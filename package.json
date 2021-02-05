@@ -2,6 +2,11 @@
   "name": "avonni-components",
   "description": "AVONNI components",
   "version": "0.0.1",
+  "dependencies": {
+    "chart.js": "^2.9.4",
+    "d3": "^6.5.0",
+    "d3-funnel": "^1.2.2"
+  },
   "devDependencies": {
     "@babel/core": "^7.12.13",
     "@lwc/synthetic-shadow": "^1.17.0",
