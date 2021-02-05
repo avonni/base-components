@@ -12,8 +12,7 @@ module.exports = {
             new LWCWebpackPlugin({
                 modules: [
                     { dir: 'src/modules' },
-                    { npm: 'lightning-base-components' },
-                    { npm: '@salesforce-ux/design-system' }
+                    { npm: 'lightning-base-components' }
                 ]
             })
         );
@@ -24,16 +23,8 @@ module.exports = {
 
         config.module.rules.push({
             test: /\.css$/,
-            use: [
-                'style-loader',
-                {
-                    loader: 'css-loader',
-                    options: {
-                        modules: true
-                    }
-                }
-            ],
-            include: path.resolve(__dirname, '../src')
+            include: [path.resolve(__dirname, 'not_exist_path')],
+            loader: 'style!css'
         });
 
         return config;
