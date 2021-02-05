@@ -5,10 +5,10 @@ import Component from 'avonni/avatarGroup';
 buildAndRegisterCustomElement('avonni-avatar-group', Component);
 
 export const AvatarGroup = ({ items, size, variant, maxCount }) => {
-    const el = document.createElement('avonni-avatar-group');
-    el.items = items;
-    el.variant = variant;
-    el.size = size;
-    el.maxCount = maxCount;
-    return el;
+    const element = document.createElement('avonni-avatar-group');
+    element.items = items;
+    element.variant = variant;
+    element.size = size;
+    element.maxCount = maxCount;
+    return element;
 };
