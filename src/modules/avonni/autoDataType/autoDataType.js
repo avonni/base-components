@@ -38,7 +38,7 @@ export default class AutoDataType extends LightningElement {
         if (this.isBoolean) {
             return this.card[this.fieldName] === 'true' || this.card[this.fieldName];
         }
-        
+
         return this.card[this.fieldName];
     }
 

@@ -7,6 +7,5 @@ export default function buildAndRegisterCustomElement(
     if (!customElements.get(elementName)) {
         const customElement = buildCustomElementConstructor(elementClass);
         customElements.define(elementName, customElement);
-        console.log(customElements);
     }
 }

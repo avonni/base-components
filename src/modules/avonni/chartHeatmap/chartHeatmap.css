@@ -1,0 +1,7 @@
+.d3 {
+    position: relative;
+}
+.tooltip {
+    position: absolute;
+    white-space: nowrap;
+}
