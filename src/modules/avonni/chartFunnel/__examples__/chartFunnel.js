@@ -1,8 +1,7 @@
 import '@lwc/synthetic-shadow';
-import buildAndRegisterCustomElement from '../../../../../.storybook/utils/build-custom-element';
 import Component from 'avonni/chartFunnel';
 
-buildAndRegisterCustomElement('avonni-chart-funnel', Component);
+customElements.define('ac-avonni-chart-funnel', Component.CustomElementConstructor);
 
 export const ChartFunnel = ({
     palette,
@@ -15,7 +14,7 @@ export const ChartFunnel = ({
     combineMax,
     decimalPlaces
 }) => {
-    const element = document.createElement('avonni-chart-funnel');
+    const element = document.createElement('ac-avonni-chart-funnel');
     element.palette = palette;
     element.chartDataset = chartDataset;
     element.tooltipHidden = tooltipHidden;

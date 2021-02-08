@@ -1,8 +1,7 @@
 import '@lwc/synthetic-shadow';
-import buildAndRegisterCustomElement from '../../../../../.storybook/utils/build-custom-element';
 import Component from 'avonni/chartBar';
 
-buildAndRegisterCustomElement('avonni-chart-bar', Component);
+customElements.define('ac-avonni-chart-bar', Component.CustomElementConstructor);
 
 export const ChartBar = ({
     type,
@@ -20,7 +19,7 @@ export const ChartBar = ({
     legendPosition,
     hideLegend
 }) => {
-    const element = document.createElement('avonni-chart-bar');
+    const element = document.createElement('ac-avonni-chart-bar');
     element.type = type;
     element.palette = palette;
     element.chartDatasets = chartDatasets;

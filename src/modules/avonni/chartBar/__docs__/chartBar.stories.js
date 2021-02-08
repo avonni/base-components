@@ -1,4 +1,5 @@
 import { ChartBar } from '../__examples__/chartBar';
+import { html } from 'lit-html';
 
 export default {
     title: 'Example/Chart Bar',
@@ -167,7 +168,13 @@ const chartDatasets = [
     }
 ];
 
-const Template = (args) => ChartBar(args);
+const Template = (args) => {
+    return html`
+        <div style="max-width: 50rem">
+            ${ChartBar(args)}
+        </div>
+    `
+};
 
 export const Base = Template.bind({});
 Base.args = {

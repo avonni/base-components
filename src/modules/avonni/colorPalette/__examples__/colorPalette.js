@@ -1,8 +1,7 @@
 import '@lwc/synthetic-shadow';
-import buildAndRegisterCustomElement from '../../../../../.storybook/utils/build-custom-element';
 import Component from 'avonni/colorPalette';
 
-buildAndRegisterCustomElement('avonni-color-palette', Component);
+customElements.define('ac-avonni-color-palette', Component.CustomElementConstructor);
 
 export const ColorPalette = ({
     disabled,
@@ -13,7 +12,7 @@ export const ColorPalette = ({
     tileWidth,
     tileHeight
 }) => {
-    const element = document.createElement('avonni-color-palette');
+    const element = document.createElement('ac-avonni-color-palette');
     element.disabled = disabled;
     element.readOnly = readOnly;
     element.isLoading = isLoading;

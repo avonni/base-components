@@ -1,4 +1,5 @@
 import { chartPie } from '../__examples__/chartPie';
+import { html } from 'lit-html';
 
 export default {
     title: 'Example/Chart Pie',
@@ -128,7 +129,13 @@ export default {
 const chartDatasets = [{ data: [300025, 50070, 100180, 230295, 90025, 30080] }];
 const axisLabels = ['January', 'February', 'March', 'April', 'May', 'June'];
 
-const Template = (args) => chartPie(args);
+const Template = (args) => {
+    return html`
+        <div style="max-width: 50rem">
+            ${chartPie(args)}
+        </div>
+    `
+};
 
 export const Base = Template.bind({});
 Base.args = {

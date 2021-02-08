@@ -1,11 +1,15 @@
 import '@lwc/synthetic-shadow';
-import buildAndRegisterCustomElement from '../../../../../.storybook/utils/build-custom-element';
 import Component from 'avonni/badgeIcon';
 
-buildAndRegisterCustomElement('avonni-badge-icon', Component);
+customElements.define('ac-avonni-badge-icon', Component.CustomElementConstructor);
 
-export const BadgeIcon = ({ iconName, variant, label, iconPosition }) => {
-    const element = document.createElement('avonni-badge-icon');
+export const BadgeIcon = ({ 
+    iconName, 
+    variant, 
+    label, 
+    iconPosition 
+}) => {
+    const element = document.createElement('ac-avonni-badge-icon');
     element.iconName = iconName;
     element.variant = variant;
     element.label = label;

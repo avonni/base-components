@@ -1,8 +1,7 @@
 import '@lwc/synthetic-shadow';
-import buildAndRegisterCustomElement from '../../../../../.storybook/utils/build-custom-element';
 import Component from 'avonni/checkboxGroup';
 
-buildAndRegisterCustomElement('avonni-checkbox-group', Component);
+customElements.define('ac-avonni-checkbox-group', Component.CustomElementConstructor);
 
 export const CheckboxGroup = ({ 
     disabled,
@@ -14,7 +13,7 @@ export const CheckboxGroup = ({
     value,
     variant
 }) => {
-    const element = document.createElement('avonni-checkbox-group');
+    const element = document.createElement('ac-avonni-checkbox-group');
     element.disabled = disabled;
     element.label = label;
     element.type = type;

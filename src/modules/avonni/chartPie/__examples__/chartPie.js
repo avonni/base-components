@@ -1,8 +1,7 @@
 import '@lwc/synthetic-shadow';
-import buildAndRegisterCustomElement from '../../../../../.storybook/utils/build-custom-element';
 import Component from 'avonni/chartPie';
 
-buildAndRegisterCustomElement('avonni-chart-pie', Component);
+customElements.define('ac-avonni-chart-pie', Component.CustomElementConstructor);
 
 export const chartPie = ({
     variant,
@@ -19,7 +18,7 @@ export const chartPie = ({
     legendPosition,
     hideLegend
 }) => {
-    const element = document.createElement('avonni-chart-pie');
+    const element = document.createElement('ac-avonni-chart-pie');
     element.variant = variant;
     element.palette = palette;
     element.chartDatasets = chartDatasets;

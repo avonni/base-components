@@ -1,8 +1,7 @@
 import '@lwc/synthetic-shadow';
-import buildAndRegisterCustomElement from '../../../../../.storybook/utils/build-custom-element';
 import Component from 'avonni/chartHeatmap';
 
-buildAndRegisterCustomElement('avonni-chart-heatmap', Component);
+customElements.define('ac-avonni-chart-heatmap', Component.CustomElementConstructor);
 
 export const ChartHeatmap = ({
     palette,
@@ -16,7 +15,7 @@ export const ChartHeatmap = ({
     decimalPlaces,
     hideLegend
 }) => {
-    const element = document.createElement('avonni-chart-heatmap');
+    const element = document.createElement('ac-avonni-chart-heatmap');
     element.palette = palette;
     element.chartDatasets = chartDatasets;
     element.xLabels = xLabels;

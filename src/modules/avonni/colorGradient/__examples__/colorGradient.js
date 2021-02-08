@@ -1,8 +1,7 @@
 import '@lwc/synthetic-shadow';
-import buildAndRegisterCustomElement from '../../../../../.storybook/utils/build-custom-element';
 import Component from 'avonni/colorGradient';
 
-buildAndRegisterCustomElement('avonni-color-gradient', Component);
+customElements.define('ac-avonni-color-gradient', Component.CustomElementConstructor);
 
 export const ColorGradient = ({ 
     disabled,
@@ -11,7 +10,7 @@ export const ColorGradient = ({
     opacity,
     messageWhenBadInput
 }) => {
-    const element = document.createElement('avonni-color-gradient');
+    const element = document.createElement('ac-avonni-color-gradient');
     element.disabled = disabled;
     element.value = value;
     element.readOnly = readOnly;

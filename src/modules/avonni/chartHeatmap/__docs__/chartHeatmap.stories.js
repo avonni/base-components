@@ -1,4 +1,5 @@
 import { ChartHeatmap } from '../__examples__/chartHeatmap';
+import { html } from 'lit-html';
 
 export default {
     title: 'Example/Chart Heatmap',
@@ -116,7 +117,13 @@ const chartDatasets = [
     }
 ];
 
-const Template = (args) => ChartHeatmap(args);
+const Template = (args) => {
+    return html`
+        <div style="max-width: 50rem">
+            ${ChartHeatmap(args)}
+        </div>
+    `
+};
 
 export const Base = Template.bind({});
 Base.args = {

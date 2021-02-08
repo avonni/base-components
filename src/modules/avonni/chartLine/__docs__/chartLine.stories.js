@@ -1,4 +1,5 @@
 import { chartLine } from '../__examples__/chartLine';
+import { html } from 'lit-html';
 
 export default {
     title: 'Example/Chart Line',
@@ -124,7 +125,13 @@ const axisLabels = [
     'July'
 ];
 
-const Template = (args) => chartLine(args);
+const Template = (args) => {
+    return html`
+        <div style="max-width: 50rem">
+            ${chartLine(args)}
+        </div>
+    `
+};
 
 export const Base = Template.bind({});
 Base.args = {

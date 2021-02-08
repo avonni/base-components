@@ -1,4 +1,5 @@
 import { ChartFunnel } from '../__examples__/chartFunnel';
+import { html } from 'lit-html';
 
 export default {
     title: 'Example/Chart Funnel',
@@ -95,7 +96,13 @@ const chartDataset = [
     { label: 'Person', value: 25000 }
 ];
 
-const Template = (args) => ChartFunnel(args);
+const Template = (args) => {
+    return html`
+        <div style="max-width: 20rem">
+            ${ChartFunnel(args)}
+        </div>
+    `
+};
 
 export const Base = Template.bind({});
 Base.args = {

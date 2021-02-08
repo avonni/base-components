@@ -1,8 +1,7 @@
 import '@lwc/synthetic-shadow';
-import buildAndRegisterCustomElement from '../../../../../.storybook/utils/build-custom-element';
 import Component from 'avonni/chartTreemap';
 
-buildAndRegisterCustomElement('avonni-chart-treemap', Component);
+customElements.define('ac-avonni-chart-treemap', Component.CustomElementConstructor);
 
 export const chartTreemap = ({
     palette,
@@ -17,7 +16,7 @@ export const chartTreemap = ({
     legendPosition,
     hideLegend
 }) => {
-    const element = document.createElement('avonni-chart-treemap');
+    const element = document.createElement('ac-avonni-chart-treemap');
     element.palette = palette;
     element.chartDatasets = chartDatasets;
     element.displayUnits = displayUnits;

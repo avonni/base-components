@@ -1,0 +1,68 @@
+<template>
+    <div class="avonni-emoji-picker-container">
+        <div class="slds-popover" role="dialog">
+            <div class="slds-popover__body slds-p-around_none">
+                <div role="dialog">
+                    <div class="avonni-emoji-viewer">
+                        <template for:each={emojiGroups} for:item="item">
+                            <section
+                                class="slds-p-vertical_x-small slds-p-horizontal_small"
+                                key={item.title}
+                                data-value={item.value}
+                            >
+                                <h2
+                                    class="slds-text-heading_x-small slds-m-bottom_xx-small slds-text-title_caps emoji-category-text"
+                                >
+                                    {item.title}
+                                </h2>
+                                <div class="avonni-category-emojis" role="grid">
+                                    <template
+                                        for:each={item.emojis}
+                                        for:item="emoji"
+                                    >
+                                        <span
+                                            class="avonni-emoji-entity"
+                                            title={emoji.title}
+                                            role="gridcell"
+                                            tabindex="0"
+                                            key={emoji.title}
+                                        >
+                                            <button
+                                                tabindex="-1"
+                                                onclick={dispatchSelectEmojiEvent}
+                                                value={emoji.value}
+                                            >
+                                                {emoji.value}
+                                            </button>
+                                        </span>
+                                    </template>
+                                </div>
+                            </section>
+                        </template>
+                    </div>
+                </div>
+            </div>
+            <footer
+                class="slds-popover__footer slds-theme_shade slds-p-around_none"
+            >
+                <nav aria-label="Emoji categories">
+                    <ul class="avonni-emoji-categories">
+                        <template for:each={categories} for:item="item">
+                            <li key={item.title}>
+                                <div class="slds-p-horizontal_x-small">
+                                    <lightning-button-icon
+                                        icon-name={item.iconName}
+                                        variant="bare"
+                                        title={item.title}
+                                        value={item.value}
+                                        onclick={goToSection}
+                                    ></lightning-button-icon>
+                                </div>
+                            </li>
+                        </template>
+                    </ul>
+                </nav>
+            </footer>
+        </div>
+    </div>
+</template>

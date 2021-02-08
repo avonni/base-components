@@ -1,4 +1,5 @@
 import { chartTreemap } from '../__examples__/chartTreemap';
+import { html } from 'lit-html';
 
 export default {
     title: 'Example/Chart Treemap',
@@ -118,7 +119,13 @@ const chartDatasets = [
     { label: 'Person', value: 2500 }
 ];
 
-const Template = (args) => chartTreemap(args);
+const Template = (args) => {
+    return html`
+        <div style="max-width: 50rem">
+            ${chartTreemap(args)}
+        </div>
+    `
+};
 
 export const Base = Template.bind({});
 Base.args = {

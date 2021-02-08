@@ -1,8 +1,7 @@
 import '@lwc/synthetic-shadow';
-import buildAndRegisterCustomElement from '../../../../../.storybook/utils/build-custom-element';
 import Component from 'avonni/calendar';
 
-buildAndRegisterCustomElement('avonni-calendar', Component);
+customElements.define('ac-avonni-calendar', Component.CustomElementConstructor);
 
 export const Calendar = ({
     value,
@@ -13,7 +12,7 @@ export const Calendar = ({
     min,
     max
 }) => {
-    const element = document.createElement('avonni-calendar');
+    const element = document.createElement('ac-avonni-calendar');
     element.value = value;
     element.multiValue = multiValue;
     element.disabled = disabled;

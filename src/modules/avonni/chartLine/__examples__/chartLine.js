@@ -1,8 +1,7 @@
 import '@lwc/synthetic-shadow';
-import buildAndRegisterCustomElement from '../../../../../.storybook/utils/build-custom-element';
 import Component from 'avonni/chartLine';
 
-buildAndRegisterCustomElement('avonni-chart-line', Component);
+customElements.define('ac-avonni-chart-line', Component.CustomElementConstructor);
 
 export const chartLine = ({
     palette,
@@ -16,7 +15,7 @@ export const chartLine = ({
     legendPosition,
     hideLegend
 }) => {
-    const element = document.createElement('avonni-chart-line');
+    const element = document.createElement('ac-avonni-chart-line');
     element.palette = palette;
     element.chartDatasets = chartDatasets;
     element.axisLabels = axisLabels;
