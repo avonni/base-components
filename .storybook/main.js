@@ -1,4 +1,3 @@
-const path = require('path');
 const LWCWebpackPlugin = require('lwc-webpack-plugin');
 
 module.exports = {
@@ -20,12 +19,6 @@ module.exports = {
         config.module.rules = config.module.rules.filter(
             (f) => f.test.toString() !== '/\\.css$/'
         );
-
-        config.module.rules.push({
-            test: /\.css$/,
-            include: [path.resolve(__dirname, 'not_exist_path')],
-            loader: 'style!css'
-        });
 
         return config;
     }
