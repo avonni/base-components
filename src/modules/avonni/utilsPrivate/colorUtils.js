@@ -1,5 +1,5 @@
-const HEX = /^#([\da-f]{3}){1,2}$/;
-const HEXA = /^#([\da-f]{4}){1,2}$/;
+const HEX = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+const HEXA = /^#([A-Fa-f0-9]{8}|[A-Fa-f0-9]{4})$/;
 const RGB = /^rgb\((((((((1?[1-9]?\d)|10\d|(2[0-4]\d)|25[0-5]),\s?)){2}|((((1?[1-9]?\d)|10\d|(2[0-4]\d)|25[0-5])\s)){2})((1?[1-9]?\d)|10\d|(2[0-4]\d)|25[0-5]))|((((([1-9]?\d(\.\d+)?)|100|(\.\d+))%,\s?){2}|((([1-9]?\d(\.\d+)?)|100|(\.\d+))%\s){2})(([1-9]?\d(\.\d+)?)|100|(\.\d+))%))\)$/;
 const RGBA = /^rgba\((((((((1?[1-9]?\d)|10\d|(2[0-4]\d)|25[0-5]),\s?)){3})|(((([1-9]?\d(\.\d+)?)|100|(\.\d+))%,\s?){3}))|(((((1?[1-9]?\d)|10\d|(2[0-4]\d)|25[0-5])\s){3})|(((([1-9]?\d(\.\d+)?)|100|(\.\d+))%\s){3}))\/\s)((0?\.\d+)|[01]|(([1-9]?\d(\.\d+)?)|100|(\.\d+))%)\)$/;
 const HSL = /^hsl\(((((([12]?[1-9]?\d)|[12]0\d|(3[0-5]\d))(\.\d+)?)|(\.\d+))(deg)?|(0|0?\.\d+)turn|(([0-6](\.\d+)?)|(\.\d+))rad)((,\s?(([1-9]?\d(\.\d+)?)|100|(\.\d+))%){2}|(\s(([1-9]?\d(\.\d+)?)|100|(\.\d+))%){2})\)$/;
@@ -145,10 +145,12 @@ export function RGBToHex(rgb) {
         .split(sep);
 
     for (let i in rgb) {
-        if (rgb[i].indexOf('%') > -1) {
-            rgb[i] = Math.round(
-                (rgb[i].substr(0, rgb[i].length - 1) / 100) * 255
-            );
+        if (rgb.hasOwnProperty(i)) {
+            if (rgb[i].indexOf('%') > -1) {
+                rgb[i] = Math.round(
+                    (rgb[i].substr(0, rgb[i].length - 1) / 100) * 255
+                );
+            }
         }
     }
 
@@ -177,19 +179,20 @@ export function RGBAToHexA(rgba) {
         .substr(5)
         .split(')')[0]
         .split(sep);
-
     if (rgba.indexOf('/') > -1) {
         rgba.splice(3, 1);
     }
 
     for (let i in rgba) {
-        if (rgba[i].indexOf('%') > -1) {
-            let p = rgba[i].substr(0, rgba[i].length - 1) / 100;
-
-            if (i < 3) {
-                rgba[i] = Math.round(p * 255);
-            } else {
-                rgba[i] = p;
+        if (rgba.hasOwnProperty(i)) {
+            if (rgba[i].indexOf('%') > -1) {
+                let p = rgba[i].substr(0, rgba[i].length - 1) / 100;
+    
+                if (i < 3) {
+                    rgba[i] = Math.round(p * 255);
+                } else {
+                    rgba[i] = p;
+                }
             }
         }
     }
@@ -266,10 +269,12 @@ export function RGBToHSL(rgb) {
         .split(sep);
 
     for (let i in rgb) {
-        if (rgb[i].indexOf('%') > -1) {
-            rgb[i] = Math.round(
-                (rgb[i].substr(0, rgb[i].length - 1) / 100) * 255
-            );
+        if (rgb.hasOwnProperty(i)) {
+            if (rgb[i].indexOf('%') > -1) {
+                rgb[i] = Math.round(
+                    (rgb[i].substr(0, rgb[i].length - 1) / 100) * 255
+                );
+            }
         }
     }
 
@@ -320,13 +325,15 @@ export function RGBAToHSLA(rgba) {
     }
 
     for (let i in rgba) {
-        if (rgba[i].indexOf('%') > -1) {
-            let p = rgba[i].substr(0, rgba[i].length - 1) / 100;
-
-            if (i < 3) {
-                rgba[i] = Math.round(p * 255);
-            } else {
-                rgba[i] = p;
+        if (rgba.hasOwnProperty(i)) {
+            if (rgba[i].indexOf('%') > -1) {
+                let p = rgba[i].substr(0, rgba[i].length - 1) / 100;
+    
+                if (i < 3) {
+                    rgba[i] = Math.round(p * 255);
+                } else {
+                    rgba[i] = p;
+                }
             }
         }
     }
