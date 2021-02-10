@@ -1,4 +1,3 @@
-import '@lwc/synthetic-shadow';
 import Component from 'avonni/inputPen';
 
 customElements.define('ac-avonni-input-pen', Component.CustomElementConstructor);

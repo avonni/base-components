@@ -1,4 +1,3 @@
-import '@lwc/synthetic-shadow';
 import Component from 'avonni/colorGradient';
 
 customElements.define('ac-avonni-color-gradient', Component.CustomElementConstructor);

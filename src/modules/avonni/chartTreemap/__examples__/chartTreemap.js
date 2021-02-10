@@ -1,4 +1,3 @@
-import '@lwc/synthetic-shadow';
 import Component from 'avonni/chartTreemap';
 
 customElements.define('ac-avonni-chart-treemap', Component.CustomElementConstructor);

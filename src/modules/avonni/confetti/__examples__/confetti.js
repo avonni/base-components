@@ -1,4 +1,3 @@
-import '@lwc/synthetic-shadow';
 import Component from 'avonni/confetti';
 
 customElements.define('ac-avonni-confetti', Component.CustomElementConstructor);

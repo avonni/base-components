@@ -1,4 +1,3 @@
-import '@lwc/synthetic-shadow';
 import Component from 'avonni/pagination';
 
 customElements.define('ac-avonni-pagination', Component.CustomElementConstructor);

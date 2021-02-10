@@ -1,4 +1,3 @@
-import '@lwc/synthetic-shadow';
 import Component from 'avonni/inputCounter';
 
 customElements.define('ac-avonni-input-counter', Component.CustomElementConstructor);

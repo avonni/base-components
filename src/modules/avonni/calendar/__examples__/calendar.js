@@ -1,4 +1,3 @@
-import '@lwc/synthetic-shadow';
 import Component from 'avonni/calendar';
 
 customElements.define('ac-avonni-calendar', Component.CustomElementConstructor);

@@ -1,4 +1,3 @@
-import '@lwc/synthetic-shadow';
 import Component from 'avonni/chartPie';
 
 customElements.define('ac-avonni-chart-pie', Component.CustomElementConstructor);

@@ -1,4 +1,3 @@
-import '@lwc/synthetic-shadow';
 import Component from 'avonni/rating';
 
 customElements.define('ac-avonni-rating', Component.CustomElementConstructor);

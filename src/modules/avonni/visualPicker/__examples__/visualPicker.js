@@ -1,4 +1,3 @@
-import '@lwc/synthetic-shadow';
 import Component from 'avonni/visualPicker';
 
 customElements.define('ac-avonni-visual-picker', Component.CustomElementConstructor);

@@ -1,4 +1,3 @@
-import '@lwc/synthetic-shadow';
 import Component from 'avonni/chartBar';
 
 customElements.define('ac-avonni-chart-bar', Component.CustomElementConstructor);

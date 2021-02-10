@@ -1,4 +1,3 @@
-import '@lwc/synthetic-shadow';
 import Component from 'avonni/chartFunnel';
 
 customElements.define('ac-avonni-chart-funnel', Component.CustomElementConstructor);

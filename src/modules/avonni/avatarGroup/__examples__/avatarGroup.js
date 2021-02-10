@@ -1,4 +1,3 @@
-import '@lwc/synthetic-shadow';
 import Component from 'avonni/avatarGroup';
 
 customElements.define('ac-avonni-avatar-group', Component.CustomElementConstructor);

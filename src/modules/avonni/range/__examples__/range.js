@@ -1,4 +1,3 @@
-import '@lwc/synthetic-shadow';
 import Component from 'avonni/range';
 
 customElements.define('ac-avonni-range', Component.CustomElementConstructor);

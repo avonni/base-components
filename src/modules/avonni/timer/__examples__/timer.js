@@ -1,4 +1,3 @@
-import '@lwc/synthetic-shadow';
 import Component from 'avonni/timer';
 
 customElements.define('ac-avonni-timer', Component.CustomElementConstructor);

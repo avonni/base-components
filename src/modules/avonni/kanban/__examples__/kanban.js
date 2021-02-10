@@ -1,4 +1,3 @@
-import '@lwc/synthetic-shadow';
 import Component from 'avonni/kanban';
 
 customElements.define('ac-avonni-kanban', Component.CustomElementConstructor);

@@ -1,4 +1,3 @@
-import '@lwc/synthetic-shadow';
 import Component from 'avonni/checkboxGroup';
 
 customElements.define('ac-avonni-checkbox-group', Component.CustomElementConstructor);
