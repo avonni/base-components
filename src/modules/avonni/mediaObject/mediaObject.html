@@ -1,7 +1,10 @@
 <template>
     <div class={mediaObjectClass}>
+        <!-- to do slots -->
         <template if:true={showFigureSlot}>
-            <slot name="figure"></slot>
+            <span class="slds-avatar slds-avatar_large">
+                <slot name="figure"></slot>
+            </span>
         </template>
         <div class="slds-media__figure">
             <span class="slds-avatar slds-avatar_large">
@@ -24,7 +27,7 @@
                 <span
                     class="slds-avatar slds-avatar_large slds-media__figure_reverse"
                 >
-                    <slot name="figure inverse"></slot>
+                    <slot name="figureInverse"></slot>
                 </span>
             </div>
         </template>

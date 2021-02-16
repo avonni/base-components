@@ -13,24 +13,25 @@ export default class MediaObject extends LightningElement {
     showFigureSlot = true;
     showFigureInverseSlot = true;
 
-    // renderedCallback() {
-    //     if (this.figureSlot) {
-    //         this.showTitleSlot = this.titleSlot.assignedElements().length !== 0;
-    //         this.showHeader = this.title || this.showTitleSlot;
-    //     }
+    renderedCallback() {
+        if (this.figureSlot) {
+            this.showFigureSlot =
+                this.figureSlot.assignedElements().length !== 0;
+        }
 
-    //     if (this.figureInverseSlot) {
-    //         this.showFooter = this.footerSlot.assignedElements().length !== 0;
-    //     }
-    // }
+        if (this.figureInverseSlot) {
+            this.showFigureInverseSlot =
+                this.showFigureInverseSlot.assignedElements().length !== 0;
+        }
+    }
 
-    // get figureSlot() {
-    //     return this.template.querySelector('slot[name=figure]');
-    // }
+    get figureSlot() {
+        return this.template.querySelector('slot[name=figure]');
+    }
 
-    // get figureInverseSlot() {
-    //     return this.template.querySelector('slot[name=figureInverse]');
-    // }
+    get figureInverseSlot() {
+        return this.template.querySelector('slot[name=figureInverse]');
+    }
 
     get mediaObjectClass() {
         return classSet('slds-media')
