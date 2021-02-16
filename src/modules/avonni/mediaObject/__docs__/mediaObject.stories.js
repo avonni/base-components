@@ -8,7 +8,10 @@ export default {
                 type: 'select',
                 options: ['start', 'center', 'end']
             },
-            defaultValue: 'start'
+            defaultValue: 'start',
+            table: {
+                defaultValue: { summary: 'start' }
+            }
         },
         responsive: {
             control: {
@@ -23,13 +26,12 @@ export default {
         size: {
             control: {
                 type: 'select',
-                options: [
-                    'slds-media_small',
-                    'slds-media_medium',
-                    'slds-media_large'
-                ]
+                options: ['small', 'medium', 'large']
             },
-            defaultValue: 'slds-media_medium'
+            defaultValue: 'medium',
+            table: {
+                defaultValue: { summary: 'medium' }
+            }
         }
     }
 };
