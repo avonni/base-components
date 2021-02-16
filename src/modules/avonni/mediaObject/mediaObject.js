@@ -1,12 +1,11 @@
 import { LightningElement, api, track } from 'lwc';
-import { normalizeString } from 'avonni/utilsPrivate';
+import { normalizeString, normalizeBoolean } from 'avonni/utilsPrivate';
 import { classSet } from '../utils/utils';
 
 const validSizes = ['small', 'medium', 'large'];
 const validVerticalAlignement = ['center', 'start', 'end'];
 
 export default class MediaObject extends LightningElement {
-    @api responsive;
     @api inline;
 
     @track _verticalAlign = '';
@@ -21,7 +20,8 @@ export default class MediaObject extends LightningElement {
                 'slds-media_large': this._size === 'large',
                 'slds-media_center': this._verticalAlign === 'center',
                 'avonni-media-object-alignement-end':
-                    this._verticalAlign === 'end'
+                    this._verticalAlign === 'end',
+                'slds-media_responsive': this._responsive === true
             })
             .toString();
     }
@@ -46,5 +46,13 @@ export default class MediaObject extends LightningElement {
             fallbackValue: 'start',
             validValues: validVerticalAlignement
         });
+    }
+
+    @api get responsive() {
+        return this._responsive;
+    }
+
+    set responsive(value) {
+        this._responsive = normalizeBoolean(value);
     }
 }
