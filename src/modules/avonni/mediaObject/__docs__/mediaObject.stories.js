@@ -10,26 +10,36 @@ export default {
             },
             defaultValue: 'start',
             table: {
+                type: { summary: 'String' },
                 defaultValue: { summary: 'start' }
             }
         },
         responsive: {
             control: {
                 type: 'boolean'
+            },
+            table: {
+                type: { summary: 'Boolean' },
+                defaultValue: { summary: 'False' }
             }
         },
         inline: {
             control: {
                 type: 'boolean'
+            },
+            table: {
+                type: { summary: 'Boolean' },
+                defaultValue: { summary: 'False' }
             }
         },
         size: {
             control: {
                 type: 'select',
-                options: ['small', 'medium', 'large']
+                options: ['medium', 'small', 'large']
             },
             defaultValue: 'medium',
             table: {
+                type: { summary: 'String' },
                 defaultValue: { summary: 'medium' }
             }
         }

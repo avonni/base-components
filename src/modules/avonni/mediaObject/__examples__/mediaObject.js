@@ -11,6 +11,5 @@ export const MediaObject = ({ verticalAlign, responsive, inline, size }) => {
     element.responsive = responsive;
     element.inline = inline;
     element.size = size;
-
     return element;
 };

@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { normalizeString, normalizeBoolean } from 'avonni/utilsPrivate';
 import { classSet } from '../utils/utils';
 
@@ -6,12 +6,31 @@ const validSizes = ['small', 'medium', 'large'];
 const validVerticalAlignement = ['center', 'start', 'end'];
 
 export default class MediaObject extends LightningElement {
-    @api inline;
+    _verticalAlign = 'start';
+    _responsive = false;
+    _inline = false;
+    _size = 'medium';
+    showFigureSlot = true;
+    showFigureInverseSlot = true;
 
-    @track _verticalAlign = '';
-    @track _responsive = false;
-    @track _inline = false;
-    @track _size = 'medium';
+    // renderedCallback() {
+    //     if (this.figureSlot) {
+    //         this.showTitleSlot = this.titleSlot.assignedElements().length !== 0;
+    //         this.showHeader = this.title || this.showTitleSlot;
+    //     }
+
+    //     if (this.figureInverseSlot) {
+    //         this.showFooter = this.footerSlot.assignedElements().length !== 0;
+    //     }
+    // }
+
+    // get figureSlot() {
+    //     return this.template.querySelector('slot[name=figure]');
+    // }
+
+    // get figureInverseSlot() {
+    //     return this.template.querySelector('slot[name=figureInverse]');
+    // }
 
     get mediaObjectClass() {
         return classSet('slds-media')
@@ -21,7 +40,8 @@ export default class MediaObject extends LightningElement {
                 'slds-media_center': this._verticalAlign === 'center',
                 'avonni-media-object-alignement-end':
                     this._verticalAlign === 'end',
-                'slds-media_responsive': this._responsive === true
+                'slds-media_responsive': this._responsive === true,
+                'avonni-media-object-display-inline': this._inline === true // slds-media_inline wasn't responsive
             })
             .toString();
     }
@@ -54,5 +74,13 @@ export default class MediaObject extends LightningElement {
 
     set responsive(value) {
         this._responsive = normalizeBoolean(value);
+    }
+
+    @api get inline() {
+        return this._inline;
+    }
+
+    set inline(value) {
+        this._inline = normalizeBoolean(value);
     }
 }

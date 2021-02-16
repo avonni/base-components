@@ -1,5 +1,8 @@
 <template>
     <div class={mediaObjectClass}>
+        <template if:true={showFigureSlot}>
+            <slot name="figure"></slot>
+        </template>
         <div class="slds-media__figure">
             <span class="slds-avatar slds-avatar_large">
                 <img
@@ -13,11 +16,17 @@
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat
                 minus molestias reprehenderit consequuntur sapiente. Modi
-                veritatis totam accusantium numquam assumenda. Lorem ipsum dolor
-                sit amet, consectetur adipisicing elit. Fugiat minus molestias
-                reprehenderit consequuntur sapiente. Modi veritatis totam
-                accusantium numquam assumenda.
+                veritatis totam accusantium numquam assumenda.
             </p>
         </div>
+        <template if:true={showFigureInverseSlot}>
+            <div class="slds-media__figure">
+                <span
+                    class="slds-avatar slds-avatar_large slds-media__figure_reverse"
+                >
+                    <slot name="figure inverse"></slot>
+                </span>
+            </div>
+        </template>
     </div>
 </template>
