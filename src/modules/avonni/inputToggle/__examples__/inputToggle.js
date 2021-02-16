@@ -13,6 +13,8 @@ export const InputToggle = ({
     ariaLabelledBy,
     checked,
     disabled,
+    fieldLevelHelp,
+    hideMark,
     label,
     messageToggleActive,
     messageToggleInactive,
@@ -21,7 +23,8 @@ export const InputToggle = ({
     readOnly,
     required,
     size,
-    value
+    value,
+    variant
 }) => {
     const element = document.createElement('ac-avonni-input-toggle');
     element.accessKey = accessKey;
@@ -31,6 +34,8 @@ export const InputToggle = ({
     element.ariaLabelledBy = ariaLabelledBy;
     element.checked = checked;
     element.disabled = disabled;
+    element.fieldLevelHelp = fieldLevelHelp;
+    element.hideMark = hideMark;
     element.label = label;
     element.messageToggleActive = messageToggleActive;
     element.messageToggleInactive = messageToggleInactive;
@@ -40,5 +45,6 @@ export const InputToggle = ({
     element.required = required;
     element.size = size;
     element.value = value;
+    element.variant = variant;
     return element;
 };

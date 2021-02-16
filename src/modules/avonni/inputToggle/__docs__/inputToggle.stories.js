@@ -38,6 +38,16 @@ export default {
                 type: 'boolean'
             }
         },
+        fieldLevelHelp: {
+            control: {
+                type: 'text'
+            }
+        },
+        hideMark: {
+            control: {
+                type: 'boolean'
+            }
+        },
         label: {
             control: {
                 type: 'text'
@@ -82,6 +92,17 @@ export default {
         value: {
             control: {
                 type: 'text'
+            }
+        },
+        variant: {
+            control: {
+                type: 'select',
+                options: [
+                    'standard',
+                    'label-inline',
+                    'label-hidden',
+                    'label-stacked'
+                ]
             }
         }
     }

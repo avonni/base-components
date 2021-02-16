@@ -8,18 +8,21 @@ const i18n = {
 };
 
 const validSizes = ['x-small', 'small', 'medium', 'large'];
+const validVariants = [
+    'standard',
+    'label-inline',
+    'label-hidden',
+    'label-stacked'
+];
 
 export default class InputToggle extends LightningElement {
-    // "This attribute isn't supported for file, toggle, and checkbox-button types."
-    // Waiting for answer
-    @api fieldLevelHelp;
-
     // Effective
-    @api accessKey = null;
-    @api ariaControls = null;
-    @api ariaDescribedBy = null;
-    @api ariaLabel = null;
-    @api ariaLabelledBy = null;
+    @api accessKey;
+    @api ariaControls;
+    @api ariaDescribedBy;
+    @api ariaLabel;
+    @api ariaLabelledBy;
+    @api fieldLevelHelp;
     @api label = 'Toggle Label';
     @api messageToggleActive = 'Active';
     @api messageToggleInactive = 'Inactive';
@@ -29,14 +32,14 @@ export default class InputToggle extends LightningElement {
 
     _checked;
     _disabled;
+    _hideMark;
     _readOnly; // No effect on checkboxes
     _required;
     _size = 'medium';
+    _variant = 'standard';
 
     // To do
-    @api hideMark = false;
     @api validity;
-    @api variant;
 
     @api get checked() {
         return this._checked;
@@ -49,7 +52,21 @@ export default class InputToggle extends LightningElement {
         return classSet('slds-checkbox_faux').add({
             'avonni-input-toggle__faux_x-small': this.size === 'x-small',
             'avonni-input-toggle__faux_small': this.size === 'small',
-            'avonni-input-toggle__faux_large': this.size === 'large'
+            'avonni-input-toggle__faux_large': this.size === 'large',
+            'avonni-input-toggle__faux_hide-mark': this.hideMark === true
+        });
+    }
+
+    get computedLabelClass() {
+        return classSet('slds-form-element__label slds-m-bottom_none').add({
+            'slds-assistive-text': this.variant === 'label-hidden'
+        });
+    }
+
+    get computedWrapperClass() {
+        return classSet('slds-checkbox_faux').add({
+            'slds-form-element_horizontal': this.variant === 'label-inline',
+            'slds-form-element_stacked': this.variant === 'label-stacked'
         });
     }
 
@@ -58,6 +75,13 @@ export default class InputToggle extends LightningElement {
     }
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
+    }
+
+    @api get hideMark() {
+        return this._hideMark;
+    }
+    set hideMark(value) {
+        this._hideMark = normalizeBoolean(value);
     }
 
     get i18n() {
@@ -85,6 +109,16 @@ export default class InputToggle extends LightningElement {
         this._size = normalizeString(toggleSize, {
             fallbackValue: 'medium',
             validValues: validSizes
+        });
+    }
+
+    @api get variant() {
+        return this._variant;
+    }
+    set variant(toggleVariant) {
+        this._variant = normalizeString(toggleVariant, {
+            fallbackValue: 'standard',
+            validValues: validVariants
         });
     }
 }

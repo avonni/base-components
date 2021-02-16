@@ -75,3 +75,10 @@
     left: 0.6rem;
     top: 0.1rem;
 }
+
+.avonni-input-toggle__label
+    input:checked
+    + .slds-checkbox_faux_container
+    .avonni-input-toggle__faux_hide-mark::after {
+    display: none;
+}
