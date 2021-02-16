@@ -1,24 +1,41 @@
 <template>
     <div class="slds-form-element">
-        <label class="slds-checkbox_toggle slds-grid">
+        <label
+            class="slds-checkbox_toggle slds-grid avonni-input-toggle__label"
+        >
+            <template if:true={required}>
+                <abbr class="slds-required" title={i18n.required}>*</abbr>
+            </template>
             <span class="slds-form-element__label slds-m-bottom_none"
-                >Toggle Label</span
+                >{label}</span
             >
             <input
+                accesskey={accessKey}
+                aria-controls={ariaControls}
+                aria-describedby={ariaDescribedBy}
+                aria-label={ariaLabel}
+                aria-labelled-by={ariaLabelledBy}
+                checked={checked}
+                disabled={disabled}
+                name={name}
+                readonly={readOnly}
+                required={required}
                 type="checkbox"
-                name="checkbox-toggle-16"
-                value="checkbox-toggle-16"
-                aria-describedby="checkbox-toggle-16"
+                value={value}
             />
-            <span
-                id="checkbox-toggle-16"
-                class="slds-checkbox_faux_container"
-                aria-live="assertive"
-            >
-                <span class="slds-checkbox_faux"></span>
-                <span class="slds-checkbox_on">Enabled</span>
-                <span class="slds-checkbox_off">Disabled</span>
+            <span class="slds-checkbox_faux_container" aria-live="assertive">
+                <span class={computedFauxToggleClass}></span>
+                <span class="slds-checkbox_on">{messageToggleActive}</span>
+                <span class="slds-checkbox_off">{messageToggleInactive}</span>
             </span>
         </label>
+        <!--  TODO: add '.slds-has-error' to the parent and show this div when error-->
+        <div
+            data-help-message="true"
+            role="alert"
+            class="slds-form-element__help"
+        >
+            {messageWhenValueMissing}
+        </div>
     </div>
 </template>

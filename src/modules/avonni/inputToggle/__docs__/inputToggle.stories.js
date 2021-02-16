@@ -7,6 +7,82 @@ export default {
             control: {
                 type: 'text'
             }
+        },
+        ariaControls: {
+            control: {
+                type: 'text'
+            }
+        },
+        ariaDescribedBy: {
+            control: {
+                type: 'text'
+            }
+        },
+        ariaLabel: {
+            control: {
+                type: 'text'
+            }
+        },
+        ariaLabelledBy: {
+            control: {
+                type: 'text'
+            }
+        },
+        checked: {
+            control: {
+                type: 'boolean'
+            }
+        },
+        disabled: {
+            control: {
+                type: 'boolean'
+            }
+        },
+        label: {
+            control: {
+                type: 'text'
+            }
+        },
+        messageToggleActive: {
+            control: {
+                type: 'text'
+            }
+        },
+        messageToggleInactive: {
+            control: {
+                type: 'text'
+            }
+        },
+        messageWhenValueMissing: {
+            control: {
+                type: 'text'
+            }
+        },
+        name: {
+            control: {
+                type: 'text'
+            }
+        },
+        readOnly: {
+            control: {
+                type: 'boolean'
+            }
+        },
+        required: {
+            control: {
+                type: 'boolean'
+            }
+        },
+        size: {
+            control: {
+                type: 'select',
+                options: ['x-small', 'small', 'medium', 'large']
+            }
+        },
+        value: {
+            control: {
+                type: 'text'
+            }
         }
     }
 };
@@ -15,5 +91,9 @@ const Template = (args) => InputToggle(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    accessKey: 'Blabloubli'
+    label: 'Toggle label',
+    messageToggleActive: 'Active',
+    messageToggleInactive: 'Inactive',
+    messageWhenValueMissing: 'Value missing',
+    size: 'medium'
 };
