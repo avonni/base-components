@@ -16,7 +16,7 @@ export default class ProgressRing extends LightningElement {
     _direction = 'fill';
     _size = 'medium';
     _value = 0;
-    _variants = 'base';
+    _variant = 'base';
     _hideIcon = false;
 
     @api get direction() {
@@ -61,9 +61,16 @@ export default class ProgressRing extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: 'standard',
+            fallbackValue: 'base',
             validValues: validVariants
         });
+        if (variant === 'warning') {
+            this.iconName = 'utility:warning';
+        } else if (variant === 'expired') {
+            this.iconName = 'utility:error';
+        } else if (variant === 'base-autocomplete') {
+            this.iconName = 'utility:check';
+        }
     }
 
     @api get hideIcon() {
@@ -77,7 +84,13 @@ export default class ProgressRing extends LightningElement {
     get progressRingClass() {
         return classSet('slds-progress-ring')
             .add({
-                'slds-progress-ring_large': this._size === 'large'
+                'slds-progress-ring_large': this._size === 'large',
+                'slds-progress-ring_warning': this._variant === 'warning',
+                'slds-progress-ring_expired': this._variant === 'expired',
+                'slds-progress-ring_active-step':
+                    this._variant === 'active-step',
+                'slds-progress-ring_complete':
+                    this._variant === 'base-autocomplete' && this._value === 100
             })
             .toString();
     }
@@ -95,5 +108,16 @@ export default class ProgressRing extends LightningElement {
         let arcY = Math.sin(2 * Math.PI * (fillValue / 100));
 
         return 'M 1 0 A 1 1 0 ' + isLong + ' ' + arcX + ' ' + arcY + ' L 0 0';
+    }
+
+    get iconPresence() {
+        if (this._variant === 'base-autocomplete' && this._value === 100) {
+            return true;
+        } else if (this._variant === 'warning') {
+            return true;
+        } else if (this._variant === 'expired') {
+            return true;
+        }
+        return false;
     }
 }

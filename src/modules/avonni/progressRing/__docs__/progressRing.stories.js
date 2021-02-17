@@ -70,3 +70,6 @@ export default {
 const Template = (args) => ProgressRing(args);
 
 export const Base = Template.bind({});
+Base.args = {
+    value: 25
+};
