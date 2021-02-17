@@ -1,20 +1,16 @@
 <template>
     <div class={mediaObjectClass}>
-        <!-- to do slots -->
         <template if:true={showFigureSlot}>
-            <span class="slds-avatar slds-avatar_large">
-                <slot name="figure"></slot>
-            </span>
+            <div class="slds-media__figure">
+                <span class="slds-avatar slds-avatar_large">
+                    <img
+                        alt="Person name"
+                        src="https://www.lightningdesignsystem.com/assets/images/avatar3.jpg"
+                        title="User avatar"
+                    />
+                </span>
+            </div>
         </template>
-        <div class="slds-media__figure">
-            <span class="slds-avatar slds-avatar_large">
-                <img
-                    alt="Person name"
-                    src="https://www.lightningdesignsystem.com/assets/images/avatar3.jpg"
-                    title="User avatar"
-                />
-            </span>
-        </div>
         <div class="slds-media__body">
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat
