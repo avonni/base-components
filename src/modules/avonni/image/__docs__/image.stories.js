@@ -51,41 +51,73 @@ export default {
         block: {
             control: {
                 type: 'boolean'
+            },
+            defaultValue: 0,
+            table: {
+                defaultValue: { summary: 'false' }
             }
         },
         fluid: {
             control: {
                 type: 'boolean'
+            },
+            defaultValue: 0,
+            table: {
+                defaultValue: { summary: 'false' }
             }
         },
         fluidGrow: {
             control: {
                 type: 'boolean'
+            },
+            defaultValue: 0,
+            table: {
+                defaultValue: { summary: 'false' }
             }
         },
         thumbnail: {
             control: {
                 type: 'boolean'
+            },
+            defaultValue: 0,
+            table: {
+                defaultValue: { summary: 'false' }
             }
         },
         left: {
             control: {
                 type: 'boolean'
+            },
+            defaultValue: 0,
+            table: {
+                defaultValue: { summary: 'false' }
             }
         },
         right: {
             control: {
                 type: 'boolean'
+            },
+            defaultValue: 0,
+            table: {
+                defaultValue: { summary: 'false' }
             }
         },
         center: {
             control: {
                 type: 'boolean'
+            },
+            defaultValue: 0,
+            table: {
+                defaultValue: { summary: 'false' }
             }
         },
         blank: {
             control: {
                 type: 'boolean'
+            },
+            defaultValue: 0,
+            table: {
+                defaultValue: { summary: 'false' }
             }
         }
     }

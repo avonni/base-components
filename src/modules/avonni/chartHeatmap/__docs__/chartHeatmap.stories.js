@@ -61,21 +61,37 @@ export default {
         showValues: {
             control: {
                 type: 'boolean'
+            },
+            defaultValue: 0,
+            table: {
+                defaultValue: { summary: 'false' }
             }
         },
         showPercentages: {
             control: {
                 type: 'boolean'
+            },
+            defaultValue: 0,
+            table: {
+                defaultValue: { summary: 'false' }
             }
         },
         showTotal: {
             control: {
                 type: 'boolean'
+            },
+            defaultValue: 0,
+            table: {
+                defaultValue: { summary: 'false' }
             }
         },
         hideLegend: {
             control: {
                 type: 'boolean'
+            },
+            defaultValue: 0,
+            table: {
+                defaultValue: { summary: 'false' }
             }
         },
         chartDatasets: {

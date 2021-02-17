@@ -96,11 +96,19 @@ export default {
         pin: {
             control: {
                 type: 'boolean'
+            },
+            defaultValue: 0,
+            table: {
+                defaultValue: { summary: 'false' }
             }
         },
         disabled: {
             control: {
                 type: 'boolean'
+            },
+            defaultValue: 0,
+            table: {
+                defaultValue: { summary: 'false' }
             }
         },
         messageWhenRangeOverflow: {

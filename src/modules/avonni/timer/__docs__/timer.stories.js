@@ -72,11 +72,19 @@ export default {
         autoStart: {
             control: {
                 type: 'boolean'
+            },
+            defaultValue: 0,
+            table: {
+                defaultValue: { summary: 'false' }
             }
         },
         repeat: {
             control: {
                 type: 'boolean'
+            },
+            defaultValue: 0,
+            table: {
+                defaultValue: { summary: 'false' }
             }
         }
     }

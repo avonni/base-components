@@ -61,21 +61,37 @@ export default {
         tooltipHidden: {
             control: {
                 type: 'boolean'
+            },
+            defaultValue: 0,
+            table: {
+                defaultValue: { summary: 'false' }
             }
         },
         showValues: {
             control: {
                 type: 'boolean'
+            },
+            defaultValue: 0,
+            table: {
+                defaultValue: { summary: 'false' }
             }
         },
         showPercentages: {
             control: {
                 type: 'boolean'
+            },
+            defaultValue: 0,
+            table: {
+                defaultValue: { summary: 'false' }
             }
         },
         combineSmallGroups: {
             control: {
                 type: 'boolean'
+            },
+            defaultValue: 0,
+            table: {
+                defaultValue: { summary: 'false' }
             }
         },
         combineMax: {

@@ -16,6 +16,10 @@ export default {
         disabled: {
             control: {
                 type: 'boolean'
+            },
+            defaultValue: 0,
+            table: {
+                defaultValue: { summary: 'false' }
             }
         },
         value: {
