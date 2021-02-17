@@ -10,6 +10,7 @@ export default class MediaObject extends LightningElement {
     _responsive = false;
     _inline = false;
     _size = 'medium';
+
     showFigureSlot = true;
     showFigureInverseSlot = true;
 
@@ -21,7 +22,7 @@ export default class MediaObject extends LightningElement {
 
         if (this.figureInverseSlot) {
             this.showFigureInverseSlot =
-                this.showFigureInverseSlot.assignedElements().length !== 0;
+                this.figureInverseSlot.assignedElements().length !== 0;
         }
     }
 
@@ -31,6 +32,47 @@ export default class MediaObject extends LightningElement {
 
     get figureInverseSlot() {
         return this.template.querySelector('slot[name=figureInverse]');
+    }
+
+    @api
+    get verticalAlign() {
+        return this._verticalAlign;
+    }
+
+    set verticalAlign(verticalAlign) {
+        this._verticalAlign = normalizeString(verticalAlign, {
+            fallbackValue: 'start',
+            validValues: validVerticalAlignement
+        });
+    }
+
+    @api
+    get responsive() {
+        return this._responsive;
+    }
+
+    set responsive(value) {
+        this._responsive = normalizeBoolean(value);
+    }
+
+    @api
+    get inline() {
+        return this._inline;
+    }
+
+    set inline(value) {
+        this._inline = normalizeBoolean(value);
+    }
+
+    @api get size() {
+        return this._size;
+    }
+
+    set size(size) {
+        this._size = normalizeString(size, {
+            fallbackValue: 'medium',
+            validValues: validSizes
+        });
     }
 
     get mediaObjectClass() {
@@ -45,43 +87,5 @@ export default class MediaObject extends LightningElement {
                 'avonni-media-object-display-inline': this._inline === true
             })
             .toString();
-    }
-
-    @api get size() {
-        return this._size;
-    }
-
-    set size(size) {
-        this._size = normalizeString(size, {
-            fallbackValue: 'medium',
-            validValues: validSizes
-        });
-    }
-
-    @api get verticalAlign() {
-        return this._verticalAlign;
-    }
-
-    set verticalAlign(verticalAlign) {
-        this._verticalAlign = normalizeString(verticalAlign, {
-            fallbackValue: 'start',
-            validValues: validVerticalAlignement
-        });
-    }
-
-    @api get responsive() {
-        return this._responsive;
-    }
-
-    set responsive(value) {
-        this._responsive = normalizeBoolean(value);
-    }
-
-    @api get inline() {
-        return this._inline;
-    }
-
-    set inline(value) {
-        this._inline = normalizeBoolean(value);
     }
 }
