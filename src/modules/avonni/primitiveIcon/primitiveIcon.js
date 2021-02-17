@@ -1,4 +1,4 @@
-import dir from '@salesforce/i18n/dir';
+// import dir from '@salesforce/i18n/dir';
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'avonni/utils';
 import { normalizeString as normalize } from 'avonni/utilsPrivate';
@@ -28,7 +28,7 @@ export default class cPrimitiveIcon extends LightningElement {
     }
 
     get href() {
-        return this.src || iconUtils.getIconPath(this.iconName, dir);
+        return this.src || iconUtils.getIconPath(this.iconName, 'ltr');
     }
 
     get name() {

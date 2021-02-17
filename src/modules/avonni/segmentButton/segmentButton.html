@@ -1,0 +1,27 @@
+<template>
+    <button
+        class="avonni-button-switch"
+        disabled={disabled}
+        type={type}
+        value={value}
+        onclick={handleButtonClick}
+    >
+        <template if:true={prefixIconName}>
+            <avonni-primitive-icon
+                icon-name={prefixIconName}
+                svg-class="slds-button__icon slds-button__icon_left"
+                variant="bare"
+            ></avonni-primitive-icon>
+        </template>
+
+        {label}
+
+        <template if:true={iconName}>
+            <avonni-primitive-icon
+                icon-name={iconName}
+                svg-class="slds-button__icon slds-button__icon_right"
+                variant="bare"
+            ></avonni-primitive-icon>
+        </template>
+    </button>
+</template>
