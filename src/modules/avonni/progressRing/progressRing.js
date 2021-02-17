@@ -88,6 +88,14 @@ export default class ProgressRing extends LightningElement {
             .toString();
     }
 
+    get progressRingIconContainer() {
+        return classSet('slds-icon_container').add({
+            'slds-icon-utility-warning': this._variant === 'warning',
+            'slds-icon-utility-error': this._variant === 'expired',
+            'slds-icon-utility-check': this._variant === 'base-autocomplete'
+        });
+    }
+
     get completeness() {
         let fillValue = Number(this.value);
         let isLong = this.value > 50 ? '1 1' : '0 1';

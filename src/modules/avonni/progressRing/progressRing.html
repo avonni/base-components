@@ -17,7 +17,7 @@
             </template>
             <template if:false={hideIcon}>
                 <template if:true={iconPresence}>
-                    <span class="slds-icon_container">
+                    <span class={progressRingIconContainer}>
                         <div class="slds-icon" aria-hidden="true">
                             <lightning-icon
                                 icon-name={iconName}
@@ -25,6 +25,9 @@
                         </div>
                     </span>
                 </template>
+            </template>
+            <template if:true={hideIcon}>
+                <slot></slot>
             </template>
         </div>
     </div>
