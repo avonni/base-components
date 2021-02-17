@@ -1,4 +1,4 @@
-import Component from 'avonni/progressRing';
+import Component from '../../storybookWrappers/progressRing/progressRing';
 
 customElements.define(
     'ac-avonni-progress-ring',
