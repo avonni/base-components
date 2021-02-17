@@ -81,6 +81,7 @@ export default class ProgressRing extends LightningElement {
             })
             .toString();
     }
+
     get completeness() {
         let fillValue = Number(this.value);
         let isLong = this.value > 50 ? '1 1' : '0 1';

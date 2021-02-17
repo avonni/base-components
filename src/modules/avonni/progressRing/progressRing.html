@@ -12,7 +12,19 @@
             </svg>
         </div>
         <div class="slds-progress-ring__content">
-            <slot></slot>
+            <template if:false={hideIcon}>
+                <span
+                    class="slds-icon_container slds-icon-utility-warning"
+                    title="Warning"
+                >
+                    <div class="slds-icon" aria-hidden="true">
+                        <lightning-icon
+                            icon-name="utility:warning"
+                        ></lightning-icon>
+                    </div>
+                    <span class="slds-assistive-text">Warning</span>
+                </span>
+            </template>
         </div>
     </div>
 </template>
