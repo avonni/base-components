@@ -123,11 +123,11 @@ export default class ProgressRing extends LightningElement {
     }
 
     get iconPresence() {
-        if (this._variant === 'base-autocomplete' && this._value === 100) {
-            return true;
-        } else if (this._variant === 'warning') {
-            return true;
-        } else if (this._variant === 'expired') {
+        if (
+            (this._variant === 'base-autocomplete' && this._value === 100) ||
+            this._variant === 'warning' ||
+            this._variant === 'expired'
+        ) {
             return true;
         }
         return false;
