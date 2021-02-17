@@ -81,4 +81,18 @@ export default class ProgressRing extends LightningElement {
             })
             .toString();
     }
+    get completeness() {
+        let fillValue = Number(this.value);
+        let isLong = this.value > 50 ? '1 1' : '0 1';
+
+        if (this._direction === 'fill' && fillValue !== 100) {
+            fillValue = 100 - this.value;
+            isLong = this.value > 50 ? '1 0' : '0 0';
+        }
+
+        let arcX = Math.cos(2 * Math.PI * (fillValue / 100));
+        let arcY = Math.sin(2 * Math.PI * (fillValue / 100));
+
+        return 'M 1 0 A 1 1 0 ' + isLong + ' ' + arcX + ' ' + arcY + ' L 0 0';
+    }
 }
