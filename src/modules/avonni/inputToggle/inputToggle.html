@@ -22,6 +22,7 @@
             checked={checked}
             disabled={disabled}
             name={name}
+            onblur={handleBlur}
             onchange={handleChange}
             readonly={readOnly}
             required={required}
@@ -35,14 +36,14 @@
         </span>
     </label>
 
-    <template if:true={_helpMessage}>
+    <template if:false={valid}>
         <div
             id="help-message"
             class="slds-form-element__help"
             data-help-message
             role="alert"
         >
-            {_helpMessage}
+            {messageWhenValueMissing}
         </div>
     </template>
 </template>

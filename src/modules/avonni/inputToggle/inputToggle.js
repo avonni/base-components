@@ -27,7 +27,6 @@ export default class InputToggle extends LightningElement {
     @api label = 'Toggle Label';
     @api messageToggleActive = 'Active';
     @api messageToggleInactive = 'Inactive';
-    @api messageWhenValueMissing;
     @api name;
     @api value = '';
 
@@ -36,10 +35,13 @@ export default class InputToggle extends LightningElement {
     _disabled;
     _helpMessage = null;
     _hideMark = false;
+    _invalidMessage = 'Complete this field';
     _readOnly;
     _required;
     _size = 'medium';
     _variant;
+
+    valid = true;
 
     connectedCallback() {
         this._connected = true;
@@ -50,8 +52,8 @@ export default class InputToggle extends LightningElement {
     updateClassList() {
         classListMutation(this.classList, {
             'slds-form-element_stacked': this.variant === VARIANT.LABEL_STACKED,
-            'slds-form-element_horizontal':
-                this.variant === VARIANT.LABEL_INLINE
+            'slds-form-element_horizontal': this.variant === VARIANT.LABEL_INLINE,
+            'slds-has-error': !this.valid
         });
     }
 
@@ -76,7 +78,7 @@ export default class InputToggle extends LightningElement {
             'slds-form-element slds-form-element__label slds-m-bottom_none'
         ).add({
             'slds-assistive-text': this.variant === VARIANT.LABEL_HIDDEN,
-            'slds-m-top_xxx-small': this.size === 'large'
+            'slds-p-top_xx-small slds-m-top_xxx-small': this.size === 'large'
         });
     }
 
@@ -96,6 +98,15 @@ export default class InputToggle extends LightningElement {
 
     get i18n() {
         return i18n;
+    }
+
+    @api
+    get messageWhenValueMissing() {
+        return this._invalidMessage;
+    }
+
+    set messageWhenValueMissing(value) {
+        this._invalidMessage = value || 'Complete this field';
     }
 
     @api get readOnly() {
@@ -154,7 +165,18 @@ export default class InputToggle extends LightningElement {
         }
     }
 
+    handleBlur() {
+        if (this.required && !this.checked) {
+            this.valid = false;
+        } else {
+            this.valid = true;
+        }
+        this.updateClassList();
+    }
+
     handleChange(event) {
+        this.checked = event.target.checked;
+
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: event.target.checked,
