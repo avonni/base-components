@@ -17,21 +17,21 @@
         aria-atomic={computedAriaAtomic}
     >
         <template if:true={showIconLeft}>
-            <c-primitive-icon
+            <avonni-primitive-icon
                 icon-name={iconName}
                 svg-class={computedIconClass}
                 variant="bare"
-            ></c-primitive-icon>
+            ></avonni-primitive-icon>
         </template>
 
         {label}
 
         <template if:true={showIconRight}>
-            <c-primitive-icon
+            <avonni-primitive-icon
                 icon-name={iconName}
                 svg-class={computedIconClass}
                 variant="bare"
-            ></c-primitive-icon>
+            ></avonni-primitive-icon>
         </template>
     </button>
 </template>
