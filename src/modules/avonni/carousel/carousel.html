@@ -1,0 +1,32 @@
+<template>
+    <div class="slds-carousel">
+        <div class="slds-carousel__stage">
+            <div class="slds-carousel__panels">
+                <slot></slot>
+            </div>
+            <ul class="slds-carousel__indicators" role="tablist" onkeydown={keyDownHandler}>
+                <template for:each={paginationItems} for:item="paginationItem" for:index="paginationIndex">
+                    <li
+                        class="slds-carousel__indicator"
+                        role="presentation"
+                        onclick={onItemSelect}
+                        key={paginationItem.key}
+                        data-index={paginationIndex}
+                    >
+                        <a
+                            id={paginationItem.id}
+                            class={paginationItem.className}
+                            href="javascript:void(0);"
+                            role="tab"
+                            tabindex={paginationItem.tabIndex}
+                            aria-selected={paginationItem.ariaSelected}
+                            title={paginationItem.tabTitle}
+                        >
+                            <span class="slds-assistive-text">{paginationItem.tabTitle}</span>
+                        </a>
+                    </li>
+                </template>
+            </ul>
+        </div>
+    </div>
+</template>
