@@ -64,13 +64,6 @@ export default class ProgressRing extends LightningElement {
             fallbackValue: 'base',
             validValues: validVariants
         });
-        if (variant === 'warning') {
-            this.iconName = 'utility:warning';
-        } else if (variant === 'expired') {
-            this.iconName = 'utility:error';
-        } else if (variant === 'base-autocomplete') {
-            this.iconName = 'utility:check';
-        }
     }
 
     @api get hideIcon() {
@@ -108,6 +101,17 @@ export default class ProgressRing extends LightningElement {
         let arcY = Math.sin(2 * Math.PI * (fillValue / 100));
 
         return 'M 1 0 A 1 1 0 ' + isLong + ' ' + arcX + ' ' + arcY + ' L 0 0';
+    }
+
+    get iconName() {
+        if (this._variant === 'warning') {
+            return 'utility:warning';
+        } else if (this._variant === 'expired') {
+            return 'utility:error';
+        } else if (this._variant === 'base-autocomplete') {
+            return 'utility:check';
+        }
+        return '';
     }
 
     get iconPresence() {
