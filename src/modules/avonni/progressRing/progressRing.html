@@ -12,7 +12,9 @@
             </svg>
         </div>
         <div class="slds-progress-ring__content">
-            <slot></slot>
+            <template if:false={iconPresence}>
+                <slot></slot>
+            </template>
             <template if:false={hideIcon}>
                 <template if:true={iconPresence}>
                     <span class="slds-icon_container">
