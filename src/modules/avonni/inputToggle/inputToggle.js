@@ -31,9 +31,7 @@ export default class InputToggle extends LightningElement {
     @api value = '';
 
     _checked;
-    _connected;
     _disabled;
-    _helpMessage = null;
     _hideMark = false;
     _invalidMessage = 'Complete this field';
     _readOnly;
@@ -41,6 +39,8 @@ export default class InputToggle extends LightningElement {
     _size = 'medium';
     _variant;
 
+    _connected;
+    _helpMessage = null;
     valid = true;
 
     connectedCallback() {
@@ -49,55 +49,29 @@ export default class InputToggle extends LightningElement {
         this.updateClassList();
     }
 
-    updateClassList() {
-        classListMutation(this.classList, {
-            'slds-form-element_stacked': this.variant === VARIANT.LABEL_STACKED,
-            'slds-form-element_horizontal': this.variant === VARIANT.LABEL_INLINE,
-            'slds-has-error': !this.valid
-        });
-    }
-
-    @api get checked() {
+    @api
+    get checked() {
         return this._checked;
     }
+
     set checked(value) {
         this._checked = normalizeBoolean(value);
     }
 
-    get computedFauxToggleClass() {
-        return classSet('slds-checkbox_faux').add({
-            'avonni-input-toggle__faux_x-small': this.size === 'x-small',
-            'avonni-input-toggle__faux_small': this.size === 'small',
-            'avonni-input-toggle__faux_large': this.size === 'large',
-            'avonni-input-toggle__faux_hide-mark': this.hideMark === true
-        });
-    }
-
-    get computedLabelClass() {
-        return classSet(
-            'slds-form-element slds-form-element__label slds-m-bottom_none'
-        ).add({
-            'slds-assistive-text': this.variant === VARIANT.LABEL_HIDDEN,
-            'slds-p-top_xx-small slds-m-top_xxx-small': this.size === 'large'
-        });
-    }
-
-    @api get disabled() {
+    @api
+    get disabled() {
         return this._disabled;
     }
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
     }
 
-    @api get hideMark() {
+    @api
+    get hideMark() {
         return this._hideMark;
     }
     set hideMark(value) {
         this._hideMark = normalizeBoolean(value);
-    }
-
-    get i18n() {
-        return i18n;
     }
 
     @api
@@ -109,23 +83,29 @@ export default class InputToggle extends LightningElement {
         this._invalidMessage = value || 'Complete this field';
     }
 
-    @api get readOnly() {
+    @api
+    get readOnly() {
         return this._readOnly;
     }
+
     set readOnly(value) {
         this._readOnly = normalizeBoolean(value);
     }
 
-    @api get required() {
+    @api
+    get required() {
         return this._required;
     }
+
     set required(value) {
         this._required = normalizeBoolean(value);
     }
 
-    @api get size() {
+    @api
+    get size() {
         return this._size;
     }
+
     set size(toggleSize) {
         this._size = normalizeString(toggleSize, {
             fallbackValue: 'medium',
@@ -133,17 +113,19 @@ export default class InputToggle extends LightningElement {
         });
     }
 
-    @api get validity() {
-        return this._constraint.validity;
-    }
-
-    @api get variant() {
+    @api
+    get variant() {
         return this._variant || VARIANT.STANDARD;
     }
 
     set variant(toggleVariant) {
         this._variant = normalizeVariant(toggleVariant);
         this.updateClassList();
+    }
+
+    @api
+    get validity() {
+        return this._constraint.validity;
     }
 
     @api
@@ -165,28 +147,6 @@ export default class InputToggle extends LightningElement {
         }
     }
 
-    handleBlur() {
-        if (this.required && !this.checked) {
-            this.valid = false;
-        } else {
-            this.valid = true;
-        }
-        this.updateClassList();
-    }
-
-    handleChange(event) {
-        this.checked = event.target.checked;
-
-        this.dispatchEvent(
-            new CustomEvent('change', {
-                detail: event.target.checked,
-                bubbles: true,
-                cancelable: false,
-                composed: true
-            })
-        );
-    }
-
     @api
     reportValidity() {
         return this._constraint.reportValidity((message) => {
@@ -204,6 +164,28 @@ export default class InputToggle extends LightningElement {
         this.reportValidity();
     }
 
+    get i18n() {
+        return i18n;
+    }
+
+    get computedFauxToggleClass() {
+        return classSet('slds-checkbox_faux').add({
+            'avonni-input-toggle__faux_x-small': this.size === 'x-small',
+            'avonni-input-toggle__faux_small': this.size === 'small',
+            'avonni-input-toggle__faux_large': this.size === 'large',
+            'avonni-input-toggle__faux_hide-mark': this.hideMark === true
+        });
+    }
+
+    get computedLabelClass() {
+        return classSet(
+            'slds-form-element slds-form-element__label slds-m-bottom_none'
+        ).add({
+            'slds-assistive-text': this.variant === VARIANT.LABEL_HIDDEN,
+            'slds-p-top_xx-small slds-m-top_xxx-small': this.size === 'large'
+        });
+    }
+
     get _constraint() {
         if (!this._constraintApi) {
             this._constraintApi = new FieldConstraintApi(() => this, {
@@ -211,5 +193,36 @@ export default class InputToggle extends LightningElement {
             });
         }
         return this._constraintApi;
+    }
+
+    updateClassList() {
+        classListMutation(this.classList, {
+            'slds-form-element_stacked': this.variant === VARIANT.LABEL_STACKED,
+            'slds-form-element_horizontal':
+                this.variant === VARIANT.LABEL_INLINE,
+            'slds-has-error': !this.valid
+        });
+    }
+
+    handleBlur() {
+        if (this.required && !this.checked) {
+            this.valid = false;
+        } else {
+            this.valid = true;
+        }
+        this.updateClassList();
+    }
+
+    handleChange(event) {
+        this._checked = event.target.checked;
+
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                detail: event.target.checked,
+                bubbles: true,
+                cancelable: false,
+                composed: true
+            })
+        );
     }
 }

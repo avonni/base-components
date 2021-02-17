@@ -28,28 +28,9 @@ export default {
                 type: 'text'
             }
         },
-        checked: {
-            control: {
-                type: 'boolean'
-            }
-        },
-        disabled: {
-            control: {
-                type: 'boolean'
-            }
-        },
         fieldLevelHelp: {
             control: {
                 type: 'text'
-            }
-        },
-        hideMark: {
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: false,
-            table: {
-                defaultValue: { summary: false }
             }
         },
         label: {
@@ -77,14 +58,9 @@ export default {
                 type: 'text'
             }
         },
-        readOnly: {
+        value: {
             control: {
-                type: 'boolean'
-            }
-        },
-        required: {
-            control: {
-                type: 'boolean'
+                type: 'text'
             }
         },
         size: {
@@ -97,11 +73,6 @@ export default {
                 defaultValue: { summary: 'medium' }
             }
         },
-        value: {
-            control: {
-                type: 'text'
-            }
-        },
         variant: {
             control: {
                 type: 'select',
@@ -111,6 +82,51 @@ export default {
                     'label-hidden',
                     'label-stacked'
                 ]
+            }
+        },
+        checked: {
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: 0,
+            table: {
+                defaultValue: { summary: 'false' }
+            }
+        },
+        disabled: {
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: 0,
+            table: {
+                defaultValue: { summary: 'false' }
+            }
+        },
+        hideMark: {
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: 0,
+            table: {
+                defaultValue: { summary: 'false' }
+            }
+        },
+        readOnly: {
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: 0,
+            table: {
+                defaultValue: { summary: 'false' }
+            }
+        },
+        required: {
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: 0,
+            table: {
+                defaultValue: { summary: 'false' }
             }
         }
     }
@@ -124,5 +140,7 @@ Base.args = {
     messageToggleActive: 'Active',
     messageToggleInactive: 'Inactive',
     messageWhenValueMissing: 'Value missing',
-    size: 'medium'
+    size: 'medium',
+    ariaControls: 'input',
+    ariaDescribedBy: 'input'
 };
