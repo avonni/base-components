@@ -1,1 +1,24 @@
-<template></template>
+<template>
+    <div class={progressRingClass}>
+        <div
+            class="slds-progress-ring__progress"
+            role="progressbar"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="100"
+        >
+            <svg viewBox="-1 -1 2 2">
+                <circle
+                    class="slds-progress-ring__path"
+                    id="slds-progress-ring-path-38"
+                    cx="0"
+                    cy="0"
+                    r="1"
+                ></circle>
+            </svg>
+        </div>
+        <div class="slds-progress-ring__content">
+            <slot></slot>
+        </div>
+    </div>
+</template>
