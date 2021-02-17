@@ -1,4 +1,4 @@
-import Component from 'avonni/mediaObject';
+import Component from '../../storybookWrappers/mediaObject/mediaObject';
 
 customElements.define(
     'ac-avonni-media-object',

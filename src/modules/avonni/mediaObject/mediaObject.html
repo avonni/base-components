@@ -3,20 +3,12 @@
         <template if:true={showFigureSlot}>
             <div class="slds-media__figure">
                 <span class="slds-avatar slds-avatar_large">
-                    <img
-                        alt="Person name"
-                        src="https://www.lightningdesignsystem.com/assets/images/avatar3.jpg"
-                        title="User avatar"
-                    />
+                    <slot name="figure"></slot>
                 </span>
             </div>
         </template>
         <div class="slds-media__body">
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat
-                minus molestias reprehenderit consequuntur sapiente. Modi
-                veritatis totam accusantium numquam assumenda.
-            </p>
+            <slot></slot>
         </div>
         <template if:true={showFigureInverseSlot}>
             <div class="slds-media__figure">
