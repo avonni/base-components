@@ -1,4 +1,4 @@
-import Component from 'avonni/carousel';
+import Component from '../../storybookWrappers/carousel/carousel';
 
 customElements.define('ac-avonni-carousel', Component.CustomElementConstructor);
 
