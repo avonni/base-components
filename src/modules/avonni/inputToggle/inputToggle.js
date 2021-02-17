@@ -1,22 +1,23 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeBoolean, normalizeString } from 'avonni/utilsPrivate';
+import {
+    classListMutation,
+    normalizeBoolean,
+    normalizeString
+} from 'avonni/utilsPrivate';
 import { classSet } from 'avonni/utils';
+import {
+    FieldConstraintApi,
+    normalizeVariant,
+    VARIANT
+} from 'avonni/inputUtils';
 
-// For translations?
 const i18n = {
     required: 'required'
 };
 
 const validSizes = ['x-small', 'small', 'medium', 'large'];
-const validVariants = [
-    'standard',
-    'label-inline',
-    'label-hidden',
-    'label-stacked'
-];
 
 export default class InputToggle extends LightningElement {
-    // Effective
     @api accessKey;
     @api ariaControls;
     @api ariaDescribedBy;
@@ -28,18 +29,31 @@ export default class InputToggle extends LightningElement {
     @api messageToggleInactive = 'Inactive';
     @api messageWhenValueMissing;
     @api name;
-    @api value;
+    @api value = '';
 
     _checked;
+    _connected;
     _disabled;
-    _hideMark;
-    _readOnly; // No effect on checkboxes
+    _helpMessage = null;
+    _hideMark = false;
+    _readOnly;
     _required;
     _size = 'medium';
-    _variant = 'standard';
+    _variant;
 
-    // To do
-    @api validity;
+    connectedCallback() {
+        this._connected = true;
+        this.classList.add('slds-form-element');
+        this.updateClassList();
+    }
+
+    updateClassList() {
+        classListMutation(this.classList, {
+            'slds-form-element_stacked': this.variant === VARIANT.LABEL_STACKED,
+            'slds-form-element_horizontal':
+                this.variant === VARIANT.LABEL_INLINE
+        });
+    }
 
     @api get checked() {
         return this._checked;
@@ -58,15 +72,10 @@ export default class InputToggle extends LightningElement {
     }
 
     get computedLabelClass() {
-        return classSet('slds-form-element__label slds-m-bottom_none').add({
-            'slds-assistive-text': this.variant === 'label-hidden'
-        });
-    }
-
-    get computedWrapperClass() {
-        return classSet('slds-checkbox_faux').add({
-            'slds-form-element_horizontal': this.variant === 'label-inline',
-            'slds-form-element_stacked': this.variant === 'label-stacked'
+        return classSet(
+            'slds-form-element slds-form-element__label slds-m-bottom_none'
+        ).add({
+            'slds-assistive-text': this.variant === VARIANT.LABEL_HIDDEN
         });
     }
 
@@ -112,13 +121,72 @@ export default class InputToggle extends LightningElement {
         });
     }
 
-    @api get variant() {
-        return this._variant;
+    @api get validity() {
+        return this._constraint.validity;
     }
+
+    @api get variant() {
+        return this._variant || VARIANT.STANDARD;
+    }
+
     set variant(toggleVariant) {
-        this._variant = normalizeString(toggleVariant, {
-            fallbackValue: 'standard',
-            validValues: validVariants
+        this._variant = normalizeVariant(toggleVariant);
+        this.updateClassList();
+    }
+
+    @api
+    blur() {
+        if (this._connected) {
+            this.template.querySelector('input').blur();
+        }
+    }
+
+    @api
+    checkValidity() {
+        return this._constraint.checkValidity();
+    }
+
+    @api
+    focus() {
+        if (this._connected) {
+            this.template.querySelector('input').focus();
+        }
+    }
+
+    handleChange(event) {
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                detail: event.target.checked,
+                bubbles: true,
+                cancelable: false,
+                composed: true
+            })
+        );
+    }
+
+    @api
+    reportValidity() {
+        return this._constraint.reportValidity((message) => {
+            this._helpMessage = message;
         });
+    }
+
+    @api
+    setCustomValidity(message) {
+        this._constraint.setCustomValidity(message);
+    }
+
+    @api
+    showHelpMessageIfInvalid() {
+        this.reportValidity();
+    }
+
+    get _constraint() {
+        if (!this._constraintApi) {
+            this._constraintApi = new FieldConstraintApi(() => this, {
+                checked: () => this.checked
+            });
+        }
+        return this._constraintApi;
     }
 }

@@ -46,6 +46,10 @@ export default {
         hideMark: {
             control: {
                 type: 'boolean'
+            },
+            defaultValue: false,
+            table: {
+                defaultValue: { summary: false }
             }
         },
         label: {
@@ -87,6 +91,10 @@ export default {
             control: {
                 type: 'select',
                 options: ['x-small', 'small', 'medium', 'large']
+            },
+            defaultValue: 'medium',
+            table: {
+                defaultValue: { summary: 'medium' }
             }
         },
         value: {
