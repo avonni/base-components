@@ -75,7 +75,8 @@ export default class InputToggle extends LightningElement {
         return classSet(
             'slds-form-element slds-form-element__label slds-m-bottom_none'
         ).add({
-            'slds-assistive-text': this.variant === VARIANT.LABEL_HIDDEN
+            'slds-assistive-text': this.variant === VARIANT.LABEL_HIDDEN,
+            'slds-m-top_xxx-small': this.size === 'large'
         });
     }
 
