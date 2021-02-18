@@ -87,7 +87,7 @@ export default class Carousel extends LightningElement {
 			previousPanel: value.previousPanel || this._assistiveText.previousPanel
 		};
 	}
-
+	
 	@api 
 	get items() {
 		return this._carouselItems;
@@ -123,12 +123,12 @@ export default class Carousel extends LightningElement {
 		const flexBasis = 100 / this.itemsPerPanel;
 		return `flex-basis: ${flexBasis}%;`
 	}
-
+	
 	get previousPanelNavigationDisabled() {
-		return this.activeIndexPage === 0;
+		return !this.isInfinite ? this.activeIndexPage === 0 : null;
 	}
 	get nextPanelNavigationDisabled() {
-		return this.activeIndexPage === this.paginationItems.length - 1;
+		return !this.isInfinite ? this.activeIndexPage === this.paginationItems.length - 1 : null;
 	}
 	
 	onPageSelect(event) {
@@ -162,16 +162,25 @@ export default class Carousel extends LightningElement {
 		activePaginationItem.ariaSelected = FALSE_STRING;
 		activePaginationItem.className = INDICATOR_ACTION;
 	}
-
+	
 	handlePreviousClick() {
+		
 		this.unselectCurrentPage();
-		this.activeIndexPage -= 1;
+		if (this.activeIndexPage > 0) {
+			this.activeIndexPage -= 1;
+		} else {
+			this.activeIndexPage = this.paginationItems.length - 1;
+		}
 		this.selectNewPage(this.activeIndexPage);
 	}
-
+	
 	handleNextClick() {
 		this.unselectCurrentPage();
-		this.activeIndexPage += 1;
+		if (this.activeIndexPage < this.paginationItems.length - 1){
+			this.activeIndexPage += 1;
+		} else {
+			this.activeIndexPage = 0;
+		}
 		this.selectNewPage(this.activeIndexPage);
 	}
 	
