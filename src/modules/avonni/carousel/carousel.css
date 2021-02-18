@@ -2,3 +2,7 @@
     display: flex;
     flex: 0 0 100%;
 }
+
+.avonni-carousel__content {
+    height: 7rem;
+}

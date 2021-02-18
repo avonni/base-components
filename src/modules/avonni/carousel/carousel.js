@@ -31,21 +31,22 @@ export default class Carousel extends LightningElement {
 	_carouselItems = [];
 	_itemsPerPanel = 1;
 	
-	activeIndexPage = 0;
+	activeIndexPage;
 	pageItems = [];
 	paginationItems = [];
-	pageStyle = `transform: translateX(-0%);`;
+	pageStyle;
 	
 	
-	connectedCallback() {	
-		this.initializePaginationItems();
+	connectedCallback() {
+		const numberOfPages = Math.ceil(this._carouselItems.length / this.itemsPerPanel);
+
+		this.initializeCurrentPanel(numberOfPages);
+		this.initializePaginationItems(numberOfPages);
 		this.initializePages();
 	}
 	
-	initializePaginationItems() {
-		const numberOfPages = Math.ceil(this._carouselItems.length / this.itemsPerPanel);
-
-		for (let i = 1; i <= numberOfPages; i++) {
+	initializePaginationItems(numberOfPages) {
+		for (let i = 0; i < numberOfPages; i++) {
 			const isItemActive = i === this.activeIndexPage;
 			this.paginationItems.push({
 				key: i,
@@ -57,6 +58,11 @@ export default class Carousel extends LightningElement {
 				tabTitle: `Tab ${i}`
 			})
 		}
+	}
+
+	initializeCurrentPanel(numberOfPages) {
+		const firstPanel = parseInt(this.currentPanel, 10);
+		this.activeIndexPage = firstPanel < numberOfPages ? firstPanel : 0;
 	}
 
 	// Creates an array of pages, each containing an array of items
@@ -72,6 +78,7 @@ export default class Carousel extends LightningElement {
 			pageIndex += 1;
 		}
 		this.pageItems = pageItems;
+		this.pageStyle = `transform: translateX(-${this.activeIndexPage * 100}%);`
 	}
 
 	// Sets the width of each item, depending on the number of items per panel
@@ -110,12 +117,37 @@ export default class Carousel extends LightningElement {
 		this._itemsPerPanel = parseInt(number, 10);
 	}
 	
-	onItemSelect(event) {
+	onPageSelect(event) {
 		const currentTarget = event.currentTarget;
-		const itemIndex = currentTarget.dataset.index;
-		console.log(itemIndex);
-		// Change to the selected slide
+		const itemIndex = parseInt(currentTarget.dataset.index, 10);
+
+		if (this.activeIndexPage !== itemIndex) {
+			this.unselectCurrentPage();
+			this.selectNewPage(itemIndex);
+		}
 	}
+
+	selectNewPage(pageIndex) {
+        const activePaginationItem = this.paginationItems[pageIndex];
+
+		activePaginationItem.tabIndex = '0';
+		activePaginationItem.ariaSelected = TRUE_STRING;
+		activePaginationItem.className =
+			INDICATOR_ACTION + ' ' + SLDS_ACTIVE;
+
+		this.pageStyle = `transform:translateX(-${
+			pageIndex * 100
+		}%);`;
+		this.activeIndexPage = pageIndex;
+    }
+
+	unselectCurrentPage() {
+        const activePaginationItem = this.paginationItems[this.activeIndexPage];
+
+        activePaginationItem.tabIndex = '-1';
+        activePaginationItem.ariaSelected = FALSE_STRING;
+        activePaginationItem.className = INDICATOR_ACTION;
+    }
 	
 	keyDownHandler(event) {
 		// Handle keyboard navigation

@@ -1,64 +1,81 @@
 <template>
     <div class="slds-carousel">
-        <div class="slds-carousel__stage">
-            
-            
-            <!-- Carousel pages -->
-            <div class="slds-carousel__panels" style="transform: translateX(-0%);" >
-            <template for:each={pageItems} for:item="page">
-                    <div class="avonni-carousel__page" key={page.key}>
-                    <template  for:each={page.items} for:item="item">
-                        <div key={item.key} class="slds-carousel__panel" style={carouselItemStyle} role="tabpanel" aria-hidden="false">
-                            <a href={item.href} class="slds-carousel__panel-action slds-text-link_reset" tabindex="0">
-                                <div class="slds-carousel__image">
-                                    <slot>
-                                        <img src={item.src} alt={item.imageAssistiveText} />
-                                    </slot>
-                                </div>
-                                <div class="slds-carousel__content">
-                                    <h2 class="slds-carousel__content-title">{item.heading}</h2>
-                                    <p>{item.description}</p>
-                                    <template if:true={item.buttonLabel}>
-                                        <div class="slds-m-top_small">
-                                            <lightning-button label={item.buttonLabel} icon-name={item.buttonIconName} icon-position={item.buttonIconPosition} variant={item.buttonVariant} disabled={item.buttonDisabled}></lightning-button>
-                                        </div>
-                                    </template>
-                                </div>
-                            </a>
-                        </div>
-                    </template>
-                </div>
+        <lightning-layout vertical-align="center">
+            <template if:false={hidePreviousNextPanelNavigation}>
+                <lightning-layout-item>
+                    <!-- Previous navigation -->
+                    <lightning-button-icon class="slds-m-right_medium"  icon-name="utility:chevronleft"  variant="border-filled" alternative-text="Previous" title="Previous" size="small"></lightning-button-icon>
+                </lightning-layout-item>
+            </template>
+            <lightning-layout-item flexibility="auto">
+                <div class="slds-carousel__stage">
+                    
+                    <!-- Carousel pages -->
+                    <div class="slds-carousel__panels" style={pageStyle} >
+                        <template for:each={pageItems} for:item="page">
+                            <div class="avonni-carousel__page" key={page.key}>
+                                <template  for:each={page.items} for:item="item">
+                                    <div key={item.key} class="slds-carousel__panel" style={carouselItemStyle} role="tabpanel" aria-hidden="false">
+                                        <a href={item.href} class="slds-carousel__panel-action slds-text-link_reset" tabindex="0">
+                                            <div class="slds-carousel__image">
+                                                <slot>
+                                                    <img src={item.src} alt={item.imageAssistiveText} />
+                                                </slot>
+                                            </div>
+                                            <div class="slds-carousel__content avonni-carousel__content">
+                                                <h2 class="slds-carousel__content-title">{item.heading}</h2>
+                                                <p>{item.description}</p>
+                                                <template if:true={item.buttonLabel}>
+                                                    <div class="slds-m-top_small">
+                                                        <lightning-button label={item.buttonLabel} icon-name={item.buttonIconName} icon-position={item.buttonIconPosition} variant={item.buttonVariant} disabled={item.buttonDisabled}></lightning-button>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+                    
+                    
+                    
+                    <ul class="slds-carousel__indicators" role="tablist" onkeydown={keyDownHandler}>
+                        
+                        <!-- Pagination items -->
+                        <template for:each={paginationItems} for:item="paginationItem" for:index="paginationIndex">
+                            <li 
+                            key={paginationItem.key}
+                            class="slds-carousel__indicator"
+                            role="presentation"
+                            onclick={onPageSelect}
+                            data-index={paginationIndex}
+                            >
+                            <a
+                            id={paginationItem.id}
+                            class={paginationItem.className}
+                            href="javascript:void(0);"
+                            role="tab"
+                            tabindex={paginationItem.tabIndex}
+                            aria-selected={paginationItem.ariaSelected}
+                            title={paginationItem.tabTitle}
+                            >
+                            <span class="slds-assistive-text">{paginationItem.tabTitle}</span>
+                        </a>
+                    </li>
                 </template>
-            </div>
-            
-            
-            
-            <ul class="slds-carousel__indicators" role="tablist" onkeydown={keyDownHandler}>
                 
-                <!-- Pagination items -->
-                <template for:each={paginationItems} for:item="paginationItem" for:index="paginationIndex">
-                    <li 
-                    key={paginationItem.key}
-                    class="slds-carousel__indicator"
-                    role="presentation"
-                    onclick={onItemSelect}
-                    data-index={paginationIndex}
-                    >
-                    <a
-                    id={paginationItem.id}
-                    class={paginationItem.className}
-                    href="javascript:void(0);"
-                    role="tab"
-                    tabindex={paginationItem.tabIndex}
-                    aria-selected={paginationItem.ariaSelected}
-                    title={paginationItem.tabTitle}
-                    >
-                    <span class="slds-assistive-text">{paginationItem.tabTitle}</span>
-                </a>
-            </li>
-        </template>
-        
-    </ul>
-</div>
+            </ul>
+        </div>
+    </lightning-layout-item>
+    <template if:false={hidePreviousNextPanelNavigation}>
+        <!-- Next navigation -->
+        <lightning-layout-item>
+            <lightning-button-icon class="slds-m-left_medium" icon-name="utility:chevronright"  variant="border-filled" alternative-text="Next" title="Next" size="small"></lightning-button-icon>
+        </lightning-layout-item>
+    </template>
+</lightning-layout>
+
+
 </div>
 </template>
