@@ -1,4 +1,5 @@
 import { LightningElement, api } from 'lwc';
+import { keyCodes } from 'avonni/utilsPrivate';
 
 const INDICATOR_ACTION = 'slds-carousel__indicator-action';
 const SLDS_ACTIVE = 'slds-is-active';
@@ -235,6 +236,39 @@ export default class Carousel extends LightningElement {
 	}
 	
 	keyDownHandler(event) {
-		// Handle keyboard navigation
+		const key = event.keyCode;
+		let indicatorActionsElements = this.indicatorActionsElements;
+		
+		if (key === keyCodes.right) {
+			event.preventDefault();
+			event.stopPropagation();
+
+			this.cancelAutoScrollTimeOut();
+			if(this.activeIndexPage < this.pageItems.length - 1 || this.isInfinite) {
+				this.selectNextSibling();
+			}
+		}
+
+		if (key === keyCodes.left) {
+			event.preventDefault();
+			event.stopPropagation();
+
+			this.cancelAutoScrollTimeOut();
+			if(this.activeIndexPage > 0 || this.isInfinite) {
+				this.selectPreviousSibling();
+			}
+		}
+
+		// we cache them the first time
+		if (!indicatorActionsElements) {
+            indicatorActionsElements = this.template.querySelectorAll(
+                '.slds-carousel__indicator-action'
+            );
+            this.indicatorActionsElements = indicatorActionsElements;
+        }
+
+        // we want to make sure that while we are using the keyboard
+        // navigation we are focusing on the right indicator
+        indicatorActionsElements[this.activeIndexPage].focus();
 	}
 }
