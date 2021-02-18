@@ -1,0 +1,23 @@
+.avonni-progress-bar-theme-inverse {
+    background: #ffffff;
+}
+
+.avonni-progress-bar-theme-alt-inverse {
+    background: #16325c;
+}
+
+.avonni-progress-bar-theme-warning {
+    background: #ffb75d;
+}
+
+.avonni-progress-bar-theme-info {
+    background: #706e6b;
+}
+
+.avonni-progress-bar-theme-error {
+    background: #d4504c;
+}
+
+.avonni-progress-bar-theme-offline {
+    background: #3e3e3c;
+}
