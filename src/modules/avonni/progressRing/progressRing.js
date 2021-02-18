@@ -19,7 +19,8 @@ export default class ProgressRing extends LightningElement {
     _variant = 'base';
     _hideIcon = false;
 
-    @api get direction() {
+    @api 
+    get direction() {
         return this._direction;
     }
 
@@ -30,7 +31,8 @@ export default class ProgressRing extends LightningElement {
         });
     }
 
-    @api get size() {
+    @api 
+    get size() {
         return this._size;
     }
 
@@ -41,7 +43,8 @@ export default class ProgressRing extends LightningElement {
         });
     }
 
-    @api get value() {
+    @api 
+    get value() {
         return this._value;
     }
 
@@ -55,7 +58,8 @@ export default class ProgressRing extends LightningElement {
         }
     }
 
-    @api get variant() {
+    @api 
+    get variant() {
         return this._variant;
     }
 
@@ -66,7 +70,8 @@ export default class ProgressRing extends LightningElement {
         });
     }
 
-    @api get hideIcon() {
+    @api 
+    get hideIcon() {
         return this._hideIcon;
     }
 
@@ -101,9 +106,7 @@ export default class ProgressRing extends LightningElement {
         const filldrain = this.direction === 'drain' ? 1 : 0;
         const inverter = this.direction === 'drain' ? 1 : -1;
         const islong = fillPercent > 0.5 ? 1 : 0;
-
         const subCalc = 2 * Math.PI * fillPercent;
-
         const arcx = Math.cos(subCalc);
         const arcy = Math.sin(subCalc) * inverter;
 

@@ -3,6 +3,18 @@ import { ProgressRing } from '../__examples__/progressRing';
 export default {
     title: 'Example/Progress Ring',
     argTypes: {
+        value: {
+            control: {
+                type: 'number',
+                min: 0,
+                max: 100
+            },
+            defaultValue: 0,
+            table: {
+                type: { summary: 'Number', detail: 'From 0 to 100' },
+                defaultValue: { summary: '0' }
+            }
+        },
         direction: {
             control: {
                 type: 'select',
@@ -23,18 +35,6 @@ export default {
             table: {
                 type: { summary: 'String' },
                 defaultValue: { summary: 'medium' }
-            }
-        },
-        value: {
-            control: {
-                type: 'number',
-                min: 0,
-                max: 100
-            },
-            defaultValue: 0,
-            table: {
-                type: { summary: 'Number', detail: 'From 0 to 100' },
-                defaultValue: { summary: '0' }
             }
         },
         variant: {
