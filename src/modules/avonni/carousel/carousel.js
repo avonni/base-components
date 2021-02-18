@@ -1,5 +1,4 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeBoolean } from '../utilsPrivate/normalize';
 
 const INDICATOR_ACTION = 'slds-carousel__indicator-action';
 const SLDS_ACTIVE = 'slds-is-active';
@@ -43,15 +42,16 @@ export default class Carousel extends LightningElement {
 		this.initializePaginationItems(numberOfPages);
 		this.initializePages();
 	}
-
+	
 	renderedCallback() {
 		if (this._initialRender) {
-            if (!this.disableAutoScroll) {
-                this.setAutoScroll();
-            }
-        }
-        this._initialRender = false;
+			if (!this.disableAutoScroll) {
+				this.setAutoScroll();
+			}
+		}
+		this._initialRender = false;
 	}
+	
 	
 	initializePaginationItems(numberOfPages) {
 		for (let i = 0; i < numberOfPages; i++) {
@@ -81,42 +81,39 @@ export default class Carousel extends LightningElement {
 			pageItems.push({
 				index: pageIndex,
 				key: `page-${pageIndex}`,
-				items: this._carouselItems.slice(i, i + this.itemsPerPanel)
+				items: this._carouselItems.slice(i, i + this.itemsPerPanel),
+				ariaHidden: this.activeIndexPage === i ? FALSE_STRING : TRUE_STRING
 			});
 			pageIndex += 1;
 		}
 		this.pageItems = pageItems;
 		this.pageStyle = `transform: translateX(-${this.activeIndexPage * 100}%);`
 	}
-
+	
 	setAutoScroll() {
-        // milliseconds
-        const scrollDuration = parseInt(this.scrollDuration, 10) * 1000;
-        const carouselPagesLength = this.pageItems.length;
-
-        if (
-            this.activeIndexPage === carouselPagesLength - 1 &&
-            (this.disableAutoRefresh || !this.isInfinite)
-        ) {
-            this.cancelAutoScrollTimeOut();
-            return;
-        }
-
-        this.cancelAutoScrollTimeOut();
-        this.autoScrollTimeOut = setTimeout(
-            this.startAutoScroll.bind(this),
-            scrollDuration
-        );
-    }
-
+		const scrollDuration = parseInt(this.scrollDuration, 10) * 1000;
+		const carouselPagesLength = this.pageItems.length;
+		
+		if (this.activeIndexPage === carouselPagesLength - 1 && (this.disableAutoRefresh || !this.isInfinite)) {
+			this.cancelAutoScrollTimeOut();
+			return;
+		}
+		
+		this.cancelAutoScrollTimeOut();
+		this.autoScrollTimeOut = setTimeout(
+			this.startAutoScroll.bind(this),
+			scrollDuration
+		);
+	}
+		
 	startAutoScroll() {
-        this.selectNextSibling();
-        this.setAutoScroll();
-    }
-
+		this.selectNextSibling();
+		this.setAutoScroll();
+	}
+	
 	cancelAutoScrollTimeOut() {
-        clearTimeout(this.autoScrollTimeOut);
-    }
+		clearTimeout(this.autoScrollTimeOut);
+	}
 	
 	@api get assistiveText() {
 		return this._assistiveText;
@@ -128,7 +125,7 @@ export default class Carousel extends LightningElement {
 			previousPanel: value.previousPanel || this._assistiveText.previousPanel
 		};
 	}
-
+	
 	@api 
 	get items() {
 		return this._carouselItems;
@@ -172,6 +169,15 @@ export default class Carousel extends LightningElement {
 		return !this.isInfinite ? this.activeIndexPage === this.paginationItems.length - 1 : null;
 	}
 	
+	handleItemClicked(event) {
+		const pageNumber = parseInt(event.currentTarget.dataset.pageIndex, 10);
+		const itemNumber = parseInt(event.currentTarget.dataset.itemIndex, 10);
+		const itemData = this.pageItems[pageNumber].items[itemNumber];
+		this.dispatchEvent(new CustomEvent(
+			'itemclick', { detail: itemData }
+		));
+	}
+	
 	onPageSelect(event) {
 		const currentTarget = event.currentTarget;
 		const itemIndex = parseInt(currentTarget.dataset.index, 10);
@@ -184,9 +190,11 @@ export default class Carousel extends LightningElement {
 	
 	selectNewPage(pageIndex) {
 		const activePaginationItem = this.paginationItems[pageIndex];
+		const activePageItem = this.pageItems[pageIndex];
 		
+		activePageItem.ariaHidden = FALSE_STRING;
 		activePaginationItem.tabIndex = '0';
-		activePaginationItem.ariaSelected = TRUE_STRING;
+		activePaginationItem.ariaHidden = TRUE_STRING;
 		activePaginationItem.className =
 		INDICATOR_ACTION + ' ' + SLDS_ACTIVE;
 		
@@ -198,7 +206,9 @@ export default class Carousel extends LightningElement {
 	
 	unselectCurrentPage() {
 		const activePaginationItem = this.paginationItems[this.activeIndexPage];
+		const activePageItem = this.pageItems[this.activeIndexPage];
 		
+		activePageItem.ariaHidden = TRUE_STRING;
 		activePaginationItem.tabIndex = '-1';
 		activePaginationItem.ariaSelected = FALSE_STRING;
 		activePaginationItem.className = INDICATOR_ACTION;

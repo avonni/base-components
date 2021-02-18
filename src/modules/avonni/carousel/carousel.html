@@ -20,16 +20,30 @@
                 <div class="slds-carousel__stage">
                     
                     <!-- Carousel pages -->
-                    <div class="slds-carousel__panels" style={pageStyle} >
-                        <template for:each={pageItems} for:item="page">
-                            <div class="avonni-carousel__page" key={page.key}>
-                                <template  for:each={page.items} for:item="item">
-                                    <div key={item.key} class="slds-carousel__panel" style={carouselItemStyle} role="tabpanel" aria-hidden="false">
-                                        <a href={item.href} class="slds-carousel__panel-action slds-text-link_reset" tabindex="0">
+                    <div class="slds-carousel__panels" style={pageStyle}>
+                        <template for:each={pageItems} for:item="page" for:index="pageIndex">
+                            <div
+                            class="avonni-carousel__page"
+                            key={page.key}
+                            aria-hidden={page.ariaHidden}
+                            role="tabpanel"
+                            tabindex={page.tabIndex}
+                            >
+                                <template for:each={page.items} for:item="item" for:index="itemIndex">
+                                    <div 
+                                    key={item.key}
+                                    class="slds-carousel__panel"
+                                    style={carouselItemStyle}
+                                    >
+                                        <a
+                                        class="slds-carousel__panel-action slds-text-link_reset" 
+                                        data-page-index={pageIndex}
+                                        data-item-index={itemIndex}
+                                        href={item.href}
+                                        onclick={handleItemClicked}
+                                        >
                                             <div class="slds-carousel__image">
-                                                <slot>
-                                                    <img src={item.src} alt={item.imageAssistiveText} />
-                                                </slot>
+                                                <img src={item.src} alt={item.imageAssistiveText} />
                                             </div>
                                             <div class="slds-carousel__content avonni-carousel__content">
                                                 <h2 class="slds-carousel__content-title">{item.heading}</h2>
@@ -46,8 +60,7 @@
                             </div>
                         </template>
                     </div>
-                    
-                    
+
                     
                     <ul class="slds-carousel__indicators" role="tablist" onkeydown={keyDownHandler}>
                         

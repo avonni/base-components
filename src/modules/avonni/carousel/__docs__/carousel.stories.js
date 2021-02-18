@@ -82,8 +82,7 @@ Base.args = {
 			heading: 'Visit App Exchange',
 			description: 'Extend Salesforce with the #1 business marketplace.',
 			imageAssistiveText: 'Appy',
-			src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
-			href: 'https://www.salesforce.com',
+			src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
 		},
 		{
 			buttonLabel: 'Get Started',
@@ -142,6 +141,5 @@ Base.args = {
 		}
 	],
     itemsPerPanel: '3',
-    scrollDuration: '1',
-    disableAutoRefresh: 'true'
+    disableAutoScroll: true
 };
