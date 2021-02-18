@@ -1,4 +1,5 @@
 import { LightningElement, api } from 'lwc';
+import { normalizeBoolean } from '../utilsPrivate/normalize';
 
 const INDICATOR_ACTION = 'slds-carousel__indicator-action';
 const SLDS_ACTIVE = 'slds-is-active';
@@ -17,7 +18,7 @@ export default class Carousel extends LightningElement {
 	@api disableAutoScroll;
 	@api hidePreviousNextPanelNavigation;
 	@api isInfinite;
-	@api scrollDuration;
+	@api scrollDuration = 5;
 	
 	_assistiveText = {
 		autoplayButton: i18n.autoPlay,
@@ -26,8 +27,10 @@ export default class Carousel extends LightningElement {
 	};
 	_carouselItems = [];
 	_itemsPerPanel = 1;
+	_initialRender = true;
 	
 	activeIndexPage;
+	autoScrollTimeOut;
 	pageItems = [];
 	paginationItems = [];
 	pageStyle;
@@ -39,6 +42,15 @@ export default class Carousel extends LightningElement {
 		this.initializeCurrentPanel(numberOfPages);
 		this.initializePaginationItems(numberOfPages);
 		this.initializePages();
+	}
+
+	renderedCallback() {
+		if (this._initialRender) {
+            if (!this.disableAutoScroll) {
+                this.setAutoScroll();
+            }
+        }
+        this._initialRender = false;
 	}
 	
 	initializePaginationItems(numberOfPages) {
@@ -76,6 +88,35 @@ export default class Carousel extends LightningElement {
 		this.pageItems = pageItems;
 		this.pageStyle = `transform: translateX(-${this.activeIndexPage * 100}%);`
 	}
+
+	setAutoScroll() {
+        // milliseconds
+        const scrollDuration = parseInt(this.scrollDuration, 10) * 1000;
+        const carouselPagesLength = this.pageItems.length;
+
+        if (
+            this.activeIndexPage === carouselPagesLength - 1 &&
+            (this.disableAutoRefresh || !this.isInfinite)
+        ) {
+            this.cancelAutoScrollTimeOut();
+            return;
+        }
+
+        this.cancelAutoScrollTimeOut();
+        this.autoScrollTimeOut = setTimeout(
+            this.startAutoScroll.bind(this),
+            scrollDuration
+        );
+    }
+
+	startAutoScroll() {
+        this.selectNextSibling();
+        this.setAutoScroll();
+    }
+
+	cancelAutoScrollTimeOut() {
+        clearTimeout(this.autoScrollTimeOut);
+    }
 	
 	@api get assistiveText() {
 		return this._assistiveText;
@@ -87,7 +128,7 @@ export default class Carousel extends LightningElement {
 			previousPanel: value.previousPanel || this._assistiveText.previousPanel
 		};
 	}
-	
+
 	@api 
 	get items() {
 		return this._carouselItems;
@@ -163,8 +204,7 @@ export default class Carousel extends LightningElement {
 		activePaginationItem.className = INDICATOR_ACTION;
 	}
 	
-	handlePreviousClick() {
-		
+	selectPreviousSibling() {
 		this.unselectCurrentPage();
 		if (this.activeIndexPage > 0) {
 			this.activeIndexPage -= 1;
@@ -174,7 +214,7 @@ export default class Carousel extends LightningElement {
 		this.selectNewPage(this.activeIndexPage);
 	}
 	
-	handleNextClick() {
+	selectNextSibling() {
 		this.unselectCurrentPage();
 		if (this.activeIndexPage < this.paginationItems.length - 1){
 			this.activeIndexPage += 1;

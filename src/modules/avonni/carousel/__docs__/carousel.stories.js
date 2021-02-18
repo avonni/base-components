@@ -141,5 +141,7 @@ Base.args = {
 			href: 'https://www.salesforce.com',
 		}
 	],
-    itemsPerPanel: '3'
+    itemsPerPanel: '3',
+    scrollDuration: '1',
+    disableAutoRefresh: 'true'
 };
