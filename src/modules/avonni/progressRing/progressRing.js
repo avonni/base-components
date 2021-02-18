@@ -88,7 +88,7 @@ export default class ProgressRing extends LightningElement {
             .toString();
     }
 
-    get progressRingIconContainer() {
+    get computedIconTheme() {
         return classSet('slds-icon_container').add({
             'slds-icon-utility-warning': this._variant === 'warning',
             'slds-icon-utility-error': this._variant === 'expired',
