@@ -6,5 +6,12 @@ export default class ProgressBar extends LightningElement {
     _size = 'medium';
     _value = 0;
     _showValue = false;
-    _valueLabel = '';
+    _valuePosition = 'top-right';
+    _valueLabel = ''; // à vérifier
+    _badges = {}; // à vérifier
+    _variant = 'base';
+    _theme = 'base';
+    _textured = false;
+    _thickness = 'medium';
+    _orientation = 'horizontal';
 }
