@@ -97,18 +97,27 @@ export default class ProgressRing extends LightningElement {
     }
 
     get completeness() {
-        let fillValue = Number(this.value);
-        let isLong = this.value > 50 ? '1 1' : '0 1';
-
-        if (this._direction === 'fill' && fillValue !== 100) {
-            fillValue = 100 - this.value;
-            isLong = this.value > 50 ? '1 0' : '0 0';
+        const progressRing = {
+            fillPercent: this.value / 100,
+            isLong: this.value > 50 ? '1 1' : '0 1'
+        };
+        if (this._direction === 'fill' && this.value !== 100) {
+            progressRing.fillPercent = 1 - this.value / 100;
+            progressRing.isLong = this.value > 50 ? '1 0' : '0 0';
         }
+        const subCalc = 2 * Math.PI * progressRing.fillPercent;
+        const arcX = Math.cos(subCalc);
+        const arcY = Math.sin(subCalc);
 
-        let arcX = Math.cos(2 * Math.PI * (fillValue / 100));
-        let arcY = Math.sin(2 * Math.PI * (fillValue / 100));
-
-        return 'M 1 0 A 1 1 0 ' + isLong + ' ' + arcX + ' ' + arcY + ' L 0 0';
+        return (
+            'M 1 0 A 1 1 0 ' +
+            progressRing.isLong +
+            ' ' +
+            arcX +
+            ' ' +
+            arcY +
+            ' L 0 0'
+        );
     }
 
     get iconName() {
