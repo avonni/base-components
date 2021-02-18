@@ -1,8 +1,13 @@
 .avonni-carousel__page {
     display: flex;
     flex: 0 0 100%;
+    max-width: 100%;
 }
 
 .avonni-carousel__content {
-    height: 7rem;
+    height: 8.5rem;
+}
+
+.avonni-carousel__nav-button {
+    display: block;
 }
