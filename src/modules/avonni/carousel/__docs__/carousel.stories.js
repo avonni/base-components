@@ -139,6 +139,7 @@ Base.args = {
 			imageAssistiveText: 'Apps',
 			src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
 			href: 'https://www.salesforce.com',
-		},
-	]
+		}
+	],
+    itemsPerPanel: '3'
 };

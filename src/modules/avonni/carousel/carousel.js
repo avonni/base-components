@@ -29,14 +29,15 @@ export default class Carousel extends LightningElement {
 	@api scrollDuration;
 	
 	_carouselItems = [];
-	_itemsPerPanel = 3;
+	_itemsPerPanel = 1;
 	
 	activeIndexPage = 0;
 	pageItems = [];
 	paginationItems = [];
-	carrouselPage = [];
+	pageStyle = `transform: translateX(-0%);`;
 	
-	connectedCallback() {		
+	
+	connectedCallback() {	
 		this.initializePaginationItems();
 		this.initializePages();
 	}
@@ -58,12 +59,25 @@ export default class Carousel extends LightningElement {
 		}
 	}
 
+	// Creates an array of pages, each containing an array of items
 	initializePages() {
 		const pageItems = [];
+		let pageIndex = 0;
 		for (let i = 0; i < this._carouselItems.length; i += this.itemsPerPanel) {
-			pageItems.push(this._carouselItems.slice(i, i + this.itemsPerPanel));
+			pageItems.push({
+				index: pageIndex,
+				key: `page-${pageIndex}`,
+				items: this._carouselItems.slice(i, i + this.itemsPerPanel)
+			});
+			pageIndex += 1;
 		}
 		this.pageItems = pageItems;
+	}
+
+	// Sets the width of each item, depending on the number of items per panel
+	get carouselItemStyle() {
+		const flexBasis = 100 / this.itemsPerPanel;
+		return `flex-basis: ${flexBasis}%;`
 	}
 	
 	@api 
@@ -97,7 +111,10 @@ export default class Carousel extends LightningElement {
 	}
 	
 	onItemSelect(event) {
-		// Dispatch itemclick
+		const currentTarget = event.currentTarget;
+		const itemIndex = currentTarget.dataset.index;
+		console.log(itemIndex);
+		// Change to the selected slide
 	}
 	
 	keyDownHandler(event) {
