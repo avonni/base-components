@@ -14,11 +14,11 @@ export default {
             },
             table: {
                 defaultValue: {
-                    summary: {
+                    summary: `{
                         autoplayButton: 'Start / Stop auto-play',
                         nextPanel: 'Next Panel',
                         previousPanel: 'Previous Panel'
-                    }
+                    }`
                 }
             }
         },
@@ -42,7 +42,9 @@ export default {
                 type: 'number'
             },
             defaultValue: 5,
-            table: { defaultValue: 5 }
+            table: {
+                defaultValue: { summary: 5 }
+            }
         },
         isInfinite: {
             control: {
@@ -59,14 +61,18 @@ export default {
                 type: 'boolean'
             },
             defaultValue: false,
-            table: { defaultValue: false }
+            table: {
+                defaultValue: { summary: false }
+            }
         },
         itemsPerPanel: {
             control: {
                 type: 'number'
             },
             defaultValue: 1,
-            table: { defaultValue: 1 }
+            table: { 
+                defaultValue: { summary: 1 }
+            }
         }
     }
 };
