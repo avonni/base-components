@@ -119,7 +119,7 @@ export default class ProgressRing extends LightningElement {
         } else if (this._variant === 'base-autocomplete') {
             return 'utility:check';
         }
-        return '';
+        return null;
     }
 
     get iconPresence() {
