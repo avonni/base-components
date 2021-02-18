@@ -7,7 +7,6 @@ const FALSE_STRING = 'false';
 const TRUE_STRING = 'true';
 
 const i18n = {
-	autoPlay: 'Start / Stop auto-play',
 	nextPanel: 'Next Panel',
 	previousPanel: 'Previous Panel'
 };
@@ -21,7 +20,6 @@ export default class Carousel extends LightningElement {
 	@api scrollDuration = 5;
 	
 	_assistiveText = {
-		autoplayButton: i18n.autoPlay,
 		nextPanel: i18n.nextPanel,
 		previousPanel: i18n.previousPanel
 	};
@@ -29,19 +27,19 @@ export default class Carousel extends LightningElement {
 	_itemsPerPanel = 1;
 	_initialRender = true;
 	
-	activeIndexPage;
+	activeIndexPanel;
 	autoScrollTimeOut;
-	pageItems = [];
+	panelItems = [];
 	paginationItems = [];
-	pageStyle;
+	panelStyle;
 	
 	
 	connectedCallback() {
-		const numberOfPages = Math.ceil(this._carouselItems.length / this.itemsPerPanel);
+		const numberOfPanels = Math.ceil(this._carouselItems.length / this.itemsPerPanel);
 		
-		this.initializeCurrentPanel(numberOfPages);
-		this.initializePaginationItems(numberOfPages);
-		this.initializePages();
+		this.initializeCurrentPanel(numberOfPanels);
+		this.initializePaginationItems(numberOfPanels);
+		this.initializePanels();
 	}
 	
 	renderedCallback() {
@@ -54,9 +52,9 @@ export default class Carousel extends LightningElement {
 	}
 	
 	
-	initializePaginationItems(numberOfPages) {
-		for (let i = 0; i < numberOfPages; i++) {
-			const isItemActive = i === this.activeIndexPage;
+	initializePaginationItems(numberOfPanels) {
+		for (let i = 0; i < numberOfPanels; i++) {
+			const isItemActive = i === this.activeIndexPanel;
 			this.paginationItems.push({
 				key: i,
 				id: `pagination-item-${i}`,
@@ -69,33 +67,33 @@ export default class Carousel extends LightningElement {
 		}
 	}
 	
-	initializeCurrentPanel(numberOfPages) {
+	initializeCurrentPanel(numberOfPanels) {
 		const firstPanel = parseInt(this.currentPanel, 10);
-		this.activeIndexPage = firstPanel < numberOfPages ? firstPanel : 0;
+		this.activeIndexPanel = firstPanel < numberOfPanels ? firstPanel : 0;
 	}
 	
-	// Creates an array of pages, each containing an array of items
-	initializePages() {
-		const pageItems = [];
-		let pageIndex = 0;
+	// Creates an array of panels, each containing an array of items
+	initializePanels() {
+		const panelItems = [];
+		let panelIndex = 0;
 		for (let i = 0; i < this._carouselItems.length; i += this.itemsPerPanel) {
-			pageItems.push({
-				index: pageIndex,
-				key: `page-${pageIndex}`,
+			panelItems.push({
+				index: panelIndex,
+				key: `panel-${panelIndex}`,
 				items: this._carouselItems.slice(i, i + this.itemsPerPanel),
-				ariaHidden: this.activeIndexPage === i ? FALSE_STRING : TRUE_STRING
+				ariaHidden: this.activeIndexPanel === i ? FALSE_STRING : TRUE_STRING
 			});
-			pageIndex += 1;
+			panelIndex += 1;
 		}
-		this.pageItems = pageItems;
-		this.pageStyle = `transform: translateX(-${this.activeIndexPage * 100}%);`
+		this.panelItems = panelItems;
+		this.panelStyle = `transform: translateX(-${this.activeIndexPanel * 100}%);`
 	}
 	
 	setAutoScroll() {
 		const scrollDuration = parseInt(this.scrollDuration, 10) * 1000;
-		const carouselPagesLength = this.pageItems.length;
+		const carouselPanelsLength = this.panelItems.length;
 		
-		if (this.activeIndexPage === carouselPagesLength - 1 && (this.disableAutoRefresh || !this.isInfinite)) {
+		if (this.activeIndexPanel === carouselPanelsLength - 1 && (this.disableAutoRefresh || !this.isInfinite)) {
 			this.cancelAutoScrollTimeOut();
 			return;
 		}
@@ -164,75 +162,75 @@ export default class Carousel extends LightningElement {
 	}
 	
 	get previousPanelNavigationDisabled() {
-		return !this.isInfinite ? this.activeIndexPage === 0 : null;
+		return !this.isInfinite ? this.activeIndexPanel === 0 : null;
 	}
 	get nextPanelNavigationDisabled() {
-		return !this.isInfinite ? this.activeIndexPage === this.paginationItems.length - 1 : null;
+		return !this.isInfinite ? this.activeIndexPanel === this.paginationItems.length - 1 : null;
 	}
 	
 	handleItemClicked(event) {
-		const pageNumber = parseInt(event.currentTarget.dataset.pageIndex, 10);
+		const panelNumber = parseInt(event.currentTarget.dataset.panelIndex, 10);
 		const itemNumber = parseInt(event.currentTarget.dataset.itemIndex, 10);
-		const itemData = this.pageItems[pageNumber].items[itemNumber];
+		const itemData = this.panelItems[panelNumber].items[itemNumber];
 		this.dispatchEvent(new CustomEvent(
 			'itemclick', { detail: itemData }
 		));
 	}
 	
-	onPageSelect(event) {
+	onPanelSelect(event) {
 		const currentTarget = event.currentTarget;
 		const itemIndex = parseInt(currentTarget.dataset.index, 10);
 		
-		if (this.activeIndexPage !== itemIndex) {
-			this.unselectCurrentPage();
-			this.selectNewPage(itemIndex);
+		if (this.activeIndexPanel !== itemIndex) {
+			this.unselectCurrentPanel();
+			this.selectNewPanel(itemIndex);
 		}
 	}
 	
-	selectNewPage(pageIndex) {
-		const activePaginationItem = this.paginationItems[pageIndex];
-		const activePageItem = this.pageItems[pageIndex];
+	selectNewPanel(panelIndex) {
+		const activePaginationItem = this.paginationItems[panelIndex];
+		const activePanelItem = this.panelItems[panelIndex];
 		
-		activePageItem.ariaHidden = FALSE_STRING;
+		activePanelItem.ariaHidden = FALSE_STRING;
 		activePaginationItem.tabIndex = '0';
 		activePaginationItem.ariaHidden = TRUE_STRING;
 		activePaginationItem.className =
 		INDICATOR_ACTION + ' ' + SLDS_ACTIVE;
 		
-		this.pageStyle = `transform:translateX(-${
-			pageIndex * 100
+		this.panelStyle = `transform:translateX(-${
+			panelIndex * 100
 		}%);`;
-		this.activeIndexPage = pageIndex;
+		this.activeIndexPanel = panelIndex;
 	}
 	
-	unselectCurrentPage() {
-		const activePaginationItem = this.paginationItems[this.activeIndexPage];
-		const activePageItem = this.pageItems[this.activeIndexPage];
+	unselectCurrentPanel() {
+		const activePaginationItem = this.paginationItems[this.activeIndexPanel];
+		const activePanelItem = this.panelItems[this.activeIndexPanel];
 		
-		activePageItem.ariaHidden = TRUE_STRING;
+		activePanelItem.ariaHidden = TRUE_STRING;
 		activePaginationItem.tabIndex = '-1';
 		activePaginationItem.ariaSelected = FALSE_STRING;
 		activePaginationItem.className = INDICATOR_ACTION;
 	}
 	
 	selectPreviousSibling() {
-		this.unselectCurrentPage();
-		if (this.activeIndexPage > 0) {
-			this.activeIndexPage -= 1;
+		this.unselectCurrentPanel();
+		if (this.activeIndexPanel > 0) {
+			this.activeIndexPanel -= 1;
 		} else {
-			this.activeIndexPage = this.paginationItems.length - 1;
+			this.activeIndexPanel = this.paginationItems.length - 1;
 		}
-		this.selectNewPage(this.activeIndexPage);
+		this.selectNewPanel(this.activeIndexPanel);
 	}
 	
 	selectNextSibling() {
-		this.unselectCurrentPage();
-		if (this.activeIndexPage < this.paginationItems.length - 1){
-			this.activeIndexPage += 1;
+		this.unselectCurrentPanel();
+		if (this.activeIndexPanel < this.paginationItems.length - 1){
+			this.activeIndexPanel += 1;
 		} else {
-			this.activeIndexPage = 0;
+			this.activeIndexPanel = 0;
 		}
-		this.selectNewPage(this.activeIndexPage);
+		this.selectNewPanel(this.activeIndexPanel);
 	}
 	
 	keyDownHandler(event) {
@@ -244,7 +242,7 @@ export default class Carousel extends LightningElement {
 			event.stopPropagation();
 
 			this.cancelAutoScrollTimeOut();
-			if(this.activeIndexPage < this.pageItems.length - 1 || this.isInfinite) {
+			if(this.activeIndexPanel < this.panelItems.length - 1 || this.isInfinite) {
 				this.selectNextSibling();
 			}
 		}
@@ -254,7 +252,7 @@ export default class Carousel extends LightningElement {
 			event.stopPropagation();
 
 			this.cancelAutoScrollTimeOut();
-			if(this.activeIndexPage > 0 || this.isInfinite) {
+			if(this.activeIndexPanel > 0 || this.isInfinite) {
 				this.selectPreviousSibling();
 			}
 		}
@@ -269,6 +267,6 @@ export default class Carousel extends LightningElement {
 
         // we want to make sure that while we are using the keyboard
         // navigation we are focusing on the right indicator
-        indicatorActionsElements[this.activeIndexPage].focus();
+        indicatorActionsElements[this.activeIndexPanel].focus();
 	}
 }

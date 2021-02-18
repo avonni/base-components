@@ -8,14 +8,12 @@ export default {
                 type: 'object'
             },
             defaultValue: {
-                autoplayButton: 'Start / Stop auto-play',
                 nextPanel: 'Next Panel',
                 previousPanel: 'Previous Panel'
             },
             table: {
                 defaultValue: {
                     summary: `{
-                        autoplayButton: 'Start / Stop auto-play',
                         nextPanel: 'Next Panel',
                         previousPanel: 'Previous Panel'
                     }`

@@ -19,17 +19,17 @@
             <lightning-layout-item flexibility="auto">
                 <div class="slds-carousel__stage">
                     
-                    <!-- Carousel pages -->
-                    <div class="slds-carousel__panels" style={pageStyle}>
-                        <template for:each={pageItems} for:item="page" for:index="pageIndex">
+                    <!-- Carousel panels -->
+                    <div class="slds-carousel__panels" style={panelStyle}>
+                        <template for:each={panelItems} for:item="panel" for:index="panelIndex">
                             <div
-                            class="avonni-carousel__page"
-                            key={page.key}
-                            aria-hidden={page.ariaHidden}
+                            class="avonni-carousel__panel"
+                            key={panel.key}
+                            aria-hidden={panel.ariaHidden}
                             role="tabpanel"
-                            tabindex={page.tabIndex}
+                            tabindex={panel.tabIndex}
                             >
-                                <template for:each={page.items} for:item="item" for:index="itemIndex">
+                                <template for:each={panel.items} for:item="item" for:index="itemIndex">
                                     <div 
                                     key={item.key}
                                     class="slds-carousel__panel slds-p-horizontal_x-small"
@@ -37,7 +37,7 @@
                                     >
                                         <a
                                         class="slds-carousel__panel-action slds-text-link_reset" 
-                                        data-page-index={pageIndex}
+                                        data-panel-index={panelIndex}
                                         data-item-index={itemIndex}
                                         href={item.href}
                                         onclick={handleItemClicked}
@@ -70,7 +70,7 @@
                             key={paginationItem.key}
                             class="slds-carousel__indicator"
                             role="presentation"
-                            onclick={onPageSelect}
+                            onclick={onPanelSelect}
                             data-index={paginationIndex}
                             >
                             <a
