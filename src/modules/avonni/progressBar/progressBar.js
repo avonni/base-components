@@ -115,7 +115,15 @@ export default class ProgressBar extends LightningElement {
     get computedOuterClass() {
         return classSet('slds-progress-bar')
             .add({
-                'slds-progress-bar_vertical': this._orientation === 'vertical'
+                'slds-progress-bar_vertical': this._orientation === 'vertical',
+                'slds-progress-bar_circular': this.variant === 'circular'
+            })
+            .toString();
+    }
+    get computedInnerClass() {
+        return classSet('slds-progress-bar__value')
+            .add({
+                'slds-progress-bar__value_success': this._theme === 'success'
             })
             .toString();
     }
@@ -125,7 +133,9 @@ export default class ProgressBar extends LightningElement {
         return this._value;
     }
     get progressBarValue() {
-        return `width: ${this.value}%`;
+        return this._orientation === 'horizontal'
+            ? `width: ${this.value}%`
+            : `height: ${this.value}%`;
     }
 
     set value(value) {

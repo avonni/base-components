@@ -6,7 +6,7 @@
         aria-valuenow={value}
         role="progressbar"
     >
-        <span class="slds-progress-bar__value" style={progressBarValue}>
+        <span class={computedInnerClass} style={progressBarValue}>
             <span if:true={showValue} class="slds-assistive-text"
                 >{value}%</span
             >
