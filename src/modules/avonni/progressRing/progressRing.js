@@ -96,28 +96,31 @@ export default class ProgressRing extends LightningElement {
         });
     }
 
-    get completeness() {
-        const progressRing = {
-            fillPercent: this.value / 100,
-            isLong: this.value > 50 ? '1 1' : '0 1'
-        };
-        if (this._direction === 'fill' && this.value !== 100) {
-            progressRing.fillPercent = 1 - this.value / 100;
-            progressRing.isLong = this.value > 50 ? '1 0' : '0 0';
-        }
-        const subCalc = 2 * Math.PI * progressRing.fillPercent;
-        const arcX = Math.cos(subCalc);
-        const arcY = Math.sin(subCalc);
+    get d() {
+        const fillPercent = this._value / 100;
+        const filldrain = this.direction === 'drain' ? 1 : 0;
+        const inverter = this.direction === 'drain' ? 1 : -1;
+        const islong = fillPercent > 0.5 ? 1 : 0;
 
-        return (
-            'M 1 0 A 1 1 0 ' +
-            progressRing.isLong +
-            ' ' +
-            arcX +
-            ' ' +
-            arcY +
-            ' L 0 0'
-        );
+        const subCalc = 2 * Math.PI * fillPercent;
+
+        const arcx = Math.cos(subCalc);
+        const arcy = Math.sin(subCalc) * inverter;
+
+        return `M 1 0 A 1 1 0 ${islong} ${filldrain} ${arcx} ${arcy} L 0 0`;
+    }
+
+    get computedAltText() {
+        if (this.variant === 'warning') {
+            return 'Warning';
+        }
+        if (this.variant === 'expired') {
+            return 'Expired';
+        }
+        if (this.isComplete) {
+            return 'Complete';
+        }
+        return undefined;
     }
 
     get iconName() {
@@ -142,5 +145,13 @@ export default class ProgressRing extends LightningElement {
             return true;
         }
         return false;
+    }
+
+    get showIcon() {
+        return !this.hideIcon && this.iconPresence;
+    }
+
+    get showSlot() {
+        return !this.iconPresence || (this.iconPresence && this.hideIcon);
     }
 }
