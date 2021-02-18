@@ -4,7 +4,16 @@
             <template if:false={hidePreviousNextPanelNavigation}>
                 <lightning-layout-item>
                     <!-- Previous navigation -->
-                    <lightning-button-icon class="slds-m-right_medium"  icon-name="utility:chevronleft"  variant="border-filled" alternative-text="Previous" title="Previous" size="small"></lightning-button-icon>
+                    <lightning-button-icon
+                        alternative-text={assistiveText.previousPanel}
+                        class="slds-m-right_medium"
+                        disabled={previousPanelNavigationDisabled}
+                        icon-name="utility:chevronleft"
+                        onclick={handlePreviousClick}
+                        size="small"
+                        title={assistiveText.previousPanel}
+                        variant="border-filled"
+                    ></lightning-button-icon>
                 </lightning-layout-item>
             </template>
             <lightning-layout-item flexibility="auto">
@@ -71,7 +80,16 @@
     <template if:false={hidePreviousNextPanelNavigation}>
         <!-- Next navigation -->
         <lightning-layout-item>
-            <lightning-button-icon class="slds-m-left_medium" icon-name="utility:chevronright"  variant="border-filled" alternative-text="Next" title="Next" size="small"></lightning-button-icon>
+            <lightning-button-icon
+                alternative-text={assistiveText.nextPanel}
+                class="slds-m-left_medium"
+                disabled={nextPanelNavigationDisabled}
+                icon-name="utility:chevronright" 
+                onclick={handleNextClick}
+                size="small"
+                title={assistiveText.nextPanel}
+                variant="border-filled"
+            ></lightning-button-icon>
         </lightning-layout-item>
     </template>
 </lightning-layout>

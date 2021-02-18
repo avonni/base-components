@@ -12,15 +12,6 @@ const i18n = {
 };
 
 export default class Carousel extends LightningElement {
-	get i18n() {
-		return i18n;
-	}
-	
-	@api assistiveText = {
-		autoplayButton: i18n.autoPlay,
-		nextPanel: i18n.nextPanel,
-		previousPanel: i18n.previousPanel
-	}
 	@api currentPanel;
 	@api disableAutoRefresh;
 	@api disableAutoScroll;
@@ -28,6 +19,11 @@ export default class Carousel extends LightningElement {
 	@api isInfinite;
 	@api scrollDuration;
 	
+	_assistiveText = {
+		autoplayButton: i18n.autoPlay,
+		nextPanel: i18n.nextPanel,
+		previousPanel: i18n.previousPanel
+	};
 	_carouselItems = [];
 	_itemsPerPanel = 1;
 	
@@ -39,7 +35,7 @@ export default class Carousel extends LightningElement {
 	
 	connectedCallback() {
 		const numberOfPages = Math.ceil(this._carouselItems.length / this.itemsPerPanel);
-
+		
 		this.initializeCurrentPanel(numberOfPages);
 		this.initializePaginationItems(numberOfPages);
 		this.initializePages();
@@ -59,12 +55,12 @@ export default class Carousel extends LightningElement {
 			})
 		}
 	}
-
+	
 	initializeCurrentPanel(numberOfPages) {
 		const firstPanel = parseInt(this.currentPanel, 10);
 		this.activeIndexPage = firstPanel < numberOfPages ? firstPanel : 0;
 	}
-
+	
 	// Creates an array of pages, each containing an array of items
 	initializePages() {
 		const pageItems = [];
@@ -80,13 +76,18 @@ export default class Carousel extends LightningElement {
 		this.pageItems = pageItems;
 		this.pageStyle = `transform: translateX(-${this.activeIndexPage * 100}%);`
 	}
-
-	// Sets the width of each item, depending on the number of items per panel
-	get carouselItemStyle() {
-		const flexBasis = 100 / this.itemsPerPanel;
-		return `flex-basis: ${flexBasis}%;`
-	}
 	
+	@api get assistiveText() {
+		return this._assistiveText;
+	}
+	set assistiveText(value) {
+		this._assistiveText = {
+			autoplayButton: value.autoplayButton || this._assistiveText.autoplayButton,
+			nextPanel: value.nextPanel || this._assistiveText.nextPanel,
+			previousPanel: value.previousPanel || this._assistiveText.previousPanel
+		};
+	}
+
 	@api 
 	get items() {
 		return this._carouselItems;
@@ -117,37 +118,62 @@ export default class Carousel extends LightningElement {
 		this._itemsPerPanel = parseInt(number, 10);
 	}
 	
+	// Sets the width of each item, depending on the number of items per panel
+	get carouselItemStyle() {
+		const flexBasis = 100 / this.itemsPerPanel;
+		return `flex-basis: ${flexBasis}%;`
+	}
+
+	get previousPanelNavigationDisabled() {
+		return this.activeIndexPage === 0;
+	}
+	get nextPanelNavigationDisabled() {
+		return this.activeIndexPage === this.paginationItems.length - 1;
+	}
+	
 	onPageSelect(event) {
 		const currentTarget = event.currentTarget;
 		const itemIndex = parseInt(currentTarget.dataset.index, 10);
-
+		
 		if (this.activeIndexPage !== itemIndex) {
 			this.unselectCurrentPage();
 			this.selectNewPage(itemIndex);
 		}
 	}
-
+	
 	selectNewPage(pageIndex) {
-        const activePaginationItem = this.paginationItems[pageIndex];
-
+		const activePaginationItem = this.paginationItems[pageIndex];
+		
 		activePaginationItem.tabIndex = '0';
 		activePaginationItem.ariaSelected = TRUE_STRING;
 		activePaginationItem.className =
-			INDICATOR_ACTION + ' ' + SLDS_ACTIVE;
-
+		INDICATOR_ACTION + ' ' + SLDS_ACTIVE;
+		
 		this.pageStyle = `transform:translateX(-${
 			pageIndex * 100
 		}%);`;
 		this.activeIndexPage = pageIndex;
-    }
-
+	}
+	
 	unselectCurrentPage() {
-        const activePaginationItem = this.paginationItems[this.activeIndexPage];
+		const activePaginationItem = this.paginationItems[this.activeIndexPage];
+		
+		activePaginationItem.tabIndex = '-1';
+		activePaginationItem.ariaSelected = FALSE_STRING;
+		activePaginationItem.className = INDICATOR_ACTION;
+	}
 
-        activePaginationItem.tabIndex = '-1';
-        activePaginationItem.ariaSelected = FALSE_STRING;
-        activePaginationItem.className = INDICATOR_ACTION;
-    }
+	handlePreviousClick() {
+		this.unselectCurrentPage();
+		this.activeIndexPage -= 1;
+		this.selectNewPage(this.activeIndexPage);
+	}
+
+	handleNextClick() {
+		this.unselectCurrentPage();
+		this.activeIndexPage += 1;
+		this.selectNewPage(this.activeIndexPage);
+	}
 	
 	keyDownHandler(event) {
 		// Handle keyboard navigation
