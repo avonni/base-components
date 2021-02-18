@@ -127,13 +127,12 @@ export default class ProgressBar extends LightningElement {
         return classSet('slds-progress-bar__value')
             .add({
                 'slds-progress-bar__value_success': this._theme === 'success',
-                'avonni-progress-bar-theme-inverse': this._theme === 'inverse',
-                'avonni-progress-bar-theme-alt-inverse':
-                    this._theme === 'alt-inverse',
-                'avonni-progress-bar-theme-warning': this.theme === 'warning',
-                'avonni-progress-bar-theme-info': this._theme === 'info',
-                'avonni-progress-bar-theme-error': this._theme === 'error',
-                'avonni-progress-bar-theme-offline': this._theme === 'offline'
+                'slds-theme_inverse': this._theme === 'inverse',
+                'slds-theme_alt-inverse': this._theme === 'alt-inverse',
+                'slds-theme_warning': this.theme === 'warning',
+                'slds-theme_info': this._theme === 'info',
+                'slds-theme_error': this._theme === 'error',
+                'slds-theme_offline': this._theme === 'offline'
             })
             .toString();
     }
