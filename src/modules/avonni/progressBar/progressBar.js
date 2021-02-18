@@ -116,7 +116,10 @@ export default class ProgressBar extends LightningElement {
         return classSet('slds-progress-bar')
             .add({
                 'slds-progress-bar_vertical': this._orientation === 'vertical',
-                'slds-progress-bar_circular': this.variant === 'circular'
+                'slds-progress-bar_circular': this.variant === 'circular',
+                'slds-progress-bar_x-small': this._thickness === 'x-small',
+                'slds-progress-bar_small': this._thickness === 'small',
+                'slds-progress-bar_large': this._thickness === 'large'
             })
             .toString();
     }
