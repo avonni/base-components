@@ -1,13 +1,15 @@
 <template>
     <div
-        class="slds-progress-bar"
+        class={computedOuterClass}
         aria-valuemin="0"
         aria-valuemax="100"
         aria-valuenow={value}
         role="progressbar"
     >
-        <span class="slds-progress-bar__value" style={styleValue}>
-            <span class="slds-assistive-text">Progress: 25%</span>
+        <span class="slds-progress-bar__value" style={progressBarValue}>
+            <span if:true={showValue} class="slds-assistive-text"
+                >{value}%</span
+            >
         </span>
     </div>
 </template>
