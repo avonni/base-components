@@ -74,7 +74,7 @@ export default class ProgressRing extends LightningElement {
         this._hideIcon = normalizeBoolean(value);
     }
 
-    get progressRingClass() {
+    get computedOuterClass() {
         return classSet('slds-progress-ring')
             .add({
                 'slds-progress-ring_large': this._size === 'large',
@@ -124,9 +124,11 @@ export default class ProgressRing extends LightningElement {
 
     get iconPresence() {
         if (
-            (this._variant === 'base-autocomplete' && this._value === 100) ||
-            this._variant === 'warning' ||
-            this._variant === 'expired'
+            (this._variant === 'base-autocomplete' &&
+                this._value === 100 &&
+                this._hideIcon === false) ||
+            (this._variant === 'warning' && this._hideIcon === false) ||
+            (this._variant === 'expired' && this._hideIcon === false)
         ) {
             return true;
         }

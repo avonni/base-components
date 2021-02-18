@@ -1,5 +1,5 @@
 <template>
-    <div class={progressRingClass}>
+    <div class={computedOuterClass}>
         <div
             class="slds-progress-ring__progress"
             role="progressbar"
@@ -12,7 +12,7 @@
             </svg>
         </div>
         <div class="slds-progress-ring__content">
-            <template if:false={iconPresence}>
+            <template if:false={iconPresence} if:true={hideIcon}>
                 <slot></slot>
             </template>
             <template if:false={hideIcon}>
@@ -25,9 +25,6 @@
                         </div>
                     </span>
                 </template>
-            </template>
-            <template if:true={hideIcon}>
-                <slot></slot>
             </template>
         </div>
     </div>
