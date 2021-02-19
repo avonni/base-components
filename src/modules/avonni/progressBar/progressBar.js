@@ -251,4 +251,11 @@ export default class ProgressBar extends LightningElement {
     get positionBottomLeft() {
         return this._valuePosition === 'bottom-left' && this._showValue;
     }
+
+    get positionBottom() {
+        return (
+            this._valuePosition === 'bottom-left' ||
+            (this._valuePosition === 'bottom-right' && this._showValue)
+        );
+    }
 }

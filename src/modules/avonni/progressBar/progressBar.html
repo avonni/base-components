@@ -19,7 +19,7 @@
                         <span
                             if:true={positionTopLeft}
                             aria-hidden="true"
-                            class="slds-p-left_x-small"
+                            class="slds-p-left_xx-small"
                         >
                             <strong>{value}% {valueLabel}</strong>
                         </span>
@@ -86,21 +86,53 @@
             </lightning-layout-item>
         </lightning-layout>
     </div>
-    <div if:false={horizontal} class={sizing}>
-        <span>{label}</span>
-        <span aria-hidden="true">
-            <strong>{value}% {valueLabel}</strong>
-        </span>
-        <div
-            class={computedOuterClass}
-            aria-valuemin="0"
-            aria-valuemax="100"
-            aria-valuenow={value}
-            role="progressbar"
-        >
-            <span class={computedInnerClass} style={progressBarValue}>
-                <span class="slds-assistive-text">Progress: {value}%</span>
-            </span>
-        </div>
+    <div if:false={horizontal}>
+        <lightning-layout>
+            <lightning-layout-item size="12" class="slds-text-align_center">
+                <span
+                    if:true={positionTopLeft}
+                    aria-hidden="true"
+                    class="slds-p-right_xx-small"
+                >
+                    <strong>{value}% {valueLabel}</strong>
+                </span>
+                <span>{label}</span>
+                <span
+                    if:true={positionTopRight}
+                    aria-hidden="true"
+                    class="slds-p-left_xx-small"
+                >
+                    <strong>{value}% {valueLabel}</strong>
+                </span>
+            </lightning-layout-item>
+        </lightning-layout>
+        <lightning-layout vertical-align="center">
+            <lightning-layout-item
+                size="12"
+                class={sizing}
+                style="display: flex; justify-content: center"
+            >
+                <div
+                    class={computedOuterClass}
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    aria-valuenow={value}
+                    role="progressbar"
+                >
+                    <span class={computedInnerClass} style={progressBarValue}>
+                        <span class="slds-assistive-text"
+                            >Progress: {value}%</span
+                        >
+                    </span>
+                </div>
+            </lightning-layout-item>
+        </lightning-layout>
+        <lightning-layout>
+            <lightning-layout-item size="12" class="slds-text-align_center">
+                <span if:true={positionBottom} aria-hidden="true">
+                    <strong>{value}% {valueLabel}</strong>
+                </span>
+            </lightning-layout-item>
+        </lightning-layout>
     </div>
 </template>
