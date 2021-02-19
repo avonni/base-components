@@ -3,14 +3,15 @@ import { normalizeBoolean, normalizeString } from 'avonni/utilsPrivate';
 import { classSet } from 'avonni/utils';
 
 const validSizes = ['x-small', 'small', 'medium', 'large'];
-const validPositions = [
+const validValuePositions = [
     'left',
     'right',
     'top-right',
     'top-left',
     'bottom-right',
     'bottom-left',
-    'centered'
+    'top-centered',
+    'bottom-centered'
 ];
 const validVariants = ['base', 'circular'];
 const validThemes = [
@@ -28,12 +29,12 @@ const validOrientations = ['horizontal', 'vertical'];
 
 export default class ProgressBar extends LightningElement {
     @api label;
+    @api valueLabel;
 
     _size = 'medium';
     _value = 0;
     _showValue = false;
     _valuePosition = 'top-right';
-    _valueLabel = ''; // à vérifier
     _badges = {}; // à vérifier
     _variant = 'base';
     _theme = 'base';
@@ -54,14 +55,38 @@ export default class ProgressBar extends LightningElement {
     }
 
     @api
-    get position() {
-        return this._position;
+    get value() {
+        return this._value;
     }
 
-    set position(position) {
-        this._position = normalizeString(position, {
+    set value(value) {
+        if (value < 0) {
+            this._value = 0;
+        } else if (value > 100) {
+            this._value = 100;
+        } else {
+            this._value = value;
+        }
+    }
+
+    @api
+    get showValue() {
+        return this._showValue;
+    }
+
+    set showValue(value) {
+        this._showValue = normalizeBoolean(value);
+    }
+
+    @api
+    get valuePosition() {
+        return this._valuePosition;
+    }
+
+    set valuePosition(valuePosition) {
+        this._valuePosition = normalizeString(valuePosition, {
             fallbackValue: 'top-right',
-            validValues: validPositions
+            validValues: validValuePositions
         });
     }
 
@@ -90,6 +115,15 @@ export default class ProgressBar extends LightningElement {
     }
 
     @api
+    get textured() {
+        return this._textured;
+    }
+
+    set textured(value) {
+        this._textured = normalizeBoolean(value);
+    }
+
+    @api
     get thickness() {
         return this._thickness;
     }
@@ -112,6 +146,28 @@ export default class ProgressBar extends LightningElement {
             validValues: validOrientations
         });
     }
+
+    get sizing() {
+        return classSet('')
+            .add({
+                'avonni-progress-bar-size_x-small': this._size === 'x-small',
+                'avonni-progress-bar-size_small': this._size === 'small',
+                'avonni-progress-bar-size_medium': this._size === 'medium',
+                'avonni-progress-bar-size_large': this._size === 'large',
+                'avonni-progress-bar-vertical-size_x-small':
+                    this._size === 'x-small' &&
+                    this._orientation === 'vertical',
+                'avonni-progress-bar-vertical-size_small':
+                    this._size === 'small' && this._orientation === 'vertical',
+                'avonni-progress-bar-vertical-size_medium':
+                    this._size === 'medium' && this._orientation === 'vertical',
+                'avonni-progress-bar-vertical-size_large':
+                    this._size === 'large' && this._orientation === 'vertical',
+                'slds-theme_alert-texture': this._textured === true
+            })
+            .toString();
+    }
+
     get computedOuterClass() {
         return classSet('slds-progress-bar')
             .add({
@@ -123,6 +179,7 @@ export default class ProgressBar extends LightningElement {
             })
             .toString();
     }
+
     get computedInnerClass() {
         return classSet('slds-progress-bar__value')
             .add({
@@ -137,32 +194,37 @@ export default class ProgressBar extends LightningElement {
             .toString();
     }
 
-    @api
-    get value() {
-        return this._value;
-    }
     get progressBarValue() {
         return this._orientation === 'horizontal'
             ? `width: ${this.value}%`
             : `height: ${this.value}%`;
     }
 
-    set value(value) {
-        if (value < 0) {
-            this._value = 0;
-        } else if (value > 100) {
-            this._value = 100;
-        } else {
-            this._value = value;
-        }
+    get positionTopRight() {
+        return this._valuePosition === 'top-right' && this._showValue;
     }
 
-    @api
-    get showValue() {
-        return this._showValue;
+    get positionTopCentered() {
+        return this._valuePosition === 'top-centered' && this._showValue;
     }
 
-    set showValue(value) {
-        this._showValue = normalizeBoolean(value);
+    get positionTopLeft() {
+        return (
+            this._valuePosition === 'top-left' &&
+            this._showValue &&
+            this.label === ''
+        );
+    }
+
+    get positionBottomRight() {
+        return this._valuePosition === 'bottom-right' && this._showValue;
+    }
+
+    get positionBottomCentered() {
+        return this._valuePosition === 'bottom-centered' && this._showValue;
+    }
+
+    get positionBottomLeft() {
+        return this._valuePosition === 'bottom-left' && this._showValue;
     }
 }

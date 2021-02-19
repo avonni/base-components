@@ -54,7 +54,8 @@ export default {
                     'top-left',
                     'bottom-right',
                     'bottom-left',
-                    'centered'
+                    'top-centered',
+                    'bottom-centered'
                 ]
             },
             defaultValue: 'top-right',

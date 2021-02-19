@@ -1,15 +1,56 @@
 <template>
-    <div
-        class={computedOuterClass}
-        aria-valuemin="0"
-        aria-valuemax="100"
-        aria-valuenow={value}
-        role="progressbar"
-    >
-        <span class={computedInnerClass} style={progressBarValue}>
-            <span if:true={showValue} class="slds-assistive-text"
-                >{value}%</span
+    <div class={sizing}>
+        <lightning-layout
+            horizontal-align="spread"
+            class="slds-p-bottom_x-small"
+        >
+            <lightning-layout-item>
+                <span if:true={positionTopLeft} aria-hidden="true">
+                    <strong>{value}% {valueLabel}</strong>
+                </span>
+                <span>{label}</span>
+            </lightning-layout-item>
+            <lightning-layout-item>
+                <span if:true={positionTopCentered} aria-hidden="true">
+                    <strong>{value}% {valueLabel}</strong>
+                </span>
+            </lightning-layout-item>
+            <lightning-layout-item>
+                <span if:true={positionTopRight} aria-hidden="true">
+                    <strong>{value}% {valueLabel}</strong>
+                </span>
+            </lightning-layout-item>
+        </lightning-layout>
+        <div
+            class={computedOuterClass}
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow={value}
+            role="progressbar"
+        >
+            <span class={computedInnerClass} style={progressBarValue}>
+                <span class="slds-assistive-text">{value}%</span>
+            </span>
+            <lightning-layout
+                horizontal-align="spread"
+                class="slds-p-top_x-small"
             >
-        </span>
+                <lightning-layout-item>
+                    <span if:true={positionBottomRight} aria-hidden="true">
+                        <strong>{value}% {valueLabel}</strong>
+                    </span>
+                </lightning-layout-item>
+                <lightning-layout-item>
+                    <span if:true={positionBottomCentered} aria-hidden="true">
+                        <strong>{value}% {valueLabel}</strong>
+                    </span>
+                </lightning-layout-item>
+                <lightning-layout-item>
+                    <span if:true={positionBottomLeft} aria-hidden="true">
+                        <strong>{value}% {valueLabel}</strong>
+                    </span>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
     </div>
 </template>
