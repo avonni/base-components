@@ -15,10 +15,14 @@
                     class="slds-p-bottom_x-small"
                 >
                     <lightning-layout-item>
-                        <span if:true={positionTopLeft} aria-hidden="true">
+                        <span>{label}</span>
+                        <span
+                            if:true={positionTopLeft}
+                            aria-hidden="true"
+                            class="slds-p-left_x-small"
+                        >
                             <strong>{value}% {valueLabel}</strong>
                         </span>
-                        <span>{label}</span>
                     </lightning-layout-item>
                     <lightning-layout-item>
                         <span if:true={positionTopCentered} aria-hidden="true">
@@ -84,14 +88,17 @@
     </div>
     <div if:false={horizontal} class={sizing}>
         <span>{label}</span>
+        <span aria-hidden="true">
+            <strong>{value}% {valueLabel}</strong>
+        </span>
         <div
-            class="slds-progress-bar slds-progress-bar_vertical"
+            class={computedOuterClass}
             aria-valuemin="0"
             aria-valuemax="100"
             aria-valuenow={value}
             role="progressbar"
         >
-            <span class={verticalSizing} style={progressBarValue}>
+            <span class={computedInnerClass} style={progressBarValue}>
                 <span class="slds-assistive-text">Progress: {value}%</span>
             </span>
         </div>

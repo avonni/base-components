@@ -146,22 +146,6 @@ export default class ProgressBar extends LightningElement {
             validValues: validOrientations
         });
     }
-    get verticalSizing() {
-        return classSet('slds-progress-bar__value')
-            .add({
-                'avonni-progress-bar-vertical-size_x-small':
-                    this._size === 'x-small' &&
-                    this._orientation === 'vertical',
-                'avonni-progress-bar-vertical-size_small':
-                    this._size === 'small' && this._orientation === 'vertical',
-                'avonni-progress-bar-vertical-size_medium':
-                    this._size === 'medium' && this._orientation === 'vertical',
-                'avonni-progress-bar-vertical-size_large':
-                    this._size === 'large' && this._orientation === 'vertical',
-                'slds-theme_alert-texture': this._textured === true
-            })
-            .toString();
-    }
 
     get sizing() {
         return classSet('')
@@ -186,8 +170,7 @@ export default class ProgressBar extends LightningElement {
                 'avonni-progress-bar-vertical-size_medium':
                     this._size === 'medium' && this._orientation === 'vertical',
                 'avonni-progress-bar-vertical-size_large':
-                    this._size === 'large' && this._orientation === 'vertical',
-                'slds-theme_alert-texture': this._textured === true
+                    this._size === 'large' && this._orientation === 'vertical'
             })
             .toString();
     }
@@ -213,7 +196,17 @@ export default class ProgressBar extends LightningElement {
                 'slds-theme_warning': this.theme === 'warning',
                 'slds-theme_info': this._theme === 'info',
                 'slds-theme_error': this._theme === 'error',
-                'slds-theme_offline': this._theme === 'offline'
+                'slds-theme_offline': this._theme === 'offline',
+                'avonni-progress-bar-vertical-size_x-small':
+                    this._size === 'x-small' &&
+                    this._orientation === 'vertical',
+                'avonni-progress-bar-vertical-size_small':
+                    this._size === 'small' && this._orientation === 'vertical',
+                'avonni-progress-bar-vertical-size_medium':
+                    this._size === 'medium' && this._orientation === 'vertical',
+                'avonni-progress-bar-vertical-size_large':
+                    this._size === 'large' && this._orientation === 'vertical',
+                'slds-theme_alert-texture': this._textured === true
             })
             .toString();
     }
@@ -244,11 +237,7 @@ export default class ProgressBar extends LightningElement {
     }
 
     get positionTopLeft() {
-        return (
-            this._valuePosition === 'top-left' &&
-            this._showValue &&
-            this.label === ''
-        );
+        return this._valuePosition === 'top-left' && this._showValue;
     }
 
     get positionBottomRight() {

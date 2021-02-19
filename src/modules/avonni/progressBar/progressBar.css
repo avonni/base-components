@@ -24,7 +24,7 @@
 }
 
 .avonni-progress-bar-vertical-size_medium {
-    height: 20rem;
+    height: var(--lwc-sizeMedium, 20rem);
 }
 
 .avonni-progress-bar-vertical-size_large {
