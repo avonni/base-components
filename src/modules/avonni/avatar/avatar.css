@@ -3,10 +3,11 @@
 }
 
 /* Sizes */
-.avonni-avatar_xx-small, .avonni-avatar_xx-small .slds-icon {
+.avonni-avatar_xx-small,
+.avonni-avatar_xx-small .slds-icon {
     font-size: 0.6rem;
-    height: .875rem;
-    width: .875rem;
+    height: 0.875rem;
+    width: 0.875rem;
 }
 .avonni-avatar_x-large {
     font-size: 1.25rem;
@@ -30,9 +31,10 @@
     width: 20px;
     height: 20px;
     font-size: 0.6rem;
+    border: 2px solid #f3f2f2;
 }
 
-.avonni-avatar__status_approved{
+.avonni-avatar__status_approved {
     background-color: #04844b;
 }
 
@@ -46,22 +48,91 @@
 }
 
 .avonni-avatar__status_unknown {
-    background-color: #99753e;
+    background-color: #706e6b;
 }
 
-.avonni-avatar__status_top-right {
+/* Presence */
+.avonni-avatar__presence {
+    position: absolute;
+    border-radius: var(--lwc-borderRadiusCircle, 50%);
+}
+.avonni-avatar_xx-small .avonni-avatar__presence {
+    width: 4px;
+    height: 4px;
+}
+.slds-avatar_x-small .avonni-avatar__presence {
+    width: 6px;
+    height: 6px;
+}
+.slds-avatar_small .avonni-avatar__presence {
+    width: 8px;
+    height: 8px;
+}
+.slds-avatar_medium .avonni-avatar__presence {
+    width: 10px;
+    height: 10px;
+}
+.slds-avatar_large .avonni-avatar__presence {
+    width: 14px;
+    height: 14px;
+}
+.avonni-avatar_x-large .avonni-avatar__presence {
+    width: 18px;
+    height: 18px;
+}
+.avonni-avatar_xx-large .avonni-avatar__presence {
+    width: 20px;
+    height: 20px;
+}
+.avonni-avatar__presence_online {
+    background-color: #04844b;
+}
+.avonni-avatar__presence_busy {
+    background-color: #bf0201;
+}
+.avonni-avatar__presence_focus {
+    background-color: #1589ee;
+}
+.avonni-avatar__presence_offline {
+    background-color: #3e3e3c;
+}
+.avonni-avatar__presence_blocked {
+    background-color: #ecebea;
+}
+.avonni-avatar__presence_away {
+    background-color: #ff9a3c;
+}
+
+/* Positionning */
+.avonni-avatar_square .avonni-avatar_top-right {
+    top: 2px;
+    right: 2px;
+}
+.avonni-avatar_square .avonni-avatar_top-left {
+    top: 2px;
+    left: 2px;
+}
+.avonni-avatar_square .avonni-avatar_bottom-right {
+    bottom: 2px;
+    right: 2px;
+}
+.avonni-avatar_square .avonni-avatar_bottom-left {
+    bottom: 2px;
+    left: 2px;
+}
+.avonni-avatar_circle .avonni-avatar_top-right {
     top: 0;
     right: 0;
 }
-.avonni-avatar__status_top-left {
+.avonni-avatar_circle .avonni-avatar_top-left {
     top: 0;
     left: 0;
 }
-.avonni-avatar__status_bottom-right {
+.avonni-avatar_circle .avonni-avatar_bottom-right {
     bottom: 0;
     right: 0;
 }
-.avonni-avatar__status_bottom-left {
+.avonni-avatar_circle .avonni-avatar_bottom-left {
     bottom: 0;
     left: 0;
 }

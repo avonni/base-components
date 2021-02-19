@@ -4,21 +4,34 @@ import { normalizeString } from 'avonni/utilsPrivate';
 import { computeSldsClass } from 'avonni/iconUtils';
 
 const SIZE = {
-    valid: ['xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'],
+    valid: [
+        'xx-small',
+        'x-small',
+        'small',
+        'medium',
+        'large',
+        'x-large',
+        'xx-large'
+    ],
     default: 'medium'
-}
+};
 const VARIANT = {
     valid: ['circle', 'square'],
     default: 'square'
-}
+};
 const STATUS = {
     valid: ['approved', 'locked', 'declined', 'unknown'],
     default: null
 };
-const STATUS_POSITION = {
+const POSITION = {
     valid: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
-    default: 'top-right'
-}
+    presenceDefault: 'bottom-right',
+    statusDefault: 'top-right'
+};
+const PRESENCE = {
+    valid: ['online', 'busy', 'focus', 'offline', 'blocked', 'away'],
+    default: null
+};
 
 export default class Avatar extends LightningElement {
     avatarClass;
@@ -26,14 +39,19 @@ export default class Avatar extends LightningElement {
     @api alternativeText = '';
     @api fallbackIconName;
     @api initials;
+    @api presenceTitle;
     @api statusTitle;
 
+    presenceClass;
     statusComputed;
+    wrapperClass;
 
+    _presence = PRESENCE.default;
+    _presencePosition = POSITION.presenceDefault;
     _size = SIZE.default;
     _src = '';
     _status = STATUS.default;
-    _statusPosition  = STATUS_POSITION.default;
+    _statusPosition = POSITION.statusDefault;
     _variant = VARIANT.default;
 
     // TODO:
@@ -45,7 +63,7 @@ export default class Avatar extends LightningElement {
     set size(value) {
         this._size = normalizeString(value, {
             fallbackValue: SIZE.default,
-            validValues: SIZE.valid,
+            validValues: SIZE.valid
         });
         this.updateClassList();
     }
@@ -69,58 +87,102 @@ export default class Avatar extends LightningElement {
         });
     }
 
-    _computeStatus(type) {
+    _computeStatus() {
         const classes = classSet('avonni-avatar__status slds-current-color')
             .add({
-                'avonni-avatar__status_approved': type === 'approved',
-                'avonni-avatar__status_locked': type === 'locked',
-                'avonni-avatar__status_declined': type === 'declined',
-                'avonni-avatar__status_unknown': type === 'unknown',
+                'avonni-avatar__status_approved': this.status === 'approved',
+                'avonni-avatar__status_locked': this.status === 'locked',
+                'avonni-avatar__status_declined': this.status === 'declined',
+                'avonni-avatar__status_unknown': this.status === 'unknown'
             })
             .add({
-                'avonni-avatar__status_top-right': this.statusPostion === 'top-right',
-                'avonni-avatar__status_top-left': this.statusPostion === 'top-left',
-                'avonni-avatar__status_bottom-left': this.statusPostion === 'bottom-left',
-                'avonni-avatar__status_bottom-right': this.statusPostion === 'bottom-right'
+                'avonni-avatar_top-right': this.statusPosition === 'top-right',
+                'avonni-avatar_top-left': this.statusPosition === 'top-left',
+                'avonni-avatar_bottom-left':
+                    this.statusPosition === 'bottom-left',
+                'avonni-avatar_bottom-right':
+                    this.statusPosition === 'bottom-right'
             });
 
-
-        const status = {
-            type: type,
-            class: classes,
-            title: this.statusTitle
+        let iconName;
+        switch (this.status) {
+            case 'approved':
+                iconName = 'utility:check';
+                break;
+            case 'locked':
+                iconName = 'utility:lock';
+                break;
+            case 'declined':
+                iconName = 'utility:close';
+                break;
+            default:
+                iconName = 'utility:help';
+                break;
         }
 
         // TODO: Change the status icon size depending on the avatar size
-        status.iconSize = 'xx-small';
-        
-        switch (status.type) {
-            case 'approved':
-                status.iconName = 'utility:check';
-                break;
-            case 'locked':
-                status.iconName = 'utility:lock';
-                break;
-            case 'declined':
-                status.iconName = 'utility:close';
-                break;
-            default:
-                status.iconName = 'utility:help';
-                break;
-        }
-
-        this.statusComputed = status;
+        this.statusComputed = {
+            class: classes,
+            iconName: iconName,
+            iconSize: 'xx-small',
+            type: this.status,
+            title: this.statusTitle
+        };
     }
 
     @api
-    get statusPostion() {
+    get statusPosition() {
         return this._statusPosition;
     }
-    set statusPostion(value) {
+    set statusPosition(value) {
         this._statusPosition = normalizeString(value, {
-            fallbackValue: STATUS_POSITION.default,
-            validValues: STATUS_POSITION.valid
+            fallbackValue: POSITION.statusDefault,
+            validValues: POSITION.valid
         });
+    }
+
+    @api
+    get presence() {
+        return this._presence;
+    }
+    set presence(value) {
+        this._presence = normalizeString(value, {
+            fallbackValue: PRESENCE.default,
+            validValues: PRESENCE.valid
+        });
+    }
+
+    @api
+    get presencePosition() {
+        return this._presencePosition;
+    }
+    set presencePosition(value) {
+        this._presencePosition = normalizeString(value, {
+            fallbackValue: POSITION.presenceDefault,
+            validValues: POSITION.valid
+        });
+    }
+
+    _computePresenceClasses() {
+        const presence = this.presence;
+        const presencePosition = this.presencePosition;
+
+        this.presenceClass = classSet('avonni-avatar__presence')
+            .add({
+                'avonni-avatar__presence_online': presence === 'online',
+                'avonni-avatar__presence_busy': presence === 'busy',
+                'avonni-avatar__presence_focus': presence === 'focus',
+                'avonni-avatar__presence_offline': presence === 'offline',
+                'avonni-avatar__presence_blocked': presence === 'blocked',
+                'avonni-avatar__presence_away': presence === 'away'
+            })
+            .add({
+                'avonni-avatar_top-right': presencePosition === 'top-right',
+                'avonni-avatar_top-left': presencePosition === 'top-left',
+                'avonni-avatar_bottom-left': presencePosition === 'bottom-left',
+                'avonni-avatar_bottom-right':
+                    presencePosition === 'bottom-right'
+            });
     }
 
     @api
@@ -130,7 +192,7 @@ export default class Avatar extends LightningElement {
     set variant(value) {
         this._variant = normalizeString(value, {
             fallbackValue: VARIANT.default,
-            validValues: VARIANT.valid,
+            validValues: VARIANT.valid
         });
         this.updateClassList();
     }
@@ -138,14 +200,15 @@ export default class Avatar extends LightningElement {
     connectedCallback() {
         this.updateClassList();
         /*eslint no-unused-expressions: ["error", { "allowShortCircuit": true }]*/
-        this.status && this._computeStatus(this.status);
+        this.status && this._computeStatus();
+        this.presence && this._computePresenceClasses();
     }
 
     // Update wrapper div class list
     updateClassList() {
         const size = this._size;
         const variant = this._variant;
-        const classes = classSet('slds-avatar')
+        const avatarClasses = classSet('slds-avatar')
             .add({
                 'avonni-avatar_xx-small': size === 'xx-small',
                 'slds-avatar_x-small': size === 'x-small',
@@ -156,9 +219,16 @@ export default class Avatar extends LightningElement {
                 'avonni-avatar_xx-large': size === 'xx-large'
             })
             .add({
-                'slds-avatar_circle': variant === 'circle',
+                'slds-avatar_circle': variant === 'circle'
             });
-        this.avatarClass = classes;
+
+        const wrapperClass = classSet('avonni-avatar slds-is-relative').add({
+            'avonni-avatar_square': variant === 'square',
+            'avonni-avatar_circle': variant === 'circle'
+        });
+
+        this.avatarClass = avatarClasses;
+        this.wrapperClass = wrapperClass;
     }
 
     get computedInitialsClass() {

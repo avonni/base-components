@@ -18,10 +18,52 @@ export default {
                 type: 'text'
             }
         },
+        presence: {
+            control: {
+                type: 'select',
+                options: [
+                    'online',
+                    'busy',
+                    'focus',
+                    'offline',
+                    'blocked',
+                    'away',
+                    ''
+                ]
+            }
+        },
+        presenceTitle: {
+            control: {
+                type: 'text'
+            }
+        },
+        presencePosition: {
+            control: {
+                type: 'select',
+                options: [
+                    'top-left',
+                    'top-right',
+                    'bottom-left',
+                    'bottom-right'
+                ]
+            },
+            defaultValue: 'bottom-right',
+            table: {
+                defaultValue: { summary: 'bottom-right' }
+            }
+        },
         size: {
             control: {
                 type: 'select',
-                options: ['xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large']
+                options: [
+                    'xx-small',
+                    'x-small',
+                    'small',
+                    'medium',
+                    'large',
+                    'x-large',
+                    'xx-large'
+                ]
             },
             defaultValue: 'medium',
             table: {
@@ -37,11 +79,21 @@ export default {
         statusPosition: {
             control: {
                 type: 'select',
-                options: ['top-left', 'top-right', 'bottom-left', 'bottom-right']
+                options: [
+                    'top-left',
+                    'top-right',
+                    'bottom-left',
+                    'bottom-right'
+                ]
             },
             defaultValue: 'top-right',
             table: {
                 defaultValue: { summary: 'top-right' }
+            }
+        },
+        statusTitle: {
+            control: {
+                type: 'text'
             }
         },
         variant: {
@@ -64,5 +116,5 @@ Base.args = {
     src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
     fallbackIconName: 'standard:avatar',
     initials: 'JD',
-    status: 'approved'
+    presence: 'online'
 };
