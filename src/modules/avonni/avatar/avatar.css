@@ -1,0 +1,67 @@
+.avonni-avatar {
+    display: inline-block;
+}
+
+/* Sizes */
+.avonni-avatar_xx-small, .avonni-avatar_xx-small .slds-icon {
+    font-size: 0.6rem;
+    height: .875rem;
+    width: .875rem;
+}
+.avonni-avatar_x-large {
+    font-size: 1.25rem;
+    width: 56px;
+    height: 56px;
+}
+.avonni-avatar_xx-large {
+    font-size: 1.5rem;
+    width: 72px;
+    height: 72px;
+}
+
+/* Status */
+.avonni-avatar__status {
+    color: var(--lwc-colorTextInverse, #fff);
+    position: absolute;
+    border-radius: var(--lwc-borderRadiusCircle, 50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    font-size: 0.6rem;
+}
+
+.avonni-avatar__status_approved{
+    background-color: #04844b;
+}
+
+.avonni-avatar__status_locked {
+    color: #514f4d;
+    background-color: #ecebea;
+}
+
+.avonni-avatar__status_declined {
+    background-color: #c23934;
+}
+
+.avonni-avatar__status_unknown {
+    background-color: #99753e;
+}
+
+.avonni-avatar__status_top-right {
+    top: 0;
+    right: 0;
+}
+.avonni-avatar__status_top-left {
+    top: 0;
+    left: 0;
+}
+.avonni-avatar__status_bottom-right {
+    bottom: 0;
+    right: 0;
+}
+.avonni-avatar__status_bottom-left {
+    bottom: 0;
+    left: 0;
+}

@@ -1,0 +1,12 @@
+<template>
+    <div class="avonni-avatar slds-is-relative">
+        <div class={avatarClass}>
+            <img if:true={src} src={src} onerror={handleImageError} alt={alternativeText} title={alternativeText}>
+            <abbr if:true={showInitials} class={computedInitialsClass} title={alternativeText}>{initials}</abbr>
+            <lightning-icon size={size} if:true={showIcon} icon-name={fallbackIconName} alternative-text={alternativeText} title={alternativeText}></lightning-icon>
+        </div>
+        <div if:true={statusComputed.type} class={statusComputed.class}>
+            <lightning-icon size={statusComputed.iconSize} icon-name={statusComputed.iconName} alternative-text={statusComputed.title} title={statusComputed.title}></lightning-icon>
+        </div>
+    </div>
+</template>
