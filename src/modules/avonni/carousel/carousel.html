@@ -50,7 +50,13 @@
                                                 <p>{item.description}</p>
                                                 <template if:true={item.buttonLabel}>
                                                     <div class="slds-m-top_small">
-                                                        <lightning-button label={item.buttonLabel} icon-name={item.buttonIconName} icon-position={item.buttonIconPosition} variant={item.buttonVariant} disabled={item.buttonDisabled}></lightning-button>
+                                                        <lightning-button
+                                                        label={item.buttonLabel} 
+                                                        icon-name={item.buttonIconName} 
+                                                        icon-position={item.buttonIconPosition} 
+                                                        variant={item.buttonVariant} 
+                                                        disabled={item.buttonDisabled}
+                                                        ></lightning-button>
                                                     </div>
                                                 </template>
                                             </div>
@@ -73,40 +79,52 @@
                             onclick={onPanelSelect}
                             data-index={paginationIndex}
                             >
-                            <a
-                            id={paginationItem.id}
-                            class={paginationItem.className}
-                            href="javascript:void(0);"
-                            role="tab"
-                            tabindex={paginationItem.tabIndex}
-                            aria-selected={paginationItem.ariaSelected}
-                            title={paginationItem.tabTitle}
-                            >
-                            <span class="slds-assistive-text">{paginationItem.tabTitle}</span>
-                        </a>
-                    </li>
-                </template>
+                                <a
+                                id={paginationItem.id}
+                                class={paginationItem.className}
+                                href="javascript:void(0);"
+                                role="tab"
+                                tabindex={paginationItem.tabIndex}
+                                aria-selected={paginationItem.ariaSelected}
+                                title={paginationItem.tabTitle}
+                                >
+                                    <span class="slds-assistive-text">{paginationItem.tabTitle}</span>
+                                </a>
+                            </li>
+                        </template>
                 
-            </ul>
-        </div>
-    </lightning-layout-item>
-    <template if:false={hidePreviousNextPanelNavigation}>
-        <!-- Next navigation -->
-        <lightning-layout-item>
-            <lightning-button-icon
-                alternative-text={assistiveText.nextPanel}
-                class="slds-m-left_medium slds-m-bottom_large avonni-carousel__nav-button"
-                disabled={nextPanelNavigationDisabled}
-                icon-name="utility:chevronright" 
-                onclick={selectNextSibling}
-                size="small"
-                title={assistiveText.nextPanel}
-                variant="border-filled"
-            ></lightning-button-icon>
-        </lightning-layout-item>
-    </template>
-</lightning-layout>
+                    </ul>
 
+                    <!-- Autoplay button -->
+                    <template if:false={disableAutoScroll}>
+                        <lightning-button-icon
+                            alternative-text={assistiveText.autoplayButton}
+                            class="avonni-carousel__autoscroll-button"
+                            icon-name={autoScrollIcon}
+                            onclick={toggleAutoScroll}
+                            size="x-small"
+                            title={assistiveText.autoplayButton}
+                            variant="border-filled"
+                        ></lightning-button-icon>
+                    </template>
+                </div>
+            </lightning-layout-item>
+            <template if:false={hidePreviousNextPanelNavigation}>
+                <!-- Next navigation -->
+                <lightning-layout-item>
+                    <lightning-button-icon
+                        alternative-text={assistiveText.nextPanel}
+                        class="slds-m-left_medium slds-m-bottom_large avonni-carousel__nav-button"
+                        disabled={nextPanelNavigationDisabled}
+                        icon-name="utility:chevronright" 
+                        onclick={selectNextSibling}
+                        size="small"
+                        title={assistiveText.nextPanel}
+                        variant="border-filled"
+                    ></lightning-button-icon>
+                </lightning-layout-item>
+            </template>
+        </lightning-layout>
 
-</div>
+    </div>
 </template>

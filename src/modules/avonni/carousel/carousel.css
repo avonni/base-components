@@ -11,3 +11,9 @@
 .avonni-carousel__nav-button {
     display: block;
 }
+
+.avonni-carousel__autoscroll-button {
+    position: absolute;
+    bottom: 0;
+    left: var(--lwc-spacingMedium, 1rem);
+}

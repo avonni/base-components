@@ -8,7 +8,8 @@ const TRUE_STRING = 'true';
 
 const i18n = {
 	nextPanel: 'Next Panel',
-	previousPanel: 'Previous Panel'
+	previousPanel: 'Previous Panel',
+	autoplayButton: 'Start / Stop auto-play'
 };
 
 export default class Carousel extends LightningElement {
@@ -21,14 +22,17 @@ export default class Carousel extends LightningElement {
 	
 	_assistiveText = {
 		nextPanel: i18n.nextPanel,
-		previousPanel: i18n.previousPanel
+		previousPanel: i18n.previousPanel,
+		autoplayButton: i18n.autoplayButton
 	};
 	_carouselItems = [];
 	_itemsPerPanel = 1;
 	_initialRender = true;
 	
 	activeIndexPanel;
+	autoScrollIcon = 'utility:play';
 	autoScrollTimeOut;
+	autoScrollOn;
 	panelItems = [];
 	paginationItems = [];
 	panelStyle;
@@ -103,6 +107,9 @@ export default class Carousel extends LightningElement {
 			this.startAutoScroll.bind(this),
 			scrollDuration
 		);
+
+		this.autoScrollOn = true;
+		this.autoScrollIcon = 'utility:pause';
 	}
 		
 	startAutoScroll() {
@@ -112,6 +119,8 @@ export default class Carousel extends LightningElement {
 	
 	cancelAutoScrollTimeOut() {
 		clearTimeout(this.autoScrollTimeOut);
+		this.autoScrollOn = false;
+		this.autoScrollIcon = 'utility:play';
 	}
 	
 	@api get assistiveText() {
@@ -176,63 +185,7 @@ export default class Carousel extends LightningElement {
 			'itemclick', { detail: itemData }
 		));
 	}
-	
-	onPanelSelect(event) {
-		const currentTarget = event.currentTarget;
-		const itemIndex = parseInt(currentTarget.dataset.index, 10);
-		
-		if (this.activeIndexPanel !== itemIndex) {
-			this.unselectCurrentPanel();
-			this.selectNewPanel(itemIndex);
-		}
-	}
-	
-	selectNewPanel(panelIndex) {
-		const activePaginationItem = this.paginationItems[panelIndex];
-		const activePanelItem = this.panelItems[panelIndex];
-		
-		activePanelItem.ariaHidden = FALSE_STRING;
-		activePaginationItem.tabIndex = '0';
-		activePaginationItem.ariaHidden = TRUE_STRING;
-		activePaginationItem.className =
-		INDICATOR_ACTION + ' ' + SLDS_ACTIVE;
-		
-		this.panelStyle = `transform:translateX(-${
-			panelIndex * 100
-		}%);`;
-		this.activeIndexPanel = panelIndex;
-	}
-	
-	unselectCurrentPanel() {
-		const activePaginationItem = this.paginationItems[this.activeIndexPanel];
-		const activePanelItem = this.panelItems[this.activeIndexPanel];
-		
-		activePanelItem.ariaHidden = TRUE_STRING;
-		activePaginationItem.tabIndex = '-1';
-		activePaginationItem.ariaSelected = FALSE_STRING;
-		activePaginationItem.className = INDICATOR_ACTION;
-	}
-	
-	selectPreviousSibling() {
-		this.unselectCurrentPanel();
-		if (this.activeIndexPanel > 0) {
-			this.activeIndexPanel -= 1;
-		} else {
-			this.activeIndexPanel = this.paginationItems.length - 1;
-		}
-		this.selectNewPanel(this.activeIndexPanel);
-	}
-	
-	selectNextSibling() {
-		this.unselectCurrentPanel();
-		if (this.activeIndexPanel < this.paginationItems.length - 1){
-			this.activeIndexPanel += 1;
-		} else {
-			this.activeIndexPanel = 0;
-		}
-		this.selectNewPanel(this.activeIndexPanel);
-	}
-	
+
 	keyDownHandler(event) {
 		const key = event.keyCode;
 		let indicatorActionsElements = this.indicatorActionsElements;
@@ -268,5 +221,69 @@ export default class Carousel extends LightningElement {
         // we want to make sure that while we are using the keyboard
         // navigation we are focusing on the right indicator
         indicatorActionsElements[this.activeIndexPanel].focus();
+	}
+	
+	onPanelSelect(event) {
+		const currentTarget = event.currentTarget;
+		const itemIndex = parseInt(currentTarget.dataset.index, 10);
+		this.cancelAutoScrollTimeOut();
+		
+		if (this.activeIndexPanel !== itemIndex) {
+			this.unselectCurrentPanel();
+			this.selectNewPanel(itemIndex);
+		}
+	}
+	
+	selectNewPanel(panelIndex) {
+		const activePaginationItem = this.paginationItems[panelIndex];
+		const activePanelItem = this.panelItems[panelIndex];
+		
+		activePanelItem.ariaHidden = FALSE_STRING;
+		activePaginationItem.tabIndex = '0';
+		activePaginationItem.ariaHidden = TRUE_STRING;
+		activePaginationItem.className =
+		INDICATOR_ACTION + ' ' + SLDS_ACTIVE;
+		
+		this.panelStyle = `transform:translateX(-${
+			panelIndex * 100
+		}%);`;
+		this.activeIndexPanel = panelIndex;
+	}
+	
+	unselectCurrentPanel() {
+		const activePaginationItem = this.paginationItems[this.activeIndexPanel];
+		const activePanelItem = this.panelItems[this.activeIndexPanel];
+		
+		activePanelItem.ariaHidden = TRUE_STRING;
+		activePaginationItem.tabIndex = '-1';
+		activePaginationItem.ariaSelected = FALSE_STRING;
+		activePaginationItem.className = INDICATOR_ACTION;
+	}
+	
+	selectPreviousSibling() {
+		this.cancelAutoScrollTimeOut();
+		this.unselectCurrentPanel();
+		if (this.activeIndexPanel > 0) {
+			this.activeIndexPanel -= 1;
+		} else {
+			this.activeIndexPanel = this.paginationItems.length - 1;
+		}
+		this.selectNewPanel(this.activeIndexPanel);
+	}
+	
+	selectNextSibling() {
+		this.cancelAutoScrollTimeOut();
+		this.unselectCurrentPanel();
+		if (this.activeIndexPanel < this.paginationItems.length - 1){
+			this.activeIndexPanel += 1;
+		} else {
+			this.activeIndexPanel = 0;
+		}
+		this.selectNewPanel(this.activeIndexPanel);
+	}
+
+	toggleAutoScroll() {
+		/*eslint no-unused-expressions: ["error", { "allowTernary": true }]*/
+		this.autoScrollOn ? this.cancelAutoScrollTimeOut() : this.setAutoScroll();
 	}
 }

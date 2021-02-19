@@ -9,13 +9,15 @@ export default {
             },
             defaultValue: {
                 nextPanel: 'Next Panel',
-                previousPanel: 'Previous Panel'
+                previousPanel: 'Previous Panel',
+                autoplayButton: 'Start / Stop auto-play'
             },
             table: {
                 defaultValue: {
                     summary: `{
                         nextPanel: 'Next Panel',
-                        previousPanel: 'Previous Panel'
+                        previousPanel: 'Previous Panel',
+                        autoplayButton: 'Start / Stop auto-play'
                     }`
                 }
             }
