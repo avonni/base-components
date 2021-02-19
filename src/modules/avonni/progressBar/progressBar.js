@@ -35,7 +35,13 @@ export default class ProgressBar extends LightningElement {
     _value = 0;
     _showValue = false;
     _valuePosition = 'top-right';
-    _badges = {}; // à vérifier
+    badges = [
+        {
+            label: 'Avg',
+            value: 90,
+            variant: 'darker'
+        }
+    ];
     _variant = 'base';
     _theme = 'base';
     _textured = false;

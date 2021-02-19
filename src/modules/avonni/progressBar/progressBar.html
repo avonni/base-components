@@ -106,12 +106,22 @@
                 </span>
             </lightning-layout-item>
         </lightning-layout>
-        <lightning-layout vertical-align="center">
+        <lightning-layout>
             <lightning-layout-item
                 size="12"
                 class={sizing}
-                style="display: flex; justify-content: center"
+                style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                "
             >
+                <span
+                    aria-hidden="true"
+                    class="slds-text-align_end slds-p-right_xx-small"
+                >
+                    <strong>{value}% {valueLabel}</strong>
+                </span>
                 <div
                     class={computedOuterClass}
                     aria-valuemin="0"
