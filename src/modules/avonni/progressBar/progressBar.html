@@ -1,5 +1,5 @@
 <template>
-    <div class={sizing}>
+    <div if:true={horizontal} class={sizing}>
         <lightning-layout vertical-align="end">
             <lightning-layout-item
                 if:true={positionLeft}
@@ -81,5 +81,19 @@
                 </span>
             </lightning-layout-item>
         </lightning-layout>
+    </div>
+    <div if:false={horizontal} class={sizing}>
+        <span>{label}</span>
+        <div
+            class="slds-progress-bar slds-progress-bar_vertical"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow={value}
+            role="progressbar"
+        >
+            <span class={verticalSizing} style={progressBarValue}>
+                <span class="slds-assistive-text">Progress: {value}%</span>
+            </span>
+        </div>
     </div>
 </template>

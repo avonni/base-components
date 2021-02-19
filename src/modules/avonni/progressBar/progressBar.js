@@ -60,7 +60,7 @@ export default class ProgressBar extends LightningElement {
     }
 
     set value(value) {
-        if (value < 0) {
+        if (value <= 0) {
             this._value = 0;
         } else if (value > 100) {
             this._value = 100;
@@ -146,14 +146,38 @@ export default class ProgressBar extends LightningElement {
             validValues: validOrientations
         });
     }
+    get verticalSizing() {
+        return classSet('slds-progress-bar__value')
+            .add({
+                'avonni-progress-bar-vertical-size_x-small':
+                    this._size === 'x-small' &&
+                    this._orientation === 'vertical',
+                'avonni-progress-bar-vertical-size_small':
+                    this._size === 'small' && this._orientation === 'vertical',
+                'avonni-progress-bar-vertical-size_medium':
+                    this._size === 'medium' && this._orientation === 'vertical',
+                'avonni-progress-bar-vertical-size_large':
+                    this._size === 'large' && this._orientation === 'vertical',
+                'slds-theme_alert-texture': this._textured === true
+            })
+            .toString();
+    }
 
     get sizing() {
         return classSet('')
             .add({
-                'avonni-progress-bar-size_x-small': this._size === 'x-small',
-                'avonni-progress-bar-size_small': this._size === 'small',
-                'avonni-progress-bar-size_medium': this._size === 'medium',
-                'avonni-progress-bar-size_large': this._size === 'large',
+                'avonni-progress-bar-size_x-small':
+                    this._size === 'x-small' &&
+                    this._orientation === 'horizontal',
+                'avonni-progress-bar-size_small':
+                    this._size === 'small' &&
+                    this._orientation === 'horizontal',
+                'avonni-progress-bar-size_medium':
+                    this._size === 'medium' &&
+                    this._orientation === 'horizontal',
+                'avonni-progress-bar-size_large':
+                    this._size === 'large' &&
+                    this._orientation === 'horizontal',
                 'avonni-progress-bar-vertical-size_x-small':
                     this._size === 'x-small' &&
                     this._orientation === 'vertical',
@@ -192,6 +216,9 @@ export default class ProgressBar extends LightningElement {
                 'slds-theme_offline': this._theme === 'offline'
             })
             .toString();
+    }
+    get horizontal() {
+        return this._orientation === 'horizontal';
     }
 
     get progressBarValue() {
