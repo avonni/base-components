@@ -10,8 +10,7 @@ const validValuePositions = [
     'top-left',
     'bottom-right',
     'bottom-left',
-    'top-centered',
-    'bottom-centered'
+    'centered'
 ];
 const validVariants = ['base', 'circular'];
 const validThemes = [
@@ -30,23 +29,21 @@ const validOrientations = ['horizontal', 'vertical'];
 export default class ProgressBar extends LightningElement {
     @api label;
     @api valueLabel;
+    @api badges = {};
 
     _size = 'medium';
     _value = 0;
     _showValue = false;
     _valuePosition = 'top-right';
-    badges = [
-        {
-            label: 'Avg',
-            value: 90,
-            variant: 'darker'
-        }
-    ];
     _variant = 'base';
     _theme = 'base';
     _textured = false;
     _thickness = 'medium';
     _orientation = 'horizontal';
+
+    connectedCallback() {
+        console.log(this.badges.variant);
+    }
 
     @api
     get size() {
@@ -182,7 +179,7 @@ export default class ProgressBar extends LightningElement {
     }
 
     get computedOuterClass() {
-        return classSet('slds-progress-bar')
+        return classSet('slds-progress-bar slds-text-align_center')
             .add({
                 'slds-progress-bar_vertical': this._orientation === 'vertical',
                 'slds-progress-bar_circular': this.variant === 'circular',
@@ -234,12 +231,12 @@ export default class ProgressBar extends LightningElement {
         return this._valuePosition === 'right' && this._showValue;
     }
 
-    get positionTopRight() {
-        return this._valuePosition === 'top-right' && this._showValue;
+    get positionCentered() {
+        return this._valuePosition === 'centered' && this._showValue;
     }
 
-    get positionTopCentered() {
-        return this._valuePosition === 'top-centered' && this._showValue;
+    get positionTopRight() {
+        return this._valuePosition === 'top-right' && this._showValue;
     }
 
     get positionTopLeft() {
@@ -250,18 +247,36 @@ export default class ProgressBar extends LightningElement {
         return this._valuePosition === 'bottom-right' && this._showValue;
     }
 
-    get positionBottomCentered() {
-        return this._valuePosition === 'bottom-centered' && this._showValue;
-    }
-
     get positionBottomLeft() {
         return this._valuePosition === 'bottom-left' && this._showValue;
     }
 
     get positionBottom() {
         return (
-            this._valuePosition === 'bottom-left' ||
-            (this._valuePosition === 'bottom-right' && this._showValue)
+            (this._valuePosition === 'bottom-left' ||
+                this._valuePosition === 'bottom-right') &&
+            this._showValue
         );
+    }
+
+    get badgeVariant() {
+        return classSet('slds-badge avonni-progress-bar-badges')
+            .add({
+                'slds-theme_success': this.badges.variant === 'success',
+                'slds-badge_inverse': this.badges.variant === 'darker',
+                'slds-badge_lightest avonni-progress-bar-badges-border_none':
+                    this.badges.variant === 'lightest',
+                'slds-theme_warning': this.badges.variant === 'warning',
+                'slds-theme_error': this.badges.variant === 'error'
+            })
+            .toString();
+    }
+
+    get badgeMarkerHorizontal() {
+        return `width: ${this.badges.value}%`;
+    }
+
+    get badgeMarkerVertical() {
+        return `height: ${this.badges.value}%`;
     }
 }

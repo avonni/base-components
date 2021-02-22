@@ -13,7 +13,6 @@
 
 .avonni-progress-bar-size_large {
     min-width: var(--lwc-sizeLarge, 25rem);
-    max-width: 512px;
 }
 .avonni-progress-bar-vertical-size_x-small {
     height: var(--lwc-sizeXSmall, 4rem);
@@ -29,4 +28,44 @@
 
 .avonni-progress-bar-vertical-size_large {
     height: var(--lwc-sizeLarge, 25rem);
+}
+
+.avonni-progress-bar-badges-border_none {
+    border: none;
+}
+
+.avonni-progress-bar-badges {
+    border-radius: 0.35rem;
+    font-size: 0.55rem;
+    padding: 0.1rem 0.4rem;
+}
+
+.avonni-progress-bar-marker {
+    height: 10px;
+    border-right: 3px #706e6b dashed;
+    position: relative;
+    margin-bottom: 20px;
+    bottom: 6px;
+}
+
+.avonni-progress-bar-marker > div {
+    position: absolute;
+    bottom: -20px;
+    right: 10px;
+    transform: translateX(100%);
+    white-space: nowrap;
+}
+
+.avonni-progress-bar-marker-vertical {
+    width: 10px;
+    border-bottom: 3px #706e6b dashed;
+    position: relative;
+}
+
+.avonni-progress-bar-marker-vertical > div {
+    position: absolute;
+    bottom: 9px;
+    left: 12px;
+    transform: translateY(100%);
+    white-space: nowrap;
 }

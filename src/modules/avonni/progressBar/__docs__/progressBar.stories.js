@@ -54,8 +54,7 @@ export default {
                     'top-left',
                     'bottom-right',
                     'bottom-left',
-                    'top-centered',
-                    'bottom-centered'
+                    'centered'
                 ]
             },
             defaultValue: 'top-right',
@@ -137,7 +136,7 @@ export default {
                 type: 'select',
                 options: ['horizontal', 'vertical']
             },
-            defaultValue: 'horizontal',
+            defaultValue: 'vertical',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'horizontal' }
@@ -145,10 +144,18 @@ export default {
         }
     }
 };
+
+const badges = {
+    label: 'Avg',
+    value: 90,
+    variant: 'darker'
+};
+
 const Template = (args) => ProgressBar(args);
 
 export const Base = Template.bind({});
 Base.args = {
     label: 'Label',
-    value: 45
+    value: 45,
+    badges: badges
 };

@@ -25,11 +25,6 @@
                         </span>
                     </lightning-layout-item>
                     <lightning-layout-item>
-                        <span if:true={positionTopCentered} aria-hidden="true">
-                            <strong>{value}% {valueLabel}</strong>
-                        </span>
-                    </lightning-layout-item>
-                    <lightning-layout-item>
                         <span if:true={positionTopRight} aria-hidden="true">
                             <strong>{value}% {valueLabel}</strong>
                         </span>
@@ -43,6 +38,9 @@
                     role="progressbar"
                 >
                     <span class={computedInnerClass} style={progressBarValue}>
+                        <span if:true={positionCentered}>
+                            <strong>{value}% {valueLabel}</strong>
+                        </span>
                         <span class="slds-assistive-text">{value}%</span>
                     </span>
                     <lightning-layout
@@ -59,21 +57,25 @@
                         </lightning-layout-item>
                         <lightning-layout-item>
                             <span
-                                if:true={positionBottomCentered}
-                                aria-hidden="true"
-                            >
-                                <strong>{value}% {valueLabel}</strong>
-                            </span>
-                        </lightning-layout-item>
-                        <lightning-layout-item>
-                            <span
                                 if:true={positionBottomLeft}
                                 aria-hidden="true"
+                                style="position: absolute"
                             >
                                 <strong>{value}% {valueLabel}</strong>
                             </span>
                         </lightning-layout-item>
                     </lightning-layout>
+                    <div
+                        class="avonni-progress-bar-marker"
+                        style={badgeMarkerHorizontal}
+                    >
+                        <div>
+                            <lightning-badge
+                                label={badges.label}
+                                class={badgeVariant}
+                            ></lightning-badge>
+                        </div>
+                    </div>
                 </div>
             </lightning-layout-item>
             <lightning-layout-item
@@ -116,12 +118,6 @@
                     align-items: center;
                 "
             >
-                <span
-                    aria-hidden="true"
-                    class="slds-text-align_end slds-p-right_xx-small"
-                >
-                    <strong>{value}% {valueLabel}</strong>
-                </span>
                 <div
                     class={computedOuterClass}
                     aria-valuemin="0"
@@ -134,6 +130,19 @@
                             >Progress: {value}%</span
                         >
                     </span>
+                </div>
+                <div style="height: 100%">
+                    <div
+                        class="avonni-progress-bar-marker-vertical"
+                        style={badgeMarkerVertical}
+                    >
+                        <div>
+                            <lightning-badge
+                                label={badges.label}
+                                class={badgeVariant}
+                            ></lightning-badge>
+                        </div>
+                    </div>
                 </div>
             </lightning-layout-item>
         </lightning-layout>
