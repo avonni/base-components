@@ -19,3 +19,9 @@ package.xml
 
 # Storybook wrappers
 **/storybookWrappers/**
+
+**/chartFunnel/**
+**/chartHeatmap/**
+**/chartLine/**
+**/chartPie/**
+**/chartTreemap/**

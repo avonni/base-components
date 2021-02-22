@@ -1,0 +1,158 @@
+<template>
+    <div class="avonni-kanban-container">
+        <template if:true={isLoading}>
+            <lightning-spinner
+                alternative-text={loadingStateAlternativeText}
+                size="large"
+                class="avonni-spinner"
+            ></lightning-spinner>
+        </template>
+        <template
+            if:false={isLoading}
+            for:each={internalUseGroupData}
+            for:item="group"
+        >
+            <template if:true={group.cards}>
+                <div
+                    key={group.value}
+                    class="avonni-kanban-column"
+                    data-group-label={group.label}
+                    ondragover={handleDragOver}
+                    ondrop={handleDrop}
+                    ondragend={handleDragEnd}
+                >
+                    <h2 class="avonni-kanban-header">
+                        <div
+                            class="tooltip-trigger tooltip-basic uiTooltip"
+                            tabindex="0"
+                        >
+                            <span
+                                class="avonni-stage-header avonni-pipeline-header"
+                            >
+                                <span
+                                    class="avonni-stage-header-label uiOutputText"
+                                >
+                                    {group.label} ({group.size})
+                                </span>
+                            </span>
+                            <span
+                                class="tooltip avonni-pipeline-header-tooltip south"
+                                role="tooltip"
+                                aria-hidden="true"
+                            >
+                                <span class="pointer pointer-basic"></span>
+                                <span
+                                    class="tooltip-body body-basic"
+                                    role="tooltip"
+                                >
+                                    {group.label}
+                                </span>
+                            </span>
+                        </div>
+                    </h2>
+                    <div
+                        class="avonni-card-container"
+                        data-group-label={group.label}
+                    >
+                        <div
+                            if:true={summarizeFieldName}
+                            class="avonni-amount-container"
+                        >
+                            <lightning-formatted-number
+                                value={group.amountValue}
+                                format-style="currency"
+                                currency-code={currencyCode}
+                                data-group-label={group.label}
+                            ></lightning-formatted-number>
+                        </div>
+                        <ul
+                            class="slds-has-dividers_around-space"
+                            data-group-label={group.label}
+                        >
+                            <template for:each={group.cards} for:item="card">
+                                <li
+                                    key={card.id}
+                                    class={computedDraggableClass}
+                                    draggable={isDraggable}
+                                    ondragstart={itemDragStart}
+                                    data-card-id={card.id}
+                                    data-group-label={group.label}
+                                    ondragenter={handleDropTargetEnter}
+                                    ondragleave={handleDropTargetLeave}
+                                >
+                                    <div class="slds-item">
+                                        <article
+                                            class="slds-tile slds-tile_board"
+                                        >
+                                            <div class="slds-tile__detail">
+                                                <template
+                                                    for:each={fields}
+                                                    for:item="field"
+                                                >
+                                                    <c-auto-data-type
+                                                        key={field.fieldName}
+                                                        card={card}
+                                                        label={field.label}
+                                                        field-name={field.fieldName}
+                                                        type={field.type}
+                                                        type-attributes={field.typeAttributes}
+                                                    ></c-auto-data-type>
+                                                </template>
+                                            </div>
+                                            <div
+                                                class="avonni-action-container"
+                                            >
+                                                <span
+                                                    if:true={showActions}
+                                                    class="avonni-action"
+                                                >
+                                                    <lightning-button-menu
+                                                        alternative-text="Show menu"
+                                                        variant="border"
+                                                        icon-size="x-small"
+                                                        menu-alignment="right"
+                                                    >
+                                                        <template
+                                                            for:each={actions}
+                                                            for:item="action"
+                                                        >
+                                                            <lightning-menu-item
+                                                                key={action.name}
+                                                                value={action.name}
+                                                                label={action.label}
+                                                                icon-name={action.iconName}
+                                                                prefix-icon-name={action.prefixIconName}
+                                                                disabled={action.disabled}
+                                                                data-card-id={card.id}
+                                                                onprivateselect={handlePrivateselect}
+                                                            ></lightning-menu-item>
+                                                        </template>
+                                                    </lightning-button-menu>
+                                                </span>
+                                                <span
+                                                    class="avonni-status-container"
+                                                >
+                                                    <lightning-icon
+                                                        if:true={iconName}
+                                                        icon-name={iconName}
+                                                        size="x-small"
+                                                    ></lightning-icon>
+                                                    <lightning-icon
+                                                        if:true={card.warningIcon}
+                                                        icon-name={card.warningIcon}
+                                                        size="x-small"
+                                                        variant="warning"
+                                                    ></lightning-icon>
+                                                </span>
+                                            </div>
+                                        </article>
+                                    </div>
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+                </div>
+            </template>
+        </template>
+    </div>
+</template>
