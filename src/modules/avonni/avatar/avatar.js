@@ -120,7 +120,6 @@ export default class Avatar extends LightningElement {
                 break;
         }
 
-        // TODO: Change the status icon size depending on the avatar size
         this.statusComputed = {
             class: classes,
             iconName: iconName,
@@ -164,8 +163,7 @@ export default class Avatar extends LightningElement {
     }
 
     _computePresenceClasses() {
-        const presence = this.presence;
-        const presencePosition = this.presencePosition;
+        const { presence, presencePosition } = this;
 
         this.presenceClass = classSet('avonni-avatar__presence')
             .add({
@@ -206,9 +204,13 @@ export default class Avatar extends LightningElement {
 
     // Update wrapper div class list
     updateClassList() {
-        const size = this._size;
-        const variant = this._variant;
-        const avatarClasses = classSet('slds-avatar')
+        const size = this.size;
+        const variant = this.variant;
+        const wrapperClass = classSet('avonni-avatar slds-is-relative')
+            .add({
+                'avonni-avatar_square': variant === 'square',
+                'avonni-avatar_circle': variant === 'circle'
+            })
             .add({
                 'avonni-avatar_xx-small': size === 'xx-small',
                 'slds-avatar_x-small': size === 'x-small',
@@ -217,17 +219,13 @@ export default class Avatar extends LightningElement {
                 'slds-avatar_large': size === 'large',
                 'avonni-avatar_x-large': size === 'x-large',
                 'avonni-avatar_xx-large': size === 'xx-large'
-            })
-            .add({
-                'slds-avatar_circle': variant === 'circle'
             });
 
-        const wrapperClass = classSet('avonni-avatar slds-is-relative').add({
-            'avonni-avatar_square': variant === 'square',
-            'avonni-avatar_circle': variant === 'circle'
+        const avatarClass = classSet('slds-avatar').add({
+            'slds-avatar_circle': variant === 'circle'
         });
 
-        this.avatarClass = avatarClasses;
+        this.avatarClass = avatarClass;
         this.wrapperClass = wrapperClass;
     }
 

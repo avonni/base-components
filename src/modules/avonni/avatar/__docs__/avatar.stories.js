@@ -73,7 +73,7 @@ export default {
         status: {
             control: {
                 type: 'select',
-                options: ['approved', 'locked', 'declined', 'unknown']
+                options: ['approved', 'locked', 'declined', 'unknown', '']
             }
         },
         statusPosition: {
@@ -116,5 +116,6 @@ Base.args = {
     src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
     fallbackIconName: 'standard:avatar',
     initials: 'JD',
-    presence: 'online'
+    status: 'locked',
+    variant: 'circle'
 };

@@ -1,20 +1,28 @@
 .avonni-avatar {
     display: inline-block;
+    line-height: 0;
 }
 
 /* Sizes */
-.avonni-avatar_xx-small,
-.avonni-avatar_xx-small .slds-icon {
+.avonni-avatar_xx-small .slds-avatar {
     font-size: 0.6rem;
     height: 0.875rem;
     width: 0.875rem;
 }
-.avonni-avatar_x-large {
+.slds-avatar_x-small .slds-avatar,
+.slds-avatar_small .slds-avatar,
+.slds-avatar_medium .slds-avatar,
+.slds-avatar_large .slds-avatar {
+    width: inherit;
+    height: inherit;
+    font-size: inherit;
+}
+.avonni-avatar_x-large .slds-avatar {
     font-size: 1.25rem;
     width: 56px;
     height: 56px;
 }
-.avonni-avatar_xx-large {
+.avonni-avatar_xx-large .slds-avatar {
     font-size: 1.5rem;
     width: 72px;
     height: 72px;
@@ -28,10 +36,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 20px;
-    height: 20px;
     font-size: 0.6rem;
-    border: 2px solid #f3f2f2;
+    padding: 1px;
+    border: 1px solid #f3f2f2;
 }
 
 .avonni-avatar__status_approved {
@@ -49,6 +56,35 @@
 
 .avonni-avatar__status_unknown {
     background-color: #706e6b;
+}
+
+.avonni-avatar_xx-small .avonni-avatar__status {
+    width: 8px;
+    height: 8px;
+}
+.slds-avatar_x-small .avonni-avatar__status {
+    width: 10px;
+    height: 10px;
+}
+.slds-avatar_small .avonni-avatar__status {
+    width: 10px;
+    height: 10px;
+}
+.slds-avatar_medium .avonni-avatar__status {
+    width: 12px;
+    height: 12px;
+}
+.slds-avatar_large .avonni-avatar__status {
+    width: 16px;
+    height: 16px;
+}
+.avonni-avatar_x-large .avonni-avatar__status {
+    width: 18px;
+    height: 18px;
+}
+.avonni-avatar_xx-large .avonni-avatar__status {
+    width: 20px;
+    height: 20px;
 }
 
 /* Presence */
@@ -69,20 +105,24 @@
     height: 8px;
 }
 .slds-avatar_medium .avonni-avatar__presence {
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
+    margin: 1px;
 }
 .slds-avatar_large .avonni-avatar__presence {
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 12px;
+    margin: 2px;
 }
 .avonni-avatar_x-large .avonni-avatar__presence {
-    width: 18px;
-    height: 18px;
+    width: 14px;
+    height: 14px;
+    margin: 2px;
 }
 .avonni-avatar_xx-large .avonni-avatar__presence {
-    width: 20px;
-    height: 20px;
+    width: 14px;
+    height: 14px;
+    margin: 3px;
 }
 .avonni-avatar__presence_online {
     background-color: #04844b;

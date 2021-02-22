@@ -1,6 +1,7 @@
 <template>
     <div class={wrapperClass}>
         <div class={avatarClass}>
+            <!-- Image -->
             <img
                 if:true={src}
                 src={src}
@@ -8,12 +9,14 @@
                 alt={alternativeText}
                 title={alternativeText}
             />
+            <!-- Initials -->
             <abbr
                 if:true={showInitials}
                 class={computedInitialsClass}
                 title={alternativeText}
                 >{initials}</abbr
             >
+            <!-- Fallback icon -->
             <lightning-icon
                 size={size}
                 if:true={showIcon}
@@ -21,24 +24,24 @@
                 alternative-text={alternativeText}
                 title={alternativeText}
             ></lightning-icon>
-            <!-- Presence bubble -->
-            <div
-                if:true={presence}
-                class={presenceClass}
-                title={presenceTitle}
-                ria-label={presenceTitle}
-            ></div>
         </div>
 
-        <!-- Status icon -->
+        <!-- Presence -->
+        <div
+            if:true={presence}
+            class={presenceClass}
+            title={presenceTitle}
+            aria-label={presenceTitle}
+        ></div>
+
+        <!-- Status -->
         <template if:true={statusComputed}>
-            <lightning-icon
+            <avonni-primitive-icon
                 class={statusComputed.class}
-                size={statusComputed.iconSize}
                 icon-name={statusComputed.iconName}
-                alternative-text={statusComputed.title}
                 title={statusComputed.title}
-            ></lightning-icon>
+            ></avonni-primitive-icon>
+            <span class="slds-assistive-text">{statusComputed.title}</span>
         </template>
     </div>
 </template>
