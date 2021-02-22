@@ -37,7 +37,6 @@ const PRESENCE = {
 };
 
 export default class Avatar extends LightningElement {
-    @api entityIconName;
     @api entityInitials;
     @api fallbackIconName;
     @api initials;
@@ -47,11 +46,14 @@ export default class Avatar extends LightningElement {
 
     avatarClass;
     entityClass;
+    _entityIconCategory;
+    _entityIconName;
     presenceClass;
     statusComputed;
     wrapperClass;
 
     _alternativeText = 'Avatar';
+    _entityIconFullName;
     _entityPosition = POSITION.entityDefault;
     _entitySrc;
     _entityTitle = 'Entity';
@@ -324,6 +326,18 @@ export default class Avatar extends LightningElement {
      */
 
     @api
+    get entityIconName() {
+        return this._entityIconFullName;
+    }
+    set entityIconName(value) {
+        this._entityIconFullName = value;
+        if (value) {
+            this._entityIconCategory = value.split(':')[0];
+            this._entityIconName = value.split(':')[1];
+        }
+    }
+
+    @api
     get entityPosition() {
         return this._entityPosition;
     }
@@ -372,13 +386,15 @@ export default class Avatar extends LightningElement {
     }
 
     _computeEntityClasses() {
-        const { entityVariant, entityPosition } = this;
-        const iconFullName = this.entityIconName.split(':');
-        const iconCategory = iconFullName[0];
-        const iconName = iconFullName[1];
+        const {
+            entityVariant,
+            entityPosition,
+            _entityIconCategory,
+            _entityIconName
+        } = this;
 
         this.entityClass = classSet(
-            `slds-avatar slds-current-color avonni-avatar__entity slds-icon-${iconCategory}-${iconName}`
+            `slds-avatar slds-current-color avonni-avatar__entity slds-icon-${_entityIconCategory}-${_entityIconName}`
         )
             .add({
                 'avonni-avatar_top-right': entityPosition === 'top-right',
