@@ -72,7 +72,11 @@ export default class ProgressBar extends LightningElement {
                 cloneBadge.bodyClass =
                     'slds-theme_error avonni-progress-bar-badges';
             }
-            if (cloneBadge.value) {
+            if (cloneBadge.value <= 0) {
+                cloneBadge.value = 'width: 0%';
+            } else if (cloneBadge.value >= 100) {
+                cloneBadge.value = 'width: 100%';
+            } else if (cloneBadge.value) {
                 cloneBadge.value = `width: ${cloneBadge.value}%`;
             }
             console.log(cloneBadge.value);
