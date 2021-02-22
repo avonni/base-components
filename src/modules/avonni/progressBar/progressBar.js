@@ -28,8 +28,8 @@ const validOrientations = ['horizontal', 'vertical'];
 export default class ProgressBar extends LightningElement {
     @api label;
     @api valueLabel;
-    @api badges = {};
 
+    _badges = [];
     _size = 'medium';
     _value = 0;
     _showValue = false;
@@ -39,6 +39,46 @@ export default class ProgressBar extends LightningElement {
     _textured = false;
     _thickness = 'medium';
     _orientation = 'horizontal';
+
+    connectedCallback() {
+        console.log(this._badges.length);
+    }
+
+    @api
+    get badges() {
+        return this._badges;
+    }
+
+    set badges(value) {
+        let result = [];
+
+        value.forEach((badge, index) => {
+            let cloneBadge = Object.assign({}, badge);
+            cloneBadge.key = `badge-key-${index}`;
+            result.push(cloneBadge);
+            if (cloneBadge.variant === 'success') {
+                cloneBadge.bodyClass =
+                    'slds-theme_success avonni-progress-bar-badges';
+            } else if (cloneBadge.variant === 'darker') {
+                cloneBadge.bodyClass =
+                    'slds-badge_inverse avonni-progress-bar-badges';
+            } else if (cloneBadge.variant === 'lightest') {
+                cloneBadge.bodyClass =
+                    'slds-badge_lightest avonni-progress-bar-badges-border_none avonni-progress-bar-badges';
+            } else if (cloneBadge.variant === 'warning') {
+                cloneBadge.bodyClass =
+                    'slds-theme_warning avonni-progress-bar-badges';
+            } else if (cloneBadge.variant === 'error') {
+                cloneBadge.bodyClass =
+                    'slds-theme_error avonni-progress-bar-badges';
+            }
+            if (cloneBadge.value) {
+                cloneBadge.value = `width: ${cloneBadge.value}%`;
+            }
+            console.log(cloneBadge.value);
+        });
+        this._badges = result;
+    }
 
     @api
     get size() {
@@ -253,14 +293,18 @@ export default class ProgressBar extends LightningElement {
     get badgeVariant() {
         return classSet('slds-badge avonni-progress-bar-badges')
             .add({
-                'slds-theme_success': this.badges.variant === 'success',
-                'slds-badge_inverse': this.badges.variant === 'darker',
+                'slds-theme_success': this._badges.variant === 'success',
+                'slds-badge_inverse': this._badges.variant === 'darker',
                 'slds-badge_lightest avonni-progress-bar-badges-border_none':
-                    this.badges.variant === 'lightest',
-                'slds-theme_warning': this.badges.variant === 'warning',
-                'slds-theme_error': this.badges.variant === 'error'
+                    this._badges.variant === 'lightest',
+                'slds-theme_warning': this._badges.variant === 'warning',
+                'slds-theme_error': this._badges.variant === 'error'
             })
             .toString();
+    }
+
+    get badgesPresence() {
+        return this._badges.length !== 0;
     }
 
     get badgeMarkerHorizontal() {

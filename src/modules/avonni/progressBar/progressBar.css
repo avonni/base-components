@@ -35,8 +35,8 @@
 }
 
 .avonni-progress-bar-badges {
-    border-radius: 0.35rem;
-    font-size: 0.55rem;
+    border-radius: var(--sds-c-badge-radius-border, 0.35rem);
+    font-size: var(--sds-c-badge-font-size, 0.55rem);
     padding: 0.1rem 0.4rem;
 }
 

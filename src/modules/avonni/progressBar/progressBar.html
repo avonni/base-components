@@ -63,17 +63,23 @@
                             </span>
                         </lightning-layout-item>
                     </lightning-layout>
-                    <div
-                        class="avonni-progress-bar-marker"
-                        style={badgeMarkerHorizontal}
+                    <template
+                        if:true={badgesPresence}
+                        for:each={badges}
+                        for:item="badge"
                     >
-                        <div>
+                        <div
+                            key={badge.key}
+                            class="avonni-progress-bar-marker"
+                            style={badge.value}
+                        >
                             <lightning-badge
-                                label={badges.label}
-                                class={badgeVariant}
+                                style={badge.value}
+                                label={badge.label}
+                                class={badge.bodyClass}
                             ></lightning-badge>
                         </div>
-                    </div>
+                    </template>
                 </div>
             </lightning-layout-item>
             <lightning-layout-item

@@ -144,11 +144,13 @@ export default {
     }
 };
 
-const badges = {
-    label: 'Avg',
-    value: 90,
-    variant: 'darker'
-};
+const badges = [
+    {
+        label: 'Avg',
+        value: 90,
+        variant: 'darker'
+    }
+];
 
 const Template = (args) => ProgressBar(args);
 
