@@ -6,7 +6,9 @@
     border-width: var(--avonni-c-avatar-sizing-border, 0);
 }
 
-/* Sizes */
+/**
+* Size
+*/
 .avonni-avatar_xx-small .slds-avatar {
     font-size: 0.6rem;
     height: 0.875rem;
@@ -30,8 +32,18 @@
     width: 72px;
     height: 72px;
 }
+/* Makes the icon container size grow with the avatar */
+.avonni-avatar__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
 
-/* Positionning */
+/**
+* Positionning
+*/
 .avonni-avatar_square .avonni-avatar_top-right {
     top: 2px;
     right: 2px;
@@ -66,7 +78,9 @@
     left: 0;
 }
 
-/* Status */
+/**
+* Status
+*/
 .avonni-avatar__status {
     color: var(--lwc-colorTextInverse, #fff);
     position: absolute;
@@ -114,17 +128,22 @@
 .slds-avatar_large .avonni-avatar__status {
     width: 16px;
     height: 16px;
+    padding: 2px;
 }
 .avonni-avatar_x-large .avonni-avatar__status {
     width: 18px;
     height: 18px;
+    padding: 3px;
 }
 .avonni-avatar_xx-large .avonni-avatar__status {
     width: 20px;
     height: 20px;
+    padding: 3px;
 }
 
-/* Presence */
+/**
+* Presence
+*/
 .avonni-avatar__presence {
     position: absolute;
     border-radius: var(--lwc-borderRadiusCircle, 50%);
@@ -180,7 +199,9 @@
     background-color: #ff9a3c;
 }
 
-/* Entity */
+/**
+* Entity
+*/
 .avonni-avatar__entity {
     position: absolute;
     display: flex;
@@ -188,8 +209,8 @@
     justify-content: center;
     color: var(--lwc-colorTextInverse, #fff);
 }
+/* Makes the icon size change with its container's */
 .avonni-avatar__entity-icon {
-    /* So the icon size changes with its container's */
     display: flex;
     width: inherit;
 }

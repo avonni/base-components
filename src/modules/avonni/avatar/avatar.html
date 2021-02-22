@@ -19,6 +19,7 @@
             >
             <!-- Fallback icon -->
             <lightning-icon
+                class="avonni-avatar__icon"
                 size={size}
                 if:true={showIcon}
                 icon-name={fallbackIconName}
@@ -36,7 +37,7 @@
         ></div>
 
         <!-- Status -->
-        <template if:true={statusComputed}>
+        <template if:true={status}>
             <avonni-primitive-icon
                 class={statusComputed.class}
                 icon-name={statusComputed.iconName}
