@@ -1,5 +1,6 @@
 <template>
     <div class={wrapperClass}>
+        <!-- Main avatar -->
         <div class={avatarClass}>
             <!-- Image -->
             <img
@@ -43,5 +44,33 @@
             ></avonni-primitive-icon>
             <span class="slds-assistive-text">{statusComputed.title}</span>
         </template>
+
+        <!-- Entity -->
+        <div if:true={showEntity} class={entityClass}>
+            <!-- Image -->
+            <img
+                if:true={entitySrc}
+                src={entitySrc}
+                onerror={handleImageError}
+                alt={entityTitle}
+                title={entityTitle}
+            />
+            <!-- Initials -->
+            <abbr
+                if:true={entityInitials}
+                class={computedEntityInitialsClass}
+                title={entityTitle}
+                >{entityInitials}</abbr
+            >
+            <!-- Fallback icon -->
+            <template if:true={showEntityIcon}>
+                <avonni-primitive-icon
+                    class="avonni-avatar__entity-icon"
+                    icon-name={entityIconName}
+                    title={entityTitle}
+                ></avonni-primitive-icon>
+                <span class="slds-assistive-text">{entityTitle}</span>
+            </template>
+        </div>
     </div>
 </template>

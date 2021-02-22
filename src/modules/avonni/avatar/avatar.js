@@ -26,7 +26,8 @@ const STATUS = {
 const POSITION = {
     valid: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
     presenceDefault: 'bottom-right',
-    statusDefault: 'top-right'
+    statusDefault: 'top-right',
+    entityDefault: 'top-left'
 };
 const PRESENCE = {
     valid: ['online', 'busy', 'focus', 'offline', 'blocked', 'away'],
@@ -34,24 +35,30 @@ const PRESENCE = {
 };
 
 export default class Avatar extends LightningElement {
-    avatarClass;
-
-    @api alternativeText = '';
+    @api entityIconName;
+    @api entityInitials;
     @api fallbackIconName;
     @api initials;
-    @api presenceTitle;
-    @api statusTitle;
 
+    avatarClass;
+    entityClass;
     presenceClass;
     statusComputed;
     wrapperClass;
 
+    _alternativeText = 'Avatar';
+    _entityPosition = POSITION.entityDefault;
+    _entitySrc;
+    _entityTitle = 'Entity';
+    _entityVariant = VARIANT.default;
     _presence = PRESENCE.default;
     _presencePosition = POSITION.presenceDefault;
+    _presenceTitle = 'Presence';
     _size = SIZE.default;
     _src = '';
     _status = STATUS.default;
     _statusPosition = POSITION.statusDefault;
+    _statusTitle = 'Status';
     _variant = VARIANT.default;
 
     // TODO:
@@ -87,21 +94,28 @@ export default class Avatar extends LightningElement {
         });
     }
 
+    @api
+    get statusTitle() {
+        return this._statusTitle;
+    }
+    set statusTitle(value) {
+        this._statusTitle = value;
+    }
+
     _computeStatus() {
+        const { status, statusPosition } = this;
         const classes = classSet('avonni-avatar__status slds-current-color')
             .add({
-                'avonni-avatar__status_approved': this.status === 'approved',
-                'avonni-avatar__status_locked': this.status === 'locked',
-                'avonni-avatar__status_declined': this.status === 'declined',
-                'avonni-avatar__status_unknown': this.status === 'unknown'
+                'avonni-avatar__status_approved': status === 'approved',
+                'avonni-avatar__status_locked': status === 'locked',
+                'avonni-avatar__status_declined': status === 'declined',
+                'avonni-avatar__status_unknown': status === 'unknown'
             })
             .add({
-                'avonni-avatar_top-right': this.statusPosition === 'top-right',
-                'avonni-avatar_top-left': this.statusPosition === 'top-left',
-                'avonni-avatar_bottom-left':
-                    this.statusPosition === 'bottom-left',
-                'avonni-avatar_bottom-right':
-                    this.statusPosition === 'bottom-right'
+                'avonni-avatar_top-right': statusPosition === 'top-right',
+                'avonni-avatar_top-left': statusPosition === 'top-left',
+                'avonni-avatar_bottom-left': statusPosition === 'bottom-left',
+                'avonni-avatar_bottom-right': statusPosition === 'bottom-right'
             });
 
         let iconName;
@@ -162,6 +176,14 @@ export default class Avatar extends LightningElement {
         });
     }
 
+    @api
+    get presenceTitle() {
+        return this._presenceTitle;
+    }
+    set presenceTitle(value) {
+        this._presenceTitle = value;
+    }
+
     _computePresenceClasses() {
         const { presence, presencePosition } = this;
 
@@ -183,6 +205,83 @@ export default class Avatar extends LightningElement {
             });
     }
 
+    // Entity section ----
+    _computeEntityClasses() {
+        const { entityVariant, entityPosition } = this;
+        const iconFullName = this.entityIconName.split(':');
+        const iconCategory = iconFullName[0];
+        const iconName = iconFullName[1];
+
+        this.entityClass = classSet(
+            `slds-avatar slds-current-color avonni-avatar__entity slds-icon-${iconCategory}-${iconName}`
+        )
+            .add({
+                'avonni-avatar_top-right': entityPosition === 'top-right',
+                'avonni-avatar_top-left': entityPosition === 'top-left',
+                'avonni-avatar_bottom-left': entityPosition === 'bottom-left',
+                'avonni-avatar_bottom-right': entityPosition === 'bottom-right'
+            })
+            .add({
+                'slds-avatar_circle': entityVariant === 'circle'
+            });
+    }
+
+    get computedEntityInitialsClass() {
+        return classSet('slds-avatar__initials')
+            .add(computeSldsClass(this.entityIconName))
+            .toString();
+    }
+
+    @api
+    get entityPosition() {
+        return this._entityPosition;
+    }
+    set entityPosition(value) {
+        this._entityPosition = normalizeString(value, {
+            fallbackValue: POSITION.entityDefault,
+            validValues: POSITION.valid
+        });
+        console.log(this._entityPosition);
+    }
+
+    @api
+    get entitySrc() {
+        return this._entitySrc;
+    }
+    set entitySrc(value) {
+        this._entitySrc = (typeof value === 'string' && value.trim()) || '';
+    }
+
+    @api
+    get entityTitle() {
+        return this._entityTitle;
+    }
+    set entityTitle(value) {
+        this._entityTitle = value;
+    }
+
+    @api
+    get entityVariant() {
+        return this._entityVariant;
+    }
+    set entityVariant(value) {
+        this._entityVariant = normalizeString(value, {
+            fallbackValue: VARIANT.default,
+            validValues: VARIANT.valid
+        });
+        this.updateClassList();
+    }
+
+    get showEntityIcon() {
+        return !this.entitySrc && !this.entityInitials;
+    }
+
+    get showEntity() {
+        return this.entitySrc || this.entityInitials || this.entityIconName;
+    }
+
+    // ---- end of entity section
+
     @api
     get variant() {
         return this._variant;
@@ -200,6 +299,7 @@ export default class Avatar extends LightningElement {
         /*eslint no-unused-expressions: ["error", { "allowShortCircuit": true }]*/
         this.status && this._computeStatus();
         this.presence && this._computePresenceClasses();
+        this.showEntity && this._computeEntityClasses();
     }
 
     // Update wrapper div class list
@@ -227,6 +327,14 @@ export default class Avatar extends LightningElement {
 
         this.avatarClass = avatarClass;
         this.wrapperClass = wrapperClass;
+    }
+
+    @api
+    get alternativeText() {
+        return this._alternativeText;
+    }
+    set alternativeText(value) {
+        this._alternativeText = value;
     }
 
     get computedInitialsClass() {

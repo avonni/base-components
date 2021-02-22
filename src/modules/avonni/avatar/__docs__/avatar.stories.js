@@ -8,6 +8,51 @@ export default {
                 type: 'text'
             }
         },
+        entityIconName: {
+            control: {
+                type: 'text'
+            }
+        },
+        entityInitials: {
+            control: {
+                type: 'text'
+            }
+        },
+        entityPosition: {
+            control: {
+                type: 'select',
+                options: [
+                    'top-left',
+                    'top-right',
+                    'bottom-left',
+                    'bottom-right'
+                ]
+            },
+            defaultValue: 'top-left',
+            table: {
+                defaultValue: { summary: 'top-left' }
+            }
+        },
+        entitySrc: {
+            control: {
+                type: 'text'
+            }
+        },
+        entityTitle: {
+            control: {
+                type: 'text'
+            }
+        },
+        entityVariant: {
+            control: {
+                type: 'select',
+                options: ['circle', 'square']
+            },
+            defaultValue: 'square',
+            table: {
+                defaultValue: { summary: 'square' }
+            }
+        },
         fallbackIconName: {
             control: {
                 type: 'text'
@@ -116,6 +161,6 @@ Base.args = {
     src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
     fallbackIconName: 'standard:avatar',
     initials: 'JD',
-    status: 'locked',
-    variant: 'circle'
+    entityIconName: 'standard:account',
+    status: 'approved'
 };

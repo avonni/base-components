@@ -4,6 +4,12 @@ customElements.define('ac-avonni-avatar', Component.CustomElementConstructor);
 
 export const Avatar = ({
     alternativeText,
+    entityIconName,
+    entityInitials,
+    entityPosition,
+    entitySrc,
+    entityTitle,
+    entityVariant,
     fallbackIconName,
     initials,
     presence,
@@ -18,6 +24,12 @@ export const Avatar = ({
 }) => {
     const element = document.createElement('ac-avonni-avatar');
     element.alternativeText = alternativeText;
+    element.entityIconName = entityIconName;
+    element.entityInitials = entityInitials;
+    element.entityPosition = entityPosition;
+    element.entitySrc = entitySrc;
+    element.entityTitle = entityTitle;
+    element.entityVariant = entityVariant;
     element.fallbackIconName = fallbackIconName;
     element.initials = initials;
     element.presence = presence;

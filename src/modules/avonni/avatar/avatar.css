@@ -28,6 +28,41 @@
     height: 72px;
 }
 
+/* Positionning */
+.avonni-avatar_square .avonni-avatar_top-right {
+    top: 2px;
+    right: 2px;
+}
+.avonni-avatar_square .avonni-avatar_top-left {
+    top: 2px;
+    left: 2px;
+}
+.avonni-avatar_square .avonni-avatar_bottom-right {
+    bottom: 2px;
+    right: 2px;
+}
+.avonni-avatar_square .avonni-avatar_bottom-left {
+    bottom: 2px;
+    left: 2px;
+}
+
+.avonni-avatar_circle .avonni-avatar_top-right {
+    top: 0;
+    right: 0;
+}
+.avonni-avatar_circle .avonni-avatar_top-left {
+    top: 0;
+    left: 0;
+}
+.avonni-avatar_circle .avonni-avatar_bottom-right {
+    bottom: 0;
+    right: 0;
+}
+.avonni-avatar_circle .avonni-avatar_bottom-left {
+    bottom: 0;
+    left: 0;
+}
+
 /* Status */
 .avonni-avatar__status {
     color: var(--lwc-colorTextInverse, #fff);
@@ -36,7 +71,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.6rem;
     padding: 1px;
     border: 1px solid #f3f2f2;
 }
@@ -143,36 +177,52 @@
     background-color: #ff9a3c;
 }
 
-/* Positionning */
-.avonni-avatar_square .avonni-avatar_top-right {
-    top: 2px;
-    right: 2px;
+/* Entity */
+.avonni-avatar__entity {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--lwc-colorTextInverse, #fff);
 }
-.avonni-avatar_square .avonni-avatar_top-left {
-    top: 2px;
-    left: 2px;
+.avonni-avatar__entity-icon {
+    /* So the icon size changes with its container's */
+    display: flex;
+    width: inherit;
 }
-.avonni-avatar_square .avonni-avatar_bottom-right {
-    bottom: 2px;
-    right: 2px;
+
+.avonni-avatar_xx-small .avonni-avatar__entity {
+    width: 8px;
+    height: 8px;
+    font-size: 0.1rem;
 }
-.avonni-avatar_square .avonni-avatar_bottom-left {
-    bottom: 2px;
-    left: 2px;
+.slds-avatar_x-small .avonni-avatar__entity {
+    width: 10px;
+    height: 10px;
+    font-size: 0.1rem;
 }
-.avonni-avatar_circle .avonni-avatar_top-right {
-    top: 0;
-    right: 0;
+.slds-avatar_small .avonni-avatar__entity {
+    width: 10px;
+    height: 10px;
+    font-size: 0.1rem;
 }
-.avonni-avatar_circle .avonni-avatar_top-left {
-    top: 0;
-    left: 0;
+.slds-avatar_medium .avonni-avatar__entity {
+    width: 12px;
+    height: 12px;
+    font-size: 0.1rem;
 }
-.avonni-avatar_circle .avonni-avatar_bottom-right {
-    bottom: 0;
-    right: 0;
+.slds-avatar_large .avonni-avatar__entity {
+    width: 16px;
+    height: 16px;
+    font-size: 0.6rem;
 }
-.avonni-avatar_circle .avonni-avatar_bottom-left {
-    bottom: 0;
-    left: 0;
+.avonni-avatar_x-large .avonni-avatar__entity {
+    width: 18px;
+    height: 18px;
+    font-size: 0.6rem;
+}
+.avonni-avatar_xx-large .avonni-avatar__entity {
+    width: 20px;
+    height: 20px;
+    font-size: 0.6rem;
 }
