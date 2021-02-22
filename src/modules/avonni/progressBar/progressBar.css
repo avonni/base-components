@@ -1,21 +1,21 @@
-.avonni-progress-bar-size_x-small {
-    max-width: var(--lwc-sizeXSmall, 4rem);
+.avonni-progress-bar-horizontal-size_x-small {
+    width: var(--lwc-sizeXSmall, 12rem);
 }
 
-.avonni-progress-bar-size_small {
-    max-width: var(--lwc-sizeSmall, 15rem);
+.avonni-progress-bar-horizontal-size_small {
+    width: var(--lwc-sizeXSmall, 15rem);
 }
 
-.avonni-progress-bar-size_medium {
-    min-width: var(--lwc-sizeMedium, 20rem);
-    max-width: var(--lwc-sizeLarge, 25rem);
+.avonni-progress-bar-horizontal-size_medium {
+    width: var(--lwc-sizeMedium, 20rem);
 }
 
-.avonni-progress-bar-size_large {
-    min-width: var(--lwc-sizeLarge, 25rem);
+.avonni-progress-bar-horizontal-size_large {
+    width: var(--lwc-sizeLarge, 25rem);
 }
+
 .avonni-progress-bar-vertical-size_x-small {
-    height: var(--lwc-sizeXSmall, 4rem);
+    height: var(--lwc-sizeXSmall, 12rem);
 }
 
 .avonni-progress-bar-vertical-size_small {

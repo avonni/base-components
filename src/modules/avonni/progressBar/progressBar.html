@@ -1,5 +1,5 @@
 <template>
-    <div if:true={horizontal} class={sizing}>
+    <div if:true={horizontal} class={progressBarSizing}>
         <lightning-layout vertical-align="end">
             <lightning-layout-item
                 if:true={positionLeft}
@@ -38,9 +38,6 @@
                     role="progressbar"
                 >
                     <span class={computedInnerClass} style={progressBarValue}>
-                        <span if:true={positionCentered}>
-                            <strong>{value}% {valueLabel}</strong>
-                        </span>
                         <span class="slds-assistive-text">{value}%</span>
                     </span>
                     <lightning-layout
@@ -51,6 +48,7 @@
                             <span
                                 if:true={positionBottomRight}
                                 aria-hidden="true"
+                                style="position: absolute"
                             >
                                 <strong>{value}% {valueLabel}</strong>
                             </span>
@@ -59,7 +57,7 @@
                             <span
                                 if:true={positionBottomLeft}
                                 aria-hidden="true"
-                                style="position: absolute"
+                                style="position: absolute; right: 0"
                             >
                                 <strong>{value}% {valueLabel}</strong>
                             </span>
@@ -111,12 +109,8 @@
         <lightning-layout>
             <lightning-layout-item
                 size="12"
-                class={sizing}
-                style="
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                "
+                class={progressBarSizing}
+                style="display: flex; justify-content: center"
             >
                 <div
                     class={computedOuterClass}

@@ -9,8 +9,7 @@ const validValuePositions = [
     'top-right',
     'top-left',
     'bottom-right',
-    'bottom-left',
-    'centered'
+    'bottom-left'
 ];
 const validVariants = ['base', 'circular'];
 const validThemes = [
@@ -40,10 +39,6 @@ export default class ProgressBar extends LightningElement {
     _textured = false;
     _thickness = 'medium';
     _orientation = 'horizontal';
-
-    connectedCallback() {
-        console.log(this.badges.variant);
-    }
 
     @api
     get size() {
@@ -150,19 +145,19 @@ export default class ProgressBar extends LightningElement {
         });
     }
 
-    get sizing() {
+    get progressBarSizing() {
         return classSet('')
             .add({
-                'avonni-progress-bar-size_x-small':
+                'avonni-progress-bar-horizontal-size_x-small':
                     this._size === 'x-small' &&
                     this._orientation === 'horizontal',
-                'avonni-progress-bar-size_small':
+                'avonni-progress-bar-horizontal-size_small':
                     this._size === 'small' &&
                     this._orientation === 'horizontal',
-                'avonni-progress-bar-size_medium':
+                'avonni-progress-bar-horizontal-size_medium':
                     this._size === 'medium' &&
                     this._orientation === 'horizontal',
-                'avonni-progress-bar-size_large':
+                'avonni-progress-bar-horizontal-size_large':
                     this._size === 'large' &&
                     this._orientation === 'horizontal',
                 'avonni-progress-bar-vertical-size_x-small':
@@ -229,10 +224,6 @@ export default class ProgressBar extends LightningElement {
 
     get positionRight() {
         return this._valuePosition === 'right' && this._showValue;
-    }
-
-    get positionCentered() {
-        return this._valuePosition === 'centered' && this._showValue;
     }
 
     get positionTopRight() {

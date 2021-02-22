@@ -53,8 +53,7 @@ export default {
                     'top-right',
                     'top-left',
                     'bottom-right',
-                    'bottom-left',
-                    'centered'
+                    'bottom-left'
                 ]
             },
             defaultValue: 'top-right',
@@ -136,7 +135,7 @@ export default {
                 type: 'select',
                 options: ['horizontal', 'vertical']
             },
-            defaultValue: 'vertical',
+            defaultValue: 'horizontal',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'horizontal' }
