@@ -272,13 +272,23 @@ const Template = (args) => Avatar(args);
 
 export const Base = Template.bind({});
 Base.args = {
+    hideAvatarDetails: 'true',
+    src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+    fallbackIconName: 'standard:avatar',
+    initials: 'JD'
+};
+
+export const WithDetails = Template.bind({});
+WithDetails.args = {
     src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
     fallbackIconName: 'standard:avatar',
     initials: 'JD',
+    size: 'xx-large',
     entityIconName: 'standard:account',
+    entityInitials: 'SL',
     presence: 'online',
+    status: 'locked',
     primaryText: 'Jane Doe',
     secondaryText: 'VP, Human Resources',
-    tertiaryText: 'Approved',
-    size: 'medium'
+    tertiaryText: 'Approved'
 };
