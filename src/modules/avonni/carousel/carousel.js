@@ -56,6 +56,69 @@ export default class Carousel extends LightningElement {
         this._initialRender = false;
     }
 
+    @api
+    get assistiveText() {
+        return this._assistiveText;
+    }
+
+    set assistiveText(value) {
+        this._assistiveText = {
+            autoplayButton:
+                value.autoplayButton || this._assistiveText.autoplayButton,
+            nextPanel: value.nextPanel || this._assistiveText.nextPanel,
+            previousPanel:
+                value.previousPanel || this._assistiveText.previousPanel
+        };
+    }
+
+    @api
+    get items() {
+        return this._carouselItems;
+    }
+
+    set items(allItems) {
+        allItems.forEach((item) => {
+            this._carouselItems.push({
+                key: item.id,
+                heading: item.heading,
+                description: item.description,
+                buttonLabel: item.buttonLabel || null,
+                buttonIconName: item.buttonIconName,
+                buttonIconPosition: item.buttonIconPosition,
+                buttonVariant: item.buttonVariant,
+                buttonDisabled: item.buttonDisabled,
+                imageAssistiveText: item.imageAssistiveText || item.heading,
+                href: item.href,
+                src: item.src
+            });
+        });
+    }
+
+    @api
+    get itemsPerPanel() {
+        return this._itemsPerPanel;
+    }
+
+    set itemsPerPanel(number) {
+        this._itemsPerPanel = parseInt(number, 10);
+    }
+
+    // Sets the width of each item, depending on the number of items per panel
+    get carouselItemStyle() {
+        const flexBasis = 100 / this.itemsPerPanel;
+        return `flex-basis: ${flexBasis}%;`;
+    }
+
+    get previousPanelNavigationDisabled() {
+        return !this.isInfinite ? this.activeIndexPanel === 0 : null;
+    }
+
+    get nextPanelNavigationDisabled() {
+        return !this.isInfinite
+            ? this.activeIndexPanel === this.paginationItems.length - 1
+            : null;
+    }
+
     initializePaginationItems(numberOfPanels) {
         for (let i = 0; i < numberOfPanels; i++) {
             const isItemActive = i === this.activeIndexPanel;
@@ -132,69 +195,6 @@ export default class Carousel extends LightningElement {
         clearTimeout(this.autoScrollTimeOut);
         this.autoScrollOn = false;
         this.autoScrollIcon = 'utility:play';
-    }
-
-    @api
-    get assistiveText() {
-        return this._assistiveText;
-    }
-
-    set assistiveText(value) {
-        this._assistiveText = {
-            autoplayButton:
-                value.autoplayButton || this._assistiveText.autoplayButton,
-            nextPanel: value.nextPanel || this._assistiveText.nextPanel,
-            previousPanel:
-                value.previousPanel || this._assistiveText.previousPanel
-        };
-    }
-
-    @api
-    get items() {
-        return this._carouselItems;
-    }
-
-    set items(allItems) {
-        allItems.forEach((item) => {
-            this._carouselItems.push({
-                key: item.id,
-                heading: item.heading,
-                description: item.description,
-                buttonLabel: item.buttonLabel || null,
-                buttonIconName: item.buttonIconName,
-                buttonIconPosition: item.buttonIconPosition,
-                buttonVariant: item.buttonVariant,
-                buttonDisabled: item.buttonDisabled,
-                imageAssistiveText: item.imageAssistiveText || item.heading,
-                href: item.href,
-                src: item.src
-            });
-        });
-    }
-
-    @api
-    get itemsPerPanel() {
-        return this._itemsPerPanel;
-    }
-
-    set itemsPerPanel(number) {
-        this._itemsPerPanel = parseInt(number, 10);
-    }
-
-    // Sets the width of each item, depending on the number of items per panel
-    get carouselItemStyle() {
-        const flexBasis = 100 / this.itemsPerPanel;
-        return `flex-basis: ${flexBasis}%;`;
-    }
-
-    get previousPanelNavigationDisabled() {
-        return !this.isInfinite ? this.activeIndexPanel === 0 : null;
-    }
-
-    get nextPanelNavigationDisabled() {
-        return !this.isInfinite
-            ? this.activeIndexPanel === this.paginationItems.length - 1
-            : null;
     }
 
     handleItemClicked(event) {
