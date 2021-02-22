@@ -58,6 +58,15 @@ export default {
                 type: 'text'
             }
         },
+        hideAvatarDetails: {
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            table: {
+                defaultValue: { summary: 'false' }
+            }
+        },
         initials: {
             control: {
                 type: 'text'
@@ -95,6 +104,21 @@ export default {
             defaultValue: 'bottom-right',
             table: {
                 defaultValue: { summary: 'bottom-right' }
+            }
+        },
+        primaryText: {
+            control: {
+                type: 'text'
+            }
+        },
+        secondaryText: {
+            control: {
+                type: 'text'
+            }
+        },
+        tertiaryText: {
+            control: {
+                type: 'text'
             }
         },
         size: {
@@ -162,5 +186,8 @@ Base.args = {
     fallbackIconName: 'standard:avatar',
     initials: 'JD',
     entityIconName: 'standard:account',
-    status: 'approved'
+    status: 'approved',
+    primaryText: 'Jane Doe',
+    secondaryText: 'VP, Human Resources',
+    tertiaryText: 'Approved'
 };

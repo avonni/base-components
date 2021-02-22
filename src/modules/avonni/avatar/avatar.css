@@ -1,6 +1,9 @@
 .avonni-avatar {
     display: inline-block;
     line-height: 0;
+    border-style: solid;
+    border-color: var(--avonni-c-avatar-color-border, transparent);
+    border-width: var(--avonni-c-avatar-sizing-border, 0);
 }
 
 /* Sizes */

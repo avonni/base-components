@@ -11,10 +11,14 @@ export const Avatar = ({
     entityTitle,
     entityVariant,
     fallbackIconName,
+    hideAvatarDetails,
     initials,
     presence,
     presenceTitle,
     presencePosition,
+    primaryText,
+    secondaryText,
+    tertiaryText,
     size,
     src,
     status,
@@ -31,10 +35,14 @@ export const Avatar = ({
     element.entityTitle = entityTitle;
     element.entityVariant = entityVariant;
     element.fallbackIconName = fallbackIconName;
+    element.hideAvatarDetails = hideAvatarDetails;
     element.initials = initials;
     element.presence = presence;
     element.presenceTitle = presenceTitle;
     element.presencePosition = presencePosition;
+    element.primaryText = primaryText;
+    element.secondaryText = secondaryText;
+    element.tertiaryText = tertiaryText;
     element.size = size;
     element.src = src;
     element.status = status;

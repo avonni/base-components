@@ -1,7 +1,9 @@
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'avonni/utils';
-import { normalizeString } from 'avonni/utilsPrivate';
+import { normalizeString, normalizeBoolean } from 'avonni/utilsPrivate';
 import { computeSldsClass } from 'avonni/iconUtils';
+import avatar from './avatar.html';
+import avatarWithDetails from './avatarWithDetails.html';
 
 const SIZE = {
     valid: [
@@ -39,6 +41,9 @@ export default class Avatar extends LightningElement {
     @api entityInitials;
     @api fallbackIconName;
     @api initials;
+    @api primaryText;
+    @api secondaryText;
+    @api tertiaryText;
 
     avatarClass;
     entityClass;
@@ -51,6 +56,7 @@ export default class Avatar extends LightningElement {
     _entitySrc;
     _entityTitle = 'Entity';
     _entityVariant = VARIANT.default;
+    _hideAvatarDetails;
     _presence = PRESENCE.default;
     _presencePosition = POSITION.presenceDefault;
     _presenceTitle = 'Presence';
@@ -60,6 +66,21 @@ export default class Avatar extends LightningElement {
     _statusPosition = POSITION.statusDefault;
     _statusTitle = 'Status';
     _variant = VARIANT.default;
+
+    render() {
+        if (this.hideAvatarDetails) {
+            return avatar;
+        }
+        return avatarWithDetails;
+    }
+
+    @api
+    get hideAvatarDetails() {
+        return this._hideAvatarDetails || false;
+    }
+    set hideAvatarDetails(value) {
+        this._hideAvatarDetails = normalizeBoolean(value);
+    }
 
     // TODO:
     // Make the icon grow when x-large or xx-large
@@ -349,6 +370,10 @@ export default class Avatar extends LightningElement {
 
     get showIcon() {
         return !this._src && !this.initials;
+    }
+
+    get showTertiaryText() {
+        return this.size === 'x-large' || this.size === 'xx-large';
     }
 
     handleImageError(event) {
