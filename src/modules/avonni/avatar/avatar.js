@@ -126,7 +126,7 @@ export default class Avatar extends LightningElement {
         return this._alternativeText;
     }
     set alternativeText(value) {
-        this._alternativeText = value;
+        this._alternativeText = value || this._alternativeText;
     }
 
     get computedInitialsClass() {
@@ -208,7 +208,7 @@ export default class Avatar extends LightningElement {
         return this._statusTitle;
     }
     set statusTitle(value) {
-        this._statusTitle = value;
+        this._statusTitle = value || this._statusTitle;
         this._computeStatus();
     }
 
@@ -297,7 +297,7 @@ export default class Avatar extends LightningElement {
         return this._presenceTitle;
     }
     set presenceTitle(value) {
-        this._presenceTitle = value;
+        this._presenceTitle = value || this._presenceTitle;
     }
 
     _computePresenceClasses() {
@@ -362,7 +362,7 @@ export default class Avatar extends LightningElement {
         return this._entityTitle;
     }
     set entityTitle(value) {
-        this._entityTitle = value;
+        this._entityTitle = value || this._entityTitle;
     }
 
     @api
