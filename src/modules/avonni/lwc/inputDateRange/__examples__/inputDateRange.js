@@ -1,4 +1,4 @@
-import Component from 'c/inputDateRange';
+import Component from 'avonni/inputDateRange';
 
 customElements.define('ac-avonni-input-date-range', Component.CustomElementConstructor);
 

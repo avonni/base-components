@@ -1,4 +1,4 @@
-import Component from 'c/colorGradient';
+import Component from 'avonni/colorGradient';
 
 customElements.define('ac-avonni-color-gradient', Component.CustomElementConstructor);
 

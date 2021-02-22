@@ -1,4 +1,4 @@
-import Component from 'c/chartTreemap';
+import Component from 'avonni/chartTreemap';
 
 customElements.define('ac-avonni-chart-treemap', Component.CustomElementConstructor);
 

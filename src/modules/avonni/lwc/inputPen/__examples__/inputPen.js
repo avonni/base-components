@@ -1,4 +1,4 @@
-import Component from 'c/inputPen';
+import Component from 'avonni/inputPen';
 
 customElements.define('ac-avonni-input-pen', Component.CustomElementConstructor);
 

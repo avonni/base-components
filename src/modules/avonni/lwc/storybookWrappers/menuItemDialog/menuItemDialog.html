@@ -1,6 +1,6 @@
 <template>
-    <c-button-menu>
-        <c-menu-item-dialog
+    <avonni-button-menu>
+        <avonni-menu-item-dialog
             value={value}
             access-key={accessKey}
             draft-alternative-text={draftAlternativeText}
@@ -10,12 +10,12 @@
             tab-index={tabIndex}
             disabled={disabled}
             is-draft={isDraft}
-        ></c-menu-item-dialog>
-        <c-menu-item-dialog
+        ></avonni-menu-item-dialog>
+        <avonni-menu-item-dialog
             label="Menu Item Dialog Two"
             value="Dialog-2"
-        ></c-menu-item-dialog>
-        <c-dialog slot="dialogs" dialog-name="Dialog-1" title="Modal One">
+        ></avonni-menu-item-dialog>
+        <avonni-dialog slot="dialogs" dialog-name="Dialog-1" title="Modal One">
             <div>
                 Sit nulla est ex deserunt exercitation anim occaecat. Nostrud
                 ullamco deserunt aute id consequat veniam incididunt duis in
@@ -38,8 +38,8 @@
                     label="Save"
                 ></lightning-button>
             </div>
-        </c-dialog>
-        <c-dialog
+        </avonni-dialog>
+        <avonni-dialog
             slot="dialogs"
             dialog-name="Dialog-2"
             title="Modal Second"
@@ -66,6 +66,6 @@
                     label="Save"
                 ></lightning-button>
             </div>
-        </c-dialog>
-    </c-button-menu>
+        </avonni-dialog>
+    </avonni-button-menu>
 </template>

@@ -1,4 +1,4 @@
-import Component from 'c/checkboxGroup';
+import Component from 'avonni/checkboxGroup';
 
 customElements.define('ac-avonni-checkbox-group', Component.CustomElementConstructor);
 

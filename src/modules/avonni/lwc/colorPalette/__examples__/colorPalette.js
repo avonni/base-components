@@ -1,4 +1,4 @@
-import Component from 'c/colorPalette';
+import Component from 'avonni/colorPalette';
 
 customElements.define('ac-avonni-color-palette', Component.CustomElementConstructor);
 

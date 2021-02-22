@@ -1,5 +1,5 @@
 import { generateColors } from '../../utilsPrivate/colorUtils'
-import Component from 'c/progressCircle';
+import Component from 'avonni/progressCircle';
 
 customElements.define('ac-avonni-progress-circle', Component.CustomElementConstructor);
 

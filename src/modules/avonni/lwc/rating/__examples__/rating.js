@@ -1,4 +1,4 @@
-import Component from 'c/rating';
+import Component from 'avonni/rating';
 
 customElements.define('ac-avonni-rating', Component.CustomElementConstructor);
 

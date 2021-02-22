@@ -1,10 +1,235 @@
 {
     "modules": [
         {
-            "dir": "src/modules"
+            "npm": "lightning-base-components"
         },
         {
-            "npm": "lightning-base-components"
+            "name": "avonni/alert",
+            "path": "src/modules/avonni/lwc/alert/alert.js"
+        },
+        {
+            "name": "avonni/autoDataType",
+            "path": "src/modules/avonni/lwc/autoDataType/autoDataType.js"
+        },
+        {
+            "name": "avonni/avatarGroup",
+            "path": "src/modules/avonni/lwc/avatarGroup/avatarGroup.js"
+        },
+        {
+            "name": "avonni/badgeIcon",
+            "path": "src/modules/avonni/lwc/badgeIcon/badgeIcon.js"
+        },
+        {
+            "name": "avonni/blockquote",
+            "path": "src/modules/avonni/lwc/blockquote/blockquote.js"
+        },
+        {
+            "name": "avonni/buttonDialog",
+            "path": "src/modules/avonni/lwc/buttonDialog/buttonDialog.js"
+        },
+        {
+            "name": "avonni/buttonIconDialog",
+            "path": "src/modules/avonni/lwc/buttonIconDialog/buttonIconDialog.js"
+        },
+        {
+            "name": "avonni/buttonIconPopover",
+            "path": "src/modules/avonni/lwc/buttonIconPopover/buttonIconPopover.js"
+        },
+        {
+            "name": "avonni/buttonMenu",
+            "path": "src/modules/avonni/lwc/buttonMenu/buttonMenu.js"
+        },
+        {
+            "name": "avonni/buttonNavigation",
+            "path": "src/modules/avonni/lwc/buttonNavigation/buttonNavigation.js"
+        },
+        {
+            "name": "avonni/buttonPopover",
+            "path": "src/modules/avonni/lwc/buttonPopover/buttonPopover.js"
+        },
+        {
+            "name": "avonni/calendar",
+            "path": "src/modules/avonni/lwc/calendar/calendar.js"
+        },
+        {
+            "name": "avonni/carousel",
+            "path": "src/modules/avonni/lwc/carousel/carousel.js"
+        },
+        {
+            "name": "avonni/chartBar",
+            "path": "src/modules/avonni/lwc/chartBar/chartBar.js"
+        },
+        {
+            "name": "avonni/chartFunnel",
+            "path": "src/modules/avonni/lwc/chartFunnel/chartFunnel.js"
+        },
+        {
+            "name": "avonni/chartHeatmap",
+            "path": "src/modules/avonni/lwc/chartHeatmap/chartHeatmap.js"
+        },
+        {
+            "name": "avonni/chartLine",
+            "path": "src/modules/avonni/lwc/chartLine/chartLine.js"
+        },
+        {
+            "name": "avonni/chartPie",
+            "path": "src/modules/avonni/lwc/chartPie/chartPie.js"
+        },
+        {
+            "name": "avonni/chartTreemap",
+            "path": "src/modules/avonni/lwc/chartTreemap/chartTreemap.js"
+        },
+        {
+            "name": "avonni/checkboxGroup",
+            "path": "src/modules/avonni/lwc/checkboxGroup/checkboxGroup.js"
+        },
+        {
+            "name": "avonni/chip",
+            "path": "src/modules/avonni/lwc/chip/chip.js"
+        },
+        {
+            "name": "avonni/colorGradient",
+            "path": "src/modules/avonni/lwc/colorGradient/colorGradient.js"
+        },
+        {
+            "name": "avonni/colorPalette",
+            "path": "src/modules/avonni/lwc/colorPalette/colorPalette.js"
+        },
+        {
+            "name": "avonni/colorPicker",
+            "path": "src/modules/avonni/lwc/colorPicker/colorPicker.js"
+        },
+        {
+            "name": "avonni/confetti",
+            "path": "src/modules/avonni/lwc/confetti/confetti.js"
+        },
+        {
+            "name": "avonni/dialog",
+            "path": "src/modules/avonni/lwc/dialog/dialog.js"
+        },
+        {
+            "name": "avonni/dynamicMenu",
+            "path": "src/modules/avonni/lwc/dynamicMenu/dynamicMenu.js"
+        },
+        {
+            "name": "avonni/emojiPicker",
+            "path": "src/modules/avonni/lwc/emojiPicker/emojiPicker.js"
+        },
+        {
+            "name": "avonni/expandableSection",
+            "path": "src/modules/avonni/lwc/expandableSection/expandableSection.js"
+        },
+        {
+            "name": "avonni/image",
+            "path": "src/modules/avonni/lwc/image/image.js"
+        },
+        {
+            "name": "avonni/inputCounter",
+            "path": "src/modules/avonni/lwc/inputCounter/inputCounter.js"
+        },
+        {
+            "name": "avonni/inputDateRange",
+            "path": "src/modules/avonni/lwc/inputDateRange/inputDateRange.js"
+        },
+        {
+            "name": "avonni/inputPen",
+            "path": "src/modules/avonni/lwc/inputPen/inputPen.js"
+        },
+        {
+            "name": "avonni/inputToggle",
+            "path": "src/modules/avonni/lwc/inputToggle/inputToggle.js"
+        },
+        {
+            "name": "avonni/kanban",
+            "path": "src/modules/avonni/lwc/kanban/kanban.js"
+        },
+        {
+            "name": "avonni/mediaObject",
+            "path": "src/modules/avonni/lwc/mediaObject/mediaObject.js"
+        },
+        {
+            "name": "avonni/menuItemDialog",
+            "path": "src/modules/avonni/lwc/menuItemDialog/menuItemDialog.js"
+        },
+        {
+            "name": "avonni/pagination",
+            "path": "src/modules/avonni/lwc/pagination/pagination.js"
+        },
+        {
+            "name": "avonni/profileCard",
+            "path": "src/modules/avonni/lwc/profileCard/profileCard.js"
+        },
+        {
+            "name": "avonni/progressCircle",
+            "path": "src/modules/avonni/lwc/progressCircle/progressCircle.js"
+        },
+        {
+            "name": "avonni/progressRing",
+            "path": "src/modules/avonni/lwc/progressRing/progressRing.js"
+        },
+        {
+            "name": "avonni/qrcode",
+            "path": "src/modules/avonni/lwc/qrcode/qrcode.js"
+        },
+        {
+            "name": "avonni/range",
+            "path": "src/modules/avonni/lwc/range/range.js"
+        },
+        {
+            "name": "avonni/rating",
+            "path": "src/modules/avonni/lwc/rating/rating.js"
+        },
+        {
+            "name": "avonni/scopedNotification",
+            "path": "src/modules/avonni/lwc/scopedNotification/scopedNotification.js"
+        },
+        {
+            "name": "avonni/segment",
+            "path": "src/modules/avonni/lwc/segment/segment.js"
+        },
+        {
+            "name": "avonni/segmentButton",
+            "path": "src/modules/avonni/lwc/segmentButton/segmentButton.js"
+        },
+        {
+            "name": "avonni/slide",
+            "path": "src/modules/avonni/lwc/slide/slide.js"
+        },
+        {
+            "name": "avonni/slides",
+            "path": "src/modules/avonni/lwc/slides/slides.js"
+        },
+        {
+            "name": "avonni/splitter",
+            "path": "src/modules/avonni/lwc/splitter/splitter.js"
+        },
+        {
+            "name": "avonni/splitterPane",
+            "path": "src/modules/avonni/lwc/splitterPane/splitterPane.js"
+        },
+        {
+            "name": "avonni/submenu",
+            "path": "src/modules/avonni/lwc/submenu/submenu.js"
+        },
+        {
+            "name": "avonni/summaryDetail",
+            "path": "src/modules/avonni/lwc/summaryDetail/summaryDetail.js"
+        },
+        {
+            "name": "avonni/timer",
+            "path": "src/modules/avonni/lwc/timer/timer.js"
+        },
+        {
+            "name": "avonni/verticalProgressIndicator",
+            "path": "src/modules/avonni/lwc/verticalProgressIndicator/verticalProgressIndicator.js"
+        },
+        {
+            "name": "avonni/verticalProgressStep",
+            "path": "src/modules/avonni/lwc/verticalProgressStep/verticalProgressStep.js"
+        },
+        {
+            "name": "avonni/visualPicker",
+            "path": "src/modules/avonni/lwc/visualPicker/visualPicker.js"
         }
     ]
 }

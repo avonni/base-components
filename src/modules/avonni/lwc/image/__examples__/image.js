@@ -1,4 +1,4 @@
-import Component from 'c/image';
+import Component from 'avonni/image';
 
 customElements.define('ac-avonni-image', Component.CustomElementConstructor);
 

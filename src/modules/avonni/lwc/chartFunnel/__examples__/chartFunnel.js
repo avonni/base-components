@@ -1,4 +1,4 @@
-import Component from 'c/chartFunnel';
+import Component from 'avonni/chartFunnel';
 
 customElements.define('ac-avonni-chart-funnel', Component.CustomElementConstructor);
 

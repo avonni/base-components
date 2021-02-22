@@ -1,4 +1,4 @@
-import Component from 'c/chartLine';
+import Component from 'avonni/chartLine';
 
 customElements.define('ac-avonni-chart-line', Component.CustomElementConstructor);
 

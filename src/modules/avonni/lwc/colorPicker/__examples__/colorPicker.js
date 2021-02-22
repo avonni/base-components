@@ -1,4 +1,4 @@
-import Component from 'c/colorPicker';
+import Component from 'avonni/colorPicker';
 
 customElements.define('ac-avonni-color-picker', Component.CustomElementConstructor);
 

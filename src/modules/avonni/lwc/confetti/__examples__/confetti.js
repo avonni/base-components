@@ -1,4 +1,4 @@
-import Component from 'c/confetti';
+import Component from 'avonni/confetti';
 
 customElements.define('ac-avonni-confetti', Component.CustomElementConstructor);
 

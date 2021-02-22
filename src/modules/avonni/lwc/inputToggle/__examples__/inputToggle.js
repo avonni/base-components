@@ -1,4 +1,4 @@
-import Component from 'c/inputToggle';
+import Component from 'avonni/inputToggle';
 
 customElements.define(
     'ac-avonni-input-toggle',

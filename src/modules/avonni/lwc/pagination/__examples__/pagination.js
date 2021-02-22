@@ -1,4 +1,4 @@
-import Component from 'c/pagination';
+import Component from 'avonni/pagination';
 
 customElements.define('ac-avonni-pagination', Component.CustomElementConstructor);
 

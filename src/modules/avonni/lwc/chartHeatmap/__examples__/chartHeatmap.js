@@ -1,4 +1,4 @@
-import Component from 'c/chartHeatmap';
+import Component from 'avonni/chartHeatmap';
 
 customElements.define('ac-avonni-chart-heatmap', Component.CustomElementConstructor);
 

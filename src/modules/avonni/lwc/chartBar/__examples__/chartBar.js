@@ -1,4 +1,4 @@
-import Component from 'c/chartBar';
+import Component from 'avonni/chartBar';
 
 customElements.define('ac-avonni-chart-bar', Component.CustomElementConstructor);
 

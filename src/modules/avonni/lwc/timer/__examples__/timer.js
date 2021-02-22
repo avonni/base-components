@@ -1,4 +1,4 @@
-import Component from 'c/timer';
+import Component from 'avonni/timer';
 
 customElements.define('ac-avonni-timer', Component.CustomElementConstructor);
 

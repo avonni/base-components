@@ -1,4 +1,4 @@
-import Component from 'c/kanban';
+import Component from 'avonni/kanban';
 
 customElements.define('ac-avonni-kanban', Component.CustomElementConstructor);
 

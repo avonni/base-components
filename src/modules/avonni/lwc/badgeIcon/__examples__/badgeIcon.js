@@ -1,4 +1,4 @@
-import Component from 'c/badgeIcon';
+import Component from 'avonni/badgeIcon';
 
 customElements.define('ac-avonni-badge-icon', Component.CustomElementConstructor);
 

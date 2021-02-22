@@ -1,4 +1,4 @@
-import Component from 'c/range';
+import Component from 'avonni/range';
 
 customElements.define('ac-avonni-range', Component.CustomElementConstructor);
 

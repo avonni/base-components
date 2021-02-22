@@ -8,12 +8,7 @@ module.exports = {
     addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
     webpackFinal: (config) => {
         config.plugins.push(
-            new LWCWebpackPlugin({
-                modules: [
-                    { dir: 'src/modules' },
-                    { npm: 'lightning-base-components' }
-                ]
-            })
+            new LWCWebpackPlugin({})
         );
 
         config.module.rules = config.module.rules.filter(

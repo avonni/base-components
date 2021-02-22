@@ -1,4 +1,4 @@
-import Component from 'c/chartPie';
+import Component from 'avonni/chartPie';
 
 customElements.define('ac-avonni-chart-pie', Component.CustomElementConstructor);
 

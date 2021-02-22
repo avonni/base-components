@@ -1,4 +1,4 @@
-import Component from 'c/visualPicker';
+import Component from 'avonni/visualPicker';
 
 customElements.define('ac-avonni-visual-picker', Component.CustomElementConstructor);
 
