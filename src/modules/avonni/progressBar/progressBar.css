@@ -43,10 +43,9 @@
 .avonni-progress-bar-marker {
     height: 10px;
     border-right: 3px #706e6b dashed;
-    position: relative;
-    margin-bottom: 20px;
-    bottom: 6px;
-    z-index: -1;
+    position: absolute;
+    /* margin-bottom: 20px;
+    bottom: 6px; */
 }
 
 .avonni-progress-bar-marker > div {
@@ -54,7 +53,6 @@
     bottom: -20px;
     right: 10px;
     transform: translateX(100%);
-    white-space: nowrap;
 }
 
 .avonni-progress-bar-marker-vertical {
