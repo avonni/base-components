@@ -148,7 +148,8 @@ const badges = [
     {
         label: 'Avg',
         value: 90,
-        variant: 'darker'
+        variant: 'darker',
+        border: 'dashed'
     }
 ];
 

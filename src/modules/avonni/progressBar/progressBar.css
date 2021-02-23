@@ -41,17 +41,16 @@
 }
 
 .avonni-progress-bar-marker {
-    height: 10px;
-    border-right: 3px #706e6b dashed;
+    height: 20px;
+    border-right: 2px #706e6b dashed;
     position: absolute;
-    /* margin-bottom: 20px;
-    bottom: 6px; */
+    bottom: -12px;
 }
 
 .avonni-progress-bar-marker > div {
     position: absolute;
     bottom: -20px;
-    right: 10px;
+    right: 12px;
     transform: translateX(100%);
 }
 
