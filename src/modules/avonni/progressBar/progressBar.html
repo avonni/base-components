@@ -24,8 +24,8 @@
                             <strong>{value}% {valueLabel}</strong>
                         </span>
                     </lightning-layout-item>
-                    <lightning-layout-item>
-                        <span if:true={positionTopRight} aria-hidden="true">
+                    <lightning-layout-item if:true={positionTopRight}>
+                        <span aria-hidden="true">
                             <strong>{value}% {valueLabel}</strong>
                         </span>
                     </lightning-layout-item>
@@ -44,18 +44,16 @@
                         horizontal-align="spread"
                         class="slds-p-top_x-small"
                     >
-                        <lightning-layout-item>
+                        <lightning-layout-item if:true={positionBottomRight}>
                             <span
-                                if:true={positionBottomRight}
                                 aria-hidden="true"
                                 style="position: absolute; z-index: 1"
                             >
                                 <strong>{value}% {valueLabel}</strong>
                             </span>
                         </lightning-layout-item>
-                        <lightning-layout-item>
+                        <lightning-layout-item if:true={positionBottomLeft}>
                             <span
-                                if:true={positionBottomLeft}
                                 aria-hidden="true"
                                 style="position: absolute; right: 0; z-index: 1"
                             >
@@ -63,7 +61,6 @@
                             </span>
                         </lightning-layout-item>
                     </lightning-layout>
-                    <!-- div -->
                     <template
                         if:true={badgesPresence}
                         for:each={badgesList}
@@ -77,7 +74,7 @@
                             <div>
                                 <lightning-badge
                                     label={badge.label}
-                                    class={badge.bodyClass}
+                                    class={badge.class}
                                 ></lightning-badge>
                             </div>
                         </div>
@@ -147,7 +144,7 @@
                             <div>
                                 <lightning-badge
                                     label={badge.label}
-                                    class={badge.bodyClass}
+                                    class={badge.class}
                                 ></lightning-badge>
                             </div>
                         </div>

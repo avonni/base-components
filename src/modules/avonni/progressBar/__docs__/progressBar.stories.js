@@ -149,7 +149,7 @@ const badges = [
         label: 'Avg',
         value: 90,
         variant: 'darker',
-        border: 'dashed'
+        borderType: 'dashed'
     }
 ];
 

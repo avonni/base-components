@@ -147,60 +147,60 @@ export default class ProgressBar extends LightningElement {
 
     get badgesList() {
         let result = [];
+        let borderHeight = '20px';
 
         this.badges.forEach((badge, index) => {
             let cloneBadge = Object.assign({}, badge);
             cloneBadge.key = `badge-key-${index}`;
-            result.push(cloneBadge);
+            cloneBadge.class = classSet('avonni-progress-bar-badges');
+
             if (cloneBadge.variant === 'success') {
-                cloneBadge.bodyClass =
-                    'slds-theme_success avonni-progress-bar-badges';
+                cloneBadge.class
+                    .add('slds-theme_success avonni-progress-bar-badges')
+                    .toString();
             } else if (cloneBadge.variant === 'darker') {
-                cloneBadge.bodyClass =
-                    'slds-badge_inverse avonni-progress-bar-badges';
+                cloneBadge.class.add('slds-badge_inverse').toString();
             } else if (cloneBadge.variant === 'lightest') {
-                cloneBadge.bodyClass =
-                    'slds-badge_lightest avonni-progress-bar-badges-border_none avonni-progress-bar-badges';
+                cloneBadge.class
+                    .add(
+                        'slds-badge_lightest avonni-progress-bar-badges-border_none'
+                    )
+                    .toString();
             } else if (cloneBadge.variant === 'warning') {
-                cloneBadge.bodyClass =
-                    'slds-theme_warning avonni-progress-bar-badges';
+                cloneBadge.class.add('slds-theme_warning').toString();
             } else if (cloneBadge.variant === 'error') {
-                cloneBadge.bodyClass =
-                    'slds-theme_error avonni-progress-bar-badges';
+                cloneBadge.class.add('slds-theme_error').toString();
             }
 
-            if (this._orientation === 'horizontal' && cloneBadge.value >= 100) {
-                cloneBadge.value = 'width: 100%';
+            if (this._thickness === 'large') {
+                borderHeight = '24px';
+            } else if (this._thickness === 'small') {
+                borderHeight = '16px';
+            } else if (this._thickness === 'x-small') {
+                borderHeight = '14px';
             }
 
-            if (cloneBadge.value < 0 && this._orientation === 'horizontal') {
-                cloneBadge.value = 'width: 0%';
+            if (this._orientation === 'horizontal') {
+                if (cloneBadge.value >= 100) {
+                    cloneBadge.value = `width: 100%; border-right: 2px ${cloneBadge.borderType} #706e6b; height: ${borderHeight}`;
+                } else if (cloneBadge.value <= 0) {
+                    cloneBadge.value = `width: 0%; border-right: 2px ${cloneBadge.borderType} #706e6b; height: ${borderHeight}`;
+                } else if (0 < cloneBadge.value < 100) {
+                    cloneBadge.value = `width: ${cloneBadge.value}%; border-right: 2px ${cloneBadge.borderType} #706e6b; height: ${borderHeight}`;
+                }
             }
 
-            if (
-                (cloneBadge.value || cloneBadge.value === 0) &&
-                cloneBadge.value < 100 &&
-                this._orientation === 'horizontal'
-            ) {
-                cloneBadge.value = `width: ${cloneBadge.value}%`;
+            if (this._orientation === 'vertical') {
+                if (cloneBadge.value >= 100) {
+                    cloneBadge.value = 'height: 100%';
+                } else if (cloneBadge.value <= 0) {
+                    cloneBadge.value = 'height: 0%';
+                } else if (0 < cloneBadge.value < 100) {
+                    cloneBadge.value = `height: ${cloneBadge.value}%`;
+                }
             }
 
-            if (cloneBadge.value >= 100 && this._orientation === 'vertical') {
-                cloneBadge.value = 'height: 100%';
-            }
-
-            if (cloneBadge.value < 0 && this._orientation === 'vertical') {
-                cloneBadge.value = 'height: 0%';
-            }
-
-            if (
-                (cloneBadge.value || cloneBadge.value === 0) &&
-                cloneBadge.value < 100 &&
-                this._orientation === 'vertical'
-            ) {
-                cloneBadge.value = `height: ${cloneBadge.value}%`;
-            }
-
+            result.push(cloneBadge);
             console.log(cloneBadge.value);
         });
         return result;
