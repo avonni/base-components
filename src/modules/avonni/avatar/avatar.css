@@ -1,6 +1,8 @@
 .avonni-avatar {
     display: inline-block;
     line-height: 0;
+}
+.avonni-avatar .slds-avatar:first-child {
     border-style: solid;
     border-color: var(--avonni-c-avatar-color-border, transparent);
     border-width: var(--avonni-c-avatar-sizing-border, 0);
@@ -39,6 +41,7 @@
     justify-content: center;
     height: 100%;
     width: 100%;
+    border-radius: 0;
 }
 
 /**
