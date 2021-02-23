@@ -1,7 +1,7 @@
 import { LightningElement, api } from 'lwc';
-import { classSet } from 'avonni/utils';
-import { normalizeString, normalizeBoolean } from 'avonni/utilsPrivate';
-import { computeSldsClass } from 'avonni/iconUtils';
+import { classSet } from 'c/utils';
+import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
+// import { computeSldsClass } from 'c/iconUtils';
 import avatar from './avatar.html';
 import avatarWithDetails from './avatarWithDetails.html';
 
@@ -92,8 +92,228 @@ export default class Avatar extends LightningElement {
     get hideAvatarDetails() {
         return this._hideAvatarDetails || false;
     }
+
     set hideAvatarDetails(value) {
         this._hideAvatarDetails = normalizeBoolean(value);
+    }
+
+    @api
+    get alternativeText() {
+        return this._alternativeText;
+    }
+
+    set alternativeText(value) {
+        this._alternativeText = value || this._alternativeText;
+    }
+
+    @api
+    get size() {
+        return this._size;
+    }
+
+    set size(value) {
+        this._size = normalizeString(value, {
+            fallbackValue: SIZE.default,
+            validValues: SIZE.valid
+        });
+        this._updateClassList();
+    }
+
+    @api
+    get src() {
+        return this._src;
+    }
+
+    set src(value) {
+        this._src = (typeof value === 'string' && value.trim()) || '';
+    }
+
+    @api
+    get variant() {
+        return this._variant;
+    }
+
+    set variant(value) {
+        this._variant = normalizeString(value, {
+            fallbackValue: VARIANT.default,
+            validValues: VARIANT.valid
+        });
+        this._updateClassList();
+    }
+
+    /**
+     * Status
+     */
+
+    @api
+    get status() {
+        return this._status;
+    }
+
+    set status(value) {
+        this._status = normalizeString(value, {
+            fallbackValue: STATUS.default,
+            validValues: STATUS.valid
+        });
+        this._computeStatus();
+    }
+
+    @api
+    get statusTitle() {
+        return this._statusTitle;
+    }
+
+    set statusTitle(value) {
+        this._statusTitle = value || this._statusTitle;
+        this._computeStatus();
+    }
+
+    @api
+    get statusPosition() {
+        return this._statusPosition;
+    }
+
+    set statusPosition(value) {
+        this._statusPosition = normalizeString(value, {
+            fallbackValue: POSITION.statusDefault,
+            validValues: POSITION.valid
+        });
+        this._computeStatus();
+    }
+
+    /**
+     * Presence
+     */
+
+    @api
+    get presence() {
+        return this._presence;
+    }
+
+    set presence(value) {
+        this._presence = normalizeString(value, {
+            fallbackValue: PRESENCE.default,
+            validValues: PRESENCE.valid
+        });
+        this._computePresenceClasses();
+    }
+
+    @api
+    get presencePosition() {
+        return this._presencePosition;
+    }
+
+    set presencePosition(value) {
+        this._presencePosition = normalizeString(value, {
+            fallbackValue: POSITION.presenceDefault,
+            validValues: POSITION.valid
+        });
+        this._computePresenceClasses();
+    }
+
+    @api
+    get presenceTitle() {
+        return this._presenceTitle;
+    }
+
+    set presenceTitle(value) {
+        this._presenceTitle = value || this._presenceTitle;
+    }
+
+    /**
+     * Entity
+     */
+    @api
+    get entityIconName() {
+        return this._entityIconFullName;
+    }
+
+    set entityIconName(value) {
+        this._entityIconFullName = value;
+        if (value) {
+            this._entityIconCategory = value.split(':')[0];
+            this._entityIconName = value.split(':')[1];
+        }
+    }
+
+    @api
+    get entityPosition() {
+        return this._entityPosition;
+    }
+
+    set entityPosition(value) {
+        this._entityPosition = normalizeString(value, {
+            fallbackValue: POSITION.entityDefault,
+            validValues: POSITION.valid
+        });
+        this._computeEntityClasses();
+    }
+
+    @api
+    get entitySrc() {
+        return this._entitySrc;
+    }
+
+    set entitySrc(value) {
+        this._entitySrc = (typeof value === 'string' && value.trim()) || '';
+    }
+
+    @api
+    get entityTitle() {
+        return this._entityTitle;
+    }
+
+    set entityTitle(value) {
+        this._entityTitle = value || this._entityTitle;
+    }
+
+    @api
+    get entityVariant() {
+        return this._entityVariant;
+    }
+
+    set entityVariant(value) {
+        this._entityVariant = normalizeString(value, {
+            fallbackValue: VARIANT.default,
+            validValues: VARIANT.valid
+        });
+        this._computeEntityClasses();
+    }
+
+    get computedInitialsClass() {
+        return (
+            classSet('slds-avatar__initials')
+                // .add(computeSldsClass(this.fallbackIconName))
+                .toString()
+        );
+    }
+
+    get showInitials() {
+        return !this._src && this.initials;
+    }
+
+    get showIcon() {
+        return !this._src && !this.initials;
+    }
+
+    get showTertiaryText() {
+        return this.size === 'x-large' || this.size === 'xx-large';
+    }
+
+    get showEntityIcon() {
+        return !this.entitySrc && !this.entityInitials;
+    }
+
+    get showEntity() {
+        return this.entitySrc || this.entityInitials || this.entityIconName;
+    }
+
+    get computedEntityInitialsClass() {
+        return (
+            classSet('slds-avatar__initials')
+                // .add(computeSldsClass(this.entityIconName))
+                .toString()
+        );
     }
 
     _updateClassList() {
@@ -119,109 +339,6 @@ export default class Avatar extends LightningElement {
 
         this.avatarClass = avatarClass;
         this.wrapperClass = wrapperClass;
-    }
-
-    @api
-    get alternativeText() {
-        return this._alternativeText;
-    }
-    set alternativeText(value) {
-        this._alternativeText = value || this._alternativeText;
-    }
-
-    get computedInitialsClass() {
-        return classSet('slds-avatar__initials')
-            .add(computeSldsClass(this.fallbackIconName))
-            .toString();
-    }
-
-    get showInitials() {
-        return !this._src && this.initials;
-    }
-
-    get showIcon() {
-        return !this._src && !this.initials;
-    }
-
-    get showTertiaryText() {
-        return this.size === 'x-large' || this.size === 'xx-large';
-    }
-
-    handleImageError(event) {
-        // eslint-disable-next-line no-console
-        console.warn(
-            `<avonni-avatar> Image with src="${event.target.src}" failed to load.`
-        );
-        this._src = '';
-    }
-
-    @api
-    get size() {
-        return this._size;
-    }
-    set size(value) {
-        this._size = normalizeString(value, {
-            fallbackValue: SIZE.default,
-            validValues: SIZE.valid
-        });
-        this._updateClassList();
-    }
-
-    @api
-    get src() {
-        return this._src;
-    }
-    set src(value) {
-        this._src = (typeof value === 'string' && value.trim()) || '';
-    }
-
-    @api
-    get variant() {
-        return this._variant;
-    }
-    set variant(value) {
-        this._variant = normalizeString(value, {
-            fallbackValue: VARIANT.default,
-            validValues: VARIANT.valid
-        });
-        this._updateClassList();
-    }
-
-    /**
-     * Status
-     */
-
-    @api
-    get status() {
-        return this._status;
-    }
-    set status(value) {
-        this._status = normalizeString(value, {
-            fallbackValue: STATUS.default,
-            validValues: STATUS.valid
-        });
-        this._computeStatus();
-    }
-
-    @api
-    get statusTitle() {
-        return this._statusTitle;
-    }
-    set statusTitle(value) {
-        this._statusTitle = value || this._statusTitle;
-        this._computeStatus();
-    }
-
-    @api
-    get statusPosition() {
-        return this._statusPosition;
-    }
-    set statusPosition(value) {
-        this._statusPosition = normalizeString(value, {
-            fallbackValue: POSITION.statusDefault,
-            validValues: POSITION.valid
-        });
-        this._computeStatus();
     }
 
     _computeStatus() {
@@ -264,42 +381,6 @@ export default class Avatar extends LightningElement {
         };
     }
 
-    /**
-     * Presence
-     */
-
-    @api
-    get presence() {
-        return this._presence;
-    }
-    set presence(value) {
-        this._presence = normalizeString(value, {
-            fallbackValue: PRESENCE.default,
-            validValues: PRESENCE.valid
-        });
-        this._computePresenceClasses();
-    }
-
-    @api
-    get presencePosition() {
-        return this._presencePosition;
-    }
-    set presencePosition(value) {
-        this._presencePosition = normalizeString(value, {
-            fallbackValue: POSITION.presenceDefault,
-            validValues: POSITION.valid
-        });
-        this._computePresenceClasses();
-    }
-
-    @api
-    get presenceTitle() {
-        return this._presenceTitle;
-    }
-    set presenceTitle(value) {
-        this._presenceTitle = value || this._presenceTitle;
-    }
-
     _computePresenceClasses() {
         const { presence, presencePosition } = this;
 
@@ -319,70 +400,6 @@ export default class Avatar extends LightningElement {
                 'avonni-avatar_bottom-right':
                     presencePosition === 'bottom-right'
             });
-    }
-
-    /**
-     * Entity
-     */
-
-    @api
-    get entityIconName() {
-        return this._entityIconFullName;
-    }
-    set entityIconName(value) {
-        this._entityIconFullName = value;
-        if (value) {
-            this._entityIconCategory = value.split(':')[0];
-            this._entityIconName = value.split(':')[1];
-        }
-    }
-
-    @api
-    get entityPosition() {
-        return this._entityPosition;
-    }
-    set entityPosition(value) {
-        this._entityPosition = normalizeString(value, {
-            fallbackValue: POSITION.entityDefault,
-            validValues: POSITION.valid
-        });
-        this._computeEntityClasses();
-    }
-
-    @api
-    get entitySrc() {
-        return this._entitySrc;
-    }
-    set entitySrc(value) {
-        this._entitySrc = (typeof value === 'string' && value.trim()) || '';
-    }
-
-    @api
-    get entityTitle() {
-        return this._entityTitle;
-    }
-    set entityTitle(value) {
-        this._entityTitle = value || this._entityTitle;
-    }
-
-    @api
-    get entityVariant() {
-        return this._entityVariant;
-    }
-    set entityVariant(value) {
-        this._entityVariant = normalizeString(value, {
-            fallbackValue: VARIANT.default,
-            validValues: VARIANT.valid
-        });
-        this._computeEntityClasses();
-    }
-
-    get showEntityIcon() {
-        return !this.entitySrc && !this.entityInitials;
-    }
-
-    get showEntity() {
-        return this.entitySrc || this.entityInitials || this.entityIconName;
     }
 
     _computeEntityClasses() {
@@ -407,9 +424,11 @@ export default class Avatar extends LightningElement {
             });
     }
 
-    get computedEntityInitialsClass() {
-        return classSet('slds-avatar__initials')
-            .add(computeSldsClass(this.entityIconName))
-            .toString();
+    handleImageError(event) {
+        // eslint-disable-next-line no-console
+        console.warn(
+            `<avonni-avatar> Image with src="${event.target.src}" failed to load.`
+        );
+        this._src = '';
     }
 }

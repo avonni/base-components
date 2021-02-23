@@ -228,7 +228,7 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
+            defaultValue: 0,
             description: 'Hide primary, secondary and tertiary text.',
             table: {
                 defaultValue: { summary: 'false' },
@@ -272,7 +272,7 @@ const Template = (args) => Avatar(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    hideAvatarDetails: 'true',
+    hideAvatarDetails: false,
     src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
     fallbackIconName: 'standard:avatar',
     initials: 'JD'

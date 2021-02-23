@@ -39,6 +39,10 @@
             "path": "src/modules/avonni/lwc/autoDataType/autoDataType.js"
         },
         {
+            "name": "c/avatar",
+            "path": "src/modules/avonni/lwc/avatar/avatar.js"
+        },
+        {
             "name": "c/avatarGroup",
             "path": "src/modules/avonni/lwc/avatarGroup/avatarGroup.js"
         },
@@ -265,6 +269,10 @@
         {
             "name": "avonni/autoDataType",
             "path": "src/modules/avonni/lwc/autoDataType/autoDataType.js"
+        },
+        {
+            "name": "avonni/avatar",
+            "path": "src/modules/avonni/lwc/avatar/avatar.js"
         },
         {
             "name": "avonni/avatarGroup",

@@ -27,7 +27,6 @@
                 title={alternativeText}
             ></lightning-icon>
         </div>
-
         <!-- Presence -->
         <div
             if:true={presence}
@@ -35,17 +34,15 @@
             title={presenceTitle}
             aria-label={presenceTitle}
         ></div>
-
         <!-- Status -->
         <template if:true={status}>
-            <avonni-primitive-icon
+            <lightning-icon
                 class={statusComputed.class}
                 icon-name={statusComputed.iconName}
                 title={statusComputed.title}
-            ></avonni-primitive-icon>
+            ></lightning-icon>
             <span class="slds-assistive-text">{statusComputed.title}</span>
         </template>
-
         <!-- Entity -->
         <div if:true={showEntity} class={entityClass}>
             <!-- Image -->
@@ -65,11 +62,11 @@
             >
             <!-- Fallback icon -->
             <template if:true={showEntityIcon}>
-                <avonni-primitive-icon
+                <lightning-icon
                     class="avonni-avatar__entity-icon"
                     icon-name={entityIconName}
                     title={entityTitle}
-                ></avonni-primitive-icon>
+                ></lightning-icon>
                 <span class="slds-assistive-text">{entityTitle}</span>
             </template>
         </div>
