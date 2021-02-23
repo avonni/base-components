@@ -53,15 +53,13 @@
 }
 
 .avonni-progress-bar-marker-vertical {
-    width: 10px;
-    border-bottom: 3px #706e6b dashed;
-    position: relative;
+    position: absolute;
+    width: 20px;
 }
 
 .avonni-progress-bar-marker-vertical > div {
     position: absolute;
-    bottom: 9px;
-    left: 12px;
+    bottom: 10px;
+    left: 18px;
     transform: translateY(100%);
-    white-space: nowrap;
 }

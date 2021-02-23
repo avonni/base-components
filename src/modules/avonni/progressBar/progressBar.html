@@ -38,7 +38,6 @@
                     role="progressbar"
                 >
                     <span class={computedInnerClass} style={progressBarValue}>
-                        <span class="slds-assistive-text">{value}%</span>
                     </span>
                     <lightning-layout
                         horizontal-align="spread"
@@ -125,12 +124,9 @@
                     role="progressbar"
                 >
                     <span class={computedInnerClass} style={progressBarValue}>
-                        <span class="slds-assistive-text"
-                            >Progress: {value}%</span
-                        >
                     </span>
                 </div>
-                <div style="height: 100%">
+                <div style="position: relative">
                     <template
                         if:true={badgesPresence}
                         for:each={badgesList}

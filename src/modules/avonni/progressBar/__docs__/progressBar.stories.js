@@ -135,7 +135,7 @@ export default {
                 type: 'select',
                 options: ['horizontal', 'vertical']
             },
-            defaultValue: 'horizontal',
+            defaultValue: 'vertical',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'horizontal' }

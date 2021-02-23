@@ -148,6 +148,7 @@ export default class ProgressBar extends LightningElement {
     get badgesList() {
         let result = [];
         let borderHeight = '20px';
+        let borderLeft = '-8px';
 
         this.badges.forEach((badge, index) => {
             let cloneBadge = Object.assign({}, badge);
@@ -180,6 +181,14 @@ export default class ProgressBar extends LightningElement {
                 borderHeight = '14px';
             }
 
+            if (this._thickness === 'large') {
+                borderLeft = '-11px';
+            } else if (this._thickness === 'small') {
+                borderLeft = '-4px';
+            } else if (this._thickness === 'x-small') {
+                borderLeft = '-1px';
+            }
+
             if (this._orientation === 'horizontal') {
                 if (cloneBadge.value >= 100) {
                     cloneBadge.value = `width: 100%; border-right: 2px ${cloneBadge.borderType} #706e6b; height: ${borderHeight}`;
@@ -192,11 +201,11 @@ export default class ProgressBar extends LightningElement {
 
             if (this._orientation === 'vertical') {
                 if (cloneBadge.value >= 100) {
-                    cloneBadge.value = 'height: 100%';
+                    cloneBadge.value = `height: 100%; border-bottom: 2px ${cloneBadge.borderType} #706e6b; left: ${borderLeft};`;
                 } else if (cloneBadge.value <= 0) {
-                    cloneBadge.value = 'height: 0%';
+                    cloneBadge.value = `height: 0%; border-bottom: 2px ${cloneBadge.borderType} #706e6b; left: ${borderLeft};`;
                 } else if (0 < cloneBadge.value < 100) {
-                    cloneBadge.value = `height: ${cloneBadge.value}%`;
+                    cloneBadge.value = `height: ${cloneBadge.value}%; border-bottom: 2px ${cloneBadge.borderType} #706e6b; left: ${borderLeft};`;
                 }
             }
 
