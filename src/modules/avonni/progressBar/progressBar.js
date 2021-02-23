@@ -107,7 +107,7 @@ export default class ProgressBar extends LightningElement {
 
     set theme(theme) {
         this._theme = normalizeString(theme, {
-            fallbackValue: 'standard',
+            fallbackValue: 'base',
             validValues: validThemes
         });
     }
@@ -191,30 +191,31 @@ export default class ProgressBar extends LightningElement {
 
             if (this._orientation === 'horizontal') {
                 if (cloneBadge.value >= 100) {
-                    cloneBadge.value = `width: 100%; border-right: 2px ${cloneBadge.borderType} #706e6b; height: ${borderHeight}`;
+                    cloneBadge.style = `width: 100%; border-right: 2px ${cloneBadge.borderType} #706e6b; height: ${borderHeight}`;
                 } else if (cloneBadge.value <= 0) {
-                    cloneBadge.value = `width: 0%; border-right: 2px ${cloneBadge.borderType} #706e6b; height: ${borderHeight}`;
+                    cloneBadge.style = `width: 0%; border-right: 2px ${cloneBadge.borderType} #706e6b; height: ${borderHeight}`;
                 } else if (0 < cloneBadge.value < 100) {
-                    cloneBadge.value = `width: ${cloneBadge.value}%; border-right: 2px ${cloneBadge.borderType} #706e6b; height: ${borderHeight}`;
+                    cloneBadge.style = `width: ${cloneBadge.value}%; border-right: 2px ${cloneBadge.borderType} #706e6b; height: ${borderHeight}`;
                 }
             }
 
             if (this._orientation === 'vertical') {
                 if (cloneBadge.value >= 100) {
-                    cloneBadge.value = `height: 100%; border-bottom: 2px ${cloneBadge.borderType} #706e6b; left: ${borderLeft};`;
+                    cloneBadge.style = `height: 100%; border-bottom: 2px ${cloneBadge.borderType} #706e6b; left: ${borderLeft};`;
                 } else if (cloneBadge.value <= 0) {
-                    cloneBadge.value = `height: 0%; border-bottom: 2px ${cloneBadge.borderType} #706e6b; left: ${borderLeft};`;
+                    cloneBadge.style = `height: 0%; border-bottom: 2px ${cloneBadge.borderType} #706e6b; left: ${borderLeft};`;
                 } else if (0 < cloneBadge.value < 100) {
-                    cloneBadge.value = `height: ${cloneBadge.value}%; border-bottom: 2px ${cloneBadge.borderType} #706e6b; left: ${borderLeft};`;
+                    cloneBadge.style = `height: ${cloneBadge.value}%; border-bottom: 2px ${cloneBadge.borderType} #706e6b; left: ${borderLeft};`;
                 }
             }
 
             result.push(cloneBadge);
         });
+
         return result;
     }
 
-    get progressBarSizing() {
+    get computedProgressBarSizing() {
         return classSet('')
             .add({
                 'avonni-progress-bar-horizontal-size_x-small':
@@ -277,41 +278,41 @@ export default class ProgressBar extends LightningElement {
             })
             .toString();
     }
-    get horizontal() {
+    get isHorizontal() {
         return this._orientation === 'horizontal';
     }
 
-    get progressBarValue() {
+    get computedProgressBarValue() {
         return this._orientation === 'horizontal'
             ? `width: ${this.value}%`
             : `height: ${this.value}%`;
     }
 
-    get positionLeft() {
+    get showPositionLeft() {
         return this._valuePosition === 'left' && this._showValue;
     }
 
-    get positionRight() {
+    get showPositionRight() {
         return this._valuePosition === 'right' && this._showValue;
     }
 
-    get positionTopRight() {
+    get showPositionTopRight() {
         return this._valuePosition === 'top-right' && this._showValue;
     }
 
-    get positionTopLeft() {
+    get showPositionTopLeft() {
         return this._valuePosition === 'top-left' && this._showValue;
     }
 
-    get positionBottomRight() {
+    get showPositionBottomRight() {
         return this._valuePosition === 'bottom-right' && this._showValue;
     }
 
-    get positionBottomLeft() {
+    get showPositionBottomLeft() {
         return this._valuePosition === 'bottom-left' && this._showValue;
     }
 
-    get positionBottom() {
+    get showPositionBottom() {
         return (
             (this._valuePosition === 'bottom-left' ||
                 this._valuePosition === 'bottom-right') &&
@@ -319,7 +320,7 @@ export default class ProgressBar extends LightningElement {
         );
     }
 
-    get badgesPresence() {
+    get showBadge() {
         return this.badges.length !== 0;
     }
 }

@@ -38,7 +38,7 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
+            defaultValue: false,
             table: {
                 type: { summary: 'Boolean' },
                 defaultValue: { summary: 'false' }
@@ -113,7 +113,7 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
+            defaultValue: false,
             table: {
                 type: { summary: 'Boolean' },
                 defaultValue: 'false'
@@ -135,7 +135,7 @@ export default {
                 type: 'select',
                 options: ['horizontal', 'vertical']
             },
-            defaultValue: 'vertical',
+            defaultValue: 'horizontal',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'horizontal' }

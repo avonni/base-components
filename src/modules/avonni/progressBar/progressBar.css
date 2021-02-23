@@ -1,3 +1,14 @@
+.avonni-progress-bar-value_bottom-right {
+    position: absolute;
+    z-index: 1;
+}
+
+.avonni-progress-bar-value_bottom-left {
+    position: absolute;
+    right: 0;
+    z-index: 1;
+}
+
 .avonni-progress-bar-horizontal-size_x-small {
     width: var(--lwc-sizeXSmall, 12rem);
 }
