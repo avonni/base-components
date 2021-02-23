@@ -210,7 +210,6 @@ export default class ProgressBar extends LightningElement {
             }
 
             result.push(cloneBadge);
-            console.log(cloneBadge.value);
         });
         return result;
     }
