@@ -47,7 +47,7 @@ export default class SplitterPane extends LightningElement {
 
         if (slotElements.length > 0) {
             slotElements.forEach(element => {
-                if (element.localName === 'c-splitter') {
+                if (element.localName.indexOf('-splitter') > -1) {
                     element.classList.add('horizontal');
                 } else {
                     element.classList.add('vertical');

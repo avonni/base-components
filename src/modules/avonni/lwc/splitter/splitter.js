@@ -24,7 +24,7 @@ export default class Splitter extends LightningElement {
             let separatorName = '';
 
             slotElements.forEach(element => {
-                if (element.localName === 'c-splitter-pane') {
+                if (element.localName.indexOf('-splitter-pane') > -1) {
                     containerComponents++;
                 }
             });
@@ -32,7 +32,7 @@ export default class Splitter extends LightningElement {
             slotElements.forEach(element => {
                 const nextElement = element.nextSibling;
 
-                if (element.localName === 'c-splitter-pane') {
+                if (element.localName.indexOf('-splitter-pane') > -1) {
                     element.classList.add('container');
                     element.classList.add('slot-' + amount);
                     element.setAttribute('slot-id', amount);

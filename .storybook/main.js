@@ -7,9 +7,7 @@ module.exports = {
     ],
     addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
     webpackFinal: (config) => {
-        config.plugins.push(
-            new LWCWebpackPlugin({})
-        );
+        config.plugins.push(new LWCWebpackPlugin());
 
         config.module.rules = config.module.rules.filter(
             (f) => f.test.toString() !== '/\\.css$/'
