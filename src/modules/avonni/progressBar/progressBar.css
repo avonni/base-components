@@ -46,6 +46,7 @@
     position: relative;
     margin-bottom: 20px;
     bottom: 6px;
+    z-index: -1;
 }
 
 .avonni-progress-bar-marker > div {

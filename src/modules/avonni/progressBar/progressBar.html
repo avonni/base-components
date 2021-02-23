@@ -48,7 +48,7 @@
                             <span
                                 if:true={positionBottomRight}
                                 aria-hidden="true"
-                                style="position: absolute"
+                                style="position: absolute; z-index: 1"
                             >
                                 <strong>{value}% {valueLabel}</strong>
                             </span>
@@ -57,7 +57,7 @@
                             <span
                                 if:true={positionBottomLeft}
                                 aria-hidden="true"
-                                style="position: absolute; right: 0"
+                                style="position: absolute; right: 0; z-index: 1"
                             >
                                 <strong>{value}% {valueLabel}</strong>
                             </span>
