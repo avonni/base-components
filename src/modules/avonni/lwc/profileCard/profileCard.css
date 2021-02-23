@@ -36,7 +36,7 @@
     height: 9.25rem;
     width: 9.25rem;
     transition: border-color 0.2s ease;
-    z-index: 1000;
+    z-index: 50;
 }
 
 .avatar-img-circle {
