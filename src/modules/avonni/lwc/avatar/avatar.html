@@ -36,11 +36,11 @@
         ></div>
         <!-- Status -->
         <template if:true={status}>
-            <lightning-icon
+            <c-primitive-icon
                 class={statusComputed.class}
                 icon-name={statusComputed.iconName}
                 title={statusComputed.title}
-            ></lightning-icon>
+            ></c-primitive-icon>
             <span class="slds-assistive-text">{statusComputed.title}</span>
         </template>
         <!-- Entity -->
@@ -62,11 +62,11 @@
             >
             <!-- Fallback icon -->
             <template if:true={showEntityIcon}>
-                <lightning-icon
+                <c-primitive-icon
                     class="avonni-avatar__entity-icon"
                     icon-name={entityIconName}
                     title={entityTitle}
-                ></lightning-icon>
+                ></c-primitive-icon>
                 <span class="slds-assistive-text">{entityTitle}</span>
             </template>
         </div>

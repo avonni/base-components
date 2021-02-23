@@ -151,6 +151,10 @@
             "path": "src/modules/avonni/lwc/expandableSection/expandableSection.js"
         },
         {
+            "name": "c/iconUtils",
+            "path": "src/modules/avonni/lwc/iconUtils/iconUtils.js"
+        },
+        {
             "name": "c/image",
             "path": "src/modules/avonni/lwc/image/image.js"
         },
@@ -185,6 +189,10 @@
         {
             "name": "c/pagination",
             "path": "src/modules/avonni/lwc/pagination/pagination.js"
+        },
+        {
+            "name": "c/primitiveIcon",
+            "path": "src/modules/avonni/lwc/primitiveIcon/primitiveIcon.js"
         },
         {
             "name": "c/profileCard",
