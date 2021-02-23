@@ -26,3 +26,4 @@ package.xml
 **/chartLine/**
 **/chartPie/**
 **/chartTreemap/**
+**/index.js

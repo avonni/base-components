@@ -1,0 +1,4 @@
+[submodule "_cslib"]
+	path = _cslib
+	url = git@github.com:clever-studio/cslib.git
+	branch = builder-dev
