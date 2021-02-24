@@ -1,7 +1,15 @@
 {
-    "name": "avonni-components",
+    "name": "@avonni/avonni-components",
     "description": "AVONNI components",
     "version": "0.0.1",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/avonni/avonni-components.git"
+    },
+    "license": "MIT",
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com/"
+    },
     "dependencies": {
         "chart.js": "^2.9.4",
         "d3": "^5.16.0",
@@ -36,10 +44,6 @@
             "pre-commit": "lint-staged"
         }
     },
-    "license": "MIT",
-    "publishConfig": {
-        "registry": "https://npm.pkg.github.com/@aantonyuk"
-    },
     "lint-staged": {
         "**/*.{css,html,js,json,md,ts,yaml,yml}": [
             "prettier --write"
@@ -49,6 +53,7 @@
         ]
     },
     "scripts": {
-        "storybook": "start-storybook -s ./static"
+        "storybook": "start-storybook -s ./static",
+        "deploy": "npm publish"
     }
 }
