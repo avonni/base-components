@@ -1,0 +1,25 @@
+.sfdx/
+.storybook/
+config/
+.eslintignore
+.eslintrc.json
+.forceignore
+.gitignore
+.gitmodules
+.prettierignore
+.prettierrc
+jest.config.js
+package-lock.json
+sfdx-project.json
+
+# LWC Jest
+**/__tests__/**
+
+# LWC Docs
+**/__docs__/**
+
+# LWC Examples
+**/__examples__/**
+
+#LWC wrappers
+**/storybookWrappers/**
