@@ -14,12 +14,12 @@ export default {
         size: {
             control: {
                 type: 'select',
-                options: ['x-small', 'small', 'medium', 'large']
+                options: ['x-small', 'small', 'medium', 'large', 'full']
             },
-            defaultValue: 'medium',
+            defaultValue: 'full',
             table: {
                 type: { summary: 'String' },
-                defaultValue: { summary: 'medium' }
+                defaultValue: { summary: 'full' }
             }
         },
         value: {

@@ -41,6 +41,10 @@
     height: var(--lwc-sizeLarge, 25rem);
 }
 
+.avonni-progress-bar-vertical-size_full {
+    height: 100vh;
+}
+
 .avonni-progress-bar-badges-border_none {
     border: none;
 }

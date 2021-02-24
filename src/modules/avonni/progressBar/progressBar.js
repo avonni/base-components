@@ -2,7 +2,7 @@ import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'avonni/utilsPrivate';
 import { classSet } from 'avonni/utils';
 
-const validSizes = ['x-small', 'small', 'medium', 'large'];
+const validSizes = ['x-small', 'small', 'medium', 'large', 'full'];
 const validValuePositions = [
     'left',
     'right',
@@ -30,7 +30,7 @@ export default class ProgressBar extends LightningElement {
     @api valueLabel;
     @api badges = [];
 
-    _size = 'medium';
+    _size = 'full';
     _value = 0;
     _showValue = false;
     _valuePosition = 'top-right';
@@ -238,7 +238,9 @@ export default class ProgressBar extends LightningElement {
                 'avonni-progress-bar-vertical-size_medium':
                     this._size === 'medium' && this._orientation === 'vertical',
                 'avonni-progress-bar-vertical-size_large':
-                    this._size === 'large' && this._orientation === 'vertical'
+                    this._size === 'large' && this._orientation === 'vertical',
+                'avonni-progress-bar-vertical-size_full':
+                    (this._size === 'full') & (this._orientation === 'vertical')
             })
             .toString();
     }
