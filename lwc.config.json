@@ -151,6 +151,10 @@
             "path": "src/modules/avonni/lwc/expandableSection/expandableSection.js"
         },
         {
+            "name": "c/externalLink",
+            "path": "src/modules/avonni/lwc/externalLink/externalLink.js"
+        },
+        {
             "name": "c/iconUtils",
             "path": "src/modules/avonni/lwc/iconUtils/iconUtils.js"
         },
@@ -179,6 +183,18 @@
             "path": "src/modules/avonni/lwc/kanban/kanban.js"
         },
         {
+            "name": "c/link",
+            "path": "src/modules/avonni/lwc/link/link.js"
+        },
+        {
+            "name": "c/linkToNonSalesforceResource",
+            "path": "src/modules/avonni/lwc/linkToNonSalesforceResource/linkToNonSalesforceResource.js"
+        },
+        {
+            "name": "c/map",
+            "path": "src/modules/avonni/lwc/map/map.js"
+        },
+        {
             "name": "c/mediaObject",
             "path": "src/modules/avonni/lwc/mediaObject/mediaObject.js"
         },
@@ -187,12 +203,24 @@
             "path": "src/modules/avonni/lwc/menuItemDialog/menuItemDialog.js"
         },
         {
+            "name": "c/messageDispatcher",
+            "path": "src/modules/avonni/lwc/messageDispatcher/messageDispatcher.js"
+        },
+        {
             "name": "c/pagination",
             "path": "src/modules/avonni/lwc/pagination/pagination.js"
         },
         {
+            "name": "c/primitiveCoordinateItem",
+            "path": "src/modules/avonni/lwc/primitiveCoordinateItem/primitiveCoordinateItem.js"
+        },
+        {
             "name": "c/primitiveIcon",
             "path": "src/modules/avonni/lwc/primitiveIcon/primitiveIcon.js"
+        },
+        {
+            "name": "c/primitiveIframe",
+            "path": "src/modules/avonni/lwc/primitiveIframe/primitiveIframe.js"
         },
         {
             "name": "c/profileCard",
@@ -415,6 +443,10 @@
             "path": "src/modules/avonni/lwc/kanban/kanban.js"
         },
         {
+            "name": "avonni/map",
+            "path": "src/modules/avonni/lwc/map/map.js"
+        },
+        {
             "name": "avonni/mediaObject",
             "path": "src/modules/avonni/lwc/mediaObject/mediaObject.js"
         },
@@ -502,5 +534,38 @@
             "name": "avonni/visualPicker",
             "path": "src/modules/avonni/lwc/visualPicker/visualPicker.js"
         }
+    ],
+    "expose": [
+        "avonni/autoDataType",
+        "avonni/avatar",
+        "avonni/avatarGroup",
+        "avonni/badgeIcon",
+        "avonni/calendar",
+        "avonni/carousel",
+        "avonni/chartBar",
+        "avonni/chartFunnel",
+        "avonni/chartHeatmap",
+        "avonni/chartLine",
+        "avonni/chartPie",
+        "avonni/chartTreemap",
+        "avonni/checkboxGroup",
+        "avonni/colorGradient",
+        "avonni/colorPalette",
+        "avonni/colorPicker",
+        "avonni/confetti",
+        "avonni/image",
+        "avonni/inputCounter",
+        "avonni/inputDateRange",
+        "avonni/inputPen",
+        "avonni/inputToggle",
+        "avonni/kanban",
+        "avonni/map",
+        "avonni/pagination",
+        "avonni/progressCircle",
+        "avonni/qrcode",
+        "avonni/range",
+        "avonni/rating",
+        "avonni/timer",
+        "avonni/visualPicker"
     ]
 }

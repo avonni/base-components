@@ -1,0 +1,25 @@
+<template>
+    <li class="slds-coordinates__item" onclick={handleClick}>
+        <span class="slds-assistive-text" aria-live="polite"
+            >{computedAssistiveText}</span
+        >
+        <button
+            class="slds-coordinates__item-action slds-button_reset slds-media"
+            aria-pressed={selected}
+            onmouseover={handleMouseOver}
+        >
+            <span class="slds-media__figure">
+                <lightning-icon
+                    icon-name={iconName}
+                    alternative-text="Coordinate"
+                ></lightning-icon>
+            </span>
+            <span class="slds-media__body">
+                <span class="slds-text-link">
+                    {itemTitle}
+                    <span>{itemAddress}</span>
+                </span>
+            </span>
+        </button>
+    </li>
+</template>

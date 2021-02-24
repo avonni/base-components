@@ -1,0 +1,46 @@
+<template>
+    <div class="slds-map_container">
+        <div class="slds-map">
+            <c-primitive-iframe
+                id="mapContainer"
+                title={i18n.primitiveMapIframeTitle}
+                src={mapSrc}
+                domain={mapDomain}
+                oniframeload={handleIframeLoad}
+            ></c-primitive-iframe>
+        </div>
+        <div if:true={showFooter} class="slds-p-around_medium">
+            <div class="slds-button slds-button_brand">
+                <c-external-link title={title} href={mapHref}>
+                    {i18n.openInGoogleMapsString}
+                </c-external-link>
+            </div>
+        </div>
+    </div>
+    <div if:true={showCoordinatesSidebar} class="slds-coordinates">
+        <div class="slds-coordinates__header">
+            <h2 class="slds-coordinates__title">
+                {markersTitle}({_coordinates.length})
+            </h2>
+        </div>
+        <ul
+            class="slds-coordinates__list"
+            key={computeGuid}
+            onprivatecoordinateregister={handleCoordinateRegister}
+        >
+            <template for:each={_coordinates} for:item="coordinate">
+                <li class="slds-coordinates__item" key={coordinate.key}>
+                    <c-primitive-coordinate-item
+                        item-title={coordinate.title}
+                        item-address={coordinate.formattedAddress}
+                        icon-name={coordinate.icon}
+                        guid={coordinate.key}
+                        key={coordinate.key}
+                        oncoordinateclick={handleCoordinateClick}
+                        oncoordinatesmouseover={handleCoordinateHover}
+                    ></c-primitive-coordinate-item>
+                </li>
+            </template>
+        </ul>
+    </div>
+</template>
