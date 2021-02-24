@@ -25,16 +25,6 @@
     width: var(--lwc-sizeLarge, 25rem);
 }
 
-.avonni-progress-bar-badges-border_none {
-    border: none;
-}
-
-.avonni-progress-bar-badges {
-    border-radius: var(--sds-c-badge-radius-border, 0.35rem);
-    font-size: var(--sds-c-badge-font-size, 0.55rem);
-    padding: 0.1rem 0.4rem;
-}
-
 .avonni-progress-bar-marker {
     position: absolute;
     bottom: -12px;
@@ -45,4 +35,14 @@
     bottom: -10px;
     right: 12px;
     transform: translateX(100%);
+}
+
+.avonni-progress-bar-badges-border_none {
+    border: none;
+}
+
+.avonni-progress-bar-badges {
+    border-radius: var(--sds-c-badge-radius-border, 0.35rem);
+    font-size: var(--sds-c-badge-font-size, 0.55rem);
+    padding: 0.1rem 0.4rem;
 }

@@ -161,23 +161,6 @@ export default class ProgressBar extends LightningElement {
         this.badges.forEach((badge, index) => {
             let cloneBadge = Object.assign({}, badge);
             cloneBadge.key = `badge-key-${index}`;
-            cloneBadge.class = classSet('avonni-progress-bar-badges');
-
-            if (cloneBadge.variant === 'success') {
-                cloneBadge.class.add('slds-theme_success').toString();
-            } else if (cloneBadge.variant === 'darker') {
-                cloneBadge.class.add('slds-badge_inverse').toString();
-            } else if (cloneBadge.variant === 'lightest') {
-                cloneBadge.class
-                    .add(
-                        'slds-badge_lightest avonni-progress-bar-badges-border_none'
-                    )
-                    .toString();
-            } else if (cloneBadge.variant === 'warning') {
-                cloneBadge.class.add('slds-theme_warning').toString();
-            } else if (cloneBadge.variant === 'error') {
-                cloneBadge.class.add('slds-theme_error').toString();
-            }
 
             if (this._thickness === 'large') {
                 borderHeight = '24px';

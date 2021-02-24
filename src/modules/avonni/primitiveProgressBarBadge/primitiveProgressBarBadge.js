@@ -13,30 +13,25 @@ const validVariants = [
 
 export default class PrimitiveProgressBarBadge extends LightningElement {
     @api label;
+    @api variant;
+    @api value;
 
-    _variant = 'default';
-
-    @api
-    get variant() {
-        return this._variant;
-    }
-
-    set variant(variant) {
-        this._variant = normalizeString(variant, {
-            fallbackValue: 'default',
+    get normalizedVariant() {
+        return normalizeString(this.variant, {
+            fallBackValue: 'default',
             validValues: validVariants
         });
     }
 
     get computedClass() {
-        return classSet('avonni-progress-bar-badges')
+        return classSet('slds-badge avonni-progress-bar-badges')
             .add({
-                'slds-badge_inverse': this._variant === 'inverse',
+                'slds-badge_inverse': this.variant === 'darker',
                 'slds-badge_lightest avonni-progress-bar-badges-border_none':
-                    this._variant === 'lightest',
-                'slds-badge slds-theme_success': this._variant === 'success',
-                'slds-badge slds-theme_warning': this._variant === 'warning',
-                'slds-badge slds-theme_error': this._variant === 'error'
+                    this.variant === 'lightest',
+                'slds-badge slds-theme_success': this.variant === 'success',
+                'slds-badge slds-theme_warning': this.variant === 'warning',
+                'slds-badge slds-theme_error': this.variant === 'error'
             })
             .toString();
     }
