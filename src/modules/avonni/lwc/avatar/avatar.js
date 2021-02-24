@@ -1,7 +1,7 @@
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
-// import { computeSldsClass } from 'c/iconUtils';
+import { computeSldsClass } from 'c/iconUtils';
 import avatar from './avatar.html';
 import avatarWithDetails from './avatarWithDetails.html';
 
@@ -283,7 +283,7 @@ export default class Avatar extends LightningElement {
     get computedInitialsClass() {
         return (
             classSet('slds-avatar__initials')
-                // .add(computeSldsClass(this.fallbackIconName))
+                .add(computeSldsClass(this.fallbackIconName))
                 .toString()
         );
     }
@@ -311,7 +311,7 @@ export default class Avatar extends LightningElement {
     get computedEntityInitialsClass() {
         return (
             classSet('slds-avatar__initials')
-                // .add(computeSldsClass(this.entityIconName))
+                .add(computeSldsClass(this.entityIconName))
                 .toString()
         );
     }

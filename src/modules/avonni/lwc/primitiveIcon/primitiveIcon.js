@@ -28,7 +28,7 @@ export default class cPrimitiveIcon extends LightningElement {
     }
 
     get href() {
-        return this.src || iconUtils.getIconPath(this.iconName, 'ltr');
+        return this.src || iconUtils.getIconPath(this.iconName, '');
     }
 
     get name() {
