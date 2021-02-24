@@ -1,6 +1,8 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'avonni/utilsPrivate';
 import { classSet } from 'avonni/utils';
+import progressBar from './progressBar.html';
+import progressBarVertical from './progressBarVertical.html';
 
 const validSizes = ['x-small', 'small', 'medium', 'large', 'full'];
 const validValuePositions = [
@@ -40,6 +42,12 @@ export default class ProgressBar extends LightningElement {
     _thickness = 'medium';
     _orientation = 'vertical';
 
+    render() {
+        if (this._orientation === 'horizontal') {
+            return progressBar;
+        }
+        return progressBarVertical;
+    }
     @api
     get size() {
         return this._size;
