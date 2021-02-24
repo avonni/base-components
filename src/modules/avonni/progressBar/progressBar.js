@@ -156,9 +156,7 @@ export default class ProgressBar extends LightningElement {
             cloneBadge.class = classSet('avonni-progress-bar-badges');
 
             if (cloneBadge.variant === 'success') {
-                cloneBadge.class
-                    .add('slds-theme_success avonni-progress-bar-badges')
-                    .toString();
+                cloneBadge.class.add('slds-theme_success').toString();
             } else if (cloneBadge.variant === 'darker') {
                 cloneBadge.class.add('slds-badge_inverse').toString();
             } else if (cloneBadge.variant === 'lightest') {
@@ -191,21 +189,21 @@ export default class ProgressBar extends LightningElement {
 
             if (this._orientation === 'horizontal') {
                 if (cloneBadge.value >= 100) {
-                    cloneBadge.style = `width: 100%; border-right: 2px ${cloneBadge.borderType} #706e6b; height: ${borderHeight}`;
+                    cloneBadge.style = `width: 100%; border-right: 2px ${cloneBadge.borderStyle} #706e6b; height: ${borderHeight}`;
                 } else if (cloneBadge.value <= 0) {
-                    cloneBadge.style = `width: 0%; border-right: 2px ${cloneBadge.borderType} #706e6b; height: ${borderHeight}`;
+                    cloneBadge.style = `width: 0%; border-right: 2px ${cloneBadge.borderStyle} #706e6b; height: ${borderHeight}`;
                 } else if (0 < cloneBadge.value < 100) {
-                    cloneBadge.style = `width: ${cloneBadge.value}%; border-right: 2px ${cloneBadge.borderType} #706e6b; height: ${borderHeight}`;
+                    cloneBadge.style = `width: ${cloneBadge.value}%; border-right: 2px ${cloneBadge.borderStyle} #706e6b; height: ${borderHeight}`;
                 }
             }
 
             if (this._orientation === 'vertical') {
                 if (cloneBadge.value >= 100) {
-                    cloneBadge.style = `height: 100%; border-bottom: 2px ${cloneBadge.borderType} #706e6b; left: ${borderLeft};`;
+                    cloneBadge.style = `height: 100%; border-bottom: 2px ${cloneBadge.borderStyle} #706e6b; left: ${borderLeft};`;
                 } else if (cloneBadge.value <= 0) {
-                    cloneBadge.style = `height: 0%; border-bottom: 2px ${cloneBadge.borderType} #706e6b; left: ${borderLeft};`;
+                    cloneBadge.style = `height: 0%; border-bottom: 2px ${cloneBadge.borderStyle} #706e6b; left: ${borderLeft};`;
                 } else if (0 < cloneBadge.value < 100) {
-                    cloneBadge.style = `height: ${cloneBadge.value}%; border-bottom: 2px ${cloneBadge.borderType} #706e6b; left: ${borderLeft};`;
+                    cloneBadge.style = `height: ${cloneBadge.value}%; border-bottom: 2px ${cloneBadge.borderStyle} #706e6b; left: ${borderLeft};`;
                 }
             }
 

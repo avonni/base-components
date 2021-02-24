@@ -168,14 +168,14 @@ const badges = [
         label: 'Avg',
         value: 90,
         variant: 'darker',
-        borderType: 'dashed'
+        borderStyle: 'dashed'
     }
 ];
 
 const Template = (args) => ProgressBar(args);
 
-export const Base = Template.bind({});
-Base.args = {
+export const Horizontal = Template.bind({});
+Horizontal.args = {
     label: 'Label',
     value: 45,
     badges: badges
