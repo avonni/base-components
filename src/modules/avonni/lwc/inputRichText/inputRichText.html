@@ -1,0 +1,206 @@
+<template>
+    <span if:true={renderLabel} class={computedLabelClass} id="label">
+        {computedLabel}
+    </span>
+    <div
+        class="slds-rich-text-editor slds-grid slds-grid_vertical slds-nowrap"
+        onclick={activateEditor}
+    >
+        <template if:true={isBottomToolbar}>
+            <div
+                class="slds-rich-text-editor__textarea slds-grid editor"
+                lwc:dom="manual"
+            ></div>
+            <div
+                if:true={quillNotReady}
+                class="slds-rich-text-editor__textarea slds-grid"
+            >
+                <div
+                    class="slds-rich-text-area__content slds-grow slds-text-color-weak standin"
+                    onclick={handleStandInClick}
+                >
+                    <lightning-formatted-rich-text
+                        value={value}
+                        disable-linkify
+                    ></lightning-formatted-rich-text>
+                </div>
+            </div>
+            <div
+                if:false={valid}
+                class="slds-form-element__help slds-p-around_small"
+                id="error-message"
+                data-error-message
+            >
+                {errorMessage}
+            </div>
+        </template>
+        <div
+            class="slds-rich-text-editor__toolbar slds-shrink-none"
+            role="toolbar"
+            aria-label={toolbarAriaLabel}
+            onkeydown={navigateToolbar}
+        >
+            <div
+                if:true={isFontMenusVisible}
+                class="slds-grid slds-wrap"
+                role="group"
+                aria-label={i18n.formatFont}
+            >
+                <template if:true={isDesktop}>
+                    <div class="slds-rich-text-editor__select">
+                        <lightning-combobox
+                            value={selectedFontValue}
+                            variant="label-hidden"
+                            label={i18n.font}
+                            options={fontMenus.fontList}
+                            disabled={disabled}
+                            dropdown-alignment={menuDropdownAlignment}
+                            onfocus={activateEditor}
+                            onchange={selectFont}
+                        ></lightning-combobox>
+                    </div>
+                    <div
+                        class="slds-rich-text-editor__select slds-size_xx-small"
+                    >
+                        <lightning-combobox
+                            value={selectedSizeValue}
+                            variant="label-hidden"
+                            label={i18n.fontSize}
+                            options={fontMenus.sizeList}
+                            disabled={disabled}
+                            dropdown-alignment={menuDropdownAlignment}
+                            onfocus={activateEditor}
+                            onchange={selectSize}
+                        ></lightning-combobox>
+                    </div>
+                </template>
+                <template if:false={isDesktop}>
+                    <div
+                        class="slds-rich-text-editor__select slds-size_x-small"
+                    >
+                        <c-primitive-select
+                            value={selectedFontValue}
+                            variant="label-hidden"
+                            label={i18n.font}
+                            options={fontMenus.fontList}
+                            disabled={disabled}
+                            onchange={selectFont}
+                        ></c-primitive-select>
+                    </div>
+                    <div
+                        class="slds-rich-text-editor__select slds-size_xx-small"
+                    >
+                        <c-primitive-select
+                            value={selectedSizeValue}
+                            variant="label-hidden"
+                            label={i18n.fontSize}
+                            options={fontMenus.sizeList}
+                            disabled={disabled}
+                            onchange={selectSize}
+                        ></c-primitive-select>
+                    </div>
+                </template>
+            </div>
+            <c-primitive-colorpicker-button
+                if:true={isColorpickerVisible}
+                disabled={disabled}
+                value={selectedTextColorValue}
+                onchange={handleColorUpdate}
+            ></c-primitive-colorpicker-button>
+            <template for:each={computedCategories} for:item="category">
+                <ul
+                    class="slds-button-group-list"
+                    aria-label={category.label}
+                    key={category.label}
+                >
+                    <template for:each={category.buttons} for:item="button">
+                        <li key={button.key}>
+                            <button
+                                class={button.computedClass}
+                                value={button.value}
+                                title={button.label}
+                                data-format={button.format}
+                                aria-pressed="false"
+                            >
+                                <c-primitive-icon
+                                    icon-name={button.iconName}
+                                    svg-class="slds-button__icon"
+                                    variant="bare"
+                                ></c-primitive-icon>
+                                <span class="slds-assistive-text">
+                                    {button.label}
+                                </span>
+                            </button>
+                        </li>
+                    </template>
+                </ul>
+            </template>
+        </div>
+        <template if:false={isBottomToolbar}>
+            <div
+                class="slds-rich-text-editor__textarea slds-grid editor"
+                lwc:dom="manual"
+            ></div>
+            <div
+                if:true={quillNotReady}
+                class="slds-rich-text-editor__textarea slds-grid"
+            >
+                <div
+                    class="slds-rich-text-area__content slds-grow slds-text-color-weak standin"
+                    onclick={handleStandInClick}
+                >
+                    <div if:true={shouldShowPlaceholder}>
+                        <p class="input-rich-text-placeholder">{placeholder}</p>
+                    </div>
+                    <div if:false={shouldShowPlaceholder}>
+                        <lightning-formatted-rich-text
+                            value={value}
+                            disable-linkify
+                        ></lightning-formatted-rich-text>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </div>
+    <div
+        if:true={errorMessage}
+        class="slds-form-element__help slds-p-around_small"
+        id="error-message-bottom"
+        data-error-message
+    >
+        {errorMessage}
+    </div>
+    <div
+        if:true={linkPanelOpen}
+        class="slds-popover slds-popover__body"
+        onfocusout={handleLinkPanelFocusOut}
+        onfocusin={handleLinkPanelFocusIn}
+    >
+        <lightning-input
+            class="link-input"
+            name="link-input"
+            value={showLinkValue}
+            label={i18n.linkInput}
+            onchange={handleLinkValueChange}
+            onkeydown={linkKeyboardPress}
+        ></lightning-input>
+        <div class="slds-m-top_small">
+            <lightning-button
+                variant="brand"
+                label={i18n.linkSave}
+                onclick={saveLink}
+            ></lightning-button>
+            <lightning-button
+                variant="bare"
+                label={i18n.linkCancel}
+                style="margin-left: 0.25rem"
+                onclick={cancelLink}
+            ></lightning-button>
+        </div>
+    </div>
+    <c-emoji-picker
+        if:true={isPublisher}
+        class="slds-is-absolute slds-hide"
+        onemoji={handleEmoji}
+    ></c-emoji-picker>
+</template>

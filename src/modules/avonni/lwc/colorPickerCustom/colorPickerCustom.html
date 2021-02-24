@@ -1,0 +1,138 @@
+<template>
+    <div class="slds-color-picker__custom">
+        <p id="color-picker-instructions" class="slds-assistive-text">
+            {i18n.colorPickerInstructions}
+        </p>
+        <!--gradient -->
+        <div
+            class="slds-m-bottom_small"
+            data-id="color-gradient"
+            style={gradientStyle}
+            onmousedown={handleMouseDown}
+        >
+            <canvas width={canvasRect.x} height={canvasRect.y}></canvas>
+            <a
+                data-id="color-anchor"
+                href="javascript:void(0)"
+                class="slds-color-picker__range-indicator"
+                style="position: absolute; display: inline"
+                aria-live="assertive"
+                aria-atomic="true"
+                aria-describedby="color-picker-instructions"
+                onmousedrag={handlePreventDefault}
+                onmousedown={handlePreventDefault}
+                onkeydown={handleKeydown}
+            >
+                <span class="slds-assistive-text"
+                    >{computedSaturationAndBrightness}</span
+                >
+            </a>
+        </div>
+        <!--Slider & thumbnail -->
+        <div class="slds-color-picker__hue-and-preview">
+            <label class="slds-assistive-text" for="rainbow"
+                >{i18n.hueInput}</label
+            >
+            <input
+                data-id="hue-slider"
+                type="range"
+                min="0"
+                max="360"
+                class="slds-color-picker__hue-slider"
+                id="rainbow"
+                value={_hueValue}
+                onmousedown={handleDrag}
+                onchange={onChange}
+            />
+            <span
+                class="slds-swatch"
+                data-id="color-preview"
+                style={thumbnailStyle}
+            >
+                <span class="slds-assistive-text" aria-hidden="true"
+                    >{_hex}</span
+                >
+            </span>
+        </div>
+        <!--Custom Inputs-->
+        <div class="slds-color-picker__custom-inputs">
+            <!--HEX-->
+            <div class="slds-form-element slds-color-picker__input-custom-hex">
+                <label class="slds-form-element__label" for="input"
+                    >{i18n.hexLabel}</label
+                >
+                <div class="slds-form-element__control">
+                    <input
+                        data-primary-input
+                        type="text"
+                        id="input"
+                        class="slds-input"
+                        minlength="4"
+                        maxlength="7"
+                        pattern="^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+                        placeholder="#FFFFFF"
+                        onchange={handleHexChange}
+                        value={_hex}
+                    />
+                </div>
+            </div>
+            <!--RED-->
+            <div class="slds-form-element">
+                <label class="slds-form-element__label" for="red">
+                    <abbr title={i18n.redAbbr}>{i18n.rInput}</abbr>
+                </label>
+                <div class="slds-form-element__control">
+                    <input
+                        type="text"
+                        id="red"
+                        data-color-name="red"
+                        class="slds-input"
+                        placeholder="255"
+                        onchange={handleRgbChange}
+                        value={_rgb.red}
+                    />
+                </div>
+            </div>
+            <!--GREEN-->
+            <div class="slds-form-element">
+                <label class="slds-form-element__label" for="green">
+                    <abbr title={i18n.greenAbbr}>{i18n.gInput}</abbr>
+                </label>
+                <div class="slds-form-element__control">
+                    <input
+                        type="text"
+                        id="green"
+                        data-color-name="green"
+                        class="slds-input"
+                        placeholder="255"
+                        onchange={handleRgbChange}
+                        value={_rgb.green}
+                    />
+                </div>
+            </div>
+            <!--BLUE-->
+            <div class="slds-form-element">
+                <label class="slds-form-element__label" for="blue">
+                    <abbr title={i18n.blueAbbr}>{i18n.bInput}</abbr>
+                </label>
+                <div class="slds-form-element__control">
+                    <input
+                        type="text"
+                        id="blue"
+                        data-color-name="blue"
+                        class="slds-input"
+                        placeholder="255"
+                        onchange={handleRgbChange}
+                        value={_rgb.blue}
+                    />
+                </div>
+            </div>
+        </div>
+        <!-- Error Message  -->
+        <template if:true={_errorMessage}>
+            <div class="slds-form-element__help" aria-live="assertive">
+                {_errorMessage}
+            </div>
+        </template>
+    </div>
+</template>

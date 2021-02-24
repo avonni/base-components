@@ -1,10 +1,12 @@
 <template>
-    <iframe 
-        style={frameStyle}
+    <iframe
         src={src}
         title={title}
+        onload={handleContentLoad}
         width={width}
         height={height}
-        onload={handleContentLoad}
-    ></iframe>
+        style={frameStyle}
+        lang={language}
+    >
+    </iframe>
 </template>

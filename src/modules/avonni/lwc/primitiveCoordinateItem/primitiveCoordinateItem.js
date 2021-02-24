@@ -11,6 +11,9 @@ export default class PrimitiveCoordinateItem extends LightningElement {
     @api guid;
     @api selected = false;
 
+    /**
+     * getter for the i18 constant containing the localized strings
+     */
     get i18n() {
         return i18n;
     }
@@ -29,28 +32,27 @@ export default class PrimitiveCoordinateItem extends LightningElement {
     }
 
     get computedAssistiveText() {
-        return true === this.selected
-            ? `${this.itemTitle} ${i18n.labelSelectedItemString}`
-            : '';
+        if (this.selected === true) {
+            return `${this.itemTitle} ${i18n.labelSelectedItemString}`;
+        }
+        return '';
     }
 
     handleMouseOver() {
-        const event = new CustomEvent('coordinatesmouseover', {
+        const coordinatehover = new CustomEvent('coordinatesmouseover', {
             detail: {
                 key: this.guid
             }
         });
-
-        this.dispatchEvent(event);
+        this.dispatchEvent(coordinatehover);
     }
 
     handleClick() {
-        const event = new CustomEvent('coordinateclick', {
+        const coordinateclick = new CustomEvent('coordinateclick', {
             detail: {
                 key: this.guid
             }
         });
-
-        this.dispatchEvent(event);
+        this.dispatchEvent(coordinateclick);
     }
 }

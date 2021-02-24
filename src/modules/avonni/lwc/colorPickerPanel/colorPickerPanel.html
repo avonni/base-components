@@ -1,0 +1,34 @@
+<template>
+    <section
+        class="slds-popover slds-color-picker__selector slds-show slds-is-absolute"
+        role="dialog"
+        aria-label="Choose a color"
+        aria-describedby="dialog-body-id"
+        onupdateselectedcolor={handleUpdateSelectedColor}
+        onkeydown={handleKeydown}
+    >
+        <div class="slds-popover__body" id="dialog-body-id">
+            <c-color-picker-custom
+                current-color={currentColor}
+            ></c-color-picker-custom>
+        </div>
+        <footer class="slds-popover__footer">
+            <div class="slds-color-picker__selector-footer">
+                <button
+                    name="cancel"
+                    class="slds-button slds-button_neutral"
+                    onclick={handleCancelClick}
+                >
+                    {i18n.cancelButton}
+                </button>
+                <button
+                    name="done"
+                    class="slds-button slds-button_brand"
+                    onclick={handleDoneClick}
+                >
+                    {i18n.doneButton}
+                </button>
+            </div>
+        </footer>
+    </section>
+</template>

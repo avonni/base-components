@@ -1,98 +1,95 @@
-let iframeMessageIndex = 1;
-const messageHandlers = {};
-const domains = [];
-const status = {
+// Closure to hold the APIs if and when available
+let DispatcherCount = 1;
+const Dispatchers = {};
+const Domains = [];
+const dispatcherState = {
     isMessageEventHandled: false
 };
-
-export function clearDomains() {
-    domains.splice(0, domains.length);
+function generateDispatchId() {
+    return `lightningIframeMessage-${DispatcherCount++}`;
 }
 
-export function createMessage(cmpId, event, value) {
-    value.cmpId = cmpId;
+export function clearDomains() {
+    Domains.splice(0, Domains.length);
+}
 
-    return {
-        event: event,
-        arguments: value
-    };
+export function getDomains() {
+    return Domains.map((item) => item.domain);
+}
+
+export function registerDomain(domain) {
+    if (!domain || domain === '') {
+        return;
+    }
+    const found = Domains.find((item) => item.domain === domain);
+    if (found) {
+        found.ref += 1;
+    } else {
+        Domains.push({
+            domain,
+            ref: 1
+        });
+    }
+}
+
+export function unregisterDomain(domain) {
+    if (!domain || domain === '') {
+        return;
+    }
+    const index = Domains.findIndex((item) => item.domain === domain);
+    if (index >= 0) {
+        const found = Domains[index];
+        found.ref -= 1;
+        if (found.ref === 0) {
+            Domains.splice(index, 1);
+        }
+    }
+}
+
+export function setMessageEventHandled() {
+    dispatcherState.isMessageEventHandled = true;
+}
+
+export function registerMessageHandler(handler) {
+    const dispatchId = generateDispatchId();
+    Dispatchers[dispatchId] = handler;
+
+    if (!dispatcherState.isMessageEventHandled) {
+        dispatcherState.isMessageEventHandled = true;
+        window.addEventListener('message', (event) => {
+            dispatchEvent(event);
+        });
+    }
+    return dispatchId;
+}
+export function unregisterMessageHandler(dispatchId) {
+    delete Dispatchers[dispatchId];
 }
 
 export function dispatchEvent(event) {
     try {
         const data = event.data ? JSON.parse(event.data) : {};
-        const cmpId = data.arguments ? data.arguments.cmpId : null;
-
-        if (cmpId && messageHandlers[cmpId]) {
-            return messageHandlers[cmpId](data);
+        const dispatchId = data.arguments ? data.arguments.cmpId : null;
+        if (dispatchId && Dispatchers[dispatchId]) {
+            Dispatchers[dispatchId](data);
+            return true;
         }
-
-        return true;
     } catch (e) {
-        console.log(e);
+        // Catch JSON parse exception.
     }
-
     return false;
-};
-
-export function getDomains() {
-    return domains.map(e => e.domain);
 }
 
-export function postMessage(e, n, t, s) {
-    if (e) {
-        e(s ? n : JSON.stringify(n || {}), t);
-    }
+export function createMessage(dispatcherId, event, params) {
+    params.cmpId = dispatcherId;
+    return {
+        event,
+        arguments: params
+    };
 }
 
-export function registerDomain(e) {
-    if (!e || e === '') {
-        return;
+export function postMessage(handler, message, domain, useObject) {
+    if (handler) {
+        handler(useObject ? message : JSON.stringify(message || {}), domain);
     }
-    const n = domains.find(n => n.domain === e);
-
-    if (n) {
-        n.ref += 1;
-    } else {
-        domains.push({ domain: e, ref: 1 });
-    }
-}
-
-export function registerMessageHandler(handler) {
-    const messageHandlerName = `lightningIframeMessage-${iframeMessageIndex++}`;
-
-    messageHandlers[messageHandlerName] = handler;
-
-    if (!status.isMessageEventHandled) {
-        status.isMessageEventHandled = true;
-
-        window.addEventListener('message', event => {
-            dispatchEvent(event);
-        });
-    }
-
-    return messageHandlerName;
-}
-
-export function setMessageEventHandled() {
-    status.isMessageEventHandled = true;
-}
-
-export function unregisterDomain(e) {
-    if (!e || '' === e) {
-        return;
-    }
-    const n = domains.findIndex(n => n.domain === e);
-    if (n >= 0) {
-        const e = domains[n];
-        e.ref -= 1;
-
-        if (e.ref === 0) {
-            domains.splice(n, 1);
-        }
-    }
-}
-
-export function unregisterMessageHandler(e) {
-    delete messageHandlers[e];
 }

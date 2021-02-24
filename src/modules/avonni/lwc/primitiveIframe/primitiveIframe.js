@@ -1,6 +1,10 @@
 import { LightningElement, api } from 'lwc';
 import { registerDomain, unregisterDomain } from 'c/messageDispatcher';
 
+/**
+ * Class representing primitive iframe.
+ * @extends Element
+ */
 export default class PrimitiveIframe extends LightningElement {
     @api src;
     @api domain;
@@ -8,6 +12,8 @@ export default class PrimitiveIframe extends LightningElement {
     @api height = '100%';
     @api frameStyle = '';
     @api title;
+
+    language = document.documentElement.lang || null;
 
     connectedCallback() {
         registerDomain(this.src);
@@ -18,7 +24,7 @@ export default class PrimitiveIframe extends LightningElement {
     }
 
     handleContentLoad() {
-        const event = new CustomEvent('iframeload', {
+        const iframeload = new CustomEvent('iframeload', {
             detail: {
                 callbacks: {
                     postToWindow: this.postToWindow.bind(this)
@@ -29,13 +35,13 @@ export default class PrimitiveIframe extends LightningElement {
         this.contentWindow = this.template.querySelector(
             'iframe'
         ).contentWindow;
-        this.dispatchEvent(event);
+        this.dispatchEvent(iframeload);
     }
 
     @api
-    postToWindow(value) {
+    postToWindow(message) {
         if (this.contentWindow) {
-            this.contentWindow.postMessage(value, this.domain);
+            this.contentWindow.postMessage(message, this.domain);
         }
     }
 }

@@ -1,0 +1,26 @@
+<template>
+    <button
+        type="button"
+        class="slds-button slds-color-picker__summary-button slds-button_icon slds-button_icon-more"
+        onclick={handleColorPickerToggleClick}
+        disabled={disabled}
+    >
+        <span class="slds-swatch" data-id="thumbnail" style={colorInputStyle}>
+            <span class="slds-assistive-text">{i18n.a11yTriggerText}</span>
+        </span>
+        <c-primitive-icon
+            icon-name="utility:down"
+            svg-class="slds-button__icon slds-button__icon_small"
+            variant="bare"
+        ></c-primitive-icon>
+        <span class="slds-assistive-text a11y-color-value">{value}</span>
+    </button>
+    <template if:true={_isColorPickerPanelOpen}>
+        <c-color-picker-panel
+            onupdatecolor={handleUpdateColorEvent}
+            class="color-picker-panel"
+            current-color={value}
+        >
+        </c-color-picker-panel>
+    </template>
+</template>

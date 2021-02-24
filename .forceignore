@@ -17,6 +17,9 @@ package.xml
 # LWC Examples
 **/__examples__/**
 
+# Component helper
+**/__component__/**
+
 # Storybook wrappers
 **/storybookWrappers/**
 
@@ -27,3 +30,6 @@ package.xml
 **/chartPie/**
 **/chartTreemap/**
 **/index.js
+
+**/inputRichText/**
+**/quillLib/**

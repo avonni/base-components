@@ -1,0 +1,13 @@
+:host{
+    display:block
+}
+
+.input-rich-text-placeholder {
+    color:var(--lwc-colorTextPlaceholder)
+}
+
+avonni-emoji-picker {
+    right: auto;
+    left: 140px;
+    top: 140px;
+}

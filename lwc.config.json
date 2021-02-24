@@ -131,6 +131,14 @@
             "path": "src/modules/avonni/lwc/colorPicker/colorPicker.js"
         },
         {
+            "name": "c/colorPickerCustom",
+            "path": "src/modules/avonni/lwc/colorPickerCustom/colorPickerCustom.js"
+        },
+        {
+            "name": "c/colorPickerPanel",
+            "path": "src/modules/avonni/lwc/colorPickerPanel/colorPickerPanel.js"
+        },
+        {
             "name": "c/confetti",
             "path": "src/modules/avonni/lwc/confetti/confetti.js"
         },
@@ -175,6 +183,10 @@
             "path": "src/modules/avonni/lwc/inputPen/inputPen.js"
         },
         {
+            "name": "c/inputRichText",
+            "path": "src/modules/avonni/lwc/inputRichText/inputRichText.js"
+        },
+        {
             "name": "c/inputToggle",
             "path": "src/modules/avonni/lwc/inputToggle/inputToggle.js"
         },
@@ -211,6 +223,14 @@
             "path": "src/modules/avonni/lwc/pagination/pagination.js"
         },
         {
+            "name": "c/positionLibrary",
+            "path": "src/modules/avonni/lwc/positionLibrary/positionLibrary.js"
+        },
+        {
+            "name": "c/primitiveColorpickerButton",
+            "path": "src/modules/avonni/lwc/primitiveColorpickerButton/primitiveColorpickerButton.js"
+        },
+        {
             "name": "c/primitiveCoordinateItem",
             "path": "src/modules/avonni/lwc/primitiveCoordinateItem/primitiveCoordinateItem.js"
         },
@@ -221,6 +241,10 @@
         {
             "name": "c/primitiveIframe",
             "path": "src/modules/avonni/lwc/primitiveIframe/primitiveIframe.js"
+        },
+        {
+            "name": "c/primitiveSelect",
+            "path": "src/modules/avonni/lwc/primitiveSelect/primitiveSelect.js"
         },
         {
             "name": "c/profileCard",
@@ -237,6 +261,10 @@
         {
             "name": "c/qrcode",
             "path": "src/modules/avonni/lwc/qrcode/qrcode.js"
+        },
+        {
+            "name": "c/quillLib",
+            "path": "src/modules/avonni/lwc/quillLib/quillLib.js"
         },
         {
             "name": "c/range",
@@ -435,6 +463,10 @@
             "path": "src/modules/avonni/lwc/inputPen/inputPen.js"
         },
         {
+            "name": "avonni/inputRichText",
+            "path": "src/modules/avonni/lwc/inputRichText/inputRichText.js"
+        },
+        {
             "name": "avonni/inputToggle",
             "path": "src/modules/avonni/lwc/inputToggle/inputToggle.js"
         },
@@ -557,6 +589,7 @@
         "avonni/inputCounter",
         "avonni/inputDateRange",
         "avonni/inputPen",
+        "avonni/inputRichText",
         "avonni/inputToggle",
         "avonni/kanban",
         "avonni/map",
