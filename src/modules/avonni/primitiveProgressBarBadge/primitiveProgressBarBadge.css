@@ -7,3 +7,49 @@
     font-size: var(--sds-c-badge-font-size, 0.55rem);
     padding: 0.1rem 0.4rem;
 }
+
+.avonni-progress-bar-marker {
+    height: 20px;
+    position: absolute;
+    bottom: -12px;
+    border-right: 2px dashed #706e6b;
+}
+
+.avonni-progress-bar-marker > div {
+    position: absolute;
+    bottom: -10px;
+    right: 12px;
+    transform: translateX(100%);
+}
+
+.avonni-progress-bar-badge-border-style_solid {
+    border-right: 2px solid #706e6b;
+}
+
+.avonni-progress-bar-badge-border-thickness_large {
+    height: 24px;
+}
+
+.avonni-progress-bar-badge-border-thickness_small {
+    height: 16px;
+}
+
+.avonni-progress-bar-badge-border-thickness_x-small {
+    height: 16px;
+}
+
+.avonni-progress-bar-badge-border-color_success {
+    border-right-color: #027e46;
+}
+
+.avonni-progress-bar-badge-border-color_warning {
+    border-right-color: #d47500;
+}
+
+.avonni-progress-bar-badge-border-color_error {
+    border-right-color: #c23934;
+}
+
+.avonni-progress-bar-badge-border-color_lightest {
+    border-right-color: #ffffff;
+}

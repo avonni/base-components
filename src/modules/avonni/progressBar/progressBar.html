@@ -67,21 +67,19 @@
                     </lightning-layout>
                     <template
                         if:true={showBadge}
-                        for:each={badgesList}
+                        for:each={badges}
                         for:item="badge"
                     >
-                        <div
+                        <avonni-primitive-progress-bar-badge
                             key={badge.key}
-                            class="avonni-progress-bar-marker"
-                            style={badge.style}
-                        >
-                            <div>
-                                <avonni-primitive-progress-bar-badge
-                                    label={badge.label}
-                                    variant={badge.variant}
-                                ></avonni-primitive-progress-bar-badge>
-                            </div>
-                        </div>
+                            label={badge.label}
+                            variant={badge.variant}
+                            value={badge.value}
+                            border-style={badge.borderStyle}
+                            thickness={thickness}
+                            orientation={orientation}
+                            badge={badge}
+                        ></avonni-primitive-progress-bar-badge>
                     </template>
                 </div>
             </lightning-layout-item>

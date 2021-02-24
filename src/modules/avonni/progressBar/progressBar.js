@@ -30,8 +30,8 @@ const validOrientations = ['horizontal', 'vertical'];
 export default class ProgressBar extends LightningElement {
     @api label;
     @api valueLabel;
-    @api badges = [];
 
+    _badges = [];
     _size = 'full';
     _value = 0;
     _showValue = false;
@@ -42,12 +42,33 @@ export default class ProgressBar extends LightningElement {
     _thickness = 'medium';
     _orientation = 'vertical';
 
+    connectedCallback() {
+        console.log();
+    }
+
     render() {
         if (this._orientation === 'horizontal') {
             return progressBar;
         }
         return progressBarVertical;
     }
+
+    @api
+    get badges() {
+        return this._badges;
+    }
+
+    set badges(value) {
+        let result = [];
+
+        value.forEach((badge, index) => {
+            let cloneBadge = Object.assign({}, badge);
+            cloneBadge.key = `badge-key-${index}`;
+            result.push(cloneBadge);
+        });
+        this._badges = result;
+    }
+
     @api
     get size() {
         return this._size;
@@ -153,56 +174,56 @@ export default class ProgressBar extends LightningElement {
         });
     }
 
-    get badgesList() {
-        let result = [];
-        let borderHeight = '20px';
-        let borderLeft = '-8px';
+    // get badgesList() {
+    //     let result = [];
+    //     let borderHeight = '20px';
+    //     let borderLeft = '-8px';
 
-        this.badges.forEach((badge, index) => {
-            let cloneBadge = Object.assign({}, badge);
-            cloneBadge.key = `badge-key-${index}`;
+    //     this.badges.forEach((badge, index) => {
+    //         let cloneBadge = Object.assign({}, badge);
+    //         cloneBadge.key = `badge-key-${index}`;
 
-            if (this._thickness === 'large') {
-                borderHeight = '24px';
-            } else if (this._thickness === 'small') {
-                borderHeight = '16px';
-            } else if (this._thickness === 'x-small') {
-                borderHeight = '14px';
-            }
+    //         if (this._thickness === 'large') {
+    //             borderHeight = '24px';
+    //         } else if (this._thickness === 'small') {
+    //             borderHeight = '16px';
+    //         } else if (this._thickness === 'x-small') {
+    //             borderHeight = '14px';
+    //         }
 
-            if (this._thickness === 'large') {
-                borderLeft = '-11px';
-            } else if (this._thickness === 'small') {
-                borderLeft = '-4px';
-            } else if (this._thickness === 'x-small') {
-                borderLeft = '-1px';
-            }
+    //         if (this._thickness === 'large') {
+    //             borderLeft = '-11px';
+    //         } else if (this._thickness === 'small') {
+    //             borderLeft = '-4px';
+    //         } else if (this._thickness === 'x-small') {
+    //             borderLeft = '-1px';
+    //         }
 
-            if (this._orientation === 'horizontal') {
-                if (cloneBadge.value >= 100) {
-                    cloneBadge.style = `width: 100%; border-right: 2px ${cloneBadge.borderStyle} #706e6b; height: ${borderHeight}`;
-                } else if (cloneBadge.value <= 0) {
-                    cloneBadge.style = `width: 0%; border-right: 2px ${cloneBadge.borderStyle} #706e6b; height: ${borderHeight}`;
-                } else if (0 < cloneBadge.value < 100) {
-                    cloneBadge.style = `width: ${cloneBadge.value}%; border-right: 2px ${cloneBadge.borderStyle} #706e6b; height: ${borderHeight}`;
-                }
-            }
+    //         if (this._orientation === 'horizontal') {
+    //             if (cloneBadge.value >= 100) {
+    //                 cloneBadge.style = `width: 100%; border-right: 2px ${cloneBadge.borderStyle} #706e6b; height: ${borderHeight}`;
+    //             } else if (cloneBadge.value <= 0) {
+    //                 cloneBadge.style = `width: 0%; border-right: 2px ${cloneBadge.borderStyle} #706e6b; height: ${borderHeight}`;
+    //             } else if (0 < cloneBadge.value < 100) {
+    //                 cloneBadge.style = `width: ${cloneBadge.value}%; border-right: 2px ${cloneBadge.borderStyle} #706e6b; height: ${borderHeight}`;
+    //             }
+    //         }
 
-            if (this._orientation === 'vertical') {
-                if (cloneBadge.value >= 100) {
-                    cloneBadge.style = `height: 100%; border-bottom: 2px ${cloneBadge.borderStyle} #706e6b; left: ${borderLeft};`;
-                } else if (cloneBadge.value <= 0) {
-                    cloneBadge.style = `height: 0%; border-bottom: 2px ${cloneBadge.borderStyle} #706e6b; left: ${borderLeft};`;
-                } else if (0 < cloneBadge.value < 100) {
-                    cloneBadge.style = `height: ${cloneBadge.value}%; border-bottom: 2px ${cloneBadge.borderStyle} #706e6b; left: ${borderLeft};`;
-                }
-            }
+    //         if (this._orientation === 'vertical') {
+    //             if (cloneBadge.value >= 100) {
+    //                 cloneBadge.style = `height: 100%; border-bottom: 2px ${cloneBadge.borderStyle} #706e6b; left: ${borderLeft};`;
+    //             } else if (cloneBadge.value <= 0) {
+    //                 cloneBadge.style = `height: 0%; border-bottom: 2px ${cloneBadge.borderStyle} #706e6b; left: ${borderLeft};`;
+    //             } else if (0 < cloneBadge.value < 100) {
+    //                 cloneBadge.style = `height: ${cloneBadge.value}%; border-bottom: 2px ${cloneBadge.borderStyle} #706e6b; left: ${borderLeft};`;
+    //             }
+    //         }
 
-            result.push(cloneBadge);
-        });
+    //         result.push(cloneBadge);
+    //     });
 
-        return result;
-    }
+    //     return result;
+    // }
 
     get computedProgressBarSizing() {
         return classSet('')
@@ -312,6 +333,6 @@ export default class ProgressBar extends LightningElement {
     }
 
     get showBadge() {
-        return this.badges.length !== 0;
+        return this._badges.length !== 0;
     }
 }

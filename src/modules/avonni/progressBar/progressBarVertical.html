@@ -41,12 +41,12 @@
                 <div style="position: relative">
                     <template
                         if:true={showBadge}
-                        for:each={badgesList}
+                        for:each={badges}
                         for:item="badge"
                     >
                         <div
                             key={badge.key}
-                            class="avonni-progress-bar-marker-vertical"
+                            class="avonni-progress-bar-marker"
                             style={badge.style}
                         >
                             <div>

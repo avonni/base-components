@@ -30,15 +30,10 @@
 
 .avonni-progress-bar-marker {
     position: absolute;
-    bottom: -12px;
-}
-
-.avonni-progress-bar-marker-vertical {
-    position: absolute;
     width: 20px;
 }
 
-.avonni-progress-bar-marker-vertical > div {
+.avonni-progress-bar-marker > div {
     position: absolute;
     bottom: 10px;
     left: 18px;
