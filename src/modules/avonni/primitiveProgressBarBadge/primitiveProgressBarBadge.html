@@ -1,9 +1,23 @@
 <template>
-    <div class={computedBadgeBorder} style={computedBadgeValue}>
-        <div>
-            <span class={computedBadgeClass}>
-                <span>{label}</span>
-            </span>
+    <template if:true={isHorizontal}>
+        <div class={computedBadgeBorder} style={computedBadgeValue}>
+            <div>
+                <span class={computedBadgeClass}>
+                    <span>{label}</span>
+                </span>
+            </div>
         </div>
-    </div>
+    </template>
+    <template if:false={isHorizontal}>
+        <div
+            class={computedBadgeBorderVertical}
+            style={computedBadgeValueVertical}
+        >
+            <div>
+                <span class={computedBadgeClass}>
+                    <span>{label}</span>
+                </span>
+            </div>
+        </div>
+    </template>
 </template>

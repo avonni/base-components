@@ -44,18 +44,14 @@
                         for:each={badges}
                         for:item="badge"
                     >
-                        <div
+                        <avonni-primitive-progress-bar-badge
                             key={badge.key}
-                            class="avonni-progress-bar-marker"
-                            style={badge.style}
-                        >
-                            <div>
-                                <avonni-primitive-progress-bar-badge
-                                    label={badge.label}
-                                    variant={badge.variant}
-                                ></avonni-primitive-progress-bar-badge>
-                            </div>
-                        </div>
+                            label={badge.label}
+                            variant={badge.variant}
+                            border-style={badge.borderStyle}
+                            orientation={orientation}
+                            thickness={thickness}
+                        ></avonni-primitive-progress-bar-badge>
                     </template>
                 </div>
             </lightning-layout-item>

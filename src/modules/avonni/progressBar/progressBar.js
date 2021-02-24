@@ -184,14 +184,6 @@ export default class ProgressBar extends LightningElement {
     //         cloneBadge.key = `badge-key-${index}`;
 
     //         if (this._thickness === 'large') {
-    //             borderHeight = '24px';
-    //         } else if (this._thickness === 'small') {
-    //             borderHeight = '16px';
-    //         } else if (this._thickness === 'x-small') {
-    //             borderHeight = '14px';
-    //         }
-
-    //         if (this._thickness === 'large') {
     //             borderLeft = '-11px';
     //         } else if (this._thickness === 'small') {
     //             borderLeft = '-4px';

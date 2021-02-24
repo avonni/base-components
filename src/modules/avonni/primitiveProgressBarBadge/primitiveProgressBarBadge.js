@@ -20,6 +20,11 @@ export default class PrimitiveProgressBarBadge extends LightningElement {
     @api borderStyle;
     @api badge;
     @api thickness;
+    @api orientation;
+
+    connectedCallback() {
+        console.log(this.borderStyle);
+    }
 
     get normalizedBorderStyles() {
         return normalizeString(this.borderStyle, {
@@ -33,6 +38,10 @@ export default class PrimitiveProgressBarBadge extends LightningElement {
             fallBackValue: 'default',
             validValues: validVariants
         });
+    }
+
+    get isHorizontal() {
+        return this.orientation === 'horizontal';
     }
 
     get computedBadgeClass() {
@@ -52,15 +61,19 @@ export default class PrimitiveProgressBarBadge extends LightningElement {
         return classSet('avonni-progress-bar-marker')
             .add({
                 'avonni-progress-bar-badge-border-style_solid':
-                    this.borderStyle === 'solid'
+                    this.borderStyle === 'solid' &&
+                    this.orientation === 'horizontal'
             })
             .add({
                 'avonni-progress-bar-badge-border-thickness_x-small':
-                    this.thickness === 'x-small',
+                    this.thickness === 'x-small' &&
+                    this.orientation === 'horizontal',
                 'avonni-progress-bar-badge-border-thickness_small':
-                    this.thickness === 'small',
+                    this.thickness === 'small' &&
+                    this.orientation === 'horizontal',
                 'avonni-progress-bar-badge-border-thickness_large':
-                    this.thickness === 'large'
+                    this.thickness === 'large' &&
+                    this.orientation === 'horizontal'
             })
             .add({
                 'avonni-progress-bar-badge-border-color_success':
@@ -82,5 +95,36 @@ export default class PrimitiveProgressBarBadge extends LightningElement {
             return `width: 0%;`;
         }
         return `width: ${this.value}%;`;
+    }
+
+    get computedBadgeBorderVertical() {
+        return classSet('avonni-progress-bar-marker-vertical')
+            .add({
+                'avonni-progress-bar-badge-border-vertical-style_solid':
+                    this.borderStyle === 'solid' &&
+                    this.orientation === 'vertical'
+            })
+            .add({
+                'avonni-progress-bar-badge-border-thickness-vertical_x-small':
+                    this.thickness === 'x-small' &&
+                    this.orientation === 'vertical',
+                'avonni-progress-bar-badge-border-thickness-vertical_small':
+                    this.thickness === 'small' &&
+                    this.orientation === 'vertical',
+                'avonni-progress-bar-badge-border-thickness-vertical_large':
+                    this.thickness === 'large' &&
+                    this.orientation === 'vertical'
+            })
+            .add({
+                'avonni-progress-bar-badge-border-vertical-color_success':
+                    this.variant === 'success',
+                'avonni-progress-bar-badge-border-vertical-color_warning':
+                    this.variant === 'warning',
+                'avonni-progress-bar-badge-border-vertical-color_error':
+                    this.variant === 'error',
+                'avonni-progress-bar-badge-border-vertical-color_lightest':
+                    this.variant === 'lightest'
+            })
+            .toString();
     }
 }

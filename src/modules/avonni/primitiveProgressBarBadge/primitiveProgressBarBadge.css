@@ -35,7 +35,7 @@
 }
 
 .avonni-progress-bar-badge-border-thickness_x-small {
-    height: 16px;
+    height: 14px;
 }
 
 .avonni-progress-bar-badge-border-color_success {
@@ -52,4 +52,62 @@
 
 .avonni-progress-bar-badge-border-color_lightest {
     border-right-color: #ffffff;
+}
+
+.avonni-progress-bar-marker-vertical {
+    position: absolute;
+    width: 20px;
+}
+
+.avonni-progress-bar-marker-vertical > div {
+    position: absolute;
+    bottom: 10px;
+    left: 18px;
+    transform: translateY(100%);
+}
+
+.avonni-progress-bar-marker-vertical {
+    border-bottom: 2px dashed #706e6b;
+    position: absolute;
+    width: 20px;
+    left: -8px;
+}
+
+.avonni-progress-bar-marker-vertical > div {
+    position: absolute;
+    bottom: 10px;
+    left: 18px;
+    transform: translateY(100%);
+}
+
+.avonni-progress-bar-badge-border-thickness-vertical_x-small {
+    left: -1px;
+}
+
+.avonni-progress-bar-badge-border-thickness-vertical_small {
+    left: -4px;
+}
+
+.avonni-progress-bar-badge-border-thickness-vertical_large {
+    left: -11px;
+}
+
+.avonni-progress-bar-badge-border-vertical-color_success {
+    border-bottom-color: #027e46;
+}
+
+.avonni-progress-bar-badge-border-vertical-color_warning {
+    border-bottom-color: #d47500;
+}
+
+.avonni-progress-bar-badge-border-vertical-color_error {
+    border-bottom-color: #c23934;
+}
+
+.avonni-progress-bar-badge-border-vertical-color_lightest {
+    border-bottom-color: #ffffff;
+}
+
+.avonni-progress-bar-badge-border-vertical-style_solid {
+    border-bottom: 2px solid #706e6b;
 }
