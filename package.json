@@ -37,6 +37,9 @@
         }
     },
     "license": "MIT",
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com/@aantonyuk"
+    },
     "lint-staged": {
         "**/*.{css,html,js,json,md,ts,yaml,yml}": [
             "prettier --write"
