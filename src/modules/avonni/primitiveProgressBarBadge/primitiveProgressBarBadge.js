@@ -4,11 +4,7 @@ import { classSet } from 'avonni/utils';
 export default class PrimitiveProgressBarBadge extends LightningElement {
     @api badge;
     @api thickness;
-    @api orientation;
-
-    get isHorizontal() {
-        return this.orientation === 'horizontal';
-    }
+    @api isHorizontal;
 
     get computedBadgeClass() {
         return classSet('slds-badge avonni-progress-bar-badges')

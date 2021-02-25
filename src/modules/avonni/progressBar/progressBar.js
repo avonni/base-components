@@ -31,42 +31,23 @@ export default class ProgressBar extends LightningElement {
     @api label;
     @api valueLabel;
 
-    _badges = [];
     _size = 'full';
     _value = 0;
     _showValue = false;
     _valuePosition = 'top-right';
+    _badges = [];
     _variant = 'base';
     _theme = 'base';
     _textured = false;
     _thickness = 'medium';
     _orientation = 'vertical';
 
-    connectedCallback() {
-        console.log();
-    }
-
+    // render the progress bar depending on its orientation
     render() {
         if (this._orientation === 'horizontal') {
             return progressBar;
         }
         return progressBarVertical;
-    }
-
-    @api
-    get badges() {
-        return this._badges;
-    }
-
-    set badges(value) {
-        let result = [];
-
-        value.forEach((badge, index) => {
-            let cloneBadge = Object.assign({}, badge);
-            cloneBadge.key = `badge-key-${index}`;
-            result.push(cloneBadge);
-        });
-        this._badges = result;
     }
 
     @api
@@ -115,6 +96,26 @@ export default class ProgressBar extends LightningElement {
             fallbackValue: 'top-right',
             validValues: validValuePositions
         });
+    }
+
+    @api
+    get badges() {
+        return this._badges;
+    }
+
+    set badges(value) {
+        let result = [];
+
+        value.forEach((badge, index) => {
+            let cloneBadge = Object.assign({}, badge);
+            cloneBadge.key = `badge-key-${index}`;
+            result.push(cloneBadge);
+        });
+        this._badges = result;
+    }
+
+    get showBadge() {
+        return this._badges.length !== 0;
     }
 
     @api
@@ -216,6 +217,7 @@ export default class ProgressBar extends LightningElement {
             .toString();
     }
 
+    // for the progressBar in vertical we need to set a height on the outer div and inner div
     get computedInnerClass() {
         return classSet('slds-progress-bar__value')
             .add({
@@ -239,6 +241,7 @@ export default class ProgressBar extends LightningElement {
             })
             .toString();
     }
+
     get isHorizontal() {
         return this._orientation === 'horizontal';
     }
@@ -279,9 +282,5 @@ export default class ProgressBar extends LightningElement {
                 this._valuePosition === 'bottom-right') &&
             this._showValue
         );
-    }
-
-    get showBadge() {
-        return this._badges.length !== 0;
     }
 }
