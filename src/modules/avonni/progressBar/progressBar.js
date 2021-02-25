@@ -98,7 +98,8 @@ export default class ProgressBar extends LightningElement {
         });
     }
 
-    @api get badges() {
+    @api
+    get badges() {
         return this._badges;
     }
 
