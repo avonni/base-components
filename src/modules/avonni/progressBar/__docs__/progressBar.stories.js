@@ -186,5 +186,5 @@ Vertical.args = {
     label: 'Label',
     value: 45,
     orientation: 'vertical',
-    badges: badges
+    badges: [...badges]
 };

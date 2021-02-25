@@ -98,20 +98,22 @@ export default class ProgressBar extends LightningElement {
         });
     }
 
-    @api
-    get badges() {
+    @api get badges() {
         return this._badges;
     }
 
     set badges(value) {
-        let result = [];
+        this._badges = value;
+    }
 
-        value.forEach((badge, index) => {
-            let cloneBadge = Object.assign({}, badge);
-            cloneBadge.key = `badge-key-${index}`;
-            result.push(cloneBadge);
+    get badgesList() {
+        let badges = JSON.parse(JSON.stringify(this.badges));
+
+        badges.forEach((badge, index) => {
+            badge.key = 'badge-key-' + index;
         });
-        this._badges = result;
+
+        return badges;
     }
 
     get showBadge() {
