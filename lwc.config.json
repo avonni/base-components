@@ -491,6 +491,10 @@
             "path": "src/modules/avonni/lwc/pagination/pagination.js"
         },
         {
+            "name": "avonni/primitiveIcon",
+            "path": "src/modules/avonni/lwc/primitiveIcon/primitiveIcon.js"
+        },
+        {
             "name": "avonni/profileCard",
             "path": "src/modules/avonni/lwc/profileCard/profileCard.js"
         },
