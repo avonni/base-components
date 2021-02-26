@@ -239,8 +239,8 @@ export default class ProgressBar extends LightningElement {
 
     get computedStyle() {
         return this._orientation === 'horizontal'
-            ? `width: ${this.value}%`
-            : `height: ${this.value}%`;
+            ? `width: ${this._value}%`
+            : `height: ${this._value}%`;
     }
 
     get showPositionLeft() {

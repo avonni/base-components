@@ -71,6 +71,7 @@
                     <template for:each={badges} for:item="badge">
                         <avonni-primitive-progress-bar-badge
                             key={badge.label}
+                            value={badge.value}
                             thickness={thickness}
                             is-horizontal={isHorizontal}
                             badge={badge}

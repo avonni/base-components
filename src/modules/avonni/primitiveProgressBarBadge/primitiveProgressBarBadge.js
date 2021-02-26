@@ -6,7 +6,24 @@ export default class PrimitiveProgressBarBadge extends LightningElement {
     @api thickness;
     @api isHorizontal;
 
-    get computedBadgeClass() {
+    _value = 0;
+
+    @api
+    get value() {
+        return this._value;
+    }
+
+    set value(value) {
+        if (value <= 0) {
+            this._value = 0;
+        } else if (value > 100) {
+            this._value = 100;
+        } else {
+            this._value = value;
+        }
+    }
+
+    get computedInnerClass() {
         return classSet('slds-badge avonni-progress-bar-badges')
             .add({
                 'slds-badge_inverse': this.badge.variant === 'darker',
@@ -21,8 +38,11 @@ export default class PrimitiveProgressBarBadge extends LightningElement {
             .toString();
     }
 
-    get computedBadgeBorder() {
-        return classSet('avonni-progress-bar-marker')
+    get computedOuterClass() {
+        return classSet('')
+            .add({
+                'avonni-progress-bar-marker': this.isHorizontal
+            })
             .add({
                 'avonni-progress-bar-badge-border-style_solid':
                     this.badge.borderStyle === 'solid' && this.isHorizontal
@@ -45,20 +65,9 @@ export default class PrimitiveProgressBarBadge extends LightningElement {
                 'avonni-progress-bar-badge-border-color_lightest':
                     this.badge.variant === 'lightest'
             })
-            .toString();
-    }
-
-    get computedBadgeValue() {
-        if (this.badge.value >= 100) {
-            return `width: 100%;`;
-        } else if (this.badge.value <= 0) {
-            return `width: 0%;`;
-        }
-        return `width: ${this.badge.value}%;`;
-    }
-
-    get computedBadgeBorderVertical() {
-        return classSet('avonni-progress-bar-marker-vertical')
+            .add({
+                'avonni-progress-bar-marker-vertical': !this.isHorizontal
+            })
             .add({
                 'avonni-progress-bar-badge-border-vertical-style_solid':
                     this.badge.borderStyle === 'solid' && !this.isHorizontal
@@ -84,12 +93,9 @@ export default class PrimitiveProgressBarBadge extends LightningElement {
             .toString();
     }
 
-    get computedBadgeValueVertical() {
-        if (this.badge.value >= 100) {
-            return 'height: 100%';
-        } else if (this.badge.value <= 0) {
-            return 'height: 0%';
-        }
-        return `height: ${this.badge.value}%`;
+    get computedStyle() {
+        return this.isHorizontal
+            ? `width: ${this._value}%`
+            : `height: ${this._value}%`;
     }
 }
