@@ -4,28 +4,43 @@ import { classSet } from 'avonni/utils';
 import progressBar from './progressBar.html';
 import progressBarVertical from './progressBarVertical.html';
 
-const validSizes = ['x-small', 'small', 'medium', 'large', 'full'];
-const validValuePositions = [
-    'left',
-    'right',
-    'top-right',
-    'top-left',
-    'bottom-right',
-    'bottom-left'
-];
-const validVariants = ['base', 'circular'];
-const validThemes = [
-    'base',
-    'success',
-    'inverse',
-    'alt-inverse',
-    'warning',
-    'info',
-    'error',
-    'offline'
-];
-const validThickness = ['x-small', 'small', 'medium', 'large'];
-const validOrientations = ['horizontal', 'vertical'];
+const SIZES = {
+    valid: ['x-small', 'small', 'medium', 'large', 'full'],
+    default: 'full'
+};
+const POSITIONS = {
+    valid: [
+        'left',
+        'right',
+        'top-right',
+        'top-left',
+        'bottom-right',
+        'bottom-left'
+    ],
+    default: 'top-right'
+};
+const VARIANTS = { valid: ['base', 'circular'], default: 'base' };
+const THEMES = {
+    valid: [
+        'base',
+        'success',
+        'inverse',
+        'alt-inverse',
+        'warning',
+        'info',
+        'error',
+        'offline'
+    ],
+    default: 'base'
+};
+const THICKNESS = {
+    valid: ['x-small', 'small', 'medium', 'large'],
+    default: 'medium'
+};
+const ORIENTATION = {
+    valid: ['horizontal', 'vertical'],
+    default: 'horizontal'
+};
 
 export default class ProgressBar extends LightningElement {
     @api label;
@@ -57,8 +72,8 @@ export default class ProgressBar extends LightningElement {
 
     set size(size) {
         this._size = normalizeString(size, {
-            fallbackValue: 'medium',
-            validValues: validSizes
+            fallbackValue: SIZES.default,
+            validValues: SIZES.valid
         });
     }
 
@@ -93,8 +108,8 @@ export default class ProgressBar extends LightningElement {
 
     set valuePosition(valuePosition) {
         this._valuePosition = normalizeString(valuePosition, {
-            fallbackValue: 'top-right',
-            validValues: validValuePositions
+            fallbackValue: POSITIONS.default,
+            validValues: POSITIONS.valid
         });
     }
 
@@ -114,8 +129,8 @@ export default class ProgressBar extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: 'base',
-            validValues: validVariants
+            fallbackValue: VARIANTS.default,
+            validValues: VARIANTS.valid
         });
     }
 
@@ -126,8 +141,8 @@ export default class ProgressBar extends LightningElement {
 
     set theme(theme) {
         this._theme = normalizeString(theme, {
-            fallbackValue: 'base',
-            validValues: validThemes
+            fallbackValue: THEMES.default,
+            validValues: THEMES.valid
         });
     }
 
@@ -147,8 +162,8 @@ export default class ProgressBar extends LightningElement {
 
     set thickness(thickness) {
         this._thickness = normalizeString(thickness, {
-            fallbackValue: 'medium',
-            validValues: validThickness
+            fallbackValue: THICKNESS.default,
+            validValues: THICKNESS.valid
         });
     }
 
@@ -159,8 +174,8 @@ export default class ProgressBar extends LightningElement {
 
     set orientation(orientation) {
         this._orientation = normalizeString(orientation, {
-            fallbackValue: 'standard',
-            validValues: validOrientations
+            fallbackValue: ORIENTATION.default,
+            validValues: ORIENTATION.valid
         });
     }
 

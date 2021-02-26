@@ -2,11 +2,11 @@ import { LightningElement, api } from 'lwc';
 import { classSet } from 'avonni/utils';
 import { normalizeString } from 'avonni/utilsPrivate';
 
-const validVariants = {
+const VARIANTS = {
     valid: ['default', 'darker', 'success', 'warning', 'error', 'lightest'],
     default: 'default'
 };
-const validBorderStyles = {
+const BORDER_STYLES = {
     valid: ['solid', 'dashed', 'dotted', 'none'],
     default: 'none'
 };
@@ -46,8 +46,8 @@ export default class PrimitiveProgressBarBadge extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: validVariants.default,
-            validValues: validVariants.valid
+            fallbackValue: VARIANTS.default,
+            validValues: VARIANTS.valid
         });
     }
 
@@ -58,20 +58,20 @@ export default class PrimitiveProgressBarBadge extends LightningElement {
 
     set borderStyle(borderStyle) {
         this._borderStyle = normalizeString(borderStyle, {
-            fallbackValue: validBorderStyles.default,
-            validValues: validBorderStyles.valid
+            fallbackValue: BORDER_STYLES.default,
+            validValues: BORDER_STYLES.valid
         });
     }
 
     get computedInnerClass() {
-        return classSet('slds-badge avonni-progress-bar-badges')
+        return classSet('avonni-progress-bar-badges')
             .add({
                 'slds-badge_inverse': this._variant === 'darker',
                 'slds-badge_lightest avonni-progress-bar-badges-border_none':
                     this._variant === 'lightest',
-                'slds-badge slds-theme_success': this._variant === 'success',
-                'slds-badge slds-theme_warning': this._variant === 'warning',
-                'slds-badge slds-theme_error': this._variant === 'error'
+                'slds-theme_success': this._variant === 'success',
+                'slds-theme_warning': this._variant === 'warning',
+                'slds-theme_error': this._variant === 'error'
             })
             .toString();
     }

@@ -1,7 +1,10 @@
 <template>
     <div class={computedOuterClass} style={computedStyle}>
         <div>
-            <span class={computedInnerClass}>{label}</span>
+            <lightning-badge
+                class={computedInnerClass}
+                label={label}
+            ></lightning-badge>
         </div>
     </div>
 </template>

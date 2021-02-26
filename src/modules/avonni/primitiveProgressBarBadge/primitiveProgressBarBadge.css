@@ -1,5 +1,5 @@
 .avonni-progress-bar-badges-border_none {
-    border: none;
+    border: var(--sds-c-badge-sizing-border, none);
 }
 
 .avonni-progress-bar-badges {
