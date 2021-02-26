@@ -178,7 +178,7 @@ export default class ProgressBar extends LightningElement {
         });
     }
 
-    get computedProgressBarSizing() {
+    get computedSizing() {
         return classSet('')
             .add({
                 'avonni-progress-bar-horizontal-size_x-small':
@@ -249,7 +249,7 @@ export default class ProgressBar extends LightningElement {
         return this._orientation === 'horizontal';
     }
 
-    get computedProgressBarValue() {
+    get computedStyle() {
         return this._orientation === 'horizontal'
             ? `width: ${this.value}%`
             : `height: ${this.value}%`;

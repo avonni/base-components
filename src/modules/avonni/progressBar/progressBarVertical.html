@@ -22,7 +22,7 @@
         <lightning-layout>
             <lightning-layout-item
                 size="12"
-                class={computedProgressBarSizing}
+                class={computedSizing}
                 style="display: flex; justify-content: center"
             >
                 <div
@@ -32,10 +32,7 @@
                     aria-valuenow={value}
                     role="progressbar"
                 >
-                    <span
-                        class={computedInnerClass}
-                        style={computedProgressBarValue}
-                    >
+                    <span class={computedInnerClass} style={computedStyle}>
                     </span>
                 </div>
                 <div style="position: relative">

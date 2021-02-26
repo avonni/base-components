@@ -1,5 +1,5 @@
 <template>
-    <div class={computedProgressBarSizing}>
+    <div class={computedSizing}>
         <lightning-layout vertical-align="end">
             <lightning-layout-item
                 if:true={showPositionLeft}
@@ -37,10 +37,7 @@
                     aria-valuenow={value}
                     role="progressbar"
                 >
-                    <span
-                        class={computedInnerClass}
-                        style={computedProgressBarValue}
-                    >
+                    <span class={computedInnerClass} style={computedStyle}>
                     </span>
                     <lightning-layout
                         horizontal-align="spread"
