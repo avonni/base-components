@@ -25,19 +25,15 @@ export default class PrimitiveProgressBarBadge extends LightningElement {
         return classSet('avonni-progress-bar-marker')
             .add({
                 'avonni-progress-bar-badge-border-style_solid':
-                    this.badge.borderStyle === 'solid' &&
-                    this.orientation === 'horizontal'
+                    this.badge.borderStyle === 'solid' && this.isHorizontal
             })
             .add({
                 'avonni-progress-bar-badge-border-thickness_x-small':
-                    this.thickness === 'x-small' &&
-                    this.orientation === 'horizontal',
+                    this.thickness === 'x-small' && this.isHorizontal,
                 'avonni-progress-bar-badge-border-thickness_small':
-                    this.thickness === 'small' &&
-                    this.orientation === 'horizontal',
+                    this.thickness === 'small' && this.isHorizontal,
                 'avonni-progress-bar-badge-border-thickness_large':
-                    this.thickness === 'large' &&
-                    this.orientation === 'horizontal'
+                    this.thickness === 'large' && this.isHorizontal
             })
             .add({
                 'avonni-progress-bar-badge-border-color_success':
@@ -65,19 +61,15 @@ export default class PrimitiveProgressBarBadge extends LightningElement {
         return classSet('avonni-progress-bar-marker-vertical')
             .add({
                 'avonni-progress-bar-badge-border-vertical-style_solid':
-                    this.badge.borderStyle === 'solid' &&
-                    this.orientation === 'vertical'
+                    this.badge.borderStyle === 'solid' && !this.isHorizontal
             })
             .add({
                 'avonni-progress-bar-badge-border-thickness-vertical_x-small':
-                    this.thickness === 'x-small' &&
-                    this.orientation === 'vertical',
+                    this.thickness === 'x-small' && !this.isHorizontal,
                 'avonni-progress-bar-badge-border-thickness-vertical_small':
-                    this.thickness === 'small' &&
-                    this.orientation === 'vertical',
+                    this.thickness === 'small' && !this.isHorizontal,
                 'avonni-progress-bar-badge-border-thickness-vertical_large':
-                    this.thickness === 'large' &&
-                    this.orientation === 'vertical'
+                    this.thickness === 'large' && !this.isHorizontal
             })
             .add({
                 'avonni-progress-bar-badge-border-vertical-color_success':
