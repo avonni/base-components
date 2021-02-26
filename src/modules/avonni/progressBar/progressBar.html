@@ -68,13 +68,9 @@
                             </span>
                         </lightning-layout-item>
                     </lightning-layout>
-                    <template
-                        if:true={showBadge}
-                        for:each={badgesList}
-                        for:item="badge"
-                    >
+                    <template for:each={badges} for:item="badge">
                         <avonni-primitive-progress-bar-badge
-                            key={badge.key}
+                            key={badge.label}
                             thickness={thickness}
                             is-horizontal={isHorizontal}
                             badge={badge}

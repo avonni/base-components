@@ -40,13 +40,9 @@
                     </span>
                 </div>
                 <div style="position: relative">
-                    <template
-                        if:true={showBadge}
-                        for:each={badgesList}
-                        for:item="badge"
-                    >
+                    <template for:each={badges} for:item="badge">
                         <avonni-primitive-progress-bar-badge
-                            key={badge.key}
+                            key={badge.label}
                             badge={badge}
                             is-horizontal={isHorizontal}
                             thickness={thickness}
