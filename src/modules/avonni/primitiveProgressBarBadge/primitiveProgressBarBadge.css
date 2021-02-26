@@ -39,15 +39,15 @@
 }
 
 .avonni-progress-bar-badge-border-color_success {
-    border-right-color: #027e46;
+    border-right-color: var(--lwc-colorBorderSuccessDark, #04844b);
 }
 
 .avonni-progress-bar-badge-border-color_warning {
-    border-right-color: #d47500;
+    border-right-color: var(--lwc-colorBorderWarning, #ffb75d);
 }
 
 .avonni-progress-bar-badge-border-color_error {
-    border-right-color: #c23934;
+    border-right-color: var(--lwc-colorBorderError, #c23934);
 }
 
 .avonni-progress-bar-badge-border-color_lightest {
