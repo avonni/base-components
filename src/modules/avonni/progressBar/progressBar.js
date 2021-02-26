@@ -104,9 +104,7 @@ export default class ProgressBar extends LightningElement {
     }
 
     set badges(value) {
-        this._badges = Array.isArray(value)
-            ? JSON.parse(JSON.stringify(value))
-            : [];
+        this._badges = Array.isArray(value) ? value : [];
     }
 
     @api
