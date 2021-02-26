@@ -26,5 +26,5 @@
 }
 
 .avonni-progress-bar-font-weight_large {
-    font-weight: var(--lwc-fontWeightLarge, 700);
+    font-weight: var(--lwc-fontWeightBold, 700);
 }

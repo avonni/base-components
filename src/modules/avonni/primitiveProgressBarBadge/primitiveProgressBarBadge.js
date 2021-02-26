@@ -1,12 +1,28 @@
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'avonni/utils';
+import { normalizeString } from 'avonni/utilsPrivate';
+
+const validVariants = {
+    valid: ['default', 'darker', 'success', 'warning', 'error', 'lightest'],
+    default: 'default'
+};
+const validBorderStyles = {
+    valid: ['solid', 'dashed', 'dotted', 'none'],
+    default: 'none'
+};
 
 export default class PrimitiveProgressBarBadge extends LightningElement {
-    @api badge;
+    @api label;
     @api thickness;
     @api isHorizontal;
 
     _value = 0;
+    _variant = 'default';
+    _borderStyle = 'none';
+
+    connectedCallback() {
+        console.log(this._borderStyle);
+    }
 
     @api
     get value() {
@@ -23,17 +39,39 @@ export default class PrimitiveProgressBarBadge extends LightningElement {
         }
     }
 
+    @api
+    get variant() {
+        return this._variant;
+    }
+
+    set variant(variant) {
+        this._variant = normalizeString(variant, {
+            fallbackValue: validVariants.default,
+            validValues: validVariants.valid
+        });
+    }
+
+    @api
+    get borderStyle() {
+        return this._borderStyle;
+    }
+
+    set borderStyle(borderStyle) {
+        this._borderStyle = normalizeString(borderStyle, {
+            fallbackValue: validBorderStyles.default,
+            validValues: validBorderStyles.valid
+        });
+    }
+
     get computedInnerClass() {
         return classSet('slds-badge avonni-progress-bar-badges')
             .add({
-                'slds-badge_inverse': this.badge.variant === 'darker',
+                'slds-badge_inverse': this._variant === 'darker',
                 'slds-badge_lightest avonni-progress-bar-badges-border_none':
-                    this.badge.variant === 'lightest',
-                'slds-badge slds-theme_success':
-                    this.badge.variant === 'success',
-                'slds-badge slds-theme_warning':
-                    this.badge.variant === 'warning',
-                'slds-badge slds-theme_error': this.badge.variant === 'error'
+                    this._variant === 'lightest',
+                'slds-badge slds-theme_success': this._variant === 'success',
+                'slds-badge slds-theme_warning': this._variant === 'warning',
+                'slds-badge slds-theme_error': this._variant === 'error'
             })
             .toString();
     }
@@ -44,8 +82,12 @@ export default class PrimitiveProgressBarBadge extends LightningElement {
                 'avonni-progress-bar-marker': this.isHorizontal
             })
             .add({
+                'avonni-progress-bar-badge-border-style_dashed':
+                    this._borderStyle === 'dashed' && this.isHorizontal,
                 'avonni-progress-bar-badge-border-style_solid':
-                    this.badge.borderStyle === 'solid' && this.isHorizontal
+                    this._borderStyle === 'solid' && this.isHorizontal,
+                'avonni-progress-bar-badge-border-style_dotted':
+                    this._borderStyle === 'dotted' && this.isHorizontal
             })
             .add({
                 'avonni-progress-bar-badge-border-thickness_x-small':
@@ -56,21 +98,27 @@ export default class PrimitiveProgressBarBadge extends LightningElement {
                     this.thickness === 'large' && this.isHorizontal
             })
             .add({
+                'avonni-progress-bar-badge-border-color_darker':
+                    this._variant === 'darker',
                 'avonni-progress-bar-badge-border-color_success':
-                    this.badge.variant === 'success',
+                    this._variant === 'success',
                 'avonni-progress-bar-badge-border-color_warning':
-                    this.badge.variant === 'warning',
+                    this._variant === 'warning',
                 'avonni-progress-bar-badge-border-color_error':
-                    this.badge.variant === 'error',
+                    this._variant === 'error',
                 'avonni-progress-bar-badge-border-color_lightest':
-                    this.badge.variant === 'lightest'
+                    this._variant === 'lightest'
             })
             .add({
                 'avonni-progress-bar-marker-vertical': !this.isHorizontal
             })
             .add({
+                'avonni-progress-bar-badge-border-vertical-style_dashed':
+                    this._borderStyle === 'dashed' && !this.isHorizontal,
                 'avonni-progress-bar-badge-border-vertical-style_solid':
-                    this.badge.borderStyle === 'solid' && !this.isHorizontal
+                    this._borderStyle === 'solid' && !this.isHorizontal,
+                'avonni-progress-bar-badge-border-vertical-style_dotted':
+                    this._borderStyle === 'dotted' && !this.isHorizontal
             })
             .add({
                 'avonni-progress-bar-badge-border-thickness-vertical_x-small':
@@ -81,14 +129,16 @@ export default class PrimitiveProgressBarBadge extends LightningElement {
                     this.thickness === 'large' && !this.isHorizontal
             })
             .add({
+                'avonni-progress-bar-badge-border-vertical-color_darker':
+                    this._variant === 'darker',
                 'avonni-progress-bar-badge-border-vertical-color_success':
-                    this.badge.variant === 'success',
+                    this._variant === 'success',
                 'avonni-progress-bar-badge-border-vertical-color_warning':
-                    this.badge.variant === 'warning',
+                    this._variant === 'warning',
                 'avonni-progress-bar-badge-border-vertical-color_error':
-                    this.badge.variant === 'error',
+                    this._variant === 'error',
                 'avonni-progress-bar-badge-border-vertical-color_lightest':
-                    this.badge.variant === 'lightest'
+                    this._variant === 'lightest'
             })
             .toString();
     }

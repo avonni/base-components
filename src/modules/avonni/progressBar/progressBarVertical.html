@@ -43,10 +43,12 @@
                     <template for:each={badges} for:item="badge">
                         <avonni-primitive-progress-bar-badge
                             key={badge.label}
-                            badge={badge}
+                            label={badge.label}
                             value={badge.value}
-                            is-horizontal={isHorizontal}
+                            variant={badge.variant}
+                            border-style={badge.borderStyle}
                             thickness={thickness}
+                            is-horizontal={isHorizontal}
                         ></avonni-primitive-progress-bar-badge>
                     </template>
                 </div>
