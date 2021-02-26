@@ -1,21 +1,25 @@
 <template>
     <div>
-        <lightning-layout>
+        <lightning-layout if:true={showPositionTop}>
             <lightning-layout-item size="12" class="slds-text-align_center">
                 <span
                     if:true={showPositionTopLeft}
+                    class="avonni-progress-bar-font-weight_large"
                     aria-hidden="true"
-                    class="slds-p-right_xx-small"
                 >
-                    <strong>{value}% {valueLabel}</strong>
+                    {value}% {valueLabel}
                 </span>
-                <span>{label}</span>
+                <span
+                    if:true={label}
+                    class="slds-p-right_xx-small slds-p-left_xx-small"
+                    >{label}</span
+                >
                 <span
                     if:true={showPositionTopRight}
+                    class="avonni-progress-bar-font-weight_large"
                     aria-hidden="true"
-                    class="slds-p-left_xx-small"
                 >
-                    <strong>{value}% {valueLabel}</strong>
+                    {value}% {valueLabel}
                 </span>
             </lightning-layout-item>
         </lightning-layout>
@@ -51,14 +55,13 @@
                 </div>
             </lightning-layout-item>
         </lightning-layout>
-        <lightning-layout>
-            <lightning-layout-item
-                size="12"
-                class="slds-text-align_center"
-                if:true={showPositionBottom}
-            >
-                <span aria-hidden="true">
-                    <strong>{value}% {valueLabel}</strong>
+        <lightning-layout if:true={showPositionBottom}>
+            <lightning-layout-item size="12" class="slds-text-align_center">
+                <span
+                    class="avonni-progress-bar-font-weight_large"
+                    aria-hidden="true"
+                >
+                    {value}% {valueLabel}
                 </span>
             </lightning-layout-item>
         </lightning-layout>
