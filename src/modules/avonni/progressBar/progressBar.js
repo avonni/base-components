@@ -246,6 +246,10 @@ export default class ProgressBar extends LightningElement {
             .toString();
     }
 
+    get assistiveText() {
+        return `Progress: ${this._value}%`;
+    }
+
     get isHorizontal() {
         return this._orientation === 'horizontal';
     }
