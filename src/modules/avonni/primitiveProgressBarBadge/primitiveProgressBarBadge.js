@@ -6,23 +6,25 @@ const VARIANTS = {
     valid: ['default', 'darker', 'success', 'warning', 'error', 'lightest'],
     default: 'default'
 };
+
 const BORDER_STYLES = {
     valid: ['solid', 'dashed', 'dotted', 'none'],
     default: 'none'
 };
 
+const ORIENTATION = {
+    valid: ['horizontal', 'vertical'],
+    default: 'horizontal'
+};
+
 export default class PrimitiveProgressBarBadge extends LightningElement {
     @api label;
     @api thickness;
-    @api isHorizontal;
 
     _value = 0;
     _variant = 'default';
     _borderStyle = 'none';
-
-    connectedCallback() {
-        console.log(this._borderStyle);
-    }
+    _orientation = 'horizontal';
 
     @api
     get value() {
@@ -61,6 +63,22 @@ export default class PrimitiveProgressBarBadge extends LightningElement {
             fallbackValue: BORDER_STYLES.default,
             validValues: BORDER_STYLES.valid
         });
+    }
+
+    @api
+    get orientation() {
+        return this._orientation;
+    }
+
+    set orientation(orientation) {
+        this._orientation = normalizeString(orientation, {
+            fallbackValue: ORIENTATION.default,
+            validValues: ORIENTATION.valid
+        });
+    }
+
+    get isHorizontal() {
+        return this._orientation === 'horizontal';
     }
 
     get computedInnerClass() {
