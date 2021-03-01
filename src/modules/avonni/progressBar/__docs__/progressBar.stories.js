@@ -62,7 +62,7 @@ export default {
             },
             defaultValue: 'top-right',
             description:
-                'Valid values include left, right, top-right, top-left, bottom-right, bottom-left and centered',
+                'Valid values include left, right, top-right, top-left, bottom-right and bottom-left',
             table: {
                 type: { summary: 'String' },
                 defaultValue: { summary: 'top-right' }
@@ -83,7 +83,7 @@ export default {
                 type: 'object'
             },
             description:
-                'Field: <ul><li>label: string</li> <li>value: number</li> <li>variant: string (default, darker, lightest, success, warning, error)</li> <li>borderStyle: string</li>',
+                'Field: <ul><li>label: string</li> <li>value: number</li> <li>variant: string (default, darker, lightest, success, warning, error)</li> <li>borderStyle: string (none, solid, dashed, dotted)</li>',
             table: {
                 type: { summary: 'Object' }
             }
