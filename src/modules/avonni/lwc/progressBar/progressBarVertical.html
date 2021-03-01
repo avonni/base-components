@@ -42,7 +42,7 @@
                 </div>
                 <div style="position: relative">
                     <template for:each={badges} for:item="badge">
-                        <avonni-primitive-progress-bar-badge
+                        <c-primitive-progress-bar-badge
                             key={badge.label}
                             label={badge.label}
                             value={badge.value}
@@ -50,7 +50,7 @@
                             border-style={badge.borderStyle}
                             thickness={thickness}
                             orientation={orientation}
-                        ></avonni-primitive-progress-bar-badge>
+                        ></c-primitive-progress-bar-badge>
                     </template>
                 </div>
             </lightning-layout-item>

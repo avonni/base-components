@@ -1,6 +1,6 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeBoolean, normalizeString } from 'avonni/utilsPrivate';
-import { classSet } from 'avonni/utils';
+import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
+import { classSet } from 'c/utils';
 import progressBar from './progressBar.html';
 import progressBarVertical from './progressBarVertical.html';
 
@@ -8,6 +8,7 @@ const SIZES = {
     valid: ['x-small', 'small', 'medium', 'large', 'full'],
     default: 'full'
 };
+
 const POSITIONS = {
     valid: [
         'left',
@@ -19,7 +20,9 @@ const POSITIONS = {
     ],
     default: 'top-right'
 };
+
 const VARIANTS = { valid: ['base', 'circular'], default: 'base' };
+
 const THEMES = {
     valid: [
         'base',
@@ -33,10 +36,12 @@ const THEMES = {
     ],
     default: 'base'
 };
+
 const THICKNESS = {
     valid: ['x-small', 'small', 'medium', 'large'],
     default: 'medium'
 };
+
 const ORIENTATION = {
     valid: ['horizontal', 'vertical'],
     default: 'horizontal'

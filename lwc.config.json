@@ -243,12 +243,20 @@
             "path": "src/modules/avonni/lwc/primitiveIframe/primitiveIframe.js"
         },
         {
+            "name": "c/primitiveProgressBarBadge",
+            "path": "src/modules/avonni/lwc/primitiveProgressBarBadge/primitiveProgressBarBadge.js"
+        },
+        {
             "name": "c/primitiveSelect",
             "path": "src/modules/avonni/lwc/primitiveSelect/primitiveSelect.js"
         },
         {
             "name": "c/profileCard",
             "path": "src/modules/avonni/lwc/profileCard/profileCard.js"
+        },
+        {
+            "name": "c/progressBar",
+            "path": "src/modules/avonni/lwc/progressBar/progressBar.js"
         },
         {
             "name": "c/progressCircle",
@@ -499,6 +507,10 @@
             "path": "src/modules/avonni/lwc/profileCard/profileCard.js"
         },
         {
+            "name": "avonni/progressBar",
+            "path": "src/modules/avonni/lwc/progressBar/progressBar.js"
+        },
+        {
             "name": "avonni/progressCircle",
             "path": "src/modules/avonni/lwc/progressCircle/progressCircle.js"
         },
@@ -614,6 +626,7 @@
         "avonni/pagination",
         "avonni/primitiveIcon",
         "avonni/profileCard",
+        "avonni/progressBar",
         "avonni/progressRing",
         "avonni/qrcode",
         "avonni/range",

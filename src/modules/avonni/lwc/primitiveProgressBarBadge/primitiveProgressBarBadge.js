@@ -1,6 +1,6 @@
 import { LightningElement, api } from 'lwc';
-import { classSet } from 'avonni/utils';
-import { normalizeString } from 'avonni/utilsPrivate';
+import { classSet } from 'c/utils';
+import { normalizeString } from 'c/utilsPrivate';
 
 const VARIANTS = {
     valid: ['default', 'darker', 'success', 'warning', 'error', 'lightest'],
