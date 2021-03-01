@@ -9,7 +9,7 @@ const VARIANTS = {
 
 const BORDER_STYLES = {
     valid: ['solid', 'dashed', 'dotted', 'none'],
-    default: 'none'
+    default: 'dotted'
 };
 
 const ORIENTATION = {
@@ -81,15 +81,17 @@ export default class PrimitiveProgressBarBadge extends LightningElement {
         return this._orientation === 'horizontal';
     }
 
-    get computedInnerClass() {
-        return classSet('avonni-progress-bar-badges')
+    get computedBadgeClass() {
+        return classSet('avonni-progress-bar-badge')
             .add({
-                'slds-badge_inverse': this._variant === 'darker',
-                'slds-badge_lightest avonni-progress-bar-badges-border_none':
+                'avonni-progress-bar-badge_inverse': this._variant === 'darker',
+                'avonni-progress-bar-badge_lightest':
                     this._variant === 'lightest',
-                'slds-theme_success': this._variant === 'success',
-                'slds-theme_warning': this._variant === 'warning',
-                'slds-theme_error': this._variant === 'error'
+                'avonni-progress-bar-badge_success':
+                    this._variant === 'success',
+                'avonni-progress-bar-badge_warning':
+                    this._variant === 'warning',
+                'avonni-progress-bar-badge_error': this._variant === 'error'
             })
             .toString();
     }

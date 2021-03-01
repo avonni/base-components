@@ -25,6 +25,6 @@
     width: var(--lwc-sizeLarge, 25rem);
 }
 
-.avonni-progress-bar-font-weight_large {
+.avonni-progress-bar_value {
     font-weight: var(--lwc-fontWeightBold, 700);
 }

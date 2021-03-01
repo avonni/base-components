@@ -22,14 +22,14 @@
                         <span
                             if:true={showPositionTopLeft}
                             aria-hidden="true"
-                            class="slds-p-left_xx-small avonni-progress-bar-font-weight_large"
+                            class="slds-p-left_xx-small avonni-progress-bar_value"
                         >
                             {value}% {valueLabel}
                         </span>
                     </lightning-layout-item>
                     <lightning-layout-item if:true={showPositionTopRight}>
                         <span
-                            class="avonni-progress-bar-font-weight_large"
+                            class="avonni-progress-bar_value"
                             aria-hidden="true"
                         >
                             {value}% {valueLabel}
@@ -55,7 +55,7 @@
                         >
                             <span
                                 aria-hidden="true"
-                                class="avonni-progress-bar-value_bottom-right avonni-progress-bar-font-weight_large"
+                                class="avonni-progress-bar-value_bottom-right avonni-progress-bar_value"
                             >
                                 {value}% {valueLabel}
                             </span>
@@ -63,7 +63,7 @@
                         <lightning-layout-item if:true={showPositionBottomLeft}>
                             <span
                                 aria-hidden="true"
-                                class="avonni-progress-bar-value_bottom-left avonni-progress-bar-font-weight_large"
+                                class="avonni-progress-bar-value_bottom-left avonni-progress-bar_value"
                             >
                                 {value}% {valueLabel}
                             </span>
@@ -86,10 +86,7 @@
                 if:true={showPositionRight}
                 class="slds-p-bottom_x-small"
             >
-                <span
-                    class="avonni-progress-bar-font-weight_large"
-                    aria-hidden="true"
-                >
+                <span class="avonni-progress-bar_value" aria-hidden="true">
                     {value}% {valueLabel}
                 </span>
             </lightning-layout-item>
