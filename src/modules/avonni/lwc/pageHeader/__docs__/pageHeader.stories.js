@@ -107,7 +107,10 @@ const items = [
     {
         label: 'Field 5',
         value: 'This is a text',
-        type: 'text'
+        type: 'text',
+        typeAttributes: {
+            linkify: true
+        }
     },
     {
         label: 'Field 6',

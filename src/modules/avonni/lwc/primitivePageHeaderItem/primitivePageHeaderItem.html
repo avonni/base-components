@@ -1,1 +1,15 @@
-<template></template>
+<template>
+    <!-- text -->
+    <template if:true={isText}>
+        <lightning-base-formatted-text value={value} linkify={typeAttribute0}>
+        </lightning-base-formatted-text>
+    </template>
+
+    <!-- boolean -->
+    <template if:true={isBoolean}>
+        <template if:true={isChecked}>
+            <lightning-icon size="x-small" icon-name="utility:check">
+            </lightning-icon>
+        </template>
+    </template>
+</template>
