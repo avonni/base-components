@@ -76,7 +76,7 @@ export default {
 
 const items = [
     {
-        label: 'Field 1',
+        label: 'Currency',
         value: 70,
         type: 'currency',
         typeAttributes: {
@@ -84,17 +84,17 @@ const items = [
         }
     },
     {
-        label: 'Field 2',
+        label: 'Email',
         value: 'Avonni@Avonni.com',
         type: 'email'
     },
     {
-        label: 'Field 3',
+        label: 'Phone',
         value: '514-555-1234',
         type: 'phone'
     },
     {
-        label: 'Field 4',
+        label: 'Date',
         value: '10/12/1991',
         type: 'date',
         typeAttributes: {
@@ -105,7 +105,7 @@ const items = [
         }
     },
     {
-        label: 'Field 5',
+        label: 'Text',
         value: 'This is a text',
         type: 'text',
         typeAttributes: {
@@ -113,7 +113,7 @@ const items = [
         }
     },
     {
-        label: 'Field 6',
+        label: 'Boolean',
         value: 'true',
         type: 'boolean'
     }
@@ -123,6 +123,7 @@ const Template = (args) => PageHeader(args);
 
 export const Base = Template.bind({});
 Base.args = {
+    variant: 'record-home',
     iconName: 'standard:opportunity',
     label: 'Label',
     title: 'Title',

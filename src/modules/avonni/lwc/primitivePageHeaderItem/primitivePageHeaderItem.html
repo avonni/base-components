@@ -12,4 +12,14 @@
             </lightning-icon>
         </template>
     </template>
+
+    <!-- phone -->
+    <template if:true={isPhone}>
+        <lightning-formatted-phone value={value}> </lightning-formatted-phone>
+    </template>
+
+    <!-- email -->
+    <template if:true={isEmail}>
+        <lightning-formatted-email value={value}> </lightning-formatted-email>
+    </template>
 </template>

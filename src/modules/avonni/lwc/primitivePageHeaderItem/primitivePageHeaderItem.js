@@ -1,5 +1,6 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
+import { assert } from 'c/utilsPrivate';
 
 const TYPES = {
     valid: [
@@ -15,6 +16,51 @@ const TYPES = {
         'location'
     ],
     default: 'text'
+};
+
+const STANDARD_TYPES = {
+    text: ['linkify'],
+    boolean: true,
+    number: [
+        'minimumIntegerDigits',
+        'minimumFractionDigits',
+        'maximumFractionDigits',
+        'minimumSignificantDigits',
+        'maximumSignificantDigits'
+    ],
+    currency: [
+        'currencyCode',
+        'currencyDisplayAs',
+        'minimumIntegerDigits',
+        'minimumFractionDigits',
+        'maximumFractionDigits',
+        'minimumSignificantDigits',
+        'maximumSignificantDigits'
+    ],
+    percent: [
+        'minimumIntegerDigits',
+        'minimumFractionDigits',
+        'maximumFractionDigits',
+        'minimumSignificantDigits',
+        'maximumSignificantDigits'
+    ],
+    email: true,
+    date: [
+        'day',
+        'era',
+        'hour',
+        'hour12',
+        'minute',
+        'month',
+        'second',
+        'timeZone',
+        'timeZoneName',
+        'weekday',
+        'year'
+    ],
+    phone: true,
+    url: ['label', 'target', 'tooltip'],
+    location: true
 };
 
 export default class PrimitivePageHeaderItem extends LightningElement {
@@ -52,8 +98,23 @@ export default class PrimitivePageHeaderItem extends LightningElement {
         });
     }
 
+    isValidType(typeName) {
+        return !!STANDARD_TYPES[typeName];
+    }
+
+    getAttributesNames(typeName) {
+        assert(
+            this.isValidType(typeName),
+            `your are trying to access an invalid type (${typeName})`
+        );
+
+        return Array.isArray(STANDARD_TYPES[typeName])
+            ? STANDARD_TYPES[typeName]
+            : [];
+    }
+
     isType(typeName) {
-        return typeName === this.type;
+        return typeName === this._type;
     }
 
     get isText() {
