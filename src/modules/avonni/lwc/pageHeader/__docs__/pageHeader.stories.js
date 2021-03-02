@@ -78,7 +78,10 @@ const items = [
     {
         label: 'Field 1',
         value: 70,
-        type: 'currency'
+        type: 'currency',
+        typeAttributes: {
+            currencyCode: 'EUR'
+        }
     },
     {
         label: 'Field 2',
@@ -93,7 +96,23 @@ const items = [
     {
         label: 'Field 4',
         value: '10/12/1991',
-        type: 'date'
+        type: 'date',
+        typeAttributes: {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: '2-digit'
+        }
+    },
+    {
+        label: 'Field 5',
+        value: 'This is a text',
+        type: 'text'
+    },
+    {
+        label: 'Field 6',
+        value: 'true',
+        type: 'boolean'
     }
 ];
 

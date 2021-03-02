@@ -635,6 +635,7 @@
         "avonni/map",
         "avonni/mediaObject",
         "avonni/menuItemDialog",
+        "avonni/pageHeader",
         "avonni/pagination",
         "avonni/primitiveIcon",
         "avonni/profileCard",

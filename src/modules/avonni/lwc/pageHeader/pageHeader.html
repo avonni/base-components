@@ -39,10 +39,10 @@
                                     </p>
                                 </template>
                                 <template if:false={isBaseVariant}>
-                                    <template if:false={label}>
+                                    <template if:false={hasStringLabel}>
                                         <slot name="label"></slot>
                                     </template>
-                                    <template if:true={label}>
+                                    <template if:true={hasStringLabel}>
                                         <span>{label}</span>
                                     </template>
                                     <div class="slds-page-header__name-title">
@@ -118,7 +118,22 @@
                                         class="slds-truncate"
                                         title={item.value}
                                     >
-                                        {item.value}
+                                        <c-primitive-page-header-item
+                                            label={item.label}
+                                            value={item.value}
+                                            type={item.type}
+                                            type-attribute-0={cell.typeAttribute0}
+                                            type-attribute-1={item.typeAttribute1}
+                                            type-attribute-2={item.typeAttribute2}
+                                            type-attribute-3={item.typeAttribute3}
+                                            type-attribute-4={item.typeAttribute4}
+                                            type-attribute-5={item.typeAttribute5}
+                                            type-attribute-6={item.typeAttribute6}
+                                            type-attribute-7={item.typeAttribute7}
+                                            type-attribute-8={item.typeAttribute8}
+                                            type-attribute-9={item.typeAttribute9}
+                                            type-attribute-10={item.typeAttribute10}
+                                        ></c-primitive-page-header-item>
                                     </div>
                                 </li>
                             </template>
