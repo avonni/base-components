@@ -247,6 +247,10 @@
             "path": "src/modules/avonni/lwc/primitiveIframe/primitiveIframe.js"
         },
         {
+            "name": "c/primitivePageHeaderItem",
+            "path": "src/modules/avonni/lwc/primitivePageHeaderItem/primitivePageHeaderItem.js"
+        },
+        {
             "name": "c/primitiveProgressBarBadge",
             "path": "src/modules/avonni/lwc/primitiveProgressBarBadge/primitiveProgressBarBadge.js"
         },

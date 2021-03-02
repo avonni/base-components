@@ -94,6 +94,9 @@
             </template>
         </div>
         <template if:true={isRecordHomeVariant}>
+            <template if:false={showDetails}>
+                <slot name="details"></slot>
+            </template>
             <template if:true={showDetails}>
                 <div
                     class="slds-page-header__row slds-page-header__row_gutters"

@@ -24,10 +24,6 @@ export default class PageHeader extends LightningElement {
     showInfo = true;
     showControls = true;
 
-    connectedCallback() {
-        console.log(this.items);
-    }
-
     render() {
         if (this._variant === 'record-home vertical') {
             return pageHeaderVertical;

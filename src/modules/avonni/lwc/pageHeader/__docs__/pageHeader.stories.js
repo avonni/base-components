@@ -107,3 +107,13 @@ Base.args = {
     info: 'Info',
     items: items
 };
+
+export const Vertical = Template.bind({});
+Vertical.args = {
+    variant: 'record-home vertical',
+    iconName: 'standard:opportunity',
+    label: 'Label',
+    title: 'Title',
+    info: 'Info',
+    items: items
+};
