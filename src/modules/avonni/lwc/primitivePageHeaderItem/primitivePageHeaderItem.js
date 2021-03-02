@@ -1,6 +1,5 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
-import { assert } from 'c/utilsPrivate';
 
 const TYPES = {
     valid: [
@@ -64,6 +63,7 @@ const STANDARD_TYPES = {
 };
 
 export default class PrimitivePageHeaderItem extends LightningElement {
+    @api item;
     @api label;
     @api value;
     @api typeAttribute0;
@@ -82,8 +82,8 @@ export default class PrimitivePageHeaderItem extends LightningElement {
 
     connectedCallback() {
         console.log(this.type);
-        console.log(this.isText);
-        console.log(this.typeAttribute0);
+        console.log(this.getType(this.typeAttribute0));
+        console.log(this.item.typeAttributes);
     }
 
     @api
@@ -96,21 +96,6 @@ export default class PrimitivePageHeaderItem extends LightningElement {
             fallbackValue: TYPES.default,
             validValues: TYPES.valid
         });
-    }
-
-    isValidType(typeName) {
-        return !!STANDARD_TYPES[typeName];
-    }
-
-    getAttributesNames(typeName) {
-        assert(
-            this.isValidType(typeName),
-            `your are trying to access an invalid type (${typeName})`
-        );
-
-        return Array.isArray(STANDARD_TYPES[typeName])
-            ? STANDARD_TYPES[typeName]
-            : [];
     }
 
     isType(typeName) {
@@ -156,8 +141,66 @@ export default class PrimitivePageHeaderItem extends LightningElement {
     get isBoolean() {
         return this.isType('boolean');
     }
+    // from primitiveCellFactory.js
+    get urlTarget() {
+        return this.typeAttribute1 || '_self';
+    }
+
+    get urlTooltip() {
+        if (this.typeAttribute2 === '') {
+            return '';
+        }
+        return this.typeAttribute2 || this.value;
+    }
 
     get isChecked() {
         return !!this.value;
+    }
+
+    get computedDateLocalDay() {
+        return this.typeAttribute0 || 'numeric';
+    }
+
+    get computedDateLocalMonth() {
+        return this.typeAttribute1 || 'short';
+    }
+
+    get computedDateLocalYear() {
+        return this.typeAttribute2 || 'numeric';
+    }
+
+    // from columns.js
+    isObjectLike(value) {
+        return typeof value === 'object' && value !== null;
+    }
+
+    getTypeAttributesValues(item) {
+        if (this.isObjectLike(item.typeAttributes)) {
+            return item.typeAttributes;
+        }
+        return {};
+    }
+
+    getSubTypeAttributesValues(item) {
+        if (this.isObjectLike(item.typeAttributes.subTypeAttributes)) {
+            return item.typeAttributes.subTypeAttributes;
+        }
+        return {};
+    }
+
+    // from types.js
+    getTypeAttributesNames(typeName) {
+        return Array.isArray(STANDARD_TYPES[typeName])
+            ? STANDARD_TYPES[typeName]
+            : [];
+    }
+
+    getType(typeName) {
+        if (STANDARD_TYPES[typeName]) {
+            return {
+                typeAttributes: this.getTypeAttributesNames(typeName)
+            };
+        }
+        return undefined;
     }
 }
