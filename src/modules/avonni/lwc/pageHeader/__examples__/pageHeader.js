@@ -1,10 +1,24 @@
-// import { LightningElement, api } from 'lwc';
+import Component from '../../storybookWrappers/pageHeader/pageHeader';
 
-// export default class PageHeader extends LightningElement {
-//     @api iconName;
-//     @api label;
-//     @api title;
-//     @api info;
-//     @api variant = 'base';
-//     @api items = [];
-// }
+customElements.define(
+    'ac-avonni-page-header',
+    Component.CustomElementConstructor
+);
+
+export const PageHeader = ({
+    iconName,
+    label,
+    title,
+    info,
+    variant,
+    items
+}) => {
+    const element = document.createElement('ac-avonni-page-header');
+    element.iconName = iconName;
+    element.label = label;
+    element.title = title;
+    element.info = info;
+    element.variant = variant;
+    element.items = items;
+    return element;
+};

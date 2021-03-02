@@ -219,6 +219,10 @@
             "path": "src/modules/avonni/lwc/messageDispatcher/messageDispatcher.js"
         },
         {
+            "name": "c/pageHeader",
+            "path": "src/modules/avonni/lwc/pageHeader/pageHeader.js"
+        },
+        {
             "name": "c/pagination",
             "path": "src/modules/avonni/lwc/pagination/pagination.js"
         },
@@ -493,6 +497,10 @@
         {
             "name": "avonni/menuItemDialog",
             "path": "src/modules/avonni/lwc/menuItemDialog/menuItemDialog.js"
+        },
+        {
+            "name": "avonni/pageHeader",
+            "path": "src/modules/avonni/lwc/pageHeader/pageHeader.js"
         },
         {
             "name": "avonni/pagination",
