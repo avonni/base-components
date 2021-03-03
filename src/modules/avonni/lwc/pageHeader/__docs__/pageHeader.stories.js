@@ -80,19 +80,21 @@ const items = [
         value: 70,
         type: 'currency',
         typeAttributes: {
-            currencyCode: 'EUR'
+            currencyCode: 'EUR',
+            currencyDisplayAs: 'name',
+            minimumIntegerDigits: 2
         }
     },
-    // {
-    //     label: 'Email',
-    //     value: 'Avonni@Avonni.com',
-    //     type: 'email'
-    // },
-    // {
-    //     label: 'Phone',
-    //     value: '514-555-1234',
-    //     type: 'phone'
-    // },
+    {
+        label: 'Email',
+        value: 'Avonni@Avonni.com',
+        type: 'email'
+    },
+    {
+        label: 'Phone',
+        value: '514-555-1234',
+        type: 'phone'
+    },
     {
         label: 'Date',
         value: '10/12/1991',
@@ -112,36 +114,36 @@ const items = [
             linkify: true
         }
     },
-    // {
-    //     label: 'Boolean',
-    //     value: 'true',
-    //     type: 'boolean'
-    // },
+    {
+        label: 'Boolean',
+        value: 'true',
+        type: 'boolean'
+    },
     {
         label: 'URL',
         value: 'salesforce.com',
         tooltip: 'Use full domain name',
         target: '_blank',
         type: 'url'
+    },
+    {
+        label: 'Location',
+        value: {
+            latitude: '37.798460',
+            longitude: '-122.3948370'
+        },
+        type: 'location'
+    },
+    {
+        label: 'Percent',
+        value: '0.10',
+        type: 'percent'
+    },
+    {
+        label: 'Number',
+        value: '11',
+        type: 'number'
     }
-    // {
-    //     label: 'Location',
-    //     value: {
-    //         latitude: '37.798460',
-    //         longitude: '-122.3948370'
-    //     },
-    //     type: 'location'
-    // },
-    // {
-    //     label: 'Percent',
-    //     value: '0.10',
-    //     type: 'percent'
-    // },
-    // {
-    //     label: 'Number',
-    //     value: '11',
-    //     type: 'number'
-    // }
 ];
 
 const Template = (args) => PageHeader(args);

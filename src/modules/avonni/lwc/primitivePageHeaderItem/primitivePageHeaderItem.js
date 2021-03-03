@@ -81,7 +81,7 @@ export default class PrimitivePageHeaderItem extends LightningElement {
     _type = 'text';
 
     connectedCallback() {
-        console.log(this.typeAttribute0);
+        // console.log(this.typeAttribute0);
         // console.log(this.getTypeAttributesValues(this.item))
         // console.log(this.getNormalizedSubTypeAttribute(this.getTypeAttributesValues(this.item)))
         // console.log(this.getType('percent'))
@@ -182,18 +182,11 @@ export default class PrimitivePageHeaderItem extends LightningElement {
     }
 
     // giving us an object of all de subAttributes from colums.js
-    getNormalizedSubTypeAttribute(typeAttributes) {
+    getNormalizedTypeAttribute(typeAttributes) {
         return Object.assign({}, typeAttributes);
     }
 
-    getSubTypeAttributesValues(item) {
-        if (this.isObjectLike(item.typeAttributes)) {
-            return item.typeAttributes;
-        }
-        return {};
-    }
-
-    // giving me an array of all the possible typeAttributes of a certain type from type.js
+    // giving us an array of all the possible typeAttributes of a certain type from type.js
     isValidType(typeName) {
         return !!STANDARD_TYPES[typeName];
     }
@@ -215,9 +208,7 @@ export default class PrimitivePageHeaderItem extends LightningElement {
 
     computeItemTypeAttributes(item) {
         const attributesNames = this.getAttributesNames(item.type);
-        console.log(attributesNames);
-        const typeAttributesValues = this.getSubTypeAttributesValues(item);
-        console.log(typeAttributesValues);
+        const typeAttributesValues = this.getTypeAttributesValues(item);
 
         return attributesNames.reduce((attrs, attrName, index) => {
             const typeAttributeName = `typeAttribute${index}`;
