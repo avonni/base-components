@@ -1,8 +1,8 @@
 <template>
     <!-- text -->
     <template if:true={isText}>
-        <lightning-base-formatted-text value={value} linkify={typeAttribute0}>
-        </lightning-base-formatted-text>
+        <lightning-formatted-text value={value} linkify={typeAttribute0}>
+        </lightning-formatted-text>
     </template>
 
     <!-- boolean -->
@@ -27,9 +27,9 @@
     <template if:true={isUrl}>
         <lightning-formatted-url
             value={value}
-            tooltip={urlTooltip}
+            tooltip={typeAttribute1}
             label={typeAttribute0}
-            target={urlTarget}
+            target={typeAttribute2}
         >
         </lightning-formatted-url>
     </template>

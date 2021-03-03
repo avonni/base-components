@@ -66,6 +66,7 @@ export default class PrimitivePageHeaderItem extends LightningElement {
     @api item;
     @api label;
     @api value;
+    @api typeAttributes;
     @api typeAttribute0;
     @api typeAttribute1;
     @api typeAttribute2;
@@ -80,10 +81,21 @@ export default class PrimitivePageHeaderItem extends LightningElement {
 
     _type = 'text';
 
-    connectedCallback() {
-        console.log(this.type);
-        console.log(this.getType(this.typeAttribute0));
-        console.log(this.item.typeAttributes);
+    // connectedCallback() {
+    //     console.log(this.type);
+    //     console.log(this.typeAttribute1);
+    //     console.log(this.typeAttributes);
+    // }
+
+    get linkify() {
+        console.log(this.typeAttributes[Object.keys(this.typeAttributes)[0]]);
+        if (
+            this._type === 'text' &&
+            this.typeAttributes[Object.keys(this.typeAttributes)[0]] === true
+        ) {
+            return true;
+        }
+        return false;
     }
 
     @api
@@ -157,16 +169,11 @@ export default class PrimitivePageHeaderItem extends LightningElement {
         return !!this.value;
     }
 
-    get computedDateLocalDay() {
-        return this.typeAttribute0 || 'numeric';
-    }
-
-    get computedDateLocalMonth() {
-        return this.typeAttribute1 || 'short';
-    }
-
-    get computedDateLocalYear() {
-        return this.typeAttribute2 || 'numeric';
+    get dateValue() {
+        if (this.value === null) {
+            return '';
+        }
+        return new Date(this.value);
     }
 
     // from columns.js
@@ -202,5 +209,35 @@ export default class PrimitivePageHeaderItem extends LightningElement {
             };
         }
         return undefined;
+    }
+
+    isValidType(typeName) {
+        return !!this.getType(typeName);
+    }
+
+    computeCellTypeAttributes(item, types) {
+        const attributesNames = types.getType(item.type).typeAttributes;
+        const typeAttributesValues = this.getTypeAttributesValues(item);
+
+        return attributesNames.reduce((attrs, attrName, index) => {
+            const typeAttributeName = `typeAttribute${index}`;
+
+            attrs[typeAttributeName] = this.resolveAttributeValue(
+                typeAttributesValues[attrName]
+            );
+
+            return attrs;
+        }, {});
+    }
+
+    resolveAttributeValue(attrValue, row) {
+        if (this.isObjectLike(attrValue)) {
+            const fieldName = attrValue.fieldName;
+            if (fieldName) {
+                return row[fieldName];
+            }
+        }
+
+        return attrValue;
     }
 }

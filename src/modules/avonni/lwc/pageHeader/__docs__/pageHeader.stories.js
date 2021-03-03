@@ -95,7 +95,7 @@ const items = [
     },
     {
         label: 'Date',
-        value: '1547250828000',
+        value: '10/12/1991',
         type: 'date',
         typeAttributes: {
             weekday: 'long',
