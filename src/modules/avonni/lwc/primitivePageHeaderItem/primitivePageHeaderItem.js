@@ -81,12 +81,8 @@ export default class PrimitivePageHeaderItem extends LightningElement {
     _type = 'text';
 
     connectedCallback() {
-        // console.log(this.typeAttribute0);
-        // console.log(this.getTypeAttributesValues(this.item))
-        // console.log(this.getNormalizedSubTypeAttribute(this.getTypeAttributesValues(this.item)))
-        // console.log(this.getType('percent'))
-        // console.log(this.getSubTypeAttributesValues(this.item))
-        console.log(this.computeItemTypeAttributes(this.item));
+        // console.log(this.getNormalizedTypeAttribute(this.getTypeAttributesValues(this.item)))
+        // console.log(this.computeItemTypeAttributes(this.item));
     }
 
     @api
@@ -179,11 +175,6 @@ export default class PrimitivePageHeaderItem extends LightningElement {
             return item.typeAttributes;
         }
         return {};
-    }
-
-    // giving us an object of all de subAttributes from colums.js
-    getNormalizedTypeAttribute(typeAttributes) {
-        return Object.assign({}, typeAttributes);
     }
 
     // giving us an array of all the possible typeAttributes of a certain type from type.js
