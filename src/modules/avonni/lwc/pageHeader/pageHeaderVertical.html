@@ -40,9 +40,39 @@
             </template>
             <template if:true={showDetails}>
                 <ul class="slds-page-header__detail-list">
-                    <li class="slds-page-header__detail-item">
-                        <slot name="details"></slot>
-                    </li>
+                    <template for:each={items} for:item="item">
+                        <li
+                            key={item.label}
+                            class="slds-page-header__detail-item"
+                        >
+                            <div
+                                class="slds-text-title slds-truncate"
+                                title={item.label}
+                            >
+                                {item.label}
+                            </div>
+                            <div title={item.value}>
+                                <c-primitive-page-header-item
+                                    item={item}
+                                    label={item.label}
+                                    value={item.value}
+                                    type={item.type}
+                                    type-attribute-0={item.typeAttribute0}
+                                    type-attribute-1={item.typeAttribute1}
+                                    type-attribute-2={item.typeAttribute2}
+                                    type-attribute-3={item.typeAttribute3}
+                                    type-attribute-4={item.typeAttribute4}
+                                    type-attribute-5={item.typeAttribute5}
+                                    type-attribute-6={item.typeAttribute6}
+                                    type-attribute-7={item.typeAttribute7}
+                                    type-attribute-8={item.typeAttribute8}
+                                    type-attribute-9={item.typeAttribute9}
+                                    type-attribute-10={item.typeAttribute10}
+                                >
+                                </c-primitive-page-header-item>
+                            </div>
+                        </li>
+                    </template>
                 </ul>
             </template>
         </div>
