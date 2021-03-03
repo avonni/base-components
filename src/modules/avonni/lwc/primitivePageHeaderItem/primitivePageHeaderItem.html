@@ -1,10 +1,4 @@
 <template>
-    <!-- text -->
-    <template if:true={isText}>
-        <lightning-formatted-text value={value} linkify={typeAttribute0}>
-        </lightning-formatted-text>
-    </template>
-
     <!-- boolean -->
     <template if:true={isBoolean}>
         <template if:true={isChecked}>
@@ -23,17 +17,6 @@
         <lightning-formatted-email value={value}> </lightning-formatted-email>
     </template>
 
-    <!-- url -->
-    <template if:true={isUrl}>
-        <lightning-formatted-url
-            value={value}
-            tooltip={typeAttribute1}
-            label={typeAttribute0}
-            target={typeAttribute2}
-        >
-        </lightning-formatted-url>
-    </template>
-
     <!-- location -->
     <template if:true={isLocation}>
         <lightning-formatted-location
@@ -41,6 +24,23 @@
             longitude={value.longitude}
         >
         </lightning-formatted-location>
+    </template>
+
+    <!-- url -->
+    <template if:true={isUrl}>
+        <lightning-formatted-url
+            value={value}
+            label={typeAttribute0}
+            target={urlTarget}
+            tooltip={urlTooltip}
+        >
+        </lightning-formatted-url>
+    </template>
+
+    <!-- text -->
+    <template if:true={isText}>
+        <lightning-formatted-text value={value} linkify={typeAttribute0}>
+        </lightning-formatted-text>
     </template>
 
     <!-- percent -->

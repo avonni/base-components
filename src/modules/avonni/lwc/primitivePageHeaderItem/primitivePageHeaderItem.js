@@ -66,7 +66,6 @@ export default class PrimitivePageHeaderItem extends LightningElement {
     @api item;
     @api label;
     @api value;
-    @api typeAttributes;
     @api typeAttribute0;
     @api typeAttribute1;
     @api typeAttribute2;
@@ -81,21 +80,13 @@ export default class PrimitivePageHeaderItem extends LightningElement {
 
     _type = 'text';
 
-    // connectedCallback() {
-    //     console.log(this.type);
-    //     console.log(this.typeAttribute1);
-    //     console.log(this.typeAttributes);
-    // }
-
-    get linkify() {
-        console.log(this.typeAttributes[Object.keys(this.typeAttributes)[0]]);
-        if (
-            this._type === 'text' &&
-            this.typeAttributes[Object.keys(this.typeAttributes)[0]] === true
-        ) {
-            return true;
-        }
-        return false;
+    connectedCallback() {
+        console.log(this.typeAttribute0);
+        // console.log(this.getTypeAttributesValues(this.item))
+        // console.log(this.getNormalizedSubTypeAttribute(this.getTypeAttributesValues(this.item)))
+        // console.log(this.getType('percent'))
+        // console.log(this.getSubTypeAttributesValues(this.item))
+        console.log(this.computeItemTypeAttributes(this.item));
     }
 
     @api
@@ -153,6 +144,7 @@ export default class PrimitivePageHeaderItem extends LightningElement {
     get isBoolean() {
         return this.isType('boolean');
     }
+
     // from primitiveCellFactory.js
     get urlTarget() {
         return this.typeAttribute1 || '_self';
@@ -176,11 +168,12 @@ export default class PrimitivePageHeaderItem extends LightningElement {
         return new Date(this.value);
     }
 
-    // from columns.js
+    // telling us if it's an object or not from utils.js
     isObjectLike(value) {
         return typeof value === 'object' && value !== null;
     }
 
+    // giving us an object of all the diffent typeAttributes for a chosen Item from column.js
     getTypeAttributesValues(item) {
         if (this.isObjectLike(item.typeAttributes)) {
             return item.typeAttributes;
@@ -188,15 +181,24 @@ export default class PrimitivePageHeaderItem extends LightningElement {
         return {};
     }
 
+    // giving us an object of all de subAttributes from colums.js
+    getNormalizedSubTypeAttribute(typeAttributes) {
+        return Object.assign({}, typeAttributes);
+    }
+
     getSubTypeAttributesValues(item) {
-        if (this.isObjectLike(item.typeAttributes.subTypeAttributes)) {
-            return item.typeAttributes.subTypeAttributes;
+        if (this.isObjectLike(item.typeAttributes)) {
+            return item.typeAttributes;
         }
         return {};
     }
 
-    // from types.js
-    getTypeAttributesNames(typeName) {
+    // giving me an array of all the possible typeAttributes of a certain type from type.js
+    isValidType(typeName) {
+        return !!STANDARD_TYPES[typeName];
+    }
+
+    getAttributesNames(typeName) {
         return Array.isArray(STANDARD_TYPES[typeName])
             ? STANDARD_TYPES[typeName]
             : [];
@@ -205,39 +207,23 @@ export default class PrimitivePageHeaderItem extends LightningElement {
     getType(typeName) {
         if (STANDARD_TYPES[typeName]) {
             return {
-                typeAttributes: this.getTypeAttributesNames(typeName)
+                typeAttributes: this.getAttributesNames(typeName)
             };
         }
         return undefined;
     }
 
-    isValidType(typeName) {
-        return !!this.getType(typeName);
-    }
-
-    computeCellTypeAttributes(item, types) {
-        const attributesNames = types.getType(item.type).typeAttributes;
-        const typeAttributesValues = this.getTypeAttributesValues(item);
+    computeItemTypeAttributes(item) {
+        const attributesNames = this.getAttributesNames(item.type);
+        console.log(attributesNames);
+        const typeAttributesValues = this.getSubTypeAttributesValues(item);
+        console.log(typeAttributesValues);
 
         return attributesNames.reduce((attrs, attrName, index) => {
             const typeAttributeName = `typeAttribute${index}`;
-
-            attrs[typeAttributeName] = this.resolveAttributeValue(
-                typeAttributesValues[attrName]
-            );
+            attrs[typeAttributeName] = typeAttributesValues[attrName];
 
             return attrs;
         }, {});
-    }
-
-    resolveAttributeValue(attrValue, row) {
-        if (this.isObjectLike(attrValue)) {
-            const fieldName = attrValue.fieldName;
-            if (fieldName) {
-                return row[fieldName];
-            }
-        }
-
-        return attrValue;
     }
 }
