@@ -1,0 +1,37 @@
+.time-tile {
+    border: 1px solid var(--lwc-colorBorder, #dddbda);
+    width: 100%;
+    padding: var(--lwc-spacingMedium, 1rem);
+    background-color: #fff;
+}
+
+.time-tile:disabled {
+    background-color: var(--lwc-colorBackground, #f3f2f2);
+    color: var(--lwc-colorTextPlaceholder, #706e6b);
+}
+
+.table {
+    display: flex;
+}
+
+.day {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    text-align: center;
+}
+
+.day__label,
+.time {
+    flex: 1 1 auto;
+}
+
+.day__label {
+    padding: var(--lwc-spacingMedium, 1rem);
+    text-transform: uppercase;
+    color: var(--lwc-colorTextPlaceholder, #706e6b);
+}
+
+.time {
+    padding: 2px;
+}

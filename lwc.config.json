@@ -143,6 +143,10 @@
             "path": "src/modules/avonni/lwc/confetti/confetti.js"
         },
         {
+            "name": "c/dateTimePicker",
+            "path": "src/modules/avonni/lwc/dateTimePicker/dateTimePicker.js"
+        },
+        {
             "name": "c/dialog",
             "path": "src/modules/avonni/lwc/dialog/dialog.js"
         },
@@ -439,6 +443,10 @@
             "path": "src/modules/avonni/lwc/confetti/confetti.js"
         },
         {
+            "name": "avonni/dateTimePicker",
+            "path": "src/modules/avonni/lwc/dateTimePicker/dateTimePicker.js"
+        },
+        {
             "name": "avonni/dialog",
             "path": "src/modules/avonni/lwc/dialog/dialog.js"
         },
@@ -609,6 +617,7 @@
         "avonni/colorPalette",
         "avonni/colorPicker",
         "avonni/confetti",
+        "avonni/dateTimePicker",
         "avonni/dialog",
         "avonni/dynamicMenu",
         "avonni/emojiPicker",
