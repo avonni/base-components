@@ -14,7 +14,11 @@
 
     <!-- email -->
     <template if:true={isEmail}>
-        <lightning-formatted-email value={value}> </lightning-formatted-email>
+        <lightning-formatted-email
+            value={value}
+            hide-icon={computedTypeAttribute.typeAttribute0}
+        >
+        </lightning-formatted-email>
     </template>
 
     <!-- location -->
@@ -30,7 +34,7 @@
     <template if:true={isUrl}>
         <lightning-formatted-url
             value={value}
-            label={props.typeAttribute0}
+            label={label}
             target={urlTarget}
             tooltip={urlTooltip}
         >
@@ -39,7 +43,10 @@
 
     <!-- text -->
     <template if:true={isText}>
-        <lightning-formatted-text value={value} linkify={props.typeAttribute0}>
+        <lightning-formatted-text
+            value={value}
+            linkify={computedTypeAttribute.typeAttribute0}
+        >
         </lightning-formatted-text>
     </template>
 
@@ -48,11 +55,11 @@
         <lightning-formatted-number
             value={value}
             format-style="percent"
-            minimum-integer-digits={props.typeAttribute0}
-            minimum-fraction-digits={props.typeAttribute1}
-            maximum-fraction-digits={props.typeAttribute2}
-            minimum-significant-digits={props.typeAttribute3}
-            maximum-significant-digits={props.typeAttribute4}
+            minimum-integer-digits={computedTypeAttribute.typeAttribute0}
+            minimum-fraction-digits={computedTypeAttribute.typeAttribute1}
+            maximum-fraction-digits={computedTypeAttribute.typeAttribute2}
+            minimum-significant-digits={computedTypeAttribute.typeAttribute3}
+            maximum-significant-digits={computedTypeAttribute.typeAttribute4}
         >
         </lightning-formatted-number>
     </template>
@@ -61,11 +68,11 @@
     <template if:true={isNumber}>
         <lightning-formatted-number
             value={value}
-            minimum-integer-digits={props.typeAttribute0}
-            minimum-fraction-digits={props.typeAttribute1}
-            maximum-fraction-digits={props.typeAttribute2}
-            minimum-significant-digits={props.typeAttribute3}
-            maximum-significant-digits={props.typeAttribute4}
+            minimum-integer-digits={computedTypeAttribute.typeAttribute0}
+            minimum-fraction-digits={computedTypeAttribute.typeAttribute1}
+            maximum-fraction-digits={computedTypeAttribute.typeAttribute2}
+            minimum-significant-digits={computedTypeAttribute.typeAttribute3}
+            maximum-significant-digits={computedTypeAttribute.typeAttribute4}
         >
         </lightning-formatted-number>
     </template>
@@ -75,13 +82,13 @@
         <lightning-formatted-number
             value={value}
             format-style="currency"
-            currency-code={props.typeAttribute0}
-            currency-display-as={props.typeAttribute1}
-            minimum-integer-digits={props.typeAttribute2}
-            minimum-fraction-digits={props.typeAttribute3}
-            maximum-fraction-digits={props.typeAttribute4}
-            minimum-significant-digits={props.typeAttribute5}
-            maximum-significant-digits={props.typeAttribute6}
+            currency-code={computedTypeAttribute.typeAttribute0}
+            currency-display-as={computedTypeAttribute.typeAttribute1}
+            minimum-integer-digits={computedTypeAttribute.typeAttribute2}
+            minimum-fraction-digits={computedTypeAttribute.typeAttribute3}
+            maximum-fraction-digits={computedTypeAttribute.typeAttribute4}
+            minimum-significant-digits={computedTypeAttribute.typeAttribute5}
+            maximum-significant-digits={computedTypeAttribute.typeAttribute6}
         >
         </lightning-formatted-number>
     </template>
@@ -90,17 +97,17 @@
     <template if:true={isDateTime}>
         <lightning-formatted-date-time
             value={dateValue}
-            day={props.typeAttribute0}
-            era={props.typeAttribute1}
-            hour={props.typeAttribute2}
-            hour12={props.typeAttribute3}
-            minute={props.typeAttribute4}
-            month={props.typeAttribute5}
-            second={props.typeAttribute6}
-            time-zone={props.typeAttribute7}
-            time-zone-name={props.typeAttribute8}
-            weekday={props.typeAttribute9}
-            year={props.typeAttribute10}
+            day={computedTypeAttribute.typeAttribute0}
+            era={computedTypeAttribute.typeAttribute1}
+            hour={computedTypeAttribute.typeAttribute2}
+            hour12={computedTypeAttribute.typeAttribute3}
+            minute={computedTypeAttribute.typeAttribute4}
+            month={computedTypeAttribute.typeAttribute5}
+            second={computedTypeAttribute.typeAttribute6}
+            time-zone={computedTypeAttribute.typeAttribute7}
+            time-zone-name={computedTypeAttribute.typeAttribute8}
+            weekday={computedTypeAttribute.typeAttribute9}
+            year={computedTypeAttribute.typeAttribute10}
         >
         </lightning-formatted-date-time>
     </template>

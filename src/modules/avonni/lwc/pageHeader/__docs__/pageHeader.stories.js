@@ -88,7 +88,10 @@ const items = [
     {
         label: 'Email',
         value: 'Avonni@Avonni.com',
-        type: 'email'
+        type: 'email',
+        typeAttributes: {
+            hideIcon: true
+        }
     },
     {
         label: 'Phone',
@@ -111,12 +114,12 @@ const items = [
         value: 'Salesforce.com',
         type: 'text',
         typeAttributes: {
-            linkify: true
+            linkify: 'true'
         }
     },
     {
         label: 'Boolean',
-        value: 'true',
+        value: 'false',
         type: 'boolean'
     },
     {

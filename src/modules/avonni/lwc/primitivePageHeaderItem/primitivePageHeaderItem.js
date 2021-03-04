@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeString } from 'c/utilsPrivate';
+import { normalizeString, assert } from 'c/utilsPrivate';
 
 const TYPES = {
     valid: [
@@ -43,7 +43,7 @@ const STANDARD_TYPES = {
         'minimumSignificantDigits',
         'maximumSignificantDigits'
     ],
-    email: true,
+    email: ['hideIcon'],
     date: [
         'day',
         'era',
@@ -79,13 +79,10 @@ export default class PrimitivePageHeaderItem extends LightningElement {
     @api typeAttribute10;
 
     _type = 'text';
-    props;
+    computedTypeAttribute;
 
     connectedCallback() {
-        // console.log(this.getNormalizedTypeAttribute(this.getTypeAttributesValues(this.item)))
-        console.log(this.computeItemTypeAttributes(this.item));
-
-        this.props = this.computeItemTypeAttributes(this.item);
+        this.computedTypeAttribute = this.computeItemTypeAttributes(this.item);
     }
 
     @api
@@ -167,12 +164,11 @@ export default class PrimitivePageHeaderItem extends LightningElement {
         return new Date(this.value);
     }
 
-    // telling us if it's an object or not from utils.js
     isObjectLike(value) {
         return typeof value === 'object' && value !== null;
     }
 
-    // giving us an object of all the diffent typeAttributes for a chosen Item from column.js
+    // gives an object of all the diffent typeAttributes for a chosen Item
     getTypeAttributesValues(item) {
         if (this.isObjectLike(item.typeAttributes)) {
             return item.typeAttributes;
@@ -180,24 +176,20 @@ export default class PrimitivePageHeaderItem extends LightningElement {
         return {};
     }
 
-    // giving us an array of all the possible typeAttributes of a certain type from type.js
+    // gives an array of all the possible typeAttributes of a certain type from type.js
     isValidType(typeName) {
         return !!STANDARD_TYPES[typeName];
     }
 
     getAttributesNames(typeName) {
+        assert(
+            this.isValidType(typeName),
+            `your are trying to access an invalid type (${typeName})`
+        );
+
         return Array.isArray(STANDARD_TYPES[typeName])
             ? STANDARD_TYPES[typeName]
             : [];
-    }
-
-    getType(typeName) {
-        if (STANDARD_TYPES[typeName]) {
-            return {
-                typeAttributes: this.getAttributesNames(typeName)
-            };
-        }
-        return undefined;
     }
 
     computeItemTypeAttributes(item) {
