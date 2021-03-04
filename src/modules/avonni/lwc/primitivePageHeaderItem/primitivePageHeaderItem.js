@@ -79,10 +79,13 @@ export default class PrimitivePageHeaderItem extends LightningElement {
     @api typeAttribute10;
 
     _type = 'text';
+    props;
 
     connectedCallback() {
         // console.log(this.getNormalizedTypeAttribute(this.getTypeAttributesValues(this.item)))
-        // console.log(this.computeItemTypeAttributes(this.item));
+        console.log(this.computeItemTypeAttributes(this.item));
+
+        this.props = this.computeItemTypeAttributes(this.item);
     }
 
     @api
@@ -204,7 +207,11 @@ export default class PrimitivePageHeaderItem extends LightningElement {
         return attributesNames.reduce((attrs, attrName, index) => {
             const typeAttributeName = `typeAttribute${index}`;
             attrs[typeAttributeName] = typeAttributesValues[attrName];
-
+            Object.keys(attrs).forEach((key) => {
+                if (attrs[key] === undefined) {
+                    delete attrs[key];
+                }
+            });
             return attrs;
         }, {});
     }

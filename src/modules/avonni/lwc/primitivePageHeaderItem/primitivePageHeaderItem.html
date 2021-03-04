@@ -30,7 +30,7 @@
     <template if:true={isUrl}>
         <lightning-formatted-url
             value={value}
-            label={typeAttribute0}
+            label={props.typeAttribute0}
             target={urlTarget}
             tooltip={urlTooltip}
         >
@@ -39,7 +39,7 @@
 
     <!-- text -->
     <template if:true={isText}>
-        <lightning-formatted-text value={value} linkify={typeAttribute0}>
+        <lightning-formatted-text value={value} linkify={props.typeAttribute0}>
         </lightning-formatted-text>
     </template>
 
@@ -48,11 +48,11 @@
         <lightning-formatted-number
             value={value}
             format-style="percent"
-            minimum-integer-digits={typeAttribute0}
-            minimum-fraction-digits={typeAttribute1}
-            maximum-fraction-digits={typeAttribute2}
-            minimum-significant-digits={typeAttribute3}
-            maximum-significant-digits={typeAttribute4}
+            minimum-integer-digits={props.typeAttribute0}
+            minimum-fraction-digits={props.typeAttribute1}
+            maximum-fraction-digits={props.typeAttribute2}
+            minimum-significant-digits={props.typeAttribute3}
+            maximum-significant-digits={props.typeAttribute4}
         >
         </lightning-formatted-number>
     </template>
@@ -61,11 +61,11 @@
     <template if:true={isNumber}>
         <lightning-formatted-number
             value={value}
-            minimum-integer-digits={typeAttribute0}
-            minimum-fraction-digits={typeAttribute1}
-            maximum-fraction-digits={typeAttribute2}
-            minimum-significant-digits={typeAttribute3}
-            maximum-significant-digits={typeAttribute4}
+            minimum-integer-digits={props.typeAttribute0}
+            minimum-fraction-digits={props.typeAttribute1}
+            maximum-fraction-digits={props.typeAttribute2}
+            minimum-significant-digits={props.typeAttribute3}
+            maximum-significant-digits={props.typeAttribute4}
         >
         </lightning-formatted-number>
     </template>
@@ -75,13 +75,13 @@
         <lightning-formatted-number
             value={value}
             format-style="currency"
-            currency-code={typeAttribute0}
-            currency-display-as={typeAttribute1}
-            minimum-integer-digits={typeAttribute2}
-            minimum-fraction-digits={typeAttribute3}
-            maximum-fraction-digits={typeAttribute4}
-            minimum-significant-digits={typeAttribute5}
-            maximum-significant-digits={typeAttribute6}
+            currency-code={props.typeAttribute0}
+            currency-display-as={props.typeAttribute1}
+            minimum-integer-digits={props.typeAttribute2}
+            minimum-fraction-digits={tprops.ypeAttribute3}
+            maximum-fraction-digits={props.typeAttribute4}
+            minimum-significant-digits={props.typeAttribute5}
+            maximum-significant-digits={props.typeAttribute6}
         >
         </lightning-formatted-number>
     </template>
@@ -90,17 +90,17 @@
     <template if:true={isDateTime}>
         <lightning-formatted-date-time
             value={dateValue}
-            day={typeAttribute0}
-            era={typeAttribute1}
-            hour={typeAttribute2}
-            hour12={typeAttribute3}
-            minute={typeAttribute4}
-            month={typeAttribute5}
-            second={typeAttribute6}
-            time-zone={typeAttribute7}
-            time-zone-name={typeAttribute8}
-            weekday={typeAttribute9}
-            year={typeAttribute10}
+            day={props.typeAttribute0}
+            era={props.typeAttribute1}
+            hour={props.typeAttribute2}
+            hour12={props.typeAttribute3}
+            minute={props.typeAttribute4}
+            month={props.typeAttribute5}
+            second={props.typeAttribute6}
+            time-zone={props.typeAttribute7}
+            time-zone-name={props.typeAttribute8}
+            weekday={props.typeAttribute9}
+            year={props.typeAttribute10}
         >
         </lightning-formatted-date-time>
     </template>
