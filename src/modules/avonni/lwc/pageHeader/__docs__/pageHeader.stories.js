@@ -94,11 +94,6 @@ const items = [
         }
     },
     {
-        label: 'Phone',
-        value: '514-555-1234',
-        type: 'phone'
-    },
-    {
         label: 'Date',
         value: '10/12/1991',
         type: 'date',
@@ -118,34 +113,22 @@ const items = [
         }
     },
     {
-        label: 'Boolean',
-        value: 'false',
-        type: 'boolean'
-    },
-    {
         label: 'URL',
         value: 'salesforce.com',
-        tooltip: 'Use full domain name',
-        target: '_blank',
-        type: 'url'
-    },
-    {
-        label: 'Location',
-        value: {
-            latitude: '37.798460',
-            longitude: '-122.3948370'
-        },
-        type: 'location'
-    },
-    {
-        label: 'Percent',
-        value: '0.10',
-        type: 'percent'
+        type: 'url',
+        typeAttributes: {
+            // tooltip: 'Use full domain name',
+            // target: '_blank'
+        }
     },
     {
         label: 'Number',
         value: '11',
-        type: 'number'
+        type: 'number',
+        typeAttributes: {
+            minimumIntegerDigits: 2,
+            minimumFractionDigits: 2
+        }
     }
 ];
 

@@ -34,9 +34,9 @@
     <template if:true={isUrl}>
         <lightning-formatted-url
             value={value}
-            label={label}
-            target={urlTarget}
-            tooltip={urlTooltip}
+            label={computedTypeAttribute.typeAttribute0}
+            target={computedTypeAttribute.typeAttribute1}
+            tooltip={computedTypeAttribute.typeAttribute2}
         >
         </lightning-formatted-url>
     </template>
@@ -94,7 +94,7 @@
     </template>
 
     <!-- datetime -->
-    <template if:true={isDateTime}>
+    <template if:true={isDate}>
         <lightning-formatted-date-time
             value={dateValue}
             day={computedTypeAttribute.typeAttribute0}

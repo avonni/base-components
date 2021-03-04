@@ -66,17 +66,6 @@ export default class PrimitivePageHeaderItem extends LightningElement {
     @api item;
     @api label;
     @api value;
-    @api typeAttribute0;
-    @api typeAttribute1;
-    @api typeAttribute2;
-    @api typeAttribute3;
-    @api typeAttribute4;
-    @api typeAttribute5;
-    @api typeAttribute6;
-    @api typeAttribute7;
-    @api typeAttribute8;
-    @api typeAttribute9;
-    @api typeAttribute10;
 
     _type = 'text';
     computedTypeAttribute;
@@ -121,7 +110,7 @@ export default class PrimitivePageHeaderItem extends LightningElement {
         return this.isType('email');
     }
 
-    get isDateTime() {
+    get isDate() {
         return this.isType('date');
     }
 
@@ -139,18 +128,6 @@ export default class PrimitivePageHeaderItem extends LightningElement {
 
     get isBoolean() {
         return this.isType('boolean');
-    }
-
-    // from primitiveCellFactory.js
-    get urlTarget() {
-        return this.typeAttribute1 || '_self';
-    }
-
-    get urlTooltip() {
-        if (this.typeAttribute2 === '') {
-            return '';
-        }
-        return this.typeAttribute2 || this.value;
     }
 
     get isChecked() {
@@ -176,7 +153,7 @@ export default class PrimitivePageHeaderItem extends LightningElement {
         return {};
     }
 
-    // gives an array of all the possible typeAttributes of a certain type from type.js
+    // gives an array of all the possible typeAttributes of a certain type
     isValidType(typeName) {
         return !!STANDARD_TYPES[typeName];
     }
@@ -192,6 +169,7 @@ export default class PrimitivePageHeaderItem extends LightningElement {
             : [];
     }
 
+    // gives an object of all the computed TypeAttributes for every item
     computeItemTypeAttributes(item) {
         const attributesNames = this.getAttributesNames(item.type);
         const typeAttributesValues = this.getTypeAttributesValues(item);

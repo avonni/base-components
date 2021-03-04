@@ -78,8 +78,8 @@
             <div class="slds-page-header__col-meta">
                 <template if:false={isBaseVariant}>
                     <p class="slds-page-header__meta-text">
-                        <template if:true={info}> {info} </template>
-                        <template if:false={info}>
+                        <template if:true={hasStringInfo}> {info} </template>
+                        <template if:false={hasStringInfo}>
                             <slot name="info"></slot>
                         </template>
                     </p>
@@ -94,55 +94,8 @@
             </template>
         </div>
         <template if:true={isRecordHomeVariant}>
-            <template if:false={showDetails}>
-                <slot name="details"></slot>
-            </template>
             <template if:true={showDetails}>
-                <div
-                    class="slds-page-header__row slds-page-header__row_gutters"
-                >
-                    <div class="slds-page-header__col-details">
-                        <ul
-                            class="slds-page-header__detail-row avonni-page-header-overflow_hidden"
-                        >
-                            <template for:each={items} for:item="item">
-                                <li
-                                    class="slds-page-header__detail-block"
-                                    key={item.label}
-                                >
-                                    <div
-                                        class="slds-text-title slds-truncate"
-                                        title={item.label}
-                                    >
-                                        {item.label}
-                                    </div>
-                                    <div
-                                        class="slds-truncate"
-                                        title={item.value}
-                                    >
-                                        <c-primitive-page-header-item
-                                            item={item}
-                                            label={item.label}
-                                            value={item.value}
-                                            type={item.type}
-                                            type-attribute-0={item.typeAttribute0}
-                                            type-attribute-1={item.typeAttribute1}
-                                            type-attribute-2={item.typeAttribute2}
-                                            type-attribute-3={item.typeAttribute3}
-                                            type-attribute-4={item.typeAttribute4}
-                                            type-attribute-5={item.typeAttribute5}
-                                            type-attribute-6={item.typeAttribute6}
-                                            type-attribute-7={item.typeAttribute7}
-                                            type-attribute-8={item.typeAttribute8}
-                                            type-attribute-9={item.typeAttribute9}
-                                            type-attribute-10={item.typeAttribute10}
-                                        ></c-primitive-page-header-item>
-                                    </div>
-                                </li>
-                            </template>
-                        </ul>
-                    </div>
-                </div>
+                <slot name="details"></slot>
             </template>
         </template>
     </div>
