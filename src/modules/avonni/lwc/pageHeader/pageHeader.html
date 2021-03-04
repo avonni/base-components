@@ -77,7 +77,7 @@
         <div class="slds-page-header__row">
             <div class="slds-page-header__col-meta">
                 <template if:false={isBaseVariant}>
-                    <p class="slds-page-header__meta-text">
+                    <p class="slds-page-header__meta-text slds-truncate">
                         <template if:true={hasStringInfo}> {info} </template>
                         <template if:false={hasStringInfo}>
                             <slot name="info"></slot>
