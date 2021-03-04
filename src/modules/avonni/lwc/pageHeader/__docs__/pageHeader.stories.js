@@ -90,7 +90,7 @@ const items = [
         value: 'Avonni@Avonni.com',
         type: 'email',
         typeAttributes: {
-            hideIcon: true
+            hideIcon: 'true'
         }
     },
     {
@@ -106,10 +106,10 @@ const items = [
     },
     {
         label: 'Text',
-        value: 'Salesforce.com',
+        value: 'This is a text',
         type: 'text',
         typeAttributes: {
-            linkify: 'true'
+            linkify: 'false'
         }
     },
     {
@@ -117,8 +117,8 @@ const items = [
         value: 'salesforce.com',
         type: 'url',
         typeAttributes: {
-            // tooltip: 'Use full domain name',
-            // target: '_blank'
+            tooltip: 'Use full domain name',
+            target: '_blank'
         }
     },
     {
