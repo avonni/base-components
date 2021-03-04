@@ -1,1 +1,12 @@
-<template></template>
+<template>
+    <button class={computedButtonClass}>
+        <c-primitive-icon
+            icon-name="none"
+            svg-class="slds-button__icon "
+            variant="bare"
+        ></c-primitive-icon>
+    </button>
+    <span if:true={assistiveText} class="slds-assistive-text"
+        >{assistiveText}</span
+    >
+</template>

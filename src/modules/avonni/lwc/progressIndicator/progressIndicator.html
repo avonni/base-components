@@ -1,16 +1,14 @@
 <template>
     <div class={computedOuterClass}>
-        <ol class="slds-progress__list"></ol>
-        <div
-            class="slds-progress-bar slds-progress-bar_x-small"
-            aria-valuemin="0"
-            aria-valuemax="100"
-            aria-valuenow="0"
-            role="progressbar"
-        >
-            <span class="slds-progress-bar__value" style="width: 10%">
-                <span class="slds-assistive-text">Progress: 0%</span>
-            </span>
-        </div>
+        <ol class="slds-progress__list">
+            <c-progress-step label="Step 1" value="1"></c-progress-step>
+            <c-progress-step label="Step 2" value="2"></c-progress-step>
+            <c-progress-step label="Step 3" value="3"></c-progress-step>
+            <c-progress-step label="Step 4" value="4"></c-progress-step>
+        </ol>
+        <lightning-progress-bar
+            size="x-small"
+            value="50"
+        ></lightning-progress-bar>
     </div>
 </template>
