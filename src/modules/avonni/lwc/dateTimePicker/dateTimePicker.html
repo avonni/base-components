@@ -1,44 +1,16 @@
 <template>
     <div class="table">
-        <div class="day">
-            <div class="day__label">Monday</div>
-            <div class="time">
-                <button disabled class="time-tile">08:00 AM</button>
+        <template for:each={table} for:item="day">
+            <div class="day" key={day.label}>
+                <div class="day__label">{day.label}</div>
+                <template for:each={day.times} for:item="time">
+                    <div class="time" key={time.label}>
+                        <button disabled={time.disabled} class="time-tile">
+                            {time.label}
+                        </button>
+                    </div>
+                </template>
             </div>
-            <div class="time"><button class="time-tile">08:00 AM</button></div>
-            <div class="time"><button class="time-tile">08:00 AM</button></div>
-            <div class="time"><button class="time-tile">08:00 AM</button></div>
-            <div class="time"><button class="time-tile">08:00 AM</button></div>
-            <div class="time"><button class="time-tile">08:00 AM</button></div>
-        </div>
-        <div class="day">
-            <div class="day__label">Monday</div>
-            <div class="time"><button class="time-tile">08:00 AM</button></div>
-            <div class="time"><button class="time-tile">08:00 AM</button></div>
-            <div class="time"><button class="time-tile">08:00 AM</button></div>
-            <div class="time"><button class="time-tile">08:00 AM</button></div>
-            <div class="time"><button class="time-tile">08:00 AM</button></div>
-            <div class="time"><button class="time-tile">08:00 AM</button></div>
-        </div>
-        <div class="day">
-            <div class="day__label">Monday</div>
-            <div class="time"><button class="time-tile">08:00 AM</button></div>
-            <div class="time">
-                <button disabled class="time-tile">08:00 AM</button>
-            </div>
-            <div class="time"><button class="time-tile">08:00 AM</button></div>
-            <div class="time"><button class="time-tile">08:00 AM</button></div>
-            <div class="time"><button class="time-tile">08:00 AM</button></div>
-            <div class="time"><button class="time-tile">08:00 AM</button></div>
-        </div>
-        <div class="day">
-            <div class="day__label">Monday</div>
-            <div class="time"><button class="time-tile">08:00 AM</button></div>
-            <div class="time"><button class="time-tile">08:00 AM</button></div>
-            <div class="time"><button class="time-tile">08:00 AM</button></div>
-            <div class="time"><button class="time-tile">08:00 AM</button></div>
-            <div class="time"><button class="time-tile">08:00 AM</button></div>
-            <div class="time"><button class="time-tile">08:00 AM</button></div>
-        </div>
+        </template>
     </div>
 </template>

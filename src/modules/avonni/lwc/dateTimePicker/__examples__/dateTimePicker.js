@@ -5,8 +5,9 @@ customElements.define(
     Component.CustomElementConstructor
 );
 
-export const DateTimePicker = ({ label }) => {
+export const DateTimePicker = ({ label, disabledDateTimes }) => {
     const element = document.createElement('ac-avonni-date-time-picker');
     element.label = label;
+    element.disabledDateTimes = disabledDateTimes;
     return element;
 };
