@@ -39,7 +39,8 @@ export default class ProgressIndicator extends LightningElement {
     get computedOuterClass() {
         return classSet('slds-progress')
             .add({
-                'slds-progress_shade': this._variant === 'shaded'
+                'slds-progress_shade':
+                    this._variant === 'shaded' && this._type === 'base'
             })
             .toString();
     }
