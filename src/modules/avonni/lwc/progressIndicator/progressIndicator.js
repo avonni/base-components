@@ -6,11 +6,18 @@ const TYPES = { valid: ['base', 'arrow'], default: 'base' };
 
 const VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
 
+// const STATES = { completed: 'completed', current: 'current', warning: 'warning', error: 'error', incomplete: 'incomplete' }
+
 export default class ProgressIndicator extends LightningElement {
     @api currentStep;
-
     _variant = 'base';
     _type = 'base';
+    _step = [];
+
+    connectedCallback() {
+        // console.log(this.getSteps());
+        // console.log(this._currentStep)
+    }
 
     @api
     get variant() {

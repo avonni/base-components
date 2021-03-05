@@ -8,7 +8,6 @@ import { classSet } from 'c/utils';
 // };
 
 export default class ProgressStep extends LightningElement {
-    @api value;
     @api label;
     // status => completed, warning, error, current
     // iconName
@@ -22,6 +21,18 @@ export default class ProgressStep extends LightningElement {
     // buttonTitle
     // buttonVariant
     // assistiveText
+
+    _value;
+
+    @api
+    get value() {
+        return this._value;
+    }
+
+    set value(value) {
+        this._value = value;
+        this.setAttribute('data-step', value);
+    }
 
     get computedButtonClass() {
         const classes = classSet('slds-button slds-progress__marker');

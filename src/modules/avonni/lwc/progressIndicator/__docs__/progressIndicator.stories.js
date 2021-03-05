@@ -39,7 +39,7 @@ export default {
                 type: { summary: 'String[]' }
             }
         },
-        currentSteps: {
+        currentStep: {
             control: {
                 type: 'text'
             },
@@ -91,5 +91,6 @@ const Template = (args) => ProgressIndicator(args);
 export const Base = Template.bind({});
 Base.args = {
     type: 'base',
-    variant: 'base'
+    variant: 'base',
+    currentStep: 2
 };
