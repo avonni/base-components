@@ -40,3 +40,7 @@
     border-color: var(--lwc-colorBorderSelection, #0070d2);
     background-color: #d8edff;
 }
+
+.hidden-input {
+    display: none;
+}

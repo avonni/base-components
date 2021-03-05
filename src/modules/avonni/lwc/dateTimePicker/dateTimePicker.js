@@ -1,4 +1,5 @@
 import { LightningElement, api } from 'lwc';
+import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
 const TIME_SLOTS = [
     '08:00',
@@ -13,10 +14,16 @@ const TIME_SLOTS = [
     '18:00'
 ];
 
+const VISIBILITY = ['day', 'week'];
+
 // QUESTIONS
-// Add a disabledDaysHours to be applied at all time?
-// Add the possibility to pick the duration of a time slot?
-// Add the possibility to pick the time format (AM/PM or not)?
+// Use of a hidden input?
+// Effect of the timezone change => only on the disabledDateTimes?
+// Variant? horizontal/vertical?
+// Provide an object with available days/timeslots? OR:
+//   * Add a disabledDaysHours to be applied at all time?
+//   * Add the possibility to pick the duration of a time slot?
+//   * Add the possibility to pick the time format (AM/PM or not)?
 // Disable previous/next buttons for date ranges out of the dates allowed?
 
 export default class DateTimePicker extends LightningElement {
@@ -25,6 +32,9 @@ export default class DateTimePicker extends LightningElement {
     _max;
     _min;
     _value;
+    _visibility;
+    _hideNavigation;
+    _hideDatePicker;
 
     table;
     today;
@@ -33,11 +43,18 @@ export default class DateTimePicker extends LightningElement {
     selectedDayTime = {};
 
     connectedCallback() {
+        // TODO:
+        // Fix the weird min date change on first previous/next click
         this.today = new Date();
-        // eslint-disable-next-line no-unused-expressions
-        this.today < this.min
-            ? this._setFirstWeekDay(this.min)
-            : this._setFirstWeekDay(this.today);
+        if (this.today < this.min && this.visibility === 'day') {
+            this.firstWeekDay = this.min;
+        } else if (this.visibility === 'day') {
+            this.firstWeekDay = this.today;
+        } else if (this.today < this.min) {
+            this._setFirstWeekDay(this.min);
+        } else {
+            this._setFirstWeekDay(this.today);
+        }
         this._generateTable();
     }
 
@@ -84,6 +101,33 @@ export default class DateTimePicker extends LightningElement {
         };
     }
 
+    @api
+    get visibility() {
+        return this._visibility;
+    }
+    set visibility(value) {
+        this._visibility = normalizeString(value, {
+            fallbackValue: 'day',
+            validValues: VISIBILITY
+        });
+    }
+
+    @api
+    get hideNavigation() {
+        return this._hideNavigation;
+    }
+    set hideNavigation(value) {
+        this._hideNavigation = normalizeBoolean(value);
+    }
+
+    @api
+    get hideDatePicker() {
+        return this._hideDatePicker;
+    }
+    set hideDatePicker(value) {
+        this._hideDatePicker = normalizeBoolean(value);
+    }
+
     _setFirstWeekDay(givenDate) {
         const firstWeekDayNumber = givenDate.getDate() - givenDate.getDay();
         const firstWeekDayInMilliseconds = new Date(givenDate).setDate(
@@ -95,11 +139,15 @@ export default class DateTimePicker extends LightningElement {
     _generateTable() {
         // TODO:
         // Handle time zone
-        // Handle visibility=day
 
         const processedTable = [];
 
-        for (let day = 0; day < 7; day++) {
+        let daysDisplayed = 7;
+        if (this.visibility === 'day') {
+            daysDisplayed = 1;
+        }
+
+        for (let day = 0; day < daysDisplayed; day++) {
             const currentDay = new Date(
                 new Date(this.firstWeekDay).setDate(
                     this.firstWeekDay.getDate() + day
@@ -107,17 +155,22 @@ export default class DateTimePicker extends LightningElement {
             );
 
             // Create day object
-            const labelWeekday = currentDay.toLocaleString('default', {
-                weekday: 'short'
-            });
-            const labelDay = currentDay.toLocaleString('default', {
-                day: '2-digit'
-            });
             const currentDayTime = {
+                key: day,
                 dayObject: currentDay,
-                label: `${labelWeekday} ${labelDay}`,
                 times: []
             };
+
+            // Add a label to the day only if visibility is 'week'
+            if (this.visibility === 'week') {
+                const labelWeekday = currentDay.toLocaleString('default', {
+                    weekday: 'short'
+                });
+                const labelDay = currentDay.toLocaleString('default', {
+                    day: '2-digit'
+                });
+                currentDayTime.label = `${labelWeekday} ${labelDay}`;
+            }
 
             this._createTimeSlots(currentDayTime);
             processedTable.push(currentDayTime);
@@ -207,7 +260,10 @@ export default class DateTimePicker extends LightningElement {
         const options = { month: 'long', day: 'numeric', year: 'numeric' };
         const firstDay = this.firstWeekDay.toLocaleString('default', options);
         const lastDay = this.lastWeekDay.toLocaleString('default', options);
-        return `${firstDay} - ${lastDay}`;
+
+        return this.visibility === 'day'
+            ? firstDay
+            : `${firstDay} - ${lastDay}`;
     }
 
     get firstWeekDayToString() {
@@ -228,15 +284,18 @@ export default class DateTimePicker extends LightningElement {
     }
 
     handlePreviousClick() {
+        const dayRange = this.visibility === 'day' ? 1 : 7;
+        console.log(this.min);
         this.firstWeekDay = new Date(
-            this.firstWeekDay.setDate(this.firstWeekDay.getDate() - 7)
+            this.firstWeekDay.setDate(this.firstWeekDay.getDate() - dayRange)
         );
         this._generateTable();
     }
 
     handleNextClick() {
+        const dayRange = this.visibility === 'day' ? 1 : 7;
         this.firstWeekDay = new Date(
-            this.firstWeekDay.setDate(this.firstWeekDay.getDate() + 7)
+            this.firstWeekDay.setDate(this.firstWeekDay.getDate() + dayRange)
         );
         this._generateTable();
     }

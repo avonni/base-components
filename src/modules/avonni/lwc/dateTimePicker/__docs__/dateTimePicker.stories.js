@@ -48,6 +48,40 @@ export default {
             },
             description:
                 'The value of the date selected, which can be a Date object, timestamp, or an ISO8601 formatted string.'
+        },
+        visibility: {
+            control: {
+                type: 'select',
+                options: ['day', 'week']
+            },
+            defaultValue: 'day',
+            description: 'Valid values include day and week.',
+            table: {
+                defaultValue: { summary: 'day' },
+                type: { summary: 'string' }
+            }
+        },
+        hideNavigation: {
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description: 'If true, hide next, previous and today buttons.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
+        hideDatePicker: {
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description: 'If true, hide the date picker button',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
         }
     }
 };

@@ -10,7 +10,10 @@ export const DateTimePicker = ({
     disabledDateTimes,
     min,
     max,
-    value
+    value,
+    visibility,
+    hideNavigation,
+    hideDatePicker
 }) => {
     const element = document.createElement('ac-avonni-date-time-picker');
     element.label = label;
@@ -18,5 +21,8 @@ export const DateTimePicker = ({
     element.min = min;
     element.max = max;
     element.value = value;
+    element.visibility = visibility;
+    element.hideNavigation = hideNavigation;
+    element.hideDatePicker = hideDatePicker;
     return element;
 };

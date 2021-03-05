@@ -1,5 +1,10 @@
 <template>
-    <!-- <lightning-input type="datetime" label="Date and time" onchange={fireEvent} value={value}></lightning-input> -->
+    <!-- <lightning-input
+        class="hidden-input"
+        type="datetime"
+        label="Date and time"
+        value={value}
+    ></lightning-input> -->
     <lightning-layout
         class="slds-p-around_medium"
         multiple-rows="true"
@@ -10,8 +15,11 @@
                 {currentDateRangeString}
             </p>
         </lightning-layout-item>
-        <lightning-layout-item padding="horizontal-small">
-            <lightning-button-group>
+        <lightning-layout-item
+            if:false={hideNavigation}
+            padding="horizontal-small"
+        >
+            <lightning-button-group class="slds-m-bottom_small">
                 <lightning-button-icon
                     alternative-text="Previous dates"
                     icon-name="utility:left"
@@ -32,7 +40,10 @@
                 ></lightning-button-icon>
             </lightning-button-group>
         </lightning-layout-item>
-        <lightning-layout-item padding="horizontal-small">
+        <lightning-layout-item
+            if:false={hideDatePicker}
+            padding="horizontal-small"
+        >
             <lightning-input
                 label="Date"
                 max={maxToString}
@@ -46,8 +57,8 @@
     </lightning-layout>
     <div class="table">
         <template for:each={table} for:item="day">
-            <div class="day" key={day.label}>
-                <div class="day__label">{day.label}</div>
+            <div class="day" key={day.key}>
+                <div if:true={day.label} class="day__label">{day.label}</div>
                 <template for:each={day.times} for:item="time">
                     <div class="time" key={time.label}>
                         <button
