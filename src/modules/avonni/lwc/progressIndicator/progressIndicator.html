@@ -1,8 +1,12 @@
 <template>
     <div class={computedOuterClass}>
         <ol class="slds-progress__list">
-            <template for:each={steps} for:item="step">
-                <c-progress-step key={step.label} value="1"></c-progress-step>
+            <template for:each={steps} for:item="step" for:index="index">
+                <c-progress-step
+                    key={step.value}
+                    label={step.label}
+                    value={step.value}
+                ></c-progress-step>
             </template>
         </ol>
         <div

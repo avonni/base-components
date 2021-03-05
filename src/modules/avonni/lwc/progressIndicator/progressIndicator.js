@@ -19,8 +19,34 @@ export default class ProgressIndicator extends LightningElement {
     _type = 'base';
     _steps = [];
 
-    connectedCallback() {
-        console.log(this._steps);
+    connectedCallback() {}
+
+    renderedCallback() {
+        let elements = Array.from(
+            this.template.querySelectorAll('c-progress-step')
+        );
+        let indexCompleted = 0;
+
+        elements.forEach((element, index) => {
+            // element.setAttributes(this.variant === 'shade');
+
+            if (element.getAttribute('data-step') === this.currentStep) {
+                indexCompleted = index;
+            }
+
+            console.log(index);
+        });
+
+        elements.forEach((element, index) => {
+            if (indexCompleted > index) {
+                element.classList.add('slds-progress__item');
+                element.classList.add('slds-is-completed');
+                element.setIcon('utility:success');
+            } else if (indexCompleted === index) {
+                element.classList.add('slds-progress__item');
+                // element.classList.add('slds-is-active');
+            }
+        });
     }
 
     @api

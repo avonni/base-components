@@ -10,7 +10,7 @@ import { classSet } from 'c/utils';
 export default class ProgressStep extends LightningElement {
     @api label;
     // status => completed, warning, error, current
-    // iconName
+    iconName;
     // iconSrc
     // iconPosition
     // buttonLabel
@@ -47,5 +47,10 @@ export default class ProgressStep extends LightningElement {
 
     get hasIcon() {
         return false;
+    }
+
+    @api
+    setIcon(iconName) {
+        this.iconName = iconName;
     }
 }
