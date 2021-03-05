@@ -1,18 +1,22 @@
 import { LightningElement, api } from 'lwc';
 
 const TIME_SLOTS = [
-    '08:00 AM',
-    '08:30 AM',
-    '09:00 AM',
-    '09:30 AM',
-    '10:00 AM',
-    '10:30 AM',
-    '11:00 AM'
+    '08:00',
+    '08:30',
+    '09:00',
+    '09:30',
+    '10:00',
+    '10:30',
+    '11:00',
+    '14:00',
+    '14:30',
+    '18:00'
 ];
 
 // QUESTIONS
 // Add a disabledDaysHours to be applied at all time?
 // Add the possibility to pick the duration of a time slot?
+// Add the possibility to pick the time format (AM/PM or not)?
 
 export default class DateTimePicker extends LightningElement {
     @api disabledDateTimes;
@@ -55,8 +59,7 @@ export default class DateTimePicker extends LightningElement {
                 )
             );
 
-            const dayIsPast = currentDay - this.today < 0;
-
+            // Create day object
             const currentDayTime = {
                 dayObject: currentDay,
                 label: `${currentDay
@@ -65,18 +68,39 @@ export default class DateTimePicker extends LightningElement {
                 times: []
             };
 
-            TIME_SLOTS.forEach((time) => {
-                currentDayTime.times.push({
-                    label: time,
-                    disabled: dayIsPast // || timeIsPast
-                });
-            });
+            this._createTimeSlots(currentDayTime);
             processedTable.push(currentDayTime);
         }
 
         // Disable the dates and times provided by the user
         this._disableDateTimes(processedTable);
         this.table = processedTable;
+    }
+
+    _createTimeSlots(day) {
+        const dayIsPast = day.dayObject - this.today < 0;
+        const dayIsToday = day.dayObject - this.today === 0;
+
+        TIME_SLOTS.forEach((time) => {
+            const currentHour = parseInt(time.slice(0, 2), 10);
+            const currentMinutes = parseInt(time.slice(3, 5), 10);
+
+            // Check if the time slot is in the past
+            let timeIsPast = false;
+            if (
+                dayIsToday &&
+                (currentHour < this.today.getHours() ||
+                    (currentHour === this.today.getHours() &&
+                        currentMinutes < this.today.getMinutes()))
+            ) {
+                timeIsPast = true;
+            }
+
+            day.times.push({
+                label: time,
+                disabled: dayIsPast || timeIsPast
+            });
+        });
     }
 
     _disableDateTimes(table) {
