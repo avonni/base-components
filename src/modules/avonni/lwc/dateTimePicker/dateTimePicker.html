@@ -1,11 +1,40 @@
 <template>
+    <lightning-layout class="slds-p-around_medium">
+        <lightning-layout-item class="slds-has-flexi-truncate">
+            <p class="slds-text-heading_medium slds-truncate">
+                {currentDateRangeString}
+            </p>
+        </lightning-layout-item>
+        <lightning-layout-item>
+            <lightning-button-group>
+                <lightning-button-icon
+                    alternative-text="Previous dates"
+                    icon-name="utility:left"
+                    onclick={handlePreviousClick}
+                    title="Previous dates"
+                    variant="border-filled"
+                ></lightning-button-icon>
+                <lightning-button
+                    label="Today"
+                    onclick={handleTodayClick}
+                ></lightning-button>
+                <lightning-button-icon
+                    alternative-text="Next dates"
+                    icon-name="utility:right"
+                    onclick={handleNextClick}
+                    title="Next dates"
+                    variant="border-filled"
+                ></lightning-button-icon>
+            </lightning-button-group>
+        </lightning-layout-item>
+    </lightning-layout>
     <div class="table">
         <template for:each={table} for:item="day">
             <div class="day" key={day.label}>
                 <div class="day__label">{day.label}</div>
                 <template for:each={day.times} for:item="time">
                     <div class="time" key={time.label}>
-                        <button disabled={time.disabled} class="time-tile">
+                        <button disabled={time.disabled} class="time__button">
                             {time.label}
                         </button>
                     </div>
