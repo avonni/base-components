@@ -10,6 +10,7 @@ import { classSet } from 'c/utils';
 export default class ProgressStep extends LightningElement {
     @api value;
     @api label;
+    // status => completed, warning, error, current
     // iconName
     // iconSrc
     // iconPosition

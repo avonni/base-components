@@ -6,9 +6,16 @@
             <c-progress-step label="Step 3" value="3"></c-progress-step>
             <c-progress-step label="Step 4" value="4"></c-progress-step>
         </ol>
-        <lightning-progress-bar
-            size="x-small"
-            value="50"
-        ></lightning-progress-bar>
+        <div
+            class="slds-progress-bar slds-progress-bar_x-small"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="25"
+            role="progressbar"
+        >
+            <span class="slds-progress-bar__value" style="width: 25%">
+                <span class="slds-assistive-text">Progress: 25%</span>
+            </span>
+        </div>
     </div>
 </template>
