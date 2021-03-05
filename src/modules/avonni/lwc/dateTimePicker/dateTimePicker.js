@@ -184,6 +184,18 @@ export default class DateTimePicker extends LightningElement {
         return `${firstDay} - ${lastDay}`;
     }
 
+    get firstWeekDayToString() {
+        return this.firstWeekDay.toISOString();
+    }
+
+    get minToString() {
+        return this.min.toISOString();
+    }
+
+    get maxToString() {
+        return this.max.toISOString();
+    }
+
     handleTodayClick() {
         this._setFirstWeekDay(this.today);
         this._generateTable();
@@ -200,6 +212,12 @@ export default class DateTimePicker extends LightningElement {
         this.firstWeekDay = new Date(
             this.firstWeekDay.setDate(this.firstWeekDay.getDate() + 7)
         );
+        this._generateTable();
+    }
+
+    handleDatePickerSelect(event) {
+        const date = new Date(event.currentTarget.value);
+        this._setFirstWeekDay(date);
         this._generateTable();
     }
 }

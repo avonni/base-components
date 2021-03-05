@@ -1,11 +1,15 @@
 <template>
-    <lightning-layout class="slds-p-around_medium">
-        <lightning-layout-item class="slds-has-flexi-truncate">
-            <p class="slds-text-heading_medium slds-truncate">
+    <lightning-layout
+        class="slds-p-around_medium"
+        multiple-rows="true"
+        pull-to-boundary="small"
+    >
+        <lightning-layout-item flexibility="auto" padding="horizontal-small">
+            <p class="slds-text-heading_medium slds-m-bottom_small">
                 {currentDateRangeString}
             </p>
         </lightning-layout-item>
-        <lightning-layout-item>
+        <lightning-layout-item padding="horizontal-small">
             <lightning-button-group>
                 <lightning-button-icon
                     alternative-text="Previous dates"
@@ -26,6 +30,17 @@
                     variant="border-filled"
                 ></lightning-button-icon>
             </lightning-button-group>
+        </lightning-layout-item>
+        <lightning-layout-item padding="horizontal-small">
+            <lightning-input
+                label="Date"
+                max={maxToString}
+                min={minToString}
+                onchange={handleDatePickerSelect}
+                type="date"
+                value={firstWeekDayToString}
+                variant="label-hidden"
+            ></lightning-input>
         </lightning-layout-item>
     </lightning-layout>
     <div class="table">
