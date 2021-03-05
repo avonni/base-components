@@ -86,11 +86,27 @@ export default {
     }
 };
 
+const steps = [
+    {
+        label: '1'
+    },
+    {
+        label: '2'
+    },
+    {
+        label: '3'
+    },
+    {
+        label: '4'
+    }
+];
+
 const Template = (args) => ProgressIndicator(args);
 
 export const Base = Template.bind({});
 Base.args = {
     type: 'base',
     variant: 'base',
-    currentStep: 2
+    currentStep: 2,
+    steps: steps
 };

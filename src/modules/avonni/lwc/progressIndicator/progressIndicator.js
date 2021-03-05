@@ -10,13 +10,17 @@ const VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
 
 export default class ProgressIndicator extends LightningElement {
     @api currentStep;
+
+    _completedSteps = [];
+    _disabledSteps = [];
+    _errorSteps = [];
+    _warningSteps = [];
     _variant = 'base';
     _type = 'base';
-    _step = [];
+    _steps = [];
 
     connectedCallback() {
-        // console.log(this.getSteps());
-        // console.log(this._currentStep)
+        console.log(this._steps);
     }
 
     @api
@@ -41,6 +45,15 @@ export default class ProgressIndicator extends LightningElement {
             fallbackValue: TYPES.default,
             validValues: TYPES.valid
         });
+    }
+
+    @api
+    get steps() {
+        return this._steps;
+    }
+
+    set steps(value) {
+        this._steps = Array.isArray(value) ? value : [];
     }
 
     get computedOuterClass() {
