@@ -24,11 +24,13 @@ export default class DateTimePicker extends LightningElement {
 
     _max;
     _min;
+    _value;
 
     table;
     today;
     firstWeekDay;
     lastWeekDay;
+    selectedDayTime = {};
 
     connectedCallback() {
         this.today = new Date();
@@ -37,11 +39,6 @@ export default class DateTimePicker extends LightningElement {
             ? this._setFirstWeekDay(this.min)
             : this._setFirstWeekDay(this.today);
         this._generateTable();
-
-        // TODO:
-        // Handle time slot selection
-        // The table is re-computed each time the date is changed by the user.
-        //   * If the user picks a specific date with the date picker, calculate the new firstWeekDay
     }
 
     @api
@@ -68,6 +65,23 @@ export default class DateTimePicker extends LightningElement {
         } else {
             this._min = new Date(1900, 0, 1);
         }
+    }
+
+    @api
+    get value() {
+        return this._value;
+    }
+    set value(datetime) {
+        const date = new Date(datetime);
+        this._value = date;
+        this._selectedDayTime = {
+            day: date,
+            time: date.toLocaleTimeString('default', {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            })
+        };
     }
 
     _setFirstWeekDay(givenDate) {
@@ -120,10 +134,14 @@ export default class DateTimePicker extends LightningElement {
         const dayIsOutsideOfAllowedDates =
             day.dayObject < this.min || day.dayObject > this.max;
         const dayIsToday = day.dayObject - this.today === 0;
+        const dayIsSelected = this._selectedDayTime.day
+            ? day.dayObject.toLocaleDateString() ===
+              this._selectedDayTime.day.toLocaleDateString()
+            : false;
 
         TIME_SLOTS.forEach((time) => {
-            const currentHour = parseInt(time.slice(0, 2), 10);
-            const currentMinutes = parseInt(time.slice(3, 5), 10);
+            const currentHour = this._getHourFromTimeString(time);
+            const currentMinutes = this._getMinutesFromTimeString(time);
 
             // Check if the time slot is in the past
             let timeIsPast = false;
@@ -138,9 +156,17 @@ export default class DateTimePicker extends LightningElement {
 
             day.times.push({
                 label: time,
-                disabled: dayIsPast || dayIsOutsideOfAllowedDates || timeIsPast
+                disabled: dayIsPast || dayIsOutsideOfAllowedDates || timeIsPast,
+                selected: dayIsSelected && time === this._selectedDayTime.time
             });
         });
+    }
+
+    _getHourFromTimeString(time) {
+        return parseInt(time.slice(0, 2), 10);
+    }
+    _getMinutesFromTimeString(time) {
+        return parseInt(time.slice(3, 5), 10);
     }
 
     _disableDateTimes(table) {
@@ -148,14 +174,13 @@ export default class DateTimePicker extends LightningElement {
         table.forEach((day) => {
             // For each disabled day provided
             this.disabledDateTimes.forEach((disabledDateTime) => {
-                const disabledDayInMilliseconds = new Date(
+                const disabledDayString = new Date(
                     disabledDateTime.date
-                ).getTime();
-                const dayObject = day.dayObject;
-                const dayInMilliseconds = dayObject.setHours(0, 0, 0, 0);
+                ).toLocaleDateString();
+                const dayString = day.dayObject.toLocaleDateString();
 
                 // If the disabled day matches the day
-                if (disabledDayInMilliseconds === dayInMilliseconds) {
+                if (disabledDayString === dayString) {
                     if (disabledDateTime.times) {
                         // For each disabled time
                         disabledDateTime.times.forEach((disabledTime) => {
@@ -167,6 +192,7 @@ export default class DateTimePicker extends LightningElement {
                                 day.times[disabledTimeIndex].disabled = true;
                             }
                         });
+                        // If no time is provided, disable the whole day
                     } else {
                         day.times.forEach((time) => {
                             time.disabled = true;
@@ -215,9 +241,35 @@ export default class DateTimePicker extends LightningElement {
         this._generateTable();
     }
 
-    handleDatePickerSelect(event) {
+    handleDatePickerChange(event) {
         const date = new Date(event.currentTarget.value);
         this._setFirstWeekDay(date);
         this._generateTable();
+    }
+
+    handleTimeSlotClick(event) {
+        const buttonElement = event.currentTarget;
+        const hour = this._getHourFromTimeString(buttonElement.textContent);
+        const minutes = this._getMinutesFromTimeString(
+            buttonElement.textContent
+        );
+        const selectedDate = new Date(buttonElement.dataset.day);
+        selectedDate.setHours(hour, minutes, 0);
+
+        this._value = selectedDate;
+        this._selectedDayTime = {
+            day: selectedDate,
+            time: buttonElement.textContent
+        };
+        // Refresh table to show selected time slot
+        this._generateTable();
+
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                detail: {
+                    value: selectedDate.toISOString()
+                }
+            })
+        );
     }
 }

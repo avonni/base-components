@@ -41,6 +41,13 @@ export default {
                 defaultValue: { summary: '12/31/2099' },
                 type: { summary: 'string' }
             }
+        },
+        value: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'The value of the date selected, which can be a Date object, timestamp, or an ISO8601 formatted string.'
         }
     }
 };
@@ -62,5 +69,6 @@ Base.args = {
             date: '03/09/2021',
             times: ['Wrong data']
         }
-    ]
+    ],
+    value: '2021-03-06T19:00:00.000Z'
 };

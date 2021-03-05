@@ -1,4 +1,5 @@
 <template>
+    <!-- <lightning-input type="datetime" label="Date and time" onchange={fireEvent} value={value}></lightning-input> -->
     <lightning-layout
         class="slds-p-around_medium"
         multiple-rows="true"
@@ -36,7 +37,7 @@
                 label="Date"
                 max={maxToString}
                 min={minToString}
-                onchange={handleDatePickerSelect}
+                onchange={handleDatePickerChange}
                 type="date"
                 value={firstWeekDayToString}
                 variant="label-hidden"
@@ -49,7 +50,13 @@
                 <div class="day__label">{day.label}</div>
                 <template for:each={day.times} for:item="time">
                     <div class="time" key={time.label}>
-                        <button disabled={time.disabled} class="time__button">
+                        <button
+                            aria-pressed={time.selected}
+                            class="time__button"
+                            data-day={day.dayObject}
+                            disabled={time.disabled}
+                            onclick={handleTimeSlotClick}
+                        >
                             {time.label}
                         </button>
                     </div>

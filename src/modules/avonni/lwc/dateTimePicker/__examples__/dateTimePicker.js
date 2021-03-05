@@ -5,11 +5,18 @@ customElements.define(
     Component.CustomElementConstructor
 );
 
-export const DateTimePicker = ({ label, disabledDateTimes, min, max }) => {
+export const DateTimePicker = ({
+    label,
+    disabledDateTimes,
+    min,
+    max,
+    value
+}) => {
     const element = document.createElement('ac-avonni-date-time-picker');
     element.label = label;
     element.disabledDateTimes = disabledDateTimes;
     element.min = min;
     element.max = max;
+    element.value = value;
     return element;
 };

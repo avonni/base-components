@@ -35,3 +35,8 @@
     background-color: var(--lwc-colorBackground, #f3f2f2);
     color: var(--lwc-colorTextPlaceholder, #706e6b);
 }
+
+.time__button[aria-pressed='true'] {
+    border-color: var(--lwc-colorBorderSelection, #0070d2);
+    background-color: #d8edff;
+}
