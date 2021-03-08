@@ -12,7 +12,6 @@ export function getStepIndex(steps, stepValue) {
             }
         }
     }
-    console.log(ret);
     return ret;
 }
 

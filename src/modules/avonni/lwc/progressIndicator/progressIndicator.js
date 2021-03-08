@@ -77,7 +77,7 @@ export default class ProgressIndicator extends LightningElement {
     updateSteps() {
         let steps = this.getSteps();
 
-        let indexCompleted = 0;
+        let indexCompleted = this.currentStep <= 1 ? 0 : this.currentStep - 1;
         steps.forEach((step, index) => {
             if (
                 step.getAttribute('data-step') ===
