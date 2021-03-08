@@ -1,10 +1,4 @@
 <template>
-    <!-- <lightning-input
-        class="hidden-input"
-        type="datetime"
-        label="Date and time"
-        value={value}
-    ></lightning-input> -->
     <lightning-layout
         class="slds-p-around_medium"
         multiple-rows="true"
@@ -14,6 +8,18 @@
             <p class="slds-text-heading_medium slds-m-bottom_small">
                 {currentDateRangeString}
             </p>
+        </lightning-layout-item>
+        <lightning-layout-item>
+            <lightning-combobox
+                if:true={showTimeZone}
+                name="timezone"
+                label="Time zone"
+                value={selectedTimeZone}
+                placeholder="Select time zone"
+                options={timeZones}
+                onchange={handleTimeZoneChange}
+                variant="label-hidden"
+            ></lightning-combobox>
         </lightning-layout-item>
         <lightning-layout-item
             if:false={hideNavigation}
@@ -60,15 +66,20 @@
             <div class="day" key={day.key}>
                 <div if:true={day.label} class="day__label">{day.label}</div>
                 <template for:each={day.times} for:item="time">
-                    <div class="time" key={time.label}>
+                    <div class="time" key={time.dayTimeISO}>
                         <button
                             aria-pressed={time.selected}
                             class="time__button"
-                            data-day={day.dayObject}
                             disabled={time.disabled}
                             onclick={handleTimeSlotClick}
+                            data-label={time.label}
                         >
-                            {time.label}
+                            <lightning-formatted-date-time
+                                value={time.dayTimeISO}
+                                time-zone={selectedTimeZone}
+                                hour="2-digit"
+                                minute="2-digit"
+                            ></lightning-formatted-date-time>
                         </button>
                     </div>
                 </template>

@@ -61,6 +61,16 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        showTimeZone: {
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
         hideNavigation: {
             control: {
                 type: 'boolean'
@@ -104,5 +114,7 @@ Base.args = {
             times: ['Wrong data']
         }
     ],
-    value: '2021-03-06T19:00:00.000Z'
+    visibility: 'week',
+    value: new Date().toISOString(),
+    showTimeZone: true
 };
