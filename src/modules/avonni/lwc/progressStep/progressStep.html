@@ -1,17 +1,11 @@
 <template>
-    <li class="slds-progress__item" style="display: flex">
+    <li style="display: flex">
         <button class={computedButtonClass}>
-            <lightning-icon
-                if:true={iconName}
+            <c-primitive-icon
                 icon-name={iconName}
-                size="xx-small"
-                class="slds-progress__marker slds-progress__marker_icon slds-progress__marker_icon-success"
-                onmouseenter={handleMouseEnter}
-                onmouseleave={handleMouseLeave}
-                onfocus={handleFocus}
-                onblur={handleBlur}
-                tabindex="0"
-            ></lightning-icon>
+                svg-class="slds-button__icon"
+                variant="bare"
+            ></c-primitive-icon>
         </button>
         <span if:true={assistiveText} class="slds-assistive-text"
             >{assistiveText}</span

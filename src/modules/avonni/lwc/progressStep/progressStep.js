@@ -24,6 +24,10 @@ export default class ProgressStep extends LightningElement {
 
     _value;
 
+    connectedCallback() {
+        this.classList.add('slds-progress__item');
+    }
+
     @api
     get value() {
         return this._value;
@@ -36,7 +40,7 @@ export default class ProgressStep extends LightningElement {
 
     get computedButtonClass() {
         const classes = classSet('slds-button slds-progress__marker');
-        if (this.hasIcon) {
+        if (this.iconName) {
             classes
                 .add('slds-button_icon')
                 .add('slds-progress__marker')
@@ -46,7 +50,7 @@ export default class ProgressStep extends LightningElement {
     }
 
     get hasIcon() {
-        return false;
+        return true;
     }
 
     @api

@@ -44,7 +44,7 @@ export default class ProgressIndicator extends LightningElement {
                 element.setIcon('utility:success');
             } else if (indexCompleted === index) {
                 element.classList.add('slds-progress__item');
-                // element.classList.add('slds-is-active');
+                element.classList.add('slds-is-active');
             }
         });
     }
