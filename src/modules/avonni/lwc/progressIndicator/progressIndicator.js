@@ -1,6 +1,6 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
-// import { getStepIndex, getCurrentStepIndex, computeProgressValue } from './utils'
+import { getCurrentStepIndex, computeProgressValue } from './utils';
 import { classSet } from 'c/utils';
 
 const TYPES = { valid: ['base', 'arrow'], default: 'base' };
@@ -10,7 +10,7 @@ const VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
 // const STATES = { completed: 'completed', current: 'current', warning: 'warning', error: 'error', incomplete: 'incomplete' }
 
 export default class ProgressIndicator extends LightningElement {
-    _currentStep = 5;
+    @api currentStep;
 
     _completedSteps = [];
     _disabledSteps = [];
@@ -19,42 +19,13 @@ export default class ProgressIndicator extends LightningElement {
     _variant = 'base';
     _type = 'base';
     _steps = [];
-    _progressValue = 0;
+    _progressValue;
 
     connectedCallback() {}
 
     renderedCallback() {
-        let elements = Array.from(
-            this.template.querySelectorAll('c-progress-step')
-        );
-
-        let indexCompleted = 0;
-
-        elements.forEach((element, index) => {
-            if (element.getAttribute('data-step') === this._currentStep) {
-                indexCompleted = index;
-            }
-        });
-
-        elements.forEach((element, index) => {
-            if (indexCompleted > index) {
-                element.classList.add('slds-progress__item');
-                element.classList.add('slds-is-completed');
-                element.setIcon('utility:success');
-            } else if (indexCompleted === index) {
-                element.classList.add('slds-progress__item');
-                element.classList.add('slds-is-active');
-            }
-        });
-    }
-
-    @api
-    get currentStep() {
-        return this._currentStep;
-    }
-
-    set currentStep(value) {
-        this._currentStep = value;
+        this.updateProgressValue();
+        this.updateSteps();
     }
 
     @api
@@ -101,5 +72,40 @@ export default class ProgressIndicator extends LightningElement {
 
     getSteps() {
         return Array.from(this.template.querySelectorAll('c-progress-step'));
+    }
+
+    updateSteps() {
+        let steps = this.getSteps();
+
+        let indexCompleted = 0;
+        steps.forEach((step, index) => {
+            if (
+                step.getAttribute('data-step') ===
+                parseInt(this.currentStep, 10)
+            ) {
+                indexCompleted = index;
+            }
+        });
+
+        steps.forEach((step, index) => {
+            if (indexCompleted > index) {
+                step.classList.add('slds-progress__item');
+                step.classList.add('slds-is-completed');
+                step.setIcon('utility:success');
+            } else if (indexCompleted === index) {
+                step.classList.add('slds-progress__item');
+                step.classList.add('slds-is-active');
+            }
+        });
+    }
+
+    updateProgressValue() {
+        const steps = this.getSteps();
+        const currentStepIndex = getCurrentStepIndex(steps, this.currentStep);
+        this._progressValue = computeProgressValue(steps, currentStepIndex);
+    }
+
+    get progressValue() {
+        return this._progressValue;
     }
 }

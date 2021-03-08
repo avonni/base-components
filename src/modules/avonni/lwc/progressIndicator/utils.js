@@ -4,15 +4,15 @@ export function getStepIndex(steps, stepValue) {
     }
     let ret = -1;
     if (stepValue) {
-        // iterate over the steps and find the index of the first element with a matching value
         const stepsLength = steps.length;
         for (let i = 0; i < stepsLength; i += 1) {
-            if (steps[i].value === stepValue) {
+            if (steps[i].value === parseInt(stepValue, 10)) {
                 ret = i;
                 break;
             }
         }
     }
+    console.log(ret);
     return ret;
 }
 

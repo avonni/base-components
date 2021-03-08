@@ -115,6 +115,6 @@ export const Base = Template.bind({});
 Base.args = {
     type: 'base',
     variant: 'base',
-    currentStep: 5,
+    currentStep: 2,
     steps: steps
 };
