@@ -50,12 +50,12 @@ export default {
                     'base',
                     'object-home',
                     'record-home',
-                    'record-home vertical'
+                    'record-home-vertical'
                 ]
             },
             defaultValue: 'base',
             description:
-                'The type of component. Valid values include base, object-home, record-home and record-home vertical',
+                'The type of component. Valid values include base, object-home, record-home and record-home-vertical',
             table: {
                 defaultValue: { summary: 'base' },
                 type: { summary: 'String' }
@@ -166,7 +166,7 @@ RecordHome.args = {
 
 export const RecordHomeVertical = Template.bind({});
 RecordHomeVertical.args = {
-    variant: 'record-home vertical',
+    variant: 'record-home-vertical',
     iconName: 'standard:opportunity',
     label: 'Label',
     title: 'Title',
