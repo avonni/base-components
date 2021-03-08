@@ -43,8 +43,6 @@ export default class DateTimePicker extends LightningElement {
     selectedDayTime = {};
 
     connectedCallback() {
-        // TODO:
-        // Fix the weird min date change on first previous/next click
         this.today = new Date();
         if (this.today < this.min && this.visibility === 'day') {
             this.firstWeekDay = this.min;
@@ -285,9 +283,10 @@ export default class DateTimePicker extends LightningElement {
 
     handlePreviousClick() {
         const dayRange = this.visibility === 'day' ? 1 : 7;
-        console.log(this.min);
         this.firstWeekDay = new Date(
-            this.firstWeekDay.setDate(this.firstWeekDay.getDate() - dayRange)
+            new Date(this.firstWeekDay).setDate(
+                this.firstWeekDay.getDate() - dayRange
+            )
         );
         this._generateTable();
     }
@@ -295,7 +294,9 @@ export default class DateTimePicker extends LightningElement {
     handleNextClick() {
         const dayRange = this.visibility === 'day' ? 1 : 7;
         this.firstWeekDay = new Date(
-            this.firstWeekDay.setDate(this.firstWeekDay.getDate() + dayRange)
+            new Date(this.firstWeekDay).setDate(
+                this.firstWeekDay.getDate() + dayRange
+            )
         );
         this._generateTable();
     }
