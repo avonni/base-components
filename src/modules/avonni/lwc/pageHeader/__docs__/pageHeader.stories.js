@@ -136,6 +136,26 @@ const Template = (args) => PageHeader(args);
 
 export const Base = Template.bind({});
 Base.args = {
+    variant: 'base',
+    iconName: 'standard:opportunity',
+    label: 'Label',
+    title: 'Title',
+    info: 'Info',
+    items: items
+};
+
+export const ObjectHome = Template.bind({});
+ObjectHome.args = {
+    variant: 'object-home',
+    iconName: 'standard:opportunity',
+    label: 'Label',
+    title: 'Title',
+    info: 'Info',
+    items: items
+};
+
+export const RecordHome = Template.bind({});
+RecordHome.args = {
     variant: 'record-home',
     iconName: 'standard:opportunity',
     label: 'Label',
@@ -144,8 +164,8 @@ Base.args = {
     items: items
 };
 
-export const Vertical = Template.bind({});
-Vertical.args = {
+export const RecordHomeVertical = Template.bind({});
+RecordHomeVertical.args = {
     variant: 'record-home vertical',
     iconName: 'standard:opportunity',
     label: 'Label',

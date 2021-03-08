@@ -53,7 +53,31 @@
             </div>
         </template>
         <template if:true={showDetails}>
-            <slot name="details"></slot>
+            <ul class="slds-page-header__detail-list">
+                <template for:each={items} for:item="item">
+                    <li
+                        key={item.label}
+                        class="slds-page-header__detail-item"
+                        style="overflow: hidden"
+                    >
+                        <div
+                            class="slds-text-title slds-truncate"
+                            title={item.label}
+                        >
+                            {item.label}
+                        </div>
+                        <div title={item.value}>
+                            <c-primitive-page-header-item
+                                item={item}
+                                label={item.label}
+                                value={item.value}
+                                type={item.type}
+                            >
+                            </c-primitive-page-header-item>
+                        </div>
+                    </li>
+                </template>
+            </ul>
         </template>
     </div>
 </template>
