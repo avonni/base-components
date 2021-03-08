@@ -101,19 +101,7 @@ const Template = (args) => DateTimePicker(args);
 export const Base = Template.bind({});
 Base.args = {
     label: 'Avonni date and time picker',
-    disabledDateTimes: [
-        {
-            date: '03/08/2021',
-            times: ['08:00', 'Wrong data', '10:30']
-        },
-        {
-            date: '03/10/2021'
-        },
-        {
-            date: '03/09/2021',
-            times: ['Wrong data']
-        }
-    ],
+    disabledDateTimes: ['Wed', new Date('2021-03-12T13:00:00.00Z')],
     visibility: 'week',
     value: new Date().toISOString(),
     showTimeZone: true

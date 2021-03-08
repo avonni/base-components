@@ -15,12 +15,14 @@ const TIME_SLOTS = [
     '18:00'
 ];
 
+const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
 const VISIBILITY = ['day', 'week'];
 
 export default class DateTimePicker extends LightningElement {
     // TODO:
     // Add startTime, endTime, timeSlotDuration
-    // Handle whole day or time disabledd
+    // Handle whole day or time disabled
     // Disable previous/next buttons for date ranges out of the dates allowed
 
     @api disabledDateTimes;
@@ -177,16 +179,11 @@ export default class DateTimePicker extends LightningElement {
             processedTable.push(currentDayTime);
         }
 
-        // Disable the dates and times provided by the user
-        this._disableDateTimes(processedTable);
         this.lastWeekDay = processedTable[processedTable.length - 1].dayObject;
         this.table = processedTable;
     }
 
     _createTimeSlots(day) {
-        const dayIsPast = day.dayObject - this.today < 0;
-        const dayIsOutsideOfAllowedDates =
-            day.dayObject < this.min || day.dayObject > this.max;
         const dayIsToday = day.dayObject - this.today === 0;
         const dayIsSelected = this._selectedDayTime.day
             ? day.dayObject.toLocaleDateString() ===
@@ -197,9 +194,9 @@ export default class DateTimePicker extends LightningElement {
             const currentHour = this._getHourFromTimeString(time);
             const currentMinutes = this._getMinutesFromTimeString(time);
             const dayTimeObject = day.dayObject;
-            dayTimeObject.setHours(currentHour, currentMinutes, 0);
+            dayTimeObject.setHours(currentHour, currentMinutes, 0, 0);
 
-            // Check if the time slot is in the past
+            // Check if the time slot is today but in the past
             let timeIsPast = false;
             if (
                 dayIsToday &&
@@ -213,7 +210,7 @@ export default class DateTimePicker extends LightningElement {
             day.times.push({
                 label: time,
                 dayTimeISO: dayTimeObject.toISOString(),
-                disabled: dayIsPast || dayIsOutsideOfAllowedDates || timeIsPast,
+                disabled: this._isDisabled(dayTimeObject) || timeIsPast,
                 selected: dayIsSelected && time === this._selectedDayTime.time
             });
         });
@@ -226,38 +223,56 @@ export default class DateTimePicker extends LightningElement {
         return parseInt(time.slice(3, 5), 10);
     }
 
-    _disableDateTimes(table) {
-        // For each day of the table
-        table.forEach((day) => {
-            // For each disabled day provided
-            this.disabledDateTimes.forEach((disabledDateTime) => {
-                const disabledDayString = new Date(
-                    disabledDateTime.date
-                ).toLocaleDateString();
-                const dayString = day.dayObject.toLocaleDateString();
+    _isDisabled(day) {
+        const outsideOfAllowedDates = day < this.min || day > this.max;
+        const past = day - this.today < 0;
 
-                // If the disabled day matches the day
-                if (disabledDayString === dayString) {
-                    if (disabledDateTime.times) {
-                        // For each disabled time
-                        disabledDateTime.times.forEach((disabledTime) => {
-                            const disabledTimeIndex = day.times.findIndex(
-                                (time) => time.label === disabledTime
-                            );
-                            // If the time exists, disable it
-                            if (disabledTimeIndex > -1) {
-                                day.times[disabledTimeIndex].disabled = true;
-                            }
-                        });
-                        // If no time is provided, disable the whole day
-                    } else {
-                        day.times.forEach((time) => {
-                            time.disabled = true;
-                        });
-                    }
-                }
-            });
+        const time = day.getTime();
+        const weekDay = day.getDay();
+        const monthDay = day.getDate();
+
+        return (
+            outsideOfAllowedDates ||
+            past ||
+            this.disabledFullDateTimes.indexOf(time) > -1 ||
+            this.disabledWeekDays.indexOf(weekDay) > -1 ||
+            this.disabledMonthDays.indexOf(monthDay) > -1
+        );
+    }
+
+    get disabledFullDateTimes() {
+        let dateTimes = [];
+
+        this.disabledDateTimes.forEach((dateTime) => {
+            if (typeof dateTime === 'object') {
+                dateTimes.push(dateTime.getTime());
+            }
         });
+        return dateTimes;
+    }
+
+    get disabledWeekDays() {
+        let dates = [];
+
+        this.disabledDateTimes.forEach((date) => {
+            if (typeof date === 'string') {
+                dates.push(DAYS.indexOf(date));
+            }
+        });
+
+        return dates;
+    }
+
+    get disabledMonthDays() {
+        let dates = [];
+
+        this.disabledDateTimes.forEach((date) => {
+            if (typeof date === 'number') {
+                dates.push(date);
+            }
+        });
+
+        return dates;
     }
 
     get currentDateRangeString() {
