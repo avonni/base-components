@@ -2,10 +2,11 @@
     <div class="slds-page-header slds-page-header_vertical">
         <div class="slds-media slds-media_center">
             <div class="slds-media__figure">
-                <div class="slds-icon_container slds-icon-standard-opportunity">
+                <div class={computedIconClass}>
                     <c-primitive-icon
                         svg-class="slds-icon slds-page-header__icon"
                         icon-name={iconName}
+                        variant="bare"
                     >
                     </c-primitive-icon>
                 </div>
@@ -22,7 +23,6 @@
                             </template>
                             <span
                                 class="slds-page-header__title slds-hyphenate slds-truncate"
-                                title={title}
                             >
                                 <template if:true={hasStringTitle}>
                                     {title}

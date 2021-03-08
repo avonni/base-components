@@ -9,6 +9,6 @@ export default class PageHeader extends LightningElement {
     @api items = [];
 
     get isRecordHomeVertical() {
-        return this.variant === 'record-home vertical';
+        return this.variant === 'record-home-vertical';
     }
 }

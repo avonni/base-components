@@ -3,9 +3,10 @@ import { normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import pageHeader from './pageHeader.html';
 import pageHeaderVertical from './pageHeaderVertical.html';
+import { computeSldsClass } from 'c/iconUtils';
 
 const VARIANTS = {
-    valid: ['base', 'object-home', 'record-home', 'record-home vertical'],
+    valid: ['base', 'object-home', 'record-home', 'record-home-vertical'],
     default: 'base'
 };
 
@@ -25,7 +26,7 @@ export default class PageHeader extends LightningElement {
     showControls = true;
 
     render() {
-        if (this._variant === 'record-home vertical') {
+        if (this._variant === 'record-home-vertical') {
             return pageHeaderVertical;
         }
         return pageHeader;
@@ -104,6 +105,12 @@ export default class PageHeader extends LightningElement {
                 'slds-page-header_object-home': this._variant === 'object-home',
                 'slds-page-header_record-home': this._variant === 'record-home'
             })
+            .toString();
+    }
+
+    get computedIconClass() {
+        return classSet('slds-icon_container')
+            .add(computeSldsClass(this.iconName))
             .toString();
     }
 
