@@ -9,16 +9,9 @@
                 ></c-progress-step>
             </template>
         </ol>
-        <div
-            class="slds-progress-bar slds-progress-bar_x-small"
-            aria-valuemin="0"
-            aria-valuemax="100"
-            aria-valuenow="25"
-            role="progressbar"
-        >
-            <span class="slds-progress-bar__value" style="width: 25%">
-                <span class="slds-assistive-text">Progress: 25%</span>
-            </span>
-        </div>
+        <lightning-progress-bar
+            value={_progressValue}
+            size="small"
+        ></lightning-progress-bar>
     </div>
 </template>

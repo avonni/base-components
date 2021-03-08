@@ -1,5 +1,6 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
+// import { getStepIndex, getCurrentStepIndex, computeProgressValue } from './utils'
 import { classSet } from 'c/utils';
 
 const TYPES = { valid: ['base', 'arrow'], default: 'base' };
@@ -9,7 +10,7 @@ const VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
 // const STATES = { completed: 'completed', current: 'current', warning: 'warning', error: 'error', incomplete: 'incomplete' }
 
 export default class ProgressIndicator extends LightningElement {
-    @api currentStep;
+    _currentStep = 5;
 
     _completedSteps = [];
     _disabledSteps = [];
@@ -18,6 +19,7 @@ export default class ProgressIndicator extends LightningElement {
     _variant = 'base';
     _type = 'base';
     _steps = [];
+    _progressValue = 0;
 
     connectedCallback() {}
 
@@ -25,16 +27,13 @@ export default class ProgressIndicator extends LightningElement {
         let elements = Array.from(
             this.template.querySelectorAll('c-progress-step')
         );
+
         let indexCompleted = 0;
 
         elements.forEach((element, index) => {
-            // element.setAttributes(this.variant === 'shade');
-
-            if (element.getAttribute('data-step') === this.currentStep) {
+            if (element.getAttribute('data-step') === this._currentStep) {
                 indexCompleted = index;
             }
-
-            console.log(index);
         });
 
         elements.forEach((element, index) => {
@@ -47,6 +46,15 @@ export default class ProgressIndicator extends LightningElement {
                 element.classList.add('slds-is-active');
             }
         });
+    }
+
+    @api
+    get currentStep() {
+        return this._currentStep;
+    }
+
+    set currentStep(value) {
+        this._currentStep = value;
     }
 
     @api
@@ -89,5 +97,9 @@ export default class ProgressIndicator extends LightningElement {
                     this._variant === 'shaded' && this._type === 'base'
             })
             .toString();
+    }
+
+    getSteps() {
+        return Array.from(this.template.querySelectorAll('c-progress-step'));
     }
 }
