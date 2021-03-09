@@ -104,8 +104,7 @@ const steps = [
     },
     {
         value: 4,
-        label: '4',
-        assistiveText: '4'
+        label: '4'
     },
     {
         value: 5,

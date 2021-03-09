@@ -1,14 +1,11 @@
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 
-// const BASE_ICONS = {
-//     completed: 'utility:success',
-//     error: 'utility:error',
-//     warning: 'utility:warning'
-// };
-
 export default class ProgressStep extends LightningElement {
     @api label;
+    @api assistiveText;
+    @api ariaHidden = false;
+    @api ariaDescribedBy = '';
     iconName;
     // status => completed, warning, error, current
     // iconSrc
@@ -20,7 +17,6 @@ export default class ProgressStep extends LightningElement {
     // buttonDisabled
     // buttonTitle
     // buttonVariant
-    @api assistiveText;
 
     _value;
 
@@ -97,26 +93,24 @@ export default class ProgressStep extends LightningElement {
         );
     }
 
-    // selectStep(event){
-    //     // const step = event.target.dataset
-    //     // console.log(step)
-    //     this.dispatchEvent(
-    //         new CustomEvent('stepselect', {
-    //             bubbles: true,
-    //             detail: { value: this.value}
-    //         })
-    //         )
-    //     this.updateAriaDescribedBy('button')
-    // }
-
-    updateAriaDescribedBy(value) {
-        const button = this.template.querySelector('button');
-        if (button) {
-            if (value !== null) {
-                button.setAttribute('aria-describedBy', value);
-            } else {
-                button.removeAttribute('aria-describedBy');
-            }
-        }
+    selectStep() {
+        this.dispatchEvent(
+            new CustomEvent('stepselect', {
+                bubbles: true,
+                detail: { value: this.value }
+            })
+        );
+        // this.updateAriaDescribedBy('button')
     }
+
+    // updateAriaDescribedBy(value) {
+    //     const button = this.template.querySelector('button');
+    //     if (button) {
+    //         if (value !== null) {
+    //             button.setAttribute('aria-describedBy', value);
+    //         } else {
+    //             button.removeAttribute('aria-describedBy');
+    //         }
+    //     }
+    // }
 }

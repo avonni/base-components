@@ -88,11 +88,9 @@ export default class ProgressIndicator extends LightningElement {
 
         steps.forEach((step, index) => {
             if (indexCompleted > index) {
-                step.classList.add('slds-progress__item');
                 step.classList.add('slds-is-completed');
                 step.setIcon('utility:success');
             } else if (indexCompleted === index) {
-                step.classList.add('slds-progress__item');
                 step.classList.add('slds-is-active');
             }
         });
@@ -148,15 +146,12 @@ export default class ProgressIndicator extends LightningElement {
         });
     }
 
-    selectStep(event) {
-        const step = event.target.dataset;
-        console.log(step);
+    selectStep() {
         this.dispatchEvent(
             new CustomEvent('stepselect', {
                 bubbles: true,
                 detail: { value: this.value }
             })
         );
-        // this.updateAriaDescribedBy('button')
     }
 }
