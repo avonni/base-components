@@ -14,17 +14,19 @@ const INTL_OPTIONS = {
     hour12: false
 };
 
-export default class DateTimePicker extends LightningElement {
-    @api label;
-    @api name;
+const VARIANTS = ['standard', 'label-hidden'];
 
+export default class DateTimePicker extends LightningElement {
     @api disabled;
     @api fieldLevelHelp;
+    @api label;
     @api messageWhenValueMissing;
+    @api name;
     @api readOnly;
     @api required;
     @api disabledDateTimes;
 
+    _variant;
     _max;
     _min;
     _value;
@@ -33,6 +35,7 @@ export default class DateTimePicker extends LightningElement {
     _timeSlotDuration;
     _timeSlots;
     _visibility;
+    // _multiple;
     _showTimeZone;
     _hideNavigation;
     _hideDatePicker;
@@ -54,16 +57,28 @@ export default class DateTimePicker extends LightningElement {
         this.today = now;
         this.datePickerValue = now.toISOString();
 
-        if (this.today < this.min && this.visibility === 'day') {
-            this.firstWeekDay = this.min;
-        } else if (this.visibility === 'day') {
-            this.firstWeekDay = this.today;
-        } else if (this.today < this.min) {
-            this._setFirstWeekDay(this.min);
-        } else {
-            this._setFirstWeekDay(this.today);
-        }
+        // eslint-disable-next-line no-unused-expressions
+        this.today < this.min
+            ? this._setFirstWeekDay(this.min)
+            : this._setFirstWeekDay(this.today);
         this._generateTable();
+    }
+
+    renderedCallback() {
+        // TODO:
+        // Show disabled dates in date picker
+        this.template.querySelector('lightning-input').reportValidity();
+    }
+
+    @api
+    get variant() {
+        return this._variant;
+    }
+    set variant(value) {
+        this._variant = normalizeString(value, {
+            fallbackValue: 'standard',
+            validValues: VARIANTS
+        });
     }
 
     @api
@@ -73,9 +88,9 @@ export default class DateTimePicker extends LightningElement {
     set max(value) {
         const date = new Date(value);
         if (date) {
-            this._max = date;
+            this._max = new Date(date.setHours(0, 0, 0, 0));
         } else {
-            this._max = new Date(2099, 11, 31);
+            this._max = new Date(new Date(2099, 11, 31).setHours(0, 0, 0, 0));
         }
     }
 
@@ -86,9 +101,9 @@ export default class DateTimePicker extends LightningElement {
     set min(value) {
         const date = new Date(value);
         if (date) {
-            this._min = date;
+            this._min = new Date(date.setHours(0, 0, 0, 0));
         } else {
-            this._min = new Date(1900, 0, 1);
+            this._min = new Date(new Date(1900, 0, 1).setHours(0, 0, 0, 0));
         }
     }
 
@@ -167,6 +182,17 @@ export default class DateTimePicker extends LightningElement {
         });
     }
 
+    // TODO:
+    // Add support for multiple selection
+
+    // @api
+    // get multiple() {
+    //     return this._multiple;
+    // }
+    // set multiple(value) {
+    //     this._multiple = normalizeBoolean(value);
+    // }
+
     @api
     get showTimeZone() {
         return this._showTimeZone;
@@ -240,11 +266,13 @@ export default class DateTimePicker extends LightningElement {
     }
 
     _setFirstWeekDay(givenDate) {
-        const firstWeekDayNumber = givenDate.getDate() - givenDate.getDay();
-        const firstWeekDayInMilliseconds = new Date(givenDate).setDate(
-            firstWeekDayNumber
-        );
-        this.firstWeekDay = new Date(firstWeekDayInMilliseconds);
+        if (this.visibility === 'day') {
+            this.firstWeekDay = givenDate;
+        } else {
+            const dateDay = givenDate.getDate() - givenDate.getDay();
+            const dateTime = new Date(givenDate).setDate(dateDay);
+            this.firstWeekDay = new Date(dateTime);
+        }
     }
 
     _generateTable() {
@@ -286,60 +314,54 @@ export default class DateTimePicker extends LightningElement {
     }
 
     _createTimeSlots(day) {
-        const dayIsToday = day.dayObject - this.today === 0;
         const dayIsSelected = this._selectedDayTime
             ? day.dayObject.toLocaleDateString() ===
               this._selectedDayTime.day.toLocaleDateString()
             : false;
 
+        const dayIsDisabled = this._isDisabled(day.dayObject);
+
         this._timeSlots.forEach((time) => {
             const timeIsSelected =
                 this._selectedDayTime && time === this._selectedDayTime.time;
-            const currentHour = parseInt(time.slice(0, 2), 10);
-            const currentMinutes = parseInt(time.slice(3, 5), 10);
-            const currentSeconds = parseInt(time.slice(6, 8), 10);
-            const dayTimeObject = day.dayObject;
-            dayTimeObject.setHours(
-                currentHour,
-                currentMinutes,
-                currentSeconds,
-                0
-            );
 
-            // Check if the time slot is today but in the past
-            let timeIsPast = false;
-            if (
-                dayIsToday &&
-                (currentHour < this.today.getHours() ||
-                    (currentHour === this.today.getHours() &&
-                        currentMinutes < this.today.getMinutes()))
-            ) {
-                timeIsPast = true;
-            }
+            const hour = parseInt(time.slice(0, 2), 10);
+            const minutes = parseInt(time.slice(3, 5), 10);
+            const seconds = parseInt(time.slice(6, 8), 10);
+            const dayTimeObject = day.dayObject;
+            dayTimeObject.setHours(hour, minutes, seconds, 0);
+
+            // Check if time is disabled
+            const dayTime = dayTimeObject.getTime();
+            const timeIsDisabled =
+                this.disabledFullDateTimes.indexOf(dayTime) > -1;
 
             day.times.push({
                 dayTimeISO: dayTimeObject.toISOString(),
-                disabled:
-                    this.disabled ||
-                    this._isDisabled(dayTimeObject) ||
-                    timeIsPast,
+                disabled: this.disabled || dayIsDisabled || timeIsDisabled,
                 selected: dayIsSelected && timeIsSelected
             });
         });
     }
 
-    _isDisabled(day) {
-        const outsideOfAllowedDates = day < this.min || day > this.max;
-        const past = day - this.today < 0;
+    _isDisabled(dayObject) {
+        // TODO:
+        // Disable whole day from date without time
+        //   * Maybe use an object to disable specific times, instead of passing a date with the right time?
+        //   {
+        //       date: Date Object,
+        //       time: ISO time string
+        //   }
 
-        const time = day.getTime();
+        // Remove time from the date object
+        const day = new Date(new Date(dayObject).setHours(0, 0, 0, 0));
+
+        const outsideOfAllowedDates = day < this.min || day > this.max;
         const weekDay = day.getDay();
         const monthDay = day.getDate();
 
         return (
             outsideOfAllowedDates ||
-            past ||
-            this.disabledFullDateTimes.indexOf(time) > -1 ||
             this.disabledWeekDays.indexOf(weekDay) > -1 ||
             this.disabledMonthDays.indexOf(monthDay) > -1
         );
@@ -353,6 +375,7 @@ export default class DateTimePicker extends LightningElement {
                 dateTimes.push(dateTime.getTime());
             }
         });
+
         return dateTimes;
     }
 
@@ -381,12 +404,15 @@ export default class DateTimePicker extends LightningElement {
     }
 
     get currentDateRangeString() {
+        const firstWeekDay = this.firstWeekDay.toLocaleString('default', {
+            weekday: 'long'
+        });
         const options = { month: 'long', day: 'numeric', year: 'numeric' };
         const firstDay = this.firstWeekDay.toLocaleString('default', options);
         const lastDay = this.lastWeekDay.toLocaleString('default', options);
 
         return this.visibility === 'day'
-            ? firstDay
+            ? `${firstWeekDay}, ${firstDay}`
             : `${firstDay} - ${lastDay}`;
     }
 
@@ -402,8 +428,12 @@ export default class DateTimePicker extends LightningElement {
         return this.max.toISOString();
     }
 
+    get labelHidden() {
+        return this.variant === 'label-hidden';
+    }
+
     get prevButtonIsDisabled() {
-        return this.firstWeekDay <= this.min || this.firstWeekDay <= this.today;
+        return this.firstWeekDay <= this.min;
     }
 
     get nextButtonIsDisabled() {
@@ -411,6 +441,7 @@ export default class DateTimePicker extends LightningElement {
     }
 
     handleTodayClick() {
+        this.datePickerValue = this.today.toISOString();
         this._setFirstWeekDay(this.today);
         this._generateTable();
     }
@@ -423,6 +454,7 @@ export default class DateTimePicker extends LightningElement {
             )
         );
         this._generateTable();
+        this.datePickerValue = this.firstWeekDay.toISOString();
     }
 
     handleNextClick() {
@@ -433,12 +465,22 @@ export default class DateTimePicker extends LightningElement {
             )
         );
         this._generateTable();
+        this.datePickerValue = this.firstWeekDay.toISOString();
     }
 
     handleDatePickerChange(event) {
-        this.datePickerValue = event.currentTarget.value;
-        this._setFirstWeekDay(new Date(this.datePickerValue));
-        this._generateTable();
+        const dateString = event.currentTarget.value;
+        if (dateString) {
+            this.datePickerValue = dateString;
+
+            // Cut date string into pieces to make sure new date is created with current time zone
+            const year = parseInt(dateString.slice(0, 4), 10);
+            const month = parseInt(dateString.slice(5, 7), 10) - 1;
+            const day = parseInt(dateString.slice(8, 10), 10);
+            const date = new Date(year, month, day);
+            this._setFirstWeekDay(date);
+            this._generateTable();
+        }
     }
 
     handleTimeSlotClick(event) {
@@ -458,7 +500,8 @@ export default class DateTimePicker extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
-                    value: this.value
+                    value: this.value,
+                    name: this.name
                 }
             })
         );

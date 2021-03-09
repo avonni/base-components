@@ -1,15 +1,15 @@
 <template>
+    <p class="slds-form-element__label" if:false={labelHidden}>{label}</p>
+    <lightning-helptext
+        if:true={fieldLevelHelp}
+        content={fieldLevelHelp}
+    ></lightning-helptext>
     <lightning-layout multiple-rows="true" pull-to-boundary="small">
         <lightning-layout-item flexibility="auto" padding="horizontal-small">
             <p
                 class="slds-text-heading_medium slds-m-bottom_small slds-grid slds-grid_vertical-align-center"
             >
                 {currentDateRangeString}
-                <lightning-helptext
-                    if:true={fieldLevelHelp}
-                    content={fieldLevelHelp}
-                    class="slds-m-left_x-small slds-m-bottom_small avonni-date-time-picker__field-level-help"
-                ></lightning-helptext>
             </p>
             <div
                 class="slds-form-element__help"

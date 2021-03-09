@@ -33,6 +33,19 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        variant: {
+            control: {
+                type: 'select',
+                options: ['standard', 'label-hidden']
+            },
+            defaultValue: 'standard',
+            description:
+                'The variant changes the appearance of the field. Accepted variants include standard and label-hidden.',
+            table: {
+                defaultValue: { summary: 'standard' },
+                type: { summary: 'string' }
+            }
+        },
         messageWhenValueMissing: {
             control: {
                 type: 'text'
@@ -200,7 +213,6 @@ export const Base = Template.bind({});
 Base.args = {
     label: 'Avonni date and time picker',
     disabledDateTimes: ['Wed', new Date('2021-03-12T13:00:00.00Z')],
-    visibility: 'week',
     showTimeZone: true,
-    max: '2021/03/18'
+    required: true
 };

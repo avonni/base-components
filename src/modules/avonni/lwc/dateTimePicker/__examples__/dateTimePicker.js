@@ -9,6 +9,7 @@ export const DateTimePicker = ({
     disabled,
     fieldLevelHelp,
     label,
+    variant,
     messageWhenValueMissing,
     name,
     readOnly,
@@ -29,6 +30,7 @@ export const DateTimePicker = ({
     element.disabled = disabled;
     element.fieldLevelHelp = fieldLevelHelp;
     element.label = label;
+    element.variant = variant;
     element.messageWhenValueMissing = messageWhenValueMissing;
     element.name = name;
     element.readOnly = readOnly;
