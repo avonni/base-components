@@ -1,0 +1,5 @@
+.avonni-progress-indicator-has-warning > svg {
+    color: #ffb75d !important;
+    border-color: transparent;
+    box-shadow: none;
+}

@@ -1,17 +1,35 @@
 <template>
-    <div class={computedOuterClass}>
-        <ol class="slds-progress__list">
-            <template for:each={steps} for:item="step" for:index="index">
-                <c-progress-step
-                    key={step.value}
-                    label={step.label}
-                    value={step.value}
-                ></c-progress-step>
+    <div
+        style="
+            justify-content: space-around;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+        "
+    >
+        <!-- <lightning-layout horizontal-align="space">
+            <template for:each={steps} for:item="step">
+                <lightning-layout-item key={step.value} padding="horizontal-medium">
+                    {step.label}
+                </lightning-layout-item>
             </template>
-        </ol>
-        <lightning-progress-bar
-            value={progressValue}
-            size="small"
-        ></lightning-progress-bar>
+        </lightning-layout> -->
+        <div class={computedOuterClass}>
+            <ol class="slds-progress__list">
+                <template for:each={steps} for:item="step" for:index="index">
+                    <c-progress-step
+                        onclick={selectStep}
+                        key={step.value}
+                        label={step.label}
+                        value={step.value}
+                        assistive-text={step.assistiveText}
+                    ></c-progress-step>
+                </template>
+            </ol>
+            <lightning-progress-bar
+                value={progressValue}
+                size="small"
+            ></lightning-progress-bar>
+        </div>
     </div>
 </template>

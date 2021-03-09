@@ -1,6 +1,13 @@
 <template>
     <li style="display: flex">
-        <button class={computedButtonClass}>
+        <button
+            class={computedButtonClass}
+            onclick={selectStep}
+            onmouseenter={handleStepMouseEnter}
+            onmouseleave={handleStepMouseLeave}
+            onfocus={handleStepFocus}
+            onblur={handleStepBlur}
+        >
             <c-primitive-icon
                 icon-name={iconName}
                 svg-class="slds-button__icon"

@@ -89,23 +89,33 @@ export default {
 const steps = [
     {
         value: 1,
-        label: '1'
+        label: '1',
+        assistiveText: '1'
     },
     {
         value: 2,
-        label: '2'
+        label: '2',
+        assistiveText: '2'
     },
     {
         value: 3,
-        label: '3'
+        label: '3',
+        assistiveText: '3'
     },
     {
         value: 4,
-        label: '4'
+        label: '4',
+        assistiveText: '4'
     },
     {
         value: 5,
-        label: '5'
+        label: '5',
+        assistiveText: '5'
+    },
+    {
+        value: 6,
+        label: '6',
+        assistiveText: '6'
     }
 ];
 
@@ -115,6 +125,10 @@ export const Base = Template.bind({});
 Base.args = {
     type: 'base',
     variant: 'base',
-    currentStep: 2,
-    steps: steps
+    currentStep: 3,
+    steps: steps,
+    errorSteps: [1],
+    warningSteps: [2],
+    completedSteps: [4],
+    disabledSteps: [5]
 };

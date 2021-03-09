@@ -11,14 +11,13 @@ const VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
 
 export default class ProgressIndicator extends LightningElement {
     @api currentStep;
+    @api errorSteps = [];
+    @api warningSteps = [];
+    @api completedSteps = [];
+    @api disabledSteps = [];
 
-    _completedSteps = [];
-    _disabledSteps = [];
-    _errorSteps = [];
-    _warningSteps = [];
     _variant = 'base';
     _type = 'base';
-    _steps = [];
     _progressValue;
 
     connectedCallback() {}
@@ -26,6 +25,9 @@ export default class ProgressIndicator extends LightningElement {
     renderedCallback() {
         this.updateProgressValue();
         this.updateSteps();
+        this.updateErrorSteps();
+        this.updateWarningSteps();
+        this.updateCompletedSteps();
     }
 
     @api
@@ -79,10 +81,7 @@ export default class ProgressIndicator extends LightningElement {
 
         let indexCompleted = this.currentStep <= 1 ? 0 : this.currentStep - 1;
         steps.forEach((step, index) => {
-            if (
-                step.getAttribute('data-step') ===
-                parseInt(this.currentStep, 10)
-            ) {
+            if (step.getAttribute('data-step') === this.currentStep) {
                 indexCompleted = index;
             }
         });
@@ -107,5 +106,57 @@ export default class ProgressIndicator extends LightningElement {
 
     get progressValue() {
         return this._progressValue;
+    }
+
+    updateErrorSteps() {
+        const steps = this.getSteps();
+        steps.forEach((step) => {
+            this.errorSteps.forEach((error) => {
+                if (parseInt(step.getAttribute('data-step'), 10) === error) {
+                    step.setIcon('utility:error');
+                    step.classList.remove('slds-is-completed');
+                    step.classList.add('slds-has-error');
+                }
+            });
+        });
+    }
+
+    updateWarningSteps() {
+        const steps = this.getSteps();
+        steps.forEach((step) => {
+            this.warningSteps.forEach((warning) => {
+                if (parseInt(step.getAttribute('data-step'), 10) === warning) {
+                    step.setIcon('utility:warning');
+                    // step.classList.remove('slds-is-completed')
+                    step.classList.add('avonni-progress-indicator-has-warning');
+                }
+            });
+        });
+    }
+
+    updateCompletedSteps() {
+        const steps = this.getSteps();
+        steps.forEach((step) => {
+            this.completedSteps.forEach((completed) => {
+                if (
+                    parseInt(step.getAttribute('data-step'), 10) === completed
+                ) {
+                    step.setIcon('utility:success');
+                    step.classList.add('slds-is-completed');
+                }
+            });
+        });
+    }
+
+    selectStep(event) {
+        const step = event.target.dataset;
+        console.log(step);
+        this.dispatchEvent(
+            new CustomEvent('stepselect', {
+                bubbles: true,
+                detail: { value: this.value }
+            })
+        );
+        // this.updateAriaDescribedBy('button')
     }
 }

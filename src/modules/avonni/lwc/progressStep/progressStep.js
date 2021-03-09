@@ -9,8 +9,8 @@ import { classSet } from 'c/utils';
 
 export default class ProgressStep extends LightningElement {
     @api label;
-    // status => completed, warning, error, current
     iconName;
+    // status => completed, warning, error, current
     // iconSrc
     // iconPosition
     // buttonLabel
@@ -20,7 +20,7 @@ export default class ProgressStep extends LightningElement {
     // buttonDisabled
     // buttonTitle
     // buttonVariant
-    // assistiveText
+    @api assistiveText;
 
     _value;
 
@@ -56,5 +56,67 @@ export default class ProgressStep extends LightningElement {
     @api
     setIcon(iconName) {
         this.iconName = iconName;
+    }
+
+    handleStepMouseEnter() {
+        this.dispatchEvent(
+            new CustomEvent('stepmouseenter', {
+                bubbles: true,
+                cancelable: true,
+                detail: { value: this.value }
+            })
+        );
+    }
+
+    handleStepMouseLeave() {
+        this.dispatchEvent(
+            new CustomEvent('stepmouseleave', {
+                bubbles: true,
+                cancelable: true,
+                detail: { value: this.value }
+            })
+        );
+    }
+
+    handleStepFocus() {
+        this.dispatchEvent(
+            new CustomEvent('stepfocus', {
+                bubbles: true,
+                cancelable: true,
+                detail: { value: this.value }
+            })
+        );
+    }
+
+    handleStepBlur() {
+        this.dispatchEvent(
+            new CustomEvent('stepblur', {
+                bubbles: true,
+                detail: { value: this.value }
+            })
+        );
+    }
+
+    // selectStep(event){
+    //     // const step = event.target.dataset
+    //     // console.log(step)
+    //     this.dispatchEvent(
+    //         new CustomEvent('stepselect', {
+    //             bubbles: true,
+    //             detail: { value: this.value}
+    //         })
+    //         )
+    //     this.updateAriaDescribedBy('button')
+    // }
+
+    updateAriaDescribedBy(value) {
+        const button = this.template.querySelector('button');
+        if (button) {
+            if (value !== null) {
+                button.setAttribute('aria-describedBy', value);
+            } else {
+                button.removeAttribute('aria-describedBy');
+            }
+        }
     }
 }
