@@ -11,6 +11,9 @@ export const DateTimePicker = ({
     min,
     max,
     value,
+    startTime,
+    endTime,
+    timeSlotDuration,
     visibility,
     showTimeZone,
     hideNavigation,
@@ -22,6 +25,9 @@ export const DateTimePicker = ({
     element.min = min;
     element.max = max;
     element.value = value;
+    element.startTime = startTime;
+    element.endTime = endTime;
+    element.timeSlotDuration = timeSlotDuration;
     element.visibility = visibility;
     element.showTimeZone = showTimeZone;
     element.hideNavigation = hideNavigation;

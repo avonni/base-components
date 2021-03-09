@@ -2,27 +2,12 @@ import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import TIME_ZONES from './timeZones.js';
 
-const TIME_SLOTS = [
-    '08:00',
-    '08:30',
-    '09:00',
-    '09:30',
-    '10:00',
-    '10:30',
-    '11:00',
-    '14:00',
-    '14:30',
-    '18:00'
-];
-
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 const VISIBILITY = ['day', 'week'];
 
 export default class DateTimePicker extends LightningElement {
     // TODO:
-    // Add startTime, endTime, timeSlotDuration
-    // Handle whole day or time disabled
     // Disable previous/next buttons for date ranges out of the dates allowed
 
     @api disabledDateTimes;
@@ -30,6 +15,10 @@ export default class DateTimePicker extends LightningElement {
     _max;
     _min;
     _value;
+    _startTime;
+    _endTime;
+    _timeSlotDuration;
+    _timeSlots;
     _visibility;
     _showTimeZone;
     _hideNavigation;
@@ -45,6 +34,7 @@ export default class DateTimePicker extends LightningElement {
 
     connectedCallback() {
         this.selectedTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        this._initTimeSlots();
         this.today = new Date();
 
         if (this.today < this.min && this.visibility === 'day') {
@@ -103,6 +93,48 @@ export default class DateTimePicker extends LightningElement {
     }
 
     @api
+    get startTime() {
+        return this._startTime;
+    }
+    set startTime(value) {
+        const start = new Date(`1970-01-01T${value}`);
+        // Return start time in ms. Default value is 08:00.
+        this._startTime = isNaN(start.getTime()) ? 46800000 : start.getTime();
+    }
+
+    @api
+    get endTime() {
+        return this._endTime;
+    }
+    set endTime(value) {
+        const end = new Date(`1970-01-01T${value}`);
+        // Return end time in ms. Default value is 18:00.
+        this._endTime = isNaN(end.getTime()) ? 82800000 : end.getTime();
+    }
+
+    @api
+    get timeSlotDuration() {
+        return this._timeSlotDuration;
+    }
+    set timeSlotDuration(value) {
+        const duration = value.match(/(\d{2}):(\d{2}):?(\d{2})?/);
+        let durationMilliseconds = 0;
+        if (duration) {
+            const durationHours = parseInt(duration[1], 10);
+            const durationMinutes = parseInt(duration[2], 10);
+            const durationSeconds = parseInt(duration[3], 10) || 0;
+            durationMilliseconds =
+                durationHours * 3600000 +
+                durationMinutes * 60000 +
+                durationSeconds * 1000;
+        }
+
+        // Return duration in ms. Default value is 00:30.
+        this._timeSlotDuration =
+            durationMilliseconds > 0 ? durationMilliseconds : 1800000;
+    }
+
+    @api
     get visibility() {
         return this._visibility;
     }
@@ -135,6 +167,24 @@ export default class DateTimePicker extends LightningElement {
     }
     set hideDatePicker(value) {
         this._hideDatePicker = normalizeBoolean(value);
+    }
+
+    _initTimeSlots() {
+        const timeSlots = [];
+        let currentTime = this.startTime;
+
+        while (currentTime < this.endTime) {
+            timeSlots.push(
+                new Date(currentTime).toLocaleTimeString('default', {
+                    hour12: false,
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                })
+            );
+            currentTime = currentTime + this.timeSlotDuration;
+        }
+        this._timeSlots = timeSlots;
     }
 
     _setFirstWeekDay(givenDate) {
@@ -190,7 +240,7 @@ export default class DateTimePicker extends LightningElement {
               this._selectedDayTime.day.toLocaleDateString()
             : false;
 
-        TIME_SLOTS.forEach((time) => {
+        this._timeSlots.forEach((time) => {
             const currentHour = this._getHourFromTimeString(time);
             const currentMinutes = this._getMinutesFromTimeString(time);
             const dayTimeObject = day.dayObject;

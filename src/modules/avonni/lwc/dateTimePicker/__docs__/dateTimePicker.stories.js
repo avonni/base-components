@@ -49,6 +49,42 @@ export default {
             description:
                 'The value of the date selected, which can be a Date object, timestamp, or an ISO8601 formatted string.'
         },
+        startTime: {
+            control: {
+                type: 'text'
+            },
+            defaultValue: '08:00',
+            description:
+                'Start of the time slots. Must be an ISO8601 formatted time string.',
+            table: {
+                defaultValue: { summary: '08:00' },
+                type: { summary: 'string' }
+            }
+        },
+        endTime: {
+            control: {
+                type: 'text'
+            },
+            defaultValue: '18:00',
+            description:
+                'End of the time slots. Must be an ISO8601 formatted time string.',
+            table: {
+                defaultValue: { summary: '18:00' },
+                type: { summary: 'string' }
+            }
+        },
+        timeSlotDuration: {
+            control: {
+                type: 'text'
+            },
+            defaultValue: '00:30',
+            description:
+                'Duration of each time slot. Must be an ISO8601 formatted time string.',
+            table: {
+                defaultValue: { summary: '00:30' },
+                type: { summary: 'string' }
+            }
+        },
         visibility: {
             control: {
                 type: 'select',
