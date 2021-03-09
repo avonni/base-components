@@ -15,8 +15,6 @@ const INTL_OPTIONS = {
 };
 
 export default class DateTimePicker extends LightningElement {
-    // TODO:
-    // Disable previous/next buttons for date ranges out of the dates allowed
     @api label;
     @api name;
 
@@ -47,11 +45,14 @@ export default class DateTimePicker extends LightningElement {
     timeZones = TIME_ZONES;
     selectedTimeZone;
     helpMessage = null;
+    datePickerValue;
 
     connectedCallback() {
         this.selectedTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         this._initTimeSlots();
-        this.today = new Date();
+        const now = new Date();
+        this.today = now;
+        this.datePickerValue = now.toISOString();
 
         if (this.today < this.min && this.visibility === 'day') {
             this.firstWeekDay = this.min;
@@ -401,6 +402,14 @@ export default class DateTimePicker extends LightningElement {
         return this.max.toISOString();
     }
 
+    get prevButtonIsDisabled() {
+        return this.firstWeekDay <= this.min || this.firstWeekDay <= this.today;
+    }
+
+    get nextButtonIsDisabled() {
+        return this.lastWeekDay >= this.max;
+    }
+
     handleTodayClick() {
         this._setFirstWeekDay(this.today);
         this._generateTable();
@@ -427,8 +436,8 @@ export default class DateTimePicker extends LightningElement {
     }
 
     handleDatePickerChange(event) {
-        const date = new Date(event.currentTarget.value);
-        this._setFirstWeekDay(date);
+        this.datePickerValue = event.currentTarget.value;
+        this._setFirstWeekDay(new Date(this.datePickerValue));
         this._generateTable();
     }
 

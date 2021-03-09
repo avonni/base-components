@@ -74,7 +74,7 @@ export default {
         },
         value: {
             control: {
-                type: 'text'
+                type: 'date'
             },
             description:
                 'The value of the date selected, which can be a Date object, timestamp, or an ISO8601 formatted string.',
@@ -125,25 +125,25 @@ export default {
         },
         max: {
             control: {
-                type: 'text'
+                type: 'date'
             },
-            defaultValue: '12/31/2099',
+            defaultValue: '2099-12-31',
             description:
                 'Specifies the minimum date, which the calendar can show.',
             table: {
-                defaultValue: { summary: '12/31/2099' },
+                defaultValue: { summary: '2099-12-31' },
                 type: { summary: 'string' }
             }
         },
         min: {
             control: {
-                type: 'text'
+                type: 'date'
             },
-            defaultValue: '01/01/1900',
+            defaultValue: '1900-01-01',
             description:
                 'Specifies the maximum date, which the calendar can show.',
             table: {
-                defaultValue: { summary: '01/01/1900' },
+                defaultValue: { summary: '1900-01-01' },
                 type: { summary: 'string' }
             }
         },
@@ -201,5 +201,6 @@ Base.args = {
     label: 'Avonni date and time picker',
     disabledDateTimes: ['Wed', new Date('2021-03-12T13:00:00.00Z')],
     visibility: 'week',
-    showTimeZone: true
+    showTimeZone: true,
+    max: '2021/03/18'
 };
