@@ -3,6 +3,26 @@ import { DateTimePicker } from '../__examples__/dateTimePicker';
 export default {
     title: 'Example/Date Time Picker',
     argTypes: {
+        disabled: {
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the date time picker is disabled and users cannot interact with it.',
+            table: {
+                type: { summary: 'boolean' }
+            }
+        },
+        fieldLevelHelp: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'Help text detailing the purpose and function of the input.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         label: {
             control: {
                 type: 'text'
@@ -13,33 +33,43 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        disabledDateTimes: {
-            control: {
-                type: 'object'
-            }
-        },
-        min: {
+        messageWhenValueMissing: {
             control: {
                 type: 'text'
             },
-            defaultValue: '01/01/1900',
             description:
-                'Specifies the maximum date, which the calendar can show.',
+                'Error message to be displayed when the value is missing. The valueMissing error can be returned when you specify the required attribute for any input type.',
             table: {
-                defaultValue: { summary: '01/01/1900' },
                 type: { summary: 'string' }
             }
         },
-        max: {
+        name: {
             control: {
                 type: 'text'
             },
-            defaultValue: '12/31/2099',
-            description:
-                'Specifies the minimum date, which the calendar can show.',
+            description: 'Specifies the name of an input element.',
             table: {
-                defaultValue: { summary: '12/31/2099' },
                 type: { summary: 'string' }
+            }
+        },
+        readOnly: {
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the input field is read-only and cannot be edited by users.',
+            table: {
+                type: { summary: 'boolean' }
+            }
+        },
+        required: {
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the input field must be filled out before the form is submitted.',
+            table: {
+                type: { summary: 'boolean' }
             }
         },
         value: {
@@ -47,7 +77,10 @@ export default {
                 type: 'text'
             },
             description:
-                'The value of the date selected, which can be a Date object, timestamp, or an ISO8601 formatted string.'
+                'The value of the date selected, which can be a Date object, timestamp, or an ISO8601 formatted string.',
+            table: {
+                type: { summary: 'string' }
+            }
         },
         startTime: {
             control: {
@@ -82,6 +115,35 @@ export default {
                 'Duration of each time slot. Must be an ISO8601 formatted time string.',
             table: {
                 defaultValue: { summary: '00:30' },
+                type: { summary: 'string' }
+            }
+        },
+        disabledDateTimes: {
+            control: {
+                type: 'object'
+            }
+        },
+        max: {
+            control: {
+                type: 'text'
+            },
+            defaultValue: '12/31/2099',
+            description:
+                'Specifies the minimum date, which the calendar can show.',
+            table: {
+                defaultValue: { summary: '12/31/2099' },
+                type: { summary: 'string' }
+            }
+        },
+        min: {
+            control: {
+                type: 'text'
+            },
+            defaultValue: '01/01/1900',
+            description:
+                'Specifies the maximum date, which the calendar can show.',
+            table: {
+                defaultValue: { summary: '01/01/1900' },
                 type: { summary: 'string' }
             }
         },
@@ -139,6 +201,5 @@ Base.args = {
     label: 'Avonni date and time picker',
     disabledDateTimes: ['Wed', new Date('2021-03-12T13:00:00.00Z')],
     visibility: 'week',
-    value: new Date().toISOString(),
     showTimeZone: true
 };

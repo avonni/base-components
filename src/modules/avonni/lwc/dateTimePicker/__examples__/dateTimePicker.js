@@ -6,28 +6,40 @@ customElements.define(
 );
 
 export const DateTimePicker = ({
+    disabled,
+    fieldLevelHelp,
     label,
-    disabledDateTimes,
-    min,
-    max,
+    messageWhenValueMissing,
+    name,
+    readOnly,
+    required,
     value,
     startTime,
     endTime,
     timeSlotDuration,
+    disabledDateTimes,
+    max,
+    min,
     visibility,
     showTimeZone,
     hideNavigation,
     hideDatePicker
 }) => {
     const element = document.createElement('ac-avonni-date-time-picker');
+    element.disabled = disabled;
+    element.fieldLevelHelp = fieldLevelHelp;
     element.label = label;
-    element.disabledDateTimes = disabledDateTimes;
-    element.min = min;
-    element.max = max;
+    element.messageWhenValueMissing = messageWhenValueMissing;
+    element.name = name;
+    element.readOnly = readOnly;
+    element.required = required;
     element.value = value;
     element.startTime = startTime;
     element.endTime = endTime;
     element.timeSlotDuration = timeSlotDuration;
+    element.disabledDateTimes = disabledDateTimes;
+    element.max = max;
+    element.min = min;
     element.visibility = visibility;
     element.showTimeZone = showTimeZone;
     element.hideNavigation = hideNavigation;

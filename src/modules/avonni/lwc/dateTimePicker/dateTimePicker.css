@@ -41,6 +41,6 @@
     background-color: #d8edff;
 }
 
-.hidden-input {
-    display: none;
+.field-level-help {
+    display: inline-block;
 }

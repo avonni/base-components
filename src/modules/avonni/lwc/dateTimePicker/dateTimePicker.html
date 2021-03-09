@@ -1,15 +1,25 @@
 <template>
-    <lightning-layout
-        class="slds-p-around_medium"
-        multiple-rows="true"
-        pull-to-boundary="small"
-    >
+    <lightning-layout multiple-rows="true" pull-to-boundary="small">
         <lightning-layout-item flexibility="auto" padding="horizontal-small">
-            <p class="slds-text-heading_medium slds-m-bottom_small">
+            <p
+                class="slds-text-heading_medium slds-m-bottom_small slds-grid slds-grid_vertical-align-center"
+            >
                 {currentDateRangeString}
+                <lightning-helptext
+                    if:true={fieldLevelHelp}
+                    content={fieldLevelHelp}
+                    class="slds-m-left_x-small slds-m-bottom_small field-level-help"
+                ></lightning-helptext>
             </p>
+            <div
+                class="slds-form-element__help"
+                aria-live="assertive"
+                if:true={helpMessage}
+            >
+                {helpMessage}
+            </div>
         </lightning-layout-item>
-        <lightning-layout-item>
+        <lightning-layout-item padding="horizontal-small">
             <lightning-combobox
                 if:true={showTimeZone}
                 name="timezone"
@@ -19,6 +29,7 @@
                 options={timeZones}
                 onchange={handleTimeZoneChange}
                 variant="label-hidden"
+                class="slds-m-bottom_small"
             ></lightning-combobox>
         </lightning-layout-item>
         <lightning-layout-item
@@ -71,8 +82,9 @@
                             aria-pressed={time.selected}
                             class="time__button"
                             disabled={time.disabled}
+                            type="button"
                             onclick={handleTimeSlotClick}
-                            data-label={time.label}
+                            aria-readonly={readOnly}
                         >
                             <lightning-formatted-date-time
                                 value={time.dayTimeISO}
