@@ -13,7 +13,9 @@
 }
 
 .slds-progress__item {
-    width: 100%;
+    position: relative;
+    top: 18px;
+    margin-top: 1.5rem;
 }
 
 .slds-progress__marker_icon {

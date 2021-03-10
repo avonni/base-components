@@ -179,23 +179,49 @@ export default class ProgressStep extends LightningElement {
     }
 
     get showLabelBottom() {
-        return this._labelPosition === 'bottom';
+        return this._labelPosition === 'bottom' && this.label;
     }
 
     get showLabelNubbin() {
-        return this._labelPosition === 'inside-nubbin';
+        return this._labelPosition === 'inside-nubbin' && this.label;
     }
 
     get showDescriptionTop() {
-        return this._descriptionPosition === 'top';
+        return this._descriptionPosition === 'top' && this.description;
     }
 
     get showDescriptionBottom() {
-        return this._descriptionPosition === 'bottom';
+        return this._descriptionPosition === 'bottom' && this.description;
     }
 
     get showDescriptionNubbin() {
-        return this._descriptionPosition === 'inside-nubbin';
+        return (
+            this._descriptionPosition === 'inside-nubbin' && this.description
+        );
+    }
+
+    get showIconTop() {
+        return this._iconPosition === 'top' && this.iconName;
+    }
+
+    get showIconBottom() {
+        return this._iconPosition === 'bottom' && this.iconName;
+    }
+
+    get showIconNubbin() {
+        return this._iconPosition === 'inside-nubbin' && this.iconName;
+    }
+
+    get showButtonTop() {
+        return this._buttonPosition === 'top' && this.buttonLabel;
+    }
+
+    get showButtonBottom() {
+        return this._buttonPosition === 'bottom' && this.buttonLabel;
+    }
+
+    get showButtonNubbin() {
+        return this._buttonPosition === 'inside-nubbin' && this.buttonLabel;
     }
 
     @api

@@ -98,7 +98,7 @@ export default class ProgressIndicator extends LightningElement {
             this.errorSteps.forEach((error) => {
                 if (parseInt(step.getAttribute('data-step'), 10) === error) {
                     step.setIcon('utility:error');
-                    step.classList.remove('slds-is-completed');
+                    // step.classList.remove('slds-is-completed');
                     step.classList.remove(
                         'avonni-progress-indicator-has-success'
                     );
@@ -134,7 +134,7 @@ export default class ProgressIndicator extends LightningElement {
                     parseInt(step.getAttribute('data-step'), 10) === completed
                 ) {
                     step.setIcon('utility:success');
-                    step.classList.add('slds-is-completed');
+                    step.classList.add('slds-has-error');
                     step.classList.add('avonni-progress-indicator-has-success');
                 }
             });

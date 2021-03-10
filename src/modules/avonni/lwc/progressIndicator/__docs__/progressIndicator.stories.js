@@ -98,7 +98,11 @@ const steps = [
     {
         value: 2,
         label: '2',
-        assistiveText: '2'
+        assistiveText: '2',
+        iconName: 'utility:down',
+        iconSize: 'large',
+        iconPosition: 'top',
+        iconSrc: 'src'
     },
     {
         value: 3,

@@ -1,14 +1,23 @@
 <template>
     <div class="avonni-progress-step-outer-class">
-        <div style="text-align: center; position: relative">
+        <div style="position: absolute">
             <template if:true={showLabelTop}> {label} </template>
             <template if:true={showDescriptionTop}> {description} </template>
+            <template if:true={showIconTop}>
+                <lightning-icon
+                    icon-name={iconName}
+                    size={iconSize}
+                ></lightning-icon>
+            </template>
+            <template if:true={showButtonTop}>
+                <lightning-button></lightning-button>
+            </template>
         </div>
         <li class="slds-progress__item">
             <c-primitive-icon
                 if:true={stepIconName}
                 icon-name={stepIconName}
-                size="x-small"
+                size="xx-small"
                 variant="bare"
                 class="slds-progress__marker slds-progress__marker_icon slds-progress__marker_icon-success"
                 onclick={handleStepClick}
@@ -34,7 +43,7 @@
         <span if:true={assistiveText} class="slds-assistive-text"
             >{assistiveText}</span
         >
-        <div style="text-align: center">
+        <div style="position: absolute; top: 50px">
             <template if:true={showLabelBottom}> {label} </template>
             <template if:true={showDescriptionBottom}> {description} </template>
         </div>
