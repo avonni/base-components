@@ -1,5 +1,14 @@
 <template>
-    <p class="slds-form-element__label" if:false={labelHidden}>{label}</p>
+    <p class="slds-form-element__label" if:false={labelHidden}>
+        <abbr
+            if:true={required}
+            title="required"
+            aria-label="required"
+            class="slds-required"
+            >*</abbr
+        >
+        {label}
+    </p>
     <lightning-helptext
         if:true={fieldLevelHelp}
         content={fieldLevelHelp}
@@ -40,10 +49,11 @@
                 <lightning-button-icon
                     alternative-text="Previous dates"
                     icon-name="utility:left"
-                    onclick={handlePreviousClick}
+                    onclick={handlePrevNextClick}
                     title="Previous dates"
                     variant="border-filled"
                     disabled={prevButtonIsDisabled}
+                    data-direction="previous"
                 ></lightning-button-icon>
                 <lightning-button
                     label="Today"
@@ -52,10 +62,11 @@
                 <lightning-button-icon
                     alternative-text="Next dates"
                     icon-name="utility:right"
-                    onclick={handleNextClick}
+                    onclick={handlePrevNextClick}
                     title="Next dates"
                     variant="border-filled"
                     disabled={nextButtonIsDisabled}
+                    data-direction="next"
                 ></lightning-button-icon>
             </lightning-button-group>
         </lightning-layout-item>

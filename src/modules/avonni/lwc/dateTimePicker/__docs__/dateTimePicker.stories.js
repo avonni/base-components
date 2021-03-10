@@ -87,13 +87,10 @@ export default {
         },
         value: {
             control: {
-                type: 'date'
+                type: 'object'
             },
             description:
-                'The value of the date selected, which can be a Date object, timestamp, or an ISO8601 formatted string.',
-            table: {
-                type: { summary: 'string' }
-            }
+                'The value of the date selected, which can be a Date object, timestamp, or an ISO8601 formatted string. If "multiple" is true, an array of values can be provided.'
         },
         startTime: {
             control: {
@@ -134,6 +131,11 @@ export default {
         disabledDateTimes: {
             control: {
                 type: 'object'
+            },
+            description:
+                'An array that will be used to determine which date times to be disabled in the calendar.',
+            table: {
+                type: { summary: 'array' }
             }
         },
         max: {
@@ -170,6 +172,17 @@ export default {
             table: {
                 defaultValue: { summary: 'day' },
                 type: { summary: 'string' }
+            }
+        },
+        multiple: {
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description: 'If true, allow selection of multiple values.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         },
         showTimeZone: {
@@ -214,5 +227,8 @@ Base.args = {
     label: 'Avonni date and time picker',
     disabledDateTimes: ['Wed', new Date('2021-03-12T13:00:00.00Z')],
     showTimeZone: true,
-    required: true
+    required: true,
+    visibility: 'week',
+    value: ['2021-03-13T13:00:00.000Z', '2021-03-13T14:00:00.000Z'],
+    multiple: true
 };

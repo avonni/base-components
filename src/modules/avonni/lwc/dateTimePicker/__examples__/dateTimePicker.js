@@ -22,6 +22,7 @@ export const DateTimePicker = ({
     max,
     min,
     visibility,
+    multiple,
     showTimeZone,
     hideNavigation,
     hideDatePicker
@@ -43,6 +44,7 @@ export const DateTimePicker = ({
     element.max = max;
     element.min = min;
     element.visibility = visibility;
+    element.multiple = multiple;
     element.showTimeZone = showTimeZone;
     element.hideNavigation = hideNavigation;
     element.hideDatePicker = hideDatePicker;

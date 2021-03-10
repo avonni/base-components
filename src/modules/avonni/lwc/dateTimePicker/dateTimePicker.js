@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { FieldConstraintApi } from 'c/inputUtils';
@@ -35,7 +36,7 @@ export default class DateTimePicker extends LightningElement {
     _timeSlotDuration;
     _timeSlots;
     _visibility;
-    // _multiple;
+    _multiple;
     _showTimeZone;
     _hideNavigation;
     _hideDatePicker;
@@ -51,13 +52,13 @@ export default class DateTimePicker extends LightningElement {
     datePickerValue;
 
     connectedCallback() {
+        this._processValue();
         this.selectedTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         this._initTimeSlots();
         const now = new Date();
         this.today = now;
         this.datePickerValue = now.toISOString();
 
-        // eslint-disable-next-line no-unused-expressions
         this.today < this.min
             ? this._setFirstWeekDay(this.min)
             : this._setFirstWeekDay(this.today);
@@ -86,7 +87,7 @@ export default class DateTimePicker extends LightningElement {
         return this._max;
     }
     set max(value) {
-        const date = new Date(value);
+        const date = this._processDate(value);
         if (date) {
             this._max = new Date(date.setHours(0, 0, 0, 0));
         } else {
@@ -99,7 +100,7 @@ export default class DateTimePicker extends LightningElement {
         return this._min;
     }
     set min(value) {
-        const date = new Date(value);
+        const date = this._processDate(value);
         if (date) {
             this._min = new Date(date.setHours(0, 0, 0, 0));
         } else {
@@ -115,18 +116,8 @@ export default class DateTimePicker extends LightningElement {
     get value() {
         return this._value;
     }
-    set value(datetime) {
-        let date = null;
-        if (datetime instanceof Date) date = datetime;
-        if (!isNaN(new Date(datetime).getTime())) date = new Date(datetime);
-
-        if (date) {
-            this._selectedDayTime = {
-                day: date,
-                time: date.toLocaleTimeString('default', INTL_OPTIONS)
-            };
-            this._value = date.toISOString();
-        }
+    set value(value) {
+        this._value = value;
     }
 
     @api
@@ -182,16 +173,13 @@ export default class DateTimePicker extends LightningElement {
         });
     }
 
-    // TODO:
-    // Add support for multiple selection
-
-    // @api
-    // get multiple() {
-    //     return this._multiple;
-    // }
-    // set multiple(value) {
-    //     this._multiple = normalizeBoolean(value);
-    // }
+    @api
+    get multiple() {
+        return this._multiple;
+    }
+    set multiple(value) {
+        this._multiple = normalizeBoolean(value);
+    }
 
     @api
     get showTimeZone() {
@@ -249,6 +237,41 @@ export default class DateTimePicker extends LightningElement {
         this.reportValidity();
     }
 
+    // Returns a date object or null
+    _processDate(value) {
+        let date = null;
+        if (value instanceof Date) date = value;
+        if (!isNaN(new Date(value).getTime())) date = new Date(value);
+        return date;
+    }
+
+    _processValue() {
+        if (this.multiple) {
+            // Make sure the values are in an array
+            if (!Array.isArray(this._value)) this._value = [this._value];
+
+            const selectedDayTimes = [];
+            const values = [];
+
+            this._value.forEach((value) => {
+                const date = this._processDate(value);
+                if (date) {
+                    selectedDayTimes.push(date.getTime());
+                    values.push(date.toISOString());
+                }
+            });
+
+            this._selectedDayTime = selectedDayTimes;
+            this._value = values;
+        } else {
+            const date = this._processDate(this.value);
+            if (date) {
+                this._selectedDayTime = date.getTime();
+                this._value = date.toISOString();
+            }
+        }
+    }
+
     _initTimeSlots() {
         const timeSlots = [];
         let currentTime = this.startTime;
@@ -265,89 +288,92 @@ export default class DateTimePicker extends LightningElement {
         this._timeSlots = timeSlots;
     }
 
-    _setFirstWeekDay(givenDate) {
+    _setFirstWeekDay(date) {
         if (this.visibility === 'day') {
-            this.firstWeekDay = givenDate;
+            this.firstWeekDay = date;
         } else {
-            const dateDay = givenDate.getDate() - givenDate.getDay();
-            const dateTime = new Date(givenDate).setDate(dateDay);
+            const dateDay = date.getDate() - date.getDay();
+            const dateTime = new Date(date).setDate(dateDay);
             this.firstWeekDay = new Date(dateTime);
         }
     }
 
     _generateTable() {
         const processedTable = [];
-
         const daysDisplayed = this.visibility === 'day' ? 1 : 7;
 
-        for (let day = 0; day < daysDisplayed; day++) {
-            const currentDay = new Date(
+        for (let i = 0; i < daysDisplayed; i++) {
+            const day = new Date(
                 new Date(this.firstWeekDay).setDate(
-                    this.firstWeekDay.getDate() + day
+                    this.firstWeekDay.getDate() + i
                 )
             );
 
-            // Create day object
-            const currentDayTime = {
-                key: day,
-                dayObject: currentDay,
+            // Create dayTime object
+            const dayTime = {
+                key: i,
+                day: day,
                 times: []
             };
 
             // Add a label to the day only if visibility is 'week'
             if (this.visibility === 'week') {
-                const labelWeekday = currentDay.toLocaleString('default', {
+                const labelWeekday = day.toLocaleString('default', {
                     weekday: 'short'
                 });
-                const labelDay = currentDay.toLocaleString('default', {
+                const labelDay = day.toLocaleString('default', {
                     day: '2-digit'
                 });
-                currentDayTime.label = `${labelWeekday} ${labelDay}`;
+                dayTime.label = `${labelWeekday} ${labelDay}`;
             }
 
-            this._createTimeSlots(currentDayTime);
-            processedTable.push(currentDayTime);
+            this._createTimeSlots(dayTime);
+            processedTable.push(dayTime);
         }
 
-        this.lastWeekDay = processedTable[processedTable.length - 1].dayObject;
+        this.lastWeekDay = processedTable[processedTable.length - 1].day;
         this.table = processedTable;
     }
 
-    _createTimeSlots(day) {
-        const dayIsSelected = this._selectedDayTime
-            ? day.dayObject.toLocaleDateString() ===
-              this._selectedDayTime.day.toLocaleDateString()
-            : false;
+    //  /!\ Changes the dayTime object passed as argument.
+    _createTimeSlots(dayTime) {
+        const dayIsDisabled = this._isDisabled(dayTime.day);
 
-        const dayIsDisabled = this._isDisabled(day.dayObject);
+        this._timeSlots.forEach((timeSlot) => {
+            const hour = parseInt(timeSlot.slice(0, 2), 10);
+            const minutes = parseInt(timeSlot.slice(3, 5), 10);
+            const seconds = parseInt(timeSlot.slice(6, 8), 10);
+            const day = dayTime.day;
+            day.setHours(hour, minutes, seconds, 0);
+            const time = day.getTime();
 
-        this._timeSlots.forEach((time) => {
             const timeIsSelected =
-                this._selectedDayTime && time === this._selectedDayTime.time;
-
-            const hour = parseInt(time.slice(0, 2), 10);
-            const minutes = parseInt(time.slice(3, 5), 10);
-            const seconds = parseInt(time.slice(6, 8), 10);
-            const dayTimeObject = day.dayObject;
-            dayTimeObject.setHours(hour, minutes, seconds, 0);
-
-            // Check if time is disabled
-            const dayTime = dayTimeObject.getTime();
+                this._selectedDayTime && this._isSelected(time);
             const timeIsDisabled =
-                this.disabledFullDateTimes.indexOf(dayTime) > -1;
+                this._disabledFullDateTimes.indexOf(time) > -1;
 
-            day.times.push({
-                dayTimeISO: dayTimeObject.toISOString(),
+            dayTime.times.push({
+                dayTimeISO: day.toISOString(),
                 disabled: this.disabled || dayIsDisabled || timeIsDisabled,
-                selected: dayIsSelected && timeIsSelected
+                selected: timeIsSelected
             });
         });
     }
 
+    _isSelected(time) {
+        const selection = this._selectedDayTime;
+
+        return Array.isArray(selection)
+            ? selection.indexOf(time) > -1
+            : selection === time;
+    }
+
     _isDisabled(dayObject) {
         // TODO:
-        // Disable whole day from date without time
-        //   * Maybe use an object to disable specific times, instead of passing a date with the right time?
+        // Disable whole day from date.
+        //   Maybe pass an object to disable specific times, instead of passing a date with the right time?
+        //   => If a date object is given, disable whole day.
+        //   => If this object structure is given, disable only the specific time.
         //   {
         //       date: Date Object,
         //       time: ISO time string
@@ -362,12 +388,12 @@ export default class DateTimePicker extends LightningElement {
 
         return (
             outsideOfAllowedDates ||
-            this.disabledWeekDays.indexOf(weekDay) > -1 ||
-            this.disabledMonthDays.indexOf(monthDay) > -1
+            this._disabledWeekDays.indexOf(weekDay) > -1 ||
+            this._disabledMonthDays.indexOf(monthDay) > -1
         );
     }
 
-    get disabledFullDateTimes() {
+    get _disabledFullDateTimes() {
         let dateTimes = [];
 
         this.disabledDateTimes.forEach((dateTime) => {
@@ -379,7 +405,7 @@ export default class DateTimePicker extends LightningElement {
         return dateTimes;
     }
 
-    get disabledWeekDays() {
+    get _disabledWeekDays() {
         let dates = [];
 
         this.disabledDateTimes.forEach((date) => {
@@ -391,7 +417,7 @@ export default class DateTimePicker extends LightningElement {
         return dates;
     }
 
-    get disabledMonthDays() {
+    get _disabledMonthDays() {
         let dates = [];
 
         this.disabledDateTimes.forEach((date) => {
@@ -440,28 +466,23 @@ export default class DateTimePicker extends LightningElement {
         return this.lastWeekDay >= this.max;
     }
 
+    handleTimeZoneChange(event) {
+        this.selectedTimeZone = event.detail.value;
+    }
+
     handleTodayClick() {
         this.datePickerValue = this.today.toISOString();
         this._setFirstWeekDay(this.today);
         this._generateTable();
     }
 
-    handlePreviousClick() {
+    handlePrevNextClick(event) {
         const dayRange = this.visibility === 'day' ? 1 : 7;
+        const direction = event.currentTarget.dataset.direction;
+        const dayRangeSign = direction === 'next' ? dayRange : -dayRange;
         this.firstWeekDay = new Date(
             new Date(this.firstWeekDay).setDate(
-                this.firstWeekDay.getDate() - dayRange
-            )
-        );
-        this._generateTable();
-        this.datePickerValue = this.firstWeekDay.toISOString();
-    }
-
-    handleNextClick() {
-        const dayRange = this.visibility === 'day' ? 1 : 7;
-        this.firstWeekDay = new Date(
-            new Date(this.firstWeekDay).setDate(
-                this.firstWeekDay.getDate() + dayRange
+                this.firstWeekDay.getDate() + dayRangeSign
             )
         );
         this._generateTable();
@@ -489,11 +510,24 @@ export default class DateTimePicker extends LightningElement {
         const dateTimeISO = event.currentTarget.firstChild.value;
         const date = new Date(dateTimeISO);
 
-        this._value = dateTimeISO;
-        this._selectedDayTime = {
-            day: date,
-            time: date.toLocaleTimeString('default', INTL_OPTIONS)
-        };
+        // Select/unselect the date
+        if (this.multiple) {
+            const valueIndex = this.value.indexOf(dateTimeISO);
+            valueIndex > -1
+                ? this._value.splice(valueIndex, 1)
+                : this._value.push(dateTimeISO);
+            const selectIndex = this._selectedDayTime.indexOf(date.getTime());
+            selectIndex > -1
+                ? this._selectedDayTime.splice(selectIndex, 1)
+                : this._selectedDayTime.push(date.getTime());
+        } else {
+            this._value = this._value === dateTimeISO ? null : dateTimeISO;
+            this._selectedDayTime =
+                this._selectedDayTime === date.getTime()
+                    ? null
+                    : date.getTime();
+        }
+
         // Refresh table to show selected time slot
         this._generateTable();
 
@@ -505,9 +539,5 @@ export default class DateTimePicker extends LightningElement {
                 }
             })
         );
-    }
-
-    handleTimeZoneChange(event) {
-        this.selectedTimeZone = event.detail.value;
     }
 }
