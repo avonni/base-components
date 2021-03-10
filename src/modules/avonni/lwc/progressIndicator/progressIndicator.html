@@ -2,21 +2,13 @@
     <div class={computedOuterClass}>
         <ol class="slds-progress__list">
             <template for:each={steps} for:item="step">
-                <div key={step.value}>salut</div>
                 <c-progress-step
-                    aria-hidden={ariaHidden}
-                    aria-describedby={ariaDescribedBy}
-                    onclick={selectStep}
+                    class="avonni-progress-step-sizing"
                     key={step.value}
                     label={step.label}
                     value={step.value}
-                    assistive-text={step.assistiveText}
                 ></c-progress-step>
             </template>
         </ol>
-        <lightning-progress-bar
-            value={progressValue}
-            size="x-small"
-        ></lightning-progress-bar>
     </div>
 </template>

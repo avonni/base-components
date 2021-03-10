@@ -1,5 +1,37 @@
-.avonni-progress-indicator-has-warning > svg {
-    color: #ffb75d !important;
-    border-color: transparent;
-    box-shadow: none;
+.slds-is-active::before {
+    content: '';
+    display: block;
+    height: 2px;
+    position: absolute;
+    top: 26px;
+    background-color: blue;
+    left: 0;
+    right: 0;
+}
+
+.slds-progress__item::before {
+    content: '';
+    display: block;
+    height: 2px;
+    position: absolute;
+    top: 26px;
+    background-color: gray;
+    left: 0;
+    right: 0;
+}
+
+.slds-is-completed::before {
+    content: '';
+    display: block;
+    height: 2px;
+    position: absolute;
+    top: 26px;
+    background-color: green;
+    left: 0;
+    right: 0;
+}
+
+.avonni-progress-step-sizing {
+    flex: 1 1 auto;
+    position: relative;
 }

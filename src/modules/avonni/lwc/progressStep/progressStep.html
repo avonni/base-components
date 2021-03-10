@@ -1,21 +1,29 @@
 <template>
-    <li style="display: flex">
-        <button
-            class={computedButtonClass}
-            onclick={selectStep}
-            onmouseenter={handleStepMouseEnter}
-            onmouseleave={handleStepMouseLeave}
-            onfocus={handleStepFocus}
-            onblur={handleStepBlur}
-        >
-            <c-primitive-icon
+    <div style="display: flex; flex-direction: column; justify-content: center">
+        <div style="text-align: center">{label}</div>
+        <li class="slds-progress__item">
+            <lightning-icon
+                if:true={iconName}
                 icon-name={iconName}
-                svg-class="slds-button__icon"
-                variant="bare"
-            ></c-primitive-icon>
-        </button>
-        <span if:true={assistiveText} class="slds-assistive-text"
-            >{assistiveText}</span
-        >
-    </li>
+                size="xx-small"
+                class="slds-progress__marker slds-progress__marker_icon"
+                onclick={step}
+                onmouseenter={handleStepMouseEnter}
+                onmouseleave={handleStepMouseLeave}
+                onfocus={handleStepFocus}
+                onblur={handleStepBlur}
+                tabindex="0"
+            ></lightning-icon>
+            <div
+                if:false={iconName}
+                class="slds-progress__marker"
+                onmouseenter={handleStepMouseEnter}
+                onmouseleave={handleStepMouseLeave}
+                onfocus={handleStepFocus}
+                onblur={handleStepBlur}
+                tabindex="0"
+            ></div>
+        </li>
+        <!-- <div>allo</div> -->
+    </div>
 </template>

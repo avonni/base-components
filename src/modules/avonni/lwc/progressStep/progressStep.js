@@ -3,9 +3,6 @@ import { classSet } from 'c/utils';
 
 export default class ProgressStep extends LightningElement {
     @api label;
-    @api assistiveText;
-    @api ariaHidden = false;
-    @api ariaDescribedBy = '';
     iconName;
     // status => completed, warning, error, current
     // iconSrc
@@ -22,6 +19,7 @@ export default class ProgressStep extends LightningElement {
 
     connectedCallback() {
         this.classList.add('slds-progress__item');
+        this.classList.add('avonni-progress-step-sizing');
     }
 
     @api
