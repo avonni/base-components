@@ -2,24 +2,25 @@
     <div style="display: flex; flex-direction: column; justify-content: center">
         <div style="text-align: center">{label}</div>
         <li class="slds-progress__item">
-            <lightning-icon
+            <c-primitive-icon
                 if:true={iconName}
                 icon-name={iconName}
                 size="xx-small"
+                variant="bare"
                 class="slds-progress__marker slds-progress__marker_icon slds-progress__marker_icon-success"
                 onmouseenter={handleStepMouseEnter}
                 onmouseleave={handleStepMouseLeave}
                 onfocus={handleStepFocus}
                 onblur={handleStepBlur}
                 tabindex="0"
-            ></lightning-icon>
+            ></c-primitive-icon>
             <div
                 if:false={iconName}
                 class="slds-progress__marker"
-                onmouseenter={handleMouseEnter}
-                onmouseleave={handleMouseLeave}
-                onfocus={handleFocus}
-                onblur={handleBlur}
+                onmouseenter={handleStepMouseEnter}
+                onmouseleave={handleStepMouseLeave}
+                onfocus={handleStepFocus}
+                onblur={handleStepBlur}
                 tabindex="0"
             >
                 <div class="avonni-marker"></div>

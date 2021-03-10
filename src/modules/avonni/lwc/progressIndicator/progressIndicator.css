@@ -3,7 +3,7 @@
     display: block;
     height: 2px;
     position: absolute;
-    top: 26px;
+    top: 27px;
     background-color: blue;
     left: 0;
     right: 0;
@@ -14,8 +14,19 @@
     display: block;
     height: 2px;
     position: absolute;
-    top: 26px;
+    top: 27px;
     background-color: gray;
+    left: 0;
+    right: 0;
+}
+
+.slds-progress__item:last-child::before {
+    content: '';
+    display: block;
+    height: 2px;
+    position: absolute;
+    top: 27px;
+    background-color: transparent;
     left: 0;
     right: 0;
 }
@@ -25,8 +36,41 @@
     display: block;
     height: 2px;
     position: absolute;
-    top: 26px;
-    background-color: green;
+    top: 27px;
+    background-color: #4bca81;
+    left: 0;
+    right: 0;
+}
+
+.slds-is-completed:last-child::before {
+    content: '';
+    display: block;
+    height: 2px;
+    position: absolute;
+    top: 27px;
+    background-color: transparent;
+    left: 0;
+    right: 0;
+}
+
+.slds-has-error::before {
+    content: '';
+    display: block;
+    height: 2px;
+    position: absolute;
+    top: 27px;
+    background-color: #c23934;
+    left: 0;
+    right: 0;
+}
+
+.slds-has-warning::before {
+    content: '';
+    display: block;
+    height: 2px;
+    position: absolute;
+    top: 27px;
+    background-color: #ffb75d;
     left: 0;
     right: 0;
 }
@@ -34,4 +78,16 @@
 .avonni-progress-step-sizing {
     flex: 1 1 auto;
     position: relative;
+}
+
+.avonni-progress-indicator-has-warning {
+    fill: #ffb75d;
+}
+
+.avonni-progress-indicator-has-error {
+    fill: #c23934;
+}
+
+.avonni-progress-indicator-has-success {
+    fill: #4bca81;
 }
