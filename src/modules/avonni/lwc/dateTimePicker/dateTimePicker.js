@@ -337,7 +337,8 @@ export default class DateTimePicker extends LightningElement {
 
     //  /!\ Changes the dayTime object passed as argument.
     _createTimeSlots(dayTime) {
-        const dayIsDisabled = this._isDisabled(dayTime.day);
+        const dayIsDisabled =
+            this.disabledDateTimes && this._isDisabled(dayTime.day);
 
         this._timeSlots.forEach((timeSlot) => {
             const hour = parseInt(timeSlot.slice(0, 2), 10);
@@ -350,6 +351,7 @@ export default class DateTimePicker extends LightningElement {
             const timeIsSelected =
                 this._selectedDayTime && this._isSelected(time);
             const timeIsDisabled =
+                this.disabledDateTimes &&
                 this._disabledFullDateTimes.indexOf(time) > -1;
 
             dayTime.times.push({
