@@ -1,8 +1,8 @@
 <template>
     <div class="avonni-progress-step-outer-class">
-        <div>
-            <template if:true={label}> {label} </template>
-            <template if:true={description}> {description} </template>
+        <div style="text-align: center; position: relative">
+            <template if:true={showLabelTop}> {label} </template>
+            <template if:true={showDescriptionTop}> {description} </template>
         </div>
         <li class="slds-progress__item">
             <c-primitive-icon
@@ -17,7 +17,6 @@
                 onfocus={handleStepFocus}
                 onblur={handleStepBlur}
                 tabindex="0"
-                style="padding-bottom: 3px"
             ></c-primitive-icon>
             <div
                 if:false={stepIconName}
@@ -35,6 +34,9 @@
         <span if:true={assistiveText} class="slds-assistive-text"
             >{assistiveText}</span
         >
-        <div></div>
+        <div style="text-align: center">
+            <template if:true={showLabelBottom}> {label} </template>
+            <template if:true={showDescriptionBottom}> {description} </template>
+        </div>
     </div>
 </template>

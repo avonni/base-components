@@ -39,6 +39,7 @@ export default class ProgressStep extends LightningElement {
     _descriptionPosition = 'top';
     _iconPosition = 'top';
     _iconSize = 'medium';
+    _buttonPosition = 'top';
     _buttonIconPosition = 'left';
     _buttonDisabled = false;
     _buttonVariant = 'neutral';
@@ -118,6 +119,18 @@ export default class ProgressStep extends LightningElement {
     }
 
     @api
+    get buttonPosition() {
+        return this._buttonPosition;
+    }
+
+    set buttonPosition(position) {
+        this._buttonPosition = normalizeString(position, {
+            fallbackValue: POSITIONS.default,
+            validValues: POSITIONS.valid
+        });
+    }
+
+    @api
     get buttonIconPosition() {
         return this._buttonIconPosition;
     }
@@ -159,6 +172,30 @@ export default class ProgressStep extends LightningElement {
                 .add('slds-progress__marker_icon');
         }
         return classes.toString();
+    }
+
+    get showLabelTop() {
+        return this._labelPosition === 'top' && this.label;
+    }
+
+    get showLabelBottom() {
+        return this._labelPosition === 'bottom';
+    }
+
+    get showLabelNubbin() {
+        return this._labelPosition === 'inside-nubbin';
+    }
+
+    get showDescriptionTop() {
+        return this._descriptionPosition === 'top';
+    }
+
+    get showDescriptionBottom() {
+        return this._descriptionPosition === 'bottom';
+    }
+
+    get showDescriptionNubbin() {
+        return this._descriptionPosition === 'inside-nubbin';
     }
 
     @api
