@@ -19,7 +19,10 @@ export default class ProgressStep extends LightningElement {
 
     connectedCallback() {
         this.classList.add('slds-progress__item');
-        this.classList.add('avonni-progress-step-sizing');
+    }
+
+    renderedCallback() {
+        // console.log(Array.from(this.template.getAttribute('data-key')))
     }
 
     @api
@@ -98,17 +101,5 @@ export default class ProgressStep extends LightningElement {
                 detail: { value: this.value }
             })
         );
-        // this.updateAriaDescribedBy('button')
     }
-
-    // updateAriaDescribedBy(value) {
-    //     const button = this.template.querySelector('button');
-    //     if (button) {
-    //         if (value !== null) {
-    //             button.setAttribute('aria-describedBy', value);
-    //         } else {
-    //             button.removeAttribute('aria-describedBy');
-    //         }
-    //     }
-    // }
 }

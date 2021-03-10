@@ -1,13 +1,10 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
-import { getCurrentStepIndex, computeProgressValue } from './utils';
 import { classSet } from 'c/utils';
 
 const TYPES = { valid: ['base', 'arrow'], default: 'base' };
 
 const VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
-
-// const STATES = { completed: 'completed', current: 'current', warning: 'warning', error: 'error', incomplete: 'incomplete' }
 
 export default class ProgressIndicator extends LightningElement {
     @api currentStep;
@@ -23,7 +20,6 @@ export default class ProgressIndicator extends LightningElement {
     connectedCallback() {}
 
     renderedCallback() {
-        this.updateProgressValue();
         this.updateSteps();
         this.updateErrorSteps();
         this.updateWarningSteps();
@@ -96,23 +92,13 @@ export default class ProgressIndicator extends LightningElement {
         });
     }
 
-    updateProgressValue() {
-        const steps = this.getSteps();
-        const currentStepIndex = getCurrentStepIndex(steps, this.currentStep);
-        this._progressValue = computeProgressValue(steps, currentStepIndex);
-    }
-
-    get progressValue() {
-        return this._progressValue;
-    }
-
     updateErrorSteps() {
         const steps = this.getSteps();
         steps.forEach((step) => {
             this.errorSteps.forEach((error) => {
                 if (parseInt(step.getAttribute('data-step'), 10) === error) {
                     step.setIcon('utility:error');
-                    step.classList.remove('slds-is-completed');
+                    // step.classList.remove('slds-is-completed');
                     step.classList.add('slds-has-error');
                 }
             });
@@ -126,7 +112,7 @@ export default class ProgressIndicator extends LightningElement {
                 if (parseInt(step.getAttribute('data-step'), 10) === warning) {
                     step.setIcon('utility:warning');
                     // step.classList.remove('slds-is-completed')
-                    step.classList.add('avonni-progress-indicator-has-warning');
+                    // step.classList.add('avonni-progress-indicator-has-warning');
                 }
             });
         });

@@ -6,8 +6,7 @@
                 if:true={iconName}
                 icon-name={iconName}
                 size="xx-small"
-                class="slds-progress__marker slds-progress__marker_icon"
-                onclick={step}
+                class="slds-progress__marker slds-progress__marker_icon slds-progress__marker_icon-success"
                 onmouseenter={handleStepMouseEnter}
                 onmouseleave={handleStepMouseLeave}
                 onfocus={handleStepFocus}
@@ -17,12 +16,14 @@
             <div
                 if:false={iconName}
                 class="slds-progress__marker"
-                onmouseenter={handleStepMouseEnter}
-                onmouseleave={handleStepMouseLeave}
-                onfocus={handleStepFocus}
-                onblur={handleStepBlur}
+                onmouseenter={handleMouseEnter}
+                onmouseleave={handleMouseLeave}
+                onfocus={handleFocus}
+                onblur={handleBlur}
                 tabindex="0"
-            ></div>
+            >
+                <div class="avonni-marker"></div>
+            </div>
         </li>
         <!-- <div>allo</div> -->
     </div>
