@@ -1,0 +1,58 @@
+<template>
+    <header>
+        <div if:true={title}>{title}</div>
+        <template if:false={title}>
+            <slot name="title"></slot>
+        </template>
+    </header>
+
+    <div>
+        <slot></slot>
+    </div>
+
+    <footer>
+        <lightning-layout vertical-align="center">
+            <lightning-layout-item>
+                <lightning-button
+                    icon-name={buttonPreviousIconName}
+                    icon-position={buttonPreviousIconPosition}
+                    label={buttonPreviousLabel}
+                    variant={buttonPreviousVariant}
+                ></lightning-button>
+            </lightning-layout-item>
+            <lightning-layout-item flexibility="auto">
+                <template if:true={steps}>
+                    <lightning-progress-indicator
+                        current-step={currentStep}
+                        type="base"
+                        variant="base"
+                    >
+                        <template for:each={steps} for:item="step">
+                            <lightning-progress-step
+                                key={step.name}
+                                label={step.label}
+                                value={step.name}
+                            ></lightning-progress-step>
+                        </template>
+                    </lightning-progress-indicator>
+                </template>
+            </lightning-layout-item>
+            <lightning-layout-item>
+                <lightning-button
+                    if:false={lastStep}
+                    icon-name={buttonNextIconName}
+                    icon-position={buttonNextIconPosition}
+                    label={buttonNextLabel}
+                    variant={buttonNextVariant}
+                ></lightning-button>
+                <lightning-button
+                    if:true={lastStep}
+                    icon-name={buttonFinishIconName}
+                    icon-position={buttonFinishIconPosition}
+                    label={buttonFinishLabel}
+                    variant={buttonFinishVariant}
+                ></lightning-button>
+            </lightning-layout-item>
+        </lightning-layout>
+    </footer>
+</template>

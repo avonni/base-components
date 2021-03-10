@@ -335,6 +335,14 @@
             "path": "src/modules/avonni/lwc/visualPicker/visualPicker.js"
         },
         {
+            "name": "c/wizard",
+            "path": "src/modules/avonni/lwc/wizard/wizard.js"
+        },
+        {
+            "name": "c/wizardStep",
+            "path": "src/modules/avonni/lwc/wizardStep/wizardStep.js"
+        },
+        {
             "name": "avonni/alert",
             "path": "src/modules/avonni/lwc/alert/alert.js"
         },
@@ -581,6 +589,14 @@
         {
             "name": "avonni/visualPicker",
             "path": "src/modules/avonni/lwc/visualPicker/visualPicker.js"
+        },
+        {
+            "name": "avonni/wizard",
+            "path": "src/modules/avonni/lwc/wizard/wizard.js"
+        },
+        {
+            "name": "avonni/wizardStep",
+            "path": "src/modules/avonni/lwc/wizardStep/wizardStep.js"
         }
     ],
     "expose": [
@@ -644,6 +660,8 @@
         "avonni/timer",
         "avonni/verticalProgressIndicator",
         "avonni/verticalProgressStep",
-        "avonni/visualPicker"
+        "avonni/visualPicker",
+        "avonni/wizard",
+        "avonni/wizardStep"
     ]
 }

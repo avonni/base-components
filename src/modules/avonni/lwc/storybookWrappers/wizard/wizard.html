@@ -1,0 +1,43 @@
+<template>
+    <avonni-wizard
+        title={title}
+        current-step={currentStep}
+        variant={variant}
+        indicator-type={indicatorType}
+        hide-indicator={hideIndicator}
+        button-previous-icon-name={buttonPreviousIconName}
+        button-previous-icon-position={buttonPreviousIconPosition}
+        button-previous-label={buttonPreviousLabel}
+        button-previous-variant={buttonPreviousVariant}
+        button-next-icon-name={buttonNextIconName}
+        button-next-icon-position={buttonNextIconPosition}
+        button-next-label={buttonNextLabel}
+        button-next-variant={buttonNextVariant}
+        button-finish-icon-name={buttonFinishIconName}
+        button-finish-icon-position={buttonFinishIconPosition}
+        button-finish-variant={buttonFinishVariant}
+        button-position={buttonPosition}
+        button-alignment-bump={buttonAlignmentBump}
+        fraction-prefix-label={fractionPrefixLabel}
+        fraction-label={fractionLabel}
+    >
+        <div slot="title">Title slot</div>
+        <avonni-wizard-step label="First step" name="Custom name">
+            <p>This is the first step.</p>
+            <p>It has a label and a name.</p>
+        </avonni-wizard-step>
+        <avonni-wizard-step hide-previous-button="true" action-position="right">
+            <p>This is the second step.</p>
+            <p>Previous Button is hidden.</p>
+            <p>Action position is set to right.</p>
+        </avonni-wizard-step>
+        <avonni-wizard-step hide-next-finish-button="true">
+            <p>This is the third step.</p>
+            <p>The next button is hidden.</p>
+        </avonni-wizard-step>
+        <avonni-wizard-step>
+            <p>This is the last step.</p>
+            <p>Nothing is set.</p>
+        </avonni-wizard-step>
+    </avonni-wizard>
+</template>

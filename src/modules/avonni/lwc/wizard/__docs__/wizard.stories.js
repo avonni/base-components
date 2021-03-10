@@ -1,0 +1,184 @@
+import { Wizard } from '../__examples__/wizard';
+
+export default {
+    title: 'Example/Wizard',
+    argTypes: {
+        title: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'The title can include text, and is displayed in the header. To include additional markup or another component, use the title slot.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        currentStep: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'Set current-step to match the name attribute of one of wizard-step components. If current-step is not provided, the name of the first wizard-step component is used.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        buttonPreviousIconName: {
+            control: {
+                type: 'text'
+            },
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        buttonPreviousIconPosition: {
+            control: {
+                type: 'select',
+                options: ['left', 'right']
+            },
+            defaultValue: 'left',
+            description: 'Values include left and right.',
+            table: {
+                defaultValue: 'left',
+                type: { summary: 'string' }
+            }
+        },
+        buttonPreviousLabel: {
+            control: {
+                type: 'text'
+            },
+            defaultValue: 'Previous',
+            table: {
+                defaultValue: 'Previous',
+                type: { summary: 'string' }
+            }
+        },
+        buttonPreviousVariant: {
+            control: {
+                type: 'select',
+                options: [
+                    'bare',
+                    'neutral',
+                    'brand',
+                    'brand-outline',
+                    'inverse',
+                    'destructive',
+                    'destructive-text',
+                    'success'
+                ]
+            },
+            defaultValue: 'neutral',
+            table: {
+                defaultValue: 'neutral',
+                type: { summary: 'string' }
+            }
+        },
+        buttonNextIconName: {
+            control: {
+                type: 'text'
+            },
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        buttonNextIconPosition: {
+            control: {
+                type: 'select',
+                options: ['left', 'right']
+            },
+            defaultValue: 'left',
+            description: 'Values include left and right.',
+            table: {
+                defaultValue: 'left',
+                type: { summary: 'string' }
+            }
+        },
+        buttonNextLabel: {
+            control: {
+                type: 'text'
+            },
+            defaultValue: 'Next',
+            table: {
+                defaultValue: 'Next',
+                type: { summary: 'string' }
+            }
+        },
+        buttonNextVariant: {
+            control: {
+                type: 'select',
+                options: [
+                    'bare',
+                    'neutral',
+                    'brand',
+                    'brand-outline',
+                    'inverse',
+                    'destructive',
+                    'destructive-text',
+                    'success'
+                ]
+            },
+            defaultValue: 'neutral',
+            table: {
+                defaultValue: 'neutral',
+                type: { summary: 'string' }
+            }
+        },
+        buttonFinishIconName: {
+            control: {
+                type: 'text'
+            },
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        buttonFinishIconPosition: {
+            control: {
+                type: 'select',
+                options: ['left', 'right']
+            },
+            defaultValue: 'left',
+            description: 'Values include left and right.',
+            table: {
+                defaultValue: 'left',
+                type: { summary: 'string' }
+            }
+        },
+        buttonFinishLabel: {
+            control: {
+                type: 'text'
+            },
+            defaultValue: 'Finish',
+            table: {
+                defaultValue: 'Finish',
+                type: { summary: 'string' }
+            }
+        },
+        buttonFinishVariant: {
+            control: {
+                type: 'select',
+                options: [
+                    'bare',
+                    'neutral',
+                    'brand',
+                    'brand-outline',
+                    'inverse',
+                    'destructive',
+                    'destructive-text',
+                    'success'
+                ]
+            },
+            defaultValue: 'neutral',
+            table: {
+                defaultValue: 'neutral',
+                type: { summary: 'string' }
+            }
+        }
+    }
+};
+
+const Template = (args) => Wizard(args);
+
+export const Base = Template.bind({});
+Base.args = {
+    title: 'Avonni Wizard'
+};
