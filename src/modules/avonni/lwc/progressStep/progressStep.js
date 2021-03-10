@@ -1,28 +1,50 @@
 import { LightningElement, api } from 'lwc';
+import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
+
+const POPOVER_STATE = { valid: ['show', 'hidden', 'hover'], default: 'hover' };
+const POSITIONS = { valid: ['top', 'bottom', 'inside-nubbin'], default: 'top' };
+const SIZES = {
+    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+    default: 'medium'
+};
+const BUTTON_ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
+const BUTTON_VARIANTS = {
+    valid: [
+        'neutral',
+        'brand',
+        'brand-outline',
+        'destructive-text',
+        'inverse',
+        'success'
+    ],
+    default: 'neutral'
+};
 
 export default class ProgressStep extends LightningElement {
     @api label;
-    iconName;
-    // status => completed, warning, error, current
-    // iconSrc
-    // iconPosition
-    // buttonLabel
-    // buttonName
-    // buttonIconName
-    // buttonIconPosition
-    // buttonDisabled
-    // buttonTitle
-    // buttonVariant
+    @api description;
+    @api iconName;
+    @api iconSrc;
+    @api buttonLabel;
+    @api buttonName;
+    @api buttonIconName;
+    @api buttonTitle;
+    @api assistiveText;
 
+    stepIconName;
     _value;
+    _popoverState = 'hover';
+    _labelPosition = 'top';
+    _descriptionPosition = 'top';
+    _iconPosition = 'top';
+    _iconSize = 'medium';
+    _buttonIconPosition = 'left';
+    _buttonDisabled = false;
+    _buttonVariant = 'neutral';
 
     connectedCallback() {
         this.classList.add('slds-progress__item');
-    }
-
-    renderedCallback() {
-        // console.log(Array.from(this.template.getAttribute('data-key')))
     }
 
     @api
@@ -35,9 +57,102 @@ export default class ProgressStep extends LightningElement {
         this.setAttribute('data-step', value);
     }
 
+    @api
+    get popoverState() {
+        return this._popoverState;
+    }
+
+    set popoverState(state) {
+        this._popoverState = normalizeString(state, {
+            fallbackValue: POPOVER_STATE.default,
+            validValues: POPOVER_STATE.valid
+        });
+    }
+
+    @api
+    get labelPosition() {
+        return this._labelPosition;
+    }
+
+    set labelPosition(position) {
+        this._labelPosition = normalizeString(position, {
+            fallbackValue: POSITIONS.default,
+            validValues: POSITIONS.valid
+        });
+    }
+
+    @api
+    get descriptionPosition() {
+        return this._descriptionPosition;
+    }
+
+    set descriptionPosition(position) {
+        this._descriptionPosition = normalizeString(position, {
+            fallbackValue: POSITIONS.default,
+            validValues: POSITIONS.valid
+        });
+    }
+
+    @api
+    get iconPosition() {
+        return this._iconPosition;
+    }
+
+    set iconPosition(position) {
+        this._iconPosition = normalizeString(position, {
+            fallbackValue: POSITIONS.default,
+            validValues: POSITIONS.valid
+        });
+    }
+
+    @api
+    get iconSize() {
+        return this._iconSize;
+    }
+
+    set iconSize(size) {
+        this._iconSize = normalizeString(size, {
+            fallbackValue: SIZES.default,
+            validValues: SIZES.valid
+        });
+    }
+
+    @api
+    get buttonIconPosition() {
+        return this._buttonIconPosition;
+    }
+
+    set buttonIconPosition(position) {
+        this._buttonIconPosition = normalizeString(position, {
+            fallbackValue: BUTTON_ICON_POSITIONS.default,
+            validValues: BUTTON_ICON_POSITIONS.valid
+        });
+    }
+
+    @api
+    get buttonDisabled() {
+        return this._buttonDisabled;
+    }
+
+    set buttonDisabled(value) {
+        this._buttonDisabled = normalizeBoolean(value);
+    }
+
+    @api
+    get buttonVariant() {
+        return this._buttonVariant;
+    }
+
+    set buttonVariant(variant) {
+        this._buttonVariant = normalizeString(variant, {
+            fallbackValue: BUTTON_VARIANTS.default,
+            validValues: BUTTON_VARIANTS.valid
+        });
+    }
+
     get computedButtonClass() {
         const classes = classSet('slds-button slds-progress__marker');
-        if (this.iconName) {
+        if (this.stepIconName) {
             classes
                 .add('slds-button_icon')
                 .add('slds-progress__marker')
@@ -46,13 +161,9 @@ export default class ProgressStep extends LightningElement {
         return classes.toString();
     }
 
-    get hasIcon() {
-        return true;
-    }
-
     @api
-    setIcon(iconName) {
-        this.iconName = iconName;
+    setIcon(stepIconName) {
+        this.stepIconName = stepIconName;
     }
 
     handleStepMouseEnter() {
@@ -94,9 +205,9 @@ export default class ProgressStep extends LightningElement {
         );
     }
 
-    selectStep() {
+    handleStepClick() {
         this.dispatchEvent(
-            new CustomEvent('stepselect', {
+            new CustomEvent('stepsclick', {
                 bubbles: true,
                 detail: { value: this.value }
             })

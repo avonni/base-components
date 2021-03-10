@@ -64,7 +64,7 @@
     right: 0;
 }
 
-.slds-has-warning::before {
+.avonni-progress-indicator-has-warning::before {
     content: '';
     display: block;
     height: 2px;

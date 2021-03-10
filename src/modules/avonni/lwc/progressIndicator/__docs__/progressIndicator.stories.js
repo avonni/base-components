@@ -90,7 +90,9 @@ const steps = [
     {
         value: 1,
         label: '1',
-        assistiveText: '1'
+        assistiveText: '1',
+        description: 'Step #1',
+        descriptionPosition: 'top'
     },
     {
         value: 2,

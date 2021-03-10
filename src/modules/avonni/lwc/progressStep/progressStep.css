@@ -36,3 +36,9 @@
     outline: none;
     box-shadow: rgb(53, 125, 219) 0 0 0 2px !important;
 }
+
+.avonni-progress-step-outer-class {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

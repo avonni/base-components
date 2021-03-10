@@ -1,22 +1,28 @@
 <template>
-    <div style="display: flex; flex-direction: column; justify-content: center">
-        <div style="text-align: center">{label}</div>
+    <div class="avonni-progress-step-outer-class">
+        <div>
+            <template if:true={label}> {label} </template>
+            <template if:true={description}> {description} </template>
+        </div>
         <li class="slds-progress__item">
             <c-primitive-icon
-                if:true={iconName}
-                icon-name={iconName}
-                size="xx-small"
+                if:true={stepIconName}
+                icon-name={stepIconName}
+                size="x-small"
                 variant="bare"
                 class="slds-progress__marker slds-progress__marker_icon slds-progress__marker_icon-success"
+                onclick={handleStepClick}
                 onmouseenter={handleStepMouseEnter}
                 onmouseleave={handleStepMouseLeave}
                 onfocus={handleStepFocus}
                 onblur={handleStepBlur}
                 tabindex="0"
+                style="padding-bottom: 3px"
             ></c-primitive-icon>
             <div
-                if:false={iconName}
+                if:false={stepIconName}
                 class="slds-progress__marker"
+                onclick={handleStepClick}
                 onmouseenter={handleStepMouseEnter}
                 onmouseleave={handleStepMouseLeave}
                 onfocus={handleStepFocus}
@@ -26,6 +32,9 @@
                 <div class="avonni-marker"></div>
             </div>
         </li>
-        <!-- <div>allo</div> -->
+        <span if:true={assistiveText} class="slds-assistive-text"
+            >{assistiveText}</span
+        >
+        <div></div>
     </div>
 </template>
