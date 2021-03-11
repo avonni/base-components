@@ -22,6 +22,10 @@ export const DateTimePicker = ({
     timeFormatHour12,
     timeFormatMinute,
     timeFormatSecond,
+    dateFormatDay,
+    dateFormatWeekday,
+    dateFormatMonth,
+    dateFormatYear,
     disabledDateTimes,
     max,
     min,
@@ -48,6 +52,10 @@ export const DateTimePicker = ({
     element.timeFormatHour12 = timeFormatHour12;
     element.timeFormatMinute = timeFormatMinute;
     element.timeFormatSecond = timeFormatSecond;
+    element.dateFormatDay = dateFormatDay;
+    element.dateFormatWeekday = dateFormatWeekday;
+    element.dateFormatMonth = dateFormatMonth;
+    element.dateFormatYear = dateFormatYear;
     element.disabledDateTimes = disabledDateTimes;
     element.max = max;
     element.min = min;

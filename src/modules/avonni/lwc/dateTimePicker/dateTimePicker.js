@@ -10,7 +10,10 @@ const VISIBILITY = ['day', 'week'];
 
 const VARIANTS = ['standard', 'label-hidden'];
 const TYPES = ['radio', 'checkbox'];
-const TIME_FORMAT = ['numeric', '2-digit'];
+const DATE_TIME_FORMAT = ['numeric', '2-digit'];
+const WEEKDAY_FORMAT = ['narrow', 'short', 'long'];
+
+const MONTH_FORMAT = ['2-digit', 'numeric', 'narrow', 'short', 'long'];
 
 export default class DateTimePicker extends LightningElement {
     @api disabled;
@@ -34,6 +37,10 @@ export default class DateTimePicker extends LightningElement {
     _timeFormatHour12;
     _timeFormatMinute;
     _timeFormatSecond;
+    _dateFormatDay;
+    _dateFormatWeekday;
+    _dateFormatMonth;
+    _dateFormatYear;
     _visibility;
     _type;
     _showTimeZone;
@@ -50,9 +57,6 @@ export default class DateTimePicker extends LightningElement {
     helpMessage = null;
     datePickerValue;
 
-    // QUESTIONS:
-    // Default hour/minute format if everything is empty
-
     connectedCallback() {
         this._processValue();
         this.selectedTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -65,13 +69,14 @@ export default class DateTimePicker extends LightningElement {
             ? this._setFirstWeekDay(this.min)
             : this._setFirstWeekDay(this.today);
 
-        // If no time format is provided, defaults to 00:00
+        // If no time format is provided, defaults to hour:minutes (0:00)
+        // The default is set here so it is possible to have only the hour, minutes:seconds, etc.
         if (
             !this.timeFormatHour &&
             !this.timeFormatMinute &&
             !this.timeFormatSecond
         ) {
-            this._timeFormatHour = '2-digit';
+            this._timeFormatHour = 'numeric';
             this._timeFormatMinute = '2-digit';
         }
         this._generateTable();
@@ -180,7 +185,7 @@ export default class DateTimePicker extends LightningElement {
     }
     set timeFormatHour(value) {
         this._timeFormatHour = normalizeString(value, {
-            validValues: TIME_FORMAT
+            validValues: DATE_TIME_FORMAT
         });
     }
 
@@ -189,7 +194,10 @@ export default class DateTimePicker extends LightningElement {
         return this._timeFormatHour12;
     }
     set timeFormatHour12(boolean) {
-        this._timeFormatHour12 = normalizeBoolean(boolean);
+        if (boolean !== undefined) {
+            this._timeFormatHour12 = normalizeBoolean(boolean);
+        }
+        console.log(this.timeFormatHour12);
     }
 
     @api
@@ -198,7 +206,7 @@ export default class DateTimePicker extends LightningElement {
     }
     set timeFormatMinute(value) {
         this._timeFormatMinute = normalizeString(value, {
-            validValues: TIME_FORMAT
+            validValues: DATE_TIME_FORMAT
         });
     }
 
@@ -208,7 +216,50 @@ export default class DateTimePicker extends LightningElement {
     }
     set timeFormatSecond(value) {
         this._timeFormatSecond = normalizeString(value, {
-            validValues: TIME_FORMAT
+            validValues: DATE_TIME_FORMAT
+        });
+    }
+
+    @api
+    get dateFormatDay() {
+        return this._dateFormatDay;
+    }
+    set dateFormatDay(value) {
+        this._dateFormatDay = normalizeString(value, {
+            fallbackValue: 'numeric',
+            validValues: DATE_TIME_FORMAT
+        });
+    }
+
+    @api
+    get dateFormatMonth() {
+        return this._dateFormatMonth;
+    }
+    set dateFormatMonth(value) {
+        this._dateFormatMonth = normalizeString(value, {
+            fallbackValue: 'long',
+            validValues: MONTH_FORMAT
+        });
+    }
+
+    @api
+    get dateFormatWeekday() {
+        return this._dateFormatWeekday;
+    }
+    set dateFormatWeekday(value) {
+        this._dateFormatWeekday = normalizeString(value, {
+            fallbackValue: 'short',
+            validValues: WEEKDAY_FORMAT
+        });
+    }
+
+    @api
+    get dateFormatYear() {
+        return this._dateFormatYear;
+    }
+    set dateFormatYear(value) {
+        this._dateFormatYear = normalizeString(value, {
+            validValues: DATE_TIME_FORMAT
         });
     }
 
@@ -371,13 +422,13 @@ export default class DateTimePicker extends LightningElement {
                 times: []
             };
 
-            // Add a label to the day only if visibility is 'week'
+            // Add a label to the day only if variant is 'week'
             if (this.visibility === 'week') {
                 const labelWeekday = day.toLocaleString('default', {
-                    weekday: 'short'
+                    weekday: this.dateFormatWeekday
                 });
                 const labelDay = day.toLocaleString('default', {
-                    day: '2-digit'
+                    day: this.dateFormatDay
                 });
                 dayTime.label = `${labelWeekday} ${labelDay}`;
             }
@@ -487,10 +538,16 @@ export default class DateTimePicker extends LightningElement {
     }
 
     get currentDateRangeString() {
+        const options = {
+            month: this.dateFormatMonth,
+            day: this.dateFormatDay
+        };
+
+        if (this.dateFormatYear) options.year = this.dateFormatYear;
+
         const firstWeekDay = this.firstWeekDay.toLocaleString('default', {
-            weekday: 'long'
+            weekday: this.dateFormatWeekday
         });
-        const options = { month: 'long', day: 'numeric', year: 'numeric' };
         const firstDay = this.firstWeekDay.toLocaleString('default', options);
         const lastDay = this.lastWeekDay.toLocaleString('default', options);
 

@@ -130,12 +130,13 @@ export default {
         },
         timeFormatHour: {
             control: {
-                type: 'radio',
+                type: 'select',
                 options: ['2-digit', 'numeric']
             },
             description: 'Valid values include numeric and 2-digit.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                defaultValue: 'numeric'
             }
         },
         timeFormatHour12: {
@@ -150,17 +151,18 @@ export default {
         },
         timeFormatMinute: {
             control: {
-                type: 'radio',
+                type: 'select',
                 options: ['2-digit', 'numeric']
             },
             description: 'Valid values include numeric and 2-digit.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                defaultValue: '2-digit'
             }
         },
         timeFormatSecond: {
             control: {
-                type: 'radio',
+                type: 'select',
                 options: ['2-digit', 'numeric']
             },
             description: 'Valid values include numeric and 2-digit.',
@@ -176,6 +178,54 @@ export default {
                 'An array that will be used to determine which date times to be disabled in the calendar.',
             table: {
                 type: { summary: 'array' }
+            }
+        },
+        dateFormatDay: {
+            control: {
+                type: 'select',
+                options: ['2-digit', 'numeric']
+            },
+            defaultValue: 'numeric',
+            description: 'Valid values include numeric and 2-digit.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'numeric' }
+            }
+        },
+        dateFormatWeekday: {
+            control: {
+                type: 'select',
+                options: ['narrow', 'short', 'long']
+            },
+            defaultValue: 'short',
+            description:
+                'Specifies how to display the day of the week. Allowed values are narrow, short, or long.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'short' }
+            }
+        },
+        dateFormatMonth: {
+            control: {
+                type: 'select',
+                options: ['numeric', '2-digit', 'narrow', 'short', 'long']
+            },
+            defaultValue: 'long',
+            description:
+                'Allowed values are numeric, 2-digit, long, short or narrow.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'long' }
+            }
+        },
+        dateFormatYear: {
+            control: {
+                type: 'select',
+                options: ['2-digit', 'numeric']
+            },
+            description: 'Valid values include numeric and 2-digit.',
+            table: {
+                type: { summary: 'string' }
             }
         },
         max: {
@@ -216,7 +266,7 @@ export default {
         },
         type: {
             control: {
-                type: 'radio',
+                type: 'select',
                 options: ['radio', 'checkbox']
             },
             defaultValue: 'radio',
@@ -276,5 +326,7 @@ Complex.args = {
     required: true,
     visibility: 'week',
     value: ['2021-03-13T13:00:00.000Z', '2021-03-13T14:00:00.000Z'],
-    type: 'checkbox'
+    type: 'checkbox',
+    dateFormatWeekday: 'long',
+    timeFormatHour12: false
 };
