@@ -1,18 +1,25 @@
 <template>
     <div class="avonni-progress-step-outer-class">
-        <div
-            style="position: absolute; transform: translateX(0%); width: 142px"
-        >
+        <div style="position: absolute; transform: translateX(-20%)">
             <template if:true={showLabelTop}> {label} </template>
             <template if:true={showDescriptionTop}> {description} </template>
             <template if:true={showIconTop}>
                 <lightning-icon
                     icon-name={iconName}
                     size={iconSize}
+                    src={iconSrc}
                 ></lightning-icon>
             </template>
             <template if:true={showButtonTop}>
-                <lightning-button></lightning-button>
+                <lightning-button
+                    name={buttonName}
+                    label={buttonLabel}
+                    title={buttonTitle}
+                    variant={buttonVariant}
+                    disabled={buttonDisabled}
+                    icon-name={buttonIconName}
+                    icon-position={buttonIconPosition}
+                ></lightning-button>
             </template>
         </div>
         <li class="slds-progress__item">
@@ -45,9 +52,21 @@
         <span if:true={assistiveText} class="slds-assistive-text"
             >{assistiveText}</span
         >
-        <div style="position: absolute; top: 75px">
+        <div style="position: absolute; transform: translateX(-40%); top: 75px">
             <template if:true={showLabelBottom}> {label} </template>
             <template if:true={showDescriptionBottom}> {description} </template>
+            <template if:true={showIconBottom}></template>
+            <template if:true={showButtonBottom}>
+                <lightning-button
+                    name={buttonName}
+                    label={buttonLabel}
+                    title={buttonTitle}
+                    variant={buttonVariant}
+                    disabled={buttonDisabled}
+                    icon-name={buttonIconName}
+                    icon-position={buttonIconPosition}
+                ></lightning-button>
+            </template>
         </div>
     </div>
 </template>

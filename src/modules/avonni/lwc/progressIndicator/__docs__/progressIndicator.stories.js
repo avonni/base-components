@@ -102,13 +102,20 @@ const steps = [
         assistiveText: '2',
         iconName: 'utility:down',
         iconSize: 'small',
-        iconPosition: 'top',
-        iconSrc: 'src'
+        iconPosition: 'top'
     },
     {
         value: 3,
         label: '3',
-        assistiveText: '3'
+        assistiveText: '3',
+        buttonName: 'button',
+        buttonLabel: 'Press',
+        buttonIconName: 'standard:address',
+        buttonIconPosition: 'left',
+        buttonTitle: 'title',
+        buttonVariant: 'success',
+        buttonPosition: 'bottom'
+        // buttonDisabled: true
     },
     {
         value: 4,
