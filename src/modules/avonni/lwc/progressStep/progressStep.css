@@ -40,3 +40,13 @@
     flex-direction: column;
     justify-content: center;
 }
+
+.avonni-progress-step-bottom {
+    position: absolute;
+    transform: translate(40%, 300%);
+}
+
+.avonni-progress-step-top {
+    position: absolute;
+    transform: translate(-40%, -50%);
+}

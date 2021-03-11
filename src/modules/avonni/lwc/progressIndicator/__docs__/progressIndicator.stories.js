@@ -93,7 +93,12 @@ const steps = [
         labelPosition: 'bottom',
         assistiveText: '1',
         description: 'Step #1',
-        descriptionPosition: 'top'
+        descriptionPosition: 'top',
+        buttonName: 'button',
+        buttonLabel: 'Press',
+        buttonTitle: 'title',
+        buttonVariant: 'success',
+        buttonPosition: 'top'
     },
     {
         value: 2,
@@ -101,37 +106,49 @@ const steps = [
         labelPosition: 'bottom',
         assistiveText: '2',
         iconName: 'utility:down',
-        iconSize: 'small',
+        iconSize: 'large',
         iconPosition: 'top'
     },
     {
         value: 3,
         label: '3',
+        labelPosition: 'bottom',
         assistiveText: '3',
         buttonName: 'button',
-        buttonLabel: 'Press',
-        buttonIconName: 'standard:address',
-        buttonIconPosition: 'left',
+        buttonLabel: 'doing',
         buttonTitle: 'title',
         buttonVariant: 'success',
-        buttonPosition: 'bottom'
-        // buttonDisabled: true
+        buttonPosition: 'inside-nubbin',
+        buttonDisabled: true,
+        popoverState: 'show'
     },
     {
         value: 4,
         label: '4',
         labelPosition: 'inside-nubbin',
-        popoverState: 'show'
+        popoverState: 'show',
+        buttonName: 'button',
+        buttonLabel: 'Completed',
+        buttonTitle: 'title',
+        buttonVariant: 'brand',
+        buttonPosition: 'inside-nubbin'
     },
     {
         value: 5,
         label: '5',
-        assistiveText: '5'
+        labelPosition: 'inside-nubbin',
+        popoverState: 'show'
     },
     {
         value: 6,
         label: '6',
+        labelPosition: 'bottom',
         assistiveText: '6'
+    },
+    {
+        value: 7,
+        label: '7',
+        assistiveText: '7'
     }
 ];
 
@@ -144,7 +161,7 @@ Base.args = {
     currentStep: 3,
     steps: steps,
     errorSteps: [1],
-    warningSteps: [2],
+    warningSteps: [7],
     completedSteps: [4],
     disabledSteps: [5]
 };
