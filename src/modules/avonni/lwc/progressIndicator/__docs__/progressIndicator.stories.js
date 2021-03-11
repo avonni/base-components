@@ -137,6 +137,8 @@ const steps = [
         value: 5,
         label: '5',
         labelPosition: 'inside-nubbin',
+        description: 'step #5',
+        descriptionPosition: 'inside-nubbin',
         popoverState: 'show'
     },
     {
@@ -147,8 +149,10 @@ const steps = [
     },
     {
         value: 7,
-        label: '7',
-        assistiveText: '7'
+        label: 'Warning for this step',
+        assistiveText: '7',
+        description: 'step #7',
+        descriptionPosition: 'bottom'
     }
 ];
 
@@ -162,6 +166,6 @@ Base.args = {
     steps: steps,
     errorSteps: [1],
     warningSteps: [7],
-    completedSteps: [4],
+    completedSteps: [4, 2, 5],
     disabledSteps: [5]
 };

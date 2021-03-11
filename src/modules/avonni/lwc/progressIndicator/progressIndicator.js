@@ -19,10 +19,10 @@ export default class ProgressIndicator extends LightningElement {
     connectedCallback() {}
 
     renderedCallback() {
-        this.updateSteps();
         this.updateErrorSteps();
         this.updateWarningSteps();
         this.updateCompletedSteps();
+        this.updateCurrentStep();
     }
 
     @api
@@ -71,21 +71,13 @@ export default class ProgressIndicator extends LightningElement {
         return Array.from(this.template.querySelectorAll('c-progress-step'));
     }
 
-    updateSteps() {
-        let steps = this.getSteps();
-
-        let indexCompleted = this.currentStep <= 1 ? 0 : this.currentStep - 1;
-        steps.forEach((step, index) => {
-            if (step.getAttribute('data-step') === this.currentStep) {
-                indexCompleted = index;
-            }
-        });
-
-        steps.forEach((step, index) => {
-            if (indexCompleted > index) {
-                step.classList.add('slds-is-completed');
-                step.setIcon('utility:success');
-            } else if (indexCompleted === index) {
+    updateCurrentStep() {
+        const steps = this.getSteps();
+        steps.forEach((step) => {
+            if (
+                parseInt(step.getAttribute('data-step'), 10) ===
+                this.currentStep
+            ) {
                 step.classList.add('slds-is-active');
             }
         });

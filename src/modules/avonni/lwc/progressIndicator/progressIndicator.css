@@ -5,7 +5,7 @@
     position: relative;
     width: 35%;
     top: 26px;
-    background-color: gray;
+    background-color: #dddbda;
     left: -4px;
     right: 0;
     margin-top: 1.5rem;
@@ -18,7 +18,7 @@
     position: relative;
     width: 35%;
     top: 26px;
-    background-color: gray;
+    background-color: #dddbda;
     left: 4px;
     right: 0;
     margin-top: 1.5rem;
@@ -96,7 +96,7 @@
     position: relative;
     width: 35%;
     top: 26px;
-    background-color: #60b4ff;
+    background-color: #dddbda;
     left: -4px;
     right: 0;
     margin-top: 1.5rem;
