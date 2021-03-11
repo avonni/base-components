@@ -17,6 +17,7 @@ export default class Wizard extends LightningElement {
     @api buttonFinishIconName;
     @api buttonFinishIconPosition;
     @api buttonFinishVariant;
+    @api buttonFinishLabel;
     @api buttonPosition;
     @api buttonAlignmentBump;
     @api fractionPrefixLabel;

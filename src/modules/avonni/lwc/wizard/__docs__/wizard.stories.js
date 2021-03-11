@@ -23,6 +23,37 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        indicatorType: {
+            control: {
+                type: 'select',
+                options: [
+                    'base',
+                    'base-shaded',
+                    'path',
+                    'bullet',
+                    'fractions',
+                    'bar'
+                ]
+            },
+            defaultValue: 'base',
+            description:
+                'Changes the visual pattern of the indicator. Valid values are base, base-shaded, path, bullet, fractions, bar.',
+            table: {
+                defaultValue: 'base',
+                type: { summary: 'string' }
+            }
+        },
+        hideIndicator: {
+            control: {
+                type: 'boolean'
+            },
+            description: 'If true, hide the indicator.',
+            defaultValue: false,
+            table: {
+                defaultValue: 'false',
+                type: { summary: 'boolean' }
+            }
+        },
         buttonPreviousIconName: {
             control: {
                 type: 'text'
@@ -172,6 +203,26 @@ export default {
                 defaultValue: 'neutral',
                 type: { summary: 'string' }
             }
+        },
+        fractionPrefixLabel: {
+            control: {
+                type: 'text'
+            },
+            defaultValue: 'Steps',
+            table: {
+                defaultValue: 'Steps',
+                type: { summary: 'string' }
+            }
+        },
+        fractionLabel: {
+            control: {
+                type: 'text'
+            },
+            defaultValue: 'of',
+            table: {
+                defaultValue: 'of',
+                type: { summary: 'string' }
+            }
         }
     }
 };
@@ -180,5 +231,7 @@ const Template = (args) => Wizard(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    title: 'Avonni Wizard'
+    title: 'Avonni Wizard',
+    indicatorType: 'fractions',
+    currentStep: 'step-3'
 };

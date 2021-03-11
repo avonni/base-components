@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeString } from 'c/utilsPrivate';
+import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
 // import { classSet } from 'c/utils';
 
 const POSITIONS = ['left', 'right'];
@@ -13,6 +13,14 @@ const BUTTON_VARIANTS = [
     'destructive-text',
     'success'
 ];
+const INDICATOR_TYPES = [
+    'base',
+    'base-shaded',
+    'path',
+    'bullet',
+    'fractions',
+    'bar'
+];
 
 // QUESTIONS:
 // Current step: reference to name and not value?
@@ -23,11 +31,7 @@ const BUTTON_VARIANTS = [
 export default class Wizard extends LightningElement {
     // TODO:
     @api variant;
-    @api indicatorType;
-    @api hideIndicator;
     @api buttonPosition;
-    @api fractionPrefixLabel;
-    @api fractionLabel;
     _buttonAlignmentBump;
 
     @api title;
@@ -36,19 +40,34 @@ export default class Wizard extends LightningElement {
     @api buttonFinishIconName;
 
     _currentStep;
-    _buttonPreviousIconPosition;
-    _buttonPreviousLabel;
-    _buttonPreviousVariant;
-    _buttonNextIconPosition;
-    _buttonNextLabel;
-    _buttonNextVariant;
-    _buttonFinishIconPosition;
-    _buttonFinishLabel;
-    _buttonFinishVariant;
-    _rendered = false;
+    _indicatorType = 'base';
+    _hideIndicator;
+    _buttonPreviousIconPosition = 'left';
+    _buttonPreviousLabel = 'Previous';
+    _buttonPreviousVariant = 'neutral';
+    _buttonNextIconPosition = 'left';
+    _buttonNextLabel = 'Next';
+    _buttonNextVariant = 'neutral';
+    _buttonFinishIconPosition = 'left';
+    _buttonFinishLabel = 'Finish';
+    _buttonFinishVariant = 'neutral';
+    _fractionPrefixLabel = 'Steps';
+    _fractionLabel = 'of';
+    _rendered;
 
     steps;
-    lastStep = false;
+    lastStep;
+    progressIndicatorVariant = 'base';
+    progressIndicatorType = 'base';
+    progressBarValue = 0;
+    fractionCurrentStep;
+    fractionTotalSteps;
+    showBulletIndicator;
+    showProgressIndicator;
+    showFractionIndicator;
+    showBarIndicator;
+    hidePreviousButton;
+    hideNextFinishButton;
 
     renderedCallback() {
         if (!this._rendered) {
@@ -62,11 +81,66 @@ export default class Wizard extends LightningElement {
             });
 
             // If no current step was given, sets current step to first step.
-            const stepNames = this.steps.map((step) => step.name);
-            if (stepNames.indexOf(this.currentStep) === -1) {
+            if (this.currentStepIndex === -1) {
                 this._currentStep = this.steps[0].name;
             }
+
+            this._initIndicator();
+            this._updateSteps();
         }
+    }
+
+    _initIndicator() {
+        switch (this.indicatorType) {
+            case 'base-shaded':
+                this.showProgressIndicator = true;
+                this.progressIndicatorVariant = 'shaded';
+                this.progressIndicatorType = 'base';
+                break;
+            case 'path':
+                this.showProgressIndicator = true;
+                this.progressIndicatorType = 'path';
+                break;
+            case 'bullet':
+                this.showBulletIndicator = true;
+                break;
+            case 'fractions':
+                this.showFractionIndicator = true;
+                this.fractionTotalSteps = this.steps.length;
+                break;
+            case 'bar':
+                this.showBarIndicator = true;
+                break;
+            default:
+                this.showProgressIndicator = true;
+                break;
+        }
+    }
+
+    _updateSteps() {
+        const currentStepComponent = this.steps[this.currentStepIndex];
+
+        this.lastStep =
+            this.currentStepIndex === this.steps.length - 1 ? true : false;
+        this.progressBarValue =
+            (this.currentStepIndex / (this.steps.length - 1)) * 100;
+        this.fractionCurrentStep = this.currentStepIndex + 1;
+        this.hidePreviousButton = currentStepComponent.hidePreviousButton;
+        this.hideNextFinishButton = currentStepComponent.hideNextFinishButton;
+
+        this.steps.forEach((step) =>
+            step.setAttribute('style', 'display: none;')
+        );
+        currentStepComponent.setAttribute('style', '');
+    }
+
+    get currentStepIndex() {
+        const stepNames = this.steps.map((step) => step.name);
+        return stepNames.indexOf(this.currentStep);
+    }
+
+    get showIndicator() {
+        return this.steps && !this.hideIndicator;
     }
 
     @api
@@ -75,6 +149,25 @@ export default class Wizard extends LightningElement {
     }
     set currentStep(name) {
         this._currentStep = name;
+    }
+
+    @api
+    get indicatorType() {
+        return this._indicatorType;
+    }
+    set indicatorType(type) {
+        this._indicatorType = normalizeString(type, {
+            fallbackValue: 'base',
+            validValues: INDICATOR_TYPES
+        });
+    }
+
+    @api
+    get hideIndicator() {
+        return this._hideIndicator;
+    }
+    set hideIndicator(boolean) {
+        this._hideIndicator = normalizeBoolean(boolean);
     }
 
     @api
@@ -93,7 +186,7 @@ export default class Wizard extends LightningElement {
         return this._buttonPreviousLabel;
     }
     set buttonPreviousLabel(label) {
-        this._buttonPreviousLabel = label || 'Previous';
+        this._buttonPreviousLabel = label;
     }
 
     @api
@@ -123,7 +216,7 @@ export default class Wizard extends LightningElement {
         return this._buttonNextLabel;
     }
     set buttonNextLabel(label) {
-        this._buttonNextLabel = label || 'Next';
+        this._buttonNextLabel = label;
     }
 
     @api
@@ -153,7 +246,7 @@ export default class Wizard extends LightningElement {
         return this._buttonFinishLabel;
     }
     set buttonFinishLabel(label) {
-        this._buttonFinishLabel = label || 'Finish';
+        this._buttonFinishLabel = label;
     }
 
     @api
@@ -176,5 +269,60 @@ export default class Wizard extends LightningElement {
             fallbackValue: null,
             validValues: POSITIONS
         });
+    }
+
+    @api
+    get fractionPrefixLabel() {
+        return this._fractionPrefixLabel;
+    }
+    set fractionPrefixLabel(prefix) {
+        this._fractionPrefixLabel = prefix;
+    }
+
+    @api
+    get fractionLabel() {
+        return this._fractionLabel;
+    }
+    set fractionLabel(label) {
+        this._fractionLabel = label;
+    }
+
+    handlePreviousNextClick(event) {
+        const oldStep = this.currentStep;
+        const button = event.currentTarget.dataset.label;
+
+        if (button === 'previous') {
+            // If user clicks 'previous' on first step, currentStep === oldStep
+            this._currentStep =
+                this.currentStepIndex === 0
+                    ? this._currentStep
+                    : this.steps[this.currentStepIndex - 1].name;
+        } else {
+            this._currentStep = this.steps[this.currentStepIndex + 1].name;
+        }
+
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                detail: {
+                    currentStep: this.currentStep,
+                    oldStep: oldStep
+                },
+                bubbles: false,
+                cancelable: false,
+                composed: false
+            })
+        );
+
+        this._updateSteps();
+    }
+
+    handleFinishClick() {
+        this.dispatchEvent(
+            new CustomEvent('complete', {
+                bubbles: false,
+                cancelable: false,
+                composed: false
+            })
+        );
     }
 }

@@ -5,6 +5,8 @@ customElements.define('ac-avonni-wizard', Component.CustomElementConstructor);
 export const Wizard = ({
     title,
     currentStep,
+    indicatorType,
+    hideIndicator,
     buttonPreviousIconName,
     buttonPreviousIconPosition,
     buttonPreviousLabel,
@@ -16,11 +18,15 @@ export const Wizard = ({
     buttonFinishIconName,
     buttonFinishIconPosition,
     buttonFinishLabel,
-    buttonFinishVariant
+    buttonFinishVariant,
+    fractionPrefixLabel,
+    fractionLabel
 }) => {
     const element = document.createElement('ac-avonni-wizard');
     element.title = title;
     element.currentStep = currentStep;
+    element.indicatorType = indicatorType;
+    element.hideIndicator = hideIndicator;
     element.buttonPreviousIconName = buttonPreviousIconName;
     element.buttonPreviousIconPosition = buttonPreviousIconPosition;
     element.buttonPreviousLabel = buttonPreviousLabel;
@@ -33,5 +39,7 @@ export const Wizard = ({
     element.buttonFinishIconPosition = buttonFinishIconPosition;
     element.buttonFinishLabel = buttonFinishLabel;
     element.buttonFinishVariant = buttonFinishVariant;
+    element.fractionPrefixLabel = fractionPrefixLabel;
+    element.fractionLabel = fractionLabel;
     return element;
 };
