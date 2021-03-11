@@ -119,7 +119,9 @@ const steps = [
     },
     {
         value: 4,
-        label: '4'
+        label: '4',
+        labelPosition: 'inside-nubbin',
+        popoverState: 'show'
     },
     {
         value: 5,

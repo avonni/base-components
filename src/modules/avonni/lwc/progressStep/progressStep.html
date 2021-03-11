@@ -1,6 +1,6 @@
 <template>
     <div class="avonni-progress-step-outer-class">
-        <div style="position: absolute; transform: translateX(-20%)">
+        <div style="position: absolute; left: 40%; transform: translateX(-50%)">
             <template if:true={showLabelTop}> {label} </template>
             <template if:true={showDescriptionTop}> {description} </template>
             <template if:true={showIconTop}>
@@ -23,39 +23,95 @@
             </template>
         </div>
         <li class="slds-progress__item">
-            <c-primitive-icon
+            <button
+                class={computedButtonClass}
                 if:true={stepIconName}
-                icon-name={stepIconName}
-                size="xx-small"
-                variant="bare"
-                class="slds-progress__marker slds-progress__marker_icon slds-progress__marker_icon-success"
-                onclick={handleStepClick}
-                onmouseenter={handleStepMouseEnter}
-                onmouseleave={handleStepMouseLeave}
-                onfocus={handleStepFocus}
-                onblur={handleStepBlur}
-                tabindex="0"
-            ></c-primitive-icon>
-            <div
-                if:false={stepIconName}
-                class="slds-progress__marker"
-                onclick={handleStepClick}
-                onmouseenter={handleStepMouseEnter}
-                onmouseleave={handleStepMouseLeave}
-                onfocus={handleStepFocus}
-                onblur={handleStepBlur}
-                tabindex="0"
+                aria-hidden="true"
             >
-                <div class="avonni-marker"></div>
-            </div>
+                <c-primitive-icon
+                    class="slds-button__icon"
+                    icon-name={stepIconName}
+                    size="xx-small"
+                    variant="bare"
+                    onclick={handleStepClick}
+                    onmouseenter={handleStepMouseEnter}
+                    onmouseleave={handleStepMouseLeave}
+                    onfocus={handleStepFocus}
+                    onblur={handleStepBlur}
+                    tabindex="0"
+                ></c-primitive-icon>
+            </button>
+            <button class={computedButtonClass} if:false={stepIconName}>
+                <div
+                    onclick={handleStepClick}
+                    onmouseenter={handleStepMouseEnter}
+                    onmouseleave={handleStepMouseLeave}
+                    onfocus={handleStepFocus}
+                    onblur={handleStepBlur}
+                    tabindex="0"
+                >
+                    <div class="avonni-marker"></div>
+                </div>
+            </button>
+            <template if:true={showPopover}>
+                <div
+                    class="slds-popover slds-popover_tooltip slds-nubbin_bottom slds-rise-from-ground"
+                    role="tooltip"
+                    id={value}
+                    style="
+                        position: absolute;
+                        top: -50px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                    "
+                >
+                    <div class="slds-popover__body">
+                        <template if:true={showLabelNubbin}> {label} </template>
+                        <template if:true={showDescriptionNubbin}>
+                            {description}
+                        </template>
+                        <template if:true={showIconNubbin}>
+                            <lightning-icon
+                                icon-name={iconName}
+                                size={iconSize}
+                                src={iconSrc}
+                            ></lightning-icon>
+                        </template>
+                        <template if:true={showButtonNubbin}>
+                            <lightning-button
+                                name={buttonName}
+                                label={buttonLabel}
+                                title={buttonTitle}
+                                variant={buttonVariant}
+                                disabled={buttonDisabled}
+                                icon-name={buttonIconName}
+                                icon-position={buttonIconPosition}
+                            ></lightning-button>
+                        </template>
+                    </div>
+                </div>
+            </template>
         </li>
         <span if:true={assistiveText} class="slds-assistive-text"
             >{assistiveText}</span
         >
-        <div style="position: absolute; transform: translateX(-40%); top: 75px">
+        <div
+            style="
+                position: absolute;
+                left: 40%;
+                transform: translateX(-50%);
+                top: 75px;
+            "
+        >
             <template if:true={showLabelBottom}> {label} </template>
             <template if:true={showDescriptionBottom}> {description} </template>
-            <template if:true={showIconBottom}></template>
+            <template if:true={showIconBottom}>
+                <lightning-icon
+                    icon-name={iconName}
+                    size={iconSize}
+                    src={iconSrc}
+                ></lightning-icon>
+            </template>
             <template if:true={showButtonBottom}>
                 <lightning-button
                     name={buttonName}

@@ -84,7 +84,6 @@ export default class ProgressIndicator extends LightningElement {
         steps.forEach((step, index) => {
             if (indexCompleted > index) {
                 step.classList.add('slds-is-completed');
-                step.classList.add('avonni-progress-indicator-has-success');
                 step.setIcon('utility:success');
             } else if (indexCompleted === index) {
                 step.classList.add('slds-is-active');
@@ -98,12 +97,7 @@ export default class ProgressIndicator extends LightningElement {
             this.errorSteps.forEach((error) => {
                 if (parseInt(step.getAttribute('data-step'), 10) === error) {
                     step.setIcon('utility:error');
-                    // step.classList.remove('slds-is-completed');
-                    step.classList.remove(
-                        'avonni-progress-indicator-has-success'
-                    );
                     step.classList.add('slds-has-error');
-                    step.classList.add('avonni-progress-indicator-has-error');
                 }
             });
         });
@@ -115,12 +109,7 @@ export default class ProgressIndicator extends LightningElement {
             this.warningSteps.forEach((warning) => {
                 if (parseInt(step.getAttribute('data-step'), 10) === warning) {
                     step.setIcon('utility:warning');
-                    step.classList.add('slds-has-warning');
                     step.classList.add('slds-has-error');
-                    step.classList.remove(
-                        'avonni-progress-indicator-has-success'
-                    );
-                    step.classList.add('avonni-progress-indicator-has-warning');
                 }
             });
         });
@@ -135,7 +124,6 @@ export default class ProgressIndicator extends LightningElement {
                 ) {
                     step.setIcon('utility:success');
                     step.classList.add('slds-is-completed');
-                    step.classList.add('avonni-progress-indicator-has-success');
                 }
             });
         });

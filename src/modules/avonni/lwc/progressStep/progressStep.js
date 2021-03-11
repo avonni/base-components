@@ -168,8 +168,16 @@ export default class ProgressStep extends LightningElement {
         if (this.stepIconName) {
             classes
                 .add('slds-button_icon')
-                .add('slds-progress__marker')
-                .add('slds-progress__marker_icon');
+                .add('slds-progress__marker_icon')
+                .add('slds-progress__marker_icon-success');
+        }
+        return classes.toString();
+    }
+
+    get computedStepIcon() {
+        const classes = classSet('');
+        if (!this.stepIconName) {
+            classes.add('slds-progress__marker');
         }
         return classes.toString();
     }
@@ -222,6 +230,10 @@ export default class ProgressStep extends LightningElement {
 
     get showButtonNubbin() {
         return this._buttonPosition === 'inside-nubbin' && this.buttonLabel;
+    }
+
+    get showPopover() {
+        return this._popoverState === 'show';
     }
 
     @api
