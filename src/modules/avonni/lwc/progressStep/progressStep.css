@@ -25,10 +25,6 @@
     box-shadow: #ffffff 0 0 0 3px !important;
 }
 
-:host(.avonni-spread) .slds-progress__marker_icon {
-    box-shadow: rgb(243, 242, 242) 0 0 0 3px !important;
-}
-
 :host(.slds-is-active) .slds-progress__marker {
     border: none;
 }

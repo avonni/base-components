@@ -59,7 +59,7 @@ export default class ProgressIndicator extends LightningElement {
     }
 
     get computedOuterClass() {
-        return classSet('slds-progress')
+        return classSet('slds-progress slds-progress_horizontal')
             .add({
                 'slds-progress_shade':
                     this._variant === 'shaded' && this._type === 'base'
@@ -134,7 +134,7 @@ export default class ProgressIndicator extends LightningElement {
                     parseInt(step.getAttribute('data-step'), 10) === completed
                 ) {
                     step.setIcon('utility:success');
-                    step.classList.add('slds-has-error');
+                    step.classList.add('slds-is-completed');
                     step.classList.add('avonni-progress-indicator-has-success');
                 }
             });

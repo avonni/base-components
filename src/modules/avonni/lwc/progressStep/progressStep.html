@@ -1,6 +1,8 @@
 <template>
     <div class="avonni-progress-step-outer-class">
-        <div style="position: absolute">
+        <div
+            style="position: absolute; transform: translateX(0%); width: 142px"
+        >
             <template if:true={showLabelTop}> {label} </template>
             <template if:true={showDescriptionTop}> {description} </template>
             <template if:true={showIconTop}>
@@ -43,7 +45,7 @@
         <span if:true={assistiveText} class="slds-assistive-text"
             >{assistiveText}</span
         >
-        <div style="position: absolute; top: 50px">
+        <div style="position: absolute; top: 75px">
             <template if:true={showLabelBottom}> {label} </template>
             <template if:true={showDescriptionBottom}> {description} </template>
         </div>
