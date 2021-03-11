@@ -6,9 +6,7 @@ import TIME_ZONES from './timeZones.js';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-const VISIBILITY = ['day', 'week'];
-
-const VARIANTS = ['standard', 'label-hidden'];
+const VARIANTS = ['daily', 'weekly'];
 const TYPES = ['radio', 'checkbox'];
 const DATE_TIME_FORMAT = ['numeric', '2-digit'];
 const WEEKDAY_FORMAT = ['narrow', 'short', 'long'];
@@ -25,6 +23,7 @@ export default class DateTimePicker extends LightningElement {
     @api required;
     @api disabledDateTimes;
 
+    _hideLabel;
     _variant;
     _max;
     _min;
@@ -41,7 +40,7 @@ export default class DateTimePicker extends LightningElement {
     _dateFormatWeekday;
     _dateFormatMonth;
     _dateFormatYear;
-    _visibility;
+    _showEndTime;
     _type;
     _showTimeZone;
     _hideNavigation;
@@ -89,12 +88,20 @@ export default class DateTimePicker extends LightningElement {
     }
 
     @api
+    get hideLabel() {
+        return this._hideLabel;
+    }
+    set hideLabel(boolean) {
+        this._hideLabel = normalizeBoolean(boolean);
+    }
+
+    @api
     get variant() {
         return this._variant;
     }
     set variant(value) {
         this._variant = normalizeString(value, {
-            fallbackValue: 'standard',
+            fallbackValue: 'daily',
             validValues: VARIANTS
         });
     }
@@ -197,7 +204,6 @@ export default class DateTimePicker extends LightningElement {
         if (boolean !== undefined) {
             this._timeFormatHour12 = normalizeBoolean(boolean);
         }
-        console.log(this.timeFormatHour12);
     }
 
     @api
@@ -264,14 +270,11 @@ export default class DateTimePicker extends LightningElement {
     }
 
     @api
-    get visibility() {
-        return this._visibility;
+    get showEndTime() {
+        return this._showEndTime;
     }
-    set visibility(value) {
-        this._visibility = normalizeString(value, {
-            fallbackValue: 'day',
-            validValues: VISIBILITY
-        });
+    set showEndTime(boolean) {
+        this._showEndTime = normalizeBoolean(boolean);
     }
 
     @api
@@ -395,7 +398,7 @@ export default class DateTimePicker extends LightningElement {
     }
 
     _setFirstWeekDay(date) {
-        if (this.visibility === 'day') {
+        if (this.variant === 'daily') {
             this.firstWeekDay = date;
         } else {
             const dateDay = date.getDate() - date.getDay();
@@ -406,7 +409,7 @@ export default class DateTimePicker extends LightningElement {
 
     _generateTable() {
         const processedTable = [];
-        const daysDisplayed = this.visibility === 'day' ? 1 : 7;
+        const daysDisplayed = this.variant === 'daily' ? 1 : 7;
 
         for (let i = 0; i < daysDisplayed; i++) {
             const day = new Date(
@@ -419,11 +422,14 @@ export default class DateTimePicker extends LightningElement {
             const dayTime = {
                 key: i,
                 day: day,
+                isToday:
+                    this.today.toLocaleDateString() ===
+                    day.toLocaleDateString(),
                 times: []
             };
 
             // Add a label to the day only if variant is 'week'
-            if (this.visibility === 'week') {
+            if (this.variant === 'weekly') {
                 const labelWeekday = day.toLocaleString('default', {
                     weekday: this.dateFormatWeekday
                 });
@@ -456,12 +462,18 @@ export default class DateTimePicker extends LightningElement {
 
             const timeIsSelected =
                 this._selectedDayTime && this._isSelected(time);
+
+            if (timeIsSelected) dayTime.selected = true;
+
             const timeIsDisabled =
                 this.disabledDateTimes &&
                 this._disabledFullDateTimes.indexOf(time) > -1;
 
             dayTime.times.push({
-                dayTimeISO: day.toISOString(),
+                startTimeISO: day.toISOString(),
+                endTimeISO: new Date(
+                    time + this.timeSlotDuration
+                ).toISOString(),
                 disabled: this.disabled || dayIsDisabled || timeIsDisabled,
                 selected: timeIsSelected
             });
@@ -551,7 +563,7 @@ export default class DateTimePicker extends LightningElement {
         const firstDay = this.firstWeekDay.toLocaleString('default', options);
         const lastDay = this.lastWeekDay.toLocaleString('default', options);
 
-        return this.visibility === 'day'
+        return this.variant === 'daily'
             ? `${firstWeekDay}, ${firstDay}`
             : `${firstDay} - ${lastDay}`;
     }
@@ -566,10 +578,6 @@ export default class DateTimePicker extends LightningElement {
 
     get maxToString() {
         return this.max.toISOString();
-    }
-
-    get labelHidden() {
-        return this.variant === 'label-hidden';
     }
 
     get prevButtonIsDisabled() {
@@ -591,7 +599,7 @@ export default class DateTimePicker extends LightningElement {
     }
 
     handlePrevNextClick(event) {
-        const dayRange = this.visibility === 'day' ? 1 : 7;
+        const dayRange = this.variant === 'daily' ? 1 : 7;
         const direction = event.currentTarget.dataset.direction;
         const dayRangeSign = direction === 'next' ? dayRange : -dayRange;
         this.firstWeekDay = new Date(
@@ -648,7 +656,7 @@ export default class DateTimePicker extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
-                    value: this.value,
+                    value: this.value.join(),
                     name: this.name
                 }
             })

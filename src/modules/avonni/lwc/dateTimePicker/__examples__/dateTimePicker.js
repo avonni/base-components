@@ -9,6 +9,7 @@ export const DateTimePicker = ({
     disabled,
     fieldLevelHelp,
     label,
+    hideLabel,
     variant,
     messageWhenValueMissing,
     name,
@@ -26,10 +27,10 @@ export const DateTimePicker = ({
     dateFormatWeekday,
     dateFormatMonth,
     dateFormatYear,
+    showEndTime,
     disabledDateTimes,
     max,
     min,
-    visibility,
     type,
     showTimeZone,
     hideNavigation,
@@ -39,6 +40,7 @@ export const DateTimePicker = ({
     element.disabled = disabled;
     element.fieldLevelHelp = fieldLevelHelp;
     element.label = label;
+    element.hideLabel = hideLabel;
     element.variant = variant;
     element.messageWhenValueMissing = messageWhenValueMissing;
     element.name = name;
@@ -56,10 +58,10 @@ export const DateTimePicker = ({
     element.dateFormatWeekday = dateFormatWeekday;
     element.dateFormatMonth = dateFormatMonth;
     element.dateFormatYear = dateFormatYear;
+    element.showEndTime = showEndTime;
     element.disabledDateTimes = disabledDateTimes;
     element.max = max;
     element.min = min;
-    element.visibility = visibility;
     element.type = type;
     element.showTimeZone = showTimeZone;
     element.hideNavigation = hideNavigation;

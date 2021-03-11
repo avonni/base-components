@@ -33,16 +33,25 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        hideLabel: {
+            control: {
+                type: 'boolean'
+            },
+            description: 'If true, hide the label.',
+            table: {
+                type: { summary: 'boolean' }
+            }
+        },
         variant: {
             control: {
                 type: 'select',
-                options: ['standard', 'label-hidden']
+                options: ['daily', 'weekly']
             },
-            defaultValue: 'standard',
+            defaultValue: 'daily',
             description:
-                'The variant changes the appearance of the field. Accepted variants include standard and label-hidden.',
+                'The variant changes the appearance of the time picker. Accepted variants include daily and weekly.',
             table: {
-                defaultValue: { summary: 'standard' },
+                defaultValue: { summary: 'daily' },
                 type: { summary: 'string' }
             }
         },
@@ -218,6 +227,16 @@ export default {
                 defaultValue: { summary: 'long' }
             }
         },
+        showEndTime: {
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If true, show the end time in each slots. Ex: 1:00 PM - 1:30 PM',
+            table: {
+                type: { summary: 'boolean' }
+            }
+        },
         dateFormatYear: {
             control: {
                 type: 'select',
@@ -249,18 +268,6 @@ export default {
                 'Specifies the maximum date, which the calendar can show.',
             table: {
                 defaultValue: { summary: '1900-01-01' },
-                type: { summary: 'string' }
-            }
-        },
-        visibility: {
-            control: {
-                type: 'select',
-                options: ['day', 'week']
-            },
-            defaultValue: 'day',
-            description: 'Valid values include day and week.',
-            table: {
-                defaultValue: { summary: 'day' },
                 type: { summary: 'string' }
             }
         },
@@ -324,9 +331,9 @@ Complex.args = {
     disabledDateTimes: ['Wed', new Date('2021-03-12T13:00:00.00Z')],
     showTimeZone: true,
     required: true,
-    visibility: 'week',
+    variant: 'weekly',
     value: ['2021-03-13T13:00:00.000Z', '2021-03-13T14:00:00.000Z'],
     type: 'checkbox',
-    dateFormatWeekday: 'long',
-    timeFormatHour12: false
+    timeFormatHour12: false,
+    showEndTime: true
 };
