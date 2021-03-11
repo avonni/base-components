@@ -23,13 +23,5 @@ package.xml
 # Storybook wrappers
 **/storybookWrappers/**
 
-**/chartBar/**
-**/chartFunnel/**
-**/chartHeatmap/**
-**/chartLine/**
-**/chartPie/**
-**/chartTreemap/**
-**/index.js
-
 **/inputRichText/**
 **/quillLib/**
