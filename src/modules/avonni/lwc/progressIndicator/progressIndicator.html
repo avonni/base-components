@@ -1,5 +1,5 @@
 <template>
-    <div class={computedOuterClass} style="margin-top: 75px">
+    <div class={computedOuterClass}>
         <ol class="slds-progress__list">
             <template for:each={steps} for:item="step">
                 <c-progress-step
@@ -17,7 +17,6 @@
                     icon-position={step.iconPosition}
                     button-label={step.buttonLabel}
                     button-name={step.buttonName}
-                    button-position={step.buttonPosition}
                     button-icon-name={step.buttonIconName}
                     button-icon-position={step.buttonIconPosition}
                     button-disabled={step.buttonDisabled}

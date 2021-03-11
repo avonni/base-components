@@ -220,18 +220,6 @@ export default class ProgressStep extends LightningElement {
         return this._iconPosition === 'inside-nubbin' && this.iconName;
     }
 
-    get showButtonTop() {
-        return this._buttonPosition === 'top' && this.buttonLabel;
-    }
-
-    get showButtonBottom() {
-        return this._buttonPosition === 'bottom' && this.buttonLabel;
-    }
-
-    get showButtonNubbin() {
-        return this._buttonPosition === 'inside-nubbin' && this.buttonLabel;
-    }
-
     get showPopover() {
         return this._popoverState === 'show';
     }

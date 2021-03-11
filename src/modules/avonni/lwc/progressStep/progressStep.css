@@ -14,8 +14,13 @@
 
 .slds-progress__item {
     position: relative;
-    top: 18px;
+    min-width: 9rem;
+    margin-right: var(--lwc-varSpacingHorizontalMedium, 1rem);
     margin-top: 1.5rem;
+}
+
+.slds-progress__item:first-child {
+    margin-left: var(--lwc-varSpacingHorizontalMedium, 1rem);
 }
 
 .slds-progress__marker_icon {
@@ -43,10 +48,14 @@
 
 .avonni-progress-step-bottom {
     position: absolute;
-    transform: translate(40%, 300%);
+    width: 100%;
+    top: 30px;
 }
 
 .avonni-progress-step-top {
     position: absolute;
-    transform: translate(-40%, -50%);
+    bottom: 30px;
+    transform: translatex(-42%);
+    width: 100%;
+    right: -60px;
 }

@@ -90,7 +90,7 @@ const steps = [
     {
         value: 1,
         label: '1',
-        labelPosition: 'bottom',
+        labelPosition: 'top',
         assistiveText: '1',
         description: 'Step #1',
         descriptionPosition: 'top',
@@ -112,7 +112,7 @@ const steps = [
     {
         value: 3,
         label: '3',
-        labelPosition: 'bottom',
+        labelPosition: 'top',
         assistiveText: '3',
         buttonName: 'button',
         buttonLabel: 'doing',
@@ -140,19 +140,6 @@ const steps = [
         description: 'step #5',
         descriptionPosition: 'inside-nubbin',
         popoverState: 'show'
-    },
-    {
-        value: 6,
-        label: '6',
-        labelPosition: 'bottom',
-        assistiveText: '6'
-    },
-    {
-        value: 7,
-        label: 'Warning for this step',
-        assistiveText: '7',
-        description: 'step #7',
-        descriptionPosition: 'bottom'
     }
 ];
 
