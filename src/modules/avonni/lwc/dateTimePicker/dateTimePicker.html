@@ -110,8 +110,10 @@
                             <lightning-formatted-date-time
                                 value={time.dayTimeISO}
                                 time-zone={selectedTimeZone}
-                                hour="2-digit"
-                                minute="2-digit"
+                                hour={timeFormatHour}
+                                minute={timeFormatMinute}
+                                second={timeFormatSecond}
+                                hour12={timeFormatHour12}
                             ></lightning-formatted-date-time>
                         </button>
                     </div>

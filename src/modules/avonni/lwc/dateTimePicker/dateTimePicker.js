@@ -8,14 +8,9 @@ const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 const VISIBILITY = ['day', 'week'];
 
-const INTL_OPTIONS = {
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: false
-};
-
 const VARIANTS = ['standard', 'label-hidden'];
+const TYPES = ['radio', 'checkbox'];
+const TIME_FORMAT = ['numeric', '2-digit'];
 
 export default class DateTimePicker extends LightningElement {
     @api disabled;
@@ -35,8 +30,12 @@ export default class DateTimePicker extends LightningElement {
     _endTime;
     _timeSlotDuration;
     _timeSlots;
+    _timeFormatHour;
+    _timeFormatHour12;
+    _timeFormatMinute;
+    _timeFormatSecond;
     _visibility;
-    _multiple;
+    _type;
     _showTimeZone;
     _hideNavigation;
     _hideDatePicker;
@@ -51,6 +50,9 @@ export default class DateTimePicker extends LightningElement {
     helpMessage = null;
     datePickerValue;
 
+    // QUESTIONS:
+    // Default hour/minute format if everything is empty
+
     connectedCallback() {
         this._processValue();
         this.selectedTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -62,6 +64,16 @@ export default class DateTimePicker extends LightningElement {
         this.today < this.min
             ? this._setFirstWeekDay(this.min)
             : this._setFirstWeekDay(this.today);
+
+        // If no time format is provided, defaults to 00:00
+        if (
+            !this.timeFormatHour &&
+            !this.timeFormatMinute &&
+            !this.timeFormatSecond
+        ) {
+            this._timeFormatHour = '2-digit';
+            this._timeFormatMinute = '2-digit';
+        }
         this._generateTable();
     }
 
@@ -163,6 +175,44 @@ export default class DateTimePicker extends LightningElement {
     }
 
     @api
+    get timeFormatHour() {
+        return this._timeFormatHour || undefined;
+    }
+    set timeFormatHour(value) {
+        this._timeFormatHour = normalizeString(value, {
+            validValues: TIME_FORMAT
+        });
+    }
+
+    @api
+    get timeFormatHour12() {
+        return this._timeFormatHour12;
+    }
+    set timeFormatHour12(boolean) {
+        this._timeFormatHour12 = normalizeBoolean(boolean);
+    }
+
+    @api
+    get timeFormatMinute() {
+        return this._timeFormatMinute || undefined;
+    }
+    set timeFormatMinute(value) {
+        this._timeFormatMinute = normalizeString(value, {
+            validValues: TIME_FORMAT
+        });
+    }
+
+    @api
+    get timeFormatSecond() {
+        return this._timeFormatSecond || undefined;
+    }
+    set timeFormatSecond(value) {
+        this._timeFormatSecond = normalizeString(value, {
+            validValues: TIME_FORMAT
+        });
+    }
+
+    @api
     get visibility() {
         return this._visibility;
     }
@@ -174,11 +224,14 @@ export default class DateTimePicker extends LightningElement {
     }
 
     @api
-    get multiple() {
-        return this._multiple;
+    get type() {
+        return this._type;
     }
-    set multiple(value) {
-        this._multiple = normalizeBoolean(value);
+    set type(value) {
+        this._type = normalizeString(value, {
+            fallbackValue: 'radio',
+            validValues: TYPES
+        });
     }
 
     @api
@@ -246,7 +299,7 @@ export default class DateTimePicker extends LightningElement {
     }
 
     _processValue() {
-        if (this.multiple) {
+        if (this.type === 'checkbox') {
             // Make sure the values are in an array
             if (!Array.isArray(this._value)) this._value = [this._value];
 
@@ -278,10 +331,12 @@ export default class DateTimePicker extends LightningElement {
 
         while (currentTime < this.endTime) {
             timeSlots.push(
-                new Date(currentTime).toLocaleTimeString(
-                    'default',
-                    INTL_OPTIONS
-                )
+                new Date(currentTime).toLocaleTimeString('default', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false
+                })
             );
             currentTime = currentTime + this.timeSlotDuration;
         }
@@ -513,7 +568,7 @@ export default class DateTimePicker extends LightningElement {
         const date = new Date(dateTimeISO);
 
         // Select/unselect the date
-        if (this.multiple) {
+        if (this.type === 'checkbox') {
             const valueIndex = this.value.indexOf(dateTimeISO);
             valueIndex > -1
                 ? this._value.splice(valueIndex, 1)

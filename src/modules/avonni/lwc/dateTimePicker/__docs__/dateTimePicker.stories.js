@@ -90,7 +90,7 @@ export default {
                 type: 'object'
             },
             description:
-                'The value of the date selected, which can be a Date object, timestamp, or an ISO8601 formatted string. If "multiple" is true, an array of values can be provided.'
+                'The value of the date selected, which can be a Date object, timestamp, or an ISO8601 formatted string. If "type" is "checkbox", an array of values can be provided.'
         },
         startTime: {
             control: {
@@ -125,6 +125,46 @@ export default {
                 'Duration of each time slot. Must be an ISO8601 formatted time string.',
             table: {
                 defaultValue: { summary: '00:30' },
+                type: { summary: 'string' }
+            }
+        },
+        timeFormatHour: {
+            control: {
+                type: 'radio',
+                options: ['2-digit', 'numeric']
+            },
+            description: 'Valid values include numeric and 2-digit.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        timeFormatHour12: {
+            control: {
+                type: 'boolean'
+            },
+            description:
+                "Determines whether time is displayed as 12-hour. If false, time displays as 24-hour. The default setting is determined by the user's locale.",
+            table: {
+                type: { summary: 'boolean' }
+            }
+        },
+        timeFormatMinute: {
+            control: {
+                type: 'radio',
+                options: ['2-digit', 'numeric']
+            },
+            description: 'Valid values include numeric and 2-digit.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        timeFormatSecond: {
+            control: {
+                type: 'radio',
+                options: ['2-digit', 'numeric']
+            },
+            description: 'Valid values include numeric and 2-digit.',
+            table: {
                 type: { summary: 'string' }
             }
         },
@@ -174,15 +214,16 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        multiple: {
+        type: {
             control: {
-                type: 'boolean'
+                type: 'radio',
+                options: ['radio', 'checkbox']
             },
-            defaultValue: false,
-            description: 'If true, allow selection of multiple values.',
+            defaultValue: 'radio',
+            description: 'Valid values include radio and checkbox.',
             table: {
-                defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' }
+                defaultValue: { summary: 'radio' },
+                type: { summary: 'string' }
             }
         },
         showTimeZone: {
@@ -235,5 +276,5 @@ Complex.args = {
     required: true,
     visibility: 'week',
     value: ['2021-03-13T13:00:00.000Z', '2021-03-13T14:00:00.000Z'],
-    multiple: true
+    type: 'checkbox'
 };

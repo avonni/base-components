@@ -18,11 +18,15 @@ export const DateTimePicker = ({
     startTime,
     endTime,
     timeSlotDuration,
+    timeFormatHour,
+    timeFormatHour12,
+    timeFormatMinute,
+    timeFormatSecond,
     disabledDateTimes,
     max,
     min,
     visibility,
-    multiple,
+    type,
     showTimeZone,
     hideNavigation,
     hideDatePicker
@@ -40,11 +44,15 @@ export const DateTimePicker = ({
     element.startTime = startTime;
     element.endTime = endTime;
     element.timeSlotDuration = timeSlotDuration;
+    element.timeFormatHour = timeFormatHour;
+    element.timeFormatHour12 = timeFormatHour12;
+    element.timeFormatMinute = timeFormatMinute;
+    element.timeFormatSecond = timeFormatSecond;
     element.disabledDateTimes = disabledDateTimes;
     element.max = max;
     element.min = min;
     element.visibility = visibility;
-    element.multiple = multiple;
+    element.type = type;
     element.showTimeZone = showTimeZone;
     element.hideNavigation = hideNavigation;
     element.hideDatePicker = hideDatePicker;
