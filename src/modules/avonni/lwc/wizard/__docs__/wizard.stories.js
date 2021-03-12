@@ -272,6 +272,5 @@ const Template = (args) => Wizard(args);
 export const Base = Template.bind({});
 Base.args = {
     title: 'Avonni Wizard',
-    indicatorType: 'fractions',
     currentStep: 'step-3'
 };

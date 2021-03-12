@@ -22,10 +22,6 @@ const INDICATOR_TYPES = [
     'bar'
 ];
 
-// QUESTIONS:
-// Indicator type: bullet => similar to a carousel
-// Variant: use of avonni components
-
 export default class Wizard extends LightningElement {
     // TODO:
     @api variant;
@@ -137,10 +133,16 @@ export default class Wizard extends LightningElement {
         this.hidePreviousButton = currentStepComponent.hidePreviousButton;
         this.hideNextFinishButton = currentStepComponent.hideNextFinishButton;
 
-        this.steps.forEach((step) =>
-            step.setAttribute('style', 'display: none;')
-        );
-        currentStepComponent.setAttribute('style', '');
+        // Show only current step
+        this.steps.forEach((step) => {
+            step.setAttribute('style', 'display: none;');
+            step.selected = false;
+            step.bulletClass = 'slds-carousel__indicator-action';
+        });
+        currentStepComponent.removeAttribute('style');
+        currentStepComponent.selected = true;
+        currentStepComponent.bulletClass =
+            'slds-carousel__indicator-action slds-is-active';
     }
 
     _reorderColumns() {

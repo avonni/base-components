@@ -32,7 +32,8 @@
                                 onclick={handlePreviousNextClick}
                             ></lightning-button>
                         </lightning-layout-item>
-                        <!-- Progress -->
+
+                        <!-- Indicator -->
                         <lightning-layout-item
                             flexibility="auto"
                             class={progressColClass}
@@ -57,10 +58,36 @@
                                         </template>
                                     </lightning-progress-indicator>
                                 </template>
+
                                 <!-- Bullets -->
                                 <template if:true={showBulletIndicator}>
-                                    Bullets here
+                                    <ul
+                                        class="slds-carousel__indicators slds-text-align_center slds-m-top_small"
+                                        aria-label="Progress indicator"
+                                    >
+                                        <template
+                                            for:each={steps}
+                                            for:item="step"
+                                        >
+                                            <li
+                                                key={step.name}
+                                                class="slds-carousel__indicator"
+                                            >
+                                                <span
+                                                    class={step.bulletClass}
+                                                    title={step.label}
+                                                    aria-selected={step.selected}
+                                                >
+                                                    <span
+                                                        class="slds-assistive-text"
+                                                        >{step.label}</span
+                                                    >
+                                                </span>
+                                            </li>
+                                        </template>
+                                    </ul>
                                 </template>
+
                                 <!-- Fraction indicator -->
                                 <template if:true={showFractionIndicator}>
                                     <p class="slds-text-align_center">
