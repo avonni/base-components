@@ -1,31 +1,22 @@
 <template>
     <section>
-        <lightning-layout
-            multiple-rows="true"
-            class="slds-box slds-p-around_none"
-        >
+        <lightning-layout multiple-rows="true">
             <lightning-layout-item size="12" class={contentColClass}>
                 <!-- Title and title slot -->
-                <header
-                    class="slds-theme_default slds-p-around_medium slds-border_bottom slds-text-align_center"
-                >
-                    <h1 class="slds-text-heading_medium" if:true={title}>
-                        {title}
-                    </h1>
+                <header class={headerClass}>
+                    <h1 class={titleClass} if:true={title}>{title}</h1>
                     <template if:false={title}>
                         <slot name="title"></slot>
                     </template>
                 </header>
                 <!-- Wizard steps slot -->
-                <main
-                    class="slds-p-around_medium slds-theme_default slds-border_bottom"
-                >
+                <main class={bodyClass}>
                     <slot></slot>
                 </main>
             </lightning-layout-item>
             <!-- Navigation -->
             <lightning-layout-item size="12" class={navigationColClass}>
-                <footer class="slds-theme_shade slds-p-around_medium">
+                <footer class={footerClass}>
                     <lightning-layout
                         vertical-align="center"
                         multiple-rows="true"
@@ -42,6 +33,7 @@
                                 variant={buttonPreviousVariant}
                                 data-label="previous"
                                 onclick={handlePreviousNextClick}
+                                class="slds-m-horizontal_xx-small"
                             ></lightning-button>
                         </lightning-layout-item>
 
@@ -140,6 +132,7 @@
                                         data-label="next"
                                         variant={buttonNextVariant}
                                         onclick={handlePreviousNextClick}
+                                        class="slds-m-horizontal_xx-small"
                                     ></lightning-button>
                                     <lightning-button
                                         if:true={lastStep}
@@ -148,6 +141,7 @@
                                         label={buttonFinishLabel}
                                         variant={buttonFinishVariant}
                                         onclick={handleFinishClick}
+                                        class="slds-m-horizontal_xx-small"
                                     ></lightning-button>
                                 </lightning-layout-item>
                             </lightning-layout>

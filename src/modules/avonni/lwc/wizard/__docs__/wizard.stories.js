@@ -302,7 +302,7 @@ Modal.args = {
 
 export const Popover = Template.bind({});
 Popover.args = {
-    title: 'Avonni Wizard',
+    title: 'Avonni Wizard Popover',
     variant: 'popover',
     indicatorType: 'fractions',
     actionPosition: 'right',

@@ -1,160 +1,38 @@
 <template>
-    <avonni-button-popover
-        label="Popover"
-        popover-size="large"
-        onclick={handlePopoverButtonClick}
-    >
-        <lightning-layout
-            multiple-rows="true"
-            class="avonni-wizard__popover-remove-padding"
-        >
-            <lightning-layout-item size="12" class={contentColClass}>
-                <!-- Title and title slot -->
-                <header class="slds-popover__header">
-                    <h1 class="slds-text-heading_small" if:true={title}>
-                        {title}
-                    </h1>
-                    <template if:false={title}>
-                        <slot name="title"></slot>
-                    </template>
-                </header>
-                <!-- Wizard steps slot -->
-                <main class="slds-popover__body">
-                    <slot></slot>
-                </main>
-            </lightning-layout-item>
-            <!-- Navigation -->
-            <lightning-layout-item size="12" class={navigationColClass}>
-                <footer class="slds-popover__footer">
-                    <lightning-layout
-                        vertical-align="center"
-                        multiple-rows="true"
-                    >
-                        <!-- Previous button -->
-                        <lightning-layout-item
-                            if:false={hidePreviousButton}
-                            class={previousButtonColClass}
-                        >
-                            <lightning-button
-                                icon-name={buttonPreviousIconName}
-                                icon-position={buttonPreviousIconPosition}
-                                label={buttonPreviousLabel}
-                                variant={buttonPreviousVariant}
-                                data-label="previous"
-                                onclick={handlePreviousNextClick}
-                            ></lightning-button>
-                        </lightning-layout-item>
-
-                        <!-- Indicator -->
-                        <lightning-layout-item
-                            flexibility="auto"
-                            class={progressColClass}
-                            padding="horizontal-small"
-                        >
-                            <template if:true={showIndicator}>
-                                <!-- Progress indicator -->
-                                <template if:true={showProgressIndicator}>
-                                    <lightning-progress-indicator
-                                        current-step={currentStep}
-                                        type={progressIndicatorType}
-                                        variant={progressIndicatorVariant}
-                                    >
-                                        <template
-                                            for:each={steps}
-                                            for:item="step"
-                                        >
-                                            <lightning-progress-step
-                                                key={step.name}
-                                                label={step.label}
-                                                value={step.name}
-                                            ></lightning-progress-step>
-                                        </template>
-                                    </lightning-progress-indicator>
-                                </template>
-
-                                <!-- Bullets -->
-                                <template if:true={showBulletIndicator}>
-                                    <ul
-                                        class="slds-carousel__indicators slds-text-align_center slds-m-top_small"
-                                        aria-label="Progress indicator"
-                                    >
-                                        <template
-                                            for:each={steps}
-                                            for:item="step"
-                                        >
-                                            <li
-                                                key={step.name}
-                                                class="slds-carousel__indicator"
-                                            >
-                                                <span
-                                                    class={step.bulletClass}
-                                                    title={step.label}
-                                                    aria-selected={step.selected}
-                                                >
-                                                    <span
-                                                        class="slds-assistive-text"
-                                                        >{step.label}</span
-                                                    >
-                                                </span>
-                                            </li>
-                                        </template>
-                                    </ul>
-                                </template>
-
-                                <!-- Fraction indicator -->
-                                <template if:true={showFractionIndicator}>
-                                    <p>
-                                        {fractionPrefixLabel}
-                                        {fractionCurrentStep} {fractionLabel}
-                                        {fractionTotalSteps}
-                                    </p>
-                                </template>
-                                <!-- Bar indicator -->
-                                <template if:true={showBarIndicator}>
-                                    <lightning-progress-bar
-                                        value={progressBarValue}
-                                        size="large"
-                                    ></lightning-progress-bar>
-                                </template>
-                            </template>
-                        </lightning-layout-item>
-                        <!-- Actions slot and Next/Finish buttons -->
-                        <lightning-layout-item
-                            class={actionsNextFinishButtonColClass}
-                        >
-                            <lightning-layout>
-                                <lightning-layout-item
-                                    class={actionsSlotColClass}
-                                >
-                                    <slot name="actions"></slot>
-                                </lightning-layout-item>
-                                <lightning-layout-item
-                                    if:false={hideNextFinishButton}
-                                    class={nextFinishButtonColClass}
-                                >
-                                    <lightning-button
-                                        if:false={lastStep}
-                                        icon-name={buttonNextIconName}
-                                        icon-position={buttonNextIconPosition}
-                                        label={buttonNextLabel}
-                                        data-label="next"
-                                        variant={buttonNextVariant}
-                                        onclick={handlePreviousNextClick}
-                                    ></lightning-button>
-                                    <lightning-button
-                                        if:true={lastStep}
-                                        icon-name={buttonFinishIconName}
-                                        icon-position={buttonFinishIconPosition}
-                                        label={buttonFinishLabel}
-                                        variant={buttonFinishVariant}
-                                        onclick={handleFinishClick}
-                                    ></lightning-button>
-                                </lightning-layout-item>
-                            </lightning-layout>
-                        </lightning-layout-item>
-                    </lightning-layout>
-                </footer>
-            </lightning-layout-item>
-        </lightning-layout>
+    <avonni-button-popover label="Popover" popover-size="large">
+        <div class="avonni-wizard__popover-remove-padding">
+            <c-wizard
+                title={title}
+                variant="base"
+                current-step={currentStep}
+                indicator-type={indicatorType}
+                hide-indicator={hideIndicator}
+                button-previous-icon-name={buttonPreviousIconName}
+                button-previous-icon-position={buttonPreviousIconPosition}
+                button-previous-label={buttonPreviousLabel}
+                button-previous-variant={buttonPreviousVariant}
+                button-next-icon-name={buttonNextIconName}
+                button-next-icon-position={buttonNextIconPosition}
+                button-next-label={buttonNextLabel}
+                button-next-variant={buttonNextVariant}
+                button-finish-icon-name={buttonFinishIconName}
+                button-finish-icon-position={buttonFinishIconPosition}
+                button-finish-variant={buttonFinishVariant}
+                button-finish-label={buttonFinishLabel}
+                action-position={actionPosition}
+                navigation-position={navigationPosition}
+                button-alignment-bump={buttonAlignmentBump}
+                fraction-prefix-label={fractionPrefixLabel}
+                fraction-label={fractionLabel}
+            >
+                <div slot="title">
+                    <slot name="title"></slot>
+                </div>
+                <slot></slot>
+                <div slot="actions">
+                    <slot name="actions"></slot>
+                </div>
+            </c-wizard>
+        </div>
     </avonni-button-popover>
 </template>

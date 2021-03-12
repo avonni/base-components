@@ -3,6 +3,7 @@ import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
 import base from './base.html';
 import modal from './modal.html';
 import popover from './popover.html';
+// import { classSet } from 'c/utils';
 
 const HORIZONTAL_POSITIONS = ['left', 'right'];
 const VERTICAL_POSITIONS = ['top', 'bottom'];
@@ -77,36 +78,40 @@ export default class Wizard extends LightningElement {
     nextFinishButtonColClass;
     contentColClass;
     navigationColClass;
+    headerClass;
+    titleClass;
+    bodyClass;
+    footerClass;
 
     renderedCallback() {
         const slot = this.template.querySelector('slot:not([name])');
 
         if (!this._rendered && slot) {
             this._rendered = true;
-            this._initWizard(slot);
+
+            this.steps = slot.assignedElements({ flatten: true });
+            if (this.steps.length === 0) return;
+
+            this.steps.forEach((step, index) => {
+                step.name = step.name || `step-${index}`;
+            });
+
+            // If no current step was given, sets current step to first step
+            if (this.currentStepIndex === -1) {
+                this._currentStep = this.steps[0].name;
+            }
+
+            this._initIndicator();
+            this._updateSteps();
+            this._setVariantClasses();
+
+            // Apply settings of buttonAlignmentBump, actionPosition or navigationPosition.
+            this._reorderColumns();
         }
     }
 
     render() {
         return this._templates[this.variant];
-    }
-
-    _initWizard(slot) {
-        this.steps = slot.assignedElements();
-        this.steps.forEach((step, index) => {
-            step.name = step.name || `step-${index}`;
-        });
-
-        // If no current step was given, sets current step to first step
-        if (this.currentStepIndex === -1) {
-            this._currentStep = this.steps[0].name;
-        }
-
-        this._initIndicator();
-        this._updateSteps();
-
-        // Apply settings of buttonAlignmentBump, actionPosition or navigationPosition.
-        this._reorderColumns();
     }
 
     _initIndicator() {
@@ -158,6 +163,31 @@ export default class Wizard extends LightningElement {
         currentStepComponent.bulletClass =
             'slds-carousel__indicator-action slds-is-active';
     }
+
+    // TODO:
+    // Send the variant value to child wizard, without setting it to this variant.
+
+    // _setVariantClasses() {
+    //     const variant = this.variant;
+
+    //     this.headerClass = classSet('slds-p-around_small slds-text-align_center')
+    //         .add({
+    //             'slds-popover__header': variant === 'popover',
+    //             'slds-modal__header': variant === 'modal'
+    //         });
+
+    //     this.titleClass = variant === 'popover' ? 'slds-text-heading_small' : 'slds-text-heading_medium';
+    //     this.bodyClass = classSet('slds-p-around_medium slds-theme_default')
+    //         .add({
+    //             'slds-popover__body': variant === 'popover',
+    //             'slds-modal__content': variant === 'modal'
+    //         })
+    //     this.footerClass = classSet('slds-p-around_small')
+    //         .add({
+    //             'slds-popover__footer': variant ==='popover',
+    //             'slds-modal__footer': variant === 'modal'
+    //         });
+    // }
 
     _reorderColumns() {
         const bump = this.buttonAlignmentBump;
@@ -404,12 +434,5 @@ export default class Wizard extends LightningElement {
                 composed: false
             })
         );
-    }
-
-    handlePopoverButtonClick() {
-        const slot = this.template.querySelector('slot:not([name])');
-        if (slot) {
-            this._initWizard(slot);
-        }
     }
 }
