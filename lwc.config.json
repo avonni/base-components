@@ -167,10 +167,6 @@
             "path": "src/modules/avonni/lwc/inputToggle/inputToggle.js"
         },
         {
-            "name": "c/kanban",
-            "path": "src/modules/avonni/lwc/kanban/kanban.js"
-        },
-        {
             "name": "c/link",
             "path": "src/modules/avonni/lwc/link/link.js"
         },
@@ -431,10 +427,6 @@
             "path": "src/modules/avonni/lwc/inputToggle/inputToggle.js"
         },
         {
-            "name": "avonni/kanban",
-            "path": "src/modules/avonni/lwc/kanban/kanban.js"
-        },
-        {
             "name": "avonni/map",
             "path": "src/modules/avonni/lwc/map/map.js"
         },
@@ -565,7 +557,6 @@
         "avonni/inputPen",
         "avonni/inputRichText",
         "avonni/inputToggle",
-        "avonni/kanban",
         "avonni/map",
         "avonni/mediaObject",
         "avonni/menuItemDialog",
