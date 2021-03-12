@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import { generateUniqueId } from 'c/inputUtils';
@@ -17,13 +17,13 @@ export default class Pagination extends LightningElement {
     @api lastButtonLabel;
     @api lastButtonIconName;
 
-    @track _value = 1;
-    @track _limit = 5;
-    @track _nextButtonIconName;
-    @track _previousButtonIconName;
-    @track _align = 'left';
-    @track _disabled = false;
-    @track init = false;
+    _value = 1;
+    _limit = 5;
+    _nextButtonIconName;
+    _previousButtonIconName;
+    _align = 'left';
+    _disabled = false;
+    init = false;
 
     renderedCallback() {
         if (!this.init) {

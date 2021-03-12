@@ -1,12 +1,12 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { normalizeBoolean } from 'c/utilsPrivate';
 
 export default class ExpandableSection extends LightningElement {
     @api title;
 
-    @track _closed;
-    @track _collapsable;
+    _closed;
+    _collapsable;
 
     @api get closed() {
         return this._closed;

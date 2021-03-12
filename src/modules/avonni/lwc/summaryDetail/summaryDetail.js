@@ -1,10 +1,10 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { normalizeBoolean } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
 export default class SummaryDetail extends LightningElement {
     @api title;
-    @track _closed;
+    _closed;
 
     @api get closed() {
         return this._closed;

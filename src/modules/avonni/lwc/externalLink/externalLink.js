@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 
 export default class ExternalLink extends LightningElement {
     @api label;
@@ -6,7 +6,7 @@ export default class ExternalLink extends LightningElement {
     @api rel;
     @api tabIndex;
 
-    @track _href;
+    _href;
     _isDirty = true;
 
     @api

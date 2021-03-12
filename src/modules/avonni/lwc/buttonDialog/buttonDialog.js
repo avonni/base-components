@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
 const validVariants = [
@@ -18,9 +18,9 @@ export default class ButtonDialog extends LightningElement {
     @api label;
     @api iconName;
 
-    @track _disabled;
-    @track _variant = 'neutral';
-    @track _iconPosition = 'left';
+    _disabled;
+    _variant = 'neutral';
+    _iconPosition = 'left';
 
     @api get variant() {
         return this._variant;

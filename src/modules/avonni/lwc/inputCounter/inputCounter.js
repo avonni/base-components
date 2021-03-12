@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
@@ -34,13 +34,13 @@ export default class InputCounter extends LightningElement {
     @api fieldLevelHelp;
     @api accessKey;
 
-    @track _variant = 'standard';
-    @track _disabled;
-    @track _readOnly;
-    @track _required;
-    @track labelVariant;
-    @track labelFieldLevelHelp;
-    @track init = false;
+    _variant = 'standard';
+    _disabled;
+    _readOnly;
+    _required;
+    labelVariant;
+    labelFieldLevelHelp;
+    init = false;
 
     renderedCallback() {
         if (!this.init) {

@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { normalizeString } from 'c/utilsPrivate';
 
@@ -9,8 +9,8 @@ export default class BadgeIcon extends LightningElement {
     @api iconName;
     @api label;
 
-    @track _variant = 'base';
-    @track _iconPosition = 'left';
+    _variant = 'base';
+    _iconPosition = 'left';
 
     @api get variant() {
         return this._variant;

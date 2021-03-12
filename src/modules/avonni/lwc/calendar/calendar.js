@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { normalizeBoolean } from 'c/utilsPrivate';
 import { generateUniqueId } from 'c/utils';
 
@@ -20,18 +20,18 @@ const MONTHS = [
 
 export default class Calendar extends LightningElement {
 
-    @track _disabledDates = [];
-    @track _value;
-    @track _max = new Date(2099, 11, 31);
-    @track _min = new Date(1900, 0, 1);
-    @track _multiValue;
-    @track _disabled = false;
-    @track _weekNumber = false;
-    @track year;
-    @track month;
-    @track day;
-    @track date = new Date(new Date().setHours(0, 0, 0, 0));
-    @track calendarData;
+    _disabledDates = [];
+    _value;
+    _max = new Date(2099, 11, 31);
+    _min = new Date(1900, 0, 1);
+    _multiValue;
+    _disabled = false;
+    _weekNumber = false;
+    year;
+    month;
+    day;
+    date = new Date(new Date().setHours(0, 0, 0, 0));
+    calendarData;
 
     months = MONTHS;
 

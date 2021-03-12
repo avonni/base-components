@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
@@ -24,20 +24,20 @@ export default class Range extends LightningElement {
     @api messageWhenTypeMismatch;
     @api unitAttributes = {};
 
-    @track _min = defaultMin;
-    @track _max = defaultMax;
-    @track _step = defaultStep;
-    @track _valueLower;
-    @track _valueUpper;
-    @track _size = '';
-    @track _type = 'horizontal';
-    @track _variant = 'standard';
-    @track _unit = 'decimal';
-    @track _pin = false;
-    @track _disabled = false;
-    @track _helpMessage;
+    _min = defaultMin;
+    _max = defaultMax;
+    _step = defaultStep;
+    _valueLower;
+    _valueUpper;
+    _size = '';
+    _type = 'horizontal';
+    _variant = 'standard';
+    _unit = 'decimal';
+    _pin = false;
+    _disabled = false;
+    _helpMessage;
 
-    @track init;
+    init;
 
     renderedCallback() {
         if (!this.init) {

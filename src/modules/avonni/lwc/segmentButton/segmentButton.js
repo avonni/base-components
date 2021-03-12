@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
 const validTypes = ['button', 'reset', 'submit'];
@@ -8,9 +8,9 @@ export default class SegmentButton extends LightningElement {
     @api iconName;
     @api prefixIconName;
 
-    @track _value;
-    @track _type = 'button';
-    @track _disabled = false;
+    _value;
+    _type = 'button';
+    _disabled = false;
 
     @api
     get value() {

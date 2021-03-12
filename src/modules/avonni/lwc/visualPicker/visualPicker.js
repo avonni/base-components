@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { classSet, generateUniqueId } from 'c/utils';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
@@ -13,15 +13,15 @@ export default class VisualPicker extends LightningElement {
     @api messageWhenValueMissing;
     @api name = generateUniqueId();
 
-    @track _value = [];
-    @track _variant = 'non-coverable';
-    @track _type = 'radio';
-    @track _size = 'medium';
-    @track _required = false;
-    @track _disabled = false;
-    @track _hideBorder = false;
-    @track _hideCheckMark = false;
-    @track _ratio = '1-by-1';
+    _value = [];
+    _variant = 'non-coverable';
+    _type = 'radio';
+    _size = 'medium';
+    _required = false;
+    _disabled = false;
+    _hideBorder = false;
+    _hideCheckMark = false;
+    _ratio = '1-by-1';
 
     renderedCallback() {
         const inputs = this.template.querySelectorAll('input');

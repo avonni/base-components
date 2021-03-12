@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
@@ -7,21 +7,21 @@ const validRounded = ['top', 'right', 'bottom', 'left', 'circle', '0'];
 export default class Image extends LightningElement {
     @api alt;
 
-    @track _src;
-    @track _width;
-    @track _height;
-    @track _blankColor = 'transparent';
-    @track _srcset;
-    @track _sizes;
-    @track _block = false;
-    @track _fluid = false;
-    @track _fluidGrow = false;
-    @track _rounded = false;
-    @track _thumbnail = false;
-    @track _left = false;
-    @track _right = false;
-    @track _center = false;
-    @track _blank = false;
+    _src;
+    _width;
+    _height;
+    _blankColor = 'transparent';
+    _srcset;
+    _sizes;
+    _block = false;
+    _fluid = false;
+    _fluidGrow = false;
+    _rounded = false;
+    _thumbnail = false;
+    _left = false;
+    _right = false;
+    _center = false;
+    _blank = false;
 
     @api
     get src() {

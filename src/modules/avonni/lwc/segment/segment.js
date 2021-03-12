@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
 const validVariants = ['shade', 'success', 'warning', 'error'];
@@ -6,8 +6,8 @@ const validVariants = ['shade', 'success', 'warning', 'error'];
 export default class Segment extends LightningElement {
     @api value;
 
-    @track _variant = 'shade';
-    @track _disabled = false;
+    _variant = 'shade';
+    _disabled = false;
 
     renderedCallback() {
         this.moveSwitch(this.value);

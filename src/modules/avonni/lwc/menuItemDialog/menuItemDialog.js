@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, keyCodes } from 'c/utilsPrivate';
 
 export default class MenuItemDialog extends LightningElement {
@@ -9,9 +9,9 @@ export default class MenuItemDialog extends LightningElement {
     @api label;
     @api prefixIconName;
 
-    @track _tabIndex = '0';
-    @track _disabled = false;
-    @track _isDraft = false;
+    _tabIndex = '0';
+    _disabled = false;
+    _isDraft = false;
 
     connectedCallback() {
         this.classList.add('slds-dropdown__item');

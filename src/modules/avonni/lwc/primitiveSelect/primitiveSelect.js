@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import {
     normalizeBoolean,
@@ -22,17 +22,17 @@ export default class PrivateSelect extends LightningElement {
     @api messageWhenValueMissing;
     @api accessKey;
 
-    @track _errorMessage = '';
-    @track _options = [];
-    @track _selectedValue;
-    @track _variant;
-    @track _required = false;
-    @track _disabled = false;
-    @track _multiple = false;
-    @track _fieldLevelHelp;
-    @track _size;
-    @track _ariaDescribedBy;
-    @track _tabIndex;
+    _errorMessage = '';
+    _options = [];
+    _selectedValue;
+    _variant;
+    _required = false;
+    _disabled = false;
+    _multiple = false;
+    _fieldLevelHelp;
+    _size;
+    _ariaDescribedBy;
+    _tabIndex;
 
     @api
     get fieldLevelHelp() {

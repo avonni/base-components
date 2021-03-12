@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import {
     colorType,
     generateColors,
@@ -11,20 +11,20 @@ const indicatorSize = 12;
 export default class ColorGradient extends LightningElement {
     @api messageWhenBadInput = 'Please ensure value is correct';
 
-    @track _disabled = false;
-    @track _readOnly = false;
-    @track _opacity = false;
+    _disabled = false;
+    _readOnly = false;
+    _opacity = false;
 
-    @track _value = '#ffffff';
-    @track colors = generateColors('#ffffff');
-    @track positionX;
-    @track positionY;
-    @track paletteWidth;
-    @track paletteHeight;
-    @track data;
-    @track down = false;
-    @track init = false;
-    @track showError = false;
+    _value = '#ffffff';
+    colors = generateColors('#ffffff');
+    positionX;
+    positionY;
+    paletteWidth;
+    paletteHeight;
+    data;
+    down = false;
+    init = false;
+    showError = false;
 
     connectedCallback() {
         this.onMouseUp = this.handlerMouseUp.bind(this);

@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { normalizeString } from 'c/utilsPrivate';
 
@@ -9,9 +9,9 @@ export default class ScopedNotification extends LightningElement {
     @api title;
     @api iconName;
 
-    @track _variant = 'base';
-    @track _iconSize = 'medium';
-    @track showTitle = true;
+    _variant = 'base';
+    _iconSize = 'medium';
+    showTitle = true;
 
     renderedCallback() {
         if (this.titleSlot) {

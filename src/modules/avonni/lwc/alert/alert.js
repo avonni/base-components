@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
@@ -8,10 +8,10 @@ export default class Alert extends LightningElement {
     @api iconName;
     @api closeAction;
 
-    @track hideAlert;
-    @track _variant = 'base';
-    @track _textured = false;
-    @track _isDismissible = false;
+    hideAlert;
+    _variant = 'base';
+    _textured = false;
+    _isDismissible = false;
 
     @api get variant() {
         return this._variant;

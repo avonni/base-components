@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { NavigationMixin } from 'lightning/navigation';
 
@@ -54,10 +54,10 @@ export default class ButtonNavigation extends NavigationMixin(
     @api stateFilterName = 'Recent';
     @api stateDefaultFieldValues;
 
-    @track _iconPosition = 'left';
-    @track _variant = 'neutral';
-    @track _type;
-    @track _disabled;
+    _iconPosition = 'left';
+    _variant = 'neutral';
+    _type;
+    _disabled;
 
     @api
     get iconPosition() {

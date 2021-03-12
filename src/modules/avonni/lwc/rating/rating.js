@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
 import { generateUniqueId } from 'c/utils';
 
@@ -10,15 +10,15 @@ export default class Rating extends LightningElement {
     @api name = generateUniqueId();
     @api iconName;
 
-    @track _min = 1;
-    @track _max = 5;
-    @track _value;
-    @track _selection = 'continuous';
-    @track _disabled;
-    @track _readOnly;
-    @track _valueHidden;
-    @track init = false;
-    @track initStyles = false;
+    _min = 1;
+    _max = 5;
+    _value;
+    _selection = 'continuous';
+    _disabled;
+    _readOnly;
+    _valueHidden;
+    init = false;
+    initStyles = false;
 
     renderedCallback() {
         this.ratingRecalculation();

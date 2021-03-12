@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
@@ -9,11 +9,11 @@ const validSizes = ['x-small', 'small', 'medium', 'large', 'x-large'];
 export default class ProgressCircle extends LightningElement {
     @api label;
 
-    @track _value = 0;
-    @track _variant = 'standard';
-    @track _direction = 'fill';
-    @track _size = 'medium';
-    @track _color = '#1589ee';
+    _value = 0;
+    _variant = 'standard';
+    _direction = 'fill';
+    _size = 'medium';
+    _color = '#1589ee';
 
     @api get value() {
         return this._value;

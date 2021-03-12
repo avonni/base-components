@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
 const validVariants = [
@@ -19,18 +19,18 @@ const validFormats = ['hh:mm:ss', 'mm:ss', 'hh:mm', 'hh', 'mm', 'ss'];
 export default class Timer extends LightningElement {
     @api iconName;
 
-    @track _value = 0;
-    @track _duration = 1;
-    @track _variant = 'neutral';
-    @track _type = 'count-up';
-    @track _iconPosition = 'left';
-    @track _format = 'hh:mm:ss';
-    @track _autoStart = false;
-    @track _repeat = false;
+    _value = 0;
+    _duration = 1;
+    _variant = 'neutral';
+    _type = 'count-up';
+    _iconPosition = 'left';
+    _format = 'hh:mm:ss';
+    _autoStart = false;
+    _repeat = false;
 
-    @track step;
-    @track play = false;
-    @track interval = null;
+    step;
+    play = false;
+    interval = null;
 
     disconnectedCallback() {
         clearInterval(this.interval);

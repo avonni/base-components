@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { parseDateTime } from 'c/internationalizationLibrary';
 
@@ -11,22 +11,22 @@ export default class InputDateRange extends LightningElement {
     @api labelStartDate;
     @api labelEndDate;
 
-    @track _timezone;
-    @track _startDate = '';
-    @track _endDate = '';
+    _timezone;
+    _startDate = '';
+    _endDate = '';
 
-    @track _dateStyle = 'medium';
-    @track _timeStyle = 'short';
-    @track _type = 'date';
-    @track _disabled = false;
-    @track _required = false;
+    _dateStyle = 'medium';
+    _timeStyle = 'short';
+    _type = 'date';
+    _disabled = false;
+    _required = false;
 
-    @track startTime;
-    @track endTime;
-    @track isOpenStartDate = false;
-    @track isOpenEndDate = false;
-    @track _cancelBlurStartDate = false;
-    @track _cancelBlurEndDate = false;
+    startTime;
+    endTime;
+    isOpenStartDate = false;
+    isOpenEndDate = false;
+    _cancelBlurStartDate = false;
+    _cancelBlurEndDate = false;
 
     @api
     get startDate() {

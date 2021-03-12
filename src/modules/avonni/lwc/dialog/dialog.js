@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
@@ -9,12 +9,12 @@ export default class Dialog extends LightningElement {
     @api title;
     @api loadingStateAlternativeText;
 
-    @track _size = 'medium';
-    @track _isLoading;
-    @track _showDialog = false;
-    @track showTitleSlot = true;
-    @track showFooter = true;
-    @track showHeader = true;
+    _size = 'medium';
+    _isLoading;
+    _showDialog = false;
+    showTitleSlot = true;
+    showFooter = true;
+    showHeader = true;
 
     connectedCallback() {
         this.setAttribute('dialog-name', this.dialogName);

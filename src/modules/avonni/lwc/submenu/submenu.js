@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { normalizeBoolean } from 'c/utilsPrivate';
 
 export default class Submenu extends LightningElement {
@@ -8,11 +8,11 @@ export default class Submenu extends LightningElement {
     @api label;
     @api prefixIconName;
 
-    @track _tabIndex = '0';
-    @track _disabled = false;
-    @track _isDraft = false;
-    @track isOpen = false;
-    @track init = false;
+    _tabIndex = '0';
+    _disabled = false;
+    _isDraft = false;
+    isOpen = false;
+    init = false;
 
     connectedCallback() {
         this.classList.add('slds-dropdown__item');
