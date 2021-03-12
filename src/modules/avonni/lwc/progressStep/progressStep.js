@@ -270,7 +270,16 @@ export default class ProgressStep extends LightningElement {
 
     handleStepClick() {
         this.dispatchEvent(
-            new CustomEvent('stepsclick', {
+            new CustomEvent('stepclick', {
+                bubbles: true,
+                detail: { value: this.value }
+            })
+        );
+    }
+
+    handleStepButtonClick() {
+        this.dispatchEvent(
+            new CustomEvent('stepbuttonclick', {
                 bubbles: true,
                 detail: { value: this.value }
             })

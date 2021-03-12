@@ -125,7 +125,7 @@ const steps = [
     {
         value: 4,
         label: '4',
-        labelPosition: 'inside-nubbin',
+        labelPosition: 'bottom',
         popoverState: 'show',
         buttonName: 'button',
         buttonLabel: 'Completed',

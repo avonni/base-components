@@ -120,6 +120,7 @@
                     </template>
                     <template if:true={buttonLabel}>
                         <lightning-button
+                            onclick={handleStepButtonClick}
                             name={buttonName}
                             label={buttonLabel}
                             title={buttonTitle}
