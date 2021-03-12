@@ -4,7 +4,6 @@ import { normalizeBoolean } from '../utilsPrivate/normalize';
 export default class WizardStep extends LightningElement {
     @api label;
     @api name;
-    @api actionPosition;
 
     _hidePreviousButton = false;
     _hideNextFinishButton = false;

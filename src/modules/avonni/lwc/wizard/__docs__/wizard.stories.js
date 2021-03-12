@@ -23,6 +23,18 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        variant: {
+            control: {
+                type: 'select',
+                options: ['base', 'modal', 'popover']
+            },
+            defaultValue: 'base',
+            description: 'Valid values include base, modal and popover.',
+            table: {
+                defaultValue: 'base',
+                type: { summary: 'string' }
+            }
+        },
         indicatorType: {
             control: {
                 type: 'select',
@@ -270,7 +282,31 @@ export default {
 const Template = (args) => Wizard(args);
 
 export const Base = Template.bind({});
-Base.args = {
+
+export const Modal = Template.bind({});
+Modal.args = {
+    title: 'Avonni Wizard Modal',
+    variant: 'modal',
+    indicatorType: 'bar',
+    buttonPreviousIconName: 'utility:back',
+    buttonPreviousLabel: 'Back',
+    buttonNextIconName: 'utility:forward',
+    buttonNextIconPosition: 'right',
+    buttonNextLabel: 'Continue',
+    buttonNextVariant: 'brand',
+    buttonFinishIconName: 'utility:check',
+    buttonFinishIconPosition: 'right',
+    buttonFinishLabel: 'Done',
+    buttonFinishVariant: 'success'
+};
+
+export const Popover = Template.bind({});
+Popover.args = {
     title: 'Avonni Wizard',
-    currentStep: 'step-3'
+    variant: 'popover',
+    indicatorType: 'fractions',
+    actionPosition: 'right',
+    buttonNextVariant: 'success',
+    buttonFinishVariant: 'success',
+    buttonAlignmentBump: 'right'
 };

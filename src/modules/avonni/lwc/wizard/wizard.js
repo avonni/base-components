@@ -1,5 +1,8 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
+import base from './base.html';
+import modal from './modal.html';
+import popover from './popover.html';
 
 const HORIZONTAL_POSITIONS = ['left', 'right'];
 const VERTICAL_POSITIONS = ['top', 'bottom'];
@@ -21,17 +24,16 @@ const INDICATOR_TYPES = [
     'fractions',
     'bar'
 ];
+const VARIANTS = ['base', 'modal', 'popover'];
 
 export default class Wizard extends LightningElement {
-    // TODO:
-    @api variant;
-
     @api title;
     @api buttonPreviousIconName;
     @api buttonNextIconName;
     @api buttonFinishIconName;
 
     _currentStep;
+    _variant = 'base';
     _indicatorType = 'base';
     _hideIndicator;
     _buttonPreviousIconPosition = 'left';
@@ -49,6 +51,11 @@ export default class Wizard extends LightningElement {
     _fractionPrefixLabel = 'Steps';
     _fractionLabel = 'of';
     _rendered;
+    _templates = {
+        base: base,
+        modal: modal,
+        popover: popover
+    };
 
     steps;
     lastStep;
@@ -72,27 +79,34 @@ export default class Wizard extends LightningElement {
     navigationColClass;
 
     renderedCallback() {
-        if (!this._rendered) {
+        const slot = this.template.querySelector('slot:not([name])');
+
+        if (!this._rendered && slot) {
             this._rendered = true;
-
-            this.steps = this.template
-                .querySelector('slot:not([name])')
-                .assignedElements();
-            this.steps.forEach((step, index) => {
-                step.name = step.name || `step-${index}`;
-            });
-
-            // If no current step was given, sets current step to first step
-            if (this.currentStepIndex === -1) {
-                this._currentStep = this.steps[0].name;
-            }
-
-            this._initIndicator();
-            this._updateSteps();
-
-            // Apply settings of buttonAlignmentBump, actionPosition or navigationPosition.
-            this._reorderColumns();
+            this._initWizard(slot);
         }
+    }
+
+    render() {
+        return this._templates[this.variant];
+    }
+
+    _initWizard(slot) {
+        this.steps = slot.assignedElements();
+        this.steps.forEach((step, index) => {
+            step.name = step.name || `step-${index}`;
+        });
+
+        // If no current step was given, sets current step to first step
+        if (this.currentStepIndex === -1) {
+            this._currentStep = this.steps[0].name;
+        }
+
+        this._initIndicator();
+        this._updateSteps();
+
+        // Apply settings of buttonAlignmentBump, actionPosition or navigationPosition.
+        this._reorderColumns();
     }
 
     _initIndicator() {
@@ -133,7 +147,7 @@ export default class Wizard extends LightningElement {
         this.hidePreviousButton = currentStepComponent.hidePreviousButton;
         this.hideNextFinishButton = currentStepComponent.hideNextFinishButton;
 
-        // Show only current step
+        // Handle current vs. other steps display
         this.steps.forEach((step) => {
             step.setAttribute('style', 'display: none;');
             step.selected = false;
@@ -174,6 +188,17 @@ export default class Wizard extends LightningElement {
 
     get showIndicator() {
         return this.steps && !this.hideIndicator;
+    }
+
+    @api
+    get variant() {
+        return this._variant;
+    }
+    set variant(value) {
+        this._variant = normalizeString(value, {
+            fallbackValue: 'base',
+            validValues: VARIANTS
+        });
     }
 
     @api
@@ -379,5 +404,12 @@ export default class Wizard extends LightningElement {
                 composed: false
             })
         );
+    }
+
+    handlePopoverButtonClick() {
+        const slot = this.template.querySelector('slot:not([name])');
+        if (slot) {
+            this._initWizard(slot);
+        }
     }
 }

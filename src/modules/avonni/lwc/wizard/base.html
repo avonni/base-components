@@ -1,0 +1,160 @@
+<template>
+    <section>
+        <lightning-layout
+            multiple-rows="true"
+            class="slds-box slds-p-around_none"
+        >
+            <lightning-layout-item size="12" class={contentColClass}>
+                <!-- Title and title slot -->
+                <header
+                    class="slds-theme_default slds-p-around_medium slds-border_bottom slds-text-align_center"
+                >
+                    <h1 class="slds-text-heading_medium" if:true={title}>
+                        {title}
+                    </h1>
+                    <template if:false={title}>
+                        <slot name="title"></slot>
+                    </template>
+                </header>
+                <!-- Wizard steps slot -->
+                <main
+                    class="slds-p-around_medium slds-theme_default slds-border_bottom"
+                >
+                    <slot></slot>
+                </main>
+            </lightning-layout-item>
+            <!-- Navigation -->
+            <lightning-layout-item size="12" class={navigationColClass}>
+                <footer class="slds-theme_shade slds-p-around_medium">
+                    <lightning-layout
+                        vertical-align="center"
+                        multiple-rows="true"
+                    >
+                        <!-- Previous button -->
+                        <lightning-layout-item
+                            if:false={hidePreviousButton}
+                            class={previousButtonColClass}
+                        >
+                            <lightning-button
+                                icon-name={buttonPreviousIconName}
+                                icon-position={buttonPreviousIconPosition}
+                                label={buttonPreviousLabel}
+                                variant={buttonPreviousVariant}
+                                data-label="previous"
+                                onclick={handlePreviousNextClick}
+                            ></lightning-button>
+                        </lightning-layout-item>
+
+                        <!-- Indicator -->
+                        <lightning-layout-item
+                            flexibility="auto"
+                            class={progressColClass}
+                            padding="horizontal-small"
+                        >
+                            <template if:true={showIndicator}>
+                                <!-- Progress indicator -->
+                                <template if:true={showProgressIndicator}>
+                                    <lightning-progress-indicator
+                                        current-step={currentStep}
+                                        type={progressIndicatorType}
+                                        variant={progressIndicatorVariant}
+                                    >
+                                        <template
+                                            for:each={steps}
+                                            for:item="step"
+                                        >
+                                            <lightning-progress-step
+                                                key={step.name}
+                                                label={step.label}
+                                                value={step.name}
+                                            ></lightning-progress-step>
+                                        </template>
+                                    </lightning-progress-indicator>
+                                </template>
+
+                                <!-- Bullets -->
+                                <template if:true={showBulletIndicator}>
+                                    <ul
+                                        class="slds-carousel__indicators slds-text-align_center slds-m-top_small"
+                                        aria-label="Progress indicator"
+                                    >
+                                        <template
+                                            for:each={steps}
+                                            for:item="step"
+                                        >
+                                            <li
+                                                key={step.name}
+                                                class="slds-carousel__indicator"
+                                            >
+                                                <span
+                                                    class={step.bulletClass}
+                                                    title={step.label}
+                                                    aria-selected={step.selected}
+                                                >
+                                                    <span
+                                                        class="slds-assistive-text"
+                                                        >{step.label}</span
+                                                    >
+                                                </span>
+                                            </li>
+                                        </template>
+                                    </ul>
+                                </template>
+
+                                <!-- Fraction indicator -->
+                                <template if:true={showFractionIndicator}>
+                                    <p>
+                                        {fractionPrefixLabel}
+                                        {fractionCurrentStep} {fractionLabel}
+                                        {fractionTotalSteps}
+                                    </p>
+                                </template>
+                                <!-- Bar indicator -->
+                                <template if:true={showBarIndicator}>
+                                    <lightning-progress-bar
+                                        value={progressBarValue}
+                                        size="large"
+                                    ></lightning-progress-bar>
+                                </template>
+                            </template>
+                        </lightning-layout-item>
+                        <!-- Actions slot and Next/Finish buttons -->
+                        <lightning-layout-item
+                            class={actionsNextFinishButtonColClass}
+                        >
+                            <lightning-layout>
+                                <lightning-layout-item
+                                    class={actionsSlotColClass}
+                                >
+                                    <slot name="actions"></slot>
+                                </lightning-layout-item>
+                                <lightning-layout-item
+                                    if:false={hideNextFinishButton}
+                                    class={nextFinishButtonColClass}
+                                >
+                                    <lightning-button
+                                        if:false={lastStep}
+                                        icon-name={buttonNextIconName}
+                                        icon-position={buttonNextIconPosition}
+                                        label={buttonNextLabel}
+                                        data-label="next"
+                                        variant={buttonNextVariant}
+                                        onclick={handlePreviousNextClick}
+                                    ></lightning-button>
+                                    <lightning-button
+                                        if:true={lastStep}
+                                        icon-name={buttonFinishIconName}
+                                        icon-position={buttonFinishIconPosition}
+                                        label={buttonFinishLabel}
+                                        variant={buttonFinishVariant}
+                                        onclick={handleFinishClick}
+                                    ></lightning-button>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </footer>
+            </lightning-layout-item>
+        </lightning-layout>
+    </section>
+</template>
