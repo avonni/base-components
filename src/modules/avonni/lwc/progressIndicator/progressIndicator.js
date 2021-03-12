@@ -7,7 +7,7 @@ const TYPES = { valid: ['base', 'arrow'], default: 'base' };
 const VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
 
 export default class ProgressIndicator extends LightningElement {
-    @api currentStep;
+    @api currentStep = 1;
     @api errorSteps = [];
     @api warningSteps = [];
     @api completedSteps = [];
@@ -16,13 +16,12 @@ export default class ProgressIndicator extends LightningElement {
     _variant = 'base';
     _type = 'base';
 
-    connectedCallback() {}
-
     renderedCallback() {
         this.updateErrorSteps();
         this.updateWarningSteps();
         this.updateCompletedSteps();
         this.updateCurrentStep();
+        this.updateDisabledSteps();
     }
 
     @api
@@ -116,6 +115,17 @@ export default class ProgressIndicator extends LightningElement {
                 ) {
                     step.setIcon('utility:success');
                     step.classList.add('slds-is-completed');
+                }
+            });
+        });
+    }
+
+    updateDisabledSteps() {
+        const steps = this.getSteps();
+        steps.forEach((step) => {
+            this.disabledSteps.forEach((disabled) => {
+                if (parseInt(step.getAttribute('data-step'), 10) === disabled) {
+                    step.classList.add('slds-is-disabled');
                 }
             });
         });

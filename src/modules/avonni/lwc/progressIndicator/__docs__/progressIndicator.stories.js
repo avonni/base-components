@@ -97,8 +97,7 @@ const steps = [
         buttonName: 'button',
         buttonLabel: 'Press',
         buttonTitle: 'title',
-        buttonVariant: 'success',
-        buttonPosition: 'top'
+        buttonVariant: 'success'
     },
     {
         value: 2,
@@ -118,20 +117,16 @@ const steps = [
         buttonLabel: 'doing',
         buttonTitle: 'title',
         buttonVariant: 'success',
-        buttonPosition: 'inside-nubbin',
-        buttonDisabled: true,
-        popoverState: 'show'
+        buttonDisabled: true
     },
     {
         value: 4,
         label: '4',
         labelPosition: 'bottom',
-        popoverState: 'show',
         buttonName: 'button',
         buttonLabel: 'Completed',
         buttonTitle: 'title',
-        buttonVariant: 'brand',
-        buttonPosition: 'inside-nubbin'
+        buttonVariant: 'brand'
     },
     {
         value: 5,
@@ -139,7 +134,10 @@ const steps = [
         labelPosition: 'inside-nubbin',
         description: 'step #5',
         descriptionPosition: 'inside-nubbin',
-        popoverState: 'show'
+        popoverState: 'show',
+        iconName: 'utility:down',
+        iconSize: 'large',
+        iconPosition: 'inside-nubbin'
     }
 ];
 
@@ -149,10 +147,10 @@ export const Base = Template.bind({});
 Base.args = {
     type: 'base',
     variant: 'base',
-    currentStep: 3,
+    currentStep: 1,
     steps: steps,
-    errorSteps: [1],
-    warningSteps: [7],
-    completedSteps: [4, 2, 5],
-    disabledSteps: [5]
+    errorSteps: [3],
+    warningSteps: [5],
+    completedSteps: [2],
+    disabledSteps: []
 };

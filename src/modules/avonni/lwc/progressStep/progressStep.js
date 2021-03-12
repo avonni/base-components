@@ -2,13 +2,20 @@ import { LightningElement, api } from 'lwc';
 import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-const POPOVER_STATE = { valid: ['show', 'hidden', 'hover'], default: 'hover' };
+const POPOVER_STATE = {
+    valid: ['show', 'hidden', 'hover', 'button'],
+    default: 'hover'
+};
+
 const POSITIONS = { valid: ['top', 'bottom', 'inside-nubbin'], default: 'top' };
+
 const SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
     default: 'medium'
 };
+
 const BUTTON_ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
+
 const BUTTON_VARIANTS = {
     valid: [
         'neutral',
