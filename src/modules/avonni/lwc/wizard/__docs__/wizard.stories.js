@@ -68,7 +68,7 @@ export default {
                 options: ['left', 'right']
             },
             defaultValue: 'left',
-            description: 'Values include left and right.',
+            description: 'Valid values include left and right.',
             table: {
                 defaultValue: 'left',
                 type: { summary: 'string' }
@@ -118,7 +118,7 @@ export default {
                 options: ['left', 'right']
             },
             defaultValue: 'left',
-            description: 'Values include left and right.',
+            description: 'Valid values include left and right.',
             table: {
                 defaultValue: 'left',
                 type: { summary: 'string' }
@@ -168,7 +168,7 @@ export default {
                 options: ['left', 'right']
             },
             defaultValue: 'left',
-            description: 'Values include left and right.',
+            description: 'Valid values include left and right.',
             table: {
                 defaultValue: 'left',
                 type: { summary: 'string' }
@@ -199,9 +199,45 @@ export default {
                 ]
             },
             defaultValue: 'neutral',
+            description:
+                'Valid values include bare, neutral, brand, brand-outline, inverse, destructive, destructive-text, success.',
             table: {
                 defaultValue: 'neutral',
                 type: { summary: 'string' }
+            }
+        },
+        buttonAlignmentBump: {
+            control: {
+                type: 'select',
+                options: ['left', 'right']
+            },
+            description: 'Valid values include left and right.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        actionPosition: {
+            control: {
+                type: 'select',
+                options: ['left', 'right']
+            },
+            defaultValue: 'left',
+            description: 'Valid values include left and right.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: 'left'
+            }
+        },
+        navigationPosition: {
+            control: {
+                type: 'select',
+                options: ['top', 'bottom']
+            },
+            defaultValue: 'bottom',
+            description: 'Valid values include top and bottom.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: 'bottom'
             }
         },
         fractionPrefixLabel: {
@@ -209,6 +245,8 @@ export default {
                 type: 'text'
             },
             defaultValue: 'Steps',
+            description:
+                'Label displayed in front of fraction. Example: fraction-prefix-label == “Steps” => Steps 1 of 3',
             table: {
                 defaultValue: 'Steps',
                 type: { summary: 'string' }
@@ -219,6 +257,8 @@ export default {
                 type: 'text'
             },
             defaultValue: 'of',
+            description:
+                'Label displayed between current index and max number of slides. Example: fraction-label == “of” => 1 of 3',
             table: {
                 defaultValue: 'of',
                 type: { summary: 'string' }

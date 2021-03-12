@@ -1,8 +1,8 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
-// import { classSet } from 'c/utils';
 
-const POSITIONS = ['left', 'right'];
+const HORIZONTAL_POSITIONS = ['left', 'right'];
+const VERTICAL_POSITIONS = ['top', 'bottom'];
 const BUTTON_VARIANTS = [
     'bare',
     'neutral',
@@ -23,16 +23,12 @@ const INDICATOR_TYPES = [
 ];
 
 // QUESTIONS:
-// Current step: reference to name and not value?
-// Button position middle: where goes the indicator?
-// Button alignment bump: bumps to other side of the indicator?
-// Indicator type: bullet => similar to a carousel?
+// Indicator type: bullet => similar to a carousel
+// Variant: use of avonni components
 
 export default class Wizard extends LightningElement {
     // TODO:
     @api variant;
-    @api buttonPosition;
-    _buttonAlignmentBump;
 
     @api title;
     @api buttonPreviousIconName;
@@ -51,6 +47,9 @@ export default class Wizard extends LightningElement {
     _buttonFinishIconPosition = 'left';
     _buttonFinishLabel = 'Finish';
     _buttonFinishVariant = 'neutral';
+    _buttonAlignmentBump;
+    _actionPosition = 'left';
+    _navigationPosition = 'bottom';
     _fractionPrefixLabel = 'Steps';
     _fractionLabel = 'of';
     _rendered;
@@ -68,6 +67,13 @@ export default class Wizard extends LightningElement {
     showBarIndicator;
     hidePreviousButton;
     hideNextFinishButton;
+    previousButtonColClass;
+    progressColClass;
+    actionsNextFinishButtonColClass;
+    actionsSlotColClass;
+    nextFinishButtonColClass;
+    contentColClass;
+    navigationColClass;
 
     renderedCallback() {
         if (!this._rendered) {
@@ -80,13 +86,16 @@ export default class Wizard extends LightningElement {
                 step.name = step.name || `step-${index}`;
             });
 
-            // If no current step was given, sets current step to first step.
+            // If no current step was given, sets current step to first step
             if (this.currentStepIndex === -1) {
                 this._currentStep = this.steps[0].name;
             }
 
             this._initIndicator();
             this._updateSteps();
+
+            // Apply settings of buttonAlignmentBump, actionPosition or navigationPosition.
+            this._reorderColumns();
         }
     }
 
@@ -134,6 +143,28 @@ export default class Wizard extends LightningElement {
         currentStepComponent.setAttribute('style', '');
     }
 
+    _reorderColumns() {
+        const bump = this.buttonAlignmentBump;
+        if (bump) {
+            this.actionsNextFinishButtonColClass =
+                bump === 'right' ? 'slds-order_3' : 'slds-order_2';
+            this.progressColClass =
+                bump === 'right' ? 'slds-order_1' : 'slds-order_3';
+            this.previousButtonColClass =
+                bump === 'right' ? 'slds-order_2' : 'slds-order_1';
+        }
+
+        if (this.actionPosition === 'right') {
+            this.nextFinishButtonColClass = 'slds-order_1';
+            this.actionsSlotColClass = 'slds-order_2';
+        }
+
+        if (this.navigationPosition === 'top') {
+            this.contentColClass = 'slds-order_2';
+            this.navigationColClass = 'slds-order_1';
+        }
+    }
+
     get currentStepIndex() {
         const stepNames = this.steps.map((step) => step.name);
         return stepNames.indexOf(this.currentStep);
@@ -177,7 +208,7 @@ export default class Wizard extends LightningElement {
     set buttonPreviousIconPosition(position) {
         this._buttonPreviousIconPosition = normalizeString(position, {
             fallbackValue: 'left',
-            validValues: POSITIONS
+            validValues: HORIZONTAL_POSITIONS
         });
     }
 
@@ -207,7 +238,7 @@ export default class Wizard extends LightningElement {
     set buttonNextIconPosition(position) {
         this._buttonNextIconPosition = normalizeString(position, {
             fallbackValue: 'left',
-            validValues: POSITIONS
+            validValues: HORIZONTAL_POSITIONS
         });
     }
 
@@ -237,7 +268,7 @@ export default class Wizard extends LightningElement {
     set buttonFinishIconPosition(position) {
         this._buttonFinishIconPosition = normalizeString(position, {
             fallbackValue: 'left',
-            validValues: POSITIONS
+            validValues: HORIZONTAL_POSITIONS
         });
     }
 
@@ -267,7 +298,29 @@ export default class Wizard extends LightningElement {
     set buttonAlignmentBump(position) {
         this._buttonAlignmentBump = normalizeString(position, {
             fallbackValue: null,
-            validValues: POSITIONS
+            validValues: HORIZONTAL_POSITIONS
+        });
+    }
+
+    @api
+    get actionPosition() {
+        return this._actionPosition;
+    }
+    set actionPosition(position) {
+        this._actionPosition = normalizeString(position, {
+            fallbackValue: 'left',
+            validValues: HORIZONTAL_POSITIONS
+        });
+    }
+
+    @api
+    get navigationPosition() {
+        return this._navigationPosition;
+    }
+    set navigationPosition(position) {
+        this._navigationPosition = normalizeString(position, {
+            fallbackValue: 'bottom',
+            validValues: VERTICAL_POSITIONS
         });
     }
 

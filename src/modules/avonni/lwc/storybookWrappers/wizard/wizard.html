@@ -17,17 +17,21 @@
         button-finish-icon-position={buttonFinishIconPosition}
         button-finish-variant={buttonFinishVariant}
         button-finish-label={buttonFinishLabel}
-        button-position={buttonPosition}
+        action-position={actionPosition}
+        navigation-position={navigationPosition}
         button-alignment-bump={buttonAlignmentBump}
         fraction-prefix-label={fractionPrefixLabel}
         fraction-label={fractionLabel}
     >
         <div slot="title">Title slot</div>
+        <div slot="actions">
+            <lightning-button label="Button in actions slot"></lightning-button>
+        </div>
         <avonni-wizard-step label="First step" name="Custom name">
             <p>This is the first step.</p>
             <p>It has a label and a name.</p>
         </avonni-wizard-step>
-        <avonni-wizard-step hide-previous-button="true" action-position="right">
+        <avonni-wizard-step action-position="right" hide-previous-button="true">
             <p>This is the second step.</p>
             <p>Previous Button is hidden.</p>
             <p>Action position is set to right.</p>

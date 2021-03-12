@@ -19,6 +19,9 @@ export const Wizard = ({
     buttonFinishIconPosition,
     buttonFinishLabel,
     buttonFinishVariant,
+    buttonAlignmentBump,
+    actionPosition,
+    navigationPosition,
     fractionPrefixLabel,
     fractionLabel
 }) => {
@@ -39,6 +42,9 @@ export const Wizard = ({
     element.buttonFinishIconPosition = buttonFinishIconPosition;
     element.buttonFinishLabel = buttonFinishLabel;
     element.buttonFinishVariant = buttonFinishVariant;
+    element.buttonAlignmentBump = buttonAlignmentBump;
+    element.actionPosition = actionPosition;
+    element.navigationPosition = navigationPosition;
     element.fractionPrefixLabel = fractionPrefixLabel;
     element.fractionLabel = fractionLabel;
     return element;
