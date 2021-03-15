@@ -57,7 +57,13 @@ export default class ProgressStep extends LightningElement {
 
     connectedCallback() {
         this.classList.add('slds-progress__item');
-        console.log(this._value);
+        console.log(Array.from(this.disabledSteps));
+        // console.log(this.template.getAttribute('data-button'))
+        console.log(
+            Array.from(this.disabledSteps).includes(
+                this.getAttribute('data-button')
+            )
+        );
     }
 
     renderedCallback() {
@@ -67,8 +73,14 @@ export default class ProgressStep extends LightningElement {
     isDisabled() {
         const buttons = this.template.querySelectorAll('button');
         buttons.forEach((button) => {
-            if (this.disabledSteps.includes(this.getAttribute('data-button'))) {
-                button.setAttribute('disabled');
+            console.log(this.getAttribute('data-step'));
+            if (
+                Array.from(this.disabledSteps).includes(
+                    this.getAttribute('data-step')
+                )
+            ) {
+                console.log('hello');
+                button.setAttribute('disabled', 'true');
             }
         });
     }

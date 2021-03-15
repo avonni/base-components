@@ -156,5 +156,5 @@ Base.args = {
     errorSteps: ['1'],
     warningSteps: ['5'],
     completedSteps: ['4'],
-    disabledSteps: ['2']
+    disabledSteps: ['sam', '5']
 };
