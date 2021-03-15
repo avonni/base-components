@@ -278,13 +278,7 @@ export default class ProgressStep extends LightningElement {
             250
         );
 
-        this.dispatchEvent(
-            new CustomEvent('stepmouseenter', {
-                bubbles: true,
-                cancelable: true,
-                detail: { value: this.value }
-            })
-        );
+        this.dispatchEvent(new CustomEvent('stepmouseenter', {}));
     }
 
     handleStepMouseLeave() {
@@ -296,58 +290,26 @@ export default class ProgressStep extends LightningElement {
             }.bind(this),
             250
         );
-        this.dispatchEvent(
-            new CustomEvent('stepmouseleave', {
-                bubbles: true,
-                cancelable: true,
-                detail: { value: this.value }
-            })
-        );
+        this.dispatchEvent(new CustomEvent('stepmouseleave'));
     }
 
     handleStepFocus() {
-        this.dispatchEvent(
-            new CustomEvent('stepfocus', {
-                bubbles: true,
-                cancelable: true,
-                detail: { value: this.value }
-            })
-        );
+        this.dispatchEvent(new CustomEvent('stepfocus'));
     }
 
     handleStepBlur() {
-        this.dispatchEvent(
-            new CustomEvent('stepblur', {
-                bubbles: true,
-                detail: { value: this.value }
-            })
-        );
+        this.dispatchEvent(new CustomEvent('stepblur'));
     }
 
     handleStepClick() {
-        this.dispatchEvent(
-            new CustomEvent('stepclick', {
-                bubbles: true,
-                detail: { value: this.value }
-            })
-        );
+        this.dispatchEvent(new CustomEvent('stepclick'));
     }
 
     handleStepButtonClick() {
-        this.dispatchEvent(
-            new CustomEvent('stepbuttonclick', {
-                bubbles: true,
-                detail: { value: this.value }
-            })
-        );
+        this.dispatchEvent(new CustomEvent('stepbuttonclick'));
     }
 
     handleStepPopoverClick() {
-        this.dispatchEvent(
-            new CustomEvent('steppopoverclick', {
-                bubbles: true,
-                detail: { value: this.value }
-            })
-        );
+        this.dispatchEvent(new CustomEvent('steppopoverclick'));
     }
 }

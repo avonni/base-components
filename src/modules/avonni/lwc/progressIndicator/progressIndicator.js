@@ -18,7 +18,6 @@ export default class ProgressIndicator extends LightningElement {
     _initialRender = true;
 
     renderedCallback() {
-        console.log(this.currentStep);
         if (this._initialRender) {
             this.updateErrorSteps();
             this.updateWarningSteps();
