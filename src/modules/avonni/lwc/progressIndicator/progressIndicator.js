@@ -15,12 +15,16 @@ export default class ProgressIndicator extends LightningElement {
 
     _variant = 'base';
     _type = 'base';
+    _initialRender = true;
 
     renderedCallback() {
-        this.updateErrorSteps();
-        this.updateWarningSteps();
-        this.updateCompletedSteps();
-        this.updateCurrentStep();
+        if (this._initialRender) {
+            this.updateErrorSteps();
+            this.updateWarningSteps();
+            this.updateCompletedSteps();
+            this.updateCurrentStep();
+        }
+        this._initialRender = false;
     }
 
     @api
