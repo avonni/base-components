@@ -4,6 +4,8 @@
             <template for:each={steps} for:item="step">
                 <c-progress-step
                     class="avonni-progress-step-sizing"
+                    disabled-steps={disabledSteps}
+                    warning-steps={warningSteps}
                     key={step.value}
                     label={step.label}
                     label-position={step.labelPosition}
@@ -23,7 +25,6 @@
                     button-title={step.buttonTitle}
                     button-variant={step.buttonVariant}
                     assistive-text={step.assistiveText}
-                    disabled-steps={disabledSteps}
                 ></c-progress-step>
             </template>
         </ol>

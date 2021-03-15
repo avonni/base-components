@@ -29,6 +29,7 @@ const BUTTON_VARIANTS = {
 };
 
 export default class ProgressStep extends LightningElement {
+    stepIconName;
     @api label;
     @api description;
     @api iconName;
@@ -38,51 +39,26 @@ export default class ProgressStep extends LightningElement {
     @api buttonIconName;
     @api buttonTitle;
     @api assistiveText;
-    @api disabledSteps = [];
+    @api disabledSteps;
+    @api warningSteps;
 
-    stepIconName;
     _value;
     _popoverState = 'hover';
     _labelPosition = 'top';
     _descriptionPosition = 'top';
     _iconPosition = 'top';
     _iconSize = 'medium';
-    _buttonPosition = 'top';
     _buttonIconPosition = 'left';
     _buttonDisabled = false;
     _buttonVariant = 'neutral';
-
     popoverVisible = false;
-    _boundingRect = {};
 
     connectedCallback() {
         this.classList.add('slds-progress__item');
-        console.log(Array.from(this.disabledSteps));
-        // console.log(this.template.getAttribute('data-button'))
-        console.log(
-            Array.from(this.disabledSteps).includes(
-                this.getAttribute('data-button')
-            )
-        );
     }
 
     renderedCallback() {
         this.isDisabled();
-    }
-
-    isDisabled() {
-        const buttons = this.template.querySelectorAll('button');
-        buttons.forEach((button) => {
-            console.log(this.getAttribute('data-step'));
-            if (
-                Array.from(this.disabledSteps).includes(
-                    this.getAttribute('data-step')
-                )
-            ) {
-                console.log('hello');
-                button.setAttribute('disabled', 'true');
-            }
-        });
     }
 
     @api
@@ -196,14 +172,6 @@ export default class ProgressStep extends LightningElement {
         return classes.toString();
     }
 
-    get computedStepIcon() {
-        const classes = classSet('');
-        if (!this.stepIconName) {
-            classes.add('slds-progress__marker');
-        }
-        return classes.toString();
-    }
-
     get showLabelTop() {
         return this._labelPosition === 'top' && this.label;
     }
@@ -267,9 +235,32 @@ export default class ProgressStep extends LightningElement {
             this.showIconNubbin ||
             this.showLabelNubbin
         ) {
-            return this.popoverVisible || this.popoverShow === true;
+            return this.popoverVisible || this.popoverShow;
         }
         return false;
+    }
+
+    get isButtonDisabled() {
+        return (
+            this._buttonDisabled ||
+            this.disabledSteps.includes(this.getAttribute('data-step'))
+        );
+    }
+
+    get primitiveIconVariant() {
+        if (this.warningSteps.includes(this.getAttribute('data-step'))) {
+            return 'warning';
+        }
+        return 'bare';
+    }
+
+    isDisabled() {
+        const buttons = this.template.querySelectorAll('button');
+        buttons.forEach((button) => {
+            if (this.disabledSteps.includes(this.getAttribute('data-step'))) {
+                button.setAttribute('disabled', 'true');
+            }
+        });
     }
 
     @api
@@ -278,9 +269,15 @@ export default class ProgressStep extends LightningElement {
     }
 
     handleStepMouseEnter() {
-        if (this.popoverHover) {
-            this.popoverVisible = !this.popoverVisible;
-        }
+        setTimeout(
+            function () {
+                if (this.popoverHover) {
+                    this.popoverVisible = !this.popoverVisible;
+                }
+            }.bind(this),
+            250
+        );
+
         this.dispatchEvent(
             new CustomEvent('stepmouseenter', {
                 bubbles: true,
@@ -291,9 +288,14 @@ export default class ProgressStep extends LightningElement {
     }
 
     handleStepMouseLeave() {
-        if (this.popoverHover) {
-            this.popoverVisible = !this.popoverVisible;
-        }
+        setTimeout(
+            function () {
+                if (this.popoverHover) {
+                    this.popoverVisible = !this.popoverVisible;
+                }
+            }.bind(this),
+            250
+        );
         this.dispatchEvent(
             new CustomEvent('stepmouseleave', {
                 bubbles: true,

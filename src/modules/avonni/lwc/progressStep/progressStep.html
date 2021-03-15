@@ -24,7 +24,6 @@
                     onmouseleave={handleStepMouseLeave}
                     onfocus={handleStepFocus}
                     onblur={handleStepBlur}
-                    data-button={value}
                     aria-hidden="true"
                     aria-haspopup="true"
                     aria-expanded="true"
@@ -33,8 +32,8 @@
                         if:true={stepIconName}
                         svg-class="slds-button__icon"
                         icon-name={stepIconName}
-                        size="x-small"
-                        variant="bare"
+                        size="xx-small"
+                        variant={primitiveIconVariant}
                     ></c-primitive-icon>
                     <div if:false={stepIconName} class="avonni-marker"></div>
                 </button>
@@ -56,17 +55,6 @@
                                     size={iconSize}
                                     src={iconSrc}
                                 ></lightning-icon>
-                            </template>
-                            <template if:true={showButtonNubbin}>
-                                <lightning-button
-                                    name={buttonName}
-                                    label={buttonLabel}
-                                    title={buttonTitle}
-                                    variant={buttonVariant}
-                                    disabled={buttonDisabled}
-                                    icon-name={buttonIconName}
-                                    icon-position={buttonIconPosition}
-                                ></lightning-button>
                             </template>
                         </div>
                     </div>
@@ -91,35 +79,18 @@
                                     src={iconSrc}
                                 ></lightning-icon>
                             </template>
-                            <template if:true={showButtonNubbin}>
-                                <lightning-button
-                                    name={buttonName}
-                                    label={buttonLabel}
-                                    title={buttonTitle}
-                                    variant={buttonVariant}
-                                    disabled={buttonDisabled}
-                                    icon-name={buttonIconName}
-                                    icon-position={buttonIconPosition}
-                                ></lightning-button>
-                            </template>
                         </div>
                     </button>
                 </template>
                 <span if:true={assistiveText} class="slds-assistive-text"
                     >{assistiveText}</span
                 >
-                <div class="avonni-progress-step-bottom">
+                <div class="avonni-progress-step-bottom slds-truncate">
                     <template if:true={showLabelBottom}>
-                        <p
-                            class="slds-truncate slds-text-align_center slds-text-title_bold"
-                        >
-                            {label}
-                        </p>
+                        <p class="slds-text-title_bold">{label}</p>
                     </template>
                     <template if:true={showDescriptionBottom}>
-                        <p class="slds-truncate slds-text-align_center">
-                            {description}
-                        </p>
+                        <p>{description}</p>
                     </template>
                     <template if:true={showIconBottom}>
                         <lightning-icon
@@ -135,7 +106,7 @@
                             label={buttonLabel}
                             title={buttonTitle}
                             variant={buttonVariant}
-                            disabled={buttonDisabled}
+                            disabled={isButtonDisabled}
                             icon-name={buttonIconName}
                             icon-position={buttonIconPosition}
                         ></lightning-button>

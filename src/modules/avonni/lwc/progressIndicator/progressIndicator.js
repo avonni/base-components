@@ -21,7 +21,6 @@ export default class ProgressIndicator extends LightningElement {
         this.updateWarningSteps();
         this.updateCompletedSteps();
         this.updateCurrentStep();
-        this.updateDisabledSteps();
     }
 
     @api
@@ -58,7 +57,7 @@ export default class ProgressIndicator extends LightningElement {
     }
 
     get computedOuterClass() {
-        return classSet('slds-progress slds-progress_horizontal')
+        return classSet('slds-progress')
             .add({
                 'slds-progress_shade':
                     this._variant === 'shaded' && this._type === 'base'
@@ -110,17 +109,6 @@ export default class ProgressIndicator extends LightningElement {
                 if (step.getAttribute('data-step') === completed) {
                     step.setIcon('utility:success');
                     step.classList.add('slds-is-completed');
-                }
-            });
-        });
-    }
-
-    updateDisabledSteps() {
-        const steps = this.getSteps();
-        steps.forEach((step) => {
-            this.disabledSteps.forEach((disabled) => {
-                if (step.getAttribute('data-step') === disabled) {
-                    step.classList.add('slds-is-disabled');
                 }
             });
         });

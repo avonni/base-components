@@ -117,7 +117,7 @@ const steps = [
         buttonLabel: 'doing',
         buttonTitle: 'title',
         buttonVariant: 'success',
-        buttonDisabled: true,
+        buttonDisabled: 'true',
         popoverState: 'show'
     },
     {
@@ -151,10 +151,10 @@ export const Base = Template.bind({});
 Base.args = {
     type: 'base',
     variant: 'base',
-    currentStep: 'sam',
+    currentStep: '2',
     steps: steps,
     errorSteps: ['1'],
     warningSteps: ['5'],
-    completedSteps: ['4'],
-    disabledSteps: ['sam', '5']
+    completedSteps: ['sam'],
+    disabledSteps: ['1']
 };

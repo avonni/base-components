@@ -1,10 +1,26 @@
 :host(.slds-is-active) .avonni-marker {
     width: 14px;
     height: 14px;
-    border: 3px solid #1589ee;
+    border: 2px solid #1589ee;
     border-radius: 50%;
     margin: 1px;
     background-color: #ffffff;
+}
+
+:host(.slds-is-active) .slds-progress__marker {
+    border: none;
+}
+
+.slds-progress__marker_icon:focus,
+.slds-progress__marker:focus {
+    outline: none;
+    box-shadow: rgb(53, 125, 219) 0 0 0 2px !important;
+}
+
+.slds-progress__marker_icon {
+    width: 16.5px;
+    height: 16.5px;
+    border: none;
 }
 
 .avonni-progress-step-sizing {
@@ -21,23 +37,6 @@
 
 .slds-progress__item:first-child {
     margin-left: var(--lwc-varSpacingHorizontalMedium, 1rem);
-}
-
-.slds-progress__marker_icon {
-    width: 16px;
-    height: 16px;
-    border: none;
-    box-shadow: #ffffff 0 0 0 3px !important;
-}
-
-:host(.slds-is-active) .slds-progress__marker {
-    border: none;
-}
-
-:host(.avonni-spread) .slds-progress__marker_icon:focus,
-.slds-progress__marker:focus {
-    outline: none;
-    box-shadow: rgb(53, 125, 219) 0 0 0 2px !important;
 }
 
 .avonni-progress-step-outer-class {

@@ -16,10 +16,11 @@
     height: 2px;
     position: absolute;
     width: 40%;
-    left: 100px;
+    left: 95px;
     right: 0;
     top: 33px;
     background-color: #dddbda;
+    z-index: -1;
 }
 
 .slds-progress__item:last-child::after {
@@ -28,10 +29,11 @@
     height: 2px;
     position: absolute;
     width: 40%;
-    left: 100px;
+    left: 95px;
     right: 0;
     top: 33px;
     background-color: transparent;
+    z-index: -1;
 }
 
 .slds-progress__item:first-child::before {
@@ -64,10 +66,11 @@
     height: 2px;
     position: absolute;
     width: 40%;
-    left: 100px;
+    left: 95px;
     right: 0;
     top: 33px;
     background-color: #60b4ff;
+    z-index: -1;
 }
 
 .slds-is-completed:last-child::before {
