@@ -4,7 +4,7 @@ import { classSet } from 'c/utils';
 
 const POPOVER_STATE = {
     valid: ['show', 'hidden', 'hover', 'button'],
-    default: 'hover'
+    default: 'hidden'
 };
 
 const POSITIONS = { valid: ['top', 'bottom', 'inside-nubbin'], default: 'top' };
@@ -51,9 +51,14 @@ export default class ProgressStep extends LightningElement {
     _buttonDisabled = false;
     _buttonVariant = 'neutral';
 
+    popoverVisible = false;
+    _boundingRect = {};
+
     connectedCallback() {
         this.classList.add('slds-progress__item');
     }
+
+    renderedCallback() {}
 
     @api
     get value() {
@@ -171,7 +176,9 @@ export default class ProgressStep extends LightningElement {
     }
 
     get computedButtonClass() {
-        const classes = classSet('slds-button slds-progress__marker');
+        const classes = classSet(
+            'slds-button slds-progress__marker slds-dropdown-trigger slds-dropdown-trigger_click'
+        );
         if (this.stepIconName) {
             classes
                 .add('slds-button_icon')
@@ -227,8 +234,34 @@ export default class ProgressStep extends LightningElement {
         return this._iconPosition === 'inside-nubbin' && this.iconName;
     }
 
-    get showPopover() {
+    get popoverHover() {
+        return this._popoverState === 'hover';
+    }
+
+    get popoverShow() {
         return this._popoverState === 'show';
+    }
+
+    get popoverButton() {
+        if (
+            this.showDescriptionNubbin ||
+            this.showIconNubbin ||
+            this.showLabelNubbin
+        ) {
+            return this._popoverState === 'button';
+        }
+        return false;
+    }
+
+    get displayPopover() {
+        if (
+            this.showDescriptionNubbin ||
+            this.showIconNubbin ||
+            this.showLabelNubbin
+        ) {
+            return this.popoverVisible || this.popoverShow === true;
+        }
+        return false;
     }
 
     @api
@@ -237,6 +270,9 @@ export default class ProgressStep extends LightningElement {
     }
 
     handleStepMouseEnter() {
+        if (this.popoverHover) {
+            this.popoverVisible = !this.popoverVisible;
+        }
         this.dispatchEvent(
             new CustomEvent('stepmouseenter', {
                 bubbles: true,
@@ -247,6 +283,9 @@ export default class ProgressStep extends LightningElement {
     }
 
     handleStepMouseLeave() {
+        if (this.popoverHover) {
+            this.popoverVisible = !this.popoverVisible;
+        }
         this.dispatchEvent(
             new CustomEvent('stepmouseleave', {
                 bubbles: true,
@@ -287,6 +326,15 @@ export default class ProgressStep extends LightningElement {
     handleStepButtonClick() {
         this.dispatchEvent(
             new CustomEvent('stepbuttonclick', {
+                bubbles: true,
+                detail: { value: this.value }
+            })
+        );
+    }
+
+    handleStepPopoverClick() {
+        this.dispatchEvent(
+            new CustomEvent('steppopoverclick', {
                 bubbles: true,
                 detail: { value: this.value }
             })

@@ -24,77 +24,109 @@
                     </template>
                 </div>
                 <button
+                    id="burrito"
                     class={computedButtonClass}
                     if:true={stepIconName}
+                    onclick={handleStepClick}
+                    onmouseenter={handleStepMouseEnter}
+                    onmouseleave={handleStepMouseLeave}
+                    onfocus={handleStepFocus}
+                    onblur={handleStepBlur}
                     aria-hidden="true"
                     aria-haspopup="true"
+                    aria-expanded="true"
                 >
                     <c-primitive-icon
                         class="slds-button__icon"
                         icon-name={stepIconName}
                         size="xx-small"
                         variant="bare"
-                        onclick={handleStepClick}
-                        onmouseenter={handleStepMouseEnter}
-                        onmouseleave={handleStepMouseLeave}
-                        onfocus={handleStepFocus}
-                        onblur={handleStepBlur}
                         tabindex="0"
                     ></c-primitive-icon>
                 </button>
                 <button
                     class={computedButtonClass}
                     if:false={stepIconName}
+                    onclick={handleStepClick}
+                    onmouseenter={handleStepMouseEnter}
+                    onmouseleave={handleStepMouseLeave}
+                    onfocus={handleStepFocus}
+                    onblur={handleStepBlur}
                     aria-hidden="true"
                     aria-haspopup="true"
                 >
-                    <div
-                        onclick={handleStepClick}
-                        onmouseenter={handleStepMouseEnter}
-                        onmouseleave={handleStepMouseLeave}
-                        onfocus={handleStepFocus}
-                        onblur={handleStepBlur}
-                        tabindex="0"
-                    >
+                    <div tabindex="0">
                         <div class="avonni-marker"></div>
                     </div>
                 </button>
-                <!-- <template if:true={showPopover}>
-                <div
-                    class="slds-popover slds-popover_tooltip slds-nubbin_bottom slds-rise-from-ground"
-                    role="tooltip"
-                    style="
-                        position: absolute;
-                        left: 50%;
-                        transform: translate(-50%, -130%);
-                    "
-                >
-                    <div class="slds-popover__body slds-text-align_center">
-                        <template if:true={showLabelNubbin}> {label} </template>
-                        <template if:true={showDescriptionNubbin}>
-                            {description}
-                        </template>
-                        <template if:true={showIconNubbin}>
-                            <lightning-icon
-                                icon-name={iconName}
-                                size={iconSize}
-                                src={iconSrc}
-                            ></lightning-icon>
-                        </template>
-                        <template if:true={showButtonNubbin}>
-                            <lightning-button
-                                name={buttonName}
-                                label={buttonLabel}
-                                title={buttonTitle}
-                                variant={buttonVariant}
-                                disabled={buttonDisabled}
-                                icon-name={buttonIconName}
-                                icon-position={buttonIconPosition}
-                            ></lightning-button>
-                        </template>
+                <template if:true={displayPopover}>
+                    <div
+                        class="slds-popover slds-nubbin_bottom avonni-progress-step-popover"
+                        tabindex="0"
+                        onclick={handleStepPopoverClick}
+                    >
+                        <div class="slds-popover__body slds-text-align_center">
+                            <template if:true={showLabelNubbin}>
+                                {label}
+                            </template>
+                            <template if:true={showDescriptionNubbin}>
+                                {description}
+                            </template>
+                            <template if:true={showIconNubbin}>
+                                <lightning-icon
+                                    icon-name={iconName}
+                                    size={iconSize}
+                                    src={iconSrc}
+                                ></lightning-icon>
+                            </template>
+                            <template if:true={showButtonNubbin}>
+                                <lightning-button
+                                    name={buttonName}
+                                    label={buttonLabel}
+                                    title={buttonTitle}
+                                    variant={buttonVariant}
+                                    disabled={buttonDisabled}
+                                    icon-name={buttonIconName}
+                                    icon-position={buttonIconPosition}
+                                ></lightning-button>
+                            </template>
+                        </div>
                     </div>
-                </div>
-            </template> -->
+                </template>
+                <template if:true={popoverButton}>
+                    <button
+                        class="slds-popover slds-nubbin_bottom avonni-progress-step-popover"
+                        tabindex="0"
+                        onclick={handleStepPopoverClick}
+                    >
+                        <div class="slds-popover__body slds-text-align_center">
+                            <template if:true={showLabelNubbin}>
+                                {label}
+                            </template>
+                            <template if:true={showDescriptionNubbin}>
+                                {description}
+                            </template>
+                            <template if:true={showIconNubbin}>
+                                <lightning-icon
+                                    icon-name={iconName}
+                                    size={iconSize}
+                                    src={iconSrc}
+                                ></lightning-icon>
+                            </template>
+                            <template if:true={showButtonNubbin}>
+                                <lightning-button
+                                    name={buttonName}
+                                    label={buttonLabel}
+                                    title={buttonTitle}
+                                    variant={buttonVariant}
+                                    disabled={buttonDisabled}
+                                    icon-name={buttonIconName}
+                                    icon-position={buttonIconPosition}
+                                ></lightning-button>
+                            </template>
+                        </div>
+                    </button>
+                </template>
                 <span if:true={assistiveText} class="slds-assistive-text"
                     >{assistiveText}</span
                 >

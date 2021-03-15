@@ -59,3 +59,10 @@
     width: 100%;
     right: -60px;
 }
+
+.avonni-progress-step-popover {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -130%);
+    width: 100%;
+}

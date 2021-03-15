@@ -111,22 +111,24 @@ const steps = [
     {
         value: 3,
         label: '3',
-        labelPosition: 'top',
+        labelPosition: 'inside-nubbin',
         assistiveText: '3',
         buttonName: 'button',
         buttonLabel: 'doing',
         buttonTitle: 'title',
         buttonVariant: 'success',
-        buttonDisabled: true
+        buttonDisabled: true,
+        popoverState: 'button'
     },
     {
         value: 4,
         label: '4',
-        labelPosition: 'bottom',
+        labelPosition: 'inside-nubbin',
         buttonName: 'button',
         buttonLabel: 'Completed',
         buttonTitle: 'title',
-        buttonVariant: 'brand'
+        buttonVariant: 'brand',
+        popoverState: 'show'
     },
     {
         value: 5,
@@ -134,7 +136,7 @@ const steps = [
         labelPosition: 'inside-nubbin',
         description: 'step #5',
         descriptionPosition: 'inside-nubbin',
-        popoverState: 'show',
+        popoverState: 'hover',
         iconName: 'utility:down',
         iconSize: 'large',
         iconPosition: 'inside-nubbin'
