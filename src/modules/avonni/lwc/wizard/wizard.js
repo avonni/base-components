@@ -18,18 +18,6 @@ export default class Wizard extends LightningElement {
         this.navigation = event.detail;
     }
 
-    connectedCallback() {
-        this.addEventListener('complete', () => {
-            this.dispatchEvent(
-                new CustomEvent('complete', {
-                    bubbles: false,
-                    cancelable: false,
-                    composed: false
-                })
-            );
-        });
-    }
-
     renderedCallback() {
         if (!this._rendered) {
             this._rendered = true;

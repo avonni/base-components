@@ -58,7 +58,7 @@ export default class WizardNavigation extends LightningElement {
     hidePreviousButton;
     hideNextFinishButton;
     previousButtonColClass;
-    progressColClass;
+    progressColClass = 'slds-text-align_left';
     actionsNextFinishButtonColClass;
     actionsSlotColClass;
     nextFinishButtonColClass;
@@ -153,7 +153,9 @@ export default class WizardNavigation extends LightningElement {
             this.actionsNextFinishButtonColClass =
                 bump === 'right' ? 'slds-order_3' : 'slds-order_2';
             this.progressColClass =
-                bump === 'right' ? 'slds-order_1' : 'slds-order_3';
+                bump === 'right'
+                    ? 'slds-order_1 slds-text-align_left'
+                    : 'slds-order_3 slds-text-align_right';
             this.previousButtonColClass =
                 bump === 'right' ? 'slds-order_2' : 'slds-order_1';
         }
