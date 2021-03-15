@@ -65,4 +65,8 @@
     left: 50%;
     transform: translate(-50%, -130%);
     width: 100%;
+    background-color: var(
+        --avonni-c-progress-indicator-step-color-background,
+        white
+    );
 }

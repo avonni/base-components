@@ -73,10 +73,7 @@ export default class ProgressIndicator extends LightningElement {
     updateCurrentStep() {
         const steps = this.getSteps();
         steps.forEach((step) => {
-            if (
-                parseInt(step.getAttribute('data-step'), 10) ===
-                this.currentStep
-            ) {
+            if (step.getAttribute('data-step') === this.currentStep) {
                 step.classList.add('slds-is-active');
             }
         });
@@ -86,7 +83,7 @@ export default class ProgressIndicator extends LightningElement {
         const steps = this.getSteps();
         steps.forEach((step) => {
             this.errorSteps.forEach((error) => {
-                if (parseInt(step.getAttribute('data-step'), 10) === error) {
+                if (step.getAttribute('data-step') === error) {
                     step.setIcon('utility:error');
                     step.classList.add('slds-has-error');
                 }
@@ -98,7 +95,7 @@ export default class ProgressIndicator extends LightningElement {
         const steps = this.getSteps();
         steps.forEach((step) => {
             this.warningSteps.forEach((warning) => {
-                if (parseInt(step.getAttribute('data-step'), 10) === warning) {
+                if (step.getAttribute('data-step') === warning) {
                     step.setIcon('utility:warning');
                     step.classList.add('slds-has-error');
                 }
@@ -110,9 +107,7 @@ export default class ProgressIndicator extends LightningElement {
         const steps = this.getSteps();
         steps.forEach((step) => {
             this.completedSteps.forEach((completed) => {
-                if (
-                    parseInt(step.getAttribute('data-step'), 10) === completed
-                ) {
+                if (step.getAttribute('data-step') === completed) {
                     step.setIcon('utility:success');
                     step.classList.add('slds-is-completed');
                 }
@@ -124,7 +119,7 @@ export default class ProgressIndicator extends LightningElement {
         const steps = this.getSteps();
         steps.forEach((step) => {
             this.disabledSteps.forEach((disabled) => {
-                if (parseInt(step.getAttribute('data-step'), 10) === disabled) {
+                if (step.getAttribute('data-step') === disabled) {
                     step.classList.add('slds-is-disabled');
                 }
             });

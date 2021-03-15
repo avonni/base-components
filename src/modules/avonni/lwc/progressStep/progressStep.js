@@ -4,7 +4,7 @@ import { classSet } from 'c/utils';
 
 const POPOVER_STATE = {
     valid: ['show', 'hidden', 'hover', 'button'],
-    default: 'hidden'
+    default: 'hover'
 };
 
 const POSITIONS = { valid: ['top', 'bottom', 'inside-nubbin'], default: 'top' };
@@ -38,6 +38,7 @@ export default class ProgressStep extends LightningElement {
     @api buttonIconName;
     @api buttonTitle;
     @api assistiveText;
+    @api disabledSteps = [];
 
     stepIconName;
     _value;
@@ -56,9 +57,21 @@ export default class ProgressStep extends LightningElement {
 
     connectedCallback() {
         this.classList.add('slds-progress__item');
+        console.log(this._value);
     }
 
-    renderedCallback() {}
+    renderedCallback() {
+        this.isDisabled();
+    }
+
+    isDisabled() {
+        const buttons = this.template.querySelectorAll('button');
+        buttons.forEach((button) => {
+            if (this.disabledSteps.includes(this.getAttribute('data-button'))) {
+                button.setAttribute('disabled');
+            }
+        });
+    }
 
     @api
     get value() {
@@ -131,18 +144,6 @@ export default class ProgressStep extends LightningElement {
     }
 
     @api
-    get buttonPosition() {
-        return this._buttonPosition;
-    }
-
-    set buttonPosition(position) {
-        this._buttonPosition = normalizeString(position, {
-            fallbackValue: POSITIONS.default,
-            validValues: POSITIONS.valid
-        });
-    }
-
-    @api
     get buttonIconPosition() {
         return this._buttonIconPosition;
     }
@@ -176,14 +177,9 @@ export default class ProgressStep extends LightningElement {
     }
 
     get computedButtonClass() {
-        const classes = classSet(
-            'slds-button slds-progress__marker slds-dropdown-trigger slds-dropdown-trigger_click'
-        );
+        const classes = classSet('slds-button slds-progress__marker');
         if (this.stepIconName) {
-            classes
-                .add('slds-button_icon')
-                .add('slds-progress__marker_icon')
-                .add('slds-progress__marker_icon-success');
+            classes.add('slds-button_icon').add('slds-progress__marker_icon');
         }
         return classes.toString();
     }

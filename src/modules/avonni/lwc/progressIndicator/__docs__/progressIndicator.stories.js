@@ -118,20 +118,22 @@ const steps = [
         buttonTitle: 'title',
         buttonVariant: 'success',
         buttonDisabled: true,
-        popoverState: 'button'
+        popoverState: 'show'
     },
     {
-        value: 4,
+        value: 'sam',
         label: '4',
         labelPosition: 'inside-nubbin',
+        description: 'This is button popover',
+        descriptionPosition: 'inside-nubbin',
         buttonName: 'button',
         buttonLabel: 'Completed',
         buttonTitle: 'title',
         buttonVariant: 'brand',
-        popoverState: 'show'
+        popoverState: 'button'
     },
     {
-        value: 5,
+        value: '5',
         label: '5',
         labelPosition: 'inside-nubbin',
         description: 'step #5',
@@ -149,10 +151,10 @@ export const Base = Template.bind({});
 Base.args = {
     type: 'base',
     variant: 'base',
-    currentStep: 1,
+    currentStep: 'sam',
     steps: steps,
-    errorSteps: [3],
-    warningSteps: [5],
-    completedSteps: [2],
-    disabledSteps: []
+    errorSteps: ['1'],
+    warningSteps: ['5'],
+    completedSteps: ['4'],
+    disabledSteps: ['2']
 };
