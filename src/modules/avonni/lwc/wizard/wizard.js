@@ -4,18 +4,35 @@ export default class Wizard extends LightningElement {
     _rendered;
     _currentStep;
 
-    steps;
+    steps = [];
+    navigation;
+
+    handleStepRegister(event) {
+        event.stopPropagation();
+
+        const step = event.detail;
+        this.steps.push(step);
+    }
+
+    handleNavigationRegister(event) {
+        this.navigation = event.detail;
+    }
+
+    connectedCallback() {
+        this.addEventListener('complete', () => {
+            this.dispatchEvent(
+                new CustomEvent('complete', {
+                    bubbles: false,
+                    cancelable: false,
+                    composed: false
+                })
+            );
+        });
+    }
 
     renderedCallback() {
-        const slot = this.template.querySelector('slot:not([name])');
-
-        if (!this._rendered && slot) {
+        if (!this._rendered) {
             this._rendered = true;
-            const slotElements = slot.assignedElements();
-            this.steps = slotElements.filter(
-                (element) => element.tagName === 'AVONNI-WIZARD-STEP'
-            );
-
             if (this.steps.length === 0) return;
 
             // Make sure all steps have a name
@@ -29,51 +46,16 @@ export default class Wizard extends LightningElement {
             }
 
             this._updateStepDisplay();
-            this._linkNavigation(slotElements);
+            this.navigation.callbacks.setSteps(this.steps);
+            this.navigation.callbacks.setCurrentStep(this.currentStep);
         }
     }
 
     _updateStepDisplay() {
         this.steps.forEach((step) => {
-            step.setAttribute('style', 'display: none;');
+            step.callbacks.setClass('avonni-wizard-step_hidden');
         });
-        this.steps[this.currentStepIndex].removeAttribute('style');
-    }
-
-    _linkNavigation(slotElements) {
-        const navigation = slotElements.find(
-            (element) => element.tagName === 'AVONNI-WIZARD-NAVIGATION'
-        );
-        if (!navigation) return;
-
-        navigation.steps = this.steps;
-        navigation.currentStep = this.currentStep;
-
-        navigation.addEventListener('change', (event) => {
-            this._currentStep = event.detail.currentStep;
-            this._updateStepDisplay();
-
-            this.dispatchEvent(
-                new CustomEvent('change', {
-                    detail: {
-                        currentStep: this._currentStep,
-                        oldStep: event.detail.oldStep
-                    },
-                    bubbles: false,
-                    cancelable: false,
-                    composed: false
-                })
-            );
-        });
-        navigation.addEventListener('complete', () => {
-            this.dispatchEvent(
-                new CustomEvent('complete', {
-                    bubbles: false,
-                    cancelable: false,
-                    composed: false
-                })
-            );
-        });
+        this.steps[this.currentStepIndex].callbacks.setClass(undefined);
     }
 
     get currentStepIndex() {
@@ -87,5 +69,36 @@ export default class Wizard extends LightningElement {
     }
     set currentStep(name) {
         this._currentStep = name;
+    }
+
+    handleChange(event) {
+        event.stopPropagation();
+
+        this._currentStep = event.detail.currentStep;
+        this._updateStepDisplay();
+
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                detail: {
+                    currentStep: this._currentStep,
+                    oldStep: event.detail.oldStep
+                },
+                bubbles: false,
+                cancelable: false,
+                composed: false
+            })
+        );
+    }
+
+    handleComplete(event) {
+        event.stopPropagation();
+
+        this.dispatchEvent(
+            new CustomEvent('complete', {
+                bubbles: false,
+                cancelable: false,
+                composed: false
+            })
+        );
     }
 }

@@ -1,8 +1,11 @@
-import Component from '../../storybookWrappers/wizard/wizard';
+import BaseWrapper from '../../storybookWrappers/wizard/base';
 
-customElements.define('ac-avonni-wizard', Component.CustomElementConstructor);
+customElements.define(
+    'ac-avonni-base-wizard',
+    BaseWrapper.CustomElementConstructor
+);
 
-export const Wizard = ({
+export const BaseWizard = ({
     currentStep,
     indicatorType,
     hideIndicator,
@@ -24,7 +27,7 @@ export const Wizard = ({
     fractionPrefixLabel,
     fractionLabel
 }) => {
-    const element = document.createElement('ac-avonni-wizard');
+    const element = document.createElement('ac-avonni-base-wizard');
     element.currentStep = currentStep;
     element.indicatorType = indicatorType;
     element.hideIndicator = hideIndicator;

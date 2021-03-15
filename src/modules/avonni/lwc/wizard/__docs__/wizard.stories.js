@@ -1,4 +1,5 @@
-import { Wizard } from '../__examples__/wizard';
+import { BaseWizard } from '../__examples__/base';
+import { ModalWizard } from '../__examples__/modal';
 
 export default {
     title: 'Example/Wizard',
@@ -245,21 +246,8 @@ export default {
     }
 };
 
-const Template = (args) => Wizard(args);
+const BaseTemplate = (args) => BaseWizard(args);
+const ModalTemplate = (args) => ModalWizard(args);
 
-export const Base = Template.bind({});
-
-export const Modal = Template.bind({});
-Modal.args = {
-    indicatorType: 'bar',
-    buttonPreviousIconName: 'utility:back',
-    buttonPreviousLabel: 'Back',
-    buttonNextIconName: 'utility:forward',
-    buttonNextIconPosition: 'right',
-    buttonNextLabel: 'Continue',
-    buttonNextVariant: 'brand',
-    buttonFinishIconName: 'utility:check',
-    buttonFinishIconPosition: 'right',
-    buttonFinishLabel: 'Done',
-    buttonFinishVariant: 'success'
-};
+export const Base = BaseTemplate.bind({});
+export const Modal = ModalTemplate.bind({});

@@ -1,0 +1,65 @@
+<template>
+    <avonni-wizard current-step={currentStep}>
+        <avonni-dialog show-dialog="true">
+            <div slot="title">Wizard inside a modal</div>
+            <avonni-wizard-step label="First step" name="first-step">
+                <h2 class="slds-text-heading_small slds-m-bottom_small">
+                    This step has these properties set:
+                </h2>
+                <ul>
+                    <li><strong>label:</strong> "First step"</li>
+                    <li><strong>name:</strong> "first-step"</li>
+                </ul>
+            </avonni-wizard-step>
+            <avonni-wizard-step hide-previous-button="true" label="Second step">
+                <h2 class="slds-text-heading_small slds-m-bottom_small">
+                    This step has these properties set:
+                </h2>
+                <ul>
+                    <li><strong>label:</strong> "Second step"</li>
+                    <li><strong>hide-previous-button:</strong> "true"</li>
+                </ul>
+            </avonni-wizard-step>
+            <avonni-wizard-step>
+                <h2 class="slds-text-heading_small slds-m-bottom_small">
+                    This step has no property set.
+                </h2>
+            </avonni-wizard-step>
+            <avonni-wizard-step label="Last step">
+                <h2 class="slds-text-heading_small slds-m-bottom_small">
+                    This step has these properties set:
+                </h2>
+                <ul>
+                    <li><strong>label:</strong> "Last step"</li>
+                </ul>
+            </avonni-wizard-step>
+
+            <avonni-wizard-navigation
+                slot="footer"
+                indicator-type={indicatorType}
+                hide-indicator={hideIndicator}
+                button-previous-icon-name={buttonPreviousIconName}
+                button-previous-icon-position={buttonPreviousIconPosition}
+                button-previous-label={buttonPreviousLabel}
+                button-previous-variant={buttonPreviousVariant}
+                button-next-icon-name={buttonNextIconName}
+                button-next-icon-position={buttonNextIconPosition}
+                button-next-label={buttonNextLabel}
+                button-next-variant={buttonNextVariant}
+                button-finish-icon-name={buttonFinishIconName}
+                button-finish-icon-position={buttonFinishIconPosition}
+                button-finish-variant={buttonFinishVariant}
+                button-finish-label={buttonFinishLabel}
+                action-position={actionPosition}
+                button-alignment-bump={buttonAlignmentBump}
+                fraction-prefix-label={fractionPrefixLabel}
+                fraction-label={fractionLabel}
+            >
+                <lightning-button
+                    label="Action"
+                    variant="brand"
+                ></lightning-button>
+            </avonni-wizard-navigation>
+        </avonni-dialog>
+    </avonni-wizard>
+</template>

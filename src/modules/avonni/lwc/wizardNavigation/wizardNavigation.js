@@ -22,12 +22,11 @@ const INDICATOR_TYPES = [
 ];
 
 export default class WizardNavigation extends LightningElement {
-    @api steps;
     @api buttonPreviousIconName;
     @api buttonNextIconName;
     @api buttonFinishIconName;
 
-    _currentStep;
+    _rendered;
     _indicatorType = 'base';
     _hideIndicator;
     _buttonPreviousIconPosition = 'left';
@@ -44,6 +43,8 @@ export default class WizardNavigation extends LightningElement {
     _fractionPrefixLabel = 'Steps';
     _fractionLabel = 'of';
 
+    steps;
+    currentStep;
     lastStep;
     progressIndicatorVariant = 'base';
     progressIndicatorType = 'base';
@@ -63,17 +64,37 @@ export default class WizardNavigation extends LightningElement {
     nextFinishButtonColClass;
 
     connectedCallback() {
-        // Apply settings of buttonAlignmentBump and actionPosition.
+        // Apply buttonAlignmentBump and actionPosition.
         this._reorderColumns();
+
+        const navigationRegister = new CustomEvent('wizardnavigationregister', {
+            bubbles: true,
+            detail: {
+                callbacks: {
+                    setSteps: this.setSteps,
+                    setCurrentStep: this.setCurrentStep
+                }
+            }
+        });
+
+        this.dispatchEvent(navigationRegister);
     }
 
     renderedCallback() {
         // steps and currentStep are set automatically by the parent avonni-wizard
-        if (this.steps) {
+        if (!this._rendered && this.steps) {
+            this._rendered = true;
             this._initIndicator();
             this._updateSteps();
         }
     }
+
+    setSteps = (value) => {
+        this.steps = value;
+    };
+    setCurrentStep = (value) => {
+        this.currentStep = value;
+    };
 
     _initIndicator() {
         switch (this.indicatorType) {
@@ -103,24 +124,27 @@ export default class WizardNavigation extends LightningElement {
     }
 
     _updateSteps() {
-        const currentStepComponent = this.steps[this.currentStepIndex];
+        const currentStepIndex = this.currentStepIndex;
+        const currentStep = this.steps[currentStepIndex];
 
         this.lastStep =
-            this.currentStepIndex === this.steps.length - 1 ? true : false;
+            currentStepIndex === this.steps.length - 1 ? true : false;
         this.progressBarValue =
-            (this.currentStepIndex / (this.steps.length - 1)) * 100;
-        this.fractionCurrentStep = this.currentStepIndex + 1;
-        this.hidePreviousButton = currentStepComponent.hidePreviousButton;
-        this.hideNextFinishButton = currentStepComponent.hideNextFinishButton;
+            (currentStepIndex / (this.steps.length - 1)) * 100;
+        this.fractionCurrentStep = currentStepIndex + 1;
+        this.hidePreviousButton = currentStep.hidePreviousButton;
+        this.hideNextFinishButton = currentStep.hideNextFinishButton;
 
         // Add info to step for bullet variant
-        this.steps.forEach((step) => {
-            step.selected = false;
-            step.bulletClass = 'slds-carousel__indicator-action';
-        });
-        currentStepComponent.selected = true;
-        currentStepComponent.bulletClass =
-            'slds-carousel__indicator-action slds-is-active';
+        if (this.indicatorType === 'bullet') {
+            this.steps.forEach((step) => {
+                step.selected = false;
+                step.bulletClass = 'slds-carousel__indicator-action';
+            });
+            currentStep.selected = true;
+            currentStep.bulletClass =
+                'slds-carousel__indicator-action slds-is-active';
+        }
     }
 
     _reorderColumns() {
@@ -147,14 +171,6 @@ export default class WizardNavigation extends LightningElement {
 
     get showIndicator() {
         return this.steps && !this.hideIndicator;
-    }
-
-    @api
-    get currentStep() {
-        return this._currentStep;
-    }
-    set currentStep(name) {
-        this._currentStep = name;
     }
 
     @api
@@ -310,12 +326,12 @@ export default class WizardNavigation extends LightningElement {
 
         if (button === 'previous') {
             // If user clicks 'previous' on first step, currentStep === oldStep
-            this._currentStep =
+            this.currentStep =
                 this.currentStepIndex === 0
-                    ? this._currentStep
+                    ? this.currentStep
                     : this.steps[this.currentStepIndex - 1].name;
         } else {
-            this._currentStep = this.steps[this.currentStepIndex + 1].name;
+            this.currentStep = this.steps[this.currentStepIndex + 1].name;
         }
 
         this.dispatchEvent(
@@ -324,7 +340,7 @@ export default class WizardNavigation extends LightningElement {
                     currentStep: this.currentStep,
                     oldStep: oldStep
                 },
-                bubbles: false,
+                bubbles: true,
                 cancelable: false,
                 composed: false
             })
@@ -336,7 +352,7 @@ export default class WizardNavigation extends LightningElement {
     handleFinishClick() {
         this.dispatchEvent(
             new CustomEvent('complete', {
-                bubbles: false,
+                bubbles: true,
                 cancelable: false,
                 composed: false
             })

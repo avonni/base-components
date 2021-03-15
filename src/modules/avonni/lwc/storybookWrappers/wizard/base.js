@@ -1,9 +1,7 @@
 import { LightningElement, api } from 'lwc';
 
-export default class Wizard extends LightningElement {
-    @api title;
+export default class Base extends LightningElement {
     @api currentStep;
-    @api variant;
     @api indicatorType;
     @api hideIndicator;
     @api buttonPreviousIconName;
