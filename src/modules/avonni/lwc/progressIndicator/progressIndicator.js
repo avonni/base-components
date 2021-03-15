@@ -7,7 +7,7 @@ const TYPES = { valid: ['base', 'arrow'], default: 'base' };
 const VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
 
 export default class ProgressIndicator extends LightningElement {
-    @api currentStep = 1;
+    @api currentStep;
     @api errorSteps = [];
     @api warningSteps = [];
     @api completedSteps = [];
@@ -18,6 +18,7 @@ export default class ProgressIndicator extends LightningElement {
     _initialRender = true;
 
     renderedCallback() {
+        console.log(this.currentStep);
         if (this._initialRender) {
             this.updateErrorSteps();
             this.updateWarningSteps();
@@ -75,17 +76,19 @@ export default class ProgressIndicator extends LightningElement {
 
     updateCurrentStep() {
         const steps = this.getSteps();
-        steps.forEach((step) => {
-            if (step.getAttribute('data-step') === this.currentStep) {
-                step.classList.add('slds-is-active');
-            }
-        });
+        if (this.currentStep) {
+            steps.forEach((step) => {
+                if (step.getAttribute('data-step') === this.currentStep) {
+                    step.classList.add('slds-is-active');
+                }
+            });
+        } else steps[0].classList.add('slds-is-active');
     }
 
     updateErrorSteps() {
         const steps = this.getSteps();
         steps.forEach((step) => {
-            this.errorSteps.forEach((error) => {
+            Array.from(this.errorSteps).forEach((error) => {
                 if (step.getAttribute('data-step') === error) {
                     step.setIcon('utility:error');
                     step.classList.add('slds-has-error');
@@ -97,7 +100,7 @@ export default class ProgressIndicator extends LightningElement {
     updateWarningSteps() {
         const steps = this.getSteps();
         steps.forEach((step) => {
-            this.warningSteps.forEach((warning) => {
+            Array.from(this.warningSteps).forEach((warning) => {
                 if (step.getAttribute('data-step') === warning) {
                     step.setIcon('utility:warning');
                     step.classList.add('slds-has-error');
@@ -109,7 +112,7 @@ export default class ProgressIndicator extends LightningElement {
     updateCompletedSteps() {
         const steps = this.getSteps();
         steps.forEach((step) => {
-            this.completedSteps.forEach((completed) => {
+            Array.from(this.completedSteps).forEach((completed) => {
                 if (step.getAttribute('data-step') === completed) {
                     step.setIcon('utility:success');
                     step.classList.add('slds-is-completed');

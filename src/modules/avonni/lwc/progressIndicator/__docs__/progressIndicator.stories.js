@@ -88,7 +88,7 @@ export default {
 
 const steps = [
     {
-        value: 1,
+        value: '1',
         label: '1',
         labelPosition: 'top',
         assistiveText: '1',
@@ -100,28 +100,21 @@ const steps = [
         buttonVariant: 'success'
     },
     {
-        value: 2,
+        value: '2',
         label: '2',
         labelPosition: 'bottom',
         assistiveText: '2',
-        iconName: 'utility:down',
-        iconSize: 'large',
-        iconPosition: 'top'
+        description: 'This is button #2'
     },
     {
-        value: 3,
+        value: '3',
         label: '3',
         labelPosition: 'inside-nubbin',
         assistiveText: '3',
-        buttonName: 'button',
-        buttonLabel: 'doing',
-        buttonTitle: 'title',
-        buttonVariant: 'success',
-        buttonDisabled: 'true',
         popoverState: 'show'
     },
     {
-        value: 'sam',
+        value: '4',
         label: '4',
         labelPosition: 'inside-nubbin',
         description: 'This is button popover',
@@ -151,9 +144,8 @@ export const Base = Template.bind({});
 Base.args = {
     type: 'base',
     variant: 'base',
-    currentStep: '2',
     steps: steps,
-    errorSteps: ['1'],
+    errorSteps: ['2'],
     warningSteps: ['5'],
     completedSteps: ['sam'],
     disabledSteps: ['1']
