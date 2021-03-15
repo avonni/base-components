@@ -3,16 +3,6 @@ import { Wizard } from '../__examples__/wizard';
 export default {
     title: 'Example/Wizard',
     argTypes: {
-        title: {
-            control: {
-                type: 'text'
-            },
-            description:
-                'The title can include text, and is displayed in the header. To include additional markup or another component, use the title slot.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
         currentStep: {
             control: {
                 type: 'text'
@@ -20,18 +10,6 @@ export default {
             description:
                 'Set current-step to match the name attribute of one of wizard-step components. If current-step is not provided, the name of the first wizard-step component is used.',
             table: {
-                type: { summary: 'string' }
-            }
-        },
-        variant: {
-            control: {
-                type: 'select',
-                options: ['base', 'modal', 'popover']
-            },
-            defaultValue: 'base',
-            description: 'Valid values include base, modal and popover.',
-            table: {
-                defaultValue: 'base',
                 type: { summary: 'string' }
             }
         },
@@ -240,18 +218,6 @@ export default {
                 defaultValue: 'left'
             }
         },
-        navigationPosition: {
-            control: {
-                type: 'select',
-                options: ['top', 'bottom']
-            },
-            defaultValue: 'bottom',
-            description: 'Valid values include top and bottom.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: 'bottom'
-            }
-        },
         fractionPrefixLabel: {
             control: {
                 type: 'text'
@@ -285,8 +251,6 @@ export const Base = Template.bind({});
 
 export const Modal = Template.bind({});
 Modal.args = {
-    title: 'Avonni Wizard Modal',
-    variant: 'modal',
     indicatorType: 'bar',
     buttonPreviousIconName: 'utility:back',
     buttonPreviousLabel: 'Back',
@@ -298,15 +262,4 @@ Modal.args = {
     buttonFinishIconPosition: 'right',
     buttonFinishLabel: 'Done',
     buttonFinishVariant: 'success'
-};
-
-export const Popover = Template.bind({});
-Popover.args = {
-    title: 'Avonni Wizard Popover',
-    variant: 'popover',
-    indicatorType: 'fractions',
-    actionPosition: 'right',
-    buttonNextVariant: 'success',
-    buttonFinishVariant: 'success',
-    buttonAlignmentBump: 'right'
 };

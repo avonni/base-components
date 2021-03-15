@@ -3,9 +3,7 @@ import Component from '../../storybookWrappers/wizard/wizard';
 customElements.define('ac-avonni-wizard', Component.CustomElementConstructor);
 
 export const Wizard = ({
-    title,
     currentStep,
-    variant,
     indicatorType,
     hideIndicator,
     buttonPreviousIconName,
@@ -27,9 +25,7 @@ export const Wizard = ({
     fractionLabel
 }) => {
     const element = document.createElement('ac-avonni-wizard');
-    element.title = title;
     element.currentStep = currentStep;
-    element.variant = variant;
     element.indicatorType = indicatorType;
     element.hideIndicator = hideIndicator;
     element.buttonPreviousIconName = buttonPreviousIconName;

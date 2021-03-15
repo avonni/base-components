@@ -339,6 +339,10 @@
             "path": "src/modules/avonni/lwc/wizard/wizard.js"
         },
         {
+            "name": "c/wizardNavigation",
+            "path": "src/modules/avonni/lwc/wizardNavigation/wizardNavigation.js"
+        },
+        {
             "name": "c/wizardStep",
             "path": "src/modules/avonni/lwc/wizardStep/wizardStep.js"
         },
@@ -595,6 +599,10 @@
             "path": "src/modules/avonni/lwc/wizard/wizard.js"
         },
         {
+            "name": "avonni/wizardNavigation",
+            "path": "src/modules/avonni/lwc/wizardNavigation/wizardNavigation.js"
+        },
+        {
             "name": "avonni/wizardStep",
             "path": "src/modules/avonni/lwc/wizardStep/wizardStep.js"
         }
@@ -662,6 +670,7 @@
         "avonni/verticalProgressStep",
         "avonni/visualPicker",
         "avonni/wizard",
+        "avonni/wizardNavigation",
         "avonni/wizardStep"
     ]
 }

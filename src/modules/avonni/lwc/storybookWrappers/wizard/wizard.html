@@ -1,35 +1,5 @@
 <template>
-    <avonni-wizard
-        title={title}
-        current-step={currentStep}
-        variant={variant}
-        indicator-type={indicatorType}
-        hide-indicator={hideIndicator}
-        button-previous-icon-name={buttonPreviousIconName}
-        button-previous-icon-position={buttonPreviousIconPosition}
-        button-previous-label={buttonPreviousLabel}
-        button-previous-variant={buttonPreviousVariant}
-        button-next-icon-name={buttonNextIconName}
-        button-next-icon-position={buttonNextIconPosition}
-        button-next-label={buttonNextLabel}
-        button-next-variant={buttonNextVariant}
-        button-finish-icon-name={buttonFinishIconName}
-        button-finish-icon-position={buttonFinishIconPosition}
-        button-finish-variant={buttonFinishVariant}
-        button-finish-label={buttonFinishLabel}
-        action-position={actionPosition}
-        navigation-position={navigationPosition}
-        button-alignment-bump={buttonAlignmentBump}
-        fraction-prefix-label={fractionPrefixLabel}
-        fraction-label={fractionLabel}
-    >
-        <div slot="title">Title slot</div>
-        <div
-            slot="actions"
-            class="slds-p-vertical_xx-small slds-p-horizontal_x-small"
-        >
-            Action slot
-        </div>
+    <avonni-wizard current-step={currentStep}>
         <avonni-wizard-step label="First step" name="first-step">
             <h2 class="slds-text-heading_small slds-m-bottom_small">
                 This step has these properties set:
@@ -61,5 +31,30 @@
                 <li><strong>label:</strong> "Last step"</li>
             </ul>
         </avonni-wizard-step>
+
+        <avonni-wizard-navigation
+            indicator-type={indicatorType}
+            hide-indicator={hideIndicator}
+            button-previous-icon-name={buttonPreviousIconName}
+            button-previous-icon-position={buttonPreviousIconPosition}
+            button-previous-label={buttonPreviousLabel}
+            button-previous-variant={buttonPreviousVariant}
+            button-next-icon-name={buttonNextIconName}
+            button-next-icon-position={buttonNextIconPosition}
+            button-next-label={buttonNextLabel}
+            button-next-variant={buttonNextVariant}
+            button-finish-icon-name={buttonFinishIconName}
+            button-finish-icon-position={buttonFinishIconPosition}
+            button-finish-variant={buttonFinishVariant}
+            button-finish-label={buttonFinishLabel}
+            action-position={actionPosition}
+            button-alignment-bump={buttonAlignmentBump}
+            fraction-prefix-label={fractionPrefixLabel}
+            fraction-label={fractionLabel}
+        >
+            <div class="slds-p-vertical_xx-small slds-p-horizontal_x-small">
+                Action slot
+            </div>
+        </avonni-wizard-navigation>
     </avonni-wizard>
 </template>
