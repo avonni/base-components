@@ -237,6 +237,16 @@ export default {
                 type: { summary: 'boolean' }
             }
         },
+        showDisabledDates: {
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If true, show the disabled dates in the date time picker.',
+            table: {
+                type: { summary: 'boolean' }
+            }
+        },
         dateFormatYear: {
             control: {
                 type: 'select',
@@ -328,11 +338,15 @@ Base.args = {
 export const Complex = Template.bind({});
 Complex.args = {
     label: 'Date picker',
-    disabledDateTimes: ['Wed', new Date('2021-03-12T13:00:00.00Z')],
+    disabledDateTimes: [
+        'Wed',
+        new Date('2021-03-16T12:00:00.00Z'),
+        new Date('2021-03-16T13:00:00.00Z')
+    ],
     showTimeZone: true,
     required: true,
     variant: 'weekly',
-    value: ['2021-03-13T13:00:00.000Z', '2021-03-13T14:00:00.000Z'],
+    value: ['2021-03-16T13:00:00.000Z', '2021-03-13T14:00:00.000Z'],
     type: 'checkbox',
     timeFormatHour12: false,
     showEndTime: true

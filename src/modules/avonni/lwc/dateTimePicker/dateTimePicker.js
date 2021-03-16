@@ -41,6 +41,7 @@ export default class DateTimePicker extends LightningElement {
     _dateFormatMonth;
     _dateFormatYear;
     _showEndTime;
+    _showDisabledDates;
     _type;
     _showTimeZone;
     _hideNavigation;
@@ -82,8 +83,6 @@ export default class DateTimePicker extends LightningElement {
     }
 
     renderedCallback() {
-        // TODO:
-        // Show disabled dates in date picker
         this.template.querySelector('lightning-input').reportValidity();
     }
 
@@ -278,6 +277,14 @@ export default class DateTimePicker extends LightningElement {
     }
 
     @api
+    get showDisabledDates() {
+        return this._showDisabledDates;
+    }
+    set showDisabledDates(boolean) {
+        this._showDisabledDates = normalizeBoolean(boolean);
+    }
+
+    @api
     get type() {
         return this._type;
     }
@@ -418,10 +425,16 @@ export default class DateTimePicker extends LightningElement {
                 )
             );
 
+            const disabled =
+                this.disabled ||
+                (this.disabledDateTimes && this._isDisabled(day));
+
             // Create dayTime object
             const dayTime = {
                 key: i,
                 day: day,
+                disabled: disabled,
+                show: !disabled || this.showDisabledDates,
                 isToday:
                     this.today.toLocaleDateString() ===
                     day.toLocaleDateString(),
@@ -449,9 +462,6 @@ export default class DateTimePicker extends LightningElement {
 
     //  /!\ Changes the dayTime object passed as argument.
     _createTimeSlots(dayTime) {
-        const dayIsDisabled =
-            this.disabledDateTimes && this._isDisabled(dayTime.day);
-
         this._timeSlots.forEach((timeSlot) => {
             const hour = parseInt(timeSlot.slice(0, 2), 10);
             const minutes = parseInt(timeSlot.slice(3, 5), 10);
@@ -469,13 +479,17 @@ export default class DateTimePicker extends LightningElement {
                 this.disabledDateTimes &&
                 this._disabledFullDateTimes.indexOf(time) > -1;
 
+            const disabled =
+                this.disabled || dayTime.disabled || timeIsDisabled;
+
             dayTime.times.push({
                 startTimeISO: day.toISOString(),
                 endTimeISO: new Date(
                     time + this.timeSlotDuration
                 ).toISOString(),
-                disabled: this.disabled || dayIsDisabled || timeIsDisabled,
-                selected: timeIsSelected
+                disabled: disabled,
+                selected: timeIsSelected,
+                show: !disabled || this.showDisabledDates
             });
         });
     }
@@ -489,16 +503,6 @@ export default class DateTimePicker extends LightningElement {
     }
 
     _isDisabled(dayObject) {
-        // TODO:
-        // Disable whole day from date.
-        //   Maybe pass an object to disable specific times, instead of passing a date with the right time?
-        //   => If a date object is given, disable whole day.
-        //   => If this object structure is given, disable only the specific time.
-        //   {
-        //       date: Date Object,
-        //       time: ISO time string
-        //   }
-
         // Remove time from the date object
         const day = new Date(new Date(dayObject).setHours(0, 0, 0, 0));
 

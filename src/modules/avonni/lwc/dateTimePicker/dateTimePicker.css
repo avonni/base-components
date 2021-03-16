@@ -23,11 +23,6 @@
     color: var(--lwc-colorTextBrand, #1589ee);
 }
 
-.avonni-date-time-picker__day-label,
-.avonni-date-time-picker__time {
-    flex: 1 1 auto;
-}
-
 .avonni-date-time-picker__time {
     padding: 2px;
 }

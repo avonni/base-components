@@ -105,54 +105,57 @@
     <!-- Hour table -->
     <div class="avonni-date-time-picker__table">
         <template for:each={table} for:item="day">
-            <div class="avonni-date-time-picker__day" key={day.key}>
-                <!-- Day label -->
-                <div
-                    if:true={day.label}
-                    aria-selected={day.selected}
-                    data-today={day.isToday}
-                    class="avonni-date-time-picker__day-label"
-                >
-                    {day.label}
-                </div>
-
-                <!-- Hours -->
-                <template for:each={day.times} for:item="time">
+            <template if:true={day.show}>
+                <div class="avonni-date-time-picker__day" key={day.key}>
+                    <!-- Day label -->
                     <div
-                        class="avonni-date-time-picker__time"
-                        key={time.startTimeISO}
+                        if:true={day.label}
+                        aria-selected={day.selected}
+                        data-today={day.isToday}
+                        class="avonni-date-time-picker__day-label"
                     >
-                        <button
-                            aria-selected={time.selected}
-                            class="avonni-date-time-picker__time-button"
-                            disabled={time.disabled}
-                            type="button"
-                            onclick={handleTimeSlotClick}
-                            aria-readonly={readOnly}
-                        >
-                            <lightning-formatted-date-time
-                                value={time.startTimeISO}
-                                time-zone={selectedTimeZone}
-                                hour={timeFormatHour}
-                                minute={timeFormatMinute}
-                                second={timeFormatSecond}
-                                hour12={timeFormatHour12}
-                            ></lightning-formatted-date-time>
-                            <template if:true={showEndTime}>
-                                &nbsp;-&nbsp;
-                                <lightning-formatted-date-time
-                                    value={time.endTimeISO}
-                                    time-zone={selectedTimeZone}
-                                    hour={timeFormatHour}
-                                    minute={timeFormatMinute}
-                                    second={timeFormatSecond}
-                                    hour12={timeFormatHour12}
-                                ></lightning-formatted-date-time>
-                            </template>
-                        </button>
+                        {day.label}
                     </div>
-                </template>
-            </div>
+                    <!-- Hours -->
+                    <template for:each={day.times} for:item="time">
+                        <template if:true={time.show}>
+                            <div
+                                class="avonni-date-time-picker__time"
+                                key={time.startTimeISO}
+                            >
+                                <button
+                                    aria-selected={time.selected}
+                                    class="avonni-date-time-picker__time-button"
+                                    disabled={time.disabled}
+                                    type="button"
+                                    onclick={handleTimeSlotClick}
+                                    aria-readonly={readOnly}
+                                >
+                                    <lightning-formatted-date-time
+                                        value={time.startTimeISO}
+                                        time-zone={selectedTimeZone}
+                                        hour={timeFormatHour}
+                                        minute={timeFormatMinute}
+                                        second={timeFormatSecond}
+                                        hour12={timeFormatHour12}
+                                    ></lightning-formatted-date-time>
+                                    <template if:true={showEndTime}>
+                                        &nbsp;-&nbsp;
+                                        <lightning-formatted-date-time
+                                            value={time.endTimeISO}
+                                            time-zone={selectedTimeZone}
+                                            hour={timeFormatHour}
+                                            minute={timeFormatMinute}
+                                            second={timeFormatSecond}
+                                            hour12={timeFormatHour12}
+                                        ></lightning-formatted-date-time>
+                                    </template>
+                                </button>
+                            </div>
+                        </template>
+                    </template>
+                </div>
+            </template>
         </template>
     </div>
 </template>
