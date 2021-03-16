@@ -100,10 +100,6 @@
                                 <template if:true={showDescriptionNubbin}>
                                     <p>{description}</p>
                                 </template>
-                            </div>
-                        </template>
-                        <template if:true={popoverIconVisible}>
-                            <div class="slds-popover__body">
                                 <template if:true={showIconNubbin}>
                                     <lightning-icon
                                         icon-name={iconName}
@@ -111,6 +107,14 @@
                                         src={iconSrc}
                                     ></lightning-icon>
                                 </template>
+                            </div>
+                        </template>
+                        <template if:true={popoverIconVisible}>
+                            <div class="slds-popover__body">
+                                <c-primitive-icon
+                                    icon-name="utility:add"
+                                    svg-class="slds-button__icon"
+                                ></c-primitive-icon>
                             </div>
                         </template>
                     </button>

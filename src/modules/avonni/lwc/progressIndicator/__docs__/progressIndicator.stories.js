@@ -97,35 +97,35 @@ const steps = [
         iconName: 'utility:add',
         iconPosition: 'inside-nubbin',
         popoverState: 'button-icon-name'
+    },
+    {
+        value: '2',
+        label: '2',
+        labelPosition: 'bottom',
+        assistiveText: '2',
+        description: 'This is button #2',
+        descriptionPosition: 'inside-nubbin',
+        popoverState: 'hidden'
+    },
+    {
+        value: '3',
+        label: '3',
+        labelPosition: 'inside-nubbin',
+        assistiveText: '3',
+        popoverState: 'show'
+    },
+    {
+        value: '4',
+        label: '4',
+        labelPosition: 'inside-nubbin',
+        description: 'This is button popover',
+        descriptionPosition: 'inside-nubbin',
+        buttonName: 'button',
+        buttonLabel: 'Completed',
+        buttonTitle: 'title',
+        buttonVariant: 'brand',
+        popoverState: 'button'
     }
-    // {
-    //     value: '2',
-    //     label: '2',
-    //     labelPosition: 'bottom',
-    //     assistiveText: '2',
-    //     description: 'This is button #2',
-    //     descriptionPosition: 'inside-nubbin',
-    //     popoverState: 'hidden'
-    // },
-    // {
-    //     value: '3',
-    //     label: '3',
-    //     labelPosition: 'inside-nubbin',
-    //     assistiveText: '3',
-    //     popoverState: 'show'
-    // },
-    // {
-    //     value: '4',
-    //     label: '4',
-    //     labelPosition: 'inside-nubbin',
-    //     description: 'This is button popover',
-    //     descriptionPosition: 'inside-nubbin',
-    //     buttonName: 'button',
-    //     buttonLabel: 'Completed',
-    //     buttonTitle: 'title',
-    //     buttonVariant: 'brand',
-    //     popoverState: 'button'
-    // },
     // {
     //     value: '5',
     //     label: '5',

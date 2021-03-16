@@ -86,10 +86,11 @@
 }
 
 .avonni-progress-step-sizing {
-    flex: 1 1 auto;
     position: relative;
 }
 
-.slds-progress__list {
+.slds-progress_horizontal .slds-progress__list {
     min-height: 11rem;
+    display: inline-flex;
+    justify-content: space-around;
 }
