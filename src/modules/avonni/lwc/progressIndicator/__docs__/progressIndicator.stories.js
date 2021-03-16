@@ -94,8 +94,6 @@ const steps = [
         assistiveText: '1',
         description: 'Step #1',
         descriptionPosition: 'inside-nubbin',
-        iconName: 'utility:add',
-        iconPosition: 'inside-nubbin',
         popoverState: 'button-icon-name'
     },
     {
@@ -106,26 +104,26 @@ const steps = [
         description: 'This is button #2',
         descriptionPosition: 'inside-nubbin',
         popoverState: 'hidden'
-    },
-    {
-        value: '3',
-        label: '3',
-        labelPosition: 'inside-nubbin',
-        assistiveText: '3',
-        popoverState: 'show'
-    },
-    {
-        value: '4',
-        label: '4',
-        labelPosition: 'inside-nubbin',
-        description: 'This is button popover',
-        descriptionPosition: 'inside-nubbin',
-        buttonName: 'button',
-        buttonLabel: 'Completed',
-        buttonTitle: 'title',
-        buttonVariant: 'brand',
-        popoverState: 'button'
     }
+    // {
+    //     value: '3',
+    //     label: '3',
+    //     labelPosition: 'inside-nubbin',
+    //     assistiveText: '3',
+    //     popoverState: 'show'
+    // },
+    // {
+    //     value: '4',
+    //     label: '4',
+    //     labelPosition: 'inside-nubbin',
+    //     description: 'This is button popover',
+    //     descriptionPosition: 'inside-nubbin',
+    //     buttonName: 'button',
+    //     buttonLabel: 'Completed',
+    //     buttonTitle: 'title',
+    //     buttonVariant: 'brand',
+    //     popoverState: 'button'
+    // }
     // {
     //     value: '5',
     //     label: '5',
@@ -137,6 +135,65 @@ const steps = [
     //     iconSize: 'large',
     //     iconPosition: 'inside-nubbin'
     // }
+];
+
+const stepsLWC = [
+    {
+        value: '1',
+        label: 'Merger & Acquisition',
+        labelPosition: 'bottom',
+        iconName: 'utility:merge',
+        iconPosition: 'inside-nubbin',
+        popoverState: 'button-icon-name'
+    },
+    {
+        value: '2',
+        label: 'Expansion',
+        labelPosition: 'bottom',
+        iconName: 'utility:rules',
+        iconPosition: 'inside-nubbin',
+        popoverState: 'button-icon-name'
+    },
+    {
+        value: '3',
+        label: 'Executive Change',
+        labelPosition: 'bottom',
+        iconName: 'utility:block_visitor',
+        iconPosition: 'inside-nubbin',
+        popoverState: 'button-icon-name'
+    },
+    {
+        value: '4',
+        label: 'Market Listing',
+        labelPosition: 'bottom',
+        iconName: 'utility:priority',
+        iconPosition: 'inside-nubbin',
+        popoverState: 'button-icon-name'
+    },
+    {
+        value: '5',
+        label: 'Bankruptcy',
+        labelPosition: 'bottom',
+        iconName: 'utility:error',
+        iconPosition: 'inside-nubbin',
+        popoverState: 'button-icon-name'
+    },
+    {
+        value: '6',
+        label: 'New Product Launch',
+        labelPosition: 'bottom',
+        iconName: 'utility:cases',
+        iconPosition: 'inside-nubbin',
+        popoverState: 'button-icon-name'
+    },
+    {
+        value: '7',
+        label: 'New Partnership',
+        labelPosition: 'bottom',
+        iconName: 'utility:change_record_type',
+        iconPosition: 'inside-nubbin',
+        popoverState: 'button-icon-name'
+    }
 ];
 
 const Template = (args) => ProgressIndicator(args);
@@ -160,5 +217,16 @@ Arrow.args = {
     errorSteps: ['2'],
     warningSteps: ['3'],
     completedSteps: ['4'],
+    disabledSteps: []
+};
+
+export const LWC = Template.bind({});
+LWC.args = {
+    type: 'base',
+    variant: 'base',
+    steps: stepsLWC,
+    errorSteps: [],
+    warningSteps: [],
+    completedSteps: [],
     disabledSteps: []
 };

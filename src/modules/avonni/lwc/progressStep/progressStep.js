@@ -237,13 +237,7 @@ export default class ProgressStep extends LightningElement {
     }
 
     get popoverButtonIconName() {
-        if (
-            (this.showDescriptionNubbin || this.showLabelNubbin) &&
-            this.showIconNubbin
-        ) {
-            return this._popoverState === 'button-icon-name';
-        }
-        return false;
+        return this._popoverState === 'button-icon-name';
     }
 
     get displayPopover() {

@@ -74,7 +74,7 @@
     position: absolute;
     left: 50%;
     transform: translate(-50%, -130%);
-    width: 100%;
+    width: 50%;
     background-color: var(
         --avonni-c-progress-indicator-step-color-background,
         #f4f6fe
@@ -86,7 +86,7 @@
     position: absolute;
     left: 50%;
     transform: translate(-50%, -130%);
-    width: 100%;
+    width: 50%;
     background-color: var(
         --avonni-c-progress-indicator-step-color-background,
         white
