@@ -90,51 +90,41 @@ const steps = [
     {
         value: '1',
         label: '1',
-        labelPosition: 'top',
+        labelPosition: 'bottom',
         assistiveText: '1',
-        description: 'Step #1',
-        descriptionPosition: 'inside-nubbin',
-        popoverState: 'button-icon-name'
+        description: 'This is step #1',
+        descriptionPosition: 'inside-nubbin'
     },
     {
         value: '2',
         label: '2',
         labelPosition: 'bottom',
         assistiveText: '2',
-        description: 'This is button #2',
-        descriptionPosition: 'inside-nubbin',
-        popoverState: 'hidden'
+        description: 'This is step #2',
+        descriptionPosition: 'inside-nubbin'
+    },
+    {
+        value: '3',
+        label: '3',
+        labelPosition: 'bottom',
+        assistiveText: '3',
+        description: 'This is step #3',
+        descriptionPosition: 'inside-nubbin'
+    },
+    {
+        value: '4',
+        label: '4',
+        labelPosition: 'bottom',
+        description: 'This is step #4',
+        descriptionPosition: 'inside-nubbin'
+    },
+    {
+        value: '5',
+        label: '5',
+        labelPosition: 'bottom',
+        description: 'This is step #5',
+        descriptionPosition: 'inside-nubbin'
     }
-    // {
-    //     value: '3',
-    //     label: '3',
-    //     labelPosition: 'inside-nubbin',
-    //     assistiveText: '3',
-    //     popoverState: 'show'
-    // },
-    // {
-    //     value: '4',
-    //     label: '4',
-    //     labelPosition: 'inside-nubbin',
-    //     description: 'This is button popover',
-    //     descriptionPosition: 'inside-nubbin',
-    //     buttonName: 'button',
-    //     buttonLabel: 'Completed',
-    //     buttonTitle: 'title',
-    //     buttonVariant: 'brand',
-    //     popoverState: 'button'
-    // }
-    // {
-    //     value: '5',
-    //     label: '5',
-    //     labelPosition: 'inside-nubbin',
-    //     description: 'step #5',
-    //     descriptionPosition: 'inside-nubbin',
-    //     popoverState: 'hover',
-    //     iconName: 'utility:down',
-    //     iconSize: 'large',
-    //     iconPosition: 'inside-nubbin'
-    // }
 ];
 
 const stepsLWC = [
@@ -203,9 +193,9 @@ Base.args = {
     type: 'base',
     variant: 'base',
     steps: steps,
-    errorSteps: ['2'],
-    warningSteps: ['3'],
-    completedSteps: ['4'],
+    errorSteps: ['1'],
+    warningSteps: ['5'],
+    completedSteps: ['2', '3', '4'],
     disabledSteps: []
 };
 
