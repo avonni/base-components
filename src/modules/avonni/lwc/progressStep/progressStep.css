@@ -70,6 +70,29 @@
     );
 }
 
+.avonni-progress-step-popover-button-icon {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -130%);
+    width: 100%;
+    background-color: var(
+        --avonni-c-progress-indicator-step-color-background,
+        #f4f6fe
+    );
+}
+
+.avonni-progress-step-popover-button-icon:focus,
+.avonni-progress-step-popover-button-icon:hover {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -130%);
+    width: 100%;
+    background-color: var(
+        --avonni-c-progress-indicator-step-color-background,
+        white
+    );
+}
+
 :host(.slds-has-warning) .slds-button {
     background-color: #ffffff;
 }

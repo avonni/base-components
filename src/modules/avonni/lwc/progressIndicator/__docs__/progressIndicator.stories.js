@@ -93,51 +93,50 @@ const steps = [
         labelPosition: 'top',
         assistiveText: '1',
         description: 'Step #1',
-        descriptionPosition: 'top',
-        buttonName: 'button',
-        buttonLabel: 'Press',
-        buttonTitle: 'title',
-        buttonVariant: 'success'
-    },
-    {
-        value: '2',
-        label: '2',
-        labelPosition: 'bottom',
-        assistiveText: '2',
-        description: 'This is button #2',
         descriptionPosition: 'inside-nubbin',
-        popoverState: 'hidden'
-    },
-    {
-        value: '3',
-        label: '3',
-        labelPosition: 'inside-nubbin',
-        assistiveText: '3',
-        popoverState: 'show'
-    },
-    {
-        value: '4',
-        label: '4',
-        labelPosition: 'inside-nubbin',
-        description: 'This is button popover',
-        descriptionPosition: 'inside-nubbin',
-        buttonName: 'button',
-        buttonLabel: 'Completed',
-        buttonTitle: 'title',
-        buttonVariant: 'brand',
-        popoverState: 'button'
-    },
-    {
-        value: '5',
-        label: '5',
-        labelPosition: 'inside-nubbin',
-        description: 'step #5',
-        descriptionPosition: 'inside-nubbin',
-        popoverState: 'hover',
-        iconName: 'utility:down',
-        iconSize: 'large',
-        iconPosition: 'inside-nubbin'
+        iconName: 'utility:add',
+        iconPosition: 'inside-nubbin',
+        popoverState: 'button-icon-name'
     }
+    // {
+    //     value: '2',
+    //     label: '2',
+    //     labelPosition: 'bottom',
+    //     assistiveText: '2',
+    //     description: 'This is button #2',
+    //     descriptionPosition: 'inside-nubbin',
+    //     popoverState: 'hidden'
+    // },
+    // {
+    //     value: '3',
+    //     label: '3',
+    //     labelPosition: 'inside-nubbin',
+    //     assistiveText: '3',
+    //     popoverState: 'show'
+    // },
+    // {
+    //     value: '4',
+    //     label: '4',
+    //     labelPosition: 'inside-nubbin',
+    //     description: 'This is button popover',
+    //     descriptionPosition: 'inside-nubbin',
+    //     buttonName: 'button',
+    //     buttonLabel: 'Completed',
+    //     buttonTitle: 'title',
+    //     buttonVariant: 'brand',
+    //     popoverState: 'button'
+    // },
+    // {
+    //     value: '5',
+    //     label: '5',
+    //     labelPosition: 'inside-nubbin',
+    //     description: 'step #5',
+    //     descriptionPosition: 'inside-nubbin',
+    //     popoverState: 'hover',
+    //     iconName: 'utility:down',
+    //     iconSize: 'large',
+    //     iconPosition: 'inside-nubbin'
+    // }
 ];
 
 const Template = (args) => ProgressIndicator(args);
@@ -150,7 +149,7 @@ Base.args = {
     errorSteps: ['2'],
     warningSteps: ['3'],
     completedSteps: ['4'],
-    disabledSteps: ['1']
+    disabledSteps: []
 };
 
 export const Arrow = Template.bind({});
@@ -161,5 +160,5 @@ Arrow.args = {
     errorSteps: ['2'],
     warningSteps: ['3'],
     completedSteps: ['4'],
-    disabledSteps: ['1']
+    disabledSteps: []
 };

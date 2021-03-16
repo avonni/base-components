@@ -82,6 +82,39 @@
                         </div>
                     </button>
                 </template>
+                <template if:true={popoverButtonIconName}>
+                    <button
+                        class="slds-popover slds-nubbin_bottom avonni-progress-step-popover-button-icon"
+                        tabindex="0"
+                        onclick={handleStepPopoverClick}
+                        onfocus={handlePopoverFocus}
+                        onblur={handlePopoverBlur}
+                        onmouseenter={handlePopoverMouseEnter}
+                        onmouseleave={handlePopoverMouseLeave}
+                    >
+                        <template if:false={popoverIconVisible}>
+                            <div class="slds-popover__body">
+                                <template if:true={showLabelNubbin}>
+                                    <p class="slds-text-title_bold">{label}</p>
+                                </template>
+                                <template if:true={showDescriptionNubbin}>
+                                    <p>{description}</p>
+                                </template>
+                            </div>
+                        </template>
+                        <template if:true={popoverIconVisible}>
+                            <div class="slds-popover__body">
+                                <template if:true={showIconNubbin}>
+                                    <lightning-icon
+                                        icon-name={iconName}
+                                        size={iconSize}
+                                        src={iconSrc}
+                                    ></lightning-icon>
+                                </template>
+                            </div>
+                        </template>
+                    </button>
+                </template>
                 <span if:true={assistiveText} class="slds-assistive-text"
                     >{assistiveText}</span
                 >

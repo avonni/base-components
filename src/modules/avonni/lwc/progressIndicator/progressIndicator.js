@@ -84,13 +84,11 @@ export default class ProgressIndicator extends LightningElement {
 
     updateCurrentStep() {
         const steps = this.getSteps();
-        if (this.currentStep) {
-            steps.forEach((step) => {
-                if (step.getAttribute('data-step') === this.currentStep) {
-                    step.classList.add('slds-is-active');
-                }
-            });
-        } else steps[0].classList.add('slds-is-active');
+        steps.forEach((step) => {
+            if (step.getAttribute('data-step') === this.currentStep) {
+                step.classList.add('slds-is-active');
+            }
+        });
     }
 
     updateErrorSteps() {

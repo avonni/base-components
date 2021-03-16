@@ -3,7 +3,7 @@ import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
 const POPOVER_STATE = {
-    valid: ['show', 'hidden', 'hover', 'button'],
+    valid: ['show', 'hidden', 'hover', 'button', 'button-icon-name'],
     default: 'hover'
 };
 
@@ -51,10 +51,13 @@ export default class ProgressStep extends LightningElement {
     _buttonIconPosition = 'left';
     _buttonDisabled = false;
     _buttonVariant = 'neutral';
-    popoverVisible = false;
+    _popoverVisible = false;
+    _popoverIconVisible = false;
+    _allowBlur = false;
 
     connectedCallback() {
         this.classList.add('slds-progress__item');
+        console.log(this._popoverIconVisible);
     }
 
     renderedCallback() {
@@ -218,6 +221,10 @@ export default class ProgressStep extends LightningElement {
         return this._popoverState === 'show';
     }
 
+    get popoverIconVisible() {
+        return this._popoverIconVisible;
+    }
+
     get popoverButton() {
         if (
             this.showDescriptionNubbin ||
@@ -229,13 +236,23 @@ export default class ProgressStep extends LightningElement {
         return false;
     }
 
+    get popoverButtonIconName() {
+        if (
+            (this.showDescriptionNubbin || this.showLabelNubbin) &&
+            this.showIconNubbin
+        ) {
+            return this._popoverState === 'button-icon-name';
+        }
+        return false;
+    }
+
     get displayPopover() {
         if (
             this.showDescriptionNubbin ||
             this.showIconNubbin ||
             this.showLabelNubbin
         ) {
-            return this.popoverVisible || this.popoverShow;
+            return this._popoverVisible || this.popoverShow;
         }
         return false;
     }
@@ -272,7 +289,7 @@ export default class ProgressStep extends LightningElement {
         setTimeout(
             function () {
                 if (this.popoverHover) {
-                    this.popoverVisible = !this.popoverVisible;
+                    this._popoverVisible = !this._popoverVisible;
                 }
             }.bind(this),
             250
@@ -285,7 +302,7 @@ export default class ProgressStep extends LightningElement {
         setTimeout(
             function () {
                 if (this.popoverHover) {
-                    this.popoverVisible = !this.popoverVisible;
+                    this._popoverVisible = !this._popoverVisible;
                 }
             }.bind(this),
             250
@@ -311,5 +328,40 @@ export default class ProgressStep extends LightningElement {
 
     handleStepPopoverClick() {
         this.dispatchEvent(new CustomEvent('steppopoverclick'));
+    }
+
+    allowBlur() {
+        this._allowBlur = true;
+    }
+
+    cancelBlur() {
+        this._allowBlur = false;
+    }
+
+    handlePopoverFocus() {
+        if (!this._allowBlur) {
+            this.allowBlur();
+        }
+    }
+
+    handlePopoverBlur() {
+        if (this._allowBlur) {
+            this.cancelBlur();
+            this._popoverIconVisible = false;
+        }
+    }
+
+    handlePopoverMouseEnter() {
+        if (this._allowBlur) {
+            return;
+        }
+        this._popoverIconVisible = true;
+    }
+
+    handlePopoverMouseLeave() {
+        if (this._allowBlur) {
+            return;
+        }
+        this._popoverIconVisible = false;
     }
 }
