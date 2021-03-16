@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 
 const validTypes = [
@@ -21,7 +21,7 @@ export default class AutoDataType extends LightningElement {
     @api fieldName;
     @api typeAttributes = {};
 
-    @track _type = 'text';
+    _type = 'text';
 
     @api get type() {
         return this._type;

@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { keyCodes } from 'c/utilsPrivate';
 
@@ -13,8 +13,8 @@ const DEFAULT_COLOR = '#000000';
 export default class ColorPickerPanel extends LightningElement {
     @api currentColor;
 
-    @track _isCustomTabActive = false;
-    @track _selectedColor = null;
+    _isCustomTabActive = false;
+    _selectedColor = null;
 
     connectedCallback() {
         this._selectedColor = this.currentColor || DEFAULT_COLOR;

@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
@@ -10,9 +10,9 @@ export default class Blockquote extends LightningElement {
     @api title;
     @api iconName;
 
-    @track _variant = 'default';
-    @track _iconPosition = 'left';
-    @track _iconSize = 'small';
+    _variant = 'default';
+    _iconPosition = 'left';
+    _iconSize = 'small';
 
     @api get variant() {
         return this._variant;

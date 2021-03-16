@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { normalizeBoolean } from 'c/utilsPrivate';
 
 export default class SplitterPane extends LightningElement {
@@ -7,15 +7,15 @@ export default class SplitterPane extends LightningElement {
     @api size;
     @api collapsedSize;
 
-    @track _collapsed = false;
-    @track _scrollable = false;
-    @track _resizable = false;
-    @track _collapsible = false;
+    _collapsed = false;
+    _scrollable = false;
+    _resizable = false;
+    _collapsible = false;
 
-    @track startX;
-    @track startY;
-    @track startWidth;
-    @track startHeight;
+    startX;
+    startY;
+    startWidth;
+    startHeight;
 
     connectedCallback() {
         if (this.max) {

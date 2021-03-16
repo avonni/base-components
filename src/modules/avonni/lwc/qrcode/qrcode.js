@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 import qrcodeGeneration from './qrcodeGeneration.js';
 
@@ -7,16 +7,16 @@ const validErrorCorrections = ['L', 'M', 'Q', 'H'];
 const validRenderAs = ['canvas', 'svg'];
 
 export default class Qrcode extends LightningElement {
-    @track _borderWidth = 0;
-    @track _padding = 0;
-    @track _value;
-    @track _size = 200;
-    @track _encoding = 'ISO_8859_1';
-    @track _errorCorrection = 'L';
-    @track _renderAs = 'svg';
-    @track _background = '#fff';
-    @track _borderColor;
-    @track _color = '#000';
+    _borderWidth = 0;
+    _padding = 0;
+    _value;
+    _size = 200;
+    _encoding = 'ISO_8859_1';
+    _errorCorrection = 'L';
+    _renderAs = 'svg';
+    _background = '#fff';
+    _borderColor;
+    _color = '#000';
 
     rendered = false;
 

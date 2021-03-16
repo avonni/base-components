@@ -1,12 +1,12 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 
 export default class VerticalProgressStep extends LightningElement {
     @api label;
 
-    @track _value;
-    @track iconName;
-    @track contentInLine = false;
-    @track showSlot = true;
+    _value;
+    iconName;
+    contentInLine = false;
+    showSlot = true;
 
     connectedCallback() {
         this.classList.add('slds-progress__item');

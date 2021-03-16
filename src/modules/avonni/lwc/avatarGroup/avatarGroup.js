@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { normalizeString } from 'c/utilsPrivate';
 
@@ -6,13 +6,13 @@ const validSizes = ['x-small', 'small', 'medium', 'large'];
 const validVariants = ['stack', 'grid'];
 
 export default class AvatarGroup extends LightningElement {
-    @track _items = [];
-    @track _maxCount;
-    @track _size = 'medium';
-    @track _variant = 'stack';
-    @track _allowBlur = false;
-    @track showPopever = false;
-    @track hiddenItems = [];
+    _items = [];
+    _maxCount;
+    _size = 'medium';
+    _variant = 'stack';
+    _allowBlur = false;
+    showPopever = false;
+    hiddenItems = [];
 
     renderedCallback() {
         if (!this.isClassic) {

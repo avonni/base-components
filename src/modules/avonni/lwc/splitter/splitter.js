@@ -1,13 +1,13 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 
 const validOrientations = ['horizontal', 'vertical'];
 
 export default class Splitter extends LightningElement {
-    @track _orientation = 'horizontal';
-    @track down = false;
-    @track data;
-    @track selectedSeparator;
+    _orientation = 'horizontal';
+    down = false;
+    data;
+    selectedSeparator;
 
     renderedCallback() {
         let splitter = this.template.querySelector(

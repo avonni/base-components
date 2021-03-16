@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import {
     colorType,
     generateColors,
@@ -80,26 +80,26 @@ export default class ColorPicker extends LightningElement {
     @api colors = DEFAULT_COLORS;
     @api messageWhenBadInput = 'Please ensure value is correct';
 
-    @track _value;
-    @track _variant = 'standard';
-    @track _type = 'base';
-    @track _menuVariant = 'border';
-    @track _menuIconSize = 'x-small';
-    @track _menuAlignment = 'left';
-    @track _disabled = false;
-    @track _isLoading = false;
-    @track _readOnly = false;
-    @track _required = false;
-    @track _hideColorInput = false;
-    @track _menuNubbin = false;
-    @track _opacity = false;
+    _value;
+    _variant = 'standard';
+    _type = 'base';
+    _menuVariant = 'border';
+    _menuIconSize = 'x-small';
+    _menuAlignment = 'left';
+    _disabled = false;
+    _isLoading = false;
+    _readOnly = false;
+    _required = false;
+    _hideColorInput = false;
+    _menuNubbin = false;
+    _opacity = false;
 
-    @track _dropdownVisible = false;
-    @track _dropdownOpened = false;
-    @track init = false;
-    @track showError = false;
-    @track isDefault = true;
-    @track newValue;
+    _dropdownVisible = false;
+    _dropdownOpened = false;
+    init = false;
+    showError = false;
+    isDefault = true;
+    newValue;
 
     connectedCallback() {
         this._connected = true;

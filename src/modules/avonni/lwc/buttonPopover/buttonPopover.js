@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import {
     normalizeBoolean,
@@ -38,17 +38,17 @@ export default class ButtonPopover extends LightningElement {
     @api iconName;
     @api loadingStateAlternativeText;
 
-    @track _disabled = false;
-    @track _isLoading = false;
-    @track _iconPosition = 'left';
-    @track _popoverSize = 'medium';
-    @track _placement = 'left';
-    @track _variant = 'neutral';
-    @track _triggers = 'click';
-    @track _popoverVariant = 'base';
-    @track popoverVisible = false;
-    @track showTitle = true;
-    @track showFooter = true;
+    _disabled = false;
+    _isLoading = false;
+    _iconPosition = 'left';
+    _popoverSize = 'medium';
+    _placement = 'left';
+    _variant = 'neutral';
+    _triggers = 'click';
+    _popoverVariant = 'base';
+    popoverVisible = false;
+    showTitle = true;
+    showFooter = true;
     _boundingRect = {};
 
     connectedCallback() {

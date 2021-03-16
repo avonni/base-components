@@ -1,4 +1,4 @@
-import { api, LightningElement, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import {
     normalizeBoolean,
@@ -40,19 +40,19 @@ export default class cButtonMenu extends LightningElement {
 
     @api draftAlternativeText;
 
-    @track _accesskey = null;
-    @track _disabled = false;
-    @track _dropdownVisible = false;
-    @track _dropdownOpened = false;
-    @track _nubbin = false;
-    @track _title = null;
-    @track _isDraft = false;
-    @track _isLoading = false;
-    @track _focusOnIndexDuringRenderedCallback = null;
-    @track _tabindex = 0;
+    _accesskey = null;
+    _disabled = false;
+    _dropdownVisible = false;
+    _dropdownOpened = false;
+    _nubbin = false;
+    _title = null;
+    _isDraft = false;
+    _isLoading = false;
+    _focusOnIndexDuringRenderedCallback = null;
+    _tabindex = 0;
 
-    @track _order = null;
-    @track _variant = 'border';
+    _order = null;
+    _variant = 'border';
 
     _positioning = false;
     _menuAlignment = 'left';

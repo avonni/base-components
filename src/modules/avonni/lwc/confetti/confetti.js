@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 import './confettiLib';
 
@@ -26,8 +26,8 @@ export default class Confetti extends LightningElement {
     @api originY = 0.5;
     @api zIndex = 100;
 
-    @track _variant = 'base';
-    @track _name;
+    _variant = 'base';
+    _name;
 
     @api 
     get variant() {

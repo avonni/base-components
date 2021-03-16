@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import {
     deepCopy,
     normalizeString,
@@ -55,10 +55,10 @@ export default class Map extends LightningElement {
     @api showFooter = false;
     @api listView = 'auto';
 
-    @track _mapHref = mapHref;
-    @track _coordinates = [];
-    @track _activeCoordinate = null;
-    @track _markersTitle = i18n.coordinatesTitleString;
+    _mapHref = mapHref;
+    _coordinates = [];
+    _activeCoordinate = null;
+    _markersTitle = i18n.coordinatesTitleString;
 
     privateZoomLevel = null;
     privateCenter = null;

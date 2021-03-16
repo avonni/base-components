@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, generateColors } from 'c/utilsPrivate';
 import { generateUniqueId } from 'c/utils';
 
@@ -37,13 +37,13 @@ export default class ColorPalette extends LightningElement {
     @api value;
     @api colors = DEFAULT_COLORS;
 
-    @track _columns = 7;
-    @track _tileWidth = 20;
-    @track _tileHeight = 20;
-    @track _disabled = false;
-    @track _isLoading = false;
-    @track _readOnly = false;
-    @track init = false;
+    _columns = 7;
+    _tileWidth = 20;
+    _tileHeight = 20;
+    _disabled = false;
+    _isLoading = false;
+    _readOnly = false;
+    init = false;
 
     renderedCallback() {
         this.initContainer();

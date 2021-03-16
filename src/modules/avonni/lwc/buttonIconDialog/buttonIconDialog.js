@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
 const validSizes = ['xx-small', 'x-small', 'small', 'medium'];
@@ -19,9 +19,9 @@ export default class ButtonIconDialog extends LightningElement {
     @api iconClass;
     @api iconName;
 
-    @track _disabled;
-    @track _size = 'medium';
-    @track _variant = 'border';
+    _disabled;
+    _size = 'medium';
+    _variant = 'border';
 
     @api get size() {
         return this._size;

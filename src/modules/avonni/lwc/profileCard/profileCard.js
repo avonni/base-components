@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
@@ -23,13 +23,13 @@ export default class ProfileCard extends LightningElement {
     @api avatarAlternativeText;
     @api avatarFallbackIconName;
 
-    @track _size = 'medium';
-    @track _avatarPosition = 'top-left';
-    @track _avatarVariant = 'circle';
-    @track isError = false;
-    @track showActions = true;
-    @track showFooter = true;
-    @track showAvatarActions = true;
+    _size = 'medium';
+    _avatarPosition = 'top-left';
+    _avatarVariant = 'circle';
+    isError = false;
+    showActions = true;
+    showFooter = true;
+    showAvatarActions = true;
 
     renderedCallback() {
         let header = this.template.querySelector('header');

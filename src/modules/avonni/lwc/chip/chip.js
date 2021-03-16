@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
@@ -17,10 +17,10 @@ const validVariants = [
 export default class Chip extends LightningElement {
     @api label;
 
-    @track _variant = 'base';
-    @track _outline = false;
-    @track renderLeft = true;
-    @track renderRight = true;
+    _variant = 'base';
+    _outline = false;
+    renderLeft = true;
+    renderRight = true;
 
     renderedCallback() {
         if (this.leftSlot) {

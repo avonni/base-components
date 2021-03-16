@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { keyCodes } from 'c/utilsPrivate';
 import { generateUniqueId, getErrorMessage } from 'c/inputUtils';
 import {
@@ -26,16 +26,15 @@ const i18n = {
 const CANVAS = { x: 198, y: 80 };
 
 export default class ColorPickerCustom extends LightningElement {
-    @track _hueValue = null;
-    @track
+    _hueValue = null;
     _rgb = {
         red: '86',
         green: '121',
         blue: '192',
     };
-    @track _hex = '#5679C0';
-    @track _errorMessage = null;
-    @track _currentColor = null;
+    _hex = '#5679C0';
+    _errorMessage = null;
+    _currentColor = null;
 
     constructor() {
         super();

@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import {
     normalizeBoolean,
     normalizeString,
@@ -30,11 +30,11 @@ export default class CheckboxGroup extends LightningElement {
     @api messageWhenValueMissing;
     @api name;
 
-    @track _type = 'checkbox';
-    @track _helpMessage;
-    @track _disabled;
-    @track _required;
-    @track _value = [];
+    _type = 'checkbox';
+    _helpMessage;
+    _disabled;
+    _required;
+    _value = [];
 
     constructor() {
         super();

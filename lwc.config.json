@@ -87,30 +87,6 @@
             "path": "src/modules/avonni/lwc/carousel/carousel.js"
         },
         {
-            "name": "c/chartBar",
-            "path": "src/modules/avonni/lwc/chartBar/chartBar.js"
-        },
-        {
-            "name": "c/chartFunnel",
-            "path": "src/modules/avonni/lwc/chartFunnel/chartFunnel.js"
-        },
-        {
-            "name": "c/chartHeatmap",
-            "path": "src/modules/avonni/lwc/chartHeatmap/chartHeatmap.js"
-        },
-        {
-            "name": "c/chartLine",
-            "path": "src/modules/avonni/lwc/chartLine/chartLine.js"
-        },
-        {
-            "name": "c/chartPie",
-            "path": "src/modules/avonni/lwc/chartPie/chartPie.js"
-        },
-        {
-            "name": "c/chartTreemap",
-            "path": "src/modules/avonni/lwc/chartTreemap/chartTreemap.js"
-        },
-        {
             "name": "c/checkboxGroup",
             "path": "src/modules/avonni/lwc/checkboxGroup/checkboxGroup.js"
         },
@@ -193,10 +169,6 @@
         {
             "name": "c/inputToggle",
             "path": "src/modules/avonni/lwc/inputToggle/inputToggle.js"
-        },
-        {
-            "name": "c/kanban",
-            "path": "src/modules/avonni/lwc/kanban/kanban.js"
         },
         {
             "name": "c/link",
@@ -395,30 +367,6 @@
             "path": "src/modules/avonni/lwc/carousel/carousel.js"
         },
         {
-            "name": "avonni/chartBar",
-            "path": "src/modules/avonni/lwc/chartBar/chartBar.js"
-        },
-        {
-            "name": "avonni/chartFunnel",
-            "path": "src/modules/avonni/lwc/chartFunnel/chartFunnel.js"
-        },
-        {
-            "name": "avonni/chartHeatmap",
-            "path": "src/modules/avonni/lwc/chartHeatmap/chartHeatmap.js"
-        },
-        {
-            "name": "avonni/chartLine",
-            "path": "src/modules/avonni/lwc/chartLine/chartLine.js"
-        },
-        {
-            "name": "avonni/chartPie",
-            "path": "src/modules/avonni/lwc/chartPie/chartPie.js"
-        },
-        {
-            "name": "avonni/chartTreemap",
-            "path": "src/modules/avonni/lwc/chartTreemap/chartTreemap.js"
-        },
-        {
             "name": "avonni/checkboxGroup",
             "path": "src/modules/avonni/lwc/checkboxGroup/checkboxGroup.js"
         },
@@ -485,10 +433,6 @@
         {
             "name": "avonni/inputToggle",
             "path": "src/modules/avonni/lwc/inputToggle/inputToggle.js"
-        },
-        {
-            "name": "avonni/kanban",
-            "path": "src/modules/avonni/lwc/kanban/kanban.js"
         },
         {
             "name": "avonni/map",
@@ -605,12 +549,6 @@
         "avonni/buttonPopover",
         "avonni/calendar",
         "avonni/carousel",
-        "avonni/chartBar",
-        "avonni/chartFunnel",
-        "avonni/chartHeatmap",
-        "avonni/chartLine",
-        "avonni/chartPie",
-        "avonni/chartTreemap",
         "avonni/checkboxGroup",
         "avonni/chip",
         "avonni/colorGradient",
@@ -628,7 +566,6 @@
         "avonni/inputPen",
         "avonni/inputRichText",
         "avonni/inputToggle",
-        "avonni/kanban",
         "avonni/map",
         "avonni/mediaObject",
         "avonni/menuItemDialog",

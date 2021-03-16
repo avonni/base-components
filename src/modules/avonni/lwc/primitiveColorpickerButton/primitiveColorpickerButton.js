@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { Direction, AutoPosition } from 'c/positionLibrary';
 import { normalizeBoolean } from 'c/utilsPrivate';
 
@@ -9,9 +9,9 @@ const i18n = {
 export default class PrimitiveColorpickerButton extends LightningElement {
     static delegatesFocus = true;
 
-    @track _isColorPickerPanelOpen = false;
-    @track _value = '';
-    @track _disabled = false;
+    _isColorPickerPanelOpen = false;
+    _value = '';
+    _disabled = false;
 
     @api
     get value() {

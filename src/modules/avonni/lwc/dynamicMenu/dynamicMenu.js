@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import {
     normalizeBoolean,
@@ -36,16 +36,16 @@ export default class DynamicMenu extends LightningElement {
     @api searchInputPlaceholder = 'Search…';
     @api tooltip;
 
-    @track _items = [];
-    @track _isLoading;
-    @track _variant = 'border';
-    @track _menuAlignment = 'left';
-    @track _disabled;
-    @track queryTerm;
-    @track _dropdownVisible = false;
-    @track _dropdownOpened = false;
-    @track showFooter = true;
-    @track filteredItems = [];
+    _items = [];
+    _isLoading;
+    _variant = 'border';
+    _menuAlignment = 'left';
+    _disabled;
+    queryTerm;
+    _dropdownVisible = false;
+    _dropdownOpened = false;
+    showFooter = true;
+    filteredItems = [];
     _boundingRect = {};
 
     connectedCallback() {

@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
 const validVariants = ['base', 'shade'];
@@ -6,9 +6,9 @@ const validVariants = ['base', 'shade'];
 export default class VerticalProgressIndicator extends LightningElement {
     @api currentStep;
 
-    @track _variant = 'base';
-    @track _hasError = false;
-    @track _contentInLine = false;
+    _variant = 'base';
+    _hasError = false;
+    _contentInLine = false;
 
     renderedCallback() {
         let elements = this.template.querySelector('slot').assignedElements();

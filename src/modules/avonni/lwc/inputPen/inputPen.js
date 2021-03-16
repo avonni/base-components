@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
 const validVariants = ['bottom-toolbar', 'top-toolbar'];
@@ -9,30 +9,30 @@ export default class InputPen extends LightningElement {
     @api label;
     @api disabledButtons = [];
 
-    @track _value;
-    @track _color = '#000';
-    @track _size = 2;
-    @track _variant = 'bottom-toolbar';
-    @track _mode = 'draw';
-    @track _disabled = false;
-    @track _readOnly = false;
-    @track _required = false;
-    @track _hideControls = false;
-    @track _invalid = false;
+    _value;
+    _color = '#000';
+    _size = 2;
+    _variant = 'bottom-toolbar';
+    _mode = 'draw';
+    _disabled = false;
+    _readOnly = false;
+    _required = false;
+    _hideControls = false;
+    _invalid = false;
 
-    @track sizeList;
-    @track init = false;
+    sizeList;
+    init = false;
 
-    @track isDownFlag;
-    @track isDotFlag = false;
-    @track prevX = 0;
-    @track currX = 0;
-    @track prevY = 0;
-    @track currY = 0;
+    isDownFlag;
+    isDotFlag = false;
+    prevX = 0;
+    currX = 0;
+    prevY = 0;
+    currY = 0;
 
-    @track canvasElement;
-    @track ctx;
-    @track cursor;
+    canvasElement;
+    ctx;
+    cursor;
 
     connectedCallback() {
         this.sizeList = [...Array(100).keys()].slice(1).map(x => {

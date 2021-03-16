@@ -1,4 +1,4 @@
-import { LightningElement, track, api } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import {
     normalizeBoolean,
     deepCopy,
@@ -134,14 +134,14 @@ export default class InputRichText extends LightningElement {
     @api shareWithEntityId;
     @api isPublisher = false;
 
-    @track _valid = true;
-    @track _disabled = false;
-    @track linkPanelOpen = false;
-    @track queueLinkPanelOpen = false;
-    @track selectedFontValue = DEFAULT_FONT;
-    @track selectedSizeValue = DEFAULT_SIZE;
-    @track quillNotReady = true;
-    @track selectedTextColorValue = DEFAULT_COLOR;
+    _valid = true;
+    _disabled = false;
+    linkPanelOpen = false;
+    queueLinkPanelOpen = false;
+    selectedFontValue = DEFAULT_FONT;
+    selectedSizeValue = DEFAULT_SIZE;
+    quillNotReady = true;
+    selectedTextColorValue = DEFAULT_COLOR;
 
     _pendingFormats = [];
     quill;

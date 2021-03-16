@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
 const validDirections = ['horizontal', 'vertical'];
@@ -47,40 +47,40 @@ export default class Slides extends LightningElement {
     @api coverflowSlideWidth;
     @api coverflowSlideHeight;
 
-    @track _direction = 'horizontal';
-    @track _effect = 'slide';
-    @track _buttonPreviousIconPosition = 'left';
-    @track _buttonPreviousVariant = 'neutral';
-    @track _buttonNextIconPosition = 'right';
-    @track _buttonNextVariant = 'neutral';
-    @track _buttonPosition = 'middle';
-    @track _indicatorType = 'bullets';
-    @track _indicatorPosition = 'bottom-center';
+    _direction = 'horizontal';
+    _effect = 'slide';
+    _buttonPreviousIconPosition = 'left';
+    _buttonPreviousVariant = 'neutral';
+    _buttonNextIconPosition = 'right';
+    _buttonNextVariant = 'neutral';
+    _buttonPosition = 'middle';
+    _indicatorType = 'bullets';
+    _indicatorPosition = 'bottom-center';
 
-    @track _navigation = false;
-    @track _buttonInner = false;
-    @track _indicators = false;
-    @track _indicatorInner = false;
-    @track _loop = false;
+    _navigation = false;
+    _buttonInner = false;
+    _indicators = false;
+    _indicatorInner = false;
+    _loop = false;
 
-    @track container;
-    @track slideList;
-    @track startPosition;
-    @track slide = 0;
-    @track slides = 0;
-    @track containerWidth;
-    @track containerHeight;
-    @track slideWidth;
-    @track slideHeight;
-    @track maxWidth;
-    @track minWidth;
-    @track maxHeight;
-    @track minHeight;
-    @track opacity = 0;
-    @track bullets = [];
-    @track autoplayPause = false;
-    @track isMouseDown = false;
-    @track init = false;
+    container;
+    slideList;
+    startPosition;
+    slide = 0;
+    slides = 0;
+    containerWidth;
+    containerHeight;
+    slideWidth;
+    slideHeight;
+    maxWidth;
+    minWidth;
+    maxHeight;
+    minHeight;
+    opacity = 0;
+    bullets = [];
+    autoplayPause = false;
+    isMouseDown = false;
+    init = false;
 
     connectedCallback() {
         this.spaceBetween = Number(this.spaceBetween);
