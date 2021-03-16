@@ -15,7 +15,11 @@ export default class Wizard extends LightningElement {
     }
 
     handleNavigationRegister(event) {
+        event.stopPropagation();
+
         this.navigation = event.detail;
+        this.navigation.callbacks.registerChange(this.handleChange);
+        this.navigation.callbacks.registerComplete(this.handleComplete);
     }
 
     renderedCallback() {
@@ -59,34 +63,14 @@ export default class Wizard extends LightningElement {
         this._currentStep = name;
     }
 
-    handleChange(event) {
-        event.stopPropagation();
-
+    handleChange = (event) => {
         this._currentStep = event.detail.currentStep;
         this._updateStepDisplay();
 
-        this.dispatchEvent(
-            new CustomEvent('change', {
-                detail: {
-                    currentStep: this._currentStep,
-                    oldStep: event.detail.oldStep
-                },
-                bubbles: false,
-                cancelable: false,
-                composed: false
-            })
-        );
-    }
+        this.dispatchEvent(event);
+    };
 
-    handleComplete(event) {
-        event.stopPropagation();
-
-        this.dispatchEvent(
-            new CustomEvent('complete', {
-                bubbles: false,
-                cancelable: false,
-                composed: false
-            })
-        );
-    }
+    handleComplete = (event) => {
+        this.dispatchEvent(event);
+    };
 }

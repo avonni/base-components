@@ -72,7 +72,9 @@ export default class WizardNavigation extends LightningElement {
             detail: {
                 callbacks: {
                     setSteps: this.setSteps,
-                    setCurrentStep: this.setCurrentStep
+                    setCurrentStep: this.setCurrentStep,
+                    registerChange: this.registerChange,
+                    registerComplete: this.registerComplete
                 }
             }
         });
@@ -81,7 +83,7 @@ export default class WizardNavigation extends LightningElement {
     }
 
     renderedCallback() {
-        // steps and currentStep are set automatically by the parent avonni-wizard
+        // steps and currentStep are set automatically by the parent wizard
         if (!this._rendered && this.steps) {
             this._rendered = true;
             this._initIndicator();
@@ -94,6 +96,12 @@ export default class WizardNavigation extends LightningElement {
     };
     setCurrentStep = (value) => {
         this.currentStep = value;
+    };
+    registerChange = (callback) => {
+        this.dispatchChangeToWizard = callback;
+    };
+    registerComplete = (callback) => {
+        this.dispatchCompleteToWizard = callback;
     };
 
     _initIndicator() {
@@ -336,28 +344,29 @@ export default class WizardNavigation extends LightningElement {
             this.currentStep = this.steps[this.currentStepIndex + 1].name;
         }
 
-        this.dispatchEvent(
-            new CustomEvent('change', {
-                detail: {
-                    currentStep: this.currentStep,
-                    oldStep: oldStep
-                },
-                bubbles: true,
-                cancelable: false,
-                composed: false
-            })
-        );
+        const changeEvent = new CustomEvent('change', {
+            detail: {
+                currentStep: this.currentStep,
+                oldStep: oldStep
+            },
+            bubbles: false,
+            cancelable: false,
+            composed: false
+        });
+        // Send change event directly to parent wizard
+        this.dispatchChangeToWizard(changeEvent);
 
         this._updateSteps();
     }
 
     handleFinishClick() {
-        this.dispatchEvent(
-            new CustomEvent('complete', {
-                bubbles: true,
-                cancelable: false,
-                composed: false
-            })
-        );
+        const completeEvent = new CustomEvent('complete', {
+            bubbles: false,
+            cancelable: false,
+            composed: false
+        });
+
+        // Send complete event directly to parent wizard
+        this.dispatchCompleteToWizard(completeEvent);
     }
 }

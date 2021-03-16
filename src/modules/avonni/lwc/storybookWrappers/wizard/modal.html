@@ -2,22 +2,26 @@
     <avonni-wizard current-step={currentStep}>
         <avonni-dialog show-dialog="true">
             <div slot="title">Wizard inside a modal</div>
-            <avonni-wizard-step label="First step" name="first-step">
+            <avonni-wizard-step label="First step">
                 <h2 class="slds-text-heading_small slds-m-bottom_small">
                     This step has these properties set:
                 </h2>
                 <ul>
                     <li><strong>label:</strong> "First step"</li>
-                    <li><strong>name:</strong> "first-step"</li>
                 </ul>
             </avonni-wizard-step>
-            <avonni-wizard-step hide-previous-button="true" label="Second step">
+            <avonni-wizard-step
+                hide-previous-button="true"
+                label="Second step"
+                name="second-step"
+            >
                 <h2 class="slds-text-heading_small slds-m-bottom_small">
                     This step has these properties set:
                 </h2>
                 <ul>
                     <li><strong>label:</strong> "Second step"</li>
                     <li><strong>hide-previous-button:</strong> "true"</li>
+                    <li><strong>name:</strong> "second-step"</li>
                 </ul>
             </avonni-wizard-step>
             <avonni-wizard-step>
