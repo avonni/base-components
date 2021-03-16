@@ -6,7 +6,7 @@ import TIME_ZONES from './timeZones.js';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-const VARIANTS = ['daily', 'weekly'];
+const VARIANTS = ['daily', 'weekly', 'inline', 'timeline', 'monthly'];
 const TYPES = ['radio', 'checkbox'];
 const DATE_TIME_FORMAT = ['numeric', '2-digit'];
 const WEEKDAY_FORMAT = ['narrow', 'short', 'long'];
@@ -56,6 +56,7 @@ export default class DateTimePicker extends LightningElement {
     selectedTimeZone;
     helpMessage = null;
     datePickerValue;
+    dayClass = 'avonni-date-time-picker__day';
 
     connectedCallback() {
         this._processValue();
@@ -103,6 +104,11 @@ export default class DateTimePicker extends LightningElement {
             fallbackValue: 'daily',
             validValues: VARIANTS
         });
+
+        this.dayClass =
+            this._variant === 'inline'
+                ? 'avonni-date-time-picker__day_inline'
+                : ' avonni-date-time-picker__day';
     }
 
     @api
@@ -405,18 +411,18 @@ export default class DateTimePicker extends LightningElement {
     }
 
     _setFirstWeekDay(date) {
-        if (this.variant === 'daily') {
-            this.firstWeekDay = date;
-        } else {
+        if (this.variant === 'weekly') {
             const dateDay = date.getDate() - date.getDay();
             const dateTime = new Date(date).setDate(dateDay);
             this.firstWeekDay = new Date(dateTime);
+        } else {
+            this.firstWeekDay = date;
         }
     }
 
     _generateTable() {
         const processedTable = [];
-        const daysDisplayed = this.variant === 'daily' ? 1 : 7;
+        const daysDisplayed = this.variant === 'weekly' ? 7 : 1;
 
         for (let i = 0; i < daysDisplayed; i++) {
             const day = new Date(
@@ -567,9 +573,9 @@ export default class DateTimePicker extends LightningElement {
         const firstDay = this.firstWeekDay.toLocaleString('default', options);
         const lastDay = this.lastWeekDay.toLocaleString('default', options);
 
-        return this.variant === 'daily'
-            ? `${firstWeekDay}, ${firstDay}`
-            : `${firstDay} - ${lastDay}`;
+        return this.variant === 'weekly'
+            ? `${firstDay} - ${lastDay}`
+            : `${firstWeekDay}, ${firstDay}`;
     }
 
     get firstWeekDayToString() {
@@ -603,7 +609,7 @@ export default class DateTimePicker extends LightningElement {
     }
 
     handlePrevNextClick(event) {
-        const dayRange = this.variant === 'daily' ? 1 : 7;
+        const dayRange = this.variant === 'weekly' ? 7 : 1;
         const direction = event.currentTarget.dataset.direction;
         const dayRangeSign = direction === 'next' ? dayRange : -dayRange;
         this.firstWeekDay = new Date(
@@ -660,7 +666,9 @@ export default class DateTimePicker extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
-                    value: this.value.join(),
+                    value: Array.isArray(this.value)
+                        ? this.value.join()
+                        : this.value,
                     name: this.name
                 }
             })

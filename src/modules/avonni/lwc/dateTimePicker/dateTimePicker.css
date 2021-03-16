@@ -6,11 +6,20 @@
     float: none;
 }
 
-.avonni-date-time-picker__day {
+.avonni-date-time-picker__day,
+.avonni-date-time-picker__day_inline {
     display: flex;
+    text-align: center;
+}
+
+.avonni-date-time-picker__day {
     flex-direction: column;
     flex: 1 1 auto;
-    text-align: center;
+}
+
+.avonni-date-time-picker__day_inline {
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .avonni-date-time-picker__day-label {

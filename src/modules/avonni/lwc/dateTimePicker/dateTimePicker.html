@@ -106,7 +106,7 @@
     <div class="avonni-date-time-picker__table">
         <template for:each={table} for:item="day">
             <template if:true={day.show}>
-                <div class="avonni-date-time-picker__day" key={day.key}>
+                <div class={dayClass} key={day.key}>
                     <!-- Day label -->
                     <div
                         if:true={day.label}

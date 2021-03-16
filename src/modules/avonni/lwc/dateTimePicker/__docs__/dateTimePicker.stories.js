@@ -45,7 +45,7 @@ export default {
         variant: {
             control: {
                 type: 'select',
-                options: ['daily', 'weekly']
+                options: ['daily', 'weekly', 'inline', 'timeline', 'monthly']
             },
             defaultValue: 'daily',
             description:
@@ -330,13 +330,13 @@ export default {
 
 const Template = (args) => DateTimePicker(args);
 
-export const Base = Template.bind({});
-Base.args = {
+export const Daily = Template.bind({});
+Daily.args = {
     label: 'Date picker'
 };
 
-export const Complex = Template.bind({});
-Complex.args = {
+export const Weekly = Template.bind({});
+Weekly.args = {
     label: 'Date picker',
     disabledDateTimes: [
         'Wed',
@@ -350,4 +350,10 @@ Complex.args = {
     type: 'checkbox',
     timeFormatHour12: false,
     showEndTime: true
+};
+
+export const Inline = Template.bind({});
+Inline.args = {
+    label: 'Date picker',
+    variant: 'inline'
 };
