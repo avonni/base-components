@@ -1,0 +1,32 @@
+<template>
+    <div class={computedOuterClass}>
+        <ol class="slds-progress__list">
+            <template for:each={steps} for:item="step">
+                <c-progress-step
+                    class="avonni-progress-step-sizing"
+                    disabled-steps={disabledSteps}
+                    warning-steps={warningSteps}
+                    key={step.value}
+                    label={step.label}
+                    label-position={step.labelPosition}
+                    description={step.description}
+                    description-position={step.descriptionPosition}
+                    value={step.value}
+                    popover-state={step.popoverState}
+                    icon-name={step.iconName}
+                    icon-src={step.iconSrc}
+                    icon-size={step.iconSize}
+                    icon-position={step.iconPosition}
+                    button-label={step.buttonLabel}
+                    button-name={step.buttonName}
+                    button-icon-name={step.buttonIconName}
+                    button-icon-position={step.buttonIconPosition}
+                    button-disabled={step.buttonDisabled}
+                    button-title={step.buttonTitle}
+                    button-variant={step.buttonVariant}
+                    assistive-text={step.assistiveText}
+                ></c-progress-step>
+            </template>
+        </ol>
+    </div>
+</template>

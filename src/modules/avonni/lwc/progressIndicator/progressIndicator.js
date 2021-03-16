@@ -1,6 +1,8 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
+import progressIndicator from './progressIndicator.html';
+import arrowProgressIndicator from './arrowProgressIndicator.html';
 
 const TYPES = { valid: ['base', 'arrow'], default: 'base' };
 
@@ -27,6 +29,13 @@ export default class ProgressIndicator extends LightningElement {
         this._initialRender = false;
     }
 
+    render() {
+        if (this._type === 'arrow') {
+            return arrowProgressIndicator;
+        }
+        return progressIndicator;
+    }
+
     @api
     get variant() {
         return this._variant;
@@ -45,7 +54,7 @@ export default class ProgressIndicator extends LightningElement {
     }
 
     set type(type) {
-        this._variant = normalizeString(type, {
+        this._type = normalizeString(type, {
             fallbackValue: TYPES.default,
             validValues: TYPES.valid
         });
@@ -102,7 +111,11 @@ export default class ProgressIndicator extends LightningElement {
             Array.from(this.warningSteps).forEach((warning) => {
                 if (step.getAttribute('data-step') === warning) {
                     step.setIcon('utility:warning');
-                    step.classList.add('slds-has-error');
+                    step.classList.add('slds-has-warning');
+                    if (this._variant === 'shaded') {
+                        step.classList.remove('slds-has-warning');
+                        step.classList.add('slds-has-warning-shaded');
+                    }
                 }
             });
         });

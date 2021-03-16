@@ -69,3 +69,21 @@
         white
     );
 }
+
+:host(.slds-has-warning) .slds-button {
+    background-color: #ffffff;
+}
+
+:host(.slds-has-warning) .slds-button:hover,
+:host(.slds-has-warning) .slds-button:focus {
+    color: #ffb75d;
+}
+
+:host(.slds-has-warning-shaded) .slds-button {
+    background-color: #f3f2f2;
+}
+
+:host(.slds-has-warning-shaded) .slds-button:hover,
+:host(.slds-has-warning-shaded) .slds-button:focus {
+    color: #ffb75d;
+}

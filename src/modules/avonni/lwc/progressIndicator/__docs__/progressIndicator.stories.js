@@ -152,3 +152,14 @@ Base.args = {
     completedSteps: ['4'],
     disabledSteps: ['1']
 };
+
+export const Arrow = Template.bind({});
+Arrow.args = {
+    type: 'arrow',
+    variant: 'base',
+    steps: steps,
+    errorSteps: ['2'],
+    warningSteps: ['3'],
+    completedSteps: ['4'],
+    disabledSteps: ['1']
+};
