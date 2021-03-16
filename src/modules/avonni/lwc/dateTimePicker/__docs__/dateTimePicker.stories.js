@@ -357,3 +357,17 @@ Inline.args = {
     label: 'Date picker',
     variant: 'inline'
 };
+
+export const Timeline = Template.bind({});
+Timeline.args = {
+    label: 'Date picker',
+    variant: 'timeline',
+    timeSlotDuration: '00:10',
+    disabledDateTimes: [
+        new Date('2021-03-16T13:00:00.00Z'),
+        new Date('2021-03-16T13:10:00.00Z'),
+        new Date('2021-03-16T13:20:00.00Z'),
+        new Date('2021-03-16T15:10:00.00Z')
+    ],
+    showDisabledDates: true
+};

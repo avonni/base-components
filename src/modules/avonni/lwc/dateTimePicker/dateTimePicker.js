@@ -2,6 +2,7 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { FieldConstraintApi } from 'c/inputUtils';
+import { classSet } from 'c/utils';
 import TIME_ZONES from './timeZones.js';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -105,10 +106,10 @@ export default class DateTimePicker extends LightningElement {
             validValues: VARIANTS
         });
 
-        this.dayClass =
-            this._variant === 'inline'
-                ? 'avonni-date-time-picker__day_inline'
-                : ' avonni-date-time-picker__day';
+        this.dayClass = classSet('slds-text-align_center slds-grid').add({
+            'avonni-date-time-picker__day_inline': this._variant === 'inline',
+            'avonni-date-time-picker__day': this._variant !== 'inline'
+        });
     }
 
     @api
@@ -469,34 +470,61 @@ export default class DateTimePicker extends LightningElement {
     //  /!\ Changes the dayTime object passed as argument.
     _createTimeSlots(dayTime) {
         this._timeSlots.forEach((timeSlot) => {
+            // Add time to day
             const hour = parseInt(timeSlot.slice(0, 2), 10);
             const minutes = parseInt(timeSlot.slice(3, 5), 10);
             const seconds = parseInt(timeSlot.slice(6, 8), 10);
             const day = dayTime.day;
             day.setHours(hour, minutes, seconds, 0);
-            const time = day.getTime();
 
-            const timeIsSelected =
-                this._selectedDayTime && this._isSelected(time);
+            const timestamp = day.getTime();
 
-            if (timeIsSelected) dayTime.selected = true;
+            const selected =
+                this._selectedDayTime && this._isSelected(timestamp);
 
-            const timeIsDisabled =
-                this.disabledDateTimes &&
-                this._disabledFullDateTimes.indexOf(time) > -1;
+            if (selected) dayTime.selected = true;
 
             const disabled =
-                this.disabled || dayTime.disabled || timeIsDisabled;
+                dayTime.disabled ||
+                (this.disabledDateTimes &&
+                    this._disabledFullDateTimes.indexOf(timestamp) > -1);
 
-            dayTime.times.push({
+            const time = {
                 startTimeISO: day.toISOString(),
                 endTimeISO: new Date(
-                    time + this.timeSlotDuration
+                    timestamp + this.timeSlotDuration
                 ).toISOString(),
                 disabled: disabled,
-                selected: timeIsSelected,
+                selected: selected,
                 show: !disabled || this.showDisabledDates
-            });
+            };
+
+            // If the variant is 'timeline', pushes a two-level deep object into dayTime.times
+            // {
+            //     hour: ISO datetime,
+            //     times: [ time objects ]
+            // }
+            if (this.isTimeline) {
+                let timelineHour = new Date(day);
+                timelineHour.setHours(hour, 0, 0, 0);
+                timelineHour = timelineHour.toISOString();
+
+                const index = dayTime.times.findIndex(
+                    (timeObject) => timeObject.hour === timelineHour
+                );
+
+                if (index < 0) {
+                    dayTime.times.push({
+                        hour: timelineHour,
+                        times: [time]
+                    });
+                } else {
+                    dayTime.times[index].times.push(time);
+                }
+                // For other variants, pushes the time object directyl into dayTime.times
+            } else {
+                dayTime.times.push(time);
+            }
         });
     }
 
@@ -596,6 +624,10 @@ export default class DateTimePicker extends LightningElement {
 
     get nextButtonIsDisabled() {
         return this.lastWeekDay >= this.max;
+    }
+
+    get isTimeline() {
+        return this.variant === 'timeline';
     }
 
     handleTimeZoneChange(event) {
