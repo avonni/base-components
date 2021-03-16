@@ -14,6 +14,10 @@ const WEEKDAY_FORMAT = ['narrow', 'short', 'long'];
 
 const MONTH_FORMAT = ['2-digit', 'numeric', 'narrow', 'short', 'long'];
 
+// QUESTION:
+// The event fired by the calendar doesn't have the same value format than the event fired by the <lightning-input type="date"> ('3/19/2021' vs. '2021-03-19'). Maybe we could uniformize the calendar value?
+// Monthly variant: should we hide the date picker and navigation (today/previous/next) by default, or leave it to the user to choose, since they have the option?
+
 export default class DateTimePicker extends LightningElement {
     @api disabled;
     @api fieldLevelHelp;
@@ -58,6 +62,7 @@ export default class DateTimePicker extends LightningElement {
     helpMessage = null;
     datePickerValue;
     dayClass = 'avonni-date-time-picker__day';
+    calendarDisabledDates = [];
 
     connectedCallback() {
         this._processValue();
@@ -81,11 +86,16 @@ export default class DateTimePicker extends LightningElement {
             this._timeFormatHour = 'numeric';
             this._timeFormatMinute = '2-digit';
         }
+
+        this.isMonthly && this._disableMonthlyCalendarDates();
+
         this._generateTable();
     }
 
     renderedCallback() {
-        this.template.querySelector('lightning-input').reportValidity();
+        // Show errors on date picker
+        const datePicker = this.template.querySelector('lightning-input');
+        datePicker && datePicker.reportValidity();
     }
 
     @api
@@ -356,6 +366,18 @@ export default class DateTimePicker extends LightningElement {
     @api
     showHelpMessageIfInvalid() {
         this.reportValidity();
+    }
+
+    _disableMonthlyCalendarDates() {
+        this.disabledDateTimes.forEach((disabledDateTime) => {
+            const type = typeof disabledDateTime;
+            const isNumber = type === 'number';
+            const isWeekDay =
+                type === 'string' && DAYS.indexOf(disabledDateTime) > -1;
+            if (isNumber || isWeekDay) {
+                this.calendarDisabledDates.push(disabledDateTime);
+            }
+        });
     }
 
     // Returns a date object or null
@@ -630,6 +652,10 @@ export default class DateTimePicker extends LightningElement {
         return this.variant === 'timeline';
     }
 
+    get isMonthly() {
+        return this.variant === 'monthly';
+    }
+
     handleTimeZoneChange(event) {
         this.selectedTimeZone = event.detail.value;
     }
@@ -653,8 +679,27 @@ export default class DateTimePicker extends LightningElement {
         this.datePickerValue = this.firstWeekDay.toISOString();
     }
 
+    handleMonthlyCalendarChange(event) {
+        // Format received: 3/18/2021
+        const dateString = event.detail.value.match(
+            /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/
+        );
+        if (dateString) {
+            // Cut date string into pieces to make sure new date is created with current time zone
+            const date = new Date(
+                dateString[3],
+                dateString[1] - 1,
+                dateString[2]
+            );
+            this._setFirstWeekDay(date);
+            this._generateTable();
+            this.datePickerValue = date.toISOString();
+        }
+    }
+
     handleDatePickerChange(event) {
-        const dateString = event.currentTarget.value;
+        // Format received: 2021-03-18
+        const dateString = event.detail.value;
         if (dateString) {
             this.datePickerValue = dateString;
 
