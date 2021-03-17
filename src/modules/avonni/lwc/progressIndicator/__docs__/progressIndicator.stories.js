@@ -93,7 +93,8 @@ const steps = [
         labelPosition: 'bottom',
         assistiveText: '1',
         description: 'This is step #1',
-        descriptionPosition: 'inside-nubbin'
+        descriptionPosition: 'inside-nubbin',
+        popoverState: 'button-icon-name'
     },
     {
         value: '2',
@@ -135,7 +136,7 @@ const stepsLWC = [
         iconName: 'utility:merge',
         iconPosition: 'inside-nubbin',
         popoverState: 'button-icon-name',
-        popoverButtonIconName: 'utility:add'
+        popoverButtonIcon: 'utility:add'
     },
     {
         value: '2',
@@ -144,7 +145,7 @@ const stepsLWC = [
         iconName: 'utility:rules',
         iconPosition: 'inside-nubbin',
         popoverState: 'button-icon-name',
-        popoverButtonIconName: 'utility:add'
+        popoverButtonIcon: 'utility:add'
     },
     {
         value: '3',
@@ -153,7 +154,7 @@ const stepsLWC = [
         iconName: 'utility:block_visitor',
         iconPosition: 'inside-nubbin',
         popoverState: 'button-icon-name',
-        popoverButtonIconName: 'utility:add'
+        popoverButtonIcon: 'utility:add'
     },
     {
         value: '4',
@@ -162,7 +163,7 @@ const stepsLWC = [
         iconName: 'utility:priority',
         iconPosition: 'inside-nubbin',
         popoverState: 'button-icon-name',
-        popoverButtonIconName: 'utility:add'
+        popoverButtonIcon: 'utility:add'
     },
     {
         value: '5',
@@ -171,7 +172,7 @@ const stepsLWC = [
         iconName: 'utility:error',
         iconPosition: 'inside-nubbin',
         popoverState: 'button-icon-name',
-        popoverButtonIconName: 'utility:add'
+        popoverButtonIcon: 'utility:add'
     },
     {
         value: '6',
@@ -180,7 +181,7 @@ const stepsLWC = [
         iconName: 'utility:cases',
         iconPosition: 'inside-nubbin',
         popoverState: 'button-icon-name',
-        popoverButtonIconName: 'utility:add'
+        popoverButtonIcon: 'utility:add'
     },
     {
         value: '7',
@@ -189,7 +190,7 @@ const stepsLWC = [
         iconName: 'utility:change_record_type',
         iconPosition: 'inside-nubbin',
         popoverState: 'button-icon-name',
-        popoverButtonIconName: 'utility:add'
+        popoverButtonIcon: 'utility:add'
     }
 ];
 
@@ -207,19 +208,8 @@ Base.args = {
     disabledSteps: []
 };
 
-export const Arrow = Template.bind({});
-Arrow.args = {
-    type: 'arrow',
-    variant: 'base',
-    steps: steps,
-    errorSteps: ['2'],
-    warningSteps: ['3'],
-    completedSteps: ['4'],
-    disabledSteps: []
-};
-
-export const LWC = Template.bind({});
-LWC.args = {
+export const MilesStones = Template.bind({});
+MilesStones.args = {
     type: 'base',
     variant: 'base',
     steps: stepsLWC,

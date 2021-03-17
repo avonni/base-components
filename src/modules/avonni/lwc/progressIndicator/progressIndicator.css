@@ -1,3 +1,7 @@
+.avonni-progress-step-position-relative {
+    position: relative;
+}
+
 .slds-progress__item::before {
     content: '';
     display: block;
@@ -83,10 +87,6 @@
     right: 0;
     top: 33px;
     background-color: #60b4ff;
-}
-
-.avonni-progress-step-sizing {
-    position: relative;
 }
 
 .slds-progress_horizontal .slds-progress__list {

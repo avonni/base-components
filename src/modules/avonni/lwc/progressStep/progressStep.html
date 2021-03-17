@@ -10,11 +10,11 @@
                         <p>{description}</p>
                     </template>
                     <template if:true={showIconTop}>
-                        <lightning-icon
+                        <c-primitive-icon
                             icon-name={iconName}
                             size={iconSize}
                             src={iconSrc}
-                        ></lightning-icon>
+                        ></c-primitive-icon>
                     </template>
                 </div>
                 <button
@@ -24,7 +24,6 @@
                     onmouseleave={handleStepMouseLeave}
                     onfocus={handleStepFocus}
                     onblur={handleStepBlur}
-                    aria-hidden="true"
                     aria-haspopup="true"
                     aria-expanded="true"
                 >
@@ -50,41 +49,18 @@
                                 <p>{description}</p>
                             </template>
                             <template if:true={showIconNubbin}>
-                                <lightning-icon
+                                <c-primitive-icon
                                     icon-name={iconName}
                                     size={iconSize}
                                     src={iconSrc}
-                                ></lightning-icon>
+                                ></c-primitive-icon>
                             </template>
                         </div>
                     </div>
                 </template>
                 <template if:true={popoverButton}>
                     <button
-                        class="slds-popover slds-nubbin_bottom avonni-progress-step-popover"
-                        tabindex="0"
-                        onclick={handleStepPopoverClick}
-                    >
-                        <div class="slds-popover__body">
-                            <template if:true={showLabelNubbin}>
-                                <p class="slds-text-title_bold">{label}</p>
-                            </template>
-                            <template if:true={showDescriptionNubbin}>
-                                <p>{description}</p>
-                            </template>
-                            <template if:true={showIconNubbin}>
-                                <lightning-icon
-                                    icon-name={iconName}
-                                    size={iconSize}
-                                    src={iconSrc}
-                                ></lightning-icon>
-                            </template>
-                        </div>
-                    </button>
-                </template>
-                <template if:true={popoverButtonIconNames}>
-                    <button
-                        class="slds-popover slds-nubbin_bottom avonni-progress-step-popover-button-icon"
+                        class="slds-popover slds-nubbin_bottom avonni-progress-step-popover-button"
                         tabindex="0"
                         onclick={handleStepPopoverClick}
                         onfocus={handlePopoverFocus}
@@ -93,20 +69,26 @@
                         onmouseleave={handlePopoverMouseLeave}
                     >
                         <template if:false={popoverIconVisible}>
-                            <div class="slds-popover__body">
+                            <div class="slds-popover__body slds-truncate">
+                                <template if:true={showLabelNubbin}>
+                                    <p class="slds-text-title_bold">{label}</p>
+                                </template>
+                                <template if:true={showDescriptionNubbin}>
+                                    <p>{description}</p>
+                                </template>
                                 <template if:true={showIconNubbin}>
-                                    <lightning-icon
+                                    <c-primitive-icon
                                         icon-name={iconName}
                                         size={iconSize}
                                         src={iconSrc}
-                                    ></lightning-icon>
+                                    ></c-primitive-icon>
                                 </template>
                             </div>
                         </template>
                         <template if:true={popoverIconVisible}>
                             <div class="slds-popover__body">
                                 <c-primitive-icon
-                                    icon-name={popoverButtonIconName}
+                                    icon-name={popoverButtonIcon}
                                     svg-class="slds-button_icon"
                                 ></c-primitive-icon>
                             </div>
@@ -124,11 +106,11 @@
                         <p>{description}</p>
                     </template>
                     <template if:true={showIconBottom}>
-                        <lightning-icon
+                        <c-primitive-icon
                             icon-name={iconName}
                             size={iconSize}
                             src={iconSrc}
-                        ></lightning-icon>
+                        ></c-primitive-icon>
                     </template>
                     <template if:true={buttonLabel}>
                         <lightning-button

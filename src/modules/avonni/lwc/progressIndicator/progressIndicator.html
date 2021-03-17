@@ -3,7 +3,7 @@
         <ol class="slds-progress__list">
             <template for:each={steps} for:item="step">
                 <c-progress-step
-                    class="avonni-progress-step-sizing"
+                    class="avonni-progress-step-position-relative"
                     disabled-steps={disabledSteps}
                     warning-steps={warningSteps}
                     key={step.value}
@@ -24,7 +24,7 @@
                     button-disabled={step.buttonDisabled}
                     button-title={step.buttonTitle}
                     button-variant={step.buttonVariant}
-                    popover-button-icon-name={step.popoverButtonIconName}
+                    popover-button-icon={step.popoverButtonIcon}
                     assistive-text={step.assistiveText}
                 ></c-progress-step>
             </template>

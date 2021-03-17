@@ -23,11 +23,6 @@
     border: none;
 }
 
-.avonni-progress-step-sizing {
-    flex: 1 1 auto;
-    position: relative;
-}
-
 .slds-progress__item {
     position: relative;
     min-width: 9rem;
@@ -66,30 +61,30 @@
     width: 100%;
     background-color: var(
         --avonni-c-progress-indicator-step-color-background,
-        white
+        #ffffff
     );
 }
 
-.avonni-progress-step-popover-button-icon {
+.avonni-progress-step-popover-button {
     position: absolute;
     left: 50%;
     transform: translate(-50%, -130%);
-    width: 50%;
+    width: 100%;
     background-color: var(
         --avonni-c-progress-indicator-step-color-background,
-        #f4f6fe
+        #ffffff
     );
 }
 
-.avonni-progress-step-popover-button-icon:focus,
-.avonni-progress-step-popover-button-icon:hover {
+.avonni-progress-step-popover-button:focus,
+.avonni-progress-step-popover-button:hover {
     position: absolute;
     left: 50%;
     transform: translate(-50%, -130%);
-    width: 50%;
+    width: 100%;
     background-color: var(
         --avonni-c-progress-indicator-step-color-background,
-        white
+        #ffffff
     );
 }
 

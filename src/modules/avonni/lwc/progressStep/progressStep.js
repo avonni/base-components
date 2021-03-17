@@ -37,7 +37,7 @@ export default class ProgressStep extends LightningElement {
     @api buttonLabel;
     @api buttonName;
     @api buttonIconName;
-    @api popoverButtonIconName;
+    @api popoverButtonIcon;
     @api buttonTitle;
     @api assistiveText;
     @api disabledSteps;
@@ -232,14 +232,10 @@ export default class ProgressStep extends LightningElement {
             this.showIconNubbin ||
             this.showLabelNubbin
         ) {
-            return this._popoverState === 'button';
-        }
-        return false;
-    }
-
-    get popoverButtonIconNames() {
-        if (this.showIconNubbin) {
-            return this._popoverState === 'button-icon-name';
+            return (
+                this._popoverState === 'button' ||
+                this._popoverState === 'button-icon-name'
+            );
         }
         return false;
     }
@@ -328,6 +324,7 @@ export default class ProgressStep extends LightningElement {
         this.dispatchEvent(new CustomEvent('steppopoverclick'));
     }
 
+    // Events for popoverButtonIconName
     allowBlur() {
         this._allowBlur = true;
     }
@@ -350,16 +347,20 @@ export default class ProgressStep extends LightningElement {
     }
 
     handlePopoverMouseEnter() {
-        if (this._allowBlur) {
-            return;
+        if (this.popoverButtonIcon) {
+            if (this._allowBlur) {
+                return;
+            }
+            this._popoverIconVisible = true;
         }
-        this._popoverIconVisible = true;
     }
 
     handlePopoverMouseLeave() {
-        if (this._allowBlur) {
-            return;
+        if (this.popoverButtonIcon) {
+            if (this._allowBlur) {
+                return;
+            }
+            this._popoverIconVisible = false;
         }
-        this._popoverIconVisible = false;
     }
 }
