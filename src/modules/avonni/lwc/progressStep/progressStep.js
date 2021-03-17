@@ -29,6 +29,11 @@ const BUTTON_VARIANTS = {
     default: 'neutral'
 };
 
+const POPOVER_RATIO = {
+    valid: ['1-by-1', '4-by-3', '16-by-9'],
+    default: '1-by-1'
+};
+
 export default class ProgressStep extends LightningElement {
     stepIconName;
     @api label;
@@ -44,6 +49,8 @@ export default class ProgressStep extends LightningElement {
     @api disabledSteps;
     @api warningSteps;
     @api completedSteps;
+    @api popoverLabel;
+    @api popoverDescription;
 
     _value;
     _popoverState = 'hover';
@@ -54,6 +61,7 @@ export default class ProgressStep extends LightningElement {
     _buttonIconPosition = 'left';
     _buttonVariant = 'neutral';
     _buttonDisabled = false;
+    _popoverRatio = '1-by-1';
 
     _popoverVisible = false;
     _popoverIconVisible = false;
@@ -170,6 +178,18 @@ export default class ProgressStep extends LightningElement {
         });
     }
 
+    @api
+    get popoverRatio() {
+        return this._popoverRatio;
+    }
+
+    set popoverRatio(ratio) {
+        this._popoverRatio = normalizeString(ratio, {
+            fallbackValue: POPOVER_RATIO.default,
+            validValues: POPOVER_RATIO.valid
+        });
+    }
+
     get computedButtonClass() {
         const classes = classSet('slds-button slds-progress__marker');
         if (this.stepIconName) {
@@ -185,6 +205,7 @@ export default class ProgressStep extends LightningElement {
         if (this.completedSteps.includes(this.getAttribute('data-step'))) {
             classes.add('avonni-progress-step-popover-completed');
         }
+        classes.add(`ratio-${this._popoverRatio}`);
         return classes.toString();
     }
 
@@ -195,6 +216,7 @@ export default class ProgressStep extends LightningElement {
         if (this.completedSteps.includes(this.getAttribute('data-step'))) {
             classes.add('avonni-progress-step-popover-button-completed');
         }
+        classes.add(`ratio-${this._popoverRatio}`);
         return classes.toString();
     }
 
