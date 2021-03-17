@@ -7,6 +7,7 @@ customElements.define(
 
 export const ModalWizard = ({
     title,
+    iconName,
     type,
     currentStep,
     indicatorType,
@@ -30,6 +31,7 @@ export const ModalWizard = ({
 }) => {
     const element = document.createElement('ac-avonni-modal-wizard');
     element.title = title;
+    element.iconName = iconName;
     element.type = type;
     element.currentStep = currentStep;
     element.indicatorType = indicatorType;

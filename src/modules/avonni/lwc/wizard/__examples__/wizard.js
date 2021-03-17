@@ -4,6 +4,7 @@ customElements.define('ac-avonni-wizard', Component.CustomElementConstructor);
 
 export const Wizard = ({
     title,
+    iconName,
     type,
     currentStep,
     indicatorType,
@@ -27,6 +28,7 @@ export const Wizard = ({
 }) => {
     const element = document.createElement('ac-avonni-wizard');
     element.title = title;
+    element.iconName = iconName;
     element.type = type;
     element.currentStep = currentStep;
     element.indicatorType = indicatorType;

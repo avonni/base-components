@@ -6,13 +6,20 @@ import CardView from './card.html';
 
 const TYPES = ['base', 'modal', 'card'];
 
-// QUESTIONS / TO VALIDATE:
+// QUESTIONS:
 // If beforeChange returns an error, should we display it somewhere? In the console? In the step?
-// next/previous methods fire the change/complete event.
-// The change event is fired when the user clicks on 'previous' in the first step (with oldStep === currentStep).
+// Add padding to base default slot?
+// In modal, if iconName, change default header for media object?
+
+// TO VALIDATE:
+// next/previous methods fire the change/complete event, even if called programmatically.
+// The change event is fired even when the user clicks on 'previous' in the first step (with oldStep === currentStep).
+// type modal does not include the button and is closed by default.
+// Since bubbles, cancelable and composed are false by default, I did not include them in the dispatchEvent
 
 export default class Wizard extends LightningElement {
     @api title;
+    @api iconName;
     @api indicatorType;
     @api hideIndicator;
     @api buttonPreviousIconName;
@@ -66,7 +73,7 @@ export default class Wizard extends LightningElement {
             stepTemp.name = stepTemp.name || `step-${index}`;
         });
 
-        // If no current step was given, sets current step to first step
+        // If no current step was given, set current step to first step
         if (this.currentStepIndex === -1) {
             this._currentStep = this.steps[0].name;
         }

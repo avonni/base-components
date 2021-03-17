@@ -2,6 +2,7 @@ import { LightningElement, api } from 'lwc';
 
 export default class Base extends LightningElement {
     @api title;
+    @api iconName;
     @api type;
     @api currentStep;
     @api indicatorType;

@@ -1,14 +1,25 @@
 <template>
     <article if:true={showWizard}>
-        <template if:true={title}>
-            <header>
-                <h1>{title}</h1>
-            </header>
-        </template>
+        <header>
+            <avonni-media-object vertical-align="center">
+                <template if:true={iconName}>
+                    <div slot="figure">
+                        <lightning-icon
+                            size="small"
+                            icon-name={iconName}
+                        ></lightning-icon>
+                    </div>
+                </template>
 
-        <template if:false={title}>
-            <slot name="title"></slot>
-        </template>
+                <template if:true={title}>
+                    <h1 class="slds-text-heading_small">{title}</h1>
+                </template>
+
+                <template if:false={title}>
+                    <slot name="title"></slot>
+                </template>
+            </avonni-media-object>
+        </header>
         <main>
             <slot onwizardstepregister={handleStepRegister}></slot>
         </main>
@@ -36,7 +47,7 @@
                 fraction-prefix-label={fractionPrefixLabel}
                 fraction-label={fractionLabel}
             >
-                <slot name="action"></slot>
+                <slot name="actions"></slot>
             </c-primitive-wizard-navigation>
         </footer>
     </article>

@@ -14,17 +14,24 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        type: {
+        iconName: {
             control: {
-                type: 'select',
-                options: ['base', 'modal', 'card']
+                type: 'text'
             },
+            description:
+                "The Lightning Design System name of the icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed. The icon is displayed in the header before the title.",
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        type: {
+            control: false,
             defaultValue: 'base',
             description:
                 'Type of the wizard. Valid values include base, modal and card.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: 'base'
+                defaultValue: { summary: 'base' }
             }
         },
         currentStep: {
@@ -53,8 +60,10 @@ export default {
             description:
                 'Changes the visual pattern of the indicator. Valid values are base, base-shaded, path, bullet, fractions, bar.',
             table: {
-                defaultValue: 'base',
-                type: { summary: 'string' }
+                defaultValue: { summary: 'base' },
+                type: { summary: 'string' },
+                category: 'Navigation',
+                subcategory: 'Indicator'
             }
         },
         hideIndicator: {
@@ -64,8 +73,10 @@ export default {
             description: 'If true, hide the indicator.',
             defaultValue: false,
             table: {
-                defaultValue: 'false',
-                type: { summary: 'boolean' }
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' },
+                category: 'Navigation',
+                subcategory: 'Indicator'
             }
         },
         buttonPreviousIconName: {
@@ -73,7 +84,9 @@ export default {
                 type: 'text'
             },
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Navigation',
+                subcategory: 'Previous button'
             }
         },
         buttonPreviousIconPosition: {
@@ -84,8 +97,10 @@ export default {
             defaultValue: 'left',
             description: 'Valid values include left and right.',
             table: {
-                defaultValue: 'left',
-                type: { summary: 'string' }
+                defaultValue: { summary: 'left' },
+                type: { summary: 'string' },
+                category: 'Navigation',
+                subcategory: 'Previous button'
             }
         },
         buttonPreviousLabel: {
@@ -94,8 +109,10 @@ export default {
             },
             defaultValue: 'Previous',
             table: {
-                defaultValue: 'Previous',
-                type: { summary: 'string' }
+                defaultValue: { summary: 'Previous' },
+                type: { summary: 'string' },
+                category: 'Navigation',
+                subcategory: 'Previous button'
             }
         },
         buttonPreviousVariant: {
@@ -114,8 +131,10 @@ export default {
             },
             defaultValue: 'neutral',
             table: {
-                defaultValue: 'neutral',
-                type: { summary: 'string' }
+                defaultValue: { summary: 'neutral' },
+                type: { summary: 'string' },
+                category: 'Navigation',
+                subcategory: 'Previous button'
             }
         },
         buttonNextIconName: {
@@ -123,7 +142,9 @@ export default {
                 type: 'text'
             },
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Navigation',
+                subcategory: 'Next button'
             }
         },
         buttonNextIconPosition: {
@@ -134,8 +155,10 @@ export default {
             defaultValue: 'left',
             description: 'Valid values include left and right.',
             table: {
-                defaultValue: 'left',
-                type: { summary: 'string' }
+                defaultValue: { summary: 'left' },
+                type: { summary: 'string' },
+                category: 'Navigation',
+                subcategory: 'Next button'
             }
         },
         buttonNextLabel: {
@@ -144,8 +167,10 @@ export default {
             },
             defaultValue: 'Next',
             table: {
-                defaultValue: 'Next',
-                type: { summary: 'string' }
+                defaultValue: { summary: 'Next' },
+                type: { summary: 'string' },
+                category: 'Navigation',
+                subcategory: 'Next button'
             }
         },
         buttonNextVariant: {
@@ -164,8 +189,10 @@ export default {
             },
             defaultValue: 'neutral',
             table: {
-                defaultValue: 'neutral',
-                type: { summary: 'string' }
+                defaultValue: { summary: 'neutral' },
+                type: { summary: 'string' },
+                category: 'Navigation',
+                subcategory: 'Next button'
             }
         },
         buttonFinishIconName: {
@@ -173,7 +200,9 @@ export default {
                 type: 'text'
             },
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Navigation',
+                subcategory: 'Finish button'
             }
         },
         buttonFinishIconPosition: {
@@ -184,8 +213,10 @@ export default {
             defaultValue: 'left',
             description: 'Valid values include left and right.',
             table: {
-                defaultValue: 'left',
-                type: { summary: 'string' }
+                defaultValue: { summary: 'left' },
+                type: { summary: 'string' },
+                category: 'Navigation',
+                subcategory: 'Finish button'
             }
         },
         buttonFinishLabel: {
@@ -194,8 +225,10 @@ export default {
             },
             defaultValue: 'Finish',
             table: {
-                defaultValue: 'Finish',
-                type: { summary: 'string' }
+                defaultValue: { summary: 'Finish' },
+                type: { summary: 'string' },
+                category: 'Navigation',
+                subcategory: 'Finish button'
             }
         },
         buttonFinishVariant: {
@@ -216,8 +249,10 @@ export default {
             description:
                 'Valid values include bare, neutral, brand, brand-outline, inverse, destructive, destructive-text, success.',
             table: {
-                defaultValue: 'neutral',
-                type: { summary: 'string' }
+                defaultValue: { summary: 'neutral' },
+                type: { summary: 'string' },
+                category: 'Navigation',
+                subcategory: 'Finish button'
             }
         },
         buttonAlignmentBump: {
@@ -227,7 +262,8 @@ export default {
             },
             description: 'Valid values include left and right.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Navigation'
             }
         },
         actionPosition: {
@@ -238,8 +274,9 @@ export default {
             defaultValue: 'left',
             description: 'Valid values include left and right.',
             table: {
+                defaultValue: { summary: 'left' },
                 type: { summary: 'string' },
-                defaultValue: 'left'
+                category: 'Navigation'
             }
         },
         fractionPrefixLabel: {
@@ -250,8 +287,10 @@ export default {
             description:
                 'Label displayed in front of fraction. Example: fraction-prefix-label == “Step” => Step 1 of 3',
             table: {
-                defaultValue: 'Step',
-                type: { summary: 'string' }
+                defaultValue: { summary: 'Step' },
+                type: { summary: 'string' },
+                category: 'Navigation',
+                subcategory: 'Indicator'
             }
         },
         fractionLabel: {
@@ -262,8 +301,10 @@ export default {
             description:
                 'Label displayed between current index and max number of slides. Example: fraction-label == “of” => 1 of 3',
             table: {
-                defaultValue: 'of',
-                type: { summary: 'string' }
+                defaultValue: { summary: 'of' },
+                type: { summary: 'string' },
+                category: 'Navigation',
+                subcategory: 'Indicator'
             }
         }
     }
@@ -285,5 +326,6 @@ Modal.args = {
 };
 
 Card.args = {
-    type: 'card'
+    type: 'card',
+    iconName: 'utility:announcement'
 };

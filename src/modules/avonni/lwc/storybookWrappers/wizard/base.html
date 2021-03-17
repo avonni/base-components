@@ -1,6 +1,7 @@
 <template>
     <avonni-wizard
         title={title}
+        icon-name={iconName}
         type={type}
         current-step={currentStep}
         indicator-type={indicatorType}
@@ -23,14 +24,7 @@
         fraction-label={fractionLabel}
     >
         <div slot="title">
-            <avonni-media-object vertical-align="center">
-                <div slot="figure">
-                    <lightning-icon
-                        icon-name="utility:announcement"
-                    ></lightning-icon>
-                </div>
-                <h1>Title slot containing a media object</h1>
-            </avonni-media-object>
+            <h1>Title slot</h1>
         </div>
         <avonni-wizard-step label="First step">
             <h2>This step has these properties set:</h2>
@@ -60,7 +54,7 @@
             </ul>
         </avonni-wizard-step>
         <div
-            slot="action"
+            slot="actions"
             class="slds-p-vertical_xx-small slds-p-horizontal_x-small"
         >
             Action slot
