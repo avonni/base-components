@@ -10,8 +10,8 @@
                 icon-position={buttonPreviousIconPosition}
                 label={buttonPreviousLabel}
                 variant={buttonPreviousVariant}
-                data-label="previous"
-                onclick={handlePreviousNextClick}
+                data-action="previous"
+                onclick={handleButtonClick}
                 class="slds-m-horizontal_xx-small"
             ></lightning-button>
         </lightning-layout-item>
@@ -96,18 +96,19 @@
                         icon-name={buttonNextIconName}
                         icon-position={buttonNextIconPosition}
                         label={buttonNextLabel}
-                        data-label="next"
+                        data-action="next"
                         variant={buttonNextVariant}
-                        onclick={handlePreviousNextClick}
+                        onclick={handleButtonClick}
                         class="slds-m-horizontal_xx-small"
                     ></lightning-button>
                     <lightning-button
                         if:true={lastStep}
                         icon-name={buttonFinishIconName}
                         icon-position={buttonFinishIconPosition}
+                        data-action="finish"
                         label={buttonFinishLabel}
                         variant={buttonFinishVariant}
-                        onclick={handleFinishClick}
+                        onclick={handleButtonClick}
                         class="slds-m-horizontal_xx-small"
                     ></lightning-button>
                 </lightning-layout-item>

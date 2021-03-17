@@ -1,0 +1,43 @@
+<template>
+    <article>
+        <template if:true={title}>
+            <header>
+                <h1>{title}</h1>
+            </header>
+        </template>
+
+        <template if:false={title}>
+            <slot name="title"></slot>
+        </template>
+        <main>
+            <slot onwizardstepregister={handleStepRegister}></slot>
+        </main>
+        <footer>
+            <c-primitive-wizard-navigation
+                onchange={handleChange}
+                current-step={currentStep}
+                steps={steps}
+                indicator-type={indicatorType}
+                hide-indicator={hideIndicator}
+                button-previous-icon-name={buttonPreviousIconName}
+                button-previous-icon-position={buttonPreviousIconPosition}
+                button-previous-label={buttonPreviousLabel}
+                button-previous-variant={buttonPreviousVariant}
+                button-next-icon-name={buttonNextIconName}
+                button-next-icon-position={buttonNextIconPosition}
+                button-next-label={buttonNextLabel}
+                button-next-variant={buttonNextVariant}
+                button-finish-icon-name={buttonFinishIconName}
+                button-finish-icon-position={buttonFinishIconPosition}
+                button-finish-label={buttonFinishLabel}
+                button-finish-variant={buttonFinishVariant}
+                button-alignment-bump={buttonAlignmentBump}
+                action-position={actionPosition}
+                fraction-prefix-label={fractionPrefixLabel}
+                fraction-label={fractionLabel}
+            >
+                <slot name="action"></slot>
+            </c-primitive-wizard-navigation>
+        </footer>
+    </article>
+</template>

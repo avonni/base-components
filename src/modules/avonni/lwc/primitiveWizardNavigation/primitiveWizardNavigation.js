@@ -22,29 +22,29 @@ const INDICATOR_TYPES = [
 ];
 
 export default class WizardNavigation extends LightningElement {
+    @api steps;
     @api buttonPreviousIconName;
     @api buttonNextIconName;
     @api buttonFinishIconName;
 
+    _currentStep;
     _rendered;
-    _indicatorType = 'base';
+    _indicatorType;
     _hideIndicator;
-    _buttonPreviousIconPosition = 'left';
-    _buttonPreviousLabel = 'Previous';
-    _buttonPreviousVariant = 'neutral';
-    _buttonNextIconPosition = 'left';
-    _buttonNextLabel = 'Next';
-    _buttonNextVariant = 'neutral';
-    _buttonFinishIconPosition = 'left';
-    _buttonFinishLabel = 'Finish';
-    _buttonFinishVariant = 'neutral';
+    _buttonPreviousIconPosition;
+    _buttonPreviousLabel;
+    _buttonPreviousVariant;
+    _buttonNextIconPosition;
+    _buttonNextLabel;
+    _buttonNextVariant;
+    _buttonFinishIconPosition;
+    _buttonFinishLabel;
+    _buttonFinishVariant;
     _buttonAlignmentBump;
-    _actionPosition = 'left';
-    _fractionPrefixLabel = 'Steps';
-    _fractionLabel = 'of';
+    _actionPosition;
+    _fractionPrefixLabel;
+    _fractionLabel;
 
-    steps;
-    currentStep;
     lastStep;
     progressIndicatorVariant = 'base';
     progressIndicatorType = 'base';
@@ -66,43 +66,16 @@ export default class WizardNavigation extends LightningElement {
     connectedCallback() {
         // Apply buttonAlignmentBump and actionPosition.
         this._reorderColumns();
-
-        const navigationRegister = new CustomEvent('wizardnavigationregister', {
-            bubbles: true,
-            detail: {
-                callbacks: {
-                    setSteps: this.setSteps,
-                    setCurrentStep: this.setCurrentStep,
-                    registerChange: this.registerChange,
-                    registerComplete: this.registerComplete
-                }
-            }
-        });
-
-        this.dispatchEvent(navigationRegister);
     }
 
     renderedCallback() {
-        // steps and currentStep are set automatically by the parent wizard
-        if (!this._rendered && this.steps) {
+        if (!this._rendered && this.steps.length > 0) {
             this._rendered = true;
+
             this._initIndicator();
             this._updateSteps();
         }
     }
-
-    setSteps = (value) => {
-        this.steps = value;
-    };
-    setCurrentStep = (value) => {
-        this.currentStep = value;
-    };
-    registerChange = (callback) => {
-        this.dispatchChangeToWizard = callback;
-    };
-    registerComplete = (callback) => {
-        this.dispatchCompleteToWizard = callback;
-    };
 
     _initIndicator() {
         switch (this.indicatorType) {
@@ -133,15 +106,15 @@ export default class WizardNavigation extends LightningElement {
 
     _updateSteps() {
         const currentStepIndex = this.currentStepIndex;
-        const currentStep = this.steps[currentStepIndex];
+        const currentStepComponent = this.steps[currentStepIndex];
 
         this.lastStep =
             currentStepIndex === this.steps.length - 1 ? true : false;
         this.progressBarValue =
             (currentStepIndex / (this.steps.length - 1)) * 100;
         this.fractionCurrentStep = currentStepIndex + 1;
-        this.hidePreviousButton = currentStep.hidePreviousButton;
-        this.hideNextFinishButton = currentStep.hideNextFinishButton;
+        this.hidePreviousButton = currentStepComponent.hidePreviousButton;
+        this.hideNextFinishButton = currentStepComponent.hideNextFinishButton;
 
         // Add info to step for bullet variant
         if (this.indicatorType === 'bullet') {
@@ -149,8 +122,8 @@ export default class WizardNavigation extends LightningElement {
                 step.selected = false;
                 step.bulletClass = 'slds-carousel__indicator-action';
             });
-            currentStep.selected = true;
-            currentStep.bulletClass =
+            currentStepComponent.selected = true;
+            currentStepComponent.bulletClass =
                 'slds-carousel__indicator-action slds-is-active';
         }
     }
@@ -181,6 +154,16 @@ export default class WizardNavigation extends LightningElement {
 
     get showIndicator() {
         return this.steps && !this.hideIndicator;
+    }
+
+    @api
+    get currentStep() {
+        return this._currentStep;
+    }
+    set currentStep(name) {
+        this._currentStep = name;
+
+        if (this._rendered && this.steps) this._updateSteps();
     }
 
     @api
@@ -218,7 +201,7 @@ export default class WizardNavigation extends LightningElement {
         return this._buttonPreviousLabel;
     }
     set buttonPreviousLabel(label) {
-        this._buttonPreviousLabel = label;
+        this._buttonPreviousLabel = label || 'Previous';
     }
 
     @api
@@ -248,7 +231,7 @@ export default class WizardNavigation extends LightningElement {
         return this._buttonNextLabel;
     }
     set buttonNextLabel(label) {
-        this._buttonNextLabel = label;
+        this._buttonNextLabel = label || 'Next';
     }
 
     @api
@@ -278,7 +261,7 @@ export default class WizardNavigation extends LightningElement {
         return this._buttonFinishLabel;
     }
     set buttonFinishLabel(label) {
-        this._buttonFinishLabel = label;
+        this._buttonFinishLabel = label || 'Finish';
     }
 
     @api
@@ -319,7 +302,7 @@ export default class WizardNavigation extends LightningElement {
         return this._fractionPrefixLabel;
     }
     set fractionPrefixLabel(prefix) {
-        this._fractionPrefixLabel = prefix;
+        this._fractionPrefixLabel = prefix || 'Step';
     }
 
     @api
@@ -327,46 +310,18 @@ export default class WizardNavigation extends LightningElement {
         return this._fractionLabel;
     }
     set fractionLabel(label) {
-        this._fractionLabel = label;
+        this._fractionLabel = label || 'of';
     }
 
-    handlePreviousNextClick(event) {
-        const oldStep = this.currentStep;
-        const button = event.currentTarget.dataset.label;
+    handleButtonClick(event) {
+        const action = event.currentTarget.dataset.action;
 
-        if (button === 'previous') {
-            // If user clicks 'previous' on first step, currentStep === oldStep
-            this.currentStep =
-                this.currentStepIndex === 0
-                    ? this.currentStep
-                    : this.steps[this.currentStepIndex - 1].name;
-        } else {
-            this.currentStep = this.steps[this.currentStepIndex + 1].name;
-        }
-
-        const changeEvent = new CustomEvent('change', {
-            detail: {
-                currentStep: this.currentStep,
-                oldStep: oldStep
-            },
-            bubbles: false,
-            cancelable: false,
-            composed: false
-        });
-        // Send change event directly to parent wizard
-        this.dispatchChangeToWizard(changeEvent);
-
-        this._updateSteps();
-    }
-
-    handleFinishClick() {
-        const completeEvent = new CustomEvent('complete', {
-            bubbles: false,
-            cancelable: false,
-            composed: false
-        });
-
-        // Send complete event directly to parent wizard
-        this.dispatchCompleteToWizard(completeEvent);
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                detail: {
+                    action: action
+                }
+            })
+        );
     }
 }

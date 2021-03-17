@@ -1,6 +1,8 @@
 import { LightningElement, api } from 'lwc';
 
-export default class Base extends LightningElement {
+export default class Modal extends LightningElement {
+    @api title;
+    @api type;
     @api currentStep;
     @api indicatorType;
     @api hideIndicator;
@@ -18,7 +20,6 @@ export default class Base extends LightningElement {
     @api buttonFinishLabel;
     @api buttonAlignmentBump;
     @api actionPosition;
-    @api navigationPosition;
     @api fractionPrefixLabel;
     @api fractionLabel;
 }

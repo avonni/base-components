@@ -1,0 +1,37 @@
+<template>
+    <c-dialog title={title} show-dialog="true">
+        <template if:false={title}>
+            <div slot="title">
+                <slot name="title"></slot>
+            </div>
+        </template>
+        <slot onwizardstepregister={handleStepRegister}></slot>
+        <div slot="footer">
+            <c-primitive-wizard-navigation
+                onchange={handleChange}
+                current-step={currentStep}
+                steps={steps}
+                indicator-type={indicatorType}
+                hide-indicator={hideIndicator}
+                button-previous-icon-name={buttonPreviousIconName}
+                button-previous-icon-position={buttonPreviousIconPosition}
+                button-previous-label={buttonPreviousLabel}
+                button-previous-variant={buttonPreviousVariant}
+                button-next-icon-name={buttonNextIconName}
+                button-next-icon-position={buttonNextIconPosition}
+                button-next-label={buttonNextLabel}
+                button-next-variant={buttonNextVariant}
+                button-finish-icon-name={buttonFinishIconName}
+                button-finish-icon-position={buttonFinishIconPosition}
+                button-finish-label={buttonFinishLabel}
+                button-finish-variant={buttonFinishVariant}
+                button-alignment-bump={buttonAlignmentBump}
+                action-position={actionPosition}
+                fraction-prefix-label={fractionPrefixLabel}
+                fraction-label={fractionLabel}
+            >
+                <slot name="action"></slot>
+            </c-primitive-wizard-navigation>
+        </div>
+    </c-dialog>
+</template>

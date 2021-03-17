@@ -4,6 +4,9 @@ import { normalizeBoolean } from '../utilsPrivate/normalize';
 export default class WizardStep extends LightningElement {
     @api label;
     @api name;
+    @api beforeChange = function () {
+        return true;
+    };
 
     stepClass;
     _hidePreviousButton = false;
@@ -14,7 +17,11 @@ export default class WizardStep extends LightningElement {
             bubbles: true,
             detail: {
                 callbacks: {
-                    setClass: this.setClass
+                    setClass: this.setClass,
+                    beforeChange:
+                        typeof this.beforeChange === 'function'
+                            ? this.beforeChange.bind(this)
+                            : null
                 },
                 name: this.name,
                 label: this.label,

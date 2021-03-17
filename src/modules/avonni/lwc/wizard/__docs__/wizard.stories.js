@@ -1,9 +1,32 @@
-import { BaseWizard } from '../__examples__/base';
+import { Wizard } from '../__examples__/wizard';
 import { ModalWizard } from '../__examples__/modal';
 
 export default {
     title: 'Example/Wizard',
     argTypes: {
+        title: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'The title can include text, and is displayed in the header. To include additional markup or another component, use the title slot.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        type: {
+            control: {
+                type: 'select',
+                options: ['base', 'modal', 'card']
+            },
+            defaultValue: 'base',
+            description:
+                'Type of the wizard. Valid values include base, modal and card.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: 'base'
+            }
+        },
         currentStep: {
             control: {
                 type: 'text'
@@ -223,11 +246,11 @@ export default {
             control: {
                 type: 'text'
             },
-            defaultValue: 'Steps',
+            defaultValue: 'Step',
             description:
-                'Label displayed in front of fraction. Example: fraction-prefix-label == “Steps” => Steps 1 of 3',
+                'Label displayed in front of fraction. Example: fraction-prefix-label == “Step” => Step 1 of 3',
             table: {
-                defaultValue: 'Steps',
+                defaultValue: 'Step',
                 type: { summary: 'string' }
             }
         },
@@ -246,8 +269,21 @@ export default {
     }
 };
 
-const BaseTemplate = (args) => BaseWizard(args);
+const Template = (args) => Wizard(args);
 const ModalTemplate = (args) => ModalWizard(args);
 
-export const Base = BaseTemplate.bind({});
+export const Base = Template.bind({});
 export const Modal = ModalTemplate.bind({});
+export const Card = Template.bind({});
+
+Base.args = {
+    title: 'Avonni Wizard'
+};
+
+Modal.args = {
+    type: 'modal'
+};
+
+Card.args = {
+    type: 'card'
+};

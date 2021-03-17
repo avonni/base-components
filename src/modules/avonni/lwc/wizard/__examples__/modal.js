@@ -1,11 +1,13 @@
-import ModalWrapper from '../../storybookWrappers/wizard/modal';
+import Component from '../../storybookWrappers/wizard/modal';
 
 customElements.define(
     'ac-avonni-modal-wizard',
-    ModalWrapper.CustomElementConstructor
+    Component.CustomElementConstructor
 );
 
 export const ModalWizard = ({
+    title,
+    type,
     currentStep,
     indicatorType,
     hideIndicator,
@@ -23,11 +25,12 @@ export const ModalWizard = ({
     buttonFinishVariant,
     buttonAlignmentBump,
     actionPosition,
-    navigationPosition,
     fractionPrefixLabel,
     fractionLabel
 }) => {
     const element = document.createElement('ac-avonni-modal-wizard');
+    element.title = title;
+    element.type = type;
     element.currentStep = currentStep;
     element.indicatorType = indicatorType;
     element.hideIndicator = hideIndicator;
@@ -45,7 +48,6 @@ export const ModalWizard = ({
     element.buttonFinishVariant = buttonFinishVariant;
     element.buttonAlignmentBump = buttonAlignmentBump;
     element.actionPosition = actionPosition;
-    element.navigationPosition = navigationPosition;
     element.fractionPrefixLabel = fractionPrefixLabel;
     element.fractionLabel = fractionLabel;
     return element;
