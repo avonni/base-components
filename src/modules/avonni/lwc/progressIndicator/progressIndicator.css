@@ -2,6 +2,12 @@
     position: relative;
 }
 
+.slds-progress_horizontal .slds-progress__list {
+    min-height: 11rem;
+    display: inline-flex;
+}
+
+/* setting the progress bars */
 .slds-progress__item::before {
     content: '';
     display: block;
@@ -87,9 +93,4 @@
     right: 0;
     top: 33px;
     background-color: #60b4ff;
-}
-
-.slds-progress_horizontal .slds-progress__list {
-    min-height: 11rem;
-    display: inline-flex;
 }

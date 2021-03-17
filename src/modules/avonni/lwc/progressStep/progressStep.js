@@ -21,6 +21,7 @@ const BUTTON_VARIANTS = {
         'neutral',
         'brand',
         'brand-outline',
+        'destructive',
         'destructive-text',
         'inverse',
         'success'
@@ -222,6 +223,17 @@ export default class ProgressStep extends LightningElement {
         return this._popoverState === 'show';
     }
 
+    get displayPopover() {
+        if (
+            this.showDescriptionNubbin ||
+            this.showIconNubbin ||
+            this.showLabelNubbin
+        ) {
+            return this._popoverVisible || this.popoverShow;
+        }
+        return false;
+    }
+
     get popoverIconVisible() {
         return this._popoverIconVisible;
     }
@@ -240,29 +252,11 @@ export default class ProgressStep extends LightningElement {
         return false;
     }
 
-    get displayPopover() {
-        if (
-            this.showDescriptionNubbin ||
-            this.showIconNubbin ||
-            this.showLabelNubbin
-        ) {
-            return this._popoverVisible || this.popoverShow;
-        }
-        return false;
-    }
-
     get isButtonDisabled() {
         return (
             this._buttonDisabled ||
             this.disabledSteps.includes(this.getAttribute('data-step'))
         );
-    }
-
-    get primitiveIconVariant() {
-        if (this.warningSteps.includes(this.getAttribute('data-step'))) {
-            return 'warning';
-        }
-        return 'bare';
     }
 
     isDisabled() {
@@ -277,6 +271,13 @@ export default class ProgressStep extends LightningElement {
     @api
     setIcon(stepIconName) {
         this.stepIconName = stepIconName;
+    }
+
+    get primitiveIconVariant() {
+        if (this.warningSteps.includes(this.getAttribute('data-step'))) {
+            return 'warning';
+        }
+        return 'bare';
     }
 
     handleStepMouseEnter() {

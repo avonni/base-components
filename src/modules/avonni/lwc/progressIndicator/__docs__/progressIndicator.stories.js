@@ -93,8 +93,7 @@ const steps = [
         labelPosition: 'bottom',
         assistiveText: '1',
         description: 'This is step #1',
-        descriptionPosition: 'inside-nubbin',
-        popoverState: 'button-icon-name'
+        descriptionPosition: 'inside-nubbin'
     },
     {
         value: '2',
@@ -128,7 +127,58 @@ const steps = [
     }
 ];
 
-const stepsLWC = [
+const stepsWithButtons = [
+    {
+        value: '1',
+        label: '1',
+        labelPosition: 'top',
+        assistiveText: '1',
+        description: 'This is step #1',
+        descriptionPosition: 'inside-nubbin',
+        buttonLabel: 'Error',
+        buttonVariant: 'destructive'
+    },
+    {
+        value: '2',
+        label: '2',
+        labelPosition: 'top',
+        assistiveText: '2',
+        description: 'This is step #2',
+        descriptionPosition: 'inside-nubbin',
+        buttonLabel: 'Completed',
+        buttonVariant: 'success'
+    },
+    {
+        value: '3',
+        label: '3',
+        labelPosition: 'top',
+        assistiveText: '3',
+        description: 'This is step #3',
+        descriptionPosition: 'inside-nubbin',
+        buttonLabel: 'Completed',
+        buttonVariant: 'success'
+    },
+    {
+        value: '4',
+        label: '4',
+        labelPosition: 'top',
+        description: 'This is step #4',
+        descriptionPosition: 'inside-nubbin',
+        buttonLabel: 'Current',
+        buttonVariant: 'brand'
+    },
+    {
+        value: '5',
+        label: '5',
+        labelPosition: 'top',
+        description: 'This is step #5',
+        descriptionPosition: 'inside-nubbin',
+        buttonLabel: 'Warning',
+        buttonVariant: 'destructive-text'
+    }
+];
+
+const milestonesSteps = [
     {
         value: '1',
         label: 'Merger & Acquisition',
@@ -208,11 +258,23 @@ Base.args = {
     disabledSteps: []
 };
 
-export const MilesStones = Template.bind({});
-MilesStones.args = {
+export const withButtons = Template.bind({});
+withButtons.args = {
     type: 'base',
     variant: 'base',
-    steps: stepsLWC,
+    steps: stepsWithButtons,
+    currentStep: '4',
+    errorSteps: ['1'],
+    warningSteps: ['5'],
+    completedSteps: ['2', '3'],
+    disabledSteps: ['3']
+};
+
+export const milestones = Template.bind({});
+milestones.args = {
+    type: 'base',
+    variant: 'base',
+    steps: milestonesSteps,
     errorSteps: [],
     warningSteps: [],
     completedSteps: [],

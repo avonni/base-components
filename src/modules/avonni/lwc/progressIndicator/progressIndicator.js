@@ -78,6 +78,7 @@ export default class ProgressIndicator extends LightningElement {
             .toString();
     }
 
+    // Set what type of step (active, completed, warning, error, disabled)
     getSteps() {
         return Array.from(this.template.querySelectorAll('c-progress-step'));
     }

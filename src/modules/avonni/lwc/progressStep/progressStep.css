@@ -23,35 +23,31 @@
     border: none;
 }
 
-.slds-progress__item {
+.avonni-progress-step-outer-class {
     position: relative;
     min-width: 9rem;
     margin-right: var(--lwc-varSpacingHorizontalMedium, 1rem);
     margin-top: 1.5rem;
-}
-
-.slds-progress__item:first-child {
-    margin-left: var(--lwc-varSpacingHorizontalMedium, 1rem);
-}
-
-.avonni-progress-step-outer-class {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-.avonni-progress-step-bottom {
+.avonni-progress-step-outer-class:first-child {
+    margin-left: var(--lwc-varSpacingHorizontalMedium, 1rem);
+}
+
+.avonni-progress-step-position-top {
+    position: absolute;
+    width: 100%;
+    bottom: 30px;
+    left: 0;
+}
+
+.avonni-progress-step-position-bottom {
     position: absolute;
     width: 100%;
     top: 30px;
-}
-
-.avonni-progress-step-top {
-    position: absolute;
-    bottom: 30px;
-    transform: translatex(-42%);
-    width: 100%;
-    right: -60px;
 }
 
 .avonni-progress-step-popover {
@@ -82,10 +78,7 @@
     left: 50%;
     transform: translate(-50%, -130%);
     width: 100%;
-    background-color: var(
-        --avonni-c-progress-indicator-step-color-background,
-        #ffffff
-    );
+    background-color: #ffffff;
 }
 
 :host(.slds-has-warning) .slds-button {

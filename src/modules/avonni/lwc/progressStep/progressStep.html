@@ -1,8 +1,8 @@
 <template>
-    <div class="avonni-progress-step-outer-class slds-progress__item">
+    <div class="avonni-progress-step-outer-class">
         <li>
             <div style="flex: 1 1 auto; text-align: center">
-                <div class="avonni-progress-step-top slds-truncate">
+                <div class="avonni-progress-step-position-top slds-truncate">
                     <template if:true={showLabelTop}>
                         <p class="slds-text-title_bold">{label}</p>
                     </template>
@@ -98,7 +98,7 @@
                 <span if:true={assistiveText} class="slds-assistive-text"
                     >{assistiveText}</span
                 >
-                <div class="avonni-progress-step-bottom slds-truncate">
+                <div class="avonni-progress-step-position-bottom slds-truncate">
                     <template if:true={showLabelBottom}>
                         <p class="slds-text-title_bold">{label}</p>
                     </template>
