@@ -134,7 +134,8 @@ const stepsLWC = [
         labelPosition: 'bottom',
         iconName: 'utility:merge',
         iconPosition: 'inside-nubbin',
-        popoverState: 'button-icon-name'
+        popoverState: 'button-icon-name',
+        popoverButtonIconName: 'utility:add'
     },
     {
         value: '2',
@@ -142,7 +143,8 @@ const stepsLWC = [
         labelPosition: 'bottom',
         iconName: 'utility:rules',
         iconPosition: 'inside-nubbin',
-        popoverState: 'button-icon-name'
+        popoverState: 'button-icon-name',
+        popoverButtonIconName: 'utility:add'
     },
     {
         value: '3',
@@ -150,7 +152,8 @@ const stepsLWC = [
         labelPosition: 'bottom',
         iconName: 'utility:block_visitor',
         iconPosition: 'inside-nubbin',
-        popoverState: 'button-icon-name'
+        popoverState: 'button-icon-name',
+        popoverButtonIconName: 'utility:add'
     },
     {
         value: '4',
@@ -158,7 +161,8 @@ const stepsLWC = [
         labelPosition: 'bottom',
         iconName: 'utility:priority',
         iconPosition: 'inside-nubbin',
-        popoverState: 'button-icon-name'
+        popoverState: 'button-icon-name',
+        popoverButtonIconName: 'utility:add'
     },
     {
         value: '5',
@@ -166,7 +170,8 @@ const stepsLWC = [
         labelPosition: 'bottom',
         iconName: 'utility:error',
         iconPosition: 'inside-nubbin',
-        popoverState: 'button-icon-name'
+        popoverState: 'button-icon-name',
+        popoverButtonIconName: 'utility:add'
     },
     {
         value: '6',
@@ -174,7 +179,8 @@ const stepsLWC = [
         labelPosition: 'bottom',
         iconName: 'utility:cases',
         iconPosition: 'inside-nubbin',
-        popoverState: 'button-icon-name'
+        popoverState: 'button-icon-name',
+        popoverButtonIconName: 'utility:add'
     },
     {
         value: '7',
@@ -182,7 +188,8 @@ const stepsLWC = [
         labelPosition: 'bottom',
         iconName: 'utility:change_record_type',
         iconPosition: 'inside-nubbin',
-        popoverState: 'button-icon-name'
+        popoverState: 'button-icon-name',
+        popoverButtonIconName: 'utility:add'
     }
 ];
 
@@ -193,9 +200,10 @@ Base.args = {
     type: 'base',
     variant: 'base',
     steps: steps,
+    currentStep: '4',
     errorSteps: ['1'],
     warningSteps: ['5'],
-    completedSteps: ['2', '3', '4'],
+    completedSteps: ['2', '3'],
     disabledSteps: []
 };
 

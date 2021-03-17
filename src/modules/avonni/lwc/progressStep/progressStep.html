@@ -82,7 +82,7 @@
                         </div>
                     </button>
                 </template>
-                <template if:true={popoverButtonIconName}>
+                <template if:true={popoverButtonIconNames}>
                     <button
                         class="slds-popover slds-nubbin_bottom avonni-progress-step-popover-button-icon"
                         tabindex="0"
@@ -94,12 +94,6 @@
                     >
                         <template if:false={popoverIconVisible}>
                             <div class="slds-popover__body">
-                                <template if:true={showLabelNubbin}>
-                                    <p class="slds-text-title_bold">{label}</p>
-                                </template>
-                                <template if:true={showDescriptionNubbin}>
-                                    <p>{description}</p>
-                                </template>
                                 <template if:true={showIconNubbin}>
                                     <lightning-icon
                                         icon-name={iconName}
@@ -112,8 +106,8 @@
                         <template if:true={popoverIconVisible}>
                             <div class="slds-popover__body">
                                 <c-primitive-icon
-                                    icon-name="utility:add"
-                                    svg-class="slds-button__icon"
+                                    icon-name={popoverButtonIconName}
+                                    svg-class="slds-button_icon"
                                 ></c-primitive-icon>
                             </div>
                         </template>

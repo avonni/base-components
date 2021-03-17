@@ -110,7 +110,3 @@
 :host(.slds-has-warning-shaded) .slds-button:focus {
     color: #ffb75d;
 }
-
-:host(.slds-popover__body) .slds-icon-text-default {
-    fill: blue;
-}

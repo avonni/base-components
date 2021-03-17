@@ -37,6 +37,7 @@ export default class ProgressStep extends LightningElement {
     @api buttonLabel;
     @api buttonName;
     @api buttonIconName;
+    @api popoverButtonIconName;
     @api buttonTitle;
     @api assistiveText;
     @api disabledSteps;
@@ -49,15 +50,15 @@ export default class ProgressStep extends LightningElement {
     _iconPosition = 'top';
     _iconSize = 'medium';
     _buttonIconPosition = 'left';
-    _buttonDisabled = false;
     _buttonVariant = 'neutral';
+    _buttonDisabled = false;
+
     _popoverVisible = false;
     _popoverIconVisible = false;
     _allowBlur = false;
 
     connectedCallback() {
         this.classList.add('slds-progress__item');
-        console.log(this._popoverIconVisible);
     }
 
     renderedCallback() {
@@ -236,8 +237,11 @@ export default class ProgressStep extends LightningElement {
         return false;
     }
 
-    get popoverButtonIconName() {
-        return this._popoverState === 'button-icon-name';
+    get popoverButtonIconNames() {
+        if (this.showIconNubbin) {
+            return this._popoverState === 'button-icon-name';
+        }
+        return false;
     }
 
     get displayPopover() {
