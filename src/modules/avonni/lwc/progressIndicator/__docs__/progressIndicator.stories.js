@@ -277,6 +277,6 @@ milestones.args = {
     steps: milestonesSteps,
     errorSteps: [],
     warningSteps: [],
-    completedSteps: [],
+    completedSteps: ['1'],
     disabledSteps: []
 };

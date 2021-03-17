@@ -43,6 +43,7 @@ export default class ProgressStep extends LightningElement {
     @api assistiveText;
     @api disabledSteps;
     @api warningSteps;
+    @api completedSteps;
 
     _value;
     _popoverState = 'hover';
@@ -177,6 +178,26 @@ export default class ProgressStep extends LightningElement {
         return classes.toString();
     }
 
+    get computedPopoverClass() {
+        const classes = classSet(
+            'slds-popover slds-nubbin_bottom avonni-progress-step-popover'
+        );
+        if (this.completedSteps.includes(this.getAttribute('data-step'))) {
+            classes.add('avonni-progress-step-popover-completed');
+        }
+        return classes.toString();
+    }
+
+    get computedPopoverButtonClass() {
+        const classes = classSet(
+            'slds-popover slds-nubbin_bottom avonni-progress-step-popover-button'
+        );
+        if (this.completedSteps.includes(this.getAttribute('data-step'))) {
+            classes.add('avonni-progress-step-popover-button-completed');
+        }
+        return classes.toString();
+    }
+
     get showLabelTop() {
         return this._labelPosition === 'top' && this.label;
     }
@@ -273,11 +294,18 @@ export default class ProgressStep extends LightningElement {
         this.stepIconName = stepIconName;
     }
 
-    get primitiveIconVariant() {
+    get primitiveButtonIconVariant() {
         if (this.warningSteps.includes(this.getAttribute('data-step'))) {
             return 'warning';
         }
         return 'bare';
+    }
+
+    get primitivePopoverIconVariant() {
+        if (this.completedSteps.includes(this.getAttribute('data-step'))) {
+            return 'inverse';
+        }
+        return '';
     }
 
     handleStepMouseEnter() {

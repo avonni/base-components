@@ -32,13 +32,13 @@
                         svg-class="slds-button__icon"
                         icon-name={stepIconName}
                         size="xx-small"
-                        variant={primitiveIconVariant}
+                        variant={primitiveButtonIconVariant}
                     ></c-primitive-icon>
                     <div if:false={stepIconName} class="avonni-marker"></div>
                 </button>
                 <template if:true={displayPopover}>
                     <div
-                        class="slds-popover slds-nubbin_bottom avonni-progress-step-popover"
+                        class={computedPopoverClass}
                         onclick={handleStepPopoverClick}
                     >
                         <div class="slds-popover__body">
@@ -60,7 +60,7 @@
                 </template>
                 <template if:true={popoverButton}>
                     <button
-                        class="slds-popover slds-nubbin_bottom avonni-progress-step-popover-button"
+                        class={computedPopoverButtonClass}
                         tabindex="0"
                         onclick={handleStepPopoverClick}
                         onfocus={handlePopoverFocus}
@@ -81,6 +81,7 @@
                                         icon-name={iconName}
                                         size={iconSize}
                                         src={iconSrc}
+                                        variant={primitivePopoverIconVariant}
                                     ></c-primitive-icon>
                                 </template>
                             </div>

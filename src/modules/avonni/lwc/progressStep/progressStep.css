@@ -61,6 +61,14 @@
     );
 }
 
+.avonni-progress-step-popover-completed {
+    color: #ffffff;
+    background-color: var(
+        --avonni-c-progress-indicator-step-color-background,
+        #006dcc
+    );
+}
+
 .avonni-progress-step-popover-button {
     position: absolute;
     left: 50%;
@@ -69,6 +77,14 @@
     background-color: var(
         --avonni-c-progress-indicator-step-color-background,
         #ffffff
+    );
+}
+
+.avonni-progress-step-popover-button-completed {
+    color: #ffffff;
+    background-color: var(
+        --avonni-c-progress-indicator-step-color-background,
+        #006dcc
     );
 }
 
