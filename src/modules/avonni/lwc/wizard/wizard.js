@@ -32,36 +32,23 @@ export default class Wizard extends LightningElement {
     @api fractionPrefixLabel;
     @api fractionLabel;
 
-    _rendered;
     _type;
     _currentStep;
 
     steps = [];
+    showWizard = true;
 
     handleStepRegister(event) {
         event.stopPropagation();
 
         const step = event.detail;
         this.steps.push(step);
+
+        this._initSteps();
     }
 
-    renderedCallback() {
-        if (!this._rendered) {
-            this._rendered = true;
-            if (this.steps.length === 0) return;
-
-            // Make sure all steps have a name
-            this.steps.forEach((step, index) => {
-                step.name = step.name || `step-${index}`;
-            });
-
-            // If no current step was given, sets current step to first step
-            if (this.currentStepIndex === -1) {
-                this._currentStep = this.steps[0].name;
-            }
-
-            this._updateStepDisplay();
-        }
+    connectedCallback() {
+        if (this.type === 'modal') this.hide();
     }
 
     render() {
@@ -71,6 +58,19 @@ export default class Wizard extends LightningElement {
             return CardView;
         }
         return BaseView;
+    }
+
+    _initSteps() {
+        // Make sure all steps have a name
+        this.steps.forEach((stepTemp, index) => {
+            stepTemp.name = stepTemp.name || `step-${index}`;
+        });
+
+        // If no current step was given, sets current step to first step
+        if (this.currentStepIndex === -1) {
+            this._currentStep = this.steps[0].name;
+        }
+        this._updateStepDisplay();
     }
 
     _updateStepDisplay() {
@@ -102,6 +102,17 @@ export default class Wizard extends LightningElement {
             fallbackValue: 'base',
             validValues: TYPES
         });
+    }
+
+    @api
+    show() {
+        this.showWizard = true;
+    }
+
+    @api
+    hide() {
+        this.showWizard = false;
+        this.steps = [];
     }
 
     @api
@@ -174,5 +185,9 @@ export default class Wizard extends LightningElement {
                 this.next();
                 break;
         }
+    }
+
+    handleCloseDialog() {
+        this.hide();
     }
 }

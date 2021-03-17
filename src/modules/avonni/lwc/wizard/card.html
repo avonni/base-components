@@ -1,5 +1,5 @@
 <template>
-    <lightning-card title={title}>
+    <lightning-card title={title} if:true={showWizard}>
         <template if:false={title}>
             <div slot="title">
                 <slot name="title"></slot>

@@ -69,7 +69,7 @@ export default class WizardNavigation extends LightningElement {
     }
 
     renderedCallback() {
-        if (!this._rendered && this.steps.length > 0) {
+        if (!this._rendered && this.steps.length > 0 && this.currentStep) {
             this._rendered = true;
 
             this._initIndicator();

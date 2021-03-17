@@ -1,5 +1,10 @@
 <template>
-    <c-dialog title={title} show-dialog="true">
+    <p>{temp}</p>
+    <c-dialog
+        title={title}
+        show-dialog={showWizard}
+        onclosedialog={handleCloseDialog}
+    >
         <template if:false={title}>
             <div slot="title">
                 <slot name="title"></slot>
