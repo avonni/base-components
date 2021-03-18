@@ -46,3 +46,32 @@ Base.args = {
     iconName: 'utility:user',
     closeAction: () => console.log('Close action')
 };
+
+export const Error = Template.bind({});
+Error.args = {
+    iconName: 'utility:error',
+    variant: 'error',
+    closeAction: () => console.log('Close action')
+};
+
+export const Offline = Template.bind({});
+Offline.args = {
+    iconName: 'utility:clock',
+    variant: 'offline',
+    closeAction: () => console.log('Close action')
+};
+
+export const Warning = Template.bind({});
+Warning.args = {
+    iconName: 'utility:warning',
+    variant: 'warning',
+    closeAction: () => console.log('Close action')
+};
+
+export const WarningTextured = Template.bind({});
+WarningTextured.args = {
+    iconName: 'utility:warning',
+    variant: 'warning',
+    textured: 'true',
+    closeAction: () => console.log('Close action')
+};
