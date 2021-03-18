@@ -86,45 +86,82 @@ export default {
     }
 };
 
-const steps = [
+const BaseStepsWithPopoverHidden = [
     {
         value: '1',
         label: '1',
         labelPosition: 'bottom',
         assistiveText: '1',
-        description: 'This is step #1',
-        popoverDescription: '1',
-        popoverSize: 'medium',
-        popoverRatio: '16-by-9'
+        popoverDescription: 'This is step #1',
+        popoverHidden: 'true'
     },
     {
         value: '2',
         label: '2',
         labelPosition: 'bottom',
         assistiveText: '2',
-        popoverLabel: '2',
         popoverDescription: 'This is step #2',
-        popoverSize: 'small',
-        popoverRatio: '4-by-3'
+        popoverHidden: 'true'
     },
     {
         value: '3',
         label: '3',
         labelPosition: 'bottom',
         assistiveText: '3',
-        description: 'This is step #3'
+        popoverDescription: 'This is step #3',
+        popoverHidden: 'true'
     },
     {
         value: '4',
         label: '4',
         labelPosition: 'bottom',
-        description: 'This is step #4'
+        popoverDescription: 'This is step #4',
+        popoverHidden: 'true'
     },
     {
         value: '5',
         label: '5',
         labelPosition: 'bottom',
-        description: 'This is step #5'
+        popoverDescription: 'This is step #5',
+        popoverHidden: 'true'
+    }
+];
+
+const BaseStepsWithPopoverVisible = [
+    {
+        value: '1',
+        label: '1',
+        labelPosition: 'bottom',
+        assistiveText: '1',
+        popoverDescription: 'This is step #1'
+    },
+    {
+        value: '2',
+        label: '2',
+        labelPosition: 'bottom',
+        assistiveText: '2',
+        popoverDescription: '2',
+        popoverSize: 'small',
+        popoverRatio: '16-by-9'
+    },
+    {
+        value: '3',
+        label: '3',
+        labelPosition: 'bottom',
+        assistiveText: '3',
+        popoverDescription: 'This is step #3'
+    },
+    {
+        value: '4',
+        label: '4',
+        labelPosition: 'bottom',
+        popoverDescription: 'This is step #4'
+    },
+    {
+        value: '5',
+        label: '5',
+        labelPosition: 'bottom',
+        popoverDescription: 'This is step #5'
     }
 ];
 
@@ -183,7 +220,6 @@ const milestonesSteps = [
         labelPosition: 'bottom',
         popoverIconName: 'utility:merge',
         popoverIconNameWhenHover: 'utility:add',
-        popoverHidden: 'true',
         popoverSize: 'small'
     },
     {
@@ -238,11 +274,23 @@ const milestonesSteps = [
 
 const Template = (args) => ProgressIndicator(args);
 
-export const Base = Template.bind({});
-Base.args = {
+export const BaseWithPopoverHidden = Template.bind({});
+BaseWithPopoverHidden.args = {
     type: 'base',
     variant: 'base',
-    steps: steps,
+    steps: BaseStepsWithPopoverHidden,
+    currentStep: '4',
+    errorSteps: ['1'],
+    warningSteps: ['5'],
+    completedSteps: ['2', '3'],
+    disabledSteps: []
+};
+
+export const BaseWithPopoverVisible = Template.bind({});
+BaseWithPopoverVisible.args = {
+    type: 'base',
+    variant: 'base',
+    steps: BaseStepsWithPopoverVisible,
     currentStep: '4',
     errorSteps: ['1'],
     warningSteps: ['5'],
@@ -266,6 +314,17 @@ export const milestones = Template.bind({});
 milestones.args = {
     type: 'base',
     variant: 'base',
+    steps: milestonesSteps,
+    errorSteps: [],
+    warningSteps: [],
+    completedSteps: ['1'],
+    disabledSteps: []
+};
+
+export const milestonesShaded = Template.bind({});
+milestonesShaded.args = {
+    type: 'base',
+    variant: 'shaded',
     steps: milestonesSteps,
     errorSteps: [],
     warningSteps: [],
