@@ -377,7 +377,7 @@ export default class Calendar extends LightningElement {
         let date = this.date.getDate();
         let month = this.date.getMonth() + 1;
         let year = this.date.getFullYear();
-        let dateStr = month + '/' + date + '/' + year;
+        let dateStr = year + '-' + month + '-' + date;
 
         this.dispatchEvent(
             new CustomEvent('change', {
