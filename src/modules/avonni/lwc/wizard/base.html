@@ -20,20 +20,22 @@
                     </template>
                 </avonni-media-object>
             </div>
-            <div if:true={indicatorInHeader} class="slds-m-top_small">
-                <c-primitive-wizard-navigation
-                    position="header"
-                    indicator-position={indicatorPosition}
-                    current-step={currentStep}
-                    steps={steps}
-                    indicator-type={indicatorType}
-                    hide-indicator={hideIndicator}
-                    fraction-prefix-label={fractionPrefixLabel}
-                    fraction-label={fractionLabel}
-                >
-                    <slot name="actions"></slot>
-                </c-primitive-wizard-navigation>
-            </div>
+            <template if:false={hideNavigation}>
+                <div if:true={indicatorInHeader} class="slds-m-top_small">
+                    <c-primitive-wizard-navigation
+                        position="header"
+                        indicator-position={indicatorPosition}
+                        current-step={currentStep}
+                        steps={steps}
+                        indicator-type={indicatorType}
+                        hide-indicator={hideIndicator}
+                        fraction-prefix-label={fractionPrefixLabel}
+                        fraction-label={fractionLabel}
+                    >
+                        <slot name="actions"></slot>
+                    </c-primitive-wizard-navigation>
+                </div>
+            </template>
         </header>
 
         <!-- Steps -->
@@ -42,7 +44,10 @@
         </main>
 
         <!-- Footer -->
-        <footer class="slds-p-horizontal_medium slds-p-bottom_medium">
+        <footer
+            class="slds-p-horizontal_medium slds-p-bottom_medium"
+            if:false={hideNavigation}
+        >
             <c-primitive-wizard-navigation
                 position="footer"
                 onchange={handleChange}

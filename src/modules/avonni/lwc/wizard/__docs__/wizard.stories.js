@@ -44,6 +44,18 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        hideNavigation: {
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If true, hide the navigation (buttons and indicator).',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: false },
+                category: 'Navigation'
+            }
+        },
         indicatorType: {
             control: {
                 type: 'select',

@@ -7,6 +7,7 @@ export const Wizard = ({
     iconName,
     variant,
     currentStep,
+    hideNavigation,
     indicatorType,
     indicatorPosition,
     hideIndicator,
@@ -32,6 +33,7 @@ export const Wizard = ({
     element.iconName = iconName;
     element.variant = variant;
     element.currentStep = currentStep;
+    element.hideNavigation = hideNavigation;
     element.indicatorType = indicatorType;
     element.indicatorPosition = indicatorPosition;
     element.hideIndicator = hideIndicator;

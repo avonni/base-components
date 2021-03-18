@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeString } from '../utilsPrivate/normalize';
+import { normalizeString, normalizeBoolean } from '../utilsPrivate/normalize';
 import BaseView from './base.html';
 import ModalView from './modal.html';
 import CardView from './card.html';
@@ -11,12 +11,9 @@ const VERTICAL_POSITIONS = ['header', 'footer'];
 // If beforeChange returns an error, should we display it somewhere? In the console? In the step?
 // Add padding to base default slot? Yes
 // In modal, if iconName, change default header for media object? => icon centered
-// Indicator position
 
 // TO VALIDATE:
 // The change event is fired even when the user clicks on 'previous' in the first step (with oldStep === currentStep). => Hide by default
-
-// hideNavigation
 
 export default class Wizard extends LightningElement {
     @api title;
@@ -104,6 +101,14 @@ export default class Wizard extends LightningElement {
     }
     set currentStep(name) {
         this._currentStep = name;
+    }
+
+    @api
+    get hideNavigation() {
+        return this._hideNavigation;
+    }
+    set hideNavigation(boolean) {
+        this._hideNavigation = normalizeBoolean(boolean);
     }
 
     @api

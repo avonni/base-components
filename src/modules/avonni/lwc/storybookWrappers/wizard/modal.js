@@ -5,6 +5,7 @@ export default class Modal extends LightningElement {
     @api iconName;
     @api variant;
     @api currentStep;
+    @api hideNavigation;
     @api indicatorType;
     @api indicatorPosition;
     @api hideIndicator;
