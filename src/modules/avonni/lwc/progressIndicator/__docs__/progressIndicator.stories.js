@@ -93,15 +93,19 @@ const steps = [
         labelPosition: 'bottom',
         assistiveText: '1',
         description: 'This is step #1',
-        popoverLabel: '1',
-        popoverHidden: 'true'
+        popoverDescription: '1',
+        popoverSize: 'medium',
+        popoverRatio: '16-by-9'
     },
     {
         value: '2',
         label: '2',
         labelPosition: 'bottom',
         assistiveText: '2',
-        popoverDescription: 'This is step #2'
+        popoverLabel: '2',
+        popoverDescription: 'This is step #2',
+        popoverSize: 'small',
+        popoverRatio: '4-by-3'
     },
     {
         value: '3',
@@ -179,49 +183,56 @@ const milestonesSteps = [
         labelPosition: 'bottom',
         popoverIconName: 'utility:merge',
         popoverIconNameWhenHover: 'utility:add',
-        popoverHidden: 'true'
+        popoverHidden: 'true',
+        popoverSize: 'small'
     },
     {
         value: '2',
         label: 'Expansion',
         labelPosition: 'bottom',
         popoverIconName: 'utility:rules',
-        popoverIconNameWhenHover: 'utility:add'
+        popoverIconNameWhenHover: 'utility:add',
+        popoverSize: 'small'
     },
     {
         value: '3',
         label: 'Executive Change',
         labelPosition: 'bottom',
         popoverIconName: 'utility:block_visitor',
-        popoverIconNameWhenHover: 'utility:add'
+        popoverIconNameWhenHover: 'utility:add',
+        popoverSize: 'small'
     },
     {
         value: '4',
         label: 'Market Listing',
         labelPosition: 'bottom',
         popoverIconName: 'utility:priority',
-        popoverIconNameWhenHover: 'utility:add'
+        popoverIconNameWhenHover: 'utility:add',
+        popoverSize: 'small'
     },
     {
         value: '5',
         label: 'Bankruptcy',
         labelPosition: 'bottom',
         popoverIconName: 'utility:error',
-        popoverIconNameWhenHover: 'utility:add'
+        popoverIconNameWhenHover: 'utility:add',
+        popoverSize: 'small'
     },
     {
         value: '6',
         label: 'New Product Launch',
         labelPosition: 'bottom',
         popoverIconName: 'utility:cases',
-        popoverIconNameWhenHover: 'utility:add'
+        popoverIconNameWhenHover: 'utility:add',
+        popoverSize: 'small'
     },
     {
         value: '7',
         label: 'New Partnership',
         labelPosition: 'bottom',
         popoverIconName: 'utility:change_record_type',
-        popoverIconNameWhenHover: 'utility:add'
+        popoverIconNameWhenHover: 'utility:add',
+        popoverSize: 'small'
     }
 ];
 

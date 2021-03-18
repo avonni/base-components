@@ -24,6 +24,11 @@ const BUTTON_VARIANTS = {
     default: 'neutral'
 };
 
+const POPOVER_SIZE = {
+    valid: ['small', 'medium'],
+    default: 'medium'
+};
+
 const POPOVER_RATIO = {
     valid: ['1-by-1', '4-by-3', '16-by-9'],
     default: '1-by-1'
@@ -57,6 +62,7 @@ export default class ProgressStep extends LightningElement {
     _buttonVariant = 'neutral';
     _buttonDisabled = false;
     _popoverIconSize = 'medium';
+    _popoverSize = 'medium';
     _popoverRatio = '1-by-1';
     _popoverHidden = false;
 
@@ -176,6 +182,18 @@ export default class ProgressStep extends LightningElement {
     }
 
     @api
+    get popoverSize() {
+        return this._popoverSize;
+    }
+
+    set popoverSize(size) {
+        this._popoverSize = normalizeString(size, {
+            fallbackValue: POPOVER_SIZE.default,
+            validValues: POPOVER_SIZE.valid
+        });
+    }
+
+    @api
     get popoverRatio() {
         return this._popoverRatio;
     }
@@ -199,33 +217,30 @@ export default class ProgressStep extends LightningElement {
     }
 
     get computedButtonClass() {
-        const classes = classSet('slds-button slds-progress__marker');
-        if (this.stepIconName) {
-            classes.add('slds-button_icon').add('slds-progress__marker_icon');
-        }
-        return classes.toString();
+        return classSet('slds-button slds-progress__marker')
+            .add({
+                'slds-button_icon slds-progress__marker_icon': this.stepIconName
+            })
+            .toString();
     }
 
     get computedPopoverClass() {
-        const classes = classSet(
-            'slds-popover slds-nubbin_bottom avonni-progress-step-popover'
-        );
-        if (this.completedSteps.includes(this.getAttribute('data-step'))) {
-            classes.add('avonni-progress-step-popover-completed');
-        }
-        classes.add(`ratio-${this._popoverRatio}`);
-        return classes.toString();
-    }
-
-    get computedPopoverButtonClass() {
-        const classes = classSet(
-            'slds-popover slds-nubbin_bottom avonni-progress-step-popover-button'
-        );
-        if (this.completedSteps.includes(this.getAttribute('data-step'))) {
-            classes.add('avonni-progress-step-popover-button-completed');
-        }
-        classes.add(`ratio-${this._popoverRatio}`);
-        return classes.toString();
+        return classSet(
+            'slds-popover .slds-dropdown slds-nubbin_bottom avonni-progress-step-popover-body'
+        )
+            .add({
+                'avonni-progress-step-popover-completed': this.completedSteps.includes(
+                    this.getAttribute('data-step')
+                )
+            })
+            .add({
+                'avonni-progress-step-popover_small':
+                    this._popoverSize === 'small',
+                'avonni-progress-step-popover_medium':
+                    this._popoverSize === 'medium'
+            })
+            .add(`ratio-${this._popoverRatio}`)
+            .toString();
     }
 
     get showLabelTop() {

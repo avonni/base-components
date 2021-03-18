@@ -40,23 +40,25 @@
                         onmouseleave={handlePopoverMouseLeave}
                     >
                         <template if:false={popoverIconHoverVisible}>
-                            <div class="slds-popover__body">
-                                <template if:true={popoverLabel}>
-                                    <p class="slds-text-title_bold">
-                                        {popoverLabel}
-                                    </p>
-                                </template>
-                                <template if:true={popoverDescription}>
-                                    <p>{popoverDescription}</p>
-                                </template>
-                                <template if:true={popoverIconName}>
-                                    <c-primitive-icon
-                                        icon-name={popoverIconName}
-                                        size={popoverIconSize}
-                                        src={popoverIconSrc}
-                                        variant={primitivePopoverIconVariant}
-                                    ></c-primitive-icon>
-                                </template>
+                            <div style="overflow: hidden">
+                                <div class="slds-popover__body">
+                                    <template if:true={popoverLabel}>
+                                        <p class="slds-text-title_bold">
+                                            {popoverLabel}
+                                        </p>
+                                    </template>
+                                    <template if:true={popoverDescription}>
+                                        <p>{popoverDescription}</p>
+                                    </template>
+                                    <template if:true={popoverIconName}>
+                                        <c-primitive-icon
+                                            icon-name={popoverIconName}
+                                            size={popoverIconSize}
+                                            src={popoverIconSrc}
+                                            variant={primitivePopoverIconVariant}
+                                        ></c-primitive-icon>
+                                    </template>
+                                </div>
                             </div>
                         </template>
                         <template if:true={popoverIconHoverVisible}>
