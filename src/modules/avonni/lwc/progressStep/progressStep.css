@@ -91,7 +91,7 @@
 }
 
 .avonni-progress-step-popover_small.ratio-4-by-3 {
-    height: 35px;
+    height: 36px;
     left: 48px;
     top: -47px;
 }
@@ -150,12 +150,21 @@
 .avonni-progress-step-popover_small:hover {
     color: black;
     background-color: var(--lwc-brandLight, #f4f6fe);
+    outline: 0 !important;
 }
 
 .avonni-progress-step-popover_medium:focus,
 .avonni-progress-step-popover_medium:hover {
     color: black;
     background-color: var(--lwc-brandLight, #f4f6fe);
+    outline: 0 !important;
+}
+
+.avonni-progress-step-popover_large:focus,
+.avonni-progress-step-popover_large:hover {
+    color: black;
+    background-color: var(--lwc-brandLight, #f4f6fe);
+    outline: 0 !important;
 }
 
 :host(.slds-has-warning) .slds-button {

@@ -30,47 +30,90 @@
                     <div if:false={stepIconName} class="avonni-marker"></div>
                 </button>
                 <template if:true={displayPopover}>
-                    <div
-                        class={computedPopoverClass}
-                        tabindex="0"
-                        onclick={handleStepPopoverClick}
-                        onmouseenter={handlePopoverMouseEnter}
-                        onmouseleave={handlePopoverMouseLeave}
-                    >
-                        <template if:false={popoverIconHoverVisible}>
-                            <div style="overflow: hidden">
-                                <div class="slds-popover__body">
-                                    <template if:true={popoverLabel}>
-                                        <p class="slds-text-title_bold">
-                                            {popoverLabel}
-                                        </p>
-                                    </template>
-                                    <template if:true={popoverDescription}>
-                                        <p>{popoverDescription}</p>
-                                    </template>
-                                    <template if:true={popoverIconName}>
-                                        <c-primitive-icon
-                                            icon-name={popoverIconName}
-                                            size={popoverIconSize}
-                                            src={popoverIconSrc}
-                                            variant={primitivePopoverIconVariant}
-                                        ></c-primitive-icon>
-                                    </template>
+                    <template if:false={popoverButton}>
+                        <div
+                            class={computedPopoverClass}
+                            onclick={handleStepPopoverClick}
+                            onmouseenter={handlePopoverMouseEnter}
+                            onmouseleave={handlePopoverMouseLeave}
+                        >
+                            <template if:false={popoverIconHoverVisible}>
+                                <div style="overflow: hidden">
+                                    <div class="slds-popover__body">
+                                        <template if:true={popoverLabel}>
+                                            <p class="slds-text-title_bold">
+                                                {popoverLabel}
+                                            </p>
+                                        </template>
+                                        <template if:true={popoverDescription}>
+                                            <p>{popoverDescription}</p>
+                                        </template>
+                                        <template if:true={popoverIconName}>
+                                            <c-primitive-icon
+                                                icon-name={popoverIconName}
+                                                size={popoverIconSize}
+                                                src={popoverIconSrc}
+                                                variant={primitivePopoverIconVariant}
+                                            ></c-primitive-icon>
+                                        </template>
+                                    </div>
                                 </div>
-                            </div>
-                        </template>
-                        <template if:true={popoverIconHoverVisible}>
-                            <div
-                                class="slds-popover__body avonni-progress-step-icon-color_brand"
-                            >
-                                <c-primitive-icon
-                                    icon-name={popoverIconNameWhenHover}
-                                    src={popoverIconSrcWhenHover}
-                                    class="slds-current-color"
-                                ></c-primitive-icon>
-                            </div>
-                        </template>
-                    </div>
+                            </template>
+                            <template if:true={popoverIconHoverVisible}>
+                                <div
+                                    class="slds-popover__body avonni-progress-step-icon-color_brand"
+                                >
+                                    <c-primitive-icon
+                                        icon-name={popoverIconNameWhenHover}
+                                        src={popoverIconSrcWhenHover}
+                                        class="slds-current-color"
+                                    ></c-primitive-icon>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                    <template if:true={popoverButton}>
+                        <button
+                            class={computedPopoverClass}
+                            onclick={handleStepPopoverClick}
+                            onmouseenter={handlePopoverMouseEnter}
+                            onmouseleave={handlePopoverMouseLeave}
+                        >
+                            <template if:false={popoverIconHoverVisible}>
+                                <div style="overflow: hidden">
+                                    <div class="slds-popover__body">
+                                        <template if:true={popoverLabel}>
+                                            <p class="slds-text-title_bold">
+                                                {popoverLabel}
+                                            </p>
+                                        </template>
+                                        <template if:true={popoverDescription}>
+                                            <p>{popoverDescription}</p>
+                                        </template>
+                                        <template if:true={popoverIconName}>
+                                            <c-primitive-icon
+                                                icon-name={popoverIconName}
+                                                size={popoverIconSize}
+                                                src={popoverIconSrc}
+                                                variant={primitivePopoverIconVariant}
+                                            ></c-primitive-icon>
+                                        </template>
+                                    </div>
+                                </div>
+                            </template>
+                            <template if:true={popoverIconHoverVisible}>
+                                <div
+                                    class="slds-popover__body avonni-progress-step-icon-color_brand"
+                                >
+                                    <c-primitive-icon
+                                        icon-name={popoverIconNameWhenHover}
+                                        src={popoverIconSrcWhenHover}
+                                        class="slds-current-color"
+                                    ></c-primitive-icon>
+                                </div>
+                            </template>
+                        </button>
+                    </template>
                 </template>
                 <span if:true={assistiveText} class="slds-assistive-text"
                     >{assistiveText}</span

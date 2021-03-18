@@ -24,12 +24,14 @@ const BUTTON_VARIANTS = {
     default: 'neutral'
 };
 
-const POPOVER_SIZE = {
+const POPOVER_VARIANTS = { valid: ['button', 'base'], default: 'base' };
+
+const POPOVER_SIZES = {
     valid: ['small', 'medium', 'large'],
     default: 'medium'
 };
 
-const POPOVER_RATIO = {
+const POPOVER_RATIOS = {
     valid: ['1-by-1', '4-by-3', '16-by-9'],
     default: '1-by-1'
 };
@@ -57,8 +59,9 @@ export default class ProgressStep extends LightningElement {
     _labelPosition = 'top';
     _descriptionPosition = 'top';
     _buttonIconPosition = 'left';
-    _buttonVariant = 'neutral';
     _buttonDisabled = false;
+    _buttonVariant = 'neutral';
+    _popoverVariant = 'base';
     _popoverIconSize = 'medium';
     _popoverSize = 'medium';
     _popoverRatio = '1-by-1';
@@ -167,6 +170,18 @@ export default class ProgressStep extends LightningElement {
     }
 
     @api
+    get popoverVariant() {
+        return this._popoverVariant;
+    }
+
+    set popoverVariant(variant) {
+        this._popoverVariant = normalizeString(variant, {
+            fallbackValue: POPOVER_VARIANTS.default,
+            validValues: POPOVER_VARIANTS.valid
+        });
+    }
+
+    @api
     get popoverIconSize() {
         return this._popoverIconSize;
     }
@@ -185,8 +200,8 @@ export default class ProgressStep extends LightningElement {
 
     set popoverSize(size) {
         this._popoverSize = normalizeString(size, {
-            fallbackValue: POPOVER_SIZE.default,
-            validValues: POPOVER_SIZE.valid
+            fallbackValue: POPOVER_SIZES.default,
+            validValues: POPOVER_SIZES.valid
         });
     }
 
@@ -197,8 +212,8 @@ export default class ProgressStep extends LightningElement {
 
     set popoverRatio(ratio) {
         this._popoverRatio = normalizeString(ratio, {
-            fallbackValue: POPOVER_RATIO.default,
-            validValues: POPOVER_RATIO.valid
+            fallbackValue: POPOVER_RATIOS.default,
+            validValues: POPOVER_RATIOS.valid
         });
     }
 
@@ -221,7 +236,7 @@ export default class ProgressStep extends LightningElement {
 
     get computedPopoverClass() {
         return classSet(
-            'slds-popover .slds-dropdown slds-nubbin_bottom avonni-progress-step-popover-body'
+            'slds-popover slds-nubbin_bottom avonni-progress-step-popover-body'
         )
             .add({
                 'avonni-progress-step-popover-completed': this.completedSteps.includes(
@@ -271,6 +286,10 @@ export default class ProgressStep extends LightningElement {
                 this.popoverDescription ||
                 this.popoverIconName)
         );
+    }
+
+    get popoverButton() {
+        return this._popoverVariant === 'button';
     }
 
     get popoverIconHoverVisible() {
