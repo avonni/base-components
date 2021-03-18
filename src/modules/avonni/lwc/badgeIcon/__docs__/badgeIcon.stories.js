@@ -33,3 +33,23 @@ Base.args = {
     iconName: 'utility:moneybag',
     label: '423 Credits Available'
 };
+
+export const BaseWithIconRight = Template.bind({});
+BaseWithIconRight.args = {
+    iconName: 'utility:moneybag',
+    iconPosition: 'right',
+    label: '423 Credits Available'
+};
+
+export const Lightest = Template.bind({});
+Lightest.args = {
+    variant: 'lightest',
+    iconName: 'utility:currency',
+    label: '100$ Available'
+};
+
+export const Inverse = Template.bind({});
+Inverse.args = {
+    iconName: 'utility:block_visitor',
+    label: 'Contact Blocked'
+};
