@@ -7,9 +7,7 @@ export default class WizardStep extends LightningElement {
     @api beforeChange = function () {
         return true;
     };
-
-    // before-change={function}
-    // before-change-error-message="Did not work"
+    @api beforeChangeErrorMessage;
 
     stepClass;
     _hidePreviousButton = false;
@@ -29,7 +27,8 @@ export default class WizardStep extends LightningElement {
                 name: this.name,
                 label: this.label,
                 hidePreviousButton: this.hidePreviousButton,
-                hideNextFinishButton: this.hideNextFinishButton
+                hideNextFinishButton: this.hideNextFinishButton,
+                beforeChangeErrorMessage: this.beforeChangeErrorMessage
             }
         });
 

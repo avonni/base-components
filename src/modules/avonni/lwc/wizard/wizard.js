@@ -9,7 +9,6 @@ const VERTICAL_POSITIONS = ['header', 'footer'];
 
 // QUESTIONS:
 // If beforeChange returns an error, should we display it somewhere? In the console? In the step?
-// In modal, if iconName, change default header for media object? => icon centered
 
 export default class Wizard extends LightningElement {
     @api title;
@@ -39,6 +38,7 @@ export default class Wizard extends LightningElement {
 
     steps = [];
     showWizard = true;
+    errorMessage;
 
     handleStepRegister(event) {
         event.stopPropagation();
@@ -190,15 +190,22 @@ export default class Wizard extends LightningElement {
     }
 
     async handleChange(event) {
+        this.errorMessage = undefined;
+
         // Execute beforeChange function set on the step
+        // If the function returns false, the change does not happen
         const hasError = !(await this.beforeChange(
             this.steps[this.currentStepIndex]
         ));
-        if (hasError) return;
+        if (hasError) {
+            this.errorMessage = this.steps[
+                this.currentStepIndex
+            ].beforeChangeErrorMessage;
+            return;
+        }
 
         const action = event.detail.action;
 
-        // eslint-disable-next-line default-case
         switch (action) {
             case 'finish':
                 this.dispatchEvent(new CustomEvent('complete'));
@@ -208,6 +215,8 @@ export default class Wizard extends LightningElement {
                 break;
             case 'next':
                 this.next();
+                break;
+            default:
                 break;
         }
     }

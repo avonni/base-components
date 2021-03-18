@@ -1,5 +1,6 @@
 import { Wizard } from '../__examples__/wizard';
 import { ModalWizard } from '../__examples__/modal';
+import { BeforeChangeWizard } from '../__examples__/beforeChange';
 
 export default {
     title: 'Example/Wizard',
@@ -339,10 +340,12 @@ export default {
 
 const Template = (args) => Wizard(args);
 const ModalTemplate = (args) => ModalWizard(args);
+const BeforeChangeTemplate = (args) => BeforeChangeWizard(args);
 
 export const Base = Template.bind({});
 export const Modal = ModalTemplate.bind({});
 export const Card = Template.bind({});
+export const BeforeChangeOnSteps = BeforeChangeTemplate.bind({});
 
 Base.args = {
     title: 'Avonni Wizard'
@@ -355,4 +358,9 @@ Modal.args = {
 Card.args = {
     variant: 'card',
     iconName: 'utility:announcement'
+};
+
+BeforeChangeOnSteps.args = {
+    iconName: 'utility:touch_action',
+    indicatorType: 'bar'
 };

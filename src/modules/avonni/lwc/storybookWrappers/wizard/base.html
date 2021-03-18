@@ -35,9 +35,10 @@
             </ul>
         </avonni-wizard-step>
         <avonni-wizard-step
-            hide-previous-button="true"
             label="Second step"
             name="second-step"
+            before-change={beforeAction}
+            before-change-error-message="There is an error in this step"
         >
             <h2>This step has these properties set:</h2>
             <ul>
