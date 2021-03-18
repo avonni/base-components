@@ -8,9 +8,10 @@ customElements.define(
 export const ModalWizard = ({
     title,
     iconName,
-    type,
+    variant,
     currentStep,
     indicatorType,
+    indicatorPosition,
     hideIndicator,
     buttonPreviousIconName,
     buttonPreviousIconPosition,
@@ -32,9 +33,10 @@ export const ModalWizard = ({
     const element = document.createElement('ac-avonni-modal-wizard');
     element.title = title;
     element.iconName = iconName;
-    element.type = type;
+    element.variant = variant;
     element.currentStep = currentStep;
     element.indicatorType = indicatorType;
+    element.indicatorPosition = indicatorPosition;
     element.hideIndicator = hideIndicator;
     element.buttonPreviousIconName = buttonPreviousIconName;
     element.buttonPreviousIconPosition = buttonPreviousIconPosition;

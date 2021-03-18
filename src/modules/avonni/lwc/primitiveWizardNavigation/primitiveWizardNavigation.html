@@ -1,8 +1,13 @@
 <template>
-    <lightning-layout vertical-align="center" multiple-rows="true">
+    <lightning-layout
+        vertical-align="center"
+        multiple-rows="true"
+        pull-to-boundary="small"
+    >
         <!-- Previous button -->
         <lightning-layout-item
             if:false={hidePreviousButton}
+            padding="horizontal-small"
             class={previousButtonColClass}
         >
             <lightning-button
@@ -12,7 +17,7 @@
                 variant={buttonPreviousVariant}
                 data-action="previous"
                 onclick={handleButtonClick}
-                class="slds-m-horizontal_xx-small"
+                class="slds-m-right_xx-small"
             ></lightning-button>
         </lightning-layout-item>
 
@@ -82,7 +87,10 @@
             </template>
         </lightning-layout-item>
         <!-- Actions slot and Next/Finish buttons -->
-        <lightning-layout-item class={actionsNextFinishButtonColClass}>
+        <lightning-layout-item
+            padding="horizontal-small"
+            class={actionsNextFinishButtonColClass}
+        >
             <lightning-layout>
                 <lightning-layout-item class={actionsSlotColClass}>
                     <slot></slot>
@@ -99,7 +107,7 @@
                         data-action="next"
                         variant={buttonNextVariant}
                         onclick={handleButtonClick}
-                        class="slds-m-horizontal_xx-small"
+                        class="slds-m-left_xx-small"
                     ></lightning-button>
                     <lightning-button
                         if:true={lastStep}
@@ -109,7 +117,7 @@
                         label={buttonFinishLabel}
                         variant={buttonFinishVariant}
                         onclick={handleButtonClick}
-                        class="slds-m-horizontal_xx-small"
+                        class="slds-m-left_xx-small"
                     ></lightning-button>
                 </lightning-layout-item>
             </lightning-layout>

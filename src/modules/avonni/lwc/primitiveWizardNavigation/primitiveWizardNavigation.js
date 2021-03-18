@@ -22,11 +22,13 @@ const INDICATOR_TYPES = [
 ];
 
 export default class WizardNavigation extends LightningElement {
-    @api steps;
+    @api position;
+    @api indicatorPosition;
     @api buttonPreviousIconName;
     @api buttonNextIconName;
     @api buttonFinishIconName;
 
+    _steps;
     _currentStep;
     _rendered;
     _indicatorType;
@@ -72,12 +74,40 @@ export default class WizardNavigation extends LightningElement {
         if (!this._rendered && this.steps.length > 0 && this.currentStep) {
             this._rendered = true;
 
-            this._initIndicator();
+            if (!this.hideIndicator) this._initIndicator();
+            this._normalizeProxySteps();
             this._updateSteps();
         }
     }
 
+    // Tranform the read only proxy object into an array
+    _normalizeProxySteps() {
+        this._steps = this.steps.map((proxyStep) => {
+            return {
+                name: proxyStep.name,
+                label: proxyStep.label,
+                hidePreviousButton: proxyStep.hidePreviousButton,
+                hideNextFinishButton: proxyStep.hideNextFinishButton
+            };
+        });
+    }
+
     _initIndicator() {
+        // If the indicator position is set to header, two navigations will be in the wizard:
+        // One will be in the footer and will only display the buttons.
+        // One will be in the header and will only display the indicator.
+        if (this.indicatorPosition === 'header') {
+            if (this.position === 'footer') {
+                this._hideIndicator = true;
+                return;
+            }
+            if (this.position === 'header') {
+                this.hidePreviousButton = true;
+                this.hideNextFinishButton = true;
+                this.actionsSlotColClass = 'slds-hide';
+            }
+        }
+
         switch (this.indicatorType) {
             case 'base-shaded':
                 this.showProgressIndicator = true;
@@ -106,24 +136,37 @@ export default class WizardNavigation extends LightningElement {
 
     _updateSteps() {
         const currentStepIndex = this.currentStepIndex;
-        const currentStepComponent = this.steps[currentStepIndex];
+        const currentStep = this.steps[currentStepIndex];
 
+        // Update buttons
         this.lastStep =
             currentStepIndex === this.steps.length - 1 ? true : false;
-        this.progressBarValue =
-            (currentStepIndex / (this.steps.length - 1)) * 100;
-        this.fractionCurrentStep = currentStepIndex + 1;
-        this.hidePreviousButton = currentStepComponent.hidePreviousButton;
-        this.hideNextFinishButton = currentStepComponent.hideNextFinishButton;
+        if (
+            !(this.indicatorPosition === 'header' && this.position === 'header')
+        ) {
+            this.hidePreviousButton = currentStep.hidePreviousButton;
+            this.hideNextFinishButton = currentStep.hideNextFinishButton;
+        }
 
-        // Add info to step for bullet variant
-        if (this.indicatorType === 'bullet') {
-            this.steps.forEach((step) => {
+        // Update indicators
+        if (this.hideIndicator) return;
+
+        if (this.showBarIndicator) {
+            this.progressBarValue =
+                (currentStepIndex / (this.steps.length - 1)) * 100;
+        }
+
+        if (this.showFractionIndicator) {
+            this.fractionCurrentStep = currentStepIndex + 1;
+        }
+
+        if (this.showBulletIndicator) {
+            this._steps.forEach((step) => {
                 step.selected = false;
                 step.bulletClass = 'slds-carousel__indicator-action';
             });
-            currentStepComponent.selected = true;
-            currentStepComponent.bulletClass =
+            currentStep.selected = true;
+            currentStep.bulletClass =
                 'slds-carousel__indicator-action slds-is-active';
         }
     }
@@ -154,6 +197,14 @@ export default class WizardNavigation extends LightningElement {
 
     get showIndicator() {
         return this.steps && !this.hideIndicator;
+    }
+
+    @api
+    get steps() {
+        return this._steps;
+    }
+    set steps(proxy) {
+        this._steps = proxy;
     }
 
     @api

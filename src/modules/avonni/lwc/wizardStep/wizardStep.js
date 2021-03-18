@@ -8,6 +8,9 @@ export default class WizardStep extends LightningElement {
         return true;
     };
 
+    // before-change={function}
+    // before-change-error-message="Did not work"
+
     stepClass;
     _hidePreviousButton = false;
     _hideNextFinishButton = false;

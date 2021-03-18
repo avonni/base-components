@@ -24,11 +24,11 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        type: {
+        variant: {
             control: false,
             defaultValue: 'base',
             description:
-                'Type of the wizard. Valid values include base, modal and card.',
+                'Variant of the wizard. Valid values include base, modal and card.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'base' }
@@ -61,6 +61,21 @@ export default {
                 'Changes the visual pattern of the indicator. Valid values are base, base-shaded, path, bullet, fractions, bar.',
             table: {
                 defaultValue: { summary: 'base' },
+                type: { summary: 'string' },
+                category: 'Navigation',
+                subcategory: 'Indicator'
+            }
+        },
+        indicatorPosition: {
+            control: {
+                type: 'select',
+                options: ['footer', 'header']
+            },
+            defaultValue: 'footer',
+            description:
+                'Changes the indicator position. Valid values are footer and header.',
+            table: {
+                defaultValue: { summary: 'footer' },
                 type: { summary: 'string' },
                 category: 'Navigation',
                 subcategory: 'Indicator'
@@ -322,10 +337,10 @@ Base.args = {
 };
 
 Modal.args = {
-    type: 'modal'
+    variant: 'modal'
 };
 
 Card.args = {
-    type: 'card',
+    variant: 'card',
     iconName: 'utility:announcement'
 };

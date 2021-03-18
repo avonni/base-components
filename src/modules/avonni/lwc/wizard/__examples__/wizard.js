@@ -5,9 +5,10 @@ customElements.define('ac-avonni-wizard', Component.CustomElementConstructor);
 export const Wizard = ({
     title,
     iconName,
-    type,
+    variant,
     currentStep,
     indicatorType,
+    indicatorPosition,
     hideIndicator,
     buttonPreviousIconName,
     buttonPreviousIconPosition,
@@ -29,9 +30,10 @@ export const Wizard = ({
     const element = document.createElement('ac-avonni-wizard');
     element.title = title;
     element.iconName = iconName;
-    element.type = type;
+    element.variant = variant;
     element.currentStep = currentStep;
     element.indicatorType = indicatorType;
+    element.indicatorPosition = indicatorPosition;
     element.hideIndicator = hideIndicator;
     element.buttonPreviousIconName = buttonPreviousIconName;
     element.buttonPreviousIconPosition = buttonPreviousIconPosition;

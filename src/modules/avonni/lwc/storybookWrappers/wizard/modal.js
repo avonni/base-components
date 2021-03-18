@@ -3,9 +3,10 @@ import { LightningElement, api } from 'lwc';
 export default class Modal extends LightningElement {
     @api title;
     @api iconName;
-    @api type;
+    @api variant;
     @api currentStep;
     @api indicatorType;
+    @api indicatorPosition;
     @api hideIndicator;
     @api buttonPreviousIconName;
     @api buttonPreviousIconPosition;

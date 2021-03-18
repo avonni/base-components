@@ -4,18 +4,19 @@ import BaseView from './base.html';
 import ModalView from './modal.html';
 import CardView from './card.html';
 
-const TYPES = ['base', 'modal', 'card'];
+const VARIANTS = ['base', 'modal', 'card'];
+const VERTICAL_POSITIONS = ['header', 'footer'];
 
 // QUESTIONS:
 // If beforeChange returns an error, should we display it somewhere? In the console? In the step?
-// Add padding to base default slot?
-// In modal, if iconName, change default header for media object?
+// Add padding to base default slot? Yes
+// In modal, if iconName, change default header for media object? => icon centered
+// Indicator position
 
 // TO VALIDATE:
-// next/previous methods fire the change/complete event, even if called programmatically.
-// The change event is fired even when the user clicks on 'previous' in the first step (with oldStep === currentStep).
-// type modal does not include the button and is closed by default.
-// Since bubbles, cancelable and composed are false by default, I did not include them in the dispatchEvent
+// The change event is fired even when the user clicks on 'previous' in the first step (with oldStep === currentStep). => Hide by default
+
+// hideNavigation
 
 export default class Wizard extends LightningElement {
     @api title;
@@ -39,7 +40,8 @@ export default class Wizard extends LightningElement {
     @api fractionPrefixLabel;
     @api fractionLabel;
 
-    _type;
+    _variant;
+    _indicatorPosition;
     _currentStep;
 
     steps = [];
@@ -55,13 +57,13 @@ export default class Wizard extends LightningElement {
     }
 
     connectedCallback() {
-        if (this.type === 'modal') this.hide();
+        if (this.variant === 'modal') this.hide();
     }
 
     render() {
-        if (this.type === 'modal') {
+        if (this.variant === 'modal') {
             return ModalView;
-        } else if (this.type === 'card') {
+        } else if (this.variant === 'card') {
             return CardView;
         }
         return BaseView;
@@ -69,8 +71,8 @@ export default class Wizard extends LightningElement {
 
     _initSteps() {
         // Make sure all steps have a name
-        this.steps.forEach((stepTemp, index) => {
-            stepTemp.name = stepTemp.name || `step-${index}`;
+        this.steps.forEach((step, index) => {
+            step.name = step.name || `step-${index}`;
         });
 
         // If no current step was given, set current step to first step
@@ -92,6 +94,10 @@ export default class Wizard extends LightningElement {
         return stepNames.indexOf(this.currentStep);
     }
 
+    get indicatorInHeader() {
+        return this.indicatorPosition === 'header';
+    }
+
     @api
     get currentStep() {
         return this._currentStep;
@@ -101,13 +107,24 @@ export default class Wizard extends LightningElement {
     }
 
     @api
-    get type() {
-        return this._type;
+    get variant() {
+        return this._variant;
     }
-    set type(type) {
-        this._type = normalizeString(type, {
+    set variant(variant) {
+        this._variant = normalizeString(variant, {
             fallbackValue: 'base',
-            validValues: TYPES
+            validValues: VARIANTS
+        });
+    }
+
+    @api
+    get indicatorPosition() {
+        return this._indicatorPosition;
+    }
+    set indicatorPosition(position) {
+        this._indicatorPosition = normalizeString(position, {
+            fallbackValue: 'footer',
+            validValues: VERTICAL_POSITIONS
         });
     }
 
