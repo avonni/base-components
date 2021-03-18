@@ -42,8 +42,6 @@ export default class ProgressStep extends LightningElement {
     @api assistiveText;
     @api label;
     @api description;
-    @api iconName;
-    @api iconSrc;
     @api buttonLabel;
     @api buttonName;
     @api buttonIconName;
@@ -68,7 +66,6 @@ export default class ProgressStep extends LightningElement {
 
     _popoverVisible = true;
     _popoverIconHoverVisible = false;
-    _allowBlur = false;
 
     connectedCallback() {
         this.classList.add('slds-progress__item');
@@ -211,9 +208,7 @@ export default class ProgressStep extends LightningElement {
     }
 
     set popoverHidden(value) {
-        this._popoverHidden = normalizeBoolean(value, {
-            fallbackValue: false
-        });
+        this._popoverHidden = normalizeBoolean(value);
     }
 
     get computedButtonClass() {
@@ -342,42 +337,14 @@ export default class ProgressStep extends LightningElement {
         this.dispatchEvent(new CustomEvent('steppopoverclick'));
     }
 
-    // Events for popoverButtonIconName
-    allowBlur() {
-        this._allowBlur = true;
-    }
-
-    cancelBlur() {
-        this._allowBlur = false;
-    }
-
-    handlePopoverFocus() {
-        if (!this._allowBlur) {
-            this.allowBlur();
-        }
-    }
-
-    handlePopoverBlur() {
-        if (this._allowBlur) {
-            this.cancelBlur();
-            this._popoverIconHoverVisible = false;
-        }
-    }
-
     handlePopoverMouseEnter() {
         if (this.popoverIconNameWhenHover) {
-            if (this._allowBlur) {
-                return;
-            }
             this._popoverIconHoverVisible = true;
         }
     }
 
     handlePopoverMouseLeave() {
         if (this.popoverIconNameWhenHover) {
-            if (this._allowBlur) {
-                return;
-            }
             this._popoverIconHoverVisible = false;
         }
     }
