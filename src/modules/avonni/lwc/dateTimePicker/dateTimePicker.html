@@ -102,6 +102,10 @@
         </lightning-layout-item>
     </lightning-layout>
 
+    <template if:true={entirePeriodIsDisabled}>
+        <p if:false={isMonthly}>No available time slots for this period.</p>
+    </template>
+
     <lightning-layout multiple-rows="true" pull-to-boundary="medium">
         <template if:true={isMonthly}>
             <lightning-layout-item padding="horizontal-medium">
@@ -118,6 +122,11 @@
         </template>
 
         <lightning-layout-item flexibility="auto" padding="horizontal-medium">
+            <template if:true={entirePeriodIsDisabled}>
+                <p if:true={isMonthly} class="slds-text-align_right">
+                    No available time slots for this period.
+                </p>
+            </template>
             <!-- Hour table -->
             <div class="slds-grid">
                 <template for:each={table} for:item="day">

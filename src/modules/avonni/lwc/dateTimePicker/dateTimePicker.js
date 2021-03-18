@@ -13,9 +13,6 @@ const WEEKDAY_FORMAT = ['narrow', 'short', 'long'];
 
 const MONTH_FORMAT = ['2-digit', 'numeric', 'narrow', 'short', 'long'];
 
-// TODO:
-// Display "No available time slots for this period." when period (day, month, etc.) is completely disabled.
-
 export default class DateTimePicker extends LightningElement {
     @api disabled;
     @api fieldLevelHelp;
@@ -646,6 +643,10 @@ export default class DateTimePicker extends LightningElement {
 
     get nextButtonIsDisabled() {
         return this.lastWeekDay >= this.max;
+    }
+
+    get entirePeriodIsDisabled() {
+        return this.table.every((day) => day.disabled === true);
     }
 
     get isTimeline() {
