@@ -138,17 +138,23 @@ export default class WizardNavigation extends LightningElement {
         const currentStepIndex = this.currentStepIndex;
         const currentStep = this.steps[currentStepIndex];
 
-        // Update buttons
-        this.lastStep =
-            currentStepIndex === this.steps.length - 1 ? true : false;
+        // Update buttons if they are visible
         if (
             !(this.indicatorPosition === 'header' && this.position === 'header')
         ) {
-            this.hidePreviousButton = currentStep.hidePreviousButton;
+            this.lastStep = currentStepIndex === this.steps.length - 1;
+
+            // Hide previous button for first step
+            if (currentStep === this.steps[0]) {
+                this.hidePreviousButton = true;
+            } else {
+                this.hidePreviousButton = currentStep.hidePreviousButton;
+            }
+
             this.hideNextFinishButton = currentStep.hideNextFinishButton;
         }
 
-        // Update indicators
+        // Update indicator if it is visible
         if (this.hideIndicator) return;
 
         if (this.showBarIndicator) {

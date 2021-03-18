@@ -9,11 +9,7 @@ const VERTICAL_POSITIONS = ['header', 'footer'];
 
 // QUESTIONS:
 // If beforeChange returns an error, should we display it somewhere? In the console? In the step?
-// Add padding to base default slot? Yes
 // In modal, if iconName, change default header for media object? => icon centered
-
-// TO VALIDATE:
-// The change event is fired even when the user clicks on 'previous' in the first step (with oldStep === currentStep). => Hide by default
 
 export default class Wizard extends LightningElement {
     @api title;
