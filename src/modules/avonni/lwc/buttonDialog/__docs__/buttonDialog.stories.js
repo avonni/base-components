@@ -64,5 +64,64 @@ const Template = (args) => ButtonDialog(args);
 export const Base = Template.bind({});
 Base.args = {
     label: 'Show modal',
-    iconName: 'utility:animal_and_nature'
+    iconName: 'utility:animal_and_nature',
+    variant: 'base'
+};
+
+export const NeutralWithIconRight = Template.bind({});
+NeutralWithIconRight.args = {
+    label: 'Show modal',
+    iconName: 'utility:animal_and_nature',
+    iconPosition: 'right',
+    variant: 'neutral'
+};
+
+export const Brand = Template.bind({});
+Brand.args = {
+    label: 'Show modal',
+    iconName: 'utility:animal_and_nature',
+    variant: 'brand'
+};
+
+export const BrandOutline = Template.bind({});
+BrandOutline.args = {
+    label: 'Show modal',
+    iconName: 'utility:animal_and_nature',
+    variant: 'brand-outline'
+};
+
+export const Destructive = Template.bind({});
+Destructive.args = {
+    label: 'Show modal',
+    iconName: 'utility:animal_and_nature',
+    variant: 'destructive'
+};
+
+export const DestructiveText = Template.bind({});
+DestructiveText.args = {
+    label: 'Show modal',
+    iconName: 'utility:animal_and_nature',
+    variant: 'destructive-text'
+};
+
+export const Inverse = Template.bind({});
+Inverse.args = {
+    label: 'Show modal',
+    iconName: 'utility:animal_and_nature',
+    variant: 'inverse'
+};
+
+export const Success = Template.bind({});
+Success.args = {
+    label: 'Show modal',
+    iconName: 'utility:animal_and_nature',
+    variant: 'success'
+};
+
+export const Disabled = Template.bind({});
+Disabled.args = {
+    label: 'Show modal',
+    iconName: 'utility:animal_and_nature',
+    variant: 'success',
+    disabled: 'true'
 };
