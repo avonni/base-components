@@ -75,6 +75,7 @@
     left: 50%;
     transform: translate(-50%, -130%);
     width: 100%;
+    color: black;
     background-color: var(--lwc-brandLight, #f4f6fe);
 }
 
@@ -94,4 +95,8 @@
 :host(.slds-has-warning-shaded) .slds-button:hover,
 :host(.slds-has-warning-shaded) .slds-button:focus {
     color: #ffb75d;
+}
+
+.avonni-progress-step-icon-color_brand {
+    color: var(--lwc-brandAccessible, rgb(0, 112, 210));
 }

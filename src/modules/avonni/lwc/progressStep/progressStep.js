@@ -66,11 +66,9 @@ export default class ProgressStep extends LightningElement {
 
     connectedCallback() {
         this.classList.add('slds-progress__item');
-        // console.log((this._popoverHidden && (this.popoverDescription || this.popoverIconName || this.popoverLabel)))
     }
 
     renderedCallback() {
-        console.log(this._popoverHidden);
         this.isDisabled();
     }
 

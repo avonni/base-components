@@ -60,55 +60,18 @@
                             </div>
                         </template>
                         <template if:true={popoverIconHoverVisible}>
-                            <div class="slds-popover__body">
+                            <div
+                                class="slds-popover__body avonni-progress-step-icon-color_brand"
+                            >
                                 <c-primitive-icon
                                     icon-name={popoverIconNameWhenHover}
                                     src={popoverIconSrcWhenHover}
-                                    svg-class="slds-button_icon"
+                                    class="slds-current-color"
                                 ></c-primitive-icon>
                             </div>
                         </template>
                     </div>
                 </template>
-                <!-- <template if:true={popoverIconName}>
-                    <button
-                        class={computedPopoverButtonClass}
-                        tabindex="0"
-                        onclick={handleStepPopoverClick}
-                        onfocus={handlePopoverFocus}
-                        onblur={handlePopoverBlur}
-                        onmouseenter={handlePopoverMouseEnter}
-                        onmouseleave={handlePopoverMouseLeave}
-                    >
-                        <template if:false={popoverIconVisible}>
-                            <div class="slds-popover__body slds-truncate">
-                                <template if:true={popoverLabel}>
-                                    <p class="slds-text-title_bold">{popoverLabel}</p>
-                                </template>
-                                <template if:true={popoverDescription}>
-                                    <p>{popoverDescription}</p>
-                                </template>
-                                <template if:true={popoverIconName}>
-                                    <c-primitive-icon
-                                        icon-name={popoverIconName}
-                                        size={popoverIconSize}
-                                        src={popoverIconSrc}
-                                        variant={primitivePopoverIconVariant}
-                                    ></c-primitive-icon>
-                                </template>
-                            </div>
-                        </template>
-                        <template if:true={popoverIconHoverVisible}>
-                            <div class="slds-popover__body">
-                                <c-primitive-icon
-                                    icon-name={popoverIconNameWhenHover}
-                                    src={popoverIconSrcWhenHover}
-                                    svg-class="slds-button_icon"
-                                ></c-primitive-icon>
-                            </div>
-                        </template>
-                    </button>
-                </template> -->
                 <span if:true={assistiveText} class="slds-assistive-text"
                     >{assistiveText}</span
                 >
