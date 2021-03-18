@@ -94,7 +94,7 @@
                 label="Date"
                 max={maxToString}
                 min={minToString}
-                onchange={handleDatePickerChange}
+                onchange={handleDateChange}
                 type="date"
                 value={datePickerValue}
                 variant="label-hidden"
@@ -112,7 +112,7 @@
                     disabled={disabled}
                     max={max}
                     min={min}
-                    onchange={handleMonthlyCalendarChange}
+                    onchange={handleDateChange}
                 ></c-calendar>
             </lightning-layout-item>
         </template>

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-expressions */
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { FieldConstraintApi } from 'c/inputUtils';
@@ -14,9 +13,8 @@ const WEEKDAY_FORMAT = ['narrow', 'short', 'long'];
 
 const MONTH_FORMAT = ['2-digit', 'numeric', 'narrow', 'short', 'long'];
 
-// QUESTION:
-// The event fired by the calendar doesn't have the same value format than the event fired by the <lightning-input type="date"> ('3/19/2021' vs. '2021-03-19'). Maybe we could uniformize the calendar value?
-// Monthly variant: should we hide the date picker and navigation (today/previous/next) by default, or leave it to the user to choose, since they have the option?
+// TODO:
+// Display "No available time slots for this period." when period (day, month, etc.) is completely disabled.
 
 export default class DateTimePicker extends LightningElement {
     @api disabled;
@@ -72,9 +70,11 @@ export default class DateTimePicker extends LightningElement {
         this.today = now;
         this.datePickerValue = now.toISOString();
 
-        this.today < this.min
-            ? this._setFirstWeekDay(this.min)
-            : this._setFirstWeekDay(this.today);
+        if (this.today < this.min) {
+            this._setFirstWeekDay(this.min);
+        } else {
+            this._setFirstWeekDay(this.today);
+        }
 
         // If no time format is provided, defaults to hour:minutes (0:00)
         // The default is set here so it is possible to have only the hour, minutes:seconds, etc.
@@ -87,7 +87,7 @@ export default class DateTimePicker extends LightningElement {
             this._timeFormatMinute = '2-digit';
         }
 
-        this.isMonthly && this._disableMonthlyCalendarDates();
+        if (this.isMonthly) this._disableMonthlyCalendarDates();
 
         this._generateTable();
     }
@@ -95,7 +95,7 @@ export default class DateTimePicker extends LightningElement {
     renderedCallback() {
         // Show errors on date picker
         const datePicker = this.template.querySelector('lightning-input');
-        datePicker && datePicker.reportValidity();
+        if (datePicker) datePicker.reportValidity();
     }
 
     @api
@@ -543,7 +543,7 @@ export default class DateTimePicker extends LightningElement {
                 } else {
                     dayTime.times[index].times.push(time);
                 }
-                // For other variants, pushes the time object directyl into dayTime.times
+                // For other variants, pushes the time object directly into dayTime.times
             } else {
                 dayTime.times.push(time);
             }
@@ -679,37 +679,20 @@ export default class DateTimePicker extends LightningElement {
         this.datePickerValue = this.firstWeekDay.toISOString();
     }
 
-    handleMonthlyCalendarChange(event) {
-        // Format received: 3/18/2021
+    handleDateChange(event) {
         const dateString = event.detail.value.match(
-            /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/
+            /^(\d{4})-(\d{2})-(\d{2})$/
         );
+
         if (dateString) {
-            // Cut date string into pieces to make sure new date is created with current time zone
-            const date = new Date(
-                dateString[3],
-                dateString[1] - 1,
-                dateString[2]
-            );
+            const year = dateString[1];
+            const month = dateString[2] - 1;
+            const day = dateString[3];
+            const date = new Date(year, month, day);
+
             this._setFirstWeekDay(date);
             this._generateTable();
             this.datePickerValue = date.toISOString();
-        }
-    }
-
-    handleDatePickerChange(event) {
-        // Format received: 2021-03-18
-        const dateString = event.detail.value;
-        if (dateString) {
-            this.datePickerValue = dateString;
-
-            // Cut date string into pieces to make sure new date is created with current time zone
-            const year = parseInt(dateString.slice(0, 4), 10);
-            const month = parseInt(dateString.slice(5, 7), 10) - 1;
-            const day = parseInt(dateString.slice(8, 10), 10);
-            const date = new Date(year, month, day);
-            this._setFirstWeekDay(date);
-            this._generateTable();
         }
     }
 
@@ -722,13 +705,18 @@ export default class DateTimePicker extends LightningElement {
         // Select/unselect the date
         if (this.type === 'checkbox') {
             const valueIndex = this.value.indexOf(dateTimeISO);
-            valueIndex > -1
-                ? this._value.splice(valueIndex, 1)
-                : this._value.push(dateTimeISO);
+            if (valueIndex > -1) {
+                this._value.splice(valueIndex, 1);
+            } else {
+                this._value.push(dateTimeISO);
+            }
+
             const selectIndex = this._selectedDayTime.indexOf(date.getTime());
-            selectIndex > -1
-                ? this._selectedDayTime.splice(selectIndex, 1)
-                : this._selectedDayTime.push(date.getTime());
+            if (selectIndex > -1) {
+                this._selectedDayTime.splice(selectIndex, 1);
+            } else {
+                this._selectedDayTime.push(date.getTime());
+            }
         } else {
             this._value = this._value === dateTimeISO ? null : dateTimeISO;
             this._selectedDayTime =
