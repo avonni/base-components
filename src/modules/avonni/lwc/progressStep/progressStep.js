@@ -2,12 +2,7 @@ import { LightningElement, api } from 'lwc';
 import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-const POPOVER_STATE = {
-    valid: ['show', 'hidden', 'hover', 'button', 'button-icon-name'],
-    default: 'hover'
-};
-
-const POSITIONS = { valid: ['top', 'bottom', 'inside-nubbin'], default: 'top' };
+const POSITIONS = { valid: ['top', 'bottom'], default: 'top' };
 
 const SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
@@ -36,6 +31,10 @@ const POPOVER_RATIO = {
 
 export default class ProgressStep extends LightningElement {
     stepIconName;
+    @api disabledSteps;
+    @api warningSteps;
+    @api completedSteps;
+    @api assistiveText;
     @api label;
     @api description;
     @api iconName;
@@ -43,35 +42,35 @@ export default class ProgressStep extends LightningElement {
     @api buttonLabel;
     @api buttonName;
     @api buttonIconName;
-    @api popoverButtonIcon;
     @api buttonTitle;
-    @api assistiveText;
-    @api disabledSteps;
-    @api warningSteps;
-    @api completedSteps;
+    @api popoverIconName;
+    @api popoverIconSrc;
+    @api popoverIconNameWhenHover;
+    @api popoverIconSrcWhenHover;
     @api popoverLabel;
     @api popoverDescription;
 
     _value;
-    _popoverState = 'hover';
     _labelPosition = 'top';
     _descriptionPosition = 'top';
-    _iconPosition = 'top';
-    _iconSize = 'medium';
     _buttonIconPosition = 'left';
     _buttonVariant = 'neutral';
     _buttonDisabled = false;
+    _popoverIconSize = 'medium';
     _popoverRatio = '1-by-1';
+    _popoverHidden = false;
 
-    _popoverVisible = false;
-    _popoverIconVisible = false;
+    _popoverVisible = true;
+    _popoverIconHoverVisible = false;
     _allowBlur = false;
 
     connectedCallback() {
         this.classList.add('slds-progress__item');
+        // console.log((this._popoverHidden && (this.popoverDescription || this.popoverIconName || this.popoverLabel)))
     }
 
     renderedCallback() {
+        console.log(this._popoverHidden);
         this.isDisabled();
     }
 
@@ -83,18 +82,6 @@ export default class ProgressStep extends LightningElement {
     set value(value) {
         this._value = value;
         this.setAttribute('data-step', value);
-    }
-
-    @api
-    get popoverState() {
-        return this._popoverState;
-    }
-
-    set popoverState(state) {
-        this._popoverState = normalizeString(state, {
-            fallbackValue: POPOVER_STATE.default,
-            validValues: POPOVER_STATE.valid
-        });
     }
 
     @api
@@ -179,6 +166,18 @@ export default class ProgressStep extends LightningElement {
     }
 
     @api
+    get popoverIconSize() {
+        return this._popoverIconSize;
+    }
+
+    set popoverIconSize(size) {
+        this._popoverIconSize = normalizeString(size, {
+            fallbackValue: SIZES.default,
+            validValues: SIZES.valid
+        });
+    }
+
+    @api
     get popoverRatio() {
         return this._popoverRatio;
     }
@@ -187,6 +186,17 @@ export default class ProgressStep extends LightningElement {
         this._popoverRatio = normalizeString(ratio, {
             fallbackValue: POPOVER_RATIO.default,
             validValues: POPOVER_RATIO.valid
+        });
+    }
+
+    @api
+    get popoverHidden() {
+        return this._popoverHidden;
+    }
+
+    set popoverHidden(value) {
+        this._popoverHidden = normalizeBoolean(value, {
+            fallbackValue: false
         });
     }
 
@@ -228,10 +238,6 @@ export default class ProgressStep extends LightningElement {
         return this._labelPosition === 'bottom' && this.label;
     }
 
-    get showLabelNubbin() {
-        return this._labelPosition === 'inside-nubbin' && this.label;
-    }
-
     get showDescriptionTop() {
         return this._descriptionPosition === 'top' && this.description;
     }
@@ -240,66 +246,25 @@ export default class ProgressStep extends LightningElement {
         return this._descriptionPosition === 'bottom' && this.description;
     }
 
-    get showDescriptionNubbin() {
-        return (
-            this._descriptionPosition === 'inside-nubbin' && this.description
-        );
-    }
-
-    get showIconTop() {
-        return this._iconPosition === 'top' && this.iconName;
-    }
-
-    get showIconBottom() {
-        return this._iconPosition === 'bottom' && this.iconName;
-    }
-
-    get showIconNubbin() {
-        return this._iconPosition === 'inside-nubbin' && this.iconName;
-    }
-
-    get popoverHover() {
-        return this._popoverState === 'hover';
-    }
-
-    get popoverShow() {
-        return this._popoverState === 'show';
-    }
-
-    get displayPopover() {
-        if (
-            this.showDescriptionNubbin ||
-            this.showIconNubbin ||
-            this.showLabelNubbin
-        ) {
-            return this._popoverVisible || this.popoverShow;
-        }
-        return false;
-    }
-
-    get popoverIconVisible() {
-        return this._popoverIconVisible;
-    }
-
-    get popoverButton() {
-        if (
-            this.showDescriptionNubbin ||
-            this.showIconNubbin ||
-            this.showLabelNubbin
-        ) {
-            return (
-                this._popoverState === 'button' ||
-                this._popoverState === 'button-icon-name'
-            );
-        }
-        return false;
-    }
-
     get isButtonDisabled() {
         return (
             this._buttonDisabled ||
             this.disabledSteps.includes(this.getAttribute('data-step'))
         );
+    }
+
+    get displayPopover() {
+        return (
+            ((!this._popoverHidden && this._popoverVisible) ||
+                (this.popoverHidden && !this._popoverVisible)) &&
+            (this.popoverLabel ||
+                this.popoverDescription ||
+                this.popoverIconName)
+        );
+    }
+
+    get popoverIconHoverVisible() {
+        return this._popoverIconHoverVisible && this.popoverIconNameWhenHover;
     }
 
     isDisabled() {
@@ -331,35 +296,24 @@ export default class ProgressStep extends LightningElement {
     }
 
     handleStepMouseEnter() {
-        setTimeout(
-            function () {
-                if (this.popoverHover) {
-                    this._popoverVisible = !this._popoverVisible;
-                }
-            }.bind(this),
-            250
-        );
-
-        this.dispatchEvent(new CustomEvent('stepmouseenter', {}));
+        this.dispatchEvent(new CustomEvent('stepmouseenter'));
     }
 
     handleStepMouseLeave() {
-        setTimeout(
-            function () {
-                if (this.popoverHover) {
-                    this._popoverVisible = !this._popoverVisible;
-                }
-            }.bind(this),
-            250
-        );
         this.dispatchEvent(new CustomEvent('stepmouseleave'));
     }
 
     handleStepFocus() {
+        if (this._popoverHidden) {
+            this._popoverVisible = !this._popoverVisible;
+        }
         this.dispatchEvent(new CustomEvent('stepfocus'));
     }
 
     handleStepBlur() {
+        if (this._popoverHidden) {
+            this._popoverVisible = !this._popoverVisible;
+        }
         this.dispatchEvent(new CustomEvent('stepblur'));
     }
 
@@ -393,25 +347,25 @@ export default class ProgressStep extends LightningElement {
     handlePopoverBlur() {
         if (this._allowBlur) {
             this.cancelBlur();
-            this._popoverIconVisible = false;
+            this._popoverIconHoverVisible = false;
         }
     }
 
     handlePopoverMouseEnter() {
-        if (this.popoverButtonIcon) {
+        if (this.popoverIconNameWhenHover) {
             if (this._allowBlur) {
                 return;
             }
-            this._popoverIconVisible = true;
+            this._popoverIconHoverVisible = true;
         }
     }
 
     handlePopoverMouseLeave() {
-        if (this.popoverButtonIcon) {
+        if (this.popoverIconNameWhenHover) {
             if (this._allowBlur) {
                 return;
             }
-            this._popoverIconVisible = false;
+            this._popoverIconHoverVisible = false;
         }
     }
 }

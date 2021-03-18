@@ -57,7 +57,7 @@
     width: 100%;
     background-color: var(
         --avonni-c-progress-indicator-step-color-background,
-        #ffffff
+        #e8e8e8
     );
 }
 
@@ -69,32 +69,13 @@
     );
 }
 
-.avonni-progress-step-popover-button {
+.avonni-progress-step-popover:focus,
+.avonni-progress-step-popover:hover {
     position: absolute;
     left: 50%;
     transform: translate(-50%, -130%);
     width: 100%;
-    background-color: var(
-        --avonni-c-progress-indicator-step-color-background,
-        #ffffff
-    );
-}
-
-.avonni-progress-step-popover-button-completed {
-    color: #ffffff;
-    background-color: var(
-        --avonni-c-progress-indicator-step-color-background,
-        #006dcc
-    );
-}
-
-.avonni-progress-step-popover-button:focus,
-.avonni-progress-step-popover-button:hover {
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, -130%);
-    width: 100%;
-    background-color: #ffffff;
+    background-color: var(--lwc-brandLight, #f4f6fe);
 }
 
 :host(.slds-has-warning) .slds-button {

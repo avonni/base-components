@@ -93,37 +93,34 @@ const steps = [
         labelPosition: 'bottom',
         assistiveText: '1',
         description: 'This is step #1',
-        descriptionPosition: 'inside-nubbin'
+        popoverLabel: '1',
+        popoverHidden: 'true'
     },
     {
         value: '2',
         label: '2',
         labelPosition: 'bottom',
         assistiveText: '2',
-        description: 'This is step #2',
-        descriptionPosition: 'inside-nubbin'
+        popoverDescription: 'This is step #2'
     },
     {
         value: '3',
         label: '3',
         labelPosition: 'bottom',
         assistiveText: '3',
-        description: 'This is step #3',
-        descriptionPosition: 'inside-nubbin'
+        description: 'This is step #3'
     },
     {
         value: '4',
         label: '4',
         labelPosition: 'bottom',
-        description: 'This is step #4',
-        descriptionPosition: 'inside-nubbin'
+        description: 'This is step #4'
     },
     {
         value: '5',
         label: '5',
         labelPosition: 'bottom',
-        description: 'This is step #5',
-        descriptionPosition: 'inside-nubbin'
+        description: 'This is step #5'
     }
 ];
 
@@ -134,7 +131,6 @@ const stepsWithButtons = [
         labelPosition: 'top',
         assistiveText: '1',
         description: 'This is step #1',
-        descriptionPosition: 'inside-nubbin',
         buttonLabel: 'Error',
         buttonVariant: 'destructive'
     },
@@ -144,7 +140,6 @@ const stepsWithButtons = [
         labelPosition: 'top',
         assistiveText: '2',
         description: 'This is step #2',
-        descriptionPosition: 'inside-nubbin',
         buttonLabel: 'Completed',
         buttonVariant: 'success'
     },
@@ -154,7 +149,6 @@ const stepsWithButtons = [
         labelPosition: 'top',
         assistiveText: '3',
         description: 'This is step #3',
-        descriptionPosition: 'inside-nubbin',
         buttonLabel: 'Completed',
         buttonVariant: 'success'
     },
@@ -162,8 +156,8 @@ const stepsWithButtons = [
         value: '4',
         label: '4',
         labelPosition: 'top',
+        assistiveText: '4',
         description: 'This is step #4',
-        descriptionPosition: 'inside-nubbin',
         buttonLabel: 'Current',
         buttonVariant: 'brand'
     },
@@ -171,8 +165,8 @@ const stepsWithButtons = [
         value: '5',
         label: '5',
         labelPosition: 'top',
+        assistiveText: '5',
         description: 'This is step #5',
-        descriptionPosition: 'inside-nubbin',
         buttonLabel: 'Warning',
         buttonVariant: 'destructive-text'
     }
@@ -183,64 +177,51 @@ const milestonesSteps = [
         value: '1',
         label: 'Merger & Acquisition',
         labelPosition: 'bottom',
-        iconName: 'utility:merge',
-        iconPosition: 'inside-nubbin',
-        popoverState: 'button-icon-name',
-        popoverButtonIcon: 'utility:add'
+        popoverIconName: 'utility:merge',
+        popoverIconNameWhenHover: 'utility:add',
+        popoverHidden: 'true'
     },
     {
         value: '2',
         label: 'Expansion',
         labelPosition: 'bottom',
-        iconName: 'utility:rules',
-        iconPosition: 'inside-nubbin',
-        popoverState: 'button-icon-name',
-        popoverButtonIcon: 'utility:add'
+        popoverIconName: 'utility:rules',
+        popoverIconNameWhenHover: 'utility:add'
     },
     {
         value: '3',
         label: 'Executive Change',
         labelPosition: 'bottom',
-        iconName: 'utility:block_visitor',
-        iconPosition: 'inside-nubbin',
-        popoverState: 'button-icon-name',
-        popoverButtonIcon: 'utility:add'
+        popoverIconName: 'utility:block_visitor',
+        popoverIconNameWhenHover: 'utility:add'
     },
     {
         value: '4',
         label: 'Market Listing',
         labelPosition: 'bottom',
-        iconName: 'utility:priority',
-        iconPosition: 'inside-nubbin',
-        popoverState: 'button-icon-name',
-        popoverButtonIcon: 'utility:add'
+        popoverIconName: 'utility:priority',
+        popoverIconNameWhenHover: 'utility:add'
     },
     {
         value: '5',
         label: 'Bankruptcy',
         labelPosition: 'bottom',
-        iconName: 'utility:error',
-        iconPosition: 'inside-nubbin',
-        popoverState: 'button-icon-name',
-        popoverButtonIcon: 'utility:add'
+        popoverIconName: 'utility:error',
+        popoverIconNameWhenHover: 'utility:add'
     },
     {
         value: '6',
         label: 'New Product Launch',
         labelPosition: 'bottom',
-        iconName: 'utility:cases',
-        iconPosition: 'inside-nubbin',
-        popoverState: 'button-icon-name',
-        popoverButtonIcon: 'utility:add'
+        popoverIconName: 'utility:cases',
+        popoverIconNameWhenHover: 'utility:add'
     },
     {
         value: '7',
         label: 'New Partnership',
         labelPosition: 'bottom',
-        iconName: 'utility:change_record_type',
-        iconPosition: 'inside-nubbin',
-        popoverState: 'button-icon-name',
-        popoverButtonIcon: 'utility:add'
+        popoverIconName: 'utility:change_record_type',
+        popoverIconNameWhenHover: 'utility:add'
     }
 ];
 

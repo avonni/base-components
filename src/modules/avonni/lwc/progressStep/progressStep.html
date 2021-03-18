@@ -9,13 +9,6 @@
                     <template if:true={showDescriptionTop}>
                         <p>{description}</p>
                     </template>
-                    <template if:true={showIconTop}>
-                        <c-primitive-icon
-                            icon-name={iconName}
-                            size={iconSize}
-                            src={iconSrc}
-                        ></c-primitive-icon>
-                    </template>
                 </div>
                 <button
                     class={computedButtonClass}
@@ -39,26 +32,45 @@
                 <template if:true={displayPopover}>
                     <div
                         class={computedPopoverClass}
+                        tabindex="0"
                         onclick={handleStepPopoverClick}
+                        onfocus={handlePopoverFocus}
+                        onblur={handlePopoverBlur}
+                        onmouseenter={handlePopoverMouseEnter}
+                        onmouseleave={handlePopoverMouseLeave}
                     >
-                        <div class="slds-popover__body">
-                            <template if:true={showLabelNubbin}>
-                                <p class="slds-text-title_bold">{label}</p>
-                            </template>
-                            <template if:true={showDescriptionNubbin}>
-                                <p>{description}</p>
-                            </template>
-                            <template if:true={showIconNubbin}>
+                        <template if:false={popoverIconHoverVisible}>
+                            <div class="slds-popover__body">
+                                <template if:true={popoverLabel}>
+                                    <p class="slds-text-title_bold">
+                                        {popoverLabel}
+                                    </p>
+                                </template>
+                                <template if:true={popoverDescription}>
+                                    <p>{popoverDescription}</p>
+                                </template>
+                                <template if:true={popoverIconName}>
+                                    <c-primitive-icon
+                                        icon-name={popoverIconName}
+                                        size={popoverIconSize}
+                                        src={popoverIconSrc}
+                                        variant={primitivePopoverIconVariant}
+                                    ></c-primitive-icon>
+                                </template>
+                            </div>
+                        </template>
+                        <template if:true={popoverIconHoverVisible}>
+                            <div class="slds-popover__body">
                                 <c-primitive-icon
-                                    icon-name={iconName}
-                                    size={iconSize}
-                                    src={iconSrc}
+                                    icon-name={popoverIconNameWhenHover}
+                                    src={popoverIconSrcWhenHover}
+                                    svg-class="slds-button_icon"
                                 ></c-primitive-icon>
-                            </template>
-                        </div>
+                            </div>
+                        </template>
                     </div>
                 </template>
-                <template if:true={popoverButton}>
+                <!-- <template if:true={popoverIconName}>
                     <button
                         class={computedPopoverButtonClass}
                         tabindex="0"
@@ -70,32 +82,33 @@
                     >
                         <template if:false={popoverIconVisible}>
                             <div class="slds-popover__body slds-truncate">
-                                <template if:true={showLabelNubbin}>
-                                    <p class="slds-text-title_bold">{label}</p>
+                                <template if:true={popoverLabel}>
+                                    <p class="slds-text-title_bold">{popoverLabel}</p>
                                 </template>
-                                <template if:true={showDescriptionNubbin}>
-                                    <p>{description}</p>
+                                <template if:true={popoverDescription}>
+                                    <p>{popoverDescription}</p>
                                 </template>
-                                <template if:true={showIconNubbin}>
+                                <template if:true={popoverIconName}>
                                     <c-primitive-icon
-                                        icon-name={iconName}
-                                        size={iconSize}
-                                        src={iconSrc}
+                                        icon-name={popoverIconName}
+                                        size={popoverIconSize}
+                                        src={popoverIconSrc}
                                         variant={primitivePopoverIconVariant}
                                     ></c-primitive-icon>
                                 </template>
                             </div>
                         </template>
-                        <template if:true={popoverIconVisible}>
+                        <template if:true={popoverIconHoverVisible}>
                             <div class="slds-popover__body">
                                 <c-primitive-icon
-                                    icon-name={popoverButtonIcon}
+                                    icon-name={popoverIconNameWhenHover}
+                                    src={popoverIconSrcWhenHover}
                                     svg-class="slds-button_icon"
                                 ></c-primitive-icon>
                             </div>
                         </template>
                     </button>
-                </template>
+                </template> -->
                 <span if:true={assistiveText} class="slds-assistive-text"
                     >{assistiveText}</span
                 >
@@ -105,13 +118,6 @@
                     </template>
                     <template if:true={showDescriptionBottom}>
                         <p>{description}</p>
-                    </template>
-                    <template if:true={showIconBottom}>
-                        <c-primitive-icon
-                            icon-name={iconName}
-                            size={iconSize}
-                            src={iconSrc}
-                        ></c-primitive-icon>
                     </template>
                     <template if:true={buttonLabel}>
                         <lightning-button
