@@ -294,8 +294,8 @@ BaseWithDetails.args = {
     tertiaryText: 'Online'
 };
 
-export const Circle = Template.bind({});
-Circle.args = {
+export const CircleLarge = Template.bind({});
+CircleLarge.args = {
     hideAvatarDetails: false,
     variant: 'circle',
     size: 'large',

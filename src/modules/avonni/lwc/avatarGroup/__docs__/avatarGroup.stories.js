@@ -53,7 +53,34 @@ const items = [
     }
 ];
 
-export const Base = Template.bind({});
-Base.args = {
+export const BaseWithTwoAvatars = Template.bind({});
+BaseWithTwoAvatars.args = {
+    items: items
+};
+
+export const BaseWithMoreThanTwoAvatars = Template.bind({});
+BaseWithMoreThanTwoAvatars.args = {
     items: [...items, ...items, ...items, ...items, ...items, ...items]
+};
+
+export const BaseLargeWithMoreThanTwoAvatars = Template.bind({});
+BaseLargeWithMoreThanTwoAvatars.args = {
+    items: [...items, ...items, ...items, ...items, ...items, ...items],
+    size: 'large',
+    maxCount: '6'
+};
+
+export const Grid = Template.bind({});
+Grid.args = {
+    items: [...items, ...items, ...items, ...items, ...items, ...items],
+    variant: 'grid',
+    maxCount: '6'
+};
+
+export const GridSmall = Template.bind({});
+GridSmall.args = {
+    items: [...items, ...items, ...items, ...items, ...items, ...items],
+    size: 'small',
+    variant: 'grid',
+    maxCount: '7'
 };
