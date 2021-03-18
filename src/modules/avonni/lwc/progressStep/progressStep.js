@@ -25,7 +25,7 @@ const BUTTON_VARIANTS = {
 };
 
 const POPOVER_SIZE = {
-    valid: ['small', 'medium'],
+    valid: ['small', 'medium', 'large'],
     default: 'medium'
 };
 
@@ -232,7 +232,9 @@ export default class ProgressStep extends LightningElement {
                 'avonni-progress-step-popover_small':
                     this._popoverSize === 'small',
                 'avonni-progress-step-popover_medium':
-                    this._popoverSize === 'medium'
+                    this._popoverSize === 'medium',
+                'avonni-progress-step-popover_large':
+                    this._popoverSize === 'large'
             })
             .add(`ratio-${this._popoverRatio}`)
             .toString();

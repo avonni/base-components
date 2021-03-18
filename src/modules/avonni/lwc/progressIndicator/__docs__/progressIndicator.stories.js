@@ -133,7 +133,9 @@ const BaseStepsWithPopoverVisible = [
         label: '1',
         labelPosition: 'bottom',
         assistiveText: '1',
-        popoverDescription: 'This is step #1'
+        popoverDescription: 'This is step #1',
+        popoverSize: 'small',
+        popoverRatio: '16-by-9'
     },
     {
         value: '2',
@@ -141,7 +143,7 @@ const BaseStepsWithPopoverVisible = [
         labelPosition: 'bottom',
         assistiveText: '2',
         popoverDescription: '2',
-        popoverSize: 'small',
+        popoverSize: 'large',
         popoverRatio: '16-by-9'
     },
     {
@@ -149,7 +151,9 @@ const BaseStepsWithPopoverVisible = [
         label: '3',
         labelPosition: 'bottom',
         assistiveText: '3',
-        popoverDescription: 'This is step #3'
+        popoverDescription: 'This is step #3',
+        popoverSize: 'small',
+        popoverRatio: '16-by-9'
     },
     {
         value: '4',

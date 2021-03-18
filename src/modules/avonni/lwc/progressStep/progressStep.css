@@ -59,7 +59,7 @@
 
 .avonni-progress-step-popover_small {
     position: absolute;
-    width: 80px;
+    width: 48px;
     background-color: var(
         --avonni-c-progress-indicator-step-color-background,
         #e8e8e8
@@ -67,6 +67,15 @@
 }
 
 .avonni-progress-step-popover_medium {
+    position: absolute;
+    width: 72px;
+    background-color: var(
+        --avonni-c-progress-indicator-step-color-background,
+        #e8e8e8
+    );
+}
+
+.avonni-progress-step-popover_large {
     position: absolute;
     width: 100px;
     background-color: var(
@@ -76,39 +85,57 @@
 }
 
 .avonni-progress-step-popover_small.ratio-1-by-1 {
-    height: 80px;
-    left: 32px;
-    top: -92px;
+    height: 48px;
+    left: 48px;
+    top: -60px;
 }
 
 .avonni-progress-step-popover_small.ratio-4-by-3 {
-    height: 60px;
-    left: 32px;
-    top: -72px;
+    height: 35px;
+    left: 48px;
+    top: -47px;
 }
 
 .avonni-progress-step-popover_small.ratio-16-by-9 {
-    height: 45px;
-    left: 32px;
-    top: -57px;
+    height: 27px;
+    left: 48px;
+    top: -44px;
 }
 
 .avonni-progress-step-popover_medium.ratio-1-by-1 {
-    height: 100px;
-    left: 22px;
-    top: -115px;
+    height: 72px;
+    left: 36px;
+    top: -84px;
 }
 
 .avonni-progress-step-popover_medium.ratio-4-by-3 {
-    height: 75px;
-    left: 22px;
-    top: -90px;
+    height: 54px;
+    left: 36px;
+    top: -65px;
 }
 
 .avonni-progress-step-popover_medium.ratio-16-by-9 {
+    height: 40.5px;
+    left: 36px;
+    top: -51.5px;
+}
+
+.avonni-progress-step-popover_large.ratio-1-by-1 {
+    height: 100px;
+    left: 22px;
+    top: -112px;
+}
+
+.avonni-progress-step-popover_large.ratio-4-by-3 {
+    height: 75px;
+    left: 22px;
+    top: -87px;
+}
+
+.avonni-progress-step-popover_large.ratio-16-by-9 {
     height: 56.25px;
     left: 22px;
-    top: -71.25px;
+    top: -68.25px;
 }
 
 .avonni-progress-step-popover-completed {
