@@ -278,17 +278,45 @@ Base.args = {
     initials: 'JD'
 };
 
-export const WithDetails = Template.bind({});
-WithDetails.args = {
+export const BaseWithDetails = Template.bind({});
+BaseWithDetails.args = {
+    alternativeText: 'Invitation Declined',
     src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
     fallbackIconName: 'standard:avatar',
     initials: 'JD',
     size: 'xx-large',
     entityIconName: 'standard:account',
-    entityInitials: 'SL',
+    entityInitials: 'JD',
     presence: 'online',
-    status: 'locked',
+    status: 'Declined',
     primaryText: 'Jane Doe',
+    secondaryText: 'VP, Finance',
+    tertiaryText: 'Online'
+};
+
+export const Circle = Template.bind({});
+Circle.args = {
+    hideAvatarDetails: false,
+    variant: 'circle',
+    size: 'large',
+    entityIconName: 'standard:account',
+    entityInitials: 'JS',
+    src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+    fallbackIconName: 'standard:avatar',
+    initials: 'JS'
+};
+
+export const CircleWithDetails = Template.bind({});
+CircleWithDetails.args = {
+    alternativeText: 'Presence Unknown',
+    variant: 'circle',
+    size: 'x-large',
+    presence: 'busy',
+    status: 'unknown',
+    primaryText: 'John Smith',
     secondaryText: 'VP, Human Resources',
-    tertiaryText: 'Approved'
+    tertiaryText: 'Busy',
+    src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+    fallbackIconName: 'standard:avatar',
+    initials: 'JS'
 };
