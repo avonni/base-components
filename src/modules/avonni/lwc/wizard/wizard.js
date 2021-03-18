@@ -5,10 +5,7 @@ import ModalView from './modal.html';
 import CardView from './card.html';
 
 const VARIANTS = ['base', 'modal', 'card'];
-const VERTICAL_POSITIONS = ['header', 'footer'];
-
-// QUESTIONS:
-// If beforeChange returns an error, should we display it somewhere? In the console? In the step?
+const INDICATOR_POSITIONS = ['header', 'footer'];
 
 export default class Wizard extends LightningElement {
     @api title;
@@ -77,7 +74,7 @@ export default class Wizard extends LightningElement {
 
     _updateStepDisplay() {
         this.steps.forEach((step) => {
-            step.callbacks.setClass('avonni-wizard-step_hidden');
+            step.callbacks.setClass('slds-hide');
         });
         this.steps[this.currentStepIndex].callbacks.setClass(undefined);
     }
@@ -125,7 +122,7 @@ export default class Wizard extends LightningElement {
     set indicatorPosition(position) {
         this._indicatorPosition = normalizeString(position, {
             fallbackValue: 'footer',
-            validValues: VERTICAL_POSITIONS
+            validValues: INDICATOR_POSITIONS
         });
     }
 
@@ -160,12 +157,7 @@ export default class Wizard extends LightningElement {
     @api
     previous() {
         const oldStep = this.currentStep;
-
-        // If user clicks 'previous' on first step, currentStep === oldStep
-        this._currentStep =
-            this.currentStepIndex === 0
-                ? this.currentStep
-                : this.steps[this.currentStepIndex - 1].name;
+        this._currentStep = this.steps[this.currentStepIndex - 1].name;
 
         this.dispatchEvent(
             new CustomEvent('change', {

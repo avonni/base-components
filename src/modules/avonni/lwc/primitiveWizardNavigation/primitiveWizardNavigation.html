@@ -7,7 +7,6 @@
         <!-- Previous button -->
         <lightning-layout-item
             if:false={hidePreviousButton}
-            padding="horizontal-small"
             class={previousButtonColClass}
         >
             <lightning-button
@@ -17,7 +16,7 @@
                 variant={buttonPreviousVariant}
                 data-action="previous"
                 onclick={handleButtonClick}
-                class="slds-m-right_xx-small"
+                class="slds-m-right_xx-small slds-m-left_small"
             ></lightning-button>
         </lightning-layout-item>
 
@@ -87,11 +86,8 @@
             </template>
         </lightning-layout-item>
         <!-- Actions slot and Next/Finish buttons -->
-        <lightning-layout-item
-            padding="horizontal-small"
-            class={actionsNextFinishButtonColClass}
-        >
-            <lightning-layout>
+        <lightning-layout-item class={actionsNextFinishButtonColClass}>
+            <lightning-layout class="slds-m-right_small">
                 <lightning-layout-item class={actionsSlotColClass}>
                     <slot></slot>
                 </lightning-layout-item>

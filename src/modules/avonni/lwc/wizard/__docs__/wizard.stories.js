@@ -347,17 +347,31 @@ export const Modal = ModalTemplate.bind({});
 export const Card = Template.bind({});
 export const BeforeChangeOnSteps = BeforeChangeTemplate.bind({});
 
-Base.args = {
-    title: 'Avonni Wizard'
-};
-
 Modal.args = {
-    variant: 'modal'
+    title: 'Modal Wizard Example',
+    variant: 'modal',
+    indicatorPosition: 'header',
+    indicatorType: 'path',
+    buttonPreviousLabel: 'Back',
+    buttonPreviousIconName: 'utility:back',
+    buttonNextIconName: 'utility:forward',
+    buttonNextIconPosition: 'right',
+    buttonNextLabel: 'Continue',
+    buttonNextVariant: 'brand',
+    buttonFinishIconName: 'utility:check',
+    buttonFinishLabel: 'Done',
+    buttonFinishVariant: 'success'
 };
 
 Card.args = {
+    title: 'Card Wizard Example',
     variant: 'card',
-    iconName: 'utility:announcement'
+    iconName: 'custom:custom26',
+    buttonAlignmentBump: 'right',
+    actionPosition: 'right',
+    indicatorType: 'fractions',
+    buttonNextVariant: 'brand',
+    buttonFinishVariant: 'destructive'
 };
 
 BeforeChangeOnSteps.args = {

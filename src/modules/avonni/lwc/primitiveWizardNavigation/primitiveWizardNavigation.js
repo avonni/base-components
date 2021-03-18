@@ -81,6 +81,7 @@ export default class WizardNavigation extends LightningElement {
     }
 
     // Tranform the read only proxy object into an array
+    // Needed by the bullet indicator to add keys to the steps
     _normalizeProxySteps() {
         this._steps = this.steps.map((proxyStep) => {
             return {
