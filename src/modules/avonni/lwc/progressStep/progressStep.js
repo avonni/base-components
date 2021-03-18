@@ -69,6 +69,7 @@ export default class ProgressStep extends LightningElement {
 
     _popoverVisible = true;
     _popoverIconHoverVisible = false;
+    _allowBlur = false;
 
     connectedCallback() {
         this.classList.add('slds-progress__item');
@@ -365,8 +366,32 @@ export default class ProgressStep extends LightningElement {
     }
 
     handlePopoverMouseLeave() {
-        if (this.popoverIconNameWhenHover) {
+        if (!this._allowBlur) {
+            if (this.popoverIconNameWhenHover) {
+                this._popoverIconHoverVisible = false;
+            }
+        }
+    }
+
+    handleStepPopoverFocus() {
+        if (!this._allowBlur) {
+            this.allowBlur();
+        }
+        this._popoverIconHoverVisible = true;
+    }
+
+    handleStepPopoverBlur() {
+        if (this._allowBlur) {
+            this.cancelBlur();
             this._popoverIconHoverVisible = false;
         }
+    }
+
+    allowBlur() {
+        this._allowBlur = true;
+    }
+
+    cancelBlur() {
+        this._allowBlur = false;
     }
 }
