@@ -80,7 +80,7 @@
                         >
                             <div style="overflow: hidden">
                                 <div
-                                    class="slds-popover__body avonni-progress-step-body-icon-hover"
+                                    class="slds-popover__body avonni-progress-step-popover-body-icon-hover"
                                 >
                                     <template if:true={popoverLabel}>
                                         <p class="slds-text-title_bold">
@@ -96,6 +96,7 @@
                                             size={computedPopoverIconSize}
                                             src={popoverIconSrc}
                                             variant={primitivePopoverIconVariant}
+                                            class="slds-current-color"
                                         ></c-primitive-icon>
                                     </template>
                                 </div>
@@ -103,7 +104,7 @@
                             <template if:false={popoverIconNameWhenHover}>
                                 <div style="overflow: hidden">
                                     <div
-                                        class="slds-popover__body avonni-progress-step-body-no-icon-hover"
+                                        class="slds-popover__body avonni-progress-step-popover-body-no-icon-hover"
                                     >
                                         <template if:true={popoverLabel}>
                                             <p class="slds-text-title_bold">
@@ -119,6 +120,7 @@
                                                 size={computedPopoverIconSize}
                                                 src={popoverIconSrc}
                                                 variant={primitivePopoverIconVariant}
+                                                class="slds-current-color"
                                             ></c-primitive-icon>
                                         </template>
                                     </div>

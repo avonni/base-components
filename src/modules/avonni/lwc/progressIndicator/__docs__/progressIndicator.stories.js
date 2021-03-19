@@ -253,6 +253,7 @@ const milestonesSteps = [
         label: 'Merger & Acquisition',
         labelPosition: 'bottom',
         popoverIconName: 'utility:merge',
+        popoverLabel: 'allo',
         popoverSize: 'large',
         popoverVariant: 'button'
     },
