@@ -52,7 +52,7 @@ export default {
         type: {
             control: {
                 type: 'select',
-                options: ['base', 'arrow']
+                options: ['base']
             },
             description:
                 'Changes the visual pattern of the indicator. Valid values are base and arrow. The default is base.',

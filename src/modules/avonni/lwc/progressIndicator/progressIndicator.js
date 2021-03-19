@@ -1,8 +1,6 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
-import progressIndicator from './progressIndicator.html';
-import arrowProgressIndicator from './arrowProgressIndicator.html';
 
 const TYPES = { valid: ['base', 'arrow'], default: 'base' };
 
@@ -27,13 +25,6 @@ export default class ProgressIndicator extends LightningElement {
             this.updateCurrentStep();
         }
         this._initialRender = false;
-    }
-
-    render() {
-        if (this._type === 'arrow') {
-            return arrowProgressIndicator;
-        }
-        return progressIndicator;
     }
 
     @api

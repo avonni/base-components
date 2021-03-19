@@ -51,7 +51,7 @@
                                         <template if:true={popoverIconName}>
                                             <c-primitive-icon
                                                 icon-name={popoverIconName}
-                                                size={popoverIconSize}
+                                                size={computedPopoverIconSize}
                                                 src={popoverIconSrc}
                                                 variant={primitivePopoverIconVariant}
                                             ></c-primitive-icon>
@@ -66,6 +66,7 @@
                                     <c-primitive-icon
                                         icon-name={popoverIconNameWhenHover}
                                         src={popoverIconSrcWhenHover}
+                                        size={computedPopoverIconSize}
                                         class="slds-current-color"
                                     ></c-primitive-icon>
                                 </div>
@@ -95,7 +96,7 @@
                                         <template if:true={popoverIconName}>
                                             <c-primitive-icon
                                                 icon-name={popoverIconName}
-                                                size={popoverIconSize}
+                                                size={computedPopoverIconSize}
                                                 src={popoverIconSrc}
                                                 variant={primitivePopoverIconVariant}
                                             ></c-primitive-icon>
@@ -110,6 +111,7 @@
                                     <c-primitive-icon
                                         icon-name={popoverIconNameWhenHover}
                                         src={popoverIconSrcWhenHover}
+                                        size={computedPopoverIconSize}
                                         class="slds-current-color"
                                     ></c-primitive-icon>
                                 </div>

@@ -256,6 +256,15 @@ export default class ProgressStep extends LightningElement {
             .toString();
     }
 
+    get computedPopoverIconSize() {
+        if (this._popoverSize === 'small') {
+            return 'small';
+        } else if (this._popoverSize === 'large') {
+            return 'large';
+        }
+        return 'medium';
+    }
+
     get showLabelTop() {
         return this._labelPosition === 'top' && this.label;
     }
