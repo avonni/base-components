@@ -128,8 +128,69 @@ export default {
 
 const Template = (args) => ButtonPopover(args);
 
-export const Base = Template.bind({});
-Base.args = {
+export const BaseWithPopoverVariantWalkthrough = Template.bind({});
+BaseWithPopoverVariantWalkthrough.args = {
+    label: 'Info',
+    iconName: 'utility:favorite',
+    variant: 'base',
+    popoverVariant: 'Walkthrough'
+};
+
+export const Neutral = Template.bind({});
+Neutral.args = {
     label: 'Info',
     iconName: 'utility:favorite'
+};
+
+export const NeutralLargeWithIconRight = Template.bind({});
+NeutralLargeWithIconRight.args = {
+    label: 'Info',
+    iconName: 'utility:favorite',
+    iconPosition: 'right'
+};
+
+export const Brand = Template.bind({});
+Brand.args = {
+    label: 'Info',
+    iconName: 'utility:favorite',
+    variant: 'brand'
+};
+
+export const BrandOutlineWithPopoverWarning = Template.bind({});
+BrandOutlineWithPopoverWarning.args = {
+    label: 'Info',
+    iconName: 'utility:favorite',
+    variant: 'Brand-Outline',
+    popoverVariant: 'error'
+};
+
+export const DestructiveWithPopoverError = Template.bind({});
+DestructiveWithPopoverError.args = {
+    label: 'Error',
+    iconName: 'utility:error',
+    variant: 'destructive',
+    popoverVariant: 'error'
+};
+
+export const DestructiveTextWithPopoverError = Template.bind({});
+DestructiveTextWithPopoverError.args = {
+    label: 'Error',
+    iconName: 'utility:error',
+    variant: 'destructive-text',
+    popoverVariant: 'error'
+};
+
+export const InverseWithPopoverLoading = Template.bind({});
+InverseWithPopoverLoading.args = {
+    label: 'Info',
+    iconName: 'utility:favorite',
+    variant: 'inverse',
+    isLoading: 'true'
+};
+
+export const Success = Template.bind({});
+Success.args = {
+    label: 'Complete',
+    iconName: 'utility:success',
+    variant: 'success'
 };
