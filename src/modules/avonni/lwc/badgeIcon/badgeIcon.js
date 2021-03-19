@@ -12,7 +12,8 @@ export default class BadgeIcon extends LightningElement {
     _variant = 'base';
     _iconPosition = 'left';
 
-    @api get variant() {
+    @api
+    get variant() {
         return this._variant;
     }
 
@@ -23,7 +24,8 @@ export default class BadgeIcon extends LightningElement {
         });
     }
 
-    @api get iconPosition() {
+    @api
+    get iconPosition() {
         return this._iconPosition;
     }
 
