@@ -146,22 +146,8 @@
     );
 }
 
-.avonni-progress-step-popover_small:focus,
-.avonni-progress-step-popover_small:hover {
-    color: black;
-    background-color: var(--lwc-brandLight, #f4f6fe);
-    outline: 0 !important;
-}
-
-.avonni-progress-step-popover_medium:focus,
-.avonni-progress-step-popover_medium:hover {
-    color: black;
-    background-color: var(--lwc-brandLight, #f4f6fe);
-    outline: 0 !important;
-}
-
-.avonni-progress-step-popover_large:focus,
-.avonni-progress-step-popover_large:hover {
+.avonni-progress-step-popover-button:focus,
+.avonni-progress-step-popover-button:hover {
     color: black;
     background-color: var(--lwc-brandLight, #f4f6fe);
     outline: 0 !important;

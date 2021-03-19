@@ -252,6 +252,10 @@ export default class ProgressStep extends LightningElement {
                 'avonni-progress-step-popover_large':
                     this._popoverSize === 'large'
             })
+            .add({
+                'avonni-progress-step-popover-button':
+                    this._popoverVariant === 'button'
+            })
             .add(`ratio-${this._popoverRatio}`)
             .toString();
     }
