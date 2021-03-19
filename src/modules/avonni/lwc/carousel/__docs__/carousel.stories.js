@@ -159,3 +159,40 @@ Base.args = {
     items: items,
     assistiveText: assistiveText
 };
+
+export const BaseWithThreeItemsPerPanel = Template.bind({});
+BaseWithThreeItemsPerPanel.args = {
+    items: items,
+    assistiveText: assistiveText,
+    itemsPerPanel: '3'
+};
+
+export const BaseWithFiveItemsPerPanel = Template.bind({});
+BaseWithFiveItemsPerPanel.args = {
+    items: items,
+    assistiveText: assistiveText,
+    itemsPerPanel: '5'
+};
+
+export const WithoutPanelNavigation = Template.bind({});
+WithoutPanelNavigation.args = {
+    items: items,
+    assistiveText: assistiveText,
+    hidePreviousNextPanelNavigation: 'true'
+};
+
+export const WithoutPanelNavigationWithThreeItemsPerPanel = Template.bind({});
+WithoutPanelNavigationWithThreeItemsPerPanel.args = {
+    items: items,
+    assistiveText: assistiveText,
+    itemsPerPanel: '3',
+    hidePreviousNextPanelNavigation: 'true'
+};
+
+export const WithoutPanelNavigationWithFiveItemsPerPanel = Template.bind({});
+WithoutPanelNavigationWithFiveItemsPerPanel.args = {
+    items: items,
+    assistiveText: assistiveText,
+    itemsPerPanel: '5',
+    hidePreviousNextPanelNavigation: 'true'
+};
