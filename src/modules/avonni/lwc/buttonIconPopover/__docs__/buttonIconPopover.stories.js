@@ -136,8 +136,41 @@ export default {
 
 const Template = (args) => ButtonIconPopover(args);
 
-export const Base = Template.bind({});
-Base.args = {
+export const BorderWithPopoverBase = Template.bind({});
+BorderWithPopoverBase.args = {
     iconName: 'utility:favorite',
     tooltip: 'Tooltip text'
+};
+
+export const BorderWithPopoverLoading = Template.bind({});
+BorderWithPopoverLoading.args = {
+    iconName: 'utility:favorite',
+    tooltip: 'Tooltip text',
+    isLoading: 'true'
+};
+
+export const BorderWithPopoverWarning = Template.bind({});
+BorderWithPopoverWarning.args = {
+    iconName: 'utility:warning',
+    tooltip: 'Tooltip text',
+    size: 'small',
+    popoverVariant: 'warning'
+};
+
+export const BorderFilledWithLargePopoverWalkthrough = Template.bind({});
+BorderFilledWithLargePopoverWalkthrough.args = {
+    iconName: 'utility:favorite',
+    tooltip: 'Tooltip text',
+    variant: 'border-filled',
+    popoverVariant: 'walkthrough',
+    popoverSize: 'large'
+};
+
+export const ContainerWithSmallPopoverError = Template.bind({});
+ContainerWithSmallPopoverError.args = {
+    iconName: 'utility:error',
+    tooltip: 'Tooltip text',
+    variant: 'Container',
+    popoverVariant: 'error',
+    popoverSize: 'small'
 };
