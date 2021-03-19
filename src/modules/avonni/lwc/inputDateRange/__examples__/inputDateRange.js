@@ -1,6 +1,9 @@
 import Component from 'avonni/inputDateRange';
 
-customElements.define('ac-avonni-input-date-range', Component.CustomElementConstructor);
+customElements.define(
+    'ac-avonni-input-date-range',
+    Component.CustomElementConstructor
+);
 
 export const InputDateRange = ({
     type,
@@ -13,7 +16,8 @@ export const InputDateRange = ({
     dateStyle,
     timeStyle,
     timezone,
-    disabled
+    disabled,
+    required
 }) => {
     const element = document.createElement('ac-avonni-input-date-range');
     element.type = type;
@@ -27,5 +31,6 @@ export const InputDateRange = ({
     element.timeStyle = timeStyle;
     element.timezone = timezone;
     element.disabled = disabled;
+    element.required = required;
     return element;
 };

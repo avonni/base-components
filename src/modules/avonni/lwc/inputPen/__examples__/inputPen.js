@@ -1,6 +1,9 @@
 import Component from 'avonni/inputPen';
 
-customElements.define('ac-avonni-input-pen', Component.CustomElementConstructor);
+customElements.define(
+    'ac-avonni-input-pen',
+    Component.CustomElementConstructor
+);
 
 export const InputPen = ({
     variant,
@@ -14,20 +17,24 @@ export const InputPen = ({
     disabled,
     readOnly,
     required,
-    hideControls
+    hideControls,
+    invalid
 }) => {
-
     const element = document.createElement('ac-avonni-input-pen');
     element.variant = variant;
     element.label = label;
     element.fieldLevelHelp = fieldLevelHelp;
     element.value = value;
     element.mode = mode;
-    element.disabledButtons = disabledButtons;
     element.disabled = disabled;
     element.readOnly = readOnly;
     element.required = required;
     element.hideControls = hideControls;
+    element.invalid = invalid;
+
+    if (disabledButtons) {
+        element.disabledButtons = disabledButtons;
+    }
 
     if (color) {
         element.color = color;
@@ -36,6 +43,6 @@ export const InputPen = ({
     if (size) {
         element.size = size;
     }
-    
+
     return element;
 };
