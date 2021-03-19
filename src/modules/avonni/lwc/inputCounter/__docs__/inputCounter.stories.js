@@ -93,7 +93,8 @@ export default {
                 'If present, the input field is disabled and users cannot interact with it.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Validation'
             }
         },
         readOnly: {
@@ -106,7 +107,8 @@ export default {
                 'If present, the input field is read-only and cannot be edited by users.',
             table: {
                 defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' }
+                type: { summary: 'boolean' },
+                category: 'Validation'
             }
         },
         required: {
@@ -118,7 +120,8 @@ export default {
                 'If present, the input field must be filled out before the form is submitted.',
             table: {
                 defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' }
+                type: { summary: 'boolean' },
+                category: 'Validation'
             }
         },
         messageWhenBadInput: {

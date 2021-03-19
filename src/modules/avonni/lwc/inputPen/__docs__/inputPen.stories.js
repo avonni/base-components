@@ -3,6 +3,75 @@ import { InputPen } from '../__examples__/inputPen';
 export default {
     title: 'Example/Input Pen',
     argTypes: {
+        label: {
+            control: {
+                type: 'text'
+            },
+            description: 'Text label for the input.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        fieldLevelHelp: {
+            name: 'field-level-help',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Help text detailing the purpose and function of the input.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        value: {
+            control: {
+                type: 'text'
+            },
+            description: "dataUrl like 'data:image/png;base64, …'",
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        disabled: {
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: 0,
+            description:
+                'If present, the input field is disabled and users cannot interact with it.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' },
+                category: 'Validation'
+            }
+        },
+        readOnly: {
+            name: 'read-only',
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: 0,
+            description:
+                'If present, the input field is read-only and cannot be edited by users.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Validation'
+            }
+        },
+        required: {
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: 0,
+            description:
+                'If present, the input field must be filled out before the form is submitted.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Validation'
+            }
+        },
         variant: {
             control: {
                 type: 'select',
@@ -41,35 +110,6 @@ export default {
                 category: 'Pen'
             }
         },
-        label: {
-            control: {
-                type: 'text'
-            },
-            description: 'Text label for the input.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        fieldLevelHelp: {
-            name: 'field-level-help',
-            control: {
-                type: 'text'
-            },
-            description:
-                'Help text detailing the purpose and function of the input.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        value: {
-            control: {
-                type: 'text'
-            },
-            description: "dataUrl like 'data:image/png;base64, …'",
-            table: {
-                type: { summary: 'string' }
-            }
-        },
         size: {
             control: {
                 type: 'number',
@@ -80,43 +120,6 @@ export default {
                 type: { summary: 'number' },
                 defaultValue: { summary: '2' },
                 category: 'Pen'
-            }
-        },
-        disabled: {
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: 0,
-            description:
-                'If present, the input field is disabled and users cannot interact with it.',
-            table: {
-                defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' }
-            }
-        },
-        readOnly: {
-            name: 'read-only',
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: 0,
-            description:
-                'If present, the input field is read-only and cannot be edited by users.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
-            }
-        },
-        required: {
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: 0,
-            description:
-                'If present, the input field must be filled out before the form is submitted.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
             }
         },
         hideControls: {
@@ -153,7 +156,8 @@ export default {
                 'Specifies whether the editor content is valid. If invalid, the slds-has-error class is added. This value defaults to false.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: 'false'
+                defaultValue: 'false',
+                category: 'Validation'
             }
         }
     }

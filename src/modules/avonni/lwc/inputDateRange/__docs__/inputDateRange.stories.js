@@ -15,34 +15,6 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        dateStyle: {
-            name: 'date-style',
-            control: {
-                type: 'select',
-                options: ['short', 'medium', 'long']
-            },
-            defaultValue: 'medium',
-            description:
-                'Valid values are short, medium (default), and long. The format of each style is specific to the locale. On mobile devices this attribute has no effect.',
-            table: {
-                defaultValue: { summary: 'medium' },
-                type: { summary: 'string' }
-            }
-        },
-        timeStyle: {
-            name: 'time-style',
-            control: {
-                type: 'select',
-                options: ['short', 'medium', 'long']
-            },
-            defaultValue: 'short',
-            description:
-                "The display style of the time when type='time' or type='datetime'. Valid values are short (default), medium, and long. Currently, medium and long styles look the same. On mobile devices this attribute has no effect.",
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'short' }
-            }
-        },
         label: {
             control: {
                 type: 'text'
@@ -106,6 +78,34 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        dateStyle: {
+            name: 'date-style',
+            control: {
+                type: 'select',
+                options: ['short', 'medium', 'long']
+            },
+            defaultValue: 'medium',
+            description:
+                'Valid values are short, medium (default), and long. The format of each style is specific to the locale. On mobile devices this attribute has no effect.',
+            table: {
+                defaultValue: { summary: 'medium' },
+                type: { summary: 'string' }
+            }
+        },
+        timeStyle: {
+            name: 'time-style',
+            control: {
+                type: 'select',
+                options: ['short', 'medium', 'long']
+            },
+            defaultValue: 'short',
+            description:
+                "The display style of the time when type='time' or type='datetime'. Valid values are short (default), medium, and long. Currently, medium and long styles look the same. On mobile devices this attribute has no effect.",
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'short' }
+            }
+        },
         timezone: {
             control: {
                 type: 'text'
@@ -125,7 +125,8 @@ export default {
                 'If present, the input field is disabled and users cannot interact with it.',
             table: {
                 defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' }
+                type: { summary: 'boolean' },
+                category: 'Validation'
             }
         },
         required: {
@@ -137,7 +138,8 @@ export default {
                 'If present, the input field must be filled out before the form is submitted.',
             table: {
                 defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' }
+                type: { summary: 'boolean' },
+                category: 'Validation'
             }
         }
     }
