@@ -62,7 +62,6 @@ export default class ProgressStep extends LightningElement {
     _buttonDisabled = false;
     _buttonVariant = 'neutral';
     _popoverVariant = 'base';
-    _popoverIconSize = 'medium';
     _popoverSize = 'medium';
     _popoverRatio = '1-by-1';
     _popoverHidden = false;
@@ -179,18 +178,6 @@ export default class ProgressStep extends LightningElement {
         this._popoverVariant = normalizeString(variant, {
             fallbackValue: POPOVER_VARIANTS.default,
             validValues: POPOVER_VARIANTS.valid
-        });
-    }
-
-    @api
-    get popoverIconSize() {
-        return this._popoverIconSize;
-    }
-
-    set popoverIconSize(size) {
-        this._popoverIconSize = normalizeString(size, {
-            fallbackValue: SIZES.default,
-            validValues: SIZES.valid
         });
     }
 
