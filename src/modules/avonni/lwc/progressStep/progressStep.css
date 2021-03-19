@@ -174,3 +174,27 @@
 .avonni-progress-step-icon-color_brand {
     color: var(--lwc-brandAccessible, rgb(0, 112, 210));
 }
+
+.avonni-progress-step-popover-icon-hover {
+    display: none;
+}
+
+.slds-popover:hover .avonni-progress-step-popover-icon-hover,
+.slds-popover:focus .avonni-progress-step-popover-icon-hover {
+    display: inherit;
+}
+
+.slds-popover:hover .avonni-progress-step-body-icon-hover,
+.slds-popover:focus .avonni-progress-step-body-icon-hover {
+    display: none;
+}
+
+.avonni-progress-step-body-no-icon-hover {
+    display: none;
+}
+
+.slds-popover:hover .avonni-progress-step-body-no-icon-hover,
+.slds-popover:focus .avonni-progress-step-body-no-icon-hover {
+    display: inherit;
+    color: black;
+}

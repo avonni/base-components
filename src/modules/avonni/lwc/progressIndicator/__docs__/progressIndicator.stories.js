@@ -253,8 +253,7 @@ const milestonesSteps = [
         label: 'Merger & Acquisition',
         labelPosition: 'bottom',
         popoverIconName: 'utility:merge',
-        popoverIconNameWhenHover: 'utility:add',
-        popoverSize: 'small',
+        popoverSize: 'large',
         popoverVariant: 'button'
     },
     {
@@ -262,7 +261,6 @@ const milestonesSteps = [
         label: 'Expansion',
         labelPosition: 'bottom',
         popoverIconName: 'utility:rules',
-        popoverIconNameWhenHover: 'utility:add',
         popoverSize: 'small',
         popoverVariant: 'button'
     },

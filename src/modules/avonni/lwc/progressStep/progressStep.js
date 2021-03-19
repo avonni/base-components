@@ -358,40 +358,4 @@ export default class ProgressStep extends LightningElement {
     handleStepPopoverClick() {
         this.dispatchEvent(new CustomEvent('steppopoverclick'));
     }
-
-    handlePopoverMouseEnter() {
-        if (this.popoverIconNameWhenHover) {
-            this._popoverIconHoverVisible = true;
-        }
-    }
-
-    handlePopoverMouseLeave() {
-        if (!this._allowBlur) {
-            if (this.popoverIconNameWhenHover) {
-                this._popoverIconHoverVisible = false;
-            }
-        }
-    }
-
-    handleStepPopoverFocus() {
-        if (!this._allowBlur) {
-            this.allowBlur();
-        }
-        this._popoverIconHoverVisible = true;
-    }
-
-    handleStepPopoverBlur() {
-        if (this._allowBlur) {
-            this.cancelBlur();
-            this._popoverIconHoverVisible = false;
-        }
-    }
-
-    allowBlur() {
-        this._allowBlur = true;
-    }
-
-    cancelBlur() {
-        this._allowBlur = false;
-    }
 }
