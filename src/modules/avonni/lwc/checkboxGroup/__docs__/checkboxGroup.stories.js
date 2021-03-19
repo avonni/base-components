@@ -26,7 +26,12 @@ export default {
         variant: {
             control: {
                 type: 'select',
-                options: ['standard', 'label-hidden', 'label-inline', 'label-stacked']
+                options: [
+                    'standard',
+                    'label-hidden',
+                    'label-inline',
+                    'label-stacked'
+                ]
             },
             defaultValue: 'standard',
             table: {
@@ -75,9 +80,74 @@ const options = [
 ];
 const value = ['wed', 'fri'];
 
-export const Base = Template.bind({});
-Base.args = {
+export const Checkbox = Template.bind({});
+Checkbox.args = {
     label: 'Please select a value',
+    messageWhenValueMissing: 'Value missing',
+    options: options,
+    value: value
+};
+
+export const CheckboxDisabled = Template.bind({});
+CheckboxDisabled.args = {
+    label: 'Please select a value',
+    messageWhenValueMissing: 'Value missing',
+    options: options,
+    value: value,
+    disabled: 'true'
+};
+
+export const CheckboxWithNoLabel = Template.bind({});
+CheckboxWithNoLabel.args = {
+    label: 'Please select a value',
+    variant: 'label-hidden',
+    messageWhenValueMissing: 'Value missing',
+    options: options,
+    value: value
+};
+
+export const CheckboxWithLabelStacked = Template.bind({});
+CheckboxWithLabelStacked.args = {
+    label: 'Please select a value',
+    variant: 'label-stacked',
+    messageWhenValueMissing: 'Value missing',
+    options: options,
+    value: value
+};
+
+export const CheckboxRequired = Template.bind({});
+CheckboxRequired.args = {
+    label: 'Please select a value',
+    messageWhenValueMissing: 'Value missing',
+    required: 'true',
+    options: options,
+    value: value
+};
+
+export const Button = Template.bind({});
+Button.args = {
+    label: 'Please select a value',
+    type: 'button',
+    messageWhenValueMissing: 'Value missing',
+    options: options,
+    value: value
+};
+
+export const ButtonWithLabelInline = Template.bind({});
+ButtonWithLabelInline.args = {
+    label: 'Please select a value',
+    type: 'button',
+    variant: 'label-inline',
+    messageWhenValueMissing: 'Value missing',
+    options: options,
+    value: value
+};
+
+export const ButtonDisabled = Template.bind({});
+ButtonDisabled.args = {
+    label: 'Please select a value',
+    type: 'button',
+    disabled: 'true',
     messageWhenValueMissing: 'Value missing',
     options: options,
     value: value
