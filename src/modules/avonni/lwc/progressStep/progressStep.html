@@ -79,9 +79,7 @@
                             onclick={handleStepPopoverClick}
                         >
                             <div style="overflow: hidden">
-                                <div
-                                    class="slds-popover__body avonni-progress-step-popover-body-icon-hover"
-                                >
+                                <div class={computedPopoverBody}>
                                     <template if:true={popoverLabel}>
                                         <p class="slds-text-title_bold">
                                             {popoverLabel}
@@ -101,31 +99,6 @@
                                     </template>
                                 </div>
                             </div>
-                            <template if:false={popoverIconNameWhenHover}>
-                                <div style="overflow: hidden">
-                                    <div
-                                        class="slds-popover__body avonni-progress-step-popover-body-no-icon-hover"
-                                    >
-                                        <template if:true={popoverLabel}>
-                                            <p class="slds-text-title_bold">
-                                                {popoverLabel}
-                                            </p>
-                                        </template>
-                                        <template if:true={popoverDescription}>
-                                            <p>{popoverDescription}</p>
-                                        </template>
-                                        <template if:true={popoverIconName}>
-                                            <c-primitive-icon
-                                                icon-name={popoverIconName}
-                                                size={computedPopoverIconSize}
-                                                src={popoverIconSrc}
-                                                variant={primitivePopoverIconVariant}
-                                                class="slds-current-color"
-                                            ></c-primitive-icon>
-                                        </template>
-                                    </div>
-                                </div>
-                            </template>
                             <template if:true={popoverIconNameWhenHover}>
                                 <div
                                     class="avonni-progress-step-popover-icon-hover avonni-progress-step-icon-color_brand"

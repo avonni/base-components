@@ -185,7 +185,7 @@
 
 .slds-popover:hover .avonni-progress-step-popover-icon-hover,
 .slds-popover:focus .avonni-progress-step-popover-icon-hover {
-    display: inherit;
+    display: block;
 }
 
 .slds-popover:hover .avonni-progress-step-popover-body-icon-hover,
@@ -193,12 +193,8 @@
     display: none;
 }
 
-.avonni-progress-step-popover-body-no-icon-hover {
-    display: none;
-}
-
 .slds-popover:hover .avonni-progress-step-popover-body-no-icon-hover,
 .slds-popover:focus .avonni-progress-step-popover-body-no-icon-hover {
-    display: inherit;
+    display: block;
     color: #706e6b;
 }

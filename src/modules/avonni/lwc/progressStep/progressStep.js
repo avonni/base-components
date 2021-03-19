@@ -67,8 +67,6 @@ export default class ProgressStep extends LightningElement {
     _popoverHidden = false;
 
     _popoverVisible = true;
-    _popoverIconHoverVisible = false;
-    _allowBlur = false;
 
     connectedCallback() {
         this.classList.add('slds-progress__item');
@@ -293,8 +291,10 @@ export default class ProgressStep extends LightningElement {
         return this._popoverVariant === 'button';
     }
 
-    get popoverIconHoverVisible() {
-        return this._popoverIconHoverVisible && this.popoverIconNameWhenHover;
+    get computedPopoverBody() {
+        return this.popoverIconNameWhenHover
+            ? 'slds-popover__body avonni-progress-step-popover-body-icon-hover'
+            : 'slds-popover__body avonni-progress-step-popover-body-no-icon-hover';
     }
 
     isDisabled() {
