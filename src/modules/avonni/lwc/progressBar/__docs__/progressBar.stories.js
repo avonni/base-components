@@ -8,7 +8,7 @@ export default {
                 type: 'text'
             },
             table: {
-                type: { summary: 'String' }
+                type: { summary: 'string' }
             }
         },
         size: {
@@ -20,7 +20,7 @@ export default {
             description:
                 'The size of the progress bar. Valid values are x-small, small, medium, large and full. The default value is medium.',
             table: {
-                type: { summary: 'String' },
+                type: { summary: 'string' },
                 defaultValue: { summary: 'full' }
             }
         },
@@ -33,22 +33,26 @@ export default {
             defaultValue: 0,
             description: 'The percentage value of the progress bar.',
             table: {
-                type: { summary: 'Number', detail: 'From 0 to 100' },
-                defaultValue: { summary: '0' }
+                type: { summary: 'number', detail: 'From 0 to 100' },
+                defaultValue: { summary: '0' },
+                category: 'Value'
             }
         },
         showValue: {
+            name: 'show-value',
             control: {
                 type: 'boolean'
             },
             defaultValue: false,
             description: 'If true, display the value.',
             table: {
-                type: { summary: 'Boolean' },
-                defaultValue: { summary: 'false' }
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Value'
             }
         },
         valuePosition: {
+            name: 'value-position',
             control: {
                 type: 'select',
                 options: [
@@ -64,18 +68,21 @@ export default {
             description:
                 'Valid values include left, right, top-right, top-left, bottom-right and bottom-left',
             table: {
-                type: { summary: 'String' },
-                defaultValue: { summary: 'top-right' }
+                type: { summary: 'string' },
+                defaultValue: { summary: 'top-right' },
+                category: 'Value'
             }
         },
         valueLabel: {
+            name: 'value-label',
             control: {
                 type: 'text'
             },
             description:
                 'Text display next to the value. <br> Example: 25% Complete',
             table: {
-                type: { summary: 'String' }
+                type: { summary: 'string' },
+                category: 'Value'
             }
         },
         badges: {
@@ -85,7 +92,7 @@ export default {
             description:
                 'Field: <ul><li>label: string</li> <li>value: number</li> <li>variant: string (default, darker, lightest, success, warning, error)</li> <li>borderStyle: string (none, solid, dashed, dotted)</li>',
             table: {
-                type: { summary: 'Object' }
+                type: { summary: 'object[]' }
             }
         },
         variant: {
@@ -97,7 +104,7 @@ export default {
             description:
                 'The variant changes the appearance of the progress bar. Accepted variants include base or circular. This value defaults to base.',
             table: {
-                type: { summary: 'String' },
+                type: { summary: 'string' },
                 defaultValue: { summary: 'base' }
             }
         },
@@ -130,7 +137,7 @@ export default {
             defaultValue: false,
             description: 'If true display a texture background.',
             table: {
-                type: { summary: 'Boolean' },
+                type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
             }
         },
@@ -143,7 +150,7 @@ export default {
             description:
                 'Set progress bar thickness. Valid values include x-small, small, medium and large',
             table: {
-                type: { summary: 'String' },
+                type: { summary: 'string' },
                 defaultValue: { summary: 'medium' }
             }
         },
@@ -163,7 +170,7 @@ export default {
     }
 };
 
-const badges = [
+const oneBadge = [
     {
         label: 'Avg',
         value: 90,
@@ -172,19 +179,86 @@ const badges = [
     }
 ];
 
+const multipleBadges = [
+    {
+        label: '1st',
+        value: 10,
+        variant: 'darker',
+        borderStyle: 'dashed'
+    },
+    {
+        label: '2nd',
+        value: 15,
+        variant: 'lightest',
+        borderStyle: 'dotted'
+    },
+    {
+        label: '3rd',
+        value: 53,
+        variant: 'warning',
+        borderStyle: 'solid'
+    },
+    {
+        label: '4th',
+        value: 87,
+        variant: 'success',
+        borderStyle: 'none'
+    }
+];
+
 const Template = (args) => ProgressBar(args);
 
-export const Horizontal = Template.bind({});
-Horizontal.args = {
+export const Base = Template.bind({});
+Base.args = {
     label: 'Label',
     value: 45,
-    badges: badges
+    badges: oneBadge
 };
 
 export const Vertical = Template.bind({});
 Vertical.args = {
-    label: 'Label',
+    label: 'Vertical progress bar',
     value: 45,
     orientation: 'vertical',
-    badges: badges
+    badges: oneBadge
+};
+
+export const MultipleBadges = Template.bind({});
+MultipleBadges.args = {
+    label: 'Progress bar with multiple badges',
+    value: 45,
+    badges: multipleBadges
+};
+
+export const ThickWarningTheme = Template.bind({});
+ThickWarningTheme.args = {
+    label: 'Thick circular progress bar with warning theme',
+    value: 87,
+    badges: oneBadge,
+    theme: 'warning',
+    thickness: 'large',
+    variant: 'circular'
+};
+
+export const TexturedVisibleValue = Template.bind({});
+TexturedVisibleValue.args = {
+    label: 'Textured progress bar with visible value',
+    value: 24,
+    badges: oneBadge,
+    valueLabel: 'Value label',
+    showValue: true,
+    textured: true
+};
+
+export const ExtraSmallVertical = Template.bind({});
+ExtraSmallVertical.args = {
+    label: 'Extra small and thin vertical progress bar',
+    value: 63,
+    badges: oneBadge,
+    valueLabel: 'Value label',
+    valuePosition: 'bottom-right',
+    showValue: true,
+    size: 'x-small',
+    orientation: 'vertical',
+    thickness: 'x-small'
 };
