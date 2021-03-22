@@ -79,28 +79,28 @@ NeutralWithIconRight.args = {
 export const Brand = Template.bind({});
 Brand.args = {
     label: 'Show modal',
-    iconName: 'utility:animal_and_nature',
+    iconName: 'utility:einstein',
     variant: 'brand'
 };
 
 export const BrandOutline = Template.bind({});
 BrandOutline.args = {
     label: 'Show modal',
-    iconName: 'utility:animal_and_nature',
+    iconName: 'utility:einstein',
     variant: 'brand-outline'
 };
 
 export const Destructive = Template.bind({});
 Destructive.args = {
     label: 'Show modal',
-    iconName: 'utility:animal_and_nature',
+    iconName: 'utility:error',
     variant: 'destructive'
 };
 
 export const DestructiveText = Template.bind({});
 DestructiveText.args = {
     label: 'Show modal',
-    iconName: 'utility:animal_and_nature',
+    iconName: 'utility:error',
     variant: 'destructive-text'
 };
 
@@ -114,7 +114,7 @@ Inverse.args = {
 export const Success = Template.bind({});
 Success.args = {
     label: 'Show modal',
-    iconName: 'utility:animal_and_nature',
+    iconName: 'utility:success',
     variant: 'success'
 };
 

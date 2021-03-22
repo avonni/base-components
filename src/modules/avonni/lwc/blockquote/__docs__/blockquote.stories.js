@@ -50,6 +50,35 @@ const Template = (args) => Blockquote(args);
 
 export const Base = Template.bind({});
 Base.args = {
+    title: 'Keep in mind'
+};
+
+export const Brand = Template.bind({});
+Brand.args = {
+    title: 'Keep in mind',
+    variant: 'brand'
+};
+
+export const Warning = Template.bind({});
+Warning.args = {
+    title: 'Keep in mind',
+    variant: 'warning'
+};
+
+export const Error = Template.bind({});
+Error.args = {
+    title: 'Keep in mind',
+    variant: 'error'
+};
+
+export const Success = Template.bind({});
+Success.args = {
+    title: 'Keep in mind',
+    variant: 'success'
+};
+
+export const BaseWithIcon = Template.bind({});
+BaseWithIcon.args = {
     title: 'Keep in mind',
     iconName: 'utility:animal_and_nature'
 };
@@ -61,8 +90,8 @@ BaseWithIconXxsmall.args = {
     iconSize: 'xx-small'
 };
 
-export const Brand = Template.bind({});
-Brand.args = {
+export const BrandWithIcon = Template.bind({});
+BrandWithIcon.args = {
     title: 'Keep in mind',
     iconName: 'utility:user',
     variant: 'brand'
