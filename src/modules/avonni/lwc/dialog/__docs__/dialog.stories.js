@@ -75,5 +75,6 @@ export const IsLoading = Template.bind({});
 IsLoading.args = {
     dialogName: 'dialog',
     showDialog: true,
-    isLoading: 'true'
+    isLoading: 'true',
+    loadingStateAlternativeText: 'Modal is loading'
 };
