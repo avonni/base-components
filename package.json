@@ -1,10 +1,10 @@
 {
-    "name": "@avonni/avonni-components",
-    "description": "AVONNI components",
+    "name": "@avonni/base-components",
+    "description": "Base components",
     "version": "0.0.1",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/avonni/avonni-components.git"
+        "url": "git+https://github.com/avonni/base-components.git"
     },
     "license": "MIT",
     "publishConfig": {
