@@ -152,15 +152,15 @@ NeutralLargeWithIconRight.args = {
 export const Brand = Template.bind({});
 Brand.args = {
     label: 'Info',
-    iconName: 'utility:favorite',
+    iconName: 'utility:einstein',
     variant: 'brand'
 };
 
 export const BrandOutlineWithPopoverWarning = Template.bind({});
 BrandOutlineWithPopoverWarning.args = {
     label: 'Info',
-    iconName: 'utility:favorite',
-    variant: 'Brand-Outline',
+    iconName: 'utility:question_mark',
+    variant: 'brand-outline',
     popoverVariant: 'error'
 };
 
