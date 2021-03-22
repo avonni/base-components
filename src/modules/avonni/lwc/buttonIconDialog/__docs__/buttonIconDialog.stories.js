@@ -76,6 +76,34 @@ Border.args = {
     iconName: 'utility:animal_and_nature'
 };
 
+export const BorderWithWarningIcon = Template.bind({});
+BorderWithWarningIcon.args = {
+    tooltip: 'Show modal',
+    iconName: 'utility:warning',
+    iconClass: 'slds-icon-text-warning'
+};
+
+export const BorderWithErrorIcon = Template.bind({});
+BorderWithErrorIcon.args = {
+    tooltip: 'Show modal',
+    iconName: 'utility:error',
+    iconClass: 'slds-icon-text-error'
+};
+
+export const BorderWithSuccessIcon = Template.bind({});
+BorderWithSuccessIcon.args = {
+    tooltip: 'Show modal',
+    iconName: 'utility:success',
+    iconClass: 'slds-icon-text-success'
+};
+
+export const BorderWithLightIcon = Template.bind({});
+BorderWithLightIcon.args = {
+    tooltip: 'Show modal',
+    iconName: 'utility:check',
+    iconClass: 'slds-icon-text-light'
+};
+
 export const BorderSmall = Template.bind({});
 BorderSmall.args = {
     tooltip: 'Show modal',
@@ -93,7 +121,7 @@ BorderDisabled.args = {
 export const Brand = Template.bind({});
 Brand.args = {
     tooltip: 'Show modal',
-    iconName: 'utility:animal_and_nature',
+    iconName: 'utility:einstein',
     variant: 'brand'
 };
 
