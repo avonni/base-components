@@ -26,7 +26,12 @@ export default {
         variant: {
             control: {
                 type: 'select',
-                options: ['standard', 'label-inline', 'label-hidden', 'label-stacked']
+                options: [
+                    'standard',
+                    'label-inline',
+                    'label-hidden',
+                    'label-stacked'
+                ]
             },
             defaultValue: 'standard',
             table: {
@@ -46,7 +51,14 @@ export default {
         menuVariant: {
             control: {
                 type: 'select',
-                options: ['bare', 'container', 'border', 'border-filled', 'bare-inverse', 'border-inverse']
+                options: [
+                    'bare',
+                    'container',
+                    'border',
+                    'border-filled',
+                    'bare-inverse',
+                    'border-inverse'
+                ]
             },
             defaultValue: 'border',
             table: {
@@ -76,7 +88,15 @@ export default {
         menuAlignment: {
             control: {
                 type: 'select',
-                options: ['auto', 'left', 'center', 'right', 'bottom-left', 'bottom-center', 'bottom-right']
+                options: [
+                    'auto',
+                    'left',
+                    'center',
+                    'right',
+                    'bottom-left',
+                    'bottom-center',
+                    'bottom-right'
+                ]
             },
             defaultValue: 'left',
             table: {
@@ -193,7 +213,7 @@ StandardWithIcon.args = {
     fieldLevelHelp: 'Help text',
     value: '#419fec',
     messageWhenBadInput: 'Please ensure value is correct',
-    menuIconName: 'utility:add',
+    menuIconName: 'utility:down',
     menuLabel: 'Pick a color',
     colorsValue: colorsValue
 };
@@ -204,7 +224,7 @@ StandardWithIconWithoutColorInput.args = {
     fieldLevelHelp: 'Help text',
     value: '#419fec',
     messageWhenBadInput: 'Please ensure value is correct',
-    menuIconName: 'utility:add',
+    menuIconName: 'utility:down',
     menuLabel: 'Pick a color',
     hideColorInput: 'true',
     colorsValue: colorsValue
@@ -217,7 +237,7 @@ LabelInlineWithMenuVariantContainer.args = {
     value: '#0a2399',
     messageWhenBadInput: 'Please ensure value is correct',
     variant: 'label-inline',
-    menuVariant:'container',
+    menuVariant: 'container',
     colorsValue: colorsValue
 };
 
@@ -228,7 +248,7 @@ LabelInlineWithoutColorInput.args = {
     value: '#096a50',
     messageWhenBadInput: 'Please ensure value is correct',
     variant: 'label-inline',
-    menuVariant:'container',
+    menuVariant: 'container',
     hideColorInput: 'true',
     colorsValue: colorsValue
 };
@@ -267,13 +287,57 @@ LabelHiddenWithMenuLabel.args = {
     colorsValue: colorsValue
 };
 
+export const Xx_smallIconWithColorInput = Template.bind({});
+Xx_smallIconWithColorInput.args = {
+    label: 'Color label',
+    fieldLevelHelp: 'Help text',
+    value: '#419fec',
+    messageWhenBadInput: 'Please ensure value is correct',
+    menuIconName: 'utility:down',
+    menuIconSize: 'xx-small',
+    colorsValue: colorsValue
+};
+
+export const X_smallIconWithColorInput = Template.bind({});
+X_smallIconWithColorInput.args = {
+    label: 'Color label',
+    fieldLevelHelp: 'Help text',
+    value: '#419fec',
+    messageWhenBadInput: 'Please ensure value is correct',
+    menuIconName: 'utility:down',
+    menuIconSize: 'x-small',
+    colorsValue: colorsValue
+};
+
+export const SmallIconWithColorInput = Template.bind({});
+SmallIconWithColorInput.args = {
+    label: 'Color label',
+    fieldLevelHelp: 'Help text',
+    value: '#419fec',
+    messageWhenBadInput: 'Please ensure value is correct',
+    menuIconName: 'utility:down',
+    menuIconSize: 'small',
+    colorsValue: colorsValue
+};
+
 export const MediumIconWithColorInput = Template.bind({});
 MediumIconWithColorInput.args = {
     label: 'Color label',
     fieldLevelHelp: 'Help text',
     value: '#419fec',
     messageWhenBadInput: 'Please ensure value is correct',
-    menuIconName: 'utility:choice',
+    menuIconName: 'utility:down',
     menuIconSize: 'medium',
+    colorsValue: colorsValue
+};
+
+export const LargeIconWithColorInput = Template.bind({});
+LargeIconWithColorInput.args = {
+    label: 'Color label',
+    fieldLevelHelp: 'Help text',
+    value: '#419fec',
+    messageWhenBadInput: 'Please ensure value is correct',
+    menuIconName: 'utility:down',
+    menuIconSize: 'large',
     colorsValue: colorsValue
 };
