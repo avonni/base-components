@@ -54,6 +54,13 @@ Base.args = {
     iconName: 'utility:animal_and_nature'
 };
 
+export const BaseWithIconXxsmall = Template.bind({});
+BaseWithIconXxsmall.args = {
+    title: 'Keep in mind',
+    iconName: 'utility:animal_and_nature',
+    iconSize: 'xx-small'
+};
+
 export const Brand = Template.bind({});
 Brand.args = {
     title: 'Keep in mind',
@@ -69,10 +76,11 @@ WarningWithIconLarge.args = {
     variant: 'warning'
 };
 
-export const Error = Template.bind({});
-Error.args = {
+export const ErrorWithIconMedium = Template.bind({});
+ErrorWithIconMedium.args = {
     title: 'Keep in mind',
     iconName: 'utility:error',
+    iconSize: 'medium',
     variant: 'error'
 };
 
@@ -81,5 +89,13 @@ SuccessWithIconRight.args = {
     title: 'Keep in mind',
     iconName: 'utility:success',
     iconPosition: 'right',
+    variant: 'success'
+};
+
+export const SuccessWithIconXsmall = Template.bind({});
+SuccessWithIconXsmall.args = {
+    title: 'Keep in mind',
+    iconName: 'utility:success',
+    iconSize: 'x-small',
     variant: 'success'
 };
