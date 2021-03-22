@@ -158,6 +158,16 @@ BaseLarge.args = {
     height: '300'
 };
 
+export const BaseBlankGrayLarge = Template.bind({});
+BaseBlankGrayLarge.args = {
+    src: 'https://picsum.photos/600/300/?image=41',
+    alt: 'Alt text',
+    blankColor: 'gray',
+    width: '600',
+    height: '300',
+    blank: 'true'
+};
+
 export const Thumbnail = Template.bind({});
 Thumbnail.args = {
     src: 'https://picsum.photos/300/150/?image=41',
@@ -208,12 +218,54 @@ CornerLeft.args = {
     blankColor: 'transparent'
 };
 
-export const Circle = Template.bind({});
-Circle.args = {
+export const SmallCircle = Template.bind({});
+SmallCircle.args = {
+    src: 'https://picsum.photos/50/50/?image=41',
+    alt: 'Alt text',
+    height: '50',
+    width: '50',
+    rounded: 'circle',
+    blankColor: 'transparent'
+};
+
+export const MediumCircle = Template.bind({});
+MediumCircle.args = {
+    src: 'https://picsum.photos/150/150/?image=41',
+    alt: 'Alt text',
+    height: '150',
+    width: '150',
+    rounded: 'circle',
+    blankColor: 'transparent'
+};
+
+export const ThumbnailMediumCircle = Template.bind({});
+ThumbnailMediumCircle.args = {
+    src: 'https://picsum.photos/150/150/?image=41',
+    alt: 'Alt text',
+    height: '150',
+    width: '150',
+    rounded: 'circle',
+    blankColor: 'transparent',
+    thumbnail: 'true'
+};
+
+export const LargeCircle = Template.bind({});
+LargeCircle.args = {
     src: 'https://picsum.photos/300/300/?image=41',
     alt: 'Alt text',
     height: '300',
     width: '300',
     rounded: 'circle',
     blankColor: 'transparent'
+};
+
+export const LargeBlankGrayCircle = Template.bind({});
+LargeBlankGrayCircle.args = {
+    src: 'https://picsum.photos/300/300/?image=41',
+    alt: 'Alt text',
+    height: '300',
+    width: '300',
+    rounded: 'circle',
+    blank: 'true',
+    blankColor: 'gray'
 };
