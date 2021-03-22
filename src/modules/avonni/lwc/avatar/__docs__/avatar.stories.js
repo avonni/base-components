@@ -272,10 +272,53 @@ const Template = (args) => Avatar(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    hideAvatarDetails: false,
+    alternativeText: 'JD',
+    hideAvatarDetails: true,
     src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
     fallbackIconName: 'standard:avatar',
     initials: 'JD'
+};
+
+export const BaseWithStatusBottomLeft = Template.bind({});
+BaseWithStatusBottomLeft.args = {
+    alternativeText: 'Invitation Declined',
+    hideAvatarDetails: true,
+    src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+    fallbackIconName: 'standard:avatar',
+    initials: 'JD',
+    status: 'declined',
+    statusPosition: 'bottom-left',
+    statusTitle: 'declined',
+    size: 'x-large'
+};
+
+export const BaseWithPresenceTopRight = Template.bind({});
+BaseWithPresenceTopRight.args = {
+    alternativeText: 'Invitation Declined',
+    hideAvatarDetails: true,
+    src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+    fallbackIconName: 'standard:avatar',
+    initials: 'JD',
+    presence: 'focus',
+    presencePosition: 'top-right',
+    presenceTitle: 'focus',
+    size: 'large'
+};
+
+export const BaseWithPresenceAndStatus = Template.bind({});
+BaseWithPresenceAndStatus.args = {
+    alternativeText: 'Invitation Declined',
+    hideAvatarDetails: true,
+    src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+    fallbackIconName: 'standard:avatar',
+    initials: 'JD',
+    presence: 'blocked',
+    presencePosition: 'top-right',
+    presenceTitle: 'blocked',
+    status: 'locked',
+    statusPosition: 'bottom-right',
+    statusTitle: 'locked',
+    size: 'large'
 };
 
 export const BaseWithDetails = Template.bind({});
@@ -288,15 +331,27 @@ BaseWithDetails.args = {
     entityIconName: 'standard:account',
     entityInitials: 'JD',
     presence: 'online',
-    status: 'Declined',
+    presenceTitle: 'online',
+    status: 'declined',
     primaryText: 'Jane Doe',
     secondaryText: 'VP, Finance',
     tertiaryText: 'Online'
 };
 
-export const CircleLarge = Template.bind({});
-CircleLarge.args = {
-    hideAvatarDetails: false,
+export const Circle = Template.bind({});
+Circle.args = {
+    alternativeText: 'JS',
+    hideAvatarDetails: true,
+    src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+    fallbackIconName: 'standard:avatar',
+    initials: 'JS',
+    variant: 'circle'
+};
+
+export const CircleLargeWithEntity = Template.bind({});
+CircleLargeWithEntity.args = {
+    alternativeText: 'John Smith',
+    hideAvatarDetails: true,
     variant: 'circle',
     size: 'large',
     entityIconName: 'standard:account',
@@ -306,13 +361,51 @@ CircleLarge.args = {
     initials: 'JS'
 };
 
+export const CircleWithEntityIcon = Template.bind({});
+CircleWithEntityIcon.args = {
+    alternativeText: 'John Smith',
+    hideAvatarDetails: true,
+    variant: 'circle',
+    size: 'large',
+    src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+    fallbackIconName: 'standard:avatar',
+    entityIconName: 'utility:favorite',
+    initials: 'JS'
+};
+
+export const CircleWithPresence = Template.bind({});
+CircleWithPresence.args = {
+    alternativeText: 'John Smith',
+    hideAvatarDetails: true,
+    variant: 'circle',
+    presence: 'online',
+    size: 'large',
+    src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+    fallbackIconName: 'standard:avatar',
+    initials: 'JS'
+};
+
 export const CircleWithDetails = Template.bind({});
 CircleWithDetails.args = {
-    alternativeText: 'Presence Unknown',
+    alternativeText: 'John Smith',
+    variant: 'circle',
+    size: 'x-large',
+    presence: 'offline',
+    status: 'unknown',
+    primaryText: 'John Smith',
+    secondaryText: 'VP, Human Resources',
+    tertiaryText: 'Offline',
+    src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+    fallbackIconName: 'standard:avatar',
+    initials: 'JS'
+};
+
+export const CircleWithPresenceAndDetails = Template.bind({});
+CircleWithPresenceAndDetails.args = {
+    alternativeText: 'John Smith',
     variant: 'circle',
     size: 'x-large',
     presence: 'busy',
-    status: 'unknown',
     primaryText: 'John Smith',
     secondaryText: 'VP, Human Resources',
     tertiaryText: 'Busy',
