@@ -152,9 +152,26 @@ BorderWithPopoverLoading.args = {
 export const BorderWithPopoverWarning = Template.bind({});
 BorderWithPopoverWarning.args = {
     iconName: 'utility:warning',
+    iconClass: 'slds-icon-text-warning',
     tooltip: 'Tooltip text',
     size: 'small',
     popoverVariant: 'warning'
+};
+
+export const BorderFilledWithGreenSuccessIcon = Template.bind({});
+BorderFilledWithGreenSuccessIcon.args = {
+    iconName: 'utility:success',
+    iconClass: 'slds-icon-text-success',
+    tooltip: 'Tooltip text',
+    variant: 'border-filled'
+};
+
+export const BorderFilledWithLightCheckIcon = Template.bind({});
+BorderFilledWithLightCheckIcon.args = {
+    iconName: 'utility:check',
+    iconClass: 'slds-icon-text-light',
+    tooltip: 'Tooltip text',
+    variant: 'border-filled'
 };
 
 export const BorderFilledWithLargePopoverWalkthrough = Template.bind({});
@@ -169,6 +186,7 @@ BorderFilledWithLargePopoverWalkthrough.args = {
 export const ContainerWithSmallPopoverError = Template.bind({});
 ContainerWithSmallPopoverError.args = {
     iconName: 'utility:error',
+    iconClass: 'slds-icon-text-error',
     tooltip: 'Tooltip text',
     variant: 'Container',
     popoverVariant: 'error',
