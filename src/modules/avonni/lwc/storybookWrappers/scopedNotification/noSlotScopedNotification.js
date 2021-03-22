@@ -1,6 +1,6 @@
 import { LightningElement, api } from 'lwc';
 
-export default class ScopedNotification extends LightningElement {
+export default class NoSlotScopedNotification extends LightningElement {
     @api title;
     @api iconName;
     @api variant = 'base';

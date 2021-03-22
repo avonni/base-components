@@ -5,8 +5,14 @@ export default {
     title: 'Example/Timer',
     argTypes: {
         iconName: {
+            name: 'icon-name',
             control: {
                 type: 'text'
+            },
+            description:
+                "The Lightning Design System name of the icon. Names are written in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.",
+            table: {
+                type: { summary: 'string' }
             }
         },
         value: {
@@ -15,8 +21,10 @@ export default {
                 min: 0
             },
             defaultValue: 0,
+            description: 'Default value of the timer.',
             table: {
-                defaultValue: { summary: '0' }
+                defaultValue: { summary: '0' },
+                type: { summary: 'number' }
             }
         },
         duration: {
@@ -24,19 +32,34 @@ export default {
                 type: 'number',
                 min: 1
             },
-            defaultValue: 1,
+            defaultValue: 1000,
+            description:
+                'How long a timer runs in milliseconds. There is no maximum value.',
             table: {
-                defaultValue: { summary: '1' }
+                defaultValue: { summary: '1000' },
+                type: { summary: 'number' }
             }
         },
         variant: {
             control: {
                 type: 'select',
-                options: ['base', 'neutral', 'brand', 'brand-outline', 'destructive', 'destructive-text', 'inverse', 'success']
+                options: [
+                    'base',
+                    'neutral',
+                    'brand',
+                    'brand-outline',
+                    'destructive',
+                    'destructive-text',
+                    'inverse',
+                    'success'
+                ]
             },
             defaultValue: 'neutral',
+            description:
+                'The variant changes the appearance of the timer. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success. This value defaults to neutral.',
             table: {
-                defaultValue: { summary: 'neutral' }
+                defaultValue: { summary: 'neutral' },
+                type: { summary: 'string' }
             }
         },
         type: {
@@ -45,18 +68,24 @@ export default {
                 options: ['count-up', 'count-down']
             },
             defaultValue: 'count-up',
+            description: 'Values include count-up and count-down',
             table: {
-                defaultValue: { summary: 'count-up' }
+                defaultValue: { summary: 'count-up' },
+                type: { summary: 'string' }
             }
         },
         iconPosition: {
+            name: 'icon-position',
             control: {
                 type: 'select',
                 options: ['left', 'right']
             },
             defaultValue: 'left',
+            description:
+                'Describes the position of the icon with respect to body. Options include left and right. This value defaults to left.',
             table: {
-                defaultValue: { summary: 'left' }
+                defaultValue: { summary: 'left' },
+                type: { summary: 'string' }
             }
         },
         format: {
@@ -65,17 +94,24 @@ export default {
                 options: ['hh:mm:ss', 'mm:ss', 'hh:mm', 'hh', 'mm', 'ss']
             },
             defaultValue: 'hh:mm:ss',
+            description:
+                'Values include "hh:mm:ss", "mm:ss", "hh:mm", “hh”, “mm”, “ss”',
             table: {
-                defaultValue: { summary: 'hh:mm:ss' }
+                defaultValue: { summary: 'hh:mm:ss' },
+                type: { summary: 'string' }
             }
         },
         autoStart: {
+            name: 'auto-start',
             control: {
                 type: 'boolean'
             },
             defaultValue: 0,
+            description:
+                'Whether the timer control automatically starts to play when the user navigates to the component.',
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         },
         repeat: {
@@ -83,8 +119,11 @@ export default {
                 type: 'boolean'
             },
             defaultValue: 0,
+            description:
+                'Whether a timer automatically restarts when it finishes running.',
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         }
     }
@@ -95,35 +134,53 @@ const Template = (args) => {
 
     const btnStart = document.createElement('ac-lightning-button');
     btnStart.onclick = () => component.start();
-    btnStart.label = "Start";
+    btnStart.label = 'Start';
 
     const btnPause = document.createElement('ac-lightning-button');
     btnPause.onclick = () => component.pause();
-    btnPause.label = "Pause";
+    btnPause.label = 'Pause';
 
     const btnStop = document.createElement('ac-lightning-button');
     btnStop.onclick = () => component.stop();
-    btnStop.label = "Stop";
+    btnStop.label = 'Stop';
 
     const btnReset = document.createElement('ac-lightning-button');
     btnReset.onclick = () => component.reset();
-    btnReset.label = "Reset";
+    btnReset.label = 'Reset';
 
     return html`
-        <div>
-            ${component}
-        </div>
+        <div>${component}</div>
         <div class="slds-m-vertical_small">
-            ${btnStart}
-            ${btnPause}
-            ${btnStop}
-            ${btnReset}
+            ${btnStart} ${btnPause} ${btnStop} ${btnReset}
         </div>
-    `
+    `;
 };
 
 export const Base = Template.bind({});
 Base.args = {
-    iconName: 'utility:clock',
     duration: 10000
+};
+
+export const SuccessSeconds = Template.bind({});
+SuccessSeconds.args = {
+    duration: 10000,
+    variant: 'success',
+    format: 'ss'
+};
+
+export const BrandIcon = Template.bind({});
+BrandIcon.args = {
+    iconName: 'utility:clock',
+    duration: 10000,
+    variant: 'brand'
+};
+
+export const DestructiveCountdown = Template.bind({});
+DestructiveCountdown.args = {
+    type: 'count-down',
+    value: 10,
+    duration: 10000,
+    format: 'mm:ss',
+    variant: 'destructive',
+    autoStart: true
 };

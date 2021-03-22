@@ -1,8 +1,6 @@
-import { LightningElement, api } from 'lwc';
+import { LightningElement } from 'lwc';
 
-export default class Splitter extends LightningElement {
-    @api orientation;
-
+export default class DoubleOrientationSplitter extends LightningElement {
     text = `
         Sit nulla est ex deserunt exercitation anim occaecat. Nostrud ullamco deserunt aute id consequat veniam incididunt duis in 
         sint irure nisi. Mollit officia cillum Lorem ullamco minim nostrud elit officia tempor esse quis. Cillum sunt ad dolore quis 

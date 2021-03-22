@@ -1,0 +1,62 @@
+<template>
+    <avonni-splitter orientation="vertical">
+        <avonni-splitter-pane resizable collapsible max="100px">
+            <avonni-splitter orientation="horizontal">
+                <avonni-splitter-pane size="25%">
+                    <div
+                        style="
+                            padding: 0.5rem;
+                            height: 400px;
+                            white-space: normal;
+                        "
+                    >
+                        {text}
+                    </div>
+                </avonni-splitter-pane>
+                <avonni-splitter-pane resizable collapsible>
+                    <div style="padding: 0.5rem">
+                        <c-progress-circle
+                            value="25"
+                            color="#eea115"
+                            label="DATA"
+                            direction="drain"
+                        ></c-progress-circle>
+                    </div>
+                </avonni-splitter-pane>
+                <avonni-splitter-pane size="30%" collapsible>
+                    <div
+                        style="
+                            padding: 0.5rem;
+                            height: 400px;
+                            white-space: normal;
+                        "
+                    >
+                        {text}
+                    </div>
+                </avonni-splitter-pane>
+            </avonni-splitter>
+        </avonni-splitter-pane>
+        <avonni-splitter-pane>
+            <avonni-splitter orientation>
+                <avonni-splitter-pane>
+                    <div style="padding: 0.5rem">
+                        <avonni-progress-circle
+                            value="67"
+                            label="LEFT"
+                            direction="drain"
+                        ></avonni-progress-circle>
+                    </div>
+                </avonni-splitter-pane>
+                <avonni-splitter-pane size="300px">
+                    <div style="padding: 0.5rem">
+                        <c-progress-circle
+                            value="25"
+                            color="#eea115"
+                            direction="drain"
+                        ></c-progress-circle>
+                    </div>
+                </avonni-splitter-pane>
+            </avonni-splitter>
+        </avonni-splitter-pane>
+    </avonni-splitter>
+</template>
