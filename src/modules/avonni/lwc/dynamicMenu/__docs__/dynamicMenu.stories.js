@@ -162,6 +162,27 @@ Base.args = {
     iconName: 'utility:favorite'
 };
 
+export const BaseWithSearch = Template.bind({});
+BaseWithSearch.args = {
+    items: items,
+    iconName: 'utility:favorite',
+    withSearch: 'true'
+};
+
+export const Disabled = Template.bind({});
+Disabled.args = {
+    items: items,
+    iconName: 'utility:favorite',
+    disabled: 'true'
+};
+
+export const IsLoading = Template.bind({});
+IsLoading.args = {
+    items: items,
+    iconName: 'utility:favorite',
+    isLoading: 'true'
+};
+
 export const BaseWithLabel = Template.bind({});
 BaseWithLabel.args = {
     items: items,
@@ -181,6 +202,13 @@ Bare.args = {
     items: items,
     iconName: 'utility:add',
     variant: 'bare'
+};
+
+export const BareInverse = Template.bind({});
+BareInverse.args = {
+    items: items,
+    iconName: 'utility:favorite',
+    variant: 'bare-inverse'
 };
 
 export const Container = Template.bind({});
