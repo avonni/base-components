@@ -178,11 +178,102 @@ const colorsValue = [
 
 const Template = (args) => ColorPicker(args);
 
-export const Base = Template.bind({});
-Base.args = {
+export const Standard = Template.bind({});
+Standard.args = {
     label: 'Color label',
     fieldLevelHelp: 'Help text',
     value: '#419fec',
-    messageWhenBadInput: 'bad input',
+    messageWhenBadInput: 'Please ensure value is correct',
+    colorsValue: colorsValue
+};
+
+export const StandardWithIcon = Template.bind({});
+StandardWithIcon.args = {
+    label: 'Color label',
+    fieldLevelHelp: 'Help text',
+    value: '#419fec',
+    messageWhenBadInput: 'Please ensure value is correct',
+    menuIconName: 'utility:add',
+    menuLabel: 'Pick a color',
+    colorsValue: colorsValue
+};
+
+export const StandardWithIconWithoutColorInput = Template.bind({});
+StandardWithIconWithoutColorInput.args = {
+    label: 'Color label',
+    fieldLevelHelp: 'Help text',
+    value: '#419fec',
+    messageWhenBadInput: 'Please ensure value is correct',
+    menuIconName: 'utility:add',
+    menuLabel: 'Pick a color',
+    hideColorInput: 'true',
+    colorsValue: colorsValue
+};
+
+export const LabelInlineWithMenuVariantContainer = Template.bind({});
+LabelInlineWithMenuVariantContainer.args = {
+    label: 'Color label',
+    fieldLevelHelp: 'Help text',
+    value: '#0a2399',
+    messageWhenBadInput: 'Please ensure value is correct',
+    variant: 'label-inline',
+    menuVariant:'container',
+    colorsValue: colorsValue
+};
+
+export const LabelInlineWithoutColorInput = Template.bind({});
+LabelInlineWithoutColorInput.args = {
+    label: 'Color label',
+    fieldLevelHelp: 'Help text',
+    value: '#096a50',
+    messageWhenBadInput: 'Please ensure value is correct',
+    variant: 'label-inline',
+    menuVariant:'container',
+    hideColorInput: 'true',
+    colorsValue: colorsValue
+};
+
+export const LabelHiddenWithoutHelpMessage = Template.bind({});
+LabelHiddenWithoutHelpMessage.args = {
+    label: 'Color label',
+    messageWhenBadInput: 'Please ensure value is correct',
+    value: '#ffb758',
+    variant: 'label-hidden',
+    hideColorInput: 'true',
+    menuVariant: 'bare-inverse',
+    colorsValue: colorsValue
+};
+
+export const LabelHiddenWithoutHelpMessageBorderInverse = Template.bind({});
+LabelHiddenWithoutHelpMessageBorderInverse.args = {
+    label: 'Color label',
+    messageWhenBadInput: 'Please ensure value is correct',
+    value: '#3be281',
+    variant: 'label-hidden',
+    hideColorInput: 'true',
+    menuVariant: 'border-inverse',
+    colorsValue: colorsValue
+};
+
+export const LabelHiddenWithMenuLabel = Template.bind({});
+LabelHiddenWithMenuLabel.args = {
+    label: 'Color label',
+    messageWhenBadInput: 'Please ensure value is correct',
+    value: '#d073df',
+    variant: 'label-hidden',
+    hideColorInput: 'true',
+    menuVariant: 'border-inverse',
+    menuLabel: 'Pick a color',
+    colorsValue: colorsValue
+};
+
+export const MediumIconWithColorInput = Template.bind({});
+MediumIconWithColorInput.args = {
+    label: 'Color label',
+    fieldLevelHelp: 'Help text',
+    value: '#419fec',
+    messageWhenBadInput: 'Please ensure value is correct',
+    menuIconName: 'utility:choice',
+    menuIconSize: 'medium',
     colorsValue: colorsValue
 };
