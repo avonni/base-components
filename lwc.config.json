@@ -8,531 +8,531 @@
         },
         {
             "name": "c/configProvider",
-            "path": "src/modules/base/lwc/configProvider/configProvider.js"
+            "path": "src/modules/base/configProvider/configProvider.js"
         },
         {
             "name": "c/inputUtils",
-            "path": "src/modules/base/lwc/inputUtils/inputUtils.js"
+            "path": "src/modules/base/inputUtils/inputUtils.js"
         },
         {
             "name": "c/internationalizationLibrary",
-            "path": "src/modules/base/lwc/internationalizationLibrary/internationalizationLibrary.js"
+            "path": "src/modules/base/internationalizationLibrary/internationalizationLibrary.js"
         },
         {
             "name": "c/iso8601Utils",
-            "path": "src/modules/base/lwc/iso8601Utils/iso8601Utils.js"
+            "path": "src/modules/base/iso8601Utils/iso8601Utils.js"
         },
         {
             "name": "c/utils",
-            "path": "src/modules/base/lwc/utils/utils.js"
+            "path": "src/modules/base/utils/utils.js"
         },
         {
             "name": "c/utilsPrivate",
-            "path": "src/modules/base/lwc/utilsPrivate/utilsPrivate.js"
+            "path": "src/modules/base/utilsPrivate/utilsPrivate.js"
         },
         {
             "name": "c/alert",
-            "path": "src/modules/base/lwc/alert/alert.js"
+            "path": "src/modules/base/alert/alert.js"
         },
         {
             "name": "c/autoDataType",
-            "path": "src/modules/base/lwc/autoDataType/autoDataType.js"
+            "path": "src/modules/base/autoDataType/autoDataType.js"
         },
         {
             "name": "c/avatar",
-            "path": "src/modules/base/lwc/avatar/avatar.js"
+            "path": "src/modules/base/avatar/avatar.js"
         },
         {
             "name": "c/avatarGroup",
-            "path": "src/modules/base/lwc/avatarGroup/avatarGroup.js"
+            "path": "src/modules/base/avatarGroup/avatarGroup.js"
         },
         {
             "name": "c/badgeIcon",
-            "path": "src/modules/base/lwc/badgeIcon/badgeIcon.js"
+            "path": "src/modules/base/badgeIcon/badgeIcon.js"
         },
         {
             "name": "c/blockquote",
-            "path": "src/modules/base/lwc/blockquote/blockquote.js"
+            "path": "src/modules/base/blockquote/blockquote.js"
         },
         {
             "name": "c/buttonDialog",
-            "path": "src/modules/base/lwc/buttonDialog/buttonDialog.js"
+            "path": "src/modules/base/buttonDialog/buttonDialog.js"
         },
         {
             "name": "c/buttonIconDialog",
-            "path": "src/modules/base/lwc/buttonIconDialog/buttonIconDialog.js"
+            "path": "src/modules/base/buttonIconDialog/buttonIconDialog.js"
         },
         {
             "name": "c/buttonIconPopover",
-            "path": "src/modules/base/lwc/buttonIconPopover/buttonIconPopover.js"
+            "path": "src/modules/base/buttonIconPopover/buttonIconPopover.js"
         },
         {
             "name": "c/buttonMenu",
-            "path": "src/modules/base/lwc/buttonMenu/buttonMenu.js"
+            "path": "src/modules/base/buttonMenu/buttonMenu.js"
         },
         {
             "name": "c/buttonNavigation",
-            "path": "src/modules/base/lwc/buttonNavigation/buttonNavigation.js"
+            "path": "src/modules/base/buttonNavigation/buttonNavigation.js"
         },
         {
             "name": "c/buttonPopover",
-            "path": "src/modules/base/lwc/buttonPopover/buttonPopover.js"
+            "path": "src/modules/base/buttonPopover/buttonPopover.js"
         },
         {
             "name": "c/calendar",
-            "path": "src/modules/base/lwc/calendar/calendar.js"
+            "path": "src/modules/base/calendar/calendar.js"
         },
         {
             "name": "c/carousel",
-            "path": "src/modules/base/lwc/carousel/carousel.js"
+            "path": "src/modules/base/carousel/carousel.js"
         },
         {
             "name": "c/checkboxGroup",
-            "path": "src/modules/base/lwc/checkboxGroup/checkboxGroup.js"
+            "path": "src/modules/base/checkboxGroup/checkboxGroup.js"
         },
         {
             "name": "c/chip",
-            "path": "src/modules/base/lwc/chip/chip.js"
+            "path": "src/modules/base/chip/chip.js"
         },
         {
             "name": "c/colorGradient",
-            "path": "src/modules/base/lwc/colorGradient/colorGradient.js"
+            "path": "src/modules/base/colorGradient/colorGradient.js"
         },
         {
             "name": "c/colorPalette",
-            "path": "src/modules/base/lwc/colorPalette/colorPalette.js"
+            "path": "src/modules/base/colorPalette/colorPalette.js"
         },
         {
             "name": "c/colorPicker",
-            "path": "src/modules/base/lwc/colorPicker/colorPicker.js"
+            "path": "src/modules/base/colorPicker/colorPicker.js"
         },
         {
             "name": "c/colorPickerCustom",
-            "path": "src/modules/base/lwc/colorPickerCustom/colorPickerCustom.js"
+            "path": "src/modules/base/colorPickerCustom/colorPickerCustom.js"
         },
         {
             "name": "c/colorPickerPanel",
-            "path": "src/modules/base/lwc/colorPickerPanel/colorPickerPanel.js"
+            "path": "src/modules/base/colorPickerPanel/colorPickerPanel.js"
         },
         {
             "name": "c/confetti",
-            "path": "src/modules/base/lwc/confetti/confetti.js"
+            "path": "src/modules/base/confetti/confetti.js"
         },
         {
             "name": "c/dateTimePicker",
-            "path": "src/modules/base/lwc/dateTimePicker/dateTimePicker.js"
+            "path": "src/modules/base/dateTimePicker/dateTimePicker.js"
         },
         {
             "name": "c/dialog",
-            "path": "src/modules/base/lwc/dialog/dialog.js"
+            "path": "src/modules/base/dialog/dialog.js"
         },
         {
             "name": "c/dynamicMenu",
-            "path": "src/modules/base/lwc/dynamicMenu/dynamicMenu.js"
+            "path": "src/modules/base/dynamicMenu/dynamicMenu.js"
         },
         {
             "name": "c/emojiPicker",
-            "path": "src/modules/base/lwc/emojiPicker/emojiPicker.js"
+            "path": "src/modules/base/emojiPicker/emojiPicker.js"
         },
         {
             "name": "c/expandableSection",
-            "path": "src/modules/base/lwc/expandableSection/expandableSection.js"
+            "path": "src/modules/base/expandableSection/expandableSection.js"
         },
         {
             "name": "c/externalLink",
-            "path": "src/modules/base/lwc/externalLink/externalLink.js"
+            "path": "src/modules/base/externalLink/externalLink.js"
         },
         {
             "name": "c/iconUtils",
-            "path": "src/modules/base/lwc/iconUtils/iconUtils.js"
+            "path": "src/modules/base/iconUtils/iconUtils.js"
         },
         {
             "name": "c/image",
-            "path": "src/modules/base/lwc/image/image.js"
+            "path": "src/modules/base/image/image.js"
         },
         {
             "name": "c/inputCounter",
-            "path": "src/modules/base/lwc/inputCounter/inputCounter.js"
+            "path": "src/modules/base/inputCounter/inputCounter.js"
         },
         {
             "name": "c/inputDateRange",
-            "path": "src/modules/base/lwc/inputDateRange/inputDateRange.js"
+            "path": "src/modules/base/inputDateRange/inputDateRange.js"
         },
         {
             "name": "c/inputPen",
-            "path": "src/modules/base/lwc/inputPen/inputPen.js"
+            "path": "src/modules/base/inputPen/inputPen.js"
         },
         {
             "name": "c/inputRichText",
-            "path": "src/modules/base/lwc/inputRichText/inputRichText.js"
+            "path": "src/modules/base/inputRichText/inputRichText.js"
         },
         {
             "name": "c/inputToggle",
-            "path": "src/modules/base/lwc/inputToggle/inputToggle.js"
+            "path": "src/modules/base/inputToggle/inputToggle.js"
         },
         {
             "name": "c/link",
-            "path": "src/modules/base/lwc/link/link.js"
+            "path": "src/modules/base/link/link.js"
         },
         {
             "name": "c/linkToNonSalesforceResource",
-            "path": "src/modules/base/lwc/linkToNonSalesforceResource/linkToNonSalesforceResource.js"
+            "path": "src/modules/base/linkToNonSalesforceResource/linkToNonSalesforceResource.js"
         },
         {
             "name": "c/map",
-            "path": "src/modules/base/lwc/map/map.js"
+            "path": "src/modules/base/map/map.js"
         },
         {
             "name": "c/mediaObject",
-            "path": "src/modules/base/lwc/mediaObject/mediaObject.js"
+            "path": "src/modules/base/mediaObject/mediaObject.js"
         },
         {
             "name": "c/menuItemDialog",
-            "path": "src/modules/base/lwc/menuItemDialog/menuItemDialog.js"
+            "path": "src/modules/base/menuItemDialog/menuItemDialog.js"
         },
         {
             "name": "c/messageDispatcher",
-            "path": "src/modules/base/lwc/messageDispatcher/messageDispatcher.js"
+            "path": "src/modules/base/messageDispatcher/messageDispatcher.js"
         },
         {
             "name": "c/pagination",
-            "path": "src/modules/base/lwc/pagination/pagination.js"
+            "path": "src/modules/base/pagination/pagination.js"
         },
         {
             "name": "c/positionLibrary",
-            "path": "src/modules/base/lwc/positionLibrary/positionLibrary.js"
+            "path": "src/modules/base/positionLibrary/positionLibrary.js"
         },
         {
             "name": "c/primitiveColorpickerButton",
-            "path": "src/modules/base/lwc/primitiveColorpickerButton/primitiveColorpickerButton.js"
+            "path": "src/modules/base/primitiveColorpickerButton/primitiveColorpickerButton.js"
         },
         {
             "name": "c/primitiveCoordinateItem",
-            "path": "src/modules/base/lwc/primitiveCoordinateItem/primitiveCoordinateItem.js"
+            "path": "src/modules/base/primitiveCoordinateItem/primitiveCoordinateItem.js"
         },
         {
             "name": "c/primitiveIcon",
-            "path": "src/modules/base/lwc/primitiveIcon/primitiveIcon.js"
+            "path": "src/modules/base/primitiveIcon/primitiveIcon.js"
         },
         {
             "name": "c/primitiveIframe",
-            "path": "src/modules/base/lwc/primitiveIframe/primitiveIframe.js"
+            "path": "src/modules/base/primitiveIframe/primitiveIframe.js"
         },
         {
             "name": "c/primitiveProgressBarBadge",
-            "path": "src/modules/base/lwc/primitiveProgressBarBadge/primitiveProgressBarBadge.js"
+            "path": "src/modules/base/primitiveProgressBarBadge/primitiveProgressBarBadge.js"
         },
         {
             "name": "c/primitiveSelect",
-            "path": "src/modules/base/lwc/primitiveSelect/primitiveSelect.js"
+            "path": "src/modules/base/primitiveSelect/primitiveSelect.js"
         },
         {
             "name": "c/profileCard",
-            "path": "src/modules/base/lwc/profileCard/profileCard.js"
+            "path": "src/modules/base/profileCard/profileCard.js"
         },
         {
             "name": "c/progressBar",
-            "path": "src/modules/base/lwc/progressBar/progressBar.js"
+            "path": "src/modules/base/progressBar/progressBar.js"
         },
         {
             "name": "c/progressCircle",
-            "path": "src/modules/base/lwc/progressCircle/progressCircle.js"
+            "path": "src/modules/base/progressCircle/progressCircle.js"
         },
         {
             "name": "c/progressRing",
-            "path": "src/modules/base/lwc/progressRing/progressRing.js"
+            "path": "src/modules/base/progressRing/progressRing.js"
         },
         {
             "name": "c/qrcode",
-            "path": "src/modules/base/lwc/qrcode/qrcode.js"
+            "path": "src/modules/base/qrcode/qrcode.js"
         },
         {
             "name": "c/quillLib",
-            "path": "src/modules/base/lwc/quillLib/quillLib.js"
+            "path": "src/modules/base/quillLib/quillLib.js"
         },
         {
             "name": "c/range",
-            "path": "src/modules/base/lwc/range/range.js"
+            "path": "src/modules/base/range/range.js"
         },
         {
             "name": "c/rating",
-            "path": "src/modules/base/lwc/rating/rating.js"
+            "path": "src/modules/base/rating/rating.js"
         },
         {
             "name": "c/scopedNotification",
-            "path": "src/modules/base/lwc/scopedNotification/scopedNotification.js"
+            "path": "src/modules/base/scopedNotification/scopedNotification.js"
         },
         {
             "name": "c/segment",
-            "path": "src/modules/base/lwc/segment/segment.js"
+            "path": "src/modules/base/segment/segment.js"
         },
         {
             "name": "c/segmentButton",
-            "path": "src/modules/base/lwc/segmentButton/segmentButton.js"
+            "path": "src/modules/base/segmentButton/segmentButton.js"
         },
         {
             "name": "c/slide",
-            "path": "src/modules/base/lwc/slide/slide.js"
+            "path": "src/modules/base/slide/slide.js"
         },
         {
             "name": "c/slides",
-            "path": "src/modules/base/lwc/slides/slides.js"
+            "path": "src/modules/base/slides/slides.js"
         },
         {
             "name": "c/splitter",
-            "path": "src/modules/base/lwc/splitter/splitter.js"
+            "path": "src/modules/base/splitter/splitter.js"
         },
         {
             "name": "c/splitterPane",
-            "path": "src/modules/base/lwc/splitterPane/splitterPane.js"
+            "path": "src/modules/base/splitterPane/splitterPane.js"
         },
         {
             "name": "c/submenu",
-            "path": "src/modules/base/lwc/submenu/submenu.js"
+            "path": "src/modules/base/submenu/submenu.js"
         },
         {
             "name": "c/summaryDetail",
-            "path": "src/modules/base/lwc/summaryDetail/summaryDetail.js"
+            "path": "src/modules/base/summaryDetail/summaryDetail.js"
         },
         {
             "name": "c/timer",
-            "path": "src/modules/base/lwc/timer/timer.js"
+            "path": "src/modules/base/timer/timer.js"
         },
         {
             "name": "c/verticalProgressIndicator",
-            "path": "src/modules/base/lwc/verticalProgressIndicator/verticalProgressIndicator.js"
+            "path": "src/modules/base/verticalProgressIndicator/verticalProgressIndicator.js"
         },
         {
             "name": "c/verticalProgressStep",
-            "path": "src/modules/base/lwc/verticalProgressStep/verticalProgressStep.js"
+            "path": "src/modules/base/verticalProgressStep/verticalProgressStep.js"
         },
         {
             "name": "c/visualPicker",
-            "path": "src/modules/base/lwc/visualPicker/visualPicker.js"
+            "path": "src/modules/base/visualPicker/visualPicker.js"
         },
         {
             "name": "base/alert",
-            "path": "src/modules/base/lwc/alert/alert.js"
+            "path": "src/modules/base/alert/alert.js"
         },
         {
             "name": "base/autoDataType",
-            "path": "src/modules/base/lwc/autoDataType/autoDataType.js"
+            "path": "src/modules/base/autoDataType/autoDataType.js"
         },
         {
             "name": "base/avatar",
-            "path": "src/modules/base/lwc/avatar/avatar.js"
+            "path": "src/modules/base/avatar/avatar.js"
         },
         {
             "name": "base/avatarGroup",
-            "path": "src/modules/base/lwc/avatarGroup/avatarGroup.js"
+            "path": "src/modules/base/avatarGroup/avatarGroup.js"
         },
         {
             "name": "base/badgeIcon",
-            "path": "src/modules/base/lwc/badgeIcon/badgeIcon.js"
+            "path": "src/modules/base/badgeIcon/badgeIcon.js"
         },
         {
             "name": "base/blockquote",
-            "path": "src/modules/base/lwc/blockquote/blockquote.js"
+            "path": "src/modules/base/blockquote/blockquote.js"
         },
         {
             "name": "base/buttonDialog",
-            "path": "src/modules/base/lwc/buttonDialog/buttonDialog.js"
+            "path": "src/modules/base/buttonDialog/buttonDialog.js"
         },
         {
             "name": "base/buttonIconDialog",
-            "path": "src/modules/base/lwc/buttonIconDialog/buttonIconDialog.js"
+            "path": "src/modules/base/buttonIconDialog/buttonIconDialog.js"
         },
         {
             "name": "base/buttonIconPopover",
-            "path": "src/modules/base/lwc/buttonIconPopover/buttonIconPopover.js"
+            "path": "src/modules/base/buttonIconPopover/buttonIconPopover.js"
         },
         {
             "name": "base/buttonMenu",
-            "path": "src/modules/base/lwc/buttonMenu/buttonMenu.js"
+            "path": "src/modules/base/buttonMenu/buttonMenu.js"
         },
         {
             "name": "base/buttonNavigation",
-            "path": "src/modules/base/lwc/buttonNavigation/buttonNavigation.js"
+            "path": "src/modules/base/buttonNavigation/buttonNavigation.js"
         },
         {
             "name": "base/buttonPopover",
-            "path": "src/modules/base/lwc/buttonPopover/buttonPopover.js"
+            "path": "src/modules/base/buttonPopover/buttonPopover.js"
         },
         {
             "name": "base/calendar",
-            "path": "src/modules/base/lwc/calendar/calendar.js"
+            "path": "src/modules/base/calendar/calendar.js"
         },
         {
             "name": "base/carousel",
-            "path": "src/modules/base/lwc/carousel/carousel.js"
+            "path": "src/modules/base/carousel/carousel.js"
         },
         {
             "name": "base/checkboxGroup",
-            "path": "src/modules/base/lwc/checkboxGroup/checkboxGroup.js"
+            "path": "src/modules/base/checkboxGroup/checkboxGroup.js"
         },
         {
             "name": "base/chip",
-            "path": "src/modules/base/lwc/chip/chip.js"
+            "path": "src/modules/base/chip/chip.js"
         },
         {
             "name": "base/colorGradient",
-            "path": "src/modules/base/lwc/colorGradient/colorGradient.js"
+            "path": "src/modules/base/colorGradient/colorGradient.js"
         },
         {
             "name": "base/colorPalette",
-            "path": "src/modules/base/lwc/colorPalette/colorPalette.js"
+            "path": "src/modules/base/colorPalette/colorPalette.js"
         },
         {
             "name": "base/colorPicker",
-            "path": "src/modules/base/lwc/colorPicker/colorPicker.js"
+            "path": "src/modules/base/colorPicker/colorPicker.js"
         },
         {
             "name": "base/confetti",
-            "path": "src/modules/base/lwc/confetti/confetti.js"
+            "path": "src/modules/base/confetti/confetti.js"
         },
         {
             "name": "base/dateTimePicker",
-            "path": "src/modules/base/lwc/dateTimePicker/dateTimePicker.js"
+            "path": "src/modules/base/dateTimePicker/dateTimePicker.js"
         },
         {
             "name": "base/dialog",
-            "path": "src/modules/base/lwc/dialog/dialog.js"
+            "path": "src/modules/base/dialog/dialog.js"
         },
         {
             "name": "base/dynamicMenu",
-            "path": "src/modules/base/lwc/dynamicMenu/dynamicMenu.js"
+            "path": "src/modules/base/dynamicMenu/dynamicMenu.js"
         },
         {
             "name": "base/emojiPicker",
-            "path": "src/modules/base/lwc/emojiPicker/emojiPicker.js"
+            "path": "src/modules/base/emojiPicker/emojiPicker.js"
         },
         {
             "name": "base/expandableSection",
-            "path": "src/modules/base/lwc/expandableSection/expandableSection.js"
+            "path": "src/modules/base/expandableSection/expandableSection.js"
         },
         {
             "name": "base/image",
-            "path": "src/modules/base/lwc/image/image.js"
+            "path": "src/modules/base/image/image.js"
         },
         {
             "name": "base/inputCounter",
-            "path": "src/modules/base/lwc/inputCounter/inputCounter.js"
+            "path": "src/modules/base/inputCounter/inputCounter.js"
         },
         {
             "name": "base/inputDateRange",
-            "path": "src/modules/base/lwc/inputDateRange/inputDateRange.js"
+            "path": "src/modules/base/inputDateRange/inputDateRange.js"
         },
         {
             "name": "base/inputPen",
-            "path": "src/modules/base/lwc/inputPen/inputPen.js"
+            "path": "src/modules/base/inputPen/inputPen.js"
         },
         {
             "name": "base/inputRichText",
-            "path": "src/modules/base/lwc/inputRichText/inputRichText.js"
+            "path": "src/modules/base/inputRichText/inputRichText.js"
         },
         {
             "name": "base/inputToggle",
-            "path": "src/modules/base/lwc/inputToggle/inputToggle.js"
+            "path": "src/modules/base/inputToggle/inputToggle.js"
         },
         {
             "name": "base/map",
-            "path": "src/modules/base/lwc/map/map.js"
+            "path": "src/modules/base/map/map.js"
         },
         {
             "name": "base/mediaObject",
-            "path": "src/modules/base/lwc/mediaObject/mediaObject.js"
+            "path": "src/modules/base/mediaObject/mediaObject.js"
         },
         {
             "name": "base/menuItemDialog",
-            "path": "src/modules/base/lwc/menuItemDialog/menuItemDialog.js"
+            "path": "src/modules/base/menuItemDialog/menuItemDialog.js"
         },
         {
             "name": "base/pagination",
-            "path": "src/modules/base/lwc/pagination/pagination.js"
+            "path": "src/modules/base/pagination/pagination.js"
         },
         {
             "name": "base/primitiveIcon",
-            "path": "src/modules/base/lwc/primitiveIcon/primitiveIcon.js"
+            "path": "src/modules/base/primitiveIcon/primitiveIcon.js"
         },
         {
             "name": "base/profileCard",
-            "path": "src/modules/base/lwc/profileCard/profileCard.js"
+            "path": "src/modules/base/profileCard/profileCard.js"
         },
         {
             "name": "base/progressBar",
-            "path": "src/modules/base/lwc/progressBar/progressBar.js"
+            "path": "src/modules/base/progressBar/progressBar.js"
         },
         {
             "name": "base/progressCircle",
-            "path": "src/modules/base/lwc/progressCircle/progressCircle.js"
+            "path": "src/modules/base/progressCircle/progressCircle.js"
         },
         {
             "name": "base/progressRing",
-            "path": "src/modules/base/lwc/progressRing/progressRing.js"
+            "path": "src/modules/base/progressRing/progressRing.js"
         },
         {
             "name": "base/qrcode",
-            "path": "src/modules/base/lwc/qrcode/qrcode.js"
+            "path": "src/modules/base/qrcode/qrcode.js"
         },
         {
             "name": "base/range",
-            "path": "src/modules/base/lwc/range/range.js"
+            "path": "src/modules/base/range/range.js"
         },
         {
             "name": "base/rating",
-            "path": "src/modules/base/lwc/rating/rating.js"
+            "path": "src/modules/base/rating/rating.js"
         },
         {
             "name": "base/scopedNotification",
-            "path": "src/modules/base/lwc/scopedNotification/scopedNotification.js"
+            "path": "src/modules/base/scopedNotification/scopedNotification.js"
         },
         {
             "name": "base/segment",
-            "path": "src/modules/base/lwc/segment/segment.js"
+            "path": "src/modules/base/segment/segment.js"
         },
         {
             "name": "base/segmentButton",
-            "path": "src/modules/base/lwc/segmentButton/segmentButton.js"
+            "path": "src/modules/base/segmentButton/segmentButton.js"
         },
         {
             "name": "base/slide",
-            "path": "src/modules/base/lwc/slide/slide.js"
+            "path": "src/modules/base/slide/slide.js"
         },
         {
             "name": "base/slides",
-            "path": "src/modules/base/lwc/slides/slides.js"
+            "path": "src/modules/base/slides/slides.js"
         },
         {
             "name": "base/splitter",
-            "path": "src/modules/base/lwc/splitter/splitter.js"
+            "path": "src/modules/base/splitter/splitter.js"
         },
         {
             "name": "base/splitterPane",
-            "path": "src/modules/base/lwc/splitterPane/splitterPane.js"
+            "path": "src/modules/base/splitterPane/splitterPane.js"
         },
         {
             "name": "base/submenu",
-            "path": "src/modules/base/lwc/submenu/submenu.js"
+            "path": "src/modules/base/submenu/submenu.js"
         },
         {
             "name": "base/summaryDetail",
-            "path": "src/modules/base/lwc/summaryDetail/summaryDetail.js"
+            "path": "src/modules/base/summaryDetail/summaryDetail.js"
         },
         {
             "name": "base/timer",
-            "path": "src/modules/base/lwc/timer/timer.js"
+            "path": "src/modules/base/timer/timer.js"
         },
         {
             "name": "base/verticalProgressIndicator",
-            "path": "src/modules/base/lwc/verticalProgressIndicator/verticalProgressIndicator.js"
+            "path": "src/modules/base/verticalProgressIndicator/verticalProgressIndicator.js"
         },
         {
             "name": "base/verticalProgressStep",
-            "path": "src/modules/base/lwc/verticalProgressStep/verticalProgressStep.js"
+            "path": "src/modules/base/verticalProgressStep/verticalProgressStep.js"
         },
         {
             "name": "base/visualPicker",
-            "path": "src/modules/base/lwc/visualPicker/visualPicker.js"
+            "path": "src/modules/base/visualPicker/visualPicker.js"
         }
     ],
     "expose": [
