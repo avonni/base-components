@@ -161,3 +161,32 @@ Base.args = {
     items: items,
     iconName: 'utility:favorite'
 };
+
+export const BaseWithLabel = Template.bind({});
+BaseWithLabel.args = {
+    items: items,
+    label: 'Menu',
+    iconName: 'utility:favorite'
+};
+
+export const BorderFilled = Template.bind({});
+BorderFilled.args = {
+    items: items,
+    iconName: 'utility:add',
+    variant: 'border-filled'
+};
+
+export const Bare = Template.bind({});
+Bare.args = {
+    items: items,
+    iconName: 'utility:add',
+    variant: 'bare'
+};
+
+export const Container = Template.bind({});
+Container.args = {
+    items: items,
+    alternativeText: 'Display Menu',
+    iconName: 'utility:add',
+    variant: 'container'
+};
