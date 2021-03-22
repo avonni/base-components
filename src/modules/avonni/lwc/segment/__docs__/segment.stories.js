@@ -6,6 +6,9 @@ export default {
         value: {
             control: {
                 type: 'text'
+            },
+            table: {
+                type: { summary: 'number' }
             }
         },
         variant: {
@@ -15,7 +18,8 @@ export default {
             },
             defaultValue: 'shade',
             table: {
-                defaultValue: { summary: 'shade' }
+                defaultValue: { summary: 'shade' },
+                type: { summary: 'string' }
             }
         },
         disabled: {
@@ -24,7 +28,8 @@ export default {
             },
             defaultValue: 0,
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         }
     }
@@ -33,6 +38,27 @@ export default {
 const Template = (args) => Segment(args);
 
 export const Base = Template.bind({});
-Base.args = {
+
+export const Disabled = Template.bind({});
+Disabled.args = {
+    value: 1,
+    disabled: true
+};
+
+export const Success = Template.bind({});
+Success.args = {
+    value: 1,
+    variant: 'success'
+};
+
+export const Warning = Template.bind({});
+Warning.args = {
+    value: 3,
+    variant: 'warning'
+};
+
+export const Error = Template.bind({});
+Error.args = {
+    variant: 'error',
     value: 2
 };
