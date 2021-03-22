@@ -25,7 +25,7 @@ const Template = (args) => Calendar(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    value: '05/05/2021',
+    value: '05/03/2021',
     disabled: false,
     weekNumber: false,
     disabledDates: [
