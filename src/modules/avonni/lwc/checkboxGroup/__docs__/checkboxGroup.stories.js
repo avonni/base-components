@@ -78,14 +78,16 @@ const options = [
     { label: 'Thu', value: 'thu' },
     { label: 'Fri', value: 'fri' }
 ];
-const value = ['wed', 'fri'];
+const primaryValue = ['wed', 'fri'];
+const secondaryValue = ['mon', 'tue'];
+const thirdValue = ['thu'];
 
 export const Checkbox = Template.bind({});
 Checkbox.args = {
     label: 'Please select a value',
     messageWhenValueMissing: 'Value missing',
     options: options,
-    value: value
+    value: primaryValue
 };
 
 export const CheckboxDisabled = Template.bind({});
@@ -93,7 +95,7 @@ CheckboxDisabled.args = {
     label: 'Please select a value',
     messageWhenValueMissing: 'Value missing',
     options: options,
-    value: value,
+    value: secondaryValue,
     disabled: 'true'
 };
 
@@ -103,7 +105,7 @@ CheckboxWithNoLabel.args = {
     variant: 'label-hidden',
     messageWhenValueMissing: 'Value missing',
     options: options,
-    value: value
+    value: thirdValue
 };
 
 export const CheckboxWithLabelStacked = Template.bind({});
@@ -112,7 +114,7 @@ CheckboxWithLabelStacked.args = {
     variant: 'label-stacked',
     messageWhenValueMissing: 'Value missing',
     options: options,
-    value: value
+    value: primaryValue
 };
 
 export const CheckboxRequired = Template.bind({});
@@ -121,7 +123,7 @@ CheckboxRequired.args = {
     messageWhenValueMissing: 'Value missing',
     required: 'true',
     options: options,
-    value: value
+    value: secondaryValue
 };
 
 export const Button = Template.bind({});
@@ -130,7 +132,7 @@ Button.args = {
     type: 'button',
     messageWhenValueMissing: 'Value missing',
     options: options,
-    value: value
+    value: primaryValue
 };
 
 export const ButtonWithLabelInline = Template.bind({});
@@ -140,7 +142,7 @@ ButtonWithLabelInline.args = {
     variant: 'label-inline',
     messageWhenValueMissing: 'Value missing',
     options: options,
-    value: value
+    value: secondaryValue
 };
 
 export const ButtonDisabled = Template.bind({});
@@ -150,5 +152,5 @@ ButtonDisabled.args = {
     disabled: 'true',
     messageWhenValueMissing: 'Value missing',
     options: options,
-    value: value
+    value: thirdValue
 };
