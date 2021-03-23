@@ -11,7 +11,14 @@ export default {
         size: {
             control: {
                 type: 'select',
-                options: ['x-small', 'small', 'medium', 'large']
+                options: [
+                    'x-small',
+                    'small',
+                    'medium',
+                    'large',
+                    'x-large',
+                    'xx-large'
+                ]
             },
             defaultValue: 'medium',
             table: {
@@ -56,6 +63,12 @@ const items = [
 export const BaseWithTwoAvatars = Template.bind({});
 BaseWithTwoAvatars.args = {
     items: items
+};
+
+export const BaseExtraLargeWithTwoAvatars = Template.bind({});
+BaseExtraLargeWithTwoAvatars.args = {
+    items: items,
+    size: 'x-large'
 };
 
 export const BaseWithMoreThanTwoAvatars = Template.bind({});

@@ -13,6 +13,7 @@
                 class="slds-avatar-grouped slds-avatar-grouped__primary"
                 onclick={handleAvatarclick}
                 tabindex="0"
+                size={size}
             ></c-avatar>
             <c-avatar
                 alternative-text={secondaryItem.alternativeText}
@@ -57,20 +58,18 @@
                     class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open"
                     key={item.key}
                 >
-                    <span
+                    <c-avatar
+                        initials={item.initials}
+                        variant="circle"
+                        hide-avatar-details="true"
+                        size={size}
+                        data-item-id={index}
+                        data-type="show"
                         class={avatarInlinePlusClass}
                         onclick={handleAvatarclick}
                         onblur={handleBlur}
                         tabindex="0"
-                    >
-                        <abbr
-                            if:true={item.initials}
-                            class="slds-avatar__initials slds-avatar-grouped__initials"
-                            data-item-id={index}
-                            data-type="show"
-                            >{item.initials}
-                        </abbr>
-                    </span>
+                    ></c-avatar>
                     <template if:true={showPopover}>
                         <div
                             class="slds-dropdown slds-dropdown_left"

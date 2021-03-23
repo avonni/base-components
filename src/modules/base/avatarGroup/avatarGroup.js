@@ -2,7 +2,14 @@ import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { normalizeString } from 'c/utilsPrivate';
 
-const validSizes = ['x-small', 'small', 'medium', 'large'];
+const validSizes = [
+    'x-small',
+    'small',
+    'medium',
+    'large',
+    'x-large',
+    'xx-large'
+];
 const validVariants = ['stack', 'grid'];
 
 export default class AvatarGroup extends LightningElement {
@@ -134,7 +141,9 @@ export default class AvatarGroup extends LightningElement {
                 'slds-avatar-group_x-small': this.size === 'x-small',
                 'slds-avatar-group_small': this.size === 'small',
                 'slds-avatar-group_medium': this.size === 'medium',
-                'slds-avatar-group_large': this.size === 'large'
+                'slds-avatar-group_large': this.size === 'large',
+                'avonni-avatar-group_x-large': this.size === 'x-large',
+                'avonni-avatar-group_xx-large': this.size === 'xx-large'
             })
             .toString();
     }
