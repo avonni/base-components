@@ -12,8 +12,10 @@
             </svg>
         </div>
         <div class={progressRingContentClass}>
-            <span if:true={showValue} style={progressLabelStyles}>{value}%</span>
+            <span if:true={showValue} style={progressTitleStyles}
+                >{value}%</span
+            >
         </div>
-        <div class={progressLabelClass}>{label}</div>
+        <div class={progressTitleClass}>{title}</div>
     </div>
 </template>

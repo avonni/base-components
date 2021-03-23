@@ -3,12 +3,12 @@ import { ProgressCircle } from '../__examples__/progressCircle';
 export default {
     title: 'Example/Progress Circle',
     argTypes: {
-        label: {
+        title: {
             control: {
                 type: 'text'
             },
             description:
-                'The label is displayed at the bottom of the progress circle.',
+                'The title is displayed at the bottom of the progress circle.',
             table: {
                 type: { summary: 'string' }
             }
@@ -97,13 +97,13 @@ const Template = (args) => ProgressCircle(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    label: 'Text label',
+    title: 'Text title',
     value: 45
 };
 
 export const DrainDirection = Template.bind({});
 DrainDirection.args = {
-    label: 'Drain direction',
+    title: 'Drain direction',
     value: 45,
     direction: 'drain'
 };
@@ -118,28 +118,28 @@ NoLabelSmallValueHiddenGreen.args = {
 
 export const ExtraSmall = Template.bind({});
 ExtraSmall.args = {
-    label: 'Extra small',
+    title: 'Extra small',
     value: 45,
     size: 'x-small'
 };
 
 export const Small = Template.bind({});
 Small.args = {
-    label: 'Small',
+    title: 'Small',
     value: 45,
     size: 'small'
 };
 
 export const Large = Template.bind({});
 Large.args = {
-    label: 'Large',
+    title: 'Large',
     value: 45,
     size: 'large'
 };
 
 export const ExtraLarge = Template.bind({});
 ExtraLarge.args = {
-    label: 'Extra large',
+    title: 'Extra large',
     value: 45,
     size: 'x-large'
 };

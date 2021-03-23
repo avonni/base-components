@@ -7,7 +7,7 @@ const validDirections = ['fill', 'drain'];
 const validSizes = ['x-small', 'small', 'medium', 'large', 'x-large'];
 
 export default class ProgressCircle extends LightningElement {
-    @api label;
+    @api title;
 
     _value = 0;
     _variant = 'standard';
@@ -125,14 +125,14 @@ export default class ProgressCircle extends LightningElement {
             .toString();
     }
 
-    get progressLabelClass() {
+    get progressTitleClass() {
         return classSet('slds-grid slds-grid_align-center')
             .add({
-                'avonni-progress-label-x-small': this._size === 'x-small',
-                'avonni-progress-label-small': this._size === 'small',
-                'avonni-progress-label-medium': this._size === 'medium',
-                'avonni-progress-label-large': this._size === 'large',
-                'avonni-progress-label-x-large': this._size === 'x-large'
+                'avonni-progress-title-x-small': this._size === 'x-small',
+                'avonni-progress-title-small': this._size === 'small',
+                'avonni-progress-title-medium': this._size === 'medium',
+                'avonni-progress-title-large': this._size === 'large',
+                'avonni-progress-title-x-large': this._size === 'x-large'
             })
             .toString();
     }
