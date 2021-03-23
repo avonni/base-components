@@ -1,0 +1,25 @@
+<template>
+    <c-vertical-progress-indicator
+        current-step={currentStep}
+        variant={variant}
+        has-error={hasError}
+        content-in-line={contentInLine}
+    >
+        <c-vertical-progress-step
+            label="Step 1"
+            value="1"
+        ></c-vertical-progress-step>
+        <c-vertical-progress-step
+            label="Step 2"
+            value="2"
+        ></c-vertical-progress-step>
+        <c-vertical-progress-step
+            label="Step 3"
+            value="3"
+        ></c-vertical-progress-step>
+        <c-vertical-progress-step
+            label="Step 4"
+            value="4"
+        ></c-vertical-progress-step>
+    </c-vertical-progress-indicator>
+</template>

@@ -1,0 +1,62 @@
+<template>
+    <c-splitter orientation="vertical">
+        <c-splitter-pane resizable collapsible max="100px">
+            <c-splitter orientation="horizontal">
+                <c-splitter-pane size="25%">
+                    <div
+                        style="
+                            padding: 0.5rem;
+                            height: 400px;
+                            white-space: normal;
+                        "
+                    >
+                        {text}
+                    </div>
+                </c-splitter-pane>
+                <c-splitter-pane resizable collapsible>
+                    <div style="padding: 0.5rem">
+                        <c-progress-circle
+                            value="25"
+                            color="#eea115"
+                            label="DATA"
+                            direction="drain"
+                        ></c-progress-circle>
+                    </div>
+                </c-splitter-pane>
+                <c-splitter-pane size="30%" collapsible>
+                    <div
+                        style="
+                            padding: 0.5rem;
+                            height: 400px;
+                            white-space: normal;
+                        "
+                    >
+                        {text}
+                    </div>
+                </c-splitter-pane>
+            </c-splitter>
+        </c-splitter-pane>
+        <c-splitter-pane>
+            <c-splitter orientation>
+                <c-splitter-pane>
+                    <div style="padding: 0.5rem">
+                        <c-progress-circle
+                            value="67"
+                            label="LEFT"
+                            direction="drain"
+                        ></c-progress-circle>
+                    </div>
+                </c-splitter-pane>
+                <c-splitter-pane size="300px">
+                    <div style="padding: 0.5rem">
+                        <c-progress-circle
+                            value="25"
+                            color="#eea115"
+                            direction="drain"
+                        ></c-progress-circle>
+                    </div>
+                </c-splitter-pane>
+            </c-splitter>
+        </c-splitter-pane>
+    </c-splitter>
+</template>
