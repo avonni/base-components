@@ -24,7 +24,18 @@
     left: var(--lwc-spacingMedium, 1rem);
 }
 
-.avonni-carousel-progress-indicator_shaded {
-    background-color: #d0d6e1;
-    border: #d0d6e1;
+.avonni-carousel-progress-indicator-shaded-active {
+    background-color: #dddbda;
+    border: #dddbda;
+}
+
+.avonni-carousel-progress-indicator-shaded-active:hover,
+.avonni-carousel-progress-indicator-shaded-active:focus {
+    background-color: #706e6b;
+    border: #706e6b;
+}
+
+.avonni-carousel-progress-indicator-shaded-inactive:focus {
+    background-color: #706e6b;
+    border: #706e6b;
 }

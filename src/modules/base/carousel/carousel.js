@@ -3,9 +3,11 @@ import { keyCodes } from 'c/utilsPrivate';
 import { normalizeBoolean, normalizeString } from '../utilsPrivate/normalize';
 
 const INDICATOR_ACTION = 'slds-carousel__indicator-action';
+const INDICATOR_ACTION_SHADED =
+    'slds-carousel__indicator-action avonni-carousel-progress-indicator-shaded-inactive';
 const SLDS_ACTIVE = 'slds-is-active';
 const SLDS_ACTIVE_SHADED =
-    'slds-is-active avonni-carousel-progress-indicator_shaded';
+    'slds-is-active avonni-carousel-progress-indicator-shaded-active';
 const FALSE_STRING = 'false';
 const TRUE_STRING = 'true';
 
@@ -173,8 +175,8 @@ export default class Carousel extends LightningElement {
                     key: i,
                     id: `pagination-item-${i}`,
                     className: isItemActive
-                        ? INDICATOR_ACTION + ' ' + SLDS_ACTIVE_SHADED
-                        : INDICATOR_ACTION,
+                        ? INDICATOR_ACTION_SHADED + ' ' + SLDS_ACTIVE_SHADED
+                        : INDICATOR_ACTION_SHADED,
                     tabIndex: isItemActive ? '0' : '-1',
                     ariaSelected: isItemActive ? TRUE_STRING : FALSE_STRING,
                     tabTitle: `Tab ${i}`
@@ -318,7 +320,7 @@ export default class Carousel extends LightningElement {
                 INDICATOR_ACTION + ' ' + SLDS_ACTIVE;
         } else if (this._indicatorVariant === 'shaded') {
             activePaginationItem.className =
-                INDICATOR_ACTION + ' ' + SLDS_ACTIVE_SHADED;
+                INDICATOR_ACTION_SHADED + ' ' + SLDS_ACTIVE_SHADED;
         }
 
         this.panelStyle = `transform:translateX(-${panelIndex * 100}%);`;
@@ -334,7 +336,11 @@ export default class Carousel extends LightningElement {
         activePanelItem.ariaHidden = TRUE_STRING;
         activePaginationItem.tabIndex = '-1';
         activePaginationItem.ariaSelected = FALSE_STRING;
-        activePaginationItem.className = INDICATOR_ACTION;
+        if (this._indicatorVariant === 'shaded') {
+            activePaginationItem.className = INDICATOR_ACTION_SHADED;
+        } else {
+            activePaginationItem.className = INDICATOR_ACTION;
+        }
     }
 
     selectPreviousSibling() {
