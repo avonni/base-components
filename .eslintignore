@@ -1,8 +1,5 @@
-dist/
-lib/
-**/lwc/**/*.css
-**/lwc/**/*.html
-**/lwc/**/*.json
-**/lwc/**/*.svg
-**/lwc/**/*.xml
-.sfdx
+**/base/**/*.css
+**/base/**/*.html
+**/base/**/*.json
+**/base/**/*.svg
+**/base/**/*.xml
