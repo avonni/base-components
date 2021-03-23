@@ -1,0 +1,56 @@
+<template>
+    <c-button-dialog label="Open Wizard Modal">
+        <c-wizard
+            title={title}
+            icon-name={iconName}
+            variant={variant}
+            current-step={currentStep}
+            hide-navigation={hideNavigation}
+            indicator-type={indicatorType}
+            hide-indicator={hideIndicator}
+            indicator-position={indicatorPosition}
+            button-previous-icon-name={buttonPreviousIconName}
+            button-previous-icon-position={buttonPreviousIconPosition}
+            button-previous-label={buttonPreviousLabel}
+            button-previous-variant={buttonPreviousVariant}
+            button-next-icon-name={buttonNextIconName}
+            button-next-icon-position={buttonNextIconPosition}
+            button-next-label={buttonNextLabel}
+            button-next-variant={buttonNextVariant}
+            button-finish-icon-name={buttonFinishIconName}
+            button-finish-icon-position={buttonFinishIconPosition}
+            button-finish-label={buttonFinishLabel}
+            button-finish-variant={buttonFinishVariant}
+            button-alignment-bump={buttonAlignmentBump}
+            action-position={actionPosition}
+            fraction-prefix-label={fractionPrefixLabel}
+            fraction-label={fractionLabel}
+        >
+            <c-wizard-step label="First step">
+                <h2>This step has these properties set:</h2>
+                <ul>
+                    <li><strong>label:</strong> "First step"</li>
+                </ul>
+            </c-wizard-step>
+            <c-wizard-step label="Second step" name="second-step">
+                <h2>This step has these properties set:</h2>
+                <ul>
+                    <li><strong>label:</strong> "Second step"</li>
+                    <li><strong>name:</strong> "second-step"</li>
+                </ul>
+            </c-wizard-step>
+            <c-wizard-step label="Third step">
+                <h2>This step has these properties set:</h2>
+                <ul>
+                    <li><strong>label:</strong> "Third step"</li>
+                </ul>
+            </c-wizard-step>
+            <c-wizard-step label="Last step">
+                <h2>This step has these properties set:</h2>
+                <ul>
+                    <li><strong>label:</strong> "Last step"</li>
+                </ul>
+            </c-wizard-step>
+        </c-wizard>
+    </c-button-dialog>
+</template>

@@ -311,6 +311,18 @@
             "path": "src/modules/base/visualPicker/visualPicker.js"
         },
         {
+            "name": "c/wizard",
+            "path": "src/modules/base/wizard/wizard.js"
+        },
+        {
+            "name": "c/primitiveWizardNavigation",
+            "path": "src/modules/base/primitiveWizardNavigation/primitiveWizardNavigation.js"
+        },
+        {
+            "name": "c/wizardStep",
+            "path": "src/modules/base/wizardStep/wizardStep.js"
+        },
+        {
             "name": "base/alert",
             "path": "src/modules/base/alert/alert.js"
         },
@@ -533,6 +545,18 @@
         {
             "name": "base/visualPicker",
             "path": "src/modules/base/visualPicker/visualPicker.js"
+        },
+        {
+            "name": "base/wizard",
+            "path": "src/modules/base/wizard/wizard.js"
+        },
+        {
+            "name": "base/primitiveWizardNavigation",
+            "path": "src/modules/base/primitiveWizardNavigation/primitiveWizardNavigation.js"
+        },
+        {
+            "name": "base/wizardStep",
+            "path": "src/modules/base/wizardStep/wizardStep.js"
         }
     ],
     "expose": [
