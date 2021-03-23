@@ -191,6 +191,10 @@
             "path": "src/modules/base/messageDispatcher/messageDispatcher.js"
         },
         {
+            "name": "c/pageHeader",
+            "path": "src/modules/base/pageHeader/pageHeader.js"
+        },
+        {
             "name": "c/pagination",
             "path": "src/modules/base/pagination/pagination.js"
         },
@@ -213,6 +217,10 @@
         {
             "name": "c/primitiveIframe",
             "path": "src/modules/base/primitiveIframe/primitiveIframe.js"
+        },
+        {
+            "name": "c/primitivePageHeaderItem",
+            "path": "src/modules/base/primitivePageHeaderItem/primitivePageHeaderItem.js"
         },
         {
             "name": "c/primitiveProgressBarBadge",
@@ -451,6 +459,10 @@
             "path": "src/modules/base/menuItemDialog/menuItemDialog.js"
         },
         {
+            "name": "base/pageHeader",
+            "path": "src/modules/base/pageHeader/pageHeader.js"
+        },
+        {
             "name": "base/pagination",
             "path": "src/modules/base/pagination/pagination.js"
         },
@@ -584,6 +596,7 @@
         "base/map",
         "base/mediaObject",
         "base/menuItemDialog",
+        "base/pageHeader",
         "base/pagination",
         "base/primitiveIcon",
         "base/profileCard",
