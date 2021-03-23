@@ -10,6 +10,7 @@ export const ProgressCircle = ({
     title,
     titlePosition,
     value,
+    label,
     variant,
     color,
     direction,
@@ -20,6 +21,7 @@ export const ProgressCircle = ({
     element.title = title;
     element.titlePosition = titlePosition;
     element.value = value;
+    element.label = label;
     element.variant = variant;
     element.color = generateColors(color).hex;
     element.direction = direction;

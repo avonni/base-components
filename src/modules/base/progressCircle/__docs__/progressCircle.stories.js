@@ -8,7 +8,7 @@ export default {
                 type: 'text'
             },
             description:
-                'The title is displayed at the bottom of the progress circle.',
+                'The title is displayed at the bottom or top of the progress circle.',
             table: {
                 type: { summary: 'string' }
             }
@@ -48,6 +48,16 @@ export default {
             table: {
                 defaultValue: { summary: '0' },
                 type: { summary: 'number' }
+            }
+        },
+        label: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'The label is displayed after the value in the progress circle.',
+            table: {
+                type: { summary: 'string' }
             }
         },
         variant: {

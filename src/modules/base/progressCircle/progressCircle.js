@@ -12,6 +12,7 @@ const TITLE_POSITIONS = { valid: ['top', 'bottom'], default: 'bottom' };
 
 export default class ProgressCircle extends LightningElement {
     @api title;
+    @api label;
 
     _titlePosition = 'bottom';
     _value = 0;
