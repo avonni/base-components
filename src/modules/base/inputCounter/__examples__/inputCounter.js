@@ -12,7 +12,13 @@ export const InputCounter = ({
     variant,
     disabled,
     readOnly,
-    required
+    required,
+    messageWhenBadInput,
+    messageWhenPatternMismatch,
+    messageWhenRangeOverflow,
+    messageWhenRangeUnderflow,
+    messageWhenStepMismatch,
+    messageWhenValueMissing
 }) => {
     const element = document.createElement('ac-base-input-counter');
     element.label = label;
@@ -25,5 +31,11 @@ export const InputCounter = ({
     element.disabled = disabled;
     element.readOnly = readOnly;
     element.required = required;
+    element.messageWhenBadInput = messageWhenBadInput;
+    element.messageWhenPatternMismatch = messageWhenPatternMismatch;
+    element.messageWhenRangeOverflow = messageWhenRangeOverflow;
+    element.messageWhenRangeUnderflow = messageWhenRangeUnderflow;
+    element.messageWhenStepMismatch = messageWhenStepMismatch;
+    element.messageWhenValueMissing = messageWhenValueMissing;
     return element;
 };

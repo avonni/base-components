@@ -12,11 +12,11 @@ export const InputRichText = ({
     labelVisible,
     messageWhenBadInput,
     placeholder,
-    required,
     shareWithEntityId,
     value,
     variant,
-    formats
+    formats,
+    isPublisher
 }) => {
     const element = document.createElement('ac-base-input-rich-text');
     element.disabled = disabled;
@@ -25,10 +25,10 @@ export const InputRichText = ({
     element.labelVisible = labelVisible;
     element.messageWhenBadInput = messageWhenBadInput;
     element.placeholder = placeholder;
-    element.required = required;
     element.shareWithEntityId = shareWithEntityId;
     element.value = value;
     element.variant = variant;
     element.formats = formats;
+    element.isPublisher = isPublisher;
     return element;
 };

@@ -4,52 +4,73 @@ export default {
     title: 'Example/Map',
     argTypes: {
         markersTitle: {
+            name: 'markers-title',
             control: {
                 type: 'text'
             },
             defaultValue: 'Markers',
             table: {
-                defaultValue: { summary: 'Markers' }
+                defaultValue: { summary: 'Markers' },
+                type: { summary: 'string' }
             }
         },
         selectedMarkerValue: {
+            name: 'selected-marker-value',
             control: {
                 type: 'text'
+            },
+            table: {
+                type: { summary: 'string' }
             }
         },
         zoomLevel: {
+            name: 'zoom-level',
             control: {
                 type: 'number',
                 min: 1
+            },
+            table: {
+                type: { summary: 'number' }
             }
         },
         listView: {
+            name: 'list-view',
             control: {
                 type: 'select',
                 options: ['visible', 'hidden', 'auto']
             },
             defaultValue: 'auto',
             table: {
-                defaultValue: { summary: 'auto' }
+                defaultValue: { summary: 'auto' },
+                type: { summary: 'string' }
             }
         },
         mapMarkers: {
+            name: 'map-markers',
             control: {
                 type: 'object'
+            },
+            table: {
+                type: { summary: 'object[]' }
             }
         },
         center: {
             control: {
                 type: 'object'
+            },
+            table: {
+                type: { summary: 'object' }
             }
         },
         showFooter: {
+            name: 'show-footer',
             control: {
                 type: 'boolean'
             },
             defaultValue: 0,
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         }
     }
@@ -59,8 +80,8 @@ export default {
 
 const Template = (args) => Map(args);
 
-export const MapWithASingleMarker = Template.bind({});
-MapWithASingleMarker.args = {
+export const SingleMarker = Template.bind({});
+SingleMarker.args = {
     mapMarkers: [
         {
             location: {
@@ -76,11 +97,11 @@ MapWithASingleMarker.args = {
     ]
 };
 
-export const MapWithMultipleMarkers = Template.bind({});
+export const MultipleMarkers = Template.bind({});
 
 let selectedMarkerValue;
 
-MapWithMultipleMarkers.args = {
+MultipleMarkers.args = {
     onchange: (event) => {
         selectedMarkerValue = event.detail.selectedMarkerValue;
     },
@@ -189,8 +210,8 @@ MapWithMultipleMarkers.args = {
     ]
 };
 
-export const MapWithManualCenteringAndZoom = Template.bind({});
-MapWithManualCenteringAndZoom.args = {
+export const ManualCenteringAndZoom = Template.bind({});
+ManualCenteringAndZoom.args = {
     center: {
         location: {
             City: 'Denver'
