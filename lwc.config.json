@@ -47,10 +47,6 @@
             "path": "src/modules/base/avatarGroup/avatarGroup.js"
         },
         {
-            "name": "c/badgeIcon",
-            "path": "src/modules/base/badgeIcon/badgeIcon.js"
-        },
-        {
             "name": "c/blockquote",
             "path": "src/modules/base/blockquote/blockquote.js"
         },
@@ -339,10 +335,6 @@
             "path": "src/modules/base/avatarGroup/avatarGroup.js"
         },
         {
-            "name": "base/badgeIcon",
-            "path": "src/modules/base/badgeIcon/badgeIcon.js"
-        },
-        {
             "name": "base/blockquote",
             "path": "src/modules/base/blockquote/blockquote.js"
         },
@@ -564,7 +556,6 @@
         "base/autoDataType",
         "base/avatar",
         "base/avatarGroup",
-        "base/badgeIcon",
         "base/blockquote",
         "base/buttonDialog",
         "base/buttonIconDialog",
