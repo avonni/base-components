@@ -247,6 +247,12 @@ HiddenLabel.args = {
     variant: 'label-hidden'
 };
 
+export const InlineLabel = Template.bind({});
+InlineLabel.args = {
+    label: 'Inline label',
+    variant: 'label-inline'
+};
+
 export const Disabled = Template.bind({});
 Disabled.args = {
     label: 'Disabled toggle',
