@@ -1,0 +1,27 @@
+<template>
+    <c-button-icon-popover
+        access-key={accessKey}
+        alternative-text={alternativeText}
+        title={title}
+        icon-name={iconName}
+        icon-class={iconClass}
+        loading-state-alternative-text={loadingStateAlternativeText}
+        tooltip={tooltip}
+        disabled={disabled}
+        is-loading={isLoading}
+        size={size}
+        placement={placement}
+        variant={variant}
+        popover-size={popoverSize}
+        triggers={triggers}
+        popover-variant={popoverVariant}
+    >
+        <h2 slot="title" class="slds-text-heading_small">Header Title</h2>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore.
+            <a href="#" title="Learn More"> Learn More </a>
+        </p>
+        <p slot="footer">Footer Item</p>
+    </c-button-icon-popover>
+</template>
