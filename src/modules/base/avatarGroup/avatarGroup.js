@@ -11,7 +11,7 @@ export default class AvatarGroup extends LightningElement {
     _size = 'medium';
     _variant = 'stack';
     _allowBlur = false;
-    showPopever = false;
+    showPopover = false;
     hiddenItems = [];
 
     renderedCallback() {
@@ -176,10 +176,10 @@ export default class AvatarGroup extends LightningElement {
             return;
         }
 
-        this.showPopever = false;
+        this.showPopover = false;
     }
 
-    handlAvatarclick(event) {
+    handleAvatarclick(event) {
         let itemId = event.target.dataset.itemId;
         let type = event.target.dataset.type;
         let item;
@@ -191,7 +191,7 @@ export default class AvatarGroup extends LightningElement {
         }
 
         if (item.showMore) {
-            this.showPopever = true;
+            this.showPopover = true;
             this.allowBlur();
         } else {
             this.dispatchEvent(
@@ -204,7 +204,7 @@ export default class AvatarGroup extends LightningElement {
                 })
             );
 
-            this.showPopever = false;
+            this.showPopover = false;
             this.cancelBlur();
         }
     }
