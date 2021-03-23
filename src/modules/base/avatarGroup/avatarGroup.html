@@ -96,19 +96,21 @@
                     key={item.key}
                 >
                     <template if:true={isNotList}>
-                        <c-avatar
-                            initials={item.initials}
-                            variant={variant}
-                            fallback-icon-name="standard:macros"
-                            hide-avatar-details="true"
-                            size={size}
-                            data-item-id={index}
-                            data-type="show"
-                            class={avatarInlinePlusClass}
-                            onclick={handleAvatarClick}
-                            onblur={handleBlur}
-                            tabindex="0"
-                        ></c-avatar>
+                        <span class={avatarWrapperClass}>
+                            <c-avatar
+                                initials={item.initials}
+                                variant={variant}
+                                fallback-icon-name="standard:macros"
+                                hide-avatar-details="true"
+                                size={size}
+                                data-item-id={index}
+                                data-type="show"
+                                class={avatarInlinePlusClass}
+                                onclick={handleAvatarClick}
+                                onblur={handleBlur}
+                                tabindex="0"
+                            ></c-avatar>
+                        </span>
                     </template>
                     <template if:false={isNotList}>
                         <lightning-button

@@ -4,6 +4,7 @@
     transition: transform 0.1s ease-out 0s;
     --avonni-c-avatar-color-border: #fff;
     --avonni-c-avatar-sizing-border: 1px;
+    color: #fff;
     cursor: pointer;
 }
 
@@ -90,7 +91,7 @@
     box-shadow: rgb(53, 125, 219) 0 0 0 2px !important;
 }
 .avonni-avatar-group__avatar .slds-avatar-grouped {
-    border-radius: var(--lwc-borderRadiusMedium, 0.25rem);
+    border-radius: var(--lwc-borderRadiusMedium, 0.3rem);
 }
 .avonni-avatar-group_circle:not(.slds-show) .avonni-avatar-group__avatar,
 .avonni-avatar-group_circle .slds-avatar-grouped {
@@ -98,7 +99,7 @@
 }
 /* --- */
 
-/* .slds-avatar,
+.slds-avatar,
 .slds-avatar__initials {
     cursor: pointer;
-} */
+}

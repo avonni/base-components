@@ -27,9 +27,6 @@ const validButtonVariants = [
     'success'
 ];
 
-// TODO:
-// Fix cursor on show more avatar
-
 export default class AvatarGroup extends LightningElement {
     @api listButtonLabel = 'Show more';
     @api listButtonIconName;
