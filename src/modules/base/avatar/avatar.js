@@ -36,6 +36,11 @@ const PRESENCE = {
     default: null
 };
 
+const TEXT_POSITION = {
+    valid: ['left', 'right', 'center'],
+    default: 'right'
+};
+
 export default class Avatar extends LightningElement {
     @api entityInitials;
     @api fallbackIconName;
@@ -51,6 +56,7 @@ export default class Avatar extends LightningElement {
     presenceClass;
     statusComputed;
     wrapperClass;
+    mediaObjectClass;
 
     _alternativeText = 'Avatar';
     _entityIconFullName;
@@ -68,6 +74,7 @@ export default class Avatar extends LightningElement {
     _statusPosition = POSITION.statusDefault;
     _statusTitle = 'Status';
     _variant = VARIANT.default;
+    _textPosition = TEXT_POSITION.default;
 
     /**
      * Main avatar logic
@@ -75,10 +82,10 @@ export default class Avatar extends LightningElement {
 
     connectedCallback() {
         this._updateClassList();
-        /*eslint no-unused-expressions: ["error", { "allowShortCircuit": true }]*/
-        this.status && this._computeStatus();
-        this.presence && this._computePresenceClasses();
-        this.showEntity && this._computeEntityClasses();
+
+        if (this.status) this._computeStatus();
+        if (this.presence) this._computePresenceClasses();
+        if (this.showEntity) this._computeEntityClasses();
     }
 
     render() {
@@ -139,6 +146,18 @@ export default class Avatar extends LightningElement {
             validValues: VARIANT.valid
         });
         this._updateClassList();
+    }
+
+    @api
+    get textPosition() {
+        return this._textPosition;
+    }
+
+    set textPosition(position) {
+        this._textPosition = normalizeString(position, {
+            fallbackValue: TEXT_POSITION.default,
+            validValues: TEXT_POSITION.valid
+        });
     }
 
     /**
@@ -281,11 +300,9 @@ export default class Avatar extends LightningElement {
     }
 
     get computedInitialsClass() {
-        return (
-            classSet('slds-avatar__initials')
-                .add(computeSldsClass(this.fallbackIconName))
-                .toString()
-        );
+        return classSet('slds-avatar__initials')
+            .add(computeSldsClass(this.fallbackIconName))
+            .toString();
     }
 
     get showInitials() {
@@ -309,15 +326,21 @@ export default class Avatar extends LightningElement {
     }
 
     get computedEntityInitialsClass() {
-        return (
-            classSet('slds-avatar__initials')
-                .add(computeSldsClass(this.entityIconName))
-                .toString()
-        );
+        return classSet('slds-avatar__initials')
+            .add(computeSldsClass(this.entityIconName))
+            .toString();
+    }
+
+    get textPositionLeft() {
+        return this.textPosition === 'left';
+    }
+
+    get computedMediaObjectInline() {
+        return this.textPosition === 'center';
     }
 
     _updateClassList() {
-        const { size, variant } = this;
+        const { size, variant, textPosition } = this;
         const wrapperClass = classSet('avonni-avatar slds-is-relative')
             .add({
                 'avonni-avatar_square': variant === 'square',
@@ -337,8 +360,14 @@ export default class Avatar extends LightningElement {
             'slds-avatar_circle': variant === 'circle'
         });
 
+        const mediaObjectClass = classSet('').add({
+            'slds-text-align_right': textPosition === 'left',
+            'slds-text-align_center': textPosition === 'center'
+        });
+
         this.avatarClass = avatarClass;
         this.wrapperClass = wrapperClass;
+        this.mediaObjectClass = mediaObjectClass;
     }
 
     _computeStatus() {
