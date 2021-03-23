@@ -10,21 +10,42 @@ const validSizes = [
     'x-large',
     'xx-large'
 ];
-const validVariants = ['stack', 'grid'];
+const validLayouts = ['stack', 'grid', 'list'];
+
+const validButtonIconPositions = ['left', 'right'];
+
+const validButtonVariants = [
+    'neutral',
+    'base',
+    'brand',
+    'brand-outline',
+    'destructive',
+    'destructive-text',
+    'inverse',
+    'success'
+];
+
+// TODO:
+// Fix cursor on show more avatar
 
 export default class AvatarGroup extends LightningElement {
+    @api listButtonLabel = 'Show more';
+    @api listButtonIconName;
+
     _items = [];
     _maxCount;
     _size = 'medium';
-    _variant = 'stack';
+    _layout = 'stack';
     _allowBlur = false;
+    _listButtonVariant;
+    _listButtonIconPosition;
     showPopover = false;
     hiddenItems = [];
 
     renderedCallback() {
         if (!this.isClassic) {
             let avatars = this.template.querySelectorAll(
-                '.avonni-avatar-in-line'
+                '.avonni-avatar-group_in-line'
             );
 
             avatars.forEach((avatar, index) => {
@@ -62,14 +83,36 @@ export default class AvatarGroup extends LightningElement {
         });
     }
 
-    @api get variant() {
-        return this._variant;
+    @api get layout() {
+        return this._layout;
     }
 
-    set variant(value) {
-        this._variant = normalizeString(value, {
+    set layout(value) {
+        this._layout = normalizeString(value, {
             fallbackValue: 'stack',
-            validValues: validVariants
+            validValues: validLayouts
+        });
+    }
+
+    @api get listButtonVariant() {
+        return this._listButtonVariant;
+    }
+
+    set listButtonVariant(value) {
+        this._listButtonVariant = normalizeString(value, {
+            fallbackValue: 'neutral',
+            validValues: validButtonVariants
+        });
+    }
+
+    @api get listButtonIconPosition() {
+        return this._listButtonIconPosition;
+    }
+
+    set listButtonIconPosition(value) {
+        this._listButtonIconPosition = normalizeString(value, {
+            fallbackValue: 'left',
+            validValues: validButtonIconPositions
         });
     }
 
@@ -95,7 +138,7 @@ export default class AvatarGroup extends LightningElement {
         let items = JSON.parse(JSON.stringify(this.items));
 
         if (isNaN(maxCount)) {
-            maxCount = this.variant === 'stack' ? 5 : 11;
+            maxCount = this.layout === 'stack' ? 5 : 11;
         }
 
         if (length > maxCount) {
@@ -120,7 +163,7 @@ export default class AvatarGroup extends LightningElement {
         let items = JSON.parse(JSON.stringify(this.items));
 
         if (isNaN(maxCount)) {
-            maxCount = this.variant === 'stack' ? 5 : 11;
+            maxCount = this.layout === 'stack' ? 5 : 11;
         }
 
         if (length > maxCount) {
@@ -149,27 +192,35 @@ export default class AvatarGroup extends LightningElement {
     }
 
     get avatarInlineClass() {
-        return classSet('avonni-avatar')
+        return classSet('avonni-avatar-group__avatar')
             .add({
-                'avonni-avatar-in-line': this.variant === 'stack',
-                'avonni-avatar-grid': this.variant === 'grid'
+                'avonni-avatar-group_in-line': this.layout === 'stack'
             })
             .add(`avonni-avatar-${this.size}`)
             .toString();
     }
 
     get avatarInlinePlusClass() {
-        return classSet('avonni-avatar avonni-avatar-plus')
+        return classSet('avonni-avatar-group__avatar avonni-avatar-group__plus')
             .add({
-                'avonni-avatar-in-line': this.variant === 'stack',
-                'avonni-avatar-grid': this.variant === 'grid'
+                'avonni-avatar-group_in-line': this.layout === 'stack'
             })
             .add(`avonni-avatar-${this.size}`)
             .toString();
     }
 
+    get avatarWrapperClass() {
+        return classSet('avonni-avatar-group__avatar-container').add({
+            'slds-show slds-m-bottom_small': this.layout === 'list'
+        });
+    }
+
     get isClassic() {
-        return this.variant === 'stack' && this.items.length === 2;
+        return this.layout === 'stack' && this.items.length === 2;
+    }
+
+    get isNotList() {
+        return !(this.layout === 'list');
     }
 
     allowBlur() {
@@ -188,7 +239,7 @@ export default class AvatarGroup extends LightningElement {
         this.showPopover = false;
     }
 
-    handleAvatarclick(event) {
+    handleAvatarClick(event) {
         let itemId = event.target.dataset.itemId;
         let type = event.target.dataset.type;
         let item;

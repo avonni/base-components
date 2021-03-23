@@ -1,16 +1,9 @@
-.avonni-avatar {
+.avonni-avatar-group__avatar {
     display: inline-block;
     position: relative;
-    vertical-align: top;
-    background: transparent;
-    padding: 0px;
     transition: transform 0.1s ease-out 0s;
-    border: 1px solid rgb(255, 255, 255);
-    line-height: 0;
-    border-radius: 50%;
-    background: #34becd;
-    overflow: hidden;
-    color: rgb(255, 255, 255);
+    --avonni-c-avatar-color-border: #fff;
+    --avonni-c-avatar-sizing-border: 1px;
     cursor: pointer;
 }
 
@@ -39,48 +32,48 @@
     height: 43px;
 }
 
-.avonni-avatar-in-line.avonni-avatar-x-small {
+.avonni-avatar-group_in-line.avonni-avatar-x-small {
     margin-left: -4px;
 }
 
-.avonni-avatar-in-line.avonni-avatar-small {
+.avonni-avatar-group_in-line.avonni-avatar-small {
     margin-left: -6px;
 }
 
-.avonni-avatar-in-line.avonni-avatar-medium {
+.avonni-avatar-group_in-line.avonni-avatar-medium {
     margin-left: -8px;
 }
 
-.avonni-avatar-in-line.avonni-avatar-large {
+.avonni-avatar-group_in-line.avonni-avatar-large {
     margin-left: -10px;
 }
 
-.avonni-avatar-in-line.avonni-avatar-x-large {
+.avonni-avatar-group_in-line.avonni-avatar-x-large {
     margin-left: -12px;
 }
 
-.avonni-avatar-in-line.avonni-avatar-xx-large {
+.avonni-avatar-group_in-line.avonni-avatar-xx-large {
     margin-left: -14px;
 }
 
-.avonni-avatar-in-line:first-child:not(.avonni-avatar-plus) {
+.avonni-avatar-group__avatar-container:first-child:not(.avonni-avatar-group__plus) {
     margin-left: 0px;
 }
 
-.avonni-hidden-avatar-container {
+.avonni-avatar-group__hidden-avatar-container {
     display: flex;
     align-items: center;
     cursor: pointer;
     padding: 0.5rem 0.75rem;
 }
 
-.avonni-hidden-avatar-container p {
+.avonni-avatar-group__hidden-avatar-container p {
     padding-left: 0.5rem;
     white-space: nowrap;
     cursor: pointer;
 }
 
-.avonni-hidden-avatar-container:hover {
+.avonni-avatar-group__hidden-avatar-container:hover {
     background-color: rgb(240, 240, 240);
 }
 
@@ -90,12 +83,17 @@
 }
 
 .slds-avatar:focus,
-.avonni-avatar:focus {
+.avonni-avatar-group__avatar:focus {
     outline: none;
     box-shadow: rgb(53, 125, 219) 0 0 0 2px !important;
 }
+/* To have a circle outline on non-list layout */
+.avonni-avatar-group__avatar-container:not(.slds-show)
+    .avonni-avatar-group__avatar {
+    border-radius: 50%;
+}
 
-.slds-avatar,
+/* .slds-avatar,
 .slds-avatar__initials {
     cursor: pointer;
-}
+} */

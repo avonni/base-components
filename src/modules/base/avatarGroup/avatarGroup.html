@@ -8,12 +8,23 @@
                 src={primaryItem.src}
                 variant="circle"
                 hide-avatar-details="true"
+                size={size}
+                status={primaryItem.status}
+                status-title={primaryItem.statusTitle}
+                status-position={primaryItem.statusPosition}
+                presence={primaryItem.presence}
+                presence-title={primaryItem.presenceTitle}
+                presence-position={primaryItem.presencePosition}
+                entity-icon-name={primaryItem.entityIconName}
+                entity-initials={primaryItem.entityInitials}
+                entity-variant={primaryItem.entityVariant}
+                entity-src={primaryItem.entitySrc}
+                entity-position={primaryItem.entityPosition}
                 data-item-id="0"
                 data-type="show"
                 class="slds-avatar-grouped slds-avatar-grouped__primary"
-                onclick={handleAvatarclick}
+                onclick={handleAvatarClick}
                 tabindex="0"
-                size={size}
             ></c-avatar>
             <c-avatar
                 alternative-text={secondaryItem.alternativeText}
@@ -22,12 +33,23 @@
                 src={secondaryItem.src}
                 variant="circle"
                 hide-avatar-details="true"
+                size={size}
+                status={secondaryItem.status}
+                status-title={secondaryItem.statusTitle}
+                status-position={secondaryItem.statusPosition}
+                presence={secondaryItem.presence}
+                presence-title={secondaryItem.presenceTitle}
+                presence-position={secondaryItem.presencePosition}
+                entity-icon-name={secondaryItem.entityIconName}
+                entity-initials={secondaryItem.entityInitials}
+                entity-variant={secondaryItem.entityVariant}
+                entity-src={secondaryItem.entitySrc}
+                entity-position={secondaryItem.entityPosition}
                 data-item-id="1"
                 data-type="show"
                 class="slds-avatar-grouped slds-avatar-grouped__secondary"
-                onclick={handleAvatarclick}
+                onclick={handleAvatarClick}
                 tabindex="0"
-                size={size}
             ></c-avatar>
         </span>
     </template>
@@ -35,41 +57,72 @@
         <template for:each={listItems} for:item="item" for:index="index">
             <template if:false={item.showMore}>
                 <template if:true={item.key}>
-                    <c-avatar
-                        key={item.key}
-                        alternative-text={item.alternativeText}
-                        fallback-icon-name={item.fallbackIconName}
-                        initials={item.initials}
-                        src={item.src}
-                        variant="circle"
-                        hide-avatar-details="true"
-                        data-item-id={index}
-                        data-type="show"
-                        class={avatarInlineClass}
-                        onclick={handleAvatarclick}
-                        onblur={handleBlur}
-                        tabindex="0"
-                        size={size}
-                    ></c-avatar>
+                    <span key={item.key} class={avatarWrapperClass}>
+                        <c-avatar
+                            alternative-text={item.alternativeText}
+                            fallback-icon-name={item.fallbackIconName}
+                            initials={item.initials}
+                            src={item.src}
+                            variant="circle"
+                            hide-avatar-details={isNotList}
+                            size={size}
+                            status={item.status}
+                            status-title={item.statusTitle}
+                            status-position={item.statusPosition}
+                            presence={item.presence}
+                            presence-title={item.presenceTitle}
+                            presence-position={item.presencePosition}
+                            entity-icon-name={item.entityIconName}
+                            entity-initials={item.entityInitials}
+                            entity-variant={item.entityVariant}
+                            entity-src={item.entitySrc}
+                            entity-position={item.entityPosition}
+                            primary-text={item.primaryText}
+                            secondary-text={item.secondaryText}
+                            tertiary-text={item.tertiaryText}
+                            data-item-id={index}
+                            data-type="show"
+                            class={avatarInlineClass}
+                            onclick={handleAvatarClick}
+                            onblur={handleBlur}
+                            tabindex="0"
+                        ></c-avatar>
+                    </span>
                 </template>
             </template>
             <template if:true={item.showMore}>
                 <div
-                    class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open"
+                    class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open avonni-avatar-group__avatar-container"
                     key={item.key}
                 >
-                    <c-avatar
-                        initials={item.initials}
-                        variant="circle"
-                        hide-avatar-details="true"
-                        size={size}
-                        data-item-id={index}
-                        data-type="show"
-                        class={avatarInlinePlusClass}
-                        onclick={handleAvatarclick}
-                        onblur={handleBlur}
-                        tabindex="0"
-                    ></c-avatar>
+                    <template if:true={isNotList}>
+                        <c-avatar
+                            initials={item.initials}
+                            variant="circle"
+                            fallback-icon-name="action:more"
+                            hide-avatar-details="true"
+                            size={size}
+                            data-item-id={index}
+                            data-type="show"
+                            class={avatarInlinePlusClass}
+                            onclick={handleAvatarClick}
+                            onblur={handleBlur}
+                            tabindex="0"
+                        ></c-avatar>
+                    </template>
+                    <template if:false={isNotList}>
+                        <lightning-button
+                            variant={listButtonVariant}
+                            label={listButtonLabel}
+                            icon-name={listButtonIconName}
+                            icon-position={listButtonIconPosition}
+                            data-item-id={index}
+                            data-type="show"
+                            onclick={handleAvatarClick}
+                            onblur={handleBlur}
+                            tabindex="0"
+                        ></lightning-button>
+                    </template>
                     <template if:true={showPopover}>
                         <div
                             class="slds-dropdown slds-dropdown_left"
@@ -83,8 +136,8 @@
                             >
                                 <div
                                     key={item.key}
-                                    class="avonni-hidden-avatar-container"
-                                    onclick={handleAvatarclick}
+                                    class="avonni-avatar-group__hidden-avatar-container"
+                                    onclick={handleAvatarClick}
                                     data-item-id={index}
                                     data-type="hidden"
                                 >
@@ -96,14 +149,25 @@
                                         variant="circle"
                                         hide-avatar-details="true"
                                         size={size}
+                                        status={item.status}
+                                        status-title={item.statusTitle}
+                                        status-position={item.statusPosition}
+                                        presence={item.presence}
+                                        presence-title={item.presenceTitle}
+                                        presence-position={item.presencePosition}
+                                        entity-icon-name={item.entityIconName}
+                                        entity-initials={item.entityInitials}
+                                        entity-variant={item.entityVariant}
+                                        entity-src={item.entitySrc}
+                                        entity-position={item.entityPosition}
                                         data-item-id={index}
                                         data-type="hidden"
                                         class={avatarInlineClass}
-                                        onclick={handleAvatarclick}
+                                        onclick={handleAvatarClick}
                                         tabindex="0"
                                     ></c-avatar>
                                     <p
-                                        onclick={handleAvatarclick}
+                                        onclick={handleAvatarClick}
                                         data-item-id={index}
                                         data-type="hidden"
                                     >
