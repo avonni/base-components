@@ -14,6 +14,7 @@ export default {
             }
         },
         titlePosition: {
+            name: 'title-position',
             control: {
                 type: 'select',
                 options: ['bottom', 'top']
@@ -110,6 +111,17 @@ export default {
             table: {
                 defaultValue: { summary: 'medium' },
                 type: { summary: 'string' }
+            }
+        },
+        round: {
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description: 'If true, round the line ends.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
             }
         }
     }

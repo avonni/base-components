@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeString } from 'c/utilsPrivate';
+import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
 const VARIANTS = { valid: ['standard', 'value-hidden'], default: 'standard' };
@@ -20,6 +20,7 @@ export default class ProgressCircle extends LightningElement {
     _direction = 'fill';
     _size = 'medium';
     _thickness = 'medium';
+    _round = false;
     _color = '#1589ee';
 
     @api
@@ -95,6 +96,15 @@ export default class ProgressCircle extends LightningElement {
             fallbackValue: SIZES.default,
             validValues: SIZES.valid
         });
+    }
+
+    @api
+    get round() {
+        return this._round;
+    }
+
+    set round(value) {
+        this._round = normalizeBoolean(value);
     }
 
     @api
