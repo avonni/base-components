@@ -5,3 +5,7 @@
 .avonni-media-object-display-inline {
     display: inline-block;
 }
+
+.avonni-media-object-display-inline .slds-media__figure {
+    margin: 0;
+}
