@@ -76,6 +76,19 @@ export default {
                 defaultValue: { summary: 'medium' },
                 type: { summary: 'string' }
             }
+        },
+        thickness: {
+            control: {
+                type: 'select',
+                options: ['x-small', 'small', 'medium', 'large', 'x-large']
+            },
+            defaultValue: 'medium',
+            description:
+                'Set progress circle thickness. Valid values include x-small, small, medium, large and x-large.',
+            table: {
+                defaultValue: { summary: 'medium' },
+                type: { summary: 'string' }
+            }
         }
     }
 };

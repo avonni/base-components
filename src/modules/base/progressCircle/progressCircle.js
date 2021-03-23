@@ -13,9 +13,11 @@ export default class ProgressCircle extends LightningElement {
     _variant = 'standard';
     _direction = 'fill';
     _size = 'medium';
+    _thickness = 'medium';
     _color = '#1589ee';
 
-    @api get value() {
+    @api
+    get value() {
         return this._value;
     }
 
@@ -29,7 +31,8 @@ export default class ProgressCircle extends LightningElement {
         }
     }
 
-    @api get variant() {
+    @api
+    get variant() {
         return this._variant;
     }
 
@@ -40,7 +43,8 @@ export default class ProgressCircle extends LightningElement {
         });
     }
 
-    @api get direction() {
+    @api
+    get direction() {
         return this._direction;
     }
 
@@ -51,7 +55,8 @@ export default class ProgressCircle extends LightningElement {
         });
     }
 
-    @api get size() {
+    @api
+    get size() {
         return this._size;
     }
 
@@ -62,7 +67,20 @@ export default class ProgressCircle extends LightningElement {
         });
     }
 
-    @api get color() {
+    @api
+    get thickness() {
+        return this._thickness;
+    }
+
+    set thickness(thickness) {
+        this._thickness = normalizeString(thickness, {
+            fallbackValue: 'medium',
+            validValues: validSizes
+        });
+    }
+
+    @api
+    get color() {
         return this._color;
     }
 

@@ -1,7 +1,10 @@
-import { generateColors } from '../../utilsPrivate/colorUtils'
+import { generateColors } from '../../utilsPrivate/colorUtils';
 import Component from 'base/progressCircle';
 
-customElements.define('ac-base-progress-circle', Component.CustomElementConstructor);
+customElements.define(
+    'ac-base-progress-circle',
+    Component.CustomElementConstructor
+);
 
 export const ProgressCircle = ({
     label,
@@ -9,7 +12,8 @@ export const ProgressCircle = ({
     variant,
     color,
     direction,
-    size
+    size,
+    thickness
 }) => {
     const element = document.createElement('ac-base-progress-circle');
     element.label = label;
@@ -18,5 +22,6 @@ export const ProgressCircle = ({
     element.color = generateColors(color).hex;
     element.direction = direction;
     element.size = size;
+    element.thickness = thickness;
     return element;
 };
