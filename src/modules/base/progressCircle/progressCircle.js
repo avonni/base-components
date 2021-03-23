@@ -156,6 +156,7 @@ export default class ProgressCircle extends LightningElement {
     get progressTitleClass() {
         return classSet('slds-grid slds-grid_align-center')
             .add({
+                // 'slds-grid_align-center': this._titlePosition === 'bottom',
                 'avonni-progress-title-x-small': this._size === 'x-small',
                 'avonni-progress-title-small': this._size === 'small',
                 'avonni-progress-title-medium': this._size === 'medium',
@@ -186,5 +187,9 @@ export default class ProgressCircle extends LightningElement {
         let arcY = Math.sin(2 * Math.PI * (fillValue / 100));
 
         return 'M 1 0 A 1 1 0 ' + isLong + ' ' + arcX + ' ' + arcY + ' L 0 0';
+    }
+
+    get showPositionBottom() {
+        return this._titlePosition === 'bottom';
     }
 }
