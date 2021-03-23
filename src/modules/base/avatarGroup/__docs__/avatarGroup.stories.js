@@ -6,6 +6,11 @@ export default {
         items: {
             control: {
                 type: 'object'
+            },
+            description:
+                'Fields: alternativeText, fallbackIconName, initials, src, status, status-title, status-position, presence, presence-title, presence-position, entity-icon-name, entity-initials, entity-variant, entity-src, entity-position, primary-text, secondary-text, tertiary-text',
+            table: {
+                type: { summary: 'object[]' }
             }
         },
         size: {
@@ -21,8 +26,22 @@ export default {
                 ]
             },
             defaultValue: 'medium',
+            description: 'x-small, small, medium and large.',
             table: {
                 defaultValue: { summary: 'medium' }
+            }
+        },
+        variant: {
+            control: {
+                type: 'select',
+                options: ['empty', 'circle', 'square']
+            },
+            defaultValue: 'square',
+            description:
+                'Shape of the avatars. Valid values include empty, circle or square.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'square' }
             }
         },
         layout: {
@@ -31,14 +50,78 @@ export default {
                 options: ['stack', 'grid', 'list']
             },
             defaultValue: 'stack',
+            description: 'Valid values include stack, grid, list',
             table: {
-                defaultValue: { summary: 'stack' }
+                defaultValue: { summary: 'stack' },
+                type: { summary: 'string' }
             }
         },
         maxCount: {
+            name: 'max-count',
             control: {
                 type: 'number',
                 min: 0
+            },
+            description:
+                'The maximum number of avatars allowed in the visible list.',
+            table: {
+                defaultValue: { summary: '5 for stack, 11 for grid and list' },
+                type: { summary: 'number' }
+            }
+        },
+        listButtonLabel: {
+            name: 'list-button-label',
+            control: {
+                type: 'text'
+            },
+            defaultValue: 'Show more',
+            description:
+                'Label of the button that appears in the list layout, when the number of avatars exceeds the max-count number.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Show more' },
+                category: 'List button'
+            }
+        },
+        listButtonVariant: {
+            name: 'list-button-variant',
+            control: {
+                type: 'text'
+            },
+            defaultValue: 'neutral',
+            description:
+                'Variant of the button that appears in the list layout, when the number of avatars exceeds the max-count number.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'neutral' },
+                category: 'List button'
+            }
+        },
+        listButtonIconName: {
+            name: 'list-button-icon-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                "The Lightning Design System name of the list button icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.",
+            table: {
+                type: { summary: 'string' },
+                category: 'List button'
+            }
+        },
+        listButtonIconPosition: {
+            name: 'list-button-icon-position',
+            control: {
+                type: 'radio',
+                options: ['left', 'right']
+            },
+            defaultValue: 'left',
+            description:
+                'Position of the list button’s icon. Valid values include left and right.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'left' },
+                category: 'List button'
             }
         }
     }
@@ -174,7 +257,8 @@ BaseWithTwoAvatars.args = {
 export const BaseExtraLargeWithTwoAvatars = Template.bind({});
 BaseExtraLargeWithTwoAvatars.args = {
     items: items,
-    size: 'x-large'
+    size: 'x-large',
+    variant: 'circle'
 };
 
 export const BaseWithMoreThanTwoAvatars = Template.bind({});
@@ -186,7 +270,8 @@ export const BaseLargeWithMoreThanTwoAvatars = Template.bind({});
 BaseLargeWithMoreThanTwoAvatars.args = {
     items: [...items, ...items, ...items],
     size: 'large',
-    maxCount: '6'
+    maxCount: '6',
+    variant: 'circle'
 };
 
 export const Grid = Template.bind({});
@@ -207,7 +292,8 @@ GridWithPresence.args = {
         ...itemsWithPresence
     ],
     layout: 'grid',
-    maxCount: '6'
+    maxCount: '6',
+    variant: 'circle'
 };
 
 export const GridSmall = Template.bind({});

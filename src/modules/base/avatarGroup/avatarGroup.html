@@ -6,7 +6,7 @@
                 fallback-icon-name={primaryItem.fallbackIconName}
                 initials={primaryItem.initials}
                 src={primaryItem.src}
-                variant="circle"
+                variant={variant}
                 hide-avatar-details="true"
                 size={size}
                 status={primaryItem.status}
@@ -31,7 +31,7 @@
                 fallback-icon-name={secondaryItem.fallbackIconName}
                 initials={secondaryItem.initials}
                 src={secondaryItem.src}
-                variant="circle"
+                variant={variant}
                 hide-avatar-details="true"
                 size={size}
                 status={secondaryItem.status}
@@ -63,7 +63,7 @@
                             fallback-icon-name={item.fallbackIconName}
                             initials={item.initials}
                             src={item.src}
-                            variant="circle"
+                            variant={variant}
                             hide-avatar-details={isNotList}
                             size={size}
                             status={item.status}
@@ -92,14 +92,14 @@
             </template>
             <template if:true={item.showMore}>
                 <div
-                    class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open avonni-avatar-group__avatar-container"
+                    class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open"
                     key={item.key}
                 >
                     <template if:true={isNotList}>
                         <c-avatar
                             initials={item.initials}
-                            variant="circle"
-                            fallback-icon-name="action:more"
+                            variant={variant}
+                            fallback-icon-name="standard:macros"
                             hide-avatar-details="true"
                             size={size}
                             data-item-id={index}
@@ -146,7 +146,7 @@
                                         fallback-icon-name={item.fallbackIconName}
                                         initials={item.initials}
                                         src={item.src}
-                                        variant="circle"
+                                        variant={variant}
                                         hide-avatar-details="true"
                                         size={size}
                                         status={item.status}

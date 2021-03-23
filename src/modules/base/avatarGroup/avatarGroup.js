@@ -12,6 +12,8 @@ const validSizes = [
 ];
 const validLayouts = ['stack', 'grid', 'list'];
 
+const validVariants = ['empty', 'square', 'circle'];
+
 const validButtonIconPositions = ['left', 'right'];
 
 const validButtonVariants = [
@@ -116,6 +118,17 @@ export default class AvatarGroup extends LightningElement {
         });
     }
 
+    @api get variant() {
+        return this._variant;
+    }
+
+    set variant(value) {
+        this._variant = normalizeString(value, {
+            fallbackValue: 'square',
+            validValues: validVariants
+        });
+    }
+
     get primaryItem() {
         if (this.items.length === 2) {
             return this.items[0];
@@ -179,14 +192,15 @@ export default class AvatarGroup extends LightningElement {
     }
 
     get avatarGroupClass() {
-        return classSet('slds-avatar-group')
+        return classSet('slds-avatar-group avonni-avatar-group__avatar')
             .add({
                 'slds-avatar-group_x-small': this.size === 'x-small',
                 'slds-avatar-group_small': this.size === 'small',
                 'slds-avatar-group_medium': this.size === 'medium',
                 'slds-avatar-group_large': this.size === 'large',
                 'avonni-avatar-group_x-large': this.size === 'x-large',
-                'avonni-avatar-group_xx-large': this.size === 'xx-large'
+                'avonni-avatar-group_xx-large': this.size === 'xx-large',
+                'avonni-avatar-group_circle': this.variant === 'circle'
             })
             .toString();
     }
@@ -211,7 +225,8 @@ export default class AvatarGroup extends LightningElement {
 
     get avatarWrapperClass() {
         return classSet('avonni-avatar-group__avatar-container').add({
-            'slds-show slds-m-bottom_small': this.layout === 'list'
+            'slds-show slds-m-bottom_small': this.layout === 'list',
+            'avonni-avatar-group_circle': this.variant === 'circle'
         });
     }
 
