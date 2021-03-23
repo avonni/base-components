@@ -13,6 +13,18 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        titlePosition: {
+            control: {
+                type: 'select',
+                options: ['bottom', 'top']
+            },
+            defaultValue: 'bottom',
+            description: 'Valid values include top and bottom.',
+            table: {
+                defaultValue: { summary: 'bottom' },
+                type: { summary: 'string' }
+            }
+        },
         color: {
             control: {
                 type: 'color'
