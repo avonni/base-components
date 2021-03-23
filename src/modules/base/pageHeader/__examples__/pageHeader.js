@@ -1,7 +1,7 @@
 import Component from '../../storybookWrappers/pageHeader/pageHeader';
 
 customElements.define(
-    'ac-avonni-page-header',
+    'ac-base-page-header',
     Component.CustomElementConstructor
 );
 
@@ -13,7 +13,7 @@ export const PageHeader = ({
     variant,
     items
 }) => {
-    const element = document.createElement('ac-avonni-page-header');
+    const element = document.createElement('ac-base-page-header');
     element.iconName = iconName;
     element.label = label;
     element.title = title;

@@ -224,7 +224,7 @@
         },
         {
             "name": "c/primitivePageHeaderItem",
-            "path": "src/modules/avonni/lwc/primitivePageHeaderItem/primitivePageHeaderItem.js"
+            "path": "src/modules/base/primitivePageHeaderItem/primitivePageHeaderItem.js"
         },
         {
             "name": "c/primitiveProgressBarBadge",
