@@ -1,16 +1,12 @@
-.sfdx/
 .storybook/
-config/
 .eslintignore
 .eslintrc.json
-.forceignore
 .gitignore
 .gitmodules
 .prettierignore
 .prettierrc
 jest.config.js
 package-lock.json
-sfdx-project.json
 
 # LWC Jest
 **/__tests__/**

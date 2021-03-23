@@ -1,21 +1,9 @@
 # Jest coverage
 coverage/
 
-# Default lib folder
-lib/
-
-# Default dist folder
-dist/
-
-# Default resources folder
-src/resources
-
 # List files or directories below to ignore them when running prettier
 # More information: https://prettier.io/docs/en/ignore.html
 #
 
-**/staticresources/**
-.localdevserver
-.sfdx
 coverage/
 jsconfig.json
