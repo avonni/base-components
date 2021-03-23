@@ -86,6 +86,7 @@
                             </div>
                         </template>
                     </div>
+                    <!-- <template if:false={hideIndicator}> -->
                     <ul
                         class="slds-carousel__indicators"
                         role="tablist"
@@ -93,6 +94,7 @@
                     >
                         <!-- Pagination items -->
                         <template
+                            if:false={hideIndicator}
                             for:each={paginationItems}
                             for:item="paginationItem"
                             for:index="paginationIndex"
@@ -120,11 +122,12 @@
                             </li>
                         </template>
                     </ul>
+                    <!-- </template> -->
                     <!-- Autoplay button -->
                     <template if:false={disableAutoScroll}>
                         <lightning-button-icon
                             alternative-text={assistiveText.autoplayButton}
-                            class="avonni-carousel__autoscroll-button"
+                            class={computedAutoScrollAutoplayButton}
                             icon-name={autoScrollIcon}
                             onclick={toggleAutoScroll}
                             size="x-small"

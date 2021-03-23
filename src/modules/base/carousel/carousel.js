@@ -145,6 +145,13 @@ export default class Carousel extends LightningElement {
             : null;
     }
 
+    // Change the button position depending if hideIndicator is true or false
+    get computedAutoScrollAutoplayButton() {
+        return this._hideIndicator
+            ? 'avonni-carousel__autoscroll-button-without-indicator'
+            : 'avonni-carousel__autoscroll-button-with-indicator';
+    }
+
     initializePaginationItems(numberOfPanels) {
         for (let i = 0; i < numberOfPanels; i++) {
             const isItemActive = i === this.activeIndexPanel;

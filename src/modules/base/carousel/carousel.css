@@ -12,8 +12,14 @@
     display: block;
 }
 
-.avonni-carousel__autoscroll-button {
+.avonni-carousel__autoscroll-button-with-indicator {
     position: absolute;
-    bottom: 0;
+    bottom: 10px;
+    left: var(--lwc-spacingMedium, 1rem);
+}
+
+.avonni-carousel__autoscroll-button-without-indicator {
+    position: absolute;
+    bottom: 20px;
     left: var(--lwc-spacingMedium, 1rem);
 }
