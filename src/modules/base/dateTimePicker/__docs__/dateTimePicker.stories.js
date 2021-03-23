@@ -45,7 +45,7 @@ export default {
         variant: {
             control: {
                 type: 'select',
-                options: ['daily', 'weekly']
+                options: ['daily', 'weekly', 'inline', 'timeline', 'monthly']
             },
             defaultValue: 'daily',
             description:
@@ -227,6 +227,16 @@ export default {
                 defaultValue: { summary: 'long' }
             }
         },
+        dateFormatYear: {
+            control: {
+                type: 'select',
+                options: ['2-digit', 'numeric']
+            },
+            description: 'Valid values include numeric and 2-digit.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         showEndTime: {
             control: {
                 type: 'boolean'
@@ -237,14 +247,14 @@ export default {
                 type: { summary: 'boolean' }
             }
         },
-        dateFormatYear: {
+        showDisabledDates: {
             control: {
-                type: 'select',
-                options: ['2-digit', 'numeric']
+                type: 'boolean'
             },
-            description: 'Valid values include numeric and 2-digit.',
+            description:
+                'If true, show the disabled dates in the date time picker.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'boolean' }
             }
         },
         max: {
@@ -320,20 +330,73 @@ export default {
 
 const Template = (args) => DateTimePicker(args);
 
-export const Base = Template.bind({});
-Base.args = {
+export const Daily = Template.bind({});
+Daily.args = {
     label: 'Date picker'
 };
 
-export const Complex = Template.bind({});
-Complex.args = {
+export const Weekly = Template.bind({});
+Weekly.args = {
     label: 'Date picker',
-    disabledDateTimes: ['Wed', new Date('2021-03-12T13:00:00.00Z')],
+    fieldLevelHelp: 'Pick one or several time slots',
+    disabledDateTimes: [
+        'Wed',
+        new Date('2021-03-16T12:00:00.00Z'),
+        new Date('2021-03-16T13:00:00.00Z')
+    ],
     showTimeZone: true,
     required: true,
     variant: 'weekly',
-    value: ['2021-03-13T13:00:00.000Z', '2021-03-13T14:00:00.000Z'],
     type: 'checkbox',
     timeFormatHour12: false,
-    showEndTime: true
+    showEndTime: true,
+    showDisabledDates: true
+};
+
+export const Inline = Template.bind({});
+Inline.args = {
+    label: 'Date picker',
+    fieldLevelHelp: 'Pick a time',
+    variant: 'inline'
+};
+
+export const Timeline = Template.bind({});
+Timeline.args = {
+    label: 'Date picker',
+    hideLabel: true,
+    variant: 'timeline',
+    timeSlotDuration: '00:05',
+    disabledDateTimes: [
+        new Date(new Date().setHours(9, 35, 0, 0)),
+        new Date(new Date().setHours(9, 30, 0, 0)),
+        new Date(new Date().setHours(9, 10, 0, 0)),
+        new Date(new Date().setHours(10, 15, 0, 0)),
+        new Date(new Date().setHours(15, 0, 0, 0)),
+        new Date(new Date().setHours(15, 10, 0, 0)),
+        new Date(new Date().setHours(16, 45, 0, 0)),
+        new Date(new Date().setHours(17, 20, 0, 0)),
+        'Wed',
+        13
+    ]
+};
+
+export const Monthly = Template.bind({});
+Monthly.args = {
+    label: 'Date picker',
+    hideLabel: true,
+    variant: 'monthly',
+    timeSlotDuration: '01:00',
+    disabledDateTimes: [
+        new Date('2021-03-16T13:00:00.00Z'),
+        new Date('2021-03-16T13:10:00.00Z'),
+        'Wed',
+        13
+    ],
+    value: '2021-03-16T15:00:00.00Z',
+    timeFormatHour: 'numeric',
+    dateFormatWeekday: 'long',
+    dateFormatYear: 'numeric',
+    showTimeZone: true,
+    hideNavigation: true,
+    hideDatePicker: true
 };

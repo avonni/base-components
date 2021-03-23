@@ -28,6 +28,7 @@ export const DateTimePicker = ({
     dateFormatMonth,
     dateFormatYear,
     showEndTime,
+    showDisabledDates,
     disabledDateTimes,
     max,
     min,
@@ -59,6 +60,7 @@ export const DateTimePicker = ({
     element.dateFormatMonth = dateFormatMonth;
     element.dateFormatYear = dateFormatYear;
     element.showEndTime = showEndTime;
+    element.showDisabledDates = showDisabledDates;
     element.disabledDateTimes = disabledDateTimes;
     element.max = max;
     element.min = min;
