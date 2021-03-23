@@ -1,7 +1,7 @@
 <template>
     <div class="avonni-progress-step-outer-class">
         <li>
-            <div style="flex: 1 1 auto; text-align: center">
+            <div class="avonni-progress-step-inner-class">
                 <div class="avonni-progress-step-position-top slds-truncate">
                     <template if:true={showLabelTop}>
                         <p class="slds-text-title_bold">{label}</p>
@@ -38,7 +38,9 @@
                             onmouseleave={handlePopoverMouseLeave}
                         >
                             <template if:false={popoverIconHoverVisible}>
-                                <div style="overflow: hidden">
+                                <div
+                                    class="avonni-progress-step-overflow-hidden"
+                                >
                                     <div class="slds-popover__body">
                                         <template if:true={popoverLabel}>
                                             <p class="slds-text-title_bold">
@@ -78,7 +80,7 @@
                             class={computedPopoverClass}
                             onclick={handleStepPopoverClick}
                         >
-                            <div style="overflow: hidden">
+                            <div class="avonni-progress-step-overflow-hidden">
                                 <div class={computedPopoverBody}>
                                     <template if:true={popoverLabel}>
                                         <p class="slds-text-title_bold">

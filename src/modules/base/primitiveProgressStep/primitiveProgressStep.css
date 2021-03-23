@@ -37,6 +37,11 @@
     margin-left: var(--lwc-varSpacingHorizontalMedium, 1rem);
 }
 
+.avonni-progress-step-inner-class {
+    flex: 1 1 auto;
+    text-align: center;
+}
+
 .avonni-progress-step-position-top {
     position: absolute;
     width: 100%;
@@ -197,4 +202,8 @@
 .slds-popover:focus .avonni-progress-step-popover-body-no-icon-hover {
     display: block;
     color: #706e6b;
+}
+
+.avonni-progress-step-overflow-hidden {
+    overflow: hidden;
 }
