@@ -55,11 +55,7 @@
         <template if:true={items}>
             <ul class="slds-page-header__detail-list">
                 <template for:each={items} for:item="item">
-                    <li
-                        key={item.label}
-                        class="slds-page-header__detail-item"
-                        style="overflow: hidden"
-                    >
+                    <li key={item.label} class="slds-page-header__detail-item">
                         <div
                             class="slds-text-title slds-truncate"
                             title={item.label}
