@@ -36,9 +36,29 @@ export default {
                 type: 'boolean'
             }
         },
+        indicatorVariant: {
+            control: {
+                type: 'string'
+            },
+            defaultValue: 'base',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'base' }
+            }
+        },
         isInfinite: {
             control: {
                 type: 'boolean'
+            }
+        },
+        hideIndicator: {
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
             }
         },
         hidePreviousNextPanelNavigation: {

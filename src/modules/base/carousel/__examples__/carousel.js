@@ -8,8 +8,10 @@ export const Carousel = ({
     disableAutoRefresh,
     disableAutoScroll,
     scrollDuration,
+    indicatorVariant,
     isInfinite,
     currentPanel,
+    hideIndicator,
     hidePreviousNextPanelNavigation,
     itemsPerPanel
 }) => {
@@ -19,8 +21,10 @@ export const Carousel = ({
     element.disableAutoRefresh = disableAutoRefresh;
     element.disableAutoScroll = disableAutoScroll;
     element.scrollDuration = scrollDuration;
+    element.indicatorVariant = indicatorVariant;
     element.isInfinite = isInfinite;
     element.currentPanel = currentPanel;
+    element.hideIndicator = hideIndicator;
     element.hidePreviousNextPanelNavigation = hidePreviousNextPanelNavigation;
     element.itemsPerPanel = itemsPerPanel;
     return element;
