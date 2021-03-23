@@ -38,7 +38,8 @@ export default {
         },
         indicatorVariant: {
             control: {
-                type: 'text'
+                type: 'select',
+                options: ['base', 'shaded']
             },
             defaultValue: 'base',
             table: {
