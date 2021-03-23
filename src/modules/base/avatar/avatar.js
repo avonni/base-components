@@ -51,6 +51,7 @@ export default class Avatar extends LightningElement {
     presenceClass;
     statusComputed;
     wrapperClass;
+    fallbackIconClass;
 
     _alternativeText = 'Avatar';
     _entityIconFullName;
@@ -281,11 +282,16 @@ export default class Avatar extends LightningElement {
     }
 
     get computedInitialsClass() {
-        return (
-            classSet('slds-avatar__initials')
-                .add(computeSldsClass(this.fallbackIconName))
-                .toString()
-        );
+        return classSet('slds-avatar__initials')
+            .add({
+                'slds-avatar-grouped__initials': this.groupedAvatar
+            })
+            .add(computeSldsClass(this.fallbackIconName))
+            .toString();
+    }
+
+    get groupedAvatar() {
+        return this.template.host.classList.contains('slds-avatar-grouped');
     }
 
     get showInitials() {
@@ -309,15 +315,13 @@ export default class Avatar extends LightningElement {
     }
 
     get computedEntityInitialsClass() {
-        return (
-            classSet('slds-avatar__initials')
-                .add(computeSldsClass(this.entityIconName))
-                .toString()
-        );
+        return classSet('slds-avatar__initials')
+            .add(computeSldsClass(this.entityIconName))
+            .toString();
     }
 
     _updateClassList() {
-        const { size, variant } = this;
+        const { size, variant, groupedAvatar } = this;
         const wrapperClass = classSet('avonni-avatar slds-is-relative')
             .add({
                 'avonni-avatar_square': variant === 'square',
@@ -337,8 +341,13 @@ export default class Avatar extends LightningElement {
             'slds-avatar_circle': variant === 'circle'
         });
 
+        const fallbackIconClass = classSet('avonni-avatar__icon').add({
+            'slds-avatar-grouped__icon': groupedAvatar
+        });
+
         this.avatarClass = avatarClass;
         this.wrapperClass = wrapperClass;
+        this.fallbackIconClass = fallbackIconClass;
     }
 
     _computeStatus() {
