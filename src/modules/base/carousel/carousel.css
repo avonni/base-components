@@ -20,7 +20,7 @@
 
 .avonni-carousel__autoscroll-button-without-indicator {
     position: absolute;
-    bottom: 20px;
+    bottom: 22px;
     left: var(--lwc-spacingMedium, 1rem);
 }
 
