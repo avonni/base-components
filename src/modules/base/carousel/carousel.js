@@ -1,10 +1,13 @@
 import { LightningElement, api } from 'lwc';
 import { keyCodes } from 'c/utilsPrivate';
+import { normalizeBoolean, normalizeString } from '../utilsPrivate/normalize';
 
 const INDICATOR_ACTION = 'slds-carousel__indicator-action';
 const SLDS_ACTIVE = 'slds-is-active';
 const FALSE_STRING = 'false';
 const TRUE_STRING = 'true';
+
+const VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
 
 const i18n = {
     nextPanel: 'Next Panel',
@@ -28,6 +31,8 @@ export default class Carousel extends LightningElement {
     _carouselItems = [];
     _itemsPerPanel = 1;
     _initialRender = true;
+    _indicatorVariant = 'base';
+    _hideIndicator = false;
 
     activeIndexPanel;
     autoScrollIcon = 'utility:play';
@@ -101,6 +106,27 @@ export default class Carousel extends LightningElement {
 
     set itemsPerPanel(number) {
         this._itemsPerPanel = parseInt(number, 10);
+    }
+
+    @api
+    get indicatorVariant() {
+        return this._indicatorVariant;
+    }
+
+    set indicatorVariant(variant) {
+        this._indicatorVariant = normalizeString(variant, {
+            fallbackValue: VARIANTS.default,
+            validValues: VARIANTS.valid
+        });
+    }
+
+    @api
+    get hideIndicator() {
+        return this._hideIndicator;
+    }
+
+    set hideIndicator(value) {
+        this._hideIndicator = normalizeBoolean(value);
     }
 
     // Sets the width of each item, depending on the number of items per panel
