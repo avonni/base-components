@@ -240,7 +240,7 @@
         },
         {
             "name": "c/progressIndicator",
-            "path": "src/modules/avonni/lwc/progressIndicator/progressIndicator.js"
+            "path": "src/modules/base/progressIndicator/progressIndicator.js"
         },
         {
             "name": "c/progressRing",
@@ -248,7 +248,7 @@
         },
         {
             "name": "c/progressStep",
-            "path": "src/modules/avonni/lwc/progressStep/progressStep.js"
+            "path": "src/modules/base/progressStep/progressStep.js"
         },
         {
             "name": "c/qrcode",
@@ -475,6 +475,10 @@
             "path": "src/modules/base/progressCircle/progressCircle.js"
         },
         {
+            "name": "base/progressIndicator",
+            "path": "src/modules/base/progressIndicator/progressIndicator.js"
+        },
+        {
             "name": "base/progressRing",
             "path": "src/modules/base/progressRing/progressRing.js"
         },
@@ -582,6 +586,7 @@
         "base/profileCard",
         "base/progressBar",
         "base/progressCircle",
+        "base/progressIndicator",
         "base/progressRing",
         "base/qrcode",
         "base/range",

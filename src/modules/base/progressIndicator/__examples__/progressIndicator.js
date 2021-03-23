@@ -1,4 +1,4 @@
-import Component from 'avonni/progressIndicator';
+import Component from 'base/progressIndicator';
 
 customElements.define(
     'ac-avonni-progress-indicator',
@@ -15,7 +15,7 @@ export const ProgressIndicator = ({
     variant,
     steps
 }) => {
-    const element = document.createElement('ac-avonni-progress-indicator');
+    const element = document.createElement('ac-base-progress-indicator');
     element.completedSteps = completedSteps;
     element.disabledSteps = disabledSteps;
     element.errorSteps = errorSteps;
