@@ -70,8 +70,92 @@ export default {
 
 const Template = (args) => ButtonIconDialog(args);
 
-export const Base = Template.bind({});
-Base.args = {
+export const Border = Template.bind({});
+Border.args = {
     tooltip: 'Show modal',
     iconName: 'utility:animal_and_nature'
+};
+
+export const BorderWithWarningIcon = Template.bind({});
+BorderWithWarningIcon.args = {
+    tooltip: 'Show modal',
+    iconName: 'utility:warning',
+    iconClass: 'slds-icon-text-warning'
+};
+
+export const BorderWithErrorIcon = Template.bind({});
+BorderWithErrorIcon.args = {
+    tooltip: 'Show modal',
+    iconName: 'utility:error',
+    iconClass: 'slds-icon-text-error'
+};
+
+export const BorderWithSuccessIcon = Template.bind({});
+BorderWithSuccessIcon.args = {
+    tooltip: 'Show modal',
+    iconName: 'utility:success',
+    iconClass: 'slds-icon-text-success'
+};
+
+export const BorderWithLightIcon = Template.bind({});
+BorderWithLightIcon.args = {
+    tooltip: 'Show modal',
+    iconName: 'utility:check',
+    iconClass: 'slds-icon-text-light'
+};
+
+export const BorderSmall = Template.bind({});
+BorderSmall.args = {
+    tooltip: 'Show modal',
+    iconName: 'utility:animal_and_nature',
+    size: 'small'
+};
+
+export const BorderDisabled = Template.bind({});
+BorderDisabled.args = {
+    tooltip: 'Show modal',
+    iconName: 'utility:animal_and_nature',
+    disabled: 'true'
+};
+
+export const Brand = Template.bind({});
+Brand.args = {
+    tooltip: 'Show modal',
+    iconName: 'utility:einstein',
+    variant: 'brand'
+};
+
+export const Container = Template.bind({});
+Container.args = {
+    tooltip: 'Show modal',
+    iconName: 'utility:animal_and_nature',
+    variant: 'Container'
+};
+
+export const Bare = Template.bind({});
+Bare.args = {
+    tooltip: 'Show modal',
+    iconName: 'utility:animal_and_nature',
+    variant: 'bare'
+};
+
+export const BareInverse = Template.bind({});
+BareInverse.args = {
+    tooltip: 'Show modal',
+    iconName: 'utility:animal_and_nature',
+    variant: 'bare-inverse'
+};
+
+export const BorderFilled = Template.bind({});
+BorderFilled.args = {
+    tooltip: 'Show modal',
+    iconName: 'utility:animal_and_nature',
+    variant: 'Border-Filled'
+};
+
+export const BorderInverse = Template.bind({});
+BorderInverse.args = {
+    tooltip: 'Show modal',
+    iconName: 'utility:animal_and_nature',
+    variant: 'Border-inverse'
 };

@@ -126,7 +126,8 @@ export default class ColorPicker extends LightningElement {
         this.initSwatchColor();
     }
 
-    @api get variant() {
+    @api 
+    get variant() {
         return this._variant;
     }
 
@@ -137,7 +138,8 @@ export default class ColorPicker extends LightningElement {
         });
     }
 
-    @api get type() {
+    @api 
+    get type() {
         return this._type;
     }
 
@@ -148,7 +150,8 @@ export default class ColorPicker extends LightningElement {
         });
     }
 
-    @api get menuVariant() {
+    @api 
+    get menuVariant() {
         return this._menuVariant;
     }
 
@@ -159,18 +162,20 @@ export default class ColorPicker extends LightningElement {
         });
     }
 
-    @api get menuIconSize() {
+    @api 
+    get menuIconSize() {
         return this._menuIconSize;
     }
 
     set menuIconSize(size) {
         this._menuIconSize = normalizeString(size, {
-            fallbackValue: 'medium',
+            fallbackValue: 'x-small',
             validValues: validMenuIconSizes
         });
     }
 
-    @api get menuAlignment() {
+    @api 
+    get menuAlignment() {
         return this._menuAlignment;
     }
 
@@ -181,7 +186,8 @@ export default class ColorPicker extends LightningElement {
         });
     }
 
-    @api get disabled() {
+    @api 
+    get disabled() {
         return this._disabled;
     }
 
@@ -189,7 +195,8 @@ export default class ColorPicker extends LightningElement {
         this._disabled = normalizeBoolean(value);
     }
 
-    @api get isLoading() {
+    @api 
+    get isLoading() {
         return this._isLoading;
     }
 
@@ -197,7 +204,8 @@ export default class ColorPicker extends LightningElement {
         this._isLoading = normalizeBoolean(value);
     }
 
-    @api get readOnly() {
+    @api 
+    get readOnly() {
         return this._readOnly;
     }
 
@@ -205,7 +213,8 @@ export default class ColorPicker extends LightningElement {
         this._readOnly = normalizeBoolean(value);
     }
 
-    @api get required() {
+    @api 
+    get required() {
         return this._required;
     }
 
@@ -213,7 +222,8 @@ export default class ColorPicker extends LightningElement {
         this._required = normalizeBoolean(value);
     }
 
-    @api get hideColorInput() {
+    @api 
+    get hideColorInput() {
         return this._hideColorInput;
     }
 
@@ -221,7 +231,8 @@ export default class ColorPicker extends LightningElement {
         this._hideColorInput = normalizeBoolean(value);
     }
 
-    @api get menuNubbin() {
+    @api 
+    get menuNubbin() {
         return this._menuNubbin;
     }
 
@@ -229,7 +240,8 @@ export default class ColorPicker extends LightningElement {
         this._menuNubbin = normalizeBoolean(value);
     }
 
-    @api get opacity() {
+    @api 
+    get opacity() {
         return this._opacity;
     }
 

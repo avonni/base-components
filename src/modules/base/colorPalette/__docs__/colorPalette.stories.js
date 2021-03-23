@@ -105,3 +105,24 @@ export const Base = Template.bind({});
 Base.args = {
     colors: colors
 };
+
+export const BaseSmall = Template.bind({});
+BaseSmall.args = {
+    colors: colors,
+    tileWidth: '10',
+    tileHeight: '10'
+};
+
+export const BaseLarge = Template.bind({});
+BaseLarge.args = {
+    colors: colors,
+    tileWidth: '30',
+    tileHeight: '30',
+    columns: '7'
+};
+
+export const Disabled = Template.bind({});
+Disabled.args = {
+    colors: colors,
+    disabled: 'true'
+};

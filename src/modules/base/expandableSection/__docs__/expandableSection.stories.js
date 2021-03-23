@@ -35,3 +35,16 @@ export const Base = Template.bind({});
 Base.args = {
     title: 'Section'
 };
+
+export const Collapsable = Template.bind({});
+Collapsable.args = {
+    title: 'Section',
+    collapsable: 'true'
+};
+
+export const CollapsableClosed = Template.bind({});
+CollapsableClosed.args = {
+    title: 'Section',
+    closed: 'true',
+    collapsable: 'true'
+};
