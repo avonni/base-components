@@ -223,6 +223,10 @@
             "path": "src/modules/base/primitiveProgressBarBadge/primitiveProgressBarBadge.js"
         },
         {
+            "name": "c/primitiveProgressStep",
+            "path": "src/modules/base/primitiveProgressStep/primitiveProgressStep.js"
+        },
+        {
             "name": "c/primitiveSelect",
             "path": "src/modules/base/primitiveSelect/primitiveSelect.js"
         },
@@ -245,10 +249,6 @@
         {
             "name": "c/progressRing",
             "path": "src/modules/base/progressRing/progressRing.js"
-        },
-        {
-            "name": "c/progressStep",
-            "path": "src/modules/base/progressStep/progressStep.js"
         },
         {
             "name": "c/qrcode",

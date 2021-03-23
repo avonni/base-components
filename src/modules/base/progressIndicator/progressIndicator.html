@@ -2,7 +2,7 @@
     <div class={computedOuterClass}>
         <ol class="slds-progress__list">
             <template for:each={steps} for:item="step">
-                <c-progress-step
+                <c-primitive-progress-step
                     class="avonni-progress-step-position-relative"
                     disabled-steps={disabledSteps}
                     warning-steps={warningSteps}
@@ -31,7 +31,7 @@
                     popover-description={step.popoverDescription}
                     popover-hidden={step.popoverHidden}
                     assistive-text={step.assistiveText}
-                ></c-progress-step>
+                ></c-primitive-progress-step>
             </template>
         </ol>
     </div>

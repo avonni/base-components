@@ -1,7 +1,7 @@
 import Component from 'base/progressIndicator';
 
 customElements.define(
-    'ac-avonni-progress-indicator',
+    'ac-base-progress-indicator',
     Component.CustomElementConstructor
 );
 
