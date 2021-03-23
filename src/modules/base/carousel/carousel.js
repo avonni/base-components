@@ -4,6 +4,8 @@ import { normalizeBoolean, normalizeString } from '../utilsPrivate/normalize';
 
 const INDICATOR_ACTION = 'slds-carousel__indicator-action';
 const SLDS_ACTIVE = 'slds-is-active';
+const SLDS_ACTIVE_SHADED =
+    'slds-is-active avonni-carousel-progress-indicator_shaded';
 const FALSE_STRING = 'false';
 const TRUE_STRING = 'true';
 
@@ -155,16 +157,29 @@ export default class Carousel extends LightningElement {
     initializePaginationItems(numberOfPanels) {
         for (let i = 0; i < numberOfPanels; i++) {
             const isItemActive = i === this.activeIndexPanel;
-            this.paginationItems.push({
-                key: i,
-                id: `pagination-item-${i}`,
-                className: isItemActive
-                    ? INDICATOR_ACTION + ' ' + SLDS_ACTIVE
-                    : INDICATOR_ACTION,
-                tabIndex: isItemActive ? '0' : '-1',
-                ariaSelected: isItemActive ? TRUE_STRING : FALSE_STRING,
-                tabTitle: `Tab ${i}`
-            });
+            if (this._indicatorVariant === 'base') {
+                this.paginationItems.push({
+                    key: i,
+                    id: `pagination-item-${i}`,
+                    className: isItemActive
+                        ? INDICATOR_ACTION + ' ' + SLDS_ACTIVE
+                        : INDICATOR_ACTION,
+                    tabIndex: isItemActive ? '0' : '-1',
+                    ariaSelected: isItemActive ? TRUE_STRING : FALSE_STRING,
+                    tabTitle: `Tab ${i}`
+                });
+            } else if (this._indicatorVariant === 'shaded') {
+                this.paginationItems.push({
+                    key: i,
+                    id: `pagination-item-${i}`,
+                    className: isItemActive
+                        ? INDICATOR_ACTION + ' ' + SLDS_ACTIVE_SHADED
+                        : INDICATOR_ACTION,
+                    tabIndex: isItemActive ? '0' : '-1',
+                    ariaSelected: isItemActive ? TRUE_STRING : FALSE_STRING,
+                    tabTitle: `Tab ${i}`
+                });
+            }
         }
     }
 
@@ -298,7 +313,13 @@ export default class Carousel extends LightningElement {
         activePanelItem.ariaHidden = FALSE_STRING;
         activePaginationItem.tabIndex = '0';
         activePaginationItem.ariaHidden = TRUE_STRING;
-        activePaginationItem.className = INDICATOR_ACTION + ' ' + SLDS_ACTIVE;
+        if (this._indicatorVariant === 'base') {
+            activePaginationItem.className =
+                INDICATOR_ACTION + ' ' + SLDS_ACTIVE;
+        } else if (this._indicatorVariant === 'shaded') {
+            activePaginationItem.className =
+                INDICATOR_ACTION + ' ' + SLDS_ACTIVE_SHADED;
+        }
 
         this.panelStyle = `transform:translateX(-${panelIndex * 100}%);`;
         this.activeIndexPanel = panelIndex;

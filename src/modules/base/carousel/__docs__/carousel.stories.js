@@ -38,7 +38,7 @@ export default {
         },
         indicatorVariant: {
             control: {
-                type: 'string'
+                type: 'text'
             },
             defaultValue: 'base',
             table: {
