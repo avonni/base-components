@@ -143,6 +143,10 @@
             "path": "src/modules/base/iconUtils/iconUtils.js"
         },
         {
+            "name": "c/illustration",
+            "path": "src/modules/base/illustration/illustration.js"
+        },
+        {
             "name": "c/image",
             "path": "src/modules/base/image/image.js"
         },
@@ -439,6 +443,10 @@
             "path": "src/modules/base/expandableSection/expandableSection.js"
         },
         {
+            "name": "base/illustration",
+            "path": "src/modules/base/illustration/illustration.js"
+        },
+        {
             "name": "base/image",
             "path": "src/modules/base/image/image.js"
         },
@@ -615,6 +623,7 @@
         "base/dynamicMenu",
         "base/emojiPicker",
         "base/expandableSection",
+        "base/illustration",
         "base/image",
         "base/inputCounter",
         "base/inputDateRange",
