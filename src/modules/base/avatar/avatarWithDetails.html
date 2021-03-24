@@ -1,5 +1,9 @@
 <template>
-    <c-media-object inline={computedMediaObjectInline} class={mediaObjectClass}>
+    <c-media-object
+        inline={computedMediaObjectInline}
+        class={mediaObjectClass}
+        size={mediaObjectSize}
+    >
         <div if:true={textPositionLeft} slot="figure-inverse">
             <c-avatar
                 hide-avatar-details="true"

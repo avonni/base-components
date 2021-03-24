@@ -339,6 +339,13 @@ export default class Avatar extends LightningElement {
         return this.textPosition === 'center';
     }
 
+    get mediaObjectSize() {
+        const small = ['xx-small', 'x-small', 'small', 'medium'];
+
+        if (small.includes(this.size)) return 'small';
+        return 'medium';
+    }
+
     _updateClassList() {
         const { size, variant, textPosition } = this;
         const wrapperClass = classSet('avonni-avatar slds-is-relative')
