@@ -323,6 +323,10 @@
             "path": "src/modules/base/visualPicker/visualPicker.js"
         },
         {
+            "name": "c/visualPickerLink",
+            "path": "src/modules/base/visualPickerLink/visualPickerLink.js"
+        },
+        {
             "name": "c/wizard",
             "path": "src/modules/base/wizard/wizard.js"
         },
@@ -563,6 +567,10 @@
             "path": "src/modules/base/visualPicker/visualPicker.js"
         },
         {
+            "name": "base/visualPickerLink",
+            "path": "src/modules/base/visualPickerLink/visualPickerLink.js"
+        },
+        {
             "name": "base/wizard",
             "path": "src/modules/base/wizard/wizard.js"
         },
@@ -631,6 +639,7 @@
         "base/timer",
         "base/verticalProgressIndicator",
         "base/verticalProgressStep",
-        "base/visualPicker"
+        "base/visualPicker",
+        "base/visualPickerLink"
     ]
 }
