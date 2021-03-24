@@ -252,8 +252,10 @@ export default class AvatarGroup extends LightningElement {
     }
 
     handleAvatarClick(event) {
-        let itemId = event.target.dataset.itemId;
-        let type = event.target.dataset.type;
+        if (event.type === 'keyup' && event.key !== 'Enter') return;
+
+        const itemId = event.target.dataset.itemId;
+        const type = event.target.dataset.type;
         let item;
 
         if (type === 'show') {
@@ -264,6 +266,7 @@ export default class AvatarGroup extends LightningElement {
 
         if (item.showMore) {
             this.showPopover = true;
+            this.template.querySelector('.slds-dropdown-trigger').focus();
             this.allowBlur();
         } else {
             this.dispatchEvent(

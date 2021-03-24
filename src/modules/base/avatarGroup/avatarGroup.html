@@ -24,6 +24,8 @@
                 data-type="show"
                 class="slds-avatar-grouped slds-avatar-grouped__primary"
                 onclick={handleAvatarClick}
+                role="button"
+                onkeyup={handleAvatarClick}
                 tabindex="0"
             ></c-avatar>
             <c-avatar
@@ -49,6 +51,8 @@
                 data-type="show"
                 class="slds-avatar-grouped slds-avatar-grouped__secondary"
                 onclick={handleAvatarClick}
+                role="button"
+                onkeyup={handleAvatarClick}
                 tabindex="0"
             ></c-avatar>
         </span>
@@ -85,6 +89,8 @@
                             class={avatarInlineClass}
                             onclick={handleAvatarClick}
                             onblur={handleBlur}
+                            role="button"
+                            onkeyup={handleAvatarClick}
                             tabindex="0"
                         ></c-avatar>
                     </span>
@@ -94,6 +100,7 @@
                 <div
                     class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open"
                     key={item.key}
+                    onblur={handleBlur}
                 >
                     <template if:true={isNotList}>
                         <span class={avatarWrapperClass}>
@@ -107,8 +114,9 @@
                                 data-type="show"
                                 class={avatarInlinePlusClass}
                                 onclick={handleAvatarClick}
-                                onblur={handleBlur}
                                 tabindex="0"
+                                role="button"
+                                onkeyup={handleAvatarClick}
                             ></c-avatar>
                         </span>
                     </template>
@@ -121,7 +129,6 @@
                             data-item-id={index}
                             data-type="show"
                             onclick={handleAvatarClick}
-                            onblur={handleBlur}
                             tabindex="0"
                             class="slds-m-top_small slds-m-left_small slds-show avonni-avatar-group__list-button"
                         ></lightning-button>
@@ -167,6 +174,8 @@
                                         data-type="hidden"
                                         class={avatarInlineClass}
                                         onclick={handleAvatarClick}
+                                        role="button"
+                                        onkeyup={handleAvatarClick}
                                         tabindex="0"
                                     ></c-avatar>
                                     <p
