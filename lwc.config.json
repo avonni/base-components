@@ -227,6 +227,10 @@
             "path": "src/modules/base/primitiveProgressBarBadge/primitiveProgressBarBadge.js"
         },
         {
+            "name": "c/primitiveProgressStep",
+            "path": "src/modules/base/primitiveProgressStep/primitiveProgressStep.js"
+        },
+        {
             "name": "c/primitiveSelect",
             "path": "src/modules/base/primitiveSelect/primitiveSelect.js"
         },
@@ -241,6 +245,10 @@
         {
             "name": "c/progressCircle",
             "path": "src/modules/base/progressCircle/progressCircle.js"
+        },
+        {
+            "name": "c/progressIndicator",
+            "path": "src/modules/base/progressIndicator/progressIndicator.js"
         },
         {
             "name": "c/progressRing",
@@ -483,6 +491,10 @@
             "path": "src/modules/base/progressCircle/progressCircle.js"
         },
         {
+            "name": "base/progressIndicator",
+            "path": "src/modules/base/progressIndicator/progressIndicator.js"
+        },
+        {
             "name": "base/progressRing",
             "path": "src/modules/base/progressRing/progressRing.js"
         },
@@ -602,6 +614,7 @@
         "base/profileCard",
         "base/progressBar",
         "base/progressCircle",
+        "base/progressIndicator",
         "base/progressRing",
         "base/qrcode",
         "base/range",
