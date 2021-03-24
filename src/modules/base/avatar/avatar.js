@@ -347,13 +347,6 @@ export default class Avatar extends LightningElement {
         return this.textPosition === 'center';
     }
 
-    get mediaObjectSize() {
-        const small = ['xx-small', 'x-small', 'small'];
-
-        if (small.includes(this.size)) return 'small';
-        return 'medium';
-    }
-
     _updateClassList() {
         const { size, variant, textPosition, groupedAvatar } = this;
         const wrapperClass = classSet('avonni-avatar slds-is-relative')
@@ -376,7 +369,8 @@ export default class Avatar extends LightningElement {
         });
 
         const fallbackIconClass = classSet('avonni-avatar__icon').add({
-            'slds-avatar-grouped__icon': groupedAvatar});
+            'slds-avatar-grouped__icon': groupedAvatar
+        });
 
         const mediaObjectClass = classSet('').add({
             'slds-text-align_right': textPosition === 'left',
