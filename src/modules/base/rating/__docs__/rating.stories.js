@@ -34,10 +34,10 @@ export default {
             name: 'icon-size',
             control: {
                 type: 'select',
-                options: [ 'xx-small', 'x-small', 'small', 'medium', 'large' ]
+                options: [ 'x-small', 'small', 'medium', 'large' ]
             },
             defaultValue: 'large',
-            description: "Valid values include xx-small, x-small, small, medium and large.",
+            description: "Valid values include x-small, small, medium and large.",
             table: {
                 type: { summary: 'string' },
                 defaultValue: {summary: 'large'}

@@ -3,7 +3,7 @@ import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
 import { generateUniqueId } from 'c/utils';
 
 const VALID_SELECTIONS = {valid: ['continuous', 'single'], default: 'continues'};
-const VALID_SIZES = { valid: [ 'xx-small', 'x-small', 'small', 'medium', 'large' ], default: 'large'}
+const VALID_SIZES = { valid: [ 'x-small', 'small', 'medium', 'large' ], default: 'large'}
 
 export default class Rating extends LightningElement {
     @api label;
