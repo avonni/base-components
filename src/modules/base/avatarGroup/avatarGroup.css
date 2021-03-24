@@ -60,27 +60,36 @@
     margin-left: 0px;
 }
 
+/* List layouts (visible or in hidden dropdown) --- */
+.avonni-avatar-group__avatar-container.slds-show .avonni-avatar-group__avatar {
+    display: block;
+}
+.avonni-avatar-group__avatar-container.slds-show,
+.avonni-avatar-group__hidden-avatar-container {
+    padding: 0.5rem 0.75rem;
+}
+.avonni-avatar-group__avatar-container.slds-show:hover,
+.avonni-avatar-group__hidden-avatar-container:hover {
+    background-color: rgb(240, 240, 240);
+}
 .avonni-avatar-group__hidden-avatar-container {
     display: flex;
     align-items: center;
     cursor: pointer;
-    padding: 0.5rem 0.75rem;
 }
-
 .avonni-avatar-group__hidden-avatar-container p {
     padding-left: 0.5rem;
     white-space: nowrap;
     cursor: pointer;
 }
-
-.avonni-avatar-group__hidden-avatar-container:hover {
-    background-color: rgb(240, 240, 240);
-}
-
 .slds-dropdown {
     overflow-y: auto;
     max-height: 200px;
 }
+.avonni-avatar-group__list-button + .slds-dropdown {
+    margin-left: 0.75rem;
+}
+/* --- */
 
 /* Outline --- */
 .slds-avatar:focus,
