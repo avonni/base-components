@@ -2,7 +2,8 @@ import { LightningElement, api } from 'lwc';
 import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
 import { generateUniqueId } from 'c/utils';
 
-const validSelections = ['continuous', 'single'];
+const VALID_SELECTIONS = {valid: ['continuous', 'single'], default: 'continues'};
+const VALID_SIZES = { valid: [ 'xx-small', 'x-small', 'small', 'medium', 'large' ], default: 'large'}
 
 export default class Rating extends LightningElement {
     @api label;
@@ -13,6 +14,7 @@ export default class Rating extends LightningElement {
     _min = 1;
     _max = 5;
     _value;
+    _iconSize = 'large'
     _selection = 'continuous';
     _disabled;
     _readOnly;
@@ -99,14 +101,26 @@ export default class Rating extends LightningElement {
         }
     }
 
+    @api
+    get iconSize() {
+        return this._iconSize
+    }
+
+    set iconSize(size) {
+        this._iconSize = normalizeString(size, {
+            defaultValue: VALID_SIZES.default,
+            validValues: VALID_SIZES.valid
+        })
+    }
+
     @api get selection() {
         return this._selection;
     }
 
     set selection(selection) {
         this._selection = normalizeString(selection, {
-            fallbackValue: 'continuous',
-            validValues: validSelections
+            fallbackValue: VALID_SELECTIONS.default,
+            validValues: VALID_SELECTIONS.valid
         });
 
         if (this.init) {

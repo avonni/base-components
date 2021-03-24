@@ -25,8 +25,22 @@ export default {
             control: {
                 type: 'text'
             },
+            description: "The Lightning Design System name of the icon. Specify the name in the format 'utility:favorite' where 'utility' is the category, and 'favorite' is the specific icon to be displayed.",
             table: {
                 type: { summary: 'string' }
+            }
+        },
+        iconSize: {
+            name: 'icon-size',
+            control: {
+                type: 'select',
+                options: [ 'xx-small', 'x-small', 'small', 'medium', 'large' ]
+            },
+            defaultValue: 'large',
+            description: "Valid values include xx-small, x-small, small, medium and large.",
+            table: {
+                type: { summary: 'string' },
+                defaultValue: {summary: 'large'}
             }
         },
         value: {
