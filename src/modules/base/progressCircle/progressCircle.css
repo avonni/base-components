@@ -12,7 +12,7 @@
     top: 20px;
 }
 
-.avonni-progress-circle-title-position-top {
+.avonni-progress-title-position-top {
     position: absolute;
     width: 100%;
 }
@@ -142,74 +142,70 @@
     top: -40px;
 }
 
-.avonni-progress-circle-label-styling {
-    font-size: 14px;
-}
-
-.avonni-progress-circle-thickness-x-small {
+.avonni-progress-thickness-x-small {
     left: 3px;
     bottom: 3px;
     top: 3px;
     right: 3px;
 }
 
-.avonni-progress-circle-thickness-x-small-size-x-small {
+.avonni-progress-thickness-x-small-size-x-small {
     left: 1px;
     bottom: 1px;
     top: 1px;
     right: 1px;
 }
 
-.avonni-progress-circle-thickness-x-small-size-small {
+.avonni-progress-thickness-x-small-size-small {
     left: 2px;
     bottom: 2px;
     top: 2px;
     right: 2px;
 }
 
-.avonni-progress-circle-thickness-small {
+.avonni-progress-thickness-small {
     left: 6px;
     bottom: 6px;
     top: 6px;
     right: 6px;
 }
 
-.avonni-progress-circle-thickness-small-size-x-small {
+.avonni-progress-thickness-small-size-x-small {
     left: 2px;
     bottom: 2px;
     top: 2px;
     right: 2px;
 }
 
-.avonni-progress-circle-thickness-small-size-small {
+.avonni-progress-thickness-small-size-small {
     left: 4px;
     bottom: 4px;
     top: 4px;
     right: 4px;
 }
 
-.avonni-progress-circle-thickness-small-size-large {
+.avonni-progress-thickness-small-size-large {
     left: 8px;
     bottom: 8px;
     top: 8px;
     right: 8px;
 }
 
-.avonni-progress-circle-thickness-small-size-x-large {
+.avonni-progress-thickness-small-size-x-large {
     left: 10px;
     bottom: 10px;
     top: 10px;
     right: 10px;
 }
 
-.avonni-progress-circle-thickness-large {
+.avonni-progress-thickness-large {
     left: 12px;
     bottom: 12px;
     top: 12px;
     right: 12px;
 }
 
-.avonni-progress-circle-thickness-large-size-x-small {
+.avonni-progress-thickness-large-size-x-small {
     left: 5px;
     bottom: 5px;
     top: 5px;
@@ -217,35 +213,35 @@
     font-size: 5px;
 }
 
-.avonni-progress-circle-thickness-large-size-small {
+.avonni-progress-thickness-large-size-small {
     left: 7px;
     bottom: 7px;
     top: 7px;
     right: 7px;
 }
 
-.avonni-progress-circle-thickness-large-size-large {
+.avonni-progress-thickness-large-size-large {
     left: 16px;
     bottom: 16px;
     top: 16px;
     right: 16px;
 }
 
-.avonni-progress-circle-thickness-large-size-x-large {
+.avonni-progress-thickness-large-size-x-large {
     left: 20px;
     bottom: 20px;
     top: 20px;
     right: 20px;
 }
 
-.avonni-progress-circle-thickness-x-large {
+.avonni-progress-thickness-x-large {
     left: 15px;
     bottom: 15px;
     top: 15px;
     right: 15px;
 }
 
-.avonni-progress-circle-thickness-x-large-size-x-small {
+.avonni-progress-thickness-x-large-size-x-small {
     left: 6px;
     bottom: 6px;
     top: 6px;
@@ -253,21 +249,21 @@
     font-size: 4px;
 }
 
-.avonni-progress-circle-thickness-x-large-size-small {
+.avonni-progress-thickness-x-large-size-small {
     left: 8px;
     bottom: 8px;
     top: 8px;
     right: 8px;
 }
 
-.avonni-progress-circle-thickness-x-large-size-large {
+.avonni-progress-thickness-x-large-size-large {
     left: 19px;
     bottom: 19px;
     top: 19px;
     right: 19px;
 }
 
-.avonni-progress-circle-thickness-x-large-size-x-large {
+.avonni-progress-thickness-x-large-size-x-large {
     left: 23px;
     bottom: 23px;
     top: 23px;
