@@ -132,6 +132,8 @@ export default class ProgressCircle extends LightningElement {
     get progressRingClass() {
         return classSet('avonni-progress-ring')
             .add({
+                'avonni-progress-ring-with-title-top':
+                    this._titlePosition === 'top',
                 'avonni-progress-x-small': this._size === 'x-small',
                 'avonni-progress-small': this._size === 'small',
                 'avonni-progress-medium': this._size === 'medium',

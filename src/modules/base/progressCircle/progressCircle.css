@@ -6,6 +6,9 @@
     position: relative;
     display: inline-block;
     background: #dddbda;
+}
+
+.avonni-progress-ring-with-title-top {
     top: 20px;
 }
 
