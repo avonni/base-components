@@ -4,7 +4,6 @@
     transition: transform 0.1s ease-out 0s;
     --avonni-c-avatar-color-border: #fff;
     --avonni-c-avatar-sizing-border: 1px;
-    color: #fff;
     cursor: pointer;
 }
 
@@ -99,7 +98,6 @@
 }
 /* --- */
 
-.slds-avatar,
-.slds-avatar__initials {
-    cursor: pointer;
+.avonni-avatar-group__plus {
+    color: #fff;
 }

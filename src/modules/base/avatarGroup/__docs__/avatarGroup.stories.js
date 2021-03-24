@@ -86,7 +86,17 @@ export default {
         listButtonVariant: {
             name: 'list-button-variant',
             control: {
-                type: 'text'
+                type: 'select',
+                options: [
+                    'neutral',
+                    'base',
+                    'brand',
+                    'brand-outline',
+                    'destructive',
+                    'destructive-text',
+                    'inverse',
+                    'success'
+                ]
             },
             defaultValue: 'neutral',
             description:
