@@ -36,9 +36,30 @@ export default {
                 type: 'boolean'
             }
         },
+        indicatorVariant: {
+            control: {
+                type: 'select',
+                options: ['base', 'shaded']
+            },
+            defaultValue: 'base',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'base' }
+            }
+        },
         isInfinite: {
             control: {
                 type: 'boolean'
+            }
+        },
+        hideIndicator: {
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
             }
         },
         hidePreviousNextPanelNavigation: {
@@ -160,6 +181,13 @@ Base.args = {
     assistiveText: assistiveText
 };
 
+export const BaseWithNoProgressIndicator = Template.bind({});
+BaseWithNoProgressIndicator.args = {
+    items: items,
+    assistiveText: assistiveText,
+    hideIndicator: 'true'
+};
+
 export const BaseWithTwoItemsPerPanel = Template.bind({});
 BaseWithTwoItemsPerPanel.args = {
     items: items,
@@ -167,11 +195,12 @@ BaseWithTwoItemsPerPanel.args = {
     itemsPerPanel: '2'
 };
 
-export const BaseWithThreeItemsPerPanel = Template.bind({});
-BaseWithThreeItemsPerPanel.args = {
+export const BaseWithThreeItemsPerPanelAndVariantShaded = Template.bind({});
+BaseWithThreeItemsPerPanelAndVariantShaded.args = {
     items: items,
     assistiveText: assistiveText,
-    itemsPerPanel: '3'
+    itemsPerPanel: '3',
+    indicatorVariant: 'shaded'
 };
 
 export const BaseWithFiveItemsPerPanel = Template.bind({});
