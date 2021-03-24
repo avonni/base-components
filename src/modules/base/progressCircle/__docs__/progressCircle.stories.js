@@ -132,8 +132,43 @@ const Template = (args) => ProgressCircle(args);
 export const Base = Template.bind({});
 Base.args = {
     title: 'Text title',
+    value: 45
+};
+
+export const BaseWithTitleTop = Template.bind({});
+BaseWithTitleTop.args = {
+    title: 'Text title',
     value: 45,
     titlePosition: 'top'
+};
+
+export const BaseWithThicknessX_SmallAndLabel = Template.bind({});
+BaseWithThicknessX_SmallAndLabel.args = {
+    title: 'Thickness X-small and label',
+    value: 45,
+    thickness: 'x-small',
+    label: 'progress'
+};
+
+export const BaseWithThicknessSmall = Template.bind({});
+BaseWithThicknessSmall.args = {
+    title: 'Thickness Small',
+    value: 55,
+    thickness: 'small'
+};
+
+export const BaseWithThicknessLarge = Template.bind({});
+BaseWithThicknessLarge.args = {
+    title: 'Thickness large',
+    value: 55,
+    thickness: 'large'
+};
+
+export const BaseWithThicknessX_Large = Template.bind({});
+BaseWithThicknessX_Large.args = {
+    title: 'Thickness X-large',
+    value: 55,
+    thickness: 'x-large'
 };
 
 export const DrainDirection = Template.bind({});
