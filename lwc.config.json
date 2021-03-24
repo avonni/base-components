@@ -47,10 +47,6 @@
             "path": "src/modules/base/avatarGroup/avatarGroup.js"
         },
         {
-            "name": "c/badgeIcon",
-            "path": "src/modules/base/badgeIcon/badgeIcon.js"
-        },
-        {
             "name": "c/blockquote",
             "path": "src/modules/base/blockquote/blockquote.js"
         },
@@ -147,6 +143,10 @@
             "path": "src/modules/base/iconUtils/iconUtils.js"
         },
         {
+            "name": "c/illustration",
+            "path": "src/modules/base/illustration/illustration.js"
+        },
+        {
             "name": "c/image",
             "path": "src/modules/base/image/image.js"
         },
@@ -195,6 +195,10 @@
             "path": "src/modules/base/messageDispatcher/messageDispatcher.js"
         },
         {
+            "name": "c/pageHeader",
+            "path": "src/modules/base/pageHeader/pageHeader.js"
+        },
+        {
             "name": "c/pagination",
             "path": "src/modules/base/pagination/pagination.js"
         },
@@ -219,8 +223,16 @@
             "path": "src/modules/base/primitiveIframe/primitiveIframe.js"
         },
         {
+            "name": "c/primitivePageHeaderItem",
+            "path": "src/modules/base/primitivePageHeaderItem/primitivePageHeaderItem.js"
+        },
+        {
             "name": "c/primitiveProgressBarBadge",
             "path": "src/modules/base/primitiveProgressBarBadge/primitiveProgressBarBadge.js"
+        },
+        {
+            "name": "c/primitiveProgressStep",
+            "path": "src/modules/base/primitiveProgressStep/primitiveProgressStep.js"
         },
         {
             "name": "c/primitiveSelect",
@@ -239,8 +251,16 @@
             "path": "src/modules/base/progressCircle/progressCircle.js"
         },
         {
+            "name": "c/progressIndicator",
+            "path": "src/modules/base/progressIndicator/progressIndicator.js"
+        },
+        {
             "name": "c/progressRing",
             "path": "src/modules/base/progressRing/progressRing.js"
+        },
+        {
+            "name": "c/publisher",
+            "path": "src/modules/base/publisher/publisher.js"
         },
         {
             "name": "c/qrcode",
@@ -311,6 +331,10 @@
             "path": "src/modules/base/visualPicker/visualPicker.js"
         },
         {
+            "name": "c/visualPickerLink",
+            "path": "src/modules/base/visualPickerLink/visualPickerLink.js"
+        },
+        {
             "name": "c/wizard",
             "path": "src/modules/base/wizard/wizard.js"
         },
@@ -337,10 +361,6 @@
         {
             "name": "base/avatarGroup",
             "path": "src/modules/base/avatarGroup/avatarGroup.js"
-        },
-        {
-            "name": "base/badgeIcon",
-            "path": "src/modules/base/badgeIcon/badgeIcon.js"
         },
         {
             "name": "base/blockquote",
@@ -423,6 +443,10 @@
             "path": "src/modules/base/expandableSection/expandableSection.js"
         },
         {
+            "name": "base/illustration",
+            "path": "src/modules/base/illustration/illustration.js"
+        },
+        {
             "name": "base/image",
             "path": "src/modules/base/image/image.js"
         },
@@ -459,6 +483,10 @@
             "path": "src/modules/base/menuItemDialog/menuItemDialog.js"
         },
         {
+            "name": "base/pageHeader",
+            "path": "src/modules/base/pageHeader/pageHeader.js"
+        },
+        {
             "name": "base/pagination",
             "path": "src/modules/base/pagination/pagination.js"
         },
@@ -479,8 +507,16 @@
             "path": "src/modules/base/progressCircle/progressCircle.js"
         },
         {
+            "name": "base/progressIndicator",
+            "path": "src/modules/base/progressIndicator/progressIndicator.js"
+        },
+        {
             "name": "base/progressRing",
             "path": "src/modules/base/progressRing/progressRing.js"
+        },
+        {
+            "name": "base/publisher",
+            "path": "src/modules/base/publisher/publisher.js"
         },
         {
             "name": "base/qrcode",
@@ -547,6 +583,10 @@
             "path": "src/modules/base/visualPicker/visualPicker.js"
         },
         {
+            "name": "base/visualPickerLink",
+            "path": "src/modules/base/visualPickerLink/visualPickerLink.js"
+        },
+        {
             "name": "base/wizard",
             "path": "src/modules/base/wizard/wizard.js"
         },
@@ -564,7 +604,6 @@
         "base/autoDataType",
         "base/avatar",
         "base/avatarGroup",
-        "base/badgeIcon",
         "base/blockquote",
         "base/buttonDialog",
         "base/buttonIconDialog",
@@ -584,6 +623,7 @@
         "base/dynamicMenu",
         "base/emojiPicker",
         "base/expandableSection",
+        "base/illustration",
         "base/image",
         "base/inputCounter",
         "base/inputDateRange",
@@ -593,12 +633,15 @@
         "base/map",
         "base/mediaObject",
         "base/menuItemDialog",
+        "base/pageHeader",
         "base/pagination",
         "base/primitiveIcon",
         "base/profileCard",
         "base/progressBar",
         "base/progressCircle",
+        "base/progressIndicator",
         "base/progressRing",
+        "base/publisher",
         "base/qrcode",
         "base/range",
         "base/rating",
@@ -614,6 +657,7 @@
         "base/timer",
         "base/verticalProgressIndicator",
         "base/verticalProgressStep",
-        "base/visualPicker"
+        "base/visualPicker",
+        "base/visualPickerLink"
     ]
 }

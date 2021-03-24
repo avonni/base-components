@@ -4,6 +4,7 @@ export default {
     title: 'Example/Avatar',
     argTypes: {
         alternativeText: {
+            name: 'alternative-text',
             control: {
                 type: 'text'
             },
@@ -15,6 +16,7 @@ export default {
             }
         },
         fallbackIconName: {
+            name: 'fallback-icon-name',
             control: {
                 type: 'text'
             },
@@ -83,10 +85,12 @@ export default {
             },
             description: 'Status of the user to display. ',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Status'
             }
         },
         statusPosition: {
+            name: 'status-position',
             control: {
                 type: 'select',
                 options: [
@@ -100,17 +104,20 @@ export default {
             description: 'Position of the status icon.',
             table: {
                 defaultValue: { summary: 'top-right' },
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Status'
             }
         },
         statusTitle: {
+            name: 'status-title',
             control: {
                 type: 'text'
             },
             description:
                 'Status title to be shown as a tooltip on hover over the status icon.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Status'
             }
         },
         presence: {
@@ -128,20 +135,24 @@ export default {
             },
             description: 'Presence of the user to display.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Presence'
             }
         },
         presenceTitle: {
+            name: 'presence-title',
             control: {
                 type: 'text'
             },
             description:
                 'Presence title to be shown as a tooltip on hover over the presence icon.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Presence'
             }
         },
         presencePosition: {
+            name: 'presence-position',
             control: {
                 type: 'select',
                 options: [
@@ -155,28 +166,34 @@ export default {
             description: 'Position of the presence icon.',
             table: {
                 defaultValue: { summary: 'bottom-right' },
-                type: { summar: 'string' }
+                type: { summar: 'string' },
+                category: 'Presence'
             }
         },
         entityIconName: {
+            name: 'entity-icon-name',
             control: {
                 type: 'text'
             },
             description:
                 "Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. Only icons from the standard and custom categories are allowed.",
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Entity'
             }
         },
         entityInitials: {
+            name: 'entity-initials',
             control: {
                 type: 'text'
             },
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Entity'
             }
         },
         entityPosition: {
+            name: 'entity-position',
             control: {
                 type: 'select',
                 options: [
@@ -190,29 +207,35 @@ export default {
             description: 'Position of the entity icon.',
             table: {
                 defaultValue: { summary: 'top-left' },
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Entity'
             }
         },
         entitySrc: {
+            name: 'entity-src',
             control: {
                 type: 'text'
             },
             description: 'The URL for the entity image.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Entity'
             }
         },
         entityTitle: {
+            name: 'entity-title',
             control: {
                 type: 'text'
             },
             description:
                 'Entity title to be shown as a tooltip on hover over the presence icon.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Entity'
             }
         },
         entityVariant: {
+            name: 'entity-variant',
             control: {
                 type: 'select',
                 options: ['circle', 'square']
@@ -221,10 +244,12 @@ export default {
             description: 'The variant changes the shape of the entity.',
             table: {
                 defaultValue: { summary: 'square' },
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Entity'
             }
         },
         hideAvatarDetails: {
+            name: 'hide-avatar-details',
             control: {
                 type: 'boolean'
             },
@@ -232,37 +257,59 @@ export default {
             description: 'Hide primary, secondary and tertiary text.',
             table: {
                 defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' }
+                type: { summary: 'boolean' },
+                category: 'Details'
             }
         },
         primaryText: {
+            name: 'primary-text',
             control: {
                 type: 'text'
             },
             description:
                 'Primary text to display, usually the name of the person.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Details'
             }
         },
         secondaryText: {
+            name: 'secondary-text',
             control: {
                 type: 'text'
             },
             description:
                 'Secondary text to display, usually the role of the user.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Details'
             }
         },
         tertiaryText: {
+            name: 'tertiary-text',
             control: {
                 type: 'text'
             },
             description:
                 'Tertiary text to display, usually the status of the user. The tertiary text will only be shown when using size x-large and xx-large.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Details'
+            }
+        },
+        textPosition: {
+            name: 'text-position',
+            control: {
+                type: 'select',
+                options: ['right', 'center', 'left']
+            },
+            defaultValue: 'right',
+            description:
+                'Tertiary text to display, usually the status of the user. The tertiary text will only be shown when using size x-large and xx-large.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: 'right',
+                category: 'Details'
             }
         }
     }
@@ -338,6 +385,42 @@ BaseWithDetails.args = {
     tertiaryText: 'Online'
 };
 
+export const BaseWithCenteredDetails = Template.bind({});
+BaseWithCenteredDetails.args = {
+    alternativeText: 'Invitation Declined',
+    src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+    fallbackIconName: 'standard:avatar',
+    initials: 'JD',
+    size: 'xx-large',
+    entityIconName: 'standard:account',
+    entityInitials: 'JD',
+    presence: 'online',
+    presenceTitle: 'online',
+    status: 'declined',
+    primaryText: 'Jane Doe',
+    secondaryText: 'VP, Finance',
+    tertiaryText: 'Online',
+    textPosition: 'center'
+};
+
+export const BaseWithLeftDetails = Template.bind({});
+BaseWithLeftDetails.args = {
+    alternativeText: 'Invitation Declined',
+    src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+    fallbackIconName: 'standard:avatar',
+    initials: 'JD',
+    size: 'xx-large',
+    entityIconName: 'standard:account',
+    entityInitials: 'JD',
+    presence: 'online',
+    presenceTitle: 'online',
+    status: 'declined',
+    primaryText: 'Jane Doe',
+    secondaryText: 'VP, Finance',
+    tertiaryText: 'Online',
+    textPosition: 'left'
+};
+
 export const Circle = Template.bind({});
 Circle.args = {
     alternativeText: 'JS',
@@ -398,6 +481,38 @@ CircleWithDetails.args = {
     src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
     fallbackIconName: 'standard:avatar',
     initials: 'JS'
+};
+
+export const CircleWithCenteredDetails = Template.bind({});
+CircleWithCenteredDetails.args = {
+    alternativeText: 'John Smith',
+    variant: 'circle',
+    size: 'x-large',
+    presence: 'offline',
+    status: 'unknown',
+    primaryText: 'John Smith',
+    secondaryText: 'VP, Human Resources',
+    tertiaryText: 'Offline',
+    src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+    fallbackIconName: 'standard:avatar',
+    initials: 'JS',
+    textPosition: 'center'
+};
+
+export const CircleWithLeftDetails = Template.bind({});
+CircleWithLeftDetails.args = {
+    alternativeText: 'John Smith',
+    variant: 'circle',
+    size: 'x-large',
+    presence: 'offline',
+    status: 'unknown',
+    primaryText: 'John Smith',
+    secondaryText: 'VP, Human Resources',
+    tertiaryText: 'Offline',
+    src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+    fallbackIconName: 'standard:avatar',
+    initials: 'JS',
+    textPosition: 'left'
 };
 
 export const CircleWithPresenceAndDetails = Template.bind({});
