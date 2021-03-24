@@ -8,6 +8,7 @@ export const Calendar = ({
     disabled,
     weekNumber,
     disabledDates,
+    markedDates,
     min,
     max
 }) => {
@@ -17,6 +18,7 @@ export const Calendar = ({
     element.disabled = disabled;
     element.weekNumber = weekNumber;
     element.disabledDates = disabledDates;
+    element.markedDates = markedDates;
     element.min = min;
     element.max = max;
     return element;

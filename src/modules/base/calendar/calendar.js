@@ -19,8 +19,8 @@ const MONTHS = [
 ];
 
 export default class Calendar extends LightningElement {
-
     _disabledDates = [];
+    _markedDates = [];
     _value;
     _max = new Date(2099, 11, 31);
     _min = new Date(1900, 0, 1);
@@ -46,6 +46,16 @@ export default class Calendar extends LightningElement {
 
     set disabledDates(value) {
         this._disabledDates = value;
+        this.updateDateParameters();
+    }
+
+    @api
+    get markedDates() {
+        return this._markedDates;
+    }
+
+    set markedDates(value) {
+        this._markedDates = value;
         this.updateDateParameters();
     }
 
@@ -175,10 +185,10 @@ export default class Calendar extends LightningElement {
         return generateUniqueId();
     }
 
-    get disabledFullDates() {
+    fullDatesFromArray(array) {
         let dates = [];
 
-        this.disabledDates.forEach(date => {
+        array.forEach(date => {
             if (typeof date === 'object') {
                 dates.push(date.setHours(0, 0, 0, 0));
             }
@@ -187,10 +197,10 @@ export default class Calendar extends LightningElement {
         return dates;
     }
 
-    get disabledWeekDays() {
+    weekDaysFromArray(array) {
         let dates = [];
 
-        this.disabledDates.forEach(date => {
+        array.forEach(date => {
             if (typeof date === 'string') {
                 dates.push(DAYS.indexOf(date));
             }
@@ -199,10 +209,10 @@ export default class Calendar extends LightningElement {
         return dates;
     }
 
-    get disabledMonthDays() {
+    monthDaysFromArray(array) {
         let dates = [];
 
-        this.disabledDates.forEach(date => {
+        array.forEach(date => {
             if (typeof date === 'number') {
                 dates.push(date);
             }
@@ -257,7 +267,8 @@ export default class Calendar extends LightningElement {
                 let dateClass = '';
                 let dayClass = 'slds-day';
                 let fullDate = '';
-                let disabled = this.isDisabled(date);
+                let disabled = this.isInArray(date, this.disabledDates);
+                const marked = this.isInArray(date, this.markedDates);
                 let time = date.getTime();
                 let valueTime = this.value ? this.value.getTime() : '';
 
@@ -302,6 +313,10 @@ export default class Calendar extends LightningElement {
                     fullDate = '';
                 }
 
+                if (marked && label > 0) {
+                    dayClass += ' avonni-marked-cell';
+                }
+
                 weekData.push({
                     label: label,
                     class: dateClass,
@@ -320,16 +335,16 @@ export default class Calendar extends LightningElement {
         this.calendarData = calendarData;
     }
 
-    isDisabled(date) {
+    isInArray(date, array) {
         let disabled = false;
         let time = date.getTime();
         let weekDay = date.getDay();
         let monthDay = date.getDate();
 
         if (
-            this.disabledFullDates.indexOf(time) > -1 ||
-            this.disabledWeekDays.indexOf(weekDay) > -1 ||
-            this.disabledMonthDays.indexOf(monthDay) > -1
+            this.fullDatesFromArray(array).indexOf(time) > -1 ||
+            this.weekDaysFromArray(array).indexOf(weekDay) > -1 ||
+            this.monthDaysFromArray(array).indexOf(monthDay) > -1
         ) {
             disabled = true;
         }
