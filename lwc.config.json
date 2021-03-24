@@ -255,6 +255,10 @@
             "path": "src/modules/base/progressRing/progressRing.js"
         },
         {
+            "name": "c/publisher",
+            "path": "src/modules/base/publisher/publisher.js"
+        },
+        {
             "name": "c/qrcode",
             "path": "src/modules/base/qrcode/qrcode.js"
         },
@@ -503,6 +507,10 @@
             "path": "src/modules/base/progressRing/progressRing.js"
         },
         {
+            "name": "base/publisher",
+            "path": "src/modules/base/publisher/publisher.js"
+        },
+        {
             "name": "base/qrcode",
             "path": "src/modules/base/qrcode/qrcode.js"
         },
@@ -624,6 +632,7 @@
         "base/progressCircle",
         "base/progressIndicator",
         "base/progressRing",
+        "base/publisher",
         "base/qrcode",
         "base/range",
         "base/rating",
