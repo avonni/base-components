@@ -54,6 +54,9 @@ export default class Rating extends LightningElement {
                     .avonni-icon button:focus {
                         box-shadow: none;
                     }
+                    .avonni-icon.avonni-active-star svg {
+                        fill: #c9c7c5;
+                    }
                 `;
                 selectedIcons.appendChild(style);
                 this.initStyles = true;
