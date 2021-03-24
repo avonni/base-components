@@ -311,8 +311,6 @@ export default class Avatar extends LightningElement {
 
     get groupedAvatar() {
         return this.template.host.classList.contains('slds-avatar-grouped');
-            .add(computeSldsClass(this.fallbackIconName))
-            .toString();
     }
 
     get showInitials() {
@@ -378,7 +376,8 @@ export default class Avatar extends LightningElement {
         });
 
         const fallbackIconClass = classSet('avonni-avatar__icon').add({
-            'slds-avatar-grouped__icon': groupedAvatar
+            'slds-avatar-grouped__icon': this.groupedAvatar
+        });
         const mediaObjectClass = classSet('').add({
             'slds-text-align_right': textPosition === 'left',
             'slds-text-align_center': textPosition === 'center'
