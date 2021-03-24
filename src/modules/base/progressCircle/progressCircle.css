@@ -6,6 +6,12 @@
     position: relative;
     display: inline-block;
     background: #dddbda;
+    top: 20px;
+}
+
+.avonni-progress-circle-title-position-top {
+    position: absolute;
+    width: 100%;
 }
 
 .avonni-progress-x-small {
@@ -96,18 +102,43 @@
     font-size: 6px;
 }
 
+.avonni-progress-title-top-x-small {
+    font-size: 6px;
+    top: -9px;
+}
+
 .avonni-progress-title-small {
     font-size: 10px;
+}
+
+.avonni-progress-title-top-small {
+    font-size: 10px;
+    top: -15px;
 }
 
 .avonni-progress-title-medium {
     font-size: 19px;
 }
 
+.avonni-progress-title-top-medium {
+    font-size: 19px;
+    top: -27px;
+}
+
 .avonni-progress-title-large {
     font-size: 26px;
 }
 
-.avonni-progress-title-x-large {
+.avonni-progress-title-top-large {
+    font-size: 26px;
+    top: -36px;
+}
+
+.avonni-progress-title-top-x-large {
     font-size: 30px;
+    top: -40px;
+}
+
+.avonni-progress-circle-label-styling {
+    font-size: 14px;
 }

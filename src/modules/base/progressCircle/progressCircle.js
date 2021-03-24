@@ -156,7 +156,6 @@ export default class ProgressCircle extends LightningElement {
     get progressTitleClass() {
         return classSet('slds-grid slds-grid_align-center')
             .add({
-                // 'slds-grid_align-center': this._titlePosition === 'bottom',
                 'avonni-progress-title-x-small': this._size === 'x-small',
                 'avonni-progress-title-small': this._size === 'small',
                 'avonni-progress-title-medium': this._size === 'medium',
@@ -166,11 +165,25 @@ export default class ProgressCircle extends LightningElement {
             .toString();
     }
 
+    get progressTitleClassTop() {
+        return classSet(
+            'slds-grid slds-grid_align-center avonni-progress-circle-title-position-top'
+        )
+            .add({
+                'avonni-progress-title-top-x-small': this._size === 'x-small',
+                'avonni-progress-title-top-small': this._size === 'small',
+                'avonni-progress-title-top-medium': this._size === 'medium',
+                'avonni-progress-title-top-large': this._size === 'large',
+                'avonni-progress-title-top-x-large': this._size === 'x-large'
+            })
+            .toString();
+    }
+
     get showValue() {
         return this._variant === 'standard';
     }
 
-    get progressLabelStyles() {
+    get progressValueStyles() {
         return `color: ${this.color}`;
     }
 

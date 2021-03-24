@@ -132,7 +132,8 @@ const Template = (args) => ProgressCircle(args);
 export const Base = Template.bind({});
 Base.args = {
     title: 'Text title',
-    value: 45
+    value: 45,
+    titlePosition: 'top'
 };
 
 export const DrainDirection = Template.bind({});
