@@ -1,5 +1,11 @@
 <template>
-    <c-summary-detail title={title} closed={closed}>
+    <c-summary-detail
+        title={title}
+        full-width-header={fullWidthHeader}
+        shrink-icon-name={shrinkIconName}
+        expand-icon-name={expandIconName}
+        closed={closed}
+    >
         <div slot="actions">
             <lightning-button-icon
                 icon-name="utility:settings"
