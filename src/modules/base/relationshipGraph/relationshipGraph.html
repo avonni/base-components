@@ -1,0 +1,64 @@
+<template>
+    <h1>{label}</h1>
+
+    <!-- Group -->
+    <template for:each={groups} for:item="group">
+        <div key={generateKey} class="slds-card slds-p-around_medium">
+            <c-summary-detail title={group.label}>
+                <div slot="actions" if:true={group.actions}>
+                    <template for:each={group.actions} for:item="action">
+                        <lightning-button
+                            key={action.name}
+                            label={action.label}
+                        ></lightning-button>
+                    </template>
+                </div>
+
+                <!-- Item -->
+                <template for:each={group.items} for:item="item">
+                    <div key={item.name} class="slds-box slds-p-around_none">
+                        <lightning-card
+                            title={item.label}
+                            icon-name={item.avatarFallbackIconName}
+                        >
+                            <div slot="actions" if:true={item.actions}>
+                                <template
+                                    for:each={item.actions}
+                                    for:item="action"
+                                >
+                                    <lightning-button
+                                        key={action.name}
+                                        label={action.label}
+                                    ></lightning-button>
+                                </template>
+                            </div>
+                            <div
+                                class="slds-region_narrow slds-card__body_inner"
+                            >
+                                <dl class="slds-dl_horizontal">
+                                    <template
+                                        for:each={item.data}
+                                        for:item="data"
+                                    >
+                                        <dt
+                                            key={generateKey}
+                                            class="slds-dl_horizontal__label"
+                                        >
+                                            {data.label}
+                                        </dt>
+                                        <dd
+                                            key={generateKey}
+                                            class="slds-dl_horizontal__detail"
+                                        >
+                                            {data.value}
+                                        </dd>
+                                    </template>
+                                </dl>
+                            </div>
+                        </lightning-card>
+                    </div>
+                </template>
+            </c-summary-detail>
+        </div>
+    </template>
+</template>
