@@ -136,6 +136,33 @@ Stars.args = {
     fieldLevelHelp: 'icon-name is set to "utility:favorite"'
 };
 
+export const StarsMedium = Template.bind({});
+StarsMedium.args = {
+    label: 'Star rating',
+    iconName: 'utility:favorite',
+    iconSize: 'medium',
+    value: 3,
+    fieldLevelHelp: 'icon-name is set to "utility:favorite"'
+};
+
+export const StarsSmall = Template.bind({});
+StarsSmall.args = {
+    label: 'Star rating',
+    iconName: 'utility:favorite',
+    iconSize: 'small',
+    value: 3,
+    fieldLevelHelp: 'icon-name is set to "utility:favorite"'
+};
+
+export const StarsX_Small = Template.bind({});
+StarsX_Small.args = {
+    label: 'Star rating',
+    iconName: 'utility:favorite',
+    iconSize: 'x-small',
+    value: 3,
+    fieldLevelHelp: 'icon-name is set to "utility:favorite"'
+};
+
 export const EmojiValueHidden = Template.bind({});
 EmojiValueHidden.args = {
     label: 'Emoji rating with hidden value',
