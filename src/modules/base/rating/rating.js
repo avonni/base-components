@@ -70,6 +70,7 @@ export default class Rating extends LightningElement {
         }
 
         this.init = true;
+
     }
 
     @api
@@ -135,7 +136,8 @@ export default class Rating extends LightningElement {
         })
     }
 
-    @api get selection() {
+    @api 
+    get selection() {
         return this._selection;
     }
 
@@ -150,7 +152,8 @@ export default class Rating extends LightningElement {
         }
     }
 
-    @api get disabled() {
+    @api 
+    get disabled() {
         return this._disabled;
     }
 
@@ -162,7 +165,8 @@ export default class Rating extends LightningElement {
         }
     }
 
-    @api get readOnly() {
+    @api 
+    get readOnly() {
         return this._readOnly;
     }
 
@@ -174,7 +178,8 @@ export default class Rating extends LightningElement {
         }
     }
 
-    @api get valueHidden() {
+    @api 
+    get valueHidden() {
         return this._valueHidden;
     }
 
@@ -188,6 +193,10 @@ export default class Rating extends LightningElement {
 
     get isNumber() {
         return this._variant === 'number';
+    }
+
+    get showLabel() {
+        return this._variant !== 'label-hidden' && this.label
     }
 
     get items() {
