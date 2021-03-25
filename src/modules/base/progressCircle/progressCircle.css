@@ -273,3 +273,28 @@
     top: 23px;
     right: 23px;
 }
+
+.avonni-progress-label-style {
+    font-weight: normal;
+    color: var(--lwc-colorTextLabel, #3e3e3c);
+}
+
+.avonni-progress-label-style-x-small {
+    font-size: 3px;
+}
+
+.avonni-progress-label-style-small {
+    font-size: 5px;
+}
+
+.avonni-progress-label-style-medium {
+    font-size: 12px;
+}
+
+.avonni-progress-label-style-large {
+    font-size: 14px;
+}
+
+.avonni-progress-label-style-x-large {
+    font-size: 16px;
+}

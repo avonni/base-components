@@ -219,6 +219,18 @@ export default class ProgressCircle extends LightningElement {
             .toString();
     }
 
+    get progressLabelClass() {
+        return classSet('slds-text-align_center avonni-progress-label-style')
+            .add({
+                'avonni-progress-label-style-x-small': this._size === 'x-small',
+                'avonni-progress-label-style-small': this._size === 'small',
+                'avonni-progress-label-style-medium': this._size === 'medium',
+                'avonni-progress-label-style-large': this._size === 'large',
+                'avonni-progress-label-style-x-large': this._size === 'x-large'
+            })
+            .toString();
+    }
+
     get showValue() {
         return this._variant === 'standard';
     }

@@ -18,7 +18,7 @@
             <span if:true={showValue} style={progressValueStyles}
                 >{value}%</span
             >
-            <span if:true={label} class="slds-text-align_center"> {label}</span>
+            <span if:true={label} class={progressLabelClass}> {label}</span>
         </div>
         <template if:true={showPositionBottom}>
             <div class={progressTitleClass}>{title}</div>
