@@ -1,6 +1,6 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
-import { generateUniqueId } from 'c/utils';
+import { generateUniqueId, classSet } from 'c/utils';
 
 const VALID_SELECTIONS = {valid: ['continuous', 'single'], default: 'continues'};
 
@@ -198,6 +198,23 @@ export default class Rating extends LightningElement {
         }
 
         return items.reverse();
+    }
+
+    get computedContainerClass() {
+        return classSet()
+        .add({
+            'slds-form-element_stacked': this.variant === 'label-stacked',
+            'avonni-label-inline': this.variant === 'label-inline'
+        })
+        .toString();
+    }
+
+    get computedLegendClass() {
+        return classSet('slds-form-element__label slds-no-flex')
+            .add({
+                'slds-assistive-text': this.variant === 'label-hidden'
+            })
+            .toString();
     }
 
     selectRating(event) {
