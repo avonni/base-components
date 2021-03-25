@@ -1,64 +1,84 @@
 <template>
     <h1>{label}</h1>
 
-    <!-- Group -->
-    <template for:each={groups} for:item="group">
-        <div key={generateKey} class="slds-card slds-p-around_medium">
-            <c-summary-detail title={group.label}>
-                <div slot="actions" if:true={group.actions}>
-                    <template for:each={group.actions} for:item="action">
-                        <lightning-button
-                            key={action.name}
-                            label={action.label}
-                        ></lightning-button>
-                    </template>
-                </div>
-
-                <!-- Item -->
-                <template for:each={group.items} for:item="item">
-                    <div key={item.name} class="slds-box slds-p-around_none">
-                        <lightning-card
-                            title={item.label}
-                            icon-name={item.avatarFallbackIconName}
-                        >
-                            <div slot="actions" if:true={item.actions}>
-                                <template
-                                    for:each={item.actions}
-                                    for:item="action"
-                                >
-                                    <lightning-button
-                                        key={action.name}
-                                        label={action.label}
-                                    ></lightning-button>
-                                </template>
-                            </div>
-                            <div
-                                class="slds-region_narrow slds-card__body_inner"
+    <div class="slds-grid">
+        <!-- Visible column -->
+        <div clas="slds-col slds-grid">
+            <template for:each={groups} for:item="group">
+                <div key={group.name} class="slds-card slds-p-around_medium">
+                    <c-summary-detail title={group.label}>
+                        <div slot="actions" if:true={group.actions}>
+                            <template
+                                for:each={group.actions}
+                                for:item="action"
                             >
-                                <dl class="slds-dl_horizontal">
-                                    <template
-                                        for:each={item.data}
-                                        for:item="data"
+                                <lightning-button
+                                    key={generateKey}
+                                    label={action.label}
+                                ></lightning-button>
+                            </template>
+                        </div>
+
+                        <!-- Item -->
+                        <template for:each={group.items} for:item="item">
+                            <div
+                                key={generateKey}
+                                class="slds-box slds-p-around_none"
+                                onclick={handleSelect}
+                            >
+                                <lightning-card
+                                    title={item.label}
+                                    icon-name={item.avatarFallbackIconName}
+                                >
+                                    <div slot="actions" if:true={item.actions}>
+                                        <template
+                                            for:each={item.actions}
+                                            for:item="action"
+                                        >
+                                            <lightning-button
+                                                key={generateKey}
+                                                label={action.label}
+                                            ></lightning-button>
+                                        </template>
+                                    </div>
+                                    <div
+                                        class="slds-region_narrow slds-card__body_inner"
                                     >
-                                        <dt
-                                            key={generateKey}
-                                            class="slds-dl_horizontal__label"
-                                        >
-                                            {data.label}
-                                        </dt>
-                                        <dd
-                                            key={generateKey}
-                                            class="slds-dl_horizontal__detail"
-                                        >
-                                            {data.value}
-                                        </dd>
-                                    </template>
-                                </dl>
+                                        <dl class="slds-dl_horizontal">
+                                            <template
+                                                for:each={item.data}
+                                                for:item="data"
+                                            >
+                                                <dt
+                                                    key={generateKey}
+                                                    class="slds-dl_horizontal__label"
+                                                >
+                                                    {data.label}
+                                                </dt>
+                                                <dd
+                                                    key={generateKey}
+                                                    class="slds-dl_horizontal__detail"
+                                                >
+                                                    {data.value}
+                                                </dd>
+                                            </template>
+                                        </dl>
+                                    </div>
+                                </lightning-card>
                             </div>
-                        </lightning-card>
-                    </div>
-                </template>
-            </c-summary-detail>
+                        </template>
+                    </c-summary-detail>
+                </div>
+            </template>
         </div>
-    </template>
+
+        <!-- Column revealed on click -->
+        <div class="slds-col slds-grid" if:true={selectedGroups}>
+            <c-relationship-graph
+                onselect={handleSelect}
+                is-root="false"
+                groups={selectedGroups}
+            ></c-relationship-graph>
+        </div>
+    </div>
 </template>

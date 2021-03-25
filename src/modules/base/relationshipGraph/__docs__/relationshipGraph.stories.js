@@ -34,7 +34,7 @@ const customGroupActions = [
     },
     {
         label: 'Custom action 2',
-        name: 'group-custom-action2',
+        name: 'group-custom-action3',
         disabled: true
     }
 ];
@@ -63,6 +63,7 @@ const groups = [
     {
         // Group
         label: 'Group Relationships',
+        name: 'group-relationships',
         avatarSrc:
             'https://www.lightningdesignsystem.com/assets/images/welcome-mat/bg-info@2x.png',
         avatarFallbackIconName: 'standard:account',
@@ -92,6 +93,7 @@ const groups = [
     // Group
     {
         label: 'Related Accounts',
+        name: 'related-accounts',
         avatarFallbackIconName: 'standard:account',
         href: 'https://www.avonni.app/',
         // Items
@@ -115,22 +117,26 @@ const groups = [
                 groups: [
                     {
                         label: 'Group Relationships',
+                        name: 'northern-trails-outfitter-group-relationships',
                         avatarSrc:
                             'https://www.lightningdesignsystem.com/assets/images/welcome-mat/bg-info@2x.png',
                         avatarFallbackIconName: 'standard:account'
                     },
                     {
                         label: 'Related Contacts',
+                        name: 'northern-trails-outfitter-related-contacts',
                         href: 'https://www.avonni.app/'
                     },
                     {
                         label: 'Related Accounts',
+                        name: 'northern-trails-outfitter-related-accounts',
                         avatarFallbackIconName: 'standard:account',
                         href: 'https://www.avonni.app/',
                         // Items
                         items: [
                             {
                                 label: 'Adams Household',
+                                name: 'adams-household',
                                 avatarSrc:
                                     'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
                                 avatarFallbackIconName: 'standard:user',
@@ -147,6 +153,7 @@ const groups = [
                             },
                             {
                                 label: 'Alpine Group',
+                                name: 'alpine-group',
                                 avatarSrc:
                                     'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
                                 avatarFallbackIconName: 'standard:user',
@@ -162,11 +169,13 @@ const groups = [
                                 ]
                             },
                             {
-                                label: 'Member Relatoionships',
+                                label: 'Member Relationships',
+                                name: 'member-relationships',
                                 avatarFallbackIconName: 'standard:account'
                             },
                             {
                                 label: 'Action Plans',
+                                name: 'action-plans',
                                 avatarFallbackIconName: 'standard:account'
                             }
                         ]
@@ -197,6 +206,7 @@ const groups = [
     // Group
     {
         label: 'Member Relationships',
+        name: 'member-relationships',
         items: [
             {
                 label: 'Community Recreation',
