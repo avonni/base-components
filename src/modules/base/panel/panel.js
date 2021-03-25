@@ -1,5 +1,6 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeString } from '../utilsPrivate/normalize';
+import { classSet } from 'c/utils';
 
 const VALID_POSITIONS = { valid: ['right', 'left'], default: 'right' };
 
@@ -57,5 +58,22 @@ export default class Pagination extends LightningElement {
             fallbackValue: VALID_SIZES.default,
             validValues: VALID_SIZES.valid
         });
+    }
+
+    get computedOuterClass() {
+        return classSet('slds-panel slds-panel_docked slds-is-open')
+            .add({
+                'slds-size_small': this._size === 'small',
+                'slds-size_medium': this._size === 'medium',
+                'slds-size_large': this._size === 'large',
+                'slds-size_x-large': this._size === 'x-large',
+                'slds-size_full': this._size === 'full'
+            })
+            .add({
+                'slds-panel_docked-right': this._position === 'right',
+                'slds-panel_docked-left': this._position === 'left'
+            })
+
+            .toString();
     }
 }
