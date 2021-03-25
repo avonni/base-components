@@ -14,14 +14,26 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        fullWidthHeader: {
-            name: 'full-width-header',
+        fullWidth: {
+            name: 'full-width',
             control: {
                 type: 'boolean'
             },
             defaultValue: false,
             description:
-                'If true, the header takes the full width of the summary detail.',
+                'If true, the summary detail will take the full width available.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
+        removeBodyIndentation: {
+            name: 'remove-body-indentation',
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description: 'If true, the body left indentation will be removed.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -75,10 +87,11 @@ Closed.args = {
     title: 'Summary detail closed by default'
 };
 
-export const FullWidthHeader = TemplateWithButton.bind({});
-FullWidthHeader.args = {
-    fullWidthHeader: true,
-    title: 'Summary detail with a full width header'
+export const FullWidthWithNoIndentation = TemplateWithButton.bind({});
+FullWidthWithNoIndentation.args = {
+    fullWidth: true,
+    title: 'Summary detail with a full width and no indentation',
+    removeBodyIndentation: true
 };
 
 export const CustomIcons = TemplateWithButton.bind({});

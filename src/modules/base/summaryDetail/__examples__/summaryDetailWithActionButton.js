@@ -7,7 +7,8 @@ customElements.define(
 
 export const SummaryDetailWithActionButton = ({
     title,
-    fullWidthHeader,
+    fullWidth,
+    removeBodyIndentation,
     shrinkIconName,
     expandIconName,
     closed
@@ -16,7 +17,8 @@ export const SummaryDetailWithActionButton = ({
         'ac-avonni-summary-detail-with-action-button'
     );
     element.title = title;
-    element.fullWidthHeader = fullWidthHeader;
+    element.fullWidth = fullWidth;
+    element.removeBodyIndentation = removeBodyIndentation;
     element.shrinkIconName = shrinkIconName;
     element.expandIconName = expandIconName;
     element.closed = closed;

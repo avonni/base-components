@@ -7,14 +7,16 @@ customElements.define(
 
 export const SummaryDetail = ({
     title,
-    fullWidthHeader,
+    fullWidth,
+    removeBodyIndentation,
     shrinkIconName,
     expandIconName,
     closed
 }) => {
     const element = document.createElement('ac-base-summary-detail');
     element.title = title;
-    element.fullWidthHeader = fullWidthHeader;
+    element.fullWidth = fullWidth;
+    element.removeBodyIndentation = removeBodyIndentation;
     element.shrinkIconName = shrinkIconName;
     element.expandIconName = expandIconName;
     element.closed = closed;

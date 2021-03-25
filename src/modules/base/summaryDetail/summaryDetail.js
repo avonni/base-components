@@ -5,10 +5,28 @@ import { classSet } from 'c/utils';
 export default class SummaryDetail extends LightningElement {
     @api title;
 
+    titleClass;
+    bodyClass;
+    contentClass;
+    _removeBodyIndentation;
     _shrinkIconName = 'utility:chevrondown';
     _expandIconName = 'utility:chevronright';
-    _fullWidthHeader;
+    _fullWidth;
     _closed;
+
+    connectedCallback() {
+        if (this.fullWidth) {
+            this.titleClass = 'slds-col';
+            this.bodyClass = 'slds-col';
+        }
+
+        this.contentClass = classSet('slds-summary-detail__content')
+            .add({
+                'avonni-summary-detail__content_no-indent': this
+                    .removeBodyIndentation
+            })
+            .toString();
+    }
 
     @api get shrinkIconName() {
         return this._shrinkIconName;
@@ -24,11 +42,18 @@ export default class SummaryDetail extends LightningElement {
         this._expandIconName = name;
     }
 
-    @api get fullWidthHeader() {
-        return this._fullWidthHeader;
+    @api get fullWidth() {
+        return this._fullWidth;
     }
-    set fullWidthHeader(boolean) {
-        this._fullWidthHeader = normalizeBoolean(boolean);
+    set fullWidth(boolean) {
+        this._fullWidth = normalizeBoolean(boolean);
+    }
+
+    @api get removeBodyIndentation() {
+        return this._removeBodyIndentation;
+    }
+    set removeBodyIndentation(boolean) {
+        this._removeBodyIndentation = normalizeBoolean(boolean);
     }
 
     @api get closed() {
@@ -48,10 +73,6 @@ export default class SummaryDetail extends LightningElement {
                 'slds-is-open': this.sectionIsOpen
             })
             .toString();
-    }
-
-    get titleClass() {
-        return this.fullWidthHeader ? 'slds-col' : undefined;
     }
 
     get iconName() {
