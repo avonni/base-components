@@ -148,12 +148,13 @@ Stars.args = {
     fieldLevelHelp: 'icon-name is set to "utility:favorite"'
 };
 
-export const StarsMedium = Template.bind({});
-StarsMedium.args = {
+export const StarsMediumLabelInline = Template.bind({});
+StarsMediumLabelInline.args = {
     label: 'Star rating',
     iconName: 'utility:favorite',
     iconSize: 'medium',
     value: 3,
+    variant: 'label-inline',
     fieldLevelHelp: 'icon-name is set to "utility:favorite"'
 };
 
@@ -188,6 +189,22 @@ export const SingleSelection = Template.bind({});
 SingleSelection.args = {
     label: 'Single selection rating',
     value: 3,
+    selection: 'single'
+};
+
+export const SingleSelectionLabelHidden = Template.bind({});
+SingleSelectionLabelHidden.args = {
+    label: 'Single selection rating',
+    value: 3,
+    variant: 'label-hidden',
+    selection: 'single'
+};
+
+export const SingleSelectionLabelStacked = Template.bind({});
+SingleSelectionLabelStacked.args = {
+    label: 'Single selection rating',
+    value: 3,
+    variant: 'label-stacked',
     selection: 'single'
 };
 
