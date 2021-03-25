@@ -203,6 +203,10 @@
             "path": "src/modules/base/pagination/pagination.js"
         },
         {
+            "name": "c/panel",
+            "path": "src/modules/base/panel/panel.js"
+        },
+        {
             "name": "c/positionLibrary",
             "path": "src/modules/base/positionLibrary/positionLibrary.js"
         },
@@ -491,6 +495,10 @@
             "path": "src/modules/base/pagination/pagination.js"
         },
         {
+            "name": "base/panel",
+            "path": "src/modules/base/panel/panel.js"
+        },
+        {
             "name": "base/primitiveIcon",
             "path": "src/modules/base/primitiveIcon/primitiveIcon.js"
         },
@@ -635,6 +643,7 @@
         "base/menuItemDialog",
         "base/pageHeader",
         "base/pagination",
+        "base/panel",
         "base/primitiveIcon",
         "base/profileCard",
         "base/progressBar",
