@@ -1,4 +1,4 @@
-import Component from '../../storybookWrappers/panel/panel';
+import Component from 'base/panel';
 
 customElements.define('ac-base-panel', Component.CustomElementConstructor);
 
