@@ -3,7 +3,10 @@ import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
 import { generateUniqueId } from 'c/utils';
 
 const VALID_SELECTIONS = {valid: ['continuous', 'single'], default: 'continues'};
+
 const VALID_SIZES = { valid: [ 'x-small', 'small', 'medium', 'large' ], default: 'large'}
+
+const VALID_LABEL_VARIANTS = { valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'], default: 'standard' }
 
 export default class Rating extends LightningElement {
     @api label;
@@ -14,6 +17,7 @@ export default class Rating extends LightningElement {
     _min = 1;
     _max = 5;
     _value;
+    _variant = 'standard'
     _iconSize = 'large'
     _selection = 'continuous';
     _disabled;
@@ -105,6 +109,18 @@ export default class Rating extends LightningElement {
         if (this.init) {
             this.ratingRecalculation();
         }
+    }
+
+    @api
+    get variant() {
+        return this._variant
+    }
+
+    set variant(variant) {
+        this._variant = normalizeString(variant, {
+            defaultValue: VALID_LABEL_VARIANTS.default,
+            validValues: VALID_LABEL_VARIANTS.valid
+        })
     }
 
     @api
