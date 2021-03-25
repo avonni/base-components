@@ -14,16 +14,16 @@ export default class Pagination extends LightningElement {
 
     _position = 'right';
     _size = 'medium';
-    showTitle = true;
-    showPanelBody = true;
+    showTitleSlot = true;
+    showPanelBodySlot = true;
 
     renderedCallback() {
         if (this.titleSlot) {
-            this.showTitle = this.titleSlot.assignedElements().length !== 0;
+            this.showTitleSlot = this.titleSlot.assignedElements().length !== 0;
         }
 
         if (this.panelBodySlot) {
-            this.showPanelBody =
+            this.showPanelBodySlot =
                 this.panelBodySlot.assignedElements().length !== 0;
         }
     }
@@ -33,7 +33,7 @@ export default class Pagination extends LightningElement {
     }
 
     get panelBodySlot() {
-        return this.template.querySelector('slot[name=panelbody]');
+        return this.template.querySelector('slot[name=panel-body]');
     }
 
     @api
@@ -75,5 +75,9 @@ export default class Pagination extends LightningElement {
             })
 
             .toString();
+    }
+
+    get hasStringTitle() {
+        return !!this.title;
     }
 }

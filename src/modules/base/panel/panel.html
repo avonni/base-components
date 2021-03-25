@@ -5,22 +5,21 @@
                 class="slds-panel__header-title slds-text-heading_small slds-truncate"
                 title="Panel Header"
             >
-                Panel Header
+                <template if:true={hasStringTitle}> {title} </template>
+                <template if:false={hasStringTitle}>
+                    <slot name="title"></slot>
+                </template>
             </h2>
-            <button
-                class="slds-button slds-button_icon slds-button_icon-small slds-panel__close"
-                title="Collapse Panel Header"
-            >
-                <svg class="slds-button__icon" aria-hidden="true">
-                    <use
-                        xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"
-                    ></use>
-                </svg>
-                <span class="slds-assistive-text">Collapse Panel Header</span>
-            </button>
+            <lightning-button-icon
+                variant="bare"
+                icon-name="utility:close"
+                size="medium"
+            ></lightning-button-icon>
         </div>
-        <div class="slds-panel__body">
-            A panel body accepts any layout or component
-        </div>
+        <template if:true={showPanelBodySlot}>
+            <div class="slds-panel__body">
+                <slot name="panel-body"></slot>
+            </div>
+        </template>
     </div>
 </template>
