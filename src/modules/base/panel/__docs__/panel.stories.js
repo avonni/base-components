@@ -1,5 +1,6 @@
 import { Panel } from '../__examples__/panel';
 import { PanelWithButtons } from '../__examples__/panelWithButtons';
+import { PanelWithDatatable } from '../__examples__/panelWithDatatable';
 
 export default {
     title: 'Example/Panel',
@@ -44,6 +45,7 @@ export default {
 
 const Template = (args) => Panel(args);
 const PanelWithButtonsTemplate = (args) => PanelWithButtons(args);
+const PanelWithDatatableTemplate = (args) => PanelWithDatatable(args);
 
 export const Base = Template.bind({});
 Base.args = {
@@ -52,5 +54,10 @@ Base.args = {
 
 export const PanelButtons = PanelWithButtonsTemplate.bind({});
 PanelButtons.args = {
+    title: 'Title'
+};
+
+export const PanelDatatable = PanelWithDatatableTemplate.bind({});
+PanelDatatable.args = {
     title: 'Title'
 };
