@@ -14,6 +14,8 @@ export default class Pagination extends LightningElement {
 
     _position = 'right';
     _size = 'medium';
+    _displayPanel = true;
+
     showTitleSlot = true;
     showPanelBodySlot = true;
 
@@ -26,6 +28,8 @@ export default class Pagination extends LightningElement {
             this.showPanelBodySlot =
                 this.panelBodySlot.assignedElements().length !== 0;
         }
+
+        console.log(this.template.querySelector('c-panel'));
     }
 
     get titleSlot() {
@@ -61,7 +65,7 @@ export default class Pagination extends LightningElement {
     }
 
     get computedOuterClass() {
-        return classSet('slds-panel slds-panel_docked slds-is-open')
+        return classSet('slds-panel slds-panel_docked')
             .add({
                 'slds-size_small': this._size === 'small',
                 'slds-size_medium': this._size === 'medium',
@@ -73,11 +77,26 @@ export default class Pagination extends LightningElement {
                 'slds-panel_docked-right': this._position === 'right',
                 'slds-panel_docked-left': this._position === 'left'
             })
-
+            .add({
+                'slds-is-open': this._displayPanel === true,
+                'slds-is-hidden': this._displayPanel === false
+            })
             .toString();
     }
 
     get hasStringTitle() {
         return !!this.title;
+    }
+
+    close() {
+        this._displayPanel = false;
+    }
+
+    toggle() {
+        this._displayPanel = !this._displayPanel;
+    }
+
+    open() {
+        this._displayPanel = true;
     }
 }
