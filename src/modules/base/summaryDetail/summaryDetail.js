@@ -28,35 +28,40 @@ export default class SummaryDetail extends LightningElement {
             .toString();
     }
 
-    @api get shrinkIconName() {
+    @api
+    get shrinkIconName() {
         return this._shrinkIconName;
     }
     set shrinkIconName(name) {
         this._shrinkIconName = name;
     }
 
-    @api get expandIconName() {
+    @api
+    get expandIconName() {
         return this._expandIconName;
     }
     set expandIconName(name) {
         this._expandIconName = name;
     }
 
-    @api get fullWidth() {
+    @api
+    get fullWidth() {
         return this._fullWidth;
     }
     set fullWidth(boolean) {
         this._fullWidth = normalizeBoolean(boolean);
     }
 
-    @api get removeBodyIndentation() {
+    @api
+    get removeBodyIndentation() {
         return this._removeBodyIndentation;
     }
     set removeBodyIndentation(boolean) {
         this._removeBodyIndentation = normalizeBoolean(boolean);
     }
 
-    @api get closed() {
+    @api
+    get closed() {
         return this._closed;
     }
     set closed(value) {
