@@ -7,8 +7,54 @@ export default {
             control: {
                 type: 'text'
             },
+            description: 'Root label.',
+            type: { required: true },
             table: {
                 type: { summary: 'string' }
+            }
+        },
+        variant: {
+            control: {
+                type: 'text'
+            },
+            description: 'Valid values include horizontal, vertical.',
+            defaultValue: 'horizontal',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'horizontal' }
+            }
+        },
+        groups: {
+            control: {
+                type: 'object'
+            },
+            description: 'Array of item groups.',
+            table: {
+                type: { summary: 'object[]' }
+            }
+        },
+        shrinkIconName: {
+            name: 'shrink-icon-name',
+            control: {
+                type: 'text'
+            },
+            defaultValue: 'utility:chevrondown',
+            description: 'Icon used to shrink an expanded group of items.',
+            table: {
+                type: { summary: 'object[]' },
+                defaultValue: { summary: 'utility:chevrondown' }
+            }
+        },
+        expandIconName: {
+            name: 'expand-icon-name',
+            control: {
+                type: 'text'
+            },
+            defaultValue: 'utility:chevronright',
+            description: 'Icon used to expand a closed group of items.',
+            table: {
+                type: { summary: 'object[]' },
+                defaultValue: { summary: 'utility:chevronright' }
             }
         }
     }
@@ -149,6 +195,21 @@ const groups = [
                                         label: 'Total Financial Accounts',
                                         value: '$1,778,911.21'
                                     }
+                                ],
+                                groups: [
+                                    {
+                                        label: 'Related Accounts',
+                                        name:
+                                            'related-accounts-adams-household',
+                                        items: [
+                                            {
+                                                label:
+                                                    'Northern Trails Outfitter',
+                                                name:
+                                                    'related-accounts-adams-household-northern-trails-outfitter'
+                                            }
+                                        ]
+                                    }
                                 ]
                             },
                             {
@@ -206,10 +267,11 @@ const groups = [
     // Group
     {
         label: 'Member Relationships',
-        name: 'member-relationships',
+        name: 'member-relationships2',
         items: [
             {
                 label: 'Community Recreation',
+                name: 'community-recreation',
                 avatarFallbackIconName: 'standard:campaign',
                 data: [
                     {
@@ -238,4 +300,13 @@ Base.args = {
     groups: groups,
     groupActions: groupActions,
     itemActions: itemActions
+};
+
+export const Vertical = Template.bind({});
+Vertical.args = {
+    label: 'Root label',
+    groups: groups,
+    groupActions: groupActions,
+    itemActions: itemActions,
+    variant: 'vertical'
 };
