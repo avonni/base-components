@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeString } from '../utilsPrivate/normalize';
+import { normalizeString, normalizeBoolean } from '../utilsPrivate/normalize';
 import { classSet } from 'c/utils';
 
 const VALID_POSITIONS = { valid: ['right', 'left'], default: 'right' };
@@ -14,7 +14,7 @@ export default class Pagination extends LightningElement {
 
     _position = 'right';
     _size = 'medium';
-    _displayPanel = true;
+    _showPanel = false;
 
     showTitleSlot = true;
     showPanelBodySlot = true;
@@ -28,8 +28,6 @@ export default class Pagination extends LightningElement {
             this.showPanelBodySlot =
                 this.panelBodySlot.assignedElements().length !== 0;
         }
-
-        console.log(this.template.querySelector('c-panel'));
     }
 
     get titleSlot() {
@@ -64,6 +62,15 @@ export default class Pagination extends LightningElement {
         });
     }
 
+    @api
+    get showPanel() {
+        return this._showPanel;
+    }
+
+    set showPanel(value) {
+        this._showPanel = normalizeBoolean(value);
+    }
+
     get computedOuterClass() {
         return classSet('slds-panel slds-panel_docked')
             .add({
@@ -78,8 +85,8 @@ export default class Pagination extends LightningElement {
                 'slds-panel_docked-left': this._position === 'left'
             })
             .add({
-                'slds-is-open': this._displayPanel === true,
-                'slds-is-hidden': this._displayPanel === false
+                'slds-is-open': this._showPanel === true,
+                'slds-is-hidden': this._showPanel === false
             })
             .toString();
     }
@@ -88,15 +95,18 @@ export default class Pagination extends LightningElement {
         return !!this.title;
     }
 
+    @api
     close() {
-        this._displayPanel = false;
+        this._showPanel = false;
     }
 
+    @api
     toggle() {
-        this._displayPanel = !this._displayPanel;
+        this._showPanel = !this._showPanel;
     }
 
+    @api
     open() {
-        this._displayPanel = true;
+        this._showPanel = true;
     }
 }
