@@ -49,15 +49,12 @@ const PanelWithDatatableTemplate = (args) => PanelWithDatatable(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    title: 'Title'
+    title: 'Panel Header',
+    showPanel: true
 };
 
 export const PanelButtons = PanelWithButtonsTemplate.bind({});
-PanelButtons.args = {
-    title: 'Title'
-};
+PanelButtons.args = {};
 
 export const PanelDatatable = PanelWithDatatableTemplate.bind({});
-PanelDatatable.args = {
-    title: 'Title'
-};
+PanelDatatable.args = {};

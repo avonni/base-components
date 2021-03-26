@@ -96,10 +96,6 @@ export default class Pagination extends LightningElement {
         return !!this.title;
     }
 
-    get isRight() {
-        return this.position === 'right';
-    }
-
     @api
     close() {
         this._showPanel = false;
