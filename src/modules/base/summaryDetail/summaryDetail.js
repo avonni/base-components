@@ -15,17 +15,18 @@ export default class SummaryDetail extends LightningElement {
     _closed;
 
     connectedCallback() {
-        if (this.fullWidth) {
-            this.titleClass = 'slds-col';
-            this.bodyClass = 'slds-col';
-        }
+        this.titleClass = classSet('avonni-min-width_0').add({
+            'slds-col': this.fullWidth
+        });
 
-        this.contentClass = classSet('slds-summary-detail__content')
-            .add({
-                'avonni-summary-detail__content_no-indent': this
-                    .removeBodyIndentation
-            })
-            .toString();
+        this.bodyClass = classSet('avonni-min-width_0').add({
+            'slds-col': this.fullWidth
+        });
+
+        this.contentClass = classSet('slds-summary-detail__content').add({
+            'avonni-summary-detail__content_no-indent': this
+                .removeBodyIndentation
+        });
     }
 
     @api
