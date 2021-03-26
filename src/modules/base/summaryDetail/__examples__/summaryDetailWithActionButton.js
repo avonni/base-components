@@ -5,11 +5,22 @@ customElements.define(
     Component.CustomElementConstructor
 );
 
-export const SummaryDetailWithActionButton = ({ title, closed }) => {
+export const SummaryDetailWithActionButton = ({
+    title,
+    fullWidth,
+    removeBodyIndentation,
+    shrinkIconName,
+    expandIconName,
+    closed
+}) => {
     const element = document.createElement(
         'ac-avonni-summary-detail-with-action-button'
     );
     element.title = title;
+    element.fullWidth = fullWidth;
+    element.removeBodyIndentation = removeBodyIndentation;
+    element.shrinkIconName = shrinkIconName;
+    element.expandIconName = expandIconName;
     element.closed = closed;
     return element;
 };

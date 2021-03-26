@@ -14,6 +14,55 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        fullWidth: {
+            name: 'full-width',
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description:
+                'If true, the summary detail will take the full width available.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
+        removeBodyIndentation: {
+            name: 'remove-body-indentation',
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description: 'If true, the body left indentation will be removed.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
+        shrinkIconName: {
+            name: 'shrink-icon-name',
+            control: {
+                type: 'text'
+            },
+            defaultValue: 'utility:chevrondown',
+            description: 'Icon used to close the summary detail.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'utility:chevrondown' }
+            }
+        },
+        expandIconName: {
+            name: 'expand-icon-name',
+            control: {
+                type: 'text'
+            },
+            defaultValue: 'utility:chevronright',
+            description: 'Icon used to expand the summary detail.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'utility:chevronright' }
+            }
+        },
         closed: {
             control: {
                 type: 'boolean'
@@ -35,5 +84,19 @@ export const Base = Template.bind({});
 export const Closed = TemplateWithButton.bind({});
 Closed.args = {
     closed: true,
-    title: 'Summary detail title'
+    title: 'Summary detail closed by default'
+};
+
+export const FullWidthWithNoIndentation = TemplateWithButton.bind({});
+FullWidthWithNoIndentation.args = {
+    fullWidth: true,
+    title: 'Summary detail with a full width and no indentation',
+    removeBodyIndentation: true
+};
+
+export const CustomIcons = TemplateWithButton.bind({});
+CustomIcons.args = {
+    title: 'Summary detail with custom expand and shrink icons',
+    shrinkIconName: 'utility:contract_alt',
+    expandIconName: 'utility:expand_alt'
 };
