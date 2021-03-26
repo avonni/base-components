@@ -1,9 +1,12 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
-import { generateUniqueId } from 'c/utils';
+import { generateUniqueId, classSet } from 'c/utils';
 
 const VALID_SELECTIONS = {valid: ['continuous', 'single'], default: 'continues'};
+
 const VALID_SIZES = { valid: [ 'x-small', 'small', 'medium', 'large' ], default: 'large'}
+
+const VALID_LABEL_VARIANTS = { valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'], default: 'standard' }
 
 export default class Rating extends LightningElement {
     @api label;
@@ -14,6 +17,7 @@ export default class Rating extends LightningElement {
     _min = 1;
     _max = 5;
     _value;
+    _variant = 'standard'
     _iconSize = 'large'
     _selection = 'continuous';
     _disabled;
@@ -66,6 +70,7 @@ export default class Rating extends LightningElement {
         }
 
         this.init = true;
+
     }
 
     @api
@@ -108,6 +113,18 @@ export default class Rating extends LightningElement {
     }
 
     @api
+    get variant() {
+        return this._variant
+    }
+
+    set variant(variant) {
+        this._variant = normalizeString(variant, {
+            defaultValue: VALID_LABEL_VARIANTS.default,
+            validValues: VALID_LABEL_VARIANTS.valid
+        })
+    }
+
+    @api
     get iconSize() {
         return this._iconSize
     }
@@ -119,7 +136,8 @@ export default class Rating extends LightningElement {
         })
     }
 
-    @api get selection() {
+    @api 
+    get selection() {
         return this._selection;
     }
 
@@ -134,7 +152,8 @@ export default class Rating extends LightningElement {
         }
     }
 
-    @api get disabled() {
+    @api 
+    get disabled() {
         return this._disabled;
     }
 
@@ -146,7 +165,8 @@ export default class Rating extends LightningElement {
         }
     }
 
-    @api get readOnly() {
+    @api 
+    get readOnly() {
         return this._readOnly;
     }
 
@@ -158,7 +178,8 @@ export default class Rating extends LightningElement {
         }
     }
 
-    @api get valueHidden() {
+    @api 
+    get valueHidden() {
         return this._valueHidden;
     }
 
@@ -182,6 +203,23 @@ export default class Rating extends LightningElement {
         }
 
         return items.reverse();
+    }
+
+    get computedContainerClass() {
+        return classSet()
+        .add({
+            'slds-form-element_stacked': this.variant === 'label-stacked',
+            'avonni-label-inline': this.variant === 'label-inline'
+        })
+        .toString();
+    }
+
+    get computedLegendClass() {
+        return classSet('slds-form-element__label slds-no-flex')
+            .add({
+                'slds-assistive-text': this.variant === 'label-hidden'
+            })
+            .toString();
     }
 
     selectRating(event) {
