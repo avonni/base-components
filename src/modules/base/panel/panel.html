@@ -1,17 +1,6 @@
 <template>
-    <lightning-button onclick={toggle} label="toggle"></lightning-button>
-    <lightning-button onclick={open} label="open"></lightning-button>
-    <lightning-button onclick={close} label="close"></lightning-button>
     <div class={computedOuterClass} aria-hidden="false">
         <div class="slds-panel__header">
-            <lightning-button-icon
-                variant="bare"
-                icon-name="utility:back"
-                size="medium"
-                onclick={open}
-                class="slds-panel__back"
-            >
-            </lightning-button-icon>
             <h1
                 class="slds-panel__header-title slds-text-heading_small slds-truncate"
                 title="Panel Header"

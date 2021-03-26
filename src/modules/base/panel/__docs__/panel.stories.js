@@ -1,4 +1,5 @@
 import { Panel } from '../__examples__/panel';
+import { PanelWithButtons } from '../__examples__/panelWithButtons';
 
 export default {
     title: 'Example/Panel',
@@ -42,6 +43,14 @@ export default {
 };
 
 const Template = (args) => Panel(args);
+const PanelWithButtonsTemplate = (args) => PanelWithButtons(args);
 
 export const Base = Template.bind({});
-Base.args = {};
+Base.args = {
+    title: 'Title'
+};
+
+export const PanelButtons = PanelWithButtonsTemplate.bind({});
+PanelButtons.args = {
+    title: 'Title'
+};

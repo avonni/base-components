@@ -15,6 +15,7 @@ export default class Pagination extends LightningElement {
     _position = 'right';
     _size = 'medium';
     _showPanel = false;
+    _isRight = true;
 
     showTitleSlot = true;
     showPanelBodySlot = true;
@@ -93,6 +94,10 @@ export default class Pagination extends LightningElement {
 
     get hasStringTitle() {
         return !!this.title;
+    }
+
+    get isRight() {
+        return this.position === 'right';
     }
 
     @api
