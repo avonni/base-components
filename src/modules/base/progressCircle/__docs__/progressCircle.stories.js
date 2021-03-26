@@ -3,13 +3,26 @@ import { ProgressCircle } from '../__examples__/progressCircle';
 export default {
     title: 'Example/Progress Circle',
     argTypes: {
-        label: {
+        title: {
             control: {
                 type: 'text'
             },
             description:
-                'The label is displayed at the bottom of the progress circle.',
+                'The title is displayed at the bottom or top of the progress circle.',
             table: {
+                type: { summary: 'string' }
+            }
+        },
+        titlePosition: {
+            name: 'title-position',
+            control: {
+                type: 'select',
+                options: ['bottom', 'top']
+            },
+            defaultValue: 'bottom',
+            description: 'Valid values include top and bottom.',
+            table: {
+                defaultValue: { summary: 'bottom' },
                 type: { summary: 'string' }
             }
         },
@@ -36,6 +49,16 @@ export default {
             table: {
                 defaultValue: { summary: '0' },
                 type: { summary: 'number' }
+            }
+        },
+        label: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'The label is displayed after the value in the progress circle.',
+            table: {
+                type: { summary: 'string' }
             }
         },
         variant: {
@@ -76,6 +99,30 @@ export default {
                 defaultValue: { summary: 'medium' },
                 type: { summary: 'string' }
             }
+        },
+        thickness: {
+            control: {
+                type: 'select',
+                options: ['x-small', 'small', 'medium', 'large', 'x-large']
+            },
+            defaultValue: 'medium',
+            description:
+                'Set progress circle thickness. Valid values include x-small, small, medium, large and x-large.',
+            table: {
+                defaultValue: { summary: 'medium' },
+                type: { summary: 'string' }
+            }
+        },
+        round: {
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description: 'If true, round the line ends.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
         }
     }
 };
@@ -84,13 +131,49 @@ const Template = (args) => ProgressCircle(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    label: 'Text label',
+    title: 'Text title',
     value: 45
+};
+
+export const BaseWithTitleTop = Template.bind({});
+BaseWithTitleTop.args = {
+    title: 'Text title',
+    value: 45,
+    titlePosition: 'top'
+};
+
+export const BaseWithThicknessX_SmallAndLabel = Template.bind({});
+BaseWithThicknessX_SmallAndLabel.args = {
+    title: 'Thickness X-small and label',
+    value: 45,
+    thickness: 'x-small',
+    label: 'progress'
+};
+
+export const BaseWithThicknessSmall = Template.bind({});
+BaseWithThicknessSmall.args = {
+    title: 'Thickness Small',
+    value: 55,
+    thickness: 'small'
+};
+
+export const BaseWithThicknessLarge = Template.bind({});
+BaseWithThicknessLarge.args = {
+    title: 'Thickness large',
+    value: 55,
+    thickness: 'large'
+};
+
+export const BaseWithThicknessX_Large = Template.bind({});
+BaseWithThicknessX_Large.args = {
+    title: 'Thickness X-large',
+    value: 55,
+    thickness: 'x-large'
 };
 
 export const DrainDirection = Template.bind({});
 DrainDirection.args = {
-    label: 'Drain direction',
+    title: 'Drain direction',
     value: 45,
     direction: 'drain'
 };
@@ -105,28 +188,28 @@ NoLabelSmallValueHiddenGreen.args = {
 
 export const ExtraSmall = Template.bind({});
 ExtraSmall.args = {
-    label: 'Extra small',
+    title: 'Extra small',
     value: 45,
     size: 'x-small'
 };
 
 export const Small = Template.bind({});
 Small.args = {
-    label: 'Small',
+    title: 'Small',
     value: 45,
     size: 'small'
 };
 
 export const Large = Template.bind({});
 Large.args = {
-    label: 'Large',
+    title: 'Large',
     value: 45,
     size: 'large'
 };
 
 export const ExtraLarge = Template.bind({});
 ExtraLarge.args = {
-    label: 'Extra large',
+    title: 'Extra large',
     value: 45,
     size: 'x-large'
 };

@@ -6,6 +6,7 @@ export const Rating = ({
     label,
     fieldLevelHelp,
     value,
+    variant,
     iconName,
     iconSize,
     min,
@@ -19,6 +20,7 @@ export const Rating = ({
     element.label = label;
     element.fieldLevelHelp = fieldLevelHelp;
     element.value = value;
+    element.variant = variant;
     element.iconName = iconName;
     element.iconSize = iconSize;
     element.min = min || 1;
