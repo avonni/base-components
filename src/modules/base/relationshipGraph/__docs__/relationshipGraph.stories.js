@@ -13,6 +13,37 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        avatarSrc: {
+            name: 'avatar-src',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Image URL for the avatar of the root item. If present, the avatar is displayed before the label.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        avatarFallbackIconName: {
+            name: 'avatar-fallback-icon-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                "The Lightning Design System name of the icon used as a fallback when the root avatar image fails to load. \nSpecify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.",
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        href: {
+            control: {
+                type: 'text'
+            },
+            description: 'URL for the root label link.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         variant: {
             control: {
                 type: 'text'
@@ -22,6 +53,16 @@ export default {
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'horizontal' }
+            }
+        },
+        selectedItemName: {
+            name: 'selected-item-name',
+            control: {
+                type: 'text'
+            },
+            description: 'Name of the selected item.',
+            table: {
+                type: { summary: 'string' }
             }
         },
         groups: {
@@ -131,6 +172,38 @@ const groups = [
                     {
                         label: 'Total Financial Accounts',
                         value: '$324,700.00'
+                    }
+                ],
+                groups: [
+                    {
+                        label: 'Group Relationships',
+                        name: 'symonds-household-group-relationships'
+                    },
+                    {
+                        label: 'Related Accounts',
+                        name: 'symonds-household-related-accounts'
+                    },
+                    {
+                        label: 'Members',
+                        name: 'symonds-household-members',
+                        items: [
+                            {
+                                label: 'Neil Symonds',
+                                name: 'neil-symonds',
+                                avatarFallbackIconName: 'standard:user',
+                                href: 'https://www.avonni.app/',
+                                data: [
+                                    {
+                                        label: 'Account name',
+                                        value: 'Neil Symonds'
+                                    },
+                                    {
+                                        label: 'Account phone number',
+                                        value: '(628) 391-9393'
+                                    }
+                                ]
+                            }
+                        ]
                     }
                 ]
             }
@@ -297,14 +370,19 @@ const Template = (args) => RelationshipGraph(args);
 export const Base = Template.bind({});
 Base.args = {
     label: 'Root label',
+    avatarSrc:
+        'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+    href: 'https://www.avonni.app/',
     groups: groups,
     groupActions: groupActions,
-    itemActions: itemActions
+    itemActions: itemActions,
+    selectedItemName: 'adams-household'
 };
 
 export const Vertical = Template.bind({});
 Vertical.args = {
     label: 'Root label',
+    avatarFallbackIconName: 'standard:user',
     groups: groups,
     groupActions: groupActions,
     itemActions: itemActions,

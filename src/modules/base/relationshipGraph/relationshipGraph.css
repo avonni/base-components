@@ -1,0 +1,14 @@
+.avonni-relationship-graph__group {
+    width: var(--lwc-sizeMedium, 20rem);
+}
+
+[data-groups]::after {
+    content: '';
+    border: 0 solid transparent;
+    border-left-width: 15px;
+    border-bottom: 15px solid
+        var(--avonni-c-relationship-graph-children-indicator-color, #007add);
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
