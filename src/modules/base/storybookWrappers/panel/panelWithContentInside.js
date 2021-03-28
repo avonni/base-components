@@ -1,10 +1,10 @@
 import { LightningElement, api } from 'lwc';
 
-export default class PanelWithDatatable extends LightningElement {
+export default class PanelWithContentInside extends LightningElement {
     @api position;
     @api title;
     @api size = 'medium';
-    @api showPanel = false;
+    @api showPanel;
 
     open() {
         this.template.querySelector('c-panel').open();
@@ -16,9 +16,5 @@ export default class PanelWithDatatable extends LightningElement {
 
     toggle() {
         this.template.querySelector('c-panel').toggle();
-    }
-
-    get isRight() {
-        return this.position === 'right';
     }
 }

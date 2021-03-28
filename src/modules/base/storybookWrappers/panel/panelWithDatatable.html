@@ -1,5 +1,36 @@
 <template>
     <div style="display: flex">
+        <c-panel
+            if:false={isRight}
+            position={position}
+            title={title}
+            size={size}
+            show-panel={showPanel}
+        >
+            <div slot="title">Filters</div>
+            <div slot="panel-body">
+                <div class="slds-box">
+                    <div class="slds-text-body_small">Filter by Owner</div>
+                    <div class="slds-text-body_regular">My Accounts</div>
+                </div>
+            </div>
+            <lightning-layout horizontal-align="spread">
+                <lightning-layout-item>
+                    <lightning-button
+                        label="Add Filter"
+                        title="Neutral action"
+                        variant="base"
+                    ></lightning-button>
+                </lightning-layout-item>
+                <lightning-layout-item>
+                    <lightning-button
+                        label="Remove All"
+                        title="Neutral action"
+                        variant="base"
+                    ></lightning-button>
+                </lightning-layout-item>
+            </lightning-layout>
+        </c-panel>
         <table class="slds-table slds-table_cell-buffer slds-table_bordered">
             <thead>
                 <tr class="slds-line-height_reset">
@@ -13,17 +44,27 @@
                         </div>
                     </th>
                     <th class="" scope="col">
-                        <div class="slds-truncate" title="Account Name">
+                        <div
+                            class="slds-truncate"
+                            title="Account Name"
+                            onclick={open}
+                        >
                             Account Name
                         </div>
                     </th>
                     <th class="" scope="col">
-                        <div class="slds-truncate" title="Close Date">
+                        <div
+                            class="slds-truncate"
+                            title="Close Date"
+                            onclick={open}
+                        >
                             Close Date
                         </div>
                     </th>
                     <th class="" scope="col">
-                        <div class="slds-truncate" title="Stage">Stage</div>
+                        <div class="slds-truncate" title="Stage" onclick={open}>
+                            Stage
+                        </div>
                     </th>
                     <th class="" scope="col">
                         <div class="slds-truncate" title="Confidence">
@@ -31,10 +72,22 @@
                         </div>
                     </th>
                     <th class="" scope="col">
-                        <div class="slds-truncate" title="Amount">Amount</div>
+                        <div
+                            class="slds-truncate"
+                            title="Amount"
+                            onclick={open}
+                        >
+                            Amount
+                        </div>
                     </th>
                     <th class="" scope="col">
-                        <div class="slds-truncate" title="Contact">Contact</div>
+                        <div
+                            class="slds-truncate"
+                            title="Contact"
+                            onclick={open}
+                        >
+                            Contact
+                        </div>
                     </th>
                 </tr>
             </thead>
@@ -721,6 +774,7 @@
             </tbody>
         </table>
         <c-panel
+            if:true={isRight}
             position={position}
             title={title}
             size={size}

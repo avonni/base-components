@@ -1,0 +1,20 @@
+<template>
+    <c-panel
+        position={position}
+        title={title}
+        size={size}
+        show-panel={showPanel}
+    >
+        <div slot="title">
+            <div class="slds-text-heading_small">Panel Header</div>
+        </div>
+        <div slot="panel-body">
+            <lightning-input
+                name="enter-search"
+                label="Search"
+                type="search"
+            ></lightning-input>
+        </div>
+        <c-calendar></c-calendar>
+    </c-panel>
+</template>

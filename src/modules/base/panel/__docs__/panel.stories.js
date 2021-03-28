@@ -1,6 +1,7 @@
 import { Panel } from '../__examples__/panel';
 import { PanelWithButtons } from '../__examples__/panelWithButtons';
 import { PanelWithDatatable } from '../__examples__/panelWithDatatable';
+import { PanelWithContentInside } from '../__examples__/panelWithContentInside';
 
 export default {
     title: 'Example/Panel',
@@ -46,6 +47,7 @@ export default {
 const Template = (args) => Panel(args);
 const PanelWithButtonsTemplate = (args) => PanelWithButtons(args);
 const PanelWithDatatableTemplate = (args) => PanelWithDatatable(args);
+const PanelWithContentInsideTemplate = (args) => PanelWithContentInside(args);
 
 export const Base = Template.bind({});
 Base.args = {
@@ -53,8 +55,41 @@ Base.args = {
     showPanel: true
 };
 
+export const Small = Template.bind({});
+Small.args = {
+    title: 'Small Panel Header',
+    showPanel: true,
+    size: 'small'
+};
+
+export const Large = Template.bind({});
+Large.args = {
+    title: 'Large Panel Header',
+    showPanel: true,
+    size: 'Large'
+};
+
+export const X_Large = Template.bind({});
+X_Large.args = {
+    title: 'X-Large Panel Header',
+    showPanel: true,
+    size: 'x-Large'
+};
+
+export const Full = Template.bind({});
+Full.args = {
+    title: 'Full Panel Header',
+    showPanel: true,
+    size: 'full'
+};
+
 export const PanelButtons = PanelWithButtonsTemplate.bind({});
 PanelButtons.args = {};
 
 export const PanelDatatable = PanelWithDatatableTemplate.bind({});
 PanelDatatable.args = {};
+
+export const PanelWithContent = PanelWithContentInsideTemplate.bind({});
+PanelWithContent.args = {
+    showPanel: true
+};

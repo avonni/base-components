@@ -27,8 +27,10 @@
             show-panel={showPanel}
         >
             <div slot="title">Slot title</div>
-            <div slot="panel-body">Slot Panel Body</div>
-            <p>Panel Main Body</p>
+            <div slot="panel-body">
+                A panel body accepts any layout or component
+            </div>
+            <p>A panel main body accepts any layout or component</p>
         </c-panel>
         <template if:false={isRight}>
             <div class="slds-col slds-p-around_medium">
