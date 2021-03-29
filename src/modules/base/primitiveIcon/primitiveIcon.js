@@ -6,7 +6,7 @@ import * as iconUtils from 'c/iconUtils';
 import standardTemplate from './primitiveIcon.html';
 import { getIconSvgTemplates } from 'c/configProvider';
 
-export default class cPrimitiveIcon extends LightningElement {
+export default class PrimitiveIcon extends LightningElement {
     @api iconName;
     @api src;
     @api svgClass;

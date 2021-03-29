@@ -23,7 +23,7 @@ const validMenuAlignments = [
     'bottom-right'
 ];
 
-export default class cButtonMenu extends LightningElement {
+export default class ButtonMenu extends LightningElement {
     static delegatesFocus = true;
 
     @api iconSize = 'medium';

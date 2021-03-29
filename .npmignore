@@ -19,3 +19,6 @@ package-lock.json
 
 #LWC wrappers
 **/storybookWrappers/**
+
+#Salesforce meta
+*.js-meta.xml
