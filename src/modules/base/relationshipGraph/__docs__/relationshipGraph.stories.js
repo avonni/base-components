@@ -279,7 +279,52 @@ const groups = [
                                                 label:
                                                     'Northern Trails Outfitter',
                                                 name:
-                                                    'related-accounts-adams-household-northern-trails-outfitter'
+                                                    'related-accounts-adams-household-northern-trails-outfitter',
+                                                groups: [
+                                                    {
+                                                        label:
+                                                            'Group Relationships',
+                                                        name:
+                                                            'northern-trails-outfitter-group-relationships2'
+                                                    },
+                                                    {
+                                                        label:
+                                                            'Related Accounts',
+                                                        name:
+                                                            'northern-trails-outfitter-related-accounts2'
+                                                    },
+                                                    {
+                                                        label: 'Members',
+                                                        name:
+                                                            'northern-trails-outfitter-members',
+                                                        items: [
+                                                            {
+                                                                label:
+                                                                    'Neil Symonds',
+                                                                name:
+                                                                    'northern-trails-outfitter-neil-symonds',
+                                                                avatarFallbackIconName:
+                                                                    'standard:user',
+                                                                href:
+                                                                    'https://www.avonni.app/',
+                                                                data: [
+                                                                    {
+                                                                        label:
+                                                                            'Account name',
+                                                                        value:
+                                                                            'Neil Symonds'
+                                                                    },
+                                                                    {
+                                                                        label:
+                                                                            'Account phone number',
+                                                                        value:
+                                                                            '(628) 391-9393'
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
                                             }
                                         ]
                                     }

@@ -5,6 +5,7 @@ import { normalizeString } from 'c/utilsPrivate';
 const VARIANTS = ['horizontal', 'vertical'];
 
 // QUESTIONS:
+// Should nodes with no children close the tree on click?
 // Option to hide empty groups?
 
 // TODO:
@@ -19,12 +20,12 @@ export default class RelationshipGraph extends LightningElement {
     @api shrinkIconName;
     @api expandIconName;
 
-    selectedGroups;
     selectedItem;
     wrapperClass;
     currentLevelClass;
     _variant;
     _groups;
+    _selectedGroups;
     _isRoot = true;
 
     connectedCallback() {
@@ -39,7 +40,7 @@ export default class RelationshipGraph extends LightningElement {
                     (item) => item.selected
                 );
                 if (selectedItem.groups)
-                    this.selectedGroups = selectedItem.groups;
+                    this._selectedGroups = selectedItem.groups;
             }
         }
     }
@@ -75,6 +76,14 @@ export default class RelationshipGraph extends LightningElement {
     }
     set isRoot(boolean) {
         this._isRoot = boolean !== 'false';
+    }
+
+    @api
+    get selectedGroups() {
+        return this._selectedGroups;
+    }
+    set selectedGroups(value) {
+        this._selectedGroups = value;
     }
 
     get rootHasAvatar() {
@@ -138,11 +147,16 @@ export default class RelationshipGraph extends LightningElement {
     handleSelect(event) {
         const name = event.currentTarget.dataset.name;
 
+        // If we open a higher level node than what was already open,
+        // make sure the previous deeper children nodes are hidden.
+        const child = this.template.querySelector('c-relationship-graph');
+        if (child) child.selectedGroups = undefined;
+
         this.selectedItem = undefined;
         this.selectItem(name, this.groups);
 
         const selectedGroups = this.selectedItem.groups;
-        if (selectedGroups) this.selectedGroups = selectedGroups;
+        if (selectedGroups) this._selectedGroups = selectedGroups;
 
         const selectEvent = new CustomEvent('select', {
             detail: {
