@@ -91,9 +91,11 @@
             </template>
         </div>
         <template if:true={isRecordHomeVariant}>
-            <div class="slds-page-header__row slds-page-header__row_gutters">
-                <div class="slds-page-header__col-details">
-                    <template if:false={itemsIsEmpty}>
+            <template if:false={itemsIsEmpty}>
+                <div
+                    class="slds-page-header__row slds-page-header__row_gutters"
+                >
+                    <div class="slds-page-header__col-details">
                         <ul class="slds-page-header__detail-row">
                             <template for:each={items} for:item="item">
                                 <li
@@ -120,14 +122,12 @@
                                 </li>
                             </template>
                         </ul>
-                    </template>
-                    <template if:true={itemsIsEmpty}>
-                        <div class="slds-page-header__detail-row">
-                            <slot name="details"></slot>
-                        </div>
-                    </template>
+                    </div>
                 </div>
-            </div>
+            </template>
+            <template if:true={itemsIsEmpty}>
+                <slot name="details"></slot>
+            </template>
         </template>
     </div>
 </template>
