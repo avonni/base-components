@@ -5,6 +5,7 @@ import { normalizeString } from 'c/utilsPrivate';
 const VARIANTS = ['horizontal', 'vertical'];
 
 // QUESTIONS:
+// Dispatch event when summaryDetail is closed/opened
 // Should nodes with no children close the tree on click?
 // Option to hide empty groups?
 
@@ -16,33 +17,27 @@ export default class RelationshipGraph extends LightningElement {
     @api avatarSrc;
     @api avatarFallbackIconName;
     @api href;
-    @api selectedItemName;
     @api shrinkIconName;
     @api expandIconName;
 
-    selectedItem;
+    processedGroups;
+    selectedItemPosition;
     wrapperClass;
-    currentLevelClass;
+    currentLevelClass =
+        'avonni-relationship-graph__current-level-col slds-m-left_x-large';
     _variant;
+    _selectedItemName;
     _groups;
+    _selectedItem;
     _selectedGroups;
     _isRoot = true;
 
     connectedCallback() {
-        if (this.selectedItemName) {
-            // If this is the root, go through the tree to mark the selected groups/items
-            if (this.isRoot)
-                this.selectItem(this.selectedItemName, this.groups);
+        this.updateSelection();
+    }
 
-            const selectedGroup = this.groups.find((group) => group.selected);
-            if (selectedGroup && selectedGroup.items) {
-                const selectedItem = selectedGroup.items.find(
-                    (item) => item.selected
-                );
-                if (selectedItem.groups)
-                    this._selectedGroups = selectedItem.groups;
-            }
-        }
+    renderedCallback() {
+        this.updateVerticalLine();
     }
 
     @api
@@ -56,10 +51,18 @@ export default class RelationshipGraph extends LightningElement {
         });
 
         if (this._variant === 'vertical') {
-            this.currentLevelClass = 'slds-grid';
+            this.currentLevelClass += ' slds-grid';
         } else {
             this.wrapperClass = 'slds-grid';
         }
+    }
+
+    @api
+    get selectedItemName() {
+        return this._selectedItemName;
+    }
+    set selectedItemName(name) {
+        this._selectedItemName = name;
     }
 
     @api
@@ -67,7 +70,8 @@ export default class RelationshipGraph extends LightningElement {
         return this._groups;
     }
     set groups(proxy) {
-        this._groups = JSON.parse(JSON.stringify(proxy));
+        this._groups = proxy;
+        this.processedGroups = JSON.parse(JSON.stringify(proxy));
     }
 
     @api
@@ -94,10 +98,80 @@ export default class RelationshipGraph extends LightningElement {
         return generateUniqueId();
     }
 
+    @api
+    get maxHeightForCurrentColumnVerticalLine() {
+        const currentCol = this.template.querySelector(
+            '.avonni-relationship-graph__current-level-col'
+        );
+        const currentColHeight = currentCol.offsetHeight;
+        const lastGroup = currentCol.querySelector(
+            '.avonni-relationship-graph__group:last-child'
+        );
+        const lastGroupHeight = lastGroup.offsetHeight;
+        return currentColHeight - lastGroupHeight;
+    }
+
+    updateVerticalLine() {
+        // Root vertical line
+        if (this.isRoot) {
+            const firstLine = this.template.querySelector(
+                '.avonni-relationship-graph__first-line'
+            );
+            const height = this.maxHeightForCurrentColumnVerticalLine;
+            firstLine.setAttribute('style', `height: ${height}px`);
+        }
+
+        // Vertical line between selected item and its children
+        const line = this.template.querySelector(
+            '.avonni-relationship-graph__line'
+        );
+        const selectedItem = this.template.querySelector(
+            '[data-selected="true"]'
+        );
+        const child = this.template.querySelector('c-relationship-graph');
+        if (!line || !selectedItem || !child) return;
+
+        const currentCol = this.template.querySelector(
+            '.avonni-relationship-graph__current-level-col'
+        );
+        const currentColTop =
+            currentCol.getBoundingClientRect().top + window.scrollY;
+        const scroll = window.pageYOffset;
+        const itemPosition = selectedItem.getBoundingClientRect();
+
+        const itemHeight =
+            itemPosition.top + itemPosition.height / 2 + scroll - currentColTop;
+        const childHeight = child.maxHeightForCurrentColumnVerticalLine;
+
+        const height =
+            itemHeight > childHeight
+                ? `calc(${itemHeight}px - 1.5rem)`
+                : `${childHeight}px`;
+        line.setAttribute('style', `height: ${height};`);
+    }
+
+    updateSelection() {
+        if (!this.selectedItemName || !this.groups) return;
+
+        // Reset the selection and go through the tree with the new selection
+        this.processedGroups = JSON.parse(JSON.stringify(this.groups));
+        this.selectItem(this.selectedItemName, this.processedGroups);
+
+        const selectedGroup = this.processedGroups.find(
+            (group) => group.selected
+        );
+        if (selectedGroup && selectedGroup.items) {
+            const selectedItem = selectedGroup.items.find(
+                (item) => item.selected
+            );
+            if (selectedItem.groups) this._selectedGroups = selectedItem.groups;
+        }
+    }
+
     selectItem(name, groups) {
         let i = 0;
 
-        while (!this.selectedItem && i < groups.length) {
+        while (!this._selectedItem && i < groups.length) {
             const items = groups[i].items;
 
             if (items) {
@@ -112,22 +186,22 @@ export default class RelationshipGraph extends LightningElement {
                     currentGroup.selected = true;
                     currentItem.selected = true;
 
-                    this.selectedItem = currentItem;
+                    this._selectedItem = currentItem;
                     break;
                 }
 
                 let j = 0;
-                while (!this.selectedItem && j < items.length) {
+                while (!this._selectedItem && j < items.length) {
                     if (items[j].groups) this.selectItem(name, items[j].groups);
 
                     // If a child item has been selected, select the current parent item
-                    if (this.selectedItem) items[j].selected = true;
+                    if (this._selectedItem) items[j].selected = true;
                     j += 1;
                 }
             }
 
             // If a child group has been selected, select the current parent group
-            if (this.selectedItem) groups[i].selected = true;
+            if (this._selectedItem) groups[i].selected = true;
             i += 1;
         }
     }
@@ -145,18 +219,20 @@ export default class RelationshipGraph extends LightningElement {
     }
 
     handleSelect(event) {
-        const name = event.currentTarget.dataset.name;
+        // Reset selection
+        this._selectedGroups = undefined;
+        this._selectedItem = undefined;
+        this._selectedItemName = undefined;
 
-        // If we open a higher level node than what was already open,
+        // If we open a higher level node than the one currently opened,
         // make sure the previous deeper children nodes are hidden.
         const child = this.template.querySelector('c-relationship-graph');
         if (child) child.selectedGroups = undefined;
 
-        this.selectedItem = undefined;
-        this.selectItem(name, this.groups);
-
-        const selectedGroups = this.selectedItem.groups;
-        if (selectedGroups) this._selectedGroups = selectedGroups;
+        const name = event.currentTarget.dataset.name;
+        this._selectedItemName = name;
+        this.updateSelection();
+        this.updateVerticalLine();
 
         const selectEvent = new CustomEvent('select', {
             detail: {

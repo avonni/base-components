@@ -218,6 +218,50 @@ const groups = [
         // Items
         items: [
             {
+                label: 'Cumulus Restaurants',
+                name: 'cumulus-restaurants',
+                avatarFallbackIconName: 'custom:custom51',
+                data: [
+                    {
+                        label: 'Account name',
+                        value: 'Cumulus Restaurants'
+                    },
+                    {
+                        label: 'Account phone number',
+                        value: '(628) 391-9393'
+                    }
+                ],
+                hideDefaultActions: true
+            }
+        ],
+        hideDefaultActions: true,
+        actions: customGroupActions
+    },
+    // Group
+    {
+        label: 'Member Relationships',
+        name: 'member-relationships2',
+        items: [
+            {
+                label: 'Community Recreation',
+                name: 'community-recreation',
+                avatarFallbackIconName: 'standard:campaign',
+                data: [
+                    {
+                        label: 'Account name',
+                        value: 'Community Recreation'
+                    },
+                    {
+                        label: 'Account phone number',
+                        value: '(628) 391-9393'
+                    },
+                    {
+                        label: 'Total Financial Accounts',
+                        value: '$1,330'
+                    }
+                ]
+            },
+            {
                 label: 'Northern Trails Outfitter',
                 name: 'northern-trail-outfitter',
                 avatarFallbackIconName: 'standard:case',
@@ -253,6 +297,33 @@ const groups = [
                         href: 'https://www.avonni.app/',
                         // Items
                         items: [
+                            {
+                                label: 'Alpine Group',
+                                name: 'alpine-group',
+                                avatarSrc:
+                                    'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+                                avatarFallbackIconName: 'standard:user',
+                                data: [
+                                    {
+                                        label: 'Account name',
+                                        value: 'Alpine Group'
+                                    },
+                                    {
+                                        label: 'Total Financial Accounts',
+                                        value: '$0'
+                                    }
+                                ]
+                            },
+                            {
+                                label: 'Member Relationships',
+                                name: 'member-relationships',
+                                avatarFallbackIconName: 'standard:account'
+                            },
+                            {
+                                label: 'Action Plans',
+                                name: 'action-plans',
+                                avatarFallbackIconName: 'standard:account'
+                            },
                             {
                                 label: 'Adams Household',
                                 name: 'adams-household',
@@ -320,6 +391,22 @@ const groups = [
                                                                         value:
                                                                             '(628) 391-9393'
                                                                     }
+                                                                ],
+                                                                groups: [
+                                                                    {
+                                                                        label:
+                                                                            'Related Accounts',
+                                                                        name:
+                                                                            'northern-trails-outfitter-neil-symonds-related-accounts',
+                                                                        items: [
+                                                                            {
+                                                                                label:
+                                                                                    'Mary James',
+                                                                                name:
+                                                                                    'mary-james'
+                                                                            }
+                                                                        ]
+                                                                    }
                                                                 ]
                                                             }
                                                         ]
@@ -329,80 +416,8 @@ const groups = [
                                         ]
                                     }
                                 ]
-                            },
-                            {
-                                label: 'Alpine Group',
-                                name: 'alpine-group',
-                                avatarSrc:
-                                    'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
-                                avatarFallbackIconName: 'standard:user',
-                                data: [
-                                    {
-                                        label: 'Account name',
-                                        value: 'Alpine Group'
-                                    },
-                                    {
-                                        label: 'Total Financial Accounts',
-                                        value: '$0'
-                                    }
-                                ]
-                            },
-                            {
-                                label: 'Member Relationships',
-                                name: 'member-relationships',
-                                avatarFallbackIconName: 'standard:account'
-                            },
-                            {
-                                label: 'Action Plans',
-                                name: 'action-plans',
-                                avatarFallbackIconName: 'standard:account'
                             }
                         ]
-                    }
-                ]
-            },
-            // Item
-            {
-                label: 'Cumulus Restaurants',
-                name: 'cumulus-restaurants',
-                avatarFallbackIconName: 'custom:custom51',
-                data: [
-                    {
-                        label: 'Account name',
-                        value: 'Cumulus Restaurants'
-                    },
-                    {
-                        label: 'Account phone number',
-                        value: '(628) 391-9393'
-                    }
-                ],
-                hideDefaultActions: true
-            }
-        ],
-        hideDefaultActions: true,
-        actions: customGroupActions
-    },
-    // Group
-    {
-        label: 'Member Relationships',
-        name: 'member-relationships2',
-        items: [
-            {
-                label: 'Community Recreation',
-                name: 'community-recreation',
-                avatarFallbackIconName: 'standard:campaign',
-                data: [
-                    {
-                        label: 'Account name',
-                        value: 'Community Recreation'
-                    },
-                    {
-                        label: 'Account phone number',
-                        value: '(628) 391-9393'
-                    },
-                    {
-                        label: 'Total Financial Accounts',
-                        value: '$1,330'
                     }
                 ]
             }
@@ -421,7 +436,7 @@ Base.args = {
     groups: groups,
     groupActions: groupActions,
     itemActions: itemActions,
-    selectedItemName: 'adams-household'
+    selectedItemName: 'mary-james'
 };
 
 export const Vertical = Template.bind({});

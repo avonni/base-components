@@ -1,148 +1,149 @@
 <template>
-    <article>
-        <template if:true={isRoot}>
-            <!-- Root avatar / title -->
-            <div class="slds-m-bottom_medium">
-                <c-media-object vertical-align="center">
-                    <c-avatar
-                        if:true={rootHasAvatar}
-                        slot="figure"
-                        alternative-text={label}
-                        fallback-icon-name={avatarFallbackIconName}
-                        src={avatarSrc}
-                        hide-avatar-details="true"
-                    ></c-avatar>
-                    <h1 class="slds-text-heading_small">
-                        <a if:true={href} href={href}>{label}</a>
-                        <span if:false={href}>{label}</span>
-                    </h1>
-                </c-media-object>
-            </div>
-        </template>
-
-        <div class={wrapperClass}>
-            <!-- Current level -->
-            <div class={currentLevelClass}>
-                <template for:each={groups} for:item="group">
-                    <div
-                        key={group.name}
-                        class="slds-card slds-p-around_medium avonni-relationship-graph__group"
-                    >
-                        <c-summary-detail
-                            title={group.label}
-                            full-width="true"
-                            remove-body-indentation="true"
-                            shrink-icon-name={shrinkIconName}
-                            expand-icon-name={expandIconName}
-                        >
-                            <div slot="actions" if:true={group.actions}>
-                                <template
-                                    for:each={group.actions}
-                                    for:item="action"
-                                >
-                                    <lightning-button
-                                        key={action.name}
-                                        label={action.label}
-                                    ></lightning-button>
-                                </template>
-                            </div>
-                            <template if:true={group.items}>
-                                <template
-                                    for:each={group.items}
-                                    for:item="item"
-                                >
-                                    <!-- Item -->
-                                    <div
-                                        key={item.name}
-                                        class="slds-box slds-box_small slds-m-bottom_small slds-is-relative"
-                                        onclick={handleSelect}
-                                        data-name={item.name}
-                                        data-groups={item.groups}
-                                    >
-                                        <!-- Avatar / Title / Actions -->
-                                        <c-media-object vertical-align="center">
-                                            <c-avatar
-                                                slot="figure"
-                                                alternative-text={item.label}
-                                                fallback-icon-name={item.avatarFallbackIconName}
-                                                src={item.avatarSrc}
-                                                hide-avatar-details="true"
-                                                size="small"
-                                            ></c-avatar>
-                                            <div
-                                                class="slds-text-heading_small slds-truncate"
-                                            >
-                                                <a
-                                                    if:true={item.href}
-                                                    href={item.href}
-                                                    >{item.label}</a
-                                                >
-                                                <span if:false={item.href}
-                                                    >{item.label}</span
-                                                >
-                                            </div>
-                                            <div
-                                                slot="figure-inverse"
-                                                if:true={item.actions}
-                                            >
-                                                <template
-                                                    for:each={item.actions}
-                                                    for:item="action"
-                                                >
-                                                    <lightning-button
-                                                        key={action.name}
-                                                        label={action.label}
-                                                    ></lightning-button>
-                                                </template>
-                                            </div>
-                                        </c-media-object>
-                                        <!-- Data -->
-                                        <div
-                                            class="slds-m-top_small"
-                                            if:true={item.data}
-                                        >
-                                            <dl class="slds-dl_horizontal">
-                                                <template
-                                                    for:each={item.data}
-                                                    for:item="data"
-                                                >
-                                                    <dt
-                                                        key={generateKey}
-                                                        class="slds-dl_horizontal__label slds-truncate"
-                                                    >
-                                                        {data.label}
-                                                    </dt>
-                                                    <dd
-                                                        key={generateKey}
-                                                        class="slds-dl_horizontal__detail"
-                                                    >
-                                                        {data.value}
-                                                    </dd>
-                                                </template>
-                                            </dl>
-                                        </div>
-                                    </div>
-                                </template>
-                            </template>
-                        </c-summary-detail>
-                    </div>
-                </template>
-            </div>
-            <!-- Selected Level -->
-            <div
-                class="slds-grid slds-m-left_xx-large"
-                if:true={selectedGroups}
-            >
-                <c-relationship-graph
-                    onselect={dispatchSelectEvent}
-                    is-root="false"
-                    groups={selectedGroups}
-                    variant={variant}
-                    shrink-icon-name={shrinkIconName}
-                    expand-icon-name={expandIconName}
-                    selected-item-name={selectedItemName}
-                ></c-relationship-graph>
-            </div>
+    <template if:true={isRoot}>
+        <!-- Root avatar / title -->
+        <div class="slds-m-bottom_medium">
+            <c-media-object vertical-align="center">
+                <c-avatar
+                    if:true={rootHasAvatar}
+                    slot="figure"
+                    alternative-text={label}
+                    fallback-icon-name={avatarFallbackIconName}
+                    src={avatarSrc}
+                    hide-avatar-details="true"
+                ></c-avatar>
+                <h1 class="slds-text-heading_small">
+                    <a if:true={href} href={href}>{label}</a>
+                    <span if:false={href}>{label}</span>
+                </h1>
+            </c-media-object>
         </div>
-    </article>
+    </template>
+
+    <div class={wrapperClass}>
+        <div
+            class="avonni-relationship-graph__first-line"
+            if:true={isRoot}
+        ></div>
+        <!-- Current level -->
+        <div class={currentLevelClass}>
+            <template for:each={processedGroups} for:item="group">
+                <div
+                    key={group.name}
+                    class="slds-card slds-p-around_medium avonni-relationship-graph__group"
+                >
+                    <c-summary-detail
+                        title={group.label}
+                        full-width="true"
+                        remove-body-indentation="true"
+                        shrink-icon-name={shrinkIconName}
+                        expand-icon-name={expandIconName}
+                    >
+                        <div slot="actions" if:true={group.actions}>
+                            <template
+                                for:each={group.actions}
+                                for:item="action"
+                            >
+                                <lightning-button
+                                    key={action.name}
+                                    label={action.label}
+                                ></lightning-button>
+                            </template>
+                        </div>
+                        <template if:true={group.items}>
+                            <template for:each={group.items} for:item="item">
+                                <!-- Item -->
+                                <div
+                                    key={item.name}
+                                    class="slds-box slds-box_small slds-m-bottom_small slds-is-relative"
+                                    onclick={handleSelect}
+                                    data-name={item.name}
+                                    data-groups={item.groups}
+                                    data-selected={item.selected}
+                                >
+                                    <!-- Avatar / Title / Actions -->
+                                    <c-media-object vertical-align="center">
+                                        <c-avatar
+                                            slot="figure"
+                                            alternative-text={item.label}
+                                            fallback-icon-name={item.avatarFallbackIconName}
+                                            src={item.avatarSrc}
+                                            hide-avatar-details="true"
+                                            size="small"
+                                        ></c-avatar>
+                                        <div
+                                            class="slds-text-heading_small slds-truncate"
+                                        >
+                                            <a
+                                                if:true={item.href}
+                                                href={item.href}
+                                                >{item.label}</a
+                                            >
+                                            <span if:false={item.href}
+                                                >{item.label}</span
+                                            >
+                                        </div>
+                                        <div
+                                            slot="figure-inverse"
+                                            if:true={item.actions}
+                                        >
+                                            <template
+                                                for:each={item.actions}
+                                                for:item="action"
+                                            >
+                                                <lightning-button
+                                                    key={action.name}
+                                                    label={action.label}
+                                                ></lightning-button>
+                                            </template>
+                                        </div>
+                                    </c-media-object>
+                                    <!-- Data -->
+                                    <div
+                                        class="slds-m-top_small"
+                                        if:true={item.data}
+                                    >
+                                        <dl class="slds-dl_horizontal">
+                                            <template
+                                                for:each={item.data}
+                                                for:item="data"
+                                            >
+                                                <dt
+                                                    key={generateKey}
+                                                    class="slds-dl_horizontal__label slds-truncate"
+                                                >
+                                                    {data.label}
+                                                </dt>
+                                                <dd
+                                                    key={generateKey}
+                                                    class="slds-dl_horizontal__detail"
+                                                >
+                                                    {data.value}
+                                                </dd>
+                                            </template>
+                                        </dl>
+                                    </div>
+                                </div>
+                            </template>
+                        </template>
+                    </c-summary-detail>
+                </div>
+            </template>
+        </div>
+        <div
+            class="avonni-relationship-graph__line slds-m-left_x-large"
+            if:true={selectedGroups}
+        ></div>
+        <!-- Selected Level -->
+        <div class="slds-grid" if:true={selectedGroups}>
+            <c-relationship-graph
+                onselect={dispatchSelectEvent}
+                is-root="false"
+                groups={selectedGroups}
+                variant={variant}
+                shrink-icon-name={shrinkIconName}
+                expand-icon-name={expandIconName}
+                selected-item-name={selectedItemName}
+            ></c-relationship-graph>
+        </div>
+    </div>
 </template>

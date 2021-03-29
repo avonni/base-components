@@ -1,7 +1,28 @@
 .avonni-relationship-graph__group {
     width: var(--lwc-sizeMedium, 20rem);
+    position: relative;
 }
 
+/* Horizontal line */
+.avonni-relationship-graph__group::before {
+    content: '';
+    height: 2px;
+    background-color: var(--avonni-c-relationship-graph-line-color, #dddbda);
+    width: calc(2rem + 2px);
+    position: absolute;
+    left: calc(-2rem - 2px);
+    top: calc(1.5rem - 2px);
+}
+
+/* Vertical line */
+.avonni-relationship-graph__line,
+.avonni-relationship-graph__first-line {
+    border-right: 2px solid
+        var(--avonni-c-relationship-graph-line-color, #dddbda);
+    margin-top: var(--lwc-spacingLarge, 1.5rem);
+}
+
+/* Corner triangle */
 [data-groups]::after {
     content: '';
     border: 0 solid transparent;
@@ -11,4 +32,16 @@
     position: absolute;
     bottom: 0;
     right: 0;
+}
+
+/* Selected item horizontal line */
+[data-groups][data-selected='true']::before {
+    content: '';
+    height: 2px;
+    background-color: var(--avonni-c-relationship-graph-line-color, #dddbda);
+    position: absolute;
+    width: 50px;
+    right: -50px;
+    top: 50%;
+    transform: translateY(-50%);
 }
