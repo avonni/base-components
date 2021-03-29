@@ -123,6 +123,10 @@
             "path": "src/modules/base/dialog/dialog.js"
         },
         {
+            "name": "c/dualListbox",
+            "path": "src/modules/base/dualListbox/dualListbox.js"
+        },
+        {
             "name": "c/dynamicMenu",
             "path": "src/modules/base/dynamicMenu/dynamicMenu.js"
         },
@@ -435,6 +439,10 @@
             "path": "src/modules/base/dialog/dialog.js"
         },
         {
+            "name": "base/dualListbox",
+            "path": "src/modules/base/dualListbox/dualListbox.js"
+        },
+        {
             "name": "base/dynamicMenu",
             "path": "src/modules/base/dynamicMenu/dynamicMenu.js"
         },
@@ -628,6 +636,7 @@
         "base/confetti",
         "base/dateTimePicker",
         "base/dialog",
+        "base/dualListbox",
         "base/dynamicMenu",
         "base/emojiPicker",
         "base/expandableSection",
