@@ -1,96 +1,101 @@
 <template>
-    <div style="display: flex; width: 100%">
-        <c-panel
-            if:false={isRight}
-            position={position}
-            title={title}
-            size={size}
-            show-panel={showPanel}
-        >
-            <div slot="title">Filter</div>
-            <div slot="panel-body">
-                <div class="slds-box">
-                    <div class="slds-text-body_small">Filter by Owner</div>
-                    <div class="slds-text-body_regular">My opportunities</div>
-                </div>
-            </div>
-            <lightning-layout horizontal-align="spread">
-                <lightning-layout-item>
-                    <lightning-button
-                        label="Add Filter"
-                        title="Neutral action"
-                        variant="base"
-                    ></lightning-button>
-                </lightning-layout-item>
-                <lightning-layout-item>
-                    <lightning-button
-                        label="Remove All"
-                        title="Neutral action"
-                        variant="base"
-                    ></lightning-button>
-                </lightning-layout-item>
-            </lightning-layout>
-        </c-panel>
-        <c-page-header
-            icon-name="standard:opportunity"
-            label="Opportunities"
-            title="My Opportunities"
-            variant="record-home"
-            info="10 items • Updated 13 minutes ago"
-        >
-            <div slot="actions">
-                <lightning-button-group>
-                    <lightning-button label="Edit"></lightning-button>
-                    <lightning-button label="Delete"></lightning-button>
-                    <lightning-button label="Clone"></lightning-button>
-                </lightning-button-group>
-            </div>
-            <div slot="controls">
-                <ul class="slds-button-group-row">
-                    <li class="slds-button-group-item">
-                        <lightning-button-icon
-                            icon-name="utility:edit"
-                            variant="border-filled"
-                            alternative-text="Settings"
-                            size="medium"
-                        ></lightning-button-icon>
-                    </li>
-                    <li class="slds-button-group-item">
-                        <lightning-button-icon
-                            icon-name="utility:refresh"
-                            variant="border-filled"
-                            alternative-text="Settings"
-                            size="medium"
-                        ></lightning-button-icon>
-                    </li>
-                    <li class="slds-button-group-item">
-                        <lightning-button-icon
-                            icon-name="utility:chart"
-                            variant="border-filled"
-                            alternative-text="Settings"
-                            size="medium"
-                        ></lightning-button-icon>
-                    </li>
-                    <li class="slds-button-group-item">
-                        <lightning-button-icon
-                            icon-name="utility:filterList"
-                            variant="border-filled"
-                            alternative-text="Settings"
-                            size="medium"
-                            onclick={toggle}
-                        ></lightning-button-icon>
-                    </li>
-                    <li class="slds-button-group-item">
-                        <lightning-button-menu
-                            alternative-text="Show menu"
-                            icon-name="utility:settings"
-                        ></lightning-button-menu>
-                    </li>
-                </ul>
-            </div>
-            <div slot="details">
-                allo
-                <!-- <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+    <c-page-header
+        icon-name="standard:opportunity"
+        label="Opportunities"
+        title="My Opportunities"
+        variant="record-home"
+        info="10 items • Updated 13 minutes ago"
+    >
+        <div slot="actions">
+            <lightning-button-group>
+                <lightning-button label="Edit"></lightning-button>
+                <lightning-button label="Delete"></lightning-button>
+                <lightning-button label="Clone"></lightning-button>
+            </lightning-button-group>
+        </div>
+        <div slot="controls">
+            <ul class="slds-button-group-row">
+                <li class="slds-button-group-item">
+                    <lightning-button-icon
+                        icon-name="utility:edit"
+                        variant="border-filled"
+                        alternative-text="Settings"
+                        size="medium"
+                    ></lightning-button-icon>
+                </li>
+                <li class="slds-button-group-item">
+                    <lightning-button-icon
+                        icon-name="utility:refresh"
+                        variant="border-filled"
+                        alternative-text="Settings"
+                        size="medium"
+                    ></lightning-button-icon>
+                </li>
+                <li class="slds-button-group-item">
+                    <lightning-button-icon
+                        icon-name="utility:chart"
+                        variant="border-filled"
+                        alternative-text="Settings"
+                        size="medium"
+                    ></lightning-button-icon>
+                </li>
+                <li class="slds-button-group-item">
+                    <lightning-button-icon
+                        icon-name="utility:filterList"
+                        variant="border-filled"
+                        alternative-text="Settings"
+                        size="medium"
+                        onclick={toggle}
+                    ></lightning-button-icon>
+                </li>
+                <li class="slds-button-group-item">
+                    <lightning-button-menu
+                        alternative-text="Show menu"
+                        icon-name="utility:settings"
+                    ></lightning-button-menu>
+                </li>
+            </ul>
+        </div>
+        <div slot="details">
+            <div style="display: flex">
+                <c-panel
+                    if:false={isRight}
+                    position={position}
+                    title={title}
+                    size={size}
+                    show-panel={showPanel}
+                >
+                    <div slot="title">Filter</div>
+                    <div slot="panel-body">
+                        <div class="slds-box">
+                            <div class="slds-text-body_small">
+                                Filter by Owner
+                            </div>
+                            <div class="slds-text-body_regular">
+                                My opportunities
+                            </div>
+                        </div>
+                    </div>
+                    <lightning-layout horizontal-align="spread">
+                        <lightning-layout-item>
+                            <lightning-button
+                                label="Add Filter"
+                                title="Neutral action"
+                                variant="base"
+                            ></lightning-button>
+                        </lightning-layout-item>
+                        <lightning-layout-item>
+                            <lightning-button
+                                label="Remove All"
+                                title="Neutral action"
+                                variant="base"
+                            ></lightning-button>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </c-panel>
+                <table
+                    class="slds-table slds-table_cell-buffer slds-table_bordered"
+                >
                     <thead>
                         <tr class="slds-line-height_reset">
                             <th class="" scope="col">
@@ -102,20 +107,12 @@
                                 </div>
                             </th>
                             <th class="" scope="col">
-                                <div
-                                    class="slds-truncate"
-                                    title="Account Name"
-                                
-                                >
+                                <div class="slds-truncate" title="Account Name">
                                     Account Name
                                 </div>
                             </th>
                             <th class="" scope="col">
-                                <div
-                                    class="slds-truncate"
-                                    title="Close Date"
-                                
-                                >
+                                <div class="slds-truncate" title="Close Date">
                                     Close Date
                                 </div>
                             </th>
@@ -130,20 +127,12 @@
                                 </div>
                             </th>
                             <th class="" scope="col">
-                                <div
-                                    class="slds-truncate"
-                                    title="Amount"
-                                
-                                >
+                                <div class="slds-truncate" title="Amount">
                                     Amount
                                 </div>
                             </th>
                             <th class="" scope="col">
-                                <div
-                                    class="slds-truncate"
-                                    title="Contact"
-                                
-                                >
+                                <div class="slds-truncate" title="Contact">
                                     Contact
                                 </div>
                             </th>
@@ -175,11 +164,18 @@
                                 <div class="slds-truncate" title="20%">20%</div>
                             </td>
                             <td data-label="Amount">
-                                <div class="slds-truncate" title="$25k">$25k</div>
+                                <div class="slds-truncate" title="$25k">
+                                    $25k
+                                </div>
                             </td>
                             <td data-label="Contact">
-                                <div class="slds-truncate" title="jrogers@cloudhub.com">
-                                    <a href="#" tabindex="-1">jrogers@cloudhub.com</a>
+                                <div
+                                    class="slds-truncate"
+                                    title="jrogers@cloudhub.com"
+                                >
+                                    <a href="#" tabindex="-1"
+                                        >jrogers@cloudhub.com</a
+                                    >
                                 </div>
                             </td>
                         </tr>
@@ -213,11 +209,18 @@
                                 <div class="slds-truncate" title="20%">20%</div>
                             </td>
                             <td data-label="Amount">
-                                <div class="slds-truncate" title="$25k">$25k</div>
+                                <div class="slds-truncate" title="$25k">
+                                    $25k
+                                </div>
                             </td>
                             <td data-label="Contact">
-                                <div class="slds-truncate" title="jrogers@cloudhub.com">
-                                    <a href="#" tabindex="-1">jrogers@cloudhub.com</a>
+                                <div
+                                    class="slds-truncate"
+                                    title="jrogers@cloudhub.com"
+                                >
+                                    <a href="#" tabindex="-1"
+                                        >jrogers@cloudhub.com</a
+                                    >
                                 </div>
                             </td>
                         </tr>
@@ -251,11 +254,18 @@
                                 <div class="slds-truncate" title="20%">20%</div>
                             </td>
                             <td data-label="Amount">
-                                <div class="slds-truncate" title="$25k">$25k</div>
+                                <div class="slds-truncate" title="$25k">
+                                    $25k
+                                </div>
                             </td>
                             <td data-label="Contact">
-                                <div class="slds-truncate" title="jrogers@cloudhub.com">
-                                    <a href="#" tabindex="-1">jrogers@cloudhub.com</a>
+                                <div
+                                    class="slds-truncate"
+                                    title="jrogers@cloudhub.com"
+                                >
+                                    <a href="#" tabindex="-1"
+                                        >jrogers@cloudhub.com</a
+                                    >
                                 </div>
                             </td>
                         </tr>
@@ -289,11 +299,18 @@
                                 <div class="slds-truncate" title="20%">20%</div>
                             </td>
                             <td data-label="Amount">
-                                <div class="slds-truncate" title="$25k">$25k</div>
+                                <div class="slds-truncate" title="$25k">
+                                    $25k
+                                </div>
                             </td>
                             <td data-label="Contact">
-                                <div class="slds-truncate" title="jrogers@cloudhub.com">
-                                    <a href="#" tabindex="-1">jrogers@cloudhub.com</a>
+                                <div
+                                    class="slds-truncate"
+                                    title="jrogers@cloudhub.com"
+                                >
+                                    <a href="#" tabindex="-1"
+                                        >jrogers@cloudhub.com</a
+                                    >
                                 </div>
                             </td>
                         </tr>
@@ -327,11 +344,18 @@
                                 <div class="slds-truncate" title="20%">20%</div>
                             </td>
                             <td data-label="Amount">
-                                <div class="slds-truncate" title="$25k">$25k</div>
+                                <div class="slds-truncate" title="$25k">
+                                    $25k
+                                </div>
                             </td>
                             <td data-label="Contact">
-                                <div class="slds-truncate" title="jrogers@cloudhub.com">
-                                    <a href="#" tabindex="-1">jrogers@cloudhub.com</a>
+                                <div
+                                    class="slds-truncate"
+                                    title="jrogers@cloudhub.com"
+                                >
+                                    <a href="#" tabindex="-1"
+                                        >jrogers@cloudhub.com</a
+                                    >
                                 </div>
                             </td>
                         </tr>
@@ -365,11 +389,18 @@
                                 <div class="slds-truncate" title="20%">20%</div>
                             </td>
                             <td data-label="Amount">
-                                <div class="slds-truncate" title="$25k">$25k</div>
+                                <div class="slds-truncate" title="$25k">
+                                    $25k
+                                </div>
                             </td>
                             <td data-label="Contact">
-                                <div class="slds-truncate" title="jrogers@cloudhub.com">
-                                    <a href="#" tabindex="-1">jrogers@cloudhub.com</a>
+                                <div
+                                    class="slds-truncate"
+                                    title="jrogers@cloudhub.com"
+                                >
+                                    <a href="#" tabindex="-1"
+                                        >jrogers@cloudhub.com</a
+                                    >
                                 </div>
                             </td>
                         </tr>
@@ -403,11 +434,18 @@
                                 <div class="slds-truncate" title="20%">20%</div>
                             </td>
                             <td data-label="Amount">
-                                <div class="slds-truncate" title="$25k">$25k</div>
+                                <div class="slds-truncate" title="$25k">
+                                    $25k
+                                </div>
                             </td>
                             <td data-label="Contact">
-                                <div class="slds-truncate" title="jrogers@cloudhub.com">
-                                    <a href="#" tabindex="-1">jrogers@cloudhub.com</a>
+                                <div
+                                    class="slds-truncate"
+                                    title="jrogers@cloudhub.com"
+                                >
+                                    <a href="#" tabindex="-1"
+                                        >jrogers@cloudhub.com</a
+                                    >
                                 </div>
                             </td>
                         </tr>
@@ -441,11 +479,18 @@
                                 <div class="slds-truncate" title="20%">20%</div>
                             </td>
                             <td data-label="Amount">
-                                <div class="slds-truncate" title="$25k">$25k</div>
+                                <div class="slds-truncate" title="$25k">
+                                    $25k
+                                </div>
                             </td>
                             <td data-label="Contact">
-                                <div class="slds-truncate" title="jrogers@cloudhub.com">
-                                    <a href="#" tabindex="-1">jrogers@cloudhub.com</a>
+                                <div
+                                    class="slds-truncate"
+                                    title="jrogers@cloudhub.com"
+                                >
+                                    <a href="#" tabindex="-1"
+                                        >jrogers@cloudhub.com</a
+                                    >
                                 </div>
                             </td>
                         </tr>
@@ -479,11 +524,18 @@
                                 <div class="slds-truncate" title="20%">20%</div>
                             </td>
                             <td data-label="Amount">
-                                <div class="slds-truncate" title="$25k">$25k</div>
+                                <div class="slds-truncate" title="$25k">
+                                    $25k
+                                </div>
                             </td>
                             <td data-label="Contact">
-                                <div class="slds-truncate" title="jrogers@cloudhub.com">
-                                    <a href="#" tabindex="-1">jrogers@cloudhub.com</a>
+                                <div
+                                    class="slds-truncate"
+                                    title="jrogers@cloudhub.com"
+                                >
+                                    <a href="#" tabindex="-1"
+                                        >jrogers@cloudhub.com</a
+                                    >
                                 </div>
                             </td>
                         </tr>
@@ -517,11 +569,18 @@
                                 <div class="slds-truncate" title="20%">20%</div>
                             </td>
                             <td data-label="Amount">
-                                <div class="slds-truncate" title="$25k">$25k</div>
+                                <div class="slds-truncate" title="$25k">
+                                    $25k
+                                </div>
                             </td>
                             <td data-label="Contact">
-                                <div class="slds-truncate" title="jrogers@cloudhub.com">
-                                    <a href="#" tabindex="-1">jrogers@cloudhub.com</a>
+                                <div
+                                    class="slds-truncate"
+                                    title="jrogers@cloudhub.com"
+                                >
+                                    <a href="#" tabindex="-1"
+                                        >jrogers@cloudhub.com</a
+                                    >
                                 </div>
                             </td>
                         </tr>
@@ -555,11 +614,18 @@
                                 <div class="slds-truncate" title="20%">20%</div>
                             </td>
                             <td data-label="Amount">
-                                <div class="slds-truncate" title="$25k">$25k</div>
+                                <div class="slds-truncate" title="$25k">
+                                    $25k
+                                </div>
                             </td>
                             <td data-label="Contact">
-                                <div class="slds-truncate" title="jrogers@cloudhub.com">
-                                    <a href="#" tabindex="-1">jrogers@cloudhub.com</a>
+                                <div
+                                    class="slds-truncate"
+                                    title="jrogers@cloudhub.com"
+                                >
+                                    <a href="#" tabindex="-1"
+                                        >jrogers@cloudhub.com</a
+                                    >
                                 </div>
                             </td>
                         </tr>
@@ -593,11 +659,18 @@
                                 <div class="slds-truncate" title="20%">20%</div>
                             </td>
                             <td data-label="Amount">
-                                <div class="slds-truncate" title="$25k">$25k</div>
+                                <div class="slds-truncate" title="$25k">
+                                    $25k
+                                </div>
                             </td>
                             <td data-label="Contact">
-                                <div class="slds-truncate" title="jrogers@cloudhub.com">
-                                    <a href="#" tabindex="-1">jrogers@cloudhub.com</a>
+                                <div
+                                    class="slds-truncate"
+                                    title="jrogers@cloudhub.com"
+                                >
+                                    <a href="#" tabindex="-1"
+                                        >jrogers@cloudhub.com</a
+                                    >
                                 </div>
                             </td>
                         </tr>
@@ -631,11 +704,18 @@
                                 <div class="slds-truncate" title="20%">20%</div>
                             </td>
                             <td data-label="Amount">
-                                <div class="slds-truncate" title="$25k">$25k</div>
+                                <div class="slds-truncate" title="$25k">
+                                    $25k
+                                </div>
                             </td>
                             <td data-label="Contact">
-                                <div class="slds-truncate" title="jrogers@cloudhub.com">
-                                    <a href="#" tabindex="-1">jrogers@cloudhub.com</a>
+                                <div
+                                    class="slds-truncate"
+                                    title="jrogers@cloudhub.com"
+                                >
+                                    <a href="#" tabindex="-1"
+                                        >jrogers@cloudhub.com</a
+                                    >
                                 </div>
                             </td>
                         </tr>
@@ -669,11 +749,18 @@
                                 <div class="slds-truncate" title="20%">20%</div>
                             </td>
                             <td data-label="Amount">
-                                <div class="slds-truncate" title="$25k">$25k</div>
+                                <div class="slds-truncate" title="$25k">
+                                    $25k
+                                </div>
                             </td>
                             <td data-label="Contact">
-                                <div class="slds-truncate" title="jrogers@cloudhub.com">
-                                    <a href="#" tabindex="-1">jrogers@cloudhub.com</a>
+                                <div
+                                    class="slds-truncate"
+                                    title="jrogers@cloudhub.com"
+                                >
+                                    <a href="#" tabindex="-1"
+                                        >jrogers@cloudhub.com</a
+                                    >
                                 </div>
                             </td>
                         </tr>
@@ -707,11 +794,18 @@
                                 <div class="slds-truncate" title="20%">20%</div>
                             </td>
                             <td data-label="Amount">
-                                <div class="slds-truncate" title="$25k">$25k</div>
+                                <div class="slds-truncate" title="$25k">
+                                    $25k
+                                </div>
                             </td>
                             <td data-label="Contact">
-                                <div class="slds-truncate" title="jrogers@cloudhub.com">
-                                    <a href="#" tabindex="-1">jrogers@cloudhub.com</a>
+                                <div
+                                    class="slds-truncate"
+                                    title="jrogers@cloudhub.com"
+                                >
+                                    <a href="#" tabindex="-1"
+                                        >jrogers@cloudhub.com</a
+                                    >
                                 </div>
                             </td>
                         </tr>
@@ -745,11 +839,18 @@
                                 <div class="slds-truncate" title="20%">20%</div>
                             </td>
                             <td data-label="Amount">
-                                <div class="slds-truncate" title="$25k">$25k</div>
+                                <div class="slds-truncate" title="$25k">
+                                    $25k
+                                </div>
                             </td>
                             <td data-label="Contact">
-                                <div class="slds-truncate" title="jrogers@cloudhub.com">
-                                    <a href="#" tabindex="-1">jrogers@cloudhub.com</a>
+                                <div
+                                    class="slds-truncate"
+                                    title="jrogers@cloudhub.com"
+                                >
+                                    <a href="#" tabindex="-1"
+                                        >jrogers@cloudhub.com</a
+                                    >
                                 </div>
                             </td>
                         </tr>
@@ -783,11 +884,18 @@
                                 <div class="slds-truncate" title="20%">20%</div>
                             </td>
                             <td data-label="Amount">
-                                <div class="slds-truncate" title="$25k">$25k</div>
+                                <div class="slds-truncate" title="$25k">
+                                    $25k
+                                </div>
                             </td>
                             <td data-label="Contact">
-                                <div class="slds-truncate" title="jrogers@cloudhub.com">
-                                    <a href="#" tabindex="-1">jrogers@cloudhub.com</a>
+                                <div
+                                    class="slds-truncate"
+                                    title="jrogers@cloudhub.com"
+                                >
+                                    <a href="#" tabindex="-1"
+                                        >jrogers@cloudhub.com</a
+                                    >
                                 </div>
                             </td>
                         </tr>
@@ -821,48 +929,59 @@
                                 <div class="slds-truncate" title="20%">20%</div>
                             </td>
                             <td data-label="Amount">
-                                <div class="slds-truncate" title="$25k">$25k</div>
+                                <div class="slds-truncate" title="$25k">
+                                    $25k
+                                </div>
                             </td>
                             <td data-label="Contact">
-                                <div class="slds-truncate" title="jrogers@cloudhub.com">
-                                    <a href="#" tabindex="-1">jrogers@cloudhub.com</a>
+                                <div
+                                    class="slds-truncate"
+                                    title="jrogers@cloudhub.com"
+                                >
+                                    <a href="#" tabindex="-1"
+                                        >jrogers@cloudhub.com</a
+                                    >
                                 </div>
                             </td>
                         </tr>
                     </tbody>
-                </table> -->
+                </table>
+                <c-panel
+                    if:true={isRight}
+                    position={position}
+                    title={title}
+                    size={size}
+                    show-panel={showPanel}
+                >
+                    <div slot="title">Filter</div>
+                    <div slot="panel-body">
+                        <div class="slds-box">
+                            <div class="slds-text-body_small">
+                                Filter by Owner
+                            </div>
+                            <div class="slds-text-body_regular">
+                                My opportunities
+                            </div>
+                        </div>
+                    </div>
+                    <lightning-layout horizontal-align="spread">
+                        <lightning-layout-item>
+                            <lightning-button
+                                label="Add Filter"
+                                title="Neutral action"
+                                variant="base"
+                            ></lightning-button>
+                        </lightning-layout-item>
+                        <lightning-layout-item>
+                            <lightning-button
+                                label="Remove All"
+                                title="Neutral action"
+                                variant="base"
+                            ></lightning-button>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </c-panel>
             </div>
-        </c-page-header>
-        <c-panel
-            if:true={isRight}
-            position={position}
-            title={title}
-            size={size}
-            show-panel={showPanel}
-        >
-            <div slot="title">Filter</div>
-            <div slot="panel-body">
-                <div class="slds-box">
-                    <div class="slds-text-body_small">Filter by Owner</div>
-                    <div class="slds-text-body_regular">My opportunities</div>
-                </div>
-            </div>
-            <lightning-layout horizontal-align="spread">
-                <lightning-layout-item>
-                    <lightning-button
-                        label="Add Filter"
-                        title="Neutral action"
-                        variant="base"
-                    ></lightning-button>
-                </lightning-layout-item>
-                <lightning-layout-item>
-                    <lightning-button
-                        label="Remove All"
-                        title="Neutral action"
-                        variant="base"
-                    ></lightning-button>
-                </lightning-layout-item>
-            </lightning-layout>
-        </c-panel>
-    </div>
+        </div>
+    </c-page-header>
 </template>
