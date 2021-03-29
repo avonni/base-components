@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeString, normalizeBoolean } from '../utilsPrivate/normalize';
+import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
 import BaseView from './base.html';
 import ModalView from './modal.html';
 import CardView from './card.html';
