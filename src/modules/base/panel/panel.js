@@ -12,8 +12,8 @@ const VALID_SIZES = {
 export default class Pagination extends LightningElement {
     @api title;
 
-    _position = 'right';
-    _size = 'medium';
+    _position = VALID_POSITIONS.default;
+    _size = VALID_SIZES.default;
     _showPanel = false;
     _isRight = true;
 

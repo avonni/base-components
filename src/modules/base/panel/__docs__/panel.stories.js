@@ -2,6 +2,7 @@ import { Panel } from '../__examples__/panel';
 import { PanelWithButtons } from '../__examples__/panelWithButtons';
 import { PanelWithDatatable } from '../__examples__/panelWithDatatable';
 import { PanelWithContentInside } from '../__examples__/panelWithContentInside';
+import { FiltersPanel } from '../__examples__/filtersPanel';
 
 export default {
     title: 'Example/Panel',
@@ -48,6 +49,7 @@ const Template = (args) => Panel(args);
 const PanelWithButtonsTemplate = (args) => PanelWithButtons(args);
 const PanelWithDatatableTemplate = (args) => PanelWithDatatable(args);
 const PanelWithContentInsideTemplate = (args) => PanelWithContentInside(args);
+const FiltersPanelTemplate = (args) => FiltersPanel(args);
 
 export const Base = Template.bind({});
 Base.args = {
@@ -88,6 +90,9 @@ PanelButtons.args = {};
 
 export const PanelDatatable = PanelWithDatatableTemplate.bind({});
 PanelDatatable.args = {};
+
+export const PanelFilter = FiltersPanelTemplate.bind({});
+PanelFilter.args = {};
 
 export const PanelWithContent = PanelWithContentInsideTemplate.bind({});
 PanelWithContent.args = {
