@@ -137,4 +137,8 @@ export default class PageHeader extends LightningElement {
     get hasStringInfo() {
         return !!this.info;
     }
+
+    get itemsIsEmpty() {
+        return this._items.length === 0;
+    }
 }

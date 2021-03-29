@@ -91,7 +91,7 @@
             </template>
         </div>
         <template if:true={isRecordHomeVariant}>
-            <template if:true={items}>
+            <template if:false={itemsIsEmpty}>
                 <div
                     class="slds-page-header__row slds-page-header__row_gutters"
                 >
@@ -125,7 +125,7 @@
                     </div>
                 </div>
             </template>
-            <template if:false={items}>
+            <template if:true={itemsIsEmpty}>
                 <slot name="details"></slot>
             </template>
         </template>

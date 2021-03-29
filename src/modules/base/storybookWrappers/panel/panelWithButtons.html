@@ -1,0 +1,56 @@
+<template>
+    <div class="avonni-panel-container">
+        <template if:true={isRight}>
+            <div class="slds-col slds-p-around_medium">
+                <lightning-button
+                    onclick={toggle}
+                    label="toggle"
+                    class="slds-m-around_small"
+                ></lightning-button>
+                <lightning-button
+                    onclick={open}
+                    label="open"
+                    class="slds-m-around_small"
+                >
+                </lightning-button>
+                <lightning-button
+                    onclick={close}
+                    label="close"
+                    class="slds-m-around_small"
+                ></lightning-button>
+            </div>
+        </template>
+        <c-panel
+            position={position}
+            title={title}
+            size={size}
+            show-panel={showPanel}
+        >
+            <div slot="title">Slot title</div>
+            <div slot="panel-body">
+                A panel body accepts any layout or component
+            </div>
+            <p>A panel main body accepts any layout or component</p>
+        </c-panel>
+        <template if:false={isRight}>
+            <div class="slds-col slds-p-around_medium">
+                <lightning-button
+                    onclick={toggle}
+                    label="toggle"
+                    class="slds-m-around_small"
+                ></lightning-button>
+                <lightning-button
+                    onclick={open}
+                    label="open"
+                    class="slds-m-around_small"
+                >
+                </lightning-button>
+                <lightning-button
+                    onclick={close}
+                    label="close"
+                    class="slds-m-around_small"
+                ></lightning-button>
+            </div>
+        </template>
+    </div>
+</template>
