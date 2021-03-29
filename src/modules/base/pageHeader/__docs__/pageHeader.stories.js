@@ -140,8 +140,7 @@ Base.args = {
     iconName: 'standard:opportunity',
     label: 'Label',
     title: 'Title',
-    info: 'Info',
-    items: items
+    info: 'Info'
 };
 
 export const ObjectHome = Template.bind({});
@@ -150,8 +149,7 @@ ObjectHome.args = {
     iconName: 'standard:opportunity',
     label: 'Label',
     title: 'Title',
-    info: 'Info',
-    items: items
+    info: 'Info'
 };
 
 export const RecordHome = Template.bind({});
