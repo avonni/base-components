@@ -143,32 +143,36 @@
                         </ul>
                     </div>
                 </div>
-                <div class="slds-dueling-list__column">
-                    <button
-                        class="slds-button slds-button_icon slds-button_icon-container"
-                        title="Move Selection Up"
-                    >
-                        <svg class="slds-button__icon" aria-hidden="true">
-                            <use
-                                xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#up"
-                            ></use>
-                        </svg>
-                        <span class="slds-assistive-text">{upButtonLabel}</span>
-                    </button>
-                    <button
-                        class="slds-button slds-button_icon slds-button_icon-container"
-                        title="Move Selection Down"
-                    >
-                        <svg class="slds-button__icon" aria-hidden="true">
-                            <use
-                                xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#down"
-                            ></use>
-                        </svg>
-                        <span class="slds-assistive-text"
-                            >{downButtonLabel}</span
+                <template if:false={disableReordering}>
+                    <div class="slds-dueling-list__column">
+                        <button
+                            class="slds-button slds-button_icon slds-button_icon-container"
+                            title="Move Selection Up"
                         >
-                    </button>
-                </div>
+                            <svg class="slds-button__icon" aria-hidden="true">
+                                <use
+                                    xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#up"
+                                ></use>
+                            </svg>
+                            <span class="slds-assistive-text"
+                                >{upButtonLabel}</span
+                            >
+                        </button>
+                        <button
+                            class="slds-button slds-button_icon slds-button_icon-container"
+                            title="Move Selection Down"
+                        >
+                            <svg class="slds-button__icon" aria-hidden="true">
+                                <use
+                                    xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#down"
+                                ></use>
+                            </svg>
+                            <span class="slds-assistive-text"
+                                >{downButtonLabel}</span
+                            >
+                        </button>
+                    </div>
+                </template>
             </div>
         </div>
     </div>
