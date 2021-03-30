@@ -5,6 +5,7 @@
             <template for:each={groups} for:item="group">
                 <c-primitive-relationship-graph-group
                     onselect={handleSelect}
+                    oncloseactivegroup={handleCloseActiveGroup}
                     key={group.name}
                     label={group.label}
                     name={group.name}

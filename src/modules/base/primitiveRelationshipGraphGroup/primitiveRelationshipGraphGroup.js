@@ -66,4 +66,17 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
             })
         );
     }
+
+    handleToggle(event) {
+        if (!this.selectedItemComponent) return;
+
+        const closed = event.detail.closed;
+        if (closed) {
+            this.dispatchEvent(new CustomEvent('closeactivegroup'));
+        } else {
+            // When reopening the group, make sure the items are unselected
+            this.selectedItemComponent.activeSelection = false;
+            this.selectedItemComponent.selected = false;
+        }
+    }
 }

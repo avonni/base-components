@@ -11,11 +11,33 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
     @api groups;
     @api hideDefaultActions;
     @api actions;
-    @api selected;
-    @api activeSelection;
 
-    get wrapperClass() {
-        return classSet(
+    wrapperClass;
+
+    connectedCallback() {
+        this.updateClasses();
+    }
+
+    @api
+    get activeSelection() {
+        return this._activeSelection;
+    }
+    set activeSelection(value) {
+        this._activeSelection = value;
+        this.updateClasses();
+    }
+
+    @api
+    get selected() {
+        return this._selected;
+    }
+    set selected(value) {
+        this._selected = value;
+        this.updateClasses();
+    }
+
+    updateClasses() {
+        this.wrapperClass = classSet(
             'slds-box slds-box_small slds-m-bottom_small slds-is-relative'
         ).add({
             'avonni-relationship-graph__item_has-groups': this.groups,
@@ -23,6 +45,7 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
             'avonni-relationship-graph__item_is-active': this.activeSelection
         });
     }
+
     get generateKey() {
         return generateUniqueId();
     }
@@ -32,6 +55,10 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
     }
 
     handleClick() {
+        this._selected = true;
+        this._activeSelection = true;
+        this.updateClasses();
+
         this.dispatchEvent(
             new CustomEvent('select', {
                 detail: {

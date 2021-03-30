@@ -134,6 +134,14 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
         }
     }
 
+    cleanSelection() {
+        this._selectedGroups = undefined;
+        const child = this.template.querySelector(
+            'c-primitive-relationship-graph-level'
+        );
+        if (child) child.selectedGroups = undefined;
+    }
+
     dispatchSelectEvent(event) {
         this.dispatchEvent(
             new CustomEvent('select', {
@@ -145,15 +153,11 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
     }
 
     handleSelect(event) {
-        this._selectedGroups = undefined;
-
-        // If we open a higher level node than the one currently opened,
-        // make sure the previous deeper children nodes are hidden.
-        const child = this.template.querySelector(
-            'c-primitive-relationship-graph-level'
-        );
-        if (child) child.selectedGroups = undefined;
-
+        this.cleanSelection();
         this.dispatchSelectEvent(event);
+    }
+
+    handleCloseActiveGroup() {
+        this.cleanSelection();
     }
 }

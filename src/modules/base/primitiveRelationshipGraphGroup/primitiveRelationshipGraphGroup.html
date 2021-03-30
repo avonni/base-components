@@ -24,6 +24,7 @@
             remove-body-indentation="true"
             shrink-icon-name={shrinkIconName}
             expand-icon-name={expandIconName}
+            ontoggle={handleToggle}
         >
             <div slot="actions" if:true={actions}>
                 <template for:each={actions} for:item="action">
