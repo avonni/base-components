@@ -1,4 +1,5 @@
 import { LightningElement, api } from 'lwc';
+import { classSet } from 'c/utils';
 
 export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     @api label;
@@ -12,6 +13,7 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     @api actions;
     @api shrinkIconName;
     @api expandIconName;
+    @api active;
 
     @api
     get selectedItemComponent() {
@@ -45,6 +47,14 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
 
     get hasAvatar() {
         return this.avatarSrc || this.avatarFallbackIconName;
+    }
+
+    get wrapperClass() {
+        return classSet(
+            'slds-card slds-p-around_medium slds-m-bottom_medium avonni-relationship-graph__group'
+        ).add({
+            'avonni-relationship-graph__group_active': this.active
+        });
     }
 
     handleSelect(event) {

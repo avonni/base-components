@@ -29,6 +29,17 @@ export default class RelationshipGraph extends LightningElement {
         this.updateSelection();
     }
 
+    renderedCallback() {
+        const line = this.template.querySelector(
+            '.avonni-relationship-graph__line'
+        );
+        const currentLevel = this.template.querySelector(
+            'c-primitive-relationship-graph-level'
+        );
+        const height = currentLevel.currentLevelHeight;
+        line.setAttribute('style', `height: ${height}px;`);
+    }
+
     @api
     get variant() {
         return this._variant;

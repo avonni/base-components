@@ -13,3 +13,10 @@
     left: calc(-2rem - 2px);
     top: calc(1.5rem - 2px);
 }
+
+.avonni-relationship-graph__group_active::before {
+    background-color: var(
+        --avonni-c-relationship-graph-selected-line-color,
+        #0070d2
+    );
+}

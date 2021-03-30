@@ -17,14 +17,12 @@
                     actions={group.actions}
                     shrink-icon-name={shrinkIconName}
                     expand-icon-name={expandIconName}
+                    active={activeGroups}
                 ></c-primitive-relationship-graph-group>
             </template>
         </div>
         <!-- Vertical line -->
-        <div
-            class="avonni-relationship-graph__line slds-m-left_x-large"
-            if:true={selectedGroups}
-        ></div>
+        <div class={lineClass} if:true={selectedGroups}></div>
         <!-- Selected level -->
         <div class="slds-grid" if:true={selectedGroups}>
             <c-primitive-relationship-graph-level
@@ -33,6 +31,7 @@
                 variant={variant}
                 shrink-icon-name={shrinkIconName}
                 expand-icon-name={expandIconName}
+                active-groups={containsActiveItem}
             ></c-primitive-relationship-graph-level>
         </div>
     </div>

@@ -4,3 +4,9 @@
         var(--avonni-c-relationship-graph-line-color, #dddbda);
     margin-top: var(--lwc-spacingLarge, 1.5rem);
 }
+.avonni-relationship-graph__line_active {
+    border-right-color: var(
+        --avonni-c-relationship-graph-selected-line-color,
+        #0070d2
+    );
+}

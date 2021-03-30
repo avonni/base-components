@@ -5,6 +5,7 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
     @api variant;
     @api shrinkIconName;
     @api expandIconName;
+    @api activeGroups;
 
     _groups;
     _selectedGroups;
@@ -59,6 +60,22 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
             'avonni-relationship-graph__current-level slds-m-left_x-large'
         ).add({
             'slds-grid': this.variant === 'vertical'
+        });
+    }
+
+    get lineClass() {
+        return classSet(
+            'avonni-relationship-graph__line slds-m-left_x-large'
+        ).add({
+            'avonni-relationship-graph__line_active': this.containsActiveItem
+        });
+    }
+
+    get containsActiveItem() {
+        return Array.from(this.groups).some((group) => {
+            if (!group.items) return false;
+
+            return group.items.some((item) => item.activeSelection);
         });
     }
 
