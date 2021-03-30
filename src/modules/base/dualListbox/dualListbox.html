@@ -9,6 +9,10 @@
             class="slds-form-element__label slds-form-element__legend"
             >{label}</span
         >
+        <lightning-helptext
+            if:true={fieldLevelHelp}
+            content={fieldLevelHelp}
+        ></lightning-helptext>
         <div class="slds-form-element__control">
             <div class="slds-dueling-list">
                 <div

@@ -316,6 +316,7 @@ const Template = (args) => DualListbox(args);
 export const Base = Template.bind({});
 Base.args = {
     label: 'Label',
+    fieldLevelHelp: 'This is a label',
     sourceLabel: 'Source Label',
     selectedLabel: 'Selected Label',
     addButtonLabel: 'Add Button Label',
