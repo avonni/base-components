@@ -447,8 +447,9 @@ export default class ColorPicker extends LightningElement {
                     '.slds-swatch'
                 ).style.background = this.value;
             }
+            
             let gradientPalette = this.template.querySelector(
-                'c-color-gradient'
+                '[data-name="colorGradient"]'
             );
 
             if (gradientPalette) {
@@ -464,7 +465,7 @@ export default class ColorPicker extends LightningElement {
     handlerCancel() {
         this.newValue = '';
 
-        let gradientPalette = this.template.querySelector('c-color-gradient');
+        let gradientPalette = this.template.querySelector('[data-name="colorGradient"]');
 
         if (gradientPalette) {
             gradientPalette.renderValue(this.value);
@@ -569,7 +570,7 @@ export default class ColorPicker extends LightningElement {
             this.value = color;
 
             let gradientPalette = this.template.querySelector(
-                'c-color-gradient'
+                '[data-name="colorGradient"]'
             );
 
             if (gradientPalette) {

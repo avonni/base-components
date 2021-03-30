@@ -3,6 +3,7 @@
         <ol class="slds-progress__list">
             <template for:each={steps} for:item="step">
                 <c-primitive-progress-step
+                    data-name="primitiveProgressStep"
                     class="avonni-progress-step-position-relative"
                     disabled-steps={disabledSteps}
                     warning-steps={warningSteps}
