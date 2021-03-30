@@ -60,4 +60,5 @@ export const DualListbox = ({
     element.validity = validity;
     element.value = value;
     element.variant = variant;
+    return element;
 };

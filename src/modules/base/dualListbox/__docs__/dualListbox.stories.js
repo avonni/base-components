@@ -139,20 +139,9 @@ export default {
                 type: 'object'
             },
             description:
-                'A list of options that are available for selection. Each option has the following attributes: label, value and icon.',
+                'A list of options that are available for selection. Each option has the following attributes: label, value, avatarFallBackIcon, avatarSrc, avatarInitials, avatarVariant, avatarPrimaryText and avatarSecondaryText.',
             table: {
                 type: { summary: 'object []' }
-            }
-        },
-        optionIconName: {
-            name: 'option-icon-name',
-            control: {
-                type: 'string'
-            },
-            description:
-                "The Lightning Design System name of the icon. Specify the name in the format 'utility:favorite' where 'utility' is the category, and 'favorite' is the specific icon to be displayed.",
-            table: {
-                type: { summary: 'string' }
             }
         },
         removeButtonLabel: {
