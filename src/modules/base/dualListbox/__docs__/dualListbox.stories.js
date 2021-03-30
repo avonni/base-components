@@ -168,12 +168,12 @@ export default {
         },
         requiredOptions: {
             control: {
-                type: 'object'
+                type: 'string'
             },
             description:
                 'A list of required options that cannot be removed from selected options listbox. This list is populated with values from the options attribute.',
             table: {
-                type: { summary: 'object []' }
+                type: { summary: 'string []' }
             }
         },
         searchEngine: {
