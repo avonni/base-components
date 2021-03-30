@@ -119,7 +119,7 @@ export default class Calendar extends LightningElement {
         this.updateDateParameters();
     }
 
-    @api 
+    @api
     get weekNumber() {
         return this._weekNumber;
     }
@@ -143,7 +143,7 @@ export default class Calendar extends LightningElement {
         let startYear = this.min.getFullYear();
         let endYear = this.max.getFullYear();
 
-        return [...Array(endYear - startYear + 1).keys()].map(x => {
+        return [...Array(endYear - startYear + 1).keys()].map((x) => {
             let year = x + startYear;
             return { label: year, value: year };
         });
@@ -188,7 +188,7 @@ export default class Calendar extends LightningElement {
     fullDatesFromArray(array) {
         let dates = [];
 
-        array.forEach(date => {
+        array.forEach((date) => {
             if (typeof date === 'object') {
                 dates.push(date.setHours(0, 0, 0, 0));
             }
@@ -200,7 +200,7 @@ export default class Calendar extends LightningElement {
     weekDaysFromArray(array) {
         let dates = [];
 
-        array.forEach(date => {
+        array.forEach((date) => {
             if (typeof date === 'string') {
                 dates.push(DAYS.indexOf(date));
             }
@@ -212,7 +212,7 @@ export default class Calendar extends LightningElement {
     monthDaysFromArray(array) {
         let dates = [];
 
-        array.forEach(date => {
+        array.forEach((date) => {
             if (typeof date === 'number') {
                 dates.push(date);
             }
@@ -427,7 +427,7 @@ export default class Calendar extends LightningElement {
 }
 
 // eslint-disable-next-line no-extend-native
-Date.prototype.getWeek = function() {
+Date.prototype.getWeek = function () {
     let startDate = new Date(this.getFullYear(), 0, 1);
     let millisecsInDay = 86400000;
 

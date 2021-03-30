@@ -18,7 +18,7 @@
     cursor: pointer;
     text-align: center;
     padding-top: 0.125rem;
-    text-indent: -.25rem;
+    text-indent: -0.25rem;
 }
 .avonni-emoji-entity button {
     border: none;
@@ -28,5 +28,5 @@
 .avonni-emoji-categories {
     display: flex;
     justify-content: space-between;
-    padding: .3125rem 1rem .5rem;
+    padding: 0.3125rem 1rem 0.5rem;
 }

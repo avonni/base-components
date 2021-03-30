@@ -69,7 +69,7 @@ class ProxyCache {
 
         this.proxyCache[key] = {
             el: newProxy,
-            refCount: 1,
+            refCount: 1
         };
 
         // run GC

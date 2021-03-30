@@ -6,7 +6,7 @@ import {
     flipDirection,
     mapToHorizontal,
     mapToVertical,
-    normalizeDirection,
+    normalizeDirection
 } from './direction';
 import { createProxy } from './elementProxyCache';
 import {
@@ -17,7 +17,7 @@ import {
     normalizeElement,
     normalizePosition,
     requestAnimationFrameAsPromise,
-    WindowManager,
+    WindowManager
 } from './util';
 import {
     addConstraints,
@@ -25,7 +25,7 @@ import {
     nextIndex,
     rebaseIndex,
     reposition,
-    scheduleReposition,
+    scheduleReposition
 } from './reposition';
 import { assert } from 'c/utilsPrivate';
 import { Relationship } from './relationship';
@@ -43,7 +43,7 @@ function setupObserver(config, scrollableParent) {
         observer.observe(observedElement, {
             attributes: true,
             subtree: true,
-            childList: true,
+            childList: true
         });
         observedElement.isObserved = true;
     }
@@ -144,8 +144,8 @@ function createRelationship(
                 top: true,
                 bottom: true,
                 left: true,
-                right: true,
-            },
+                right: true
+            }
         };
         if (autoShrink) {
             const style = boxConfig.element.getNode().style;
@@ -158,7 +158,7 @@ function createRelationship(
                 top: !!config.autoShrink.height,
                 bottom: !!config.autoShrink.height,
                 left: !!config.autoShrink.width,
-                right: !!config.autoShrink.width,
+                right: !!config.autoShrink.width
             };
             constraintList.push(new Constraint('shrinking box', boxConfig));
         } else {
@@ -179,8 +179,8 @@ function createRelationship(
                     top: true,
                     bottom: true,
                     left: true,
-                    right: true,
-                },
+                    right: true
+                }
             })
         );
     }
@@ -205,11 +205,11 @@ function isAutoFlipVertical(config) {
 function normalizeAlignments(config, flipConfig) {
     const align = {
         horizontal: config.align.horizontal,
-        vertical: config.align.vertical,
+        vertical: config.align.vertical
     };
     const targetAlign = {
         horizontal: config.targetAlign.horizontal,
-        vertical: config.targetAlign.vertical,
+        vertical: config.targetAlign.vertical
     };
 
     // Horizontal alignments flip for RTL languages.
@@ -270,7 +270,7 @@ function normalizeAlignments(config, flipConfig) {
                 : normalizeDirection(align.horizontal, Direction.Left),
             vertical: vFlip
                 ? flipDirection(align.vertical)
-                : normalizeDirection(align.vertical, Direction.Top),
+                : normalizeDirection(align.vertical, Direction.Top)
         },
         targetAlign: {
             horizontal: hFlip
@@ -278,8 +278,8 @@ function normalizeAlignments(config, flipConfig) {
                 : normalizeDirection(targetAlign.horizontal, Direction.Left),
             vertical: vFlip
                 ? flipDirection(targetAlign.vertical)
-                : normalizeDirection(targetAlign.vertical, Direction.Bottom),
-        },
+                : normalizeDirection(targetAlign.vertical, Direction.Bottom)
+        }
     };
 }
 
@@ -322,9 +322,9 @@ function normalizeConfig(parent, config) {
         padLeft: config.padLeft,
         autoShrink: {
             height: config.autoShrink || config.autoShrinkHeight,
-            width: config.autoShrink || config.autoShrinkWidth,
+            width: config.autoShrink || config.autoShrinkWidth
         },
-        minHeight: config.minHeight || DEFAULT_MIN_HEIGHT,
+        minHeight: config.minHeight || DEFAULT_MIN_HEIGHT
     };
 }
 
@@ -416,8 +416,8 @@ export function startPositioning(root, config, disableReposition) {
                         config,
                         disableReposition,
                         eventComposedPath
-                    ),
-            },
+                    )
+            }
         })
     );
 

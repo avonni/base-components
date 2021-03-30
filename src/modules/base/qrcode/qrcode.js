@@ -243,7 +243,7 @@ export default class Qrcode extends LightningElement {
                 let ctx = canvas.getContext('2d');
                 let img = new Image();
 
-                img.onload = function() {
+                img.onload = function () {
                     ctx.drawImage(this, 0, 0);
                 };
 

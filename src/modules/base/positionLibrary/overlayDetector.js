@@ -5,7 +5,7 @@ export const OVERLAY_TYPE = {
     MODAL: 'uiModal',
     DIALOG: 'lightning-dialog',
     POPOVER: 'lightning-popover',
-    PANEL: 'uiPanel',
+    PANEL: 'uiPanel'
 };
 
 export function isOverlay(element) {
@@ -38,7 +38,7 @@ function isInsideOverlay(element) {
         return {
             isInside: false,
             type: null,
-            overlay: null,
+            overlay: null
         };
     }
 
@@ -48,7 +48,7 @@ function isInsideOverlay(element) {
         return {
             isInside: true,
             type,
-            overlay: element,
+            overlay: element
         };
     }
 
@@ -56,7 +56,7 @@ function isInsideOverlay(element) {
         return {
             isInside: false,
             type: null,
-            overlay: null,
+            overlay: null
         };
     }
 
@@ -72,7 +72,7 @@ export class OverlayDetector {
         this._element = element;
         this._detection = isInsideOverlay(this._element) || {
             isInside: false,
-            overlay: null,
+            overlay: null
         };
     }
 

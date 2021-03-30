@@ -1,6 +1,9 @@
 import Component from '../../storybookWrappers/publisher/publisherWithFigureSlot';
 
-customElements.define('ac-base-publisher-with-figure-slot', Component.CustomElementConstructor);
+customElements.define(
+    'ac-base-publisher-with-figure-slot',
+    Component.CustomElementConstructor
+);
 
 export const PublisherWithFigureSlot = ({
     placeholder,
@@ -10,7 +13,9 @@ export const PublisherWithFigureSlot = ({
     disabled,
     value
 }) => {
-    const element = document.createElement('ac-base-publisher-with-figure-slot');
+    const element = document.createElement(
+        'ac-base-publisher-with-figure-slot'
+    );
     element.placeholder = placeholder;
     element.buttonLabel = buttonLabel;
     element.submitAction = submitAction;

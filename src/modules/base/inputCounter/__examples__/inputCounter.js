@@ -1,6 +1,9 @@
 import Component from 'base/inputCounter';
 
-customElements.define('ac-base-input-counter', Component.CustomElementConstructor);
+customElements.define(
+    'ac-base-input-counter',
+    Component.CustomElementConstructor
+);
 
 export const InputCounter = ({
     label,

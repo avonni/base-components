@@ -7,7 +7,8 @@ export default {
             control: {
                 type: 'text'
             },
-            description: 'The value of the date selected, which can be a Date object, timestamp, or an ISO8601 formatted string.',
+            description:
+                'The value of the date selected, which can be a Date object, timestamp, or an ISO8601 formatted string.',
             table: {
                 type: { summary: 'string' }
             }
@@ -28,7 +29,8 @@ export default {
             control: {
                 type: 'object'
             },
-            description: 'An array that will be used to determine which dates to be disabled in the calendar.',
+            description:
+                'An array that will be used to determine which dates to be disabled in the calendar.',
             defaultValue: [],
             table: {
                 type: { summary: 'object[]' }
@@ -39,7 +41,8 @@ export default {
             control: {
                 type: 'object'
             },
-            description: 'An array that will be used to determine which dates to be marked in the calendar.',
+            description:
+                'An array that will be used to determine which dates to be marked in the calendar.',
             defaultValue: [],
             table: {
                 type: { summary: 'object[]' }
@@ -49,7 +52,8 @@ export default {
             control: {
                 type: 'date'
             },
-            description: 'Specifies the minimum date, which the calendar can show.',
+            description:
+                'Specifies the minimum date, which the calendar can show.',
             defaultValue: Date(1900, 0, 1),
             table: {
                 type: { summary: 'object' },
@@ -60,7 +64,8 @@ export default {
             control: {
                 type: 'date'
             },
-            description: 'Specifies the maximum date, which the calendar can show.',
+            description:
+                'Specifies the maximum date, which the calendar can show.',
             defaultValue: Date(2099, 11, 31),
             table: {
                 type: { summary: 'object' },
@@ -84,7 +89,8 @@ export default {
             control: {
                 type: 'text'
             },
-            description: 'The value of the date which will use for the draw multi-select line. Multi-value can be before or after the selected date value.',
+            description:
+                'The value of the date which will use for the draw multi-select line. Multi-value can be before or after the selected date value.',
             table: {
                 type: { summary: 'string' }
             }
@@ -146,17 +152,8 @@ BaseWithWeekNumber.args = {
 export const MarkedDates = Template.bind({});
 MarkedDates.args = {
     value: '05/09/2021',
-    disabledDates: [
-        20,
-        'Sat'
-    ],
-    markedDates: [
-        new Date(2021, 4, 9),
-        new Date(2021, 4, 26),
-        14,
-        20,
-        'Wed'
-    ],
+    disabledDates: [20, 'Sat'],
+    markedDates: [new Date(2021, 4, 9), new Date(2021, 4, 26), 14, 20, 'Wed'],
     min: new Date('04/15/2021'),
     max: new Date('06/10/2021')
 };

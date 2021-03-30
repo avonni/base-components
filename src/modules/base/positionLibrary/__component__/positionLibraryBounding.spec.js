@@ -23,7 +23,7 @@ const FLIP_MAP = {
     'right-top': 'left-top',
     top: 'top',
     'top-left': 'top-right',
-    'top-right': 'top-left',
+    'top-right': 'top-left'
 };
 
 /**
@@ -158,7 +158,7 @@ describe('Viewport Bounding', () => {
             right: 'top-right',
             leftBottom: 'bottom-left',
             bottom: 'bottom',
-            rightBottom: 'bottom-right',
+            rightBottom: 'bottom-right'
         },
         BottomLeft: {
             leftTop: 'top-left',
@@ -169,7 +169,7 @@ describe('Viewport Bounding', () => {
             right: 'top-right',
             leftBottom: 'bottom-left',
             bottom: 'bottom-left',
-            rightBottom: 'bottom-right',
+            rightBottom: 'bottom-right'
         },
         BottomRight: {
             leftTop: 'top-left',
@@ -180,7 +180,7 @@ describe('Viewport Bounding', () => {
             right: 'top-right',
             leftBottom: 'bottom-left',
             bottom: 'bottom-right',
-            rightBottom: 'bottom-right',
+            rightBottom: 'bottom-right'
         },
         Left: {
             leftTop: 'top-left', // left-top
@@ -191,7 +191,7 @@ describe('Viewport Bounding', () => {
             right: 'right',
             leftBottom: 'bottom-left', // left-bottom
             bottom: 'bottom-right', // right-bottom
-            rightBottom: 'bottom-right', // right-bottom
+            rightBottom: 'bottom-right' // right-bottom
         },
         Right: {
             leftTop: 'top-left', // left-top
@@ -202,7 +202,7 @@ describe('Viewport Bounding', () => {
             right: 'right',
             leftBottom: 'bottom-left', // left-bottom
             bottom: 'bottom-left', // left-bottom
-            rightBottom: 'bottom-right', // right-bottom
+            rightBottom: 'bottom-right' // right-bottom
         },
         Top: {
             leftTop: 'top-left',
@@ -213,7 +213,7 @@ describe('Viewport Bounding', () => {
             right: 'bottom-right',
             leftBottom: 'bottom-left',
             bottom: 'bottom',
-            rightBottom: 'bottom-right',
+            rightBottom: 'bottom-right'
         },
         TopLeft: {
             leftTop: 'top-left',
@@ -224,7 +224,7 @@ describe('Viewport Bounding', () => {
             right: 'bottom-right',
             leftBottom: 'bottom-left',
             bottom: 'bottom-left',
-            rightBottom: 'bottom-right',
+            rightBottom: 'bottom-right'
         },
         TopRight: {
             leftTop: 'top-left',
@@ -235,8 +235,8 @@ describe('Viewport Bounding', () => {
             right: 'bottom-right',
             leftBottom: 'bottom-left',
             bottom: 'bottom-right',
-            rightBottom: 'bottom-right',
-        },
+            rightBottom: 'bottom-right'
+        }
     };
 
     describe('LTR', () => {
@@ -274,13 +274,13 @@ describe('Element Bounding', () => {
             BottomLeft: {
                 left: 'top-left',
                 center: 'top-left',
-                right: 'top-right',
+                right: 'top-right'
             },
             BottomRight: {
                 left: 'top-left',
                 center: 'top-left',
-                right: 'top-right',
-            },
+                right: 'top-right'
+            }
         };
 
         executeCases(cases);
@@ -296,13 +296,13 @@ describe('Element Bounding', () => {
             BottomLeft: {
                 left: 'top-right',
                 center: 'top-right',
-                right: 'top-left',
+                right: 'top-left'
             },
             BottomRight: {
                 left: 'top-right',
                 center: 'top-right',
-                right: 'top-left',
-            },
+                right: 'top-left'
+            }
         };
 
         executeCases(cases);

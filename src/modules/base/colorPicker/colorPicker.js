@@ -126,7 +126,7 @@ export default class ColorPicker extends LightningElement {
         this.initSwatchColor();
     }
 
-    @api 
+    @api
     get variant() {
         return this._variant;
     }
@@ -138,7 +138,7 @@ export default class ColorPicker extends LightningElement {
         });
     }
 
-    @api 
+    @api
     get type() {
         return this._type;
     }
@@ -150,7 +150,7 @@ export default class ColorPicker extends LightningElement {
         });
     }
 
-    @api 
+    @api
     get menuVariant() {
         return this._menuVariant;
     }
@@ -162,7 +162,7 @@ export default class ColorPicker extends LightningElement {
         });
     }
 
-    @api 
+    @api
     get menuIconSize() {
         return this._menuIconSize;
     }
@@ -174,7 +174,7 @@ export default class ColorPicker extends LightningElement {
         });
     }
 
-    @api 
+    @api
     get menuAlignment() {
         return this._menuAlignment;
     }
@@ -186,7 +186,7 @@ export default class ColorPicker extends LightningElement {
         });
     }
 
-    @api 
+    @api
     get disabled() {
         return this._disabled;
     }
@@ -195,7 +195,7 @@ export default class ColorPicker extends LightningElement {
         this._disabled = normalizeBoolean(value);
     }
 
-    @api 
+    @api
     get isLoading() {
         return this._isLoading;
     }
@@ -204,7 +204,7 @@ export default class ColorPicker extends LightningElement {
         this._isLoading = normalizeBoolean(value);
     }
 
-    @api 
+    @api
     get readOnly() {
         return this._readOnly;
     }
@@ -213,7 +213,7 @@ export default class ColorPicker extends LightningElement {
         this._readOnly = normalizeBoolean(value);
     }
 
-    @api 
+    @api
     get required() {
         return this._required;
     }
@@ -222,7 +222,7 @@ export default class ColorPicker extends LightningElement {
         this._required = normalizeBoolean(value);
     }
 
-    @api 
+    @api
     get hideColorInput() {
         return this._hideColorInput;
     }
@@ -231,7 +231,7 @@ export default class ColorPicker extends LightningElement {
         this._hideColorInput = normalizeBoolean(value);
     }
 
-    @api 
+    @api
     get menuNubbin() {
         return this._menuNubbin;
     }
@@ -240,7 +240,7 @@ export default class ColorPicker extends LightningElement {
         this._menuNubbin = normalizeBoolean(value);
     }
 
-    @api 
+    @api
     get opacity() {
         return this._opacity;
     }
@@ -447,7 +447,7 @@ export default class ColorPicker extends LightningElement {
                     '.slds-swatch'
                 ).style.background = this.value;
             }
-            
+
             let gradientPalette = this.template.querySelector(
                 '[data-name="colorGradient"]'
             );
@@ -465,7 +465,9 @@ export default class ColorPicker extends LightningElement {
     handlerCancel() {
         this.newValue = '';
 
-        let gradientPalette = this.template.querySelector('[data-name="colorGradient"]');
+        let gradientPalette = this.template.querySelector(
+            '[data-name="colorGradient"]'
+        );
 
         if (gradientPalette) {
             gradientPalette.renderValue(this.value);
@@ -507,7 +509,7 @@ export default class ColorPicker extends LightningElement {
     handlerTabClick(event) {
         event.preventDefault();
 
-        [...this.template.querySelectorAll('a')].forEach(tab => {
+        [...this.template.querySelectorAll('a')].forEach((tab) => {
             if (tab.id === event.target.id) {
                 tab.parentElement.classList.add('slds-is-active');
                 this.isDefault = tab.parentElement.title === 'Default';

@@ -1,8 +1,11 @@
 import Component from 'base/checkboxGroup';
 
-customElements.define('ac-base-checkbox-group', Component.CustomElementConstructor);
+customElements.define(
+    'ac-base-checkbox-group',
+    Component.CustomElementConstructor
+);
 
-export const CheckboxGroup = ({ 
+export const CheckboxGroup = ({
     disabled,
     label,
     type,

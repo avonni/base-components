@@ -11,19 +11,19 @@ export const Direction = {
     Left: 'left',
     Bottom: 'bottom',
     Top: 'top',
-    Default: 'default',
+    Default: 'default'
 };
 
 const VerticalMap = {
     top: Direction.Top,
     bottom: Direction.Bottom,
-    center: Direction.Middle,
+    center: Direction.Middle
 };
 
 const HorizontalMap = {
     left: Direction.Left,
     right: Direction.Right,
-    center: Direction.Center,
+    center: Direction.Center
 };
 
 const FlipMap = {
@@ -32,7 +32,7 @@ const FlipMap = {
     top: Direction.Bottom,
     bottom: Direction.Top,
     center: Direction.Center,
-    default: Direction.Right,
+    default: Direction.Right
 };
 
 function getContainerSize(parent) {
@@ -46,7 +46,7 @@ function getContainerSize(parent) {
         height:
             WindowManager.window.innerHeight || document.body.clientHeight || 0,
         top: 0,
-        left: 0,
+        left: 0
     };
 
     rect.bottom = rect.height;
@@ -64,8 +64,8 @@ export function normalizeDirection(direction, defaultValue) {
             Direction.Bottom,
             Direction.Top,
             Direction.Middle,
-            Direction.Default,
-        ],
+            Direction.Default
+        ]
     });
 }
 
@@ -150,7 +150,7 @@ export function checkFlipPossibility(parent, element, target, leftAsBoundary) {
         left: referenceElemRect.left - width * 0.5 < 0,
         right: referenceElemRect.right + width * 0.5 > viewPort.width,
         top: referenceElemRect.top - height * 0.5 < 0,
-        bottom: referenceElemRect.bottom + height * 0.5 > viewPort.height,
+        bottom: referenceElemRect.bottom + height * 0.5 > viewPort.height
     };
 
     return {
@@ -158,6 +158,6 @@ export function checkFlipPossibility(parent, element, target, leftAsBoundary) {
         shouldAlignToRight,
         hasSpaceAbove,
         hasSpaceBelow,
-        centerOverflow,
+        centerOverflow
     };
 }

@@ -51,6 +51,8 @@
     },
     "scripts": {
         "storybook": "start-storybook -s ./static",
-        "deploy": "npm publish"
+        "deploy": "npm publish",
+        "prettier": "prettier --write '**/*.{cmp,component,css,html,js,json,md,page,yaml,yml}'",
+        "prettier:verify": "prettier --list-different '**/*.{html,js,json,yaml,yml,md,cmp,page,component}'"
     }
 }

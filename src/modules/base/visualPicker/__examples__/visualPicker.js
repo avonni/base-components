@@ -1,6 +1,9 @@
 import Component from 'base/visualPicker';
 
-customElements.define('ac-base-visual-picker', Component.CustomElementConstructor);
+customElements.define(
+    'ac-base-visual-picker',
+    Component.CustomElementConstructor
+);
 
 export const VisualPicker = ({
     label,

@@ -1,6 +1,9 @@
 import Component from 'base/colorPicker';
 
-customElements.define('ac-base-color-picker', Component.CustomElementConstructor);
+customElements.define(
+    'ac-base-color-picker',
+    Component.CustomElementConstructor
+);
 
 export const ColorPicker = ({
     disabled,

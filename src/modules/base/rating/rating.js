@@ -2,11 +2,20 @@ import { LightningElement, api } from 'lwc';
 import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
 import { generateUniqueId, classSet } from 'c/utils';
 
-const VALID_SELECTIONS = {valid: ['continuous', 'single'], default: 'continues'};
+const VALID_SELECTIONS = {
+    valid: ['continuous', 'single'],
+    default: 'continues'
+};
 
-const VALID_SIZES = { valid: [ 'x-small', 'small', 'medium', 'large' ], default: 'large'}
+const VALID_SIZES = {
+    valid: ['x-small', 'small', 'medium', 'large'],
+    default: 'large'
+};
 
-const VALID_LABEL_VARIANTS = { valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'], default: 'standard' }
+const VALID_LABEL_VARIANTS = {
+    valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'],
+    default: 'standard'
+};
 
 export default class Rating extends LightningElement {
     @api label;
@@ -17,8 +26,8 @@ export default class Rating extends LightningElement {
     _min = 1;
     _max = 5;
     _value;
-    _variant = 'standard'
-    _iconSize = 'large'
+    _variant = 'standard';
+    _iconSize = 'large';
     _selection = 'continuous';
     _disabled;
     _readOnly;
@@ -70,7 +79,6 @@ export default class Rating extends LightningElement {
         }
 
         this.init = true;
-
     }
 
     @api
@@ -114,29 +122,29 @@ export default class Rating extends LightningElement {
 
     @api
     get variant() {
-        return this._variant
+        return this._variant;
     }
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
             defaultValue: VALID_LABEL_VARIANTS.default,
             validValues: VALID_LABEL_VARIANTS.valid
-        })
+        });
     }
 
     @api
     get iconSize() {
-        return this._iconSize
+        return this._iconSize;
     }
 
     set iconSize(size) {
         this._iconSize = normalizeString(size, {
             defaultValue: VALID_SIZES.default,
             validValues: VALID_SIZES.valid
-        })
+        });
     }
 
-    @api 
+    @api
     get selection() {
         return this._selection;
     }
@@ -152,7 +160,7 @@ export default class Rating extends LightningElement {
         }
     }
 
-    @api 
+    @api
     get disabled() {
         return this._disabled;
     }
@@ -165,7 +173,7 @@ export default class Rating extends LightningElement {
         }
     }
 
-    @api 
+    @api
     get readOnly() {
         return this._readOnly;
     }
@@ -178,7 +186,7 @@ export default class Rating extends LightningElement {
         }
     }
 
-    @api 
+    @api
     get valueHidden() {
         return this._valueHidden;
     }
@@ -207,11 +215,11 @@ export default class Rating extends LightningElement {
 
     get computedContainerClass() {
         return classSet()
-        .add({
-            'slds-form-element_stacked': this.variant === 'label-stacked',
-            'avonni-label-inline': this.variant === 'label-inline'
-        })
-        .toString();
+            .add({
+                'slds-form-element_stacked': this.variant === 'label-stacked',
+                'avonni-label-inline': this.variant === 'label-inline'
+            })
+            .toString();
     }
 
     get computedLegendClass() {
@@ -238,7 +246,7 @@ export default class Rating extends LightningElement {
     ratingRecalculation() {
         let buttons = this.template.querySelectorAll('button');
 
-        buttons.forEach(button => {
+        buttons.forEach((button) => {
             button.classList.remove('slds-button_outline-brand');
             button.classList.remove('slds-button_brand');
 
@@ -269,7 +277,7 @@ export default class Rating extends LightningElement {
             'lightning-button-icon'
         );
 
-        iconButtons.forEach(button => {
+        iconButtons.forEach((button) => {
             button.classList.remove('avonni-icon-selected');
 
             if (this.selection === 'continuous') {

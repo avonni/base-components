@@ -10,7 +10,14 @@ export default {
         variant: {
             control: {
                 type: 'select',
-                options: ['base', 'random-direction', 'realistic', 'fireworks', 'snow', 'pride']
+                options: [
+                    'base',
+                    'random-direction',
+                    'realistic',
+                    'fireworks',
+                    'snow',
+                    'pride'
+                ]
             },
             defaultValue: 'base',
             table: {
@@ -50,18 +57,21 @@ const Template = (args) => {
 
     const element = document.createElement('ac-lightning-button');
     element.onclick = () => component.fire();
-    element.label = "FIRE";
+    element.label = 'FIRE';
 
-    return html`
-        <div style="">
-            ${component}
-            ${element}
-        </div>
-    `
+    return html` <div style="">${component} ${element}</div> `;
 };
 
 export const Base = Template.bind({});
 
 Base.args = {
-    colors: ['#529EE0', '#F0E442', '#FFB03B', '#E16032', '#4FD2D2', '#006699', '#E287B2']
+    colors: [
+        '#529EE0',
+        '#F0E442',
+        '#FFB03B',
+        '#E16032',
+        '#4FD2D2',
+        '#006699',
+        '#E287B2'
+    ]
 };

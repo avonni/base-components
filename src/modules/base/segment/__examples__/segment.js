@@ -1,9 +1,6 @@
 import Component from '../../storybookWrappers/segment/segment';
 
-customElements.define(
-    'ac-base-segment',
-    Component.CustomElementConstructor
-);
+customElements.define('ac-base-segment', Component.CustomElementConstructor);
 
 export const Segment = ({ value, variant, disabled }) => {
     const element = document.createElement('ac-base-segment');
