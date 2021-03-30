@@ -36,7 +36,7 @@
 }
 
 .avonni-date-time-picker__time-button[aria-selected='true'] {
-    border-color: var(--lwc-colorBorderSelection, #0070d2);
+    border-color: #0070d2;
     background-color: #d8edff;
 }
 
