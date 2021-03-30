@@ -1,6 +1,7 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
+import { FieldConstraintApi } from 'c/inputUtils';
 
 const DEFAULT_MIN = 0;
 
@@ -23,21 +24,23 @@ export default class DualListbox extends LightningElement {
     @api messageWhenValueMissing;
     @api name;
     @api requiredOptions = [];
-    @api validity;
     @api value = [];
 
     _disableReordering = false;
     _disabled = false;
     _min = DEFAULT_MIN;
-    _max = 100; // to verify
+    _max;
     _options = [];
     _required = false;
     _searchEngine = false;
     _showActivityIndicator = false;
     _size = 10;
     _variant = VALID_VARIANTS.default;
+    _helpMessage;
 
-    connectedCallback() {}
+    connectedCallback() {
+        console.log(this.computedHeightSize);
+    }
 
     @api
     get disableReordering() {
@@ -152,5 +155,53 @@ export default class DualListbox extends LightningElement {
                 'slds-is-disabled': this._disabled === true
             })
             .toString();
+    }
+
+    get computedHeightSize() {
+        return `height: ${this._size * 3.25}rem;`;
+    }
+
+    get validity() {
+        return this._constraint.validity;
+    }
+
+    @api
+    checkValidity() {
+        return this._constraint.checkValidity();
+    }
+
+    @api
+    reportValidity() {
+        return this._constraint.reportValidity((message) => {
+            this._helpMessage = message;
+        });
+    }
+
+    @api
+    setCustomValidity(message) {
+        this._constraint.setCustomValidity(message);
+    }
+
+    @api
+    showHelpMessageIfInvalid() {
+        this.reportValidity();
+    }
+
+    @api
+    focus() {
+        const firstOption = this.template.querySelector('c-primitive-option');
+        if (firstOption) {
+            firstOption.focus();
+        }
+    }
+
+    get _constraint() {
+        if (!this._constraintApi) {
+            this._constraintApi = new FieldConstraintApi(() => this, {
+                valueMissing: () =>
+                    !this.disabled && this.required && this.value.length === 0
+            });
+        }
+        return this._constraintApi;
     }
 }

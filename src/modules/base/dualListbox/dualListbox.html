@@ -31,7 +31,7 @@
                 </div>
                 <div class="slds-dueling-list__column">
                     <span class="slds-form-element__label">{sourceLabel}</span>
-                    <div class={computedInnerClass}>
+                    <div class={computedInnerClass} style={computedHeightSize}>
                         <template if:true={searchEngine}>
                             <lightning-input
                                 name="enter-search"
@@ -100,7 +100,7 @@
                     <span class="slds-form-element__label" id="label-106"
                         >{selectedLabel}</span
                     >
-                    <div class={computedInnerClass}>
+                    <div class={computedInnerClass} style={computedHeightSize}>
                         <ul
                             aria-describedby="option-drag-label"
                             aria-labelledby="label-106"
@@ -177,5 +177,10 @@
                 </template>
             </div>
         </div>
+        <span
+            id="helptext"
+            class="slds-text-color_destructive slds-form-element__help"
+            >{_helpMessage}</span
+        >
     </div>
 </template>
