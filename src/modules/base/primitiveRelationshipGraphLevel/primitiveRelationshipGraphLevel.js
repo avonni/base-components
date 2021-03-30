@@ -3,6 +3,8 @@ import { classSet } from 'c/utils';
 
 export default class PrimitiveRelationshipGraphLevel extends LightningElement {
     @api variant;
+    @api groupTheme;
+    @api itemTheme;
     @api shrinkIconName;
     @api expandIconName;
     @api activeGroups;

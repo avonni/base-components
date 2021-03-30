@@ -71,7 +71,38 @@ export default {
             },
             description: 'Array of item groups.',
             table: {
-                type: { summary: 'object[]' }
+                type: { summary: 'object[]' },
+                category: 'Groups'
+            }
+        },
+        groupTheme: {
+            name: 'group-theme',
+            control: {
+                type: 'select',
+                options: ['default', 'shade', 'inverse']
+            },
+            defaultValue: 'default',
+            description:
+                'Theme of the item groups tiles. Valid options include: ‘default’, ‘shade’ and ‘inverse’.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'default' },
+                category: 'Groups'
+            }
+        },
+        itemTheme: {
+            name: 'item-name',
+            control: {
+                type: 'select',
+                options: ['default', 'shade', 'inverse']
+            },
+            defaultValue: 'default',
+            description:
+                'Theme of the item tiles. Valid options include: ‘default’, ‘shade’ and ‘inverse’.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'default' },
+                category: 'Items'
             }
         },
         shrinkIconName: {
@@ -83,7 +114,8 @@ export default {
             description: 'Icon used to shrink an expanded group of items.',
             table: {
                 type: { summary: 'object[]' },
-                defaultValue: { summary: 'utility:chevrondown' }
+                defaultValue: { summary: 'utility:chevrondown' },
+                category: 'Groups'
             }
         },
         expandIconName: {
@@ -95,7 +127,8 @@ export default {
             description: 'Icon used to expand a closed group of items.',
             table: {
                 type: { summary: 'object[]' },
-                defaultValue: { summary: 'utility:chevronright' }
+                defaultValue: { summary: 'utility:chevronright' },
+                category: 'Groups'
             }
         }
     }

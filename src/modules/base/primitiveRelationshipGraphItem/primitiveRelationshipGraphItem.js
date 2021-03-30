@@ -11,6 +11,7 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
     @api groups;
     @api hideDefaultActions;
     @api actions;
+    @api theme;
 
     wrapperClass;
 
@@ -43,7 +44,10 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
             'avonni-relationship-graph__item_has-groups': this.groups,
             'avonni-relationship-graph__item_has-children': this.hasChildren,
             'avonni-relationship-graph__item_is-selected': this.selected,
-            'avonni-relationship-graph__item_is-active': this.activeSelection
+            'avonni-relationship-graph__item_is-active': this.activeSelection,
+            'slds-theme_shade slds-text-color_default': this.theme === 'shade',
+            'slds-theme_inverse': this.theme === 'inverse',
+            'slds-theme_default': this.theme === 'default'
         });
     }
 

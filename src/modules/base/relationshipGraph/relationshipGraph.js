@@ -2,6 +2,7 @@ import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 
 const VARIANTS = ['horizontal', 'vertical'];
+const THEMES = ['default', 'shade', 'inverse'];
 
 // TODO:
 // Accessibility (add a hidden button for clickable items?).
@@ -21,6 +22,8 @@ export default class RelationshipGraph extends LightningElement {
     _variant;
     _selectedItemName;
     _selectedItem;
+    _groupTheme;
+    _itemTheme;
 
     connectedCallback() {
         this.updateSelection();
@@ -54,6 +57,28 @@ export default class RelationshipGraph extends LightningElement {
     }
     set selectedItemName(name) {
         this._selectedItemName = name;
+    }
+
+    @api
+    get groupTheme() {
+        return this._groupTheme;
+    }
+    set groupTheme(value) {
+        this._groupTheme = normalizeString(value, {
+            fallbackValue: 'default',
+            validValues: THEMES
+        });
+    }
+
+    @api
+    get itemTheme() {
+        return this._itemTheme;
+    }
+    set itemTheme(value) {
+        this._itemTheme = normalizeString(value, {
+            fallbackValue: 'default',
+            validValues: THEMES
+        });
     }
 
     get hasAvatar() {

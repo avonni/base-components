@@ -14,6 +14,8 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     @api shrinkIconName;
     @api expandIconName;
     @api active;
+    @api theme;
+    @api itemTheme;
 
     @api
     get selectedItemComponent() {
@@ -51,9 +53,12 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
 
     get wrapperClass() {
         return classSet(
-            'slds-card slds-p-around_medium slds-m-bottom_medium avonni-relationship-graph__group'
+            'slds-p-around_medium slds-m-bottom_medium avonni-relationship-graph__group slds-box'
         ).add({
-            'avonni-relationship-graph__group_active': this.active
+            'avonni-relationship-graph__group_active': this.active,
+            'slds-theme_shade': this.theme === 'shade',
+            'slds-theme_inverse': this.theme === 'inverse',
+            'slds-theme_default': this.theme === 'default'
         });
     }
 

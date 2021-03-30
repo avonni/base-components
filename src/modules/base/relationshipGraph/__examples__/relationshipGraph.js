@@ -13,6 +13,8 @@ export const RelationshipGraph = ({
     variant,
     selectedItemName,
     groups,
+    groupTheme,
+    itemTheme,
     shrinkIconName,
     expandIconName
 }) => {
@@ -24,6 +26,8 @@ export const RelationshipGraph = ({
     element.variant = variant;
     element.selectedItemName = selectedItemName;
     element.groups = groups;
+    element.groupTheme = groupTheme;
+    element.itemTheme = itemTheme;
     element.shrinkIconName = shrinkIconName;
     element.expandIconName = expandIconName;
 
