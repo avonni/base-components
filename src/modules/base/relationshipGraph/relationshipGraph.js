@@ -4,9 +4,6 @@ import { normalizeString } from 'c/utilsPrivate';
 const VARIANTS = ['horizontal', 'vertical'];
 
 // TODO:
-// Dispatch event when summaryDetail is closed/opened
-// Show triangle indicator only when child groups have items.
-// Add selected border on click on an item with no children.
 // Accessibility (add a hidden button for clickable items?).
 
 export default class RelationshipGraph extends LightningElement {

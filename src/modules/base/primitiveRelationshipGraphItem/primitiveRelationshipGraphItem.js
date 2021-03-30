@@ -38,12 +38,19 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
 
     updateClasses() {
         this.wrapperClass = classSet(
-            'slds-box slds-box_small slds-m-bottom_small slds-is-relative'
+            'slds-box slds-box_small slds-m-bottom_small slds-is-relative avonni-relationship-graph__item'
         ).add({
             'avonni-relationship-graph__item_has-groups': this.groups,
+            'avonni-relationship-graph__item_has-children': this.hasChildren,
             'avonni-relationship-graph__item_is-selected': this.selected,
             'avonni-relationship-graph__item_is-active': this.activeSelection
         });
+    }
+
+    get hasChildren() {
+        if (!this.groups) return false;
+
+        return this.groups.some((group) => group.items);
     }
 
     get generateKey() {

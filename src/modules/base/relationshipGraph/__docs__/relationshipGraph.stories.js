@@ -231,7 +231,19 @@ const groups = [
                         value: '(628) 391-9393'
                     }
                 ],
-                hideDefaultActions: true
+                hideDefaultActions: true,
+                groups: [
+                    {
+                        label: 'Group relationships',
+                        name:
+                            'related-accounts-cumulus-restaurants-group-relationships'
+                    },
+                    {
+                        label: 'Related contacts',
+                        name:
+                            'related-accounts-cumulus-restaurants-related-contacts'
+                    }
+                ]
             }
         ],
         hideDefaultActions: true,

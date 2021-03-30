@@ -1,5 +1,9 @@
+.avonni-relationship-graph__item {
+    cursor: pointer;
+}
+
 /* Corner triangle */
-.avonni-relationship-graph__item_has-groups::after {
+.avonni-relationship-graph__item_has-children::after {
     content: '';
     border: 0 solid transparent;
     border-left-width: 15px;
@@ -21,7 +25,7 @@
     top: 50%;
     transform: translateY(-50%);
 }
-.avonni-relationship-graph__item_has-groups.avonni-relationship-graph__item_is-active {
+.avonni-relationship-graph__item_is-active {
     border-color: var(
         --avonni-c-relationship-graph-selected-line-color,
         #0070d2
