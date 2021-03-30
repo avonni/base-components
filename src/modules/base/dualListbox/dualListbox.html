@@ -28,6 +28,16 @@
                 <div class="slds-dueling-list__column">
                     <span class="slds-form-element__label">{sourceLabel}</span>
                     <div class="slds-dueling-list__options">
+                        <template if:true={searchEngine}>
+                            <lightning-input
+                                name="enter-search"
+                                label="Filter"
+                                placeholder="Type to filter list..."
+                                type="search"
+                                class="slds-p-around_small"
+                                variant="label-hidden"
+                            ></lightning-input>
+                        </template>
                         <ul
                             aria-describedby="option-drag-label"
                             aria-labelledby="label-105"
