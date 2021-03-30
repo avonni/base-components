@@ -4,13 +4,14 @@ import { normalizeString } from 'c/utilsPrivate';
 
 const VARIANTS = ['horizontal', 'vertical'];
 
-// QUESTIONS:
-// Dispatch event when summaryDetail is closed/opened
-// Should nodes with no children close the tree on click?
-// Option to hide empty groups?
-
 // TODO:
-// Accessibility (add a hidden button for clickable items?)
+// Create primitive column
+// Create primitive group
+// Create primitive item
+// Dispatch event when summaryDetail is closed/opened
+// Show triangle indicator only when child groups have items.
+// Add selected border on click on an item with no children.
+// Accessibility (add a hidden button for clickable items?).
 
 export default class RelationshipGraph extends LightningElement {
     @api label;
@@ -71,7 +72,7 @@ export default class RelationshipGraph extends LightningElement {
     }
     set groups(proxy) {
         this._groups = proxy;
-        this.processedGroups = JSON.parse(JSON.stringify(proxy));
+        this.updateSelection();
     }
 
     @api
@@ -154,6 +155,7 @@ export default class RelationshipGraph extends LightningElement {
         if (!this.selectedItemName || !this.groups) return;
 
         // Reset the selection and go through the tree with the new selection
+        this._selectedItem = undefined;
         this.processedGroups = JSON.parse(JSON.stringify(this.groups));
         this.selectItem(this.selectedItemName, this.processedGroups);
 
@@ -185,6 +187,7 @@ export default class RelationshipGraph extends LightningElement {
                     const currentItem = currentGroup.items[itemIndex];
                     currentGroup.selected = true;
                     currentItem.selected = true;
+                    currentItem.activeSelection = true;
 
                     this._selectedItem = currentItem;
                     break;
@@ -206,9 +209,12 @@ export default class RelationshipGraph extends LightningElement {
         }
     }
 
-    // If the item was clicked in a child relationship graph,
-    // the parent will directly dispatch the event received.
+    // This event handler will occur in every node
     dispatchSelectEvent(event) {
+        const name = event.detail.name;
+        this._selectedItemName = name;
+        this.updateSelection();
+
         this.dispatchEvent(
             new CustomEvent('select', {
                 detail: {
@@ -218,11 +224,9 @@ export default class RelationshipGraph extends LightningElement {
         );
     }
 
+    // This event handler will only occur in the clicked node
     handleSelect(event) {
-        // Reset selection
         this._selectedGroups = undefined;
-        this._selectedItem = undefined;
-        this._selectedItemName = undefined;
 
         // If we open a higher level node than the one currently opened,
         // make sure the previous deeper children nodes are hidden.
@@ -230,10 +234,6 @@ export default class RelationshipGraph extends LightningElement {
         if (child) child.selectedGroups = undefined;
 
         const name = event.currentTarget.dataset.name;
-        this._selectedItemName = name;
-        this.updateSelection();
-        this.updateVerticalLine();
-
         const selectEvent = new CustomEvent('select', {
             detail: {
                 name: name

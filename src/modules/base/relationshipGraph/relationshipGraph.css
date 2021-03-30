@@ -45,3 +45,16 @@
     top: 50%;
     transform: translateY(-50%);
 }
+[data-groups][data-active-selection='true'] {
+    border-color: var(
+        --avonni-c-relationship-graph-selected-line-color,
+        #0070d2
+    );
+}
+
+[data-groups][data-active-selection='true']::before {
+    background-color: var(
+        --avonni-c-relationship-graph-selected-line-color,
+        #0070d2
+    );
+}
