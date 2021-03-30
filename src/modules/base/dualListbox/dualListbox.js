@@ -36,15 +36,7 @@ export default class DualListbox extends LightningElement {
     _size = 10;
     _variant = VALID_VARIANTS.default;
 
-    connectedCallback() {
-        console.log(this.sourceLabel);
-        console.log(this.selectedLabel);
-        console.log(this.label);
-        console.log(this.addButtonLabel);
-        console.log(this.removeButtonLabel);
-        console.log(this.upButtonLabel);
-        console.log(this.downButtonLabel);
-    }
+    connectedCallback() {}
 
     @api
     get disableReordering() {
