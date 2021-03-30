@@ -19,7 +19,6 @@ export const DualListbox = ({
     messageWhenValueMissing,
     name,
     options,
-    optionsIconName,
     removeButtonLabel,
     required,
     requiredOptions,
@@ -47,7 +46,6 @@ export const DualListbox = ({
     element.messageWhenValueMissing = messageWhenValueMissing;
     element.name = name;
     element.options = options;
-    element.optionsIconName = optionsIconName;
     element.removeButtonLabel = removeButtonLabel;
     element.required = required;
     element.requiredOptions = requiredOptions;

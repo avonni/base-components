@@ -189,7 +189,7 @@ export default {
                 defaultValue: { summary: false }
             }
         },
-        selectedlabel: {
+        selectedLabel: {
             name: 'selected-label',
             type: { name: 'string', required: true },
             control: {
@@ -223,7 +223,7 @@ export default {
                 type: { summary: 'number' }
             }
         },
-        sourcelabel: {
+        sourceLabel: {
             name: 'source-label',
             type: { name: 'string', required: true },
             control: {
@@ -288,4 +288,12 @@ export default {
 const Template = (args) => DualListbox(args);
 
 export const Base = Template.bind({});
-Base.args = {};
+Base.args = {
+    label: 'Label',
+    sourceLabel: 'Source Label',
+    selectedLabel: 'Selected Label',
+    addButtonLabel: 'Add Button Label',
+    removeButtonLabel: 'Remove Button Label',
+    downButtonLabel: 'Down Button Label',
+    upButtonLabel: 'Up Button Label'
+};
