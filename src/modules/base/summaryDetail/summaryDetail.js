@@ -87,5 +87,13 @@ export default class SummaryDetail extends LightningElement {
 
     changeSectionStatus() {
         this._closed = !this._closed;
+
+        this.dispatchEvent(
+            new CustomEvent('toggle', {
+                detail: {
+                    closed: this._closed
+                }
+            })
+        );
     }
 }
