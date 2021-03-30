@@ -231,6 +231,10 @@
             "path": "src/modules/base/primitiveIframe/primitiveIframe.js"
         },
         {
+            "name": "c/primitiveOption",
+            "path": "src/modules/base/primitiveOption/primitiveOption.js"
+        },
+        {
             "name": "c/primitivePageHeaderItem",
             "path": "src/modules/base/primitivePageHeaderItem/primitivePageHeaderItem.js"
         },

@@ -285,6 +285,19 @@ export default {
     }
 };
 
+const Options = [
+    {
+        value: '1',
+        label: 'option 1',
+        avatarFallbackIconName: 'standard:account'
+    },
+    {
+        value: '2',
+        label: 'option 2',
+        avatarFallbackIconName: 'standard:address'
+    }
+];
+
 const Template = (args) => DualListbox(args);
 
 export const Base = Template.bind({});
@@ -295,5 +308,6 @@ Base.args = {
     addButtonLabel: 'Add Button Label',
     removeButtonLabel: 'Remove Button Label',
     downButtonLabel: 'Down Button Label',
-    upButtonLabel: 'Up Button Label'
+    upButtonLabel: 'Up Button Label',
+    options: Options
 };

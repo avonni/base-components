@@ -1,23 +1,25 @@
 <template>
-    <div
-        class="slds-listbox__option slds-listbox__option_plain slds-media slds-media_small slds-media_inline"
-        aria-selected="false"
-        draggable="true"
-        role="option"
-        tabindex="0"
-    >
-        <div class="slds-media__figure">
-            <c-avatar
-                avatar-fallback-icon-name={avatarFallbackIconName}
-                avatar-src={avatarSrc}
-                avatar-initials={avatarInitials}
-                avatar-variant={avatarVariant}
-                avatar-primary-text={avatarPrimaryText}
-                avatar-secondary-text={avatarSecondaryText}
-            ></c-avatar>
+    <li role="presentation" class="slds-listbox__item">
+        <div
+            class="slds-listbox__option slds-listbox__option_plain slds-media slds-media_center slds-media_small slds-media_inline"
+            aria-selected="false"
+            draggable="true"
+            role="option"
+            tabindex="0"
+        >
+            <div class="slds-media__figure">
+                <c-avatar
+                    fallback-icon-name={avatarFallbackIconName}
+                    src={avatarSrc}
+                    initials={avatarInitials}
+                    variant={avatarVariant}
+                    primary-text={avatarPrimaryText}
+                    secondary-text={avatarSecondaryText}
+                ></c-avatar>
+            </div>
+            <div class="slds-media__body">
+                <span class="slds-truncate" title="Option 1">{label}</span>
+            </div>
         </div>
-        <div class="slds-media__body">
-            <span class="slds-truncate" title="Option 1">{label}</span>
-        </div>
-    </div>
+    </li>
 </template>
