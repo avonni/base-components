@@ -7,16 +7,18 @@
             role="option"
             tabindex="0"
         >
-            <div class="slds-media__figure">
-                <c-avatar
-                    fallback-icon-name={avatarFallbackIconName}
-                    src={avatarSrc}
-                    initials={avatarInitials}
-                    variant={avatarVariant}
-                    primary-text={avatarPrimaryText}
-                    secondary-text={avatarSecondaryText}
-                ></c-avatar>
-            </div>
+            <template if:true={hasAvatar}>
+                <div class="slds-media__figure">
+                    <c-avatar
+                        fallback-icon-name={avatarFallbackIconName}
+                        src={avatarSrc}
+                        initials={avatarInitials}
+                        variant={avatarVariant}
+                        primary-text={avatarPrimaryText}
+                        secondary-text={avatarSecondaryText}
+                    ></c-avatar>
+                </div>
+            </template>
             <div class="slds-media__body">
                 <span class="slds-truncate" title="Option 1">{label}</span>
             </div>

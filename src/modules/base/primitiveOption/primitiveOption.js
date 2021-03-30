@@ -9,4 +9,14 @@ export default class PrimitiveOption extends LightningElement {
     @api avatarVariant;
     @api avatarPrimaryText;
     @api avatarSecondaryText;
+
+    get hasAvatar() {
+        return (
+            this.avatarFallbackIconName ||
+            this.avatarSrc ||
+            this.avatarInitials ||
+            this.avatarPrimaryText ||
+            this.avatarSecondaryText
+        );
+    }
 }

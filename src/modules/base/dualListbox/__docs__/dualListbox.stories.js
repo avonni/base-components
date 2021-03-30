@@ -295,6 +295,19 @@ const Options = [
         value: '2',
         label: 'option 2',
         avatarFallbackIconName: 'standard:address'
+    },
+    {
+        value: '3',
+        label: 'option 3',
+        avatarSrc:
+            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+    },
+    {
+        value: '4',
+        label: 'option 4',
+        avatarInitials: 'RAF',
+        avatarFallbackIconName: 'standard:address',
+        avatarVariant: 'circle'
     }
 ];
 
