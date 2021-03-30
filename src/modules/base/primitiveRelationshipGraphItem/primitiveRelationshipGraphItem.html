@@ -1,0 +1,45 @@
+<template>
+    <div class={wrapperClass} onclick={handleClick}>
+        <!-- Avatar / Title / Actions -->
+        <c-media-object vertical-align="center">
+            <template if:true={hasAvatar}>
+                <c-avatar
+                    slot="figure"
+                    alternative-text={label}
+                    fallback-icon-name={avatarFallbackIconName}
+                    src={avatarSrc}
+                    hide-avatar-details="true"
+                    size="small"
+                ></c-avatar>
+            </template>
+            <div class="slds-text-heading_small slds-truncate">
+                <a if:true={href} href={href}>{label}</a>
+                <span if:false={href}>{label}</span>
+            </div>
+            <div slot="figure-inverse" if:true={actions}>
+                <template for:each={actions} for:item="action">
+                    <lightning-button
+                        key={action.name}
+                        label={action.label}
+                    ></lightning-button>
+                </template>
+            </div>
+        </c-media-object>
+        <!-- Data -->
+        <div class="slds-m-top_small" if:true={contentData}>
+            <dl class="slds-dl_horizontal">
+                <template for:each={contentData} for:item="data">
+                    <dt
+                        key={generateKey}
+                        class="slds-dl_horizontal__label slds-truncate"
+                    >
+                        {data.label}
+                    </dt>
+                    <dd key={generateKey} class="slds-dl_horizontal__detail">
+                        {data.value}
+                    </dd>
+                </template>
+            </dl>
+        </div>
+    </div>
+</template>

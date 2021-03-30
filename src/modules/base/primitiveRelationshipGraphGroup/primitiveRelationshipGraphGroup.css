@@ -1,0 +1,15 @@
+.avonni-relationship-graph__group {
+    width: var(--lwc-sizeMedium, 20rem);
+    position: relative;
+}
+
+/* Horizontal line */
+.avonni-relationship-graph__group::before {
+    content: '';
+    height: 2px;
+    background-color: var(--avonni-c-relationship-graph-line-color, #dddbda);
+    width: calc(2rem + 2px);
+    position: absolute;
+    left: calc(-2rem - 2px);
+    top: calc(1.5rem - 2px);
+}

@@ -1,0 +1,39 @@
+<template>
+    <div class={wrapperClass}>
+        <!-- Current level -->
+        <div class={currentLevelClass}>
+            <template for:each={groups} for:item="group">
+                <c-primitive-relationship-graph-group
+                    onselect={handleSelect}
+                    key={group.name}
+                    label={group.label}
+                    name={group.name}
+                    avatar-src={group.avatarSrc}
+                    avatar-fallback-icon-name={group.avatarFallbackIconName}
+                    href={group.href}
+                    items={group.items}
+                    expanded={group.expanded}
+                    hide-default-actions={group.hideDefaultActions}
+                    actions={group.actions}
+                    shrink-icon-name={shrinkIconName}
+                    expand-icon-name={expandIconName}
+                ></c-primitive-relationship-graph-group>
+            </template>
+        </div>
+        <!-- Vertical line -->
+        <div
+            class="avonni-relationship-graph__line slds-m-left_x-large"
+            if:true={selectedGroups}
+        ></div>
+        <!-- Selected level -->
+        <div class="slds-grid" if:true={selectedGroups}>
+            <c-primitive-relationship-graph-level
+                onselect={dispatchSelectEvent}
+                groups={selectedGroups}
+                variant={variant}
+                shrink-icon-name={shrinkIconName}
+                expand-icon-name={expandIconName}
+            ></c-primitive-relationship-graph-level>
+        </div>
+    </div>
+</template>

@@ -235,6 +235,18 @@
             "path": "src/modules/base/primitiveProgressStep/primitiveProgressStep.js"
         },
         {
+            "name": "c/primitiveRelationshipGraphItem",
+            "path": "src/modules/base/primitiveRelationshipGraphItem/primitiveRelationshipGraphItem.js"
+        },
+        {
+            "name": "c/primitiveRelationshipGraphGroup",
+            "path": "src/modules/base/primitiveRelationshipGraphGroup/primitiveRelationshipGraphGroup.js"
+        },
+        {
+            "name": "c/primitiveRelationshipGraphLevel",
+            "path": "src/modules/base/primitiveRelationshipGraphLevel/primitiveRelationshipGraphLevel.js"
+        },
+        {
             "name": "c/primitiveSelect",
             "path": "src/modules/base/primitiveSelect/primitiveSelect.js"
         },

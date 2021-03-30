@@ -1,13 +1,9 @@
 import { LightningElement, api } from 'lwc';
-import { generateUniqueId } from 'c/utils';
 import { normalizeString } from 'c/utilsPrivate';
 
 const VARIANTS = ['horizontal', 'vertical'];
 
 // TODO:
-// Create primitive column
-// Create primitive group
-// Create primitive item
 // Dispatch event when summaryDetail is closed/opened
 // Show triangle indicator only when child groups have items.
 // Add selected border on click on an item with no children.
@@ -18,27 +14,19 @@ export default class RelationshipGraph extends LightningElement {
     @api avatarSrc;
     @api avatarFallbackIconName;
     @api href;
+    @api groups;
     @api shrinkIconName;
     @api expandIconName;
 
     processedGroups;
     selectedItemPosition;
-    wrapperClass;
-    currentLevelClass =
-        'avonni-relationship-graph__current-level-col slds-m-left_x-large';
+
     _variant;
     _selectedItemName;
-    _groups;
     _selectedItem;
-    _selectedGroups;
-    _isRoot = true;
 
     connectedCallback() {
         this.updateSelection();
-    }
-
-    renderedCallback() {
-        this.updateVerticalLine();
     }
 
     @api
@@ -50,12 +38,6 @@ export default class RelationshipGraph extends LightningElement {
             fallbackValue: 'horizontal',
             validValues: VARIANTS
         });
-
-        if (this._variant === 'vertical') {
-            this.currentLevelClass += ' slds-grid';
-        } else {
-            this.wrapperClass = 'slds-grid';
-        }
     }
 
     @api
@@ -66,89 +48,12 @@ export default class RelationshipGraph extends LightningElement {
         this._selectedItemName = name;
     }
 
-    @api
-    get groups() {
-        return this._groups;
-    }
-    set groups(proxy) {
-        this._groups = proxy;
-        this.updateSelection();
-    }
-
-    @api
-    get isRoot() {
-        return this._isRoot;
-    }
-    set isRoot(boolean) {
-        this._isRoot = boolean !== 'false';
-    }
-
-    @api
-    get selectedGroups() {
-        return this._selectedGroups;
-    }
-    set selectedGroups(value) {
-        this._selectedGroups = value;
-    }
-
-    get rootHasAvatar() {
+    get hasAvatar() {
         return this.avatarSrc || this.avatarFallbackIconName;
     }
 
-    get generateKey() {
-        return generateUniqueId();
-    }
-
-    @api
-    get maxHeightForCurrentColumnVerticalLine() {
-        const currentCol = this.template.querySelector(
-            '.avonni-relationship-graph__current-level-col'
-        );
-        const currentColHeight = currentCol.offsetHeight;
-        const lastGroup = currentCol.querySelector(
-            '.avonni-relationship-graph__group:last-child'
-        );
-        const lastGroupHeight = lastGroup.offsetHeight;
-        return currentColHeight - lastGroupHeight;
-    }
-
-    updateVerticalLine() {
-        // Root vertical line
-        if (this.isRoot) {
-            const firstLine = this.template.querySelector(
-                '.avonni-relationship-graph__first-line'
-            );
-            const height = this.maxHeightForCurrentColumnVerticalLine;
-            firstLine.setAttribute('style', `height: ${height}px`);
-        }
-
-        // Vertical line between selected item and its children
-        const line = this.template.querySelector(
-            '.avonni-relationship-graph__line'
-        );
-        const selectedItem = this.template.querySelector(
-            '[data-selected="true"]'
-        );
-        const child = this.template.querySelector('c-relationship-graph');
-        if (!line || !selectedItem || !child) return;
-
-        const currentCol = this.template.querySelector(
-            '.avonni-relationship-graph__current-level-col'
-        );
-        const currentColTop =
-            currentCol.getBoundingClientRect().top + window.scrollY;
-        const scroll = window.pageYOffset;
-        const itemPosition = selectedItem.getBoundingClientRect();
-
-        const itemHeight =
-            itemPosition.top + itemPosition.height / 2 + scroll - currentColTop;
-        const childHeight = child.maxHeightForCurrentColumnVerticalLine;
-
-        const height =
-            itemHeight > childHeight
-                ? `calc(${itemHeight}px - 1.5rem)`
-                : `${childHeight}px`;
-        line.setAttribute('style', `height: ${height};`);
+    get wrapperClass() {
+        return this._variant === 'horizontal' && 'slds-grid';
     }
 
     updateSelection() {
@@ -158,16 +63,6 @@ export default class RelationshipGraph extends LightningElement {
         this._selectedItem = undefined;
         this.processedGroups = JSON.parse(JSON.stringify(this.groups));
         this.selectItem(this.selectedItemName, this.processedGroups);
-
-        const selectedGroup = this.processedGroups.find(
-            (group) => group.selected
-        );
-        if (selectedGroup && selectedGroup.items) {
-            const selectedItem = selectedGroup.items.find(
-                (item) => item.selected
-            );
-            if (selectedItem.groups) this._selectedGroups = selectedItem.groups;
-        }
     }
 
     selectItem(name, groups) {
@@ -209,7 +104,6 @@ export default class RelationshipGraph extends LightningElement {
         }
     }
 
-    // This event handler will occur in every node
     dispatchSelectEvent(event) {
         const name = event.detail.name;
         this._selectedItemName = name;
@@ -218,27 +112,9 @@ export default class RelationshipGraph extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('select', {
                 detail: {
-                    name: event.detail.name
+                    name: name
                 }
             })
         );
-    }
-
-    // This event handler will only occur in the clicked node
-    handleSelect(event) {
-        this._selectedGroups = undefined;
-
-        // If we open a higher level node than the one currently opened,
-        // make sure the previous deeper children nodes are hidden.
-        const child = this.template.querySelector('c-relationship-graph');
-        if (child) child.selectedGroups = undefined;
-
-        const name = event.currentTarget.dataset.name;
-        const selectEvent = new CustomEvent('select', {
-            detail: {
-                name: name
-            }
-        });
-        this.dispatchSelectEvent(selectEvent);
     }
 }

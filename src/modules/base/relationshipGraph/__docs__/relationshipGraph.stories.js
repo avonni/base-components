@@ -152,7 +152,7 @@ const groups = [
         label: 'Group Relationships',
         name: 'group-relationships',
         avatarSrc:
-            'https://www.lightningdesignsystem.com/assets/images/welcome-mat/bg-info@2x.png',
+            'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
         avatarFallbackIconName: 'standard:account',
         href: 'https://www.avonni.app/',
         // Items

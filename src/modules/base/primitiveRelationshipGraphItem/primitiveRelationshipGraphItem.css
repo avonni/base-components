@@ -1,0 +1,36 @@
+/* Corner triangle */
+.avonni-relationship-graph__item_has-groups::after {
+    content: '';
+    border: 0 solid transparent;
+    border-left-width: 15px;
+    border-bottom: 15px solid
+        var(--avonni-c-relationship-graph-children-indicator-color, #007add);
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+/* Selected item horizontal line */
+.avonni-relationship-graph__item_has-groups.avonni-relationship-graph__item_is-selected::before {
+    content: '';
+    height: 2px;
+    background-color: var(--avonni-c-relationship-graph-line-color, #dddbda);
+    position: absolute;
+    width: 50px;
+    right: -50px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.avonni-relationship-graph__item_has-groups.avonni-relationship-graph__item_is-active {
+    border-color: var(
+        --avonni-c-relationship-graph-selected-line-color,
+        #0070d2
+    );
+}
+
+.avonni-relationship-graph__item_has-groups.avonni-relationship-graph__item_is-active::before {
+    background-color: var(
+        --avonni-c-relationship-graph-selected-line-color,
+        #0070d2
+    );
+}
