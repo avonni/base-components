@@ -60,6 +60,9 @@
                             </template>
                         </ul>
                     </div>
+                    <template if:true={showActivityIndicator}>
+                        <lightning-spinner></lightning-spinner>
+                    </template>
                 </div>
                 <div class="slds-dueling-list__column">
                     <button
