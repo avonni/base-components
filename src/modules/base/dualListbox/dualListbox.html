@@ -1,14 +1,16 @@
 <template>
     <div
-        class="slds-form-element"
+        class={computedOuterClass}
         role="group"
         aria-labelledby="picklist-group-label"
     >
-        <span
-            id="picklist-group-label"
-            class="slds-form-element__label slds-form-element__legend"
-            >{label}</span
-        >
+        <template if:false={isLabelHidden}>
+            <span
+                id="picklist-group-label"
+                class="slds-form-element__label slds-form-element__legend"
+                >{label}</span
+            >
+        </template>
         <lightning-helptext
             if:true={fieldLevelHelp}
             content={fieldLevelHelp}

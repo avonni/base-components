@@ -1,5 +1,6 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
+import { classSet } from 'c/utils';
 
 const DEFAULT_MIN = 0;
 
@@ -129,5 +130,19 @@ export default class DualListbox extends LightningElement {
             fallbackValue: VALID_VARIANTS.default,
             validValues: VALID_VARIANTS.valid
         });
+    }
+
+    get isLabelHidden() {
+        return this._variant === 'label-hidden';
+    }
+
+    get computedOuterClass() {
+        return classSet('slds-form-element')
+            .add({
+                'slds-form-element_horizontal':
+                    this._variant === 'label-inline',
+                'slds-form-element_stacked': this._variant === 'label-stacked'
+            })
+            .toString();
     }
 }
