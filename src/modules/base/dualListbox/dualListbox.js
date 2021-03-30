@@ -145,4 +145,12 @@ export default class DualListbox extends LightningElement {
             })
             .toString();
     }
+
+    get computedInnerClass() {
+        return classSet('slds-dueling-list__options')
+            .add({
+                'slds-is-disabled': this._disabled === true
+            })
+            .toString();
+    }
 }
