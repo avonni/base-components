@@ -1,5 +1,5 @@
 <template>
-    <li role="presentation" class="slds-listbox__item">
+    <li role="presentation" class="slds-listbox__item" onclick={handleClick}>
         <div
             class="slds-listbox__option slds-listbox__option_plain slds-media slds-media_center slds-media_small slds-media_inline"
             aria-selected="false"
@@ -22,6 +22,14 @@
             <div class="slds-media__body">
                 <span class="slds-truncate" title="Option 1">{label}</span>
             </div>
+            <template if:true={isRequired}>
+                <div class="slds-media__figure slds-media__figure_reverse">
+                    <lightning-icon
+                        icon-name="utility:lock"
+                        size="x-small"
+                    ></lightning-icon>
+                </div>
+            </template>
         </div>
     </li>
 </template>

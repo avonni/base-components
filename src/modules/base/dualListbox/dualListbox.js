@@ -34,7 +34,7 @@ export default class DualListbox extends LightningElement {
     _required = false;
     _searchEngine = false;
     _showActivityIndicator = false;
-    _size = 10;
+    _size;
     _variant = VALID_VARIANTS.default;
 
     _helpMessage;
@@ -190,7 +190,10 @@ export default class DualListbox extends LightningElement {
 
     selectedOptions() {
         this.options.forEach((option) => {
-            if (this._value.includes(option.value)) {
+            if (
+                this._value.includes(option.value) ||
+                this._requiredOptions.includes(option.value)
+            ) {
                 this._selected.push(option);
             } else this._notSelected.push(option);
         });

@@ -8,8 +8,13 @@ export default class PrimitiveOption extends LightningElement {
     @api avatarVariant;
     @api avatarPrimaryText;
     @api avatarSecondaryText;
+    @api requiredOptions;
 
     _value;
+
+    connectedCallback() {
+        console.log(this.isRequired);
+    }
 
     @api
     get value() {
@@ -29,5 +34,9 @@ export default class PrimitiveOption extends LightningElement {
             this.avatarPrimaryText ||
             this.avatarSecondaryText
         );
+    }
+
+    get isRequired() {
+        return this.requiredOptions.includes(this.value);
     }
 }
