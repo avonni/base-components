@@ -10,8 +10,11 @@ const VARIANTS = ['horizontal', 'vertical'];
 const THEMES = ['default', 'shade', 'inverse'];
 const POSITIONS = ['top', 'bottom'];
 
+// QUESTIONS:
+// Code duplication in group HTML because of display switch depending on presence of items.
+// => Other option would be to add a disable option to summary? Option would show a gray icon? Remove icon?
+
 // TODO:
-// Expanded group option.
 // Vertical variant
 // Accessibility (add a hidden button for clickable items?).
 

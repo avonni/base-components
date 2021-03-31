@@ -14,6 +14,76 @@
                 <a if:true={href} href={href}>{title}</a>
                 <span if:false={href}>{title}</span>
             </h2>
+            <!-- Actions -->
+            <template if:true={actions}>
+                <!-- Top actions -->
+                <template if:true={topActions}>
+                    <div slot="figure-inverse">
+                        <template if:true={hasMoreThanOneAction}>
+                            <lightning-button-menu
+                                alternative-text="Show menu"
+                                icon-size="small"
+                                menu-alignment="right"
+                            >
+                                <template for:each={actions} for:item="action">
+                                    <lightning-menu-item
+                                        key={action.name}
+                                        value={action.name}
+                                        label={action.label}
+                                        onclick={handleActionClick}
+                                        disabled={action.disabled}
+                                        prefix-icon-name={action.iconName}
+                                    ></lightning-menu-item>
+                                </template>
+                            </lightning-button-menu>
+                        </template>
+                        <template if:false={hasMoreThanOneAction}>
+                            <template for:each={actions} for:item="action">
+                                <div
+                                    key={action.name}
+                                    class="slds-m-bottom_xx-small"
+                                >
+                                    <lightning-button
+                                        label={action.label}
+                                        icon-name={action.iconName}
+                                        disabled={action.disabled}
+                                        onclick={handleActionClick}
+                                        value={action.name}
+                                    ></lightning-button>
+                                </div>
+                            </template>
+                        </template>
+                    </div>
+                </template>
+
+                <!-- Bottom actions -->
+                <template if:false={topActions}>
+                    <div class="slds-m-top_small">
+                        <template for:each={actions} for:item="action">
+                            <div
+                                key={action.name}
+                                class="slds-m-bottom_xx-small"
+                            >
+                                <button
+                                    name={action.name}
+                                    class="slds-button slds-button_neutral slds-button_stretch"
+                                    disabled={action.disabled}
+                                    onclick={handleActionClick}
+                                    value={action.name}
+                                >
+                                    <lightning-icon
+                                        if:true={action.iconName}
+                                        icon-name={action.iconName}
+                                        class="slds-current-color slds-m-right_x-small"
+                                        size="xx-small"
+                                    ></lightning-icon>
+                                    {action.label}
+                                </button>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+            </template>
         </c-media-object>
 
         <!-- Items exist -->
@@ -35,37 +105,43 @@
             </h2>
             <!-- Top actions -->
             <template if:true={actions}>
-                <template slot="actions" if:true={topActions}>
-                    <template if:true={hasMoreThanOneAction}>
-                        <lightning-button-menu alternative-text="Show menu">
-                            <template for:each={actions} for:item="action">
-                                <lightning-menu-item
-                                    key={action.name}
-                                    value={action.name}
-                                    label={action.label}
-                                    onclick={handleActionClick}
-                                    disabled={action.disabled}
-                                    prefix-icon-name={action.iconName}
-                                ></lightning-menu-item>
-                            </template>
-                        </lightning-button-menu>
-                    </template>
-                    <template if:false={hasMoreThanOneAction}>
-                        <template for:each={actions} for:item="action">
-                            <div
-                                key={action.name}
-                                class="slds-m-bottom_xx-small"
+                <template if:true={topActions}>
+                    <div slot="actions">
+                        <template if:true={hasMoreThanOneAction}>
+                            <lightning-button-menu
+                                alternative-text="Show menu"
+                                icon-size="small"
+                                menu-alignment="right"
                             >
-                                <lightning-button
-                                    label={action.label}
-                                    icon-name={action.iconName}
-                                    disabled={action.disabled}
-                                    onclick={handleActionClick}
-                                    value={action.name}
-                                ></lightning-button>
-                            </div>
+                                <template for:each={actions} for:item="action">
+                                    <lightning-menu-item
+                                        key={action.name}
+                                        value={action.name}
+                                        label={action.label}
+                                        onclick={handleActionClick}
+                                        disabled={action.disabled}
+                                        prefix-icon-name={action.iconName}
+                                    ></lightning-menu-item>
+                                </template>
+                            </lightning-button-menu>
                         </template>
-                    </template>
+                        <template if:false={hasMoreThanOneAction}>
+                            <template for:each={actions} for:item="action">
+                                <div
+                                    key={action.name}
+                                    class="slds-m-bottom_xx-small"
+                                >
+                                    <lightning-button
+                                        label={action.label}
+                                        icon-name={action.iconName}
+                                        disabled={action.disabled}
+                                        onclick={handleActionClick}
+                                        value={action.name}
+                                    ></lightning-button>
+                                </div>
+                            </template>
+                        </template>
+                    </div>
                 </template>
             </template>
 

@@ -205,8 +205,7 @@ Base.args = {
     groups: groups,
     groupActions: groupActions,
     itemActions: itemActions,
-    selectedItemName: 'symonds-household',
-    groupActionsPosition: 'bottom'
+    selectedItemName: 'symonds-household'
 };
 
 export const Vertical = Template.bind({});

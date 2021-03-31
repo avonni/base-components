@@ -76,10 +76,15 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
     }
 
     get actions() {
-        return (
-            !this.hideDefaultActions &&
-            this.defaultActions.concat(this.customActions)
-        );
+        const allActions = this.defaultActions.concat(this.customActions);
+
+        if (this.hideDefaultActions && this.customActions.length > 0) {
+            return this.customActions;
+        } else if (!this.hideDefaultActions && allActions.length > 0) {
+            return allActions;
+        }
+
+        return false;
     }
 
     handleClick(event) {

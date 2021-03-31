@@ -20,17 +20,12 @@ const groupActions = [
 
 const customGroupActions = [
     {
-        label: 'Custom action 1',
+        label: 'See more',
         name: 'group-custom-action1',
-        iconName: 'utility:add'
+        iconName: 'utility:preview'
     },
     {
-        label: 'Custom action 2',
-        name: 'group-custom-action2',
-        iconName: 'utility:close'
-    },
-    {
-        label: 'Custom action 2',
+        label: 'Delete',
         name: 'group-custom-action3',
         disabled: true
     }
@@ -39,7 +34,8 @@ const customGroupActions = [
 const itemActions = [
     {
         label: 'Edit',
-        name: 'edit-item'
+        name: 'edit-item',
+        iconName: 'utility:edit'
     },
     {
         label: 'Remove',
@@ -50,9 +46,9 @@ const itemActions = [
 
 const customItemActions = [
     {
-        label: 'Edit',
-        name: 'custom-edit-item',
-        iconName: 'utility:edit'
+        label: 'See more',
+        name: 'see-more-item',
+        iconName: 'utility:preview'
     }
 ];
 
@@ -189,7 +185,8 @@ const groups = [
                         label: 'Total Financial Accounts',
                         value: '$1,330'
                     }
-                ]
+                ],
+                actions: customItemActions
             },
             {
                 label: 'Northern Trails Outfitter',
@@ -206,6 +203,7 @@ const groups = [
                     }
                 ],
                 actions: customItemActions,
+                hideDefaultActions: true,
                 // Groups
                 groups: [
                     {
@@ -213,7 +211,8 @@ const groups = [
                         name: 'northern-trails-outfitter-group-relationships',
                         avatarSrc:
                             'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
-                        avatarFallbackIconName: 'standard:account'
+                        avatarFallbackIconName: 'standard:account',
+                        actions: customGroupActions
                     },
                     {
                         label: 'Related Contacts',

@@ -86,10 +86,9 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     }
 
     get actions() {
-        return (
-            !this.hideDefaultActions &&
-            this.defaultActions.concat(this.customActions)
-        );
+        if (this.hideDefaultActions) return this.customActions;
+
+        return this.defaultActions.concat(this.customActions);
     }
 
     get hasMoreThanOneAction() {

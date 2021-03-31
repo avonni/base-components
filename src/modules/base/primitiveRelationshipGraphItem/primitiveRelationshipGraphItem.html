@@ -17,7 +17,10 @@
                 <span if:false={href}>{label}</span>
             </div>
             <div slot="figure-inverse" if:true={actions}>
-                <lightning-button-menu alternative-text="Show menu">
+                <lightning-button-menu
+                    alternative-text="Show menu"
+                    icon-size="small"
+                >
                     <template for:each={actions} for:item="action">
                         <lightning-menu-item
                             key={action.name}
