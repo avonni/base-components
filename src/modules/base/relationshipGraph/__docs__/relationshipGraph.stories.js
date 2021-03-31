@@ -176,6 +176,19 @@ export default {
                 defaultValue: { summary: 'utility:chevronright' },
                 category: 'Groups'
             }
+        },
+        hideItemsCount: {
+            name: 'hide-items-count',
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description: 'If true, the number of items per group is hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Groups'
+            }
         }
     }
 };

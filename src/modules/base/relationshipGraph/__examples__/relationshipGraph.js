@@ -20,7 +20,8 @@ export const RelationshipGraph = ({
     itemActions,
     itemTheme,
     shrinkIconName,
-    expandIconName
+    expandIconName,
+    hideItemsCount
 }) => {
     const element = document.createElement('ac-base-relationship-graph');
     element.label = label;
@@ -38,6 +39,7 @@ export const RelationshipGraph = ({
     element.itemTheme = itemTheme;
     element.shrinkIconName = shrinkIconName;
     element.expandIconName = expandIconName;
+    element.hideItemsCount = hideItemsCount;
 
     return element;
 };

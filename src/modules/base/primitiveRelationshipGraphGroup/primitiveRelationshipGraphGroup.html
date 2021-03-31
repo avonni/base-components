@@ -10,22 +10,28 @@
                 src={avatarSrc}
                 hide-avatar-details="true"
             ></c-avatar>
-            <h2 class="slds-text-heading_small">
-                <a if:true={href} href={href}>{label}</a>
-                <span if:false={href}>{label}</span>
+            <h2 class="slds-truncate avonni-relationship-graph__group-title">
+                <a if:true={href} href={href}>{title}</a>
+                <span if:false={href}>{title}</span>
             </h2>
         </c-media-object>
 
         <!-- Items exist -->
         <c-summary-detail
             if:true={items}
-            title={label}
             full-width="true"
             remove-body-indentation="true"
             shrink-icon-name={shrinkIconName}
             expand-icon-name={expandIconName}
             ontoggle={handleToggle}
         >
+            <h2
+                class="slds-truncate avonni-relationship-graph__group-title"
+                slot="title"
+            >
+                <a if:true={href} href={href}>{title}</a>
+                <span if:false={href}>{title}</span>
+            </h2>
             <!-- Top actions -->
             <div slot="actions" if:true={topActions}>
                 <template if:true={hasMoreThanOneAction}>

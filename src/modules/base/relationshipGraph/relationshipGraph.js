@@ -1,5 +1,9 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeString, normalizeArray } from 'c/utilsPrivate';
+import {
+    normalizeString,
+    normalizeArray,
+    normalizeBoolean
+} from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
 const VARIANTS = ['horizontal', 'vertical'];
@@ -7,7 +11,6 @@ const THEMES = ['default', 'shade', 'inverse'];
 const POSITIONS = ['top', 'bottom'];
 
 // TODO:
-// Item count.
 // Expanded group option.
 // Vertical variant
 // Accessibility (add a hidden button for clickable items?).
@@ -32,6 +35,7 @@ export default class RelationshipGraph extends LightningElement {
     _groupTheme;
     _itemActions;
     _itemTheme;
+    _hideItemsCount;
 
     connectedCallback() {
         this.updateSelection();
@@ -114,6 +118,14 @@ export default class RelationshipGraph extends LightningElement {
             fallbackValue: 'default',
             validValues: THEMES
         });
+    }
+
+    @api
+    get hideItemsCount() {
+        return this._hideItemsCount;
+    }
+    set hideItemsCount(boolean) {
+        this._hideItemsCount = normalizeBoolean(boolean);
     }
 
     get hasAvatar() {

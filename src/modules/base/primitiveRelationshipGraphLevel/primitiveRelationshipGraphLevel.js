@@ -12,6 +12,7 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
     @api shrinkIconName;
     @api expandIconName;
     @api activeGroups;
+    @api hideItemsCount;
 
     _groups;
     _selectedGroups;

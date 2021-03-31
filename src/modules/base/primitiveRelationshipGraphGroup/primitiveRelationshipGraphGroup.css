@@ -3,6 +3,10 @@
     position: relative;
 }
 
+.avonni-relationship-graph__group-title {
+    font-size: 0.875rem;
+}
+
 /* Horizontal line */
 .avonni-relationship-graph__group::before {
     content: '';

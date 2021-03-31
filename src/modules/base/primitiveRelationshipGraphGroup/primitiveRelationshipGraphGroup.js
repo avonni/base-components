@@ -19,6 +19,7 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     @api theme;
     @api itemActions;
     @api itemTheme;
+    @api hideItemsCount;
 
     _customActions;
     _defaultActions;
@@ -55,6 +56,13 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     }
     set customActions(value) {
         this._customActions = normalizeArray(value);
+    }
+
+    get title() {
+        if (this.hideItemsCount) return this.label;
+
+        const count = this.items ? this.items.length : 0;
+        return `${this.label} (${count})`;
     }
 
     get isEmpty() {
