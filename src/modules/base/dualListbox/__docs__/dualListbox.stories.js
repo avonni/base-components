@@ -308,6 +308,15 @@ const Options = [
         avatarInitials: 'RAF',
         avatarFallbackIconName: 'standard:address',
         avatarVariant: 'circle'
+    },
+    {
+        value: '5',
+        label: 'option 5',
+        avatarFallbackIconName: 'standard:account'
+    },
+    {
+        value: '6',
+        label: 'option 6'
     }
 ];
 
