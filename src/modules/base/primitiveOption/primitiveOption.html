@@ -1,11 +1,13 @@
 <template>
-    <li role="presentation" class="slds-listbox__item" onclick={handleClick}>
+    <li role="presentation" class="slds-listbox__item">
         <div
-            class="slds-listbox__option slds-listbox__option_plain slds-media slds-media_center slds-media_small slds-media_inline"
-            aria-selected="false"
-            draggable="true"
+            class={computedOptionClass}
+            aria-selected={computedAriaSelected}
+            aria-disabled={computedAriaDisabled}
             role="option"
-            tabindex="-1"
+            tabindex={computedTabIndex}
+            onfocus={handleFocus}
+            onblur={handleBlur}
         >
             <template if:true={hasAvatar}>
                 <div class="slds-media__figure">

@@ -1,4 +1,5 @@
 import { LightningElement, api } from 'lwc';
+import { classSet } from 'c/utils';
 
 export default class PrimitiveOption extends LightningElement {
     @api label;
@@ -11,9 +12,10 @@ export default class PrimitiveOption extends LightningElement {
     @api requiredOptions;
 
     _value;
+    _isSelected = false;
 
     connectedCallback() {
-        console.log(this.isRequired);
+        console.log(this._isSelected);
     }
 
     @api
@@ -38,5 +40,44 @@ export default class PrimitiveOption extends LightningElement {
 
     get isRequired() {
         return this.requiredOptions.includes(this.value);
+    }
+
+    get computedOptionClass() {
+        return classSet(
+            'slds-listbox__option slds-listbox__option_plain slds-media slds-media_center slds-media_small slds-media_inline'
+        )
+            .add({
+                'slds-is-selected': this._isSelected === true
+            })
+            .toString();
+    }
+
+    get computedTabIndex() {
+        if (this._isSelected) {
+            return '0';
+        }
+        return '-1';
+    }
+
+    get computedAriaSelected() {
+        if (this._isSelected) {
+            return true;
+        }
+        return false;
+    }
+
+    get computedAriaDisabled() {
+        if (this.requiredOptions.includes(this.value)) {
+            return true;
+        }
+        return false;
+    }
+
+    handleFocus() {
+        this._isSelected = !this._isSelected;
+    }
+
+    handleBlur() {
+        this._isSelected = false;
     }
 }
