@@ -1,5 +1,6 @@
 import { LightningElement, api } from 'lwc';
 import { generateUniqueId, classSet } from 'c/utils';
+import { normalizeArray } from 'c/utilsPrivate';
 
 export default class PrimitiveRelationshipGraphItem extends LightningElement {
     @api label;
@@ -10,13 +11,22 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
     @api contentData;
     @api groups;
     @api hideDefaultActions;
-    @api actions;
     @api theme;
+    @api defaultActions;
 
+    _customActions;
     wrapperClass;
 
     connectedCallback() {
         this.updateClasses();
+    }
+
+    @api
+    get customActions() {
+        return this._customActions;
+    }
+    set customActions(value) {
+        this._customActions = normalizeArray(value);
     }
 
     @api
@@ -65,7 +75,14 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
         return this.avatarFallbackIconName || this.avatarSrc;
     }
 
-    handleClick() {
+    get actions() {
+        return this.defaultActions.concat(this.customActions);
+    }
+
+    handleClick(event) {
+        // Stop event if click was on action menu button
+        if (event.target.tagName === 'LIGHTNING-BUTTON-MENU') return;
+
         this._selected = true;
         this._activeSelection = true;
         this.updateClasses();
@@ -74,6 +91,20 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
             new CustomEvent('select', {
                 detail: {
                     name: this.name
+                }
+            })
+        );
+    }
+
+    handleActionClick(event) {
+        const name = event.currentTarget.value;
+
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                detail: {
+                    name: name,
+                    targetName: this.name,
+                    itemData: this.contentData
                 }
             })
         );

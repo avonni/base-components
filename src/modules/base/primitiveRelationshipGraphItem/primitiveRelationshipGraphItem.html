@@ -17,12 +17,18 @@
                 <span if:false={href}>{label}</span>
             </div>
             <div slot="figure-inverse" if:true={actions}>
-                <template for:each={actions} for:item="action">
-                    <lightning-button
-                        key={action.name}
-                        label={action.label}
-                    ></lightning-button>
-                </template>
+                <lightning-button-menu alternative-text="Show menu">
+                    <template for:each={actions} for:item="action">
+                        <lightning-menu-item
+                            key={action.name}
+                            value={action.name}
+                            label={action.label}
+                            onclick={handleActionClick}
+                            disabled={action.disabled}
+                            prefix-icon-name={action.iconName}
+                        ></lightning-menu-item>
+                    </template>
+                </lightning-button-menu>
             </div>
         </c-media-object>
         <!-- Data -->

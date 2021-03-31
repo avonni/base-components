@@ -1,5 +1,6 @@
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
+import { normalizeArray } from 'c/utilsPrivate';
 
 export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     @api label;
@@ -9,13 +10,18 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     @api href;
     @api items;
     @api expanded;
+    @api defaultActions;
     @api hideDefaultActions;
-    @api actions;
     @api shrinkIconName;
     @api expandIconName;
     @api active;
+    @api actionsPosition;
     @api theme;
+    @api itemActions;
     @api itemTheme;
+
+    _customActions;
+    _defaultActions;
 
     @api
     get selectedItemComponent() {
@@ -43,6 +49,14 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
         );
     }
 
+    @api
+    get customActions() {
+        return this._customActions;
+    }
+    set customActions(value) {
+        this._customActions = normalizeArray(value);
+    }
+
     get isEmpty() {
         return !this.items;
     }
@@ -60,6 +74,18 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
             'slds-theme_inverse': this.theme === 'inverse',
             'slds-theme_default': this.theme === 'default'
         });
+    }
+
+    get actions() {
+        return this.defaultActions.concat(this.customActions);
+    }
+
+    get hasMoreThanOneAction() {
+        return this.actions.length > 1;
+    }
+
+    get topActions() {
+        return this.actionsPosition === 'top';
     }
 
     handleSelect(event) {
@@ -83,5 +109,26 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
             this.selectedItemComponent.activeSelection = false;
             this.selectedItemComponent.selected = false;
         }
+    }
+
+    handleActionClick(event) {
+        const name = event.currentTarget.value;
+
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                detail: {
+                    name: name,
+                    targetName: this.name
+                }
+            })
+        );
+    }
+
+    dispatchActionClickEvent(event) {
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                detail: event.detail
+            })
+        );
     }
 }

@@ -16,7 +16,7 @@
             </h2>
         </c-media-object>
 
-        <!-- Items -->
+        <!-- Items exist -->
         <c-summary-detail
             if:true={items}
             title={label}
@@ -26,19 +26,43 @@
             expand-icon-name={expandIconName}
             ontoggle={handleToggle}
         >
-            <div slot="actions" if:true={actions}>
-                <template for:each={actions} for:item="action">
-                    <lightning-button
-                        key={action.name}
-                        label={action.label}
-                    ></lightning-button>
+            <!-- Top actions -->
+            <div slot="actions" if:true={topActions}>
+                <template if:true={hasMoreThanOneAction}>
+                    <lightning-button-menu alternative-text="Show menu">
+                        <template for:each={actions} for:item="action">
+                            <lightning-menu-item
+                                key={action.name}
+                                value={action.name}
+                                label={action.label}
+                                onclick={handleActionClick}
+                                disabled={action.disabled}
+                                prefix-icon-name={action.iconName}
+                            ></lightning-menu-item>
+                        </template>
+                    </lightning-button-menu>
+                </template>
+                <template if:false={hasMoreThanOneAction}>
+                    <template for:each={actions} for:item="action">
+                        <div key={action.name} class="slds-m-bottom_xx-small">
+                            <lightning-button
+                                label={action.label}
+                                icon-name={action.iconName}
+                                disabled={action.disabled}
+                                onclick={handleActionClick}
+                                value={action.name}
+                            ></lightning-button>
+                        </div>
+                    </template>
                 </template>
             </div>
+
+            <!-- Items -->
             <template if:true={items}>
                 <template for:each={items} for:item="item">
-                    <!-- Item -->
                     <c-primitive-relationship-graph-item
                         onselect={handleSelect}
+                        onactionclick={dispatchActionClickEvent}
                         key={item.name}
                         label={item.label}
                         name={item.name}
@@ -48,11 +72,35 @@
                         content-data={item.data}
                         groups={item.groups}
                         hide-default-actions={item.hideDefaultActions}
-                        actions={item.actions}
+                        custom-actions={item.actions}
                         selected={item.selected}
                         active-selection={item.activeSelection}
                         theme={itemTheme}
+                        default-actions={itemActions}
                     ></c-primitive-relationship-graph-item>
+                </template>
+            </template>
+
+            <!-- Bottom actions -->
+            <template if:false={topActions}>
+                <template for:each={actions} for:item="action">
+                    <div key={action.name} class="slds-m-bottom_xx-small">
+                        <button
+                            name={action.name}
+                            class="slds-button slds-button_neutral slds-button_stretch"
+                            disabled={action.disabled}
+                            onclick={handleActionClick}
+                            value={action.name}
+                        >
+                            <lightning-icon
+                                if:true={action.iconName}
+                                icon-name={action.iconName}
+                                class="slds-current-color slds-m-right_x-small"
+                                size="xx-small"
+                            ></lightning-icon>
+                            {action.label}
+                        </button>
+                    </div>
                 </template>
             </template>
         </c-summary-detail>

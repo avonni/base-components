@@ -6,6 +6,7 @@
                 <c-primitive-relationship-graph-group
                     onselect={handleSelect}
                     oncloseactivegroup={handleCloseActiveGroup}
+                    onactionclick={dispatchActionClickEvent}
                     key={group.name}
                     label={group.label}
                     name={group.name}
@@ -15,11 +16,14 @@
                     items={group.items}
                     expanded={group.expanded}
                     hide-default-actions={group.hideDefaultActions}
-                    actions={group.actions}
+                    custom-actions={group.actions}
                     shrink-icon-name={shrinkIconName}
                     expand-icon-name={expandIconName}
                     active={activeGroups}
+                    default-actions={groupActions}
+                    actions-position={groupActionsPosition}
                     theme={groupTheme}
+                    item-actions={itemActions}
                     item-theme={itemTheme}
                 ></c-primitive-relationship-graph-group>
             </template>
@@ -30,12 +34,16 @@
         <div class="slds-grid" if:true={selectedGroups}>
             <c-primitive-relationship-graph-level
                 onselect={dispatchSelectEvent}
+                onactionclick={dispatchActionClickEvent}
                 groups={selectedGroups}
                 variant={variant}
                 shrink-icon-name={shrinkIconName}
                 expand-icon-name={expandIconName}
                 active-groups={containsActiveItem}
+                group-actions={groupActions}
+                group-actions-position={groupActionsPosition}
                 group-theme={groupTheme}
+                item-actions={itemActions}
                 item-theme={itemTheme}
             ></c-primitive-relationship-graph-level>
         </div>

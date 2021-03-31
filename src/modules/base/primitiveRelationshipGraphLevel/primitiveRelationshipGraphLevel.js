@@ -1,9 +1,13 @@
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
+import { normalizeArray } from 'c/utilsPrivate';
 
 export default class PrimitiveRelationshipGraphLevel extends LightningElement {
     @api variant;
+    @api groupActions;
+    @api groupActionsPosition;
     @api groupTheme;
+    @api itemActions;
     @api itemTheme;
     @api shrinkIconName;
     @api expandIconName;
@@ -27,7 +31,7 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
         return this._groups;
     }
     set groups(proxy) {
-        this._groups = proxy;
+        this._groups = normalizeArray(proxy);
         this.updateSelection();
     }
 
@@ -47,6 +51,8 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
         const lastGroup = currentCol.querySelector(
             'c-primitive-relationship-graph-group:last-child'
         );
+        if (!currentCol || !lastGroup) return 0;
+
         const currentColHeight = currentCol.offsetHeight;
         const lastGroupHeight = lastGroup.height;
 
@@ -150,6 +156,14 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
                 detail: {
                     name: event.detail.name
                 }
+            })
+        );
+    }
+
+    dispatchActionClickEvent(event) {
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                detail: event.detail
             })
         );
     }

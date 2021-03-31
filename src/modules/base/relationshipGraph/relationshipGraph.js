@@ -1,10 +1,15 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeString } from 'c/utilsPrivate';
+import { normalizeString, normalizeArray } from 'c/utilsPrivate';
+import { classSet } from 'c/utils';
 
 const VARIANTS = ['horizontal', 'vertical'];
 const THEMES = ['default', 'shade', 'inverse'];
+const POSITIONS = ['top', 'bottom'];
 
 // TODO:
+// Item count.
+// Expanded group option.
+// Vertical variant
 // Accessibility (add a hidden button for clickable items?).
 
 export default class RelationshipGraph extends LightningElement {
@@ -12,6 +17,7 @@ export default class RelationshipGraph extends LightningElement {
     @api avatarSrc;
     @api avatarFallbackIconName;
     @api href;
+    @api actions;
     @api groups;
     @api shrinkIconName;
     @api expandIconName;
@@ -22,7 +28,9 @@ export default class RelationshipGraph extends LightningElement {
     _variant;
     _selectedItemName;
     _selectedItem;
+    _groupActions;
     _groupTheme;
+    _itemActions;
     _itemTheme;
 
     connectedCallback() {
@@ -37,7 +45,7 @@ export default class RelationshipGraph extends LightningElement {
             'c-primitive-relationship-graph-level'
         );
         const height = currentLevel.currentLevelHeight;
-        line.setAttribute('style', `height: ${height}px;`);
+        line.setAttribute('style', `height: calc(${height}px + 1.5rem);`);
     }
 
     @api
@@ -60,6 +68,25 @@ export default class RelationshipGraph extends LightningElement {
     }
 
     @api
+    get groupActions() {
+        return this._groupActions;
+    }
+    set groupActions(value) {
+        this._groupActions = normalizeArray(value);
+    }
+
+    @api
+    get groupActionsPosition() {
+        return this._groupActionsPosition;
+    }
+    set groupActionsPosition(value) {
+        this._groupActionsPosition = normalizeString(value, {
+            fallbackValue: 'top',
+            validValues: POSITIONS
+        });
+    }
+
+    @api
     get groupTheme() {
         return this._groupTheme;
     }
@@ -68,6 +95,14 @@ export default class RelationshipGraph extends LightningElement {
             fallbackValue: 'default',
             validValues: THEMES
         });
+    }
+
+    @api
+    get itemActions() {
+        return this._itemActions;
+    }
+    set itemActions(value) {
+        this._itemActions = normalizeArray(value);
     }
 
     @api
@@ -86,16 +121,20 @@ export default class RelationshipGraph extends LightningElement {
     }
 
     get wrapperClass() {
-        return this._variant === 'horizontal' && 'slds-grid';
+        return classSet('slds-m-left_medium').add({
+            'slds-grid': this._variant === 'horizontal'
+        });
     }
 
     updateSelection() {
-        if (!this.selectedItemName || !this.groups) return;
+        if (!this.groups) return;
 
         // Reset the selection and go through the tree with the new selection
         this._selectedItem = undefined;
         this.processedGroups = JSON.parse(JSON.stringify(this.groups));
-        this.selectItem(this.selectedItemName, this.processedGroups);
+
+        if (this.selectedItemName)
+            this.selectItem(this.selectedItemName, this.processedGroups);
     }
 
     selectItem(name, groups) {
@@ -146,6 +185,27 @@ export default class RelationshipGraph extends LightningElement {
             new CustomEvent('select', {
                 detail: {
                     name: name
+                }
+            })
+        );
+    }
+
+    dispatchActionClickEvent(event) {
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                detail: event.detail
+            })
+        );
+    }
+
+    handleActionClick(event) {
+        const name = event.currentTarget.value;
+
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                detail: {
+                    name: name,
+                    targetName: 'root'
                 }
             })
         );

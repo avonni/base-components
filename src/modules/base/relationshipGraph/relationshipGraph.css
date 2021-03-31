@@ -2,5 +2,14 @@
 .avonni-relationship-graph__line {
     border-right: 2px solid
         var(--avonni-c-relationship-graph-line-color, #dddbda);
-    margin-top: var(--lwc-spacingLarge, 1.5rem);
+}
+
+.avonni-relationship-graph__actions::before {
+    content: '';
+    border-right: 2px solid
+        var(--avonni-c-relationship-graph-line-color, #dddbda);
+    position: absolute;
+    left: var(--lwc-spacingMedium, 1rem);
+    top: 0;
+    bottom: 0;
 }
