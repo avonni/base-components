@@ -323,5 +323,7 @@ Base.args = {
     removeButtonLabel: 'Remove Button Label',
     downButtonLabel: 'Down Button Label',
     upButtonLabel: 'Up Button Label',
-    options: Options
+    options: Options,
+    requiredOptions: ['1', '2'],
+    value: ['3', '4']
 };

@@ -23,24 +23,29 @@ export default class DualListbox extends LightningElement {
     @api messageWhenRangeUnderflow;
     @api messageWhenValueMissing;
     @api name;
-    @api requiredOptions = [];
-    @api value = [];
 
     _disableReordering = false;
     _disabled = false;
     _min = DEFAULT_MIN;
     _max;
     _options = [];
+    _value = [];
+    _requiredOptions = [];
     _required = false;
     _searchEngine = false;
     _showActivityIndicator = false;
     _size = 10;
     _variant = VALID_VARIANTS.default;
+
     _helpMessage;
+    _selected = [];
+    _notSelected = [];
 
     connectedCallback() {
-        console.log(this.computedHeightSize);
+        this.selectedOptions();
     }
+
+    renderedCallback() {}
 
     @api
     get disableReordering() {
@@ -135,6 +140,24 @@ export default class DualListbox extends LightningElement {
         });
     }
 
+    @api
+    get value() {
+        return this._value;
+    }
+
+    set value(value) {
+        this._value = value;
+    }
+
+    @api
+    get requiredOptions() {
+        return this._requiredOptions;
+    }
+
+    set requiredOptions(value) {
+        this._requiredOptions = value;
+    }
+
     get isLabelHidden() {
         return this._variant === 'label-hidden';
     }
@@ -165,6 +188,14 @@ export default class DualListbox extends LightningElement {
         return this._constraint.validity;
     }
 
+    selectedOptions() {
+        this.options.forEach((option) => {
+            if (this._value.includes(option.value)) {
+                this._selected.push(option);
+            } else this._notSelected.push(option);
+        });
+    }
+
     @api
     checkValidity() {
         return this._constraint.checkValidity();
@@ -193,6 +224,29 @@ export default class DualListbox extends LightningElement {
         if (firstOption) {
             firstOption.focus();
         }
+    }
+
+    handleChange(event) {
+        event.stopPropagation();
+
+        const options = this.template.querySelectorAll('c-primitive-option');
+        const value = Array.from(options)
+            .filter((option) => option.selected)
+            .map((option) => option.value);
+
+        this._value = value;
+
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                detail: {
+                    value
+                },
+
+                composed: true,
+                bubbles: true,
+                cancelable: true
+            })
+        );
     }
 
     get _constraint() {

@@ -49,7 +49,7 @@
                             class="slds-listbox slds-listbox_vertical"
                             role="listbox"
                         >
-                            <template for:each={options} for:item="option">
+                            <template for:each={_notSelected} for:item="option">
                                 <c-primitive-option
                                     key={option.value}
                                     label={option.label}
@@ -108,40 +108,19 @@
                             class="slds-listbox slds-listbox_vertical"
                             role="listbox"
                         >
-                            <li role="presentation" class="slds-listbox__item">
-                                <div
-                                    class="slds-listbox__option slds-listbox__option_plain slds-media slds-media_small slds-media_inline"
-                                    aria-selected="false"
-                                    draggable="true"
-                                    role="option"
-                                    tabindex="0"
-                                >
-                                    <span class="slds-media__body">
-                                        <span
-                                            class="slds-truncate"
-                                            title="Option 4"
-                                            >Option 4</span
-                                        >
-                                    </span>
-                                </div>
-                            </li>
-                            <li role="presentation" class="slds-listbox__item">
-                                <div
-                                    class="slds-listbox__option slds-listbox__option_plain slds-media slds-media_small slds-media_inline"
-                                    aria-selected="false"
-                                    draggable="true"
-                                    role="option"
-                                    tabindex="-1"
-                                >
-                                    <span class="slds-media__body">
-                                        <span
-                                            class="slds-truncate"
-                                            title="Option 5"
-                                            >Option 5</span
-                                        >
-                                    </span>
-                                </div>
-                            </li>
+                            <template for:each={_selected} for:item="option">
+                                <c-primitive-option
+                                    key={option.value}
+                                    label={option.label}
+                                    value={option.value}
+                                    avatar-fallback-icon-name={option.avatarFallbackIconName}
+                                    avatar-src={option.avatarSrc}
+                                    avatar-initials={option.avatarInitials}
+                                    avatar-variant={option.avatarVariant}
+                                    avatar-primary-text={option.avatarPrimaryText}
+                                    avatar-secondary-text={option.avatarSecondaryText}
+                                ></c-primitive-option>
+                            </template>
                         </ul>
                     </div>
                 </div>
