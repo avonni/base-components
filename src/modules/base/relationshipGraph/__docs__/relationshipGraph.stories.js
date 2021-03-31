@@ -205,7 +205,7 @@ Base.args = {
     groups: groups,
     groupActions: groupActions,
     itemActions: itemActions,
-    selectedItemName: 'mary-james',
+    selectedItemName: 'symonds-household',
     groupActionsPosition: 'bottom'
 };
 

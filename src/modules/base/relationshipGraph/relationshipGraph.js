@@ -42,14 +42,7 @@ export default class RelationshipGraph extends LightningElement {
     }
 
     renderedCallback() {
-        const line = this.template.querySelector(
-            '.avonni-relationship-graph__line'
-        );
-        const currentLevel = this.template.querySelector(
-            'c-primitive-relationship-graph-level'
-        );
-        const height = currentLevel.currentLevelHeight;
-        line.setAttribute('style', `height: calc(${height}px + 1.5rem);`);
+        this.updateVerticalLine();
     }
 
     @api
@@ -138,6 +131,22 @@ export default class RelationshipGraph extends LightningElement {
         });
     }
 
+    get childLevel() {
+        return this.template.querySelector(
+            'c-primitive-relationship-graph-level'
+        );
+    }
+
+    updateVerticalLine() {
+        const line = this.template.querySelector(
+            '.avonni-relationship-graph__line'
+        );
+        const currentLevel = this.childLevel;
+        const height = currentLevel.currentLevelHeight;
+
+        line.setAttribute('style', `height: calc(${height}px + 1.5rem);`);
+    }
+
     updateSelection() {
         if (!this.groups) return;
 
@@ -221,5 +230,9 @@ export default class RelationshipGraph extends LightningElement {
                 }
             })
         );
+    }
+
+    handleLevelHeightChange() {
+        this.updateVerticalLine();
     }
 }

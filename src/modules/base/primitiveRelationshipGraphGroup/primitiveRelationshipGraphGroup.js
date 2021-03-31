@@ -21,8 +21,14 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     @api itemTheme;
     @api hideItemsCount;
 
+    _closed;
+    _expanded;
     _customActions;
     _defaultActions;
+
+    connectedCallback() {
+        this._closed = this.expanded === false;
+    }
 
     @api
     get selectedItemComponent() {
@@ -42,12 +48,7 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
         const group = this.template.querySelector(
             '.avonni-relationship-graph__group'
         );
-        const style = getComputedStyle(group);
-        return (
-            group.offsetHeight +
-            parseInt(style.marginTop, 10) +
-            parseInt(style.marginBottom, 10)
-        );
+        return group.offsetHeight;
     }
 
     @api
@@ -85,7 +86,10 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     }
 
     get actions() {
-        return this.defaultActions.concat(this.customActions);
+        return (
+            !this.hideDefaultActions &&
+            this.defaultActions.concat(this.customActions)
+        );
     }
 
     get hasMoreThanOneAction() {
@@ -95,6 +99,18 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     get topActions() {
         return this.actionsPosition === 'top';
     }
+
+    get closed() {
+        return this._closed;
+    }
+    set closed(value) {
+        // The value needs to be undefined for the summary detail to be open
+        this._closed = value === true ? true : undefined;
+    }
+
+    asyncSetClosed = async (value) => {
+        this.closed = value;
+    };
 
     handleSelect(event) {
         this.dispatchEvent(
@@ -107,6 +123,11 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     }
 
     handleToggle(event) {
+        // Wait for the group to rerender to send the height change
+        this.asyncSetClosed(!this.closed).then(() => {
+            this.dispatchEvent(new CustomEvent('heightchange'));
+        });
+
         if (!this.selectedItemComponent) return;
 
         const closed = event.detail.closed;

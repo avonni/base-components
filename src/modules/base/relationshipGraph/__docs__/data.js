@@ -87,7 +87,14 @@ const groups = [
                 groups: [
                     {
                         label: 'Group Relationships',
-                        name: 'symonds-household-group-relationships'
+                        name: 'symonds-household-group-relationships',
+                        items: [
+                            {
+                                label: 'Amine Benachraf',
+                                name: 'amine-benachraf',
+                                hideDefaultActions: true
+                            }
+                        ]
                     },
                     {
                         label: 'Related Accounts',
@@ -125,6 +132,7 @@ const groups = [
         name: 'related-accounts',
         avatarFallbackIconName: 'standard:account',
         href: 'https://www.avonni.app/',
+        expanded: false,
         // Items
         items: [
             {
@@ -210,7 +218,13 @@ const groups = [
                     {
                         label: 'Related Contacts',
                         name: 'northern-trails-outfitter-related-contacts',
-                        href: 'https://www.avonni.app/'
+                        href: 'https://www.avonni.app/',
+                        items: [
+                            {
+                                label: 'Ines Akwan',
+                                name: 'ines-akwan'
+                            }
+                        ]
                     },
                     {
                         label: 'Related Accounts',

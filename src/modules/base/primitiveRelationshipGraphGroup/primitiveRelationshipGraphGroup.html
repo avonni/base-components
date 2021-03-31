@@ -24,6 +24,7 @@
             shrink-icon-name={shrinkIconName}
             expand-icon-name={expandIconName}
             ontoggle={handleToggle}
+            closed={closed}
         >
             <h2
                 class="slds-truncate avonni-relationship-graph__group-title"
@@ -33,35 +34,40 @@
                 <span if:false={href}>{title}</span>
             </h2>
             <!-- Top actions -->
-            <div slot="actions" if:true={topActions}>
-                <template if:true={hasMoreThanOneAction}>
-                    <lightning-button-menu alternative-text="Show menu">
+            <template if:true={actions}>
+                <template slot="actions" if:true={topActions}>
+                    <template if:true={hasMoreThanOneAction}>
+                        <lightning-button-menu alternative-text="Show menu">
+                            <template for:each={actions} for:item="action">
+                                <lightning-menu-item
+                                    key={action.name}
+                                    value={action.name}
+                                    label={action.label}
+                                    onclick={handleActionClick}
+                                    disabled={action.disabled}
+                                    prefix-icon-name={action.iconName}
+                                ></lightning-menu-item>
+                            </template>
+                        </lightning-button-menu>
+                    </template>
+                    <template if:false={hasMoreThanOneAction}>
                         <template for:each={actions} for:item="action">
-                            <lightning-menu-item
+                            <div
                                 key={action.name}
-                                value={action.name}
-                                label={action.label}
-                                onclick={handleActionClick}
-                                disabled={action.disabled}
-                                prefix-icon-name={action.iconName}
-                            ></lightning-menu-item>
+                                class="slds-m-bottom_xx-small"
+                            >
+                                <lightning-button
+                                    label={action.label}
+                                    icon-name={action.iconName}
+                                    disabled={action.disabled}
+                                    onclick={handleActionClick}
+                                    value={action.name}
+                                ></lightning-button>
+                            </div>
                         </template>
-                    </lightning-button-menu>
-                </template>
-                <template if:false={hasMoreThanOneAction}>
-                    <template for:each={actions} for:item="action">
-                        <div key={action.name} class="slds-m-bottom_xx-small">
-                            <lightning-button
-                                label={action.label}
-                                icon-name={action.iconName}
-                                disabled={action.disabled}
-                                onclick={handleActionClick}
-                                value={action.name}
-                            ></lightning-button>
-                        </div>
                     </template>
                 </template>
-            </div>
+            </template>
 
             <!-- Items -->
             <template if:true={items}>
@@ -88,25 +94,27 @@
             </template>
 
             <!-- Bottom actions -->
-            <template if:false={topActions}>
-                <template for:each={actions} for:item="action">
-                    <div key={action.name} class="slds-m-bottom_xx-small">
-                        <button
-                            name={action.name}
-                            class="slds-button slds-button_neutral slds-button_stretch"
-                            disabled={action.disabled}
-                            onclick={handleActionClick}
-                            value={action.name}
-                        >
-                            <lightning-icon
-                                if:true={action.iconName}
-                                icon-name={action.iconName}
-                                class="slds-current-color slds-m-right_x-small"
-                                size="xx-small"
-                            ></lightning-icon>
-                            {action.label}
-                        </button>
-                    </div>
+            <template if:true={actions}>
+                <template if:false={topActions}>
+                    <template for:each={actions} for:item="action">
+                        <div key={action.name} class="slds-m-bottom_xx-small">
+                            <button
+                                name={action.name}
+                                class="slds-button slds-button_neutral slds-button_stretch"
+                                disabled={action.disabled}
+                                onclick={handleActionClick}
+                                value={action.name}
+                            >
+                                <lightning-icon
+                                    if:true={action.iconName}
+                                    icon-name={action.iconName}
+                                    class="slds-current-color slds-m-right_x-small"
+                                    size="xx-small"
+                                ></lightning-icon>
+                                {action.label}
+                            </button>
+                        </div>
+                    </template>
                 </template>
             </template>
         </c-summary-detail>

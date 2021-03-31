@@ -46,18 +46,28 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
 
     @api
     get currentLevelHeight() {
-        const currentCol = this.template.querySelector(
-            '.avonni-relationship-graph__current-level'
-        );
-        const lastGroup = currentCol.querySelector(
+        const currentLevel = this.currentLevel;
+        const lastGroup = currentLevel.querySelector(
             'c-primitive-relationship-graph-group:last-child'
         );
-        if (!currentCol || !lastGroup) return 0;
+        if (!currentLevel || !lastGroup) return 0;
 
-        const currentColHeight = currentCol.offsetHeight;
+        const currentLevelHeight = currentLevel.offsetHeight;
         const lastGroupHeight = lastGroup.height;
 
-        return currentColHeight - lastGroupHeight;
+        return currentLevelHeight - lastGroupHeight;
+    }
+
+    get currentLevel() {
+        return this.template.querySelector(
+            '.avonni-relationship-graph__current-level'
+        );
+    }
+
+    get childLevel() {
+        return this.template.querySelector(
+            'c-primitive-relationship-graph-level'
+        );
     }
 
     get wrapperClass() {
@@ -103,23 +113,25 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
 
     updateVerticalLine() {
         // Get the DOM elements
-        const dom = this.template;
         const selectedItem = this.selectedItemComponent;
-        const child = dom.querySelector('c-primitive-relationship-graph-level');
-        const currentCol = dom.querySelector(
-            '.avonni-relationship-graph__current-level'
+        const child = this.childLevel;
+        const currentLevel = this.currentLevel;
+        const line = this.template.querySelector(
+            '.avonni-relationship-graph__line'
         );
-        const line = dom.querySelector('.avonni-relationship-graph__line');
 
         if (!selectedItem || !child) return;
 
         // Calculate the heights
-        const currentColTop =
-            currentCol.getBoundingClientRect().top + window.scrollY;
+        const currentLevelTop =
+            currentLevel.getBoundingClientRect().top + window.scrollY;
         const scroll = window.pageYOffset;
         const itemPosition = selectedItem.getBoundingClientRect();
         const itemHeight =
-            itemPosition.top + itemPosition.height / 2 + scroll - currentColTop;
+            itemPosition.top +
+            itemPosition.height / 2 +
+            scroll -
+            currentLevelTop;
         const childHeight = child.currentLevelHeight;
 
         // Set the line height to the biggest height option
@@ -145,10 +157,7 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
 
     cleanSelection() {
         this._selectedGroups = undefined;
-        const child = this.template.querySelector(
-            'c-primitive-relationship-graph-level'
-        );
-        if (child) child.selectedGroups = undefined;
+        if (this.childLevel) this.childLevel.selectedGroups = undefined;
     }
 
     dispatchSelectEvent(event) {
@@ -176,5 +185,11 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
 
     handleCloseActiveGroup() {
         this.cleanSelection();
+    }
+
+    handleGroupHeightChange() {
+        this.updateVerticalLine();
+
+        this.dispatchEvent(new CustomEvent('heightchange'));
     }
 }
