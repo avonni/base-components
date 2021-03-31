@@ -126,7 +126,7 @@ export default {
         },
         name: {
             control: {
-                type: 'string'
+                type: 'text'
             },
             description: 'Specifies the name of an input element.',
             table: {
@@ -168,7 +168,7 @@ export default {
         },
         requiredOptions: {
             control: {
-                type: 'string'
+                type: 'text'
             },
             description:
                 'A list of required options that cannot be removed from selected options listbox. This list is populated with values from the options attribute.',
@@ -246,7 +246,7 @@ export default {
         },
         validity: {
             control: {
-                type: 'string'
+                type: 'text'
             },
             description:
                 'Represents the validity states that an element can be in, with respect to constraint validation.',
@@ -256,7 +256,7 @@ export default {
         },
         value: {
             control: {
-                type: 'string'
+                type: 'text'
             },
             description:
                 'A list of default options that are included in the selected options listbox. This list is populated with values from the options attribute.',
@@ -333,6 +333,7 @@ Base.args = {
     downButtonLabel: 'Down Button Label',
     upButtonLabel: 'Up Button Label',
     options: Options,
-    requiredOptions: ['1', '2'],
-    value: ['3', '4']
+    required: true,
+    requiredOptions: [],
+    value: []
 };

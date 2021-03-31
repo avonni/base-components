@@ -36,16 +36,20 @@ export default class DualListbox extends LightningElement {
     _showActivityIndicator = false;
     _size;
     _variant = VALID_VARIANTS.default;
+    _validity;
 
-    _helpMessage;
+    helpMessage = null;
     _selected = [];
     _notSelected = [];
 
     connectedCallback() {
         this.selectedOptions();
+        console.log(this._helpMessage);
     }
 
-    renderedCallback() {}
+    renderedCallback() {
+        this.checkValidity();
+    }
 
     @api
     get disableReordering() {
@@ -185,14 +189,20 @@ export default class DualListbox extends LightningElement {
     }
 
     get validity() {
-        return this._constraint.validity;
+        return (
+            this._constraint.validity +
+            ', ' +
+            this._constraintMax.validity +
+            ', ' +
+            this._constraintMin.validity
+        );
     }
 
     selectedOptions() {
         this.options.forEach((option) => {
             if (
-                this._value.includes(option.value) ||
-                this._requiredOptions.includes(option.value)
+                Array.from(this._value).includes(option.value) ||
+                Array.from(this._requiredOptions).includes(option.value)
             ) {
                 this._selected.push(option);
             } else this._notSelected.push(option);
@@ -201,19 +211,33 @@ export default class DualListbox extends LightningElement {
 
     @api
     checkValidity() {
-        return this._constraint.checkValidity();
+        return (
+            this._constraint.checkValidity() &&
+            this._constraintMax.checkValidity() &&
+            this._constraintMin.checkValidity()
+        );
     }
 
     @api
     reportValidity() {
-        return this._constraint.reportValidity((message) => {
-            this._helpMessage = message;
-        });
+        return (
+            this._constraint.reportValidity((message) => {
+                this._helpMessage = message || this.messageWhenValueMissing;
+            }) &&
+            this._constraintMax.reportValidity((message) => {
+                this._helpMessage = message || this.messageWhenRangeOverflow;
+            }) &&
+            this._constraintMin.reportValidity((message) => {
+                this._helpMessage = message || this.messageWhenRangeUnderflow;
+            })
+        );
     }
 
     @api
     setCustomValidity(message) {
         this._constraint.setCustomValidity(message);
+        this._constraintMax.setCustomValidity(message);
+        this._constraintMin.setCustomValidity(message);
     }
 
     @api
@@ -260,5 +284,23 @@ export default class DualListbox extends LightningElement {
             });
         }
         return this._constraintApi;
+    }
+
+    get _constraintMax() {
+        if (!this._constraintApiMax) {
+            this._constraintApiMax = new FieldConstraintApi(() => this, {
+                rangeOverflow: () => this._selected > this.max
+            });
+        }
+        return this._constraintApiMax;
+    }
+
+    get _constraintMin() {
+        if (!this._constraintApiMin) {
+            this._constraintApiMin = new FieldConstraintApi(() => this, {
+                rangeUnderflow: () => this._selected < this.min
+            });
+        }
+        return this._constraintApiMin;
     }
 }

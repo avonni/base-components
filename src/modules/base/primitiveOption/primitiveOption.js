@@ -14,9 +14,7 @@ export default class PrimitiveOption extends LightningElement {
     _value;
     _isSelected = false;
 
-    connectedCallback() {
-        console.log(this._isSelected);
-    }
+    connectedCallback() {}
 
     @api
     get value() {
