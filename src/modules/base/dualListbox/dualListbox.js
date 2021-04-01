@@ -403,7 +403,7 @@ export default class DualListbox extends LightningElement {
 
     get computedColumnStyle() {
         if (this.isNumber(this.size)) {
-            const newHeight = parseInt(this.size, 10) * 2.25 + 1;
+            const newHeight = parseInt(this.size, 10) * 2.75 + 1;
             return `height:${newHeight}rem`;
         }
         return '';
