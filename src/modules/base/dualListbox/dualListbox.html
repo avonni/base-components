@@ -76,16 +76,18 @@
                                         onclick={handleOptionClick}
                                         onkeydown={handleOptionKeyDown}
                                     >
-                                        <div class="slds-media__figure">
-                                            <c-avatar
-                                                fallback-icon-name={option.avatarFallbackIconName}
-                                                src={option.avatarSrc}
-                                                initials={option.avatarInitials}
-                                                variant={option.avatarVariant}
-                                                primary-text={option.avatarPrimaryText}
-                                                secondary-text={option.avatarSecondaryText}
-                                            ></c-avatar>
-                                        </div>
+                                        <template if:true={option.hasAvatar}>
+                                            <div class="slds-media__figure">
+                                                <c-avatar
+                                                    fallback-icon-name={option.avatarFallbackIconName}
+                                                    src={option.avatarSrc}
+                                                    initials={option.avatarInitials}
+                                                    variant={option.avatarVariant}
+                                                    primary-text={option.avatarPrimaryText}
+                                                    secondary-text={option.avatarSecondaryText}
+                                                ></c-avatar>
+                                            </div>
+                                        </template>
                                         <span class="slds-media__body">
                                             <span
                                                 class="slds-truncate"

@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import {
     normalizeBoolean,
     normalizeString,
@@ -28,26 +28,25 @@ const i18n = {
     minRequiredErrorPlural: 'labelMinRequiredErrorPlural',
     minRequiredErrorSingular: 'labelMinRequiredErrorSingular',
     optionLockAssistiveText: 'labelOptionLockAssistiveText',
-    required: 'labelRequired',
-    requiredError: 'labelRequiredError',
+    required: 'Required',
+    requiredError: 'Value required',
     requiredOptionError: 'labelRequiredOptionError',
     upButtonAssistiveText: 'labelUpButtonAssistiveText',
     moveSelectionToAssistiveText: 'labelMoveSelectionToAssistiveText',
-    loadingText: 'labelLoadingText'
+    loadingText: 'Loading'
 };
 
 export default class DualListbox extends LightningElement {
     @api sourceLabel;
     @api selectedLabel;
     @api label;
-    _options = [];
     @api min = DEFAULT_MIN;
     @api max;
     @api name;
 
-    @track _requiredOptions = [];
-    @track _selectedValues = [];
-    @track highlightedOptions = [];
+    _requiredOptions = [];
+    _selectedValues = [];
+    _options = [];
     _showActivityIndicator = false;
     _searchEngine = false;
     _variant;
@@ -59,11 +58,55 @@ export default class DualListbox extends LightningElement {
     _upButtonLabel;
     _downButtonLabel;
     _size;
+
+    highlightedOptions = [];
     errorMessage = '';
     focusableInSource;
     focusableInSelected;
-
     isFocusOnList = false;
+
+    connectedCallback() {
+        this.classList.add('slds-form-element');
+        this.updateClassList();
+        this.keyboardInterface = this.selectKeyboardInterface();
+
+        this._connected = true;
+        this.addRequiredOptionsToValue();
+
+        // debounceInteraction since DualListbox has multiple focusable elements
+        this.interactingState = new InteractingState({
+            debounceInteraction: true
+        });
+        this.interactingState.onenter(() => {
+            this.dispatchEvent(new CustomEvent('focus'));
+        });
+        this.interactingState.onleave(() => {
+            this.showHelpMessageIfInvalid();
+            this.dispatchEvent(new CustomEvent('blur'));
+
+            // reset the optionToFocus otherwise dualListbox will steal the focus any time it's rerendered.
+            this.optionToFocus = null;
+        });
+        this.hasAvatar();
+    }
+
+    renderedCallback() {
+        this.assertRequiredAttributes();
+        if (this.disabled) {
+            return;
+        }
+
+        if (this.optionToFocus) {
+            // value could have an apostrophe, which is why we need to escape it otherwise the queryselector will not work
+            const option = this.template.querySelector(
+                `div[data-value='${this.optionToFocus.replace(/'/g, "\\'")}']`
+            );
+            if (option) {
+                this.isFocusOnList = true;
+                option.focus();
+            }
+        }
+    }
 
     @api
     get options() {
@@ -141,7 +184,9 @@ export default class DualListbox extends LightningElement {
     }
 
     set requiredOptions(newValue) {
-        this._requiredOptions = newValue || [];
+        this._requiredOptions = Array.isArray(newValue)
+            ? JSON.parse(JSON.stringify(newValue))
+            : [];
         if (this._connected) {
             this.addRequiredOptionsToValue();
         }
@@ -190,8 +235,6 @@ export default class DualListbox extends LightningElement {
 
     @api
     focus() {
-        // focus on the first option from either list
-        // if nothing on source, then it'll pick the one on selected
         const firstOption = this.template.querySelector(`div[data-index='0']`);
         if (firstOption) {
             firstOption.focus();
@@ -225,32 +268,6 @@ export default class DualListbox extends LightningElement {
         this.reportValidity();
     }
 
-    connectedCallback() {
-        this.classList.add('slds-form-element');
-        this.updateClassList();
-        this.keyboardInterface = this.selectKeyboardInterface();
-
-        this._connected = true;
-        this.addRequiredOptionsToValue();
-
-        // debounceInteraction since DualListbox has multiple focusable elements
-        this.interactingState = new InteractingState({
-            debounceInteraction: true
-        });
-        this.interactingState.onenter(() => {
-            this.dispatchEvent(new CustomEvent('focus'));
-        });
-        this.interactingState.onleave(() => {
-            this.showHelpMessageIfInvalid();
-            this.dispatchEvent(new CustomEvent('blur'));
-
-            // reset the optionToFocus otherwise dualListbox will steal the focus any time it's rerendered.
-            this.optionToFocus = null;
-        });
-        this.hasAvatar();
-        console.log(this._options);
-    }
-
     hasAvatar() {
         if (this._options) {
             this._options.forEach((option) => {
@@ -272,24 +289,6 @@ export default class DualListbox extends LightningElement {
         });
     }
 
-    renderedCallback() {
-        this.assertRequiredAttributes();
-        if (this.disabled) {
-            return;
-        }
-
-        if (this.optionToFocus) {
-            // value could have an apostrophe, which is why we need to escape it otherwise the queryselector will not work
-            const option = this.template.querySelector(
-                `div[data-value='${this.optionToFocus.replace(/'/g, "\\'")}']`
-            );
-            if (option) {
-                this.isFocusOnList = true;
-                option.focus();
-            }
-        }
-    }
-
     get computedUniqueId() {
         return this.uniqueId;
     }
@@ -305,7 +304,6 @@ export default class DualListbox extends LightningElement {
     }
 
     get ariaDisabled() {
-        // aria-disabled works only with String not Boolean value
         return String(this.disabled);
     }
 

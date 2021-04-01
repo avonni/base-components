@@ -334,6 +334,6 @@ Base.args = {
     upButtonLabel: 'Up Button Label',
     options: Options,
     required: true,
-    requiredOptions: [],
+    requiredOptions: ['1'],
     value: ['2', '3']
 };
