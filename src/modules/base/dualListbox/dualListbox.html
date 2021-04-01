@@ -24,11 +24,6 @@
                     id="drag-live-region"
                     aria-live="assertive"
                 ></div>
-                <div class="slds-assistive-text" id="option-drag-label">
-                    Press space bar when on an item, to move it within the list.
-                    Cmd/Ctrl plus left and right arrow keys, to move items
-                    between lists.
-                </div>
                 <div class="slds-dueling-list__column">
                     <span class="slds-form-element__label">{sourceLabel}</span>
                     <div class={computedInnerClass} style={computedHeightSize}>
@@ -73,6 +68,7 @@
                     <button
                         class="slds-button slds-button_icon slds-button_icon-container"
                         title={addButtonLabel}
+                        onclick={handleAddButtonClick}
                     >
                         <svg class="slds-button__icon" aria-hidden="true">
                             <use
@@ -109,7 +105,11 @@
                             class="slds-listbox slds-listbox_vertical"
                             role="listbox"
                         >
-                            <template for:each={_selected} for:item="option">
+                            <template
+                                for:each={_selected}
+                                for:item="option"
+                                for:index="index"
+                            >
                                 <c-primitive-option
                                     key={option.value}
                                     label={option.label}
@@ -121,6 +121,7 @@
                                     avatar-primary-text={option.avatarPrimaryText}
                                     avatar-secondary-text={option.avatarSecondaryText}
                                     required-options={requiredOptions}
+                                    index={index}
                                 ></c-primitive-option>
                             </template>
                         </ul>

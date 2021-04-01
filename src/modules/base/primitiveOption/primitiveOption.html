@@ -6,8 +6,7 @@
             aria-disabled={computedAriaDisabled}
             role="option"
             tabindex={computedTabIndex}
-            onfocus={handleFocus}
-            onblur={handleBlur}
+            onclick={handleClick}
         >
             <template if:true={hasAvatar}>
                 <div class="slds-media__figure">

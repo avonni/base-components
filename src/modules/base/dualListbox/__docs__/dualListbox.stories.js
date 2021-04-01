@@ -335,5 +335,5 @@ Base.args = {
     options: Options,
     required: true,
     requiredOptions: [],
-    value: []
+    value: ['1', '2', '3']
 };

@@ -1,5 +1,6 @@
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
+import { normalizeBoolean } from 'c/utilsPrivate';
 
 export default class PrimitiveOption extends LightningElement {
     @api label;
@@ -13,6 +14,7 @@ export default class PrimitiveOption extends LightningElement {
 
     _value;
     _isSelected = false;
+    _index;
 
     connectedCallback() {}
 
@@ -24,6 +26,25 @@ export default class PrimitiveOption extends LightningElement {
     set value(value) {
         this._value = value;
         this.setAttribute('data-option', value);
+    }
+
+    @api
+    get index() {
+        return this._index;
+    }
+
+    set index(value) {
+        this._index = value;
+        this.setAttribute('data-index', value);
+    }
+
+    @api
+    get isSelected() {
+        return this._isSelected;
+    }
+
+    set isSelected(value) {
+        this._isSelected = normalizeBoolean(value);
     }
 
     get hasAvatar() {
@@ -71,8 +92,15 @@ export default class PrimitiveOption extends LightningElement {
         return false;
     }
 
-    handleFocus() {
+    handleClick() {
         this._isSelected = !this._isSelected;
+        this.dispatchEvent(
+            new CustomEvent('selected', {
+                detail: {
+                    value: this.value
+                }
+            })
+        );
     }
 
     handleBlur() {

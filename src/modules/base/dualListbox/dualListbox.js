@@ -44,11 +44,11 @@ export default class DualListbox extends LightningElement {
 
     connectedCallback() {
         this.selectedOptions();
-        console.log(this._helpMessage);
     }
 
     renderedCallback() {
-        this.checkValidity();
+        this.reportValidity();
+        console.log(this._helpMessage);
     }
 
     @api
@@ -302,5 +302,9 @@ export default class DualListbox extends LightningElement {
             });
         }
         return this._constraintApiMin;
+    }
+
+    handleAddButtonClick() {
+        console.log('hello');
     }
 }
