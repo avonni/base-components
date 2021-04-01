@@ -1,7 +1,14 @@
-import { LightningElement, api } from 'lwc';
-import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
-import { FieldConstraintApi } from 'c/inputUtils';
+import { LightningElement, api, track } from 'lwc';
+import {
+    normalizeBoolean,
+    normalizeString,
+    assert,
+    getRealDOMId,
+    classListMutation
+} from 'c/utilsPrivate';
+import { classSet, formatLabel } from 'c/utils';
+import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
+import { handleKeyDownOnOption } from './keyboard';
 
 const DEFAULT_MIN = 0;
 
@@ -10,82 +17,53 @@ const VALID_VARIANTS = {
     default: 'standard'
 };
 
+const i18n = {
+    componentAssistiveText: 'labelComponentAssistiveText',
+    downButtonAssistiveText: 'labelDownButtonAssistiveText',
+    maxError: 'labelMaxError',
+    maxHelp: 'labelMaxHelp',
+    minErrorPlural: 'labelMinErrorPlural',
+    minErrorSingular: 'labelMinErrorSingular',
+    minHelp: 'labelMinHelp',
+    minRequiredErrorPlural: 'labelMinRequiredErrorPlural',
+    minRequiredErrorSingular: 'labelMinRequiredErrorSingular',
+    optionLockAssistiveText: 'labelOptionLockAssistiveText',
+    required: 'labelRequired',
+    requiredError: 'labelRequiredError',
+    requiredOptionError: 'labelRequiredOptionError',
+    upButtonAssistiveText: 'labelUpButtonAssistiveText',
+    moveSelectionToAssistiveText: 'labelMoveSelectionToAssistiveText',
+    loadingText: 'labelLoadingText'
+};
+
 export default class DualListbox extends LightningElement {
-    @api label;
     @api sourceLabel;
     @api selectedLabel;
-    @api addButtonLabel;
-    @api downButtonLabel;
-    @api removeButtonLabel;
-    @api upButtonLabel;
-    @api fieldLevelHelp;
-    @api messageWhenRangeOverflow;
-    @api messageWhenRangeUnderflow;
-    @api messageWhenValueMissing;
+    @api label;
+    _options = [];
+    @api min = DEFAULT_MIN;
+    @api max;
     @api name;
 
-    _disableReordering = false;
-    _disabled = false;
-    _min = DEFAULT_MIN;
-    _max;
-    _options = [];
-    _value = [];
-    _requiredOptions = [];
-    _required = false;
-    _searchEngine = false;
+    @track _requiredOptions = [];
+    @track _selectedValues = [];
+    @track highlightedOptions = [];
     _showActivityIndicator = false;
+    _searchEngine = false;
+    _variant;
+    _disabled;
+    _disableReordering = false;
+    _required = false;
+    _addButtonLabel;
+    _removeButtonLabel;
+    _upButtonLabel;
+    _downButtonLabel;
     _size;
-    _variant = VALID_VARIANTS.default;
-    _validity;
+    errorMessage = '';
+    focusableInSource;
+    focusableInSelected;
 
-    helpMessage = null;
-    _selected = [];
-    _notSelected = [];
-
-    connectedCallback() {
-        this.selectedOptions();
-    }
-
-    renderedCallback() {
-        this.reportValidity();
-        console.log(this._helpMessage);
-    }
-
-    @api
-    get disableReordering() {
-        return this._disableReordering;
-    }
-
-    set disableReordering(value) {
-        this._disableReordering = normalizeBoolean(value);
-    }
-
-    @api
-    get disabled() {
-        return this._disabled;
-    }
-
-    set disabled(value) {
-        this._disabled = normalizeBoolean(value);
-    }
-
-    @api
-    get max() {
-        return this._max;
-    }
-
-    set max(max) {
-        this._max = Number(max);
-    }
-
-    @api
-    get min() {
-        return this._min;
-    }
-
-    set min(min) {
-        this._min = Number(min);
-    }
+    isFocusOnList = false;
 
     @api
     get options() {
@@ -93,7 +71,37 @@ export default class DualListbox extends LightningElement {
     }
 
     set options(value) {
-        this._options = Array.isArray(value) ? value : [];
+        this._options = Array.isArray(value)
+            ? JSON.parse(JSON.stringify(value))
+            : [];
+    }
+    @api messageWhenValueMissing = i18n.requiredError;
+
+    @api
+    get messageWhenRangeOverflow() {
+        return this._messageWhenRangeOverflow || this._overflowMessage;
+    }
+
+    set messageWhenRangeOverflow(message) {
+        this._messageWhenRangeOverflow = message;
+    }
+
+    @api
+    get messageWhenRangeUnderflow() {
+        return this._messageWhenRangeUnderflow || this._underflowMessage;
+    }
+
+    set messageWhenRangeUnderflow(message) {
+        this._messageWhenRangeUnderflow = message;
+    }
+
+    @api
+    get disabled() {
+        return this._disabled || false;
+    }
+
+    set disabled(value) {
+        this._disabled = normalizeBoolean(value);
     }
 
     @api
@@ -115,21 +123,28 @@ export default class DualListbox extends LightningElement {
     }
 
     @api
-    get showActivityIndicator() {
-        return this._showActivityIndicator;
+    get value() {
+        return this._selectedValues;
     }
 
-    set showActivityIndicator(value) {
-        this._showActivityIndicator = normalizeBoolean(value);
+    set value(newValue) {
+        this.updateHighlightedOptions(newValue);
+        this._selectedValues = newValue || [];
+        if (this._connected) {
+            this.addRequiredOptionsToValue();
+        }
     }
 
     @api
-    get size() {
-        return this._size;
+    get requiredOptions() {
+        return this._requiredOptions;
     }
 
-    set size(size) {
-        this._size = Number(size);
+    set requiredOptions(newValue) {
+        this._requiredOptions = newValue || [];
+        if (this._connected) {
+            this.addRequiredOptionsToValue();
+        }
     }
 
     @api
@@ -144,100 +159,65 @@ export default class DualListbox extends LightningElement {
         });
     }
 
-    @api
-    get value() {
-        return this._value;
-    }
-
-    set value(value) {
-        this._value = value;
+    set size(value) {
+        this._size = value;
     }
 
     @api
-    get requiredOptions() {
-        return this._requiredOptions;
+    get size() {
+        return this._size;
     }
 
-    set requiredOptions(value) {
-        this._requiredOptions = value;
+    @api fieldLevelHelp;
+
+    set disableReordering(value) {
+        this._disableReordering = normalizeBoolean(value);
     }
 
-    get isLabelHidden() {
-        return this._variant === 'label-hidden';
+    @api
+    get disableReordering() {
+        return this._disableReordering;
     }
 
-    get computedOuterClass() {
-        return classSet('slds-form-element')
-            .add({
-                'slds-form-element_horizontal':
-                    this._variant === 'label-inline',
-                'slds-form-element_stacked': this._variant === 'label-stacked'
-            })
-            .toString();
+    @api
+    get showActivityIndicator() {
+        return this._showActivityIndicator;
     }
 
-    get computedInnerClass() {
-        return classSet('slds-dueling-list__options')
-            .add({
-                'slds-is-disabled': this._disabled === true
-            })
-            .toString();
+    set showActivityIndicator(value) {
+        this._showActivityIndicator = normalizeBoolean(value);
     }
 
-    get computedHeightSize() {
-        return `height: ${this._size * 3.25}rem;`;
+    @api
+    focus() {
+        // focus on the first option from either list
+        // if nothing on source, then it'll pick the one on selected
+        const firstOption = this.template.querySelector(`div[data-index='0']`);
+        if (firstOption) {
+            firstOption.focus();
+            this.updateSelectedOptions(firstOption, true, false);
+        }
     }
 
     get validity() {
-        return (
-            this._constraint.validity +
-            ', ' +
-            this._constraintMax.validity +
-            ', ' +
-            this._constraintMin.validity
-        );
-    }
-
-    selectedOptions() {
-        this.options.forEach((option) => {
-            if (
-                Array.from(this._value).includes(option.value) ||
-                Array.from(this._requiredOptions).includes(option.value)
-            ) {
-                this._selected.push(option);
-            } else this._notSelected.push(option);
-        });
+        return this._constraint.validity;
     }
 
     @api
     checkValidity() {
-        return (
-            this._constraint.checkValidity() &&
-            this._constraintMax.checkValidity() &&
-            this._constraintMin.checkValidity()
-        );
+        return this._constraint.checkValidity();
     }
 
     @api
     reportValidity() {
-        return (
-            this._constraint.reportValidity((message) => {
-                this._helpMessage = message || this.messageWhenValueMissing;
-            }) &&
-            this._constraintMax.reportValidity((message) => {
-                this._helpMessage = message || this.messageWhenRangeOverflow;
-            }) &&
-            this._constraintMin.reportValidity((message) => {
-                this._helpMessage = message || this.messageWhenRangeUnderflow;
-            })
-        );
+        return this._constraint.reportValidity((message) => {
+            this.errorMessage = message;
+        });
     }
 
     @api
     setCustomValidity(message) {
         this._constraint.setCustomValidity(message);
-        this._constraintMax.setCustomValidity(message);
-        this._constraintMin.setCustomValidity(message);
     }
 
     @api
@@ -245,66 +225,664 @@ export default class DualListbox extends LightningElement {
         this.reportValidity();
     }
 
-    @api
-    focus() {
-        const firstOption = this.template.querySelector('c-primitive-option');
-        if (firstOption) {
-            firstOption.focus();
+    connectedCallback() {
+        this.classList.add('slds-form-element');
+        this.updateClassList();
+        this.keyboardInterface = this.selectKeyboardInterface();
+
+        this._connected = true;
+        this.addRequiredOptionsToValue();
+
+        // debounceInteraction since DualListbox has multiple focusable elements
+        this.interactingState = new InteractingState({
+            debounceInteraction: true
+        });
+        this.interactingState.onenter(() => {
+            this.dispatchEvent(new CustomEvent('focus'));
+        });
+        this.interactingState.onleave(() => {
+            this.showHelpMessageIfInvalid();
+            this.dispatchEvent(new CustomEvent('blur'));
+
+            // reset the optionToFocus otherwise dualListbox will steal the focus any time it's rerendered.
+            this.optionToFocus = null;
+        });
+        this.hasAvatar();
+        console.log(this._options);
+    }
+
+    hasAvatar() {
+        if (this._options) {
+            this._options.forEach((option) => {
+                if (
+                    option.avatarFallbackIconName ||
+                    option.avatarSrc ||
+                    option.avatarInitials
+                ) {
+                    option.hasAvatar = true;
+                } else option.hasAvatar = false;
+            });
         }
     }
 
-    handleChange(event) {
-        event.stopPropagation();
+    updateClassList() {
+        classListMutation(this.classList, {
+            'slds-form-element_stacked': this.variant === 'label-stacked',
+            'slds-form-element_horizontal': this.variant === 'label-inline'
+        });
+    }
 
-        const options = this.template.querySelectorAll('c-primitive-option');
-        const value = Array.from(options)
-            .filter((option) => option.selected)
-            .map((option) => option.value);
+    renderedCallback() {
+        this.assertRequiredAttributes();
+        if (this.disabled) {
+            return;
+        }
 
-        this._value = value;
+        if (this.optionToFocus) {
+            // value could have an apostrophe, which is why we need to escape it otherwise the queryselector will not work
+            const option = this.template.querySelector(
+                `div[data-value='${this.optionToFocus.replace(/'/g, "\\'")}']`
+            );
+            if (option) {
+                this.isFocusOnList = true;
+                option.focus();
+            }
+        }
+    }
 
-        this.dispatchEvent(
-            new CustomEvent('change', {
-                detail: {
-                    value
-                },
+    get computedUniqueId() {
+        return this.uniqueId;
+    }
 
-                composed: true,
-                bubbles: true,
-                cancelable: true
-            })
+    get computedSourceListId() {
+        return getRealDOMId(this.template.querySelector('[data-source-list]'));
+    }
+
+    get computedSelectedListId() {
+        return getRealDOMId(
+            this.template.querySelector('[data-selected-list]')
         );
+    }
+
+    get ariaDisabled() {
+        // aria-disabled works only with String not Boolean value
+        return String(this.disabled);
+    }
+
+    get computedSourceList() {
+        let sourceListOptions = [];
+        if (this.options) {
+            const required = this.requiredOptions;
+            const values = this.value;
+            sourceListOptions = this.options.filter(
+                (option) =>
+                    values.indexOf(option.value) === -1 &&
+                    required.indexOf(option.value) === -1
+            );
+        }
+
+        return this.computeListOptions(
+            sourceListOptions,
+            this.focusableInSource
+        );
+    }
+
+    get computedSelectedList() {
+        const selectedListOptions = [];
+        if (this.options) {
+            const optionsMap = {};
+            this.options.forEach((option) => {
+                optionsMap[option.value] = { ...option };
+            });
+            this.value.forEach((optionValue) => {
+                const option = optionsMap[optionValue];
+                if (option) {
+                    option.isSelected = true;
+                }
+            });
+            this.requiredOptions.forEach((optionValue) => {
+                const option = optionsMap[optionValue];
+                if (option) {
+                    option.isLocked = true;
+                }
+            });
+
+            // add selected items in the given order
+            this.value.forEach((optionValue) => {
+                const option = optionsMap[optionValue];
+                if (option) {
+                    selectedListOptions.push(option);
+                }
+            });
+        }
+
+        return this.computeListOptions(
+            selectedListOptions,
+            this.focusableInSelected
+        );
+    }
+
+    computeListOptions(options, focusableOptionValue) {
+        if (options.length > 0) {
+            const focusableOption = options.find((option) => {
+                return option.value === focusableOptionValue;
+            });
+
+            const focusableValue = focusableOption
+                ? focusableOption.value
+                : options[0].value;
+            return options.map((option) => {
+                return this.computeOptionProperties(option, focusableValue);
+            });
+        }
+
+        return [];
+    }
+
+    computeOptionProperties(option, focusableValue) {
+        const isSelected = this.highlightedOptions.indexOf(option.value) > -1;
+        const classList = classSet(
+            'slds-listbox__option slds-listbox__option_plain slds-media slds-media_small slds-media_inline'
+        )
+            .add({ 'slds-is-selected': isSelected })
+            .toString();
+
+        return {
+            ...option,
+            tabIndex: option.value === focusableValue ? '0' : '-1',
+            selected: isSelected ? 'true' : 'false',
+            classList
+        };
+    }
+
+    get computedLeftColumnClass() {
+        return classSet(
+            'slds-dueling-list__column slds-dueling-list__column_responsive'
+        )
+            .add({ 'slds-is-relative': this.showActivityIndicator })
+            .toString();
+    }
+
+    get computedColumnStyle() {
+        if (this.isNumber(this.size)) {
+            const newHeight = parseInt(this.size, 10) * 2.25 + 1;
+            return `height:${newHeight}rem`;
+        }
+        return '';
+    }
+
+    get isLabelHidden() {
+        return this.variant === 'label-hidden';
+    }
+
+    get computedGroupLabelClass() {
+        return classSet('slds-form-element__label slds-form-element__legend')
+            .add({ 'slds-assistive-text': this.isLabelHidden })
+            .toString();
+    }
+
+    get computedListboxContainerClass() {
+        return classSet('slds-dueling-list__options')
+            .add({ 'slds-is-disabled': this.disabled })
+            .toString();
+    }
+
+    get computedLockAssistiveText() {
+        return formatLabel(
+            this.i18n.optionLockAssistiveText,
+            this.selectedLabel
+        );
+    }
+
+    get i18n() {
+        return i18n;
+    }
+
+    getRightButtonAssistiveText() {
+        return formatLabel(
+            i18n.moveSelectionToAssistiveText,
+            this.selectedLabel
+        );
+    }
+
+    @api
+    get addButtonLabel() {
+        if (this._addButtonLabel) {
+            return this._addButtonLabel;
+        }
+        return this.getRightButtonAssistiveText();
+    }
+
+    set addButtonLabel(value) {
+        this._addButtonLabel = value;
+    }
+
+    getLeftButtonAssistiveText() {
+        return formatLabel(i18n.moveSelectionToAssistiveText, this.sourceLabel);
+    }
+
+    @api
+    get removeButtonLabel() {
+        if (this._removeButtonLabel) {
+            return this._removeButtonLabel;
+        }
+        return this.getLeftButtonAssistiveText();
+    }
+
+    set removeButtonLabel(value) {
+        this._removeButtonLabel = value;
+    }
+
+    @api
+    get upButtonLabel() {
+        return this._upButtonLabel || this.i18n.upButtonAssistiveText;
+    }
+
+    set upButtonLabel(value) {
+        this._upButtonLabel = value;
+    }
+
+    @api
+    get downButtonLabel() {
+        return this._downButtonLabel || this.i18n.downButtonAssistiveText;
+    }
+
+    set downButtonLabel(value) {
+        this._downButtonLabel = value;
+    }
+
+    get moveButtonsDisabled() {
+        return this.disabled || this.showActivityIndicator;
+    }
+
+    handleOptionClick(event) {
+        this.interactingState.interacting();
+        if (this.disabled) {
+            return;
+        }
+        const selectMultiple = event.metaKey || event.ctrlKey || event.shiftKey;
+        const option = event.currentTarget;
+        if (event.shiftKey) {
+            this.selectAllFromLastSelectedToOption(option, false);
+            return;
+        }
+        const selected =
+            selectMultiple && option.getAttribute('aria-selected') === 'true';
+        this.updateSelectedOptions(option, !selected, selectMultiple);
+        this.shiftIndex = -1;
+    }
+
+    handleFocus(event) {
+        this.interactingState.enter();
+
+        // select the focused option if entering a listbox
+        const element = event.target;
+        if (element.role === 'option') {
+            if (!this.isFocusOnList) {
+                this.isFocusOnList = true;
+                this.updateSelectedOptions(element, true, false);
+            }
+        }
+    }
+
+    handleBlur(event) {
+        this.interactingState.leave();
+
+        const element = event.target;
+        if (element.role !== 'option') {
+            this.isFocusOnList = false;
+        }
+    }
+
+    handleRightButtonClick() {
+        this.interactingState.interacting();
+        this.moveOptionsBetweenLists(true);
+    }
+
+    handleLeftButtonClick() {
+        this.interactingState.interacting();
+        this.moveOptionsBetweenLists(false);
+    }
+
+    handleUpButtonClick() {
+        this.interactingState.interacting();
+        this.changeOrderOfOptionsInList(true);
+    }
+
+    handleDownButtonClick() {
+        this.interactingState.interacting();
+        this.changeOrderOfOptionsInList(false);
+    }
+
+    handleOptionKeyDown(event) {
+        this.interactingState.interacting();
+        if (this.disabled) {
+            return;
+        }
+        handleKeyDownOnOption(event, this.keyboardInterface);
+    }
+
+    moveOptionsBetweenLists(addToSelect, retainFocus) {
+        const isValidList = addToSelect
+            ? this.selectedList === this.computedSourceListId
+            : this.selectedList === this.computedSelectedListId;
+        if (!isValidList) {
+            return;
+        }
+        const toMove = this.highlightedOptions;
+        const values = this.computedSelectedList.map((option) => option.value);
+        const required = this.requiredOptions;
+        let newValues = [];
+        if (addToSelect) {
+            newValues = values.concat(toMove);
+        } else {
+            newValues = values.filter(
+                (value) =>
+                    toMove.indexOf(value) === -1 || required.indexOf(value) > -1
+            );
+        }
+
+        const oldSelectedValues = this._selectedValues;
+        this._selectedValues = newValues;
+        const invalidMove =
+            this.validity.valueMissing ||
+            (this.validity.rangeOverflow &&
+                this.selectedList === this.computedSourceListId) ||
+            (this.validity.rangeUnderflow &&
+                this.selectedList === this.computedSelectedListId);
+
+        if (invalidMove || toMove.length === 0) {
+            this.showHelpMessageIfInvalid();
+            this._selectedValues = oldSelectedValues;
+            return;
+        }
+
+        if (retainFocus) {
+            const listId = addToSelect
+                ? this.computedSelectedListId
+                : this.computedSourceListId;
+            this.selectedList = listId;
+            this.updateFocusableOption(listId, toMove[0]);
+        } else {
+            this.interactingState.leave();
+            this.isFocusOnList = false;
+            this.highlightedOptions = [];
+            this.optionToFocus = null;
+        }
+
+        this.dispatchChangeEvent(newValues);
+    }
+
+    changeOrderOfOptionsInList(moveUp) {
+        const elementList = this.getElementsOfList(this.selectedList);
+        const values = this.computedSelectedList.map((option) => option.value);
+        const toMove = values.filter(
+            (option) => this.highlightedOptions.indexOf(option) > -1
+        );
+        const validSelection =
+            toMove.length === 0 ||
+            this.selectedList !== this.computedSelectedListId;
+        if (validSelection) {
+            return;
+        }
+        let start = moveUp ? 0 : toMove.length - 1;
+        let index = values.indexOf(toMove[start]);
+        const validMove =
+            (moveUp && index === 0) || (!moveUp && index === values.length - 1);
+        if (validMove) {
+            return;
+        }
+
+        if (moveUp) {
+            while (start < toMove.length) {
+                index = values.indexOf(toMove[start]);
+                this.swapOptions(index, index - 1, values, elementList);
+                start++;
+            }
+        } else {
+            while (start > -1) {
+                index = values.indexOf(toMove[start]);
+                this.swapOptions(index, index + 1, values, elementList);
+                start--;
+            }
+        }
+
+        this._selectedValues = values;
+        this.updateFocusableOption(this.selectedList, toMove[0]);
+        this.optionToFocus = null;
+        this.dispatchChangeEvent(values);
+    }
+
+    selectAllFromLastSelectedToOption(option, all) {
+        const listId = option.getAttribute('data-type');
+        this.updateCurrentSelectedList(listId, true);
+        const options = this.getElementsOfList(listId);
+        const end = all ? 0 : this.getOptionIndex(option);
+        this.lastSelected = this.lastSelected < 0 ? end : this.lastSelected;
+        const start = all ? options.length : this.lastSelected;
+        let val, select;
+        this.highlightedOptions = [];
+        for (let i = 0; i < options.length; i++) {
+            select = (i - start) * (i - end) <= 0;
+            if (select) {
+                val = options[i].getAttribute('data-value');
+                this.highlightedOptions.push(val);
+            }
+        }
+    }
+
+    updateSelectedOptions(option, select, isMultiple) {
+        const value = option.getAttribute('data-value');
+        const listId = this.getListId(option);
+        const optionIndex = this.getOptionIndex(option);
+        this.updateCurrentSelectedList(listId, isMultiple);
+        if (select) {
+            if (this.highlightedOptions.indexOf(value) === -1) {
+                this.highlightedOptions.push(value);
+            }
+        } else {
+            this.highlightedOptions.splice(
+                this.highlightedOptions.indexOf(value),
+                1
+            );
+        }
+
+        this.updateFocusableOption(listId, value);
+
+        this.lastSelected = optionIndex;
+    }
+
+    addRequiredOptionsToValue() {
+        if (
+            !this.options ||
+            !this.options.length ||
+            !this._requiredOptions ||
+            !this._requiredOptions.length
+        ) {
+            // no options/requiredOptions, just ignore
+            return;
+        }
+
+        const numOfSelectedValues = this._selectedValues.length;
+        const allValues = this.options.map((option) => option.value);
+
+        const requiredValues = this._requiredOptions.filter((option) =>
+            allValues.includes(option)
+        );
+
+        // add required options to the selected values as they are already displayed in the selected list
+        this._selectedValues = [
+            ...new Set([...requiredValues, ...this._selectedValues])
+        ];
+
+        if (numOfSelectedValues !== this._selectedValues.length) {
+            // value was changed
+            this.dispatchChangeEvent(this._selectedValues);
+        }
     }
 
     get _constraint() {
         if (!this._constraintApi) {
             this._constraintApi = new FieldConstraintApi(() => this, {
                 valueMissing: () =>
-                    !this.disabled && this.required && this.value.length === 0
+                    !this.disabled &&
+                    this.required &&
+                    this.computedSelectedList.length < 1,
+                rangeUnderflow: () =>
+                    this.computedSelectedList.length < this.min,
+                rangeOverflow: () => this.computedSelectedList.length > this.max
             });
         }
         return this._constraintApi;
     }
 
-    get _constraintMax() {
-        if (!this._constraintApiMax) {
-            this._constraintApiMax = new FieldConstraintApi(() => this, {
-                rangeOverflow: () => this._selected > this.max
-            });
-        }
-        return this._constraintApiMax;
+    get _overflowMessage() {
+        const minHelpMsg =
+            this.min > 0 ? formatLabel(this.i18n.minHelp, this.min) : '';
+
+        return formatLabel(this.i18n.maxError, this.max) + minHelpMsg;
     }
 
-    get _constraintMin() {
-        if (!this._constraintApiMin) {
-            this._constraintApiMin = new FieldConstraintApi(() => this, {
-                rangeUnderflow: () => this._selected < this.min
-            });
-        }
-        return this._constraintApiMin;
+    get _underflowMessage() {
+        const maxHelpMsg = this.max
+            ? formatLabel(this.i18n.maxHelp, this.max)
+            : '';
+        const minRequiredError =
+            this.min > 1
+                ? formatLabel(this.i18n.minRequiredErrorPlural, this.min)
+                : this.i18n.minRequiredErrorSingular;
+        const minError =
+            this.min > 1
+                ? formatLabel(this.i18n.minErrorPlural, this.min)
+                : this.i18n.minErrorSingular;
+
+        return this.required
+            ? minRequiredError + maxHelpMsg
+            : minError + maxHelpMsg;
     }
 
-    handleAddButtonClick() {
-        console.log('hello');
+    updateCurrentSelectedList(currentList, isMultiple) {
+        if (this.selectedList !== currentList || !isMultiple) {
+            if (this.selectedList) {
+                this.highlightedOptions = [];
+                this.lastSelected = -1;
+            }
+            this.selectedList = currentList;
+        }
+    }
+
+    dispatchChangeEvent(values) {
+        // the change event needs to propagate to elements outside of the light-DOM, hence making it composed.
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                composed: true,
+                bubbles: true,
+                detail: { value: values }
+            })
+        );
+    }
+
+    assertRequiredAttributes() {
+        assert(
+            !!this.label,
+            `<avonni-dual-listbox> Missing required "label" attribute.`
+        );
+        assert(
+            !!this.sourceLabel,
+            `<avonni-dual-listbox> Missing required "sourceLabel" attribute.`
+        );
+        assert(
+            !!this.selectedLabel,
+            `<avonni-dual-listbox> Missing required "selectedLabel" attribute.`
+        );
+        assert(
+            !!this.options,
+            `<avonni-dual-listbox> Missing required "options" attribute.`
+        );
+    }
+
+    swapOptions(i, j, array) {
+        const temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+
+    getElementsOfList(listId) {
+        const elements = this.template.querySelectorAll(
+            `div[data-type='${listId}']`
+        );
+        return elements ? elements : [];
+    }
+
+    selectKeyboardInterface() {
+        const that = this;
+        that.shiftIndex = -1;
+        that.lastShift = null;
+        return {
+            getShiftIndex() {
+                return that.shiftIndex;
+            },
+            setShiftIndex(value) {
+                that.shiftIndex = value;
+            },
+            getLastShift() {
+                return that.lastShift;
+            },
+            setLastShift(value) {
+                that.lastShift = value;
+            },
+            getElementsOfList(listId) {
+                return that.getElementsOfList(listId);
+            },
+            selectAllOptions(option) {
+                that.selectAllFromLastSelectedToOption(option, true);
+            },
+            updateSelectedOptions(option, select, isMultiple) {
+                that.updateSelectedOptions(option, select, isMultiple);
+            },
+            moveOptionsBetweenLists(addToSelect) {
+                that.moveOptionsBetweenLists(addToSelect, true);
+            }
+        };
+    }
+
+    getOptionIndex(optionElement) {
+        return parseInt(optionElement.getAttribute('data-index'), 10);
+    }
+
+    getListId(optionElement) {
+        return getRealDOMId(optionElement.parentElement.parentElement);
+    }
+
+    updateFocusableOption(listId, value) {
+        if (listId === this.computedSourceListId) {
+            this.focusableInSource = value;
+        } else if (listId === this.computedSelectedListId) {
+            this.focusableInSelected = value;
+        }
+        this.optionToFocus = value;
+    }
+
+    isNumber(value) {
+        return value !== '' && value !== null && isFinite(value);
+    }
+
+    updateHighlightedOptions(newValue) {
+        let isSame = false;
+        if (
+            newValue &&
+            newValue.length &&
+            this._selectedValues &&
+            this._selectedValues.length
+        ) {
+            isSame =
+                newValue.length === this._selectedValues.length &&
+                newValue.every((option) =>
+                    this._selectedValues.includes(option)
+                );
+        }
+        if (!isSame) {
+            this.highlightedOptions = [];
+        }
     }
 }

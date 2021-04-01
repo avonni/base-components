@@ -1,168 +1,242 @@
 <template>
-    <div
-        class={computedOuterClass}
-        role="group"
-        aria-labelledby="picklist-group-label"
-    >
-        <template if:false={isLabelHidden}>
-            <span
-                id="picklist-group-label"
-                class="slds-form-element__label slds-form-element__legend"
-                ><abbr if:true={required} title="required" class="slds-required"
+    <div role="group" aria-labelledby="group-label">
+        <div id="group-label" class={computedGroupLabelClass}>
+            <template if:true={required}>
+                <abbr class="slds-required" title={i18n.required}
                     >*</abbr
-                >{label}</span
-            >
-        </template>
+                > </template
+            >{label}
+        </div>
         <lightning-helptext
             if:true={fieldLevelHelp}
             content={fieldLevelHelp}
         ></lightning-helptext>
         <div class="slds-form-element__control">
-            <div class="slds-dueling-list">
+            <div
+                class="slds-dueling-list"
+                onfocusin={handleFocus}
+                onfocusout={handleBlur}
+            >
                 <div
                     class="slds-assistive-text"
-                    id="drag-live-region"
+                    id="assertive-thing"
                     aria-live="assertive"
                 ></div>
-                <div class="slds-dueling-list__column">
-                    <span class="slds-form-element__label">{sourceLabel}</span>
-                    <div class={computedInnerClass} style={computedHeightSize}>
+                <div class="slds-assistive-text" id="keyboard-interacton">
+                    {i18n.componentAssistiveText}
+                </div>
+                <div class={computedLeftColumnClass}>
+                    <span
+                        class="slds-form-element__label"
+                        id="source-list-label"
+                        >{sourceLabel}</span
+                    >
+                    <div
+                        class={computedListboxContainerClass}
+                        style={computedColumnStyle}
+                    >
                         <template if:true={searchEngine}>
                             <lightning-input
                                 name="enter-search"
                                 label="Filter"
                                 placeholder="Type to filter list..."
                                 type="search"
-                                class="slds-p-around_small"
+                                class="slds-p-around_x-small"
                                 variant="label-hidden"
                             ></lightning-input>
                         </template>
                         <ul
-                            aria-describedby="option-drag-label"
-                            aria-labelledby="label-105"
+                            data-source-list
+                            id="source-list"
+                            aria-describedby="keyboard-interacton"
+                            aria-labelledby="source-list-label"
                             aria-multiselectable="true"
                             class="slds-listbox slds-listbox_vertical"
                             role="listbox"
-                        >
-                            <template for:each={_notSelected} for:item="option">
-                                <c-primitive-option
-                                    key={option.value}
-                                    label={option.label}
-                                    value={option.value}
-                                    avatar-fallback-icon-name={option.avatarFallbackIconName}
-                                    avatar-src={option.avatarSrc}
-                                    avatar-initials={option.avatarInitials}
-                                    avatar-variant={option.avatarVariant}
-                                    avatar-primary-text={option.avatarPrimaryText}
-                                    avatar-secondary-text={option.avatarSecondaryText}
-                                    required-options={requiredOptions}
-                                ></c-primitive-option>
-                            </template>
-                        </ul>
-                    </div>
-                    <template if:true={showActivityIndicator}>
-                        <lightning-spinner></lightning-spinner>
-                    </template>
-                </div>
-                <div class="slds-dueling-list__column">
-                    <button
-                        class="slds-button slds-button_icon slds-button_icon-container"
-                        title={addButtonLabel}
-                        onclick={handleAddButtonClick}
-                    >
-                        <svg class="slds-button__icon" aria-hidden="true">
-                            <use
-                                xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#right"
-                            ></use>
-                        </svg>
-                        <span class="slds-assistive-text"
-                            >{addButtonLabel}</span
-                        >
-                    </button>
-                    <button
-                        class="slds-button slds-button_icon slds-button_icon-container"
-                        title={removeButtonLabel}
-                    >
-                        <svg class="slds-button__icon" aria-hidden="true">
-                            <use
-                                xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#left"
-                            ></use>
-                        </svg>
-                        <span class="slds-assistive-text"
-                            >{removeButtonLabel}</span
-                        >
-                    </button>
-                </div>
-                <div class="slds-dueling-list__column">
-                    <span class="slds-form-element__label" id="label-106"
-                        >{selectedLabel}</span
-                    >
-                    <div class={computedInnerClass} style={computedHeightSize}>
-                        <ul
-                            aria-describedby="option-drag-label"
-                            aria-labelledby="label-106"
-                            aria-multiselectable="true"
-                            class="slds-listbox slds-listbox_vertical"
-                            role="listbox"
+                            aria-disabled={ariaDisabled}
                         >
                             <template
-                                for:each={_selected}
+                                for:each={computedSourceList}
                                 for:item="option"
                                 for:index="index"
                             >
-                                <c-primitive-option
+                                <li
                                     key={option.value}
-                                    label={option.label}
-                                    value={option.value}
-                                    avatar-fallback-icon-name={option.avatarFallbackIconName}
-                                    avatar-src={option.avatarSrc}
-                                    avatar-initials={option.avatarInitials}
-                                    avatar-variant={option.avatarVariant}
-                                    avatar-primary-text={option.avatarPrimaryText}
-                                    avatar-secondary-text={option.avatarSecondaryText}
-                                    required-options={requiredOptions}
-                                    index={index}
-                                ></c-primitive-option>
+                                    role="presentation"
+                                    class="slds-listbox__item"
+                                >
+                                    <div
+                                        class={option.classList}
+                                        aria-selected={option.selected}
+                                        role="option"
+                                        tabindex={option.tabIndex}
+                                        data-index={index}
+                                        data-value={option.value}
+                                        data-type={computedSourceListId}
+                                        onclick={handleOptionClick}
+                                        onkeydown={handleOptionKeyDown}
+                                    >
+                                        <div class="slds-media__figure">
+                                            <c-avatar
+                                                fallback-icon-name={option.avatarFallbackIconName}
+                                                src={option.avatarSrc}
+                                                initials={option.avatarInitials}
+                                                variant={option.avatarVariant}
+                                                primary-text={option.avatarPrimaryText}
+                                                secondary-text={option.avatarSecondaryText}
+                                            ></c-avatar>
+                                        </div>
+                                        <span class="slds-media__body">
+                                            <span
+                                                class="slds-truncate"
+                                                title={option.label}
+                                                >{option.label}</span
+                                            >
+                                        </span>
+                                    </div>
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+                    <div if:true={showActivityIndicator}>
+                        <lightning-spinner
+                            size="small"
+                            variant="brand"
+                            alternative-text={i18n.loadingText}
+                        ></lightning-spinner>
+                    </div>
+                </div>
+                <div class="slds-dueling-list__column">
+                    <lightning-button-icon
+                        icon-name="utility:right"
+                        variant="container"
+                        onclick={handleRightButtonClick}
+                        disabled={moveButtonsDisabled}
+                        title={addButtonLabel}
+                        alternative-text={addButtonLabel}
+                    >
+                    </lightning-button-icon>
+                    <lightning-button-icon
+                        icon-name="utility:left"
+                        variant="container"
+                        onclick={handleLeftButtonClick}
+                        disabled={moveButtonsDisabled}
+                        title={removeButtonLabel}
+                        alternative-text={removeButtonLabel}
+                    >
+                    </lightning-button-icon>
+                </div>
+                <div
+                    class="slds-dueling-list__column slds-dueling-list__column_responsive"
+                >
+                    <span
+                        class="slds-form-element__label"
+                        id="selected-list-label"
+                        >{selectedLabel}</span
+                    >
+                    <div
+                        class={computedListboxContainerClass}
+                        style={computedColumnStyle}
+                    >
+                        <ul
+                            data-selected-list
+                            id="selected-list"
+                            aria-describedby="keyboard-interacton"
+                            aria-labelledby="selected-list-label"
+                            aria-multiselectable="true"
+                            class="slds-listbox slds-listbox_vertical"
+                            role="listbox"
+                            aria-disabled={ariaDisabled}
+                        >
+                            <template
+                                for:each={computedSelectedList}
+                                for:item="option"
+                                for:index="index"
+                            >
+                                <li
+                                    key={option.value}
+                                    role="presentation"
+                                    class="slds-listbox__item"
+                                >
+                                    <div
+                                        class={option.classList}
+                                        aria-selected={option.selected}
+                                        role="option"
+                                        tabindex={option.tabIndex}
+                                        data-index={index}
+                                        data-value={option.value}
+                                        data-type={computedSelectedListId}
+                                        onclick={handleOptionClick}
+                                        onkeydown={handleOptionKeyDown}
+                                    >
+                                        <template if:true={option.hasAvatar}>
+                                            <div class="slds-media__figure">
+                                                <c-avatar
+                                                    fallback-icon-name={option.avatarFallbackIconName}
+                                                    src={option.avatarSrc}
+                                                    initials={option.avatarInitials}
+                                                    variant={option.avatarVariant}
+                                                    primary-text={option.avatarPrimaryText}
+                                                    secondary-text={option.avatarSecondaryText}
+                                                ></c-avatar>
+                                            </div>
+                                        </template>
+                                        <span class="slds-media__body">
+                                            <span
+                                                class="slds-truncate"
+                                                title={option.label}
+                                                >{option.label}</span
+                                            >
+                                        </span>
+                                        <template if:true={option.isLocked}>
+                                            <span
+                                                class="slds-media__figure slds-media__figure_reverse"
+                                            >
+                                                <lightning-icon
+                                                    icon-name="utility:lock"
+                                                    size="x-small"
+                                                    alternative-text={computedLockAssistiveText}
+                                                ></lightning-icon>
+                                            </span>
+                                        </template>
+                                    </div>
+                                </li>
                             </template>
                         </ul>
                     </div>
                 </div>
+
                 <template if:false={disableReordering}>
                     <div class="slds-dueling-list__column">
-                        <button
-                            class="slds-button slds-button_icon slds-button_icon-container"
-                            title="Move Selection Up"
+                        <lightning-button-icon
+                            icon-name="utility:up"
+                            variant="container"
+                            onclick={handleUpButtonClick}
+                            disabled={disabled}
+                            title={upButtonLabel}
+                            alternative-text={upButtonLabel}
                         >
-                            <svg class="slds-button__icon" aria-hidden="true">
-                                <use
-                                    xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#up"
-                                ></use>
-                            </svg>
-                            <span class="slds-assistive-text"
-                                >{upButtonLabel}</span
-                            >
-                        </button>
-                        <button
-                            class="slds-button slds-button_icon slds-button_icon-container"
-                            title="Move Selection Down"
+                        </lightning-button-icon>
+                        <lightning-button-icon
+                            icon-name="utility:down"
+                            variant="container"
+                            onclick={handleDownButtonClick}
+                            disabled={disabled}
+                            title={downButtonLabel}
+                            alternative-text={downButtonLabel}
                         >
-                            <svg class="slds-button__icon" aria-hidden="true">
-                                <use
-                                    xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#down"
-                                ></use>
-                            </svg>
-                            <span class="slds-assistive-text"
-                                >{downButtonLabel}</span
-                            >
-                        </button>
+                        </lightning-button-icon>
                     </div>
                 </template>
             </div>
         </div>
-        <span
-            id="helptext"
-            class="slds-text-color_destructive slds-form-element__help"
-            >{_helpMessage}</span
-        >
+        <template if:true={errorMessage}>
+            <span
+                id="error-message"
+                class="slds-has-error slds-form-element__help"
+                aria-live="assertive"
+                >{errorMessage}</span
+            >
+        </template>
     </div>
 </template>
