@@ -95,9 +95,7 @@ export default class ColorPickerPanel extends LightningElement {
             event.srcElement.name === 'done'
         ) {
             event.preventDefault();
-            this.template
-                .querySelector('c-color-picker-custom')
-                .focus();
+            this.template.querySelector('c-color-picker-custom').focus();
         }
     }
 }

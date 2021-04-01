@@ -469,7 +469,7 @@ export default class Avatar extends LightningElement {
     handleImageError(event) {
         // eslint-disable-next-line no-console
         console.warn(
-            `<c-avatar> Image with src="${event.target.src}" failed to load.`
+            `Avatar component Image with src="${event.target.src}" failed to load.`
         );
         this._src = '';
     }

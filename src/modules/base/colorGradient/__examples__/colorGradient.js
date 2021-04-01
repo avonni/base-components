@@ -1,8 +1,11 @@
 import Component from 'base/colorGradient';
 
-customElements.define('ac-base-color-gradient', Component.CustomElementConstructor);
+customElements.define(
+    'ac-base-color-gradient',
+    Component.CustomElementConstructor
+);
 
-export const ColorGradient = ({ 
+export const ColorGradient = ({
     disabled,
     value,
     readOnly,

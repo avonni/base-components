@@ -1,9 +1,9 @@
-:host{
-    display:block
+:host {
+    display: block;
 }
 
 .input-rich-text-placeholder {
-    color:var(--lwc-colorTextPlaceholder)
+    color: var(--lwc-colorTextPlaceholder);
 }
 
 avonni-emoji-picker {

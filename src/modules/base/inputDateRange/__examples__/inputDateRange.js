@@ -1,6 +1,9 @@
 import Component from 'base/inputDateRange';
 
-customElements.define('ac-base-input-date-range', Component.CustomElementConstructor);
+customElements.define(
+    'ac-base-input-date-range',
+    Component.CustomElementConstructor
+);
 
 export const InputDateRange = ({
     type,

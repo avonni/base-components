@@ -78,7 +78,7 @@ export default class Submenu extends LightningElement {
     handleMouseEnter(event) {
         if (!this._disabled) {
             if (this.isOpen) {
-                this.querySelectorAll('.avonni-submenu').forEach(submenu => {
+                this.querySelectorAll('.avonni-submenu').forEach((submenu) => {
                     submenu.close();
                 });
             } else {

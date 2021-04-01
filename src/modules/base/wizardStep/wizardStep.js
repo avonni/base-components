@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeBoolean } from '../utilsPrivate/normalize';
+import { normalizeBoolean } from 'c/utilsPrivate';
 
 export default class WizardStep extends LightningElement {
     @api label;

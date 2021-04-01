@@ -1,6 +1,9 @@
 import Component from 'base/colorPalette';
 
-customElements.define('ac-base-color-palette', Component.CustomElementConstructor);
+customElements.define(
+    'ac-base-color-palette',
+    Component.CustomElementConstructor
+);
 
 export const ColorPalette = ({
     disabled,

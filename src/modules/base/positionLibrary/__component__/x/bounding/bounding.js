@@ -7,43 +7,43 @@ const BubbleAlign = {
         align: { horizontal: Direction.Center, vertical: Direction.Top },
         targetAlign: {
             horizontal: Direction.Center,
-            vertical: Direction.Bottom,
-        },
+            vertical: Direction.Bottom
+        }
     },
     BottomLeft: {
         align: { horizontal: Direction.Left, vertical: Direction.Top },
-        targetAlign: { horizontal: Direction.Left, vertical: Direction.Bottom },
+        targetAlign: { horizontal: Direction.Left, vertical: Direction.Bottom }
     },
     BottomRight: {
         align: { horizontal: Direction.Right, vertical: Direction.Top },
         targetAlign: {
             horizontal: Direction.Right,
-            vertical: Direction.Bottom,
-        },
+            vertical: Direction.Bottom
+        }
     },
     Left: {
         align: { horizontal: Direction.Right, vertical: Direction.Center },
-        targetAlign: { horizontal: Direction.Left, vertical: Direction.Center },
+        targetAlign: { horizontal: Direction.Left, vertical: Direction.Center }
     },
     Right: {
         align: { horizontal: Direction.Left, vertical: Direction.Center },
         targetAlign: {
             horizontal: Direction.Right,
-            vertical: Direction.Center,
-        },
+            vertical: Direction.Center
+        }
     },
     Top: {
         align: { horizontal: Direction.Center, vertical: Direction.Bottom },
-        targetAlign: { horizontal: Direction.Center, vertical: Direction.Top },
+        targetAlign: { horizontal: Direction.Center, vertical: Direction.Top }
     },
     TopLeft: {
         align: { horizontal: Direction.Left, vertical: Direction.Bottom },
-        targetAlign: { horizontal: Direction.Left, vertical: Direction.Top },
+        targetAlign: { horizontal: Direction.Left, vertical: Direction.Top }
     },
     TopRight: {
         align: { horizontal: Direction.Right, vertical: Direction.Bottom },
-        targetAlign: { horizontal: Direction.Right, vertical: Direction.Top },
-    },
+        targetAlign: { horizontal: Direction.Right, vertical: Direction.Top }
+    }
 };
 
 export default class PositionLibraryBounding extends LightningElement {
@@ -104,7 +104,7 @@ export default class PositionLibraryBounding extends LightningElement {
                 targetAlign: config.targetAlign,
                 padLeft: config.padLeft,
                 padTop: config.padTop,
-                leftAsBoundary: !!this.elementBound,
+                leftAsBoundary: !!this.elementBound
             })
             .then((autoPositionUpdater) => {
                 const bubble = this.template.querySelector(

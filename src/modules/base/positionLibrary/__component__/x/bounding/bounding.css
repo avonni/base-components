@@ -1,7 +1,7 @@
 /**
  * Makes element take up available space like slds-grid_frame but works with IE11.
  */
- .frame {
+.frame {
     position: absolute;
     top: 0;
     bottom: 0;

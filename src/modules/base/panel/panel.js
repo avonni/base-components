@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeString, normalizeBoolean } from '../utilsPrivate/normalize';
+import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
 const VALID_POSITIONS = { valid: ['right', 'left'], default: 'right' };

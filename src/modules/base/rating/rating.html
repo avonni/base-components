@@ -1,9 +1,7 @@
 <template>
     <div class={computedContainerClass}>
-        <template if:true={label} >
-            <label class={computedLegendClass}>
-                {label}
-            </label>
+        <template if:true={label}>
+            <label class={computedLegendClass}> {label} </label>
             <lightning-helptext
                 if:true={fieldLevelHelp}
                 content={fieldLevelHelp}

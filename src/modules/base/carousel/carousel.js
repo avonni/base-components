@@ -1,6 +1,6 @@
 import { LightningElement, api } from 'lwc';
 import { keyCodes } from 'c/utilsPrivate';
-import { normalizeBoolean, normalizeString } from '../utilsPrivate/normalize';
+import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
 const INDICATOR_ACTION = 'slds-carousel__indicator-action';
 const INDICATOR_ACTION_SHADED =

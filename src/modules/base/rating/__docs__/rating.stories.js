@@ -25,7 +25,8 @@ export default {
             control: {
                 type: 'text'
             },
-            description: "The Lightning Design System name of the icon. Specify the name in the format 'utility:favorite' where 'utility' is the category, and 'favorite' is the specific icon to be displayed.",
+            description:
+                "The Lightning Design System name of the icon. Specify the name in the format 'utility:favorite' where 'utility' is the category, and 'favorite' is the specific icon to be displayed.",
             table: {
                 type: { summary: 'string' }
             }
@@ -34,13 +35,14 @@ export default {
             name: 'icon-size',
             control: {
                 type: 'select',
-                options: [ 'x-small', 'small', 'medium', 'large' ]
+                options: ['x-small', 'small', 'medium', 'large']
             },
             defaultValue: 'large',
-            description: "Valid values include x-small, small, medium and large.",
+            description:
+                'Valid values include x-small, small, medium and large.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: {summary: 'large'}
+                defaultValue: { summary: 'large' }
             }
         },
         value: {
@@ -55,12 +57,18 @@ export default {
         variant: {
             control: {
                 type: 'select',
-                options: ['standard', 'label-inline', 'label-hidden', 'label-stacked']
+                options: [
+                    'standard',
+                    'label-inline',
+                    'label-hidden',
+                    'label-stacked'
+                ]
             },
             defaultValue: 'standard',
-            description: 'The variant changes the appearance of an input field. Accepted variants include standard, label-inline, label-hidden, and label-stacked. This value defaults to standard, which displays the label above the field. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and input field. Use label-stacked to place the label above the input field.',
+            description:
+                'The variant changes the appearance of an input field. Accepted variants include standard, label-inline, label-hidden, and label-stacked. This value defaults to standard, which displays the label above the field. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and input field. Use label-stacked to place the label above the input field.',
             table: {
-                defaultValue: { summary: 'standard'},
+                defaultValue: { summary: 'standard' },
                 type: { summary: 'string' }
             }
         },

@@ -141,7 +141,7 @@ export function isDomNode(obj) {
 export function computeAbsPos(target) {
     const val = {
         top: target.offsetTop,
-        left: target.offsetLeft,
+        left: target.offsetLeft
     };
 
     if (target.offsetParent) {
@@ -220,7 +220,7 @@ export function normalizePosition(
     element.style.zIndex = nextIndex || 0;
 
     // W-8042285 For RTL, left is positive value instead of negative.
-    element.style.left = '99999px' // Avoid flicker
+    element.style.left = '99999px'; // Avoid flicker
     // we always position from the left, but in RTL mode Omakase swaps left and right properties.
     // To always allow positioning from the left we set right to auto so position library can do its work.
     element.style.right = 'auto';
@@ -228,7 +228,7 @@ export function normalizePosition(
 
     return {
         element,
-        overlay,
+        overlay
     };
 }
 

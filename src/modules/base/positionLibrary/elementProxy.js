@@ -48,7 +48,7 @@ export class ElementProxy {
                     attributes: true,
                     childList: true,
                     characterData: true,
-                    subtree: true,
+                    subtree: true
                 });
                 this._node.isObserved = true;
             }

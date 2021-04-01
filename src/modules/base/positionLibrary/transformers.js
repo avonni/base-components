@@ -15,7 +15,7 @@ class TopTransformer extends Transformer {
         return {
             top: Math.floor(
                 this.transformY(targetBox.top, targetBox, elementBox) + this.pad
-            ),
+            )
         };
     }
 }
@@ -27,7 +27,7 @@ class BottomTransFormer extends Transformer {
                 this.transformY(targetBox.top, targetBox, elementBox) -
                     elementBox.height -
                     this.pad
-            ),
+            )
         };
     }
 }
@@ -38,7 +38,7 @@ class CenterTransformer extends Transformer {
             left: Math.floor(
                 this.transformX(targetBox.left, targetBox, elementBox) -
                     0.5 * elementBox.width
-            ),
+            )
         };
     }
 }
@@ -48,7 +48,7 @@ class MiddleTransformer extends Transformer {
         return {
             top: Math.floor(
                 0.5 * (2 * targetBox.top + targetBox.height - elementBox.height)
-            ),
+            )
         };
     }
 }
@@ -59,7 +59,7 @@ export class LeftTransformer extends Transformer {
             left: Math.floor(
                 this.transformX(targetBox.left, targetBox, elementBox) +
                     this.pad
-            ),
+            )
         };
     }
 }
@@ -71,7 +71,7 @@ class RightTransformer extends Transformer {
                 this.transformX(targetBox.left, targetBox, elementBox) -
                     elementBox.width -
                     this.pad
-            ),
+            )
         };
     }
 }
@@ -229,7 +229,7 @@ const TransformFunctions = {
     },
     bottom(input, targetBox) {
         return input + targetBox.height;
-    },
+    }
 };
 
 export const Transformers = {
@@ -243,7 +243,7 @@ export const Transformers = {
     'bounding box': BoundingBoxTransformer,
     'shrinking box': ShrinkingBoxTransformer,
     'inverse bounding box': InverseBoundingBoxTransformer,
-    default: Transformer,
+    default: Transformer
 };
 
 export function toTransformFunctions(value) {

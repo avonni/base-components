@@ -1,4 +1,4 @@
-import { generateColors } from '../../utilsPrivate/colorUtils'
+import { generateColors } from '../../utilsPrivate/colorUtils';
 import Component from 'base/qrcode';
 
 customElements.define('ac-base-qrcode', Component.CustomElementConstructor);

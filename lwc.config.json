@@ -67,10 +67,6 @@
             "path": "src/modules/base/buttonMenu/buttonMenu.js"
         },
         {
-            "name": "c/buttonNavigation",
-            "path": "src/modules/base/buttonNavigation/buttonNavigation.js"
-        },
-        {
             "name": "c/buttonPopover",
             "path": "src/modules/base/buttonPopover/buttonPopover.js"
         },
@@ -389,10 +385,6 @@
         {
             "name": "base/buttonMenu",
             "path": "src/modules/base/buttonMenu/buttonMenu.js"
-        },
-        {
-            "name": "base/buttonNavigation",
-            "path": "src/modules/base/buttonNavigation/buttonNavigation.js"
         },
         {
             "name": "base/buttonPopover",

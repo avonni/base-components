@@ -57,7 +57,8 @@ export default {
 
 const Template = (args) => Publisher(args);
 const TemplatePublisherWithFigureSlot = (args) => PublisherWithFigureSlot(args);
-const TemplatePublisherWithActionsSlot = (args) => PublisherWithActionsSlot(args);
+const TemplatePublisherWithActionsSlot = (args) =>
+    PublisherWithActionsSlot(args);
 
 export const VariantBase = Template.bind({});
 VariantBase.args = {

@@ -7,13 +7,14 @@ import {
     rgbToHex,
     rgbToHsl,
     rgbToPosition,
-    rgbToHsv,
+    rgbToHsv
 } from './colorUtil';
 
-const i18n = { 
+const i18n = {
     bInput: 'B',
     blueAbbr: 'Blue',
-    colorPickerInstructions: 'Use arrow keys to select a saturation and brightness, on an x and y axis.',
+    colorPickerInstructions:
+        'Use arrow keys to select a saturation and brightness, on an x and y axis.',
     errorMessage: 'Enter a valid hexadecimal value.',
     gInput: 'G',
     greenAbbr: 'Green',
@@ -30,7 +31,7 @@ export default class ColorPickerCustom extends LightningElement {
     _rgb = {
         red: '86',
         green: '121',
-        blue: '192',
+        blue: '192'
     };
     _hex = '#5679C0';
     _errorMessage = null;
@@ -120,7 +121,7 @@ export default class ColorPickerCustom extends LightningElement {
                 bubbles: true,
                 composed: true,
                 cancelable: true,
-                detail: { color: event.target.innerText },
+                detail: { color: event.target.innerText }
             })
         );
     }
@@ -196,7 +197,7 @@ export default class ColorPickerCustom extends LightningElement {
         } else {
             event.srcElement.classList.add('slds-has-error');
             this._errorMessage = getErrorMessage(event.srcElement.validity, {
-                patternMismatch: this.i18n.errorMessage,
+                patternMismatch: this.i18n.errorMessage
             });
         }
     }
@@ -215,7 +216,7 @@ export default class ColorPickerCustom extends LightningElement {
                 bubbles: true,
                 composed: true,
                 cancelable: true,
-                detail: { color: selectedColor },
+                detail: { color: selectedColor }
             })
         );
     }
@@ -398,7 +399,7 @@ export default class ColorPickerCustom extends LightningElement {
         const rgb = {
             red: imageData[0],
             green: imageData[1],
-            blue: imageData[2],
+            blue: imageData[2]
         };
         const color = `#${rgbToHex(rgb)}`;
         this._rgb = rgb;

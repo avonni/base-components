@@ -5,7 +5,6 @@ import { classSet } from 'c/utils';
 const validVariants = ['base', 'comment'];
 
 export default class Publisher extends LightningElement {
-    
     @api placeholder;
     @api buttonLabel;
     @api submitAction;
