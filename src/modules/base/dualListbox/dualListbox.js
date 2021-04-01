@@ -113,7 +113,7 @@ export default class DualListbox extends LightningElement {
 
     @api
     get messageWhenRangeOverflow() {
-        return this._messageWhenRangeOverflow || this._overflowMessage;
+        return this._messageWhenRangeOverflow;
     }
 
     set messageWhenRangeOverflow(message) {
@@ -122,7 +122,7 @@ export default class DualListbox extends LightningElement {
 
     @api
     get messageWhenRangeUnderflow() {
-        return this._messageWhenRangeUnderflow || this._underflowMessage;
+        return this._messageWhenRangeUnderflow;
     }
 
     set messageWhenRangeUnderflow(message) {
