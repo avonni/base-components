@@ -425,6 +425,18 @@ export default class DualListbox extends LightningElement {
             .toString();
     }
 
+    get computedSearchEngineClass() {
+        return classSet('slds-p-around_small')
+            .add({
+                'avonni-dual-listbox-search-engine-padding-around_x-small':
+                    this.variant === 'label-inline' ||
+                    this.variant === 'label-stacked',
+                'avonni-dual-listbox-search-engine-padding-left_x-small':
+                    this.variant === 'label-inline'
+            })
+            .toString();
+    }
+
     get computedLockAssistiveText() {
         return formatLabel(
             this.i18n.optionLockAssistiveText,

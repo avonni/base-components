@@ -1,0 +1,7 @@
+.avonni-dual-listbox-search-engine-padding-around_x-small {
+    padding: var(--lwc-spacingXSmall, 0.5rem) !important;
+}
+
+.avonni-dual-listbox-search-engine-padding-left_x-small {
+    padding-left: var(--lwc-spacingXSmall, 0.5rem) !important;
+}
