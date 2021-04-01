@@ -10,12 +10,11 @@ const VARIANTS = ['horizontal', 'vertical'];
 const THEMES = ['default', 'shade', 'inverse'];
 const POSITIONS = ['top', 'bottom'];
 
-// QUESTIONS:
-// Code duplication in group HTML because of display switch depending on presence of items.
-// => Other option would be to add a disable option to summary? Option would show a gray icon? Remove icon?
-
 // TODO:
-// Vertical variant
+// Add hide-icon in summary-detail
+// Add avatar to groups with children
+// Change buttons variant according to themes
+// Check button menu alignment
 // Accessibility (add a hidden button for clickable items?).
 
 export default class RelationshipGraph extends LightningElement {
@@ -30,6 +29,7 @@ export default class RelationshipGraph extends LightningElement {
 
     processedGroups;
     selectedItemPosition;
+    inlineHeader;
 
     _variant;
     _selectedItemName;
@@ -42,10 +42,14 @@ export default class RelationshipGraph extends LightningElement {
 
     connectedCallback() {
         this.updateSelection();
+
+        if (this.variant === 'vertical') {
+            this.inlineHeader = true;
+        }
     }
 
     renderedCallback() {
-        this.updateVerticalLine();
+        this.updateLine();
     }
 
     @api
@@ -128,26 +132,67 @@ export default class RelationshipGraph extends LightningElement {
         return this.avatarSrc || this.avatarFallbackIconName;
     }
 
-    get wrapperClass() {
-        return classSet('slds-m-left_medium').add({
-            'slds-grid': this._variant === 'horizontal'
-        });
-    }
-
     get childLevel() {
         return this.template.querySelector(
             'c-primitive-relationship-graph-level'
         );
     }
 
-    updateVerticalLine() {
-        const line = this.template.querySelector(
-            '.avonni-relationship-graph__line'
-        );
-        const currentLevel = this.childLevel;
-        const height = currentLevel.currentLevelHeight;
+    get wrapperClass() {
+        return classSet('').add({
+            'slds-grid': this.variant === 'horizontal',
+            'slds-m-left_medium': this.variant === 'horizontal'
+        });
+    }
 
-        line.setAttribute('style', `height: calc(${height}px + 1.5rem);`);
+    get headerClass() {
+        const { variant, groupTheme } = this;
+        return classSet('slds-show_inline-block').add({
+            'slds-box': variant === 'vertical',
+            group: variant === 'vertical',
+            'slds-theme_shade':
+                variant === 'vertical' && groupTheme === 'shade',
+            'slds-theme_inverse':
+                variant === 'vertical' && groupTheme === 'inverse',
+            'slds-theme_default':
+                variant === 'vertical' && groupTheme === 'default',
+            'slds-text-align_center': variant === 'vertical',
+            'slds-m-bottom_medium': variant === 'horizontal'
+        });
+    }
+
+    get actionsClass() {
+        return classSet('slds-is-relative actions').add({
+            actions_vertical: this.variant === 'vertical',
+            'slds-p-vertical_small': this.variant === 'horizontal',
+            'slds-p-vertical_large': this.variant === 'vertical'
+        });
+    }
+    get actionButtonClass() {
+        return classSet('slds-button slds-button_neutral').add({
+            'slds-button_stretch': this.variant === 'vertical',
+            'slds-m-bottom_xx-small': this.variant === 'horizontal'
+        });
+    }
+
+    get lineClass() {
+        return classSet('line').add({
+            line_vertical: this.variant === 'horizontal',
+            'line_horizontal slds-m-bottom_large': this.variant === 'vertical'
+        });
+    }
+
+    updateLine() {
+        const line = this.template.querySelector('.line');
+        const currentLevel = this.childLevel;
+
+        if (this.variant === 'vertical') {
+            const width = currentLevel.offsetWidth;
+            line.setAttribute('style', `width: calc(${width}px - 21rem)`);
+        } else {
+            const height = currentLevel.currentLevelHeight;
+            line.setAttribute('style', `height: calc(${height}px + 1.5rem);`);
+        }
     }
 
     updateSelection() {
@@ -236,6 +281,6 @@ export default class RelationshipGraph extends LightningElement {
     }
 
     handleLevelHeightChange() {
-        this.updateVerticalLine();
+        this.updateLine();
     }
 }

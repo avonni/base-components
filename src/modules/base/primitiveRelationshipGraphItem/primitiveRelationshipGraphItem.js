@@ -13,6 +13,7 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
     @api hideDefaultActions;
     @api theme;
     @api defaultActions;
+    @api variant;
 
     _customActions;
     wrapperClass;
@@ -49,12 +50,13 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
 
     updateClasses() {
         this.wrapperClass = classSet(
-            'slds-box slds-box_small slds-m-bottom_small slds-is-relative avonni-relationship-graph__item'
+            'slds-box slds-box_small slds-m-bottom_small slds-is-relative item'
         ).add({
-            'avonni-relationship-graph__item_has-groups': this.groups,
-            'avonni-relationship-graph__item_has-children': this.hasChildren,
-            'avonni-relationship-graph__item_is-selected': this.selected,
-            'avonni-relationship-graph__item_is-active': this.activeSelection,
+            'item_has-groups': this.groups,
+            'item_has-children': this.hasChildren,
+            'item_is-selected': this.selected,
+            'item_is-active': this.activeSelection,
+            item_horizontal: this.variant === 'horizontal',
             'slds-theme_shade slds-text-color_default': this.theme === 'shade',
             'slds-theme_inverse': this.theme === 'inverse',
             'slds-theme_default': this.theme === 'default'

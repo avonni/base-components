@@ -1,14 +1,13 @@
-.avonni-relationship-graph__group {
+.group {
     width: var(--lwc-sizeMedium, 20rem);
-    position: relative;
+    z-index: 1;
 }
 
-.avonni-relationship-graph__group-title {
+.group-title {
     font-size: 0.875rem;
 }
 
-/* Horizontal line */
-.avonni-relationship-graph__group::before {
+.group_horizontal::before {
     content: '';
     height: 2px;
     background-color: var(--avonni-c-relationship-graph-line-color, #dddbda);
@@ -18,7 +17,29 @@
     top: calc(1.5rem - 2px);
 }
 
-.avonni-relationship-graph__group_active::before {
+.group_vertical::before {
+    content: '';
+    width: 2px;
+    background-color: var(--avonni-c-relationship-graph-line-color, #dddbda);
+    height: calc(1.5rem + 2px);
+    position: absolute;
+    left: 10rem;
+    top: calc(-1.5rem - 2px);
+}
+
+.group_vertical.group_selected::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    bottom: calc(-1.5rem - 2px);
+    top: 2rem;
+    left: 10rem;
+    width: 2px;
+    background-color: var(--avonni-c-relationship-graph-line-color, #dddbda);
+}
+
+.group_active-child::before,
+.group_vertical.group_selected.group_active-parent::after {
     background-color: var(
         --avonni-c-relationship-graph-selected-line-color,
         #0070d2

@@ -13,6 +13,7 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
     @api expandIconName;
     @api activeGroups;
     @api hideItemsCount;
+    @api activeSelection;
 
     _groups;
     _selectedGroups;
@@ -24,7 +25,7 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
     }
 
     renderedCallback() {
-        this.updateVerticalLine();
+        this.updateLine();
     }
 
     @api
@@ -58,10 +59,13 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
         return currentLevelHeight - lastGroupHeight;
     }
 
+    @api
+    get currentLevelWidth() {
+        return this.currentLevel.getBoundingClientRect().width;
+    }
+
     get currentLevel() {
-        return this.template.querySelector(
-            '.avonni-relationship-graph__current-level'
-        );
+        return this.template.querySelector('.current-level');
     }
 
     get childLevel() {
@@ -71,22 +75,30 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
     }
 
     get wrapperClass() {
-        return this.variant === 'horizontal' && 'slds-grid';
-    }
-
-    get currentLevelClass() {
-        return classSet(
-            'avonni-relationship-graph__current-level slds-m-left_x-large'
-        ).add({
-            'slds-grid': this.variant === 'vertical'
+        return classSet('').add({
+            'slds-grid': this.variant === 'horizontal',
+            'slds-show_inline-block': this.variant === 'vertical'
         });
     }
 
+    get currentLevelClass() {
+        return classSet('current-level').add({
+            'slds-grid': this.variant === 'vertical',
+            'slds-m-left_x-large': this.variant === 'horizontal'
+        });
+    }
+
+    get currentLevelWrapperClass() {
+        return this.variant === 'vertical'
+            ? 'slds-show_inline-block'
+            : undefined;
+    }
+
     get lineClass() {
-        return classSet(
-            'avonni-relationship-graph__line slds-m-left_x-large'
-        ).add({
-            'avonni-relationship-graph__line_active': this.containsActiveItem
+        return classSet('line').add({
+            line_active: this.containsActiveItem,
+            line_horizontal: this.variant === 'vertical',
+            'slds-m-left_x-large line_vertical': this.variant === 'horizontal'
         });
     }
 
@@ -111,35 +123,69 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
         return selectedItem;
     }
 
-    updateVerticalLine() {
+    get selectedGroupComponent() {
+        const groups = this.template.querySelectorAll(
+            'c-primitive-relationship-graph-group'
+        );
+
+        let selectedGroup;
+        groups.forEach((group) => {
+            const selection = group.selected;
+            if (selection) selectedGroup = group;
+        });
+        return selectedGroup;
+    }
+
+    updateLine() {
         // Get the DOM elements
         const selectedItem = this.selectedItemComponent;
+        const selectedGroup = this.selectedGroupComponent;
         const child = this.childLevel;
         const currentLevel = this.currentLevel;
-        const line = this.template.querySelector(
-            '.avonni-relationship-graph__line'
-        );
+        const line = this.template.querySelector('.line');
 
         if (!selectedItem || !child) return;
 
-        // Calculate the heights
-        const currentLevelTop =
-            currentLevel.getBoundingClientRect().top + window.scrollY;
-        const scroll = window.pageYOffset;
-        const itemPosition = selectedItem.getBoundingClientRect();
-        const itemHeight =
-            itemPosition.top +
-            itemPosition.height / 2 +
-            scroll -
-            currentLevelTop;
-        const childHeight = child.currentLevelHeight;
+        // Vertical variant: calculate width
+        if (this.variant === 'vertical') {
+            const scroll = window.pageXOffset;
+            const childPosition = child.getBoundingClientRect();
+            const groupPosition = selectedGroup.getBoundingClientRect();
 
-        // Set the line height to the biggest height option
-        const height =
-            itemHeight > childHeight
-                ? `calc(${itemHeight}px - 1.5rem)`
-                : `${childHeight}px`;
-        line.setAttribute('style', `height: ${height};`);
+            // Distance between the center of the selected group and the center of the first child group
+            const groupWidth =
+                groupPosition.right -
+                childPosition.left -
+                groupPosition.width -
+                scroll * 2;
+            // Distance between the center of the two boundary child groups
+            const childWidth = child.currentLevelWidth - groupPosition.width;
+
+            const width = childWidth > groupWidth ? childWidth : groupWidth;
+            line.setAttribute('style', `width: ${width}px;`);
+
+            // Horizontal variant: calculate height
+        } else {
+            const scroll = window.pageYOffset;
+            const currentLevelTop =
+                currentLevel.getBoundingClientRect().top + scroll;
+            const itemPosition = selectedItem.getBoundingClientRect();
+
+            // Distance between the center of the selected item and the top of the first child group
+            const itemHeight =
+                itemPosition.top +
+                itemPosition.height / 2 +
+                scroll -
+                currentLevelTop;
+            // Distance between the top of the two boundary child groups
+            const childHeight = child.currentLevelHeight;
+
+            const height =
+                itemHeight > childHeight
+                    ? `calc(${itemHeight}px - 1.5rem)`
+                    : `${childHeight}px`;
+            line.setAttribute('style', `height: ${height};`);
+        }
     }
 
     updateSelection() {
@@ -188,7 +234,7 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
     }
 
     handleGroupHeightChange() {
-        this.updateVerticalLine();
+        this.updateLine();
 
         this.dispatchEvent(new CustomEvent('heightchange'));
     }

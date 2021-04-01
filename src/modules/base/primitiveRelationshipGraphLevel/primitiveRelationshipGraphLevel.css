@@ -1,11 +1,15 @@
-/* Vertical line */
-.avonni-relationship-graph__line {
+.line_vertical {
     border-right: 2px solid
         var(--avonni-c-relationship-graph-line-color, #dddbda);
     margin-top: var(--lwc-spacingLarge, 1.5rem);
 }
-.avonni-relationship-graph__line_active {
-    border-right-color: var(
+.line_horizontal {
+    border-bottom: 2px solid
+        var(--avonni-c-relationship-graph-line-color, #dddbda);
+    margin: var(--lwc-spacingLarge, 1.5rem) 10rem;
+}
+.line_active {
+    border-color: var(
         --avonni-c-relationship-graph-selected-line-color,
         #0070d2
     );

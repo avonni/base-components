@@ -47,7 +47,8 @@ export default {
         },
         variant: {
             control: {
-                type: 'text'
+                type: 'radio',
+                options: ['vertical', 'horizontal']
             },
             description: 'Valid values include horizontal, vertical.',
             defaultValue: 'horizontal',
@@ -204,8 +205,8 @@ Base.args = {
     actions: actions,
     groups: groups,
     groupActions: groupActions,
-    itemActions: itemActions,
-    selectedItemName: 'symonds-household'
+    itemActions: itemActions
+    // selectedItemName: 'symonds-household'
 };
 
 export const Vertical = Template.bind({});
@@ -213,7 +214,9 @@ Vertical.args = {
     label: 'Root label',
     avatarFallbackIconName: 'standard:user',
     groups: groups,
+    actions: actions,
     groupActions: groupActions,
     itemActions: itemActions,
-    variant: 'vertical'
+    variant: 'vertical',
+    selectedItemName: 'mary-james'
 };

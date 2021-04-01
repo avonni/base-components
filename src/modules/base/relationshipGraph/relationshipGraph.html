@@ -1,7 +1,7 @@
 <template>
     <!-- Root avatar / title -->
-    <div class="slds-m-bottom_medium">
-        <c-media-object vertical-align="center">
+    <div class={headerClass}>
+        <c-media-object vertical-align="center" inline={inlineHeader}>
             <c-avatar
                 if:true={hasAvatar}
                 slot="figure"
@@ -17,25 +17,30 @@
         </c-media-object>
     </div>
 
-    <div
-        if:true={actions}
-        class="slds-is-relative slds-p-vertical_small avonni-relationship-graph__actions"
-    >
+    <div if:true={actions} class={actionsClass}>
         <template for:each={actions} for:item="action">
-            <div key={action.name} class="slds-m-bottom_xx-small">
-                <lightning-button
-                    label={action.label}
-                    icon-name={action.iconName}
+            <div key={action.name}>
+                <button
+                    name={action.name}
+                    class={actionButtonClass}
                     disabled={action.disabled}
                     onclick={handleActionClick}
                     value={action.name}
-                ></lightning-button>
+                >
+                    <lightning-icon
+                        if:true={action.iconName}
+                        icon-name={action.iconName}
+                        class="slds-current-color slds-m-right_x-small"
+                        size="xx-small"
+                    ></lightning-icon>
+                    {action.label}
+                </button>
             </div>
         </template>
     </div>
 
     <div class={wrapperClass}>
-        <div class="avonni-relationship-graph__line"></div>
+        <div class={lineClass}></div>
 
         <!-- Levels -->
         <c-primitive-relationship-graph-level

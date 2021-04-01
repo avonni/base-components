@@ -1,8 +1,8 @@
 <template>
     <div class={wrapperClass}>
         <!-- Current level -->
-        <div>
-            <!-- Nested div necessary to calculate the level height -->
+        <div class={currentLevelWrapperClass}>
+            <!-- Nested div necessary to calculate the level height/width -->
             <div class={currentLevelClass}>
                 <template for:each={groups} for:item="group">
                     <c-primitive-relationship-graph-group
@@ -20,15 +20,18 @@
                         expanded={group.expanded}
                         hide-default-actions={group.hideDefaultActions}
                         custom-actions={group.actions}
+                        selected={group.selected}
                         shrink-icon-name={shrinkIconName}
                         expand-icon-name={expandIconName}
-                        active={activeGroups}
+                        active-child={activeGroups}
+                        variant={variant}
                         default-actions={groupActions}
                         actions-position={groupActionsPosition}
                         theme={groupTheme}
                         item-actions={itemActions}
                         item-theme={itemTheme}
                         hide-items-count={hideItemsCount}
+                        class="slds-is-relative"
                     ></c-primitive-relationship-graph-group>
                 </template>
             </div>

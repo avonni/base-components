@@ -10,7 +10,7 @@
                 src={avatarSrc}
                 hide-avatar-details="true"
             ></c-avatar>
-            <h2 class="slds-truncate avonni-relationship-graph__group-title">
+            <h2 class="slds-truncate group-title">
                 <a if:true={href} href={href}>{title}</a>
                 <span if:false={href}>{title}</span>
             </h2>
@@ -96,10 +96,7 @@
             ontoggle={handleToggle}
             closed={closed}
         >
-            <h2
-                class="slds-truncate avonni-relationship-graph__group-title"
-                slot="title"
-            >
+            <h2 class="slds-truncate group-title" slot="title">
                 <a if:true={href} href={href}>{title}</a>
                 <span if:false={href}>{title}</span>
             </h2>
@@ -165,6 +162,7 @@
                         active-selection={item.activeSelection}
                         theme={itemTheme}
                         default-actions={itemActions}
+                        variant={variant}
                     ></c-primitive-relationship-graph-item>
                 </template>
             </template>

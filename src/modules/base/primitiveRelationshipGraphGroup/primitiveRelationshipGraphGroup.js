@@ -12,15 +12,18 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     @api expanded;
     @api defaultActions;
     @api hideDefaultActions;
+    @api selected;
     @api shrinkIconName;
     @api expandIconName;
-    @api active;
+    @api activeChild;
     @api actionsPosition;
     @api theme;
     @api itemActions;
     @api itemTheme;
     @api hideItemsCount;
+    @api variant;
 
+    _hasSelectedChildren;
     _closed;
     _expanded;
     _customActions;
@@ -45,9 +48,7 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
 
     @api
     get height() {
-        const group = this.template.querySelector(
-            '.avonni-relationship-graph__group'
-        );
+        const group = this.template.querySelector('.group');
         return group.offsetHeight;
     }
 
@@ -74,14 +75,35 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
         return this.avatarSrc || this.avatarFallbackIconName;
     }
 
+    get activeParent() {
+        return this.items && this.items.find((item) => item.activeSelection);
+    }
+
+    get hasSelectedChildren() {
+        if (this._hasSelectedChildren !== undefined) {
+            return this._hasSelectedChildren;
+        }
+        const selectedItem =
+            this.items && this.items.find((item) => item.selected);
+        return selectedItem && selectedItem.groups && true;
+    }
+    set hasSelectedChildren(value) {
+        this._hasSelectedChildren = value;
+    }
+
     get wrapperClass() {
         return classSet(
-            'slds-p-around_medium slds-m-bottom_medium avonni-relationship-graph__group slds-box'
+            'slds-p-around_medium slds-m-bottom_medium group slds-box'
         ).add({
-            'avonni-relationship-graph__group_active': this.active,
+            'group_active-child': this.activeChild,
+            'group_active-parent': !this.closed && this.activeParent,
+            group_selected: this.selected && this.hasSelectedChildren,
             'slds-theme_shade': this.theme === 'shade',
             'slds-theme_inverse': this.theme === 'inverse',
-            'slds-theme_default': this.theme === 'default'
+            'slds-theme_default': this.theme === 'default',
+            'group_horizontal slds-is-relative': this.variant === 'horizontal',
+            group_vertical: this.variant === 'vertical',
+            'slds-m-right_medium': this.variant === 'vertical'
         });
     }
 
@@ -112,6 +134,7 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     };
 
     handleSelect(event) {
+        this._hasSelectedChildren = undefined;
         this.dispatchEvent(
             new CustomEvent('select', {
                 detail: {
@@ -122,9 +145,11 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     }
 
     handleToggle(event) {
-        // Wait for the group to rerender to send the height change
         this.asyncSetClosed(!this.closed).then(() => {
-            this.dispatchEvent(new CustomEvent('heightchange'));
+            // Wait for the group to rerender to send the height change
+            if (this.variant === 'horizontal') {
+                this.dispatchEvent(new CustomEvent('heightchange'));
+            }
         });
 
         if (!this.selectedItemComponent) return;
@@ -132,6 +157,7 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
         const closed = event.detail.closed;
         if (closed) {
             this.dispatchEvent(new CustomEvent('closeactivegroup'));
+            this._hasSelectedChildren = false;
         } else {
             // When reopening the group, make sure the items are unselected
             this.selectedItemComponent.activeSelection = false;
