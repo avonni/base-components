@@ -225,6 +225,48 @@ export default class DualListbox extends LightningElement {
     }
 
     @api
+    get addButtonLabel() {
+        if (this._addButtonLabel) {
+            return this._addButtonLabel;
+        }
+        return this.getRightButtonAssistiveText();
+    }
+
+    set addButtonLabel(value) {
+        this._addButtonLabel = value;
+    }
+
+    @api
+    get removeButtonLabel() {
+        if (this._removeButtonLabel) {
+            return this._removeButtonLabel;
+        }
+        return this.getLeftButtonAssistiveText();
+    }
+
+    set removeButtonLabel(value) {
+        this._removeButtonLabel = value;
+    }
+
+    @api
+    get upButtonLabel() {
+        return this._upButtonLabel || this.i18n.upButtonAssistiveText;
+    }
+
+    set upButtonLabel(value) {
+        this._upButtonLabel = value;
+    }
+
+    @api
+    get downButtonLabel() {
+        return this._downButtonLabel || this.i18n.downButtonAssistiveText;
+    }
+
+    set downButtonLabel(value) {
+        this._downButtonLabel = value;
+    }
+
+    @api
     focus() {
         const firstOption = this.template.querySelector(`div[data-index='0']`);
         if (firstOption) {
@@ -444,50 +486,8 @@ export default class DualListbox extends LightningElement {
         );
     }
 
-    @api
-    get addButtonLabel() {
-        if (this._addButtonLabel) {
-            return this._addButtonLabel;
-        }
-        return this.getRightButtonAssistiveText();
-    }
-
-    set addButtonLabel(value) {
-        this._addButtonLabel = value;
-    }
-
     getLeftButtonAssistiveText() {
         return formatLabel(i18n.moveSelectionToAssistiveText, this.sourceLabel);
-    }
-
-    @api
-    get removeButtonLabel() {
-        if (this._removeButtonLabel) {
-            return this._removeButtonLabel;
-        }
-        return this.getLeftButtonAssistiveText();
-    }
-
-    set removeButtonLabel(value) {
-        this._removeButtonLabel = value;
-    }
-
-    @api
-    get upButtonLabel() {
-        return this._upButtonLabel || this.i18n.upButtonAssistiveText;
-    }
-
-    set upButtonLabel(value) {
-        this._upButtonLabel = value;
-    }
-
-    @api
-    get downButtonLabel() {
-        return this._downButtonLabel || this.i18n.downButtonAssistiveText;
-    }
-
-    set downButtonLabel(value) {
-        this._downButtonLabel = value;
     }
 
     get moveButtonsDisabled() {
