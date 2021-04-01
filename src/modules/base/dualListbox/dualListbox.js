@@ -413,7 +413,7 @@ export default class DualListbox extends LightningElement {
     computeOptionProperties(option, focusableValue) {
         const isSelected = this.highlightedOptions.indexOf(option.value) > -1;
         const classList = classSet(
-            'slds-listbox__option slds-listbox__option_plain slds-media slds-media_small slds-media_inline'
+            'slds-listbox__option slds-listbox__option_plain slds-media slds-media_small slds-media_center slds-media_inline'
         )
             .add({ 'slds-is-selected': isSelected })
             .toString();

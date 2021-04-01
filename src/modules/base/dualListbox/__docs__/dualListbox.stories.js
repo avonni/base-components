@@ -285,38 +285,197 @@ export default {
     }
 };
 
+const LanguagesOptions = [
+    {
+        value: 'fr',
+        label: 'French'
+    },
+    {
+        value: 'en',
+        label: 'English'
+    },
+    {
+        value: 'es',
+        label: 'Spanish'
+    },
+    {
+        value: 'de',
+        label: 'German'
+    },
+    {
+        value: 'it',
+        label: 'Italian'
+    },
+    {
+        value: 'ja',
+        label: 'Japanese'
+    },
+    {
+        value: 'hi',
+        label: 'Hindi'
+    },
+    {
+        value: 'md',
+        label: 'Mandarin'
+    }
+];
+
 const OptionsWithAvatar = [
     {
         value: '1',
-        label: 'option 1',
-        avatarFallbackIconName: 'standard:account'
+        label: 'Jobs',
+        avatarFallbackIconName: 'custom:custom91'
     },
     {
         value: '2',
-        label: 'option 2',
-        avatarFallbackIconName: 'standard:address'
+        label: 'Leads & Referrals',
+        avatarFallbackIconName: 'standard:lead'
     },
     {
         value: '3',
-        label: 'option 3',
+        label: 'Legal Entities',
+        avatarFallbackIconName: 'custom:custom87'
+    },
+    {
+        value: '4',
+        label: 'Contacts',
+        avatarFallbackIconName: 'standard:contact'
+    },
+    {
+        value: '5',
+        label: 'Cases',
+        avatarFallbackIconName: 'standard:case'
+    },
+    {
+        value: '6',
+        label: 'Accounts',
+        avatarFallbackIconName: 'standard:account'
+    },
+    {
+        value: '7',
+        label: 'Reports',
+        avatarFallbackIconName: 'standard:report'
+    },
+    {
+        value: '8',
+        label: 'Knowledge',
+        avatarFallbackIconName: 'standard:knowledge'
+    },
+    {
+        value: '9',
+        label: 'List Emails',
+        avatarFallbackIconName: 'standard:list_email'
+    },
+    {
+        value: '10',
+        label: 'Dashboards',
+        avatarFallbackIconName: 'standard:dashboard'
+    }
+];
+
+const OptionsWithAvatarSrc = [
+    {
+        value: '1',
+        label: 'Carl Smith',
+        avatarSrc:
+            'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
+    },
+    {
+        value: '2',
+        label: 'Suzan White',
         avatarSrc:
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
     },
     {
+        value: '3',
+        label: 'Philipp Johnson',
+        avatarSrc:
+            'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg'
+    },
+    {
         value: '4',
-        label: 'option 4',
-        avatarInitials: 'JD',
-        avatarFallbackIconName: 'standard:address',
-        avatarVariant: 'circle'
+        label: 'Miles Williams',
+        avatarSrc:
+            'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
     },
     {
         value: '5',
-        label: 'option 5',
-        avatarFallbackIconName: 'standard:account'
+        label: 'Jane Doe',
+        avatarFallbackIconName: 'standard:account',
+        avatarInitials: 'JD'
     },
     {
         value: '6',
-        label: 'option 6'
+        label: 'Gina Garcia',
+        avatarSrc:
+            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+    },
+    {
+        value: '7',
+        label: 'John Smith',
+        avatarFallbackIconName: 'standard:address',
+        avatarInitials: 'JS'
+    },
+    {
+        value: '8',
+        label: 'Xavier Anderson',
+        avatarSrc:
+            'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg'
+    },
+    {
+        value: '9',
+        label: 'James Jackson',
+        avatarSrc:
+            'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
+    },
+    {
+        value: '10',
+        label: 'Diane Wilson',
+        avatarSrc:
+            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+    }
+];
+
+const Options = [
+    {
+        value: '1',
+        label: 'Option 1'
+    },
+    {
+        value: '2',
+        label: 'Option 2'
+    },
+    {
+        value: '3',
+        label: 'Option 3'
+    },
+    {
+        value: '4',
+        label: 'Option 4'
+    },
+    {
+        value: '5',
+        label: 'Option 5'
+    },
+    {
+        value: '6',
+        label: 'Option 6'
+    },
+    {
+        value: '7',
+        label: 'Option 7'
+    },
+    {
+        value: '8',
+        label: 'Option 8'
+    },
+    {
+        value: '9',
+        label: 'Option 9'
+    },
+    {
+        value: '10',
+        label: 'Option 10'
     }
 ];
 
@@ -324,10 +483,72 @@ const Template = (args) => DualListbox(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    label: 'Label',
-    fieldLevelHelp: 'This is a label',
-    sourceLabel: 'Source Label',
-    selectedLabel: 'Selected Label',
+    label: 'Select Options',
+    fieldLevelHelp: 'This is a Dual Listbox',
+    sourceLabel: 'Available Items',
+    selectedLabel: 'Selected Items',
+    addButtonLabel: 'Add Button Label',
+    removeButtonLabel: 'Remove Button Label',
+    downButtonLabel: 'Down Button Label',
+    upButtonLabel: 'Up Button Label',
+    options: Options,
+    value: ['2', '3']
+};
+
+export const BaseDisabled = Template.bind({});
+BaseDisabled.args = {
+    label: 'Select Options',
+    fieldLevelHelp: 'This is a Dual Listbox',
+    disabled: true,
+    sourceLabel: 'Available Items',
+    selectedLabel: 'Selected Items',
+    addButtonLabel: 'Add Button Label',
+    removeButtonLabel: 'Remove Button Label',
+    downButtonLabel: 'Down Button Label',
+    upButtonLabel: 'Up Button Label',
+    options: Options,
+    value: ['2', '3']
+};
+
+export const BaseLoading = Template.bind({});
+BaseLoading.args = {
+    label: 'Select Options',
+    fieldLevelHelp: 'This is a Dual Listbox',
+    sourceLabel: 'Available Items',
+    selectedLabel: 'Selected Items',
+    addButtonLabel: 'Add Button Label',
+    removeButtonLabel: 'Remove Button Label',
+    downButtonLabel: 'Down Button Label',
+    upButtonLabel: 'Up Button Label',
+    showActivityIndicator: true,
+    options: Options,
+    value: ['2', '3']
+};
+
+export const BaseWithMaximumMinimum = Template.bind({});
+BaseWithMaximumMinimum.args = {
+    label: 'Select Options (at least 3 and at most 8)',
+    fieldLevelHelp: 'This is a Dual Listbox',
+    sourceLabel: 'Available Items',
+    selectedLabel: 'Selected Items',
+    addButtonLabel: 'Add Button Label',
+    removeButtonLabel: 'Remove Button Label',
+    downButtonLabel: 'Down Button Label',
+    upButtonLabel: 'Up Button Label',
+    required: true,
+    max: '8',
+    min: '3',
+    options: Options,
+    requiredOptions: ['1'],
+    value: ['2', '3']
+};
+
+export const BaseWithAvatar = Template.bind({});
+BaseWithAvatar.args = {
+    label: 'Select Items',
+    fieldLevelHelp: 'This is a Dual Listbox',
+    sourceLabel: 'Available Items',
+    selectedLabel: 'Selected Items',
     addButtonLabel: 'Add Button Label',
     removeButtonLabel: 'Remove Button Label',
     downButtonLabel: 'Down Button Label',
@@ -336,4 +557,112 @@ Base.args = {
     required: true,
     requiredOptions: ['1'],
     value: ['2', '3']
+};
+
+export const BaseWithAvatarReorderingDisabled = Template.bind({});
+BaseWithAvatarReorderingDisabled.args = {
+    label: 'Select Items',
+    disableReordering: true,
+    fieldLevelHelp: 'This is a Dual Listbox',
+    sourceLabel: 'Available Items',
+    selectedLabel: 'Selected Items',
+    addButtonLabel: 'Add Button Label',
+    removeButtonLabel: 'Remove Button Label',
+    downButtonLabel: 'Down Button Label',
+    upButtonLabel: 'Up Button Label',
+    options: OptionsWithAvatar,
+    required: true,
+    requiredOptions: ['1'],
+    value: ['2', '3']
+};
+
+export const BaseWithAvatarLabelHidden = Template.bind({});
+BaseWithAvatarLabelHidden.args = {
+    label: 'Select Items',
+    sourceLabel: 'Available Items',
+    selectedLabel: 'Selected Items',
+    addButtonLabel: 'Add Button Label',
+    removeButtonLabel: 'Remove Button Label',
+    downButtonLabel: 'Down Button Label',
+    upButtonLabel: 'Up Button Label',
+    options: OptionsWithAvatar,
+    required: true,
+    requiredOptions: ['1'],
+    value: ['2', '3'],
+    variant: 'label-hidden'
+};
+
+export const BaseWithAvatarSize10 = Template.bind({});
+BaseWithAvatarSize10.args = {
+    label: 'Select Items',
+    sourceLabel: 'Available Items',
+    selectedLabel: 'Selected Items',
+    addButtonLabel: 'Add Button Label',
+    removeButtonLabel: 'Remove Button Label',
+    downButtonLabel: 'Down Button Label',
+    upButtonLabel: 'Up Button Label',
+    options: OptionsWithAvatar,
+    required: true,
+    requiredOptions: ['1'],
+    size: '10',
+    value: ['2', '3']
+};
+
+export const BaseWithAvatarSrcSize6 = Template.bind({});
+BaseWithAvatarSrcSize6.args = {
+    label: 'Invitations',
+    sourceLabel: 'Available',
+    selectedLabel: 'Invited',
+    addButtonLabel: 'Add Button Label',
+    removeButtonLabel: 'Remove Button Label',
+    downButtonLabel: 'Down Button Label',
+    upButtonLabel: 'Up Button Label',
+    options: OptionsWithAvatarSrc,
+    requiredOptions: ['1'],
+    size: '6',
+    value: ['2', '3']
+};
+
+export const Languages = Template.bind({});
+Languages.args = {
+    label: 'Languages',
+    fieldLevelHelp: 'Required',
+    sourceLabel: 'Available',
+    selectedLabel: 'Selected',
+    addButtonLabel: 'Add Button Label',
+    removeButtonLabel: 'Remove Button Label',
+    downButtonLabel: 'Down Button Label',
+    upButtonLabel: 'Up Button Label',
+    options: LanguagesOptions,
+    required: true,
+    value: ['en', 'fr']
+};
+
+export const LanguagesWithSearchEngine = Template.bind({});
+LanguagesWithSearchEngine.args = {
+    label: 'Languages',
+    sourceLabel: 'Available',
+    selectedLabel: 'Selected',
+    addButtonLabel: 'Add Button Label',
+    removeButtonLabel: 'Remove Button Label',
+    downButtonLabel: 'Down Button Label',
+    upButtonLabel: 'Up Button Label',
+    options: LanguagesOptions,
+    searchEngine: true,
+    value: ['en', 'fr']
+};
+
+export const LanguagesInline = Template.bind({});
+LanguagesInline.args = {
+    label: 'Languages',
+    fieldLevelHelp: 'Choose a language',
+    sourceLabel: 'Available',
+    selectedLabel: 'Selected',
+    addButtonLabel: 'Add Button Label',
+    removeButtonLabel: 'Remove Button Label',
+    downButtonLabel: 'Down Button Label',
+    upButtonLabel: 'Up Button Label',
+    options: LanguagesOptions,
+    variant: 'label-inline',
+    value: ['en', 'fr']
 };
