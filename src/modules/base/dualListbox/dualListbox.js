@@ -40,7 +40,7 @@ export default class DualListbox extends LightningElement {
     _options = [];
     _showActivityIndicator = false;
     _searchEngine = false;
-    _variant;
+    _variant = VALID_VARIANTS.default;
     _disabled;
     _disableReordering = false;
     _required = false;
