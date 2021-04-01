@@ -285,7 +285,7 @@ export default {
     }
 };
 
-const Options = [
+const OptionsWithAvatar = [
     {
         value: '1',
         label: 'option 1',
@@ -305,7 +305,7 @@ const Options = [
     {
         value: '4',
         label: 'option 4',
-        avatarInitials: 'RAF',
+        avatarInitials: 'JD',
         avatarFallbackIconName: 'standard:address',
         avatarVariant: 'circle'
     },
@@ -332,7 +332,7 @@ Base.args = {
     removeButtonLabel: 'Remove Button Label',
     downButtonLabel: 'Down Button Label',
     upButtonLabel: 'Up Button Label',
-    options: Options,
+    options: OptionsWithAvatar,
     required: true,
     requiredOptions: ['1'],
     value: ['2', '3']

@@ -18,21 +18,12 @@ const VALID_VARIANTS = {
 };
 
 const i18n = {
-    componentAssistiveText: 'labelComponentAssistiveText',
-    downButtonAssistiveText: 'labelDownButtonAssistiveText',
-    maxError: 'labelMaxError',
-    maxHelp: 'labelMaxHelp',
-    minErrorPlural: 'labelMinErrorPlural',
-    minErrorSingular: 'labelMinErrorSingular',
-    minHelp: 'labelMinHelp',
-    minRequiredErrorPlural: 'labelMinRequiredErrorPlural',
-    minRequiredErrorSingular: 'labelMinRequiredErrorSingular',
-    optionLockAssistiveText: 'labelOptionLockAssistiveText',
+    downButtonAssistiveText: 'Down Button AssistiveText',
+    optionLockAssistiveText: 'Option Lock AssistiveText',
     required: 'Required',
     requiredError: 'Value required',
-    requiredOptionError: 'labelRequiredOptionError',
-    upButtonAssistiveText: 'labelUpButtonAssistiveText',
-    moveSelectionToAssistiveText: 'labelMoveSelectionToAssistiveText',
+    upButtonAssistiveText: 'Up Button AssistiveText',
+    moveSelectionToAssistiveText: 'Move Selection To AssistiveText',
     loadingText: 'Loading'
 };
 
@@ -426,13 +417,11 @@ export default class DualListbox extends LightningElement {
     }
 
     get computedSearchEngineClass() {
-        return classSet('slds-p-around_small')
+        return classSet('slds-form-element slds-p-around_small')
             .add({
                 'avonni-dual-listbox-search-engine-padding-around_x-small':
                     this.variant === 'label-inline' ||
-                    this.variant === 'label-stacked',
-                'avonni-dual-listbox-search-engine-padding-left_x-small':
-                    this.variant === 'label-inline'
+                    this.variant === 'label-stacked'
             })
             .toString();
     }
@@ -744,31 +733,6 @@ export default class DualListbox extends LightningElement {
             });
         }
         return this._constraintApi;
-    }
-
-    get _overflowMessage() {
-        const minHelpMsg =
-            this.min > 0 ? formatLabel(this.i18n.minHelp, this.min) : '';
-
-        return formatLabel(this.i18n.maxError, this.max) + minHelpMsg;
-    }
-
-    get _underflowMessage() {
-        const maxHelpMsg = this.max
-            ? formatLabel(this.i18n.maxHelp, this.max)
-            : '';
-        const minRequiredError =
-            this.min > 1
-                ? formatLabel(this.i18n.minRequiredErrorPlural, this.min)
-                : this.i18n.minRequiredErrorSingular;
-        const minError =
-            this.min > 1
-                ? formatLabel(this.i18n.minErrorPlural, this.min)
-                : this.i18n.minErrorSingular;
-
-        return this.required
-            ? minRequiredError + maxHelpMsg
-            : minError + maxHelpMsg;
     }
 
     updateCurrentSelectedList(currentList, isMultiple) {
