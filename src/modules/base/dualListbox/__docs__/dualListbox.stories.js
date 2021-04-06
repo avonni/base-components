@@ -13,6 +13,20 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        buttonSize: {
+            name: 'button-size',
+            control: {
+                type: 'select',
+                options: ['xx-small', 'x-small', 'small', 'medium', 'large']
+            },
+            defaultValue: 'medium',
+            description:
+                'For the bare variant, valid values include x-small, small, medium, and large. For non-bare variants, valid values include xx-small, x-small, small, and medium.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'medium' }
+            }
+        },
         buttonVariant: {
             name: 'button-variant',
             control: {

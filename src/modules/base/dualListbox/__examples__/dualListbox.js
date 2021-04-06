@@ -6,10 +6,13 @@ customElements.define(
 );
 
 export const DualListbox = ({
+    addButtonIconName,
     addButtonLabel,
+    buttonSize,
     buttonVariant,
     disableReordering,
     disabled,
+    downButtonIconName,
     downButtonLabel,
     fieldLevelHelp,
     label,
@@ -20,6 +23,7 @@ export const DualListbox = ({
     messageWhenValueMissing,
     name,
     options,
+    removeButtonIconName,
     removeButtonLabel,
     required,
     requiredOptions,
@@ -28,16 +32,20 @@ export const DualListbox = ({
     showActivityIndicator,
     size,
     sourceLabel,
+    upButtonIconName,
     upButtonLabel,
     validity,
     value,
     variant
 }) => {
     const element = document.createElement('ac-base-dual-listbox');
+    element.addButtonIconName = addButtonIconName;
     element.addButtonLabel = addButtonLabel;
+    element.buttonSize = buttonSize;
     element.buttonVariant = buttonVariant;
     element.disableReordering = disableReordering;
     element.disabled = disabled;
+    element.downButtonIconName = downButtonIconName;
     element.downButtonLabel = downButtonLabel;
     element.fieldLevelHelp = fieldLevelHelp;
     element.label = label;
@@ -48,6 +56,7 @@ export const DualListbox = ({
     element.messageWhenValueMissing = messageWhenValueMissing;
     element.name = name;
     element.options = options;
+    element.removeButtonIconName = removeButtonIconName;
     element.removeButtonLabel = removeButtonLabel;
     element.required = required;
     element.requiredOptions = requiredOptions;
@@ -56,6 +65,7 @@ export const DualListbox = ({
     element.showActivityIndicator = showActivityIndicator;
     element.size = size;
     element.sourceLabel = sourceLabel;
+    element.upButtonIconName = upButtonIconName;
     element.upButtonLabel = upButtonLabel;
     element.validity = validity;
     element.value = value;

@@ -30,6 +30,11 @@ const VALID_BUTTON_VARIANTS = {
     default: 'bare'
 };
 
+const VALID_BUTTON_SIZES = {
+    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+    default: 'medium'
+};
+
 const i18n = {
     downButtonAssistiveText: 'Down Button AssistiveText',
     optionLockAssistiveText: 'Option Lock AssistiveText',
@@ -51,6 +56,7 @@ export default class DualListbox extends LightningElement {
     _requiredOptions = [];
     _selectedValues = [];
     _options = [];
+    _buttonSize = VALID_BUTTON_SIZES.default;
     _buttonVariant = VALID_BUTTON_VARIANTS.default;
     _showActivityIndicator = false;
     _searchEngine = false;
@@ -206,6 +212,18 @@ export default class DualListbox extends LightningElement {
         this._variant = normalizeString(variant, {
             fallbackValue: VALID_VARIANTS.default,
             validValues: VALID_VARIANTS.valid
+        });
+    }
+
+    @api
+    get buttonSize() {
+        return this._buttonSize;
+    }
+
+    set buttonSize(size) {
+        this._buttonSize = normalizeString(size, {
+            fallbackValue: VALID_BUTTON_SIZES.default,
+            validValues: VALID_BUTTON_SIZES.valid
         });
     }
 
