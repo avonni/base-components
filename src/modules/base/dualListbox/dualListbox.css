@@ -17,3 +17,9 @@
 .avonni-dual-listbox-buttons-centered {
     justify-content: center;
 }
+
+.avonni-dual-list-box-option-is-selected.slds-dueling-list__options
+    [aria-selected='true'] {
+    background: #edeceb;
+    color: black;
+}

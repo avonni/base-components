@@ -515,13 +515,17 @@ export default class DualListbox extends LightningElement {
     }
 
     get computedListboxContainerClass() {
-        return classSet('slds-dueling-list__options')
+        return classSet(
+            'slds-dueling-list__options avonni-dual-list-box-option-is-selected'
+        )
             .add({ 'slds-is-disabled': this.disabled })
             .toString();
     }
 
     get computedListboxSelectedContainerClass() {
-        return classSet('slds-dueling-list__options')
+        return classSet(
+            'slds-dueling-list__options avonni-dual-list-box-option-is-selected'
+        )
             .add({ 'slds-is-disabled': this.disabled })
             .add({
                 'avonni-dual-listbox-selected-list-with-search': this
