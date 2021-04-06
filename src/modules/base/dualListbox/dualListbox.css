@@ -13,3 +13,7 @@
 .avonni-dual-listbox-selected-list-with-search {
     margin-top: 3px;
 }
+
+.avonni-dual-listbox-buttons-centered {
+    justify-content: center;
+}
