@@ -118,7 +118,7 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     }
 
     get topActions() {
-        return this.actionsPosition === 'top';
+        return this.actions && this.actionsPosition === 'top';
     }
 
     get closed() {

@@ -11,11 +11,12 @@ const THEMES = ['default', 'shade', 'inverse'];
 const POSITIONS = ['top', 'bottom'];
 
 // TODO:
-// Add hide-icon in summary-detail
-// Add avatar to groups with children
 // Change buttons variant according to themes
 // Check button menu alignment
 // Accessibility (add a hidden button for clickable items?).
+
+// QUESTION:
+// Summary detail: remove body left indentation has no effect when the icon is hidden.
 
 export default class RelationshipGraph extends LightningElement {
     @api label;

@@ -1,146 +1,67 @@
 <template>
     <div class={wrapperClass}>
-        <!-- No items -->
-        <c-media-object if:false={items} slot="title" vertical-align="center">
-            <c-avatar
-                if:true={hasAvatar}
-                slot="figure"
-                alternative-text={label}
-                fallback-icon-name={avatarFallbackIconName}
-                src={avatarSrc}
-                hide-avatar-details="true"
-            ></c-avatar>
-            <h2 class="slds-truncate group-title">
-                <a if:true={href} href={href}>{title}</a>
-                <span if:false={href}>{title}</span>
-            </h2>
-            <!-- Actions -->
-            <template if:true={actions}>
-                <!-- Top actions -->
-                <template if:true={topActions}>
-                    <div slot="figure-inverse">
-                        <template if:true={hasMoreThanOneAction}>
-                            <lightning-button-menu
-                                alternative-text="Show menu"
-                                icon-size="small"
-                                menu-alignment="right"
-                            >
-                                <template for:each={actions} for:item="action">
-                                    <lightning-menu-item
-                                        key={action.name}
-                                        value={action.name}
-                                        label={action.label}
-                                        onclick={handleActionClick}
-                                        disabled={action.disabled}
-                                        prefix-icon-name={action.iconName}
-                                    ></lightning-menu-item>
-                                </template>
-                            </lightning-button-menu>
-                        </template>
-                        <template if:false={hasMoreThanOneAction}>
-                            <template for:each={actions} for:item="action">
-                                <div
-                                    key={action.name}
-                                    class="slds-m-bottom_xx-small"
-                                >
-                                    <lightning-button
-                                        label={action.label}
-                                        icon-name={action.iconName}
-                                        disabled={action.disabled}
-                                        onclick={handleActionClick}
-                                        value={action.name}
-                                    ></lightning-button>
-                                </div>
-                            </template>
-                        </template>
-                    </div>
-                </template>
-
-                <!-- Bottom actions -->
-                <template if:false={topActions}>
-                    <div class="slds-m-top_small">
-                        <template for:each={actions} for:item="action">
-                            <div
-                                key={action.name}
-                                class="slds-m-bottom_xx-small"
-                            >
-                                <button
-                                    name={action.name}
-                                    class="slds-button slds-button_neutral slds-button_stretch"
-                                    disabled={action.disabled}
-                                    onclick={handleActionClick}
-                                    value={action.name}
-                                >
-                                    <lightning-icon
-                                        if:true={action.iconName}
-                                        icon-name={action.iconName}
-                                        class="slds-current-color slds-m-right_x-small"
-                                        size="xx-small"
-                                    ></lightning-icon>
-                                    {action.label}
-                                </button>
-                            </div>
-                        </template>
-                    </div>
-                </template>
-            </template>
-        </c-media-object>
-
-        <!-- Items exist -->
         <c-summary-detail
-            if:true={items}
             full-width="true"
             remove-body-indentation="true"
             shrink-icon-name={shrinkIconName}
             expand-icon-name={expandIconName}
             ontoggle={handleToggle}
             closed={closed}
+            hide-icon={isEmpty}
         >
-            <h2 class="slds-truncate group-title" slot="title">
-                <a if:true={href} href={href}>{title}</a>
-                <span if:false={href}>{title}</span>
-            </h2>
-            <!-- Top actions -->
-            <template if:true={actions}>
-                <template if:true={topActions}>
-                    <div slot="actions">
-                        <template if:true={hasMoreThanOneAction}>
-                            <lightning-button-menu
-                                alternative-text="Show menu"
-                                icon-size="small"
-                                menu-alignment="right"
-                            >
-                                <template for:each={actions} for:item="action">
-                                    <lightning-menu-item
-                                        key={action.name}
-                                        value={action.name}
-                                        label={action.label}
-                                        onclick={handleActionClick}
-                                        disabled={action.disabled}
-                                        prefix-icon-name={action.iconName}
-                                    ></lightning-menu-item>
-                                </template>
-                            </lightning-button-menu>
-                        </template>
-                        <template if:false={hasMoreThanOneAction}>
-                            <template for:each={actions} for:item="action">
-                                <div
-                                    key={action.name}
-                                    class="slds-m-bottom_xx-small"
-                                >
-                                    <lightning-button
-                                        label={action.label}
-                                        icon-name={action.iconName}
-                                        disabled={action.disabled}
-                                        onclick={handleActionClick}
-                                        value={action.name}
-                                    ></lightning-button>
-                                </div>
-                            </template>
-                        </template>
-                    </div>
+            <c-media-object slot="title">
+                <template if:true={hasAvatar}>
+                    <c-avatar
+                        slot="figure"
+                        alternative-text={label}
+                        fallback-icon-name={avatarFallbackIconName}
+                        src={avatarSrc}
+                        hide-avatar-details="true"
+                        size="small"
+                    ></c-avatar>
                 </template>
-            </template>
+                <h2 class="slds-truncate group-title">
+                    <a if:true={href} href={href}>{title}</a>
+                    <span if:false={href}>{title}</span>
+                </h2>
+                <!-- Top actions -->
+                <div slot="figure-inverse" if:true={topActions}>
+                    <template if:true={hasMoreThanOneAction}>
+                        <lightning-button-menu
+                            alternative-text="Show menu"
+                            icon-size="small"
+                            menu-alignment="right"
+                        >
+                            <template for:each={actions} for:item="action">
+                                <lightning-menu-item
+                                    key={action.name}
+                                    value={action.name}
+                                    label={action.label}
+                                    onclick={handleActionClick}
+                                    disabled={action.disabled}
+                                    prefix-icon-name={action.iconName}
+                                ></lightning-menu-item>
+                            </template>
+                        </lightning-button-menu>
+                    </template>
+                    <template if:false={hasMoreThanOneAction}>
+                        <template for:each={actions} for:item="action">
+                            <div
+                                key={action.name}
+                                class="slds-m-bottom_xx-small"
+                            >
+                                <lightning-button
+                                    label={action.label}
+                                    icon-name={action.iconName}
+                                    disabled={action.disabled}
+                                    onclick={handleActionClick}
+                                    value={action.name}
+                                ></lightning-button>
+                            </div>
+                        </template>
+                    </template>
+                </div>
+            </c-media-object>
 
             <!-- Items -->
             <template if:true={items}>

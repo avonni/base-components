@@ -55,7 +55,7 @@ const customItemActions = [
 const groups = [
     {
         // Group
-        label: 'Group Relationships',
+        label: 'Group Relationships with a very long label',
         name: 'group-relationships',
         avatarSrc:
             'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
