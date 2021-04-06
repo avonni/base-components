@@ -17,13 +17,15 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         },
-        collapsable: {
+        collapsible: {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
+            defaultValue: true,
+            description:
+                'If the section is not collapsible, the left icon is hidden.',
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'true' }
             }
         }
     }
@@ -36,15 +38,14 @@ Base.args = {
     title: 'Section'
 };
 
-export const Collapsable = Template.bind({});
-Collapsable.args = {
+export const NonCollapsible = Template.bind({});
+NonCollapsible.args = {
     title: 'Section',
-    collapsable: 'true'
+    collapsible: 'false'
 };
 
-export const CollapsableClosed = Template.bind({});
-CollapsableClosed.args = {
+export const CollapsibleClosed = Template.bind({});
+CollapsibleClosed.args = {
     title: 'Section',
-    closed: 'true',
-    collapsable: 'true'
+    closed: 'true'
 };
