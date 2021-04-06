@@ -93,13 +93,13 @@
                                 </li>
                             </template>
                         </ul>
-                    </div>
-                    <div if:true={isLoading}>
-                        <lightning-spinner
-                            size="small"
-                            class="slds-spinner_container"
-                            alternative-text={i18n.loadingText}
-                        ></lightning-spinner>
+                        <div if:true={isLoading}>
+                            <lightning-spinner
+                                size="small"
+                                class="slds-spinner_container"
+                                alternative-text={i18n.loadingText}
+                            ></lightning-spinner>
+                        </div>
                     </div>
                     <div if:true={showActivityIndicator}>
                         <lightning-spinner
@@ -223,7 +223,7 @@
                             size={buttonSize}
                             variant={buttonVariant}
                             onclick={handleUpButtonClick}
-                            disabled={disabled}
+                            disabled={_upButtonDisabled}
                             title={upButtonLabel}
                             alternative-text={upButtonLabel}
                         >
@@ -233,7 +233,7 @@
                             size={buttonSize}
                             variant={buttonVariant}
                             onclick={handleDownButtonClick}
-                            disabled={disabled}
+                            disabled={_downButtonDisabled}
                             title={downButtonLabel}
                             alternative-text={downButtonLabel}
                         >

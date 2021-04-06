@@ -60,6 +60,8 @@ export default class DualListbox extends LightningElement {
     @api downButtonIconName = DEFAULT_DOWN_BUTTON_ICON_NAME;
     @api removeButtonIconName = DEFAULT_REMOVE_BUTTON_ICON_NAME;
     @api upButtonIconName = DEFAULT_UP_BUTTON_ICON_NAME;
+    _upButtonDisabled = false;
+    _downButtonDisabled = false;
 
     _requiredOptions = [];
     _selectedValues = [];
@@ -113,6 +115,8 @@ export default class DualListbox extends LightningElement {
     renderedCallback() {
         this.assertRequiredAttributes();
         if (this.disabled) {
+            this._upButtonDisabled = true;
+            this._downButtonDisabled = true;
             return;
         }
 
@@ -489,7 +493,7 @@ export default class DualListbox extends LightningElement {
             'slds-dueling-list__column slds-dueling-list__column_responsive'
         )
             .add({
-                'slds-is-relative': this.showActivityIndicator || this.isLoading
+                'slds-is-relative': this.showActivityIndicator
             })
             .toString();
     }
@@ -531,6 +535,9 @@ export default class DualListbox extends LightningElement {
             'slds-dueling-list__options avonni-dual-list-box-option-is-selected'
         )
             .add({ 'slds-is-disabled': this.disabled })
+            .add({
+                'slds-is-relative': this.isLoading
+            })
             .toString();
     }
 
@@ -583,6 +590,7 @@ export default class DualListbox extends LightningElement {
     }
 
     handleOptionClick(event) {
+        const selectedLength = this._selectedValues.length - 1;
         this.interactingState.interacting();
         if (this.disabled) {
             return;
@@ -597,6 +605,22 @@ export default class DualListbox extends LightningElement {
             selectMultiple && option.getAttribute('aria-selected') === 'true';
         this.updateSelectedOptions(option, !selected, selectMultiple);
         this.shiftIndex = -1;
+
+        // to disabled up button if first option is selected
+        if (
+            this.getOptionIndex(option) === 0 &&
+            event.target.getAttribute('data-type').match('selected')
+        ) {
+            this._upButtonDisabled = true;
+        } else this._upButtonDisabled = false;
+
+        // to disabled down button if last option is selected
+        if (
+            this.getOptionIndex(option) === selectedLength &&
+            event.target.getAttribute('data-type').match('selected')
+        ) {
+            this._downButtonDisabled = true;
+        } else this._downButtonDisabled = false;
     }
 
     handleFocus(event) {
@@ -741,6 +765,7 @@ export default class DualListbox extends LightningElement {
     }
 
     selectAllFromLastSelectedToOption(option, all) {
+        const selectedLength = this._selectedValues.length - 1;
         const listId = option.getAttribute('data-type');
         this.updateCurrentSelectedList(listId, true);
         const options = this.getElementsOfList(listId);
@@ -755,6 +780,14 @@ export default class DualListbox extends LightningElement {
                 val = options[i].getAttribute('data-value');
                 this.highlightedOptions.push(val);
             }
+        }
+
+        if (start === 0 || end === 0) {
+            this._upButtonDisabled = true;
+        }
+
+        if (start === selectedLength || end === selectedLength) {
+            this._downButtonDisabled = true;
         }
     }
 

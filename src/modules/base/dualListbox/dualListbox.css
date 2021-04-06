@@ -20,12 +20,13 @@
 
 .avonni-dual-list-box-option-is-selected {
     padding: 0;
+    color: var(--lwc-colorTextIconDefault, rgb(112, 110, 107));
 }
 
 .avonni-dual-list-box-option-is-selected.slds-dueling-list__options
     [aria-selected='true'] {
     background: #edeceb;
-    color: black;
+    color: var(--lwc-colorTextIconDefault, rgb(112, 110, 107));
 }
 
 .avonni-dual-list-box-option-border_bottom {
