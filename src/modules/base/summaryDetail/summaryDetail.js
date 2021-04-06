@@ -13,6 +13,7 @@ export default class SummaryDetail extends LightningElement {
     _expandIconName = 'utility:chevronright';
     _fullWidth;
     _closed;
+    _hideIcon;
 
     connectedCallback() {
         this.titleClass = classSet('avonni-min-width_0').add({
@@ -24,8 +25,7 @@ export default class SummaryDetail extends LightningElement {
         });
 
         this.contentClass = classSet('slds-summary-detail__content').add({
-            'avonni-summary-detail__content_no-indent': this
-                .removeBodyIndentation
+            'content_no-indent': this.removeBodyIndentation && !this.hideIcon
         });
     }
 
@@ -67,6 +67,14 @@ export default class SummaryDetail extends LightningElement {
     }
     set closed(value) {
         this._closed = normalizeBoolean(value);
+    }
+
+    @api
+    get hideIcon() {
+        return this._hideIcon;
+    }
+    set hideIcon(value) {
+        this._hideIcon = normalizeBoolean(value);
     }
 
     get sectionIsOpen() {

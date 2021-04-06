@@ -7,4 +7,5 @@ export default class SummaryDetail extends LightningElement {
     @api shrinkIconName;
     @api expandIconName;
     @api closed;
+    @api hideIcon;
 }

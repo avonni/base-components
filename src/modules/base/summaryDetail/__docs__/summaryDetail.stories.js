@@ -72,6 +72,18 @@ export default {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
             }
+        },
+        hideIcon: {
+            name: 'hide-icon',
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: 0,
+            description: 'If true, the icon to close/expand is hidden.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
         }
     }
 };
@@ -99,4 +111,10 @@ CustomIcons.args = {
     title: 'Summary detail with custom expand and shrink icons',
     shrinkIconName: 'utility:contract_alt',
     expandIconName: 'utility:expand_alt'
+};
+
+export const HiddenIcon = TemplateWithButton.bind({});
+HiddenIcon.args = {
+    title: 'Summary detail with hidden icon',
+    hideIcon: true
 };
