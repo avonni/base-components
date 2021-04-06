@@ -10,9 +10,6 @@ const VARIANTS = ['horizontal', 'vertical'];
 const THEMES = ['default', 'shade', 'inverse'];
 const POSITIONS = ['top', 'bottom'];
 
-// QUESTIONS:
-// Summary detail: remove body left indentation has no effect when the icon is hidden.
-
 export default class RelationshipGraph extends LightningElement {
     @api label;
     @api avatarSrc;
