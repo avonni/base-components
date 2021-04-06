@@ -56,7 +56,7 @@
                                 <li
                                     key={option.value}
                                     role="presentation"
-                                    class="slds-listbox__item avonni-dual-list-box-option-border_bottom"
+                                    class="slds-listbox__item avonni-dual-listbox-option-border_bottom"
                                 >
                                     <div
                                         class={option.classList}
@@ -163,7 +163,7 @@
                                 <li
                                     key={option.value}
                                     role="presentation"
-                                    class="slds-listbox__item avonni-dual-list-box-option-border_bottom"
+                                    class="slds-listbox__item avonni-dual-listbox-option-border_bottom"
                                 >
                                     <div
                                         class={option.classList}
@@ -211,9 +211,11 @@
                                 </li>
                             </template>
                         </ul>
+                        <template if:true={isSelectedBoxEmpty}>
+                            <span>{selectedPlaceholder}</span>
+                        </template>
                     </div>
                 </div>
-
                 <template if:false={disableReordering}>
                     <div
                         class="slds-dueling-list__column avonni-dual-listbox-buttons-centered"

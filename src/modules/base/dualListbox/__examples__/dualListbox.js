@@ -30,6 +30,7 @@ export const DualListbox = ({
     requiredOptions,
     searchEngine,
     selectedLabel,
+    selectedPlaceholder,
     showActivityIndicator,
     size,
     sourceLabel,
@@ -64,6 +65,7 @@ export const DualListbox = ({
     element.requiredOptions = requiredOptions;
     element.searchEngine = searchEngine;
     element.selectedLabel = selectedLabel;
+    element.selectedPlaceholder = selectedPlaceholder;
     element.showActivityIndicator = showActivityIndicator;
     element.size = size;
     element.sourceLabel = sourceLabel;

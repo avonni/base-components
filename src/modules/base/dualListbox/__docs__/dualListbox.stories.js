@@ -288,6 +288,16 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        selectedPlaceholder: {
+            name: 'selected-placeholder',
+            control: {
+                type: 'text'
+            },
+            description: 'Text displayed when no options are selected.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         showActivityIndicator: {
             name: 'show-activity-indicator',
             control: {

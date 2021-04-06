@@ -52,6 +52,7 @@ const i18n = {
 export default class DualListbox extends LightningElement {
     @api sourceLabel;
     @api selectedLabel;
+    @api selectedPlaceholder;
     @api label;
     @api min = DEFAULT_MIN;
     @api max;
@@ -130,6 +131,8 @@ export default class DualListbox extends LightningElement {
                 option.focus();
             }
         }
+        console.log(this._selectedValues.length);
+        console.log(this.isSelectedBoxEmpty);
     }
 
     @api
@@ -524,6 +527,10 @@ export default class DualListbox extends LightningElement {
         return this.variant === 'label-hidden';
     }
 
+    get isSelectedBoxEmpty() {
+        return this._selectedValues.length === 0;
+    }
+
     get computedGroupLabelClass() {
         return classSet('slds-form-element__label slds-form-element__legend')
             .add({ 'slds-assistive-text': this.isLabelHidden })
@@ -532,7 +539,7 @@ export default class DualListbox extends LightningElement {
 
     get computedListboxContainerClass() {
         return classSet(
-            'slds-dueling-list__options avonni-dual-list-box-option-is-selected'
+            'slds-dueling-list__options avonni-dual-listbox-option-is-selected'
         )
             .add({ 'slds-is-disabled': this.disabled })
             .add({
@@ -543,12 +550,15 @@ export default class DualListbox extends LightningElement {
 
     get computedListboxSelectedContainerClass() {
         return classSet(
-            'slds-dueling-list__options avonni-dual-list-box-option-is-selected'
+            'slds-dueling-list__options avonni-dual-listbox-option-is-selected'
         )
             .add({ 'slds-is-disabled': this.disabled })
             .add({
                 'avonni-dual-listbox-selected-list-with-search': this
                     .searchEngine
+            })
+            .add({
+                'avonni-dual-listbox-empty-column': this.isSelectedBoxEmpty
             })
             .toString();
     }

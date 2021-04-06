@@ -18,18 +18,25 @@
     justify-content: center;
 }
 
-.avonni-dual-list-box-option-is-selected {
+.avonni-dual-listbox-option-is-selected {
     padding: 0;
     color: var(--lwc-colorTextIconDefault, rgb(112, 110, 107));
 }
 
-.avonni-dual-list-box-option-is-selected.slds-dueling-list__options
+.avonni-dual-listbox-option-is-selected.slds-dueling-list__options
     [aria-selected='true'] {
     background: #edeceb;
     color: var(--lwc-colorTextIconDefault, rgb(112, 110, 107));
 }
 
-.avonni-dual-list-box-option-border_bottom {
+.avonni-dual-listbox-option-border_bottom {
     border-bottom: var(--lwc-borderWidthThin, 1px) solid
         var(--lwc-colorBorder, rgb(221, 219, 218));
+}
+
+.avonni-dual-listbox-empty-column {
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
