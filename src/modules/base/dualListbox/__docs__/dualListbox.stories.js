@@ -13,6 +13,28 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        buttonVariant: {
+            name: 'button-variant',
+            control: {
+                type: 'select',
+                options: [
+                    'bare',
+                    'container',
+                    'brand',
+                    'border',
+                    'border-filled',
+                    'bare-inverse',
+                    'border-inverse'
+                ]
+            },
+            defaultValue: 'border',
+            description:
+                'Use this variant for all button icons (add, up, down and remove). Valid values inlcude bare, container, brand, border, border-filled, bare-inverse and border-inverse.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'border' }
+            }
+        },
         disableReordering: {
             name: 'disable-reordering',
             control: {

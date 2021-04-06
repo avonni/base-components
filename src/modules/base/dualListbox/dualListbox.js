@@ -17,6 +17,19 @@ const VALID_VARIANTS = {
     default: 'standard'
 };
 
+const VALID_BUTTON_VARIANTS = {
+    valid: [
+        'bare',
+        'container',
+        'brand',
+        'border',
+        'border-filled',
+        'bare-inverse',
+        'border-inverse'
+    ],
+    default: 'bare'
+};
+
 const i18n = {
     downButtonAssistiveText: 'Down Button AssistiveText',
     optionLockAssistiveText: 'Option Lock AssistiveText',
@@ -38,6 +51,7 @@ export default class DualListbox extends LightningElement {
     _requiredOptions = [];
     _selectedValues = [];
     _options = [];
+    _buttonVariant = VALID_BUTTON_VARIANTS.default;
     _showActivityIndicator = false;
     _searchEngine = false;
     _variant = VALID_VARIANTS.default;
@@ -192,6 +206,18 @@ export default class DualListbox extends LightningElement {
         this._variant = normalizeString(variant, {
             fallbackValue: VALID_VARIANTS.default,
             validValues: VALID_VARIANTS.valid
+        });
+    }
+
+    @api
+    get buttonVariant() {
+        return this._buttonVariant;
+    }
+
+    set buttonVariant(variant) {
+        this._buttonVariant = normalizeString(variant, {
+            fallbackValue: VALID_BUTTON_VARIANTS.default,
+            validValues: VALID_BUTTON_VARIANTS.valid
         });
     }
 

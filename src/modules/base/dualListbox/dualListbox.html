@@ -28,23 +28,13 @@
                         style={computedColumnStyle}
                     >
                         <template if:true={searchEngine}>
-                            <div class={computedSearchEngineClass}>
-                                <div
-                                    class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right"
-                                >
-                                    <lightning-icon
-                                        size="x-small"
-                                        class="slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default"
-                                        icon-name="utility:search"
-                                    ></lightning-icon>
-                                    <input
-                                        type="text"
-                                        id="text-input-id-1"
-                                        placeholder="Type to filter list..."
-                                        class="slds-input"
-                                    />
-                                </div>
-                            </div>
+                            <lightning-input
+                                type="search"
+                                label="search"
+                                variant="label-hidden"
+                                placeholder="Type to filter list..."
+                                class="slds-p-around_x-small"
+                            ></lightning-input>
                         </template>
                         <ul
                             data-source-list
@@ -112,7 +102,7 @@
                 <div class="slds-dueling-list__column">
                     <lightning-button-icon
                         icon-name="utility:right"
-                        variant="container"
+                        variant={buttonVariant}
                         onclick={handleRightButtonClick}
                         disabled={moveButtonsDisabled}
                         title={addButtonLabel}
@@ -121,7 +111,7 @@
                     </lightning-button-icon>
                     <lightning-button-icon
                         icon-name="utility:left"
-                        variant="container"
+                        variant={buttonVariant}
                         onclick={handleLeftButtonClick}
                         disabled={moveButtonsDisabled}
                         title={removeButtonLabel}
@@ -213,7 +203,7 @@
                     <div class="slds-dueling-list__column">
                         <lightning-button-icon
                             icon-name="utility:up"
-                            variant="container"
+                            variant={buttonVariant}
                             onclick={handleUpButtonClick}
                             disabled={disabled}
                             title={upButtonLabel}
@@ -222,7 +212,7 @@
                         </lightning-button-icon>
                         <lightning-button-icon
                             icon-name="utility:down"
-                            variant="container"
+                            variant={buttonVariant}
                             onclick={handleDownButtonClick}
                             disabled={disabled}
                             title={downButtonLabel}
