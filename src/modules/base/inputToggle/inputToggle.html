@@ -1,5 +1,9 @@
 <template>
-    <label class={computedWrapperClass} for="avonni-input-toggle">
+    <label
+        class={computedWrapperClass}
+        for="avonni-input-toggle"
+        id="avonni-label"
+    >
         <template if:true={required}>
             <abbr class="slds-required" title={i18n.required}>*</abbr>
         </template>

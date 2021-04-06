@@ -15,8 +15,8 @@ const validSizes = ['x-small', 'small', 'medium', 'large'];
 
 export default class InputToggle extends LightningElement {
     @api accessKey;
-    @api ariaControls;
-    @api ariaDescribedBy;
+    @api ariaControls = 'avonni-input-toggle';
+    @api ariaDescribedBy = 'avonni-label';
     @api ariaLabel;
     @api ariaLabelledBy;
     @api fieldLevelHelp;
