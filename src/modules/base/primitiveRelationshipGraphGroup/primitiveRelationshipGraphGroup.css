@@ -54,3 +54,14 @@
         #0070d2
     );
 }
+
+/* A focus ring will be shown around the group only if: */
+/* - the user is navigating through the keyboard */
+/* - the browser supports focus-visible */
+.group:focus {
+    outline: none;
+}
+.group:focus-visible {
+    outline: 1px auto Highlight;
+    outline: 1px auto -webkit-focus-ring-color;
+}

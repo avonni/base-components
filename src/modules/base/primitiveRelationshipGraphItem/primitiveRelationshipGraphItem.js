@@ -93,9 +93,29 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
         return this.theme === 'inverse' ? 'border-inverse' : 'border';
     }
 
+    get ariaExpanded() {
+        if (this.groups && !this.selected) {
+            return false;
+        } else if (this.groups && this.selected) {
+            return true;
+        }
+        return undefined;
+    }
+
     handleClick(event) {
         // Stop event if click was on action menu button
-        if (event.target.tagName === 'LIGHTNING-BUTTON-MENU') return;
+        const target = event.target.tagName;
+        if (
+            target === 'LIGHTNING-BUTTON-MENU' ||
+            target === 'LIGHTNING-MENU-ITEM'
+        )
+            return;
+        // Stop event if pressed key is not Enter of Space bar
+        if (
+            event.type === 'keyup' &&
+            !['Enter', ' ', 'Spacebar'].includes(event.key)
+        )
+            return;
 
         this._selected = true;
         this._activeSelection = true;

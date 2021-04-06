@@ -10,10 +10,7 @@ const VARIANTS = ['horizontal', 'vertical'];
 const THEMES = ['default', 'shade', 'inverse'];
 const POSITIONS = ['top', 'bottom'];
 
-// TODO:
-// Accessibility (add a hidden button for clickable items?).
-
-// QUESTION:
+// QUESTIONS:
 // Summary detail: remove body left indentation has no effect when the icon is hidden.
 // In groups, change lightning-buttons for buttons to remove white background in shade theme?
 

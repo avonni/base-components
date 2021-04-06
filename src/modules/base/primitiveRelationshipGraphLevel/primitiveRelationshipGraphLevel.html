@@ -4,23 +4,23 @@
         <div class={currentLevelWrapperClass}>
             <!-- Nested div necessary to calculate the level height/width -->
             <div class={currentLevelClass}>
-                <template for:each={groups} for:item="group">
+                <template iterator:group={groups}>
                     <c-primitive-relationship-graph-group
                         onselect={handleSelect}
                         oncloseactivegroup={handleCloseActiveGroup}
                         onactionclick={dispatchActionClickEvent}
                         onheightchange={handleGroupHeightChange}
-                        key={group.name}
-                        label={group.label}
-                        name={group.name}
-                        avatar-src={group.avatarSrc}
-                        avatar-fallback-icon-name={group.avatarFallbackIconName}
-                        href={group.href}
-                        items={group.items}
-                        expanded={group.expanded}
-                        hide-default-actions={group.hideDefaultActions}
-                        custom-actions={group.actions}
-                        selected={group.selected}
+                        key={group.value.name}
+                        label={group.value.label}
+                        name={group.value.name}
+                        avatar-src={group.value.avatarSrc}
+                        avatar-fallback-icon-name={group.value.avatarFallbackIconName}
+                        href={group.value.href}
+                        items={group.value.items}
+                        expanded={group.value.expanded}
+                        hide-default-actions={group.value.hideDefaultActions}
+                        custom-actions={group.value.actions}
+                        selected={group.value.selected}
                         shrink-icon-name={shrinkIconName}
                         expand-icon-name={expandIconName}
                         active-child={activeGroups}
@@ -31,6 +31,7 @@
                         item-actions={itemActions}
                         item-theme={itemTheme}
                         hide-items-count={hideItemsCount}
+                        is-first-child={group.first}
                         class="slds-is-relative"
                     ></c-primitive-relationship-graph-group>
                 </template>

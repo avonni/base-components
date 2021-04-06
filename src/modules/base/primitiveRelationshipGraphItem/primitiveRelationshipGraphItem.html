@@ -1,5 +1,12 @@
 <template>
-    <div class={wrapperClass} onclick={handleClick}>
+    <div
+        class={wrapperClass}
+        onclick={handleClick}
+        onkeyup={handleClick}
+        tabindex="0"
+        role="button"
+        aria-expanded={ariaExpanded}
+    >
         <!-- Avatar / Title / Actions -->
         <c-media-object vertical-align="center">
             <template if:true={hasAvatar}>

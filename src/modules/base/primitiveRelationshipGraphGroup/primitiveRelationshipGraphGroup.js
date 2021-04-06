@@ -22,6 +22,7 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     @api itemTheme;
     @api hideItemsCount;
     @api variant;
+    @api isFirstChild;
 
     _hasSelectedChildren;
     _closed;
@@ -31,6 +32,14 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
 
     connectedCallback() {
         this._closed = this.expanded === false;
+    }
+
+    renderedCallback() {
+        // Accessibility: sets focus on the first group child of the active item
+        if (this.activeChild && this.isFirstChild) {
+            const wrapper = this.template.querySelector('.group');
+            wrapper.focus();
+        }
     }
 
     @api
