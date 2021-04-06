@@ -23,19 +23,21 @@
                         id="source-list-label"
                         >{sourceLabel}</span
                     >
-                    <div
-                        class={computedListboxContainerClass}
-                        style={computedColumnStyle}
-                    >
-                        <template if:true={searchEngine}>
+                    <template if:true={searchEngine}>
+                        <div class="avonni-dual-listbox-search-engine">
                             <lightning-input
                                 type="search"
                                 label="search"
                                 variant="label-hidden"
                                 placeholder="Type to filter list..."
-                                class="slds-p-around_x-small"
+                                class={computedSearchEngineClass}
                             ></lightning-input>
-                        </template>
+                        </div>
+                    </template>
+                    <div
+                        class={computedListboxContainerClass}
+                        style={computedColumnStyleSource}
+                    >
                         <ul
                             data-source-list
                             id="source-list"
@@ -70,12 +72,12 @@
                                         <template if:true={option.hasAvatar}>
                                             <div class="slds-media__figure">
                                                 <c-avatar
-                                                    fallback-icon-name={option.avatarFallbackIconName}
-                                                    src={option.avatarSrc}
-                                                    initials={option.avatarInitials}
-                                                    variant={option.avatarVariant}
-                                                    primary-text={option.avatarPrimaryText}
-                                                    secondary-text={option.avatarSecondaryText}
+                                                    fallback-icon-name={option.iconName}
+                                                    src={option.src}
+                                                    initials={option.initials}
+                                                    variant={option.variant}
+                                                    primary-text={option.optionLabel}
+                                                    secondary-text={option.description}
                                                 ></c-avatar>
                                             </div>
                                         </template>
@@ -130,7 +132,7 @@
                         >{selectedLabel}</span
                     >
                     <div
-                        class={computedListboxContainerClass}
+                        class={computedListboxSelectedContainerClass}
                         style={computedColumnStyle}
                     >
                         <ul
@@ -167,12 +169,12 @@
                                         <template if:true={option.hasAvatar}>
                                             <div class="slds-media__figure">
                                                 <c-avatar
-                                                    fallback-icon-name={option.avatarFallbackIconName}
-                                                    src={option.avatarSrc}
-                                                    initials={option.avatarInitials}
-                                                    variant={option.avatarVariant}
-                                                    primary-text={option.avatarPrimaryText}
-                                                    secondary-text={option.avatarSecondaryText}
+                                                    fallback-icon-name={option.iconName}
+                                                    src={option.src}
+                                                    initials={option.initials}
+                                                    variant={option.variant}
+                                                    primary-text={option.optionLabel}
+                                                    secondary-text={option.description}
                                                 ></c-avatar>
                                             </div>
                                         </template>

@@ -356,11 +356,7 @@ export default class DualListbox extends LightningElement {
     hasAvatar() {
         if (this._options) {
             this._options.forEach((option) => {
-                if (
-                    option.avatarFallbackIconName ||
-                    option.avatarSrc ||
-                    option.avatarInitials
-                ) {
+                if (option.iconName || option.src || option.initials) {
                     option.hasAvatar = true;
                 } else option.hasAvatar = false;
             });
@@ -486,6 +482,20 @@ export default class DualListbox extends LightningElement {
             .toString();
     }
 
+    get computedColumnStyleSource() {
+        if (this.isNumber(this.size)) {
+            if (this.searchEngine) {
+                const newHeight = parseInt(this.size, 10) * 2.75 + 1 - 3.5;
+                return `height:${newHeight}rem`;
+            }
+            const newHeight = parseInt(this.size, 10) * 2.75 + 1;
+            return `height:${newHeight}rem`;
+        } else if (this.searchEngine) {
+            return `height: 11.6rem`;
+        }
+        return '';
+    }
+
     get computedColumnStyle() {
         if (this.isNumber(this.size)) {
             const newHeight = parseInt(this.size, 10) * 2.75 + 1;
@@ -507,6 +517,16 @@ export default class DualListbox extends LightningElement {
     get computedListboxContainerClass() {
         return classSet('slds-dueling-list__options')
             .add({ 'slds-is-disabled': this.disabled })
+            .toString();
+    }
+
+    get computedListboxSelectedContainerClass() {
+        return classSet('slds-dueling-list__options')
+            .add({ 'slds-is-disabled': this.disabled })
+            .add({
+                'avonni-dual-listbox-selected-list-with-search': this
+                    .searchEngine
+            })
             .toString();
     }
 

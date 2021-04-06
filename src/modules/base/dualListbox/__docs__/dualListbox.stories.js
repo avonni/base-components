@@ -201,7 +201,7 @@ export default {
                 type: 'object'
             },
             description:
-                'A list of options that are available for selection. Each option has the following attributes: label, value, avatarFallBackIcon, avatarSrc, avatarInitials, avatarVariant, avatarPrimaryText and avatarSecondaryText.',
+                'A list of options that are available for selection. Each option has the following attributes: optionLabel, description, value, iconName, iconSrc, initials and variant.',
             table: {
                 type: { summary: 'object []' }
             }
@@ -412,52 +412,52 @@ const OptionsWithAvatar = [
     {
         value: '1',
         label: 'Jobs',
-        avatarFallbackIconName: 'custom:custom91'
+        iconName: 'custom:custom91'
     },
     {
         value: '2',
         label: 'Leads & Referrals',
-        avatarFallbackIconName: 'standard:lead'
+        iconName: 'standard:lead'
     },
     {
         value: '3',
         label: 'Legal Entities',
-        avatarFallbackIconName: 'custom:custom87'
+        iconName: 'custom:custom87'
     },
     {
         value: '4',
         label: 'Contacts',
-        avatarFallbackIconName: 'standard:contact'
+        iconName: 'standard:contact'
     },
     {
         value: '5',
         label: 'Cases',
-        avatarFallbackIconName: 'standard:case'
+        iconName: 'standard:case'
     },
     {
         value: '6',
         label: 'Accounts',
-        avatarFallbackIconName: 'standard:account'
+        iconName: 'standard:account'
     },
     {
         value: '7',
         label: 'Reports',
-        avatarFallbackIconName: 'standard:report'
+        iconName: 'standard:report'
     },
     {
         value: '8',
         label: 'Knowledge',
-        avatarFallbackIconName: 'standard:knowledge'
+        iconName: 'standard:knowledge'
     },
     {
         value: '9',
         label: 'List Emails',
-        avatarFallbackIconName: 'standard:list_email'
+        iconName: 'standard:list_email'
     },
     {
         value: '10',
         label: 'Dashboards',
-        avatarFallbackIconName: 'standard:dashboard'
+        iconName: 'standard:dashboard'
     }
 ];
 
@@ -465,62 +465,54 @@ const OptionsWithAvatarSrc = [
     {
         value: '1',
         label: 'Carl Smith',
-        avatarSrc:
-            'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
+        src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
     },
     {
         value: '2',
         label: 'Suzan White',
-        avatarSrc:
-            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+        src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
     },
     {
         value: '3',
         label: 'Philipp Johnson',
-        avatarSrc:
-            'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg'
+        src: 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg'
     },
     {
         value: '4',
         label: 'Miles Williams',
-        avatarSrc:
-            'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
+        src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
     },
     {
         value: '5',
         label: 'Jane Doe',
-        avatarFallbackIconName: 'standard:account',
-        avatarInitials: 'JD'
+        iconName: 'standard:account',
+        initials: 'JD'
     },
     {
         value: '6',
         label: 'Gina Garcia',
-        avatarSrc:
-            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+        src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
     },
     {
         value: '7',
         label: 'John Smith',
-        avatarFallbackIconName: 'standard:address',
-        avatarInitials: 'JS'
+        iconName: 'standard:address',
+        initials: 'JS'
     },
     {
         value: '8',
         label: 'Xavier Anderson',
-        avatarSrc:
-            'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg'
+        src: 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg'
     },
     {
         value: '9',
         label: 'James Jackson',
-        avatarSrc:
-            'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
+        src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
     },
     {
         value: '10',
         label: 'Diane Wilson',
-        avatarSrc:
-            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+        src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
     }
 ];
 

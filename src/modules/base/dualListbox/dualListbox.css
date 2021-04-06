@@ -1,3 +1,15 @@
 .avonni-dual-listbox-search-engine-padding-around_x-small {
     padding: var(--lwc-spacingXSmall, 0.5rem) !important;
 }
+
+.avonni-dual-listbox-search-engine {
+    position: relative;
+    top: 3px;
+    background: #ffffff;
+    border-radius: 0.25rem 0.25rem 0 0;
+    border: 1px solid #dddbda;
+}
+
+.avonni-dual-listbox-selected-list-with-search {
+    margin-top: 3px;
+}
