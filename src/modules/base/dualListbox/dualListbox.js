@@ -66,6 +66,7 @@ export default class DualListbox extends LightningElement {
     _options = [];
     _buttonSize = VALID_BUTTON_SIZES.default;
     _buttonVariant = VALID_BUTTON_VARIANTS.default;
+    _isLoading = false;
     _showActivityIndicator = false;
     _searchEngine = false;
     _variant = VALID_VARIANTS.default;
@@ -164,6 +165,15 @@ export default class DualListbox extends LightningElement {
 
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
+    }
+
+    @api
+    get isLoading() {
+        return this._isLoading || false;
+    }
+
+    set isLoading(value) {
+        this._isLoading = normalizeBoolean(value);
     }
 
     @api
@@ -478,7 +488,9 @@ export default class DualListbox extends LightningElement {
         return classSet(
             'slds-dueling-list__column slds-dueling-list__column_responsive'
         )
-            .add({ 'slds-is-relative': this.showActivityIndicator })
+            .add({
+                'slds-is-relative': this.showActivityIndicator || this.isLoading
+            })
             .toString();
     }
 

@@ -94,6 +94,13 @@
                             </template>
                         </ul>
                     </div>
+                    <div if:true={isLoading}>
+                        <lightning-spinner
+                            size="small"
+                            class="slds-spinner_container"
+                            alternative-text={i18n.loadingText}
+                        ></lightning-spinner>
+                    </div>
                     <div if:true={showActivityIndicator}>
                         <lightning-spinner
                             size="small"

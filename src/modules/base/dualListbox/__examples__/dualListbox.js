@@ -15,6 +15,7 @@ export const DualListbox = ({
     downButtonIconName,
     downButtonLabel,
     fieldLevelHelp,
+    isLoading,
     label,
     max,
     min,
@@ -48,6 +49,7 @@ export const DualListbox = ({
     element.downButtonIconName = downButtonIconName;
     element.downButtonLabel = downButtonLabel;
     element.fieldLevelHelp = fieldLevelHelp;
+    element.isLoading = isLoading;
     element.label = label;
     element.max = max;
     element.min = min;

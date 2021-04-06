@@ -121,6 +121,19 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        isLoading: {
+            name: 'is-loading',
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description:
+                'If present, the source options listbox is in a loading state and shows a spinner.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: false }
+            }
+        },
         label: {
             type: { name: 'string', required: true },
             control: {
