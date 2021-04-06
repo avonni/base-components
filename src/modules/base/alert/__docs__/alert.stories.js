@@ -31,9 +31,9 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
+            defaultValue: true,
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'true' }
             }
         }
     }

@@ -11,7 +11,7 @@ export default class Alert extends LightningElement {
     hideAlert;
     _variant = 'base';
     _textured = false;
-    _isDismissible = false;
+    _isDismissible = true;
 
     @api
     get variant() {
@@ -40,7 +40,11 @@ export default class Alert extends LightningElement {
     }
 
     set isDismissible(value) {
-        this._isDismissible = normalizeBoolean(value);
+        if (value === 'false') {
+            this._isDismissible = false;
+        } else {
+            this._isDismissible = normalizeBoolean(value);
+        }
     }
 
     get variantInverse() {
