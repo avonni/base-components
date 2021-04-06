@@ -199,17 +199,23 @@ const Template = (args) => RelationshipGraph(args);
 export const Base = Template.bind({});
 Base.args = {
     label: 'Root label',
-    avatarSrc:
-        'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
-    href: 'https://www.avonni.app/',
-    actions: actions,
-    groups: groups,
-    groupActions: groupActions,
-    itemActions: itemActions
+    groups: groups
 };
 
-export const GroupAndItemThemes = Template.bind({});
-GroupAndItemThemes.args = {
+export const SelectedItem = Template.bind({});
+SelectedItem.args = {
+    label: 'Root label',
+    avatarSrc:
+        'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
+    groups: groups,
+    selectedItemName: 'mary-james',
+    groupActions: groupActions,
+    groupActionsPosition: 'bottom',
+    hideItemsCount: true
+};
+
+export const InverseTheme = Template.bind({});
+InverseTheme.args = {
     label: 'Root label',
     avatarSrc:
         'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
@@ -218,8 +224,22 @@ GroupAndItemThemes.args = {
     groups: groups,
     groupActions: groupActions,
     itemActions: itemActions,
+    groupTheme: 'inverse',
+    itemTheme: 'inverse',
+    hideItemsCount: true
+};
+
+export const MixedThemes = Template.bind({});
+MixedThemes.args = {
+    label: 'Root label',
+    avatarFallbackIconName: 'standard:user',
+    actions: actions,
+    groups: groups,
+    groupActions: groupActions,
+    itemActions: itemActions,
     groupTheme: 'shade',
-    itemTheme: 'inverse'
+    itemTheme: 'default',
+    groupActionsPosition: 'bottom'
 };
 
 export const Vertical = Template.bind({});
