@@ -11,6 +11,10 @@ import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 import { handleKeyDownOnOption } from './keyboard';
 
 const DEFAULT_MIN = 0;
+const DEFAULT_ADD_BUTTON_ICON_NAME = 'utility:right';
+const DEFAULT_DOWN_BUTTON_ICON_NAME = 'utility:down';
+const DEFAULT_REMOVE_BUTTON_ICON_NAME = 'utility:left';
+const DEFAULT_UP_BUTTON_ICON_NAME = 'utility:up';
 
 const VALID_VARIANTS = {
     valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked'],
@@ -52,6 +56,10 @@ export default class DualListbox extends LightningElement {
     @api min = DEFAULT_MIN;
     @api max;
     @api name;
+    @api addButtonIconName = DEFAULT_ADD_BUTTON_ICON_NAME;
+    @api downButtonIconName = DEFAULT_DOWN_BUTTON_ICON_NAME;
+    @api removeButtonIconName = DEFAULT_REMOVE_BUTTON_ICON_NAME;
+    @api upButtonIconName = DEFAULT_UP_BUTTON_ICON_NAME;
 
     _requiredOptions = [];
     _selectedValues = [];

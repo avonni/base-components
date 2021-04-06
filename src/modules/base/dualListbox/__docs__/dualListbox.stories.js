@@ -3,6 +3,19 @@ import { DualListbox } from '../__examples__/dualListbox';
 export default {
     title: 'Example/Dual Listbox',
     argTypes: {
+        addButtonIconName: {
+            name: 'add-button-icon-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                "The name of the icon to be used in the format 'utility:right'.",
+            defaultValue: 'utility:right',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'utility:right' }
+            }
+        },
         addButtonLabel: {
             name: 'add-button-label',
             control: {
@@ -72,6 +85,19 @@ export default {
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: false }
+            }
+        },
+        downButtonIconName: {
+            name: 'down-button-icon-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                "The name of the icon to be used in the format 'utility:down'.",
+            defaultValue: 'utility:down',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'utility:down' }
             }
         },
         downButtonLabel: {
@@ -180,6 +206,19 @@ export default {
                 type: { summary: 'object []' }
             }
         },
+        removeButtonIconName: {
+            name: 'remove-button-icon-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                "The name of the icon to be used in the format 'utility:left'.",
+            defaultValue: 'utility:left',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'utility:left' }
+            }
+        },
         removeButtonLabel: {
             name: 'remove-button-label',
             control: {
@@ -268,6 +307,19 @@ export default {
             description: 'Label for the source options listbox.',
             table: {
                 type: { summary: 'string' }
+            }
+        },
+        upButtonIconName: {
+            name: 'up-button-icon-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                "The name of the icon to be used in the format 'utility:up'.",
+            defaultValue: 'utility:up',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'utility:up' }
             }
         },
         upButtonLabel: {

@@ -101,7 +101,7 @@
                 </div>
                 <div class="slds-dueling-list__column">
                     <lightning-button-icon
-                        icon-name="utility:right"
+                        icon-name={addButtonIconName}
                         size={buttonSize}
                         variant={buttonVariant}
                         onclick={handleRightButtonClick}
@@ -111,7 +111,7 @@
                     >
                     </lightning-button-icon>
                     <lightning-button-icon
-                        icon-name="utility:left"
+                        icon-name={removeButtonIconName}
                         size={buttonSize}
                         variant={buttonVariant}
                         onclick={handleLeftButtonClick}
@@ -204,7 +204,7 @@
                 <template if:false={disableReordering}>
                     <div class="slds-dueling-list__column">
                         <lightning-button-icon
-                            icon-name="utility:up"
+                            icon-name={upButtonIconName}
                             size={buttonSize}
                             variant={buttonVariant}
                             onclick={handleUpButtonClick}
@@ -214,7 +214,7 @@
                         >
                         </lightning-button-icon>
                         <lightning-button-icon
-                            icon-name="utility:down"
+                            icon-name={downButtonIconName}
                             size={buttonSize}
                             variant={buttonVariant}
                             onclick={handleDownButtonClick}
