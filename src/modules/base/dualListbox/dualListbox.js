@@ -491,9 +491,9 @@ export default class DualListbox extends LightningElement {
             const newHeight = parseInt(this.size, 10) * 2.75 + 1;
             return `height:${newHeight}rem`;
         } else if (this.searchEngine) {
-            return `height: 11.6rem`;
+            return `height: 10.6rem`;
         }
-        return '';
+        return 'height: 14rem';
     }
 
     get computedColumnStyle() {
@@ -501,7 +501,7 @@ export default class DualListbox extends LightningElement {
             const newHeight = parseInt(this.size, 10) * 2.75 + 1;
             return `height:${newHeight}rem`;
         }
-        return '';
+        return 'height: 14rem';
     }
 
     get isLabelHidden() {

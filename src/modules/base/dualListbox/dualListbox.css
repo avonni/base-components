@@ -18,8 +18,17 @@
     justify-content: center;
 }
 
+.avonni-dual-list-box-option-is-selected {
+    padding: 0;
+}
+
 .avonni-dual-list-box-option-is-selected.slds-dueling-list__options
     [aria-selected='true'] {
     background: #edeceb;
     color: black;
+}
+
+.avonni-dual-list-box-option-border_bottom {
+    border-bottom: var(--lwc-borderWidthThin, 1px) solid
+        var(--lwc-colorBorder, rgb(221, 219, 218));
 }
