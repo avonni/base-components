@@ -36,10 +36,17 @@ export default class AvatarGroup extends LightningElement {
     _size = 'medium';
     _layout = 'stack';
     _allowBlur = false;
-    _listButtonVariant;
-    _listButtonIconPosition;
+    _listButtonVariant = 'neutral';
+    _listButtonIconPosition = 'left';
+    _variant = 'square';
     showPopover = false;
     hiddenItems = [];
+
+    connectedCallback() {
+        if (!this.maxCount) {
+            this._maxCount = this.layout === 'stack' ? 5 : 11;
+        }
+    }
 
     renderedCallback() {
         if (!this.isClassic) {
