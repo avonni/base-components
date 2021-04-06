@@ -11,12 +11,11 @@ const THEMES = ['default', 'shade', 'inverse'];
 const POSITIONS = ['top', 'bottom'];
 
 // TODO:
-// Change buttons variant according to themes
-// Check button menu alignment
 // Accessibility (add a hidden button for clickable items?).
 
 // QUESTION:
 // Summary detail: remove body left indentation has no effect when the icon is hidden.
+// In groups, change lightning-buttons for buttons to remove white background in shade theme?
 
 export default class RelationshipGraph extends LightningElement {
     @api label;

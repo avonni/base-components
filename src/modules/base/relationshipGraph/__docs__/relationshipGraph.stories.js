@@ -206,7 +206,20 @@ Base.args = {
     groups: groups,
     groupActions: groupActions,
     itemActions: itemActions
-    // selectedItemName: 'symonds-household'
+};
+
+export const GroupAndItemThemes = Template.bind({});
+GroupAndItemThemes.args = {
+    label: 'Root label',
+    avatarSrc:
+        'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+    href: 'https://www.avonni.app/',
+    actions: actions,
+    groups: groups,
+    groupActions: groupActions,
+    itemActions: itemActions,
+    groupTheme: 'inverse',
+    itemTheme: 'shade'
 };
 
 export const Vertical = Template.bind({});

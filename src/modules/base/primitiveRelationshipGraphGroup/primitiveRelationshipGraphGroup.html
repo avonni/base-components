@@ -31,6 +31,7 @@
                             alternative-text="Show menu"
                             icon-size="small"
                             menu-alignment="right"
+                            variant={buttonMenuVariant}
                         >
                             <template for:each={actions} for:item="action">
                                 <lightning-menu-item
@@ -56,6 +57,7 @@
                                     disabled={action.disabled}
                                     onclick={handleActionClick}
                                     value={action.name}
+                                    variant={buttonVariant}
                                 ></lightning-button>
                             </div>
                         </template>
@@ -99,6 +101,7 @@
                                 disabled={action.disabled}
                                 onclick={handleActionClick}
                                 value={action.name}
+                                variant={buttonVariant}
                             >
                                 <lightning-icon
                                     if:true={action.iconName}

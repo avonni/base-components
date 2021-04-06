@@ -99,7 +99,7 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
             'group_active-parent': !this.closed && this.activeParent,
             group_selected: this.selected && this.hasSelectedChildren,
             'slds-theme_shade': this.theme === 'shade',
-            'slds-theme_inverse': this.theme === 'inverse',
+            'avonni-theme_inverse': this.theme === 'inverse',
             'slds-theme_default': this.theme === 'default',
             'group_horizontal slds-is-relative': this.variant === 'horizontal',
             group_vertical: this.variant === 'vertical',
@@ -127,6 +127,14 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     set closed(value) {
         // The value needs to be undefined for the summary detail to be open
         this._closed = value === true ? true : undefined;
+    }
+
+    get buttonMenuVariant() {
+        return this.theme === 'inverse' ? 'border-inverse' : 'border';
+    }
+
+    get buttonVariant() {
+        return this.theme === 'inverse' ? 'inverse' : 'neutral';
     }
 
     asyncSetClosed = async (value) => {

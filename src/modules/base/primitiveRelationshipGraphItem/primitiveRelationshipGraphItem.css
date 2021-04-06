@@ -2,6 +2,15 @@
     cursor: pointer;
 }
 
+.avonni-theme_inverse {
+    color: #fff;
+    background-color: var(--lwc-colorBackgroundInverse, #061c3f);
+}
+.avonni-theme_inverse a {
+    color: #fff;
+    text-decoration: underline;
+}
+
 /* Corner triangle */
 .item_has-children::after {
     content: '';

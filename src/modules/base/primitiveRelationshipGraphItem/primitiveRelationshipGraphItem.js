@@ -58,7 +58,7 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
             'item_is-active': this.activeSelection,
             item_horizontal: this.variant === 'horizontal',
             'slds-theme_shade slds-text-color_default': this.theme === 'shade',
-            'slds-theme_inverse': this.theme === 'inverse',
+            'avonni-theme_inverse': this.theme === 'inverse',
             'slds-theme_default': this.theme === 'default'
         });
     }
@@ -87,6 +87,10 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
         }
 
         return false;
+    }
+
+    get buttonMenuVariant() {
+        return this.theme === 'inverse' ? 'border-inverse' : 'border';
     }
 
     handleClick(event) {

@@ -20,6 +20,8 @@
                 <lightning-button-menu
                     alternative-text="Show menu"
                     icon-size="small"
+                    menu-alignment="right"
+                    variant={buttonMenuVariant}
                 >
                     <template for:each={actions} for:item="action">
                         <lightning-menu-item
@@ -29,6 +31,7 @@
                             onclick={handleActionClick}
                             disabled={action.disabled}
                             prefix-icon-name={action.iconName}
+                            class="slds-text-color_default"
                         ></lightning-menu-item>
                     </template>
                 </lightning-button-menu>

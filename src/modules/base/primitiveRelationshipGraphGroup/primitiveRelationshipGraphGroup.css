@@ -1,10 +1,19 @@
 .group {
     width: var(--lwc-sizeMedium, 20rem);
-    z-index: 1;
 }
 
 .group-title {
     font-size: 0.875rem;
+}
+
+.avonni-theme_inverse {
+    color: #fff;
+    background-color: var(--lwc-colorBackgroundInverse, #061c3f);
+    border-color: var(--lwc-colorBackgroundInverse, #061c3f);
+}
+.avonni-theme_inverse a {
+    color: #fff;
+    text-decoration: underline;
 }
 
 .group_horizontal::before {
