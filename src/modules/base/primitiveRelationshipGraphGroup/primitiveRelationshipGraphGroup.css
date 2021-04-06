@@ -1,11 +1,11 @@
 .group {
     width: var(--lwc-sizeMedium, 20rem);
 }
-
 .group-title {
     font-size: 0.875rem;
 }
 
+/* Themes --- */
 .avonni-theme_inverse {
     color: #fff;
     background-color: var(--lwc-colorBackgroundInverse, #061c3f);
@@ -15,7 +15,11 @@
     color: #fff;
     text-decoration: underline;
 }
+.action-button_shade.slds-button_neutral {
+    background-color: transparent;
+}
 
+/* Lines */
 .group_horizontal::before {
     content: '';
     height: 2px;
@@ -25,7 +29,6 @@
     left: calc(-2rem - 2px);
     top: calc(1.5rem - 2px);
 }
-
 .group_vertical::before {
     content: '';
     width: 2px;
@@ -35,7 +38,6 @@
     left: 10rem;
     top: calc(-1.5rem - 2px);
 }
-
 .group_vertical.group_selected::after {
     content: '';
     position: absolute;
@@ -46,7 +48,6 @@
     width: 2px;
     background-color: var(--avonni-c-relationship-graph-line-color, #dddbda);
 }
-
 .group_active-child::before,
 .group_vertical.group_selected.group_active-parent::after {
     background-color: var(

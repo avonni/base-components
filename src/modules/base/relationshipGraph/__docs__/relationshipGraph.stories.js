@@ -218,8 +218,8 @@ GroupAndItemThemes.args = {
     groups: groups,
     groupActions: groupActions,
     itemActions: itemActions,
-    groupTheme: 'inverse',
-    itemTheme: 'shade'
+    groupTheme: 'shade',
+    itemTheme: 'inverse'
 };
 
 export const Vertical = Template.bind({});

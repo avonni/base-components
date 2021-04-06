@@ -51,14 +51,20 @@
                                 key={action.name}
                                 class="slds-m-bottom_xx-small"
                             >
-                                <lightning-button
-                                    label={action.label}
-                                    icon-name={action.iconName}
+                                <button
+                                    class={actionButtonClass}
                                     disabled={action.disabled}
                                     onclick={handleActionClick}
                                     value={action.name}
-                                    variant={buttonVariant}
-                                ></lightning-button>
+                                >
+                                    <lightning-icon
+                                        if:true={action.iconName}
+                                        icon-name={action.iconName}
+                                        class="slds-current-color slds-m-right_x-small"
+                                        size="xx-small"
+                                    ></lightning-icon>
+                                    {action.label}
+                                </button>
                             </div>
                         </template>
                     </template>
@@ -97,7 +103,7 @@
                         <div key={action.name} class="slds-m-bottom_xx-small">
                             <button
                                 name={action.name}
-                                class="slds-button slds-button_neutral slds-button_stretch"
+                                class={actionButtonClass}
                                 disabled={action.disabled}
                                 onclick={handleActionClick}
                                 value={action.name}

@@ -116,6 +116,15 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
         });
     }
 
+    get actionButtonClass() {
+        return classSet('slds-button').add({
+            'slds-button_inverse': this.theme === 'inverse',
+            'slds-button_neutral': this.theme !== 'inverse',
+            'action-button_shade': this.theme === 'shade',
+            'slds-button_stretch': this.actionsPosition === 'bottom'
+        });
+    }
+
     get actions() {
         if (this.hideDefaultActions) return this.customActions;
 

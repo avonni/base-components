@@ -12,7 +12,6 @@ const POSITIONS = ['top', 'bottom'];
 
 // QUESTIONS:
 // Summary detail: remove body left indentation has no effect when the icon is hidden.
-// In groups, change lightning-buttons for buttons to remove white background in shade theme?
 
 export default class RelationshipGraph extends LightningElement {
     @api label;
