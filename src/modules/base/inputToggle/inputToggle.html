@@ -1,9 +1,5 @@
 <template>
-    <label
-        class={computedWrapperClass}
-        for="avonni-input-toggle"
-        id="avonni-label"
-    >
+    <label class={computedWrapperClass} for="avonni-input-toggle">
         <template if:true={required}>
             <abbr class="slds-required" title={i18n.required}>*</abbr>
         </template>
@@ -16,8 +12,6 @@
         <input
             id="avonni-input-toggle"
             accesskey={accessKey}
-            aria-controls={ariaControls}
-            aria-describedby={ariaDescribedBy}
             aria-label={ariaLabel}
             aria-labelled-by={ariaLabelledBy}
             checked={checked}
@@ -30,7 +24,11 @@
             type="checkbox"
             value={value}
         />
-        <span class="slds-checkbox_faux_container" aria-live="assertive">
+        <span
+            class="slds-checkbox_faux_container"
+            aria-live="assertive"
+            data-toggle-description
+        >
             <span class={computedFauxToggleClass}></span>
             <span class="slds-checkbox_on">{messageToggleActive}</span>
             <span class="slds-checkbox_off">{messageToggleInactive}</span>
