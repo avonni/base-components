@@ -17,21 +17,22 @@ export default class RelationshipGraph extends LightningElement {
     @api href;
     @api actions;
     @api groups;
-    @api shrinkIconName;
-    @api expandIconName;
+    @api shrinkIconName = 'utility:chevrondown';
+    @api expandIconName = 'utility:chevronright';
 
     processedGroups;
     selectedItemPosition;
     inlineHeader;
 
-    _variant;
+    _variant = 'horizontal';
     _selectedItemName;
     _selectedItem;
     _groupActions;
-    _groupTheme;
+    _groupActionsPosition = 'top';
+    _groupTheme = 'default';
     _itemActions;
-    _itemTheme;
-    _hideItemsCount;
+    _itemTheme = 'default';
+    _hideItemsCount = false;
 
     connectedCallback() {
         this.updateSelection();
