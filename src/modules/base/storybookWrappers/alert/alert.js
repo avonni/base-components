@@ -3,7 +3,7 @@ import { LightningElement, api } from 'lwc';
 export default class Alert extends LightningElement {
     @api iconName;
     @api closeAction;
-    @api variant;
-    @api textured;
-    @api isDismissible;
+    @api variant = 'base';
+    @api textured = false;
+    @api isDismissible = false;
 }
