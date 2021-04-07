@@ -600,7 +600,6 @@ export default class DualListbox extends LightningElement {
     }
 
     handleOptionClick(event) {
-        const selectedLength = this._selectedValues.length - 1;
         this.interactingState.interacting();
         if (this.disabled) {
             return;
@@ -615,22 +614,6 @@ export default class DualListbox extends LightningElement {
             selectMultiple && option.getAttribute('aria-selected') === 'true';
         this.updateSelectedOptions(option, !selected, selectMultiple);
         this.shiftIndex = -1;
-
-        // to disabled up button if first option is selected
-        if (
-            this.getOptionIndex(option) === 0 &&
-            event.target.getAttribute('data-type').match('selected')
-        ) {
-            this._upButtonDisabled = true;
-        } else this._upButtonDisabled = false;
-
-        // to disabled down button if last option is selected
-        if (
-            this.getOptionIndex(option) === selectedLength &&
-            event.target.getAttribute('data-type').match('selected')
-        ) {
-            this._downButtonDisabled = true;
-        } else this._downButtonDisabled = false;
     }
 
     handleFocus(event) {
