@@ -61,6 +61,7 @@ export default class DualListbox extends LightningElement {
     @api downButtonIconName = DEFAULT_DOWN_BUTTON_ICON_NAME;
     @api removeButtonIconName = DEFAULT_REMOVE_BUTTON_ICON_NAME;
     @api upButtonIconName = DEFAULT_UP_BUTTON_ICON_NAME;
+    @api hello;
     _upButtonDisabled = false;
     _downButtonDisabled = false;
 
@@ -131,6 +132,7 @@ export default class DualListbox extends LightningElement {
                 option.focus();
             }
         }
+        this.disabledButtons();
     }
 
     @api
@@ -733,7 +735,6 @@ export default class DualListbox extends LightningElement {
     }
 
     changeOrderOfOptionsInList(moveUp) {
-        const selectedLength = this._selectedValues.length - 1;
         const elementList = this.getElementsOfList(this.selectedList);
         const values = this.computedSelectedList.map((option) => option.value);
         const toMove = values.filter(
@@ -771,7 +772,10 @@ export default class DualListbox extends LightningElement {
         this.updateFocusableOption(this.selectedList, toMove[0]);
         this.optionToFocus = null;
         this.dispatchChangeEvent(values);
+    }
 
+    disabledButtons() {
+        const selectedLength = this._selectedValues.length - 1;
         this._upButtonDisabled = this.highlightedOptions.find((option) => {
             return this._selectedValues.indexOf(option) === 0;
         });
