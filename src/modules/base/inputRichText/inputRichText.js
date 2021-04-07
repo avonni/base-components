@@ -128,7 +128,7 @@ export default class InputRichText extends LightningElement {
     @api placeholder;
     @api disabledCategories = '';
     @api formats = '';
-    @api variant;
+    @api variant = 'top-toolbar';
     @api messageWhenBadInput;
     @api customButtons;
     @api shareWithEntityId;
