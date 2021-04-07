@@ -31,6 +31,7 @@
                                 variant="label-hidden"
                                 placeholder="Type to filter list..."
                                 class={computedSearchEngineClass}
+                                onchange={handleSearch}
                             ></lightning-input>
                         </div>
                     </template>
@@ -49,7 +50,7 @@
                             aria-disabled={ariaDisabled}
                         >
                             <template
-                                for:each={computedSourceList}
+                                for:each={hasResult}
                                 for:item="option"
                                 for:index="index"
                             >

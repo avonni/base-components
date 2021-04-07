@@ -61,7 +61,8 @@ export default class DualListbox extends LightningElement {
     @api downButtonIconName = DEFAULT_DOWN_BUTTON_ICON_NAME;
     @api removeButtonIconName = DEFAULT_REMOVE_BUTTON_ICON_NAME;
     @api upButtonIconName = DEFAULT_UP_BUTTON_ICON_NAME;
-    @api hello;
+    searchResult = [];
+    searchTerm;
     _upButtonDisabled = false;
     _downButtonDisabled = false;
 
@@ -133,6 +134,7 @@ export default class DualListbox extends LightningElement {
             }
         }
         this.disabledButtons();
+        console.log(this.searchTerm);
     }
 
     @api
@@ -641,11 +643,13 @@ export default class DualListbox extends LightningElement {
     handleRightButtonClick() {
         this.interactingState.interacting();
         this.moveOptionsBetweenLists(true);
+        this.handleSearch();
     }
 
     handleLeftButtonClick() {
         this.interactingState.interacting();
         this.moveOptionsBetweenLists(false);
+        this.handleSearch();
     }
 
     handleUpButtonClick() {
@@ -759,6 +763,11 @@ export default class DualListbox extends LightningElement {
 
     disabledButtons() {
         const selectedLength = this._selectedValues.length - 1;
+        if (this.disabled) {
+            this._upButtonDisabled = true;
+            this._downButtonDisabled = true;
+        }
+
         this._upButtonDisabled = this.highlightedOptions.find((option) => {
             return this._selectedValues.indexOf(option) === 0;
         });
@@ -974,5 +983,28 @@ export default class DualListbox extends LightningElement {
         if (!isSame) {
             this.highlightedOptions = [];
         }
+    }
+
+    handleSearch() {
+        window.clearTimeout(this.delayTimeout);
+        this.searchTerm = this.template
+            .querySelector('lightning-input')
+            .value.toLowerCase();
+        if (this.searchTerm !== '') {
+            this._isLoading = true;
+            this.delayTimeout = setTimeout(() => {
+                this.searchResult = this.computedSourceList.filter((option) => {
+                    return option.label.toLowerCase().includes(this.searchTerm);
+                });
+                this._isLoading = false;
+            }, 300);
+        } else this.searchResult = this.computedSourceList;
+    }
+
+    get hasResult() {
+        if (this.searchResult.length >= 0 && this.searchTerm) {
+            return this.searchResult;
+        }
+        return this.computedSourceList;
     }
 }
