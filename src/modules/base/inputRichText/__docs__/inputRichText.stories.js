@@ -69,18 +69,6 @@ export default {
                 type: { summary: 'boolean' }
             }
         },
-        hideControls: {
-            name: 'hide-controls',
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: 0,
-            table: {
-                defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' },
-                category: 'Toolbar'
-            }
-        },
         isPublisher: {
             name: 'is-publisher',
             control: {
