@@ -21,11 +21,11 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: true,
+            defaultValue: 0,
             description:
                 'If the section is not collapsible, the left icon is hidden.',
             table: {
-                defaultValue: { summary: 'true' }
+                defaultValue: { summary: 'false' }
             }
         }
     }
@@ -38,14 +38,15 @@ Base.args = {
     title: 'Section'
 };
 
-export const NonCollapsible = Template.bind({});
-NonCollapsible.args = {
+export const Collapsible = Template.bind({});
+Collapsible.args = {
     title: 'Section',
-    collapsible: 'false'
+    collapsible: true
 };
 
 export const CollapsibleClosed = Template.bind({});
 CollapsibleClosed.args = {
     title: 'Section',
-    closed: 'true'
+    closed: 'true',
+    collapsible: true
 };

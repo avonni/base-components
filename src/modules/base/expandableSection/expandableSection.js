@@ -6,7 +6,7 @@ export default class ExpandableSection extends LightningElement {
     @api title;
 
     _closed = false;
-    _collapsible = true;
+    _collapsible = false;
 
     @api
     get closed() {
@@ -23,11 +23,7 @@ export default class ExpandableSection extends LightningElement {
     }
 
     set collapsible(value) {
-        if (value === 'false') {
-            this._collapsible = false;
-        } else {
-            this._collapsible = normalizeBoolean(value);
-        }
+        this._collapsible = normalizeBoolean(value);
     }
 
     get sectionClass() {
