@@ -207,7 +207,6 @@ export default class DateTimePicker extends LightningElement {
 
     @api
     get timeFormatHour12() {
-        console.log(this._timeFormatHour12);
         return this._timeFormatHour12;
     }
     set timeFormatHour12(boolean) {
