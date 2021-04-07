@@ -17,13 +17,13 @@ const i18n = {
 
 const ARIA_CONTROLS = 'aria-controls';
 const ARIA_DESCRIBEDBY = 'aria-describedby';
+const ARIA_LABELEDBY = 'aria-labelledby';
 
 const validSizes = ['x-small', 'small', 'medium', 'large'];
 
 export default class InputToggle extends LightningElement {
     @api accessKey;
     @api ariaLabel;
-    @api ariaLabelledBy;
     @api fieldLevelHelp;
     @api label;
     @api messageToggleActive = 'Active';
@@ -66,7 +66,8 @@ export default class InputToggle extends LightningElement {
         if (input) {
             synchronizeAttrs(input, {
                 [ARIA_DESCRIBEDBY]: this.computedAriaDescribedBy,
-                [ARIA_CONTROLS]: this.computedAriaControls
+                [ARIA_CONTROLS]: this.computedAriaControls,
+                [ARIA_LABELEDBY]: this.computedAriaLabelledBy
             });
         }
     }
@@ -95,6 +96,21 @@ export default class InputToggle extends LightningElement {
         this.ariaObserver.link(
             'input',
             'aria-describedby',
+            references,
+            '[data-aria]'
+        );
+    }
+
+    @api
+    get ariaLabelledBy() {
+        return this._ariaLabelledBy;
+    }
+
+    set ariaLabelledBy(references) {
+        this._ariaLabelledBy = references;
+        this.ariaObserver.link(
+            'input',
+            'aria-labelledby',
             references,
             '[data-aria]'
         );
@@ -275,6 +291,16 @@ export default class InputToggle extends LightningElement {
 
         if (this.ariaControls) {
             ariaValues.push(this.ariaControls);
+        }
+
+        return normalizeAriaAttribute(ariaValues);
+    }
+
+    get computedAriaLabelledBy() {
+        const ariaValues = [];
+
+        if (this.ariaLabelledBy) {
+            ariaValues.push(this.ariaLabelledBy);
         }
 
         return normalizeAriaAttribute(ariaValues);
