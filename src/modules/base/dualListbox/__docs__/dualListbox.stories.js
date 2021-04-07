@@ -595,7 +595,7 @@ Base.args = {
     downButtonLabel: 'Down Button Label',
     upButtonLabel: 'Up Button Label',
     options: Options,
-    value: ['2', '3']
+    value: ['2', '3', '4', '5', '6']
 };
 
 export const BaseDisabled = Template.bind({});

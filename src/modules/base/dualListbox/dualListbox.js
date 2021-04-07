@@ -131,8 +131,6 @@ export default class DualListbox extends LightningElement {
                 option.focus();
             }
         }
-        console.log(this._selectedValues.length);
-        console.log(this.isSelectedBoxEmpty);
     }
 
     @api
@@ -735,6 +733,7 @@ export default class DualListbox extends LightningElement {
     }
 
     changeOrderOfOptionsInList(moveUp) {
+        const selectedLength = this._selectedValues.length - 1;
         const elementList = this.getElementsOfList(this.selectedList);
         const values = this.computedSelectedList.map((option) => option.value);
         const toMove = values.filter(
@@ -772,10 +771,17 @@ export default class DualListbox extends LightningElement {
         this.updateFocusableOption(this.selectedList, toMove[0]);
         this.optionToFocus = null;
         this.dispatchChangeEvent(values);
+
+        this._upButtonDisabled = this.highlightedOptions.find((option) => {
+            return this._selectedValues.indexOf(option) === 0;
+        });
+
+        this._downButtonDisabled = this.highlightedOptions.find((option) => {
+            return this._selectedValues.indexOf(option) === selectedLength;
+        });
     }
 
     selectAllFromLastSelectedToOption(option, all) {
-        const selectedLength = this._selectedValues.length - 1;
         const listId = option.getAttribute('data-type');
         this.updateCurrentSelectedList(listId, true);
         const options = this.getElementsOfList(listId);
@@ -790,14 +796,6 @@ export default class DualListbox extends LightningElement {
                 val = options[i].getAttribute('data-value');
                 this.highlightedOptions.push(val);
             }
-        }
-
-        if (start === 0 || end === 0) {
-            this._upButtonDisabled = true;
-        }
-
-        if (start === selectedLength || end === selectedLength) {
-            this._downButtonDisabled = true;
         }
     }
 
