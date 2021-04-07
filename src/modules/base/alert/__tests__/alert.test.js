@@ -16,7 +16,7 @@ describe('Alert', () => {
         expect(element.iconName).toBeUndefined();
         expect(element.variant).toBe('base');
         expect(element.textured).toBe(false);
-        expect(element.isDismissible).toBe(true);
+        expect(element.isDismissible).toBe(false);
     });
 
     it('Alert variant base', () => {
@@ -121,13 +121,13 @@ describe('Alert', () => {
 
         expect(lightningButtonIcon).toBeTruthy();
 
-        element.isDismissible = false;
+        element.isDismissible = true;
 
         return Promise.resolve().then(() => {
             lightningButtonIcon = element.shadowRoot.querySelector(
                 'lightning-button-icon'
             );
-            expect(element.isDismissible).toBe(false);
+            expect(element.isDismissible).toBe(true);
             expect(lightningButtonIcon).toBeFalsy();
         });
     });
