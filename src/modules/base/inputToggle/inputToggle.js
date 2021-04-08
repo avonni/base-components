@@ -322,12 +322,14 @@ export default class InputToggle extends LightningElement {
     }
 
     handleBlur() {
-        if (this.required && !this.checked) {
-            this.valid = false;
-        } else {
-            this.valid = true;
-        }
+        this.valid = !(this.required && !this.checked);
         this.updateClassList();
+
+        this.dispatchEvent(new CustomEvent('blur'));
+    }
+
+    handleFocus() {
+        this.dispatchEvent(new CustomEvent('focus'));
     }
 
     handleChange(event) {
@@ -335,7 +337,9 @@ export default class InputToggle extends LightningElement {
 
         this.dispatchEvent(
             new CustomEvent('change', {
-                detail: event.target.checked,
+                detail: {
+                    checked: event.target.checked
+                },
                 bubbles: true,
                 cancelable: false,
                 composed: true
