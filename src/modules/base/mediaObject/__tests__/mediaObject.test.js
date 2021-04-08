@@ -9,7 +9,7 @@ describe('MediaObject', () => {
     });
 
     it('Default attributes', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-media-object', {
             is: MediaObject
         });
 
@@ -21,7 +21,7 @@ describe('MediaObject', () => {
 
     // vertical-align
     it('verticalAlign = start', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-media-object', {
             is: MediaObject
         });
         document.body.appendChild(element);
@@ -38,7 +38,7 @@ describe('MediaObject', () => {
     });
 
     it('verticalAlign = center', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-media-object', {
             is: MediaObject
         });
         document.body.appendChild(element);
@@ -55,7 +55,7 @@ describe('MediaObject', () => {
     });
 
     it('verticalAlign = end', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-media-object', {
             is: MediaObject
         });
         document.body.appendChild(element);
@@ -73,7 +73,7 @@ describe('MediaObject', () => {
 
     // responsive
     it('responsive = false', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-media-object', {
             is: MediaObject
         });
         document.body.appendChild(element);
@@ -87,7 +87,7 @@ describe('MediaObject', () => {
     });
 
     it('responsive = true', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-media-object', {
             is: MediaObject
         });
         document.body.appendChild(element);
@@ -102,7 +102,7 @@ describe('MediaObject', () => {
 
     // inline
     it('inline = false', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-media-object', {
             is: MediaObject
         });
         document.body.appendChild(element);
@@ -118,7 +118,7 @@ describe('MediaObject', () => {
     });
 
     it('inline = true', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-media-object', {
             is: MediaObject
         });
         document.body.appendChild(element);
@@ -135,7 +135,7 @@ describe('MediaObject', () => {
 
     // size
     it('size = medium', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-media-object', {
             is: MediaObject
         });
         document.body.appendChild(element);
@@ -150,7 +150,7 @@ describe('MediaObject', () => {
     });
 
     it('size = small', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-media-object', {
             is: MediaObject
         });
         document.body.appendChild(element);
@@ -165,7 +165,7 @@ describe('MediaObject', () => {
     });
 
     it('size = large', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-media-object', {
             is: MediaObject
         });
         document.body.appendChild(element);

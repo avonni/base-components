@@ -9,7 +9,7 @@ describe('Map', () => {
     });
 
     it('Default attributes', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-map', {
             is: Map
         });
 
@@ -24,7 +24,7 @@ describe('Map', () => {
 
     // center
     // it('center', () => {
-    //     const element = createElement('base-alert', {
+    //     const element = createElement('base-map', {
     //         is: Map
     //     });
     //     document.body.appendChild(element);
@@ -50,7 +50,7 @@ describe('Map', () => {
     // list-view
     // Depends on mapMarkers
     it('listView = auto, with one marker', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-map', {
             is: Map
         });
         document.body.appendChild(element);
@@ -77,7 +77,7 @@ describe('Map', () => {
     });
 
     it('listView = auto, with several markers', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-map', {
             is: Map
         });
         document.body.appendChild(element);
@@ -114,7 +114,7 @@ describe('Map', () => {
     });
 
     it('listView = visible', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-map', {
             is: Map
         });
         document.body.appendChild(element);
@@ -128,7 +128,7 @@ describe('Map', () => {
     });
 
     it('listView = hidden', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-map', {
             is: Map
         });
         document.body.appendChild(element);
@@ -144,7 +144,7 @@ describe('Map', () => {
     // markers-title
     // Depends on listView
     it('markersTitle', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-map', {
             is: Map
         });
         document.body.appendChild(element);
@@ -164,7 +164,7 @@ describe('Map', () => {
     // show-footer
     // Depends on mapMarkers
     it('showFooter = false', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-map', {
             is: Map
         });
         document.body.appendChild(element);
@@ -191,7 +191,7 @@ describe('Map', () => {
     });
 
     it('showFooter = true', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-map', {
             is: Map
         });
         document.body.appendChild(element);

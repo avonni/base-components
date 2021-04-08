@@ -9,7 +9,7 @@ describe('MenuItemDialog', () => {
     });
 
     it('Default attributes', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-menu-item-dialog', {
             is: MenuItemDialog
         });
 
@@ -28,7 +28,7 @@ describe('MenuItemDialog', () => {
 
     // access-key
     it('accessKey', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-menu-item-dialog', {
             is: MenuItemDialog
         });
         document.body.appendChild(element);
@@ -44,7 +44,7 @@ describe('MenuItemDialog', () => {
     // disabled
     // Depends on the dispatch of a privateselect event on click
     it('disabled = false', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-menu-item-dialog', {
             is: MenuItemDialog
         });
         document.body.appendChild(element);
@@ -64,7 +64,7 @@ describe('MenuItemDialog', () => {
     });
 
     it('disabled = true', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-menu-item-dialog', {
             is: MenuItemDialog
         });
         document.body.appendChild(element);
@@ -86,7 +86,7 @@ describe('MenuItemDialog', () => {
     // draft-alternative-text
     // Depend on isDraft
     it('draftAlternativeText', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-menu-item-dialog', {
             is: MenuItemDialog
         });
         document.body.appendChild(element);
@@ -102,7 +102,7 @@ describe('MenuItemDialog', () => {
 
     // icon-name
     it('iconName', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-menu-item-dialog', {
             is: MenuItemDialog
         });
         document.body.appendChild(element);
@@ -119,7 +119,7 @@ describe('MenuItemDialog', () => {
 
     // is-draft
     it('isDraft = false', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-menu-item-dialog', {
             is: MenuItemDialog
         });
         document.body.appendChild(element);
@@ -133,7 +133,7 @@ describe('MenuItemDialog', () => {
     });
 
     it('isDraft = true', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-menu-item-dialog', {
             is: MenuItemDialog
         });
         document.body.appendChild(element);
@@ -148,7 +148,7 @@ describe('MenuItemDialog', () => {
 
     // label
     it('label', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-menu-item-dialog', {
             is: MenuItemDialog
         });
         document.body.appendChild(element);
@@ -164,7 +164,7 @@ describe('MenuItemDialog', () => {
 
     // prefix-icon-name
     it('prefixIconName', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-menu-item-dialog', {
             is: MenuItemDialog
         });
         document.body.appendChild(element);
@@ -181,7 +181,7 @@ describe('MenuItemDialog', () => {
 
     // tab-index
     it('tabIndex', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-menu-item-dialog', {
             is: MenuItemDialog
         });
         document.body.appendChild(element);
@@ -197,7 +197,7 @@ describe('MenuItemDialog', () => {
     // value
     // Depends on the dispatch of a privateselect event on click
     it('value', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-menu-item-dialog', {
             is: MenuItemDialog
         });
         document.body.appendChild(element);
@@ -220,7 +220,7 @@ describe('MenuItemDialog', () => {
 
     // focus
     it('focus', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-menu-item-dialog', {
             is: MenuItemDialog
         });
         document.body.appendChild(element);

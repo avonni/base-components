@@ -9,7 +9,7 @@ describe('InputToggle', () => {
     });
 
     it('Default attributes', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-input-toggle', {
             is: InputToggle
         });
 
@@ -39,7 +39,7 @@ describe('InputToggle', () => {
 
     // access-key
     it('accessKey', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-input-toggle', {
             is: InputToggle
         });
         document.body.appendChild(element);
@@ -54,7 +54,7 @@ describe('InputToggle', () => {
 
     // aria-controls
     it('ariaControls', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-input-toggle', {
             is: InputToggle
         });
         document.body.appendChild(element);
@@ -69,7 +69,7 @@ describe('InputToggle', () => {
 
     // aria-described-by
     it('ariaDescribedBy', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-input-toggle', {
             is: InputToggle
         });
         document.body.appendChild(element);
@@ -84,7 +84,7 @@ describe('InputToggle', () => {
 
     // aria-label
     it('ariaLabel', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-input-toggle', {
             is: InputToggle
         });
         document.body.appendChild(element);
@@ -99,7 +99,7 @@ describe('InputToggle', () => {
 
     // aria-labelled-by
     it('ariaLabelledBy', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-input-toggle', {
             is: InputToggle
         });
         document.body.appendChild(element);
@@ -114,7 +114,7 @@ describe('InputToggle', () => {
 
     // checked
     it('checked', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-input-toggle', {
             is: InputToggle
         });
         document.body.appendChild(element);
@@ -129,7 +129,7 @@ describe('InputToggle', () => {
 
     // disabled
     it('disabled', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-input-toggle', {
             is: InputToggle
         });
         document.body.appendChild(element);
@@ -144,7 +144,7 @@ describe('InputToggle', () => {
 
     // field-level-help
     it('fieldLevelHelp', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-input-toggle', {
             is: InputToggle
         });
         document.body.appendChild(element);
@@ -159,7 +159,7 @@ describe('InputToggle', () => {
 
     // hide-mark
     it('hideMark', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-input-toggle', {
             is: InputToggle
         });
         document.body.appendChild(element);
@@ -176,7 +176,7 @@ describe('InputToggle', () => {
 
     // label
     it('label', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-input-toggle', {
             is: InputToggle
         });
         document.body.appendChild(element);
@@ -193,7 +193,7 @@ describe('InputToggle', () => {
 
     // message-toggle-active
     it('messageToggleActive', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-input-toggle', {
             is: InputToggle
         });
         document.body.appendChild(element);
@@ -210,7 +210,7 @@ describe('InputToggle', () => {
 
     // message-toggle-inactive
     it('messageToggleInactive', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-input-toggle', {
             is: InputToggle
         });
         document.body.appendChild(element);
@@ -228,7 +228,7 @@ describe('InputToggle', () => {
     // message-when-value-missing
     // Depends on required, focus() and blur() to pass
     it('messageWhenValueMissing', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-input-toggle', {
             is: InputToggle
         });
         document.body.appendChild(element);
@@ -250,7 +250,7 @@ describe('InputToggle', () => {
 
     // name
     it('name', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-input-toggle', {
             is: InputToggle
         });
         document.body.appendChild(element);
@@ -264,7 +264,7 @@ describe('InputToggle', () => {
 
     // read-only
     it('readOnly', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-input-toggle', {
             is: InputToggle
         });
         document.body.appendChild(element);
@@ -278,7 +278,7 @@ describe('InputToggle', () => {
 
     // required
     it('required', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-input-toggle', {
             is: InputToggle
         });
         document.body.appendChild(element);
@@ -292,7 +292,7 @@ describe('InputToggle', () => {
 
     // size
     it('size = medium', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-input-toggle', {
             is: InputToggle
         });
         document.body.appendChild(element);
@@ -314,7 +314,7 @@ describe('InputToggle', () => {
     });
 
     it('size = x-small', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-input-toggle', {
             is: InputToggle
         });
         document.body.appendChild(element);
@@ -338,7 +338,7 @@ describe('InputToggle', () => {
     });
 
     it('size = small', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-input-toggle', {
             is: InputToggle
         });
         document.body.appendChild(element);
@@ -362,7 +362,7 @@ describe('InputToggle', () => {
     });
 
     it('size = large', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-input-toggle', {
             is: InputToggle
         });
         document.body.appendChild(element);
@@ -387,7 +387,7 @@ describe('InputToggle', () => {
 
     // value
     it('value', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-input-toggle', {
             is: InputToggle
         });
         document.body.appendChild(element);
@@ -401,7 +401,7 @@ describe('InputToggle', () => {
 
     // variant
     it('variant = standard', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-input-toggle', {
             is: InputToggle
         });
         document.body.appendChild(element);
@@ -425,7 +425,7 @@ describe('InputToggle', () => {
     });
 
     it('variant = label-inline', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-input-toggle', {
             is: InputToggle
         });
         document.body.appendChild(element);
@@ -449,7 +449,7 @@ describe('InputToggle', () => {
     });
 
     it('variant = label-stacked', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-input-toggle', {
             is: InputToggle
         });
         document.body.appendChild(element);
@@ -471,7 +471,7 @@ describe('InputToggle', () => {
     });
 
     it('variant = label-hidden', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-input-toggle', {
             is: InputToggle
         });
         document.body.appendChild(element);
@@ -498,7 +498,7 @@ describe('InputToggle', () => {
 
     // change
     it('change event', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-input-toggle', {
             is: InputToggle
         });
         document.body.appendChild(element);
@@ -515,7 +515,7 @@ describe('InputToggle', () => {
 
     // blur
     it('blur event', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-input-toggle', {
             is: InputToggle
         });
         document.body.appendChild(element);
@@ -533,7 +533,7 @@ describe('InputToggle', () => {
 
     // focus
     it('focus event', () => {
-        const element = createElement('base-alert', {
+        const element = createElement('base-input-toggle', {
             is: InputToggle
         });
         document.body.appendChild(element);
