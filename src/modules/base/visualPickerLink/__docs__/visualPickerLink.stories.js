@@ -71,6 +71,11 @@ export default {
 const Template = (args) => VisualPickerLink(args);
 const TemplateWithSlots = (args) => VisualPickerLinkWithSlot(args);
 
+export const Base = Template.bind({});
+Base.args = {
+    title: 'Share the knowledge'
+};
+
 export const IconPositionLeft = Template.bind({});
 IconPositionLeft.args = {
     title: 'Share the knowledge',

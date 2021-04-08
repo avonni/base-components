@@ -1,8 +1,12 @@
 import { LightningElement, api } from 'lwc';
 import {
     classListMutation,
+    ContentMutation,
+    synchronizeAttrs,
+    getRealDOMId,
     normalizeBoolean,
-    normalizeString
+    normalizeString,
+    normalizeAriaAttribute
 } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import { FieldConstraintApi, normalizeVariant, VARIANT } from 'c/inputUtils';
@@ -11,33 +15,40 @@ const i18n = {
     required: 'required'
 };
 
+const ARIA_CONTROLS = 'aria-controls';
+const ARIA_DESCRIBEDBY = 'aria-describedby';
+const ARIA_LABELEDBY = 'aria-labelledby';
+
 const validSizes = ['x-small', 'small', 'medium', 'large'];
 
 export default class InputToggle extends LightningElement {
     @api accessKey;
-    @api ariaControls;
-    @api ariaDescribedBy;
     @api ariaLabel;
-    @api ariaLabelledBy;
     @api fieldLevelHelp;
-    @api label = 'Toggle Label';
+    @api label;
     @api messageToggleActive = 'Active';
     @api messageToggleInactive = 'Inactive';
     @api name;
-    @api value = '';
+    @api value;
 
+    _ariaControls;
+    _ariaDescribedBy;
     _checked;
     _disabled;
     _hideMark = false;
-    _invalidMessage = 'Complete this field';
+    _messageWhenValueMissing;
     _readOnly;
     _required;
     _size = 'medium';
     _variant;
 
     _connected;
-    _helpMessage = null;
     valid = true;
+
+    constructor() {
+        super();
+        this.ariaObserver = new ContentMutation(this);
+    }
 
     connectedCallback() {
         this._connected = true;
@@ -45,11 +56,70 @@ export default class InputToggle extends LightningElement {
         this.updateClassList();
     }
 
+    renderedCallback() {
+        this._synchronizeA11y();
+    }
+
+    _synchronizeA11y() {
+        const input = this.template.querySelector('input');
+
+        if (input) {
+            synchronizeAttrs(input, {
+                [ARIA_DESCRIBEDBY]: this.computedAriaDescribedBy,
+                [ARIA_CONTROLS]: this.computedAriaControls,
+                [ARIA_LABELEDBY]: this.computedAriaLabelledBy
+            });
+        }
+    }
+
+    @api
+    get ariaControls() {
+        return this._ariaControls;
+    }
+    set ariaControls(references) {
+        this._ariaControls = references;
+        this.ariaObserver.link(
+            'input',
+            'aria-controls',
+            references,
+            '[data-aria]'
+        );
+    }
+
+    @api
+    get ariaDescribedBy() {
+        return this._ariaDescribedBy;
+    }
+
+    set ariaDescribedBy(references) {
+        this._ariaDescribedBy = references;
+        this.ariaObserver.link(
+            'input',
+            'aria-describedby',
+            references,
+            '[data-aria]'
+        );
+    }
+
+    @api
+    get ariaLabelledBy() {
+        return this._ariaLabelledBy;
+    }
+
+    set ariaLabelledBy(references) {
+        this._ariaLabelledBy = references;
+        this.ariaObserver.link(
+            'input',
+            'aria-labelledby',
+            references,
+            '[data-aria]'
+        );
+    }
+
     @api
     get checked() {
         return this._checked;
     }
-
     set checked(value) {
         this._checked = normalizeBoolean(value);
     }
@@ -72,11 +142,11 @@ export default class InputToggle extends LightningElement {
 
     @api
     get messageWhenValueMissing() {
-        return this._invalidMessage;
+        return this._messageWhenValueMissing;
     }
 
     set messageWhenValueMissing(value) {
-        this._invalidMessage = value || 'Complete this field';
+        this._messageWhenValueMissing = value;
     }
 
     @api
@@ -146,7 +216,7 @@ export default class InputToggle extends LightningElement {
     @api
     reportValidity() {
         return this._constraint.reportValidity((message) => {
-            this._helpMessage = message;
+            this._messageWhenValueMissing = message;
         });
     }
 
@@ -187,6 +257,53 @@ export default class InputToggle extends LightningElement {
             'slds-assistive-text': this.variant === VARIANT.LABEL_HIDDEN,
             'slds-p-top_xx-small slds-m-top_xxx-small': this.size === 'large'
         });
+    }
+
+    get computedUniqueHelpElementId() {
+        return getRealDOMId(this.template.querySelector('[data-help-message]'));
+    }
+
+    get computedUniqueToggleElementDescribedById() {
+        const toggle = this.template.querySelector('[data-toggle-description]');
+        return getRealDOMId(toggle);
+    }
+
+    get computedAriaDescribedBy() {
+        const ariaValues = [];
+
+        if (this.messageWhenValueMissing) {
+            ariaValues.push(this.computedUniqueHelpElementId);
+        }
+
+        if (this.isTypeToggle) {
+            ariaValues.push(this.computedUniqueToggleElementDescribedById);
+        }
+
+        if (this.ariaDescribedBy) {
+            ariaValues.push(this.ariaDescribedBy);
+        }
+
+        return normalizeAriaAttribute(ariaValues);
+    }
+
+    get computedAriaControls() {
+        const ariaValues = [];
+
+        if (this.ariaControls) {
+            ariaValues.push(this.ariaControls);
+        }
+
+        return normalizeAriaAttribute(ariaValues);
+    }
+
+    get computedAriaLabelledBy() {
+        const ariaValues = [];
+
+        if (this.ariaLabelledBy) {
+            ariaValues.push(this.ariaLabelledBy);
+        }
+
+        return normalizeAriaAttribute(ariaValues);
     }
 
     get _constraint() {
