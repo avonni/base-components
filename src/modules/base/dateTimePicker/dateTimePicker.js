@@ -19,33 +19,33 @@ export default class DateTimePicker extends LightningElement {
     @api label;
     @api messageWhenValueMissing;
     @api name;
-    @api readOnly;
-    @api required;
+    @api readOnly = false;
+    @api required = false;
     @api disabledDateTimes;
 
     _hideLabel;
-    _variant;
-    _max;
-    _min;
+    _variant = 'daily';
+    _max = new Date(new Date(2099, 11, 31).setHours(0, 0, 0, 0));
+    _min = new Date(new Date(1900, 0, 1).setHours(0, 0, 0, 0));
     _value;
-    _startTime;
-    _endTime;
-    _timeSlotDuration;
+    _startTime = 46800000;
+    _endTime = 82800000;
+    _timeSlotDuration = 1800000;
     _timeSlots;
     _timeFormatHour;
     _timeFormatHour12;
     _timeFormatMinute;
     _timeFormatSecond;
-    _dateFormatDay;
-    _dateFormatWeekday;
-    _dateFormatMonth;
+    _dateFormatDay = 'numeric';
+    _dateFormatWeekday = 'short';
+    _dateFormatMonth = 'long';
     _dateFormatYear;
     _showEndTime;
     _showDisabledDates;
-    _type;
-    _showTimeZone;
-    _hideNavigation;
-    _hideDatePicker;
+    _type = 'radio';
+    _showTimeZone = false;
+    _hideNavigation = false;
+    _hideDatePicker = false;
 
     table;
     today;
@@ -127,8 +127,6 @@ export default class DateTimePicker extends LightningElement {
         const date = this._processDate(value);
         if (date) {
             this._max = new Date(date.setHours(0, 0, 0, 0));
-        } else {
-            this._max = new Date(new Date(2099, 11, 31).setHours(0, 0, 0, 0));
         }
     }
 
@@ -140,8 +138,6 @@ export default class DateTimePicker extends LightningElement {
         const date = this._processDate(value);
         if (date) {
             this._min = new Date(date.setHours(0, 0, 0, 0));
-        } else {
-            this._min = new Date(new Date(1900, 0, 1).setHours(0, 0, 0, 0));
         }
     }
 

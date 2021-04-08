@@ -5,10 +5,10 @@ customElements.define(
     Component.CustomElementConstructor
 );
 
-export const ExpandableSection = ({ title, closed, collapsable }) => {
+export const ExpandableSection = ({ title, closed, collapsible }) => {
     const element = document.createElement('ac-base-expandable-section');
     element.title = title;
     element.closed = closed;
-    element.collapsable = collapsable;
+    element.collapsible = collapsible;
     return element;
 };
