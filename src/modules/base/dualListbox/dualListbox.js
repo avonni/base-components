@@ -31,7 +31,7 @@ const VALID_BUTTON_VARIANTS = {
         'bare-inverse',
         'border-inverse'
     ],
-    default: 'bare'
+    default: 'border'
 };
 
 const VALID_BUTTON_SIZES = {
@@ -40,12 +40,9 @@ const VALID_BUTTON_SIZES = {
 };
 
 const i18n = {
-    downButtonAssistiveText: 'Down Button AssistiveText',
     optionLockAssistiveText: 'Option Lock AssistiveText',
     required: 'Required',
     requiredError: 'Value required',
-    upButtonAssistiveText: 'Up Button AssistiveText',
-    moveSelectionToAssistiveText: 'Move Selection To AssistiveText',
     loadingText: 'Loading'
 };
 
@@ -61,15 +58,14 @@ export default class DualListbox extends LightningElement {
     @api downButtonIconName = DEFAULT_DOWN_BUTTON_ICON_NAME;
     @api removeButtonIconName = DEFAULT_REMOVE_BUTTON_ICON_NAME;
     @api upButtonIconName = DEFAULT_UP_BUTTON_ICON_NAME;
-    searchResult = [];
-    searchTerm;
-    _upButtonDisabled = false;
-    _downButtonDisabled = false;
-    _oldIndex;
+    @api addButtonLabel;
+    @api removeButtonLabel;
+    @api upButtonLabel;
+    @api downButtonLabel;
 
-    _requiredOptions = [];
-    _selectedValues = [];
-    _options = [];
+    _requiredOptions;
+    _options;
+    _value;
     _buttonSize = VALID_BUTTON_SIZES.default;
     _buttonVariant = VALID_BUTTON_VARIANTS.default;
     _isLoading = false;
@@ -79,17 +75,19 @@ export default class DualListbox extends LightningElement {
     _disabled;
     _disableReordering = false;
     _required = false;
-    _addButtonLabel;
-    _removeButtonLabel;
-    _upButtonLabel;
-    _downButtonLabel;
     _size;
 
+    _selectedValues;
     highlightedOptions = [];
     errorMessage = '';
     focusableInSource;
     focusableInSelected;
     isFocusOnList = false;
+    searchResult = [];
+    searchTerm;
+    _upButtonDisabled = false;
+    _downButtonDisabled = false;
+    _oldIndex;
 
     connectedCallback() {
         this.classList.add('slds-form-element');
@@ -293,48 +291,6 @@ export default class DualListbox extends LightningElement {
 
     set showActivityIndicator(value) {
         this._showActivityIndicator = normalizeBoolean(value);
-    }
-
-    @api
-    get addButtonLabel() {
-        if (this._addButtonLabel) {
-            return this._addButtonLabel;
-        }
-        return this.getRightButtonAssistiveText();
-    }
-
-    set addButtonLabel(value) {
-        this._addButtonLabel = value;
-    }
-
-    @api
-    get removeButtonLabel() {
-        if (this._removeButtonLabel) {
-            return this._removeButtonLabel;
-        }
-        return this.getLeftButtonAssistiveText();
-    }
-
-    set removeButtonLabel(value) {
-        this._removeButtonLabel = value;
-    }
-
-    @api
-    get upButtonLabel() {
-        return this._upButtonLabel || this.i18n.upButtonAssistiveText;
-    }
-
-    set upButtonLabel(value) {
-        this._upButtonLabel = value;
-    }
-
-    @api
-    get downButtonLabel() {
-        return this._downButtonLabel || this.i18n.downButtonAssistiveText;
-    }
-
-    set downButtonLabel(value) {
-        this._downButtonLabel = value;
     }
 
     @api
@@ -584,17 +540,6 @@ export default class DualListbox extends LightningElement {
 
     get i18n() {
         return i18n;
-    }
-
-    getRightButtonAssistiveText() {
-        return formatLabel(
-            i18n.moveSelectionToAssistiveText,
-            this.selectedLabel
-        );
-    }
-
-    getLeftButtonAssistiveText() {
-        return formatLabel(i18n.moveSelectionToAssistiveText, this.sourceLabel);
     }
 
     get moveButtonsDisabled() {
