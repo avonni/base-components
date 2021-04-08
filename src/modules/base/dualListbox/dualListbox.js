@@ -65,6 +65,7 @@ export default class DualListbox extends LightningElement {
     searchTerm;
     _upButtonDisabled = false;
     _downButtonDisabled = false;
+    _oldIndex;
 
     _requiredOptions = [];
     _selectedValues = [];
@@ -126,7 +127,7 @@ export default class DualListbox extends LightningElement {
         if (this.optionToFocus) {
             // value could have an apostrophe, which is why we need to escape it otherwise the queryselector will not work
             const option = this.template.querySelector(
-                `div[data-value='${this.optionToFocus.replace(/'/g, "\\'")}']`
+                `div[data-value='${this.optionToFocus}']`
             );
             if (option) {
                 this.isFocusOnList = true;
@@ -134,7 +135,6 @@ export default class DualListbox extends LightningElement {
             }
         }
         this.disabledButtons();
-        console.log(this.searchTerm);
     }
 
     @api
@@ -642,13 +642,13 @@ export default class DualListbox extends LightningElement {
 
     handleRightButtonClick() {
         this.interactingState.interacting();
-        this.moveOptionsBetweenLists(true);
+        this.moveOptionsBetweenLists(true, true);
         this.handleSearch();
     }
 
     handleLeftButtonClick() {
         this.interactingState.interacting();
-        this.moveOptionsBetweenLists(false);
+        this.moveOptionsBetweenLists(false, true);
         this.handleSearch();
     }
 
@@ -709,8 +709,21 @@ export default class DualListbox extends LightningElement {
             const listId = addToSelect
                 ? this.computedSelectedListId
                 : this.computedSourceListId;
-            this.selectedList = listId;
-            this.updateFocusableOption(listId, toMove[0]);
+            if (listId.includes('source')) {
+                if (this.computedSelectedList.length > 0) {
+                    this.updateFocusableOption(
+                        this.computedSourceListId,
+                        this.computedSelectedList[this._oldIndex].value
+                    );
+                } else this.updateFocusableOption(listId, toMove[0]);
+            } else {
+                if (this.computedSourceList.length > 0) {
+                    this.updateFocusableOption(
+                        this.computedSelectedListId,
+                        this.computedSourceList[this._oldIndex].value
+                    );
+                } else this.updateFocusableOption(listId, toMove[0]);
+            }
         } else {
             this.interactingState.leave();
             this.isFocusOnList = false;
@@ -719,6 +732,19 @@ export default class DualListbox extends LightningElement {
         }
 
         this.dispatchChangeEvent(newValues);
+        this.highlightedOptions.find((option) => {
+            return this._selectedValues.indexOf(option);
+        });
+    }
+
+    oldIndexValue(option) {
+        const options = this.template.querySelector(
+            `div[data-value='${option}']`
+        );
+        const index = options.getAttribute('data-index');
+        if (index === '0') {
+            this._oldIndex = 0;
+        } else this._oldIndex = index - 1;
     }
 
     changeOrderOfOptionsInList(moveUp) {
@@ -746,6 +772,7 @@ export default class DualListbox extends LightningElement {
                 index = values.indexOf(toMove[start]);
                 this.swapOptions(index, index - 1, values, elementList);
                 start++;
+                console.log(index);
             }
         } else {
             while (start > -1) {
@@ -814,6 +841,7 @@ export default class DualListbox extends LightningElement {
         this.updateFocusableOption(listId, value);
 
         this.lastSelected = optionIndex;
+        this.oldIndexValue(this.highlightedOptions);
     }
 
     addRequiredOptionsToValue() {
