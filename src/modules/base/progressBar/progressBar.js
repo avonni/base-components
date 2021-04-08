@@ -60,7 +60,7 @@ export default class ProgressBar extends LightningElement {
     _theme = 'base';
     _textured = false;
     _thickness = 'medium';
-    _orientation = 'vertical';
+    _orientation = 'horizontal';
 
     // render the progress bar depending on its orientation
     render() {
