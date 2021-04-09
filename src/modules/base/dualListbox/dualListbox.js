@@ -730,10 +730,6 @@ export default class DualListbox extends LightningElement {
 
     disabledButtons() {
         const selectedLength = this._selectedValues.length - 1;
-        if (this.disabled) {
-            this._upButtonDisabled = true;
-            this._downButtonDisabled = true;
-        }
 
         this._upButtonDisabled = this.highlightedOptions.find((option) => {
             return this._selectedValues.indexOf(option) === 0;

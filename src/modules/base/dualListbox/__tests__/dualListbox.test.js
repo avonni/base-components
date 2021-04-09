@@ -42,8 +42,11 @@ describe('DualListbox', () => {
         expect(element.value).toMatchObject([]);
         expect(element.variant).toBe('standard');
     });
-    // need to but label to get the right button icon, testing addButtonIconLabel as well
-    it('Dual Listbox add button icon name', () => {
+
+    /* ----- ATTRIBUTES ----- */
+
+    // add-button-icon-name & add-button-label
+    it('Dual Listbox add button icon name and label', () => {
         const element = createElement('base-dual-listbox', {
             is: DualListbox
         });
@@ -61,6 +64,7 @@ describe('DualListbox', () => {
         });
     });
 
+    // button-size
     it('Dual Listbox button size xx-small', () => {
         const element = createElement('base-dual-listbox', {
             is: DualListbox
@@ -164,6 +168,7 @@ describe('DualListbox', () => {
         });
     });
 
+    // button-variant
     it('Dual Listbox button variant bare', () => {
         const element = createElement('base-dual-listbox', {
             is: DualListbox
@@ -290,6 +295,7 @@ describe('DualListbox', () => {
         });
     });
 
+    // disable-reordering
     it('Dual Listbox disable reordering', () => {
         const element = createElement('base-dual-listbox', {
             is: DualListbox
@@ -301,7 +307,7 @@ describe('DualListbox', () => {
         element.removeButtonLabel = 'remove';
 
         return Promise.resolve().then(() => {
-            expect(element.disableReordering).toBe(true);
+            expect(element.disableReordering).toBeTruthy();
             const lightningButtonIcon = element.shadowRoot.querySelectorAll(
                 'lightning-button-icon'
             );
@@ -312,6 +318,101 @@ describe('DualListbox', () => {
         });
     });
 
+    // disabled
+    it('Dual Listbox disabled', () => {
+        const element = createElement('base-dual-listbox', {
+            is: DualListbox
+        });
+        document.body.appendChild(element);
+
+        element.disabled = true;
+        element.addButtonLabel = 'add';
+        element.downButtonLabel = 'down';
+        element.removeButtonLabel = 'remove';
+        element.upButtonLabel = 'up';
+
+        return Promise.resolve().then(() => {
+            expect(element.disabled).toBeTruthy();
+
+            const column = element.shadowRoot.querySelector(
+                '.slds-dueling-list__options'
+            );
+
+            const addLightningButtonIcon = element.shadowRoot.querySelector(
+                "lightning-button-icon[title='add']"
+            );
+            // const downLightningButtonIcon = element.shadowRoot.querySelector(
+            //     "lightning-button-icon[title='down']"
+            // );
+            const removeLightningButtonIcon = element.shadowRoot.querySelector(
+                "lightning-button-icon[title='remove']"
+            );
+            // const upLightningButtonIcon = element.shadowRoot.querySelector(
+            //     "lightning-button-icon[title='up']"
+            // );
+
+            expect(addLightningButtonIcon.disabled).toBeTruthy();
+            // expect(downLightningButtonIcon.disabled).toBeTruthy();
+            expect(removeLightningButtonIcon.disabled).toBeTruthy();
+            // expect(upLightningButtonIcon.disabled).toBeTruthy();
+
+            expect(column.classList).toContain('slds-is-disabled');
+        });
+    });
+
+    // down-button-icon-name & down-button-label
+    it('Dual Listbox down button icon name and label', () => {
+        const element = createElement('base-dual-listbox', {
+            is: DualListbox
+        });
+        document.body.appendChild(element);
+
+        element.downButtonIconName = 'utility:apex';
+        element.downButtonLabel = 'down';
+
+        return Promise.resolve().then(() => {
+            const lightningButtonIcon = element.shadowRoot.querySelector(
+                "lightning-button-icon[title='down']"
+            );
+            expect(lightningButtonIcon.iconName).toBe('utility:apex');
+            expect(lightningButtonIcon.title).toBe('down');
+        });
+    });
+
+    // field-level-help
+    it('Dual Listbox field level help', () => {
+        const element = createElement('base-dual-listbox', {
+            is: DualListbox
+        });
+        document.body.appendChild(element);
+
+        element.fieldLevelHelp = 'A string help';
+
+        return Promise.resolve().then(() => {
+            const help = element.shadowRoot.querySelector('lightning-helptext');
+            expect(help).toBeTruthy();
+        });
+    });
+
+    // isLoading
+    it('Dual Listbox is loading', () => {
+        const element = createElement('base-dual-listbox', {
+            is: DualListbox
+        });
+        document.body.appendChild(element);
+
+        element.isLoading = true;
+
+        return Promise.resolve().then(() => {
+            const spinner = element.shadowRoot.querySelector(
+                'lightning-spinner'
+            );
+            expect(element.isLoading).toBeTruthy();
+            expect(spinner).toBeTruthy();
+        });
+    });
+
+    // label
     it('Dual Listbox label', () => {
         const element = createElement('base-dual-listbox', {
             is: DualListbox
@@ -325,6 +426,157 @@ describe('DualListbox', () => {
                 '.slds-form-element__label'
             );
             expect(label.textContent).toBe('A string label');
+        });
+    });
+
+    // max
+    it('Dual Listbox max', () => {
+        const element = createElement('base-dual-listbox', {
+            is: DualListbox
+        });
+        document.body.appendChild(element);
+
+        element.max = 4;
+
+        return Promise.resolve().then(() => {
+            expect(element.max).toBe(4);
+        });
+    });
+
+    // min
+    it('Dual Listbox min', () => {
+        const element = createElement('base-dual-listbox', {
+            is: DualListbox
+        });
+        document.body.appendChild(element);
+
+        element.min = 4;
+
+        return Promise.resolve().then(() => {
+            expect(element.min).toBe(4);
+        });
+    });
+
+    // message-when-range-overflow
+    it('Dual Listbox message when range overflow', () => {
+        const element = createElement('base-dual-listbox', {
+            is: DualListbox
+        });
+        document.body.appendChild(element);
+        element.messageWhenRangerOverflow = 'Maximum Capacity!';
+
+        return Promise.resolve().then(() => {
+            const message = element.shadowRoot.querySelector(
+                '.slds-form-element__help'
+            );
+            expect(message).toBe('Maximum Capacity!');
+        });
+    });
+
+    // message-when-range-underflow
+    it('Dual Listbox message when range underflow', () => {
+        const element = createElement('base-dual-listbox', {
+            is: DualListbox
+        });
+        document.body.appendChild(element);
+        element.messageWhenRangerUnderflow = 'Minimum Capacity!';
+
+        return Promise.resolve().then(() => {
+            const message = element.shadowRoot.querySelector(
+                '.slds-form-element__help'
+            );
+            expect(message).toBe('Minimum Capacity!');
+        });
+    });
+
+    // message-when-value-missing
+    it('Dual Listbox message when value is missing', () => {
+        const element = createElement('base-dual-listbox', {
+            is: DualListbox
+        });
+        document.body.appendChild(element);
+        element.required = true;
+        element.value.length = 0;
+        element.messageWhenValueMissing = 'Missing value!';
+
+        return Promise.resolve().then(() => {
+            const message = element.shadowRoot.querySelector(
+                '.slds-form-element__help'
+            );
+            expect(message).toBe('Missing value!');
+        });
+    });
+
+    // options
+    // it('Dual Listbox options', () => {
+    //     const element = createElement('base-dual-listbox', {
+    //         is: DualListbox
+    //     });
+    //     document.body.appendChild(element);
+    //     const options = [
+    //         {
+    //             value: '1',
+    //             label: 'Jobs',
+    //             iconName: 'custom:custom91',
+    //             description: 'description',
+    //             initials: 'initials',
+    //             iconSize: 'small',
+    //             src: 'src',
+    //             variant: 'circle'
+    //         },
+    //         {
+    //             value: '2',
+    //             label: 'Content',
+    //             iconName: 'custom:custom92',
+    //             description: 'description',
+    //             initials: 'initials',
+    //             iconSize: 'large',
+    //             src: 'src',
+    //             variant: 'square'
+    //         }
+    //     ];
+
+    //     element.options = options;
+
+    //     return Promise.resolve().then(() => {
+    //         options.forEach((option) => {
+    //             expect(option.label).toBe(correspondingField.label);
+    //             expect(option.value).toBe(correspondingField.value);
+    //             expect(option.type).toBe(correspondingField.type);
+    //         });
+    //     });
+    // });
+
+    // remove-button-icon-name & remove-button-label
+    it('Dual Listbox remove button icon name and label', () => {
+        const element = createElement('base-dual-listbox', {
+            is: DualListbox
+        });
+        document.body.appendChild(element);
+
+        element.removeButtonIconName = 'utility:apex';
+        element.removeButtonLabel = 'remove';
+
+        return Promise.resolve().then(() => {
+            const lightningButtonIcon = element.shadowRoot.querySelector(
+                "lightning-button-icon[title='remove']"
+            );
+            expect(lightningButtonIcon.iconName).toBe('utility:apex');
+            expect(lightningButtonIcon.title).toBe('remove');
+        });
+    });
+
+    // required
+    it('Dual Listbox required', () => {
+        const element = createElement('base-dual-listbox', {
+            is: DualListbox
+        });
+        document.body.appendChild(element);
+        element.required = true;
+
+        return Promise.resolve().then(() => {
+            const asterisk = element.shadowRoot.querySelector('.slds-required');
+            expect(asterisk).toBeTruthy();
         });
     });
 });
