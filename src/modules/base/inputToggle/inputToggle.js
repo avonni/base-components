@@ -360,8 +360,10 @@ export default class InputToggle extends LightningElement {
     }
 
     handleChange(event) {
-        console.log(this.checked);
-        if (this.readOnly) return;
+        if (this.readOnly) {
+            this._inputElement.checked = this.checked;
+            return;
+        }
 
         this._checked = this._inputElement.checked;
         this._updateProxyInputAttributes('checked');
