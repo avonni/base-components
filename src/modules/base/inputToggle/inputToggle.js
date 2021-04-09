@@ -9,7 +9,11 @@ import {
     normalizeAriaAttribute
 } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
-import { FieldConstraintApi, normalizeVariant, VARIANT } from 'c/inputUtils';
+import {
+    FieldConstraintApiWithProxyInput,
+    normalizeVariant,
+    VARIANT
+} from 'c/inputUtils';
 
 const i18n = {
     required: 'required'
@@ -42,7 +46,8 @@ export default class InputToggle extends LightningElement {
     _size = 'medium';
     _variant;
 
-    _connected;
+    _rendered;
+    helpMessage;
     valid = true;
 
     constructor() {
@@ -51,12 +56,12 @@ export default class InputToggle extends LightningElement {
     }
 
     connectedCallback() {
-        this._connected = true;
         this.classList.add('slds-form-element');
         this.updateClassList();
     }
 
     renderedCallback() {
+        if (!this._rendered) this._rendered = true;
         this._synchronizeA11y();
     }
 
@@ -122,6 +127,11 @@ export default class InputToggle extends LightningElement {
     }
     set checked(value) {
         this._checked = normalizeBoolean(value);
+
+        if (this._rendered) {
+            this._inputElement.checked = this._checked;
+        }
+        this._updateProxyInputAttributes('checked');
     }
 
     @api
@@ -165,6 +175,7 @@ export default class InputToggle extends LightningElement {
 
     set required(value) {
         this._required = normalizeBoolean(value);
+        this._updateProxyInputAttributes('required');
     }
 
     @api
@@ -196,7 +207,7 @@ export default class InputToggle extends LightningElement {
 
     @api
     blur() {
-        if (this._connected) {
+        if (this._rendered) {
             this.template.querySelector('input').blur();
         }
     }
@@ -208,7 +219,7 @@ export default class InputToggle extends LightningElement {
 
     @api
     focus() {
-        if (this._connected) {
+        if (this._rendered) {
             this.template.querySelector('input').focus();
         }
     }
@@ -216,7 +227,7 @@ export default class InputToggle extends LightningElement {
     @api
     reportValidity() {
         return this._constraint.reportValidity((message) => {
-            this._messageWhenValueMissing = message;
+            this.helpMessage = this.messageWhenValueMissing || message;
         });
     }
 
@@ -306,13 +317,31 @@ export default class InputToggle extends LightningElement {
         return normalizeAriaAttribute(ariaValues);
     }
 
+    get _inputElement() {
+        return this.template.querySelector('input');
+    }
+
     get _constraint() {
         if (!this._constraintApi) {
-            this._constraintApi = new FieldConstraintApi(() => this, {
-                checked: () => this.checked
-            });
+            this._constraintApi = new FieldConstraintApiWithProxyInput(
+                () => this
+            );
+
+            this._constraintApiProxyInputUpdater = this._constraintApi.setInputAttributes(
+                {
+                    type: () => 'checkbox',
+                    checked: () => this.checked,
+                    required: () => this.required
+                }
+            );
         }
         return this._constraintApi;
+    }
+
+    _updateProxyInputAttributes(attributes) {
+        if (this._constraintApiProxyInputUpdater) {
+            this._constraintApiProxyInputUpdater(attributes);
+        }
     }
 
     updateClassList() {
@@ -331,7 +360,8 @@ export default class InputToggle extends LightningElement {
     }
 
     handleChange(event) {
-        this._checked = event.target.checked;
+        this._checked = this._inputElement.checked;
+        this._updateProxyInputAttributes('checked');
 
         this.dispatchEvent(
             new CustomEvent('change', {
