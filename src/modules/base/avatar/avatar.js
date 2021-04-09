@@ -313,6 +313,10 @@ export default class Avatar extends LightningElement {
         return this.template.host.classList.contains('slds-avatar-grouped');
     }
 
+    get showAvatar() {
+        return this.src || this.initials || this.fallbackIconName;
+    }
+
     get showInitials() {
         return !this._src && this.initials;
     }

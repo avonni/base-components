@@ -35,10 +35,6 @@
             "path": "src/modules/base/alert/alert.js"
         },
         {
-            "name": "c/autoDataType",
-            "path": "src/modules/base/autoDataType/autoDataType.js"
-        },
-        {
             "name": "c/avatar",
             "path": "src/modules/base/avatar/avatar.js"
         },
@@ -191,6 +187,10 @@
             "path": "src/modules/base/messageDispatcher/messageDispatcher.js"
         },
         {
+            "name": "c/outputData",
+            "path": "src/modules/base/outputData/outputData.js"
+        },
+        {
             "name": "c/pageHeader",
             "path": "src/modules/base/pageHeader/pageHeader.js"
         },
@@ -223,8 +223,8 @@
             "path": "src/modules/base/primitiveIframe/primitiveIframe.js"
         },
         {
-            "name": "c/primitivePageHeaderItem",
-            "path": "src/modules/base/primitivePageHeaderItem/primitivePageHeaderItem.js"
+            "name": "c/primitivePageHeaderField",
+            "path": "src/modules/base/primitivePageHeaderField/primitivePageHeaderField.js"
         },
         {
             "name": "c/primitiveProgressBarBadge",
@@ -233,6 +233,18 @@
         {
             "name": "c/primitiveProgressStep",
             "path": "src/modules/base/primitiveProgressStep/primitiveProgressStep.js"
+        },
+        {
+            "name": "c/primitiveRelationshipGraphItem",
+            "path": "src/modules/base/primitiveRelationshipGraphItem/primitiveRelationshipGraphItem.js"
+        },
+        {
+            "name": "c/primitiveRelationshipGraphGroup",
+            "path": "src/modules/base/primitiveRelationshipGraphGroup/primitiveRelationshipGraphGroup.js"
+        },
+        {
+            "name": "c/primitiveRelationshipGraphLevel",
+            "path": "src/modules/base/primitiveRelationshipGraphLevel/primitiveRelationshipGraphLevel.js"
         },
         {
             "name": "c/primitiveSelect",
@@ -277,6 +289,10 @@
         {
             "name": "c/rating",
             "path": "src/modules/base/rating/rating.js"
+        },
+        {
+            "name": "c/relationshipGraph",
+            "path": "src/modules/base/relationshipGraph/relationshipGraph.js"
         },
         {
             "name": "c/scopedNotification",
@@ -349,10 +365,6 @@
         {
             "name": "base/alert",
             "path": "src/modules/base/alert/alert.js"
-        },
-        {
-            "name": "base/autoDataType",
-            "path": "src/modules/base/autoDataType/autoDataType.js"
         },
         {
             "name": "base/avatar",
@@ -479,6 +491,10 @@
             "path": "src/modules/base/menuItemDialog/menuItemDialog.js"
         },
         {
+            "name": "base/outputData",
+            "path": "src/modules/base/outputData/outputData.js"
+        },
+        {
             "name": "base/pageHeader",
             "path": "src/modules/base/pageHeader/pageHeader.js"
         },
@@ -529,6 +545,10 @@
         {
             "name": "base/rating",
             "path": "src/modules/base/rating/rating.js"
+        },
+        {
+            "name": "base/relationshipGraph",
+            "path": "src/modules/base/relationshipGraph/relationshipGraph.js"
         },
         {
             "name": "base/scopedNotification",
@@ -601,7 +621,6 @@
     ],
     "expose": [
         "base/alert",
-        "base/autoDataType",
         "base/avatar",
         "base/avatarGroup",
         "base/blockquote",
@@ -643,9 +662,11 @@
         "base/progressIndicator",
         "base/progressRing",
         "base/publisher",
+        "base/outputData",
         "base/qrcode",
         "base/range",
         "base/rating",
+        "base/relationshipGraph",
         "base/scopedNotification",
         "base/segment",
         "base/segmentButton",

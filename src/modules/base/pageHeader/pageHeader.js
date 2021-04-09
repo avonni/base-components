@@ -17,7 +17,7 @@ export default class PageHeader extends LightningElement {
     @api info;
 
     _variant = 'base';
-    _items = [];
+    _fields = [];
     showTitle = true;
     showLabel = true;
     showActions = true;
@@ -91,12 +91,12 @@ export default class PageHeader extends LightningElement {
     }
 
     @api
-    get items() {
-        return this._items;
+    get fields() {
+        return this._fields;
     }
 
-    set items(value) {
-        this._items = Array.isArray(value) ? value : [];
+    set fields(value) {
+        this._fields = Array.isArray(value) ? value : [];
     }
 
     get computedOuterClass() {
@@ -138,7 +138,7 @@ export default class PageHeader extends LightningElement {
         return !!this.info;
     }
 
-    get itemsIsEmpty() {
-        return this._items.length === 0;
+    get fieldsIsEmpty() {
+        return this._fields.length === 0;
     }
 }

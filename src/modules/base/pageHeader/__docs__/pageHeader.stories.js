@@ -61,12 +61,12 @@ export default {
                 type: { summary: 'String' }
             }
         },
-        items: {
+        fields: {
             control: {
                 type: 'object'
             },
             description:
-                'The type of component. Valid values include base, object-home, record-home and related-list',
+                'The fields can include an object array, and is displayed in the details section. To include additional markup or another component, use the details slot.',
             table: {
                 type: { summary: 'Object []' }
             }
@@ -74,7 +74,7 @@ export default {
     }
 };
 
-const items = [
+const fields = [
     {
         label: 'Currency',
         value: 70,
@@ -159,7 +159,7 @@ RecordHome.args = {
     label: 'Label',
     title: 'Title',
     info: 'Info',
-    items: items
+    fields: fields
 };
 
 export const RecordHomeVertical = Template.bind({});
@@ -169,5 +169,5 @@ RecordHomeVertical.args = {
     label: 'Label',
     title: 'Title',
     info: 'Info',
-    items: items
+    fields: fields
 };

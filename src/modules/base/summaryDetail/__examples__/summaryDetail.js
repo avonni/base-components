@@ -11,7 +11,8 @@ export const SummaryDetail = ({
     removeBodyIndentation,
     shrinkIconName,
     expandIconName,
-    closed
+    closed,
+    hideIcon
 }) => {
     const element = document.createElement('ac-base-summary-detail');
     element.title = title;
@@ -20,5 +21,6 @@ export const SummaryDetail = ({
     element.shrinkIconName = shrinkIconName;
     element.expandIconName = expandIconName;
     element.closed = closed;
+    element.hideIcon = hideIcon;
     return element;
 };

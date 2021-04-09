@@ -11,7 +11,7 @@ export const PageHeader = ({
     title,
     info,
     variant,
-    items
+    fields
 }) => {
     const element = document.createElement('ac-base-page-header');
     element.iconName = iconName;
@@ -19,6 +19,6 @@ export const PageHeader = ({
     element.title = title;
     element.info = info;
     element.variant = variant;
-    element.items = items;
+    element.fields = fields;
     return element;
 };
