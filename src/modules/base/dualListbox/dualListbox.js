@@ -47,10 +47,10 @@ const i18n = {
 };
 
 export default class DualListbox extends LightningElement {
-    @api sourceLabel;
-    @api selectedLabel;
+    @api sourceLabel = 'sourceLabel';
+    @api selectedLabel = 'selectedLabel';
     @api selectedPlaceholder;
-    @api label;
+    @api label = 'label';
     @api min = DEFAULT_MIN;
     @api max;
     @api name;
@@ -63,9 +63,8 @@ export default class DualListbox extends LightningElement {
     @api upButtonLabel;
     @api downButtonLabel;
 
-    _requiredOptions;
-    _options;
-    _value;
+    _requiredOptions = [];
+    _options = [];
     _buttonSize = VALID_BUTTON_SIZES.default;
     _buttonVariant = VALID_BUTTON_VARIANTS.default;
     _isLoading = false;
@@ -77,7 +76,7 @@ export default class DualListbox extends LightningElement {
     _required = false;
     _size;
 
-    _selectedValues;
+    _selectedValues = [];
     highlightedOptions = [];
     errorMessage = '';
     focusableInSource;
