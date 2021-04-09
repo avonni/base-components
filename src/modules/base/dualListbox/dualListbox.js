@@ -519,7 +519,7 @@ export default class DualListbox extends LightningElement {
     get computedSearchEngineIconClass() {
         return classSet('slds-icon slds-input__icon slds-input__icon_left')
             .add({
-                left:
+                'avonni-dual-listbox-search-engine-icon-left':
                     this.variant === 'label-inline' ||
                     this.variant === 'label-stacked'
             })

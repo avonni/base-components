@@ -508,44 +508,49 @@ describe('DualListbox', () => {
     });
 
     // options
-    // it('Dual Listbox options', () => {
-    //     const element = createElement('base-dual-listbox', {
-    //         is: DualListbox
-    //     });
-    //     document.body.appendChild(element);
-    //     const options = [
-    //         {
-    //             value: '1',
-    //             label: 'Jobs',
-    //             iconName: 'custom:custom91',
-    //             description: 'description',
-    //             initials: 'initials',
-    //             iconSize: 'small',
-    //             src: 'src',
-    //             variant: 'circle'
-    //         },
-    //         {
-    //             value: '2',
-    //             label: 'Content',
-    //             iconName: 'custom:custom92',
-    //             description: 'description',
-    //             initials: 'initials',
-    //             iconSize: 'large',
-    //             src: 'src',
-    //             variant: 'square'
-    //         }
-    //     ];
+    it('Dual Listbox options', () => {
+        const element = createElement('base-dual-listbox', {
+            is: DualListbox
+        });
+        document.body.appendChild(element);
+        const options = [
+            {
+                value: '1',
+                label: 'Jobs',
+                iconName: 'custom:custom91',
+                description: 'description',
+                initials: 'initials',
+                iconSize: 'small',
+                src: 'src',
+                variant: 'circle'
+            }
+            // {
+            //     value: '2',
+            //     label: 'Content',
+            //     iconName: 'custom:custom92',
+            //     description: 'description',
+            //     initials: 'initials',
+            //     iconSize: 'large',
+            //     src: 'src',
+            //     variant: 'square'
+            // }
+        ];
 
-    //     element.options = options;
+        element.options = options;
 
-    //     return Promise.resolve().then(() => {
-    //         options.forEach((option) => {
-    //             expect(option.label).toBe(correspondingField.label);
-    //             expect(option.value).toBe(correspondingField.value);
-    //             expect(option.type).toBe(correspondingField.type);
-    //         });
-    //     });
-    // });
+        return Promise.resolve().then(() => {
+            options.forEach((option) => {
+                expect(option.value).toBe('1');
+                expect(option.label).toBe('Jobs');
+                expect(option.iconName).toBe('custom:custom91');
+                expect(option.description).toBe('description');
+                expect(option.initials).toBe('initials');
+                expect(option.iconSize).toBe('small');
+                expect(option.src).toBe('src');
+                expect(option.variant).toBe('circle');
+            });
+        });
+    });
 
     // remove-button-icon-name & remove-button-label
     it('Dual Listbox remove button icon name and label', () => {
@@ -577,6 +582,55 @@ describe('DualListbox', () => {
         return Promise.resolve().then(() => {
             const asterisk = element.shadowRoot.querySelector('.slds-required');
             expect(asterisk).toBeTruthy();
+        });
+    });
+
+    // required options
+    it('Dual Listbox required options', () => {
+        const element = createElement('base-dual-listbox', {
+            is: DualListbox
+        });
+        document.body.appendChild(element);
+        element.requiredOptions = [];
+
+        return Promise.resolve().then(() => {
+            expect(element.requiredOptions).toBeTruthy();
+        });
+    });
+
+    // search engine
+    it('Dual Listbox search engine', () => {
+        const element = createElement('base-dual-listbox', {
+            is: DualListbox
+        });
+        document.body.appendChild(element);
+        element.searchEngine = true;
+
+        return Promise.resolve().then(() => {
+            const searchBox = element.shadowRoot.querySelector(
+                "input[type='search']"
+            );
+            expect(element.searchEngine).toBeTruthy();
+            expect(searchBox).toBeTruthy();
+        });
+    });
+
+    // selected label and source label
+    it('Dual Listbox selected label & source label', () => {
+        const element = createElement('base-dual-listbox', {
+            is: DualListbox
+        });
+        document.body.appendChild(element);
+
+        element.sourceLabel = 'A string source label';
+        element.selectedLabel = 'A string selected label';
+
+        return Promise.resolve().then(() => {
+            const Labels = element.shadowRoot.querySelectorAll(
+                "span[class='slds-form-element__label']"
+            );
+            expect(Labels[0].textContent).toBe('A string source label');
+            expect(Labels[1].textContent).toBe('A string selected label');
         });
     });
 });
