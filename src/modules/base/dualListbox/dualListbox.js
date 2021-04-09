@@ -132,6 +132,8 @@ export default class DualListbox extends LightningElement {
             }
         }
         this.disabledButtons();
+
+        console.log(this.template.querySelector('input').value);
     }
 
     @api
@@ -960,7 +962,7 @@ export default class DualListbox extends LightningElement {
     handleSearch() {
         window.clearTimeout(this.delayTimeout);
         this.searchTerm = this.template
-            .querySelector('lightning-input')
+            .querySelector('input')
             .value.toLowerCase();
         if (this.searchTerm !== '') {
             this._isLoading = true;
@@ -973,10 +975,18 @@ export default class DualListbox extends LightningElement {
         } else this.searchResult = this.computedSourceList;
     }
 
+    handleSearchClear() {
+        this.searchTerm = this.template.querySelector('input').value = null;
+    }
+
     get hasResult() {
         if (this.searchResult.length >= 0 && this.searchTerm) {
             return this.searchResult;
         }
         return this.computedSourceList;
+    }
+
+    get hasSearchTerm() {
+        return this.searchTerm;
     }
 }
