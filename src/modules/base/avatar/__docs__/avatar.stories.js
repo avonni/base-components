@@ -528,3 +528,14 @@ CircleWithPresenceAndDetails.args = {
     fallbackIconName: 'standard:avatar',
     initials: 'JS'
 };
+
+export const DetailsWithoutAvatar = Template.bind({});
+DetailsWithoutAvatar.args = {
+    alternativeText: 'John Smith',
+    variant: 'circle',
+    size: 'x-large',
+    presence: 'busy',
+    primaryText: 'John Smith',
+    secondaryText: 'VP, Human Resources',
+    tertiaryText: 'Busy'
+};
