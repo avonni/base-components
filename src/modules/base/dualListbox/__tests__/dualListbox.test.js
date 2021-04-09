@@ -42,6 +42,24 @@ describe('DualListbox', () => {
         expect(element.value).toMatchObject([]);
         expect(element.variant).toBe('standard');
     });
+    // need to but label to get the right button icon, testing addButtonIconLabel as well
+    it('Dual Listbox add button icon name', () => {
+        const element = createElement('base-dual-listbox', {
+            is: DualListbox
+        });
+        document.body.appendChild(element);
+
+        element.addButtonIconName = 'utility:add';
+        element.addButtonLabel = 'add';
+
+        return Promise.resolve().then(() => {
+            const lightningButtonIcon = element.shadowRoot.querySelector(
+                "lightning-button-icon[title='add']"
+            );
+            expect(lightningButtonIcon.iconName).toBe('utility:add');
+            expect(lightningButtonIcon.title).toBe('add');
+        });
+    });
 
     it('Dual Listbox button size xx-small', () => {
         const element = createElement('base-dual-listbox', {
