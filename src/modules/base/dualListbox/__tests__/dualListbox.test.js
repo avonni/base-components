@@ -163,4 +163,130 @@ describe('DualListbox', () => {
             });
         });
     });
+
+    it('Dual Listbox button variant bare', () => {
+        const element = createElement('base-dual-listbox', {
+            is: DualListbox
+        });
+        document.body.appendChild(element);
+
+        element.buttonVariant = 'bare';
+
+        return Promise.resolve().then(() => {
+            expect(element.buttonVariant).toBe('bare');
+
+            const lightningButtonIcon = element.shadowRoot.querySelectorAll(
+                'lightning-button-icon'
+            );
+
+            lightningButtonIcon.forEach((button) => {
+                expect(button.variant).toBe('bare');
+            });
+        });
+    });
+
+    it('Dual Listbox button variant container', () => {
+        const element = createElement('base-dual-listbox', {
+            is: DualListbox
+        });
+        document.body.appendChild(element);
+
+        element.buttonVariant = 'container';
+
+        return Promise.resolve().then(() => {
+            expect(element.buttonVariant).toBe('container');
+
+            const lightningButtonIcon = element.shadowRoot.querySelectorAll(
+                'lightning-button-icon'
+            );
+
+            lightningButtonIcon.forEach((button) => {
+                expect(button.variant).toBe('container');
+            });
+        });
+    });
+
+    it('Dual Listbox button variant brand', () => {
+        const element = createElement('base-dual-listbox', {
+            is: DualListbox
+        });
+        document.body.appendChild(element);
+
+        element.buttonVariant = 'brand';
+
+        return Promise.resolve().then(() => {
+            expect(element.buttonVariant).toBe('brand');
+
+            const lightningButtonIcon = element.shadowRoot.querySelectorAll(
+                'lightning-button-icon'
+            );
+
+            lightningButtonIcon.forEach((button) => {
+                expect(button.variant).toBe('brand');
+            });
+        });
+    });
+
+    it('Dual Listbox button variant border-filled', () => {
+        const element = createElement('base-dual-listbox', {
+            is: DualListbox
+        });
+        document.body.appendChild(element);
+
+        element.buttonVariant = 'border-filled';
+
+        return Promise.resolve().then(() => {
+            expect(element.buttonVariant).toBe('border-filled');
+
+            const lightningButtonIcon = element.shadowRoot.querySelectorAll(
+                'lightning-button-icon'
+            );
+
+            lightningButtonIcon.forEach((button) => {
+                expect(button.variant).toBe('border-filled');
+            });
+        });
+    });
+
+    it('Dual Listbox button variant bare-inverse', () => {
+        const element = createElement('base-dual-listbox', {
+            is: DualListbox
+        });
+        document.body.appendChild(element);
+
+        element.buttonVariant = 'bare-inverse';
+
+        return Promise.resolve().then(() => {
+            expect(element.buttonVariant).toBe('bare-inverse');
+
+            const lightningButtonIcon = element.shadowRoot.querySelectorAll(
+                'lightning-button-icon'
+            );
+
+            lightningButtonIcon.forEach((button) => {
+                expect(button.variant).toBe('bare-inverse');
+            });
+        });
+    });
+
+    it('Dual Listbox button variant border-inverse', () => {
+        const element = createElement('base-dual-listbox', {
+            is: DualListbox
+        });
+        document.body.appendChild(element);
+
+        element.buttonVariant = 'border-inverse';
+
+        return Promise.resolve().then(() => {
+            expect(element.buttonVariant).toBe('border-inverse');
+
+            const lightningButtonIcon = element.shadowRoot.querySelectorAll(
+                'lightning-button-icon'
+            );
+
+            lightningButtonIcon.forEach((button) => {
+                expect(button.variant).toBe('border-inverse');
+            });
+        });
+    });
 });
