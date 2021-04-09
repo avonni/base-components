@@ -47,10 +47,10 @@ const i18n = {
 };
 
 export default class DualListbox extends LightningElement {
-    @api sourceLabel = 'sourceLabel';
-    @api selectedLabel = 'selectedLabel';
+    @api sourceLabel;
+    @api selectedLabel;
     @api selectedPlaceholder;
-    @api label = 'label';
+    @api label;
     @api min = DEFAULT_MIN;
     @api max;
     @api name;
@@ -850,18 +850,6 @@ export default class DualListbox extends LightningElement {
     }
 
     assertRequiredAttributes() {
-        assert(
-            !!this.label,
-            `<avonni-dual-listbox> Missing required "label" attribute.`
-        );
-        assert(
-            !!this.sourceLabel,
-            `<avonni-dual-listbox> Missing required "sourceLabel" attribute.`
-        );
-        assert(
-            !!this.selectedLabel,
-            `<avonni-dual-listbox> Missing required "selectedLabel" attribute.`
-        );
         assert(
             !!this.options,
             `<avonni-dual-listbox> Missing required "options" attribute.`

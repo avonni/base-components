@@ -16,13 +16,13 @@ describe('DualListbox', () => {
         expect(element.addButtonLabel).toBeUndefined();
         expect(element.buttonSize).toBe('medium');
         expect(element.buttonVariant).toBe('border');
-        expect(element.disableReordering).toBe(false);
-        expect(element.disabled).toBe(false);
+        expect(element.disableReordering).toBeFalsy();
+        expect(element.disabled).toBeFalsy();
         expect(element.downButtonIconName).toBe('utility:down');
         expect(element.downButtonLabel).toBeUndefined();
         expect(element.fieldLevelHelp).toBeUndefined();
-        expect(element.isLoading).toBe(false);
-        expect(element.label).toBe('label');
+        expect(element.isLoading).toBeFalsy();
+        expect(element.label).toBeUndefined();
         expect(element.max).toBeUndefined();
         expect(element.min).toBe(0);
         expect(element.messageWhenRangerOverflow).toBeUndefined();
@@ -30,13 +30,12 @@ describe('DualListbox', () => {
         expect(element.messageWhenValueIsMissing).toBeUndefined();
         expect(element.name).toBeUndefined();
         expect(element.options).toMatchObject([]);
-        expect(element.required).toBe(false);
+        expect(element.required).toBeFalsy();
         expect(element.requiredOptions).toMatchObject([]);
-        expect(element.searchEngine).toBe(false);
-        expect(element.selectedLabel).toBe('selectedLabel');
+        expect(element.searchEngine).toBeFalsy();
+        expect(element.selectedLabel).toBeUndefined();
         expect(element.selectedPlaceholder).toBeUndefined();
-        expect(element.showActivityIndicator).toBe(false);
-        expect(element.sourceLabel).toBe('sourceLabel');
+        expect(element.sourceLabel).toBeUndefined();
         expect(element.upButtonIconName).toBe('utility:up');
         expect(element.upButtonLabel).toBeUndefined();
         expect(element.validity).toBeUndefined();
@@ -50,18 +49,17 @@ describe('DualListbox', () => {
         });
         document.body.appendChild(element);
 
-        const lightningButtonIcon = element.shadowRoot.querySelectorAll(
-            'lightning-button-icon'
-        );
-
-        lightningButtonIcon.forEach((button) => {
-            expect(button.size).toBe('xx-small');
-        });
-
         element.buttonSize = 'xx-small';
 
         return Promise.resolve().then(() => {
             expect(element.buttonSize).toBe('xx-small');
+            const lightningButtonIcon = element.shadowRoot.querySelectorAll(
+                'lightning-button-icon'
+            );
+
+            lightningButtonIcon.forEach((button) => {
+                expect(button.size).toBe('xx-small');
+            });
         });
     });
 
@@ -71,18 +69,17 @@ describe('DualListbox', () => {
         });
         document.body.appendChild(element);
 
-        const lightningButtonIcon = element.shadowRoot.querySelectorAll(
-            'lightning-button-icon'
-        );
-
-        lightningButtonIcon.forEach((button) => {
-            expect(button.size).toBe('x-small');
-        });
-
         element.buttonSize = 'x-small';
 
         return Promise.resolve().then(() => {
             expect(element.buttonSize).toBe('x-small');
+            const lightningButtonIcon = element.shadowRoot.querySelectorAll(
+                'lightning-button-icon'
+            );
+
+            lightningButtonIcon.forEach((button) => {
+                expect(button.size).toBe('x-small');
+            });
         });
     });
 
@@ -92,18 +89,18 @@ describe('DualListbox', () => {
         });
         document.body.appendChild(element);
 
-        const lightningButtonIcon = element.shadowRoot.querySelectorAll(
-            'lightning-button-icon'
-        );
-
-        lightningButtonIcon.forEach((button) => {
-            expect(button.size).toBe('small');
-        });
-
-        element.size = 'small';
+        element.buttonSize = 'small';
 
         return Promise.resolve().then(() => {
-            expect(element.size).toBe('small');
+            expect(element.buttonSize).toBe('small');
+
+            const lightningButtonIcon = element.shadowRoot.querySelectorAll(
+                'lightning-button-icon'
+            );
+
+            lightningButtonIcon.forEach((button) => {
+                expect(button.size).toBe('small');
+            });
         });
     });
 
@@ -113,18 +110,18 @@ describe('DualListbox', () => {
         });
         document.body.appendChild(element);
 
-        const lightningButtonIcon = element.shadowRoot.querySelectorAll(
-            'lightning-button-icon'
-        );
-
-        lightningButtonIcon.forEach((button) => {
-            expect(button.size).toBe('medium');
-        });
-
-        element.size = 'medium';
+        element.buttonSize = 'medium';
 
         return Promise.resolve().then(() => {
-            expect(element.size).toBe('medium');
+            expect(element.buttonSize).toBe('medium');
+
+            const lightningButtonIcon = element.shadowRoot.querySelectorAll(
+                'lightning-button-icon'
+            );
+
+            lightningButtonIcon.forEach((button) => {
+                expect(button.size).toBe('medium');
+            });
         });
     });
 
@@ -134,18 +131,18 @@ describe('DualListbox', () => {
         });
         document.body.appendChild(element);
 
-        const lightningButtonIcon = element.shadowRoot.querySelectorAll(
-            'lightning-button-icon'
-        );
-
-        lightningButtonIcon.forEach((button) => {
-            expect(button.size).toBe('large');
-        });
-
-        element.size = 'large';
+        element.buttonSize = 'large';
 
         return Promise.resolve().then(() => {
-            expect(element.size).toBe('large');
+            expect(element.buttonSize).toBe('large');
+
+            const lightningButtonIcon = element.shadowRoot.querySelectorAll(
+                'lightning-button-icon'
+            );
+
+            lightningButtonIcon.forEach((button) => {
+                expect(button.size).toBe('large');
+            });
         });
     });
 });
