@@ -11,7 +11,8 @@ export const SummaryDetailWithActionButton = ({
     removeBodyIndentation,
     shrinkIconName,
     expandIconName,
-    closed
+    closed,
+    hideIcon
 }) => {
     const element = document.createElement(
         'ac-avonni-summary-detail-with-action-button'
@@ -22,5 +23,6 @@ export const SummaryDetailWithActionButton = ({
     element.shrinkIconName = shrinkIconName;
     element.expandIconName = expandIconName;
     element.closed = closed;
+    element.hideIcon = hideIcon;
     return element;
 };

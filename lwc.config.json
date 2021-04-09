@@ -235,6 +235,18 @@
             "path": "src/modules/base/primitiveProgressStep/primitiveProgressStep.js"
         },
         {
+            "name": "c/primitiveRelationshipGraphItem",
+            "path": "src/modules/base/primitiveRelationshipGraphItem/primitiveRelationshipGraphItem.js"
+        },
+        {
+            "name": "c/primitiveRelationshipGraphGroup",
+            "path": "src/modules/base/primitiveRelationshipGraphGroup/primitiveRelationshipGraphGroup.js"
+        },
+        {
+            "name": "c/primitiveRelationshipGraphLevel",
+            "path": "src/modules/base/primitiveRelationshipGraphLevel/primitiveRelationshipGraphLevel.js"
+        },
+        {
             "name": "c/primitiveSelect",
             "path": "src/modules/base/primitiveSelect/primitiveSelect.js"
         },
@@ -277,6 +289,10 @@
         {
             "name": "c/rating",
             "path": "src/modules/base/rating/rating.js"
+        },
+        {
+            "name": "c/relationshipGraph",
+            "path": "src/modules/base/relationshipGraph/relationshipGraph.js"
         },
         {
             "name": "c/scopedNotification",
@@ -531,6 +547,10 @@
             "path": "src/modules/base/rating/rating.js"
         },
         {
+            "name": "base/relationshipGraph",
+            "path": "src/modules/base/relationshipGraph/relationshipGraph.js"
+        },
+        {
             "name": "base/scopedNotification",
             "path": "src/modules/base/scopedNotification/scopedNotification.js"
         },
@@ -646,6 +666,7 @@
         "base/qrcode",
         "base/range",
         "base/rating",
+        "base/relationshipGraph",
         "base/scopedNotification",
         "base/segment",
         "base/segmentButton",
