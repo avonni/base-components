@@ -22,31 +22,6 @@ describe('Map', () => {
         expect(element.zoomLevel).toBeNull();
     });
 
-    // center
-    // it('center', () => {
-    //     const element = createElement('base-map', {
-    //         is: Map
-    //     });
-    //     document.body.appendChild(element);
-
-    //     const mockCallBack = jest.fn();
-
-    //     const iframe = element.shadowRoot.querySelector('c-primitive-iframe');
-    //     expect(iframe).toBeTruthy();
-    //     iframe.postToWindow = mockCallBack;
-
-    //     element.center = {
-    //         location: {
-    //             Latitude: '37.790197',
-    //             Longitude: '-122.396879'
-    //         }
-    //     };
-
-    //     return Promise.resolve().then(() => {
-    //         expect(mockCallBack).toHaveBeenCalledWith('something');
-    //     });
-    // });
-
     // list-view
     // Depends on mapMarkers
     it('listView = auto, with one marker', () => {
