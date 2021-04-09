@@ -35,10 +35,6 @@
             "path": "src/modules/base/alert/alert.js"
         },
         {
-            "name": "c/autoDataType",
-            "path": "src/modules/base/autoDataType/autoDataType.js"
-        },
-        {
             "name": "c/avatar",
             "path": "src/modules/base/avatar/avatar.js"
         },
@@ -189,6 +185,10 @@
         {
             "name": "c/messageDispatcher",
             "path": "src/modules/base/messageDispatcher/messageDispatcher.js"
+        },
+        {
+            "name": "c/outputData",
+            "path": "src/modules/base/outputData/outputData.js"
         },
         {
             "name": "c/pageHeader",
@@ -351,10 +351,6 @@
             "path": "src/modules/base/alert/alert.js"
         },
         {
-            "name": "base/autoDataType",
-            "path": "src/modules/base/autoDataType/autoDataType.js"
-        },
-        {
             "name": "base/avatar",
             "path": "src/modules/base/avatar/avatar.js"
         },
@@ -479,6 +475,10 @@
             "path": "src/modules/base/menuItemDialog/menuItemDialog.js"
         },
         {
+            "name": "base/outputData",
+            "path": "src/modules/base/outputData/outputData.js"
+        },
+        {
             "name": "base/pageHeader",
             "path": "src/modules/base/pageHeader/pageHeader.js"
         },
@@ -601,7 +601,6 @@
     ],
     "expose": [
         "base/alert",
-        "base/autoDataType",
         "base/avatar",
         "base/avatarGroup",
         "base/blockquote",
@@ -643,6 +642,7 @@
         "base/progressIndicator",
         "base/progressRing",
         "base/publisher",
+        "base/outputData",
         "base/qrcode",
         "base/range",
         "base/rating",
