@@ -7,4 +7,5 @@ export default class SummaryDetailWithActionButton extends LightningElement {
     @api shrinkIconName;
     @api expandIconName;
     @api closed;
+    @api hideIcon;
 }
