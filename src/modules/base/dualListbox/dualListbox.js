@@ -68,7 +68,6 @@ export default class DualListbox extends LightningElement {
     _buttonSize = VALID_BUTTON_SIZES.default;
     _buttonVariant = VALID_BUTTON_VARIANTS.default;
     _isLoading = false;
-    _showActivityIndicator = false;
     _searchEngine = false;
     _variant = VALID_VARIANTS.default;
     _disabled;
@@ -286,15 +285,6 @@ export default class DualListbox extends LightningElement {
     }
 
     @api
-    get showActivityIndicator() {
-        return this._showActivityIndicator;
-    }
-
-    set showActivityIndicator(value) {
-        this._showActivityIndicator = normalizeBoolean(value);
-    }
-
-    @api
     focus() {
         const firstOption = this.template.querySelector(`div[data-index='0']`);
         if (firstOption) {
@@ -332,7 +322,13 @@ export default class DualListbox extends LightningElement {
     hasAvatar() {
         if (this._options) {
             this._options.forEach((option) => {
-                if (option.iconName || option.src || option.initials) {
+                if (
+                    option.iconName ||
+                    option.src ||
+                    option.initials ||
+                    option.label ||
+                    option.description
+                ) {
                     option.hasAvatar = true;
                 } else option.hasAvatar = false;
             });
@@ -450,16 +446,6 @@ export default class DualListbox extends LightningElement {
         };
     }
 
-    get computedLeftColumnClass() {
-        return classSet(
-            'slds-dueling-list__column slds-dueling-list__column_responsive'
-        )
-            .add({
-                'slds-is-relative': this.showActivityIndicator
-            })
-            .toString();
-    }
-
     get computedColumnStyleSource() {
         if (this.isNumber(this.size)) {
             if (this.searchEngine) {
@@ -544,7 +530,7 @@ export default class DualListbox extends LightningElement {
     }
 
     get moveButtonsDisabled() {
-        return this.disabled || this.showActivityIndicator;
+        return this.disabled;
     }
 
     handleOptionClick(event) {

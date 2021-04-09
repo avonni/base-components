@@ -17,7 +17,9 @@
                 onfocusin={handleFocus}
                 onfocusout={handleBlur}
             >
-                <div class={computedLeftColumnClass}>
+                <div
+                    class="slds-dueling-list__column slds-dueling-list__column_responsive"
+                >
                     <span
                         class="slds-form-element__label"
                         id="source-list-label"
@@ -107,18 +109,11 @@
                                                     initials={option.initials}
                                                     size={option.iconSize}
                                                     variant={option.variant}
-                                                    primary-text={option.optionLabel}
+                                                    primary-text={option.label}
                                                     secondary-text={option.description}
                                                 ></c-avatar>
                                             </div>
                                         </template>
-                                        <span class="slds-media__body">
-                                            <span
-                                                class="slds-truncate"
-                                                title={option.label}
-                                                >{option.label}</span
-                                            >
-                                        </span>
                                     </div>
                                 </li>
                             </template>
@@ -130,13 +125,6 @@
                                 alternative-text={i18n.loadingText}
                             ></lightning-spinner>
                         </div>
-                    </div>
-                    <div if:true={showActivityIndicator}>
-                        <lightning-spinner
-                            size="small"
-                            variant="brand"
-                            alternative-text={i18n.loadingText}
-                        ></lightning-spinner>
                     </div>
                 </div>
                 <div
@@ -214,18 +202,11 @@
                                                     initials={option.initials}
                                                     size={option.iconSize}
                                                     variant={option.variant}
-                                                    primary-text={option.optionLabel}
+                                                    primary-text={option.label}
                                                     secondary-text={option.description}
                                                 ></c-avatar>
                                             </div>
                                         </template>
-                                        <span class="slds-media__body">
-                                            <span
-                                                class="slds-truncate"
-                                                title={option.label}
-                                                >{option.label}</span
-                                            >
-                                        </span>
                                         <template if:true={option.isLocked}>
                                             <span
                                                 class="slds-media__figure slds-media__figure_reverse"

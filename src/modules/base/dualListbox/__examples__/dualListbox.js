@@ -31,7 +31,6 @@ export const DualListbox = ({
     searchEngine,
     selectedLabel,
     selectedPlaceholder,
-    showActivityIndicator,
     size,
     sourceLabel,
     upButtonIconName,
@@ -66,7 +65,6 @@ export const DualListbox = ({
     element.searchEngine = searchEngine;
     element.selectedLabel = selectedLabel;
     element.selectedPlaceholder = selectedPlaceholder;
-    element.showActivityIndicator = showActivityIndicator;
     element.size = size;
     element.sourceLabel = sourceLabel;
     element.upButtonIconName = upButtonIconName;

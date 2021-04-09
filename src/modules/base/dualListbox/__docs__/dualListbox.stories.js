@@ -135,7 +135,7 @@ export default {
             }
         },
         label: {
-            type: { name: 'string', required: true },
+            type: { name: 'string' },
             control: {
                 type: 'text'
             },
@@ -279,7 +279,7 @@ export default {
         },
         selectedLabel: {
             name: 'selected-label',
-            type: { name: 'string', required: true },
+            type: { name: 'string' },
             control: {
                 type: 'text'
             },
@@ -298,19 +298,6 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        showActivityIndicator: {
-            name: 'show-activity-indicator',
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: false,
-            description:
-                'If present, a spinner is displayed in the first listbox to indicate loading activity.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: false }
-            }
-        },
         size: {
             control: {
                 type: 'number'
@@ -323,7 +310,7 @@ export default {
         },
         sourceLabel: {
             name: 'source-label',
-            type: { name: 'string', required: true },
+            type: { name: 'string' },
             control: {
                 type: 'text'
             },
@@ -624,7 +611,7 @@ BaseLoading.args = {
     removeButtonLabel: 'Remove Button Label',
     downButtonLabel: 'Down Button Label',
     upButtonLabel: 'Up Button Label',
-    showActivityIndicator: true,
+    isLoading: true,
     options: Options,
     value: ['2', '3']
 };
