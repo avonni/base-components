@@ -18,7 +18,7 @@ describe('PageHeader', () => {
         expect(element.title).toBeUndefined();
         expect(element.info).toBeUndefined();
         expect(element.variant).toBe('base');
-        expect(element.items).toEqual([]);
+        expect(element.fields).toEqual([]);
     });
 
     // icon-name
@@ -274,14 +274,14 @@ describe('PageHeader', () => {
         });
     });
 
-    // items
+    // fields
     // Depends on variant
-    it('items with variant = record-home', () => {
+    it('fields with variant = record-home', () => {
         const element = createElement('base-page-header', {
             is: PageHeader
         });
         document.body.appendChild(element);
-        const items = [
+        const fields = [
             {
                 label: 'Currency',
                 value: 70,
@@ -302,35 +302,35 @@ describe('PageHeader', () => {
             }
         ];
 
-        element.items = items;
+        element.fields = fields;
         element.variant = 'record-home';
 
         return Promise.resolve().then(() => {
             const detailsSlot = element.shadowRoot.querySelector(
                 'slot[name="details"]'
             );
-            const primitiveItems = element.shadowRoot.querySelectorAll(
-                'c-primitive-page-header-item'
+            const primitiveFields = element.shadowRoot.querySelectorAll(
+                'c-primitive-page-header-field'
             );
 
             expect(detailsSlot).toBeFalsy();
-            primitiveItems.forEach((item, index) => {
-                const correspondingItem = items[index];
-                expect(correspondingItem).toBeTruthy();
-                expect(item.item).toEqual(correspondingItem);
-                expect(item.label).toBe(correspondingItem.label);
-                expect(item.value).toBe(correspondingItem.value);
-                expect(item.type).toBe(correspondingItem.type);
+            primitiveFields.forEach((field, index) => {
+                const correspondingField = fields[index];
+                expect(correspondingField).toBeTruthy();
+                expect(field.field).toEqual(correspondingField);
+                expect(field.label).toBe(correspondingField.label);
+                expect(field.value).toBe(correspondingField.value);
+                expect(field.type).toBe(correspondingField.type);
             });
         });
     });
 
-    it('items with variant = record-home-vertical', () => {
+    it('fields with variant = record-home-vertical', () => {
         const element = createElement('base-page-header', {
             is: PageHeader
         });
         document.body.appendChild(element);
-        const items = [
+        const fields = [
             {
                 label: 'Currency',
                 value: 70,
@@ -351,25 +351,25 @@ describe('PageHeader', () => {
             }
         ];
 
-        element.items = items;
+        element.fields = fields;
         element.variant = 'record-home-vertical';
 
         return Promise.resolve().then(() => {
             const detailsSlot = element.shadowRoot.querySelector(
                 'slot[name="details"]'
             );
-            const primitiveItems = element.shadowRoot.querySelectorAll(
-                'c-primitive-page-header-item'
+            const primitiveFields = element.shadowRoot.querySelectorAll(
+                'c-primitive-page-header-field'
             );
 
             expect(detailsSlot).toBeFalsy();
-            primitiveItems.forEach((item, index) => {
-                const correspondingItem = items[index];
-                expect(correspondingItem).toBeTruthy();
-                expect(item.item).toEqual(correspondingItem);
-                expect(item.label).toBe(correspondingItem.label);
-                expect(item.value).toBe(correspondingItem.value);
-                expect(item.type).toBe(correspondingItem.type);
+            primitiveFields.forEach((field, index) => {
+                const correspondingField = fields[index];
+                expect(correspondingField).toBeTruthy();
+                expect(field.field).toEqual(correspondingField);
+                expect(field.label).toBe(correspondingField.label);
+                expect(field.value).toBe(correspondingField.value);
+                expect(field.type).toBe(correspondingField.type);
             });
         });
     });
