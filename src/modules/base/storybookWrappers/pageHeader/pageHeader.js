@@ -6,5 +6,5 @@ export default class PageHeader extends LightningElement {
     @api title;
     @api info;
     @api variant = 'base';
-    @api items = [];
+    @api fields = [];
 }
