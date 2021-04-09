@@ -131,8 +131,6 @@ export default class DualListbox extends LightningElement {
             }
         }
         this.disabledButtons();
-
-        console.log(this.template.querySelector('input').value);
     }
 
     @api
@@ -512,6 +510,16 @@ export default class DualListbox extends LightningElement {
         return classSet('slds-form-element slds-p-around_small')
             .add({
                 'avonni-dual-listbox-search-engine-padding-around_x-small':
+                    this.variant === 'label-inline' ||
+                    this.variant === 'label-stacked'
+            })
+            .toString();
+    }
+
+    get computedSearchEngineIconClass() {
+        return classSet('slds-icon slds-input__icon slds-input__icon_left')
+            .add({
+                left:
                     this.variant === 'label-inline' ||
                     this.variant === 'label-stacked'
             })
@@ -950,7 +958,7 @@ export default class DualListbox extends LightningElement {
         this.searchTerm = this.template
             .querySelector('input')
             .value.toLowerCase();
-        if (this.searchTerm !== '') {
+        if (this.searchTerm) {
             this._isLoading = true;
             this.delayTimeout = setTimeout(() => {
                 this.searchResult = this.computedSourceList.filter((option) => {

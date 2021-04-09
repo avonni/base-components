@@ -33,7 +33,7 @@
                                 >
                                     <c-primitive-icon
                                         size="xx-small"
-                                        class="slds-icon slds-input__icon slds-input__icon_left"
+                                        class={computedSearchEngineIconClass}
                                         svg-class="slds-icon-text-light"
                                         icon-name="utility:search"
                                     ></c-primitive-icon>
@@ -42,7 +42,7 @@
                                         id="text-input-id-1"
                                         placeholder="Type to filter list..."
                                         class="slds-input"
-                                        onchange={handleSearch}
+                                        onkeyup={handleSearch}
                                     />
                                     <div
                                         class="slds-input__icon-group slds-input__icon-group_right"

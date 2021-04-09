@@ -583,7 +583,8 @@ Base.args = {
     upButtonLabel: 'Up Button Label',
     options: Options,
     searchEngine: true,
-    value: ['2', '3', '4', '5', '6']
+    value: ['2', '3', '4', '5', '6'],
+    variant: 'label-inline'
 };
 
 export const BaseDisabled = Template.bind({});
