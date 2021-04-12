@@ -313,6 +313,8 @@ describe('Avatar', () => {
             expect(status.className).toContain(
                 'avonni-avatar__status_approved'
             );
+            const icon = element.shadowRoot.querySelector('c-primitive-icon');
+            expect(icon.iconName).toBe('utility:check');
         });
     });
 
@@ -330,6 +332,8 @@ describe('Avatar', () => {
         return Promise.resolve().then(() => {
             const status = element.shadowRoot.querySelector('c-primitive-icon');
             expect(status.className).toContain('avonni-avatar__status_locked');
+            const icon = element.shadowRoot.querySelector('c-primitive-icon');
+            expect(icon.iconName).toBe('utility:lock');
         });
     });
 
@@ -349,6 +353,8 @@ describe('Avatar', () => {
             expect(status.className).toContain(
                 'avonni-avatar__status_declined'
             );
+            const icon = element.shadowRoot.querySelector('c-primitive-icon');
+            expect(icon.iconName).toBe('utility:close');
         });
     });
 
@@ -366,6 +372,8 @@ describe('Avatar', () => {
         return Promise.resolve().then(() => {
             const status = element.shadowRoot.querySelector('c-primitive-icon');
             expect(status.className).toContain('avonni-avatar__status_unknown');
+            const icon = element.shadowRoot.querySelector('c-primitive-icon');
+            expect(icon.iconName).toBe('utility:help');
         });
     });
 
@@ -457,7 +465,11 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const status = element.shadowRoot.querySelector('c-primitive-icon');
-            expect(status.title).toContain('Status title');
+            expect(status.title).toBe('Status title');
+            const assText = element.shadowRoot.querySelector(
+                '.slds-assistive-text'
+            );
+            expect(assText.textContent).toBe('Status title');
         });
     });
 
@@ -675,6 +687,171 @@ describe('Avatar', () => {
                 '.avonni-avatar__presence.avonni-avatar__presence_online.avonni-avatar_top-right'
             );
             expect(presence).toBeTruthy();
+        });
+    });
+
+    // entity-icon-name
+    it('Avatar entity icon name', () => {
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+        document.body.appendChild(element);
+
+        element.entityIconName = 'standard:account';
+        element.entityInitials = 'JD';
+        element.hideAvatarDetails = true;
+        element.src =
+            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
+
+        return Promise.resolve().then(() => {
+            const abbr = element.shadowRoot.querySelector('abbr');
+            expect(abbr.textContent).toBe('JD');
+        });
+    });
+
+    // entity position
+    it('Avatar entity top-right', () => {
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+        document.body.appendChild(element);
+
+        element.entityIconName = 'standard:account';
+        element.entityInitials = 'JD';
+        element.entityPosition = 'top-right';
+        element.hideAvatarDetails = true;
+        element.src =
+            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
+
+        return Promise.resolve().then(() => {
+            const entity = element.shadowRoot.querySelector(
+                '.slds-avatar.slds-current-color.avonni-avatar__entity.slds-icon-standard-account'
+            );
+            expect(entity.className).toContain('avonni-avatar_top-right');
+        });
+    });
+
+    it('Avatar entity top-left', () => {
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+        document.body.appendChild(element);
+
+        element.entityIconName = 'standard:account';
+        element.entityInitials = 'JD';
+        element.entityPosition = 'top-left';
+        element.hideAvatarDetails = true;
+        element.src =
+            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
+
+        return Promise.resolve().then(() => {
+            const entity = element.shadowRoot.querySelector(
+                '.slds-avatar.slds-current-color.avonni-avatar__entity.slds-icon-standard-account'
+            );
+            expect(entity.className).toContain('avonni-avatar_top-left');
+        });
+    });
+
+    it('Avatar entity bottom-right', () => {
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+        document.body.appendChild(element);
+
+        element.entityIconName = 'standard:account';
+        element.entityInitials = 'JD';
+        element.entityPosition = 'bottom-right';
+        element.hideAvatarDetails = true;
+        element.src =
+            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
+
+        return Promise.resolve().then(() => {
+            const entity = element.shadowRoot.querySelector(
+                '.slds-avatar.slds-current-color.avonni-avatar__entity.slds-icon-standard-account'
+            );
+            expect(entity.className).toContain('avonni-avatar_bottom-right');
+        });
+    });
+
+    it('Avatar entity bottom-left', () => {
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+        document.body.appendChild(element);
+
+        element.entityIconName = 'standard:account';
+        element.entityInitials = 'JD';
+        element.entityPosition = 'bottom-left';
+        element.hideAvatarDetails = true;
+        element.src =
+            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
+
+        return Promise.resolve().then(() => {
+            const entity = element.shadowRoot.querySelector(
+                '.slds-avatar.slds-current-color.avonni-avatar__entity.slds-icon-standard-account'
+            );
+            expect(entity.className).toContain('avonni-avatar_bottom-left');
+        });
+    });
+
+    // entity src
+    it('Avatar entity src', () => {
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+        document.body.appendChild(element);
+
+        element.hideAvatarDetails = true;
+        element.fallbackIconName = 'standard:account';
+        element.entitySrc =
+            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
+
+        return Promise.resolve().then(() => {
+            const img = element.shadowRoot.querySelector('img');
+            expect(img.src).toBe(
+                'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+            );
+        });
+    });
+
+    // entity title
+    it('Avatar entity title', () => {
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+        document.body.appendChild(element);
+
+        element.hideAvatarDetails = true;
+        element.fallbackIconName = 'standard:account';
+        element.entitySrc =
+            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
+        element.entityTitle = 'Entity Title';
+
+        return Promise.resolve().then(() => {
+            const img = element.shadowRoot.querySelector('img');
+            expect(img.title).toBe('Entity Title');
+        });
+    });
+
+    // entity variant
+    it('Avatar entity circle', () => {
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+        document.body.appendChild(element);
+
+        element.entityIconName = 'standard:account';
+        element.entityPosition = 'bottom-right';
+        element.entityVariant = 'circle';
+        element.hideAvatarDetails = true;
+        element.src =
+            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
+
+        return Promise.resolve().then(() => {
+            const entity = element.shadowRoot.querySelector(
+                '.slds-avatar.slds-current-color.avonni-avatar__entity.slds-icon-standard-account.avonni-avatar_bottom-right'
+            );
+            expect(entity.className).toContain('slds-avatar_circle');
         });
     });
 });
