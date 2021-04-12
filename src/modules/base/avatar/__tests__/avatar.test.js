@@ -296,6 +296,171 @@ describe('Avatar', () => {
         });
     });
 
+    // status
+    it('Avatar status approved', () => {
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+        document.body.appendChild(element);
+
+        element.status = 'approved';
+        element.hideAvatarDetails = true;
+        element.src =
+            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
+
+        return Promise.resolve().then(() => {
+            const status = element.shadowRoot.querySelector('c-primitive-icon');
+            expect(status.className).toContain(
+                'avonni-avatar__status_approved'
+            );
+        });
+    });
+
+    it('Avatar status locked', () => {
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+        document.body.appendChild(element);
+
+        element.status = 'locked';
+        element.hideAvatarDetails = true;
+        element.src =
+            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
+
+        return Promise.resolve().then(() => {
+            const status = element.shadowRoot.querySelector('c-primitive-icon');
+            expect(status.className).toContain('avonni-avatar__status_locked');
+        });
+    });
+
+    it('Avatar status declined', () => {
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+        document.body.appendChild(element);
+
+        element.status = 'declined';
+        element.hideAvatarDetails = true;
+        element.src =
+            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
+
+        return Promise.resolve().then(() => {
+            const status = element.shadowRoot.querySelector('c-primitive-icon');
+            expect(status.className).toContain(
+                'avonni-avatar__status_declined'
+            );
+        });
+    });
+
+    it('Avatar status unknown', () => {
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+        document.body.appendChild(element);
+
+        element.status = 'unknown';
+        element.hideAvatarDetails = true;
+        element.src =
+            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
+
+        return Promise.resolve().then(() => {
+            const status = element.shadowRoot.querySelector('c-primitive-icon');
+            expect(status.className).toContain('avonni-avatar__status_unknown');
+        });
+    });
+
+    // status position
+    it('Avatar status position top-right', () => {
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+        document.body.appendChild(element);
+
+        element.status = 'approved';
+        element.statusPosition = 'top-right';
+        element.hideAvatarDetails = true;
+        element.src =
+            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
+
+        return Promise.resolve().then(() => {
+            const status = element.shadowRoot.querySelector('c-primitive-icon');
+            expect(status.className).toContain('avonni-avatar_top-right');
+        });
+    });
+
+    it('Avatar status position top-left', () => {
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+        document.body.appendChild(element);
+
+        element.status = 'approved';
+        element.statusPosition = 'top-left';
+        element.hideAvatarDetails = true;
+        element.src =
+            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
+
+        return Promise.resolve().then(() => {
+            const status = element.shadowRoot.querySelector('c-primitive-icon');
+            expect(status.className).toContain('avonni-avatar_top-left');
+        });
+    });
+
+    it('Avatar status position bottom-right', () => {
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+        document.body.appendChild(element);
+
+        element.status = 'approved';
+        element.statusPosition = 'bottom-right';
+        element.hideAvatarDetails = true;
+        element.src =
+            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
+
+        return Promise.resolve().then(() => {
+            const status = element.shadowRoot.querySelector('c-primitive-icon');
+            expect(status.className).toContain('avonni-avatar_bottom-right');
+        });
+    });
+
+    it('Avatar status position bottom-left', () => {
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+        document.body.appendChild(element);
+
+        element.status = 'approved';
+        element.statusPosition = 'bottom-left';
+        element.hideAvatarDetails = true;
+        element.src =
+            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
+
+        return Promise.resolve().then(() => {
+            const status = element.shadowRoot.querySelector('c-primitive-icon');
+            expect(status.className).toContain('avonni-avatar_bottom-left');
+        });
+    });
+
+    // status title
+    it('Avatar status title', () => {
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+        document.body.appendChild(element);
+
+        element.status = 'approved';
+        element.statusTitle = 'Status title';
+        element.hideAvatarDetails = true;
+        element.src =
+            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
+
+        return Promise.resolve().then(() => {
+            const status = element.shadowRoot.querySelector('c-primitive-icon');
+            expect(status.title).toContain('Status title');
+        });
+    });
+
     // presence
     it('Avatar presence online', () => {
         const element = createElement('base-avatar', {
