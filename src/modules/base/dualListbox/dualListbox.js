@@ -718,7 +718,6 @@ export default class DualListbox extends LightningElement {
                 index = values.indexOf(toMove[start]);
                 this.swapOptions(index, index - 1, values, elementList);
                 start++;
-                console.log(index);
             }
         } else {
             while (start > -1) {

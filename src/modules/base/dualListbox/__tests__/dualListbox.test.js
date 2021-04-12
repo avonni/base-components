@@ -380,6 +380,7 @@ describe('DualListbox', () => {
         return Promise.resolve().then(() => {
             const help = element.shadowRoot.querySelector('lightning-helptext');
             expect(help).toBeTruthy();
+            expect(help.textContent).toBe('A String help');
         });
     });
 
@@ -659,11 +660,45 @@ describe('DualListbox', () => {
             is: DualListbox
         });
         document.body.appendChild(element);
-        element.requiredOptions = [];
 
-        return Promise.resolve().then(() => {
-            expect(element.requiredOptions).toBeTruthy();
-        });
+        const options = [
+            {
+                value: '1',
+                label: 'Option 1'
+            },
+            {
+                value: '2',
+                label: 'Option 2'
+            },
+            {
+                value: '3',
+                label: 'Option 3'
+            },
+            {
+                value: '4',
+                label: 'Option 4'
+            },
+            {
+                value: '5',
+                label: 'Option 5'
+            }
+        ];
+
+        element.options = options;
+
+        return Promise.resolve()
+            .then(() => {
+                element.requiredOptions = ['1'];
+            })
+            .then(() => {
+                const lock = element.shadowRoot.querySelector('lightning-icon');
+                const selected = element.shadowRoot.querySelector(
+                    'ul[data-selected-list]'
+                );
+                expect(element.requiredOptions).toBeTruthy();
+                expect(selected.querySelectorAll('li')).toHaveLength(1);
+                expect(lock.iconName).toBe('utility:lock');
+            });
     });
 
     // search engine
