@@ -4,11 +4,6 @@ import { classSet } from 'c/utils';
 
 const POSITIONS = { valid: ['top', 'bottom'], default: 'top' };
 
-const SIZES = {
-    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
-    default: 'medium'
-};
-
 const BUTTON_ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
 
 const BUTTON_VARIANTS = {
@@ -38,9 +33,9 @@ const POPOVER_RATIOS = {
 
 export default class ProgressStep extends LightningElement {
     stepIconName;
-    @api disabledSteps;
+    @api disabledSteps = [];
     @api warningSteps;
-    @api completedSteps;
+    @api completedSteps = [];
     @api assistiveText;
     @api label;
     @api description;
@@ -107,30 +102,6 @@ export default class ProgressStep extends LightningElement {
         this._descriptionPosition = normalizeString(position, {
             fallbackValue: POSITIONS.default,
             validValues: POSITIONS.valid
-        });
-    }
-
-    @api
-    get iconPosition() {
-        return this._iconPosition;
-    }
-
-    set iconPosition(position) {
-        this._iconPosition = normalizeString(position, {
-            fallbackValue: POSITIONS.default,
-            validValues: POSITIONS.valid
-        });
-    }
-
-    @api
-    get iconSize() {
-        return this._iconSize;
-    }
-
-    set iconSize(size) {
-        this._iconSize = normalizeString(size, {
-            fallbackValue: SIZES.default,
-            validValues: SIZES.valid
         });
     }
 
@@ -268,6 +239,14 @@ export default class ProgressStep extends LightningElement {
 
     get showDescriptionBottom() {
         return this._descriptionPosition === 'bottom' && this.description;
+    }
+
+    get showPopoverIcon() {
+        return this.popoverIconSrc || this.popoverIconName;
+    }
+
+    get showPopoverIconWhenHover() {
+        return this.popoverIconSrcWhenHover || this.popoverIconNameWhenHover;
     }
 
     get isButtonDisabled() {
