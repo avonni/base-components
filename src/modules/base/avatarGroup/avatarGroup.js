@@ -2,30 +2,32 @@ import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { normalizeString } from 'c/utilsPrivate';
 
-const validSizes = [
-    'x-small',
-    'small',
-    'medium',
-    'large',
-    'x-large',
-    'xx-large'
-];
-const validLayouts = ['stack', 'grid', 'list'];
+const validSizes = {
+    valiad: ['x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'],
+    default: 'medium'
+};
+const validLayouts = { valid: ['stack', 'grid', 'list'], default: 'stack' };
 
-const validVariants = ['empty', 'square', 'circle'];
+const validVariants = {
+    valid: ['empty', 'square', 'circle'],
+    default: 'square'
+};
 
-const validButtonIconPositions = ['left', 'right'];
+const validButtonIconPositions = { valid: ['left', 'right'], default: 'left' };
 
-const validButtonVariants = [
-    'neutral',
-    'base',
-    'brand',
-    'brand-outline',
-    'destructive',
-    'destructive-text',
-    'inverse',
-    'success'
-];
+const validButtonVariants = {
+    valid: [
+        'neutral',
+        'base',
+        'brand',
+        'brand-outline',
+        'destructive',
+        'destructive-text',
+        'inverse',
+        'success'
+    ],
+    default: 'neutral'
+};
 
 export default class AvatarGroup extends LightningElement {
     @api listButtonLabel = 'Show more';
@@ -33,12 +35,12 @@ export default class AvatarGroup extends LightningElement {
 
     _items = [];
     _maxCount;
-    _size = 'medium';
-    _layout = 'stack';
+    _size = validSizes.default;
+    _layout = validLayouts.default;
     _allowBlur = false;
-    _listButtonVariant = 'neutral';
-    _listButtonIconPosition = 'left';
-    _variant = 'square';
+    _listButtonVariant = validButtonVariants.default;
+    _listButtonIconPosition = validButtonIconPositions.default;
+    _variant = validVariants.default;
     showPopover = false;
     hiddenItems = [];
 
@@ -84,8 +86,8 @@ export default class AvatarGroup extends LightningElement {
 
     set size(size) {
         this._size = normalizeString(size, {
-            fallbackValue: 'medium',
-            validValues: validSizes
+            fallbackValue: validSizes.default,
+            validValues: validSizes.valid
         });
     }
 
@@ -95,8 +97,8 @@ export default class AvatarGroup extends LightningElement {
 
     set layout(value) {
         this._layout = normalizeString(value, {
-            fallbackValue: 'stack',
-            validValues: validLayouts
+            fallbackValue: validLayouts.default,
+            validValues: validLayouts.valid
         });
     }
 
@@ -106,8 +108,8 @@ export default class AvatarGroup extends LightningElement {
 
     set listButtonVariant(value) {
         this._listButtonVariant = normalizeString(value, {
-            fallbackValue: 'neutral',
-            validValues: validButtonVariants
+            fallbackValue: validButtonVariants.default,
+            validValues: validButtonVariants.valid
         });
     }
 
@@ -117,8 +119,8 @@ export default class AvatarGroup extends LightningElement {
 
     set listButtonIconPosition(value) {
         this._listButtonIconPosition = normalizeString(value, {
-            fallbackValue: 'left',
-            validValues: validButtonIconPositions
+            fallbackValue: validButtonIconPositions.default,
+            validValues: validButtonIconPositions.valid
         });
     }
 
@@ -128,8 +130,8 @@ export default class AvatarGroup extends LightningElement {
 
     set variant(value) {
         this._variant = normalizeString(value, {
-            fallbackValue: 'square',
-            validValues: validVariants
+            fallbackValue: validVariants.default,
+            validValues: validVariants.valid
         });
     }
 
