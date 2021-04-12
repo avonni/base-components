@@ -854,4 +854,84 @@ describe('Avatar', () => {
             expect(entity.className).toContain('slds-avatar_circle');
         });
     });
+
+    // primary text
+    it('Avatar primary text', () => {
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+        document.body.appendChild(element);
+
+        element.src =
+            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
+        element.primaryText = 'This is a primary text';
+
+        return Promise.resolve().then(() => {
+            const text = element.shadowRoot.querySelector(
+                '.slds-text-title_bold'
+            );
+            expect(text.textContent).toBe('This is a primary text');
+        });
+    });
+
+    // secondary text
+    it('Avatar secondary text', () => {
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+        document.body.appendChild(element);
+
+        element.src =
+            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
+        element.secondaryText = 'This is a secondary text';
+
+        return Promise.resolve().then(() => {
+            const text = element.shadowRoot.querySelector(
+                '.avonni-avatar__light-text'
+            );
+            expect(text.textContent).toBe('This is a secondary text');
+        });
+    });
+
+    // tertiary text
+    it('Avatar tertiary text', () => {
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+        document.body.appendChild(element);
+
+        element.src =
+            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
+
+        element.secondaryText = 'This is a secondary text';
+        element.tertiaryText = 'This is a tertiary text';
+        element.size = 'xx-large';
+
+        return Promise.resolve().then(() => {
+            const text = element.shadowRoot.querySelectorAll(
+                '.avonni-avatar__light-text'
+            );
+            expect(text[0].textContent).toBe('This is a secondary text');
+            expect(text[1].textContent).toBe('This is a tertiary text');
+        });
+    });
+
+    // text-position
+    // it('Avatar center', () => {
+    //     const element = createElement('base-avatar', {
+    //         is: Avatar
+    //     });
+    //     document.body.appendChild(element);
+
+    //     element.src =
+    //     'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
+
+    //     element.secondaryText = 'This is a secondary text'
+    //     element.textPosition = 'left'
+
+    //     return Promise.resolve().then(() => {
+    //         const div = element.shadowRoot.querySelector('.slds-media__figure')
+    //         expect(div).toBe('avonni-media-obje')
+    //     });
+    // });
 });
