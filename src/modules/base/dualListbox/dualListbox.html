@@ -1,5 +1,5 @@
 <template>
-    <div role="group" aria-labelledby="group-label">
+    <div role="group" aria-labelledby="group-label" class={computedOuterClass}>
         <div id="group-label" class={computedGroupLabelClass}>
             <template if:true={required}>
                 <abbr class="slds-required" title={i18n.required}
@@ -256,12 +256,14 @@
             </div>
         </div>
         <template if:true={errorMessage}>
-            <span
+            <div
                 id="error-message"
                 class="slds-has-error slds-form-element__help"
                 aria-live="assertive"
-                >{errorMessage}</span
+                role="alert"
             >
+                {errorMessage}
+            </div>
         </template>
     </div>
 </template>

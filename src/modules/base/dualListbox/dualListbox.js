@@ -3,8 +3,7 @@ import {
     normalizeBoolean,
     normalizeString,
     assert,
-    getRealDOMId,
-    classListMutation
+    getRealDOMId
 } from 'c/utilsPrivate';
 import { classSet, formatLabel } from 'c/utils';
 import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
@@ -89,7 +88,6 @@ export default class DualListbox extends LightningElement {
 
     connectedCallback() {
         this.classList.add('slds-form-element');
-        this.updateClassList();
         this.keyboardInterface = this.selectKeyboardInterface();
 
         this._connected = true;
@@ -333,13 +331,6 @@ export default class DualListbox extends LightningElement {
         }
     }
 
-    updateClassList() {
-        classListMutation(this.classList, {
-            'slds-form-element_stacked': this.variant === 'label-stacked',
-            'slds-form-element_horizontal': this.variant === 'label-inline'
-        });
-    }
-
     get computedUniqueId() {
         return this.uniqueId;
     }
@@ -474,6 +465,17 @@ export default class DualListbox extends LightningElement {
         return this._selectedValues.length === 0;
     }
 
+    get computedOuterClass() {
+        return classSet('')
+            .add({
+                'slds-form-element_horizontal': this.variant === 'label-inline'
+            })
+            .add({
+                'slds-form-element_stacked': this.variant === 'label-stacked'
+            })
+            .toString();
+    }
+
     get computedGroupLabelClass() {
         return classSet('slds-form-element__label slds-form-element__legend')
             .add({ 'slds-assistive-text': this.isLabelHidden })
@@ -583,13 +585,17 @@ export default class DualListbox extends LightningElement {
     handleRightButtonClick() {
         this.interactingState.interacting();
         this.moveOptionsBetweenLists(true, true);
-        this.handleSearch();
+        if (this.searchTerm) {
+            this.handleSearch();
+        }
     }
 
     handleLeftButtonClick() {
         this.interactingState.interacting();
         this.moveOptionsBetweenLists(false, true);
-        this.handleSearch();
+        if (this.searchTerm) {
+            this.handleSearch();
+        }
     }
 
     handleUpButtonClick() {
