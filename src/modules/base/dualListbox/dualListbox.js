@@ -61,6 +61,7 @@ export default class DualListbox extends LightningElement {
     @api removeButtonLabel;
     @api upButtonLabel;
     @api downButtonLabel;
+    @api fieldLevelHelp;
 
     _requiredOptions = [];
     _options = [];
@@ -260,24 +261,22 @@ export default class DualListbox extends LightningElement {
         });
     }
 
-    set size(value) {
-        this._size = value;
-    }
-
     @api
     get size() {
         return this._size;
     }
 
-    @api fieldLevelHelp;
-
-    set disableReordering(value) {
-        this._disableReordering = normalizeBoolean(value);
+    set size(value) {
+        this._size = value;
     }
 
     @api
     get disableReordering() {
         return this._disableReordering;
+    }
+
+    set disableReordering(value) {
+        this._disableReordering = normalizeBoolean(value);
     }
 
     @api
@@ -402,6 +401,17 @@ export default class DualListbox extends LightningElement {
         );
     }
 
+    get hasResult() {
+        if (this.searchResult.length >= 0 && this.searchTerm) {
+            return this.searchResult;
+        }
+        return this.computedSourceList;
+    }
+
+    get hasSearchTerm() {
+        return this.searchTerm;
+    }
+
     computeListOptions(options, focusableOptionValue) {
         if (options.length > 0) {
             const focusableOption = options.find((option) => {
@@ -465,6 +475,21 @@ export default class DualListbox extends LightningElement {
         return this._selectedValues.length === 0;
     }
 
+    get computedLockAssistiveText() {
+        return formatLabel(
+            this.i18n.optionLockAssistiveText,
+            this.selectedLabel
+        );
+    }
+
+    get i18n() {
+        return i18n;
+    }
+
+    get moveButtonsDisabled() {
+        return this.disabled;
+    }
+
     get computedOuterClass() {
         return classSet('')
             .add({
@@ -526,21 +551,6 @@ export default class DualListbox extends LightningElement {
                     this.variant === 'label-stacked'
             })
             .toString();
-    }
-
-    get computedLockAssistiveText() {
-        return formatLabel(
-            this.i18n.optionLockAssistiveText,
-            this.selectedLabel
-        );
-    }
-
-    get i18n() {
-        return i18n;
-    }
-
-    get moveButtonsDisabled() {
-        return this.disabled;
     }
 
     handleOptionClick(event) {
@@ -614,6 +624,26 @@ export default class DualListbox extends LightningElement {
             return;
         }
         handleKeyDownOnOption(event, this.keyboardInterface);
+    }
+
+    handleSearch() {
+        window.clearTimeout(this.delayTimeout);
+        this.searchTerm = this.template
+            .querySelector('input')
+            .value.toLowerCase();
+        if (this.searchTerm) {
+            this._isLoading = true;
+            this.delayTimeout = setTimeout(() => {
+                this.searchResult = this.computedSourceList.filter((option) => {
+                    return option.label.toLowerCase().includes(this.searchTerm);
+                });
+                this._isLoading = false;
+            }, 300);
+        } else this.searchResult = this.computedSourceList;
+    }
+
+    handleSearchClear() {
+        this.searchTerm = this.template.querySelector('input').value = null;
     }
 
     moveOptionsBetweenLists(addToSelect, retainFocus) {
@@ -940,36 +970,5 @@ export default class DualListbox extends LightningElement {
         if (!isSame) {
             this.highlightedOptions = [];
         }
-    }
-
-    handleSearch() {
-        window.clearTimeout(this.delayTimeout);
-        this.searchTerm = this.template
-            .querySelector('input')
-            .value.toLowerCase();
-        if (this.searchTerm) {
-            this._isLoading = true;
-            this.delayTimeout = setTimeout(() => {
-                this.searchResult = this.computedSourceList.filter((option) => {
-                    return option.label.toLowerCase().includes(this.searchTerm);
-                });
-                this._isLoading = false;
-            }, 300);
-        } else this.searchResult = this.computedSourceList;
-    }
-
-    handleSearchClear() {
-        this.searchTerm = this.template.querySelector('input').value = null;
-    }
-
-    get hasResult() {
-        if (this.searchResult.length >= 0 && this.searchTerm) {
-            return this.searchResult;
-        }
-        return this.computedSourceList;
-    }
-
-    get hasSearchTerm() {
-        return this.searchTerm;
     }
 }

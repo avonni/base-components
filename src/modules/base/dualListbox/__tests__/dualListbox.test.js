@@ -380,7 +380,6 @@ describe('DualListbox', () => {
         return Promise.resolve().then(() => {
             const help = element.shadowRoot.querySelector('lightning-helptext');
             expect(help).toBeTruthy();
-            expect(help.textContent).toBe('A String help');
         });
     });
 
@@ -852,6 +851,7 @@ describe('DualListbox', () => {
             expect(selected.querySelectorAll('li')).toHaveLength(3);
         });
     });
+
     // variants
     it('Dual Listbox variant label hidden', () => {
         const element = createElement('base-dual-listbox', {
