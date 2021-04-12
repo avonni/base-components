@@ -59,21 +59,21 @@ export default class Avatar extends LightningElement {
     mediaObjectClass;
     fallbackIconClass;
 
-    _alternativeText = 'Avatar';
+    _alternativeText;
     _entityIconFullName;
     _entityPosition = POSITION.entityDefault;
     _entitySrc;
-    _entityTitle = 'Entity';
+    _entityTitle;
     _entityVariant = VARIANT.default;
     _hideAvatarDetails;
     _presence = PRESENCE.default;
     _presencePosition = POSITION.presenceDefault;
-    _presenceTitle = 'Presence';
+    _presenceTitle;
     _size = SIZE.default;
-    _src = '';
+    _src;
     _status = STATUS.default;
     _statusPosition = POSITION.statusDefault;
-    _statusTitle = 'Status';
+    _statusTitle;
     _variant = VARIANT.default;
     _textPosition = TEXT_POSITION.default;
 
