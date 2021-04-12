@@ -84,7 +84,7 @@ export default class PrimitiveProgressBarBadge extends LightningElement {
     get computedBadgeClass() {
         return classSet('avonni-progress-bar-badge')
             .add({
-                'avonni-progress-bar-badge_inverse': this._variant === 'darker',
+                'avonni-progress-bar-badge_darker': this._variant === 'darker',
                 'avonni-progress-bar-badge_lightest':
                     this._variant === 'lightest',
                 'avonni-progress-bar-badge_success':
