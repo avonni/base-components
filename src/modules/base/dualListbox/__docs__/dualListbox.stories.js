@@ -487,55 +487,63 @@ const OptionsWithAvatarSrc = [
     {
         value: '1',
         label: 'Carl Smith',
-        description: 'CC SMITH',
+        description: 'CS',
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
     },
     {
         value: '2',
         label: 'Suzan White',
+        description: 'SW',
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
     },
     {
         value: '3',
         label: 'Philipp Johnson',
+        description: 'PJ',
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg'
     },
     {
         value: '4',
         label: 'Miles Williams',
-        description: 'MM WILLLL',
+        description: 'MW',
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
     },
     {
         value: '5',
         label: 'Jane Doe',
+        description: 'JD',
         iconName: 'standard:account',
         initials: 'JD'
     },
     {
         value: '6',
         label: 'Gina Garcia',
+        description: 'GG',
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
     },
     {
         value: '7',
         label: 'John Smith',
+        description: 'JS',
         iconName: 'standard:address',
         initials: 'JS'
     },
     {
         value: '8',
         label: 'Xavier Anderson',
+        description: 'XA',
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg'
     },
     {
         value: '9',
         label: 'James Jackson',
+        description: 'JJ',
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
     },
     {
         value: '10',
         label: 'Diane Wilson',
+        description: 'DW',
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
     }
 ];
@@ -596,6 +604,21 @@ Base.args = {
     downButtonLabel: 'Down Button Label',
     upButtonLabel: 'Up Button Label',
     options: Options,
+    value: ['2', '3', '4', '5', '6']
+};
+
+export const BaseBordered = Template.bind({});
+BaseBordered.args = {
+    label: 'Select Options',
+    fieldLevelHelp: 'This is a Dual Listbox',
+    sourceLabel: 'Available Items',
+    selectedLabel: 'Selected Items',
+    addButtonLabel: 'Add Button Label',
+    removeButtonLabel: 'Remove Button Label',
+    downButtonLabel: 'Down Button Label',
+    upButtonLabel: 'Up Button Label',
+    options: Options,
+    borderedOptions: true,
     value: ['2', '3', '4', '5', '6']
 };
 
@@ -693,6 +716,7 @@ BaseWithAvatarLabelHidden.args = {
     required: true,
     requiredOptions: ['1'],
     value: ['2', '3'],
+    borderedOptions: true,
     variant: 'label-hidden'
 };
 
