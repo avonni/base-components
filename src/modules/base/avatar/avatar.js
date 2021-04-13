@@ -112,7 +112,7 @@ export default class Avatar extends LightningElement {
 
     set alternativeText(value) {
         this._alternativeText =
-            typeof value === 'string' ? value : this._alternativeText;
+            typeof value === 'string' ? value.trim() : this._alternativeText;
     }
 
     @api
@@ -186,7 +186,7 @@ export default class Avatar extends LightningElement {
 
     set statusTitle(value) {
         this._statusTitle =
-            typeof value === 'string' ? value : this._statusTitle;
+            typeof value === 'string' ? value.trim() : this._statusTitle;
         this._computeStatus();
     }
 
@@ -240,7 +240,7 @@ export default class Avatar extends LightningElement {
 
     set presenceTitle(value) {
         this._presenceTitle =
-            typeof value === 'string' ? value : this._presenceTitle;
+            typeof value === 'string' ? value.trim() : this._presenceTitle;
     }
 
     /**
@@ -252,8 +252,8 @@ export default class Avatar extends LightningElement {
     }
 
     set entityIconName(value) {
-        this._entityIconFullName = typeof value === 'string' ? value : ':';
-
+        this._entityIconFullName =
+            typeof value === 'string' ? value.trim() : ':';
         this._entityIconCategory = this._entityIconFullName.split(':')[0];
         this._entityIconName = this._entityIconFullName.split(':')[1];
     }
@@ -286,7 +286,8 @@ export default class Avatar extends LightningElement {
     }
 
     set entityTitle(value) {
-        this._entityTitle = value || this._entityTitle;
+        this._entityTitle =
+            (typeof value === 'string' && value.trim()) || this._entityTitle;
     }
 
     @api
