@@ -100,7 +100,9 @@ export default class ProgressBar extends LightningElement {
             } else {
                 this._value = value;
             }
-        } else this._value = 0;
+        } else {
+            this._value = 0;
+        }
     }
 
     @api
