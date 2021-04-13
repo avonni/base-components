@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeString } from 'c/utilsPrivate';
+import { normalizeString, normalizeArray } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import pageHeader from './pageHeader.html';
 import pageHeaderVertical from './pageHeaderVertical.html';
@@ -96,7 +96,7 @@ export default class PageHeader extends LightningElement {
     }
 
     set fields(value) {
-        this._fields = Array.isArray(value) ? value : [];
+        this._fields = normalizeArray(value);
     }
 
     get computedOuterClass() {
