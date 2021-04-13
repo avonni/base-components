@@ -227,8 +227,8 @@
             "path": "src/modules/base/primitiveIframe/primitiveIframe.js"
         },
         {
-            "name": "c/primitivePageHeaderItem",
-            "path": "src/modules/base/primitivePageHeaderItem/primitivePageHeaderItem.js"
+            "name": "c/primitivePageHeaderField",
+            "path": "src/modules/base/primitivePageHeaderField/primitivePageHeaderField.js"
         },
         {
             "name": "c/primitiveProgressBarBadge",
