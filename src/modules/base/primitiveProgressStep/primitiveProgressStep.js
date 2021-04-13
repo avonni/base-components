@@ -81,6 +81,7 @@ export default class ProgressStep extends LightningElement {
         return this._value;
     }
 
+    // value can be anything
     set value(value) {
         this._value = value;
         this.setAttribute('data-step', value);
