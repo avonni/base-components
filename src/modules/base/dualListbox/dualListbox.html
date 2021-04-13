@@ -90,20 +90,20 @@
                                     role="presentation"
                                     class={computedListItemClass}
                                 >
-                                    <div
-                                        class={option.classList}
-                                        aria-selected={option.selected}
-                                        role="option"
-                                        tabindex={option.tabIndex}
-                                        data-index={index}
-                                        data-value={option.value}
-                                        data-type={computedSourceListId}
-                                        onclick={handleOptionClick}
-                                        onkeydown={handleOptionKeyDown}
-                                    >
-                                        <template if:true={option.hasAvatar}>
-                                            <template
-                                                if:true={option.hasDescription}
+                                    <template if:true={option.hasAvatar}>
+                                        <template
+                                            if:true={option.hasDescription}
+                                        >
+                                            <div
+                                                class="slds-listbox__option slds-listbox__option_plain slds-media slds-media_center slds-media_inline"
+                                                aria-selected={option.selected}
+                                                role="option"
+                                                tabindex={option.tabIndex}
+                                                data-index={index}
+                                                data-value={option.value}
+                                                data-type={computedSourceListId}
+                                                onclick={handleOptionClick}
+                                                onkeydown={handleOptionKeyDown}
                                             >
                                                 <div class="slds-media__figure">
                                                     <c-avatar
@@ -116,9 +116,21 @@
                                                         secondary-text={option.description}
                                                     ></c-avatar>
                                                 </div>
-                                            </template>
-                                            <template
-                                                if:false={option.hasDescription}
+                                            </div>
+                                        </template>
+                                        <template
+                                            if:false={option.hasDescription}
+                                        >
+                                            <div
+                                                class={option.classList}
+                                                aria-selected={option.selected}
+                                                role="option"
+                                                tabindex={option.tabIndex}
+                                                data-index={index}
+                                                data-value={option.value}
+                                                data-type={computedSourceListId}
+                                                onclick={handleOptionClick}
+                                                onkeydown={handleOptionKeyDown}
                                             >
                                                 <div class="slds-media__figure">
                                                     <c-avatar
@@ -136,9 +148,9 @@
                                                         >{option.label}</span
                                                     >
                                                 </span>
-                                            </template>
+                                            </div>
                                         </template>
-                                    </div>
+                                    </template>
                                 </li>
                             </template>
                         </ul>
@@ -207,20 +219,20 @@
                                     role="presentation"
                                     class={computedListItemClass}
                                 >
-                                    <div
-                                        class={option.classList}
-                                        aria-selected={option.selected}
-                                        role="option"
-                                        tabindex={option.tabIndex}
-                                        data-index={index}
-                                        data-value={option.value}
-                                        data-type={computedSelectedListId}
-                                        onclick={handleOptionClick}
-                                        onkeydown={handleOptionKeyDown}
-                                    >
-                                        <template if:true={option.hasAvatar}>
-                                            <template
-                                                if:true={option.hasDescription}
+                                    <template if:true={option.hasAvatar}>
+                                        <template
+                                            if:true={option.hasDescription}
+                                        >
+                                            <div
+                                                class="slds-listbox__option slds-listbox__option_plain slds-media slds-media_center slds-media_inline"
+                                                aria-selected={option.selected}
+                                                role="option"
+                                                tabindex={option.tabIndex}
+                                                data-index={index}
+                                                data-value={option.value}
+                                                data-type={computedSourceListId}
+                                                onclick={handleOptionClick}
+                                                onkeydown={handleOptionKeyDown}
                                             >
                                                 <div class="slds-media__figure">
                                                     <c-avatar
@@ -233,9 +245,34 @@
                                                         secondary-text={option.description}
                                                     ></c-avatar>
                                                 </div>
-                                            </template>
-                                            <template
-                                                if:false={option.hasDescription}
+                                                <template
+                                                    if:true={option.isLocked}
+                                                >
+                                                    <span
+                                                        class="slds-media__figure slds-media__figure_reverse"
+                                                    >
+                                                        <lightning-icon
+                                                            icon-name="utility:lock"
+                                                            size="x-small"
+                                                            alternative-text={computedLockAssistiveText}
+                                                        ></lightning-icon>
+                                                    </span>
+                                                </template>
+                                            </div>
+                                        </template>
+                                        <template
+                                            if:false={option.hasDescription}
+                                        >
+                                            <div
+                                                class={option.classList}
+                                                aria-selected={option.selected}
+                                                role="option"
+                                                tabindex={option.tabIndex}
+                                                data-index={index}
+                                                data-value={option.value}
+                                                data-type={computedSourceListId}
+                                                onclick={handleOptionClick}
+                                                onkeydown={handleOptionKeyDown}
                                             >
                                                 <div class="slds-media__figure">
                                                     <c-avatar
@@ -253,20 +290,22 @@
                                                         >{option.label}</span
                                                     >
                                                 </span>
-                                            </template>
+                                                <template
+                                                    if:true={option.isLocked}
+                                                >
+                                                    <span
+                                                        class="slds-media__figure slds-media__figure_reverse"
+                                                    >
+                                                        <lightning-icon
+                                                            icon-name="utility:lock"
+                                                            size="x-small"
+                                                            alternative-text={computedLockAssistiveText}
+                                                        ></lightning-icon>
+                                                    </span>
+                                                </template>
+                                            </div>
                                         </template>
-                                        <template if:true={option.isLocked}>
-                                            <span
-                                                class="slds-media__figure slds-media__figure_reverse"
-                                            >
-                                                <lightning-icon
-                                                    icon-name="utility:lock"
-                                                    size="x-small"
-                                                    alternative-text={computedLockAssistiveText}
-                                                ></lightning-icon>
-                                            </span>
-                                        </template>
-                                    </div>
+                                    </template>
                                 </li>
                             </template>
                         </ul>

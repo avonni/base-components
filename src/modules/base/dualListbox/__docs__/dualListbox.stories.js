@@ -487,6 +487,7 @@ const OptionsWithAvatarSrc = [
     {
         value: '1',
         label: 'Carl Smith',
+        description: 'CC SMITH',
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
     },
     {
@@ -502,6 +503,7 @@ const OptionsWithAvatarSrc = [
     {
         value: '4',
         label: 'Miles Williams',
+        description: 'MM WILLLL',
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
     },
     {
