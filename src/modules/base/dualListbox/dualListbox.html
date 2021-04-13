@@ -102,17 +102,41 @@
                                         onkeydown={handleOptionKeyDown}
                                     >
                                         <template if:true={option.hasAvatar}>
-                                            <div class="slds-media__figure">
-                                                <c-avatar
-                                                    fallback-icon-name={option.iconName}
-                                                    src={option.src}
-                                                    initials={option.initials}
-                                                    size={option.iconSize}
-                                                    variant={option.variant}
-                                                    primary-text={option.label}
-                                                    secondary-text={option.description}
-                                                ></c-avatar>
-                                            </div>
+                                            <template
+                                                if:true={option.hasDescription}
+                                            >
+                                                <div class="slds-media__figure">
+                                                    <c-avatar
+                                                        fallback-icon-name={option.iconName}
+                                                        src={option.src}
+                                                        initials={option.initials}
+                                                        size={option.iconSize}
+                                                        variant={option.variant}
+                                                        primary-text={option.label}
+                                                        secondary-text={option.description}
+                                                    ></c-avatar>
+                                                </div>
+                                            </template>
+                                            <template
+                                                if:false={option.hasDescription}
+                                            >
+                                                <div class="slds-media__figure">
+                                                    <c-avatar
+                                                        fallback-icon-name={option.iconName}
+                                                        src={option.src}
+                                                        initials={option.initials}
+                                                        size={option.iconSize}
+                                                        variant={option.variant}
+                                                    ></c-avatar>
+                                                </div>
+                                                <span class="slds-media__body">
+                                                    <span
+                                                        class="slds-truncate"
+                                                        title={option.label}
+                                                        >{option.label}</span
+                                                    >
+                                                </span>
+                                            </template>
                                         </template>
                                     </div>
                                 </li>
@@ -195,22 +219,44 @@
                                         onkeydown={handleOptionKeyDown}
                                     >
                                         <template if:true={option.hasAvatar}>
-                                            <div class="slds-media__figure">
-                                                <c-avatar
-                                                    fallback-icon-name={option.iconName}
-                                                    src={option.src}
-                                                    initials={option.initials}
-                                                    size={option.iconSize}
-                                                    variant={option.variant}
-                                                    primary-text={option.label}
-                                                    secondary-text={option.description}
-                                                ></c-avatar>
-                                            </div>
+                                            <template
+                                                if:true={option.hasDescription}
+                                            >
+                                                <div class="slds-media__figure">
+                                                    <c-avatar
+                                                        fallback-icon-name={option.iconName}
+                                                        src={option.src}
+                                                        initials={option.initials}
+                                                        size={option.iconSize}
+                                                        variant={option.variant}
+                                                        primary-text={option.label}
+                                                        secondary-text={option.description}
+                                                    ></c-avatar>
+                                                </div>
+                                            </template>
+                                            <template
+                                                if:false={option.hasDescription}
+                                            >
+                                                <div class="slds-media__figure">
+                                                    <c-avatar
+                                                        fallback-icon-name={option.iconName}
+                                                        src={option.src}
+                                                        initials={option.initials}
+                                                        size={option.iconSize}
+                                                        variant={option.variant}
+                                                    ></c-avatar>
+                                                </div>
+                                                <span class="slds-media__body">
+                                                    <span
+                                                        class="slds-truncate"
+                                                        title={option.label}
+                                                        >{option.label}</span
+                                                    >
+                                                </span>
+                                            </template>
                                         </template>
                                         <template if:true={option.isLocked}>
-                                            <span
-                                                class="slds-media__figure slds-media__figure_reverse"
-                                            >
+                                            <span class="slds-text-align_right">
                                                 <lightning-icon
                                                     icon-name="utility:lock"
                                                     size="x-small"

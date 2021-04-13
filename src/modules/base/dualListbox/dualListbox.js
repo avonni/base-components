@@ -109,6 +109,7 @@ export default class DualListbox extends LightningElement {
             this.optionToFocus = null;
         });
         this.hasAvatar();
+        this.hasDescription();
     }
 
     renderedCallback() {
@@ -332,6 +333,16 @@ export default class DualListbox extends LightningElement {
         }
     }
 
+    hasDescription() {
+        if (this._options) {
+            this._options.forEach((option) => {
+                if (option.description) {
+                    option.hasDescription = true;
+                } else option.hasDescription = false;
+            });
+        }
+    }
+
     get computedUniqueId() {
         return this.uniqueId;
     }
@@ -434,7 +445,7 @@ export default class DualListbox extends LightningElement {
     computeOptionProperties(option, focusableValue) {
         const isSelected = this.highlightedOptions.indexOf(option.value) > -1;
         const classList = classSet(
-            'slds-listbox__option slds-listbox__option_plain slds-media slds-media_small slds-media_center slds-media_inline'
+            'slds-listbox__option slds-listbox__option_plain slds-media slds-media_x-small slds-media_center slds-media_inline'
         )
             .add({ 'slds-is-selected': isSelected })
             .toString();
