@@ -3,7 +3,7 @@ import { classSet } from 'c/utils';
 import { normalizeString } from 'c/utilsPrivate';
 
 const validSizes = {
-    valiad: ['x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'],
+    valid: ['x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'],
     default: 'medium'
 };
 const validLayouts = { valid: ['stack', 'grid', 'list'], default: 'stack' };

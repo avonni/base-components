@@ -917,21 +917,46 @@ describe('Avatar', () => {
     });
 
     // text-position
-    // it('Avatar center', () => {
-    //     const element = createElement('base-avatar', {
-    //         is: Avatar
-    //     });
-    //     document.body.appendChild(element);
+    it('Avatar center', () => {
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+        document.body.appendChild(element);
 
-    //     element.src =
-    //     'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
+        element.src =
+            'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg';
+        element.primaryText = 'This is a primary Text';
+        element.secondaryText = 'This is a secondary text';
+        element.textPosition = 'center';
+        element.size = 'large';
 
-    //     element.secondaryText = 'This is a secondary text'
-    //     element.textPosition = 'left'
+        return Promise.resolve().then(() => {
+            const mediaObject = element.shadowRoot.querySelector(
+                'c-media-object'
+            );
+            expect(mediaObject.inline).toBeTruthy();
+            expect(mediaObject.className).toBe('slds-text-align_center');
+        });
+    });
 
-    //     return Promise.resolve().then(() => {
-    //         const div = element.shadowRoot.querySelector('.slds-media__figure')
-    //         expect(div).toBe('avonni-media-obje')
-    //     });
-    // });
+    it('Avatar left', () => {
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+        document.body.appendChild(element);
+
+        element.src =
+            'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg';
+        element.primaryText = 'This is a primary Text';
+        element.secondaryText = 'This is a secondary text';
+        element.textPosition = 'left';
+        element.size = 'large';
+
+        return Promise.resolve().then(() => {
+            const mediaObject = element.shadowRoot.querySelector(
+                'c-media-object'
+            );
+            expect(mediaObject.className).toBe('slds-text-align_right');
+        });
+    });
 });
