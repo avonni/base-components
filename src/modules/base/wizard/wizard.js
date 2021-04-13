@@ -10,24 +10,24 @@ const INDICATOR_POSITIONS = ['header', 'footer'];
 export default class Wizard extends LightningElement {
     @api title;
     @api iconName;
-    @api indicatorType = 'base';
-    @api hideIndicator = false;
+    @api indicatorType;
+    @api hideIndicator;
     @api buttonPreviousIconName;
-    @api buttonPreviousIconPosition = 'left';
-    @api buttonPreviousLabel = 'Previous';
-    @api buttonPreviousVariant = 'neutral';
+    @api buttonPreviousIconPosition;
+    @api buttonPreviousLabel;
+    @api buttonPreviousVariant;
     @api buttonNextIconName;
-    @api buttonNextIconPosition = 'left';
-    @api buttonNextLabel = 'Next';
-    @api buttonNextVariant = 'neutral';
+    @api buttonNextIconPosition;
+    @api buttonNextLabel;
+    @api buttonNextVariant;
     @api buttonFinishIconName;
-    @api buttonFinishIconPosition = 'left';
+    @api buttonFinishIconPosition;
     @api buttonFinishLabel;
-    @api buttonFinishVariant = 'neutral';
+    @api buttonFinishVariant;
     @api buttonAlignmentBump;
-    @api actionPosition = 'left';
-    @api fractionPrefixLabel = 'Step';
-    @api fractionLabel = 'of';
+    @api actionPosition;
+    @api fractionPrefixLabel;
+    @api fractionLabel;
 
     _variant = 'base';
     _hideNavigation = false;
@@ -94,7 +94,7 @@ export default class Wizard extends LightningElement {
         return this._currentStep;
     }
     set currentStep(name) {
-        this._currentStep = name;
+        this._currentStep = (typeof name === 'string' && name.trim()) || '';
     }
 
     @api

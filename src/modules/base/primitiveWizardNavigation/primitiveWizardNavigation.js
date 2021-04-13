@@ -28,24 +28,24 @@ export default class PrimitiveWizardNavigation extends LightningElement {
     @api buttonNextIconName;
     @api buttonFinishIconName;
 
-    _steps;
+    _steps = [];
     _currentStep;
-    _rendered;
-    _indicatorType;
-    _hideIndicator;
-    _buttonPreviousIconPosition;
-    _buttonPreviousLabel;
-    _buttonPreviousVariant;
-    _buttonNextIconPosition;
-    _buttonNextLabel;
-    _buttonNextVariant;
-    _buttonFinishIconPosition;
-    _buttonFinishLabel;
-    _buttonFinishVariant;
+    _rendered = false;
+    _indicatorType = 'base';
+    _hideIndicator = false;
+    _buttonPreviousIconPosition = 'left';
+    _buttonPreviousLabel = 'Previous';
+    _buttonPreviousVariant = 'neutral';
+    _buttonNextIconPosition = 'left';
+    _buttonNextLabel = 'Next';
+    _buttonNextVariant = 'neutral';
+    _buttonFinishIconPosition = 'left';
+    _buttonFinishLabel = 'Finish';
+    _buttonFinishVariant = 'neutral';
     _buttonAlignmentBump;
-    _actionPosition;
-    _fractionPrefixLabel;
-    _fractionLabel;
+    _actionPosition = 'left';
+    _fractionPrefixLabel = 'Step';
+    _fractionLabel = 'of';
 
     lastStep;
     progressIndicatorVariant = 'base';
@@ -219,7 +219,7 @@ export default class PrimitiveWizardNavigation extends LightningElement {
         return this._currentStep;
     }
     set currentStep(name) {
-        this._currentStep = name;
+        this._currentStep = (typeof name === 'string' && name.trim()) || '';
 
         if (this._rendered && this.steps) this._updateSteps();
     }
@@ -259,7 +259,9 @@ export default class PrimitiveWizardNavigation extends LightningElement {
         return this._buttonPreviousLabel;
     }
     set buttonPreviousLabel(label) {
-        this._buttonPreviousLabel = label || 'Previous';
+        this._buttonPreviousLabel =
+            (typeof label === 'string' && label.trim()) ||
+            this._buttonPreviousLabel;
     }
 
     @api
@@ -289,7 +291,9 @@ export default class PrimitiveWizardNavigation extends LightningElement {
         return this._buttonNextLabel;
     }
     set buttonNextLabel(label) {
-        this._buttonNextLabel = label || 'Next';
+        this._buttonNextLabel =
+            (typeof label === 'string' && label.trim()) ||
+            this._buttonNextLabel;
     }
 
     @api
@@ -319,7 +323,9 @@ export default class PrimitiveWizardNavigation extends LightningElement {
         return this._buttonFinishLabel;
     }
     set buttonFinishLabel(label) {
-        this._buttonFinishLabel = label || 'Finish';
+        this._buttonFinishLabel =
+            (typeof label === 'string' && label.trim()) ||
+            this._buttonFinishLabel;
     }
 
     @api
@@ -360,7 +366,9 @@ export default class PrimitiveWizardNavigation extends LightningElement {
         return this._fractionPrefixLabel;
     }
     set fractionPrefixLabel(prefix) {
-        this._fractionPrefixLabel = prefix || 'Step';
+        this._fractionPrefixLabel =
+            (typeof label === 'string' && prefix.trim()) ||
+            this._fractionPrefixLabel;
     }
 
     @api
@@ -368,7 +376,8 @@ export default class PrimitiveWizardNavigation extends LightningElement {
         return this._fractionLabel;
     }
     set fractionLabel(label) {
-        this._fractionLabel = label || 'of';
+        this._fractionLabel =
+            (typeof label === 'string' && label.trim()) || this._fractionLabel;
     }
 
     handleButtonClick(event) {
