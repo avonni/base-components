@@ -75,7 +75,7 @@ export default class AvatarGroup extends LightningElement {
     }
 
     set maxCount(value) {
-        this._maxCount = typeof value === 'number' ? value : undefined;
+        this._maxCount = value;
     }
 
     @api get size() {

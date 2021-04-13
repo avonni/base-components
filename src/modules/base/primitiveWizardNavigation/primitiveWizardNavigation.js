@@ -1,25 +1,38 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
 
-const HORIZONTAL_POSITIONS = ['left', 'right'];
-const BUTTON_VARIANTS = [
-    'bare',
-    'neutral',
-    'brand',
-    'brand-outline',
-    'inverse',
-    'destructive',
-    'destructive-text',
-    'success'
-];
-const INDICATOR_TYPES = [
-    'base',
-    'base-shaded',
-    'path',
-    'bullet',
-    'fractions',
-    'bar'
-];
+const POSITIONS = {
+    valid: ['left', 'right'],
+    defaultButtonPreviousIcon: 'left',
+    defaultButtonNextIcon: 'left',
+    defaultButtonFinishIcon: 'left',
+    defaultAction: 'left'
+};
+const BUTTON_VARIANTS = {
+    valid: [
+        'bare',
+        'neutral',
+        'brand',
+        'brand-outline',
+        'inverse',
+        'destructive',
+        'destructive-text',
+        'success'
+    ],
+    defaultButtonPrevious: 'neutral',
+    defaultButtonNext: 'neutral',
+    defaultButtonFinish: 'neutral'
+};
+const INDICATOR_TYPES = {
+    valid: ['base', 'base-shaded', 'path', 'bullet', 'fractions', 'bar'],
+    default: 'base'
+};
+
+const DEFAULT_BUTTON_PREVIOUS_LABEL = 'Previous';
+const DEFAULT_BUTTON_NEXT_LABEL = 'Next';
+const DEFAULT_BUTTON_FINISH_LABEL = 'Finish';
+const DEFAULT_FRACTION_PREFIX_LABEL = 'Step';
+const DEFAULT_FRACTION_LABEL = 'of';
 
 export default class PrimitiveWizardNavigation extends LightningElement {
     @api position;
@@ -31,21 +44,21 @@ export default class PrimitiveWizardNavigation extends LightningElement {
     _steps = [];
     _currentStep;
     _rendered = false;
-    _indicatorType = 'base';
+    _indicatorType = INDICATOR_TYPES.default;
     _hideIndicator = false;
-    _buttonPreviousIconPosition = 'left';
-    _buttonPreviousLabel = 'Previous';
-    _buttonPreviousVariant = 'neutral';
-    _buttonNextIconPosition = 'left';
-    _buttonNextLabel = 'Next';
-    _buttonNextVariant = 'neutral';
-    _buttonFinishIconPosition = 'left';
-    _buttonFinishLabel = 'Finish';
-    _buttonFinishVariant = 'neutral';
+    _buttonPreviousIconPosition = POSITIONS.defaultButtonPreviousIcon;
+    _buttonPreviousLabel = DEFAULT_BUTTON_PREVIOUS_LABEL;
+    _buttonPreviousVariant = BUTTON_VARIANTS.defaultButtonPrevious;
+    _buttonNextIconPosition = POSITIONS.defaultButtonNextIcon;
+    _buttonNextLabel = DEFAULT_BUTTON_NEXT_LABEL;
+    _buttonNextVariant = BUTTON_VARIANTS.defaultButtonNext;
+    _buttonFinishIconPosition = POSITIONS.defaultButtonFinishIcon;
+    _buttonFinishLabel = DEFAULT_BUTTON_FINISH_LABEL;
+    _buttonFinishVariant = BUTTON_VARIANTS.defaultButtonFinish;
     _buttonAlignmentBump;
-    _actionPosition = 'left';
-    _fractionPrefixLabel = 'Step';
-    _fractionLabel = 'of';
+    _actionPosition = POSITIONS.defaultAction;
+    _fractionPrefixLabel = DEFAULT_FRACTION_PREFIX_LABEL;
+    _fractionLabel = DEFAULT_FRACTION_LABEL;
 
     lastStep;
     progressIndicatorVariant = 'base';
@@ -136,7 +149,8 @@ export default class PrimitiveWizardNavigation extends LightningElement {
     }
 
     _updateSteps() {
-        const currentStepIndex = this.currentStepIndex;
+        const currentStepIndex =
+            this.currentStepIndex > -1 ? this.currentStepIndex : 0;
         const currentStep = this.steps[currentStepIndex];
 
         // Update buttons if they are visible
@@ -230,8 +244,8 @@ export default class PrimitiveWizardNavigation extends LightningElement {
     }
     set indicatorType(type) {
         this._indicatorType = normalizeString(type, {
-            fallbackValue: 'base',
-            validValues: INDICATOR_TYPES
+            fallbackValue: INDICATOR_TYPES.default,
+            validValues: INDICATOR_TYPES.valid
         });
     }
 
@@ -249,8 +263,8 @@ export default class PrimitiveWizardNavigation extends LightningElement {
     }
     set buttonPreviousIconPosition(position) {
         this._buttonPreviousIconPosition = normalizeString(position, {
-            fallbackValue: 'left',
-            validValues: HORIZONTAL_POSITIONS
+            fallbackValue: POSITIONS.defaultButtonPreviousIcon,
+            validValues: POSITIONS.valid
         });
     }
 
@@ -261,7 +275,7 @@ export default class PrimitiveWizardNavigation extends LightningElement {
     set buttonPreviousLabel(label) {
         this._buttonPreviousLabel =
             (typeof label === 'string' && label.trim()) ||
-            this._buttonPreviousLabel;
+            DEFAULT_BUTTON_PREVIOUS_LABEL;
     }
 
     @api
@@ -270,8 +284,8 @@ export default class PrimitiveWizardNavigation extends LightningElement {
     }
     set buttonPreviousVariant(variant) {
         this._buttonPreviousVariant = normalizeString(variant, {
-            fallbackValue: 'neutral',
-            validValues: BUTTON_VARIANTS
+            fallbackValue: BUTTON_VARIANTS.defaultButtonPrevious,
+            validValues: BUTTON_VARIANTS.valid
         });
     }
 
@@ -281,8 +295,8 @@ export default class PrimitiveWizardNavigation extends LightningElement {
     }
     set buttonNextIconPosition(position) {
         this._buttonNextIconPosition = normalizeString(position, {
-            fallbackValue: 'left',
-            validValues: HORIZONTAL_POSITIONS
+            fallbackValue: POSITIONS.defaultButtonNextIcon,
+            validValues: POSITIONS.valid
         });
     }
 
@@ -293,7 +307,7 @@ export default class PrimitiveWizardNavigation extends LightningElement {
     set buttonNextLabel(label) {
         this._buttonNextLabel =
             (typeof label === 'string' && label.trim()) ||
-            this._buttonNextLabel;
+            DEFAULT_BUTTON_NEXT_LABEL;
     }
 
     @api
@@ -302,8 +316,8 @@ export default class PrimitiveWizardNavigation extends LightningElement {
     }
     set buttonNextVariant(variant) {
         this._buttonNextVariant = normalizeString(variant, {
-            fallbackValue: 'neutral',
-            validValues: BUTTON_VARIANTS
+            fallbackValue: BUTTON_VARIANTS.defaultButtonNext,
+            validValues: BUTTON_VARIANTS.valid
         });
     }
 
@@ -313,8 +327,8 @@ export default class PrimitiveWizardNavigation extends LightningElement {
     }
     set buttonFinishIconPosition(position) {
         this._buttonFinishIconPosition = normalizeString(position, {
-            fallbackValue: 'left',
-            validValues: HORIZONTAL_POSITIONS
+            fallbackValue: POSITIONS.defaultButtonFinishIcon,
+            validValues: POSITIONS.valid
         });
     }
 
@@ -325,7 +339,7 @@ export default class PrimitiveWizardNavigation extends LightningElement {
     set buttonFinishLabel(label) {
         this._buttonFinishLabel =
             (typeof label === 'string' && label.trim()) ||
-            this._buttonFinishLabel;
+            DEFAULT_BUTTON_FINISH_LABEL;
     }
 
     @api
@@ -334,8 +348,8 @@ export default class PrimitiveWizardNavigation extends LightningElement {
     }
     set buttonFinishVariant(variant) {
         this._buttonFinishVariant = normalizeString(variant, {
-            fallbackValue: 'neutral',
-            validValues: BUTTON_VARIANTS
+            fallbackValue: BUTTON_VARIANTS.defaultButtonFinish,
+            validValues: BUTTON_VARIANTS.valid
         });
     }
 
@@ -346,7 +360,7 @@ export default class PrimitiveWizardNavigation extends LightningElement {
     set buttonAlignmentBump(position) {
         this._buttonAlignmentBump = normalizeString(position, {
             fallbackValue: null,
-            validValues: HORIZONTAL_POSITIONS
+            validValues: POSITIONS.valid
         });
     }
 
@@ -356,8 +370,8 @@ export default class PrimitiveWizardNavigation extends LightningElement {
     }
     set actionPosition(position) {
         this._actionPosition = normalizeString(position, {
-            fallbackValue: 'left',
-            validValues: HORIZONTAL_POSITIONS
+            fallbackValue: POSITIONS.defaultAction,
+            validValues: POSITIONS.valid
         });
     }
 
@@ -368,7 +382,7 @@ export default class PrimitiveWizardNavigation extends LightningElement {
     set fractionPrefixLabel(prefix) {
         this._fractionPrefixLabel =
             (typeof label === 'string' && prefix.trim()) ||
-            this._fractionPrefixLabel;
+            DEFAULT_FRACTION_PREFIX_LABEL;
     }
 
     @api
@@ -377,7 +391,8 @@ export default class PrimitiveWizardNavigation extends LightningElement {
     }
     set fractionLabel(label) {
         this._fractionLabel =
-            (typeof label === 'string' && label.trim()) || this._fractionLabel;
+            (typeof label === 'string' && label.trim()) ||
+            DEFAULT_FRACTION_LABEL;
     }
 
     handleButtonClick(event) {
