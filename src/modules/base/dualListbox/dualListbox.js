@@ -267,7 +267,9 @@ export default class DualListbox extends LightningElement {
     }
 
     set size(value) {
-        this._size = value;
+        if (typeof value === 'number') {
+            this._size = value;
+        } else this._size = 5;
     }
 
     @api
