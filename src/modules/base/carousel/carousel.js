@@ -1,6 +1,10 @@
 import { LightningElement, api } from 'lwc';
 import { keyCodes } from 'c/utilsPrivate';
-import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
+import {
+    normalizeBoolean,
+    normalizeString,
+    normalizeArray
+} from 'c/utilsPrivate';
 
 const INDICATOR_ACTION = 'slds-carousel__indicator-action';
 const INDICATOR_ACTION_SHADED =
@@ -71,12 +75,13 @@ export default class Carousel extends LightningElement {
     }
 
     set assistiveText(value) {
+        const text = typeof value === 'object' && value !== null ? value : {};
         this._assistiveText = {
             autoplayButton:
-                value.autoplayButton || this._assistiveText.autoplayButton,
-            nextPanel: value.nextPanel || this._assistiveText.nextPanel,
+                text.autoplayButton || this._assistiveText.autoplayButton,
+            nextPanel: text.nextPanel || this._assistiveText.nextPanel,
             previousPanel:
-                value.previousPanel || this._assistiveText.previousPanel
+                text.previousPanel || this._assistiveText.previousPanel
         };
     }
 
@@ -85,7 +90,8 @@ export default class Carousel extends LightningElement {
         return this._carouselItems;
     }
 
-    set items(allItems) {
+    set items(value) {
+        const allItems = normalizeArray(value);
         allItems.forEach((item) => {
             this._carouselItems.push({
                 key: item.id,
@@ -108,7 +114,8 @@ export default class Carousel extends LightningElement {
         return this._itemsPerPanel;
     }
 
-    set itemsPerPanel(number) {
+    set itemsPerPanel(value) {
+        const number = typeof value === 'number' ? value : this._itemsPerPanel;
         this._itemsPerPanel = parseInt(number, 10);
     }
 
@@ -312,6 +319,8 @@ export default class Carousel extends LightningElement {
         const activePaginationItem = this.paginationItems[panelIndex];
         const activePanelItem = this.panelItems[panelIndex];
 
+        if (!activePaginationItem || !activePanelItem) return;
+
         activePanelItem.ariaHidden = FALSE_STRING;
         activePaginationItem.tabIndex = '0';
         activePaginationItem.ariaHidden = TRUE_STRING;
@@ -332,6 +341,8 @@ export default class Carousel extends LightningElement {
             this.activeIndexPanel
         ];
         const activePanelItem = this.panelItems[this.activeIndexPanel];
+
+        if (!activePaginationItem || !activePanelItem) return;
 
         activePanelItem.ariaHidden = TRUE_STRING;
         activePaginationItem.tabIndex = '-1';
