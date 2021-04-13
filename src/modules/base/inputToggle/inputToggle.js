@@ -82,11 +82,11 @@ export default class InputToggle extends LightningElement {
         return this._ariaControls;
     }
     set ariaControls(references) {
-        this._ariaControls = references;
+        this._ariaControls = normalizeString(references);
         this.ariaObserver.link(
             'input',
             'aria-controls',
-            references,
+            this._ariaControls,
             '[data-aria]'
         );
     }
@@ -97,11 +97,11 @@ export default class InputToggle extends LightningElement {
     }
 
     set ariaDescribedBy(references) {
-        this._ariaDescribedBy = references;
+        this._ariaDescribedBy = normalizeString(references);
         this.ariaObserver.link(
             'input',
             'aria-describedby',
-            references,
+            this._ariaDescribedBy,
             '[data-aria]'
         );
     }
@@ -112,11 +112,11 @@ export default class InputToggle extends LightningElement {
     }
 
     set ariaLabelledBy(references) {
-        this._ariaLabelledBy = references;
+        this._ariaLabelledBy = normalizeString(references);
         this.ariaObserver.link(
             'input',
             'aria-labelledby',
-            references,
+            this._ariaLabelledBy,
             '[data-aria]'
         );
     }
@@ -156,7 +156,7 @@ export default class InputToggle extends LightningElement {
     }
 
     set messageWhenValueMissing(value) {
-        this._messageWhenValueMissing = value;
+        this._messageWhenValueMissing = normalizeString(value);
     }
 
     @api
