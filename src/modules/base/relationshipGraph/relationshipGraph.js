@@ -62,7 +62,8 @@ export default class RelationshipGraph extends LightningElement {
         return this._selectedItemName;
     }
     set selectedItemName(name) {
-        this._selectedItemName = name;
+        this._selectedItemName =
+            (typeof name === 'string' && name.trim()) || '';
     }
 
     @api
