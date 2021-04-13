@@ -151,6 +151,10 @@ export default class DateTimePicker extends LightningElement {
     }
     set value(value) {
         this._value = value;
+
+        // First time validation is done through connectedCallback.
+        // If the value is changed after connexion, validation is run again.
+        if (this.isConnected) this._processValue();
     }
 
     @api
@@ -160,7 +164,9 @@ export default class DateTimePicker extends LightningElement {
     set startTime(value) {
         const start = new Date(`1970-01-01T${value}`);
         // Return start time in ms. Default value is 08:00.
-        this._startTime = isNaN(start.getTime()) ? 46800000 : start.getTime();
+        this._startTime = isNaN(start.getTime())
+            ? this._startTime
+            : start.getTime();
     }
 
     @api
@@ -170,7 +176,7 @@ export default class DateTimePicker extends LightningElement {
     set endTime(value) {
         const end = new Date(`1970-01-01T${value}`);
         // Return end time in ms. Default value is 18:00.
-        this._endTime = isNaN(end.getTime()) ? 82800000 : end.getTime();
+        this._endTime = isNaN(end.getTime()) ? this._endTime : end.getTime();
     }
 
     @api
@@ -178,7 +184,9 @@ export default class DateTimePicker extends LightningElement {
         return this._timeSlotDuration;
     }
     set timeSlotDuration(value) {
-        const duration = value.match(/(\d{2}):(\d{2}):?(\d{2})?/);
+        const duration =
+            typeof value === 'string' &&
+            value.match(/(\d{2}):(\d{2}):?(\d{2})?/);
         let durationMilliseconds = 0;
         if (duration) {
             const durationHours = parseInt(duration[1], 10);
@@ -192,7 +200,9 @@ export default class DateTimePicker extends LightningElement {
 
         // Return duration in ms. Default value is 00:30.
         this._timeSlotDuration =
-            durationMilliseconds > 0 ? durationMilliseconds : 1800000;
+            durationMilliseconds > 0
+                ? durationMilliseconds
+                : this._timeSlotDuration;
     }
 
     @api
