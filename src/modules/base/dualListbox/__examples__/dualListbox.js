@@ -8,6 +8,7 @@ customElements.define(
 export const DualListbox = ({
     addButtonIconName,
     addButtonLabel,
+    borderedOptions,
     buttonSize,
     buttonVariant,
     disableReordering,
@@ -42,6 +43,7 @@ export const DualListbox = ({
     const element = document.createElement('ac-base-dual-listbox');
     element.addButtonIconName = addButtonIconName;
     element.addButtonLabel = addButtonLabel;
+    element.borderedOptions = borderedOptions;
     element.buttonSize = buttonSize;
     element.buttonVariant = buttonVariant;
     element.disableReordering = disableReordering;

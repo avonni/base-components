@@ -88,7 +88,7 @@
                                 <li
                                     key={option.value}
                                     role="presentation"
-                                    class="slds-listbox__item avonni-dual-listbox-option-border_bottom"
+                                    class={computedListItemClass}
                                 >
                                     <div
                                         class={option.classList}
@@ -205,7 +205,7 @@
                                 <li
                                     key={option.value}
                                     role="presentation"
-                                    class="slds-listbox__item avonni-dual-listbox-option-border_bottom"
+                                    class={computedListItemClass}
                                 >
                                     <div
                                         class={option.classList}
@@ -256,7 +256,9 @@
                                             </template>
                                         </template>
                                         <template if:true={option.isLocked}>
-                                            <span class="slds-text-align_right">
+                                            <span
+                                                class="slds-media__figure slds-media__figure_reverse"
+                                            >
                                                 <lightning-icon
                                                     icon-name="utility:lock"
                                                     size="x-small"

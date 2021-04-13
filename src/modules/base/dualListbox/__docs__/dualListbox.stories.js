@@ -26,6 +26,18 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        borderedOptions: {
+            name: 'bordered-options',
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description: 'If present, the options are bordered.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: false }
+            }
+        },
         buttonSize: {
             name: 'button-size',
             control: {

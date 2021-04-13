@@ -14,6 +14,7 @@ describe('DualListbox', () => {
         });
         expect(element.addButtonIconName).toBe('utility:right');
         expect(element.addButtonLabel).toBeUndefined();
+        expect(element.borderedOptions).toBeFalsy();
         expect(element.buttonSize).toBe('medium');
         expect(element.buttonVariant).toBe('border');
         expect(element.disableReordering).toBeFalsy();
@@ -61,6 +62,27 @@ describe('DualListbox', () => {
             );
             expect(lightningButtonIcon.iconName).toBe('utility:add');
             expect(lightningButtonIcon.title).toBe('add');
+        });
+    });
+
+    // bordered options
+    it('Dual Listbox bordered options', () => {
+        const element = createElement('base-dual-listbox', {
+            is: DualListbox
+        });
+        document.body.appendChild(element);
+
+        element.borderedOptions = true;
+
+        return Promise.resolve().then(() => {
+            const li = element.shadowRoot.querySelectorAll(
+                '.slds-listbox__item'
+            );
+            li.forEach((item) => {
+                expect(item.className).toContain(
+                    'avonni-dual-listbox-option-border_bottom'
+                );
+            });
         });
     });
 

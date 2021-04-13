@@ -65,6 +65,7 @@ export default class DualListbox extends LightningElement {
 
     _requiredOptions = [];
     _options = [];
+    _borderedOptions = false;
     _buttonSize = VALID_BUTTON_SIZES.default;
     _buttonVariant = VALID_BUTTON_VARIANTS.default;
     _isLoading = false;
@@ -161,6 +162,15 @@ export default class DualListbox extends LightningElement {
 
     set messageWhenRangeUnderflow(message) {
         this._messageWhenRangeUnderflow = message;
+    }
+
+    @api
+    get borderedOptions() {
+        return this._borderedOptions || false;
+    }
+
+    set borderedOptions(value) {
+        this._borderedOptions = normalizeBoolean(value);
     }
 
     @api
@@ -445,7 +455,7 @@ export default class DualListbox extends LightningElement {
     computeOptionProperties(option, focusableValue) {
         const isSelected = this.highlightedOptions.indexOf(option.value) > -1;
         const classList = classSet(
-            'slds-listbox__option slds-listbox__option_plain slds-media slds-media_x-small slds-media_center slds-media_inline'
+            'slds-listbox__option slds-listbox__option_plain slds-media slds-media_small slds-media_center slds-media_inline'
         )
             .add({ 'slds-is-selected': isSelected })
             .toString();
@@ -562,6 +572,14 @@ export default class DualListbox extends LightningElement {
                 'avonni-dual-listbox-search-engine-icon-left':
                     this.variant === 'label-inline' ||
                     this.variant === 'label-stacked'
+            })
+            .toString();
+    }
+
+    get computedListItemClass() {
+        return classSet('slds-listbox__item')
+            .add({
+                'avonni-dual-listbox-option-border_bottom': this.borderedOptions
             })
             .toString();
     }
