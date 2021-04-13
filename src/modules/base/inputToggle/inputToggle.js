@@ -156,7 +156,9 @@ export default class InputToggle extends LightningElement {
     }
 
     set messageWhenValueMissing(value) {
-        this._messageWhenValueMissing = normalizeString(value);
+        this._messageWhenValueMissing = normalizeString(value, {
+            toLowerCase: false
+        });
     }
 
     @api
