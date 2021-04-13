@@ -1,6 +1,30 @@
 import { createElement } from 'lwc';
 import AvatarGroup from 'c/avatarGroup';
 
+const item = [
+    {
+        src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+        fallbackIconName: 'standard:user',
+        alternativeText: 'This is the alternative text',
+        status: 'locked',
+        statusTitle: 'Locked',
+        statusPosition: 'top-left',
+        entityIconName: 'standard:account',
+        entitySrc:
+            'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+        entityInitials: 'FC',
+        entityVariant: 'circle',
+        entityPosition: 'bottom-right',
+        primaryText: 'John Doe',
+        secondaryText: 'VP, Human Resources',
+        tertiaryText: 'FakeCompany Inc.',
+        initials: 'JD',
+        presence: 'busy',
+        presenceTitle: 'Busy',
+        presencePosition: 'top-right'
+    }
+];
+
 const items = [
     {
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
@@ -193,31 +217,6 @@ describe('Avatar Group', () => {
         });
         document.body.appendChild(element);
 
-        const item = [
-            {
-                src:
-                    'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
-                fallbackIconName: 'standard:user',
-                alternativeText: 'This is the alternative text',
-                status: 'locked',
-                statusTitle: 'Locked',
-                statusPosition: 'top-left',
-                entityIconName: 'standard:account',
-                entitySrc:
-                    'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
-                entityInitials: 'FC',
-                entityVariant: 'circle',
-                entityPosition: 'bottom-right',
-                primaryText: 'John Doe',
-                secondaryText: 'VP, Human Resources',
-                tertiaryText: 'FakeCompany Inc.',
-                initials: 'JD',
-                presence: 'busy',
-                presenceTitle: 'Busy',
-                presencePosition: 'top-right'
-            }
-        ];
-
         element.variant = 'circle';
         element.size = 'xx-large';
         element.items = item;
@@ -267,6 +266,113 @@ describe('Avatar Group', () => {
                 expect(avatar.tertiaryText).toBe(
                     correspondingField.tertiaryText
                 );
+            });
+        });
+    });
+
+    // layout
+    it('Avatar group layout stack with less than 3', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.layout = 'stack';
+        element.items = items;
+
+        return Promise.resolve().then(() => {
+            const group = element.shadowRoot.querySelector(
+                '.slds-avatar-group'
+            );
+            expect(group.className).toContain('avonni-avatar-group__avatar');
+
+            const noGroup = element.shadowRoot.querySelector(
+                '.slds-avatar-grouped'
+            );
+            expect(noGroup).toBeTruthy();
+        });
+    });
+
+    it('Avatar group layout stack with more than 2', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.layout = 'stack';
+        element.items = [...items, ...items, ...items];
+
+        return Promise.resolve().then(() => {
+            const avatars = element.shadowRoot.querySelectorAll(
+                '.avonni-avatar-group__avatar'
+            );
+            avatars.forEach((avatar) => {
+                expect(avatar.className).toContain(
+                    'avonni-avatar-group_in-line'
+                );
+            });
+
+            const groups = element.shadowRoot.querySelectorAll(
+                '.avonni-avatar-group__avatar-container'
+            );
+            groups.forEach((group) => {
+                expect(group.className).not.toContain('slds-show');
+            });
+        });
+    });
+
+    it('Avatar group layout grid', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.layout = 'grid';
+        element.items = [...items, ...items, ...items];
+
+        return Promise.resolve().then(() => {
+            const avatars = element.shadowRoot.querySelectorAll(
+                '.avonni-avatar-group__avatar'
+            );
+            avatars.forEach((avatar) => {
+                expect(avatar.className).not.toContain(
+                    'avonni-avatar-group_in-line'
+                );
+            });
+
+            const groups = element.shadowRoot.querySelectorAll(
+                '.avonni-avatar-group__avatar-container'
+            );
+            groups.forEach((group) => {
+                expect(group.className).not.toContain('slds-show');
+            });
+        });
+    });
+
+    it('Avatar group layout list', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.layout = 'list';
+        element.items = [...items, ...items, ...items];
+
+        return Promise.resolve().then(() => {
+            const avatars = element.shadowRoot.querySelectorAll(
+                '.avonni-avatar-group__avatar'
+            );
+            avatars.forEach((avatar) => {
+                expect(avatar.className).not.toContain(
+                    'avonni-avatar-group_in-line'
+                );
+            });
+
+            const groups = element.shadowRoot.querySelectorAll(
+                '.avonni-avatar-group__avatar-container'
+            );
+            groups.forEach((group) => {
+                expect(group.className).toContain('slds-show');
             });
         });
     });
