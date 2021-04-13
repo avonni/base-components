@@ -82,7 +82,7 @@ export default class InputToggle extends LightningElement {
         return this._ariaControls;
     }
     set ariaControls(references) {
-        this._ariaControls = normalizeString(references);
+        this._ariaControls = normalizeAriaAttribute(references);
         this.ariaObserver.link(
             'input',
             'aria-controls',
@@ -97,7 +97,7 @@ export default class InputToggle extends LightningElement {
     }
 
     set ariaDescribedBy(references) {
-        this._ariaDescribedBy = normalizeString(references);
+        this._ariaDescribedBy = normalizeAriaAttribute(references);
         this.ariaObserver.link(
             'input',
             'aria-describedby',
@@ -112,7 +112,7 @@ export default class InputToggle extends LightningElement {
     }
 
     set ariaLabelledBy(references) {
-        this._ariaLabelledBy = normalizeString(references);
+        this._ariaLabelledBy = normalizeAriaAttribute(references);
         this.ariaObserver.link(
             'input',
             'aria-labelledby',
