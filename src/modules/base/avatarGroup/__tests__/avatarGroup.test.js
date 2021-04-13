@@ -376,4 +376,80 @@ describe('Avatar Group', () => {
             });
         });
     });
+
+    //max count
+    it('Avatar group max count stack', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.layout = 'stack';
+        element.items = [
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items
+        ];
+
+        return Promise.resolve().then(() => {
+            expect(element.maxCount).toBe(5);
+            const avatars = element.shadowRoot.querySelectorAll(
+                '.avonni-avatar-group__avatar-container'
+            );
+            expect(avatars).toHaveLength(6);
+        });
+    });
+
+    it('Avatar group max count grid', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.layout = 'grid';
+        element.maxCount = 5;
+        element.items = [
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items
+        ];
+
+        return Promise.resolve().then(() => {
+            const avatars = element.shadowRoot.querySelectorAll(
+                '.avonni-avatar-group__avatar-container'
+            );
+            expect(avatars).toHaveLength(6);
+        });
+    });
+
+    it('Avatar group max count list', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.layout = 'list';
+        element.maxCount = 5;
+        element.items = [
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items
+        ];
+
+        return Promise.resolve().then(() => {
+            const avatars = element.shadowRoot.querySelectorAll(
+                '.avonni-avatar-group__avatar-container'
+            );
+            expect(avatars).toHaveLength(5);
+        });
+    });
 });
