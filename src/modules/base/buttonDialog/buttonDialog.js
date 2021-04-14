@@ -20,6 +20,7 @@ export default class ButtonDialog extends LightningElement {
     @api accessKey;
     @api label;
     @api iconName;
+    @api alternativeText;
 
     _disabled = false;
     _variant = 'neutral';

@@ -8,6 +8,11 @@ export default {
                 type: 'text'
             }
         },
+        alternativeText: {
+            control: {
+                type: 'text'
+            }
+        },
         label: {
             control: {
                 type: 'text'
@@ -115,7 +120,8 @@ export const Success = Template.bind({});
 Success.args = {
     label: 'Show modal',
     iconName: 'utility:success',
-    variant: 'success'
+    variant: 'success',
+    alternativeText: 'This is a success button dialog'
 };
 
 export const Disabled = Template.bind({});
