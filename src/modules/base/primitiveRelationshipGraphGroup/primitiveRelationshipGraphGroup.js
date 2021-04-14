@@ -180,20 +180,17 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     get wrapperClass() {
         return classSet(
             'slds-p-around_medium slds-m-bottom_medium group slds-box'
-        )
-            .add({
-                'group_active-child': this.activeChild,
-                'group_active-parent': !this.closed && this.activeParent,
-                group_selected: this.selected && this.hasSelectedChildren,
-                'slds-theme_shade': this.theme === 'shade',
-                'avonni-theme_inverse': this.theme === 'inverse',
-                'slds-theme_default': this.theme === 'default',
-                'group_horizontal slds-is-relative':
-                    this.variant === 'horizontal',
-                group_vertical: this.variant === 'vertical',
-                'slds-m-right_medium': this.variant === 'vertical'
-            })
-            .toString();
+        ).add({
+            'group_active-child': this.activeChild,
+            'group_active-parent': !this.closed && this.activeParent,
+            group_selected: this.selected && this.hasSelectedChildren,
+            'slds-theme_shade': this.theme === 'shade',
+            'avonni-theme_inverse': this.theme === 'inverse',
+            'slds-theme_default': this.theme === 'default',
+            'group_horizontal slds-is-relative': this.variant === 'horizontal',
+            group_vertical: this.variant === 'vertical',
+            'slds-m-right_medium': this.variant === 'vertical'
+        });
     }
 
     get actionButtonClass() {
