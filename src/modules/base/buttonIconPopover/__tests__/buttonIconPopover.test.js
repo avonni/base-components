@@ -344,4 +344,30 @@ describe('Button Icon Popover', () => {
             expect(button.iconName).toBe('utility:lock');
         });
     });
+
+    // title
+    it('Button Icon Popover title', () => {
+        const element = createElement('base-button-icon-popover', {
+            is: ButtonIconPopover
+        });
+        document.body.appendChild(element);
+
+        element.title = 'This is a popover Title';
+        element.triggers = 'focus';
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    'lightning-button-icon'
+                );
+                element.focus();
+                button.focus();
+            })
+            .then(() => {
+                const header = element.shadowRoot.querySelector(
+                    '.slds-text-heading_small'
+                );
+                expect(header.textContent).toBe('This is a popover Title');
+            });
+    });
 });
