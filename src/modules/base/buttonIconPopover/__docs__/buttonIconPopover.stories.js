@@ -72,6 +72,7 @@ export default {
                 options: [
                     'bare',
                     'container',
+                    'brand',
                     'border',
                     'border-filled',
                     'bare-inverse',
@@ -156,6 +157,14 @@ BorderWithPopoverWarning.args = {
     tooltip: 'Tooltip text',
     size: 'small',
     popoverVariant: 'warning'
+};
+
+export const Brand = Template.bind({});
+Brand.args = {
+    iconName: 'utility:check',
+    tooltip: 'Tooltip text',
+    size: 'small',
+    variant: 'brand'
 };
 
 export const BorderFilledWithGreenSuccessIcon = Template.bind({});

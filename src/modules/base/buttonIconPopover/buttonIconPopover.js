@@ -19,6 +19,7 @@ const validPlacements = [
 const validVariants = [
     'bare',
     'container',
+    'brand',
     'border',
     'border-filled',
     'bare-inverse',
