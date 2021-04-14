@@ -139,7 +139,6 @@ describe('DualListbox', () => {
         element.buttonSize = 'x-small';
 
         return Promise.resolve().then(() => {
-            expect(element.buttonSize).toBe('x-small');
             const lightningButtonIcon = element.shadowRoot.querySelectorAll(
                 'lightning-button-icon'
             );
@@ -159,8 +158,6 @@ describe('DualListbox', () => {
         element.buttonSize = 'small';
 
         return Promise.resolve().then(() => {
-            expect(element.buttonSize).toBe('small');
-
             const lightningButtonIcon = element.shadowRoot.querySelectorAll(
                 'lightning-button-icon'
             );
@@ -180,8 +177,6 @@ describe('DualListbox', () => {
         element.buttonSize = 'medium';
 
         return Promise.resolve().then(() => {
-            expect(element.buttonSize).toBe('medium');
-
             const lightningButtonIcon = element.shadowRoot.querySelectorAll(
                 'lightning-button-icon'
             );
@@ -201,8 +196,6 @@ describe('DualListbox', () => {
         element.buttonSize = 'large';
 
         return Promise.resolve().then(() => {
-            expect(element.buttonSize).toBe('large');
-
             const lightningButtonIcon = element.shadowRoot.querySelectorAll(
                 'lightning-button-icon'
             );
@@ -223,8 +216,6 @@ describe('DualListbox', () => {
         element.buttonVariant = 'bare';
 
         return Promise.resolve().then(() => {
-            expect(element.buttonVariant).toBe('bare');
-
             const lightningButtonIcon = element.shadowRoot.querySelectorAll(
                 'lightning-button-icon'
             );
@@ -244,8 +235,6 @@ describe('DualListbox', () => {
         element.buttonVariant = 'container';
 
         return Promise.resolve().then(() => {
-            expect(element.buttonVariant).toBe('container');
-
             const lightningButtonIcon = element.shadowRoot.querySelectorAll(
                 'lightning-button-icon'
             );
@@ -265,8 +254,6 @@ describe('DualListbox', () => {
         element.buttonVariant = 'brand';
 
         return Promise.resolve().then(() => {
-            expect(element.buttonVariant).toBe('brand');
-
             const lightningButtonIcon = element.shadowRoot.querySelectorAll(
                 'lightning-button-icon'
             );
@@ -286,8 +273,6 @@ describe('DualListbox', () => {
         element.buttonVariant = 'border-filled';
 
         return Promise.resolve().then(() => {
-            expect(element.buttonVariant).toBe('border-filled');
-
             const lightningButtonIcon = element.shadowRoot.querySelectorAll(
                 'lightning-button-icon'
             );
@@ -307,8 +292,6 @@ describe('DualListbox', () => {
         element.buttonVariant = 'bare-inverse';
 
         return Promise.resolve().then(() => {
-            expect(element.buttonVariant).toBe('bare-inverse');
-
             const lightningButtonIcon = element.shadowRoot.querySelectorAll(
                 'lightning-button-icon'
             );
@@ -328,8 +311,6 @@ describe('DualListbox', () => {
         element.buttonVariant = 'border-inverse';
 
         return Promise.resolve().then(() => {
-            expect(element.buttonVariant).toBe('border-inverse');
-
             const lightningButtonIcon = element.shadowRoot.querySelectorAll(
                 'lightning-button-icon'
             );
@@ -352,7 +333,6 @@ describe('DualListbox', () => {
         element.removeButtonLabel = 'remove';
 
         return Promise.resolve().then(() => {
-            expect(element.disableReordering).toBeTruthy();
             const lightningButtonIcon = element.shadowRoot.querySelectorAll(
                 'lightning-button-icon'
             );
@@ -377,8 +357,6 @@ describe('DualListbox', () => {
         element.upButtonLabel = 'up';
 
         return Promise.resolve().then(() => {
-            expect(element.disabled).toBeTruthy();
-
             const columns = element.shadowRoot.querySelectorAll(
                 '.slds-dueling-list__options'
             );
@@ -441,7 +419,6 @@ describe('DualListbox', () => {
             const spinner = element.shadowRoot.querySelector(
                 'lightning-spinner'
             );
-            expect(element.isLoading).toBeTruthy();
             expect(spinner).toBeTruthy();
         });
     });
@@ -494,7 +471,6 @@ describe('DualListbox', () => {
                 );
                 expect(message.textContent).toBe('Maximum Capacity!');
                 expect(div).toBeTruthy();
-                expect(element.max).toBe(2);
             });
     });
 
@@ -528,7 +504,6 @@ describe('DualListbox', () => {
                     '.slds-has-error.slds-form-element__help'
                 );
                 expect(message.textContent).toBe('Minimum Capacity!');
-                expect(element.min).toBe(5);
             });
     });
 
@@ -647,7 +622,6 @@ describe('DualListbox', () => {
                 const selected = element.shadowRoot.querySelector(
                     'ul[data-selected-list]'
                 );
-                expect(element.requiredOptions).toBeTruthy();
                 expect(selected.querySelectorAll('li')).toHaveLength(1);
             });
     });
@@ -664,7 +638,6 @@ describe('DualListbox', () => {
             const searchBox = element.shadowRoot.querySelector(
                 "input[type='search']"
             );
-            expect(element.searchEngine).toBeTruthy();
             expect(searchBox).toBeTruthy();
         });
     });
@@ -812,7 +785,6 @@ describe('DualListbox', () => {
             const div = element.shadowRoot.querySelector(
                 '.slds-form-element_horizontal'
             );
-            expect(element.variant).toBe('label-inline');
             expect(div).toBeTruthy();
         });
     });
@@ -829,7 +801,6 @@ describe('DualListbox', () => {
             const div = element.shadowRoot.querySelector(
                 '.slds-form-element_stacked'
             );
-            expect(element.variant).toBe('label-stacked');
             expect(div).toBeTruthy();
         });
     });
