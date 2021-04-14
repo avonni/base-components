@@ -22,6 +22,7 @@
         "@storybook/addon-actions": "^6.1.20",
         "@storybook/addon-essentials": "^6.1.20",
         "@storybook/addon-links": "^6.1.20",
+        "@storybook/storybook-deployer": "^2.8.7",
         "@storybook/web-components": "^6.1.20",
         "babel-loader": "^8.2.2",
         "eslint": "^7.19.0",
@@ -54,6 +55,8 @@
     "scripts": {
         "storybook": "start-storybook -s ./static",
         "deploy": "npm publish",
+        "deploy-storybook": "storybook-to-ghpages",
+        "build-storybook": "build-storybook -s ./static",
         "prettier": "prettier --write '**/*.{cmp,component,css,html,js,json,md,page,yaml,yml}'",
         "prettier:verify": "prettier --list-different '**/*.{html,js,json,yaml,yml,md,cmp,page,component}'",
         "test:unit": "lwc-services test:unit",
