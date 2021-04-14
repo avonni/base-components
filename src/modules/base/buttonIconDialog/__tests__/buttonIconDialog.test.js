@@ -286,4 +286,55 @@ describe('Button Icon Dialog', () => {
             expect(button.size).toBe('large');
         });
     });
+
+    // tooltip
+    it('Button Icon Dialog tooltip', () => {
+        const element = createElement('base-button-icon-dialog', {
+            is: ButtonIconDialog
+        });
+        document.body.appendChild(element);
+
+        element.tooltip = 'This is a tooltip';
+        const button = element.shadowRoot.querySelector(
+            'lightning-button-icon'
+        );
+
+        return Promise.resolve().then(() => {
+            expect(button.tooltip).toBe('This is a tooltip');
+        });
+    });
+
+    // icon class
+    it('Button Icon Dialog icon class', () => {
+        const element = createElement('base-button-icon-dialog', {
+            is: ButtonIconDialog
+        });
+        document.body.appendChild(element);
+
+        element.iconClass = 'button-dialog-icon-class';
+        const button = element.shadowRoot.querySelector(
+            'lightning-button-icon'
+        );
+
+        return Promise.resolve().then(() => {
+            expect(button.iconClass).toBe('button-dialog-icon-class');
+        });
+    });
+
+    // icon name
+    it('Button Icon Dialog icon name', () => {
+        const element = createElement('base-button-icon-dialog', {
+            is: ButtonIconDialog
+        });
+        document.body.appendChild(element);
+
+        element.iconName = 'utility:lock';
+        const button = element.shadowRoot.querySelector(
+            'lightning-button-icon'
+        );
+
+        return Promise.resolve().then(() => {
+            expect(button.iconName).toBe('utility:lock');
+        });
+    });
 });
