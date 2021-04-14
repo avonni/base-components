@@ -39,6 +39,25 @@ describe('Button Dialog', () => {
         });
     });
 
+    // alternative-text
+    it('Button Dialog alternative-text', () => {
+        const element = createElement('base-button-dialog', {
+            is: ButtonDialog
+        });
+        document.body.appendChild(element);
+
+        element.alternativeText = 'This is an alternative text';
+        const assistiveText = element.shadowRoot.querySelector(
+            '.slds-assistive-text'
+        );
+
+        return Promise.resolve().then(() => {
+            expect(assistiveText.textContent).toBe(
+                'This is an alternative text'
+            );
+        });
+    });
+
     // disabled
     it('Button Dialog disabled', () => {
         const element = createElement('base-button-dialog', {
@@ -179,6 +198,51 @@ describe('Button Dialog', () => {
 
         return Promise.resolve().then(() => {
             expect(button.variant).toBe('success');
+        });
+    });
+
+    // icon name
+    it('Button Dialog icon name', () => {
+        const element = createElement('base-button-dialog', {
+            is: ButtonDialog
+        });
+        document.body.appendChild(element);
+
+        element.iconName = 'utility:lock';
+        const button = element.shadowRoot.querySelector('lightning-button');
+
+        return Promise.resolve().then(() => {
+            expect(button.iconName).toBe('utility:lock');
+        });
+    });
+
+    // icon position
+    it('Button Dialog icon position left', () => {
+        const element = createElement('base-button-dialog', {
+            is: ButtonDialog
+        });
+        document.body.appendChild(element);
+
+        element.iconName = 'utility:lock';
+        const button = element.shadowRoot.querySelector('lightning-button');
+
+        return Promise.resolve().then(() => {
+            expect(button.iconPosition).toBe('left');
+        });
+    });
+
+    it('Button Dialog icon position right', () => {
+        const element = createElement('base-button-dialog', {
+            is: ButtonDialog
+        });
+        document.body.appendChild(element);
+
+        element.iconName = 'utility:lock';
+        element.iconPosition = 'right';
+        const button = element.shadowRoot.querySelector('lightning-button');
+
+        return Promise.resolve().then(() => {
+            expect(button.iconPosition).toBe('right');
         });
     });
 });
