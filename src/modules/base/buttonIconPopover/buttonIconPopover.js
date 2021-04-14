@@ -6,35 +6,53 @@ import {
     observePosition
 } from 'c/utilsPrivate';
 
-const validPopoverSizes = ['small', 'medium', 'large'];
-const validPlacements = [
-    'auto',
-    'left',
-    'center',
-    'right',
-    'bottom-left',
-    'bottom-center',
-    'bottom-right'
-];
-const validVariants = [
-    'bare',
-    'container',
-    'brand',
-    'border',
-    'border-filled',
-    'bare-inverse',
-    'border-inverse'
-];
+const validPopoverSizes = {
+    valid: ['small', 'medium', 'large'],
+    default: 'medium'
+};
+
+const validPlacements = {
+    valid: [
+        'auto',
+        'left',
+        'center',
+        'right',
+        'bottom-left',
+        'bottom-center',
+        'bottom-right'
+    ],
+    default: 'left'
+};
+
+const validVariants = {
+    valid: [
+        'bare',
+        'container',
+        'brand',
+        'border',
+        'border-filled',
+        'bare-inverse',
+        'border-inverse'
+    ],
+    default: 'border'
+};
+
 const validSizesBare = {
     valid: ['x-small', 'small', 'medium', 'large'],
     default: 'medium'
 };
+
 const validSizesNonBare = {
     valid: ['xx-small', 'x-small', 'small', 'medium'],
     default: 'medium'
 };
-const validTriggers = ['click', 'hover', 'focus'];
-const validPopoverVariants = ['base', 'warning', 'error', 'walkthrough'];
+
+const validTriggers = { valid: ['click', 'hover', 'focus'], default: 'click' };
+
+const validPopoverVariants = {
+    valid: ['base', 'warning', 'error', 'walkthrough'],
+    default: 'base'
+};
 
 export default class ButtonIconPopover extends LightningElement {
     @api accessKey;
@@ -48,11 +66,11 @@ export default class ButtonIconPopover extends LightningElement {
     _disabled = false;
     _isLoading = false;
     _size = 'medium';
-    _placement = 'left';
-    _variant = 'border';
-    _popoverSize = 'medium';
-    _triggers = 'click';
-    _popoverVariant = 'base';
+    _placement = validPlacements.default;
+    _variant = validVariants.default;
+    _popoverSize = validPopoverSizes.default;
+    _triggers = validTriggers.default;
+    _popoverVariant = validPopoverVariants.default;
     popoverVisible = false;
     showTitle = true;
     showFooter = true;
@@ -114,8 +132,8 @@ export default class ButtonIconPopover extends LightningElement {
 
     set placement(placement) {
         this._placement = normalizeString(placement, {
-            fallbackValue: 'left',
-            validValues: validPlacements
+            fallbackValue: validPlacements.default,
+            validValues: validPlacements.valid
         });
     }
 
@@ -126,8 +144,8 @@ export default class ButtonIconPopover extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: 'border',
-            validValues: validVariants
+            fallbackValue: validVariants.default,
+            validValues: validVariants.valid
         });
     }
 
@@ -138,8 +156,8 @@ export default class ButtonIconPopover extends LightningElement {
 
     set popoverSize(popoverSize) {
         this._popoverSize = normalizeString(popoverSize, {
-            fallbackValue: 'medium',
-            validValues: validPopoverSizes
+            fallbackValue: validPopoverSizes.default,
+            validValues: validPopoverSizes.valid
         });
     }
 
@@ -150,8 +168,8 @@ export default class ButtonIconPopover extends LightningElement {
 
     set triggers(triggers) {
         this._triggers = normalizeString(triggers, {
-            fallbackValue: 'click',
-            validValues: validTriggers
+            fallbackValue: validTriggers.default,
+            validValues: validTriggers.valid
         });
     }
 
@@ -162,8 +180,8 @@ export default class ButtonIconPopover extends LightningElement {
 
     set popoverVariant(popoverVariant) {
         this._popoverVariant = normalizeString(popoverVariant, {
-            fallbackValue: 'base',
-            validValues: validPopoverVariants
+            fallbackValue: validPopoverVariants.default,
+            validValues: validPopoverVariants.valid
         });
     }
 
