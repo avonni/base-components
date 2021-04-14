@@ -25,7 +25,14 @@ const validVariants = [
     'bare-inverse',
     'border-inverse'
 ];
-const validSizes = ['xx-small', 'x-small', 'small', 'medium'];
+const validSizesBare = {
+    valid: ['x-small', 'small', 'medium', 'large'],
+    default: 'medium'
+};
+const validSizesNonBare = {
+    valid: ['xx-small', 'x-small', 'small', 'medium'],
+    default: 'medium'
+};
 const validTriggers = ['click', 'hover', 'focus'];
 const validPopoverVariants = ['base', 'warning', 'error', 'walkthrough'];
 
@@ -87,10 +94,17 @@ export default class ButtonIconPopover extends LightningElement {
     }
 
     set size(size) {
-        this._size = normalizeString(size, {
-            fallbackValue: 'medium',
-            validValues: validSizes
-        });
+        if (this._variant === 'bare' || this._variant === 'bare-inverse') {
+            this._size = normalizeString(size, {
+                fallbackValue: validSizesBare.default,
+                validValues: validSizesBare.valid
+            });
+        } else {
+            this._size = normalizeString(size, {
+                fallbackValue: validSizesNonBare.default,
+                validValues: validSizesNonBare.valid
+            });
+        }
     }
 
     @api

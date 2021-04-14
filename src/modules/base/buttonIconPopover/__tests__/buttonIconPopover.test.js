@@ -195,4 +195,119 @@ describe('Button Icon Popover', () => {
             expect(button.variant).toBe('border-inverse');
         });
     });
+
+    // size
+    it('Button Icon Popover size xx-small', () => {
+        const element = createElement('base-button-icon-popover', {
+            is: ButtonIconPopover
+        });
+        document.body.appendChild(element);
+
+        element.size = 'xx-small';
+        const button = element.shadowRoot.querySelector(
+            'lightning-button-icon'
+        );
+
+        return Promise.resolve().then(() => {
+            expect(button.size).toBe('xx-small');
+        });
+    });
+
+    it('Button Icon Popover size x-small', () => {
+        const element = createElement('base-button-icon-popover', {
+            is: ButtonIconPopover
+        });
+        document.body.appendChild(element);
+
+        element.size = 'x-small';
+        const button = element.shadowRoot.querySelector(
+            'lightning-button-icon'
+        );
+
+        return Promise.resolve().then(() => {
+            expect(button.size).toBe('x-small');
+        });
+    });
+
+    it('Button Icon Popover size small', () => {
+        const element = createElement('base-button-icon-popover', {
+            is: ButtonIconPopover
+        });
+        document.body.appendChild(element);
+
+        element.size = 'small';
+        const button = element.shadowRoot.querySelector(
+            'lightning-button-icon'
+        );
+
+        return Promise.resolve().then(() => {
+            expect(button.size).toBe('small');
+        });
+    });
+
+    it('Button Icon Popover size medium', () => {
+        const element = createElement('base-button-icon-popover', {
+            is: ButtonIconPopover
+        });
+        document.body.appendChild(element);
+
+        element.size = 'medium';
+        const button = element.shadowRoot.querySelector(
+            'lightning-button-icon'
+        );
+
+        return Promise.resolve().then(() => {
+            expect(button.size).toBe('medium');
+        });
+    });
+
+    it('Button Icon Popover size large for non bare', () => {
+        const element = createElement('base-button-icon-popover', {
+            is: ButtonIconPopover
+        });
+        document.body.appendChild(element);
+
+        element.size = 'large';
+        const button = element.shadowRoot.querySelector(
+            'lightning-button-icon'
+        );
+
+        return Promise.resolve().then(() => {
+            expect(button.size).toBe('medium');
+        });
+    });
+
+    it('Button Icon Popover size large for bare', () => {
+        const element = createElement('base-button-icon-popover', {
+            is: ButtonIconPopover
+        });
+        document.body.appendChild(element);
+
+        element.variant = 'bare';
+        element.size = 'large';
+        const button = element.shadowRoot.querySelector(
+            'lightning-button-icon'
+        );
+
+        return Promise.resolve().then(() => {
+            expect(button.size).toBe('large');
+        });
+    });
+
+    // tooltip
+    it('Button Icon Popover tooltip', () => {
+        const element = createElement('base-button-icon-popover', {
+            is: ButtonIconPopover
+        });
+        document.body.appendChild(element);
+
+        element.tooltip = 'This is a tooltip';
+        const button = element.shadowRoot.querySelector(
+            'lightning-button-icon'
+        );
+
+        return Promise.resolve().then(() => {
+            expect(button.tooltip).toBe('This is a tooltip');
+        });
+    });
 });
