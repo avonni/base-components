@@ -1,24 +1,27 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
-const validVariants = [
-    'base',
-    'neutral',
-    'brand',
-    'brand-outline',
-    'destructive',
-    'destructive-text',
-    'inverse',
-    'success'
-];
-const validIconPositions = ['left', 'right'];
+const validVariants = {
+    valid: [
+        'base',
+        'neutral',
+        'brand',
+        'brand-outline',
+        'destructive',
+        'destructive-text',
+        'inverse',
+        'success'
+    ],
+    default: 'neutral'
+};
+const validIconPositions = { valid: ['left', 'right'], default: 'left' };
 
 export default class ButtonDialog extends LightningElement {
     @api accessKey;
     @api label;
     @api iconName;
 
-    _disabled;
+    _disabled = false;
     _variant = 'neutral';
     _iconPosition = 'left';
 
@@ -29,8 +32,8 @@ export default class ButtonDialog extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: 'border',
-            validValues: validVariants
+            fallbackValue: validVariants.default,
+            validValues: validVariants.valid
         });
     }
 
@@ -41,8 +44,8 @@ export default class ButtonDialog extends LightningElement {
 
     set iconPosition(iconPosition) {
         this._iconPosition = normalizeString(iconPosition, {
-            fallbackValue: 'left',
-            validValues: validIconPositions
+            fallbackValue: validIconPositions.default,
+            validValues: validIconPositions.valid
         });
     }
 
