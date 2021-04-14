@@ -1,6 +1,29 @@
 import { createElement } from 'lwc';
 import DualListbox from 'c/dualListbox';
 
+const options = [
+    {
+        value: '1',
+        label: 'Option 1'
+    },
+    {
+        value: '2',
+        label: 'Option 2'
+    },
+    {
+        value: '3',
+        label: 'Option 3'
+    },
+    {
+        value: '4',
+        label: 'Option 4'
+    },
+    {
+        value: '5',
+        label: 'Option 5'
+    }
+];
+
 describe('DualListbox', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -446,34 +469,11 @@ describe('DualListbox', () => {
             is: DualListbox
         });
         document.body.appendChild(element);
+
         element.max = 2;
         element.messageWhenRangeOverflow = 'Maximum Capacity!';
-
-        const options = [
-            {
-                value: '1',
-                label: 'Option 1'
-            },
-            {
-                value: '2',
-                label: 'Option 2'
-            },
-            {
-                value: '3',
-                label: 'Option 3'
-            },
-            {
-                value: '4',
-                label: 'Option 4'
-            },
-            {
-                value: '5',
-                label: 'Option 5'
-            }
-        ];
-
         element.options = options;
-        element.value = ['1', '2'];
+        element.value = ['1', '2', '3'];
         element.addButtonLabel = 'add';
 
         return Promise.resolve()
@@ -506,30 +506,6 @@ describe('DualListbox', () => {
         document.body.appendChild(element);
         element.messageWhenRangeUnderflow = 'Minimum Capacity!';
         element.min = 5;
-
-        const options = [
-            {
-                value: '1',
-                label: 'Option 1'
-            },
-            {
-                value: '2',
-                label: 'Option 2'
-            },
-            {
-                value: '3',
-                label: 'Option 3'
-            },
-            {
-                value: '4',
-                label: 'Option 4'
-            },
-            {
-                value: '5',
-                label: 'Option 5'
-            }
-        ];
-
         element.options = options;
         element.value = ['1', '2', '3', '4', '5'];
         element.removeButtonLabel = 'remove';
@@ -563,23 +539,9 @@ describe('DualListbox', () => {
         });
         document.body.appendChild(element);
         element.required = true;
-        const options = [
-            {
-                value: '1',
-                label: 'Option 1'
-            },
-            {
-                value: '2',
-                label: 'Option 2'
-            },
-            {
-                value: '3',
-                label: 'Option 3'
-            }
-        ];
         element.options = options;
-        element.value = ['1'];
         element.messageWhenValueMissing = 'Missing value!';
+        element.value = ['1'];
         element.removeButtonLabel = 'remove';
 
         return Promise.resolve()
@@ -609,36 +571,29 @@ describe('DualListbox', () => {
             is: DualListbox
         });
         document.body.appendChild(element);
-        const options = [
-            {
-                value: '1',
-                label: 'Jobs',
-                iconName: 'custom:custom91',
-                description: 'description',
-                initials: 'initials',
-                iconSize: 'small',
-                src: 'src',
-                variant: 'circle'
-            }
-        ];
 
         element.options = options;
 
         return Promise.resolve().then(() => {
-            options.forEach((option) => {
-                expect(option.value).toBe('1');
-                expect(option.label).toBe('Jobs');
-                expect(option.iconName).toBe('custom:custom91');
-                expect(option.description).toBe('description');
-                expect(option.initials).toBe('initials');
-                expect(option.iconSize).toBe('small');
-                expect(option.src).toBe('src');
-                expect(option.variant).toBe('circle');
+            const primitiveOptions = element.shadowRoot.querySelectorAll(
+                '.slds-listbox__option'
+            );
+            primitiveOptions.forEach((op, index) => {
+                const correspondingOption = options[index];
+                expect(correspondingOption).toBeTruthy();
+                expect(op.value).toBe(correspondingOption.value);
+                expect(op.label).toBe(correspondingOption.label);
+                expect(op.iconName).toBe(correspondingOption.iconName);
+                expect(op.description).toBe(correspondingOption.description);
+                expect(op.initials).toBe(correspondingOption.initials);
+                expect(op.iconSize).toBe(correspondingOption.iconSize);
+                expect(op.src).toBe(correspondingOption.src);
+                expect(op.variant).toBe(correspondingOption.variant);
             });
             const source = element.shadowRoot.querySelector(
                 'ul[data-source-list]'
             );
-            expect(source.querySelectorAll('li')).toHaveLength(1);
+            expect(source.querySelectorAll('li')).toHaveLength(5);
         });
     });
 
@@ -682,29 +637,6 @@ describe('DualListbox', () => {
         });
         document.body.appendChild(element);
 
-        const options = [
-            {
-                value: '1',
-                label: 'Option 1'
-            },
-            {
-                value: '2',
-                label: 'Option 2'
-            },
-            {
-                value: '3',
-                label: 'Option 3'
-            },
-            {
-                value: '4',
-                label: 'Option 4'
-            },
-            {
-                value: '5',
-                label: 'Option 5'
-            }
-        ];
-
         element.options = options;
 
         return Promise.resolve()
@@ -712,13 +644,11 @@ describe('DualListbox', () => {
                 element.requiredOptions = ['1'];
             })
             .then(() => {
-                const lock = element.shadowRoot.querySelector('lightning-icon');
                 const selected = element.shadowRoot.querySelector(
                     'ul[data-selected-list]'
                 );
                 expect(element.requiredOptions).toBeTruthy();
                 expect(selected.querySelectorAll('li')).toHaveLength(1);
-                expect(lock.iconName).toBe('utility:lock');
             });
     });
 
@@ -837,28 +767,6 @@ describe('DualListbox', () => {
         });
         document.body.appendChild(element);
 
-        const options = [
-            {
-                value: '1',
-                label: 'Option 1'
-            },
-            {
-                value: '2',
-                label: 'Option 2'
-            },
-            {
-                value: '3',
-                label: 'Option 3'
-            },
-            {
-                value: '4',
-                label: 'Option 4'
-            },
-            {
-                value: '5',
-                label: 'Option 5'
-            }
-        ];
         element.options = options;
         element.value = ['1', '2', '3'];
 
@@ -935,11 +843,23 @@ describe('DualListbox', () => {
         });
         document.body.appendChild(element);
 
-        element.addEventListener('change', (event) => {
-            expect(event.detail.checked).toBeTruthy();
-            expect(event.bubbles).toBeTruthy();
-            expect(event.cancelable).toBeFalsy();
-            expect(event.composed).toBeTruthy();
+        element.options = options;
+        element.value = ['1', '2'];
+        element.addButtonLabel = 'add';
+
+        return Promise.resolve().then(() => {
+            const lightningButtonIcon = element.shadowRoot.querySelector(
+                "lightning-button-icon[title='add']"
+            );
+            element.focus();
+            lightningButtonIcon.click();
+            element.blur();
+            element.addEventListener('change', (event) => {
+                expect(event.detail.checked).toBeTruthy();
+                expect(event.bubbles).toBeFalsy();
+                expect(event.cancelable).toBeFalsy();
+                expect(event.composed).toBeFalsy();
+            });
         });
     });
 });
