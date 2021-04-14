@@ -6,10 +6,8 @@
         "type": "git",
         "url": "git+https://github.com/avonni/base-components.git"
     },
+    "homepage": "https://storybook.avonnicomponents.com/",
     "license": "MIT",
-    "publishConfig": {
-        "registry": "https://npm.pkg.github.com/"
-    },
     "dependencies": {
         "dompurify": "^2.2.6",
         "lightning-base-components": "^1.11.2-alpha"

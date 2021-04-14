@@ -10,6 +10,7 @@ package-lock.json
 
 # LWC Jest
 **/__tests__/**
+jest-mock/**
 
 # LWC Docs
 **/__docs__/**
@@ -22,3 +23,6 @@ package-lock.json
 
 #Salesforce meta
 *.js-meta.xml
+
+#Github workflow
+.github/**
