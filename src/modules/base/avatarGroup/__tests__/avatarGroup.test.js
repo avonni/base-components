@@ -421,6 +421,7 @@ describe('Avatar Group', () => {
         ];
 
         return Promise.resolve().then(() => {
+            // expect(element.maxCount).toBe(11);
             const avatars = element.shadowRoot.querySelectorAll(
                 '.avonni-avatar-group__avatar-container'
             );
@@ -446,10 +447,337 @@ describe('Avatar Group', () => {
         ];
 
         return Promise.resolve().then(() => {
+            // expect(element.maxCount).toBe(11);
             const avatars = element.shadowRoot.querySelectorAll(
                 '.avonni-avatar-group__avatar-container'
             );
             expect(avatars).toHaveLength(5);
         });
     });
+
+    // list button label
+    it('Avatar group list button label', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.layout = 'list';
+        element.maxCount = 5;
+        element.listButtonLabel = 'This is a list button label';
+        element.items = [
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items
+        ];
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('lightning-button');
+            expect(button.label).toBe('This is a list button label');
+        });
+    });
+
+    // list button variant
+    it('Avatar group list button variant neutral', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.layout = 'list';
+        element.maxCount = 5;
+        element.listButtonLabel = 'button';
+        element.listButtonVariant = 'neutral';
+        element.items = [
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items
+        ];
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('lightning-button');
+            expect(button.variant).toBe('neutral');
+        });
+    });
+
+    it('Avatar group list button variant base', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.layout = 'list';
+        element.maxCount = 5;
+        element.listButtonLabel = 'button';
+        element.listButtonVariant = 'base';
+        element.items = [
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items
+        ];
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('lightning-button');
+            expect(button.variant).toBe('base');
+        });
+    });
+
+    it('Avatar group list button variant brand', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.layout = 'list';
+        element.maxCount = 5;
+        element.listButtonLabel = 'button';
+        element.listButtonVariant = 'brand';
+        element.items = [
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items
+        ];
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('lightning-button');
+            expect(button.variant).toBe('brand');
+        });
+    });
+
+    it('Avatar group list button variant brand-outline', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.layout = 'list';
+        element.maxCount = 5;
+        element.listButtonLabel = 'button';
+        element.listButtonVariant = 'brand-outline';
+        element.items = [
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items
+        ];
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('lightning-button');
+            expect(button.variant).toBe('brand-outline');
+        });
+    });
+
+    it('Avatar group list button variant destructive', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.layout = 'list';
+        element.maxCount = 5;
+        element.listButtonLabel = 'button';
+        element.listButtonVariant = 'destructive';
+        element.items = [
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items
+        ];
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('lightning-button');
+            expect(button.variant).toBe('destructive');
+        });
+    });
+
+    it('Avatar group list button variant destructive-text', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.layout = 'list';
+        element.maxCount = 5;
+        element.listButtonLabel = 'button';
+        element.listButtonVariant = 'destructive-text';
+        element.items = [
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items
+        ];
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('lightning-button');
+            expect(button.variant).toBe('destructive-text');
+        });
+    });
+
+    it('Avatar group list button variant inverse', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.layout = 'list';
+        element.maxCount = 5;
+        element.listButtonLabel = 'button';
+        element.listButtonVariant = 'inverse';
+        element.items = [
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items
+        ];
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('lightning-button');
+            expect(button.variant).toBe('inverse');
+        });
+    });
+
+    it('Avatar group list button variant success', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.layout = 'list';
+        element.maxCount = 5;
+        element.listButtonLabel = 'button';
+        element.listButtonVariant = 'success';
+        element.items = [
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items
+        ];
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('lightning-button');
+            expect(button.variant).toBe('success');
+        });
+    });
+
+    // list button icon name
+    it('Avatar group list button icon name', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.layout = 'list';
+        element.maxCount = 5;
+        element.listButtonVariant = 'neutral';
+        element.listButtonIconName = 'utility:lock';
+        element.items = [
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items
+        ];
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('lightning-button');
+            expect(button.iconName).toBe('utility:lock');
+        });
+    });
+
+    // list button position
+    it('Avatar group list button position right', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.layout = 'list';
+        element.maxCount = 5;
+        element.listButtonVariant = 'neutral';
+        element.listButtonIconName = 'utility:lock';
+        element.listButtonIconPosition = 'right';
+        element.items = [
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items
+        ];
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('lightning-button');
+            expect(button.iconPosition).toBe('right');
+        });
+    });
+
+    it('Avatar group list button position left', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.layout = 'list';
+        element.maxCount = 5;
+        element.listButtonVariant = 'neutral';
+        element.listButtonIconName = 'utility:lock';
+        element.listButtonIconPosition = 'left';
+        element.items = [
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items
+        ];
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('lightning-button');
+            expect(button.iconPosition).toBe('left');
+        });
+    });
+
+    /* ----- EVENTS ----- */
+
+    // avatar click
+    // it('Avatar group avatar click event', () => {
+    //     const element = createElement('base-avatar-group', {
+    //         is: AvatarGroup
+    //     });
+    //     document.body.appendChild(element);
+
+    //     element.items = items
+
+    //     const avatar = element.shadowRoot.querySelector('slds-avatar-grouped')
+    //     element.addEventListener('avatarclick', (event) => {
+    //         expect(event.detail.clicked).toBeTruthy();
+    //         expect(event.bubbles).toBeTruthy();
+    //         expect(event.cancelable).toBeTruthy();
+    //         expect(event.composed).toBeFalsy();
+    //     });
+    //     avatar.click();
+    // });
 });

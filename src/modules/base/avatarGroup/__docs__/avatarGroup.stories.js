@@ -325,10 +325,3 @@ ListDoubleExtraLarge.args = {
     maxCount: 3,
     size: 'xx-large'
 };
-
-export const test = Template.bind({});
-test.args = {
-    items: [...items, ...items, ...items, ...items, ...items, ...items],
-    layout: 'grid',
-    maxCount: 5
-};
