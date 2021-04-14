@@ -31,7 +31,7 @@ export default {
         size: {
             control: {
                 type: 'select',
-                options: ['xx-small', 'x-small', 'small', 'medium']
+                options: ['xx-small', 'x-small', 'small', 'medium', 'large']
             },
             defaultValue: 'medium',
             table: {

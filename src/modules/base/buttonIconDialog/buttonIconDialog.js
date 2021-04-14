@@ -1,16 +1,26 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
-const validSizes = ['xx-small', 'x-small', 'small', 'medium'];
-const validVariants = [
-    'bare',
-    'container',
-    'brand',
-    'border',
-    'border-filled',
-    'bare-inverse',
-    'border-inverse'
-];
+const validSizesBare = {
+    valid: ['x-small', 'small', 'medium', 'large'],
+    default: 'medium'
+};
+const validSizesNonBare = {
+    valid: ['xx-small', 'x-small', 'small', 'medium'],
+    default: 'medium'
+};
+const validVariants = {
+    valid: [
+        'bare',
+        'container',
+        'brand',
+        'border',
+        'border-filled',
+        'bare-inverse',
+        'border-inverse'
+    ],
+    default: 'border'
+};
 
 export default class ButtonIconDialog extends LightningElement {
     @api accessKey;
@@ -19,9 +29,9 @@ export default class ButtonIconDialog extends LightningElement {
     @api iconClass;
     @api iconName;
 
-    _disabled;
+    _disabled = false;
     _size = 'medium';
-    _variant = 'border';
+    _variant = validVariants.default;
 
     @api
     get size() {
@@ -29,10 +39,17 @@ export default class ButtonIconDialog extends LightningElement {
     }
 
     set size(size) {
-        this._size = normalizeString(size, {
-            fallbackValue: 'medium',
-            validValues: validSizes
-        });
+        if (this._variant === 'bare' || this._variant === 'bare-inverse') {
+            this._size = normalizeString(size, {
+                fallbackValue: validSizesBare.default,
+                validValues: validSizesBare.valid
+            });
+        } else {
+            this._size = normalizeString(size, {
+                fallbackValue: validSizesNonBare.default,
+                validValues: validSizesNonBare.valid
+            });
+        }
     }
 
     @api
@@ -42,8 +59,8 @@ export default class ButtonIconDialog extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: 'border',
-            validValues: validVariants
+            fallbackValue: validVariants.default,
+            validValues: validVariants.valid
         });
     }
 
