@@ -6,30 +6,42 @@ import {
     observePosition
 } from 'c/utilsPrivate';
 
-const validPopoverSizes = ['small', 'medium', 'large'];
-const validPlacements = [
-    'auto',
-    'left',
-    'center',
-    'right',
-    'bottom-left',
-    'bottom-center',
-    'bottom-right'
-];
-const validVariants = [
-    'base',
-    'neutral',
-    'brand',
-    'brand-outline',
-    'destructive',
-    'destructive-text',
-    'inverse',
-    'success'
-];
+const validPopoverSizes = {
+    valid: ['small', 'medium', 'large'],
+    default: 'medium'
+};
+const validPlacements = {
+    valid: [
+        'auto',
+        'left',
+        'center',
+        'right',
+        'bottom-left',
+        'bottom-center',
+        'bottom-right'
+    ],
+    default: 'left'
+};
+const validVariants = {
+    valid: [
+        'base',
+        'neutral',
+        'brand',
+        'brand-outline',
+        'destructive',
+        'destructive-text',
+        'inverse',
+        'success'
+    ],
+    default: 'neutral'
+};
 
-const validTriggers = ['click', 'hover', 'focus'];
-const validPopoverVariants = ['base', 'warning', 'error', 'walkthrough'];
-const validIconPositions = ['left', 'right'];
+const validTriggers = { valid: ['click', 'hover', 'focus'], default: 'click' };
+const validPopoverVariants = {
+    valid: ['base', 'warning', 'error', 'walkthrough'],
+    default: 'base'
+};
+const validIconPositions = { valid: ['left', 'right'], default: 'left' };
 
 export default class ButtonPopover extends LightningElement {
     @api accessKey;
@@ -40,12 +52,12 @@ export default class ButtonPopover extends LightningElement {
 
     _disabled = false;
     _isLoading = false;
-    _iconPosition = 'left';
-    _popoverSize = 'medium';
-    _placement = 'left';
-    _variant = 'neutral';
-    _triggers = 'click';
-    _popoverVariant = 'base';
+    _iconPosition = validIconPositions.default;
+    _popoverSize = validPopoverSizes.default;
+    _placement = validPlacements.default;
+    _variant = validVariants.default;
+    _triggers = validTriggers.default;
+    _popoverVariant = validPopoverVariants.default;
     popoverVisible = false;
     showTitle = true;
     showFooter = true;
@@ -88,8 +100,8 @@ export default class ButtonPopover extends LightningElement {
 
     set popoverSize(popoverSize) {
         this._popoverSize = normalizeString(popoverSize, {
-            fallbackValue: 'medium',
-            validValues: validPopoverSizes
+            fallbackValue: validPopoverSizes.default,
+            validValues: validPopoverSizes.valid
         });
     }
 
@@ -100,8 +112,8 @@ export default class ButtonPopover extends LightningElement {
 
     set iconPosition(iconPosition) {
         this._iconPosition = normalizeString(iconPosition, {
-            fallbackValue: 'left',
-            validValues: validIconPositions
+            fallbackValue: validIconPositions.default,
+            validValues: validIconPositions.valid
         });
     }
 
@@ -112,8 +124,8 @@ export default class ButtonPopover extends LightningElement {
 
     set placement(placement) {
         this._placement = normalizeString(placement, {
-            fallbackValue: 'left',
-            validValues: validPlacements
+            fallbackValue: validPlacements.default,
+            validValues: validPlacements.valid
         });
     }
 
@@ -124,8 +136,8 @@ export default class ButtonPopover extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: 'border',
-            validValues: validVariants
+            fallbackValue: validVariants.default,
+            validValues: validVariants.valid
         });
     }
 
@@ -136,8 +148,8 @@ export default class ButtonPopover extends LightningElement {
 
     set triggers(triggers) {
         this._triggers = normalizeString(triggers, {
-            fallbackValue: 'click',
-            validValues: validTriggers
+            fallbackValue: validTriggers.default,
+            validValues: validTriggers.valid
         });
     }
 
@@ -148,8 +160,8 @@ export default class ButtonPopover extends LightningElement {
 
     set popoverVariant(popoverVariant) {
         this._popoverVariant = normalizeString(popoverVariant, {
-            fallbackValue: 'base',
-            validValues: validPopoverVariants
+            fallbackValue: validPopoverVariants.default,
+            validValues: validPopoverVariants.valid
         });
     }
 
