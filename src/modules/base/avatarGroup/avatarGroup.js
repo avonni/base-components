@@ -1,6 +1,6 @@
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
-import { normalizeString } from 'c/utilsPrivate';
+import { normalizeString, normalizeArray } from 'c/utilsPrivate';
 
 const validSizes = {
     valid: ['x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'],
@@ -68,7 +68,7 @@ export default class AvatarGroup extends LightningElement {
     }
 
     set items(value) {
-        this._items = value;
+        this._items = normalizeArray(value);
     }
 
     @api

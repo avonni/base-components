@@ -1,0 +1,49 @@
+name: Node.js Package
+
+on:
+    release:
+        types: [created]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2
+              with:
+                  node-version: 12
+            - run: npm ci
+            - run: npm test
+            - run: npm run test:unit
+
+    publish-npm:
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2
+              with:
+                  node-version: 12
+                  registry-url: https://registry.npmjs.org/
+            - run: npm ci
+            - name: Npm registry authentication
+              run: npm set //registry.npmjs.org/:_authToken ${{ secrets.PUBLISH_NPM_TOKEN }}
+            - run: npm publish --access public
+              env:
+                  NODE_AUTH_TOKEN: ${{secrets.PUBLISH_NPM_TOKEN}}
+
+    publish-gpr:
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2
+              with:
+                  node-version: 12
+                  registry-url: https://npm.pkg.github.com/
+            - run: npm ci
+            - name: Github package registry authentication
+              run: npm set //npm.pkg.github.com/:_authToken ${{ secrets.PUBLISH_GITHUB_TOKEN }}
+            - run: npm publish
+              env:
+                  NODE_AUTH_TOKEN: ${{secrets.PUBLISH_GITHUB_TOKEN}}

@@ -18,15 +18,6 @@ export default {
                 defaultValue: { summary: 'base' }
             }
         },
-        textured: {
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: 0,
-            table: {
-                defaultValue: { summary: 'false' }
-            }
-        },
         isDismissible: {
             control: {
                 type: 'boolean'
@@ -65,13 +56,5 @@ export const Warning = Template.bind({});
 Warning.args = {
     iconName: 'utility:warning',
     variant: 'warning',
-    closeAction: () => console.log('Close action')
-};
-
-export const WarningTextured = Template.bind({});
-WarningTextured.args = {
-    iconName: 'utility:warning',
-    variant: 'warning',
-    textured: 'true',
     closeAction: () => console.log('Close action')
 };

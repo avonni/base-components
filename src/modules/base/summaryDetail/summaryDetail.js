@@ -34,7 +34,7 @@ export default class SummaryDetail extends LightningElement {
         return this._shrinkIconName;
     }
     set shrinkIconName(name) {
-        this._shrinkIconName = name;
+        this._shrinkIconName = (typeof name === 'string' && name.trim()) || '';
     }
 
     @api
@@ -42,7 +42,7 @@ export default class SummaryDetail extends LightningElement {
         return this._expandIconName;
     }
     set expandIconName(name) {
-        this._expandIconName = name;
+        this._expandIconName = (typeof name === 'string' && name.trim()) || '';
     }
 
     @api
