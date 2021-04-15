@@ -564,7 +564,42 @@ describe('DualListbox', () => {
                 );
                 expect(optionValue).toBeTruthy();
             })
-            .then(() => {});
+            .then(() => {
+                const label = element.shadowRoot.querySelector(
+                    '.slds-media__body'
+                );
+                expect(label.textContent).toBe('Option 1');
+            });
+    });
+
+    it('Dual Listbox options without avatar', () => {
+        const element = createElement('base-dual-listbox', {
+            is: DualListbox
+        });
+        document.body.appendChild(element);
+
+        const optionWithAvatar = [
+            {
+                value: '1',
+                label: 'Option 1'
+            }
+        ];
+
+        element.options = optionWithAvatar;
+
+        return Promise.resolve()
+            .then(() => {
+                const optionValue = element.shadowRoot.querySelector(
+                    "div[data-value='1']"
+                );
+                expect(optionValue).toBeTruthy();
+            })
+            .then(() => {
+                const label = element.shadowRoot.querySelector(
+                    '.slds-media__body'
+                );
+                expect(label.textContent).toBe('Option 1');
+            });
     });
 
     // remove-button-icon-name & remove-button-label

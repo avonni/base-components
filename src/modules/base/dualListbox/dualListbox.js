@@ -327,6 +327,7 @@ export default class DualListbox extends LightningElement {
         this.reportValidity();
     }
 
+    // cannot display description without an icon or an image
     hasAvatar() {
         if (this._options) {
             this._options.forEach((option) => {
@@ -343,7 +344,6 @@ export default class DualListbox extends LightningElement {
                 if (option.description) {
                     option.hasDescription = true;
                 } else option.hasDescription = false;
-                console.log(option);
             });
         }
     }
