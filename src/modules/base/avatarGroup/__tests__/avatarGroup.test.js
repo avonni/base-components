@@ -409,9 +409,13 @@ describe('Avatar Group', () => {
         });
         document.body.appendChild(element);
 
+        element.maxCount = '11';
         element.layout = 'grid';
-        element.maxCount = 5;
         element.items = [
+            ...items,
+            ...items,
+            ...items,
+            ...items,
             ...items,
             ...items,
             ...items,
@@ -421,11 +425,10 @@ describe('Avatar Group', () => {
         ];
 
         return Promise.resolve().then(() => {
-            // expect(element.maxCount).toBe(11);
             const avatars = element.shadowRoot.querySelectorAll(
                 '.avonni-avatar-group__avatar-container'
             );
-            expect(avatars).toHaveLength(6);
+            expect(avatars).toHaveLength(12);
         });
     });
 
@@ -435,8 +438,7 @@ describe('Avatar Group', () => {
         });
         document.body.appendChild(element);
 
-        element.layout = 'list';
-        element.maxCount = 5;
+        element.maxCount = '11';
         element.items = [
             ...items,
             ...items,
@@ -445,13 +447,13 @@ describe('Avatar Group', () => {
             ...items,
             ...items
         ];
+        element.layout = 'list';
 
         return Promise.resolve().then(() => {
-            // expect(element.maxCount).toBe(11);
             const avatars = element.shadowRoot.querySelectorAll(
                 '.avonni-avatar-group__avatar-container'
             );
-            expect(avatars).toHaveLength(5);
+            expect(avatars).toHaveLength(11);
         });
     });
 
@@ -763,21 +765,35 @@ describe('Avatar Group', () => {
     /* ----- EVENTS ----- */
 
     // avatar click
-    // it('Avatar group avatar click event', () => {
-    //     const element = createElement('base-avatar-group', {
-    //         is: AvatarGroup
-    //     });
-    //     document.body.appendChild(element);
+    it('Avatar group avatar click event', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
 
-    //     element.items = items
+        element.items = [
+            {
+                src:
+                    'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+                fallbackIconName: 'standard:user',
+                alternativeText: 'This is the alternative text',
+                primaryText: 'John Doe',
+                secondaryText: 'VP, Human Resources',
+                tertiaryText: 'FakeCompany Inc.'
+            }
+        ];
 
-    //     const avatar = element.shadowRoot.querySelector('slds-avatar-grouped')
-    //     element.addEventListener('avatarclick', (event) => {
-    //         expect(event.detail.clicked).toBeTruthy();
-    //         expect(event.bubbles).toBeTruthy();
-    //         expect(event.cancelable).toBeTruthy();
-    //         expect(event.composed).toBeFalsy();
-    //     });
-    //     avatar.click();
-    // });
+        return Promise.resolve().then(() => {
+            const avatar = element.shadowRoot.querySelector(
+                '.avonni-avatar-group__avatar'
+            );
+            avatar.click();
+            element.addEventListener('avatarclick', (event) => {
+                expect(event.detail.clicked).toBeTruthy();
+                expect(event.bubbles).toBeTruthy();
+                expect(event.cancelable).toBeTruthy();
+                expect(event.composed).toBeFalsy();
+            });
+        });
+    });
 });
