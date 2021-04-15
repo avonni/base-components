@@ -760,4 +760,21 @@ describe('Button Popover', () => {
                 expect(popover).toBeTruthy();
             });
     });
+
+    /* ----- EVENTS ----- */
+
+    // button popover click
+    it('Button Popover event click', () => {
+        const element = createElement('base-button-popover', {
+            is: ButtonPopover
+        });
+        document.body.appendChild(element);
+        const button = element.shadowRoot.querySelector('lightning-button');
+        element.addEventListener('clickOnButton', (event) => {
+            expect(event.bubbles).toBeFalsy();
+            expect(event.cancelable).toBeFalsy();
+            expect(event.composed).toBeFalsy();
+        });
+        button.click();
+    });
 });
