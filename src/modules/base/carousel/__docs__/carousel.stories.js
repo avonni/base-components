@@ -168,8 +168,8 @@ const items = [
 ];
 
 const assistiveText = {
-    nextPanel: 'Next Panel',
-    previousPanel: 'Previous Panel',
+    nextPanel: 'Next',
+    previousPanel: 'Previous',
     autoplayButton: 'Start / Stop auto-play'
 };
 
@@ -177,28 +177,25 @@ const Template = (args) => Carousel(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    items: items,
-    assistiveText: assistiveText
+    items: items
 };
 
 export const BaseWithNoProgressIndicator = Template.bind({});
 BaseWithNoProgressIndicator.args = {
     items: items,
-    assistiveText: assistiveText,
-    hideIndicator: 'true'
+    hideIndicator: 'true',
+    assistiveText: assistiveText
 };
 
 export const BaseWithTwoItemsPerPanel = Template.bind({});
 BaseWithTwoItemsPerPanel.args = {
     items: items,
-    assistiveText: assistiveText,
     itemsPerPanel: '2'
 };
 
 export const BaseWithThreeItemsPerPanelAndVariantShaded = Template.bind({});
 BaseWithThreeItemsPerPanelAndVariantShaded.args = {
     items: items,
-    assistiveText: assistiveText,
     itemsPerPanel: '3',
     indicatorVariant: 'shaded'
 };
@@ -206,21 +203,19 @@ BaseWithThreeItemsPerPanelAndVariantShaded.args = {
 export const BaseWithFiveItemsPerPanel = Template.bind({});
 BaseWithFiveItemsPerPanel.args = {
     items: items,
-    assistiveText: assistiveText,
-    itemsPerPanel: '5'
+    itemsPerPanel: '5',
+    assistiveText: assistiveText
 };
 
 export const WithoutPanelNavigation = Template.bind({});
 WithoutPanelNavigation.args = {
     items: items,
-    assistiveText: assistiveText,
     hidePreviousNextPanelNavigation: 'true'
 };
 
 export const WithoutPanelNavigationWithTwoItemsPerPanel = Template.bind({});
 WithoutPanelNavigationWithTwoItemsPerPanel.args = {
     items: items,
-    assistiveText: assistiveText,
     itemsPerPanel: '2',
     hidePreviousNextPanelNavigation: 'true'
 };
@@ -228,7 +223,6 @@ WithoutPanelNavigationWithTwoItemsPerPanel.args = {
 export const WithoutPanelNavigationWithThreeItemsPerPanel = Template.bind({});
 WithoutPanelNavigationWithThreeItemsPerPanel.args = {
     items: items,
-    assistiveText: assistiveText,
     itemsPerPanel: '3',
     hidePreviousNextPanelNavigation: 'true'
 };
@@ -236,7 +230,6 @@ WithoutPanelNavigationWithThreeItemsPerPanel.args = {
 export const WithoutPanelNavigationWithFiveItemsPerPanel = Template.bind({});
 WithoutPanelNavigationWithFiveItemsPerPanel.args = {
     items: items,
-    assistiveText: assistiveText,
     itemsPerPanel: '5',
     hidePreviousNextPanelNavigation: 'true'
 };
