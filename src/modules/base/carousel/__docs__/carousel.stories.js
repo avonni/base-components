@@ -183,7 +183,7 @@ Base.args = {
 export const BaseWithNoProgressIndicator = Template.bind({});
 BaseWithNoProgressIndicator.args = {
     items: items,
-    hideIndicator: 'true',
+    hideIndicator: true,
     assistiveText: assistiveText
 };
 
@@ -210,26 +210,26 @@ BaseWithFiveItemsPerPanel.args = {
 export const WithoutPanelNavigation = Template.bind({});
 WithoutPanelNavigation.args = {
     items: items,
-    hidePreviousNextPanelNavigation: 'true'
+    hidePreviousNextPanelNavigation: true
 };
 
 export const WithoutPanelNavigationWithTwoItemsPerPanel = Template.bind({});
 WithoutPanelNavigationWithTwoItemsPerPanel.args = {
     items: items,
     itemsPerPanel: 2,
-    hidePreviousNextPanelNavigation: 'true'
+    hidePreviousNextPanelNavigation: true
 };
 
 export const WithoutPanelNavigationWithThreeItemsPerPanel = Template.bind({});
 WithoutPanelNavigationWithThreeItemsPerPanel.args = {
     items: items,
     itemsPerPanel: 3,
-    hidePreviousNextPanelNavigation: 'true'
+    hidePreviousNextPanelNavigation: true
 };
 
 export const WithoutPanelNavigationWithFiveItemsPerPanel = Template.bind({});
 WithoutPanelNavigationWithFiveItemsPerPanel.args = {
     items: items,
     itemsPerPanel: 5,
-    hidePreviousNextPanelNavigation: 'true'
+    hidePreviousNextPanelNavigation: true
 };
