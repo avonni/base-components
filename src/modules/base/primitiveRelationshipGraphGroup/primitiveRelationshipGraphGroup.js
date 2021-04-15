@@ -53,7 +53,7 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
         // Accessibility: sets focus on the first group child of the active item
         if (this.activeChild && this.isFirstChild) {
             const wrapper = this.template.querySelector('.group');
-            wrapper.focus();
+            if (wrapper) wrapper.focus();
         }
     }
 
@@ -92,7 +92,7 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     @api
     get height() {
         const group = this.template.querySelector('.group');
-        return group.offsetHeight;
+        return group ? group.offsetHeight : 0;
     }
 
     @api
