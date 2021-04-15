@@ -8,7 +8,7 @@ describe('Calendar', () => {
         }
     });
 
-    it('Default attributes', () => {
+    it('Calendar default attributes', () => {
         const element = createElement('base-calendar', {
             is: Calendar
         });
@@ -21,5 +21,54 @@ describe('Calendar', () => {
         expect(element.min).toMatchObject(new Date(1900, 0, 1));
         expect(element.weekNumber).toBeFalsy();
         expect(element.multiValue).toBeUndefined();
+    });
+
+    /* ----- ATTRIBUTES ----- */
+
+    // values
+    it('Calendar values', () => {
+        const element = createElement('base-calendar', {
+            is: Calendar
+        });
+        document.body.appendChild(element);
+
+        element.value = '04/15/2021';
+        return Promise.resolve().then(() => {
+            const day = element.shadowRoot.querySelector('.slds-is-selected');
+            expect(day.textContent).toBe('15');
+            const month = element.shadowRoot.querySelector(
+                "h2[class='slds-align-middle']"
+            );
+            expect(month.textContent).toBe('April');
+            const year = element.shadowRoot.querySelector('lightning-combobox');
+            expect(year.value).toBe(2021);
+        });
+    });
+
+    // disabled
+    it('Calendar disabled', () => {
+        const element = createElement('base-calendar', {
+            is: Calendar
+        });
+        document.body.appendChild(element);
+
+        element.value = '04/15/2021';
+        element.disabled = true;
+        return Promise.resolve().then(() => {
+            const buttons = element.shadowRoot.querySelectorAll(
+                'lightning-button-icon'
+            );
+            buttons.forEach((button) => {
+                expect(button.disabled).toBeTruthy();
+            });
+            const combobox = element.shadowRoot.querySelector(
+                'lightning-combobox'
+            );
+            expect(combobox.disabled).toBeTruthy();
+            const tds = element.shadowRoot.querySelectorAll('td > span');
+            tds.forEach((td) => {
+                expect(td.className).toBe('avonni-disabled-cell');
+            });
+        });
     });
 });
