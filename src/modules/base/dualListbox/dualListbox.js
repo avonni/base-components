@@ -330,13 +330,7 @@ export default class DualListbox extends LightningElement {
     hasAvatar() {
         if (this._options) {
             this._options.forEach((option) => {
-                if (
-                    option.iconName ||
-                    option.src ||
-                    option.initials ||
-                    option.label ||
-                    option.description
-                ) {
+                if (option.iconName || option.src) {
                     option.hasAvatar = true;
                 } else option.hasAvatar = false;
             });
@@ -349,6 +343,7 @@ export default class DualListbox extends LightningElement {
                 if (option.description) {
                     option.hasDescription = true;
                 } else option.hasDescription = false;
+                console.log(option);
             });
         }
     }

@@ -138,6 +138,15 @@
                                                 </span>
                                             </template>
                                         </template>
+                                        <template if:false={option.hasAvatar}>
+                                            <span class="slds-media__body">
+                                                <span
+                                                    class="slds-truncate"
+                                                    title={option.label}
+                                                    >{option.label}</span
+                                                >
+                                            </span>
+                                        </template>
                                     </div>
                                 </li>
                             </template>
@@ -233,19 +242,6 @@
                                                         secondary-text={option.description}
                                                     ></c-avatar>
                                                 </div>
-                                                <template
-                                                    if:true={option.isLocked}
-                                                >
-                                                    <span
-                                                        class="slds-media__figure slds-media__figure_reverse"
-                                                    >
-                                                        <lightning-icon
-                                                            icon-name="utility:lock"
-                                                            size="x-small"
-                                                            alternative-text={computedLockAssistiveText}
-                                                        ></lightning-icon>
-                                                    </span>
-                                                </template>
                                             </template>
                                             <template
                                                 if:false={option.hasDescription}
@@ -266,20 +262,27 @@
                                                         >{option.label}</span
                                                     >
                                                 </span>
-                                                <template
-                                                    if:true={option.isLocked}
-                                                >
-                                                    <span
-                                                        class="slds-media__figure slds-media__figure_reverse"
-                                                    >
-                                                        <lightning-icon
-                                                            icon-name="utility:lock"
-                                                            size="x-small"
-                                                            alternative-text={computedLockAssistiveText}
-                                                        ></lightning-icon>
-                                                    </span>
-                                                </template>
                                             </template>
+                                        </template>
+                                        <template if:false={option.hasAvatar}>
+                                            <span class="slds-media__body">
+                                                <span
+                                                    class="slds-truncate"
+                                                    title={option.label}
+                                                    >{option.label}</span
+                                                >
+                                            </span>
+                                        </template>
+                                        <template if:true={option.isLocked}>
+                                            <span
+                                                class="slds-media__figure slds-media__figure_reverse"
+                                            >
+                                                <lightning-icon
+                                                    icon-name="utility:lock"
+                                                    size="x-small"
+                                                    alternative-text={computedLockAssistiveText}
+                                                ></lightning-icon>
+                                            </span>
                                         </template>
                                     </div>
                                 </li>

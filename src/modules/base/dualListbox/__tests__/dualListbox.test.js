@@ -541,35 +541,30 @@ describe('DualListbox', () => {
     });
 
     // options
-    it('Dual Listbox options', () => {
+    it('Dual Listbox options with avatar', () => {
         const element = createElement('base-dual-listbox', {
             is: DualListbox
         });
         document.body.appendChild(element);
 
-        element.options = options;
+        const optionWithAvatar = [
+            {
+                value: '1',
+                label: 'Option 1',
+                iconName: 'standard:address'
+            }
+        ];
 
-        return Promise.resolve().then(() => {
-            const primitiveOptions = element.shadowRoot.querySelectorAll(
-                '.slds-listbox__option'
-            );
-            primitiveOptions.forEach((op, index) => {
-                const correspondingOption = options[index];
-                expect(correspondingOption).toBeTruthy();
-                expect(op.value).toBe(correspondingOption.value);
-                expect(op.label).toBe(correspondingOption.label);
-                expect(op.iconName).toBe(correspondingOption.iconName);
-                expect(op.description).toBe(correspondingOption.description);
-                expect(op.initials).toBe(correspondingOption.initials);
-                expect(op.iconSize).toBe(correspondingOption.iconSize);
-                expect(op.src).toBe(correspondingOption.src);
-                expect(op.variant).toBe(correspondingOption.variant);
-            });
-            const source = element.shadowRoot.querySelector(
-                'ul[data-source-list]'
-            );
-            expect(source.querySelectorAll('li')).toHaveLength(5);
-        });
+        element.options = optionWithAvatar;
+
+        return Promise.resolve()
+            .then(() => {
+                const optionValue = element.shadowRoot.querySelector(
+                    "div[data-value='1']"
+                );
+                expect(optionValue).toBeTruthy();
+            })
+            .then(() => {});
     });
 
     // remove-button-icon-name & remove-button-label
