@@ -15,7 +15,6 @@ describe('Alert', () => {
 
         expect(element.iconName).toBeUndefined();
         expect(element.variant).toBe('base');
-        expect(element.textured).toBe(false);
         expect(element.isDismissible).toBe(false);
     });
 
@@ -88,23 +87,6 @@ describe('Alert', () => {
             expect(div.classList).toContain('slds-theme_warning');
             expect(lightningButtonIcon.iconClass).toBe('');
             expect(lightningIcon.variant).toBe('bare');
-        });
-    });
-
-    it('Alert textured', () => {
-        const element = createElement('base-alert', {
-            is: Alert
-        });
-
-        document.body.appendChild(element);
-
-        const div = element.shadowRoot.querySelector('div');
-
-        element.textured = true;
-
-        return Promise.resolve().then(() => {
-            expect(element.textured).toBe(true);
-            expect(div.classList).toContain('slds-theme_alert-texture');
         });
     });
 
