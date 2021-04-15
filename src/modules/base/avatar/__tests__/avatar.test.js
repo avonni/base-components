@@ -13,22 +13,22 @@ describe('Avatar', () => {
             is: Avatar
         });
 
-        expect(element.alternativeText).toBeUndefined();
+        expect(element.alternativeText).toBe('Avatar');
         expect(element.fallbackIconName).toBeUndefined();
         expect(element.initials).toBeUndefined();
         expect(element.size).toBe('medium');
         expect(element.src).toBeUndefined();
         expect(element.variant).toBe('square');
         expect(element.status).toBeNull();
-        expect(element.statusTitle).toBeUndefined();
+        expect(element.statusTitle).toBe('Status');
         expect(element.statusPosition).toBe('top-right');
         expect(element.presence).toBeNull();
-        expect(element.presenceTitle).toBeUndefined();
+        expect(element.presenceTitle).toBe('Presence');
         expect(element.presencePosition).toBe('bottom-right');
         expect(element.entityIconName).toBeUndefined();
         expect(element.entityVariant).toBe('square');
         expect(element.entitySrc).toBeUndefined();
-        expect(element.entityTitle).toBeUndefined();
+        expect(element.entityTitle).toBe('Entity');
         expect(element.entityPosition).toBe('top-left');
         expect(element.hideAvatarDetails).toBeFalsy();
         expect(element.primaryText).toBeUndefined();
