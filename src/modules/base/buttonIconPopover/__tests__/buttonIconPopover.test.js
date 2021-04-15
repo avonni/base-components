@@ -799,4 +799,77 @@ describe('Button Icon Popover', () => {
                 expect(spinner.alternativeText).toBe('This is a loading text');
             });
     });
+
+    // triggers
+    it('Button Icon Popover triggers focus', () => {
+        const element = createElement('base-button-icon-popover', {
+            is: ButtonIconPopover
+        });
+        document.body.appendChild(element);
+
+        element.triggers = 'focus';
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    'lightning-button-icon'
+                );
+                element.focus();
+                button.focus();
+            })
+            .then(() => {
+                const popover = element.shadowRoot.querySelector(
+                    '.slds-popover'
+                );
+                expect(popover).toBeTruthy();
+            });
+    });
+
+    it('Button Icon Popover triggers click', () => {
+        const element = createElement('base-button-icon-popover', {
+            is: ButtonIconPopover
+        });
+        document.body.appendChild(element);
+
+        element.triggers = 'click';
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    'lightning-button-icon'
+                );
+                element.focus();
+                button.click();
+            })
+            .then(() => {
+                const popover = element.shadowRoot.querySelector(
+                    '.slds-popover'
+                );
+                expect(popover).toBeTruthy();
+            });
+    });
+
+    it('Button Icon Popover triggers hover', () => {
+        const element = createElement('base-button-icon-popover', {
+            is: ButtonIconPopover
+        });
+        document.body.appendChild(element);
+
+        element.triggers = 'hover';
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    'lightning-button-icon'
+                );
+                element.focus();
+                button.click();
+            })
+            .then(() => {
+                const popover = element.shadowRoot.querySelector(
+                    '.slds-popover'
+                );
+                expect(popover).toBeTruthy();
+            });
+    });
 });
