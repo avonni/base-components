@@ -4,8 +4,8 @@
 }
 .avonni-avatar .slds-avatar:first-child {
     border-style: solid;
-    border-color: var(--avonni-c-avatar-color-border, transparent);
-    border-width: var(--avonni-c-avatar-sizing-border, 0);
+    border-color: var(--avonni-avatar-color-border, transparent);
+    border-width: var(--avonni-avatar-sizing-border, 0);
 }
 /* If the avatar is in a group, the cursor changes for a pointer */
 :host(.avonni-avatar-group__avatar) .slds-avatar,
