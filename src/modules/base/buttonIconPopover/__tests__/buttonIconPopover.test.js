@@ -872,4 +872,23 @@ describe('Button Icon Popover', () => {
                 expect(popover).toBeTruthy();
             });
     });
+
+    /* ----- EVENTS ----- */
+
+    // button popover click
+    it('Button Icon Popover event click', () => {
+        const element = createElement('base-button-icon-popover', {
+            is: ButtonIconPopover
+        });
+        document.body.appendChild(element);
+        const button = element.shadowRoot.querySelector(
+            'lightning-button-icon'
+        );
+        element.addEventListener('click', (event) => {
+            expect(event.bubbles).toBeFalsy();
+            expect(event.cancelable).toBeFalsy();
+            expect(event.composed).toBeFalsy();
+        });
+        button.click();
+    });
 });
