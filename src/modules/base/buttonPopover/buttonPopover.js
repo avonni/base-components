@@ -171,6 +171,10 @@ export default class ButtonPopover extends LightningElement {
         this._isLoading = normalizeBoolean(value);
     }
 
+    get hasStringTitle() {
+        return !!this.title;
+    }
+
     @api
     click() {
         if (this._connected) {
