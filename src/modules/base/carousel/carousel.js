@@ -59,13 +59,7 @@ export default class Carousel extends LightningElement {
     panelStyle;
 
     connectedCallback() {
-        const numberOfPanels = Math.ceil(
-            this._carouselItems.length / this.itemsPerPanel
-        );
-
-        this.initializeCurrentPanel(numberOfPanels);
-        this.initializePaginationItems(numberOfPanels);
-        this.initializePanels();
+        this.initCarousel();
     }
 
     renderedCallback() {
@@ -116,7 +110,9 @@ export default class Carousel extends LightningElement {
             });
         });
 
-        this.initializePanels();
+        if (this.isConnected) {
+            this.initCarousel();
+        }
     }
 
     @api
@@ -313,6 +309,16 @@ export default class Carousel extends LightningElement {
         // we want to make sure that while we are using the keyboard
         // navigation we are focusing on the right indicator
         indicatorActionsElements[this.activeIndexPanel].focus();
+    }
+
+    initCarousel() {
+        const numberOfPanels = Math.ceil(
+            this._carouselItems.length / this.itemsPerPanel
+        );
+
+        this.initializeCurrentPanel(numberOfPanels);
+        this.initializePaginationItems(numberOfPanels);
+        this.initializePanels();
     }
 
     onPanelSelect(event) {
