@@ -230,18 +230,57 @@ describe('Carousel', () => {
     });
 
     // indicator variant
-    // it('Carousel indicator variant base', () => {
-    //     const element = createElement('base-carousel', {
-    //         is: Carousel
-    //     });
-    //     document.body.appendChild(element);
+    it('Carousel indicator variant base', () => {
+        const element = createElement('base-carousel', {
+            is: Carousel
+        });
+        document.body.appendChild(element);
 
-    //     element.items = items
-    //     element.hideIndicator = false
+        element.items = items;
+        element.hideIndicator = false;
 
-    //     return Promise.resolve().then(() => {
-    //         const indicator = element.shadowRoot.querySelector('li');
-    //         expect(indicator).toBe('gello');
-    //     });
-    // });
+        return Promise.resolve().then(() => {
+            const activeIndicator = element.shadowRoot.querySelector(
+                '.slds-is-active'
+            );
+            expect(activeIndicator.className).not.toContain(
+                'avonni-carousel-progress-indicator-shaded-active'
+            );
+            const indicators = element.shadowRoot.querySelectorAll(
+                '.slds-carousel__indicator-action'
+            );
+            indicators.forEach((indicator) => {
+                expect(indicator.className).not.toContain(
+                    'avonni-carousel-progress-indicator-shaded-inactive'
+                );
+            });
+        });
+    });
+
+    it('Carousel indicator variant shaded', () => {
+        const element = createElement('base-carousel', {
+            is: Carousel
+        });
+        document.body.appendChild(element);
+
+        element.items = items;
+        element.hideIndicator = false;
+        element.disableAutoScroll = true;
+        element.indicatorVariant = 'shaded';
+
+        return Promise.resolve().then(() => {
+            const activeIndicator = element.shadowRoot.querySelector(
+                '.avonni-carousel-progress-indicator-shaded-active'
+            );
+            expect(activeIndicator.className).toBeTruthy();
+            const indicators = element.shadowRoot.querySelectorAll(
+                '.slds-carousel__indicator-action'
+            );
+            indicators.forEach((indicator) => {
+                expect(indicator.className).toContain(
+                    'avonni-carousel-progress-indicator-shaded-inactive'
+                );
+            });
+        });
+    });
 });
