@@ -99,4 +99,113 @@ describe('Calendar', () => {
             expect(dates.includes('25')).toBeTruthy();
         });
     });
+
+    // marked dates
+    it('Calendar marked dates', () => {
+        const element = createElement('base-calendar', {
+            is: Calendar
+        });
+        document.body.appendChild(element);
+
+        element.value = '05/09/2021';
+        element.markedDates = [5, 10, 15, 20, 25];
+        element.min = new Date('05/01/2021');
+        element.max = new Date('05/31/2021');
+
+        return Promise.resolve().then(() => {
+            const dates = [];
+            const markedDates = element.shadowRoot.querySelectorAll(
+                '.avonni-marked-cell'
+            );
+            markedDates.forEach((date) => {
+                dates.push(date.textContent);
+            });
+            expect(dates.includes('5')).toBeTruthy();
+            expect(dates.includes('10')).toBeTruthy();
+            expect(dates.includes('15')).toBeTruthy();
+            expect(dates.includes('20')).toBeTruthy();
+            expect(dates.includes('25')).toBeTruthy();
+        });
+    });
+
+    // min & max
+    it('Calendar min and max', () => {
+        const element = createElement('base-calendar', {
+            is: Calendar
+        });
+        document.body.appendChild(element);
+
+        element.value = '05/09/2021';
+        element.min = new Date('05/01/2021');
+        element.max = new Date('05/31/2021');
+
+        return Promise.resolve().then(() => {
+            const dateArray = [];
+            const dates = element.shadowRoot.querySelectorAll('.slds-day');
+            dates.forEach((date) => {
+                dateArray.push(date.textContent);
+            });
+            expect(dateArray.slice(0, 1)[0]).toBe('1');
+            expect(dateArray.slice(-1)[0]).toBe('31');
+        });
+    });
+
+    // week number
+    it('Calendar week number', () => {
+        const element = createElement('base-calendar', {
+            is: Calendar
+        });
+        document.body.appendChild(element);
+
+        element.value = '05/09/2021';
+        element.min = new Date('05/01/2021');
+        element.max = new Date('05/31/2021');
+        element.weekNumber = true;
+
+        return Promise.resolve().then(() => {
+            const weekNumbers = [];
+            const weeks = element.shadowRoot.querySelectorAll(
+                '.avonni-week-cell'
+            );
+            expect(weeks).toHaveLength(6);
+
+            weeks.forEach((week) => {
+                weekNumbers.push(week.textContent);
+            });
+            expect(weekNumbers.includes('18')).toBeTruthy();
+            expect(weekNumbers.includes('19')).toBeTruthy();
+            expect(weekNumbers.includes('20')).toBeTruthy();
+            expect(weekNumbers.includes('21')).toBeTruthy();
+            expect(weekNumbers.includes('22')).toBeTruthy();
+            expect(weekNumbers.includes('23')).toBeTruthy();
+        });
+    });
+
+    // multi-value
+    it('Calendar multi-value', () => {
+        const element = createElement('base-calendar', {
+            is: Calendar
+        });
+        document.body.appendChild(element);
+
+        element.value = '05/09/2021';
+        element.min = new Date('05/01/2021');
+        element.max = new Date('05/31/2021');
+        element.multiValue = '05/11/2021';
+
+        return Promise.resolve().then(() => {
+            const days = [];
+            const selectedDays = element.shadowRoot.querySelectorAll(
+                '.slds-is-selected'
+            );
+            expect(selectedDays).toHaveLength(3);
+
+            selectedDays.forEach((day) => {
+                days.push(day.textContent);
+            });
+            expect(days.includes('9')).toBeTruthy();
+            expect(days.includes('10')).toBeTruthy();
+            expect(days.includes('11')).toBeTruthy();
+        });
+    });
 });
