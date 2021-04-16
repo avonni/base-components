@@ -168,7 +168,7 @@ describe('InputToggle', () => {
 
         return Promise.resolve().then(() => {
             const fauxToggle = element.shadowRoot.querySelector(
-                '.avonni-input-toggle__faux_hide-mark'
+                '.faux_hide-mark'
             );
             expect(fauxToggle).toBeTruthy();
         });
@@ -226,7 +226,7 @@ describe('InputToggle', () => {
     });
 
     // message-when-value-missing
-    // Depends on required, focus() and blur() to pass
+    // Depends on required, focus(), blur() and showHelpMessageIfInvalid()
     it('messageWhenValueMissing', () => {
         const element = createElement('base-input-toggle', {
             is: InputToggle
@@ -239,6 +239,7 @@ describe('InputToggle', () => {
             .then(() => {
                 element.focus();
                 element.blur();
+                element.showHelpMessageIfInvalid();
             })
             .then(() => {
                 const message = element.shadowRoot.querySelector(
@@ -297,11 +298,7 @@ describe('InputToggle', () => {
         });
         document.body.appendChild(element);
         element.size = 'medium';
-        const sizeClasses = [
-            'avonni-input-toggle__faux_x-small',
-            'avonni-input-toggle__faux_small',
-            'avonni-input-toggle__faux_large'
-        ];
+        const sizeClasses = ['faux_x-small', 'faux_small', 'faux_large'];
         const fauxToggle = element.shadowRoot.querySelector(
             '.slds-checkbox_faux'
         );
@@ -319,10 +316,7 @@ describe('InputToggle', () => {
         });
         document.body.appendChild(element);
         element.size = 'x-small';
-        const sizeClasses = [
-            'avonni-input-toggle__faux_small',
-            'avonni-input-toggle__faux_large'
-        ];
+        const sizeClasses = ['faux_small', 'faux_large'];
         const fauxToggle = element.shadowRoot.querySelector(
             '.slds-checkbox_faux'
         );
@@ -331,9 +325,7 @@ describe('InputToggle', () => {
             expect(sizeClasses).toEqual(
                 expect.not.arrayContaining(Array.from(fauxToggle.classList))
             );
-            expect(fauxToggle.classList).toContain(
-                'avonni-input-toggle__faux_x-small'
-            );
+            expect(fauxToggle.classList).toContain('faux_x-small');
         });
     });
 
@@ -343,10 +335,7 @@ describe('InputToggle', () => {
         });
         document.body.appendChild(element);
         element.size = 'small';
-        const sizeClasses = [
-            'avonni-input-toggle__faux_x-small',
-            'avonni-input-toggle__faux_large'
-        ];
+        const sizeClasses = ['faux_x-small', 'faux_large'];
         const fauxToggle = element.shadowRoot.querySelector(
             '.slds-checkbox_faux'
         );
@@ -355,9 +344,7 @@ describe('InputToggle', () => {
             expect(sizeClasses).toEqual(
                 expect.not.arrayContaining(Array.from(fauxToggle.classList))
             );
-            expect(fauxToggle.classList).toContain(
-                'avonni-input-toggle__faux_small'
-            );
+            expect(fauxToggle.classList).toContain('faux_small');
         });
     });
 
@@ -367,10 +354,7 @@ describe('InputToggle', () => {
         });
         document.body.appendChild(element);
         element.size = 'large';
-        const sizeClasses = [
-            'avonni-input-toggle__faux_x-small',
-            'avonni-input-toggle__faux_small'
-        ];
+        const sizeClasses = ['faux_x-small', 'faux_small'];
         const fauxToggle = element.shadowRoot.querySelector(
             '.slds-checkbox_faux'
         );
@@ -379,9 +363,7 @@ describe('InputToggle', () => {
             expect(sizeClasses).toEqual(
                 expect.not.arrayContaining(Array.from(fauxToggle.classList))
             );
-            expect(fauxToggle.classList).toContain(
-                'avonni-input-toggle__faux_large'
-            );
+            expect(fauxToggle.classList).toContain('faux_large');
         });
     });
 
