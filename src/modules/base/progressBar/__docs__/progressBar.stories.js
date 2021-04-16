@@ -85,7 +85,7 @@ export default {
                 category: 'Value'
             }
         },
-        badges: {
+        referenceLines: {
             control: {
                 type: 'object'
             },
@@ -170,7 +170,7 @@ export default {
     }
 };
 
-const oneBadge = [
+const oneReferenceLine = [
     {
         label: 'Avg',
         value: 90,
@@ -179,7 +179,7 @@ const oneBadge = [
     }
 ];
 
-const multipleBadges = [
+const multipleReferenceLines = [
     {
         label: '1st',
         value: 10,
@@ -212,7 +212,7 @@ export const Base = Template.bind({});
 Base.args = {
     label: 'Label',
     value: 45,
-    badges: oneBadge
+    referenceLines: oneReferenceLine
 };
 
 export const Vertical = Template.bind({});
@@ -220,21 +220,21 @@ Vertical.args = {
     label: 'Vertical progress bar',
     value: 45,
     orientation: 'vertical',
-    badges: oneBadge
+    referenceLines: oneReferenceLine
 };
 
-export const MultipleBadges = Template.bind({});
-MultipleBadges.args = {
-    label: 'Progress bar with multiple badges',
+export const MultipleReferenceLines = Template.bind({});
+MultipleReferenceLines.args = {
+    label: 'Progress bar with multiple reference lines',
     value: 45,
-    badges: multipleBadges
+    referenceLines: multipleReferenceLines
 };
 
 export const ThickWarningTheme = Template.bind({});
 ThickWarningTheme.args = {
     label: 'Thick circular progress bar with warning theme',
     value: 87,
-    badges: oneBadge,
+    referenceLines: oneReferenceLine,
     theme: 'warning',
     thickness: 'large',
     variant: 'circular'
@@ -244,7 +244,7 @@ export const TexturedVisibleValue = Template.bind({});
 TexturedVisibleValue.args = {
     label: 'Textured progress bar with visible value',
     value: 24,
-    badges: oneBadge,
+    referenceLines: oneReferenceLine,
     valueLabel: 'Value label',
     showValue: true,
     textured: true
@@ -254,7 +254,7 @@ export const ExtraSmallVertical = Template.bind({});
 ExtraSmallVertical.args = {
     label: 'Extra small and thin vertical progress bar',
     value: 63,
-    badges: oneBadge,
+    referenceLines: oneReferenceLine,
     valueLabel: 'Value label',
     valuePosition: 'bottom-right',
     showValue: true,
