@@ -207,6 +207,10 @@
             "path": "src/modules/base/positionLibrary/positionLibrary.js"
         },
         {
+            "name": "c/primitiveAvatar",
+            "path": "src/modules/base/primitiveAvatar/primitiveAvatar.js"
+        },
+        {
             "name": "c/primitiveColorpickerButton",
             "path": "src/modules/base/primitiveColorpickerButton/primitiveColorpickerButton.js"
         },
