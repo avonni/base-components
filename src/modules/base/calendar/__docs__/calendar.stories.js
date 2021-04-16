@@ -157,10 +157,3 @@ MarkedDates.args = {
     min: new Date('04/15/2021'),
     max: new Date('06/10/2021')
 };
-
-export const test = Template.bind({});
-test.args = {
-    value: '05/09/2021',
-    min: new Date('05/01/2021'),
-    max: new Date('05/31/2021')
-};
