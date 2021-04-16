@@ -71,4 +71,32 @@ describe('Calendar', () => {
             });
         });
     });
+
+    // disabled dates
+    it('Calendar disabled dates', () => {
+        const element = createElement('base-calendar', {
+            is: Calendar
+        });
+        document.body.appendChild(element);
+
+        element.value = '05/09/2021';
+        element.disabledDates = [5, 10, 15, 20, 25];
+        element.min = new Date('05/01/2021');
+        element.max = new Date('05/31/2021');
+
+        return Promise.resolve().then(() => {
+            const dates = [];
+            const disabledDates = element.shadowRoot.querySelectorAll(
+                '.avonni-disabled-cell'
+            );
+            disabledDates.forEach((date) => {
+                dates.push(date.textContent);
+            });
+            expect(dates.includes('5')).toBeTruthy();
+            expect(dates.includes('10')).toBeTruthy();
+            expect(dates.includes('15')).toBeTruthy();
+            expect(dates.includes('20')).toBeTruthy();
+            expect(dates.includes('25')).toBeTruthy();
+        });
+    });
 });
