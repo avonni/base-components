@@ -230,18 +230,18 @@ describe('Carousel', () => {
     });
 
     // indicator variant
-    it('Carousel indicator variant base', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
+    // it('Carousel indicator variant base', () => {
+    //     const element = createElement('base-carousel', {
+    //         is: Carousel
+    //     });
+    //     document.body.appendChild(element);
 
-        element.items = items;
-        element.hideIndicator = false;
+    //     element.items = items
+    //     element.hideIndicator = false
 
-        return Promise.resolve().then(() => {
-            const indicator = element.shadowRoot.querySelector('li');
-            expect(indicator).toBe('gello');
-        });
-    });
+    //     return Promise.resolve().then(() => {
+    //         const indicator = element.shadowRoot.querySelector('li');
+    //         expect(indicator).toBe('gello');
+    //     });
+    // });
 });
