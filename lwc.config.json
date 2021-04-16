@@ -207,6 +207,10 @@
             "path": "src/modules/base/positionLibrary/positionLibrary.js"
         },
         {
+            "name": "c/primitiveAvatar",
+            "path": "src/modules/base/primitiveAvatar/primitiveAvatar.js"
+        },
+        {
             "name": "c/primitiveColorpickerButton",
             "path": "src/modules/base/primitiveColorpickerButton/primitiveColorpickerButton.js"
         },
@@ -227,8 +231,8 @@
             "path": "src/modules/base/primitivePageHeaderField/primitivePageHeaderField.js"
         },
         {
-            "name": "c/primitiveProgressBarBadge",
-            "path": "src/modules/base/primitiveProgressBarBadge/primitiveProgressBarBadge.js"
+            "name": "c/primitiveProgressBarReferenceLine",
+            "path": "src/modules/base/primitiveProgressBarReferenceLine/primitiveProgressBarReferenceLine.js"
         },
         {
             "name": "c/primitiveProgressStep",
