@@ -115,6 +115,8 @@ export default class Carousel extends LightningElement {
                 src: item.src
             });
         });
+
+        this.initializePanels();
     }
 
     @api
