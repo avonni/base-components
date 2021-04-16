@@ -208,4 +208,28 @@ describe('Calendar', () => {
             expect(days.includes('11')).toBeTruthy();
         });
     });
+
+    /* ----- EVENTS ----- */
+
+    // calendar change
+    it('Calendar event change', () => {
+        const element = createElement('base-calendar', {
+            is: Calendar
+        });
+        document.body.appendChild(element);
+
+        element.value = '05/09/2021';
+        element.min = new Date('05/01/2021');
+        element.max = new Date('05/31/2021');
+
+        return Promise.resolve().then(() => {
+            const date = element.shadowRoot.querySelector('.slds-day');
+            element.addEventListener('change', (event) => {
+                expect(event.bubbles).toBeFalsy();
+                expect(event.cancelable).toBeFalsy();
+                expect(event.composed).toBeFalsy();
+            });
+            date.click();
+        });
+    });
 });

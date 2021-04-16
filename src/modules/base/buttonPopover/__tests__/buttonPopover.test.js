@@ -770,7 +770,7 @@ describe('Button Popover', () => {
         });
         document.body.appendChild(element);
         const button = element.shadowRoot.querySelector('lightning-button');
-        element.addEventListener('clickOnButton', (event) => {
+        element.addEventListener('click', (event) => {
             expect(event.bubbles).toBeFalsy();
             expect(event.cancelable).toBeFalsy();
             expect(event.composed).toBeFalsy();
