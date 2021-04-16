@@ -52,8 +52,10 @@ describe('Avatar', () => {
         element.hideAvatarDetails = true;
 
         return Promise.resolve().then(() => {
-            const image = element.shadowRoot.querySelector('img');
-            expect(image.alt).toBe('This is an alternative text');
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
+            );
+            expect(avatar.alternativeText).toBe('This is an alternative text');
         });
     });
 
@@ -68,8 +70,10 @@ describe('Avatar', () => {
         element.hideAvatarDetails = true;
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('lightning-icon');
-            expect(icon.title).toBe('This is an alternative text');
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
+            );
+            expect(avatar.alternativeText).toBe('This is an alternative text');
         });
     });
 
@@ -84,8 +88,10 @@ describe('Avatar', () => {
         element.hideAvatarDetails = true;
 
         return Promise.resolve().then(() => {
-            const abbr = element.shadowRoot.querySelector('abbr');
-            expect(abbr.title).toBe('This is an alternative text');
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
+            );
+            expect(avatar.alternativeText).toBe('This is an alternative text');
         });
     });
 
@@ -100,8 +106,10 @@ describe('Avatar', () => {
         element.hideAvatarDetails = true;
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('lightning-icon');
-            expect(icon.iconName).toBe('standard:account');
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
+            );
+            expect(avatar.fallbackIconName).toBe('standard:account');
         });
     });
 
@@ -116,8 +124,10 @@ describe('Avatar', () => {
         element.hideAvatarDetails = true;
 
         return Promise.resolve().then(() => {
-            const abbr = element.shadowRoot.querySelector('abbr');
-            expect(abbr.textContent).toBe('JD');
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
+            );
+            expect(avatar.initials).toBe('JD');
         });
     });
 
@@ -134,8 +144,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const div = element.shadowRoot.querySelector('div');
-            expect(div.className).toContain('avonni-avatar_xx-small');
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
+            );
+            expect(avatar.size).toBe('xx-small');
         });
     });
 
@@ -151,8 +163,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const div = element.shadowRoot.querySelector('div');
-            expect(div.className).toContain('slds-avatar_x-small');
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
+            );
+            expect(avatar.size).toBe('x-small');
         });
     });
 
@@ -168,8 +182,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const div = element.shadowRoot.querySelector('div');
-            expect(div.className).toContain('slds-avatar_small');
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
+            );
+            expect(avatar.size).toBe('small');
         });
     });
 
@@ -185,8 +201,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const div = element.shadowRoot.querySelector('div');
-            expect(div.className).toContain('slds-avatar_medium');
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
+            );
+            expect(avatar.size).toBe('medium');
         });
     });
 
@@ -202,8 +220,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const div = element.shadowRoot.querySelector('div');
-            expect(div.className).toContain('slds-avatar_large');
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
+            );
+            expect(avatar.size).toBe('large');
         });
     });
 
@@ -219,8 +239,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const div = element.shadowRoot.querySelector('div');
-            expect(div.className).toContain('avonni-avatar_x-large');
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
+            );
+            expect(avatar.size).toBe('x-large');
         });
     });
 
@@ -236,8 +258,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const div = element.shadowRoot.querySelector('div');
-            expect(div.className).toContain('avonni-avatar_xx-large');
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
+            );
+            expect(avatar.size).toBe('xx-large');
         });
     });
 
@@ -254,8 +278,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
-            expect(img.src).toBe(
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
+            );
+            expect(avatar.src).toBe(
                 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
             );
         });
@@ -274,8 +300,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const div = element.shadowRoot.querySelector('div');
-            expect(div.className).toContain('avonni-avatar_square');
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
+            );
+            expect(avatar.variant).toBe('square');
         });
     });
 
@@ -291,8 +319,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const div = element.shadowRoot.querySelector('div');
-            expect(div.className).toContain('avonni-avatar_circle');
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
+            );
+            expect(avatar.variant).toBe('circle');
         });
     });
 
@@ -309,12 +339,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const status = element.shadowRoot.querySelector('c-primitive-icon');
-            expect(status.className).toContain(
-                'avonni-avatar__status_approved'
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
             );
-            const icon = element.shadowRoot.querySelector('c-primitive-icon');
-            expect(icon.iconName).toBe('utility:check');
+            expect(avatar.status).toBe('approved');
         });
     });
 
@@ -330,10 +358,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const status = element.shadowRoot.querySelector('c-primitive-icon');
-            expect(status.className).toContain('avonni-avatar__status_locked');
-            const icon = element.shadowRoot.querySelector('c-primitive-icon');
-            expect(icon.iconName).toBe('utility:lock');
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
+            );
+            expect(avatar.status).toBe('locked');
         });
     });
 
@@ -349,12 +377,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const status = element.shadowRoot.querySelector('c-primitive-icon');
-            expect(status.className).toContain(
-                'avonni-avatar__status_declined'
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
             );
-            const icon = element.shadowRoot.querySelector('c-primitive-icon');
-            expect(icon.iconName).toBe('utility:close');
+            expect(avatar.status).toBe('declined');
         });
     });
 
@@ -370,10 +396,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const status = element.shadowRoot.querySelector('c-primitive-icon');
-            expect(status.className).toContain('avonni-avatar__status_unknown');
-            const icon = element.shadowRoot.querySelector('c-primitive-icon');
-            expect(icon.iconName).toBe('utility:help');
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
+            );
+            expect(avatar.status).toBe('unknown');
         });
     });
 
@@ -391,8 +417,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const status = element.shadowRoot.querySelector('c-primitive-icon');
-            expect(status.className).toContain('avonni-avatar_top-right');
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
+            );
+            expect(avatar.statusPosition).toBe('top-right');
         });
     });
 
@@ -409,8 +437,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const status = element.shadowRoot.querySelector('c-primitive-icon');
-            expect(status.className).toContain('avonni-avatar_top-left');
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
+            );
+            expect(avatar.statusPosition).toBe('top-left');
         });
     });
 
@@ -427,8 +457,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const status = element.shadowRoot.querySelector('c-primitive-icon');
-            expect(status.className).toContain('avonni-avatar_bottom-right');
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
+            );
+            expect(avatar.statusPosition).toBe('bottom-right');
         });
     });
 
@@ -445,8 +477,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const status = element.shadowRoot.querySelector('c-primitive-icon');
-            expect(status.className).toContain('avonni-avatar_bottom-left');
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
+            );
+            expect(avatar.statusPosition).toBe('bottom-left');
         });
     });
 
@@ -464,12 +498,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const status = element.shadowRoot.querySelector('c-primitive-icon');
-            expect(status.title).toBe('Status title');
-            const assText = element.shadowRoot.querySelector(
-                '.slds-assistive-text'
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
             );
-            expect(assText.textContent).toBe('Status title');
+            expect(avatar.statusTitle).toBe('Status title');
         });
     });
 
@@ -486,10 +518,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const presence = element.shadowRoot.querySelector(
-                '.avonni-avatar__presence.avonni-avatar__presence_online'
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
             );
-            expect(presence).toBeTruthy();
+            expect(avatar.presence).toBe('online');
         });
     });
 
@@ -505,10 +537,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const presence = element.shadowRoot.querySelector(
-                '.avonni-avatar__presence.avonni-avatar__presence_busy'
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
             );
-            expect(presence).toBeTruthy();
+            expect(avatar.presence).toBe('busy');
         });
     });
 
@@ -524,10 +556,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const presence = element.shadowRoot.querySelector(
-                '.avonni-avatar__presence.avonni-avatar__presence_focus'
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
             );
-            expect(presence).toBeTruthy();
+            expect(avatar.presence).toBe('focus');
         });
     });
 
@@ -543,10 +575,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const presence = element.shadowRoot.querySelector(
-                '.avonni-avatar__presence.avonni-avatar__presence_offline'
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
             );
-            expect(presence).toBeTruthy();
+            expect(avatar.presence).toBe('offline');
         });
     });
 
@@ -562,10 +594,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const presence = element.shadowRoot.querySelector(
-                '.avonni-avatar__presence.avonni-avatar__presence_blocked'
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
             );
-            expect(presence).toBeTruthy();
+            expect(avatar.presence).toBe('blocked');
         });
     });
 
@@ -581,10 +613,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const presence = element.shadowRoot.querySelector(
-                '.avonni-avatar__presence.avonni-avatar__presence_away'
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
             );
-            expect(presence).toBeTruthy();
+            expect(avatar.presence).toBe('away');
         });
     });
 
@@ -602,10 +634,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const presence = element.shadowRoot.querySelector(
-                '.avonni-avatar__presence.avonni-avatar__presence_online'
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
             );
-            expect(presence.title).toBe('Presence Title');
+            expect(avatar.presenceTitle).toBe('Presence Title');
         });
     });
 
@@ -623,10 +655,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const presence = element.shadowRoot.querySelector(
-                '.avonni-avatar__presence.avonni-avatar__presence_online.avonni-avatar_bottom-right'
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
             );
-            expect(presence).toBeTruthy();
+            expect(avatar.presencePosition).toBe('bottom-right');
         });
     });
 
@@ -643,10 +675,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const presence = element.shadowRoot.querySelector(
-                '.avonni-avatar__presence.avonni-avatar__presence_online.avonni-avatar_bottom-left'
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
             );
-            expect(presence).toBeTruthy();
+            expect(avatar.presencePosition).toBe('bottom-left');
         });
     });
 
@@ -663,10 +695,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const presence = element.shadowRoot.querySelector(
-                '.avonni-avatar__presence.avonni-avatar__presence_online.avonni-avatar_top-left'
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
             );
-            expect(presence).toBeTruthy();
+            expect(avatar.presencePosition).toBe('top-left');
         });
     });
 
@@ -683,10 +715,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const presence = element.shadowRoot.querySelector(
-                '.avonni-avatar__presence.avonni-avatar__presence_online.avonni-avatar_top-right'
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
             );
-            expect(presence).toBeTruthy();
+            expect(avatar.presencePosition).toBe('top-right');
         });
     });
 
@@ -704,8 +736,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const abbr = element.shadowRoot.querySelector('abbr');
-            expect(abbr.textContent).toBe('JD');
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
+            );
+            expect(avatar.entityIconName).toBe('standard:account');
         });
     });
 
@@ -724,10 +758,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const entity = element.shadowRoot.querySelector(
-                '.slds-avatar.slds-current-color.avonni-avatar__entity.slds-icon-standard-account'
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
             );
-            expect(entity.className).toContain('avonni-avatar_top-right');
+            expect(avatar.entityPosition).toBe('top-right');
         });
     });
 
@@ -745,10 +779,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const entity = element.shadowRoot.querySelector(
-                '.slds-avatar.slds-current-color.avonni-avatar__entity.slds-icon-standard-account'
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
             );
-            expect(entity.className).toContain('avonni-avatar_top-left');
+            expect(avatar.entityPosition).toBe('top-left');
         });
     });
 
@@ -766,10 +800,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const entity = element.shadowRoot.querySelector(
-                '.slds-avatar.slds-current-color.avonni-avatar__entity.slds-icon-standard-account'
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
             );
-            expect(entity.className).toContain('avonni-avatar_bottom-right');
+            expect(avatar.entityPosition).toBe('bottom-right');
         });
     });
 
@@ -787,10 +821,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const entity = element.shadowRoot.querySelector(
-                '.slds-avatar.slds-current-color.avonni-avatar__entity.slds-icon-standard-account'
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
             );
-            expect(entity.className).toContain('avonni-avatar_bottom-left');
+            expect(avatar.entityPosition).toBe('bottom-left');
         });
     });
 
@@ -807,8 +841,10 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
-            expect(img.src).toBe(
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
+            );
+            expect(avatar.entitySrc).toBe(
                 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
             );
         });
@@ -828,8 +864,10 @@ describe('Avatar', () => {
         element.entityTitle = 'Entity Title';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
-            expect(img.title).toBe('Entity Title');
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
+            );
+            expect(avatar.entityTitle).toBe('Entity Title');
         });
     });
 
@@ -848,10 +886,31 @@ describe('Avatar', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const entity = element.shadowRoot.querySelector(
-                '.slds-avatar.slds-current-color.avonni-avatar__entity.slds-icon-standard-account.avonni-avatar_bottom-right'
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
             );
-            expect(entity.className).toContain('slds-avatar_circle');
+            expect(avatar.entityVariant).toBe('circle');
+        });
+    });
+
+    it('Avatar entity square', () => {
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+        document.body.appendChild(element);
+
+        element.entityIconName = 'standard:account';
+        element.entityPosition = 'bottom-right';
+        element.entityVariant = 'square';
+        element.hideAvatarDetails = true;
+        element.src =
+            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
+
+        return Promise.resolve().then(() => {
+            const avatar = element.shadowRoot.querySelector(
+                'c-primitive-avatar'
+            );
+            expect(avatar.entityVariant).toBe('square');
         });
     });
 
