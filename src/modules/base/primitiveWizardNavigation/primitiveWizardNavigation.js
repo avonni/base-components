@@ -8,6 +8,12 @@ const POSITIONS = {
     defaultButtonFinishIcon: 'left',
     defaultAction: 'left'
 };
+
+const INDICATOR_POSITIONS = {
+    valid: ['header', 'footer'],
+    default: 'footer'
+};
+
 const BUTTON_VARIANTS = {
     valid: [
         'bare',
@@ -35,8 +41,6 @@ const DEFAULT_FRACTION_PREFIX_LABEL = 'Step';
 const DEFAULT_FRACTION_LABEL = 'of';
 
 export default class PrimitiveWizardNavigation extends LightningElement {
-    @api position;
-    @api indicatorPosition;
     @api buttonPreviousIconName;
     @api buttonNextIconName;
     @api buttonFinishIconName;
@@ -59,19 +63,21 @@ export default class PrimitiveWizardNavigation extends LightningElement {
     _actionPosition = POSITIONS.defaultAction;
     _fractionPrefixLabel = DEFAULT_FRACTION_PREFIX_LABEL;
     _fractionLabel = DEFAULT_FRACTION_LABEL;
+    _indicatorPosition = 'footer';
+    _position = 'footer';
 
-    lastStep;
+    lastStep = false;
     progressIndicatorVariant = 'base';
     progressIndicatorType = 'base';
     progressBarValue = 0;
     fractionCurrentStep;
     fractionTotalSteps;
-    showBulletIndicator;
-    showProgressIndicator;
-    showFractionIndicator;
-    showBarIndicator;
-    hidePreviousButton;
-    hideNextFinishButton;
+    showBulletIndicator = false;
+    showProgressIndicator = false;
+    showFractionIndicator = false;
+    showBarIndicator = false;
+    hidePreviousButton = false;
+    hideNextFinishButton = false;
     previousButtonColClass;
     progressColClass = 'slds-text-align_left';
     actionsNextFinishButtonColClass;
@@ -84,7 +90,7 @@ export default class PrimitiveWizardNavigation extends LightningElement {
     }
 
     renderedCallback() {
-        if (!this._rendered && this.steps.length > 0 && this.currentStep) {
+        if (!this._rendered && this.steps.length > 0) {
             this._rendered = true;
 
             if (!this.hideIndicator) this._initIndicator();
@@ -121,6 +127,8 @@ export default class PrimitiveWizardNavigation extends LightningElement {
                 this.actionsSlotColClass = 'slds-hide';
             }
         }
+
+        this.showProgressIndicator = this.showBulletIndicator = this.showFractionIndicator = this.showBarIndicator = false;
 
         switch (this.indicatorType) {
             case 'base-shaded':
@@ -226,6 +234,14 @@ export default class PrimitiveWizardNavigation extends LightningElement {
     }
     set steps(proxy) {
         this._steps = proxy;
+
+        if (this._rendered && this._steps.length > 0) {
+            this._normalizeProxySteps();
+            this._updateSteps();
+
+            if (this.indicatorType === 'fractions' && !this.hideIndicator)
+                this._initIndicator();
+        }
     }
 
     @api
@@ -235,7 +251,9 @@ export default class PrimitiveWizardNavigation extends LightningElement {
     set currentStep(name) {
         this._currentStep = (typeof name === 'string' && name.trim()) || '';
 
-        if (this._rendered && this.steps) this._updateSteps();
+        if (this._rendered && this.steps.length > 0) {
+            this._updateSteps();
+        }
     }
 
     @api
@@ -247,6 +265,11 @@ export default class PrimitiveWizardNavigation extends LightningElement {
             fallbackValue: INDICATOR_TYPES.default,
             validValues: INDICATOR_TYPES.valid
         });
+
+        this._initIndicator();
+        if (this._rendered && this.steps.length > 0) {
+            this._updateSteps();
+        }
     }
 
     @api
@@ -255,6 +278,20 @@ export default class PrimitiveWizardNavigation extends LightningElement {
     }
     set hideIndicator(boolean) {
         this._hideIndicator = normalizeBoolean(boolean);
+        this._initIndicator();
+    }
+
+    @api
+    get indicatorPosition() {
+        return this._indicatorPosition;
+    }
+    set indicatorPosition(value) {
+        this._indicatorPosition = normalizeString(value, {
+            validValues: INDICATOR_POSITIONS.valid,
+            fallbackValue: INDICATOR_POSITIONS.default
+        });
+
+        this._initIndicator();
     }
 
     @api
@@ -362,6 +399,8 @@ export default class PrimitiveWizardNavigation extends LightningElement {
             fallbackValue: null,
             validValues: POSITIONS.valid
         });
+
+        if (this.isConnected) this._reorderColumns();
     }
 
     @api
@@ -373,6 +412,7 @@ export default class PrimitiveWizardNavigation extends LightningElement {
             fallbackValue: POSITIONS.defaultAction,
             validValues: POSITIONS.valid
         });
+        if (this.isConnected) this._reorderColumns();
     }
 
     @api
@@ -381,8 +421,10 @@ export default class PrimitiveWizardNavigation extends LightningElement {
     }
     set fractionPrefixLabel(prefix) {
         this._fractionPrefixLabel =
-            (typeof label === 'string' && prefix.trim()) ||
+            (typeof prefix === 'string' && prefix.trim()) ||
             DEFAULT_FRACTION_PREFIX_LABEL;
+
+        this._initIndicator();
     }
 
     @api
@@ -393,6 +435,21 @@ export default class PrimitiveWizardNavigation extends LightningElement {
         this._fractionLabel =
             (typeof label === 'string' && label.trim()) ||
             DEFAULT_FRACTION_LABEL;
+
+        this._initIndicator();
+    }
+
+    @api
+    get position() {
+        return this._position;
+    }
+    set position(value) {
+        this._position = normalizeString(value, {
+            validValues: INDICATOR_POSITIONS.valid,
+            fallbackValue: INDICATOR_POSITIONS.default
+        });
+
+        this._initIndicator();
     }
 
     handleButtonClick(event) {
