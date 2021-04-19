@@ -52,4 +52,103 @@ describe('Checkbox Group', () => {
             });
         });
     });
+
+    // label
+    it('Checkbox Group label', () => {
+        const element = createElement('base-checkbox-group', {
+            is: CheckboxGroup
+        });
+        document.body.appendChild(element);
+
+        element.options = options;
+        element.label = 'This is a label';
+
+        return Promise.resolve().then(() => {
+            const label = element.shadowRoot.querySelector(
+                '.slds-form-element__label'
+            );
+            expect(label.textContent).toBe('This is a label');
+        });
+    });
+
+    // type
+    it('Checkbox Group type checkbox', () => {
+        const element = createElement('base-checkbox-group', {
+            is: CheckboxGroup
+        });
+        document.body.appendChild(element);
+
+        element.options = options;
+
+        return Promise.resolve().then(() => {
+            const inputs = element.shadowRoot.querySelectorAll('div > span');
+            inputs.forEach((input) => {
+                expect(input.className).toBe('slds-checkbox');
+                expect(input.className).not.toContain(
+                    'slds-button slds-checkbox_button'
+                );
+            });
+        });
+    });
+
+    it('Checkbox Group type button', () => {
+        const element = createElement('base-checkbox-group', {
+            is: CheckboxGroup
+        });
+        document.body.appendChild(element);
+
+        element.options = options;
+        element.type = 'button';
+
+        return Promise.resolve().then(() => {
+            const inputs = element.shadowRoot.querySelectorAll('div > span');
+            inputs.forEach((input) => {
+                expect(input.className).toBe(
+                    'slds-button slds-checkbox_button'
+                );
+                expect(input.className).not.toBe('slds-checkbox');
+            });
+        });
+    });
+
+    // Message when value is missing
+    it('Checkbox Group message when value is missing', () => {
+        const element = createElement('base-checkbox-group', {
+            is: CheckboxGroup
+        });
+        document.body.appendChild(element);
+
+        element.options = options;
+        element.required = true;
+        element.messageWhenValueMissing = 'Value is Missing';
+
+        return Promise.resolve()
+            .then(() => {
+                element.focus();
+                element.blur();
+                element.showHelpMessageIfInvalid();
+            })
+            .then(() => {
+                const message = element.shadowRoot.querySelector(
+                    '.slds-form-element__help'
+                );
+                expect(message.textContent).toBe('Value is Missing');
+            });
+    });
+
+    // required
+    it('Checkbox Group required', () => {
+        const element = createElement('base-checkbox-group', {
+            is: CheckboxGroup
+        });
+        document.body.appendChild(element);
+
+        element.options = options;
+        element.required = true;
+
+        return Promise.resolve().then(() => {
+            const abbr = element.shadowRoot.querySelector('abbr');
+            expect(abbr).toBeTruthy();
+        });
+    });
 });
