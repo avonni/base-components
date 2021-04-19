@@ -264,9 +264,9 @@ describe('Carousel', () => {
         document.body.appendChild(element);
 
         element.items = items;
+        element.indicatorVariant = 'shaded';
 
         return Promise.resolve().then(() => {
-            element.indicatorVariant = 'shaded';
             const activeIndicator = element.shadowRoot.querySelector(
                 '.avonni-carousel-progress-indicator-shaded-active'
             );
@@ -298,12 +298,12 @@ describe('Carousel', () => {
                 '.slds-carousel__panel-action'
             );
             const handleClick = (event) => {
-                expect(event).toBeTruthy();
+                expect(event.detail).toBeTruthy();
                 expect(event.bubbles).toBeFalsy();
                 expect(event.cancelable).toBeFalsy();
                 expect(event.composed).toBeFalsy();
             };
-            element.addEventListener('click', handleClick);
+            element.addEventListener('itemclick', handleClick);
             item.click();
         });
     });

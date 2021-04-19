@@ -136,6 +136,9 @@ export default class Carousel extends LightningElement {
             fallbackValue: VARIANTS.default,
             validValues: VARIANTS.valid
         });
+        if (this.isConnected) {
+            this.initCarousel();
+        }
     }
 
     @api
