@@ -35,6 +35,7 @@ $ yarn add @avonni/base-components
 ### Use Avonni Components Inside of Salesforce Platform
 
 Go to the Github repo for Salesforce Platform [Avonni Base Components SFDX](https://github.com/avonni/base-components-sfdx)
+
 <a href="https://githubsfdeploy.herokuapp.com?owner=avonni&repo=base-components-sfdx&ref=main">
     <img alt="Deploy to Salesforce" src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">
 </a>
@@ -51,7 +52,7 @@ We use the [Jest JavaScript Testing Framework](https://jestjs.io/docs/en/getting
 
 ## Documentation
 
-- [Avonni Component Reference](https://www.avonnicomponents.com/)
+- [Avonni Components Reference](https://www.avonnicomponents.com/)
 - [Storybook](https://storybook.avonnicomponents.com/)
 
 ## Contributing
