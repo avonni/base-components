@@ -264,11 +264,9 @@ describe('Carousel', () => {
         document.body.appendChild(element);
 
         element.items = items;
-        element.hideIndicator = false;
-        element.disableAutoScroll = true;
-        element.indicatorVariant = 'shaded';
 
         return Promise.resolve().then(() => {
+            element.indicatorVariant = 'shaded';
             const activeIndicator = element.shadowRoot.querySelector(
                 '.avonni-carousel-progress-indicator-shaded-active'
             );
@@ -281,6 +279,32 @@ describe('Carousel', () => {
                     'avonni-carousel-progress-indicator-shaded-inactive'
                 );
             });
+        });
+    });
+
+    /* ----- EVENTS ----- */
+
+    // carousel itemclick
+    it('Carousel item click', () => {
+        const element = createElement('base-carousel', {
+            is: Carousel
+        });
+        document.body.appendChild(element);
+
+        element.items = items;
+
+        return Promise.resolve().then(() => {
+            const item = element.shadowRoot.querySelector(
+                '.slds-carousel__panel-action'
+            );
+            const handleClick = (event) => {
+                expect(event).toBeTruthy();
+                expect(event.bubbles).toBeFalsy();
+                expect(event.cancelable).toBeFalsy();
+                expect(event.composed).toBeFalsy();
+            };
+            element.addEventListener('click', handleClick);
+            item.click();
         });
     });
 });
