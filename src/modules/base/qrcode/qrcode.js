@@ -11,7 +11,7 @@ const DEFAULT_PADDING = 0;
 const DEFAULT_SIZE = 200;
 const DEFAULT_ENCODING = 'ISO_8859_1';
 const DEFAULT_ERROR_CORRECTION = 'L';
-const DEFAULT_RENDER_AS = '#svg';
+const DEFAULT_RENDER_AS = 'svg';
 const DEFAULT_COLOR = '#000';
 const DEFAULT_BACKGROUND_COLOR = '#fff';
 
@@ -245,6 +245,7 @@ export default class Qrcode extends LightningElement {
 
             if (this.renderAsSvg) {
                 let element = this.template.querySelector('.qrcode');
+                if (!element) return;
                 // eslint-disable-next-line @lwc/lwc/no-inner-html
                 element.innerHTML = svgCode;
 
@@ -253,6 +254,7 @@ export default class Qrcode extends LightningElement {
                 element.firstElementChild.style.maxWidth = '100%';
             } else {
                 let canvas = this.template.querySelector('canvas');
+                if (!canvas) return;
 
                 if (this.size) {
                     canvas.width = this.size;
