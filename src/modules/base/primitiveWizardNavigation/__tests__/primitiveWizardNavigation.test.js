@@ -1,6 +1,14 @@
 import { createElement } from 'lwc';
 import PrimitiveWizardNavigation from 'c/primitiveWizardNavigation';
 
+// Note:
+// Use of duplicate then() to make sure rendering is done before testing these attributes:
+// buttonFinishIconName
+// buttonFinishIconPosition
+// buttonFinishLabel
+// buttonFinishVariant
+// currentStep
+
 const STEPS = [
     {
         name: 'step-1',
@@ -35,6 +43,7 @@ describe('PrimitiveWizardNavigation', () => {
         expect(element.actionPosition).toBe('left');
         expect(element.buttonAlignmentBump).toBeUndefined();
         expect(element.buttonFinishIconName).toBeUndefined();
+        expect(element.buttonFinishIconPosition).toBe('left');
         expect(element.buttonFinishLabel).toBe('Finish');
         expect(element.buttonFinishVariant).toBe('neutral');
         expect(element.buttonNextIconName).toBeUndefined();
@@ -45,7 +54,6 @@ describe('PrimitiveWizardNavigation', () => {
         expect(element.buttonPreviousIconPosition).toBe('left');
         expect(element.buttonPreviousLabel).toBe('Previous');
         expect(element.buttonPreviousVariant).toBe('neutral');
-        expect(element.buttonFinishIconPosition).toBe('left');
         expect(element.currentStep).toBeUndefined();
         expect(element.fractionLabel).toBe('of');
         expect(element.fractionPrefixLabel).toBe('Step');
@@ -201,13 +209,15 @@ describe('PrimitiveWizardNavigation', () => {
         element.currentStep = 'step-4';
         element.steps = STEPS;
 
-        return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button'
-            );
-            const lastButton = buttons[buttons.length - 1];
-            expect(lastButton.iconName).toBe('utility:apps');
-        });
+        return Promise.resolve()
+            .then()
+            .then(() => {
+                const buttons = element.shadowRoot.querySelectorAll(
+                    'lightning-button'
+                );
+                const lastButton = buttons[buttons.length - 1];
+                expect(lastButton.iconName).toBe('utility:apps');
+            });
     });
 
     // button-finish-icon-position
@@ -223,14 +233,16 @@ describe('PrimitiveWizardNavigation', () => {
         element.currentStep = 'step-4';
         element.steps = STEPS;
 
-        return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button'
-            );
-            const lastButton = buttons[buttons.length - 1];
+        return Promise.resolve()
+            .then()
+            .then(() => {
+                const buttons = element.shadowRoot.querySelectorAll(
+                    'lightning-button'
+                );
+                const lastButton = buttons[buttons.length - 1];
 
-            expect(lastButton.iconPosition).toBe('right');
-        });
+                expect(lastButton.iconPosition).toBe('right');
+            });
     });
 
     // button-finish-label
@@ -246,14 +258,16 @@ describe('PrimitiveWizardNavigation', () => {
         element.currentStep = 'step-4';
         element.steps = STEPS;
 
-        return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button'
-            );
-            const lastButton = buttons[buttons.length - 1];
+        return Promise.resolve()
+            .then()
+            .then(() => {
+                const buttons = element.shadowRoot.querySelectorAll(
+                    'lightning-button'
+                );
+                const lastButton = buttons[buttons.length - 1];
 
-            expect(lastButton.label).toBe('A string label');
-        });
+                expect(lastButton.label).toBe('A string label');
+            });
     });
 
     // button-finish-variant
@@ -269,14 +283,16 @@ describe('PrimitiveWizardNavigation', () => {
         element.currentStep = 'step-4';
         element.steps = STEPS;
 
-        return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button'
-            );
-            const lastButton = buttons[buttons.length - 1];
+        return Promise.resolve()
+            .then()
+            .then(() => {
+                const buttons = element.shadowRoot.querySelectorAll(
+                    'lightning-button'
+                );
+                const lastButton = buttons[buttons.length - 1];
 
-            expect(lastButton.variant).toBe('inverse');
-        });
+                expect(lastButton.variant).toBe('inverse');
+            });
     });
 
     // button-next-icon-name
@@ -467,13 +483,15 @@ describe('PrimitiveWizardNavigation', () => {
         element.steps = STEPS;
         element.currentStep = 'step-4';
 
-        return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button'
-            );
-            const lastButton = buttons[buttons.length - 1];
-            expect(lastButton.dataset.action).toBe('finish');
-        });
+        return Promise.resolve()
+            .then()
+            .then(() => {
+                const buttons = element.shadowRoot.querySelectorAll(
+                    'lightning-button'
+                );
+                const lastButton = buttons[buttons.length - 1];
+                expect(lastButton.dataset.action).toBe('finish');
+            });
     });
 
     it('currentStep = first step', () => {
@@ -486,13 +504,15 @@ describe('PrimitiveWizardNavigation', () => {
         element.currentStep = 'step-1';
         element.steps = STEPS;
 
-        return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button'
-            );
-            const firstButton = buttons[0];
-            expect(firstButton.dataset.action).toBe('next');
-        });
+        return Promise.resolve()
+            .then()
+            .then(() => {
+                const buttons = element.shadowRoot.querySelectorAll(
+                    'lightning-button'
+                );
+                const firstButton = buttons[0];
+                expect(firstButton.dataset.action).toBe('next');
+            });
     });
 
     it('currentStep = middle step', () => {
