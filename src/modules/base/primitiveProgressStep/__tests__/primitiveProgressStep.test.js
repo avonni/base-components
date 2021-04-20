@@ -762,21 +762,6 @@ describe('PrimitiveProgressStep', () => {
         });
     });
 
-    // value
-    it('value', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
-        element.value = '3';
-
-        return Promise.resolve().then(() => {
-            expect(element.dataset.step).toBe('3');
-        });
-    });
-
     // waring-steps
     // Depends on value and setIcon
     it('warningSteps', () => {

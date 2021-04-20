@@ -78,7 +78,6 @@ export default class ProgressStep extends LightningElement {
 
     set value(value) {
         this._value = value;
-        this.setAttribute('data-step', value);
     }
 
     @api
@@ -197,7 +196,7 @@ export default class ProgressStep extends LightningElement {
         )
             .add({
                 'avonni-progress-step-popover-completed': this.completedSteps.includes(
-                    this.getAttribute('data-step')
+                    this.value
                 )
             })
             .add({
@@ -250,10 +249,7 @@ export default class ProgressStep extends LightningElement {
     }
 
     get isButtonDisabled() {
-        return (
-            this._buttonDisabled ||
-            this.disabledSteps.includes(this.getAttribute('data-step'))
-        );
+        return this._buttonDisabled || this.disabledSteps.includes(this.value);
     }
 
     get displayPopover() {
@@ -279,7 +275,7 @@ export default class ProgressStep extends LightningElement {
     isDisabled() {
         const buttons = this.template.querySelectorAll('button');
         buttons.forEach((button) => {
-            if (this.disabledSteps.includes(this.getAttribute('data-step'))) {
+            if (this.disabledSteps.includes(this.value)) {
                 button.setAttribute('disabled', 'true');
             }
         });
@@ -291,14 +287,14 @@ export default class ProgressStep extends LightningElement {
     }
 
     get primitiveButtonIconVariant() {
-        if (this.warningSteps.includes(this.getAttribute('data-step'))) {
+        if (this.warningSteps.includes(this.value)) {
             return 'warning';
         }
         return 'bare';
     }
 
     get primitivePopoverIconVariant() {
-        if (this.completedSteps.includes(this.getAttribute('data-step'))) {
+        if (this.completedSteps.includes(this.value)) {
             return 'inverse';
         }
         return '';
