@@ -174,17 +174,20 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
             const itemPosition = selectedItem.getBoundingClientRect();
 
             // Distance between the center of the selected item and the top of the first child group
+            // 24 is removed to compensate for the line not starting at the complete top of the level
             const itemHeight =
                 itemPosition.top +
                 itemPosition.height / 2 +
                 scroll -
-                currentLevelTop;
+                currentLevelTop -
+                24;
             // Distance between the top of the two boundary child groups
+
             const childHeight = child.currentLevelHeight;
 
             const height =
                 itemHeight > childHeight
-                    ? `calc(${itemHeight}px - 1.5rem)`
+                    ? `${itemHeight}px`
                     : `${childHeight}px`;
             line.setAttribute('style', `height: ${height};`);
         }
