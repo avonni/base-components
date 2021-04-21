@@ -1,4 +1,4 @@
-import Component from 'base/dateTimePicker';
+import Component from 'avonni/dateTimePicker';
 
 customElements.define(
     'ac-base-date-time-picker',

@@ -1,4 +1,4 @@
-import Component from 'base/avatar';
+import Component from 'avonni/avatar';
 
 customElements.define('ac-base-avatar', Component.CustomElementConstructor);
 

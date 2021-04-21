@@ -1,4 +1,4 @@
-import Component from 'base/inputRichText';
+import Component from 'avonni/inputRichText';
 
 customElements.define(
     'ac-base-input-rich-text',
