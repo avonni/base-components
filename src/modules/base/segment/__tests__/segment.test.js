@@ -139,6 +139,8 @@ describe('Segment', () => {
         });
     });
 
+    /* ----- EVENTS ----- */
+
     // change event
     it('change event', () => {
         const element = createElement('base-segment', {
