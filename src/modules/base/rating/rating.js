@@ -205,10 +205,6 @@ export default class Rating extends LightningElement {
         return !this._valueHidden && this.value;
     }
 
-    get isNumber() {
-        return this._variant === 'number';
-    }
-
     get items() {
         let items = [];
 
