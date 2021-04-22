@@ -1,7 +1,7 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
-const validVariants = ['base', 'shade'];
+const validVariants = ['base', 'shaded'];
 
 export default class VerticalProgressIndicator extends LightningElement {
     @api currentStep;
@@ -15,7 +15,10 @@ export default class VerticalProgressIndicator extends LightningElement {
         let indexCompleted = 0;
 
         elements.forEach((element, index) => {
-            element.setAttributes(this.contentInLine, this.variant === 'shade');
+            element.setAttributes(
+                this.contentInLine,
+                this.variant === 'shaded'
+            );
 
             if (element.getAttribute('data-step') === this.currentStep) {
                 indexCompleted = index;

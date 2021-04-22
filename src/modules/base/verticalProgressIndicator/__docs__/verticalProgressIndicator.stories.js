@@ -17,7 +17,7 @@ export default {
         variant: {
             control: {
                 type: 'select',
-                options: ['base', 'shade']
+                options: ['base', 'shaded']
             },
             defaultValue: 'base',
             description:
@@ -63,10 +63,10 @@ Base.args = {
     currentStep: '2'
 };
 
-export const Shade = Template.bind({});
-Shade.args = {
+export const Shaded = Template.bind({});
+Shaded.args = {
     currentStep: '2',
-    variant: 'shade'
+    variant: 'shaded'
 };
 
 export const HasError = Template.bind({});
