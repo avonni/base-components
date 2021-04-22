@@ -54,16 +54,16 @@ export default {
         },
         variant: {
             control: {
-                type: 'select',
-                options: [
-                    'border',
-                    'border-inverse',
-                    'border-filled',
-                    'bare',
-                    'bare-inverse',
-                    'container'
-                ]
+                type: 'select'
             },
+            options: [
+                'border',
+                'border-inverse',
+                'border-filled',
+                'bare',
+                'bare-inverse',
+                'container'
+            ],
             defaultValue: 'border',
             table: {
                 defaultValue: { summary: 'border' }
@@ -71,16 +71,16 @@ export default {
         },
         menuAlignment: {
             control: {
-                type: 'select',
-                options: [
-                    'left',
-                    'center',
-                    'right',
-                    'bottom-left',
-                    'bottom-center',
-                    'bottom-right'
-                ]
+                type: 'select'
             },
+            options: [
+                'left',
+                'center',
+                'right',
+                'bottom-left',
+                'bottom-center',
+                'bottom-right'
+            ],
             defaultValue: 'left',
             table: {
                 defaultValue: { summary: 'left' }
@@ -118,6 +118,11 @@ export default {
                 type: 'object'
             }
         }
+    },
+    args: {
+        withSearch: false,
+        isLoading: false,
+        disabled: false
     }
 };
 

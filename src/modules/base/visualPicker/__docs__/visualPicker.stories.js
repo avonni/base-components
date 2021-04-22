@@ -25,9 +25,9 @@ export default {
         },
         variant: {
             control: {
-                type: 'select',
-                options: ['coverable', 'non-coverable', 'vertical']
+                type: 'select'
             },
+            options: ['coverable', 'non-coverable', 'vertical'],
             defaultValue: 'non-coverable',
             description:
                 'Allowed values are coverable, non-coverable and vertical.',
@@ -37,9 +37,9 @@ export default {
         },
         type: {
             control: {
-                type: 'select',
-                options: ['radio', 'checkbox']
+                type: 'select'
             },
+            options: ['radio', 'checkbox'],
             defaultValue: 'radio',
             description: 'Allowed values are radio and checkbox.',
             table: {
@@ -48,9 +48,9 @@ export default {
         },
         size: {
             control: {
-                type: 'select',
-                options: ['xx-small', 'x-small', 'small', 'medium', 'large']
+                type: 'select'
             },
+            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
             defaultValue: 'medium',
             description:
                 'Allowed values are xx-small (4rem x 4 rem), x-small (6rem x 6 rem), small (8rem x 8rem), medium and large.',
@@ -60,9 +60,9 @@ export default {
         },
         ratio: {
             control: {
-                type: 'select',
-                options: ['1-by-1', '4-by-3', '16-by-9']
+                type: 'select'
             },
+            options: ['1-by-1', '4-by-3', '16-by-9'],
             defaultValue: '1-by-1',
             description: 'Values include 1-by-1, 4-by-3 and 16-by-9.',
             table: {
@@ -143,6 +143,12 @@ export default {
                 type: { summary: 'string' }
             }
         }
+    },
+    args: {
+        hideCheckMark: false,
+        hideBorder: false,
+        disabled: false,
+        required: false
     }
 };
 

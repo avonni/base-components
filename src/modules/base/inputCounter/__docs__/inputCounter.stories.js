@@ -68,14 +68,14 @@ export default {
         },
         variant: {
             control: {
-                type: 'select',
-                options: [
-                    'standard',
-                    'label-inline',
-                    'label-hidden',
-                    'label-stacked'
-                ]
+                type: 'select'
             },
+            options: [
+                'standard',
+                'label-inline',
+                'label-hidden',
+                'label-stacked'
+            ],
             defaultValue: 'standard',
             description:
                 'The variant changes the appearance of an input field. Accepted variants include standard, label-inline, label-hidden, and label-stacked. This value defaults to standard, which displays the label above the field. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and input field. Use label-stacked to place the label above the input field.',
@@ -202,6 +202,11 @@ export default {
                 type: { summary: 'string' }
             }
         }
+    },
+    args: {
+        disabled: false,
+        readOnly: false,
+        required: false
     }
 };
 

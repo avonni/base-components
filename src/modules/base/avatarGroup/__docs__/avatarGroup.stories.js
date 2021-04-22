@@ -15,16 +15,16 @@ export default {
         },
         size: {
             control: {
-                type: 'select',
-                options: [
-                    'x-small',
-                    'small',
-                    'medium',
-                    'large',
-                    'x-large',
-                    'xx-large'
-                ]
+                type: 'select'
             },
+            options: [
+                'x-small',
+                'small',
+                'medium',
+                'large',
+                'x-large',
+                'xx-large'
+            ],
             defaultValue: 'medium',
             description: 'x-small, small, medium and large.',
             table: {
@@ -33,9 +33,9 @@ export default {
         },
         variant: {
             control: {
-                type: 'select',
-                options: ['empty', 'circle', 'square']
+                type: 'select'
             },
+            options: ['empty', 'circle', 'square'],
             defaultValue: 'square',
             description:
                 'Shape of the avatars. Valid values include empty, circle or square.',
@@ -46,9 +46,9 @@ export default {
         },
         layout: {
             control: {
-                type: 'select',
-                options: ['stack', 'grid', 'list']
+                type: 'select'
             },
+            options: ['stack', 'grid', 'list'],
             defaultValue: 'stack',
             description: 'Valid values include stack, grid, list',
             table: {
@@ -86,18 +86,18 @@ export default {
         listButtonVariant: {
             name: 'list-button-variant',
             control: {
-                type: 'select',
-                options: [
-                    'neutral',
-                    'base',
-                    'brand',
-                    'brand-outline',
-                    'destructive',
-                    'destructive-text',
-                    'inverse',
-                    'success'
-                ]
+                type: 'select'
             },
+            options: [
+                'neutral',
+                'base',
+                'brand',
+                'brand-outline',
+                'destructive',
+                'destructive-text',
+                'inverse',
+                'success'
+            ],
             defaultValue: 'neutral',
             description:
                 'Variant of the button that appears in the list layout, when the number of avatars exceeds the max-count number.',
@@ -122,9 +122,9 @@ export default {
         listButtonIconPosition: {
             name: 'list-button-icon-position',
             control: {
-                type: 'radio',
-                options: ['left', 'right']
+                type: 'radio'
             },
+            options: ['left', 'right'],
             defaultValue: 'left',
             description:
                 'Position of the list button’s icon. Valid values include left and right.',

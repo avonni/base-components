@@ -9,9 +9,9 @@ export default {
     argTypes: {
         position: {
             control: {
-                type: 'select',
-                options: ['right', 'left']
+                type: 'select'
             },
+            options: ['right', 'left'],
             defaultValue: 'right',
             description: 'Valid values include left and right.',
             table: {
@@ -31,9 +31,9 @@ export default {
         },
         size: {
             control: {
-                type: 'select',
-                options: ['small', 'medium', 'large', 'x-large', 'full']
+                type: 'select'
             },
+            options: ['small', 'medium', 'large', 'x-large', 'full'],
             defaultValue: 'medium',
             description:
                 'Valid values include small, medium, large, x-large and full.',

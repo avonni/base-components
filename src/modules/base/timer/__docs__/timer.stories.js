@@ -42,18 +42,18 @@ export default {
         },
         variant: {
             control: {
-                type: 'select',
-                options: [
-                    'base',
-                    'neutral',
-                    'brand',
-                    'brand-outline',
-                    'destructive',
-                    'destructive-text',
-                    'inverse',
-                    'success'
-                ]
+                type: 'select'
             },
+            options: [
+                'base',
+                'neutral',
+                'brand',
+                'brand-outline',
+                'destructive',
+                'destructive-text',
+                'inverse',
+                'success'
+            ],
             defaultValue: 'neutral',
             description:
                 'The variant changes the appearance of the timer. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success. This value defaults to neutral.',
@@ -64,9 +64,9 @@ export default {
         },
         type: {
             control: {
-                type: 'select',
-                options: ['count-up', 'count-down']
+                type: 'select'
             },
+            options: ['count-up', 'count-down'],
             defaultValue: 'count-up',
             description: 'Values include count-up and count-down',
             table: {
@@ -77,9 +77,9 @@ export default {
         iconPosition: {
             name: 'icon-position',
             control: {
-                type: 'select',
-                options: ['left', 'right']
+                type: 'select'
             },
+            options: ['left', 'right'],
             defaultValue: 'left',
             description:
                 'Describes the position of the icon with respect to body. Options include left and right. This value defaults to left.',
@@ -90,9 +90,9 @@ export default {
         },
         format: {
             control: {
-                type: 'select',
-                options: ['hh:mm:ss', 'mm:ss', 'hh:mm', 'hh', 'mm', 'ss']
+                type: 'select'
             },
+            options: ['hh:mm:ss', 'mm:ss', 'hh:mm', 'hh', 'mm', 'ss'],
             defaultValue: 'hh:mm:ss',
             description:
                 'Values include "hh:mm:ss", "mm:ss", "hh:mm", “hh”, “mm”, “ss”',
@@ -126,6 +126,10 @@ export default {
                 type: { summary: 'boolean' }
             }
         }
+    },
+    args: {
+        autoStart: false,
+        repeat: false
     }
 };
 

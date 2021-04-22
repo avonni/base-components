@@ -51,9 +51,9 @@ export default {
         },
         type: {
             control: {
-                type: 'select',
-                options: ['base']
+                type: 'select'
             },
+            options: ['base'],
             description:
                 'Changes the visual pattern of the indicator. Valid values are base and arrow. The default is base.',
             defaultValue: 'base',
@@ -64,9 +64,9 @@ export default {
         },
         variant: {
             control: {
-                type: 'select',
-                options: ['base', 'shaded']
+                type: 'select'
             },
+            options: ['base', 'shaded'],
             description:
                 'Changes the appearance of the progress indicator for the base type only. Valid values are base or shaded. The shaded variant adds a light gray border to the step indicators. The default is base.',
             defaultValue: 'base',

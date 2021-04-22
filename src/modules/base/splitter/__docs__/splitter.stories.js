@@ -6,9 +6,9 @@ export default {
     argTypes: {
         orientation: {
             control: {
-                type: 'radio',
-                options: ['horizontal', 'vertical']
+                type: 'radio'
             },
+            options: ['horizontal', 'vertical'],
             defaultValue: 'horizontal',
             description:
                 'Specifies the orientation of the widget. Supported values are "horizontal" and "vertical".',

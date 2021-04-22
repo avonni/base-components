@@ -40,17 +40,9 @@ export default {
         },
         rounded: {
             control: {
-                type: 'select',
-                options: [
-                    'top',
-                    'right',
-                    'bottom',
-                    'left',
-                    'circle',
-                    false,
-                    true
-                ]
+                type: 'select'
             },
+            options: ['top', 'right', 'bottom', 'left', 'circle', false, true],
             defaultValue: false,
             table: {
                 defaultValue: { summary: false }
@@ -128,6 +120,16 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         }
+    },
+    args: {
+        block: false,
+        fluid: false,
+        fluidGrow: false,
+        thumbnail: false,
+        left: false,
+        right: false,
+        center: false,
+        blank: false
     }
 };
 

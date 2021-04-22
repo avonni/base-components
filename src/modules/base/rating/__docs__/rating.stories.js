@@ -34,9 +34,9 @@ export default {
         iconSize: {
             name: 'icon-size',
             control: {
-                type: 'select',
-                options: ['x-small', 'small', 'medium', 'large']
+                type: 'select'
             },
+            options: ['x-small', 'small', 'medium', 'large'],
             defaultValue: 'large',
             description:
                 'Valid values include x-small, small, medium and large.',
@@ -56,14 +56,14 @@ export default {
         },
         variant: {
             control: {
-                type: 'select',
-                options: [
-                    'standard',
-                    'label-inline',
-                    'label-hidden',
-                    'label-stacked'
-                ]
+                type: 'select'
             },
+            options: [
+                'standard',
+                'label-inline',
+                'label-hidden',
+                'label-stacked'
+            ],
             defaultValue: 'standard',
             description:
                 'The variant changes the appearance of an input field. Accepted variants include standard, label-inline, label-hidden, and label-stacked. This value defaults to standard, which displays the label above the field. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and input field. Use label-stacked to place the label above the input field.',
@@ -96,9 +96,9 @@ export default {
         },
         selection: {
             control: {
-                type: 'select',
-                options: ['continuous', 'single']
+                type: 'select'
             },
+            options: ['continuous', 'single'],
             defaultValue: 'continuous',
             description: 'Allowed values include continuous and single',
             table: {
@@ -141,6 +141,11 @@ export default {
                 type: { summary: 'boolean' }
             }
         }
+    },
+    args: {
+        disabled: false,
+        readOnly: false,
+        valueHidden: false
     }
 };
 

@@ -13,9 +13,9 @@ export default {
         },
         size: {
             control: {
-                type: 'select',
-                options: ['x-small', 'small', 'medium', 'large', 'full']
+                type: 'select'
             },
+            options: ['x-small', 'small', 'medium', 'large', 'full'],
             defaultValue: 'full',
             description:
                 'The size of the progress bar. Valid values are x-small, small, medium, large and full. The default value is medium.',
@@ -54,16 +54,16 @@ export default {
         valuePosition: {
             name: 'value-position',
             control: {
-                type: 'select',
-                options: [
-                    'left',
-                    'right',
-                    'top-right',
-                    'top-left',
-                    'bottom-right',
-                    'bottom-left'
-                ]
+                type: 'select'
             },
+            options: [
+                'left',
+                'right',
+                'top-right',
+                'top-left',
+                'bottom-right',
+                'bottom-left'
+            ],
             defaultValue: 'top-right',
             description:
                 'Valid values include left, right, top-right, top-left, bottom-right and bottom-left',
@@ -97,9 +97,9 @@ export default {
         },
         variant: {
             control: {
-                type: 'select',
-                options: ['base', 'circular']
+                type: 'select'
             },
+            options: ['base', 'circular'],
             defaultValue: 'base',
             description:
                 'The variant changes the appearance of the progress bar. Accepted variants include base or circular. This value defaults to base.',
@@ -110,18 +110,18 @@ export default {
         },
         theme: {
             control: {
-                type: 'select',
-                options: [
-                    'base',
-                    'success',
-                    'inverse',
-                    'alt-inverse',
-                    'warning',
-                    'info',
-                    'error',
-                    'offline'
-                ]
+                type: 'select'
             },
+            options: [
+                'base',
+                'success',
+                'inverse',
+                'alt-inverse',
+                'warning',
+                'info',
+                'error',
+                'offline'
+            ],
             defaultValue: 'base',
             description:
                 'Valid values includes base, success, inverse, alt-inverse, warning, info, error and offline.',
@@ -143,9 +143,9 @@ export default {
         },
         thickness: {
             control: {
-                type: 'select',
-                options: ['x-small', 'small', 'medium', 'large']
+                type: 'select'
             },
+            options: ['x-small', 'small', 'medium', 'large'],
             defaultValue: 'medium',
             description:
                 'Set progress bar thickness. Valid values include x-small, small, medium and large',
@@ -156,9 +156,9 @@ export default {
         },
         orientation: {
             control: {
-                type: 'select',
-                options: ['horizontal', 'vertical']
+                type: 'select'
             },
+            options: ['horizontal', 'vertical'],
             defaultValue: 'horizontal',
             description:
                 'Orientation of the progress bar to be used. Valid values include horizontal and vertical.',
@@ -167,6 +167,10 @@ export default {
                 defaultValue: { summary: 'horizontal' }
             }
         }
+    },
+    args: {
+        showValue: false,
+        textured: false
     }
 };
 

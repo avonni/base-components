@@ -45,14 +45,14 @@ export default {
         },
         variant: {
             control: {
-                type: 'select',
-                options: [
-                    'base',
-                    'object-home',
-                    'record-home',
-                    'record-home-vertical'
-                ]
+                type: 'select'
             },
+            options: [
+                'base',
+                'object-home',
+                'record-home',
+                'record-home-vertical'
+            ],
             defaultValue: 'base',
             description:
                 'The type of component. Valid values include base, object-home, record-home and record-home-vertical',
