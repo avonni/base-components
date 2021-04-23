@@ -15,9 +15,9 @@ export default {
         },
         type: {
             control: {
-                type: 'select',
-                options: ['checkbox', 'button']
+                type: 'select'
             },
+            options: ['checkbox', 'button'],
             defaultValue: 'checkbox',
             table: {
                 defaultValue: { summary: 'checkbox' }
@@ -25,14 +25,14 @@ export default {
         },
         variant: {
             control: {
-                type: 'select',
-                options: [
-                    'standard',
-                    'label-hidden',
-                    'label-inline',
-                    'label-stacked'
-                ]
+                type: 'select'
             },
+            options: [
+                'standard',
+                'label-hidden',
+                'label-inline',
+                'label-stacked'
+            ],
             defaultValue: 'standard',
             table: {
                 defaultValue: { summary: 'standard' }
@@ -66,6 +66,10 @@ export default {
                 type: 'object'
             }
         }
+    },
+    args: {
+        disabled: false,
+        required: false
     }
 };
 

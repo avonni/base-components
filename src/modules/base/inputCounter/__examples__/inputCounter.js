@@ -1,4 +1,4 @@
-import Component from 'base/inputCounter';
+import Component from 'avonni/inputCounter';
 
 customElements.define(
     'ac-base-input-counter',

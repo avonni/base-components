@@ -1,5 +1,5 @@
 import { generateColors } from '../../utilsPrivate/colorUtils';
-import Component from 'base/qrcode';
+import Component from 'avonni/qrcode';
 
 customElements.define('ac-base-qrcode', Component.CustomElementConstructor);
 

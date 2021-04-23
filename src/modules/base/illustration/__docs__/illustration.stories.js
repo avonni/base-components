@@ -14,9 +14,9 @@ export default {
         },
         size: {
             control: {
-                type: 'select',
-                options: ['small', 'large']
+                type: 'select'
             },
+            options: ['small', 'large'],
             defaultValue: 'small',
             table: {
                 defaultValue: { summary: 'small' }
@@ -24,34 +24,34 @@ export default {
         },
         variant: {
             control: {
-                type: 'select',
-                options: [
-                    'text-only',
-                    'going-camping',
-                    'gone_fishing',
-                    'maintenance',
-                    'desert',
-                    'open-road',
-                    'no-access',
-                    'no-connection',
-                    'not-available-in-lightning',
-                    'page-not-available',
-                    'walkthrough-not-available',
-                    'fishing-deals',
-                    'lake-mountain',
-                    'no-events',
-                    'no-events-2',
-                    'no-task',
-                    'no-task-2',
-                    'setup',
-                    'gone-fishing',
-                    'no-access-2',
-                    'no-content',
-                    'no-preview',
-                    'preview',
-                    'research'
-                ]
+                type: 'select'
             },
+            options: [
+                'text-only',
+                'going-camping',
+                'gone_fishing',
+                'maintenance',
+                'desert',
+                'open-road',
+                'no-access',
+                'no-connection',
+                'not-available-in-lightning',
+                'page-not-available',
+                'walkthrough-not-available',
+                'fishing-deals',
+                'lake-mountain',
+                'no-events',
+                'no-events-2',
+                'no-task',
+                'no-task-2',
+                'setup',
+                'gone-fishing',
+                'no-access-2',
+                'no-content',
+                'no-preview',
+                'preview',
+                'research'
+            ],
             defaultValue: 'text-only',
             table: {
                 defaultValue: { summary: 'text-only' }

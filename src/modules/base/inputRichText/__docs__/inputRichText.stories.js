@@ -49,9 +49,9 @@ export default {
         },
         variant: {
             control: {
-                type: 'select',
-                options: ['top-toolbar', 'bottom-toolbar']
+                type: 'select'
             },
+            options: ['top-toolbar', 'bottom-toolbar'],
             defaultValue: 'top-toolbar',
             table: {
                 defaultValue: { summary: 'top-toolbar' },
@@ -101,6 +101,11 @@ export default {
                 category: 'Toolbar'
             }
         }
+    },
+    args: {
+        labelVisible: false,
+        disabled: false,
+        isPublisher: false
     }
 };
 

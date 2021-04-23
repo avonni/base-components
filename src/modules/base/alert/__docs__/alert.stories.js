@@ -10,9 +10,9 @@ export default {
         },
         variant: {
             control: {
-                type: 'select',
-                options: ['base', 'error', 'offline', 'warning']
+                type: 'select'
             },
+            options: ['base', 'error', 'offline', 'warning'],
             defaultValue: 'base',
             table: {
                 defaultValue: { summary: 'base' }
@@ -27,6 +27,9 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         }
+    },
+    args: {
+        isDismissible: false
     }
 };
 

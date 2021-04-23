@@ -1,4 +1,4 @@
-import Component from 'base/relationshipGraph';
+import Component from 'avonni/relationshipGraph';
 
 customElements.define(
     'ac-base-relationship-graph',

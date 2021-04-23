@@ -1,4 +1,4 @@
-import Component from 'base/colorPalette';
+import Component from 'avonni/colorPalette';
 
 customElements.define(
     'ac-base-color-palette',

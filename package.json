@@ -1,7 +1,7 @@
 {
     "name": "@avonni/base-components",
     "description": "Base components",
-    "version": "1.0.0",
+    "version": "0.0.4",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/avonni/base-components.git"
@@ -17,11 +17,11 @@
         "@lwc/jest-preset": "^9.0.0",
         "@lwc/synthetic-shadow": "^1.17.0",
         "@salesforce-ux/design-system": "^2.14.3",
-        "@storybook/addon-actions": "^6.1.20",
-        "@storybook/addon-essentials": "^6.1.20",
-        "@storybook/addon-links": "^6.1.20",
+        "@storybook/addon-actions": "^6.2.8",
+        "@storybook/addon-essentials": "^6.2.8",
+        "@storybook/addon-links": "^6.2.8",
         "@storybook/storybook-deployer": "^2.8.7",
-        "@storybook/web-components": "^6.1.20",
+        "@storybook/web-components": "^6.2.8",
         "babel-loader": "^8.2.2",
         "eslint": "^7.19.0",
         "husky": "^4.3.8",

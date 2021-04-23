@@ -5,9 +5,9 @@ export default {
     argTypes: {
         align: {
             control: {
-                type: 'select',
-                options: ['left', 'center', 'right', 'fill']
+                type: 'select'
             },
+            options: ['left', 'center', 'right', 'fill'],
             description:
                 'Alignment of the page buttons. Values include left, center, right and fill.',
             defaultValue: 'left',
@@ -197,6 +197,9 @@ export default {
                 category: 'Buttons'
             }
         }
+    },
+    args: {
+        disabled: false
     }
 };
 

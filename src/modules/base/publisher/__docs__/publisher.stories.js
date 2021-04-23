@@ -17,9 +17,9 @@ export default {
         },
         variant: {
             control: {
-                type: 'select',
-                options: ['base', 'comment']
+                type: 'select'
             },
+            options: ['base', 'comment'],
             defaultValue: 'base',
             description: 'Values include base and comment.',
             table: {
@@ -52,6 +52,9 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         }
+    },
+    args: {
+        disabled: false
     }
 };
 

@@ -25,14 +25,14 @@ export default {
         },
         variant: {
             control: {
-                type: 'select',
-                options: [
-                    'standard',
-                    'label-inline',
-                    'label-hidden',
-                    'label-stacked'
-                ]
+                type: 'select'
             },
+            options: [
+                'standard',
+                'label-inline',
+                'label-hidden',
+                'label-stacked'
+            ],
             defaultValue: 'standard',
             table: {
                 defaultValue: { summary: 'standard' }
@@ -40,9 +40,9 @@ export default {
         },
         type: {
             control: {
-                type: 'select',
-                options: ['base', 'custom', 'predefined']
+                type: 'select'
             },
+            options: ['base', 'custom', 'predefined'],
             defaultValue: 'base',
             table: {
                 defaultValue: { summary: 'base' }
@@ -50,16 +50,16 @@ export default {
         },
         menuVariant: {
             control: {
-                type: 'select',
-                options: [
-                    'bare',
-                    'container',
-                    'border',
-                    'border-filled',
-                    'bare-inverse',
-                    'border-inverse'
-                ]
+                type: 'select'
             },
+            options: [
+                'bare',
+                'container',
+                'border',
+                'border-filled',
+                'bare-inverse',
+                'border-inverse'
+            ],
             defaultValue: 'border',
             table: {
                 defaultValue: { summary: 'border' }
@@ -77,9 +77,9 @@ export default {
         },
         menuIconSize: {
             control: {
-                type: 'select',
-                options: ['xx-small', 'x-small', 'small', 'medium', 'large']
+                type: 'select'
             },
+            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
             defaultValue: 'x-small',
             table: {
                 defaultValue: { summary: 'x-small' }
@@ -87,17 +87,17 @@ export default {
         },
         menuAlignment: {
             control: {
-                type: 'select',
-                options: [
-                    'auto',
-                    'left',
-                    'center',
-                    'right',
-                    'bottom-left',
-                    'bottom-center',
-                    'bottom-right'
-                ]
+                type: 'select'
             },
+            options: [
+                'auto',
+                'left',
+                'center',
+                'right',
+                'bottom-left',
+                'bottom-center',
+                'bottom-right'
+            ],
             defaultValue: 'left',
             table: {
                 defaultValue: { summary: 'left' }
@@ -162,6 +162,14 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         }
+    },
+    args: {
+        disabled: false,
+        readOnly: false,
+        isLoading: false,
+        menuNubbin: false,
+        hideColorInput: false,
+        opacity: false
     }
 };
 

@@ -38,17 +38,17 @@ export default {
         },
         size: {
             control: {
-                type: 'select',
-                options: [
-                    'xx-small',
-                    'x-small',
-                    'small',
-                    'medium',
-                    'large',
-                    'x-large',
-                    'xx-large'
-                ]
+                type: 'select'
             },
+            options: [
+                'xx-small',
+                'x-small',
+                'small',
+                'medium',
+                'large',
+                'x-large',
+                'xx-large'
+            ],
             defaultValue: 'medium',
             description: 'The size of the avatar.',
             table: {
@@ -68,9 +68,9 @@ export default {
         },
         variant: {
             control: {
-                type: 'select',
-                options: ['circle', 'square']
+                type: 'select'
             },
+            options: ['circle', 'square'],
             defaultValue: 'square',
             description: 'The variant changes the shape of the avatar.',
             table: {
@@ -80,9 +80,9 @@ export default {
         },
         status: {
             control: {
-                type: 'select',
-                options: ['approved', 'locked', 'declined', 'unknown', '']
+                type: 'select'
             },
+            options: ['approved', 'locked', 'declined', 'unknown', ''],
             description: 'Status of the user to display. ',
             table: {
                 type: { summary: 'string' },
@@ -92,14 +92,9 @@ export default {
         statusPosition: {
             name: 'status-position',
             control: {
-                type: 'select',
-                options: [
-                    'top-left',
-                    'top-right',
-                    'bottom-left',
-                    'bottom-right'
-                ]
+                type: 'select'
             },
+            options: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
             defaultValue: 'top-right',
             description: 'Position of the status icon.',
             table: {
@@ -122,17 +117,17 @@ export default {
         },
         presence: {
             control: {
-                type: 'select',
-                options: [
-                    'online',
-                    'busy',
-                    'focus',
-                    'offline',
-                    'blocked',
-                    'away',
-                    ''
-                ]
+                type: 'select'
             },
+            options: [
+                'online',
+                'busy',
+                'focus',
+                'offline',
+                'blocked',
+                'away',
+                ''
+            ],
             description: 'Presence of the user to display.',
             table: {
                 type: { summary: 'string' },
@@ -154,14 +149,9 @@ export default {
         presencePosition: {
             name: 'presence-position',
             control: {
-                type: 'select',
-                options: [
-                    'top-left',
-                    'top-right',
-                    'bottom-left',
-                    'bottom-right'
-                ]
+                type: 'select'
             },
+            options: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
             defaultValue: 'bottom-right',
             description: 'Position of the presence icon.',
             table: {
@@ -195,14 +185,9 @@ export default {
         entityPosition: {
             name: 'entity-position',
             control: {
-                type: 'select',
-                options: [
-                    'top-left',
-                    'top-right',
-                    'bottom-left',
-                    'bottom-right'
-                ]
+                type: 'select'
             },
+            options: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
             defaultValue: 'top-left',
             description: 'Position of the entity icon.',
             table: {
@@ -237,9 +222,9 @@ export default {
         entityVariant: {
             name: 'entity-variant',
             control: {
-                type: 'select',
-                options: ['circle', 'square']
+                type: 'select'
             },
+            options: ['circle', 'square'],
             defaultValue: 'square',
             description: 'The variant changes the shape of the entity.',
             table: {
@@ -300,9 +285,9 @@ export default {
         textPosition: {
             name: 'text-position',
             control: {
-                type: 'select',
-                options: ['right', 'center', 'left']
+                type: 'select'
             },
+            options: ['right', 'center', 'left'],
             defaultValue: 'right',
             description:
                 'Tertiary text to display, usually the status of the user. The tertiary text will only be shown when using size x-large and xx-large.',
@@ -312,6 +297,9 @@ export default {
                 category: 'Details'
             }
         }
+    },
+    args: {
+        hideAvatarDetails: false
     }
 };
 

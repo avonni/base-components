@@ -70,7 +70,7 @@
     position: absolute;
     width: 48px;
     background-color: var(
-        --avonni-c-progress-indicator-step-color-background,
+        --avonni-progress-indicator-step-color-background,
         #e8e8e8
     );
 }
@@ -79,7 +79,7 @@
     position: absolute;
     width: 72px;
     background-color: var(
-        --avonni-c-progress-indicator-step-color-background,
+        --avonni-progress-indicator-step-color-background,
         #e8e8e8
     );
 }
@@ -88,7 +88,7 @@
     position: absolute;
     width: 100px;
     background-color: var(
-        --avonni-c-progress-indicator-step-color-background,
+        --avonni-progress-indicator-step-color-background,
         #e8e8e8
     );
 }
@@ -150,7 +150,7 @@
 .avonni-progress-step-popover-completed {
     color: #ffffff !important;
     background-color: var(
-        --avonni-c-progress-indicator-step-color-background,
+        --avonni-progress-indicator-step-color-background,
         #006dcc
     );
 }

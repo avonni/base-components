@@ -16,9 +16,9 @@ export default {
         titlePosition: {
             name: 'title-position',
             control: {
-                type: 'select',
-                options: ['bottom', 'top']
+                type: 'select'
             },
+            options: ['bottom', 'top'],
             defaultValue: 'bottom',
             description: 'Valid values include top and bottom.',
             table: {
@@ -63,9 +63,9 @@ export default {
         },
         variant: {
             control: {
-                type: 'select',
-                options: ['standard', 'value-hidden']
+                type: 'select'
             },
+            options: ['standard', 'value-hidden'],
             defaultValue: 'standard',
             description:
                 'Accepted variants include standard, value-hidden.\nvalue-hidden: Hide the value in the progress circle (ex: 75%).',
@@ -76,9 +76,9 @@ export default {
         },
         direction: {
             control: {
-                type: 'select',
-                options: ['fill', 'drain']
+                type: 'select'
             },
+            options: ['fill', 'drain'],
             defaultValue: 'fill',
             description:
                 'Controls which way the color flows from the top of the ring, either clockwise or counterclockwise Valid values include fill and drain. The fill value corresponds to a color flow in the clockwise direction. The drain value indicates a color flow in the counterclockwise direction.',
@@ -89,9 +89,9 @@ export default {
         },
         size: {
             control: {
-                type: 'select',
-                options: ['x-small', 'small', 'medium', 'large', 'x-large']
+                type: 'select'
             },
+            options: ['x-small', 'small', 'medium', 'large', 'x-large'],
             defaultValue: 'medium',
             description:
                 'The size of the progress circle. Valid values include x-small (26x26px), small (52x52px), medium (104x104px), large (152x152px) and x-large (208x208px).',
@@ -102,9 +102,9 @@ export default {
         },
         thickness: {
             control: {
-                type: 'select',
-                options: ['x-small', 'small', 'medium', 'large', 'x-large']
+                type: 'select'
             },
+            options: ['x-small', 'small', 'medium', 'large', 'x-large'],
             defaultValue: 'medium',
             description:
                 'Set progress circle thickness. Valid values include x-small, small, medium, large and x-large.',
@@ -113,6 +113,9 @@ export default {
                 type: { summary: 'string' }
             }
         }
+    },
+    args: {
+        round: false
     }
 };
 

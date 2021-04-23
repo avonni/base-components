@@ -1,74 +1,80 @@
 <template>
-    <div class={wrapperClass} if:true={showAvatar}>
-        <!-- Main avatar -->
-        <div class={avatarClass}>
-            <!-- Image -->
-            <img
-                if:true={src}
-                src={src}
-                onerror={handleImageError}
-                alt={alternativeText}
-                title={alternativeText}
-            />
-            <!-- Initials -->
-            <abbr
-                if:true={showInitials}
-                class={computedInitialsClass}
-                title={alternativeText}
-                >{initials}</abbr
-            >
-            <!-- Fallback icon -->
-            <lightning-icon
-                class={fallbackIconClass}
-                size={size}
-                if:true={showIcon}
-                icon-name={fallbackIconName}
-                alternative-text={alternativeText}
-                title={alternativeText}
-            ></lightning-icon>
-        </div>
-        <!-- Presence -->
-        <div
-            if:true={presence}
-            class={presenceClass}
-            title={presenceTitle}
-            aria-label={presenceTitle}
-        ></div>
-        <!-- Status -->
-        <template if:true={status}>
-            <c-primitive-icon
-                class={statusComputed.class}
-                icon-name={statusComputed.iconName}
-                title={statusComputed.title}
-            ></c-primitive-icon>
-            <span class="slds-assistive-text">{statusComputed.title}</span>
+    <c-primitive-avatar
+        if:true={hideAvatarDetails}
+        alternative-text={alternativeText}
+        fallback-icon-name={fallbackIconName}
+        initials={initials}
+        size={size}
+        src={src}
+        variant={variant}
+        status={status}
+        status-title={statusTitle}
+        status-position={statusPosition}
+        presence={presence}
+        presence-title={presenceTitle}
+        presence-position={presencePosition}
+        entity-icon-name={entityIconName}
+        entity-initials={entityInitials}
+        entity-variant={entityVariant}
+        entity-src={entitySrc}
+        entity-title={entityTitle}
+        entity-position={entityPosition}
+    ></c-primitive-avatar>
+    <c-media-object
+        if:false={hideAvatarDetails}
+        inline={computedMediaObjectInline}
+        class={mediaObjectClass}
+    >
+        <template if:true={showAvatar}>
+            <div if:true={textPositionLeft} slot="figure-inverse">
+                <c-primitive-avatar
+                    alternative-text={alternativeText}
+                    fallback-icon-name={fallbackIconName}
+                    initials={initials}
+                    size={size}
+                    src={src}
+                    variant={variant}
+                    status={status}
+                    status-title={statusTitle}
+                    status-position={statusPosition}
+                    presence={presence}
+                    presence-title={presenceTitle}
+                    presence-position={presencePosition}
+                    entity-icon-name={entityIconName}
+                    entity-initials={entityInitials}
+                    entity-variant={entityVariant}
+                    entity-src={entitySrc}
+                    entity-title={entityTitle}
+                    entity-position={entityPosition}
+                ></c-primitive-avatar>
+            </div>
+            <div if:false={textPositionLeft} slot="figure">
+                <c-primitive-avatar
+                    alternative-text={alternativeText}
+                    fallback-icon-name={fallbackIconName}
+                    initials={initials}
+                    size={size}
+                    src={src}
+                    variant={variant}
+                    status={status}
+                    status-title={statusTitle}
+                    status-position={statusPosition}
+                    presence={presence}
+                    presence-title={presenceTitle}
+                    presence-position={presencePosition}
+                    entity-icon-name={entityIconName}
+                    entity-initials={entityInitials}
+                    entity-variant={entityVariant}
+                    entity-src={entitySrc}
+                    entity-title={entityTitle}
+                    entity-position={entityPosition}
+                ></c-primitive-avatar>
+            </div>
         </template>
-        <!-- Entity -->
-        <div if:true={showEntity} class={entityClass}>
-            <!-- Image -->
-            <img
-                if:true={entitySrc}
-                src={entitySrc}
-                onerror={handleImageError}
-                alt={entityTitle}
-                title={entityTitle}
-            />
-            <!-- Initials -->
-            <abbr
-                if:true={entityInitials}
-                class={computedEntityInitialsClass}
-                title={entityTitle}
-                >{entityInitials}</abbr
-            >
-            <!-- Fallback icon -->
-            <template if:true={showEntityIcon}>
-                <c-primitive-icon
-                    class="avonni-avatar__entity-icon"
-                    icon-name={entityIconName}
-                    title={entityTitle}
-                ></c-primitive-icon>
-                <span class="slds-assistive-text">{entityTitle}</span>
-            </template>
-        </div>
-    </div>
+        <p class="slds-text-title_bold">{primaryText}</p>
+        <p class="avonni-avatar__light-text">{secondaryText}</p>
+        <p if:true={showTertiaryText} class="avonni-avatar__light-text">
+            {tertiaryText}
+        </p>
+    </c-media-object>
 </template>

@@ -15,9 +15,9 @@ export default {
         },
         size: {
             control: {
-                type: 'select',
-                options: ['', 'x-small', 'small', 'medium', 'large']
+                type: 'select'
             },
+            options: ['', 'x-small', 'small', 'medium', 'large'],
             defaultValue: '',
             description:
                 'The size of the slider. The default is an empty string, which sets the slider to the width of the viewport. Accepted values are x-small, small, medium, and large.',
@@ -28,9 +28,9 @@ export default {
         },
         type: {
             control: {
-                type: 'select',
-                options: ['horizontal', 'vertical']
+                type: 'select'
             },
+            options: ['horizontal', 'vertical'],
             defaultValue: 'horizontal',
             description:
                 'The type determines the orientation of the slider. Accepted values are vertical and horizontal. The default is horizontal.',
@@ -41,9 +41,9 @@ export default {
         },
         variant: {
             control: {
-                type: 'select',
-                options: ['standard', 'label-hidden']
+                type: 'select'
             },
+            options: ['standard', 'label-hidden'],
             defaultValue: 'standard',
             description:
                 'The variant changes the appearance of the slider. Accepted variants include standard and label-hidden. The default is standard.',
@@ -54,9 +54,9 @@ export default {
         },
         unit: {
             control: {
-                type: 'select',
-                options: ['decimal', 'currency', 'percent']
+                type: 'select'
             },
+            options: ['decimal', 'currency', 'percent'],
             defaultValue: 'decimal',
             description:
                 'Accepted unit include decimal, currency and percent. \nFormat the value displayed (lightning-formatted-number)',
@@ -272,6 +272,10 @@ export default {
                 subcategory: 'Error messages'
             }
         }
+    },
+    args: {
+        disabled: false,
+        pin: false
     }
 };
 
