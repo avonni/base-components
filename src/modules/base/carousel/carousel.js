@@ -268,7 +268,11 @@ export default class Carousel extends LightningElement {
         );
         const itemNumber = parseInt(event.currentTarget.dataset.itemIndex, 10);
         const itemData = this.panelItems[panelNumber].items[itemNumber];
-        this.dispatchEvent(new CustomEvent('itemclick', { detail: itemData }));
+        this.dispatchEvent(new CustomEvent('itemclick', {
+            detail: {
+                item: itemData
+            }
+        }));
     }
 
     keyDownHandler(event) {

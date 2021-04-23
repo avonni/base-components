@@ -241,7 +241,9 @@ export default class Rating extends LightningElement {
             this._value = Number(event.target.value);
 
             const selectedEvent = new CustomEvent('change', {
-                detail: this._value
+                detail: {
+                    value: this._value
+                }
             });
             this.dispatchEvent(selectedEvent);
 
