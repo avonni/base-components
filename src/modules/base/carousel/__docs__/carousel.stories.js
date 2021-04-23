@@ -119,6 +119,7 @@ export default {
             control: {
                 type: 'object'
             },
+            type: { required: true },
             description:
                 'Array of item objects used by the default carousel item renderer. ',
             table: {

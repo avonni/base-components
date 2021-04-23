@@ -7,6 +7,7 @@ export default {
             control: {
                 type: 'text'
             },
+            type: { required: true },
             description: 'Text label for the checkbox group.',
             table: {
                 type: { summary: 'string' }
@@ -46,6 +47,7 @@ export default {
                 'label-inline',
                 'label-stacked'
             ],
+            type: { required: true },
             defaultValue: 'standard',
             description:
                 'The variant changes the appearance of the checkbox group. Accepted variants include standard, label-hidden, label-inline, and label-stacked. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and checkbox group. Use label-stacked to place the label above the checkbox group.',
@@ -90,6 +92,7 @@ export default {
             control: {
                 type: 'object'
             },
+            type: { required: true },
             description:
                 'The list of selected checkboxes. Each array entry contains the value of a selected checkbox. The value of each checkbox is set in the options attribute.',
             table: {
