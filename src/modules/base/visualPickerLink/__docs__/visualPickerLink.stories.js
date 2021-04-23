@@ -24,6 +24,7 @@ export default {
             }
         },
         iconName: {
+            name: 'icon-name',
             control: {
                 type: 'text'
             },
@@ -34,14 +35,16 @@ export default {
             }
         },
         iconPosition: {
+            name: 'icon-position',
             control: {
-                type: 'select'
+                type: 'radio'
             },
             options: ['left', 'right'],
             defaultValue: 'left',
             description: 'Values include left and right.',
             table: {
-                defaultValue: { summary: 'left' }
+                defaultValue: { summary: 'left' },
+                type: { summary: 'string' }
             }
         },
         completed: {
@@ -51,10 +54,12 @@ export default {
             defaultValue: 0,
             description: 'Show as completed.',
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         },
         infoOnly: {
+            name: 'info-only',
             control: {
                 type: 'boolean'
             },
@@ -62,7 +67,8 @@ export default {
             description:
                 'The <a> tags are removed from the tiles. The tiles also lose their button appearance, removing borders and shadows.',
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         }
     },

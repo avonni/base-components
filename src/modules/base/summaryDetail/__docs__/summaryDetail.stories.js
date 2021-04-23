@@ -68,6 +68,7 @@ export default {
                 type: 'boolean'
             },
             defaultValue: 0,
+            description: 'If true, hide details.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
