@@ -13,6 +13,16 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        alternativeText: {
+            name: 'alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'The assistive text for the button.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         label: {
             control: {
                 type: 'text'
