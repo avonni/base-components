@@ -7,7 +7,7 @@ export default {
             control: {
                 type: 'text'
             },
-            description: "URL to set for the 'src' attribute",
+            description: "URL to set for the 'src' attribute.",
             table: {
                 type: { summary: 'string' }
             }
