@@ -17,7 +17,8 @@ export const VisualPicker = ({
     hideBorder,
     disabled,
     required,
-    messageWhenValueMissing
+    messageWhenValueMissing,
+    name
 }) => {
     const element = document.createElement('ac-base-visual-picker');
     element.label = label;
@@ -32,5 +33,6 @@ export const VisualPicker = ({
     element.disabled = disabled;
     element.required = required;
     element.messageWhenValueMissing = messageWhenValueMissing;
+    element.name = name;
     return element;
 };
