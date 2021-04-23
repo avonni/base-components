@@ -6,21 +6,34 @@ export default {
         label: {
             control: {
                 type: 'text'
+            },
+            description: 'Text label for the checkbox group.',
+            table: {
+                type: { summary: 'string' }
             }
         },
         messageWhenValueMissing: {
+            name: 'message-when-value-missing',
             control: {
                 type: 'text'
+            },
+            description:
+                'Optional message to be displayed when no checkbox is selected and the required attribute is set.',
+            table: {
+                type: { summary: 'string' }
             }
         },
         type: {
             control: {
-                type: 'select'
+                type: 'radio'
             },
+            description:
+                'The style of the checkbox group. Options are checkbox or button.',
             options: ['checkbox', 'button'],
             defaultValue: 'checkbox',
             table: {
-                defaultValue: { summary: 'checkbox' }
+                defaultValue: { summary: 'checkbox' },
+                type: { summary: 'string' }
             }
         },
         variant: {
@@ -34,36 +47,53 @@ export default {
                 'label-stacked'
             ],
             defaultValue: 'standard',
+            description:
+                'The variant changes the appearance of the checkbox group. Accepted variants include standard, label-hidden, label-inline, and label-stacked. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and checkbox group. Use label-stacked to place the label above the checkbox group.',
             table: {
-                defaultValue: { summary: 'standard' }
+                defaultValue: { summary: 'standard' },
+                type: { summary: 'string' }
             }
         },
         disabled: {
             control: {
                 type: 'boolean'
             },
+            description:
+                "If present, the checkbox group is disabled. Checkbox selections can't be changed for a disabled checkbox group.",
             defaultValue: 0,
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         },
         required: {
             control: {
                 type: 'boolean'
             },
+            description: 'If present, at least one checkbox must be selected.',
             defaultValue: 0,
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         },
         options: {
             control: {
                 type: 'object'
+            },
+            description: 'Array of label-value pairs for each checkbox.',
+            table: {
+                type: { summary: 'object[]' }
             }
         },
         value: {
             control: {
                 type: 'object'
+            },
+            description:
+                'The list of selected checkboxes. Each array entry contains the value of a selected checkbox. The value of each checkbox is set in the options attribute.',
+            table: {
+                type: { summary: 'string[]' }
             }
         }
     },
