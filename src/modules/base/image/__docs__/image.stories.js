@@ -6,36 +6,69 @@ export default {
         src: {
             control: {
                 type: 'text'
+            },
+            description: "URL to set for the 'src' attribute",
+            table: {
+                type: { summary: 'string' }
             }
         },
         srcset: {
             control: {
                 type: 'text'
+            },
+            description:
+                'One or more strings separated by commas (or an array of strings), indicating possible image sources for the user agent to use.',
+            table: {
+                type: { summary: 'string' }
             }
         },
         sizes: {
             control: {
                 type: 'text'
+            },
+            description:
+                'One or more strings separated by commas (or an array of strings), indicating a set of source sizes. Optionally used in combination with the srcset prop.',
+            table: {
+                type: { summary: 'string' }
             }
         },
         alt: {
             control: {
                 type: 'text'
+            },
+            description: "Value to set for the 'alt' attribute.",
+            table: {
+                type: { summary: 'string' }
             }
         },
         width: {
             control: {
                 type: 'text'
+            },
+            description: "The value to set on the image's 'width' attribute.",
+            table: {
+                type: { summary: 'string' }
             }
         },
         height: {
             control: {
                 type: 'text'
+            },
+            description: "The value to set on the image's 'height' attribute.",
+            table: {
+                type: { summary: 'string' }
             }
         },
         blankColor: {
+            name: 'blank-color',
             control: {
                 type: 'text'
+            },
+            description:
+                'Sets the color of the blank image to the CSS color value specified.',
+            table: {
+                defaultValue: { summary: 'transparent' },
+                type: { summary: 'string' }
             }
         },
         rounded: {
@@ -44,8 +77,11 @@ export default {
             },
             options: ['top', 'right', 'bottom', 'left', 'circle', false, true],
             defaultValue: false,
+            description:
+                "When set to 'true', makes the image corners slightly rounded. Can also be used to disable rounded corners or make the image a circle/oval. See docs for details.",
             table: {
-                defaultValue: { summary: false }
+                defaultValue: { summary: false },
+                type: { summary: 'boolean' }
             }
         },
         block: {
@@ -53,8 +89,11 @@ export default {
                 type: 'boolean'
             },
             defaultValue: 0,
+            description:
+                'Forces the image to display as a block element rather than the browser default of inline-block element.',
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: false },
+                type: { summary: 'boolean' }
             }
         },
         fluid: {
@@ -62,17 +101,23 @@ export default {
                 type: 'boolean'
             },
             defaultValue: 0,
+            description: '',
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: false },
+                type: { summary: 'boolean' }
             }
         },
         fluidGrow: {
+            name: 'fluid-grow',
             control: {
                 type: 'boolean'
             },
             defaultValue: 0,
+            description:
+                "Makes the image responsive. The image will shrink as needed or grow up the the image's native width.",
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: false },
+                type: { summary: 'boolean' }
             }
         },
         thumbnail: {
@@ -80,8 +125,10 @@ export default {
                 type: 'boolean'
             },
             defaultValue: 0,
+            description: 'Adds a thumbnail border around the image.',
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: false },
+                type: { summary: 'boolean' }
             }
         },
         left: {
@@ -89,8 +136,10 @@ export default {
                 type: 'boolean'
             },
             defaultValue: 0,
+            description: 'Floats the image to the left when set.',
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: false },
+                type: { summary: 'boolean' }
             }
         },
         right: {
@@ -98,8 +147,10 @@ export default {
                 type: 'boolean'
             },
             defaultValue: 0,
+            description: 'Floats the image to the right when set.',
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: false },
+                type: { summary: 'boolean' }
             }
         },
         center: {
@@ -107,8 +158,10 @@ export default {
                 type: 'boolean'
             },
             defaultValue: 0,
+            description: 'Centers the image horizontally.',
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: false },
+                type: { summary: 'boolean' }
             }
         },
         blank: {
@@ -116,8 +169,11 @@ export default {
                 type: 'boolean'
             },
             defaultValue: 0,
+            description:
+                'Creates a blank/transparent image via an SVG data URI.',
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: false },
+                type: { summary: 'boolean' }
             }
         }
     },
