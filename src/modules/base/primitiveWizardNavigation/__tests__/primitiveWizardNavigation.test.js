@@ -203,21 +203,19 @@ describe('PrimitiveWizardNavigation', () => {
             is: PrimitiveWizardNavigation
         });
 
-        document.body.appendChild(element);
-
         element.buttonFinishIconName = 'utility:apps';
         element.currentStep = 'step-4';
         element.steps = STEPS;
 
-        return Promise.resolve()
-            .then()
-            .then(() => {
-                const buttons = element.shadowRoot.querySelectorAll(
-                    'lightning-button'
-                );
-                const lastButton = buttons[buttons.length - 1];
-                expect(lastButton.iconName).toBe('utility:apps');
-            });
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => {
+            const buttons = element.shadowRoot.querySelectorAll(
+                'lightning-button'
+            );
+            const lastButton = buttons[buttons.length - 1];
+            expect(lastButton.iconName).toBe('utility:apps');
+        });
     });
 
     // button-finish-icon-position
@@ -227,22 +225,20 @@ describe('PrimitiveWizardNavigation', () => {
             is: PrimitiveWizardNavigation
         });
 
-        document.body.appendChild(element);
-
         element.buttonFinishIconPosition = 'right';
         element.currentStep = 'step-4';
         element.steps = STEPS;
 
-        return Promise.resolve()
-            .then()
-            .then(() => {
-                const buttons = element.shadowRoot.querySelectorAll(
-                    'lightning-button'
-                );
-                const lastButton = buttons[buttons.length - 1];
+        document.body.appendChild(element);
 
-                expect(lastButton.iconPosition).toBe('right');
-            });
+        return Promise.resolve().then(() => {
+            const buttons = element.shadowRoot.querySelectorAll(
+                'lightning-button'
+            );
+            const lastButton = buttons[buttons.length - 1];
+
+            expect(lastButton.iconPosition).toBe('right');
+        });
     });
 
     // button-finish-label
@@ -252,22 +248,20 @@ describe('PrimitiveWizardNavigation', () => {
             is: PrimitiveWizardNavigation
         });
 
-        document.body.appendChild(element);
-
         element.buttonFinishLabel = 'A string label';
         element.currentStep = 'step-4';
         element.steps = STEPS;
 
-        return Promise.resolve()
-            .then()
-            .then(() => {
-                const buttons = element.shadowRoot.querySelectorAll(
-                    'lightning-button'
-                );
-                const lastButton = buttons[buttons.length - 1];
+        document.body.appendChild(element);
 
-                expect(lastButton.label).toBe('A string label');
-            });
+        return Promise.resolve().then(() => {
+            const buttons = element.shadowRoot.querySelectorAll(
+                'lightning-button'
+            );
+            const lastButton = buttons[buttons.length - 1];
+
+            expect(lastButton.label).toBe('A string label');
+        });
     });
 
     // button-finish-variant
@@ -277,22 +271,20 @@ describe('PrimitiveWizardNavigation', () => {
             is: PrimitiveWizardNavigation
         });
 
-        document.body.appendChild(element);
-
         element.buttonFinishVariant = 'inverse';
         element.currentStep = 'step-4';
         element.steps = STEPS;
 
-        return Promise.resolve()
-            .then()
-            .then(() => {
-                const buttons = element.shadowRoot.querySelectorAll(
-                    'lightning-button'
-                );
-                const lastButton = buttons[buttons.length - 1];
+        document.body.appendChild(element);
 
-                expect(lastButton.variant).toBe('inverse');
-            });
+        return Promise.resolve().then(() => {
+            const buttons = element.shadowRoot.querySelectorAll(
+                'lightning-button'
+            );
+            const lastButton = buttons[buttons.length - 1];
+
+            expect(lastButton.variant).toBe('inverse');
+        });
     });
 
     // button-next-icon-name
@@ -478,20 +470,18 @@ describe('PrimitiveWizardNavigation', () => {
             is: PrimitiveWizardNavigation
         });
 
-        document.body.appendChild(element);
-
         element.steps = STEPS;
         element.currentStep = 'step-4';
 
-        return Promise.resolve()
-            .then()
-            .then(() => {
-                const buttons = element.shadowRoot.querySelectorAll(
-                    'lightning-button'
-                );
-                const lastButton = buttons[buttons.length - 1];
-                expect(lastButton.dataset.action).toBe('finish');
-            });
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => {
+            const buttons = element.shadowRoot.querySelectorAll(
+                'lightning-button'
+            );
+            const lastButton = buttons[buttons.length - 1];
+            expect(lastButton.dataset.action).toBe('finish');
+        });
     });
 
     it('currentStep = first step', () => {
@@ -499,20 +489,18 @@ describe('PrimitiveWizardNavigation', () => {
             is: PrimitiveWizardNavigation
         });
 
-        document.body.appendChild(element);
-
         element.currentStep = 'step-1';
         element.steps = STEPS;
 
-        return Promise.resolve()
-            .then()
-            .then(() => {
-                const buttons = element.shadowRoot.querySelectorAll(
-                    'lightning-button'
-                );
-                const firstButton = buttons[0];
-                expect(firstButton.dataset.action).toBe('next');
-            });
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => {
+            const buttons = element.shadowRoot.querySelectorAll(
+                'lightning-button'
+            );
+            const firstButton = buttons[0];
+            expect(firstButton.dataset.action).toBe('next');
+        });
     });
 
     it('currentStep = middle step', () => {
