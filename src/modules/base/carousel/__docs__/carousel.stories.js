@@ -4,58 +4,72 @@ export default {
     title: 'Example/Carousel',
     argTypes: {
         scrollDuration: {
+            name: 'scroll-duration',
             control: {
                 type: 'number'
             },
             defaultValue: 5,
+            description:
+                'The auto scroll duration. The default is 5 seconds, after that the next image is displayed.',
             table: {
-                defaultValue: { summary: 5 }
+                defaultValue: { summary: 5 },
+                type: { summary: 'number' }
             }
         },
         currentPanel: {
+            name: 'current-panel',
             control: {
                 type: 'number'
+            },
+            description:
+                'Dictates the currently active/visible carousel panel.',
+            table: {
+                type: { summary: 'number' }
             }
         },
         itemsPerPanel: {
+            name: 'items-per-panel',
             control: {
                 type: 'number'
             },
+            description:
+                'Number of items to be displayed at a time in the carousel.',
             defaultValue: 1,
             table: {
-                defaultValue: { summary: 1 }
+                defaultValue: { summary: 1 },
+                type: { summary: 'number' }
             }
         },
         disableAutoRefresh: {
+            name: 'disable-auto-refresh',
             control: {
                 type: 'boolean'
+            },
+            description:
+                "If present, the carousel doesn't loop after the last image is displayed.",
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
             }
         },
         disableAutoScroll: {
+            name: 'disable-auto-scroll',
             control: {
                 type: 'boolean'
-            }
-        },
-        indicatorVariant: {
-            control: {
-                type: 'select'
             },
-            options: ['base', 'shaded'],
-            defaultValue: 'base',
+            description:
+                'If present, images do not automatically scroll and users must click the indicators to scroll.',
             table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'base' }
-            }
-        },
-        isInfinite: {
-            control: {
-                type: 'boolean'
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
             }
         },
         hideIndicator: {
+            name: 'hide-indicator',
             control: {
                 type: 'boolean'
             },
+            description: 'Boolean for displaying the progress indicators.',
             defaultValue: false,
             table: {
                 type: { summary: 'boolean' },
@@ -63,23 +77,61 @@ export default {
             }
         },
         hidePreviousNextPanelNavigation: {
+            name: 'hide-previous-next-panel-navigation',
             control: {
                 type: 'boolean'
             },
+            description:
+                'Boolean for displaying the navigation indicators (left/right arrows) of the carousel.',
             defaultValue: false,
             table: {
-                defaultValue: { summary: false }
+                defaultValue: { summary: false },
+                type: { summary: 'boolean' }
+            }
+        },
+        isInfinite: {
+            name: 'is-infinite',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'Boolean for infinite loop navigation. Note: if not true autoplay will stop automatically at the last panel.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
+        indicatorVariant: {
+            name: 'indicator-variant',
+            control: {
+                type: 'radio'
+            },
+            description:
+                'Changes the appearance of the progress indicators. Valid values are base or shaded.',
+            options: ['base', 'shaded'],
+            defaultValue: 'base',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'base' }
             }
         },
         items: {
             control: {
                 type: 'object'
+            },
+            description:
+                'Array of item objects used by the default carousel item renderer. ',
+            table: {
+                type: { summary: 'object []' }
             }
         },
         assistiveText: {
+            name: 'assistive-text',
             control: {
                 type: 'object'
             },
+            description:
+                'Description of the carousel items for screen-readers.',
             table: {
                 defaultValue: {
                     summary: `{
@@ -87,7 +139,8 @@ export default {
                         previousPanel: 'Previous Panel',
                         autoplayButton: 'Start / Stop auto-play'
                     }`
-                }
+                },
+                type: { summary: 'object' }
             }
         }
     },
