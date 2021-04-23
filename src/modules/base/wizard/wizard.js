@@ -4,36 +4,77 @@ import BaseView from './base.html';
 import ModalView from './modal.html';
 import CardView from './card.html';
 
-const VARIANTS = ['base', 'modal', 'card'];
-const INDICATOR_POSITIONS = ['header', 'footer'];
+const VARIANTS = {
+    valid: ['base', 'modal', 'card'],
+    default: 'base'
+};
+const INDICATOR_POSITIONS = {
+    valid: ['header', 'footer'],
+    default: 'footer'
+};
+
+const INDICATOR_TYPES = {
+    valid: ['base', 'base-shaded', 'path', 'bullet', 'fractions', 'bar'],
+    default: 'base'
+};
+
+const BUTTON_VARIANTS = {
+    valid: [
+        'bare',
+        'neutral',
+        'brand',
+        'brand-outline',
+        'inverse',
+        'destructive',
+        'destructive-text',
+        'success'
+    ],
+    defaultButtonPrevious: 'neutral',
+    defaultButtonNext: 'neutral',
+    defaultButtonFinish: 'neutral'
+};
+
+const POSITIONS = {
+    valid: ['left', 'right'],
+    defaultButtonPreviousIcon: 'left',
+    defaultButtonNextIcon: 'left',
+    defaultButtonFinishIcon: 'left',
+    defaultAction: 'left'
+};
+
+const DEFAULT_BUTTON_PREVIOUS_LABEL = 'Previous';
+const DEFAULT_BUTTON_NEXT_LABEL = 'Next';
+const DEFAULT_BUTTON_FINISH_LABEL = 'Finish';
+const DEFAULT_FRACTION_PREFIX_LABEL = 'Step';
+const DEFAULT_FRACTION_LABEL = 'of';
 
 export default class Wizard extends LightningElement {
     @api title;
     @api iconName;
-    @api indicatorType;
-    @api hideIndicator;
     @api buttonPreviousIconName;
-    @api buttonPreviousIconPosition;
-    @api buttonPreviousLabel;
-    @api buttonPreviousVariant;
     @api buttonNextIconName;
-    @api buttonNextIconPosition;
-    @api buttonNextLabel;
-    @api buttonNextVariant;
     @api buttonFinishIconName;
-    @api buttonFinishIconPosition;
-    @api buttonFinishLabel;
-    @api buttonFinishVariant;
-    @api buttonAlignmentBump;
-    @api actionPosition;
-    @api fractionPrefixLabel;
-    @api fractionLabel;
 
-    _variant = 'base';
+    _variant = VARIANTS.default;
     _hideNavigation = false;
-    _indicatorPosition = 'footer';
+    _indicatorPosition = INDICATOR_POSITIONS.default;
+    _indicatorType = INDICATOR_TYPES.default;
+    _hideIndicator = false;
     _currentStep;
     _initialCurrentStep;
+    _buttonPreviousIconPosition = POSITIONS.defaultButtonPreviousIcon;
+    _buttonPreviousLabel = DEFAULT_BUTTON_PREVIOUS_LABEL;
+    _buttonPreviousVariant = BUTTON_VARIANTS.defaultButtonPrevious;
+    _buttonNextIconPosition = POSITIONS.defaultButtonNextIcon;
+    _buttonNextLabel = DEFAULT_BUTTON_NEXT_LABEL;
+    _buttonNextVariant = BUTTON_VARIANTS.defaultButtonNext;
+    _buttonFinishIconPosition = POSITIONS.defaultButtonFinishIcon;
+    _buttonFinishLabel = DEFAULT_BUTTON_FINISH_LABEL;
+    _buttonFinishVariant = BUTTON_VARIANTS.defaultButtonFinish;
+    _buttonAlignmentBump;
+    _actionPosition = POSITIONS.defaultAction;
+    _fractionPrefixLabel = DEFAULT_FRACTION_PREFIX_LABEL;
+    _fractionLabel = DEFAULT_FRACTION_LABEL;
 
     steps = [];
     showWizard = true;
@@ -115,8 +156,8 @@ export default class Wizard extends LightningElement {
     }
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: 'base',
-            validValues: VARIANTS
+            fallbackValue: VARIANTS.default,
+            validValues: VARIANTS.valid
         });
     }
 
@@ -126,9 +167,166 @@ export default class Wizard extends LightningElement {
     }
     set indicatorPosition(position) {
         this._indicatorPosition = normalizeString(position, {
-            fallbackValue: 'footer',
-            validValues: INDICATOR_POSITIONS
+            fallbackValue: INDICATOR_POSITIONS.default,
+            validValues: INDICATOR_POSITIONS.valid
         });
+    }
+
+    @api
+    get indicatorType() {
+        return this._indicatorType;
+    }
+    set indicatorType(type) {
+        this._indicatorType = normalizeString(type, {
+            fallbackValue: INDICATOR_TYPES.default,
+            validValues: INDICATOR_TYPES.valid
+        });
+    }
+
+    @api
+    get hideIndicator() {
+        return this._hideIndicator;
+    }
+    set hideIndicator(value) {
+        this._hideIndicator = normalizeBoolean(value);
+    }
+
+    @api
+    get buttonPreviousIconPosition() {
+        return this._buttonPreviousIconPosition;
+    }
+    set buttonPreviousIconPosition(value) {
+        this._buttonPreviousIconPosition = normalizeString(value, {
+            fallbackValue: POSITIONS.defaultButtonPreviousIcon,
+            validValues: POSITIONS.valid
+        });
+    }
+
+    @api
+    get buttonPreviousLabel() {
+        return this._buttonPreviousLabel;
+    }
+    set buttonPreviousLabel(label) {
+        this._buttonPreviousLabel =
+            (typeof label === 'string' && label.trim()) ||
+            DEFAULT_BUTTON_PREVIOUS_LABEL;
+    }
+
+    @api
+    get buttonPreviousVariant() {
+        return this._buttonPreviousVariant;
+    }
+    set buttonPreviousVariant(value) {
+        this._buttonPreviousVariant = normalizeString(value, {
+            fallbackValue: BUTTON_VARIANTS.defaultButtonPrevious,
+            validValues: BUTTON_VARIANTS.valid
+        });
+    }
+
+    @api
+    get buttonNextIconPosition() {
+        return this._buttonNextIconPosition;
+    }
+    set buttonNextIconPosition(position) {
+        this._buttonNextIconPosition = normalizeString(position, {
+            fallbackValue: POSITIONS.defaultButtonNextIcon,
+            validValues: POSITIONS.valid
+        });
+    }
+
+    @api
+    get buttonNextLabel() {
+        return this._buttonNextLabel;
+    }
+    set buttonNextLabel(label) {
+        this._buttonNextLabel =
+            (typeof label === 'string' && label.trim()) ||
+            DEFAULT_BUTTON_NEXT_LABEL;
+    }
+
+    @api
+    get buttonNextVariant() {
+        return this._buttonNextVariant;
+    }
+    set buttonNextVariant(variant) {
+        this._buttonNextVariant = normalizeString(variant, {
+            fallbackValue: BUTTON_VARIANTS.defaultButtonNext,
+            validValues: BUTTON_VARIANTS.valid
+        });
+    }
+
+    @api
+    get buttonFinishIconPosition() {
+        return this._buttonFinishIconPosition;
+    }
+    set buttonFinishIconPosition(position) {
+        this._buttonFinishIconPosition = normalizeString(position, {
+            fallbackValue: POSITIONS.defaultButtonFinishIcon,
+            validValues: POSITIONS.valid
+        });
+    }
+
+    @api
+    get buttonFinishLabel() {
+        return this._buttonFinishLabel;
+    }
+    set buttonFinishLabel(label) {
+        this._buttonFinishLabel =
+            (typeof label === 'string' && label.trim()) ||
+            DEFAULT_BUTTON_FINISH_LABEL;
+    }
+
+    @api
+    get buttonFinishVariant() {
+        return this._buttonFinishVariant;
+    }
+    set buttonFinishVariant(variant) {
+        this._buttonFinishVariant = normalizeString(variant, {
+            fallbackValue: BUTTON_VARIANTS.defaultButtonFinish,
+            validValues: BUTTON_VARIANTS.valid
+        });
+    }
+
+    @api
+    get buttonAlignmentBump() {
+        return this._buttonAlignmentBump;
+    }
+    set buttonAlignmentBump(position) {
+        this._buttonAlignmentBump = normalizeString(position, {
+            fallbackValue: null,
+            validValues: POSITIONS.valid
+        });
+    }
+
+    @api
+    get actionPosition() {
+        return this._actionPosition;
+    }
+    set actionPosition(position) {
+        this._actionPosition = normalizeString(position, {
+            fallbackValue: POSITIONS.defaultAction,
+            validValues: POSITIONS.valid
+        });
+    }
+
+    @api
+    get fractionPrefixLabel() {
+        return this._fractionPrefixLabel;
+    }
+    set fractionPrefixLabel(prefix) {
+        this._fractionPrefixLabel =
+            (typeof prefix === 'string' && prefix.trim()) ||
+            DEFAULT_FRACTION_PREFIX_LABEL;
+    }
+
+    @api
+    get fractionLabel() {
+        return this._fractionLabel;
+    }
+    set fractionLabel(label) {
+        this._fractionLabel =
+            (typeof label === 'string' && label.trim()) ||
+            DEFAULT_FRACTION_LABEL;
     }
 
     @api
