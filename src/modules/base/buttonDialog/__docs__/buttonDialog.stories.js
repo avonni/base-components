@@ -69,7 +69,7 @@ export default {
         iconPosition: {
             name: 'icon-position',
             control: {
-                type: 'select'
+                type: 'radio'
             },
             options: ['left', 'right'],
             defaultValue: 'left',

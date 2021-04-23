@@ -23,17 +23,6 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        disabled: {
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: 0,
-            description: 'If present, the popover can be opened by users.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
-            }
-        },
         title: {
             control: {
                 type: 'text'
@@ -65,20 +54,6 @@ export default {
                 "The name of the icon to be used in the format 'utility:down'.",
             table: {
                 type: { summary: 'string' }
-            }
-        },
-        isLoading: {
-            name: 'is-loading',
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: 0,
-            description:
-                'If present, the popover is in a loading state and shows a spinner.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' },
-                category: 'Popover'
             }
         },
         loadingStateAlternativeText: {
@@ -199,6 +174,31 @@ export default {
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'border' }
+            }
+        },
+        isLoading: {
+            name: 'is-loading',
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: 0,
+            description:
+                'If present, the popover is in a loading state and shows a spinner.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Popover'
+            }
+        },
+        disabled: {
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: 0,
+            description: 'If present, the popover can be opened by users.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
             }
         }
     },
