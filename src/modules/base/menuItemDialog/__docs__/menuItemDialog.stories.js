@@ -104,6 +104,10 @@ export default {
                 type: { summary: 'boolean' }
             }
         }
+    },
+    args: {
+        disabled: false,
+        isDraft: false
     }
 };
 

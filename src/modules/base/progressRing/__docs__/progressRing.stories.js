@@ -19,9 +19,9 @@ export default {
         },
         direction: {
             control: {
-                type: 'select',
-                options: ['fill', 'drain']
+                type: 'select'
             },
+            options: ['fill', 'drain'],
             description:
                 'Controls which way the color flows from the top of the ring, either clockwise or counterclockwise Valid values include fill and drain. The fill value corresponds to a color flow in the clockwise direction. The drain value indicates a color flow in the counterclockwise direction.',
             defaultValue: 'fill',
@@ -32,9 +32,9 @@ export default {
         },
         size: {
             control: {
-                type: 'select',
-                options: ['medium', 'large']
+                type: 'select'
             },
+            options: ['medium', 'large'],
             description:
                 'The size of the progress ring. Valid values include medium and large.',
             defaultValue: 'medium',
@@ -45,15 +45,15 @@ export default {
         },
         variant: {
             control: {
-                type: 'select',
-                options: [
-                    'base',
-                    'active-step',
-                    'warning',
-                    'expired',
-                    'base-autocomplete'
-                ]
+                type: 'select'
             },
+            options: [
+                'base',
+                'active-step',
+                'warning',
+                'expired',
+                'base-autocomplete'
+            ],
             description:
                 'Changes the appearance of the progress ring. Accepted variants include base, active-step, warning, expired, base-autocomplete.',
             defaultValue: 'base',
@@ -75,6 +75,9 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         }
+    },
+    args: {
+        hideIcon: false
     }
 };
 

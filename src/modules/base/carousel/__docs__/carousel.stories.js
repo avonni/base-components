@@ -38,9 +38,9 @@ export default {
         },
         indicatorVariant: {
             control: {
-                type: 'select',
-                options: ['base', 'shaded']
+                type: 'select'
             },
+            options: ['base', 'shaded'],
             defaultValue: 'base',
             table: {
                 type: { summary: 'string' },
@@ -90,6 +90,13 @@ export default {
                 }
             }
         }
+    },
+    args: {
+        disableAutoRefresh: false,
+        disableAutoScroll: false,
+        isInfinite: false,
+        hideIndicator: false,
+        hidePreviousNextPanelNavigation: false
     }
 };
 

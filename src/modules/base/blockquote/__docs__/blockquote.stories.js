@@ -15,9 +15,9 @@ export default {
         },
         variant: {
             control: {
-                type: 'select',
-                options: ['default', 'brand', 'warning', 'error', 'success']
+                type: 'select'
             },
+            options: ['default', 'brand', 'warning', 'error', 'success'],
             defaultValue: 'default',
             table: {
                 defaultValue: { summary: 'default' }
@@ -25,9 +25,9 @@ export default {
         },
         iconPosition: {
             control: {
-                type: 'select',
-                options: ['left', 'right']
+                type: 'select'
             },
+            options: ['left', 'right'],
             defaultValue: 'left',
             table: {
                 defaultValue: { summary: 'left' }
@@ -35,9 +35,9 @@ export default {
         },
         iconSize: {
             control: {
-                type: 'select',
-                options: ['xx-small', 'x-small', 'small', 'medium', 'large']
+                type: 'select'
             },
+            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
             defaultValue: 'small',
             table: {
                 defaultValue: { summary: 'small' }

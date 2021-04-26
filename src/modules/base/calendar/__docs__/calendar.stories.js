@@ -95,6 +95,10 @@ export default {
                 type: { summary: 'string' }
             }
         }
+    },
+    args: {
+        disabled: false,
+        weekNumber: false
     }
 };
 

@@ -5,9 +5,9 @@ export default {
     argTypes: {
         type: {
             control: {
-                type: 'select',
-                options: ['date', 'datetime']
+                type: 'select'
             },
+            options: ['date', 'datetime'],
             defaultValue: 'date',
             description: 'Values include date, datetime.',
             table: {
@@ -81,9 +81,9 @@ export default {
         dateStyle: {
             name: 'date-style',
             control: {
-                type: 'select',
-                options: ['short', 'medium', 'long']
+                type: 'select'
             },
+            options: ['short', 'medium', 'long'],
             defaultValue: 'medium',
             description:
                 'Valid values are short, medium (default), and long. The format of each style is specific to the locale. On mobile devices this attribute has no effect.',
@@ -95,9 +95,9 @@ export default {
         timeStyle: {
             name: 'time-style',
             control: {
-                type: 'select',
-                options: ['short', 'medium', 'long']
+                type: 'select'
             },
+            options: ['short', 'medium', 'long'],
             defaultValue: 'short',
             description:
                 "The display style of the time when type='time' or type='datetime'. Valid values are short (default), medium, and long. Currently, medium and long styles look the same. On mobile devices this attribute has no effect.",
@@ -142,6 +142,10 @@ export default {
                 category: 'Validation'
             }
         }
+    },
+    args: {
+        disabled: false,
+        required: false
     }
 };
 

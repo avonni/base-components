@@ -90,9 +90,9 @@ export default {
         },
         encoding: {
             control: {
-                type: 'select',
-                options: ['ISO_8859_1', 'UTF_8']
+                type: 'select'
             },
+            options: ['ISO_8859_1', 'UTF_8'],
             description:
                 'The encoding mode used to encode the value.The possible values are: \n"ISO_8859_1" - supports all characters from the ISO/IEC 8859-1 character set.\n "UTF_8" - supports all Unicode characters.',
             defaultValue: 'ISO_8859_1',
@@ -104,9 +104,9 @@ export default {
         errorCorrection: {
             name: 'error-correction',
             control: {
-                type: 'select',
-                options: ['L', 'M', 'Q', 'H']
+                type: 'select'
             },
+            options: ['L', 'M', 'Q', 'H'],
             description:
                 'The error correction level used to encode the value. The possible values are: \n"L" - approximately 7% of the codewords can be restored. \n"M" - approximately 15% of the codewords can be restored. \n"Q" - approximately 25% of the codewords can be restored. \n"H" - approximately 30% of the codewords can be restored.',
             defaultValue: 'L',
@@ -118,9 +118,9 @@ export default {
         renderAs: {
             name: 'render-as',
             control: {
-                type: 'select',
-                options: ['svg', 'canvas']
+                type: 'select'
             },
+            options: ['svg', 'canvas'],
             description:
                 'Sets the preferred rendering engine. If it is not supported by the browser, the QRCode will switch to the first available mode. The supported values are: \n"canvas" - renders the widget as a Canvas element, if available. \n"svg" - renders the widget as inline SVG document, if available',
             defaultValue: 'svg',

@@ -1,4 +1,4 @@
-import Component from 'base/avatarGroup';
+import Component from 'avonni/avatarGroup';
 
 customElements.define(
     'ac-base-avatar-group',

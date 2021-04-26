@@ -59,16 +59,16 @@ export default {
         },
         indicatorType: {
             control: {
-                type: 'select',
-                options: [
-                    'base',
-                    'base-shaded',
-                    'path',
-                    'bullet',
-                    'fractions',
-                    'bar'
-                ]
+                type: 'select'
             },
+            options: [
+                'base',
+                'base-shaded',
+                'path',
+                'bullet',
+                'fractions',
+                'bar'
+            ],
             defaultValue: 'base',
             description:
                 'Changes the visual pattern of the indicator. Valid values are base, base-shaded, path, bullet, fractions, bar.',
@@ -81,9 +81,9 @@ export default {
         },
         indicatorPosition: {
             control: {
-                type: 'select',
-                options: ['footer', 'header']
+                type: 'select'
             },
+            options: ['footer', 'header'],
             defaultValue: 'footer',
             description:
                 'Changes the indicator position. Valid values are footer and header.',
@@ -119,9 +119,9 @@ export default {
         },
         buttonPreviousIconPosition: {
             control: {
-                type: 'select',
-                options: ['left', 'right']
+                type: 'select'
             },
+            options: ['left', 'right'],
             defaultValue: 'left',
             description: 'Valid values include left and right.',
             table: {
@@ -145,18 +145,18 @@ export default {
         },
         buttonPreviousVariant: {
             control: {
-                type: 'select',
-                options: [
-                    'bare',
-                    'neutral',
-                    'brand',
-                    'brand-outline',
-                    'inverse',
-                    'destructive',
-                    'destructive-text',
-                    'success'
-                ]
+                type: 'select'
             },
+            options: [
+                'bare',
+                'neutral',
+                'brand',
+                'brand-outline',
+                'inverse',
+                'destructive',
+                'destructive-text',
+                'success'
+            ],
             defaultValue: 'neutral',
             table: {
                 defaultValue: { summary: 'neutral' },
@@ -177,9 +177,9 @@ export default {
         },
         buttonNextIconPosition: {
             control: {
-                type: 'select',
-                options: ['left', 'right']
+                type: 'select'
             },
+            options: ['left', 'right'],
             defaultValue: 'left',
             description: 'Valid values include left and right.',
             table: {
@@ -203,18 +203,18 @@ export default {
         },
         buttonNextVariant: {
             control: {
-                type: 'select',
-                options: [
-                    'bare',
-                    'neutral',
-                    'brand',
-                    'brand-outline',
-                    'inverse',
-                    'destructive',
-                    'destructive-text',
-                    'success'
-                ]
+                type: 'select'
             },
+            options: [
+                'bare',
+                'neutral',
+                'brand',
+                'brand-outline',
+                'inverse',
+                'destructive',
+                'destructive-text',
+                'success'
+            ],
             defaultValue: 'neutral',
             table: {
                 defaultValue: { summary: 'neutral' },
@@ -235,9 +235,9 @@ export default {
         },
         buttonFinishIconPosition: {
             control: {
-                type: 'select',
-                options: ['left', 'right']
+                type: 'select'
             },
+            options: ['left', 'right'],
             defaultValue: 'left',
             description: 'Valid values include left and right.',
             table: {
@@ -261,18 +261,18 @@ export default {
         },
         buttonFinishVariant: {
             control: {
-                type: 'select',
-                options: [
-                    'bare',
-                    'neutral',
-                    'brand',
-                    'brand-outline',
-                    'inverse',
-                    'destructive',
-                    'destructive-text',
-                    'success'
-                ]
+                type: 'select'
             },
+            options: [
+                'bare',
+                'neutral',
+                'brand',
+                'brand-outline',
+                'inverse',
+                'destructive',
+                'destructive-text',
+                'success'
+            ],
             defaultValue: 'neutral',
             description:
                 'Valid values include bare, neutral, brand, brand-outline, inverse, destructive, destructive-text, success.',
@@ -285,9 +285,9 @@ export default {
         },
         buttonAlignmentBump: {
             control: {
-                type: 'select',
-                options: ['left', 'right']
+                type: 'select'
             },
+            options: ['left', 'right'],
             description: 'Valid values include left and right.',
             table: {
                 type: { summary: 'string' },
@@ -296,9 +296,9 @@ export default {
         },
         actionPosition: {
             control: {
-                type: 'select',
-                options: ['left', 'right']
+                type: 'select'
             },
+            options: ['left', 'right'],
             defaultValue: 'left',
             description: 'Valid values include left and right.',
             table: {
@@ -335,6 +335,10 @@ export default {
                 subcategory: 'Indicator'
             }
         }
+    },
+    args: {
+        hideNavigation: false,
+        hideIndicator: false
     }
 };
 

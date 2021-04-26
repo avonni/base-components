@@ -8,9 +8,9 @@ export default {
         verticalAlign: {
             name: 'vertical-align',
             control: {
-                type: 'select',
-                options: ['start', 'center', 'end']
+                type: 'select'
             },
+            options: ['start', 'center', 'end'],
             defaultValue: 'start',
             description:
                 'Determines how to align the media object items vertically in the container. The alignment options are start, center and end.',
@@ -44,9 +44,9 @@ export default {
         },
         size: {
             control: {
-                type: 'select',
-                options: ['medium', 'small', 'large']
+                type: 'select'
             },
+            options: ['medium', 'small', 'large'],
             description: 'Valid values include small, medium and large.',
             defaultValue: 'medium',
             table: {
@@ -54,6 +54,10 @@ export default {
                 defaultValue: { summary: 'medium' }
             }
         }
+    },
+    args: {
+        responsive: false,
+        inline: false
     }
 };
 

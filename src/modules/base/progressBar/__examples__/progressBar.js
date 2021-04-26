@@ -1,4 +1,4 @@
-import Component from 'base/progressBar';
+import Component from 'avonni/progressBar';
 
 customElements.define(
     'ac-base-progress-bar',

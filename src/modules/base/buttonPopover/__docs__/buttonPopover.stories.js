@@ -30,9 +30,9 @@ export default {
         },
         iconPosition: {
             control: {
-                type: 'select',
-                options: ['left', 'right']
+                type: 'select'
             },
+            options: ['left', 'right'],
             defaultValue: 'left',
             table: {
                 defaultValue: { summary: 'left' }
@@ -40,9 +40,9 @@ export default {
         },
         popoverSize: {
             control: {
-                type: 'select',
-                options: ['small', 'medium', 'large']
+                type: 'select'
             },
+            options: ['small', 'medium', 'large'],
             defaultValue: 'medium',
             table: {
                 defaultValue: { summary: 'medium' }
@@ -50,17 +50,17 @@ export default {
         },
         placement: {
             control: {
-                type: 'select',
-                options: [
-                    'auto',
-                    'left',
-                    'center',
-                    'right',
-                    'bottom-left',
-                    'bottom-center',
-                    'bottom-right'
-                ]
+                type: 'select'
             },
+            options: [
+                'auto',
+                'left',
+                'center',
+                'right',
+                'bottom-left',
+                'bottom-center',
+                'bottom-right'
+            ],
             defaultValue: 'left',
             table: {
                 defaultValue: { summary: 'left' }
@@ -68,18 +68,18 @@ export default {
         },
         variant: {
             control: {
-                type: 'select',
-                options: [
-                    'base',
-                    'neutral',
-                    'brand',
-                    'brand-outline',
-                    'destructive',
-                    'destructive-text',
-                    'inverse',
-                    'success'
-                ]
+                type: 'select'
             },
+            options: [
+                'base',
+                'neutral',
+                'brand',
+                'brand-outline',
+                'destructive',
+                'destructive-text',
+                'inverse',
+                'success'
+            ],
             defaultValue: 'neutral',
             table: {
                 defaultValue: { summary: 'neutral' }
@@ -87,9 +87,9 @@ export default {
         },
         triggers: {
             control: {
-                type: 'select',
-                options: ['click', 'hover', 'focus']
+                type: 'select'
             },
+            options: ['click', 'hover', 'focus'],
             defaultValue: 'click',
             table: {
                 defaultValue: { summary: 'click' }
@@ -97,9 +97,9 @@ export default {
         },
         popoverVariant: {
             control: {
-                type: 'select',
-                options: ['base', 'warning', 'error', 'walkthrough']
+                type: 'select'
             },
+            options: ['base', 'warning', 'error', 'walkthrough'],
             defaultValue: 'base',
             table: {
                 defaultValue: { summary: 'base' }
@@ -123,6 +123,10 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         }
+    },
+    args: {
+        disabled: false,
+        isLoading: false
     }
 };
 

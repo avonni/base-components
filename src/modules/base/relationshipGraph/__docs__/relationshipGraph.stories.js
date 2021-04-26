@@ -47,9 +47,9 @@ export default {
         },
         variant: {
             control: {
-                type: 'radio',
-                options: ['vertical', 'horizontal']
+                type: 'radio'
             },
+            options: ['vertical', 'horizontal'],
             description: 'Valid values include horizontal, vertical.',
             defaultValue: 'horizontal',
             table: {
@@ -100,9 +100,9 @@ export default {
         groupActionsPosition: {
             name: 'group-actions-position',
             control: {
-                type: 'radio',
-                options: ['top', 'bottom']
+                type: 'radio'
             },
+            options: ['top', 'bottom'],
             defaultValue: 'top',
             description: 'Array of default actions for all groups.',
             table: {
@@ -114,9 +114,9 @@ export default {
         groupTheme: {
             name: 'group-theme',
             control: {
-                type: 'select',
-                options: ['default', 'shade', 'inverse']
+                type: 'select'
             },
+            options: ['default', 'shade', 'inverse'],
             defaultValue: 'default',
             description:
                 'Theme of the item groups tiles. Valid options include: ‘default’, ‘shade’ and ‘inverse’.',
@@ -140,9 +140,9 @@ export default {
         itemTheme: {
             name: 'item-theme',
             control: {
-                type: 'select',
-                options: ['default', 'shade', 'inverse']
+                type: 'select'
             },
+            options: ['default', 'shade', 'inverse'],
             defaultValue: 'default',
             description:
                 'Theme of the item tiles. Valid options include: ‘default’, ‘shade’ and ‘inverse’.',
@@ -191,6 +191,9 @@ export default {
                 category: 'Groups'
             }
         }
+    },
+    args: {
+        hideItemsCount: false
     }
 };
 

@@ -30,9 +30,9 @@ export default {
         },
         size: {
             control: {
-                type: 'select',
-                options: ['xx-small', 'x-small', 'small', 'medium', 'large']
+                type: 'select'
             },
+            options: ['xx-small', 'x-small', 'small', 'medium'],
             defaultValue: 'medium',
             table: {
                 defaultValue: { summary: 'medium' }
@@ -40,17 +40,17 @@ export default {
         },
         variant: {
             control: {
-                type: 'select',
-                options: [
-                    'bare',
-                    'container',
-                    'brand',
-                    'border',
-                    'border-filled',
-                    'bare-inverse',
-                    'border-inverse'
-                ]
+                type: 'select'
             },
+            options: [
+                'bare',
+                'container',
+                'brand',
+                'border',
+                'border-filled',
+                'bare-inverse',
+                'border-inverse'
+            ],
             defaultValue: 'border',
             table: {
                 defaultValue: { summary: 'border' }
@@ -65,6 +65,9 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         }
+    },
+    args: {
+        disabled: false
     }
 };
 

@@ -25,18 +25,18 @@ export default {
         },
         variant: {
             control: {
-                type: 'select',
-                options: [
-                    'base',
-                    'neutral',
-                    'brand',
-                    'brand-outline',
-                    'destructive',
-                    'destructive-text',
-                    'inverse',
-                    'success'
-                ]
+                type: 'select'
             },
+            options: [
+                'base',
+                'neutral',
+                'brand',
+                'brand-outline',
+                'destructive',
+                'destructive-text',
+                'inverse',
+                'success'
+            ],
             defaultValue: 'neutral',
             table: {
                 defaultValue: { summary: 'neutral' }
@@ -44,9 +44,9 @@ export default {
         },
         iconPosition: {
             control: {
-                type: 'select',
-                options: ['left', 'right']
+                type: 'select'
             },
+            options: ['left', 'right'],
             defaultValue: 'left',
             table: {
                 defaultValue: { summary: 'left' }
@@ -61,6 +61,9 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         }
+    },
+    args: {
+        disabled: false
     }
 };
 

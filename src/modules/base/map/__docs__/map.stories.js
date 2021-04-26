@@ -36,9 +36,9 @@ export default {
         listView: {
             name: 'list-view',
             control: {
-                type: 'select',
-                options: ['visible', 'hidden', 'auto']
+                type: 'select'
             },
+            options: ['visible', 'hidden', 'auto'],
             defaultValue: 'auto',
             table: {
                 defaultValue: { summary: 'auto' },
@@ -73,6 +73,9 @@ export default {
                 type: { summary: 'boolean' }
             }
         }
+    },
+    args: {
+        showFooter: false
     }
 };
 

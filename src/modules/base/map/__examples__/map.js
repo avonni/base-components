@@ -1,4 +1,4 @@
-import Component from 'base/map';
+import Component from 'avonni/map';
 
 customElements.define('ac-base-map', Component.CustomElementConstructor);
 

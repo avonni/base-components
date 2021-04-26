@@ -1,4 +1,4 @@
-import Component from 'base/rating';
+import Component from 'avonni/rating';
 
 customElements.define('ac-base-rating', Component.CustomElementConstructor);
 

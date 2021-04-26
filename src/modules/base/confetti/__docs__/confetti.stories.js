@@ -9,16 +9,16 @@ export default {
     argTypes: {
         variant: {
             control: {
-                type: 'select',
-                options: [
-                    'base',
-                    'random-direction',
-                    'realistic',
-                    'fireworks',
-                    'snow',
-                    'pride'
-                ]
+                type: 'select'
             },
+            options: [
+                'base',
+                'random-direction',
+                'realistic',
+                'fireworks',
+                'snow',
+                'pride'
+            ],
             defaultValue: 'base',
             table: {
                 defaultValue: { summary: 'base' }

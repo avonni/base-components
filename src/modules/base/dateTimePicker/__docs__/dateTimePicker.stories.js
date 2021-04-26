@@ -47,9 +47,9 @@ export default {
         },
         variant: {
             control: {
-                type: 'select',
-                options: ['daily', 'weekly', 'inline', 'timeline', 'monthly']
+                type: 'select'
             },
+            options: ['daily', 'weekly', 'inline', 'timeline', 'monthly'],
             defaultValue: 'daily',
             description:
                 'The variant changes the appearance of the time picker. Accepted variants include daily and weekly.',
@@ -154,9 +154,9 @@ export default {
         timeFormatHour: {
             name: 'time-format-hour',
             control: {
-                type: 'select',
-                options: ['2-digit', 'numeric']
+                type: 'select'
             },
+            options: ['2-digit', 'numeric'],
             description: 'Valid values include numeric and 2-digit.',
             table: {
                 type: { summary: 'string' },
@@ -179,9 +179,9 @@ export default {
         timeFormatMinute: {
             name: 'time-format-minute',
             control: {
-                type: 'select',
-                options: ['2-digit', 'numeric']
+                type: 'select'
             },
+            options: ['2-digit', 'numeric'],
             description: 'Valid values include numeric and 2-digit.',
             table: {
                 type: { summary: 'string' },
@@ -192,9 +192,9 @@ export default {
         timeFormatSecond: {
             name: 'time-format-second',
             control: {
-                type: 'select',
-                options: ['2-digit', 'numeric']
+                type: 'select'
             },
+            options: ['2-digit', 'numeric'],
             description: 'Valid values include numeric and 2-digit.',
             table: {
                 type: { summary: 'string' },
@@ -215,9 +215,9 @@ export default {
         dateFormatDay: {
             name: 'date-format-day',
             control: {
-                type: 'select',
-                options: ['2-digit', 'numeric']
+                type: 'select'
             },
+            options: ['2-digit', 'numeric'],
             defaultValue: 'numeric',
             description: 'Valid values include numeric and 2-digit.',
             table: {
@@ -229,9 +229,9 @@ export default {
         dateFormatWeekday: {
             name: 'date-format-weekday',
             control: {
-                type: 'select',
-                options: ['narrow', 'short', 'long']
+                type: 'select'
             },
+            options: ['narrow', 'short', 'long'],
             defaultValue: 'short',
             description:
                 'Specifies how to display the day of the week. Allowed values are narrow, short, or long.',
@@ -244,9 +244,9 @@ export default {
         dateFormatMonth: {
             name: 'date-format-month',
             control: {
-                type: 'select',
-                options: ['numeric', '2-digit', 'narrow', 'short', 'long']
+                type: 'select'
             },
+            options: ['numeric', '2-digit', 'narrow', 'short', 'long'],
             defaultValue: 'long',
             description:
                 'Allowed values are numeric, 2-digit, long, short or narrow.',
@@ -259,9 +259,9 @@ export default {
         dateFormatYear: {
             name: 'date-format-year',
             control: {
-                type: 'select',
-                options: ['2-digit', 'numeric']
+                type: 'select'
             },
+            options: ['2-digit', 'numeric'],
             description: 'Valid values include numeric and 2-digit.',
             table: {
                 type: { summary: 'string' },
@@ -319,9 +319,9 @@ export default {
         },
         type: {
             control: {
-                type: 'select',
-                options: ['radio', 'checkbox']
+                type: 'select'
             },
+            options: ['radio', 'checkbox'],
             defaultValue: 'radio',
             description: 'Valid values include radio and checkbox.',
             table: {
@@ -367,6 +367,18 @@ export default {
                 category: 'Date'
             }
         }
+    },
+    args: {
+        disabled: false,
+        hideLabel: false,
+        readOnly: false,
+        required: false,
+        timeFormatHour12: false,
+        showEndTime: false,
+        showDisabledDates: false,
+        showTimeZone: false,
+        hideNavigation: false,
+        hideDatePicker: false
     }
 };
 
