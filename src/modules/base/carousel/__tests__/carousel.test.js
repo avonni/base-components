@@ -261,10 +261,10 @@ describe('Carousel', () => {
         const element = createElement('base-carousel', {
             is: Carousel
         });
-        document.body.appendChild(element);
 
         element.items = items;
         element.indicatorVariant = 'shaded';
+        document.body.appendChild(element);
 
         return Promise.resolve().then(() => {
             const activeIndicator = element.shadowRoot.querySelector(
