@@ -65,7 +65,7 @@ export default class DualListbox extends LightningElement {
 
     _requiredOptions = [];
     _options = [];
-    _borderedOptions = false;
+    _borderedListItem = false;
     _buttonSize = VALID_BUTTON_SIZES.default;
     _buttonVariant = VALID_BUTTON_VARIANTS.default;
     _isLoading = false;
@@ -111,6 +111,7 @@ export default class DualListbox extends LightningElement {
         });
         this.hasAvatar();
         this.hasDescription();
+        this.hasIconSize();
     }
 
     renderedCallback() {
@@ -165,12 +166,12 @@ export default class DualListbox extends LightningElement {
     }
 
     @api
-    get borderedOptions() {
-        return this._borderedOptions || false;
+    get borderedListItem() {
+        return this._borderedListItem || false;
     }
 
-    set borderedOptions(value) {
-        this._borderedOptions = normalizeBoolean(value);
+    set borderedListItem(value) {
+        this._borderedListItem = normalizeBoolean(value);
     }
 
     @api
@@ -344,6 +345,16 @@ export default class DualListbox extends LightningElement {
                 if (option.description) {
                     option.hasDescription = true;
                 } else option.hasDescription = false;
+            });
+        }
+    }
+
+    hasIconSize() {
+        if (this._options) {
+            this._options.forEach((option) => {
+                if (option.iconSize) {
+                    option.hasIconSize = true;
+                } else option.hasIconSize = false;
             });
         }
     }
@@ -576,7 +587,8 @@ export default class DualListbox extends LightningElement {
     get computedListItemClass() {
         return classSet('slds-listbox__item')
             .add({
-                'avonni-dual-listbox-option-border_bottom': this.borderedOptions
+                'avonni-dual-listbox-option-border_bottom': this
+                    .borderedListItem
             })
             .toString();
     }

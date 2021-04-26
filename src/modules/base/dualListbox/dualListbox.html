@@ -122,10 +122,19 @@
                                             >
                                                 <div class="slds-media__figure">
                                                     <c-avatar
+                                                        if:true={option.hasIconSize}
                                                         fallback-icon-name={option.iconName}
                                                         src={option.src}
                                                         initials={option.initials}
                                                         size={option.iconSize}
+                                                        variant={option.variant}
+                                                    ></c-avatar>
+                                                    <c-avatar
+                                                        if:false={option.hasIconSize}
+                                                        fallback-icon-name={option.iconName}
+                                                        src={option.src}
+                                                        initials={option.initials}
+                                                        size="small"
                                                         variant={option.variant}
                                                     ></c-avatar>
                                                 </div>
@@ -248,10 +257,19 @@
                                             >
                                                 <div class="slds-media__figure">
                                                     <c-avatar
+                                                        if:true={option.hasIconSize}
                                                         fallback-icon-name={option.iconName}
                                                         src={option.src}
                                                         initials={option.initials}
                                                         size={option.iconSize}
+                                                        variant={option.variant}
+                                                    ></c-avatar>
+                                                    <c-avatar
+                                                        if:false={option.hasIconSize}
+                                                        fallback-icon-name={option.iconName}
+                                                        src={option.src}
+                                                        initials={option.initials}
+                                                        size="small"
                                                         variant={option.variant}
                                                     ></c-avatar>
                                                 </div>

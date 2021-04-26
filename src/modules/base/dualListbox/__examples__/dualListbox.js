@@ -1,4 +1,4 @@
-import Component from 'base/dualListbox';
+import Component from 'avonni/dualListbox';
 
 customElements.define(
     'ac-base-dual-listbox',
@@ -8,7 +8,7 @@ customElements.define(
 export const DualListbox = ({
     addButtonIconName,
     addButtonLabel,
-    borderedOptions,
+    borderedListItem,
     buttonSize,
     buttonVariant,
     disableReordering,
@@ -43,7 +43,7 @@ export const DualListbox = ({
     const element = document.createElement('ac-base-dual-listbox');
     element.addButtonIconName = addButtonIconName;
     element.addButtonLabel = addButtonLabel;
-    element.borderedOptions = borderedOptions;
+    element.borderedListItem = borderedListItem;
     element.buttonSize = buttonSize;
     element.buttonVariant = buttonVariant;
     element.disableReordering = disableReordering;

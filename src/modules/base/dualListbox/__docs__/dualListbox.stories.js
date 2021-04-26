@@ -26,8 +26,8 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        borderedOptions: {
-            name: 'bordered-options',
+        borderedListItem: {
+            name: 'bordered-list-item',
             control: {
                 type: 'boolean'
             },
