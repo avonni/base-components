@@ -20,9 +20,9 @@ export default {
         },
         size: {
             control: {
-                type: 'select',
-                options: ['small', 'medium', 'large']
+                type: 'select'
             },
+            options: ['small', 'medium', 'large'],
             defaultValue: 'medium',
             table: {
                 defaultValue: { summary: 'medium' }
@@ -46,6 +46,10 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         }
+    },
+    args: {
+        isLoading: false,
+        showDialog: false
     }
 };
 

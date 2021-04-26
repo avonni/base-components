@@ -105,9 +105,9 @@ export default {
         },
         direction: {
             control: {
-                type: 'select',
-                options: ['horizontal', 'vertical']
+                type: 'select'
             },
+            options: ['horizontal', 'vertical'],
             defaultValue: 'horizontal',
             description:
                 "Could be 'horizontal' or 'vertical' (for vertical slider).",
@@ -118,9 +118,9 @@ export default {
         },
         effect: {
             control: {
-                type: 'select',
-                options: ['slide', 'fade', 'cube', 'coverflow', 'flip', 'none']
+                type: 'select'
             },
+            options: ['slide', 'fade', 'cube', 'coverflow', 'flip', 'none'],
             defaultValue: 'slide',
             description:
                 'Transition effect. Could be "slide", "fade", "cube", "coverflow", "flip" or “none”.',
@@ -212,9 +212,9 @@ export default {
         buttonPreviousIconPosition: {
             name: 'button-previous-icon-position',
             control: {
-                type: 'select',
-                options: ['left', 'right']
+                type: 'select'
             },
+            options: ['left', 'right'],
             defaultValue: 'left',
             description: 'Values include left and right.',
             table: {
@@ -226,18 +226,18 @@ export default {
         buttonPreviousVariant: {
             name: 'button-previous-variant',
             control: {
-                type: 'select',
-                options: [
-                    'bare',
-                    'neutral',
-                    'brand',
-                    'brand-outline',
-                    'inverse',
-                    'destructive',
-                    'destructive-text',
-                    'success'
-                ]
+                type: 'select'
             },
+            options: [
+                'bare',
+                'neutral',
+                'brand',
+                'brand-outline',
+                'inverse',
+                'destructive',
+                'destructive-text',
+                'success'
+            ],
             defaultValue: 'neutral',
             description:
                 'Values include bare, neutral, brand, brand-outline, inverse, destructive, destructive-text, success.',
@@ -250,9 +250,9 @@ export default {
         buttonNextIconPosition: {
             name: 'button-next-icon-position',
             control: {
-                type: 'select',
-                options: ['left', 'right']
+                type: 'select'
             },
+            options: ['left', 'right'],
             defaultValue: 'right',
             description: 'Values include left and right.',
             table: {
@@ -264,18 +264,18 @@ export default {
         buttonNextVariant: {
             name: 'button-next-variant',
             control: {
-                type: 'select',
-                options: [
-                    'bare',
-                    'neutral',
-                    'brand',
-                    'brand-outline',
-                    'inverse',
-                    'destructive',
-                    'destructive-text',
-                    'success'
-                ]
+                type: 'select'
             },
+            options: [
+                'bare',
+                'neutral',
+                'brand',
+                'brand-outline',
+                'inverse',
+                'destructive',
+                'destructive-text',
+                'success'
+            ],
             defaultValue: 'neutral',
             description:
                 'Values include bare, neutral, brand, brand-outline, inverse, destructive, destructive-text, success.',
@@ -288,9 +288,9 @@ export default {
         buttonPosition: {
             name: 'button-position',
             control: {
-                type: 'select',
-                options: ['top', 'middle', 'bottom']
+                type: 'select'
             },
+            options: ['top', 'middle', 'bottom'],
             defaultValue: 'middle',
             description: 'Values include top, middle, bottom.',
             table: {
@@ -328,14 +328,14 @@ export default {
         indicatorType: {
             name: 'indicator-type',
             control: {
-                type: 'select',
-                options: [
-                    'progress-bar',
-                    'bullets',
-                    'dynamic-bullets',
-                    'fractions'
-                ]
+                type: 'select'
             },
+            options: [
+                'progress-bar',
+                'bullets',
+                'dynamic-bullets',
+                'fractions'
+            ],
             defaultValue: 'bullets',
             description:
                 'Values include progress-bar, bullets, dynamic-bullets, fractions.',
@@ -348,16 +348,16 @@ export default {
         indicatorPosition: {
             name: 'indicator-position',
             control: {
-                type: 'select',
-                options: [
-                    'top-left',
-                    'bottom-left',
-                    'top-right',
-                    'bottom-right',
-                    'top-center',
-                    'bottom-center'
-                ]
+                type: 'select'
             },
+            options: [
+                'top-left',
+                'bottom-left',
+                'top-right',
+                'bottom-right',
+                'top-center',
+                'bottom-center'
+            ],
             defaultValue: 'bottom-center',
             description:
                 'Values include top-left, bottom-left, top-right, bottom-right, top-center, bottom-center.',
@@ -393,6 +393,13 @@ export default {
                 category: 'Indicator'
             }
         }
+    },
+    args: {
+        loop: false,
+        navigation: false,
+        buttonInner: false,
+        indicators: false,
+        indicatorInner: false
     }
 };
 

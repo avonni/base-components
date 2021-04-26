@@ -1,4 +1,4 @@
-import Component from 'base/progressBar';
+import Component from 'avonni/progressBar';
 
 customElements.define(
     'ac-base-progress-bar',
@@ -12,7 +12,7 @@ export const ProgressBar = ({
     showValue,
     valuePosition,
     valueLabel,
-    badges,
+    referenceLines,
     variant,
     theme,
     textured,
@@ -26,7 +26,7 @@ export const ProgressBar = ({
     element.showValue = showValue;
     element.valuePosition = valuePosition;
     element.valueLabel = valueLabel;
-    element.badges = badges;
+    element.referenceLines = referenceLines;
     element.variant = variant;
     element.theme = theme;
     element.textured = textured;

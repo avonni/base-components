@@ -26,16 +26,9 @@ export default {
         },
         variant: {
             control: {
-                type: 'select',
-                options: [
-                    'base',
-                    'light',
-                    'dark',
-                    'warning',
-                    'error',
-                    'success'
-                ]
+                type: 'select'
             },
+            options: ['base', 'light', 'dark', 'warning', 'error', 'success'],
             defaultValue: 'base',
             description:
                 'Values include base, light, dark, warning, error, success.',
@@ -47,9 +40,9 @@ export default {
         iconSize: {
             name: 'icon-size',
             control: {
-                type: 'select',
-                options: ['xx-small', 'x-small', 'small', 'medium', 'large']
+                type: 'select'
             },
+            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
             defaultValue: 'medium',
             description:
                 'The size of the icon. Options include xx-small, x-small, small, medium, or large. This value defaults to medium.',

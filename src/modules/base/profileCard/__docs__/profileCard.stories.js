@@ -90,16 +90,16 @@ export default {
         avatarPosition: {
             name: 'avatar-position',
             control: {
-                type: 'select',
-                options: [
-                    'top-left',
-                    'top-center',
-                    'top-right',
-                    'bottom-left',
-                    'bottom-center',
-                    'bottom-right'
-                ]
+                type: 'select'
             },
+            options: [
+                'top-left',
+                'top-center',
+                'top-right',
+                'bottom-left',
+                'bottom-center',
+                'bottom-right'
+            ],
             description:
                 'Values include top-left, top-center, top-right, bottom-left, bottom-center, bottom-right.',
             defaultValue: 'top-left',
@@ -112,9 +112,9 @@ export default {
         avatarVariant: {
             name: 'avatar-variant',
             control: {
-                type: 'select',
-                options: ['circle', 'square']
+                type: 'select'
             },
+            options: ['circle', 'square'],
             description:
                 'The variant change the shape of the avatar. Valid values are circle, square.',
             defaultValue: 'circle',
@@ -126,9 +126,9 @@ export default {
         },
         size: {
             control: {
-                type: 'select',
-                options: ['x-small', 'small', 'medium', 'large', 'x-large']
+                type: 'select'
             },
+            options: ['x-small', 'small', 'medium', 'large', 'x-large'],
             description:
                 'Values include x-small, small, medium, large, x-large.',
             defaultValue: 'medium',

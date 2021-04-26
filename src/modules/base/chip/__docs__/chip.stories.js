@@ -10,19 +10,19 @@ export default {
         },
         variant: {
             control: {
-                type: 'select',
-                options: [
-                    'base',
-                    'brand',
-                    'inverse',
-                    'alt-inverse',
-                    'success',
-                    'info',
-                    'warning',
-                    'error',
-                    'offline'
-                ]
+                type: 'select'
             },
+            options: [
+                'base',
+                'brand',
+                'inverse',
+                'alt-inverse',
+                'success',
+                'info',
+                'warning',
+                'error',
+                'offline'
+            ],
             defaultValue: 'base',
             table: {
                 defaultValue: { summary: 'base' }
@@ -37,6 +37,9 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         }
+    },
+    args: {
+        outline: false
     }
 };
 

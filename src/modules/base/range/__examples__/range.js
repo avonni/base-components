@@ -1,4 +1,4 @@
-import Component from 'base/range';
+import Component from 'avonni/range';
 
 customElements.define('ac-base-range', Component.CustomElementConstructor);
 

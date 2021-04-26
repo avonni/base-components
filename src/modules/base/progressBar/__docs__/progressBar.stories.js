@@ -13,9 +13,9 @@ export default {
         },
         size: {
             control: {
-                type: 'select',
-                options: ['x-small', 'small', 'medium', 'large', 'full']
+                type: 'select'
             },
+            options: ['x-small', 'small', 'medium', 'large', 'full'],
             defaultValue: 'full',
             description:
                 'The size of the progress bar. Valid values are x-small, small, medium, large and full. The default value is medium.',
@@ -54,16 +54,16 @@ export default {
         valuePosition: {
             name: 'value-position',
             control: {
-                type: 'select',
-                options: [
-                    'left',
-                    'right',
-                    'top-right',
-                    'top-left',
-                    'bottom-right',
-                    'bottom-left'
-                ]
+                type: 'select'
             },
+            options: [
+                'left',
+                'right',
+                'top-right',
+                'top-left',
+                'bottom-right',
+                'bottom-left'
+            ],
             defaultValue: 'top-right',
             description:
                 'Valid values include left, right, top-right, top-left, bottom-right and bottom-left',
@@ -85,7 +85,7 @@ export default {
                 category: 'Value'
             }
         },
-        badges: {
+        referenceLines: {
             control: {
                 type: 'object'
             },
@@ -97,9 +97,9 @@ export default {
         },
         variant: {
             control: {
-                type: 'select',
-                options: ['base', 'circular']
+                type: 'select'
             },
+            options: ['base', 'circular'],
             defaultValue: 'base',
             description:
                 'The variant changes the appearance of the progress bar. Accepted variants include base or circular. This value defaults to base.',
@@ -110,18 +110,18 @@ export default {
         },
         theme: {
             control: {
-                type: 'select',
-                options: [
-                    'base',
-                    'success',
-                    'inverse',
-                    'alt-inverse',
-                    'warning',
-                    'info',
-                    'error',
-                    'offline'
-                ]
+                type: 'select'
             },
+            options: [
+                'base',
+                'success',
+                'inverse',
+                'alt-inverse',
+                'warning',
+                'info',
+                'error',
+                'offline'
+            ],
             defaultValue: 'base',
             description:
                 'Valid values includes base, success, inverse, alt-inverse, warning, info, error and offline.',
@@ -143,9 +143,9 @@ export default {
         },
         thickness: {
             control: {
-                type: 'select',
-                options: ['x-small', 'small', 'medium', 'large']
+                type: 'select'
             },
+            options: ['x-small', 'small', 'medium', 'large'],
             defaultValue: 'medium',
             description:
                 'Set progress bar thickness. Valid values include x-small, small, medium and large',
@@ -156,9 +156,9 @@ export default {
         },
         orientation: {
             control: {
-                type: 'select',
-                options: ['horizontal', 'vertical']
+                type: 'select'
             },
+            options: ['horizontal', 'vertical'],
             defaultValue: 'horizontal',
             description:
                 'Orientation of the progress bar to be used. Valid values include horizontal and vertical.',
@@ -167,10 +167,14 @@ export default {
                 defaultValue: { summary: 'horizontal' }
             }
         }
+    },
+    args: {
+        showValue: false,
+        textured: false
     }
 };
 
-const oneBadge = [
+const oneReferenceLine = [
     {
         label: 'Avg',
         value: 90,
@@ -179,7 +183,7 @@ const oneBadge = [
     }
 ];
 
-const multipleBadges = [
+const multipleReferenceLines = [
     {
         label: '1st',
         value: 10,
@@ -212,7 +216,7 @@ export const Base = Template.bind({});
 Base.args = {
     label: 'Label',
     value: 45,
-    badges: oneBadge
+    referenceLines: oneReferenceLine
 };
 
 export const Vertical = Template.bind({});
@@ -220,21 +224,21 @@ Vertical.args = {
     label: 'Vertical progress bar',
     value: 45,
     orientation: 'vertical',
-    badges: oneBadge
+    referenceLines: oneReferenceLine
 };
 
-export const MultipleBadges = Template.bind({});
-MultipleBadges.args = {
-    label: 'Progress bar with multiple badges',
+export const MultipleReferenceLines = Template.bind({});
+MultipleReferenceLines.args = {
+    label: 'Progress bar with multiple reference lines',
     value: 45,
-    badges: multipleBadges
+    referenceLines: multipleReferenceLines
 };
 
 export const ThickWarningTheme = Template.bind({});
 ThickWarningTheme.args = {
     label: 'Thick circular progress bar with warning theme',
     value: 87,
-    badges: oneBadge,
+    referenceLines: oneReferenceLine,
     theme: 'warning',
     thickness: 'large',
     variant: 'circular'
@@ -244,7 +248,7 @@ export const TexturedVisibleValue = Template.bind({});
 TexturedVisibleValue.args = {
     label: 'Textured progress bar with visible value',
     value: 24,
-    badges: oneBadge,
+    referenceLines: oneReferenceLine,
     valueLabel: 'Value label',
     showValue: true,
     textured: true
@@ -254,7 +258,7 @@ export const ExtraSmallVertical = Template.bind({});
 ExtraSmallVertical.args = {
     label: 'Extra small and thin vertical progress bar',
     value: 63,
-    badges: oneBadge,
+    referenceLines: oneReferenceLine,
     valueLabel: 'Value label',
     valuePosition: 'bottom-right',
     showValue: true,

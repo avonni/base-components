@@ -85,6 +85,12 @@ export default {
                 type: { summary: 'boolean' }
             }
         }
+    },
+    args: {
+        fullWidth: false,
+        removeBodyIndentation: false,
+        closed: false,
+        hideIcon: false
     }
 };
 

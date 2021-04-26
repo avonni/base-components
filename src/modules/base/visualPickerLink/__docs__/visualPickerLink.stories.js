@@ -35,9 +35,9 @@ export default {
         },
         iconPosition: {
             control: {
-                type: 'select',
-                options: ['left', 'right']
+                type: 'select'
             },
+            options: ['left', 'right'],
             defaultValue: 'left',
             description: 'Values include left and right.',
             table: {
@@ -65,6 +65,10 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         }
+    },
+    args: {
+        completed: false,
+        infoOnly: false
     }
 };
 

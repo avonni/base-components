@@ -28,6 +28,10 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         }
+    },
+    args: {
+        closed: false,
+        collapsible: false
     }
 };
 

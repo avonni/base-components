@@ -1,15 +1,13 @@
 {
     "name": "@avonni/base-components",
     "description": "Base components",
-    "version": "0.0.2",
+    "version": "0.0.4",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/avonni/base-components.git"
     },
+    "homepage": "https://storybook.avonnicomponents.com/",
     "license": "MIT",
-    "publishConfig": {
-        "registry": "https://npm.pkg.github.com/"
-    },
     "dependencies": {
         "dompurify": "^2.2.6",
         "lightning-base-components": "^1.11.2-alpha"
@@ -18,11 +16,12 @@
         "@babel/core": "^7.12.13",
         "@lwc/jest-preset": "^9.0.0",
         "@lwc/synthetic-shadow": "^1.17.0",
-        "@salesforce-ux/design-system": "^2.14.1",
-        "@storybook/addon-actions": "^6.1.20",
-        "@storybook/addon-essentials": "^6.1.20",
-        "@storybook/addon-links": "^6.1.20",
-        "@storybook/web-components": "^6.1.20",
+        "@salesforce-ux/design-system": "^2.14.3",
+        "@storybook/addon-actions": "^6.2.8",
+        "@storybook/addon-essentials": "^6.2.8",
+        "@storybook/addon-links": "^6.2.8",
+        "@storybook/storybook-deployer": "^2.8.7",
+        "@storybook/web-components": "^6.2.8",
         "babel-loader": "^8.2.2",
         "eslint": "^7.19.0",
         "husky": "^4.3.8",
@@ -54,6 +53,8 @@
     "scripts": {
         "storybook": "start-storybook -s ./static",
         "deploy": "npm publish",
+        "deploy-storybook": "storybook-to-ghpages",
+        "build-storybook": "build-storybook -s ./static",
         "prettier": "prettier --write '**/*.{cmp,component,css,html,js,json,md,page,yaml,yml}'",
         "prettier:verify": "prettier --list-different '**/*.{html,js,json,yaml,yml,md,cmp,page,component}'",
         "test:unit": "lwc-services test:unit",

@@ -13,9 +13,9 @@ export default {
         },
         variant: {
             control: {
-                type: 'select',
-                options: ['shade', 'success', 'warning', 'error']
+                type: 'select'
             },
+            options: ['shade', 'success', 'warning', 'error'],
             defaultValue: 'shade',
             table: {
                 defaultValue: { summary: 'shade' },
@@ -32,6 +32,9 @@ export default {
                 type: { summary: 'boolean' }
             }
         }
+    },
+    args: {
+        disabled: false
     }
 };
 

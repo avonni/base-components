@@ -38,6 +38,11 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         }
+    },
+    args: {
+        disabled: false,
+        readOnly: false,
+        opacity: false
     }
 };
 

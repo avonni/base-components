@@ -74,9 +74,9 @@ export default {
         },
         variant: {
             control: {
-                type: 'select',
-                options: ['top-toolbar', 'bottom-toolbar']
+                type: 'select'
             },
+            options: ['top-toolbar', 'bottom-toolbar'],
             description:
                 'The variant changes the appearance of the toolbar. Accepted variant is bottom-toolbar and top-toolbar which causes the toolbar to be displayed below the box.',
             defaultValue: 'bottom-toolbar',
@@ -88,9 +88,9 @@ export default {
         },
         mode: {
             control: {
-                type: 'select',
-                options: ['draw', 'erase']
+                type: 'select'
             },
+            options: ['draw', 'erase'],
             defaultValue: 'draw',
             description: 'Values include draw, erase',
             table: {
@@ -160,6 +160,13 @@ export default {
                 category: 'Validation'
             }
         }
+    },
+    args: {
+        disabled: false,
+        readOnly: false,
+        required: false,
+        hideControls: false,
+        invalid: false
     }
 };
 

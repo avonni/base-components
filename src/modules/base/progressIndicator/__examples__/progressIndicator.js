@@ -1,4 +1,4 @@
-import Component from 'base/progressIndicator';
+import Component from 'avonni/progressIndicator';
 
 customElements.define(
     'ac-base-progress-indicator',

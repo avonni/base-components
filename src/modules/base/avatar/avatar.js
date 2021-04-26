@@ -1,9 +1,6 @@
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
-import { computeSldsClass } from 'c/iconUtils';
-import avatar from './avatar.html';
-import avatarWithDetails from './avatarWithDetails.html';
 
 const SIZE = {
     valid: [
@@ -41,39 +38,36 @@ const TEXT_POSITION = {
     default: 'right'
 };
 
+const DEFAULT_ALTERNATIVE_TEXT = 'Avatar';
+const DEFAULT_ENTITY_TITLE = 'Entity';
+const DEFAULT_PRESENCE_TITLE = 'Presence';
+const DEFAULT_STATUS_TITLE = 'Status';
+
 export default class Avatar extends LightningElement {
     @api entityInitials;
+    @api entityIconName;
     @api fallbackIconName;
     @api initials;
     @api primaryText;
     @api secondaryText;
     @api tertiaryText;
 
-    avatarClass;
-    entityClass;
-    _entityIconCategory;
-    _entityIconName;
-    presenceClass;
-    statusComputed;
-    wrapperClass;
     mediaObjectClass;
-    fallbackIconClass;
 
-    _alternativeText = 'Avatar';
-    _entityIconFullName;
+    _alternativeText = DEFAULT_ALTERNATIVE_TEXT;
     _entityPosition = POSITION.entityDefault;
     _entitySrc;
-    _entityTitle = 'Entity';
+    _entityTitle = DEFAULT_ENTITY_TITLE;
     _entityVariant = VARIANT.default;
-    _hideAvatarDetails;
+    _hideAvatarDetails = false;
     _presence = PRESENCE.default;
     _presencePosition = POSITION.presenceDefault;
-    _presenceTitle = 'Presence';
+    _presenceTitle = DEFAULT_PRESENCE_TITLE;
     _size = SIZE.default;
     _src = '';
     _status = STATUS.default;
     _statusPosition = POSITION.statusDefault;
-    _statusTitle = 'Status';
+    _statusTitle = DEFAULT_STATUS_TITLE;
     _variant = VARIANT.default;
     _textPosition = TEXT_POSITION.default;
 
@@ -83,22 +77,11 @@ export default class Avatar extends LightningElement {
 
     connectedCallback() {
         this._updateClassList();
-
-        if (this.status) this._computeStatus();
-        if (this.presence) this._computePresenceClasses();
-        if (this.showEntity) this._computeEntityClasses();
-    }
-
-    render() {
-        if (this.hideAvatarDetails) {
-            return avatar;
-        }
-        return avatarWithDetails;
     }
 
     @api
     get hideAvatarDetails() {
-        return this._hideAvatarDetails || false;
+        return this._hideAvatarDetails;
     }
 
     set hideAvatarDetails(value) {
@@ -111,7 +94,8 @@ export default class Avatar extends LightningElement {
     }
 
     set alternativeText(value) {
-        this._alternativeText = value || this._alternativeText;
+        this._alternativeText =
+            typeof value === 'string' ? value.trim() : DEFAULT_ALTERNATIVE_TEXT;
     }
 
     @api
@@ -124,7 +108,6 @@ export default class Avatar extends LightningElement {
             fallbackValue: SIZE.default,
             validValues: SIZE.valid
         });
-        this._updateClassList();
     }
 
     @api
@@ -146,7 +129,6 @@ export default class Avatar extends LightningElement {
             fallbackValue: VARIANT.default,
             validValues: VARIANT.valid
         });
-        this._updateClassList();
     }
 
     @api
@@ -159,6 +141,7 @@ export default class Avatar extends LightningElement {
             fallbackValue: TEXT_POSITION.default,
             validValues: TEXT_POSITION.valid
         });
+        this._updateClassList();
     }
 
     /**
@@ -175,7 +158,6 @@ export default class Avatar extends LightningElement {
             fallbackValue: STATUS.default,
             validValues: STATUS.valid
         });
-        this._computeStatus();
     }
 
     @api
@@ -184,8 +166,8 @@ export default class Avatar extends LightningElement {
     }
 
     set statusTitle(value) {
-        this._statusTitle = value || this._statusTitle;
-        this._computeStatus();
+        this._statusTitle =
+            typeof value === 'string' ? value.trim() : DEFAULT_STATUS_TITLE;
     }
 
     @api
@@ -198,7 +180,6 @@ export default class Avatar extends LightningElement {
             fallbackValue: POSITION.statusDefault,
             validValues: POSITION.valid
         });
-        this._computeStatus();
     }
 
     /**
@@ -215,7 +196,6 @@ export default class Avatar extends LightningElement {
             fallbackValue: PRESENCE.default,
             validValues: PRESENCE.valid
         });
-        this._computePresenceClasses();
     }
 
     @api
@@ -228,7 +208,6 @@ export default class Avatar extends LightningElement {
             fallbackValue: POSITION.presenceDefault,
             validValues: POSITION.valid
         });
-        this._computePresenceClasses();
     }
 
     @api
@@ -237,24 +216,13 @@ export default class Avatar extends LightningElement {
     }
 
     set presenceTitle(value) {
-        this._presenceTitle = value || this._presenceTitle;
+        this._presenceTitle =
+            typeof value === 'string' ? value.trim() : DEFAULT_PRESENCE_TITLE;
     }
 
     /**
      * Entity
      */
-    @api
-    get entityIconName() {
-        return this._entityIconFullName;
-    }
-
-    set entityIconName(value) {
-        this._entityIconFullName = value;
-        if (value) {
-            this._entityIconCategory = value.split(':')[0];
-            this._entityIconName = value.split(':')[1];
-        }
-    }
 
     @api
     get entityPosition() {
@@ -266,7 +234,6 @@ export default class Avatar extends LightningElement {
             fallbackValue: POSITION.entityDefault,
             validValues: POSITION.valid
         });
-        this._computeEntityClasses();
     }
 
     @api
@@ -284,7 +251,8 @@ export default class Avatar extends LightningElement {
     }
 
     set entityTitle(value) {
-        this._entityTitle = value || this._entityTitle;
+        this._entityTitle =
+            (typeof value === 'string' && value.trim()) || DEFAULT_ENTITY_TITLE;
     }
 
     @api
@@ -297,50 +265,14 @@ export default class Avatar extends LightningElement {
             fallbackValue: VARIANT.default,
             validValues: VARIANT.valid
         });
-        this._computeEntityClasses();
-    }
-
-    get computedInitialsClass() {
-        return classSet('slds-avatar__initials')
-            .add({
-                'slds-avatar-grouped__initials': this.groupedAvatar
-            })
-            .add(computeSldsClass(this.fallbackIconName))
-            .toString();
-    }
-
-    get groupedAvatar() {
-        return this.template.host.classList.contains('slds-avatar-grouped');
     }
 
     get showAvatar() {
         return this.src || this.initials || this.fallbackIconName;
     }
 
-    get showInitials() {
-        return !this._src && this.initials;
-    }
-
-    get showIcon() {
-        return !this._src && !this.initials;
-    }
-
     get showTertiaryText() {
         return this.size === 'x-large' || this.size === 'xx-large';
-    }
-
-    get showEntityIcon() {
-        return !this.entitySrc && !this.entityInitials;
-    }
-
-    get showEntity() {
-        return this.entitySrc || this.entityInitials || this.entityIconName;
-    }
-
-    get computedEntityInitialsClass() {
-        return classSet('slds-avatar__initials')
-            .add(computeSldsClass(this.entityIconName))
-            .toString();
     }
 
     get textPositionLeft() {
@@ -352,129 +284,9 @@ export default class Avatar extends LightningElement {
     }
 
     _updateClassList() {
-        const { size, variant, textPosition, groupedAvatar } = this;
-        const wrapperClass = classSet('avonni-avatar slds-is-relative')
-            .add({
-                'avonni-avatar_square': variant === 'square',
-                'avonni-avatar_circle': variant === 'circle'
-            })
-            .add({
-                'avonni-avatar_xx-small': size === 'xx-small',
-                'slds-avatar_x-small': size === 'x-small',
-                'slds-avatar_small': size === 'small',
-                'slds-avatar_medium': size === 'medium',
-                'slds-avatar_large': size === 'large',
-                'avonni-avatar_x-large': size === 'x-large',
-                'avonni-avatar_xx-large': size === 'xx-large'
-            });
-
-        const avatarClass = classSet('slds-avatar').add({
-            'slds-avatar_circle': variant === 'circle'
+        this.mediaObjectClass = classSet('').add({
+            'slds-text-align_right': this.textPosition === 'left',
+            'slds-text-align_center': this.textPosition === 'center'
         });
-
-        const fallbackIconClass = classSet('avonni-avatar__icon').add({
-            'slds-avatar-grouped__icon': groupedAvatar
-        });
-
-        const mediaObjectClass = classSet('').add({
-            'slds-text-align_right': textPosition === 'left',
-            'slds-text-align_center': textPosition === 'center'
-        });
-
-        this.avatarClass = avatarClass;
-        this.wrapperClass = wrapperClass;
-        this.fallbackIconClass = fallbackIconClass;
-        this.mediaObjectClass = mediaObjectClass;
-    }
-
-    _computeStatus() {
-        const { status, statusPosition, statusTitle } = this;
-        const classes = classSet('avonni-avatar__status slds-current-color')
-            .add({
-                'avonni-avatar__status_approved': status === 'approved',
-                'avonni-avatar__status_locked': status === 'locked',
-                'avonni-avatar__status_declined': status === 'declined',
-                'avonni-avatar__status_unknown': status === 'unknown'
-            })
-            .add({
-                'avonni-avatar_top-right': statusPosition === 'top-right',
-                'avonni-avatar_top-left': statusPosition === 'top-left',
-                'avonni-avatar_bottom-left': statusPosition === 'bottom-left',
-                'avonni-avatar_bottom-right': statusPosition === 'bottom-right'
-            });
-
-        let iconName;
-        switch (status) {
-            case 'approved':
-                iconName = 'utility:check';
-                break;
-            case 'locked':
-                iconName = 'utility:lock';
-                break;
-            case 'declined':
-                iconName = 'utility:close';
-                break;
-            default:
-                iconName = 'utility:help';
-                break;
-        }
-
-        this.statusComputed = {
-            class: classes,
-            iconName: iconName,
-            type: status,
-            title: statusTitle
-        };
-    }
-
-    _computePresenceClasses() {
-        const { presence, presencePosition } = this;
-
-        this.presenceClass = classSet('avonni-avatar__presence')
-            .add({
-                'avonni-avatar__presence_online': presence === 'online',
-                'avonni-avatar__presence_busy': presence === 'busy',
-                'avonni-avatar__presence_focus': presence === 'focus',
-                'avonni-avatar__presence_offline': presence === 'offline',
-                'avonni-avatar__presence_blocked': presence === 'blocked',
-                'avonni-avatar__presence_away': presence === 'away'
-            })
-            .add({
-                'avonni-avatar_top-right': presencePosition === 'top-right',
-                'avonni-avatar_top-left': presencePosition === 'top-left',
-                'avonni-avatar_bottom-left': presencePosition === 'bottom-left',
-                'avonni-avatar_bottom-right':
-                    presencePosition === 'bottom-right'
-            });
-    }
-
-    _computeEntityClasses() {
-        const {
-            entityVariant,
-            entityPosition,
-            _entityIconCategory,
-            _entityIconName
-        } = this;
-
-        this.entityClass = classSet(
-            `slds-avatar slds-current-color avonni-avatar__entity slds-icon-${_entityIconCategory}-${_entityIconName}`
-        )
-            .add({
-                'avonni-avatar_top-right': entityPosition === 'top-right',
-                'avonni-avatar_top-left': entityPosition === 'top-left',
-                'avonni-avatar_bottom-left': entityPosition === 'bottom-left',
-                'avonni-avatar_bottom-right': entityPosition === 'bottom-right'
-            })
-            .add({
-                'slds-avatar_circle': entityVariant === 'circle'
-            });
-    }
-
-    handleImageError(event) {
-        // eslint-disable-next-line no-console
-        console.warn(
-            `Avatar component Image with src="${event.target.src}" failed to load.`
-        );
-        this._src = '';
     }
 }

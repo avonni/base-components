@@ -1,4 +1,4 @@
-import Component from 'base/colorGradient';
+import Component from 'avonni/colorGradient';
 
 customElements.define(
     'ac-base-color-gradient',

@@ -10,21 +10,12 @@ export default {
         },
         variant: {
             control: {
-                type: 'select',
-                options: ['base', 'error', 'offline', 'warning']
+                type: 'select'
             },
+            options: ['base', 'error', 'offline', 'warning'],
             defaultValue: 'base',
             table: {
                 defaultValue: { summary: 'base' }
-            }
-        },
-        textured: {
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: 0,
-            table: {
-                defaultValue: { summary: 'false' }
             }
         },
         isDismissible: {
@@ -36,6 +27,9 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         }
+    },
+    args: {
+        isDismissible: false
     }
 };
 
@@ -65,13 +59,5 @@ export const Warning = Template.bind({});
 Warning.args = {
     iconName: 'utility:warning',
     variant: 'warning',
-    closeAction: () => console.log('Close action')
-};
-
-export const WarningTextured = Template.bind({});
-WarningTextured.args = {
-    iconName: 'utility:warning',
-    variant: 'warning',
-    textured: 'true',
     closeAction: () => console.log('Close action')
 };

@@ -1,5 +1,9 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
+import {
+    normalizeBoolean,
+    normalizeString,
+    normalizeArray
+} from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import progressBar from './progressBar.html';
 import progressBarVertical from './progressBarVertical.html';
@@ -55,7 +59,7 @@ export default class ProgressBar extends LightningElement {
     _value = 0;
     _showValue = false;
     _valuePosition = 'top-right';
-    _badges = [];
+    _referenceLines = [];
     _variant = 'base';
     _theme = 'base';
     _textured = false;
@@ -88,12 +92,16 @@ export default class ProgressBar extends LightningElement {
     }
 
     set value(value) {
-        if (value <= 0) {
-            this._value = 0;
-        } else if (value > 100) {
-            this._value = 100;
+        if (typeof value === 'number') {
+            if (value <= 0) {
+                this._value = 0;
+            } else if (value > 100) {
+                this._value = 100;
+            } else {
+                this._value = value;
+            }
         } else {
-            this._value = value;
+            this._value = 0;
         }
     }
 
@@ -119,12 +127,12 @@ export default class ProgressBar extends LightningElement {
     }
 
     @api
-    get badges() {
-        return this._badges;
+    get referenceLines() {
+        return this._referenceLines;
     }
 
-    set badges(value) {
-        this._badges = Array.isArray(value) ? value : [];
+    set referenceLines(value) {
+        this._referenceLines = normalizeArray(value);
     }
 
     @api
