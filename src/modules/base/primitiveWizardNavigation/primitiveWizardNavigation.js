@@ -1,5 +1,6 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
+import { classSet } from 'c/utils';
 
 const BUTTON_POSITIONS = {
     valid: ['left', 'right'],
@@ -84,16 +85,6 @@ export default class PrimitiveWizardNavigation extends LightningElement {
     showBarIndicator = false;
     hidePreviousButton = false;
     hideNextFinishButton = false;
-    previousButtonColClass;
-    progressColClass = 'slds-text-align_left';
-    actionsNextFinishButtonColClass;
-    actionsSlotColClass;
-    nextFinishButtonColClass;
-
-    connectedCallback() {
-        // Apply buttonAlignmentBump and actionPosition.
-        this._reorderColumns();
-    }
 
     renderedCallback() {
         if (!this._rendered && this.steps.length > 0) {
@@ -128,7 +119,6 @@ export default class PrimitiveWizardNavigation extends LightningElement {
         } else if (this.hideAllButtons) {
             this.hidePreviousButton = true;
             this.hideNextFinishButton = true;
-            this.actionsSlotColClass = 'slds-hide';
         }
 
         this.showProgressIndicator = this.showBulletIndicator = this.showFractionIndicator = this.showBarIndicator = false;
@@ -204,25 +194,6 @@ export default class PrimitiveWizardNavigation extends LightningElement {
         }
     }
 
-    _reorderColumns() {
-        const bump = this.buttonAlignmentBump;
-        if (bump) {
-            this.actionsNextFinishButtonColClass =
-                bump === 'right' ? 'slds-order_3' : 'slds-order_2';
-            this.progressColClass =
-                bump === 'right'
-                    ? 'slds-order_1 slds-text-align_left'
-                    : 'slds-order_3 slds-text-align_right';
-            this.previousButtonColClass =
-                bump === 'right' ? 'slds-order_2' : 'slds-order_1';
-        }
-
-        if (this.actionPosition === 'right') {
-            this.nextFinishButtonColClass = 'slds-order_1';
-            this.actionsSlotColClass = 'slds-order_2';
-        }
-    }
-
     get currentStepIndex() {
         const stepNames = this.steps.map((step) => step.name);
         return stepNames.indexOf(this.currentStep);
@@ -249,6 +220,50 @@ export default class PrimitiveWizardNavigation extends LightningElement {
             (this.indicatorPosition === 'top' && this.position === 'top') ||
             this.sideNavigation
         );
+    }
+
+    get carouselIndicatorClass() {
+        return classSet('slds-carousel__indicator').add({
+            'slds-grid slds-m-vertical_xx-small': this.sideNavigation
+        });
+    }
+
+    get progressColClass() {
+        return classSet('slds-text-align_left').add({
+            'avonni-height_full': this.indicatorType !== 'bullet',
+            'slds-align-middle': this.indicatorType === 'bullet',
+            'slds-order_1 slds-text-align_left':
+                this.buttonAlignmentBump === 'right',
+            'slds-order_3 slds-text-align_right':
+                this.buttonAlignmentBump === 'left'
+        });
+    }
+
+    get actionsNextFinishButtonColClass() {
+        return classSet().add({
+            'slds-order_3': this.buttonAlignmentBump === 'right',
+            'slds-order_2': this.buttonAlignmentBump === 'left'
+        });
+    }
+
+    get previousButtonColClass() {
+        return classSet().add({
+            'slds-order_2': this.buttonAlignmentBump === 'right',
+            'slds-order_1': this.buttonAlignmentBump === 'left'
+        });
+    }
+
+    get nextFinishButtonColClass() {
+        return classSet().add({
+            'slds-order_1': this.actionPosition === 'right'
+        });
+    }
+
+    get actionsSlotColClass() {
+        return classSet().add({
+            'slds-order_2': this.actionPosition === 'right',
+            'slds-hide': this.hideAllButtons
+        });
     }
 
     @api
@@ -422,8 +437,6 @@ export default class PrimitiveWizardNavigation extends LightningElement {
             fallbackValue: null,
             validValues: BUTTON_POSITIONS.valid
         });
-
-        if (this.isConnected) this._reorderColumns();
     }
 
     @api
@@ -435,7 +448,6 @@ export default class PrimitiveWizardNavigation extends LightningElement {
             fallbackValue: BUTTON_POSITIONS.defaultAction,
             validValues: BUTTON_POSITIONS.valid
         });
-        if (this.isConnected) this._reorderColumns();
     }
 
     @api

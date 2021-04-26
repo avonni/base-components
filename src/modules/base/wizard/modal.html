@@ -23,13 +23,11 @@
                         position="top"
                         indicator-position={indicatorPosition}
                         current-step={currentStep}
-                        steps={steps}
                         indicator-type={indicatorType}
                         hide-indicator={hideIndicator}
                         fraction-prefix-label={fractionPrefixLabel}
                         fraction-label={fractionLabel}
                     >
-                        <slot name="actions"></slot>
                     </c-primitive-wizard-navigation>
                 </div>
             </template>
@@ -41,15 +39,11 @@
                 <p class="slds-text-color_error">{errorMessage}</p>
                 <slot onwizardstepregister={handleStepRegister}></slot>
             </div>
-            <div
-                class="slds-container_small slds-p-horizontal_medium slds-align-bottom"
-                if:true={indicatorOnSide}
-            >
+            <div class={sideColClass} if:true={indicatorOnSide}>
                 <c-primitive-wizard-navigation
                     position="side"
                     onchange={handleChange}
                     current-step={currentStep}
-                    steps={steps}
                     indicator-type={indicatorType}
                     indicator-position={indicatorPosition}
                     hide-indicator={hideIndicator}
@@ -65,7 +59,6 @@
                 position="bottom"
                 onchange={handleChange}
                 current-step={currentStep}
-                steps={steps}
                 indicator-type={indicatorType}
                 indicator-position={indicatorPosition}
                 hide-indicator={hideIndicator}

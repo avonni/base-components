@@ -348,15 +348,20 @@ const BeforeChangeTemplate = (args) => BeforeChangeWizard(args);
 
 export const Base = Template.bind({});
 export const IndicatorRight = Template.bind({});
+export const PathLeft = Template.bind({});
 export const Modal = ModalTemplate.bind({});
 export const ModalLeft = ModalTemplate.bind({});
 export const Card = Template.bind({});
 export const CardRight = Template.bind({});
 export const BeforeChangeOnSteps = BeforeChangeTemplate.bind({});
-export const BeforeChangeOnStepsRight = BeforeChangeTemplate.bind({});
 
 IndicatorRight.args = {
     indicatorPosition: 'right'
+};
+
+PathLeft.args = {
+    indicatorType: 'path',
+    indicatorPosition: 'left'
 };
 
 ModalLeft.args = {
@@ -417,10 +422,4 @@ CardRight.args = {
 BeforeChangeOnSteps.args = {
     iconName: 'utility:touch_action',
     indicatorType: 'bar'
-};
-
-BeforeChangeOnStepsRight.args = {
-    iconName: 'utility:touch_action',
-    indicatorType: 'bar',
-    indicatorPosition: 'right'
 };

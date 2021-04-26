@@ -94,6 +94,17 @@ export default class Wizard extends LightningElement {
         if (this.variant === 'modal') this.hide();
     }
 
+    renderedCallback() {
+        if (this.steps.length > 0) {
+            const navigations = this.template.querySelectorAll(
+                'c-primitive-wizard-navigation'
+            );
+            navigations.forEach((nav) => {
+                nav.steps = this.steps;
+            });
+        }
+    }
+
     render() {
         if (this.variant === 'modal') {
             return ModalView;
@@ -348,7 +359,7 @@ export default class Wizard extends LightningElement {
 
     get wrapperClass() {
         return classSet().add({
-            'slds-grid slds-gutters slds-has-flexi-truncate':
+            'slds-grid slds-gutters slds-has-flexi-truncate slds-grid_vertical-stretch':
                 this.indicatorPosition === 'right' ||
                 this.indicatorPosition === 'left'
         });
@@ -360,6 +371,18 @@ export default class Wizard extends LightningElement {
                 this.indicatorPosition === 'right' ||
                 this.indicatorPosition === 'left',
             'slds-order_2': this.indicatorPosition === 'left'
+        });
+    }
+
+    get sideColClass() {
+        return classSet('slds-container_small').add({
+            'slds-align-bottom': this.indicatorType === 'fractions',
+            'slds-p-right_medium': this.indicatorPosition === 'right',
+            'slds-p-left_medium': this.indicatorPosition === 'left',
+            'slds-p-bottom_medium':
+                this.variant === 'base' && !this.indicatorType === 'fractions',
+            'slds-p-bottom_large':
+                this.variant === 'base' && this.indicatorType === 'fractions'
         });
     }
 

@@ -3,6 +3,7 @@
         vertical-align="center"
         multiple-rows="true"
         pull-to-boundary="small"
+        class="avonni-height_full"
     >
         <!-- Previous button -->
         <lightning-layout-item
@@ -66,11 +67,8 @@
                         class="slds-carousel__indicators slds-text-align_center slds-m-top_small"
                         aria-label="Progress indicator"
                     >
-                        <template for:each={steps} for:item="step">
-                            <li
-                                key={step.name}
-                                class="slds-carousel__indicator"
-                            >
+                        <template for:each={_steps} for:item="step">
+                            <li key={step.name} class={carouselIndicatorClass}>
                                 <span
                                     class={step.bulletClass}
                                     title={step.label}
@@ -98,12 +96,16 @@
                     <c-progress-bar
                         value={progressBarValue}
                         orientation={progressBarOrientation}
+                        thickness="large"
                     ></c-progress-bar>
                 </template>
             </template>
         </lightning-layout-item>
         <!-- Actions slot and Next/Finish buttons -->
-        <lightning-layout-item class={actionsNextFinishButtonColClass}>
+        <lightning-layout-item
+            class={actionsNextFinishButtonColClass}
+            if:false={sideNavigation}
+        >
             <lightning-layout class="slds-m-right_small">
                 <lightning-layout-item class={actionsSlotColClass}>
                     <slot></slot>
