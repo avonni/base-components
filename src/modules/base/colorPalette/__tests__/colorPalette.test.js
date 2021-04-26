@@ -64,18 +64,14 @@ describe('Color Palette', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('input');
-            inputs.forEach((input) => {
-                expect(input.disabled).toBeTruthy();
-            });
-            const indicator = element.shadowRoot.querySelector(
-                '.slds-color-picker__range-indicator'
-            );
-            expect(indicator).toBeFalsy();
-            const gradient = element.shadowRoot.querySelector(
-                '.slds-color-picker__custom-range'
-            );
-            expect(gradient.style.background).toBe('rgb(236, 235, 234)');
+            const a = element.shadowRoot.querySelectorAll('a')
+            a.forEach((color) => {
+                expect(color.getAttribute('is-disabled')).toBe('true');
+            })
+            const colors = element.shadowRoot.querySelectorAll('a > span')
+            colors.forEach((color) => {
+                expect(color.style.backgroundColor).toBe('rgb(221, 219, 218)');
+            })
         });
     });
 });

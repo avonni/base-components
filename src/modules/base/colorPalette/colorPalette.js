@@ -33,13 +33,17 @@ const DEFAULT_COLORS = [
     '#b85d0d'
 ];
 
+const DEFAULT_TILE_WIDTH = 20
+const DEFAULT_TILE_HEIGHT = 20
+const DEFAULT_COLUMNS = 7
+
 export default class ColorPalette extends LightningElement {
     @api value;
     @api colors = DEFAULT_COLORS;
 
-    _columns = 7;
-    _tileWidth = 20;
-    _tileHeight = 20;
+    _columns = DEFAULT_COLUMNS;
+    _tileWidth = DEFAULT_TILE_WIDTH;
+    _tileHeight = DEFAULT_TILE_HEIGHT;
     _disabled = false;
     _isLoading = false;
     _readOnly = false;
