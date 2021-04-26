@@ -337,4 +337,39 @@ describe('Button Icon Dialog', () => {
             expect(button.iconName).toBe('utility:lock');
         });
     });
+
+    /* ---- METHODS ----- */
+    it('method: click', () => {
+        const element = createElement('base-button-icon-dialog', {
+            is: ButtonIconDialog
+        });
+        document.body.appendChild(element);
+
+        let clickEvent = false;
+        element.addEventListener('click', () => {
+            clickEvent = true;
+        });
+
+        element.click();
+        return Promise.resolve().then(() => {
+            expect(clickEvent).toBeTruthy();
+        });
+    });
+
+    it('method: focus', () => {
+        const element = createElement('base-button-icon-dialog', {
+            is: ButtonIconDialog
+        });
+        document.body.appendChild(element);
+
+        let focusEvent = false;
+        element.addEventListener('focus', () => {
+            focusEvent = true;
+        });
+
+        element.focus();
+        return Promise.resolve().then(() => {
+            expect(focusEvent).toBeTruthy();
+        });
+    });
 });
