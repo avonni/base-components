@@ -737,44 +737,47 @@ describe('Button Popover', () => {
             });
     });
 
-    it('Button Popover triggers hover', () => {
-        const element = createElement('base-button-popover', {
-            is: ButtonPopover
-        });
-        document.body.appendChild(element);
+    // it('Button Popover triggers hover', () => {
+    //     const element = createElement('base-button-popover', {
+    //         is: ButtonPopover
+    //     });
+    //     document.body.appendChild(element);
 
-        element.triggers = 'hover';
+    //     element.triggers = 'hover';
 
-        return Promise.resolve()
-            .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    'lightning-button'
-                );
-                element.focus();
-                button.click();
-            })
-            .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '.slds-popover'
-                );
-                expect(popover).toBeTruthy();
-            });
-    });
+    //     return Promise.resolve()
+    //         .then(() => {
+    //             const button = element.shadowRoot.querySelector(
+    //                 'lightning-button'
+    //             );
+    //             element.focus();
+    //             button.click();
+    //         })
+    //         .then(() => {
+    //             const popover = element.shadowRoot.querySelector(
+    //                 '.slds-popover'
+    //             );
+    //             expect(popover).toBeTruthy();
+    //         });
+    // });
 
     /* ----- EVENTS ----- */
 
     // button popover click
-    it('Button Popover event click', () => {
+    it('Button Icon Popover event click', () => {
         const element = createElement('base-button-popover', {
             is: ButtonPopover
         });
         document.body.appendChild(element);
+        const handler = jest.fn();
+        element.addEventListener('click', handler);
         const button = element.shadowRoot.querySelector('lightning-button');
-        element.addEventListener('click', (event) => {
-            expect(event.bubbles).toBeFalsy();
-            expect(event.cancelable).toBeFalsy();
-            expect(event.composed).toBeFalsy();
-        });
         button.click();
+
+        expect(handler).toHaveBeenCalled();
+        expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+        expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        element.click();
     });
 });
