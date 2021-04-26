@@ -237,7 +237,11 @@ export default class ButtonIconPopover extends LightningElement {
                 this.toggleMenuVisibility();
             }
 
-            this.dispatchEvent(new CustomEvent('click'));
+            this.dispatchEvent(new CustomEvent('click'), {
+                bubbles: false,
+                cancelable: false,
+                composed: false
+            });
         }
     }
 

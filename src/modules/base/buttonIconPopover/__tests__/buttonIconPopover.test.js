@@ -881,14 +881,15 @@ describe('Button Icon Popover', () => {
             is: ButtonIconPopover
         });
         document.body.appendChild(element);
+        const handler = jest.fn();
+        element.addEventListener('click', handler);
         const button = element.shadowRoot.querySelector(
             'lightning-button-icon'
         );
-        element.addEventListener('click', (event) => {
-            expect(event.bubbles).toBeFalsy();
-            expect(event.cancelable).toBeFalsy();
-            expect(event.composed).toBeFalsy();
-        });
+        expect(handler).toHaveBeenCalled();
+        expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+        expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        expect(handler.mock.calls[0][0].composed).toBeFalsy();
         button.click();
     });
 });

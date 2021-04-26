@@ -66,10 +66,12 @@ export default class ButtonDialog extends LightningElement {
         if (dialogSlot.assignedElements().length !== 0) {
             dialogSlot.assignedElements()[0].show();
         }
+        this.dispatchEvent(new CustomEvent('click'));
     }
 
     @api
     focus() {
-        this.template.querySelector('button').focus();
+        this.template.querySelector('lightning-button').focus();
+        this.dispatchEvent(new CustomEvent('focus'));
     }
 }
