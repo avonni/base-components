@@ -683,7 +683,7 @@ export default class DualListbox extends LightningElement {
     }
 
     handleSearchClear() {
-        this.searchTerm = this.template.querySelector('input').value = null;
+        this.searchTerm = this.template.querySelector('input').value = '';
     }
 
     moveOptionsBetweenLists(addToSelect, retainFocus) {
