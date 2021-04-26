@@ -83,8 +83,8 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['footer', 'header'],
-            defaultValue: 'footer',
+            options: ['bottom', 'top', 'right', 'left'],
+            defaultValue: 'bottom',
             description:
                 'Changes the indicator position. Valid values are footer and header.',
             table: {
@@ -347,14 +347,19 @@ const ModalTemplate = (args) => ModalWizard(args);
 const BeforeChangeTemplate = (args) => BeforeChangeWizard(args);
 
 export const Base = Template.bind({});
+export const IndicatorRight = Template.bind({});
 export const Modal = ModalTemplate.bind({});
 export const Card = Template.bind({});
 export const BeforeChangeOnSteps = BeforeChangeTemplate.bind({});
 
+IndicatorRight.args = {
+    indicatorPosition: 'right'
+};
+
 Modal.args = {
     title: 'Modal Wizard Example',
     variant: 'modal',
-    indicatorPosition: 'header',
+    indicatorPosition: 'top',
     indicatorType: 'path',
     buttonPreviousLabel: 'Back',
     buttonPreviousIconName: 'utility:back',

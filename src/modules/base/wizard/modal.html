@@ -20,7 +20,7 @@
             <template if:false={hideNavigation}>
                 <div if:true={indicatorInHeader} class="slds-m-top_small">
                     <c-primitive-wizard-navigation
-                        position="header"
+                        position="top"
                         indicator-position={indicatorPosition}
                         current-step={currentStep}
                         steps={steps}
@@ -36,13 +36,31 @@
         </div>
 
         <!-- Steps -->
-        <p class="slds-text-color_error">{errorMessage}</p>
-        <slot onwizardstepregister={handleStepRegister}></slot>
+        <div class={wrapperClass}>
+            <div class={mainColClass}>
+                <p class="slds-text-color_error">{errorMessage}</p>
+                <slot onwizardstepregister={handleStepRegister}></slot>
+            </div>
+            <div class={sideColClass}>
+                <c-vertical-progress-indicator
+                    current-step={currentStep}
+                    variant={verticalIndicatorVariant}
+                >
+                    <template for:each={steps} for:item="step">
+                        <c-vertical-progress-step
+                            key={step.name}
+                            label={step.label}
+                            value={step.name}
+                        ></c-vertical-progress-step>
+                    </template>
+                </c-vertical-progress-indicator>
+            </div>
+        </div>
 
         <!-- Footer -->
         <div slot="footer" if:false={hideNavigation}>
             <c-primitive-wizard-navigation
-                position="footer"
+                position="bottom"
                 onchange={handleChange}
                 current-step={currentStep}
                 steps={steps}

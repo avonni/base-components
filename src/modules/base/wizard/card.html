@@ -6,34 +6,55 @@
                 <slot name="title"></slot>
             </template>
             {title}
-            <template if:false={hideNavigation}>
-                <div if:true={indicatorInHeader} class="slds-m-top_small">
-                    <c-primitive-wizard-navigation
-                        position="header"
-                        indicator-position={indicatorPosition}
-                        current-step={currentStep}
-                        steps={steps}
-                        indicator-type={indicatorType}
-                        hide-indicator={hideIndicator}
-                        fraction-prefix-label={fractionPrefixLabel}
-                        fraction-label={fractionLabel}
-                    >
-                        <slot name="actions"></slot>
-                    </c-primitive-wizard-navigation>
-                </div>
-            </template>
         </div>
+        <template if:false={hideNavigation}>
+            <div
+                if:true={indicatorInHeader}
+                class="slds-m-top_small slds-p-left_medium"
+            >
+                <c-primitive-wizard-navigation
+                    position="top"
+                    indicator-position={indicatorPosition}
+                    current-step={currentStep}
+                    steps={steps}
+                    indicator-type={indicatorType}
+                    hide-indicator={hideIndicator}
+                    fraction-prefix-label={fractionPrefixLabel}
+                    fraction-label={fractionLabel}
+                >
+                    <slot name="actions"></slot>
+                </c-primitive-wizard-navigation>
+            </div>
+        </template>
 
         <!-- Steps -->
         <div class="slds-card__body slds-card__body_inner">
-            <p class="slds-text-color_error">{errorMessage}</p>
-            <slot onwizardstepregister={handleStepRegister}></slot>
+            <div class={wrapperClass}>
+                <div class={mainColClass}>
+                    <p class="slds-text-color_error">{errorMessage}</p>
+                    <slot onwizardstepregister={handleStepRegister}></slot>
+                </div>
+                <div class={sideColClass}>
+                    <c-vertical-progress-indicator
+                        current-step={currentStep}
+                        variant={verticalIndicatorVariant}
+                    >
+                        <template for:each={steps} for:item="step">
+                            <c-vertical-progress-step
+                                key={step.name}
+                                label={step.label}
+                                value={step.name}
+                            ></c-vertical-progress-step>
+                        </template>
+                    </c-vertical-progress-indicator>
+                </div>
+            </div>
         </div>
 
         <!-- Footer -->
         <div slot="footer" if:false={hideNavigation}>
             <c-primitive-wizard-navigation
-                position="footer"
+                position="bottom"
                 onchange={handleChange}
                 current-step={currentStep}
                 steps={steps}
