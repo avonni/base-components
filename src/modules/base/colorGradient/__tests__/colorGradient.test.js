@@ -120,4 +120,60 @@ describe('Color Gradient', () => {
             expect(opacityInput).toBeTruthy();
         });
     });
+
+    // message when bad input
+    // it('Color Gradient message when bad input', () => {
+    //     const element = createElement('base-color-gradient', {
+    //         is: ColorGradient
+    //     });
+    //     document.body.appendChild(element);
+
+    //     element.messageWhenBadInput = 'This is a bad input message'
+    //     const input = element.shadowRoot.querySelector('.slds-input')
+    //     input.value = 'dfsdfgdsfs'
+
+    //     return Promise.resolve().then(() => {
+    //         const inputs = element.shadowRoot.querySelectorAll('.slds-input')
+    //         inputs.forEach((i) => {
+    //             console.log(i.value)
+    //         })
+    //         element.focus();
+    //         const formElements = element.shadowRoot.querySelectorAll('.slds-form-element')
+    //         formElements.forEach((e)=>{
+    //             console.log(e.className)
+    //         })
+    //     });
+    // });
+
+    /* ----- EVENTS ----- */
+
+    // color gradient change
+    it('Color Gradient change event', () => {
+        const element = createElement('base-color-gradient', {
+            is: ColorGradient
+        });
+        document.body.appendChild(element);
+        element.value = '#ffffff';
+
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        return Promise.resolve().then(() => {
+            const input = element.shadowRoot.querySelector('.slds-input');
+            input.dispatchEvent(new CustomEvent('input'));
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.hex).toBe('#ffffff');
+            expect(handler.mock.calls[0][0].detail.hexa).toBe('#ffffffff');
+            expect(handler.mock.calls[0][0].detail.rgb).toBe(
+                'rgb(255,255,255)'
+            );
+            expect(handler.mock.calls[0][0].detail.rgba).toBe(
+                'rgba(255,255,255,1)'
+            );
+            expect(handler.mock.calls[0][0].detail.alpha).toBe('1');
+            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
+        });
+    });
 });
