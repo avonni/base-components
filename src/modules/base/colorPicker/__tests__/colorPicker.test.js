@@ -27,9 +27,38 @@ describe('Color Picker', () => {
         expect(element.menuIconName).toBe('utility:down');
         expect(element.menuIconSize).toBe('x-small');
         expect(element.menuLabel).toBeUndefined();
-        expect(element.menuAlignment).toBe('left')
+        expect(element.menuAlignment).toBe('left');
         expect(element.menuNubbin).toBeFalsy();
-        expect(element.colors).toMatchObject(["#e3abec", "#c2dbf6", "#9fd6ff", "#9de7da", "#9df0bf", "#fff099", "#fed49a", "#d073df", "#86b9f3", "#5ebbff", "#44d8be", "#3be281", "#ffe654", "#ffb758", "#bd35bd", "#5778c1", "#5ebbff", "#00aea9", "#3bba4c", "#f4bc25", "#f99120", "#580d8c", "#001870", "#0a2399", "#097476", "#096a50", "#b67d11", "#b85d0d"])
+        expect(element.colors).toMatchObject([
+            '#e3abec',
+            '#c2dbf6',
+            '#9fd6ff',
+            '#9de7da',
+            '#9df0bf',
+            '#fff099',
+            '#fed49a',
+            '#d073df',
+            '#86b9f3',
+            '#5ebbff',
+            '#44d8be',
+            '#3be281',
+            '#ffe654',
+            '#ffb758',
+            '#bd35bd',
+            '#5778c1',
+            '#5ebbff',
+            '#00aea9',
+            '#3bba4c',
+            '#f4bc25',
+            '#f99120',
+            '#580d8c',
+            '#001870',
+            '#0a2399',
+            '#097476',
+            '#096a50',
+            '#b67d11',
+            '#b85d0d'
+        ]);
         expect(element.hideColorInput).toBeFalsy();
         expect(element.opacity).toBeFalsy();
         expect(element.messageWhenBadInput).toBe(
@@ -38,6 +67,21 @@ describe('Color Picker', () => {
     });
 
     /* ----- ATTRIBUTES ----- */
+
+    // access key
+    it('Color Picker access key', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.accessKey = 'K';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.accessKey).toBe('K');
+        });
+    });
 
     // disabled
     it('Color Picker disabled', () => {
@@ -49,18 +93,45 @@ describe('Color Picker', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('input');
-            inputs.forEach((input) => {
-                expect(input.disabled).toBeTruthy();
-            });
-            const indicator = element.shadowRoot.querySelector(
-                '.slds-color-picker__range-indicator'
-            );
-            expect(indicator).toBeFalsy();
-            const gradient = element.shadowRoot.querySelector(
-                '.slds-color-picker__custom-range'
-            );
-            expect(gradient.style.background).toBe('rgb(236, 235, 234)');
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.disabled).toBe(true);
         });
     });
+
+    // field level help
+    it('Color Picker field level help', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.fieldLevelHelp = 'This is a field level help text';
+
+        return Promise.resolve().then(() => {
+            const helpText = element.shadowRoot.querySelector(
+                'lightning-helptext'
+            );
+            expect(helpText.content).toBe('This is a field level help text');
+        });
+    });
+
+    // isLoading
+    // it('Color Picker isLoading', () => {
+    //     const element = createElement('base-color-picker', {
+    //         is: ColorPicker
+    //     });
+    //     document.body.appendChild(element);
+
+    //     element.isLoading = true;
+
+    //     return Promise.resolve().then(() => {
+    //         const button = element.shadowRoot.querySelector('button')
+    //         const drop = element.shadowRoot.querySelector('.slds-dropdown-trigger')
+    //         element.focus()
+    //         button.click()
+    //         console.log(drop.className)
+    //         const spinner = element.shadowRoot.querySelector('lightning-spinner')
+    //         expect(spinner).toBeTruthy();
+    //     });
+    // });
 });
