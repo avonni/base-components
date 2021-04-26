@@ -618,7 +618,7 @@ BaseBordered.args = {
     downButtonLabel: 'Down Button Label',
     upButtonLabel: 'Up Button Label',
     options: Options,
-    borderedOptions: true,
+    borderedListItem: true,
     value: ['2', '3', '4', '5', '6']
 };
 
@@ -716,7 +716,7 @@ BaseWithAvatarLabelHidden.args = {
     required: true,
     requiredOptions: ['1'],
     value: ['2', '3'],
-    borderedOptions: true,
+    borderedListItem: true,
     variant: 'label-hidden'
 };
 

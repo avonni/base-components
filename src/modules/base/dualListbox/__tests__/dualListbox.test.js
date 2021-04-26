@@ -37,7 +37,7 @@ describe('DualListbox', () => {
         });
         expect(element.addButtonIconName).toBe('utility:right');
         expect(element.addButtonLabel).toBeUndefined();
-        expect(element.borderedOptions).toBeFalsy();
+        expect(element.borderedListItem).toBeFalsy();
         expect(element.buttonSize).toBe('medium');
         expect(element.buttonVariant).toBe('border');
         expect(element.disableReordering).toBeFalsy();
@@ -88,14 +88,16 @@ describe('DualListbox', () => {
         });
     });
 
-    // bordered options
-    it('Dual Listbox bordered options', () => {
+    // bordered list item
+    it('Dual Listbox bordered list item', () => {
         const element = createElement('base-dual-listbox', {
             is: DualListbox
         });
         document.body.appendChild(element);
 
-        element.borderedOptions = true;
+        element.options = options;
+
+        element.borderedListItem = true;
 
         return Promise.resolve().then(() => {
             const li = element.shadowRoot.querySelectorAll(
