@@ -4,48 +4,104 @@ export default {
     title: 'Example/Button Icon Popover',
     argTypes: {
         accessKey: {
+            name: 'access-key',
             control: {
                 type: 'text'
+            },
+            description: 'The keyboard shortcut for the button.',
+            table: {
+                type: { summary: 'string' }
             }
         },
         alternativeText: {
+            name: 'alternative-text',
             control: {
                 type: 'text'
+            },
+            description: 'The assistive text for the button.',
+            table: {
+                type: { summary: 'string' }
             }
         },
         title: {
             control: {
                 type: 'text'
-            }
-        },
-        iconName: {
-            control: {
-                type: 'text'
+            },
+            description:
+                'The tile can include text, and is displayed in the header. To include additional markup or another component, use the title slot.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Popover'
             }
         },
         iconClass: {
+            name: 'icon-class',
             control: {
                 type: 'text'
+            },
+            description:
+                'The class to be applied to the contained icon element.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        iconName: {
+            name: 'icon-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                "The name of the icon to be used in the format 'utility:down'.",
+            table: {
+                type: { summary: 'string' }
             }
         },
         loadingStateAlternativeText: {
+            name: 'loading-state-alternative-text',
             control: {
                 type: 'text'
+            },
+            description:
+                'Message displayed while the popover is in the loading state.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Popover'
+            }
+        },
+        size: {
+            control: {
+                type: 'select'
+            },
+            options: ['xx-small', 'x-small', 'small', 'medium'],
+            defaultValue: 'medium',
+            description:
+                'The size of the buttonIcon. For the bare variant, options include x-small, small, medium, and large. For non-bare variants, options include xx-small, x-small, small, and medium.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'medium' }
             }
         },
         tooltip: {
             control: {
                 type: 'text'
+            },
+            description:
+                'Text to display when the user mouses over or focuses on the button. The tooltip is auto-positioned relative to the button and screen space.',
+            table: {
+                type: { summary: 'string' }
             }
         },
-        popoverSize: {
+        triggers: {
             control: {
                 type: 'select'
             },
-            options: ['small', 'medium', 'large'],
-            defaultValue: 'medium',
+            options: ['click', 'hover', 'focus'],
+            defaultValue: 'click',
+            description:
+                "Specify which triggers will show the popover. Supported values are 'click', 'hover', 'focus'.",
             table: {
-                defaultValue: { summary: 'medium' }
+                type: { summary: 'string' },
+                defaultValue: { summary: 'click' }
             }
         },
         placement: {
@@ -62,8 +118,42 @@ export default {
                 'bottom-right'
             ],
             defaultValue: 'left',
+            description:
+                'Determines the alignment of the popover relative to the button. Available options are: auto, left, center, right, bottom-left, bottom-center, bottom-right. The auto option aligns the popover based on available space.',
             table: {
-                defaultValue: { summary: 'left' }
+                type: { summary: 'string' },
+                defaultValue: { summary: 'left' },
+                category: 'Popover'
+            }
+        },
+        popoverSize: {
+            name: 'popover-size',
+            control: {
+                type: 'select'
+            },
+            description:
+                'Width of the popover. Accepted values include small, medium and large. ',
+            options: ['small', 'medium', 'large'],
+            defaultValue: 'medium',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'medium' },
+                category: 'Popover'
+            }
+        },
+        popoverVariant: {
+            name: 'popover-variant',
+            control: {
+                type: 'select'
+            },
+            options: ['base', 'warning', 'error', 'walkthrough'],
+            defaultValue: 'base',
+            description:
+                'The variant changes the appearance of the popover. Accepted variants include base, warning, error, walkthrough.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'base' },
+                category: 'Popover'
             }
         },
         variant: {
@@ -79,38 +169,25 @@ export default {
                 'border-inverse'
             ],
             defaultValue: 'border',
+            description:
+                'The variant changes the appearance of buttonIcon. Accepted variants include bare, container, brand, border, border-filled, bare-inverse, and border-inverse.',
             table: {
+                type: { summary: 'string' },
                 defaultValue: { summary: 'border' }
             }
         },
-        size: {
+        isLoading: {
+            name: 'is-loading',
             control: {
-                type: 'select'
+                type: 'boolean'
             },
-            options: ['xx-small', 'x-small', 'small', 'medium'],
-            defaultValue: 'medium',
+            defaultValue: 0,
+            description:
+                'If present, the popover is in a loading state and shows a spinner.',
             table: {
-                defaultValue: { summary: 'medium' }
-            }
-        },
-        triggers: {
-            control: {
-                type: 'select'
-            },
-            options: ['click', 'hover', 'focus'],
-            defaultValue: 'click',
-            table: {
-                defaultValue: { summary: 'click' }
-            }
-        },
-        popoverVariant: {
-            control: {
-                type: 'select'
-            },
-            options: ['base', 'warning', 'error', 'walkthrough'],
-            defaultValue: 'base',
-            table: {
-                defaultValue: { summary: 'base' }
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Popover'
             }
         },
         disabled: {
@@ -118,16 +195,9 @@ export default {
                 type: 'boolean'
             },
             defaultValue: 0,
+            description: 'If present, the popover can be opened by users.',
             table: {
-                defaultValue: { summary: 'false' }
-            }
-        },
-        isLoading: {
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: 0,
-            table: {
+                type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
             }
         }

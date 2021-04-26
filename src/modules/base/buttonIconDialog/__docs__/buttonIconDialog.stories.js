@@ -4,28 +4,57 @@ export default {
     title: 'Example/Button Icon Dialog',
     argTypes: {
         accessKey: {
+            name: 'access-key',
             control: {
                 type: 'text'
+            },
+            description: 'The keyboard shortcut for the button.',
+            table: {
+                type: { summary: 'string' }
             }
         },
         alternativeText: {
+            name: 'alternative-text',
             control: {
                 type: 'text'
+            },
+            description: 'The assistive text for the button.',
+            table: {
+                type: { summary: 'string' }
             }
         },
         tooltip: {
             control: {
                 type: 'text'
+            },
+            description:
+                'Text to display when the user mouses over or focuses on the button. The tooltip is auto-positioned relative to the button and screen space.',
+            table: {
+                type: { summary: 'string' }
             }
         },
         iconClass: {
+            name: 'icon-class',
             control: {
                 type: 'text'
+            },
+            description:
+                'The class to be applied to the contained icon element.',
+            table: {
+                type: { summary: 'string' },
+                category: 'icon'
             }
         },
         iconName: {
+            name: 'icon-name',
             control: {
                 type: 'text'
+            },
+            description:
+                "The name of the icon to be used in the format 'utility:down'.",
+            table: {
+                type: { summary: 'string' },
+                category: 'icon'
             }
         },
         size: {
@@ -34,7 +63,10 @@ export default {
             },
             options: ['xx-small', 'x-small', 'small', 'medium'],
             defaultValue: 'medium',
+            description:
+                'The size of the buttonIcon. For the bare variant, options include x-small, small, medium, and large. For non-bare variants, options include xx-small, x-small, small, and medium.',
             table: {
+                type: { summary: 'string' },
                 defaultValue: { summary: 'medium' }
             }
         },
@@ -52,7 +84,10 @@ export default {
                 'border-inverse'
             ],
             defaultValue: 'border',
+            description:
+                'The variant changes the appearance of the button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success.',
             table: {
+                type: { summary: 'string' },
                 defaultValue: { summary: 'border' }
             }
         },
@@ -61,7 +96,9 @@ export default {
                 type: 'boolean'
             },
             defaultValue: 0,
+            description: 'If present, the popover can be opened by users.',
             table: {
+                type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
             }
         }

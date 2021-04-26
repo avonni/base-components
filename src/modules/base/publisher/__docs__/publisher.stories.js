@@ -23,13 +23,15 @@ export default {
             defaultValue: 'base',
             description: 'Values include base and comment.',
             table: {
-                defaultValue: { summary: 'base' }
+                defaultValue: { summary: 'base' },
+                type: { summary: 'string' }
             }
         },
         buttonLabel: {
             control: {
                 type: 'text'
             },
+            description: 'Optional text to be shown on the button.',
             table: {
                 type: { summary: 'string' }
             }
@@ -47,9 +49,11 @@ export default {
             control: {
                 type: 'boolean'
             },
+            description: "If present, the publisher can't be used by users.",
             defaultValue: 0,
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         }
     },

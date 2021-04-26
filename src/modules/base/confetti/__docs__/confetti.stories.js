@@ -20,33 +20,52 @@ export default {
                 'pride'
             ],
             defaultValue: 'base',
+            description:
+                'Values include base, random-direction, realistic, fireworks, snow and pride.',
             table: {
-                defaultValue: { summary: 'base' }
+                defaultValue: { summary: 'base' },
+                type: { summary: 'string' }
             }
         },
         colors: {
             control: {
                 type: 'object'
+            },
+            description: 'An array of color strings, in the HEX format',
+            table: {
+                defaultValue: {
+                    summary:
+                        "['#529EE0','#F0E442','#FFB03B','#E16032','#4FD2D2','#006699','#E287B2']"
+                },
+                type: { summary: 'string[]' }
             }
         },
         originX: {
+            name: 'origin-x',
             control: {
                 type: 'number',
                 min: 0
             },
+            description:
+                'The x position on the page, with 0 being the left edge and 1 being the right edge.',
             defaultValue: 0.5,
             table: {
-                defaultValue: { summary: 0.5 }
+                defaultValue: { summary: 0.5 },
+                type: { summary: 'number' }
             }
         },
         originY: {
+            name: 'origin-y',
             control: {
                 type: 'number',
                 min: 0
             },
+            description:
+                'The y position on the page, with 0 being the top edge and 1 being the bottom edge.',
             defaultValue: 0.5,
             table: {
-                defaultValue: { summary: 0.5 }
+                defaultValue: { summary: 0.5 },
+                type: { summary: 'number' }
             }
         }
     }

@@ -4,38 +4,57 @@ export default {
     title: 'Example/Color Gradient',
     argTypes: {
         value: {
-            control: 'text'
+            control: 'text',
+            description: 'Specifies the value of an input element.',
+            table: {
+                type: { summary: 'string' }
+            }
         },
         messageWhenBadInput: {
+            name: 'message-when-bad-input',
             control: {
                 type: 'text'
+            },
+            description:
+                'Error message to be displayed when a bad input is detected.',
+            table: {
+                type: { summary: 'string' }
             }
         },
         disabled: {
             control: {
                 type: 'boolean'
             },
+            description:
+                'If present, the input field is disabled and users cannot interact with it.',
             defaultValue: 0,
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         },
         readOnly: {
+            name: 'read-only',
             control: {
                 type: 'boolean'
             },
+            description:
+                'If present, the palette is read-only and cannot be edited by users.',
             defaultValue: 0,
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         },
         opacity: {
             control: {
                 type: 'boolean'
             },
+            description: 'Defines whether the alpha slider will be displayed.',
             defaultValue: 0,
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         }
     },
