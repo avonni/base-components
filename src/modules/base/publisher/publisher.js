@@ -104,7 +104,9 @@ export default class Publisher extends LightningElement {
     hanlerClick() {
         if (this.isActive) {
             const selectedEvent = new CustomEvent('submit', {
-                detail: this._value
+                detail: {
+                    value: this._value
+                }
             });
             this.dispatchEvent(selectedEvent);
 
