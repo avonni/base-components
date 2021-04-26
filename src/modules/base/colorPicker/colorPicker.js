@@ -75,7 +75,7 @@ export default class ColorPicker extends LightningElement {
     @api fieldLevelHelp;
     @api label;
     @api name;
-    @api menuIconName;
+    @api menuIconName = 'utility:down';
     @api menuLabel;
     @api colors = DEFAULT_COLORS;
     @api messageWhenBadInput = 'Please ensure value is correct';
