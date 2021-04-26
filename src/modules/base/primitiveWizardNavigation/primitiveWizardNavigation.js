@@ -1,12 +1,17 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
 
-const POSITIONS = {
+const BUTTON_POSITIONS = {
     valid: ['left', 'right'],
     defaultButtonPreviousIcon: 'left',
     defaultButtonNextIcon: 'left',
     defaultButtonFinishIcon: 'left',
     defaultAction: 'left'
+};
+
+const POSITIONS = {
+    valid: ['top', 'bottom', 'side'],
+    default: 'bottom'
 };
 
 const INDICATOR_POSITIONS = {
@@ -50,26 +55,27 @@ export default class PrimitiveWizardNavigation extends LightningElement {
     _rendered = false;
     _indicatorType = INDICATOR_TYPES.default;
     _hideIndicator = false;
-    _buttonPreviousIconPosition = POSITIONS.defaultButtonPreviousIcon;
+    _buttonPreviousIconPosition = BUTTON_POSITIONS.defaultButtonPreviousIcon;
     _buttonPreviousLabel = DEFAULT_BUTTON_PREVIOUS_LABEL;
     _buttonPreviousVariant = BUTTON_VARIANTS.defaultButtonPrevious;
-    _buttonNextIconPosition = POSITIONS.defaultButtonNextIcon;
+    _buttonNextIconPosition = BUTTON_POSITIONS.defaultButtonNextIcon;
     _buttonNextLabel = DEFAULT_BUTTON_NEXT_LABEL;
     _buttonNextVariant = BUTTON_VARIANTS.defaultButtonNext;
-    _buttonFinishIconPosition = POSITIONS.defaultButtonFinishIcon;
+    _buttonFinishIconPosition = BUTTON_POSITIONS.defaultButtonFinishIcon;
     _buttonFinishLabel = DEFAULT_BUTTON_FINISH_LABEL;
     _buttonFinishVariant = BUTTON_VARIANTS.defaultButtonFinish;
     _buttonAlignmentBump;
-    _actionPosition = POSITIONS.defaultAction;
+    _actionPosition = BUTTON_POSITIONS.defaultAction;
     _fractionPrefixLabel = DEFAULT_FRACTION_PREFIX_LABEL;
     _fractionLabel = DEFAULT_FRACTION_LABEL;
-    _indicatorPosition = 'bottom';
-    _position = 'bottom';
+    _indicatorPosition = INDICATOR_POSITIONS.default;
+    _position = POSITIONS.default;
 
     lastStep = false;
-    progressIndicatorVariant = 'base';
-    progressIndicatorType = 'base';
+    progressIndicatorVariant = INDICATOR_TYPES.default;
+    progressIndicatorType = INDICATOR_TYPES.default;
     progressBarValue = 0;
+    progressBarOrientation = 'horizontal';
     fractionCurrentStep;
     fractionTotalSteps;
     showBulletIndicator = false;
@@ -116,16 +122,13 @@ export default class PrimitiveWizardNavigation extends LightningElement {
         // If the indicator position is set to header, two navigations will be in the wizard:
         // One will be in the footer and will only display the buttons.
         // One will be in the header and will only display the indicator.
-        if (this.indicatorPosition === 'top') {
-            if (this.position === 'bottom') {
-                this._hideIndicator = true;
-                return;
-            }
-            if (this.position === 'top') {
-                this.hidePreviousButton = true;
-                this.hideNextFinishButton = true;
-                this.actionsSlotColClass = 'slds-hide';
-            }
+        if (this.indicatorPosition === 'top' && this.position === 'bottom') {
+            this._hideIndicator = true;
+            return;
+        } else if (this.hideAllButtons) {
+            this.hidePreviousButton = true;
+            this.hideNextFinishButton = true;
+            this.actionsSlotColClass = 'slds-hide';
         }
 
         this.showProgressIndicator = this.showBulletIndicator = this.showFractionIndicator = this.showBarIndicator = false;
@@ -149,6 +152,9 @@ export default class PrimitiveWizardNavigation extends LightningElement {
                 break;
             case 'bar':
                 this.showBarIndicator = true;
+                this.progressBarOrientation = this.sideNavigation
+                    ? 'vertical'
+                    : 'horizontal';
                 break;
             default:
                 this.showProgressIndicator = true;
@@ -162,7 +168,7 @@ export default class PrimitiveWizardNavigation extends LightningElement {
         const currentStep = this.steps[currentStepIndex];
 
         // Update buttons if they are visible
-        if (!(this.indicatorPosition === 'top' && this.position === 'top')) {
+        if (!this.hideAllButtons) {
             this.lastStep = currentStepIndex === this.steps.length - 1;
 
             // Hide previous button for first step
@@ -231,6 +237,17 @@ export default class PrimitiveWizardNavigation extends LightningElement {
                     this.indicatorPosition === 'left') &&
                 this.position === 'bottom'
             )
+        );
+    }
+
+    get sideNavigation() {
+        return this.position === 'side';
+    }
+
+    get hideAllButtons() {
+        return (
+            (this.indicatorPosition === 'top' && this.position === 'top') ||
+            this.sideNavigation
         );
     }
 
@@ -306,8 +323,8 @@ export default class PrimitiveWizardNavigation extends LightningElement {
     }
     set buttonPreviousIconPosition(position) {
         this._buttonPreviousIconPosition = normalizeString(position, {
-            fallbackValue: POSITIONS.defaultButtonPreviousIcon,
-            validValues: POSITIONS.valid
+            fallbackValue: BUTTON_POSITIONS.defaultButtonPreviousIcon,
+            validValues: BUTTON_POSITIONS.valid
         });
     }
 
@@ -338,8 +355,8 @@ export default class PrimitiveWizardNavigation extends LightningElement {
     }
     set buttonNextIconPosition(position) {
         this._buttonNextIconPosition = normalizeString(position, {
-            fallbackValue: POSITIONS.defaultButtonNextIcon,
-            validValues: POSITIONS.valid
+            fallbackValue: BUTTON_POSITIONS.defaultButtonNextIcon,
+            validValues: BUTTON_POSITIONS.valid
         });
     }
 
@@ -370,8 +387,8 @@ export default class PrimitiveWizardNavigation extends LightningElement {
     }
     set buttonFinishIconPosition(position) {
         this._buttonFinishIconPosition = normalizeString(position, {
-            fallbackValue: POSITIONS.defaultButtonFinishIcon,
-            validValues: POSITIONS.valid
+            fallbackValue: BUTTON_POSITIONS.defaultButtonFinishIcon,
+            validValues: BUTTON_POSITIONS.valid
         });
     }
 
@@ -403,7 +420,7 @@ export default class PrimitiveWizardNavigation extends LightningElement {
     set buttonAlignmentBump(position) {
         this._buttonAlignmentBump = normalizeString(position, {
             fallbackValue: null,
-            validValues: POSITIONS.valid
+            validValues: BUTTON_POSITIONS.valid
         });
 
         if (this.isConnected) this._reorderColumns();
@@ -415,8 +432,8 @@ export default class PrimitiveWizardNavigation extends LightningElement {
     }
     set actionPosition(position) {
         this._actionPosition = normalizeString(position, {
-            fallbackValue: POSITIONS.defaultAction,
-            validValues: POSITIONS.valid
+            fallbackValue: BUTTON_POSITIONS.defaultAction,
+            validValues: BUTTON_POSITIONS.valid
         });
         if (this.isConnected) this._reorderColumns();
     }
@@ -451,8 +468,8 @@ export default class PrimitiveWizardNavigation extends LightningElement {
     }
     set position(value) {
         this._position = normalizeString(value, {
-            validValues: INDICATOR_POSITIONS.valid,
-            fallbackValue: INDICATOR_POSITIONS.default
+            validValues: POSITIONS.valid,
+            fallbackValue: POSITIONS.default
         });
 
         this._initIndicator();

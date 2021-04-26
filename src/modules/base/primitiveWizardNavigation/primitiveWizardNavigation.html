@@ -29,19 +29,35 @@
             <template if:true={showIndicator}>
                 <!-- Progress indicator -->
                 <template if:true={showProgressIndicator}>
-                    <lightning-progress-indicator
-                        current-step={currentStep}
-                        type={progressIndicatorType}
-                        variant={progressIndicatorVariant}
-                    >
-                        <template for:each={steps} for:item="step">
-                            <lightning-progress-step
-                                key={step.name}
-                                label={step.label}
-                                value={step.name}
-                            ></lightning-progress-step>
-                        </template>
-                    </lightning-progress-indicator>
+                    <template if:false={sideNavigation}>
+                        <lightning-progress-indicator
+                            current-step={currentStep}
+                            type={progressIndicatorType}
+                            variant={progressIndicatorVariant}
+                        >
+                            <template for:each={steps} for:item="step">
+                                <lightning-progress-step
+                                    key={step.name}
+                                    label={step.label}
+                                    value={step.name}
+                                ></lightning-progress-step>
+                            </template>
+                        </lightning-progress-indicator>
+                    </template>
+                    <template if:true={sideNavigation}>
+                        <c-vertical-progress-indicator
+                            current-step={currentStep}
+                            variant={progressIndicatorVariant}
+                        >
+                            <template for:each={steps} for:item="step">
+                                <c-vertical-progress-step
+                                    key={step.name}
+                                    label={step.label}
+                                    value={step.name}
+                                ></c-vertical-progress-step>
+                            </template>
+                        </c-vertical-progress-indicator>
+                    </template>
                 </template>
 
                 <!-- Bullets -->
@@ -76,12 +92,13 @@
                         {fractionLabel} {fractionTotalSteps}
                     </p>
                 </template>
+
                 <!-- Bar indicator -->
                 <template if:true={showBarIndicator}>
-                    <lightning-progress-bar
+                    <c-progress-bar
                         value={progressBarValue}
-                        size="large"
-                    ></lightning-progress-bar>
+                        orientation={progressBarOrientation}
+                    ></c-progress-bar>
                 </template>
             </template>
         </lightning-layout-item>

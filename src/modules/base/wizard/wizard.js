@@ -330,14 +330,25 @@ export default class Wizard extends LightningElement {
         return !this.hideIndicator && this.indicatorPosition === 'top';
     }
 
-    get verticalIndicatorVariant() {
-        if (this.indicatorType === 'base-shaded') return 'shaded';
-        return this.indicatorType;
+    get indicatorOnSide() {
+        return (
+            !this.hideIndicator &&
+            !this.hideNavigation &&
+            (this.indicatorPosition === 'left' ||
+                this.indicatorPosition === 'right')
+        );
+    }
+
+    get baseIndicator() {
+        return (
+            this.indicatorType === 'base-shaded' ||
+            this.indicatorType === 'base'
+        );
     }
 
     get wrapperClass() {
         return classSet().add({
-            'slds-grid slds-has-flexi-truncate':
+            'slds-grid slds-gutters slds-has-flexi-truncate':
                 this.indicatorPosition === 'right' ||
                 this.indicatorPosition === 'left'
         });
@@ -349,14 +360,6 @@ export default class Wizard extends LightningElement {
                 this.indicatorPosition === 'right' ||
                 this.indicatorPosition === 'left',
             'slds-order_2': this.indicatorPosition === 'left'
-        });
-    }
-
-    get sideColClass() {
-        return classSet('slds-container_small').add({
-            'slds-hide':
-                this.indicatorPosition === 'top' ||
-                this.indicatorPosition === 'bottom'
         });
     }
 

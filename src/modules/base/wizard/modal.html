@@ -41,19 +41,21 @@
                 <p class="slds-text-color_error">{errorMessage}</p>
                 <slot onwizardstepregister={handleStepRegister}></slot>
             </div>
-            <div class={sideColClass}>
-                <c-vertical-progress-indicator
+            <div
+                class="slds-container_small slds-p-horizontal_medium slds-align-bottom"
+                if:true={indicatorOnSide}
+            >
+                <c-primitive-wizard-navigation
+                    position="side"
+                    onchange={handleChange}
                     current-step={currentStep}
-                    variant={verticalIndicatorVariant}
-                >
-                    <template for:each={steps} for:item="step">
-                        <c-vertical-progress-step
-                            key={step.name}
-                            label={step.label}
-                            value={step.name}
-                        ></c-vertical-progress-step>
-                    </template>
-                </c-vertical-progress-indicator>
+                    steps={steps}
+                    indicator-type={indicatorType}
+                    indicator-position={indicatorPosition}
+                    hide-indicator={hideIndicator}
+                    fraction-prefix-label={fractionPrefixLabel}
+                    fraction-label={fractionLabel}
+                ></c-primitive-wizard-navigation>
             </div>
         </div>
 
