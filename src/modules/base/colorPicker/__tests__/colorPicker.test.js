@@ -2,7 +2,7 @@ import { createElement } from 'lwc';
 import ColorPicker from 'c/colorPicker';
 
 // not tested
-// colors because already tested in pae
+// change event because cannot select color in c-color-palette
 
 describe('Color Picker', () => {
     afterEach(() => {
@@ -1025,71 +1025,9 @@ describe('Color Picker', () => {
             });
     });
 
-    /* ----- METHODS ----- */
-
-    // focus method
-    it('Color Picker focus method', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
-        let focusEvent = false;
-        element.addEventListener('focus', () => {
-            focusEvent = true;
-        });
-
-        element.focus();
-        return Promise.resolve().then(() => {
-            expect(focusEvent).toBeTruthy();
-        });
-    });
-
     /* ----- EVENTS ----- */
 
-    // color picker change
-    it('Color Picker change event', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
-        const handler = jest.fn();
-        element.addEventListener('change', handler);
-        element.value = '#419fec';
-
-        return Promise.resolve()
-            .then(() => {
-                const button = element.shadowRoot.querySelector('button');
-                button.click();
-                console.log(element.value);
-            })
-            .then(() => {
-                const doneButton = element.shadowRoot.querySelector(
-                    "lightning-button[title='Done']"
-                );
-                doneButton.click();
-                console.log(element.value);
-            })
-            .then(() => {
-                console.log(element.value);
-                expect(handler).toHaveBeenCalled();
-                expect(handler.mock.calls[0][0].detail.hex).toBe('#e3abec');
-                expect(handler.mock.calls[0][0].detail.hexa).toBe('#e3abecff');
-                expect(handler.mock.calls[0][0].detail.rgb).toBe(
-                    'rgb(227,171,236)'
-                );
-                expect(handler.mock.calls[0][0].detail.rgba).toBe(
-                    'rgba(227,171,236,1)'
-                );
-                expect(handler.mock.calls[0][0].detail.alpha).toBe('1');
-                expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
-                expect(handler.mock.calls[0][0].composed).toBeFalsy();
-                expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
-            });
-    });
-
-    it('Color Picker focus event', () => {
+    it('Color Picker focus event and method', () => {
         const element = createElement('base-color-picker', {
             is: ColorPicker
         });
