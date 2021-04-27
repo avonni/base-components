@@ -56,16 +56,17 @@ const DEFAULT_RESET_BUTTON_LABEL = 'Reset';
 // tooltip (if using avonni button menu)
 
 // QUESTIONS:
-// Add tooltip to avonni button menu
-// Add width and length to avonni button menu
-// Add a way to keep the menu open on click on an item?
+// To add to avonni button menu?
+//  * tooltip
+//  * width
+//  * length
 
 // TO VALIDATE:
 // The selection is cleared on submit.
 
 export default class FilterMenu extends LightningElement {
     @api accessKey;
-    @api aternativeText;
+    @api alternativeText;
     @api label;
     @api loadingStateAlternativeText;
     @api title;
@@ -296,6 +297,7 @@ export default class FilterMenu extends LightningElement {
         });
     }
 
+    // Prevent the menu from closing on click on an item
     handleMenuItemPrivateSelect(event) {
         event.stopPropagation();
     }
