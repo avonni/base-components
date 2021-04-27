@@ -1,7 +1,7 @@
 import { FilterMenu } from '../__examples__/filterMenu';
 
 export default {
-    title: 'Example/FilterMenu',
+    title: 'Example/Filter Menu',
     argTypes: {
         accessKey: {
             name: 'access-key',
@@ -266,9 +266,30 @@ export default {
     }
 };
 
+const items = [
+    {
+        label: 'Disabled item with icon',
+        value: 'disabled-item',
+        disabled: true,
+        iconName: 'utility:task'
+    },
+    {
+        label: 'Item with icon and prefix icon',
+        value: 'item-with-two-icons',
+        iconName: 'utility:tracker',
+        prefixIconName: 'utility:choice'
+    },
+    {
+        label: 'Item with no icon',
+        value: 'item-with-no-icon'
+    }
+];
+
 const Template = (args) => FilterMenu(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    label: 'Base filter menu'
+    label: 'Base filter menu',
+    items: items,
+    value: ['item-with-no-icon']
 };

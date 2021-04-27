@@ -1,5 +1,5 @@
 <template>
-    <lightning-button-menu
+    <c-button-menu
         access-key={accessKey}
         alternative-text={alternativeText}
         disabled={disabled}
@@ -11,9 +11,48 @@
         menu-alignment={menuAlignment}
         nubbin={nubbin}
         title={title}
-        tooltip={tooltip}
         variant={variant}
     >
-        Content here
-    </lightning-button-menu>
+        <lightning-input
+            if:false={hideSearchBox}
+            class="slds-p-around_small"
+            label={searchInputPlaceholder}
+            placeholder={searchInputPlaceholder}
+            variant="label-hidden"
+            type="search"
+            disabled={disabled}
+            is-loading={isLoading}
+        ></lightning-input>
+        <template for:each={computedItems} for:item="item">
+            <lightning-menu-item
+                key={item.value}
+                label={item.label}
+                value={item.value}
+                icon-name={item.iconName}
+                prefix-icon-name={item.prefixIconName}
+                checked={item.checked}
+                disabled={item.disabled}
+                onclick={handleItemClick}
+            >
+            </lightning-menu-item>
+        </template>
+        <lightning-menu-divider></lightning-menu-divider>
+        <div
+            class="slds-p-horizontal_small slds-p-bottom_x-small slds-text-align_right"
+        >
+            <lightning-button
+                class="slds-m-right_x-small"
+                variant="base"
+                label={resetButtonLabel}
+                title={resetButtonLabel}
+                onclick={handleResetClick}
+            ></lightning-button>
+            <lightning-button
+                variant="brand"
+                label={submitButtonLabel}
+                title={submitButtonLabel}
+                onclick={handleSubmitClick}
+            ></lightning-button>
+        </div>
+    </c-button-menu>
 </template>

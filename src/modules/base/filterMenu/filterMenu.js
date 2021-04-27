@@ -50,6 +50,20 @@ const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Search...';
 const DEFAULT_SUBMIT_BUTTON_LABEL = 'Apply';
 const DEFAULT_RESET_BUTTON_LABEL = 'Reset';
 
+// TODO:
+// menuWidth
+// menuLength
+// search
+// tooltip (if using avonni button menu)
+
+// QUESTIONS:
+// Add tooltip to avonni button menu
+// Add width and length to avonni button menu
+// Add a way to keep the menu open on click on an item?
+
+// TO VALIDATE:
+// The selection is cleared on submit.
+
 export default class FilterMenu extends LightningElement {
     @api accessKey;
     @api aternativeText;
@@ -73,6 +87,8 @@ export default class FilterMenu extends LightningElement {
     _resetButtonLabel = DEFAULT_RESET_BUTTON_LABEL;
     _menuWidth = MENU_WIDTHS.default;
     _menuLength = MENU_LENGTHS.default;
+
+    computedItems = [];
 
     @api
     get disabled() {
@@ -116,16 +132,21 @@ export default class FilterMenu extends LightningElement {
     get items() {
         return this._items;
     }
-    set items(array) {
-        this._items = normalizeArray(array);
+    set items(proxy) {
+        this._items = normalizeArray(proxy);
+
+        this._computeItems();
     }
 
     @api
     get value() {
         return this._value;
     }
-    set value(array) {
+    set value(proxy) {
+        const array = JSON.parse(JSON.stringify(proxy));
         this._value = normalizeArray(array);
+
+        this._computeItems();
     }
 
     @api
@@ -219,5 +240,51 @@ export default class FilterMenu extends LightningElement {
     }
     set nubbin(bool) {
         this._nubbin = normalizeBoolean(bool);
+    }
+
+    _computeItems() {
+        this.computedItems = JSON.parse(JSON.stringify(this.items));
+        this.computedItems.forEach((item) => {
+            if (this.value.indexOf(item.value) > -1) {
+                item.checked = true;
+            } else {
+                item.checked = false;
+            }
+        });
+    }
+
+    @api
+    clear() {
+        this._value = [];
+        this._computeItems();
+    }
+
+    handleItemClick(event) {
+        const index = this.value.findIndex(
+            (itemValue) => itemValue === event.currentTarget.value
+        );
+        if (index > -1) {
+            this.value.splice(index, 1);
+        } else {
+            this.value.push(event.currentTarget.value);
+        }
+
+        this._computeItems();
+    }
+
+    handleSubmitClick() {
+        this.dispatchEvent(
+            new CustomEvent('apply', {
+                detail: {
+                    value: this.value
+                }
+            })
+        );
+        this.clear();
+    }
+
+    handleResetClick() {
+        this.dispatchEvent(new CustomEvent('reset'));
+        this.clear();
     }
 }
