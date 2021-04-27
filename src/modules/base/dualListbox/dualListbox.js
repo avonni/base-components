@@ -668,15 +668,12 @@ export default class DualListbox extends LightningElement {
     }
 
     handleSearch() {
-        window.clearTimeout(this.delayTimeout);
         this.searchTerm = this.template
             .querySelector('input')
             .value.toLowerCase();
         if (this.searchTerm) {
-            this.delayTimeout = setTimeout(() => {
-                this.searchResult = this.computedSourceList.filter((option) => {
-                    return option.label.toLowerCase().includes(this.searchTerm);
-                });
+            this.searchResult = this.computedSourceList.filter((option) => {
+                return option.label.toLowerCase().includes(this.searchTerm);
             });
         } else this.searchResult = this.computedSourceList;
     }
