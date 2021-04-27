@@ -116,22 +116,26 @@ describe('Color Picker', () => {
     });
 
     // isLoading
-    // it('Color Picker isLoading', () => {
-    //     const element = createElement('base-color-picker', {
-    //         is: ColorPicker
-    //     });
+    it('Color Picker isLoading', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
 
-    //     element.isLoading = true;
-    //     document.body.appendChild(element);
+        element.isLoading = true;
+        document.body.appendChild(element);
 
-    //     return Promise.resolve().then(() => {
-    // const button = element.shadowRoot.querySelector('button')
-    // element.focus()
-    // button.click()
-    //         const spinner = element.shadowRoot.querySelector('lightning-spinner')
-    //         expect(spinner).toBeTruthy();
-    //     });
-    // });
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector('button');
+                button.click();
+            })
+            .then(() => {
+                const spinner = element.shadowRoot.querySelector(
+                    'lightning-spinner'
+                );
+                expect(spinner).toBeTruthy();
+            });
+    });
 
     // label
     it('Color Picker label', () => {
@@ -309,22 +313,26 @@ describe('Color Picker', () => {
     });
 
     // type
-    // it('Color Picker type', () => {
-    //     const element = createElement('base-color-picker', {
-    //         is: ColorPicker
-    //     });
+    it('Color Picker type', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
 
-    //     element.type = 'base';
-    //     document.body.appendChild(element);
+        element.type = 'base';
+        document.body.appendChild(element);
 
-    //     return Promise.resolve().then(() => {
-    //         element.focus()
-    //         const button = element.shadowRoot.querySelector('button')
-    //         button.click()
-    //         const palette = element.shadowRoot.querySelector('.slds-tabs_default')
-    //         expect(palette).toBeTruthy()
-    //     });
-    // });
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector('button');
+                button.click();
+            })
+            .then(() => {
+                const palette = element.shadowRoot.querySelector(
+                    '.slds-tabs_default'
+                );
+                expect(palette).toBeTruthy();
+            });
+    });
 
     // Menu variant with menu icon down
     it('Color Picker menu variant bare', () => {
@@ -579,5 +587,309 @@ describe('Color Picker', () => {
             const icon = element.shadowRoot.querySelector('lightning-icon');
             expect(icon.size).toBe('large');
         });
+    });
+
+    // Menu label
+    it('Color Picker menu label border', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.menuLabel = 'This is a menu label text';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.textContent).toBe('This is a menu label text');
+            expect(button.className).toContain('slds-button_neutral');
+        });
+    });
+
+    it('Color Picker menu label border-inverse', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.menuLabel = 'This is a menu label text';
+        element.menuVariant = 'border-inverse';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.textContent).toBe('This is a menu label text');
+            expect(button.className).toContain('slds-button_inverse');
+        });
+    });
+
+    // Menu alignement
+    it('Color Picker menu alignement left', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector('button');
+                button.click();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '.slds-dropdown'
+                );
+                expect(dropdown.className).toContain('slds-dropdown_left');
+            });
+    });
+
+    it('Color Picker menu alignement left and menu nubbin', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.menuNubbin = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector('button');
+                button.click();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '.slds-dropdown'
+                );
+                expect(dropdown.className).toContain('slds-dropdown_left');
+                expect(dropdown.className).toContain('slds-nubbin_top-left');
+            });
+    });
+
+    it('Color Picker menu alignement right', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.menuAlignment = 'right';
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector('button');
+                button.click();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '.slds-dropdown'
+                );
+                expect(dropdown.className).toContain('slds-dropdown_right');
+            });
+    });
+
+    it('Color Picker menu alignement right and menu nubbin', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.menuAlignment = 'right';
+        element.menuNubbin = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector('button');
+                button.click();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '.slds-dropdown'
+                );
+                expect(dropdown.className).toContain('slds-dropdown_right');
+                expect(dropdown.className).toContain('slds-nubbin_top-right');
+            });
+    });
+
+    it('Color Picker menu alignement center', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.menuAlignment = 'center';
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector('button');
+                button.click();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '.slds-dropdown'
+                );
+                expect(dropdown.className).toContain('slds-dropdown_center');
+            });
+    });
+
+    it('Color Picker menu alignement center and menu nubbin', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.menuAlignment = 'center';
+        element.menuNubbin = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector('button');
+                button.click();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '.slds-dropdown'
+                );
+                expect(dropdown.className).toContain('slds-dropdown_center');
+                expect(dropdown.className).toContain('slds-nubbin_top');
+            });
+    });
+
+    it('Color Picker menu alignement bottom-center', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.menuAlignment = 'bottom-center';
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector('button');
+                button.click();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '.slds-dropdown'
+                );
+                expect(dropdown.className).toContain('slds-dropdown_bottom');
+            });
+    });
+
+    it('Color Picker menu alignement bottom-center and menu nubbin', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.menuAlignment = 'bottom-center';
+        element.menuNubbin = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector('button');
+                button.click();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '.slds-dropdown'
+                );
+                expect(dropdown.className).toContain('slds-dropdown_bottom');
+                expect(dropdown.className).toContain('slds-nubbin_bottom');
+            });
+    });
+
+    it('Color Picker menu alignement bottom-left', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.menuAlignment = 'bottom-left';
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector('button');
+                button.click();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '.slds-dropdown'
+                );
+                expect(dropdown.className).toContain(
+                    'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left'
+                );
+            });
+    });
+
+    it('Color Picker menu alignement bottom-left and menu nubbin', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.menuAlignment = 'bottom-left';
+        element.menuNubbin = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector('button');
+                button.click();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '.slds-dropdown'
+                );
+                expect(dropdown.className).toContain(
+                    'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left'
+                );
+                expect(dropdown.className).toContain('slds-nubbin_bottom-left');
+            });
+    });
+
+    it('Color Picker menu alignement bottom-right', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.menuAlignment = 'bottom-right';
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector('button');
+                button.click();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '.slds-dropdown'
+                );
+                expect(dropdown.className).toContain(
+                    'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right'
+                );
+            });
+    });
+
+    it('Color Picker menu alignement bottom-right and menu nubbin', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.menuAlignment = 'bottom-right';
+        element.menuNubbin = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector('button');
+                button.click();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '.slds-dropdown'
+                );
+                expect(dropdown.className).toContain(
+                    'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right'
+                );
+                expect(dropdown.className).toContain(
+                    'slds-nubbin_bottom-right'
+                );
+            });
     });
 });
