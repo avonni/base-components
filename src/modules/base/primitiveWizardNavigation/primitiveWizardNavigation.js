@@ -126,7 +126,7 @@ export default class PrimitiveWizardNavigation extends LightningElement {
         switch (this.indicatorType) {
             case 'base-shaded':
                 this.showProgressIndicator = true;
-                this.progressIndicatorVariant = 'shaded';
+                this.progressIndicatorVariant = 'shade';
                 this.progressIndicatorType = 'base';
                 break;
             case 'path':
@@ -230,8 +230,8 @@ export default class PrimitiveWizardNavigation extends LightningElement {
 
     get progressColClass() {
         return classSet('slds-text-align_left').add({
-            'avonni-height_full': this.indicatorType !== 'bullet',
-            'slds-align-middle': this.indicatorType === 'bullet',
+            'avonni-height_full': this.indicatorType === 'bar',
+            'slds-align-middle': this.indicatorType !== 'fractions',
             'slds-order_1 slds-text-align_left':
                 this.buttonAlignmentBump === 'right',
             'slds-order_3 slds-text-align_right':
