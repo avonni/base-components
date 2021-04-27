@@ -22,9 +22,13 @@
             type="search"
             disabled={disabled}
             is-loading={isLoading}
+            onkeyup={handleSearch}
+            value={searchTerm}
+            autocomplete="off"
         ></lightning-input>
         <template for:each={computedItems} for:item="item">
             <lightning-menu-item
+                if:false={item.hidden}
                 key={item.value}
                 label={item.label}
                 value={item.value}

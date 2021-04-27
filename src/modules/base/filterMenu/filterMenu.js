@@ -1,4 +1,4 @@
-import { LightningElement, api } from 'lwc';
+import { LightningElement, api, track } from 'lwc';
 import {
     normalizeBoolean,
     normalizeString,
@@ -53,7 +53,6 @@ const DEFAULT_RESET_BUTTON_LABEL = 'Reset';
 // TODO:
 // menuWidth
 // menuLength
-// search
 // tooltip (if using avonni button menu)
 
 // QUESTIONS:
@@ -88,7 +87,7 @@ export default class FilterMenu extends LightningElement {
     _menuWidth = MENU_WIDTHS.default;
     _menuLength = MENU_LENGTHS.default;
 
-    computedItems = [];
+    @track computedItems = [];
 
     @api
     get disabled() {
@@ -134,8 +133,9 @@ export default class FilterMenu extends LightningElement {
     }
     set items(proxy) {
         this._items = normalizeArray(proxy);
+        this.computedItems = JSON.parse(JSON.stringify(this._items));
 
-        this._computeItems();
+        this._computeValue();
     }
 
     @api
@@ -146,7 +146,7 @@ export default class FilterMenu extends LightningElement {
         const array = JSON.parse(JSON.stringify(proxy));
         this._value = normalizeArray(array);
 
-        this._computeItems();
+        this._computeValue();
     }
 
     @api
@@ -242,8 +242,7 @@ export default class FilterMenu extends LightningElement {
         this._nubbin = normalizeBoolean(bool);
     }
 
-    _computeItems() {
-        this.computedItems = JSON.parse(JSON.stringify(this.items));
+    _computeValue() {
         this.computedItems.forEach((item) => {
             if (this.value.indexOf(item.value) > -1) {
                 item.checked = true;
@@ -256,7 +255,7 @@ export default class FilterMenu extends LightningElement {
     @api
     clear() {
         this._value = [];
-        this._computeItems();
+        this._computeValue();
     }
 
     handleItemClick(event) {
@@ -269,7 +268,7 @@ export default class FilterMenu extends LightningElement {
             this.value.push(event.currentTarget.value);
         }
 
-        this._computeItems();
+        this._computeValue();
     }
 
     handleSubmitClick() {
@@ -286,5 +285,14 @@ export default class FilterMenu extends LightningElement {
     handleResetClick() {
         this.dispatchEvent(new CustomEvent('reset'));
         this.clear();
+    }
+
+    handleSearch(event) {
+        const searchTerm = event.currentTarget.value.toLowerCase();
+
+        this.computedItems.forEach((item) => {
+            const label = item.label.toLowerCase();
+            item.hidden = searchTerm ? !label.includes(searchTerm) : false;
+        });
     }
 }
