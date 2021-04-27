@@ -24,25 +24,8 @@ describe('Confetti', () => {
             '#006699',
             '#E287B2'
         ]);
-        expect(element.originX).toBe(0.5)
-        expect(element.originY).toBe(0.5)
-        expect(element.zIndex).toBe(100)
-    });
-
-    /* ----- ATTRIBUTES ----- */
-
-    // label
-    it('Confetti label', () => {
-        const element = createElement('base-confetti', {
-            is: Confetti
-        });
-        document.body.appendChild(element);
-
-        element.label = 'This is a label';
-
-        return Promise.resolve().then(() => {
-            const span = element.shadowRoot.querySelector('span');
-            expect(span.textContent).toBe('This is a label');
-        });
+        expect(element.originX).toBe(0.5);
+        expect(element.originY).toBe(0.5);
+        expect(element.zIndex).toBe(100);
     });
 });
