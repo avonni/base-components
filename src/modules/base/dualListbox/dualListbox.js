@@ -115,6 +115,7 @@ export default class DualListbox extends LightningElement {
     }
 
     renderedCallback() {
+        console.log(this.searchTerm);
         this.assertRequiredAttributes();
         if (this.disabled) {
             this._upButtonDisabled = true;
@@ -672,18 +673,16 @@ export default class DualListbox extends LightningElement {
             .querySelector('input')
             .value.toLowerCase();
         if (this.searchTerm) {
-            this._isLoading = true;
             this.delayTimeout = setTimeout(() => {
                 this.searchResult = this.computedSourceList.filter((option) => {
                     return option.label.toLowerCase().includes(this.searchTerm);
                 });
-                this._isLoading = false;
-            }, 300);
+            });
         } else this.searchResult = this.computedSourceList;
     }
 
     handleSearchClear() {
-        this.searchTerm = this.template.querySelector('input').value = '';
+        this.searchTerm = this.template.querySelector('input').value = null;
     }
 
     moveOptionsBetweenLists(addToSelect, retainFocus) {

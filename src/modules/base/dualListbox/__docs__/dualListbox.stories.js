@@ -41,9 +41,9 @@ export default {
         buttonSize: {
             name: 'button-size',
             control: {
-                type: 'select',
-                options: ['xx-small', 'x-small', 'small', 'medium', 'large']
+                type: 'select'
             },
+            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
             defaultValue: 'medium',
             description:
                 'For the bare variant, valid values include x-small, small, medium, and large. For non-bare variants, valid values include xx-small, x-small, small, and medium.',
@@ -55,17 +55,17 @@ export default {
         buttonVariant: {
             name: 'button-variant',
             control: {
-                type: 'select',
-                options: [
-                    'bare',
-                    'container',
-                    'brand',
-                    'border',
-                    'border-filled',
-                    'bare-inverse',
-                    'border-inverse'
-                ]
+                type: 'select'
             },
+            options: [
+                'bare',
+                'container',
+                'brand',
+                'border',
+                'border-filled',
+                'bare-inverse',
+                'border-inverse'
+            ],
             defaultValue: 'border',
             description:
                 'Use this variant for all button icons (add, up, down and remove). Valid values inlcude bare, container, brand, border, border-filled, bare-inverse and border-inverse.',
@@ -376,14 +376,14 @@ export default {
         },
         variant: {
             control: {
-                type: 'select',
-                options: [
-                    'standard',
-                    'label-hidden',
-                    'label-inline',
-                    'label-stacked'
-                ]
+                type: 'select'
             },
+            options: [
+                'standard',
+                'label-hidden',
+                'label-inline',
+                'label-stacked'
+            ],
             defaultValue: 'standard',
             description:
                 'The variant changes the appearance of the dual listbox. Valid variants include standard, label-hidden, label-inline, and label-stacked. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and dual listbox. Use label-stacked to place the label above the dual listbox.',
