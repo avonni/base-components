@@ -1,6 +1,9 @@
 import { createElement } from 'lwc';
 import ColorPicker from 'c/colorPicker';
 
+// not tested
+// colors because already tested in pae
+
 describe('Color Picker', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -313,7 +316,7 @@ describe('Color Picker', () => {
     });
 
     // type
-    it('Color Picker type', () => {
+    it('Color Picker type base', () => {
         const element = createElement('base-color-picker', {
             is: ColorPicker
         });
@@ -331,6 +334,48 @@ describe('Color Picker', () => {
                     '.slds-tabs_default'
                 );
                 expect(palette).toBeTruthy();
+            });
+    });
+
+    it('Color Picker type custom', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+
+        element.type = 'custom';
+        document.body.appendChild(element);
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector('button');
+                button.click();
+            })
+            .then(() => {
+                const gradient = element.shadowRoot.querySelector(
+                    'c-color-gradient'
+                );
+                expect(gradient).toBeTruthy();
+            });
+    });
+
+    it('Color Picker type predefined', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+
+        element.type = 'predefined';
+        document.body.appendChild(element);
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector('button');
+                button.click();
+            })
+            .then(() => {
+                const gradient = element.shadowRoot.querySelector(
+                    'c-color-palette'
+                );
+                expect(gradient).toBeTruthy();
             });
     });
 
@@ -621,7 +666,7 @@ describe('Color Picker', () => {
         });
     });
 
-    // Menu alignement
+    // Menu alignement & menu nubbin
     it('Color Picker menu alignement left', () => {
         const element = createElement('base-color-picker', {
             is: ColorPicker
@@ -891,5 +936,187 @@ describe('Color Picker', () => {
                     'slds-nubbin_bottom-right'
                 );
             });
+    });
+
+    // colors
+    it('Color Picker colors', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector('button');
+                button.click();
+            })
+            .then(() => {
+                const palette = element.shadowRoot.querySelector(
+                    'c-color-palette'
+                );
+                expect(palette.colors).toMatchObject([
+                    '#e3abec',
+                    '#c2dbf6',
+                    '#9fd6ff',
+                    '#9de7da',
+                    '#9df0bf',
+                    '#fff099',
+                    '#fed49a',
+                    '#d073df',
+                    '#86b9f3',
+                    '#5ebbff',
+                    '#44d8be',
+                    '#3be281',
+                    '#ffe654',
+                    '#ffb758',
+                    '#bd35bd',
+                    '#5778c1',
+                    '#5ebbff',
+                    '#00aea9',
+                    '#3bba4c',
+                    '#f4bc25',
+                    '#f99120',
+                    '#580d8c',
+                    '#001870',
+                    '#0a2399',
+                    '#097476',
+                    '#096a50',
+                    '#b67d11',
+                    '#b85d0d'
+                ]);
+            });
+    });
+
+    // Hide color input
+    it('Color Picker hide color input', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.hideColorInput = true;
+
+        return Promise.resolve().then(() => {
+            const input = element.shadowRoot.querySelector('lightning-input');
+            expect(input).toBeFalsy();
+        });
+    });
+
+    // Opacity
+    it('Color Picker Opacity', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.type = 'custom';
+        element.opacity = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector('button');
+                button.click();
+            })
+            .then(() => {
+                const palette = element.shadowRoot.querySelector(
+                    'c-color-gradient'
+                );
+                expect(palette.opacity).toBeTruthy();
+            });
+    });
+
+    /* ----- METHODS ----- */
+
+    // focus method
+    it('Color Picker focus method', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        let focusEvent = false;
+        element.addEventListener('focus', () => {
+            focusEvent = true;
+        });
+
+        element.focus();
+        return Promise.resolve().then(() => {
+            expect(focusEvent).toBeTruthy();
+        });
+    });
+
+    /* ----- EVENTS ----- */
+
+    // color picker change
+    it('Color Picker change event', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+        element.value = '#419fec';
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector('button');
+                button.click();
+                console.log(element.value);
+            })
+            .then(() => {
+                const doneButton = element.shadowRoot.querySelector(
+                    "lightning-button[title='Done']"
+                );
+                doneButton.click();
+                console.log(element.value);
+            })
+            .then(() => {
+                console.log(element.value);
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].detail.hex).toBe('#e3abec');
+                expect(handler.mock.calls[0][0].detail.hexa).toBe('#e3abecff');
+                expect(handler.mock.calls[0][0].detail.rgb).toBe(
+                    'rgb(227,171,236)'
+                );
+                expect(handler.mock.calls[0][0].detail.rgba).toBe(
+                    'rgba(227,171,236,1)'
+                );
+                expect(handler.mock.calls[0][0].detail.alpha).toBe('1');
+                expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
+            });
+    });
+
+    it('Color Picker focus event', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.addEventListener('focus', (event) => {
+            expect(event.bubbles).toBeFalsy();
+            expect(event.cancelable).toBeFalsy();
+            expect(event.composed).toBeFalsy();
+        });
+
+        element.focus();
+    });
+
+    it('Color Picker blur event', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.addEventListener('blur', (event) => {
+            expect(event.bubbles).toBeFalsy();
+            expect(event.cancelable).toBeFalsy();
+            expect(event.composed).toBeFalsy();
+        });
+
+        element.focus();
+        element.blur();
     });
 });
