@@ -309,22 +309,275 @@ describe('Color Picker', () => {
     });
 
     // type
-    it('Color Picker type', () => {
+    // it('Color Picker type', () => {
+    //     const element = createElement('base-color-picker', {
+    //         is: ColorPicker
+    //     });
+
+    //     element.type = 'base';
+    //     document.body.appendChild(element);
+
+    //     return Promise.resolve().then(() => {
+    //         element.focus()
+    //         const button = element.shadowRoot.querySelector('button')
+    //         button.click()
+    //         const palette = element.shadowRoot.querySelector('.slds-tabs_default')
+    //         expect(palette).toBeTruthy()
+    //     });
+    // });
+
+    // Menu variant with menu icon down
+    it('Color Picker menu variant bare', () => {
         const element = createElement('base-color-picker', {
             is: ColorPicker
         });
-
-        element.type = 'base';
         document.body.appendChild(element);
 
+        element.menuVariant = 'bare';
+
         return Promise.resolve().then(() => {
-            element.focus();
             const button = element.shadowRoot.querySelector('button');
-            button.click();
-            const palette = element.shadowRoot.querySelector(
-                '.slds-tabs_default'
+            expect(button.className).toBe('slds-button slds-button_icon-bare');
+        });
+    });
+
+    it('Color Picker menu variant container', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.menuVariant = 'container';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.className).toBe(
+                'slds-button slds-button_icon-container'
             );
-            expect(palette).toBeTruthy();
+        });
+    });
+
+    it('Color Picker menu variant border', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.menuVariant = 'border';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.className).toBe(
+                'slds-button slds-button_icon-border'
+            );
+        });
+    });
+
+    it('Color Picker menu variant border-filled', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.menuVariant = 'border-filled';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.className).toBe(
+                'slds-button slds-button_icon-border-filled'
+            );
+        });
+    });
+
+    it('Color Picker menu variant bare-inverse', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.menuVariant = 'bare-inverse';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.className).toBe(
+                'slds-button slds-button_icon-bare slds-button_icon-inverse'
+            );
+        });
+    });
+
+    it('Color Picker menu variant border-inverse', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.menuVariant = 'border-inverse';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.className).toBe(
+                'slds-button slds-button_icon-border-inverse'
+            );
+        });
+    });
+
+    // Menu variant without menu icon down
+    it('Color Picker menu variant bare without menu icon down', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.menuIconName = 'utility:close';
+        element.menuVariant = 'bare';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.className).toBe(
+                'slds-button slds-button_icon slds-button_icon-bare slds-button_icon-more'
+            );
+        });
+    });
+
+    it('Color Picker menu variant container without menu icon down', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.menuIconName = 'utility:close';
+        element.menuVariant = 'container';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.className).toBe(
+                'slds-button slds-button_icon slds-button_icon-container-more'
+            );
+        });
+    });
+
+    it('Color Picker menu variant border without menu icon down', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.menuIconName = 'utility:close';
+        element.menuVariant = 'border';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.className).toBe(
+                'slds-button slds-button_icon slds-button_icon-more'
+            );
+        });
+    });
+
+    it('Color Picker menu variant border-filled without menu icon down', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.menuIconName = 'utility:close';
+        element.menuVariant = 'border-filled';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.className).toBe(
+                'slds-button slds-button_icon slds-button_icon-more slds-button_icon-border-filled'
+            );
+        });
+    });
+
+    it('Color Picker menu variant bare-inverse without menu icon down', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.menuIconName = 'utility:close';
+        element.menuVariant = 'bare-inverse';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.className).toBe(
+                'slds-button slds-button_icon slds-button_icon-bare slds-button_icon-container-more slds-button_icon-inverse'
+            );
+        });
+    });
+
+    it('Color Picker menu variant border-inverse without menu icon down', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.menuIconName = 'utility:close';
+        element.menuVariant = 'border-inverse';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.className).toBe(
+                'slds-button slds-button_icon slds-button_icon-container-more slds-button_icon-border-inverse'
+            );
+        });
+    });
+
+    // Menu icon size
+    it('Color Picker menu icon size xx-small', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.menuIconSize = 'xx-small';
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector('lightning-icon');
+            expect(icon.size).toBe('xx-small');
+        });
+    });
+
+    it('Color Picker menu icon size x-small', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.menuIconSize = 'x-small';
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector('lightning-icon');
+            expect(icon.size).toBe('x-small');
+        });
+    });
+
+    it('Color Picker menu icon size medium', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.menuIconSize = 'medium';
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector('lightning-icon');
+            expect(icon.size).toBe('medium');
+        });
+    });
+
+    it('Color Picker menu icon size large', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.menuIconSize = 'large';
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector('lightning-icon');
+            expect(icon.size).toBe('large');
         });
     });
 });
