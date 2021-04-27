@@ -90,7 +90,7 @@ export default {
                 type: 'object'
             },
             description:
-                'Field: <ul><li>label: string</li> <li>value: number</li> <li>variant: string (default, darker, lightest, success, warning, error)</li> <li>borderStyle: string (none, solid, dashed, dotted)</li>',
+                'Field: <ul><li>label: string</li> <li>value: number</li> <li>variant: string (default, darker, lightest, success, warning, error)</li> <li>borderStyle: string (none, solid, dashed, dotted)</li></ul>',
             table: {
                 type: { summary: 'object[]' }
             }

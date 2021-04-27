@@ -6,21 +6,41 @@ export default {
         label: {
             control: {
                 type: 'text'
+            },
+            description: 'Text label for the input.',
+            table: {
+                type: { summary: 'string' }
             }
         },
         fieldLevelHelp: {
+            name: 'field-level-help',
             control: {
                 type: 'text'
+            },
+            description:
+                "Help text detailing the purpose and function of the input. This attribute isn't supported for file, radio, toggle, and checkbox-button types.",
+            table: {
+                type: { summary: 'string' }
             }
         },
         value: {
             control: {
                 type: 'text'
+            },
+            description: 'Specifies the value of an input element.',
+            table: {
+                type: { summary: 'string' }
             }
         },
         messageWhenBadInput: {
+            name: 'message-when-bad-input',
             control: {
                 type: 'text'
+            },
+            description:
+                'Error message to be displayed when a bad input is detected.',
+            table: {
+                type: { summary: 'string' }
             }
         },
         variant: {
@@ -34,8 +54,11 @@ export default {
                 'label-stacked'
             ],
             defaultValue: 'standard',
+            description:
+                'The variant changes the appearance of an input field. Accepted variants include standard, label-inline, label-hidden, and label-stacked. This value defaults to standard, which displays the label above the field. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and input field. Use label-stacked to place the label above the input field.',
             table: {
-                defaultValue: { summary: 'standard' }
+                defaultValue: { summary: 'standard' },
+                type: { summary: 'string' }
             }
         },
         type: {
@@ -44,11 +67,14 @@ export default {
             },
             options: ['base', 'custom', 'predefined'],
             defaultValue: 'base',
+            description: 'Values include base, custom and predefined.',
             table: {
-                defaultValue: { summary: 'base' }
+                defaultValue: { summary: 'base' },
+                type: { summary: 'string' }
             }
         },
         menuVariant: {
+            name: 'menu-variant',
             control: {
                 type: 'select'
             },
@@ -61,31 +87,52 @@ export default {
                 'border-inverse'
             ],
             defaultValue: 'border',
+            description:
+                'The variant changes the look of the button. Accepted variants include bare, container, border, border-filled, bare-inverse, and border-inverse. This value defaults to border.',
             table: {
-                defaultValue: { summary: 'border' }
+                defaultValue: { summary: 'border' },
+                type: { summary: 'string' },
+                category: 'menu'
             }
         },
         menuIconName: {
+            name: 'menu-icon-name',
             control: {
                 type: 'text'
+            },
+            table: {
+                type: { summary: 'string' },
+                category: 'menu'
             }
         },
         menuLabel: {
+            name: 'menu-label',
             control: {
                 type: 'text'
+            },
+            description: 'Optional text to be shown on the button.',
+            table: {
+                type: { summary: 'string' },
+                category: 'menu'
             }
         },
         menuIconSize: {
+            name: 'menu-icon-size',
             control: {
                 type: 'select'
             },
             options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
             defaultValue: 'x-small',
+            description:
+                'The size of the icon. Options include xx-small, x-small, small, medium, or large.',
             table: {
-                defaultValue: { summary: 'x-small' }
+                defaultValue: { summary: 'x-small' },
+                type: { summary: 'string' },
+                category: 'menu'
             }
         },
         menuAlignment: {
+            name: 'menu-alignement',
             control: {
                 type: 'select'
             },
@@ -99,13 +146,21 @@ export default {
                 'bottom-right'
             ],
             defaultValue: 'left',
+            description:
+                'Determines the alignment of the menu relative to the button. Available options are: auto, left, center, right, bottom-left, bottom-center, bottom-right. The auto option aligns the dropdown menu based on available space. ',
             table: {
-                defaultValue: { summary: 'left' }
+                defaultValue: { summary: 'left' },
+                type: { summary: 'string' },
+                category: 'menu'
             }
         },
         colors: {
             control: {
                 type: 'object'
+            },
+            description: 'Color values displayed in the default palette.',
+            table: {
+                type: { summary: 'string[]' }
             }
         },
         disabled: {
@@ -113,53 +168,74 @@ export default {
                 type: 'boolean'
             },
             defaultValue: 0,
+            description:
+                'If present, the input field is disabled and users cannot interact with it.',
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         },
         readOnly: {
+            name: 'read-only',
             control: {
                 type: 'boolean'
             },
             defaultValue: 0,
+            description:
+                'If present, the palette is read-only and cannot be edited by users.',
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         },
         isLoading: {
+            name: 'is-loading',
             control: {
                 type: 'boolean'
             },
             defaultValue: 0,
+            description:
+                'If present, a spinner is displayed to indicate that data is loading. ',
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         },
         menuNubbin: {
+            name: 'menu-nubbin',
             control: {
                 type: 'boolean'
             },
             defaultValue: 0,
+            description:
+                'If present, a nubbin is present on the menu. A nubbin is a stub that protrudes from the menu item towards the button menu. The nubbin position is based on the menu-alignment.',
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' },
+                category: 'menu'
             }
         },
         hideColorInput: {
+            name: 'hide-color-input',
             control: {
                 type: 'boolean'
             },
+            description: 'If true, hide the input color value.',
             defaultValue: 0,
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         },
         opacity: {
             control: {
                 type: 'boolean'
             },
+            description: 'Defines whether the alpha slider will be displayed.',
             defaultValue: 0,
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         }
     },

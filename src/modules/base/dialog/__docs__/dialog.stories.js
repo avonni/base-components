@@ -4,18 +4,34 @@ export default {
     title: 'Example/Dialog',
     argTypes: {
         dialogName: {
+            name: 'dialog-name',
             control: {
                 type: 'text'
+            },
+            description: '',
+            table: {
+                type: { summary: 'string' }
             }
         },
         title: {
             control: {
                 type: 'text'
+            },
+            description:
+                'The title can include text, and is displayed in the header. To include additional markup or another component, use the title slot.',
+            table: {
+                type: { summary: 'string' }
             }
         },
         loadingStateAlternativeText: {
+            name: 'loading-state-alternative-text',
             control: {
                 type: 'text'
+            },
+            description:
+                'Message displayed while the modal box is in the loading state.',
+            table: {
+                type: { summary: 'string' }
             }
         },
         size: {
@@ -24,26 +40,36 @@ export default {
             },
             options: ['small', 'medium', 'large'],
             defaultValue: 'medium',
+            description:
+                'Width of the modal. Accepted values include small, medium, large.',
             table: {
-                defaultValue: { summary: 'medium' }
+                defaultValue: { summary: 'medium' },
+                type: { summary: 'string' }
             }
         },
         isLoading: {
+            name: 'is-loading',
             control: {
                 type: 'boolean'
             },
             defaultValue: 0,
+            description:
+                'If present, the modal box is in a loading state and shows a spinner.',
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         },
         showDialog: {
+            name: 'show-dialog',
             control: {
                 type: 'boolean'
             },
             defaultValue: 0,
+            description: 'If present, display dialog',
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         }
     },

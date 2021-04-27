@@ -8,7 +8,7 @@ export default {
                 type: 'object'
             },
             description:
-                'Fields: alternativeText, fallbackIconName, initials, src, status, status-title, status-position, presence, presence-title, presence-position, entity-icon-name, entity-initials, entity-variant, entity-src, entity-position, primary-text, secondary-text, tertiary-text',
+                'Fields: <ul><li>alternativeText</li> <li>fallbackIconName</li> <li>initials</li> <li>src</li> <li>status</li> <li>status-title</li> <li>status-position</li> <li>presence</li> <li>presence-title</li> <li>presence-position</li> <li>entity-icon-name</li> <li>entity-initials</li> <li>entity-variant</li> <li>entity-src</li> <li>entity-position</li> <li>primary-text</li> <li>secondary-text</li> <li>tertiary-text</li></ul>',
             table: {
                 type: { summary: 'object[]' }
             }

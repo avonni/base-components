@@ -8,6 +8,8 @@ export default {
             control: {
                 type: 'text'
             },
+            description:
+                'The title can include text, and is displayed in the header.',
             table: {
                 type: { summary: 'string' }
             }
@@ -16,6 +18,8 @@ export default {
             control: {
                 type: 'text'
             },
+            description:
+                'The subtitle can include text, and is displayed under the title.',
             table: {
                 type: { summary: 'string' }
             }

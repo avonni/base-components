@@ -6,6 +6,10 @@ export default {
         label: {
             control: {
                 type: 'text'
+            },
+            description: 'Label display in the chip',
+            table: {
+                type: { summary: 'string' }
             }
         },
         variant: {
@@ -24,8 +28,11 @@ export default {
                 'offline'
             ],
             defaultValue: 'base',
+            description:
+                'Accepted variants include base, brand, inverse, alt-inverse, success, info, warning, error, offline.',
             table: {
-                defaultValue: { summary: 'base' }
+                defaultValue: { summary: 'base' },
+                type: { summary: 'string' }
             }
         },
         outline: {
@@ -33,8 +40,10 @@ export default {
                 type: 'boolean'
             },
             defaultValue: 0,
+            description: 'If true, display an outline style button.',
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         }
     },
