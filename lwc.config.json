@@ -127,6 +127,10 @@
             "path": "src/modules/base/expandableSection/expandableSection.js"
         },
         {
+            "name": "c/filterMenu",
+            "path": "src/modules/base/filterMenu/filterMenu.js"
+        },
+        {
             "name": "c/externalLink",
             "path": "src/modules/base/externalLink/externalLink.js"
         },
@@ -455,6 +459,10 @@
             "path": "src/modules/base/expandableSection/expandableSection.js"
         },
         {
+            "name": "avonni/filterMenu",
+            "path": "src/modules/base/filterMenu/filterMenu.js"
+        },
+        {
             "name": "avonni/illustration",
             "path": "src/modules/base/illustration/illustration.js"
         },
@@ -646,6 +654,7 @@
         "avonni/dynamicMenu",
         "avonni/emojiPicker",
         "avonni/expandableSection",
+        "avonni/filterMenu",
         "avonni/illustration",
         "avonni/image",
         "avonni/inputCounter",
