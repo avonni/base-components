@@ -115,7 +115,6 @@ export default class DualListbox extends LightningElement {
     }
 
     renderedCallback() {
-        console.log(this.searchTerm);
         this.assertRequiredAttributes();
         if (this.disabled) {
             this._upButtonDisabled = true;
