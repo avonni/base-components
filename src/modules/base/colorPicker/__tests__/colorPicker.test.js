@@ -94,7 +94,7 @@ describe('Color Picker', () => {
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector('button');
-            expect(button.disabled).toBe(true);
+            expect(button.disabled).toBeTruthy();
         });
     });
 
@@ -120,18 +120,211 @@ describe('Color Picker', () => {
     //     const element = createElement('base-color-picker', {
     //         is: ColorPicker
     //     });
-    //     document.body.appendChild(element);
 
     //     element.isLoading = true;
+    //     document.body.appendChild(element);
 
     //     return Promise.resolve().then(() => {
-    //         const button = element.shadowRoot.querySelector('button')
-    //         const drop = element.shadowRoot.querySelector('.slds-dropdown-trigger')
-    //         element.focus()
-    //         button.click()
-    //         console.log(drop.className)
+    // const button = element.shadowRoot.querySelector('button')
+    // element.focus()
+    // button.click()
     //         const spinner = element.shadowRoot.querySelector('lightning-spinner')
     //         expect(spinner).toBeTruthy();
     //     });
     // });
+
+    // label
+    it('Color Picker label', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.label = 'This is a label text';
+
+        return Promise.resolve().then(() => {
+            const label = element.shadowRoot.querySelector('label');
+            expect(label.textContent).toBe('This is a label text');
+        });
+    });
+
+    // name
+    it('Color Picker name', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.name = 'This is a name text';
+
+        return Promise.resolve().then(() => {
+            const input = element.shadowRoot.querySelector('lightning-input');
+            expect(input.name).toBe('This is a name text');
+        });
+    });
+
+    // readOnly
+    it('Color Picker readOnly', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.readOnly = true;
+
+        return Promise.resolve().then(() => {
+            const input = element.shadowRoot.querySelector('lightning-input');
+            expect(input.disabled).toBeTruthy();
+        });
+    });
+
+    // required
+    it('Color Picker required', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.required = true;
+
+        return Promise.resolve().then(() => {
+            const required = element.shadowRoot.querySelector('.slds-required');
+            expect(required).toBeTruthy();
+            expect(required.textContent).toBe('*');
+        });
+    });
+
+    // value
+    it('Color Picker value', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.value = '#419fec';
+
+        return Promise.resolve().then(() => {
+            const input = element.shadowRoot.querySelector('lightning-input');
+            expect(input.value).toBe('#419fec');
+        });
+    });
+
+    // variant
+    it('Color Picker variant standard', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.variant = 'standard';
+
+        return Promise.resolve().then(() => {
+            const labelHidden = element.shadowRoot.querySelector(
+                '.slds-assistive-text'
+            );
+            const labelStacked = element.shadowRoot.querySelector(
+                '.slds-form-element_stacked'
+            );
+            const labelInline = element.shadowRoot.querySelector(
+                '.avonni-label-inline'
+            );
+            expect(labelInline).toBeFalsy();
+            expect(labelStacked).toBeFalsy();
+            expect(labelHidden).toBeFalsy();
+        });
+    });
+
+    it('Color Picker variant label-stacked', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.variant = 'label-stacked';
+
+        return Promise.resolve().then(() => {
+            const labelHidden = element.shadowRoot.querySelector(
+                '.slds-assistive-text'
+            );
+            const labelStacked = element.shadowRoot.querySelector(
+                '.slds-form-element_stacked'
+            );
+            const labelInline = element.shadowRoot.querySelector(
+                '.avonni-label-inline'
+            );
+            expect(labelInline).toBeFalsy();
+            expect(labelStacked).toBeTruthy();
+            expect(labelHidden).toBeFalsy();
+        });
+    });
+
+    it('Color Picker variant label-hidden', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.variant = 'label-hidden';
+        element.label = 'label-hidden';
+
+        return Promise.resolve().then(() => {
+            const labelHidden = element.shadowRoot.querySelector(
+                '.slds-assistive-text'
+            );
+            const labelStacked = element.shadowRoot.querySelector(
+                '.slds-form-element_stacked'
+            );
+            const labelInline = element.shadowRoot.querySelector(
+                '.avonni-label-inline'
+            );
+            expect(labelInline).toBeFalsy();
+            expect(labelStacked).toBeFalsy();
+            expect(labelHidden).toBeTruthy();
+            expect(labelHidden.textContent).toBe('label-hidden');
+        });
+    });
+
+    it('Color Picker variant label-inline', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.variant = 'label-inline';
+
+        return Promise.resolve().then(() => {
+            const labelHidden = element.shadowRoot.querySelector(
+                '.slds-assistive-text'
+            );
+            const labelStacked = element.shadowRoot.querySelector(
+                '.slds-form-element_stacked'
+            );
+            const labelInline = element.shadowRoot.querySelector(
+                '.avonni-label-inline'
+            );
+            expect(labelInline).toBeTruthy();
+            expect(labelStacked).toBeFalsy();
+            expect(labelHidden).toBeFalsy();
+        });
+    });
+
+    // type
+    it('Color Picker type', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+
+        element.type = 'base';
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => {
+            element.focus();
+            const button = element.shadowRoot.querySelector('button');
+            button.click();
+            const palette = element.shadowRoot.querySelector(
+                '.slds-tabs_default'
+            );
+            expect(palette).toBeTruthy();
+        });
+    });
 });
