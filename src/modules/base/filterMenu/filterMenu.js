@@ -295,4 +295,8 @@ export default class FilterMenu extends LightningElement {
             item.hidden = searchTerm ? !label.includes(searchTerm) : false;
         });
     }
+
+    handleMenuItemPrivateSelect(event) {
+        event.stopPropagation();
+    }
 }
