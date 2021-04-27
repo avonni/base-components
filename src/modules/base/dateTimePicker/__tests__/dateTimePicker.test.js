@@ -50,18 +50,19 @@ describe('DateTimePicker', () => {
     });
 
     /* ----- ATTRIBUTES ----- */
-    // variant
-    // it('Date time picker variant default', () => {
+    // disabled
+    // it('Date time picker disabled', () => {
     //     const element = createElement('base-date-time-picker', {
     //         is: DateTimePicker
     //     });
     //     document.body.appendChild(element);
 
-    //     element.title = 'DateTimePicker Title';
+    //     element.variant = 'monthly'
+    //     element.disabled = true;
 
     //     return Promise.resolve().then(() => {
-    //         const div = element.shadowRoot.querySelector('.doc');
-    //         expect(div.className).toContain('blockquote-default');
+    //         const calendar = element.shadowRoot.querySelector('c-calendar')
+    //         expect(calendar.disabled).toBeTruthy();
     //     });
     // });
 });
