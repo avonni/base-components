@@ -2,8 +2,10 @@ import { LightningElement, api, track } from 'lwc';
 import {
     normalizeBoolean,
     normalizeString,
-    normalizeArray
+    normalizeArray,
+    observePosition
 } from 'c/utilsPrivate';
+import { classSet } from 'c/utils';
 
 const ICON_SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
@@ -45,6 +47,11 @@ const MENU_LENGTHS = {
     default: '7-items'
 };
 
+const i18n = {
+    loading: 'Loading',
+    showMenu: 'Show Menu'
+};
+
 const DEFAULT_ICON_NAME = 'utility:down';
 const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Search...';
 const DEFAULT_SUBMIT_BUTTON_LABEL = 'Apply';
@@ -53,25 +60,21 @@ const DEFAULT_RESET_BUTTON_LABEL = 'Reset';
 // TODO:
 // menuWidth
 // menuLength
-// tooltip (if using avonni button menu)
-
-// QUESTIONS:
-// To add to avonni button menu?
-//  * tooltip
-//  * width
-//  * length
+// tooltip
+// keyboard accessibility
+// update tests
 
 // TO VALIDATE:
 // The selection is cleared on submit.
 
 export default class FilterMenu extends LightningElement {
     @api accessKey;
-    @api alternativeText;
     @api label;
-    @api loadingStateAlternativeText;
     @api title;
     @api tooltip;
 
+    _alternativeText = i18n.showMenu;
+    _loadingStateAlternativeText = i18n.loading;
     _disabled = false;
     _iconName = DEFAULT_ICON_NAME;
     _iconSize = ICON_SIZES.default;
@@ -87,8 +90,36 @@ export default class FilterMenu extends LightningElement {
     _resetButtonLabel = DEFAULT_RESET_BUTTON_LABEL;
     _menuWidth = MENU_WIDTHS.default;
     _menuLength = MENU_LENGTHS.default;
+    _cancelBlur = false;
+    _dropdownVisible = false;
 
     @track computedItems = [];
+    dropdownOpened = false;
+
+    connectedCallback() {
+        this.classList.add(
+            'slds-dropdown-trigger',
+            'slds-dropdown-trigger_click'
+        );
+    }
+
+    @api
+    get alternativeText() {
+        return this._alternativeText;
+    }
+    set alternativeText(value) {
+        this._alternativeText =
+            typeof value === 'string' ? value.trim() : i18n.showMenu;
+    }
+
+    @api
+    get loadingStateAlternativeText() {
+        return this._loadingStateAlternativeText;
+    }
+    set loadingStateAlternativeText(value) {
+        this._loadingStateAlternativeText =
+            typeof value === 'string' ? value.trim() : i18n.loading;
+    }
 
     @api
     get disabled() {
@@ -136,7 +167,7 @@ export default class FilterMenu extends LightningElement {
         this._items = normalizeArray(proxy);
         this.computedItems = JSON.parse(JSON.stringify(this._items));
 
-        this._computeValue();
+        this.computeValue();
     }
 
     @api
@@ -147,7 +178,7 @@ export default class FilterMenu extends LightningElement {
         const array = JSON.parse(JSON.stringify(proxy));
         this._value = normalizeArray(array);
 
-        this._computeValue();
+        this.computeValue();
     }
 
     @api
@@ -243,7 +274,106 @@ export default class FilterMenu extends LightningElement {
         this._nubbin = normalizeBoolean(bool);
     }
 
-    _computeValue() {
+    get computedShowDownIcon() {
+        return !(
+            this.iconName === 'utility:down' ||
+            this.iconName === 'utility:chevrondown'
+        );
+    }
+
+    get computedAriaExpanded() {
+        return String(this._dropdownVisible); // default value must be a string for the attribute to always be present with a string value
+    }
+
+    get computedButtonClass() {
+        const isDropdownIcon = !this.computedShowDownIcon;
+        const isBare =
+            this.variant === 'bare' || this.variant === 'bare-inverse';
+
+        const classes = classSet('slds-button');
+
+        if (this.label) {
+            classes.add({
+                'slds-button_neutral': this.variant === 'border',
+                'slds-button_inverse': this.variant === 'border-inverse'
+            });
+        } else {
+            // The inverse check is to allow for a combination of a non-default icon and an -inverse variant
+            const useMoreContainer =
+                this.variant === 'container' ||
+                this.variant === 'bare-inverse' ||
+                this.variant === 'border-inverse';
+
+            classes.add({
+                'slds-button_icon': !isDropdownIcon,
+                'slds-button_icon-bare': isBare,
+                'slds-button_icon-more': !useMoreContainer && !isDropdownIcon,
+                'slds-button_icon-container-more':
+                    useMoreContainer && !isDropdownIcon,
+                'slds-button_icon-container':
+                    this.variant === 'container' && isDropdownIcon,
+                'slds-button_icon-border':
+                    this.variant === 'border' && isDropdownIcon,
+                'slds-button_icon-border-filled':
+                    this.variant === 'border-filled',
+                'slds-button_icon-border-inverse':
+                    this.variant === 'border-inverse',
+                'slds-button_icon-inverse': this.variant === 'bare-inverse',
+                'slds-button_icon-xx-small':
+                    this.iconSize === 'xx-small' && !isBare,
+                'slds-button_icon-x-small':
+                    this.iconSize === 'x-small' && !isBare,
+                'slds-button_icon-small': this.iconSize === 'small' && !isBare,
+                'slds-button_icon-large': this.iconSize === 'large' && !isBare
+            });
+        }
+
+        return classes
+            .add({
+                // order classes when part of a button-group
+                'slds-button_first': this._order === 'first',
+                'slds-button_middle': this._order === 'middle',
+                'slds-button_last': this._order === 'last'
+            })
+            .toString();
+    }
+
+    get computedDropdownClass() {
+        return classSet('slds-dropdown')
+            .add({
+                'slds-dropdown_left':
+                    this.menuAlignment === 'left' || this.isAutoAlignment(),
+                'slds-dropdown_center': this.menuAlignment === 'center',
+                'slds-dropdown_right': this.menuAlignment === 'right',
+                'slds-dropdown_bottom': this.menuAlignment === 'bottom-center',
+                'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right':
+                    this.menuAlignment === 'bottom-right',
+                'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left':
+                    this.menuAlignment === 'bottom-left',
+                'slds-nubbin_top-left':
+                    this.nubbin && this.menuAlignment === 'left',
+                'slds-nubbin_top-right':
+                    this.nubbin && this.menuAlignment === 'right',
+                'slds-nubbin_top':
+                    this.nubbin && this.menuAlignment === 'center',
+                'slds-nubbin_bottom-left':
+                    this.nubbin && this.menuAlignment === 'bottom-left',
+                'slds-nubbin_bottom-right':
+                    this.nubbin && this.menuAlignment === 'bottom-right',
+                'slds-nubbin_bottom':
+                    this.nubbin && this.menuAlignment === 'bottom-center',
+                'slds-p-vertical_large': this.isLoading
+            })
+            .toString();
+    }
+
+    @api
+    clear() {
+        this._value = [];
+        this.computeValue();
+    }
+
+    computeValue() {
         this.computedItems.forEach((item) => {
             if (this.value.indexOf(item.value) > -1) {
                 item.checked = true;
@@ -253,13 +383,153 @@ export default class FilterMenu extends LightningElement {
         });
     }
 
-    @api
-    clear() {
-        this._value = [];
-        this._computeValue();
+    allowBlur() {
+        this._cancelBlur = false;
     }
 
-    handleItemClick(event) {
+    cancelBlur() {
+        this._cancelBlur = true;
+    }
+
+    close() {
+        if (this._dropdownVisible) {
+            this.toggleMenuVisibility();
+        }
+    }
+
+    isAutoAlignment() {
+        return this.menuAlignment.startsWith('auto');
+    }
+
+    focusOnButton() {
+        this.template.querySelector('button').focus();
+    }
+
+    toggleMenuVisibility() {
+        if (!this.disabled) {
+            this._dropdownVisible = !this._dropdownVisible;
+            if (!this.dropdownOpened && this._dropdownVisible) {
+                this.dropdownOpened = true;
+            }
+            if (this._dropdownVisible) {
+                this.dispatchEvent(new CustomEvent('open'));
+
+                // update the bounding rect when the menu is toggled
+                this._boundingRect = this.getBoundingClientRect();
+
+                this.pollBoundingRect();
+            } else {
+                this.dispatchEvent(new CustomEvent('close'));
+            }
+
+            this.classList.toggle('slds-is-open');
+        }
+    }
+
+    pollBoundingRect() {
+        // only poll if the dropdown is auto aligned
+        if (this.isAutoAlignment() && this._dropdownVisible) {
+            setTimeout(
+                () => {
+                    if (this.isConnected) {
+                        observePosition(this, 300, this._boundingRect, () => {
+                            this.close();
+                        });
+
+                        // continue polling
+                        this.pollBoundingRect();
+                    }
+                },
+                250 // check every 0.25 second
+            );
+        }
+    }
+
+    handleButtonClick() {
+        this.allowBlur();
+
+        this.toggleMenuVisibility();
+
+        // Focus on the button even if the browser doesn't do it by default
+        // (the behaviour differs between Chrome, Safari, Firefox)
+        this.focusOnButton();
+    }
+
+    handleBlur() {
+        // Don't handle the blur event if the focus events are inside the menu (see the cancelBlur/allowBlur functions)
+        if (this._cancelBlur) {
+            return;
+        }
+        // Hide only when the focus moved away from the container
+        if (this._dropdownVisible) {
+            this.toggleMenuVisibility();
+        }
+
+        // dispatch standard blur event
+        this.dispatchEvent(new CustomEvent('blur'));
+    }
+
+    handleFocus() {
+        this.dispatchEvent(new CustomEvent('focus'));
+    }
+
+    handleDropdownMouseDown(event) {
+        // if the menu contais a scrollbar due to large number of menu-items
+        // this is needed so that menu doesnt close on dragging the scrollbar with the mouse
+        const mainButton = 0;
+        if (event.button === mainButton) {
+            this.cancelBlur();
+        }
+    }
+
+    handleButtonMouseDown(event) {
+        const mainButton = 0;
+        if (event.button === mainButton) {
+            this.cancelBlur();
+        }
+    }
+
+    handleDropdownMouseUp() {
+        // We need this to make sure that if a scrollbar is being dragged with the mouse, upon release
+        // of the drag we allow blur, otherwise the dropdown would not close on blur since we'd have cancel blur
+        // set
+        this.allowBlur();
+    }
+
+    handleDropdownMouseLeave() {
+        // this is to close the menu after mousedown happens on scrollbar
+        // in this case we close immediately if no menu-items were hovered/focused
+        // without this the menu would remain open since the blur on the menuitems has happened already
+        // when clicking the scrollbar
+        if (!this._menuHasFocus) {
+            this.close();
+        }
+    }
+
+    handleDropdownScroll(event) {
+        // We don't want this to bubble up to the modal which due to event retargeting wouldn't be able
+        // to know what is actually being scrolled and thus may lead to the scrolling of the modal
+        event.stopPropagation();
+    }
+
+    handlePrivateBlur(event) {
+        // The event may be synthetic from the menu items
+        event.stopPropagation();
+
+        // perform common blurring behavior
+        this.handleBlur();
+        this._menuHasFocus = false;
+    }
+
+    handlePrivateFocus(event) {
+        // synthetic from the menu items
+        event.stopPropagation();
+        // reset the cancelBlur so any clicks outside the menu can now close the menu
+        this.allowBlur();
+        this._menuHasFocus = true;
+    }
+
+    handleItemSelect(event) {
         const index = this.value.findIndex(
             (itemValue) => itemValue === event.currentTarget.value
         );
@@ -269,7 +539,21 @@ export default class FilterMenu extends LightningElement {
             this.value.push(event.currentTarget.value);
         }
 
-        this._computeValue();
+        this.computeValue();
+
+        event.stopPropagation();
+        this.dispatchSelect(event);
+    }
+
+    dispatchSelect(event) {
+        this.dispatchEvent(
+            new CustomEvent('select', {
+                cancelable: true,
+                detail: {
+                    value: event.detail.value // pass value through from original private event
+                }
+            })
+        );
     }
 
     handleSubmitClick() {
@@ -295,10 +579,5 @@ export default class FilterMenu extends LightningElement {
             const label = item.label.toLowerCase();
             item.hidden = searchTerm ? !label.includes(searchTerm) : false;
         });
-    }
-
-    // Prevent the menu from closing on click on an item
-    handleMenuItemPrivateSelect(event) {
-        event.stopPropagation();
     }
 }

@@ -1,63 +1,105 @@
 <template>
-    <c-button-menu
-        access-key={accessKey}
-        alternative-text={alternativeText}
+    <button
+        class={computedButtonClass}
         disabled={disabled}
-        icon-name={iconName}
-        icon-size={iconSize}
-        is-loading={isLoading}
-        label={label}
-        loading-state-alternative-text={loadingStateAlternativeText}
-        menu-alignment={menuAlignment}
-        nubbin={nubbin}
+        aria-expanded={computedAriaExpanded}
+        aria-haspopup="true"
         title={title}
-        variant={variant}
+        accesskey={accessKey}
+        value={value}
+        type="button"
+        onclick={handleButtonClick}
+        onblur={handleBlur}
+        onfocus={handleFocus}
+        onmousedown={handleButtonMouseDown}
     >
-        <lightning-input
-            if:false={hideSearchBox}
-            class="slds-p-around_small"
-            label={searchInputPlaceholder}
-            placeholder={searchInputPlaceholder}
-            variant="label-hidden"
-            type="search"
-            disabled={disabled}
-            is-loading={isLoading}
-            onkeyup={handleSearch}
-            value={searchTerm}
-            autocomplete="off"
-        ></lightning-input>
-        <template for:each={computedItems} for:item="item">
-            <lightning-menu-item
-                if:false={item.hidden}
-                key={item.value}
-                label={item.label}
-                value={item.value}
-                icon-name={item.iconName}
-                prefix-icon-name={item.prefixIconName}
-                checked={item.checked}
-                disabled={item.disabled}
-                onprivateselect={handleMenuItemPrivateSelect}
-                onclick={handleItemClick}
-            >
-            </lightning-menu-item>
+        {label}
+
+        <c-primitive-icon
+            icon-name={iconName}
+            svg-class="slds-button__icon"
+            variant="bare"
+        ></c-primitive-icon>
+
+        <template if:true={computedShowDownIcon}>
+            <c-primitive-icon
+                icon-name="utility:down"
+                svg-class="slds-button__icon slds-button__icon_x-small slds-m-left_xx-small"
+                variant="bare"
+            ></c-primitive-icon>
         </template>
-        <lightning-menu-divider></lightning-menu-divider>
+
+        <span class="slds-assistive-text">{alternativeText}</span>
+    </button>
+    <template if:true={dropdownOpened}>
         <div
-            class="slds-p-horizontal_small slds-p-bottom_x-small slds-text-align_right"
+            class={computedDropdownClass}
+            onmousedown={handleDropdownMouseDown}
+            onmouseup={handleDropdownMouseUp}
+            onmouseleave={handleDropdownMouseLeave}
+            onscroll={handleDropdownScroll}
         >
-            <lightning-button
-                class="slds-m-right_x-small"
-                variant="base"
-                label={resetButtonLabel}
-                title={resetButtonLabel}
-                onclick={handleResetClick}
-            ></lightning-button>
-            <lightning-button
-                variant="brand"
-                label={submitButtonLabel}
-                title={submitButtonLabel}
-                onclick={handleSubmitClick}
-            ></lightning-button>
+            <template if:true={isLoading}>
+                <lightning-spinner
+                    size="small"
+                    alternative-text={loadingStateAlternativeText}
+                ></lightning-spinner>
+            </template>
+            <template if:false={isLoading}>
+                <div
+                    class="slds-dropdown__list"
+                    role="menu"
+                    onmouseout={allowBlur}
+                >
+                    <lightning-input
+                        if:false={hideSearchBox}
+                        class="slds-p-around_small"
+                        label={searchInputPlaceholder}
+                        placeholder={searchInputPlaceholder}
+                        variant="label-hidden"
+                        type="search"
+                        disabled={disabled}
+                        is-loading={isLoading}
+                        onkeyup={handleSearch}
+                        value={searchTerm}
+                        autocomplete="off"
+                    ></lightning-input>
+                    <template for:each={computedItems} for:item="item">
+                        <lightning-menu-item
+                            if:false={item.hidden}
+                            key={item.value}
+                            label={item.label}
+                            value={item.value}
+                            icon-name={item.iconName}
+                            prefix-icon-name={item.prefixIconName}
+                            checked={item.checked}
+                            disabled={item.disabled}
+                            onprivateselect={handleItemSelect}
+                            onprivateblur={handlePrivateBlur}
+                            onprivatefocus={handlePrivateFocus}
+                        >
+                        </lightning-menu-item>
+                    </template>
+                    <lightning-menu-divider></lightning-menu-divider>
+                    <div
+                        class="slds-p-horizontal_small slds-p-bottom_x-small slds-text-align_right"
+                    >
+                        <lightning-button
+                            class="slds-m-right_x-small"
+                            variant="base"
+                            label={resetButtonLabel}
+                            title={resetButtonLabel}
+                            onclick={handleResetClick}
+                        ></lightning-button>
+                        <lightning-button
+                            variant="brand"
+                            label={submitButtonLabel}
+                            title={submitButtonLabel}
+                            onclick={handleSubmitClick}
+                        ></lightning-button>
+                    </div>
+                </div>
+            </template>
         </div>
-    </c-button-menu>
+    </template>
 </template>
