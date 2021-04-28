@@ -21,14 +21,18 @@
         >
         {label}
 
-        <lightning-icon icon-name={iconName} size="x-small"></lightning-icon>
+        <c-primitive-icon
+            icon-name={iconName}
+            svg-class="slds-button__icon"
+            variant="bare"
+        ></c-primitive-icon>
 
         <template if:true={computedShowDownIcon}>
-            <lightning-icon
-                icon-name={iconName}
-                size="x-small"
-                class="slds-m-left_xx-small"
-            ></lightning-icon>
+            <c-primitive-icon
+                icon-name="utility:down"
+                svg-class="slds-button__icon slds-button__icon_x-small slds-m-left_xx-small"
+                variant="bare"
+            ></c-primitive-icon>
         </template>
 
         <span class="slds-assistive-text">{computedAlternativeText}</span>

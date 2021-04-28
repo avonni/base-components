@@ -256,8 +256,7 @@ export default class ButtonMenu extends LightningElement {
 
         if (this.label) {
             classes.add({
-                'slds-button_neutral':
-                    this.variant === 'border' && isDropdownIcon,
+                'slds-button_neutral': this.variant === 'border',
                 'slds-button_inverse': this.variant === 'border-inverse'
             });
         } else {
