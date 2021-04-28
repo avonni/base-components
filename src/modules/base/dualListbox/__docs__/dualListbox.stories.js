@@ -378,15 +378,10 @@ export default {
             control: {
                 type: 'select'
             },
-            options: [
-                'standard',
-                'label-hidden',
-                'label-inline',
-                'label-stacked'
-            ],
+            options: ['standard', 'label-hidden', 'label-stacked'],
             defaultValue: 'standard',
             description:
-                'The variant changes the appearance of the dual listbox. Valid variants include standard, label-hidden, label-inline, and label-stacked. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and dual listbox. Use label-stacked to place the label above the dual listbox.',
+                'The variant changes the appearance of the dual listbox. Valid variants include standard, label-hidden and label-stacked. Use label-hidden to hide the label but make it available to assistive technology. Use label-stacked to place the label above the dual listbox.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'standard' }
@@ -732,7 +727,7 @@ BaseWithAvatarSize10.args = {
     options: OptionsWithAvatar,
     required: true,
     requiredOptions: ['1'],
-    size: '10',
+    size: 10,
     value: ['2', '3']
 };
 
@@ -747,7 +742,7 @@ BaseWithAvatarSrcSize6.args = {
     upButtonLabel: 'Up Button Label',
     options: OptionsWithAvatarSrc,
     requiredOptions: ['1'],
-    size: '6',
+    size: 6,
     value: ['2', '3']
 };
 
@@ -780,8 +775,8 @@ LanguagesWithSearchEngine.args = {
     value: ['en', 'fr']
 };
 
-export const LanguagesInline = Template.bind({});
-LanguagesInline.args = {
+export const LanguagesStacked = Template.bind({});
+LanguagesStacked.args = {
     label: 'Languages',
     fieldLevelHelp: 'Choose a language',
     sourceLabel: 'Available',
@@ -791,6 +786,6 @@ LanguagesInline.args = {
     downButtonLabel: 'Down Button Label',
     upButtonLabel: 'Up Button Label',
     options: LanguagesOptions,
-    variant: 'label-inline',
+    variant: 'label-stacked',
     value: ['en', 'fr']
 };

@@ -668,9 +668,10 @@ describe('DualListbox', () => {
 
         return Promise.resolve().then(() => {
             const searchBox = element.shadowRoot.querySelector(
-                "input[type='search']"
+                'lightning-input'
             );
             expect(searchBox).toBeTruthy();
+            expect(searchBox.type).toBe('search');
         });
     });
 
@@ -725,7 +726,7 @@ describe('DualListbox', () => {
             const div = element.shadowRoot.querySelector(
                 '.slds-dueling-list__options.avonni-dual-listbox-option-is-selected'
             );
-            expect(div.getAttribute('style')).toBe('height:8.5rem');
+            expect(div.getAttribute('style')).toBe('height:7.25rem');
         });
     });
 
@@ -742,7 +743,7 @@ describe('DualListbox', () => {
             const div = element.shadowRoot.querySelector(
                 '.slds-dueling-list__options.avonni-dual-listbox-option-is-selected'
             );
-            expect(div.getAttribute('style')).toBe('height:12rem');
+            expect(div.getAttribute('style')).toBe('height:10.15rem');
         });
     });
 
@@ -802,22 +803,6 @@ describe('DualListbox', () => {
                 '.slds-assistive-text'
             );
             expect(label.textContent).toBe('This is a label-hidden');
-        });
-    });
-
-    it('Dual Listbox variant label inline', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
-        element.variant = 'label-inline';
-
-        return Promise.resolve().then(() => {
-            const div = element.shadowRoot.querySelector(
-                '.slds-form-element_horizontal'
-            );
-            expect(div).toBeTruthy();
         });
     });
 

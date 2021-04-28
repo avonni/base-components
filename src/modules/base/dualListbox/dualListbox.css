@@ -76,10 +76,6 @@
     justify-content: center;
 }
 
-.avonni-dual-listbox-search-engine-button-icon {
-    margin: 0 !important;
-}
-
-.avonni-dual-listbox-search-engine-icon-left {
-    left: 10px !important;
+.avonni-dual-listbox-list-item-min_height {
+    min-height: 40px;
 }

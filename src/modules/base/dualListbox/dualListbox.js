@@ -16,7 +16,7 @@ const DEFAULT_REMOVE_BUTTON_ICON_NAME = 'utility:left';
 const DEFAULT_UP_BUTTON_ICON_NAME = 'utility:up';
 
 const VALID_VARIANTS = {
-    valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked'],
+    valid: ['standard', 'label-hidden', 'label-stacked'],
     default: 'standard'
 };
 
@@ -448,25 +448,29 @@ export default class DualListbox extends LightningElement {
     }
 
     get computedColumnStyleSource() {
-        if (this.isNumber(this.size)) {
+        if (this.size) {
             if (this.searchEngine) {
-                const newHeight = parseInt(this.size, 10) * 2.75 + 1 - 3.5;
+                if (this.size > 1) {
+                    const newHeight = parseInt(this.size, 10) * 2.5 - 2.75;
+                    return `height:${newHeight}rem`;
+                }
+                const newHeight = parseInt(this.size, 10) * 2.5 + 0.15;
                 return `height:${newHeight}rem`;
             }
-            const newHeight = parseInt(this.size, 10) * 2.75 + 1;
+            const newHeight = parseInt(this.size, 10) * 2.5 + 0.15;
             return `height:${newHeight}rem`;
         } else if (this.searchEngine) {
-            return `height: 10.6rem`;
+            return `height: 11.75rem`;
         }
-        return 'height: 14rem';
+        return 'height: 14.75rem';
     }
 
     get computedColumnStyle() {
-        if (this.isNumber(this.size)) {
-            const newHeight = parseInt(this.size, 10) * 2.75 + 1;
+        if (this.size) {
+            const newHeight = parseInt(this.size, 10) * 2.5 + 0.15;
             return `height:${newHeight}rem`;
         }
-        return 'height: 14rem';
+        return 'height: 14.75rem';
     }
 
     get isLabelHidden() {
@@ -494,9 +498,6 @@ export default class DualListbox extends LightningElement {
 
     get computedOuterClass() {
         return classSet('')
-            .add({
-                'slds-form-element_horizontal': this.variant === 'label-inline'
-            })
             .add({
                 'slds-form-element_stacked': this.variant === 'label-stacked'
             })
@@ -535,18 +536,10 @@ export default class DualListbox extends LightningElement {
             .toString();
     }
 
-    get computedSearchEngineIconClass() {
-        return classSet('slds-icon slds-input__icon slds-input__icon_left')
-            .add({
-                'avonni-dual-listbox-search-engine-icon-left':
-                    this.variant === 'label-inline' ||
-                    this.variant === 'label-stacked'
-            })
-            .toString();
-    }
-
     get computedListItemClass() {
-        return classSet('slds-listbox__item')
+        return classSet(
+            'slds-listbox__item avonni-dual-listbox-list-item-min_height'
+        )
             .add({
                 'avonni-dual-listbox-option-border_bottom': this
                     .borderedListItem
