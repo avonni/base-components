@@ -23,6 +23,7 @@ const validVariants = {
         'border',
         'border-inverse',
         'border-filled',
+        'brand',
         'bare',
         'bare-inverse',
         'container'
@@ -143,6 +144,7 @@ export default class DynamicMenu extends LightningElement {
         if (this._connected) {
             this.focusOnButton();
         }
+        this.dispatchEvent(new CustomEvent('focus'));
     }
 
     @api
@@ -243,10 +245,6 @@ export default class DynamicMenu extends LightningElement {
 
             this.classList.toggle('slds-is-open');
         }
-    }
-
-    handleFocus() {
-        this.dispatchEvent(new CustomEvent('focus'));
     }
 
     handleBlur() {

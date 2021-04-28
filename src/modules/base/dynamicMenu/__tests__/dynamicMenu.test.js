@@ -56,12 +56,13 @@ describe('Dynamic Menu', () => {
         expect(element.alternativeText).toBeUndefined();
         expect(element.menuAlignment).toBe('left');
         expect(element.disabled).toBeFalsy();
-        expect(element.loadingStateAlternativeText).toBeUndefined();
         expect(element.isLoading).toBeFalsy();
-        expect(element.searchInputPlaceholder).toBe('Search…');
+        expect(element.loadingStateAlternativeText).toBeUndefined();
         expect(element.withSearch).toBeFalsy();
+        expect(element.searchInputPlaceholder).toBe('Search…');
         expect(element.title).toBeUndefined();
         expect(element.variant).toBe('border');
+        expect(element.value).toBeUndefined();
         expect(element.accessKey).toBeUndefined();
         expect(element.tooltip).toBeUndefined();
     });
@@ -172,8 +173,9 @@ describe('Dynamic Menu', () => {
                 const dropdown = element.shadowRoot.querySelector(
                     '.slds-dropdown '
                 );
-                expect(dropdown.className).toContain('slds-dropdown_left');
-                expect(dropdown.className).toContain('slds-nubbin_top-left');
+                expect(dropdown.className).toBe(
+                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_left slds-nubbin_top-left'
+                );
             });
     });
 
@@ -196,8 +198,532 @@ describe('Dynamic Menu', () => {
                 const dropdown = element.shadowRoot.querySelector(
                     '.slds-dropdown '
                 );
-                expect(dropdown.className).toContain('slds-dropdown_right');
-                expect(dropdown.className).toContain('slds-nubbin_top-right');
+                expect(dropdown.className).toBe(
+                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_right slds-nubbin_top-right'
+                );
             });
+    });
+
+    it('Dynamic Menu menu alignment center', () => {
+        const element = createElement('base-dynamic-menu', {
+            is: DynamicMenu
+        });
+        document.body.appendChild(element);
+
+        element.menuAlignment = 'center';
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    'lightning-button-icon'
+                );
+                button.click();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '.slds-dropdown '
+                );
+                expect(dropdown.className).toBe(
+                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_center slds-nubbin_top'
+                );
+            });
+    });
+
+    it('Dynamic Menu menu alignment bottom-left', () => {
+        const element = createElement('base-dynamic-menu', {
+            is: DynamicMenu
+        });
+        document.body.appendChild(element);
+
+        element.menuAlignment = 'bottom-left';
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    'lightning-button-icon'
+                );
+                button.click();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '.slds-dropdown '
+                );
+                expect(dropdown.className).toBe(
+                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left slds-nubbin_bottom-left'
+                );
+            });
+    });
+
+    it('Dynamic Menu menu alignment bottom-right', () => {
+        const element = createElement('base-dynamic-menu', {
+            is: DynamicMenu
+        });
+        document.body.appendChild(element);
+
+        element.menuAlignment = 'bottom-right';
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    'lightning-button-icon'
+                );
+                button.click();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '.slds-dropdown '
+                );
+                expect(dropdown.className).toBe(
+                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right slds-nubbin_bottom-right'
+                );
+            });
+    });
+
+    it('Dynamic Menu menu alignment bottom-center', () => {
+        const element = createElement('base-dynamic-menu', {
+            is: DynamicMenu
+        });
+        document.body.appendChild(element);
+
+        element.menuAlignment = 'bottom-center';
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    'lightning-button-icon'
+                );
+                button.click();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '.slds-dropdown '
+                );
+                expect(dropdown.className).toBe(
+                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_bottom slds-nubbin_bottom'
+                );
+            });
+    });
+
+    // disabled
+    it('Dynamic Menu disabled without label', () => {
+        const element = createElement('base-dynamic-menu', {
+            is: DynamicMenu
+        });
+        document.body.appendChild(element);
+
+        element.disabled = true;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                'lightning-button-icon'
+            );
+            expect(button.disabled).toBeTruthy();
+        });
+    });
+
+    it('Dynamic Menu disabled with label', () => {
+        const element = createElement('base-dynamic-menu', {
+            is: DynamicMenu
+        });
+        document.body.appendChild(element);
+
+        element.label = 'label';
+        element.disabled = true;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('lightning-button');
+            expect(button.disabled).toBeTruthy();
+        });
+    });
+
+    // is loading
+    it('Dynamic Menu is loading', () => {
+        const element = createElement('base-dynamic-menu', {
+            is: DynamicMenu
+        });
+        document.body.appendChild(element);
+
+        element.isLoading = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    'lightning-button-icon'
+                );
+                button.click();
+            })
+            .then(() => {
+                const spinner = element.shadowRoot.querySelector(
+                    'lightning-spinner'
+                );
+                expect(spinner).toBeTruthy();
+            });
+    });
+
+    // loading state alternative text
+    it('Dynamic Menu loading state alternative text', () => {
+        const element = createElement('base-dynamic-menu', {
+            is: DynamicMenu
+        });
+        document.body.appendChild(element);
+
+        element.isLoading = true;
+        element.loadingStateAlternativeText = 'This is a loading text';
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    'lightning-button-icon'
+                );
+                button.click();
+            })
+            .then(() => {
+                const spinner = element.shadowRoot.querySelector(
+                    'lightning-spinner'
+                );
+                expect(spinner.alternativeText).toBe('This is a loading text');
+            });
+    });
+
+    // with search
+    it('Dynamic Menu with search', () => {
+        const element = createElement('base-dynamic-menu', {
+            is: DynamicMenu
+        });
+        document.body.appendChild(element);
+
+        element.withSearch = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    'lightning-button-icon'
+                );
+                button.click();
+            })
+            .then(() => {
+                const searchInput = element.shadowRoot.querySelector(
+                    'lightning-input'
+                );
+                expect(searchInput).toBeTruthy();
+                expect(searchInput.type).toBe('search');
+            });
+    });
+
+    // search input placeholder
+    it('Dynamic Menu search input placeholder', () => {
+        const element = createElement('base-dynamic-menu', {
+            is: DynamicMenu
+        });
+        document.body.appendChild(element);
+
+        element.withSearch = true;
+        element.searchInputPlaceholder = 'This is a search input placeholder';
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    'lightning-button-icon'
+                );
+                button.click();
+            })
+            .then(() => {
+                const searchInput = element.shadowRoot.querySelector(
+                    'lightning-input'
+                );
+                expect(searchInput).toBeTruthy();
+                expect(searchInput.placeholder).toBe(
+                    'This is a search input placeholder'
+                );
+            });
+    });
+
+    // title
+    it('Dynamic Menu title without label', () => {
+        const element = createElement('base-dynamic-menu', {
+            is: DynamicMenu
+        });
+        document.body.appendChild(element);
+
+        element.title = 'This is a title text';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                'lightning-button-icon'
+            );
+            expect(button.title).toBe('This is a title text');
+        });
+    });
+
+    it('Dynamic Menu title with label', () => {
+        const element = createElement('base-dynamic-menu', {
+            is: DynamicMenu
+        });
+        document.body.appendChild(element);
+
+        element.label = 'label';
+        element.title = 'This is a title text';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('lightning-button');
+            expect(button.title).toBe('This is a title text');
+        });
+    });
+
+    // variant
+    it('Dynamic Menu variant bare without label', () => {
+        const element = createElement('base-dynamic-menu', {
+            is: DynamicMenu
+        });
+        document.body.appendChild(element);
+
+        element.variant = 'bare';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                'lightning-button-icon'
+            );
+            expect(button.variant).toBe('bare');
+        });
+    });
+
+    it('Dynamic Menu variant container without label', () => {
+        const element = createElement('base-dynamic-menu', {
+            is: DynamicMenu
+        });
+        document.body.appendChild(element);
+
+        element.variant = 'container';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                'lightning-button-icon'
+            );
+            expect(button.variant).toBe('container');
+        });
+    });
+
+    it('Dynamic Menu variant brand without label', () => {
+        const element = createElement('base-dynamic-menu', {
+            is: DynamicMenu
+        });
+        document.body.appendChild(element);
+
+        element.variant = 'brand';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                'lightning-button-icon'
+            );
+            expect(button.variant).toBe('brand');
+        });
+    });
+
+    it('Dynamic Menu variant border-filled without label', () => {
+        const element = createElement('base-dynamic-menu', {
+            is: DynamicMenu
+        });
+        document.body.appendChild(element);
+
+        element.variant = 'border-filled';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                'lightning-button-icon'
+            );
+            expect(button.variant).toBe('border-filled');
+        });
+    });
+
+    it('Dynamic Menu variant bare-inverse without label', () => {
+        const element = createElement('base-dynamic-menu', {
+            is: DynamicMenu
+        });
+        document.body.appendChild(element);
+
+        element.variant = 'bare-inverse';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                'lightning-button-icon'
+            );
+            expect(button.variant).toBe('bare-inverse');
+        });
+    });
+
+    it('Dynamic Menu variant border-inverse without label', () => {
+        const element = createElement('base-dynamic-menu', {
+            is: DynamicMenu
+        });
+        document.body.appendChild(element);
+
+        element.variant = 'border-inverse';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                'lightning-button-icon'
+            );
+            expect(button.variant).toBe('border-inverse');
+        });
+    });
+
+    // value
+    it('Dynamic Menu value without label', () => {
+        const element = createElement('base-dynamic-menu', {
+            is: DynamicMenu
+        });
+        document.body.appendChild(element);
+
+        element.value = '1';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                'lightning-button-icon'
+            );
+            expect(button.value).toBe('1');
+        });
+    });
+
+    it('Dynamic Menu value with label', () => {
+        const element = createElement('base-dynamic-menu', {
+            is: DynamicMenu
+        });
+        document.body.appendChild(element);
+
+        element.label = 'label';
+        element.value = '1';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('lightning-button');
+            expect(button.value).toBe('1');
+        });
+    });
+
+    // accesskey
+    it('Dynamic Menu accesskey without label', () => {
+        const element = createElement('base-dynamic-menu', {
+            is: DynamicMenu
+        });
+        document.body.appendChild(element);
+
+        element.accessKey = 'K';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                'lightning-button-icon'
+            );
+            expect(button.accessKey).toBe('K');
+        });
+    });
+
+    it('Dynamic Menu accesskey with label', () => {
+        const element = createElement('base-dynamic-menu', {
+            is: DynamicMenu
+        });
+        document.body.appendChild(element);
+
+        element.label = 'label';
+        element.accessKey = 'K';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('lightning-button');
+            expect(button.accessKey).toBe('K');
+        });
+    });
+
+    // tooltip
+    it('Dynamic Menu tooltip without label', () => {
+        const element = createElement('base-dynamic-menu', {
+            is: DynamicMenu
+        });
+        document.body.appendChild(element);
+
+        element.tooltip = 'This is a tooltip text';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                'lightning-button-icon'
+            );
+            expect(button.tooltip).toBe('This is a tooltip text');
+        });
+    });
+
+    /* ---- METHODS ----- */
+    it('method: click with label', () => {
+        const element = createElement('base-dynamic-menu', {
+            is: DynamicMenu
+        });
+
+        element.label = 'label';
+
+        document.body.appendChild(element);
+
+        let clickEvent = false;
+        element.addEventListener('click', () => {
+            clickEvent = true;
+        });
+
+        element.click();
+        return Promise.resolve().then(() => {
+            expect(clickEvent).toBeTruthy();
+        });
+    });
+
+    it('method: click without label', () => {
+        const element = createElement('base-dynamic-menu', {
+            is: DynamicMenu
+        });
+        document.body.appendChild(element);
+
+        let clickEvent = false;
+        element.addEventListener('click', () => {
+            clickEvent = true;
+        });
+
+        element.click();
+        return Promise.resolve().then(() => {
+            expect(clickEvent).toBeTruthy();
+        });
+    });
+
+    it('method: focus without label', () => {
+        const element = createElement('base-dynamic-menu', {
+            is: DynamicMenu
+        });
+        document.body.appendChild(element);
+
+        let focusEvent = false;
+
+        element.addEventListener('focus', () => {
+            focusEvent = true;
+        });
+
+        element.focus();
+
+        return Promise.resolve().then(() => {
+            expect(focusEvent).toBeTruthy();
+        });
+    });
+
+    it('method: focus with label', () => {
+        const element = createElement('base-dynamic-menu', {
+            is: DynamicMenu
+        });
+
+        element.label = 'label';
+
+        document.body.appendChild(element);
+
+        let focusEvent = false;
+
+        element.addEventListener('focus', () => {
+            focusEvent = true;
+        });
+
+        element.focus();
+
+        return Promise.resolve().then(() => {
+            expect(focusEvent).toBeTruthy();
+        });
     });
 });
