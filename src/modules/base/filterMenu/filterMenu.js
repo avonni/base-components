@@ -6,6 +6,7 @@ import {
     observePosition
 } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
+import { Tooltip } from 'c/tooltipLibrary';
 
 const ICON_SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
@@ -58,7 +59,6 @@ const DEFAULT_SUBMIT_BUTTON_LABEL = 'Apply';
 const DEFAULT_RESET_BUTTON_LABEL = 'Reset';
 
 // TODO:
-// tooltip
 // keyboard accessibility
 // update tests
 
@@ -69,10 +69,10 @@ export default class FilterMenu extends LightningElement {
     @api accessKey;
     @api label;
     @api title;
-    @api tooltip;
 
     _alternativeText = i18n.showMenu;
     _loadingStateAlternativeText = i18n.loading;
+    _tooltip;
     _disabled = false;
     _iconName = DEFAULT_ICON_NAME;
     _iconSize = ICON_SIZES.default;
@@ -97,8 +97,13 @@ export default class FilterMenu extends LightningElement {
     connectedCallback() {
         this.classList.add(
             'slds-dropdown-trigger',
-            'slds-dropdown-trigger_click'
+            'slds-dropdown-trigger_click',
+            'slds-is-relative'
         );
+    }
+
+    renderedCallback() {
+        this.initTooltip();
     }
 
     @api
@@ -117,6 +122,25 @@ export default class FilterMenu extends LightningElement {
     set loadingStateAlternativeText(value) {
         this._loadingStateAlternativeText =
             typeof value === 'string' ? value.trim() : i18n.loading;
+    }
+
+    @api
+    get tooltip() {
+        return this._tooltip ? this._tooltip.value : undefined;
+    }
+
+    set tooltip(value) {
+        if (this._tooltip) {
+            this._tooltip.value = value;
+        } else if (value) {
+            // Note that because the tooltip target is a child element it may not be present in the
+            // dom during initial rendering.
+            this._tooltip = new Tooltip(value, {
+                root: this,
+                target: () => this.template.querySelector('button'),
+            });
+            this._tooltip.initialize();
+        }
     }
 
     @api
@@ -403,6 +427,12 @@ export default class FilterMenu extends LightningElement {
     close() {
         if (this._dropdownVisible) {
             this.toggleMenuVisibility();
+        }
+    }
+
+    initTooltip() {
+        if (this._tooltip && !this._tooltip.initialized) {
+            this._tooltip.initialize();
         }
     }
 
