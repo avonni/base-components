@@ -60,9 +60,12 @@
                         type="search"
                         disabled={disabled}
                         is-loading={isLoading}
-                        onkeyup={handleSearch}
                         value={searchTerm}
                         autocomplete="off"
+                        onkeyup={handleSearch}
+                        oncommit={handleSearch}
+                        onfocus={handleMenuContentFocus}
+                        onblur={handleMenuContentBlur}
                     ></lightning-input>
                     <template for:each={computedItems} for:item="item">
                         <lightning-menu-item
@@ -75,8 +78,8 @@
                             checked={item.checked}
                             disabled={item.disabled}
                             onprivateselect={handleItemSelect}
-                            onprivateblur={handlePrivateBlur}
-                            onprivatefocus={handlePrivateFocus}
+                            onblur={handleMenuContentBlur}
+                            tab-index={item.tabindex}
                         >
                         </lightning-menu-item>
                     </template>
@@ -90,12 +93,16 @@
                             label={resetButtonLabel}
                             title={resetButtonLabel}
                             onclick={handleResetClick}
+                            onfocus={handleMenuContentFocus}
+                            onblur={handleMenuContentBlur}
                         ></lightning-button>
                         <lightning-button
                             variant="brand"
                             label={submitButtonLabel}
                             title={submitButtonLabel}
                             onclick={handleSubmitClick}
+                            onfocus={handleMenuContentFocus}
+                            onblur={handleMenuContentBlur}
                         ></lightning-button>
                     </div>
                 </div>

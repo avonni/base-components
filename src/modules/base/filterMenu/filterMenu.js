@@ -59,11 +59,7 @@ const DEFAULT_SUBMIT_BUTTON_LABEL = 'Apply';
 const DEFAULT_RESET_BUTTON_LABEL = 'Reset';
 
 // TODO:
-// keyboard accessibility
 // update tests
-
-// TO VALIDATE:
-// The selection is cleared on submit.
 
 export default class FilterMenu extends LightningElement {
     @api accessKey;
@@ -97,13 +93,16 @@ export default class FilterMenu extends LightningElement {
     connectedCallback() {
         this.classList.add(
             'slds-dropdown-trigger',
-            'slds-dropdown-trigger_click',
-            'slds-is-relative'
+            'slds-dropdown-trigger_click'
         );
     }
 
     renderedCallback() {
         this.initTooltip();
+
+        if (this._dropdownVisible) {
+            this.cancelBlur();
+        }
     }
 
     @api
@@ -137,7 +136,7 @@ export default class FilterMenu extends LightningElement {
             // dom during initial rendering.
             this._tooltip = new Tooltip(value, {
                 root: this,
-                target: () => this.template.querySelector('button'),
+                target: () => this.template.querySelector('button')
             });
             this._tooltip.initialize();
         }
@@ -190,6 +189,7 @@ export default class FilterMenu extends LightningElement {
         this.computedItems = JSON.parse(JSON.stringify(this._items));
 
         this.computeValue();
+        this.computeTabindex();
     }
 
     @api
@@ -406,6 +406,16 @@ export default class FilterMenu extends LightningElement {
         this.computeValue();
     }
 
+    computeTabindex() {
+        this.computedItems.forEach((item) => {
+            if (!item.disabled) {
+                item.tabindex = '0';
+            } else {
+                item.tabindex = '-1';
+            }
+        });
+    }
+
     computeValue() {
         this.computedItems.forEach((item) => {
             if (this.value.indexOf(item.value) > -1) {
@@ -551,21 +561,19 @@ export default class FilterMenu extends LightningElement {
         event.stopPropagation();
     }
 
-    handlePrivateBlur(event) {
-        // The event may be synthetic from the menu items
+    handleMenuContentFocus(event) {
         event.stopPropagation();
 
-        // perform common blurring behavior
-        this.handleBlur();
-        this._menuHasFocus = false;
-    }
-
-    handlePrivateFocus(event) {
-        // synthetic from the menu items
-        event.stopPropagation();
         // reset the cancelBlur so any clicks outside the menu can now close the menu
         this.allowBlur();
         this._menuHasFocus = true;
+    }
+
+    handleMenuContentBlur(event) {
+        event.stopPropagation();
+
+        this.handleBlur();
+        this._menuHasFocus = false;
     }
 
     handleItemSelect(event) {
@@ -604,6 +612,8 @@ export default class FilterMenu extends LightningElement {
             })
         );
         this.clear();
+        this.handleBlur();
+        this._menuHasFocus = false;
     }
 
     handleResetClick() {
