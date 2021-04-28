@@ -2,59 +2,64 @@ import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-const validSizes = ['small', 'large'];
+const validSizes = { valid: ['small', 'large'], default: 'small' };
 
-const validVariants = [
-    'text-only',
-    'going-camping',
-    'gone_fishing',
-    'maintenance',
-    'desert',
-    'open-road',
-    'no-access',
-    'no-connection',
-    'not-available-in-lightning',
-    'page-not-available',
-    'walkthrough-not-available',
-    'fishing-deals',
-    'lake-mountain',
-    'no-events',
-    'no-events-2',
-    'no-task',
-    'no-task-2',
-    'setup',
-    'gone-fishing',
-    'no-access-2',
-    'no-content',
-    'no-preview',
-    'preview',
-    'research'
-];
+const validVariants = {
+    valid: [
+        'text-only',
+        'going-camping',
+        'gone_fishing',
+        'maintenance',
+        'desert',
+        'open-road',
+        'no-access',
+        'no-connection',
+        'not-available-in-lightning',
+        'page-not-available',
+        'walkthrough-not-available',
+        'fishing-deals',
+        'lake-mountain',
+        'no-events',
+        'no-events-2',
+        'no-task',
+        'no-task-2',
+        'setup',
+        'gone-fishing',
+        'no-access-2',
+        'no-content',
+        'no-preview',
+        'preview',
+        'research'
+    ],
+    default: 'text-only'
+};
 
 export default class Illustration extends LightningElement {
     @api title;
-    _size = 'small';
-    _variant = 'text-only';
+    _size = validSizes.default;
+    _variant = validVariants.default;
 
-    @api get variant() {
+    @api
+    get variant() {
         return this._variant;
     }
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: 'text-only',
-            validValues: validVariants
+            fallbackValue: validVariants.default,
+            validValues: validVariants.valid
         });
     }
 
-    @api get size() {
-        return this._variant;
+    @api
+    get size() {
+        return this._size;
     }
 
     set size(size) {
         this._size = normalizeString(size, {
-            fallbackValue: 'small',
-            validValues: validSizes
+            fallbackValue: validSizes.default,
+            validValues: validSizes.valid
         });
     }
 
