@@ -1,5 +1,43 @@
-.avonni-dual-listbox-search-engine-padding-around_x-small {
-    padding: var(--lwc-spacingXSmall, 0.5rem) !important;
+.avonni-dual-listbox-list {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    clear: left;
+}
+
+.avonni-dual-listbox-list__column {
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
+.avonni-dual-listbox-buttons-centered .button {
+    margin: var(--lwc-spacingSmall, 0.75rem) 0;
+}
+
+.avonni-dual-listbox-buttons-centered {
+    justify-content: center;
+    margin: var(--lwc-spacingMedium, 1rem);
+}
+
+.avonni-dual-listbox-list__column_responsive {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 1 15rem;
+    flex: 0 1 15rem;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    overflow: hidden;
+    min-width: 6rem;
+}
+
+.avonni-dual-listbox-list__column_responsive
+    .avonni-dual-listbox-list__options {
+    width: auto;
+    max-width: 100%;
 }
 
 .avonni-dual-listbox-search-engine {
@@ -8,14 +46,11 @@
     background: #ffffff;
     border-radius: 0.25rem 0.25rem 0 0;
     border: 1px solid #dddbda;
+    padding: var(--lwc-spacingXSmall, 0.5rem) !important;
 }
 
 .avonni-dual-listbox-selected-list-with-search {
     margin-top: 3px;
-}
-
-.avonni-dual-listbox-buttons-centered {
-    justify-content: center;
 }
 
 .avonni-dual-listbox-option-is-selected {

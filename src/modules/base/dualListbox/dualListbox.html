@@ -2,10 +2,9 @@
     <div role="group" aria-labelledby="group-label" class={computedOuterClass}>
         <div id="group-label" class={computedGroupLabelClass}>
             <template if:true={required}>
-                <abbr class="slds-required" title={i18n.required}
-                    >*</abbr
-                > </template
-            >{label}
+                <abbr class="slds-required" title={i18n.required}>*</abbr>
+            </template>
+            {label}
         </div>
         <lightning-helptext
             if:true={fieldLevelHelp}
@@ -13,59 +12,31 @@
         ></lightning-helptext>
         <div class="slds-form-element__control">
             <div
-                class="slds-dueling-list"
+                class="avonni-dual-listbox-list"
                 onfocusin={handleFocus}
                 onfocusout={handleBlur}
             >
                 <div
-                    class="slds-dueling-list__column slds-dueling-list__column_responsive"
+                    class="avonni-dual-listbox-list__column avonni-dual-listbox-list__column_responsive"
                 >
                     <span
                         class="slds-form-element__label"
                         id="source-list-label"
                         >{sourceLabel}</span
                     >
-                    <template if:true={searchEngine}>
-                        <div class="avonni-dual-listbox-search-engine">
-                            <div class={computedSearchEngineClass}>
-                                <div
-                                    class="slds-form-element__control slds-grow slds-input-has-icon slds-input-has-icon_left-right"
-                                >
-                                    <c-primitive-icon
-                                        size="xx-small"
-                                        class={computedSearchEngineIconClass}
-                                        svg-class="slds-icon-text-light"
-                                        icon-name="utility:search"
-                                    ></c-primitive-icon>
-                                    <input
-                                        type="search"
-                                        id="text-input-id-1"
-                                        placeholder="Type to filter list..."
-                                        class="slds-input"
-                                        onkeyup={handleSearch}
-                                    />
-                                    <div
-                                        class="slds-input__icon-group slds-input__icon-group_right"
-                                    >
-                                        <template if:true={hasSearchTerm}>
-                                            <button
-                                                type="button"
-                                                class="slds-input__icon slds-input__icon_right slds-button slds-button_icon slds-button_icon-bare avonni-dual-listbox-search-engine-button-icon"
-                                                onclick={handleSearchClear}
-                                            >
-                                                <c-primitive-icon
-                                                    icon-name="utility:clear"
-                                                    class="slds-icon"
-                                                    size="xx-small"
-                                                    svg-class="slds-icon-text-light"
-                                                ></c-primitive-icon>
-                                            </button>
-                                        </template>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </template>
+                    <div
+                        if:true={searchEngine}
+                        class="avonni-dual-listbox-search-engine"
+                    >
+                        <lightning-input
+                            id="search-input"
+                            name="search"
+                            label=" "
+                            variant="label-hidden"
+                            type="search"
+                            onchange={handleSearch}
+                        ></lightning-input>
+                    </div>
                     <div
                         class={computedListboxContainerClass}
                         style={computedColumnStyleSource}
@@ -81,7 +52,7 @@
                             aria-disabled={ariaDisabled}
                         >
                             <template
-                                for:each={hasResult}
+                                for:each={computedSourceList}
                                 for:item="option"
                                 for:index="index"
                             >
@@ -101,53 +72,18 @@
                                         onclick={handleOptionClick}
                                         onkeydown={handleOptionKeyDown}
                                     >
-                                        <template if:true={option.hasAvatar}>
-                                            <template
-                                                if:true={option.hasDescription}
-                                            >
-                                                <div class="slds-media__figure">
-                                                    <c-avatar
-                                                        fallback-icon-name={option.iconName}
-                                                        src={option.src}
-                                                        initials={option.initials}
-                                                        size={option.iconSize}
-                                                        variant={option.variant}
-                                                        primary-text={option.label}
-                                                        secondary-text={option.description}
-                                                    ></c-avatar>
-                                                </div>
-                                            </template>
-                                            <template
-                                                if:false={option.hasDescription}
-                                            >
-                                                <div class="slds-media__figure">
-                                                    <c-avatar
-                                                        if:true={option.hasIconSize}
-                                                        fallback-icon-name={option.iconName}
-                                                        src={option.src}
-                                                        initials={option.initials}
-                                                        size={option.iconSize}
-                                                        variant={option.variant}
-                                                    ></c-avatar>
-                                                    <c-avatar
-                                                        if:false={option.hasIconSize}
-                                                        fallback-icon-name={option.iconName}
-                                                        src={option.src}
-                                                        initials={option.initials}
-                                                        size="small"
-                                                        variant={option.variant}
-                                                    ></c-avatar>
-                                                </div>
-                                                <span class="slds-media__body">
-                                                    <span
-                                                        class="slds-truncate"
-                                                        title={option.label}
-                                                        >{option.label}</span
-                                                    >
-                                                </span>
-                                            </template>
-                                        </template>
-                                        <template if:false={option.hasAvatar}>
+                                        <div class="slds-media__figure">
+                                            <c-avatar
+                                                fallback-icon-name={option.iconName}
+                                                src={option.src}
+                                                initials={option.initials}
+                                                size={option.iconSize}
+                                                variant={option.variant}
+                                                primary-text={option.primaryText}
+                                                secondary-text={option.secondaryText}
+                                            ></c-avatar>
+                                        </div>
+                                        <template if:false={option.description}>
                                             <span class="slds-media__body">
                                                 <span
                                                     class="slds-truncate"
@@ -170,9 +106,10 @@
                     </div>
                 </div>
                 <div
-                    class="slds-dueling-list__column avonni-dual-listbox-buttons-centered"
+                    class="avonni-dual-listbox-list__column avonni-dual-listbox-buttons-centered"
                 >
                     <lightning-button-icon
+                        class="button"
                         icon-name={addButtonIconName}
                         size={buttonSize}
                         variant={buttonVariant}
@@ -183,6 +120,7 @@
                     >
                     </lightning-button-icon>
                     <lightning-button-icon
+                        class="button"
                         icon-name={removeButtonIconName}
                         size={buttonSize}
                         variant={buttonVariant}
@@ -194,7 +132,7 @@
                     </lightning-button-icon>
                 </div>
                 <div
-                    class="slds-dueling-list__column slds-dueling-list__column_responsive"
+                    class="avonni-dual-listbox-list__column avonni-dual-listbox-list__column_responsive"
                 >
                     <span
                         class="slds-form-element__label"
@@ -236,53 +174,18 @@
                                         onclick={handleOptionClick}
                                         onkeydown={handleOptionKeyDown}
                                     >
-                                        <template if:true={option.hasAvatar}>
-                                            <template
-                                                if:true={option.hasDescription}
-                                            >
-                                                <div class="slds-media__figure">
-                                                    <c-avatar
-                                                        fallback-icon-name={option.iconName}
-                                                        src={option.src}
-                                                        initials={option.initials}
-                                                        size={option.iconSize}
-                                                        variant={option.variant}
-                                                        primary-text={option.label}
-                                                        secondary-text={option.description}
-                                                    ></c-avatar>
-                                                </div>
-                                            </template>
-                                            <template
-                                                if:false={option.hasDescription}
-                                            >
-                                                <div class="slds-media__figure">
-                                                    <c-avatar
-                                                        if:true={option.hasIconSize}
-                                                        fallback-icon-name={option.iconName}
-                                                        src={option.src}
-                                                        initials={option.initials}
-                                                        size={option.iconSize}
-                                                        variant={option.variant}
-                                                    ></c-avatar>
-                                                    <c-avatar
-                                                        if:false={option.hasIconSize}
-                                                        fallback-icon-name={option.iconName}
-                                                        src={option.src}
-                                                        initials={option.initials}
-                                                        size="small"
-                                                        variant={option.variant}
-                                                    ></c-avatar>
-                                                </div>
-                                                <span class="slds-media__body">
-                                                    <span
-                                                        class="slds-truncate"
-                                                        title={option.label}
-                                                        >{option.label}</span
-                                                    >
-                                                </span>
-                                            </template>
-                                        </template>
-                                        <template if:false={option.hasAvatar}>
+                                        <div class="slds-media__figure">
+                                            <c-avatar
+                                                fallback-icon-name={option.iconName}
+                                                src={option.src}
+                                                initials={option.initials}
+                                                size={option.iconSize}
+                                                variant={option.variant}
+                                                primary-text={option.primaryText}
+                                                secondary-text={option.secondaryText}
+                                            ></c-avatar>
+                                        </div>
+                                        <template if:false={option.description}>
                                             <span class="slds-media__body">
                                                 <span
                                                     class="slds-truncate"
@@ -313,9 +216,10 @@
                 </div>
                 <template if:false={disableReordering}>
                     <div
-                        class="slds-dueling-list__column avonni-dual-listbox-buttons-centered"
+                        class="avonni-dual-listbox-list__column avonni-dual-listbox-buttons-centered"
                     >
                         <lightning-button-icon
+                            class="button"
                             icon-name={upButtonIconName}
                             size={buttonSize}
                             variant={buttonVariant}
@@ -326,6 +230,7 @@
                         >
                         </lightning-button-icon>
                         <lightning-button-icon
+                            class="button"
                             icon-name={downButtonIconName}
                             size={buttonSize}
                             variant={buttonVariant}

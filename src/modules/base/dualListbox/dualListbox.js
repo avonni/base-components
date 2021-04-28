@@ -82,8 +82,7 @@ export default class DualListbox extends LightningElement {
     focusableInSource;
     focusableInSelected;
     isFocusOnList = false;
-    searchResult = [];
-    searchTerm;
+    _searchTerm;
     _upButtonDisabled = false;
     _downButtonDisabled = false;
     _oldIndex;
@@ -109,9 +108,6 @@ export default class DualListbox extends LightningElement {
             // reset the optionToFocus otherwise dualListbox will steal the focus any time it's rerendered.
             this.optionToFocus = null;
         });
-        this.hasAvatar();
-        this.hasDescription();
-        this.hasIconSize();
     }
 
     renderedCallback() {
@@ -328,35 +324,8 @@ export default class DualListbox extends LightningElement {
         this.reportValidity();
     }
 
-    // cannot display description without an icon or an image
-    hasAvatar() {
-        if (this._options) {
-            this._options.forEach((option) => {
-                if (option.iconName || option.src) {
-                    option.hasAvatar = true;
-                } else option.hasAvatar = false;
-            });
-        }
-    }
-
-    hasDescription() {
-        if (this._options) {
-            this._options.forEach((option) => {
-                if (option.description) {
-                    option.hasDescription = true;
-                } else option.hasDescription = false;
-            });
-        }
-    }
-
-    hasIconSize() {
-        if (this._options) {
-            this._options.forEach((option) => {
-                if (option.iconSize) {
-                    option.hasIconSize = true;
-                } else option.hasIconSize = false;
-            });
-        }
+    get hasFieldLevelHelp() {
+        return !!this.fieldLevelHelp;
     }
 
     get computedUniqueId() {
@@ -387,6 +356,12 @@ export default class DualListbox extends LightningElement {
                     values.indexOf(option.value) === -1 &&
                     required.indexOf(option.value) === -1
             );
+        }
+
+        if (this._searchTerm) {
+            sourceListOptions = sourceListOptions.filter((option) => {
+                return option.label.toLowerCase().includes(this._searchTerm);
+            });
         }
 
         return this.computeListOptions(
@@ -430,17 +405,6 @@ export default class DualListbox extends LightningElement {
         );
     }
 
-    get hasResult() {
-        if (this.searchResult.length >= 0 && this.searchTerm) {
-            return this.searchResult;
-        }
-        return this.computedSourceList;
-    }
-
-    get hasSearchTerm() {
-        return this.searchTerm;
-    }
-
     computeListOptions(options, focusableOptionValue) {
         if (options.length > 0) {
             const focusableOption = options.find((option) => {
@@ -472,6 +436,13 @@ export default class DualListbox extends LightningElement {
             ...option,
             tabIndex: option.value === focusableValue ? '0' : '-1',
             selected: isSelected ? 'true' : 'false',
+            primaryText: option.description ? option.label : '',
+            secondaryText: option.description ? option.description : '',
+            iconSize: option.iconSize
+                ? option.iconSize
+                : option.description
+                ? 'medium'
+                : 'small',
             classList
         };
     }
@@ -564,16 +535,6 @@ export default class DualListbox extends LightningElement {
             .toString();
     }
 
-    get computedSearchEngineClass() {
-        return classSet('slds-form-element slds-p-around_small')
-            .add({
-                'avonni-dual-listbox-search-engine-padding-around_x-small':
-                    this.variant === 'label-inline' ||
-                    this.variant === 'label-stacked'
-            })
-            .toString();
-    }
-
     get computedSearchEngineIconClass() {
         return classSet('slds-icon slds-input__icon slds-input__icon_left')
             .add({
@@ -635,17 +596,11 @@ export default class DualListbox extends LightningElement {
     handleRightButtonClick() {
         this.interactingState.interacting();
         this.moveOptionsBetweenLists(true, true);
-        if (this.searchTerm) {
-            this.handleSearch();
-        }
     }
 
     handleLeftButtonClick() {
         this.interactingState.interacting();
         this.moveOptionsBetweenLists(false, true);
-        if (this.searchTerm) {
-            this.handleSearch();
-        }
     }
 
     handleUpButtonClick() {
@@ -666,19 +621,8 @@ export default class DualListbox extends LightningElement {
         handleKeyDownOnOption(event, this.keyboardInterface);
     }
 
-    handleSearch() {
-        this.searchTerm = this.template
-            .querySelector('input')
-            .value.toLowerCase();
-        if (this.searchTerm) {
-            this.searchResult = this.computedSourceList.filter((option) => {
-                return option.label.toLowerCase().includes(this.searchTerm);
-            });
-        } else this.searchResult = this.computedSourceList;
-    }
-
-    handleSearchClear() {
-        this.searchTerm = this.template.querySelector('input').value = null;
+    handleSearch(event) {
+        this._searchTerm = event.detail.value;
     }
 
     moveOptionsBetweenLists(addToSelect, retainFocus) {
