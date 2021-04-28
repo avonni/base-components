@@ -121,4 +121,37 @@ describe('Dialog', () => {
             );
         });
     });
+
+    /* ----- METHODS ----- */
+
+    // show
+    it('Dialog show method', () => {
+        const element = createElement('base-dialog', {
+            is: Dialog
+        });
+        document.body.appendChild(element);
+
+        element.show();
+
+        return Promise.resolve().then(() => {
+            const modal = element.shadowRoot.querySelector('.slds-modal');
+            expect(modal).toBeTruthy();
+        });
+    });
+
+    // close
+    it('Dialog close method', () => {
+        const element = createElement('base-dialog', {
+            is: Dialog
+        });
+        document.body.appendChild(element);
+
+        element.show();
+        element.hide();
+
+        return Promise.resolve().then(() => {
+            const modal = element.shadowRoot.querySelector('.slds-modal');
+            expect(modal).toBeFalsy();
+        });
+    });
 });
