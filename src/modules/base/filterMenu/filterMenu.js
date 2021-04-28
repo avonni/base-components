@@ -58,8 +58,6 @@ const DEFAULT_SUBMIT_BUTTON_LABEL = 'Apply';
 const DEFAULT_RESET_BUTTON_LABEL = 'Reset';
 
 // TODO:
-// menuWidth
-// menuLength
 // tooltip
 // keyboard accessibility
 // update tests
@@ -362,7 +360,18 @@ export default class FilterMenu extends LightningElement {
                     this.nubbin && this.menuAlignment === 'bottom-right',
                 'slds-nubbin_bottom':
                     this.nubbin && this.menuAlignment === 'bottom-center',
-                'slds-p-vertical_large': this.isLoading
+                'slds-p-vertical_large': this.isLoading,
+                'slds-dropdown_xx-small': this.menuWidth === 'xx-small',
+                'slds-dropdown_x-small': this.menuWidth === 'x-small',
+                'slds-dropdown_small': this.menuWidth === 'small',
+                'slds-dropdown_medium': this.menuWidth === 'medium',
+                'slds-dropdown_large': this.menuWidth === 'large',
+                'slds-dropdown_length-with-icon-5':
+                    this.menuLength === '5-items',
+                'slds-dropdown_length-with-icon-7':
+                    this.menuLength === '7-items',
+                'slds-dropdown_length-with-icon-10':
+                    this.menuLength === '10-items'
             })
             .toString();
     }
