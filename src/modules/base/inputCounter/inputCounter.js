@@ -17,12 +17,7 @@ export default class InputCounter extends LightningElement {
     @api messageWhenRangeOverflow;
     @api messageWhenRangeUnderflow;
     @api messageWhenStepMismatch;
-    @api messageWhenTooShort;
-    @api messageWhenTooLong;
-    @api messageWhenTypeMismatch;
     @api messageWhenValueMissing;
-    @api messageToggleActive;
-    @api messageToggleInactive;
     @api ariaLabel;
     @api ariaControls;
     @api ariaLabelledBy;
