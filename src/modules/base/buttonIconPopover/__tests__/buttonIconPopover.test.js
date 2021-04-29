@@ -910,6 +910,23 @@ describe('Button Icon Popover', () => {
         });
     });
 
+    it('method: close', () => {
+        const element = createElement('base-button-icon-popover', {
+            is: ButtonIconPopover
+        });
+        document.body.appendChild(element);
+
+        let closeEvent = false;
+        element.addEventListener('close', () => {
+            closeEvent = true;
+        });
+
+        element.close();
+        return Promise.resolve().then(() => {
+            expect(closeEvent).toBeTruthy();
+        });
+    });
+
     /* ----- EVENTS ----- */
 
     // button popover click
