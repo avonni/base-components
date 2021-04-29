@@ -9,8 +9,8 @@
         value={value}
         type="button"
         onclick={handleButtonClick}
-        onblur={handleBlur}
-        onfocus={handleFocus}
+        onblur={handleButtonBlur}
+        onfocus={handleButtonFocus}
         onmousedown={handleButtonMouseDown}
     >
         {label}
@@ -34,9 +34,13 @@
     <template if:true={dropdownOpened}>
         <div
             class={computedDropdownClass}
+            onprivateselect={handlePrivateSelect}
+            onprivateblur={handlePrivateBlur}
+            onprivatefocus={handlePrivateFocus}
             onmousedown={handleDropdownMouseDown}
             onmouseup={handleDropdownMouseUp}
             onmouseleave={handleDropdownMouseLeave}
+            onmouseenter={handleDropdownMouseEnter}
             onscroll={handleDropdownScroll}
         >
             <template if:true={isLoading}>
@@ -62,12 +66,14 @@
                         is-loading={isLoading}
                         value={searchTerm}
                         autocomplete="off"
-                        onkeyup={handleSearch}
-                        oncommit={handleSearch}
-                        onfocus={handleMenuContentFocus}
-                        onblur={handleMenuContentBlur}
+                        onchange={handleSearch}
+                        onkeydown={handleKeyDown}
                     ></lightning-input>
-                    <template for:each={computedItems} for:item="item">
+                    <template
+                        for:each={computedItems}
+                        for:item="item"
+                        for:index="index"
+                    >
                         <lightning-menu-item
                             if:false={item.hidden}
                             key={item.value}
@@ -77,9 +83,9 @@
                             prefix-icon-name={item.prefixIconName}
                             checked={item.checked}
                             disabled={item.disabled}
-                            onprivateselect={handleItemSelect}
-                            onblur={handleMenuContentBlur}
                             tab-index={item.tabindex}
+                            data-index={index}
+                            onkeydown={handleKeyDown}
                         >
                         </lightning-menu-item>
                     </template>
@@ -92,17 +98,19 @@
                             variant="base"
                             label={resetButtonLabel}
                             title={resetButtonLabel}
+                            onfocus={handlePrivateFocus}
+                            onblur={handlePrivateBlur}
                             onclick={handleResetClick}
-                            onfocus={handleMenuContentFocus}
-                            onblur={handleMenuContentBlur}
+                            onkeydown={handleKeyDown}
                         ></lightning-button>
                         <lightning-button
                             variant="brand"
                             label={submitButtonLabel}
                             title={submitButtonLabel}
+                            onfocus={handlePrivateFocus}
+                            onblur={handlePrivateBlur}
                             onclick={handleSubmitClick}
-                            onfocus={handleMenuContentFocus}
-                            onblur={handleMenuContentBlur}
+                            onkeydown={handleKeyDown}
                         ></lightning-button>
                     </div>
                 </div>

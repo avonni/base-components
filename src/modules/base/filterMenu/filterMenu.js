@@ -3,10 +3,17 @@ import {
     normalizeBoolean,
     normalizeString,
     normalizeArray,
-    observePosition
+    observePosition,
+    animationFrame,
+    timeout
 } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import { Tooltip } from 'c/tooltipLibrary';
+import {
+    Direction,
+    startPositioning,
+    stopPositioning
+} from 'c/positionLibrary';
 
 const ICON_SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
@@ -84,6 +91,7 @@ export default class FilterMenu extends LightningElement {
     _resetButtonLabel = DEFAULT_RESET_BUTTON_LABEL;
     _menuWidth = MENU_WIDTHS.default;
     _menuLength = MENU_LENGTHS.default;
+
     _cancelBlur = false;
     _dropdownVisible = false;
 
@@ -95,6 +103,21 @@ export default class FilterMenu extends LightningElement {
             'slds-dropdown-trigger',
             'slds-dropdown-trigger_click'
         );
+
+        // button-group necessities
+        const privatebuttonregister = new CustomEvent('privatebuttonregister', {
+            bubbles: true,
+            detail: {
+                callbacks: {
+                    setOrder: this.setOrder.bind(this),
+                    setDeRegistrationCallback: (deRegistrationCallback) => {
+                        this._deRegistrationCallback = deRegistrationCallback;
+                    }
+                }
+            }
+        });
+
+        this.dispatchEvent(privatebuttonregister);
     }
 
     renderedCallback() {
@@ -401,14 +424,21 @@ export default class FilterMenu extends LightningElement {
     }
 
     @api
+    focus() {
+        this.template.querySelector('button').focus();
+    }
+
+    @api
     clear() {
         this._value = [];
         this.computeValue();
     }
 
     computeTabindex() {
+        let firstFocusableItem;
         this.computedItems.forEach((item) => {
-            if (!item.disabled) {
+            if (!firstFocusableItem && !item.disabled) {
+                firstFocusableItem = true;
                 item.tabindex = '0';
             } else {
                 item.tabindex = '-1';
@@ -446,12 +476,87 @@ export default class FilterMenu extends LightningElement {
         }
     }
 
+    setOrder(order) {
+        this._order = order;
+    }
+
     isAutoAlignment() {
         return this.menuAlignment.startsWith('auto');
     }
 
-    focusOnButton() {
-        this.template.querySelector('button').focus();
+    startPositioning() {
+        if (!this.isAutoAlignment()) {
+            return Promise.resolve();
+        }
+
+        this._positioning = true;
+
+        const align = {
+            horizontal: Direction.Left,
+            vertical: Direction.Top
+        };
+
+        const targetAlign = {
+            horizontal: Direction.Left,
+            vertical: Direction.Bottom
+        };
+
+        let autoFlip = true;
+        let autoFlipVertical;
+
+        if (this.menuAlignment === 'auto-right') {
+            align.horizontal = Direction.Right;
+            targetAlign.horizontal = Direction.Right;
+        }
+
+        if (
+            this.menuAlignment === 'auto-right' ||
+            this.menuAlignment === 'auto-left'
+        ) {
+            autoFlip = false;
+            autoFlipVertical = true;
+        }
+
+        return animationFrame()
+            .then(() => {
+                this.stopPositioning();
+                this._autoPosition = startPositioning(
+                    this,
+                    {
+                        target: () => this.template.querySelector('button'),
+                        element: () =>
+                            this.template.querySelector('.slds-dropdown'),
+                        align,
+                        targetAlign,
+                        autoFlip,
+                        autoFlipVertical,
+                        scrollableParentBound: true,
+                        keepInViewport: true
+                    },
+                    true
+                );
+                // Edge case: W-7460656
+                if (this._autoPosition) {
+                    return this._autoPosition.reposition();
+                }
+                return Promise.reject();
+            })
+            .then(() => {
+                return timeout(0);
+            })
+            .then(() => {
+                // Use a flag to prevent this async function from executing multiple times in a single lifecycle
+                this._positioning = false;
+            });
+    }
+
+    // remove-next-line-for-c-namespace
+    stopPositioning() {
+        if (this._autoPosition) {
+            stopPositioning(this._autoPosition);
+            this._autoPosition = null;
+        }
+        this._positioning = false;
     }
 
     toggleMenuVisibility() {
@@ -461,6 +566,7 @@ export default class FilterMenu extends LightningElement {
                 this.dropdownOpened = true;
             }
             if (this._dropdownVisible) {
+                this.startPositioning();
                 this.dispatchEvent(new CustomEvent('open'));
 
                 // update the bounding rect when the menu is toggled
@@ -468,6 +574,7 @@ export default class FilterMenu extends LightningElement {
 
                 this.pollBoundingRect();
             } else {
+                this.stopPositioning();
                 this.dispatchEvent(new CustomEvent('close'));
             }
 
@@ -492,34 +599,6 @@ export default class FilterMenu extends LightningElement {
                 250 // check every 0.25 second
             );
         }
-    }
-
-    handleButtonClick() {
-        this.allowBlur();
-
-        this.toggleMenuVisibility();
-
-        // Focus on the button even if the browser doesn't do it by default
-        // (the behaviour differs between Chrome, Safari, Firefox)
-        this.focusOnButton();
-    }
-
-    handleBlur() {
-        // Don't handle the blur event if the focus events are inside the menu (see the cancelBlur/allowBlur functions)
-        if (this._cancelBlur) {
-            return;
-        }
-        // Hide only when the focus moved away from the container
-        if (this._dropdownVisible) {
-            this.toggleMenuVisibility();
-        }
-
-        // dispatch standard blur event
-        this.dispatchEvent(new CustomEvent('blur'));
-    }
-
-    handleFocus() {
-        this.dispatchEvent(new CustomEvent('focus'));
     }
 
     handleDropdownMouseDown(event) {
@@ -550,9 +629,14 @@ export default class FilterMenu extends LightningElement {
         // in this case we close immediately if no menu-items were hovered/focused
         // without this the menu would remain open since the blur on the menuitems has happened already
         // when clicking the scrollbar
+        this.allowBlur();
         if (!this._menuHasFocus) {
             this.close();
         }
+    }
+
+    handleDropdownMouseEnter() {
+        this.cancelBlur();
     }
 
     handleDropdownScroll(event) {
@@ -561,46 +645,103 @@ export default class FilterMenu extends LightningElement {
         event.stopPropagation();
     }
 
-    handleMenuContentFocus(event) {
-        event.stopPropagation();
-
-        // reset the cancelBlur so any clicks outside the menu can now close the menu
+    handleButtonClick() {
         this.allowBlur();
-        this._menuHasFocus = true;
+
+        this.toggleMenuVisibility();
     }
 
-    handleMenuContentBlur(event) {
-        event.stopPropagation();
-
-        this.handleBlur();
-        this._menuHasFocus = false;
+    handleButtonFocus() {
+        this.dispatchEvent(new CustomEvent('focus'));
     }
 
-    handleItemSelect(event) {
+    handleButtonBlur() {
+        if (!this._cancelBlur) {
+            this.close();
+        }
+    }
+
+    handlePrivateSelect(event) {
         const index = this.value.findIndex(
-            (itemValue) => itemValue === event.currentTarget.value
+            (itemValue) => itemValue === event.detail.value
         );
         if (index > -1) {
             this.value.splice(index, 1);
         } else {
-            this.value.push(event.currentTarget.value);
+            this.value.push(event.detail.value);
         }
 
         this.computeValue();
 
         event.stopPropagation();
-        this.dispatchSelect(event);
-    }
 
-    dispatchSelect(event) {
+        // Dispatch the event with the same properties as LWC button-menu
         this.dispatchEvent(
             new CustomEvent('select', {
                 cancelable: true,
                 detail: {
-                    value: event.detail.value // pass value through from original private event
+                    value: event.detail.value
                 }
             })
         );
+    }
+
+    handlePrivateBlur(event) {
+        event.stopPropagation();
+        this._menuHasFocus = false;
+
+        if (this._cancelBlur) {
+            return;
+        }
+
+        if (this._dropdownVisible) {
+            this.toggleMenuVisibility();
+        }
+
+        this.dispatchEvent(new CustomEvent('blur'));
+    }
+
+    handlePrivateFocus(event) {
+        event.stopPropagation();
+
+        this._menuHasFocus = true;
+        this.allowBlur();
+    }
+
+    handleKeyDown(event) {
+        if (event.code === 'Tab') {
+            this.cancelBlur();
+
+            if (event.target.label === this.submitButtonLabel) {
+                this.allowBlur();
+                this.close();
+            }
+        }
+
+        const isMenuItem = event.target.tagName === 'LIGHTNING-MENU-ITEM';
+
+        // To follow LWC convention, menu items are navigable with up and down arrows
+        if (isMenuItem) {
+            const index = Number(event.target.dataset.index);
+
+            if (event.code === 'ArrowUp') {
+                const previousItem = this.template.querySelector(
+                    `[data-index="${index - 1}"]`
+                );
+                if (previousItem) {
+                    this.cancelBlur();
+                    previousItem.focus();
+                }
+            } else if (event.code === 'ArrowDown') {
+                const nextItem = this.template.querySelector(
+                    `[data-index="${index + 1}"]`
+                );
+                if (nextItem) {
+                    this.cancelBlur();
+                    nextItem.focus();
+                }
+            }
+        }
     }
 
     handleSubmitClick() {
@@ -612,7 +753,6 @@ export default class FilterMenu extends LightningElement {
             })
         );
         this.clear();
-        this.handleBlur();
         this._menuHasFocus = false;
     }
 
