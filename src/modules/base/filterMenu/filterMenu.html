@@ -67,28 +67,32 @@
                         value={searchTerm}
                         autocomplete="off"
                         onchange={handleSearch}
+                        onblur={handlePrivateBlur}
+                        onfocus={handlePrivateFocus}
                         onkeydown={handleKeyDown}
                     ></lightning-input>
-                    <template
-                        for:each={computedItems}
-                        for:item="item"
-                        for:index="index"
-                    >
-                        <lightning-menu-item
-                            if:false={item.hidden}
-                            key={item.value}
-                            label={item.label}
-                            value={item.value}
-                            icon-name={item.iconName}
-                            prefix-icon-name={item.prefixIconName}
-                            checked={item.checked}
-                            disabled={item.disabled}
-                            tab-index={item.tabindex}
-                            data-index={index}
-                            onkeydown={handleKeyDown}
+                    <div class={computedItemListClass}>
+                        <template
+                            for:each={computedItems}
+                            for:item="item"
+                            for:index="index"
                         >
-                        </lightning-menu-item>
-                    </template>
+                            <lightning-menu-item
+                                if:false={item.hidden}
+                                key={item.value}
+                                label={item.label}
+                                value={item.value}
+                                icon-name={item.iconName}
+                                prefix-icon-name={item.prefixIconName}
+                                checked={item.checked}
+                                disabled={item.disabled}
+                                tab-index={item.tabindex}
+                                data-index={index}
+                                onkeydown={handleKeyDown}
+                            >
+                            </lightning-menu-item>
+                        </template>
+                    </div>
                     <lightning-menu-divider></lightning-menu-divider>
                     <div
                         class="slds-p-horizontal_small slds-p-bottom_x-small slds-text-align_right"

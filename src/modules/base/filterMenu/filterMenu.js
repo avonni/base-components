@@ -65,9 +65,6 @@ const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Search...';
 const DEFAULT_SUBMIT_BUTTON_LABEL = 'Apply';
 const DEFAULT_RESET_BUTTON_LABEL = 'Reset';
 
-// TODO:
-// update tests
-
 export default class FilterMenu extends LightningElement {
     @api accessKey;
     @api label;
@@ -200,7 +197,18 @@ export default class FilterMenu extends LightningElement {
         return this._isLoading;
     }
     set isLoading(bool) {
-        this._isLoading = normalizeBoolean(bool);
+        const normalizedValue = normalizeBoolean(bool);
+        if (this.isAutoAlignment()) {
+            // stop previous positioning if any as it maintains old position relationship
+            this.stopPositioning();
+
+            if (this._isLoading && !normalizedValue) {
+                // was loading before and now is not, we need to reposition
+                this.startPositioning();
+            }
+        }
+
+        this._isLoading = normalizedValue;
     }
 
     @api
@@ -220,8 +228,8 @@ export default class FilterMenu extends LightningElement {
         return this._value;
     }
     set value(proxy) {
-        const array = JSON.parse(JSON.stringify(proxy));
-        this._value = normalizeArray(array);
+        const array = normalizeArray(proxy);
+        this._value = JSON.parse(JSON.stringify(array));
 
         this.computeValue();
     }
@@ -412,15 +420,17 @@ export default class FilterMenu extends LightningElement {
                 'slds-dropdown_x-small': this.menuWidth === 'x-small',
                 'slds-dropdown_small': this.menuWidth === 'small',
                 'slds-dropdown_medium': this.menuWidth === 'medium',
-                'slds-dropdown_large': this.menuWidth === 'large',
-                'slds-dropdown_length-with-icon-5':
-                    this.menuLength === '5-items',
-                'slds-dropdown_length-with-icon-7':
-                    this.menuLength === '7-items',
-                'slds-dropdown_length-with-icon-10':
-                    this.menuLength === '10-items'
+                'slds-dropdown_large': this.menuWidth === 'large'
             })
             .toString();
+    }
+
+    get computedItemListClass() {
+        return classSet('slds-dropdown__list').add({
+            'slds-dropdown_length-with-icon-5': this.menuLength === '5-items',
+            'slds-dropdown_length-with-icon-7': this.menuLength === '7-items',
+            'slds-dropdown_length-with-icon-10': this.menuLength === '10-items'
+        });
     }
 
     @api
@@ -503,19 +513,6 @@ export default class FilterMenu extends LightningElement {
 
         let autoFlip = true;
         let autoFlipVertical;
-
-        if (this.menuAlignment === 'auto-right') {
-            align.horizontal = Direction.Right;
-            targetAlign.horizontal = Direction.Right;
-        }
-
-        if (
-            this.menuAlignment === 'auto-right' ||
-            this.menuAlignment === 'auto-left'
-        ) {
-            autoFlip = false;
-            autoFlipVertical = true;
-        }
 
         return animationFrame()
             .then(() => {
@@ -632,6 +629,7 @@ export default class FilterMenu extends LightningElement {
         this.allowBlur();
         if (!this._menuHasFocus) {
             this.close();
+            this.dispatchEvent(new CustomEvent('blur'));
         }
     }
 
@@ -658,6 +656,7 @@ export default class FilterMenu extends LightningElement {
     handleButtonBlur() {
         if (!this._cancelBlur) {
             this.close();
+            this.dispatchEvent(new CustomEvent('blur'));
         }
     }
 
@@ -697,8 +696,6 @@ export default class FilterMenu extends LightningElement {
         if (this._dropdownVisible) {
             this.toggleMenuVisibility();
         }
-
-        this.dispatchEvent(new CustomEvent('blur'));
     }
 
     handlePrivateFocus(event) {
@@ -715,6 +712,7 @@ export default class FilterMenu extends LightningElement {
             if (event.target.label === this.submitButtonLabel) {
                 this.allowBlur();
                 this.close();
+                this.dispatchEvent(new CustomEvent('blur'));
             }
         }
 

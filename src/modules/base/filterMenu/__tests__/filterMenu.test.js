@@ -1,8 +1,11 @@
 import { createElement } from 'lwc';
 import FilterMenu from 'c/filterMenu';
 
-// Not tested because the tooltip is injected outside of the shadowRoot:
-// tooltip
+// Not tested:
+// tooltip (is injected outside of shadow dom)
+// auto positionning
+// dropdown scrolling-related events (mouseup, mousedown, scroll)
+// Keyboard navigation (we can't artificially dispatch an event with a key code)
 
 const ITEMS = [
     {
@@ -356,6 +359,7 @@ describe('FilterMenu', () => {
 
             expect(items).toHaveLength(6);
 
+            let firstFocusableItem;
             items.forEach((item, index) => {
                 expect(item.label).toBe(ITEMS[index].label);
                 expect(item.value).toBe(ITEMS[index].value);
@@ -363,10 +367,11 @@ describe('FilterMenu', () => {
                 expect(item.prefixIconName).toBe(ITEMS[index].prefixIconName);
                 expect(item.disabled).toBe(ITEMS[index].disabled);
 
-                if (item.disabled) {
-                    expect(item.tabIndex).toBe(-1);
-                } else {
+                if (!firstFocusableItem && !item.disabled) {
                     expect(item.tabIndex).toBe(0);
+                    firstFocusableItem = true;
+                } else {
+                    expect(item.tabIndex).toBe(-1);
                 }
             });
         });
@@ -695,14 +700,16 @@ describe('FilterMenu', () => {
         button.click();
 
         return Promise.resolve().then(() => {
-            const dropdown = element.shadowRoot.querySelector('.slds-dropdown');
-            expect(dropdown.classList).toContain(
+            const itemList = element.shadowRoot.querySelector(
+                'lightning-input + div'
+            );
+            expect(itemList.classList).toContain(
                 'slds-dropdown_length-with-icon-7'
             );
-            expect(dropdown.classList).not.toContain(
+            expect(itemList.classList).not.toContain(
                 'slds-dropdown_length-with-icon-5'
             );
-            expect(dropdown.classList).not.toContain(
+            expect(itemList.classList).not.toContain(
                 'slds-dropdown_length-with-icon-10'
             );
         });
@@ -720,14 +727,16 @@ describe('FilterMenu', () => {
         button.click();
 
         return Promise.resolve().then(() => {
-            const dropdown = element.shadowRoot.querySelector('.slds-dropdown');
-            expect(dropdown.classList).not.toContain(
+            const itemList = element.shadowRoot.querySelector(
+                'lightning-input + div'
+            );
+            expect(itemList.classList).not.toContain(
                 'slds-dropdown_length-with-icon-7'
             );
-            expect(dropdown.classList).toContain(
+            expect(itemList.classList).toContain(
                 'slds-dropdown_length-with-icon-5'
             );
-            expect(dropdown.classList).not.toContain(
+            expect(itemList.classList).not.toContain(
                 'slds-dropdown_length-with-icon-10'
             );
         });
@@ -745,14 +754,16 @@ describe('FilterMenu', () => {
         button.click();
 
         return Promise.resolve().then(() => {
-            const dropdown = element.shadowRoot.querySelector('.slds-dropdown');
-            expect(dropdown.classList).not.toContain(
+            const itemList = element.shadowRoot.querySelector(
+                'lightning-input + div'
+            );
+            expect(itemList.classList).not.toContain(
                 'slds-dropdown_length-with-icon-7'
             );
-            expect(dropdown.classList).not.toContain(
+            expect(itemList.classList).not.toContain(
                 'slds-dropdown_length-with-icon-5'
             );
-            expect(dropdown.classList).toContain(
+            expect(itemList.classList).toContain(
                 'slds-dropdown_length-with-icon-10'
             );
         });
@@ -1294,6 +1305,22 @@ describe('FilterMenu', () => {
         });
     });
 
+    // focus
+    it('focus method', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        const handler = jest.fn();
+        const button = element.shadowRoot.querySelector('button');
+        button.addEventListener('focus', handler);
+
+        element.focus();
+        expect(handler).toHaveBeenCalled();
+    });
+
     /* ----- EVENTS ----- */
 
     // select
@@ -1321,6 +1348,8 @@ describe('FilterMenu', () => {
 
                 items[2].dispatchEvent(
                     new CustomEvent('privateselect', {
+                        bubbles: true,
+                        cancelable: true,
                         detail: {
                             value: items[2].value
                         }
@@ -1338,6 +1367,8 @@ describe('FilterMenu', () => {
 
                 items[2].dispatchEvent(
                     new CustomEvent('privateselect', {
+                        bubbles: true,
+                        cancelable: true,
                         detail: {
                             value: items[2].value
                         }
@@ -1461,7 +1492,7 @@ describe('FilterMenu', () => {
                     'lightning-input'
                 );
                 input.value = 'Searchable';
-                input.dispatchEvent(new CustomEvent('commit'));
+                input.dispatchEvent(new CustomEvent('change'));
 
                 expect(handler).toHaveBeenCalled();
             })
@@ -1475,7 +1506,7 @@ describe('FilterMenu', () => {
     });
 
     // blur
-    it('blur event', () => {
+    it('blur event (button blur)', () => {
         const element = createElement('base-filter-menu', {
             is: FilterMenu
         });
@@ -1485,7 +1516,6 @@ describe('FilterMenu', () => {
         const handler = jest.fn();
         element.addEventListener('blur', handler);
 
-        element.items = ITEMS;
         const button = element.shadowRoot.querySelector('button');
         button.click();
 
@@ -1494,6 +1524,46 @@ describe('FilterMenu', () => {
             button.dispatchEvent(new CustomEvent('blur'));
 
             expect(handler).toHaveBeenCalled();
+            expect(element.shadowRoot.host.classList).not.toContain(
+                'slds-is-open'
+            );
+        });
+    });
+
+    // content blur
+    // Depends on items
+    it('blur of an inside element', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.items = ITEMS;
+        const button = element.shadowRoot.querySelector('button');
+        button.click();
+
+        return Promise.resolve().then(() => {
+            const item = element.shadowRoot.querySelector(
+                'lightning-menu-item'
+            );
+            item.dispatchEvent(
+                new CustomEvent('privatefocus', {
+                    bubbles: true,
+                    cancelable: true,
+                    detail: {
+                        value: item.value
+                    }
+                })
+            );
+            item.dispatchEvent(
+                new CustomEvent('privateblur', {
+                    composed: true,
+                    bubbles: true,
+                    cancelable: true
+                })
+            );
+
             expect(element.shadowRoot.host.classList).not.toContain(
                 'slds-is-open'
             );
@@ -1518,5 +1588,49 @@ describe('FilterMenu', () => {
                 'slds-is-open'
             );
         });
+    });
+
+    // mouseenter
+    it('mouseenter event', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        const button = element.shadowRoot.querySelector('button');
+        button.click();
+
+        return Promise.resolve()
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '.slds-dropdown'
+                );
+                dropdown.dispatchEvent(new CustomEvent('mouseenter'));
+            })
+            .then(() => {
+                const input = element.shadowRoot.querySelector(
+                    'lightning-input'
+                );
+                input.dispatchEvent(new CustomEvent('blur'));
+
+                expect(element.shadowRoot.host.classList).toContain(
+                    'slds-is-open'
+                );
+            });
+    });
+
+    // privatebuttonregister
+    it('privatebuttonregister event', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        const handler = jest.fn();
+        element.addEventListener('privatebuttonregister', handler);
+
+        document.body.appendChild(element);
+
+        expect(handler).toHaveBeenCalled();
     });
 });

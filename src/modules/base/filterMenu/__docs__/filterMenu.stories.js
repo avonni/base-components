@@ -3,37 +3,6 @@ import { FilterMenu } from '../__examples__/filterMenu';
 export default {
     title: 'Example/Filter Menu',
     argTypes: {
-        accessKey: {
-            name: 'access-key',
-            control: {
-                type: 'text'
-            },
-            description: 'The keyboard shortcut for the button menu.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        alternativeText: {
-            name: 'alternative-text',
-            control: {
-                type: 'text'
-            },
-            description: 'The assistive text for the button.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        disabled: {
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: false,
-            description: 'If true, the menu cannot be opened by users.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
-            }
-        },
         label: {
             control: {
                 type: 'text'
@@ -70,6 +39,17 @@ export default {
                 defaultValue: { summary: 'medium' }
             }
         },
+        disabled: {
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description: 'If true, the menu cannot be opened by users.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         isLoading: {
             name: 'is-loading',
             control: {
@@ -80,7 +60,8 @@ export default {
                 'If true, the menu is in a loading state and shows a spinner.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Search'
             }
         },
         loadingStateAlternativeText: {
@@ -91,7 +72,8 @@ export default {
             description:
                 'Message displayed while the menu is in the loading state.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Search'
             }
         },
         items: {
@@ -101,26 +83,6 @@ export default {
             description: 'Array of item objects',
             table: {
                 type: { summary: 'object[]' }
-            }
-        },
-        title: {
-            control: {
-                type: 'text'
-            },
-            description:
-                'Displays tooltip text when the mouse moves over the button menu.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        tooltip: {
-            control: {
-                type: 'text'
-            },
-            description:
-                'Text to display when the user mouses over or focuses on the button. The tooltip is auto-positioned relative to the button and screen space.',
-            table: {
-                type: { summary: 'string' }
             }
         },
         value: {
@@ -152,6 +114,46 @@ export default {
                 defaultValue: { summary: 'border' }
             }
         },
+        title: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'Displays tooltip text when the mouse moves over the button menu.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        tooltip: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'Text to display when the user mouses over or focuses on the button. The tooltip is auto-positioned relative to the button and screen space.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        accessKey: {
+            name: 'access-key',
+            control: {
+                type: 'text'
+            },
+            description: 'The keyboard shortcut for the button menu.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        alternativeText: {
+            name: 'alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'The assistive text for the button.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         searchInputPlaceholder: {
             name: 'search-input-placeholder',
             control: {
@@ -162,7 +164,8 @@ export default {
                 'Text that is displayed when the field is empty, to prompt the user for a valid entry.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'Search...' }
+                defaultValue: { summary: 'Search...' },
+                category: 'Search'
             }
         },
         hideSearchBox: {
@@ -174,7 +177,8 @@ export default {
             description: 'If true, the search box is hidden.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Search'
             }
         },
         submitButtonLabel: {
@@ -186,7 +190,8 @@ export default {
             description: 'Label of the submit button.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'Apply' }
+                defaultValue: { summary: 'Apply' },
+                category: 'Search'
             }
         },
         resetButtonLabel: {
@@ -198,7 +203,8 @@ export default {
             description: 'Label of the reset button.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'Reset' }
+                defaultValue: { summary: 'Reset' },
+                category: 'Search'
             }
         },
         menuAlignment: {
@@ -220,7 +226,8 @@ export default {
                 'Determines the alignment of the menu relative to the button. Available options are: auto, left, center, right, bottom-left, bottom-center, bottom-right. The auto option aligns the dropdown menu based on available space. This value defaults to left.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'left' }
+                defaultValue: { summary: 'left' },
+                category: 'Dropdown menu'
             }
         },
         menuWidth: {
@@ -234,7 +241,8 @@ export default {
                 'Width of the dropdown menu. Valid values include xx-small, x-small, small, medium and large.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'small' }
+                defaultValue: { summary: 'small' },
+                category: 'Dropdown menu'
             }
         },
         menuLength: {
@@ -248,7 +256,8 @@ export default {
                 'Maximum length of the dropdown menu. Valid values include 5-items, 7-items and 10-items.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: '7-items' }
+                defaultValue: { summary: '7-items' },
+                category: 'Dropdown menu'
             }
         },
         nubbin: {
@@ -260,7 +269,8 @@ export default {
                 'If true, a nubbin is present on the menu. A nubbin is a stub that protrudes from the menu item towards the button menu. The nubbin position is based on the menu-alignment.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Dropdown menu'
             }
         }
     }
@@ -268,20 +278,38 @@ export default {
 
 const items = [
     {
-        label: 'Disabled item with icon',
-        value: 'disabled-item',
-        disabled: true,
-        iconName: 'utility:task'
+        label: 'Call',
+        value: 'call',
+        prefixIconName: 'standard:call',
+        iconName: 'utility:voicemail_drop'
     },
     {
-        label: 'Item with icon and prefix icon',
-        value: 'item-with-two-icons',
-        iconName: 'utility:tracker',
-        prefixIconName: 'utility:choice'
+        label: 'Email',
+        value: 'email',
+        prefixIconName: 'standard:email'
     },
     {
-        label: 'Item with no icon',
-        value: 'item-with-no-icon'
+        label: 'Meeting',
+        value: 'meeting',
+        prefixIconName: 'standard:service_appointment',
+        disabled: true
+    },
+    {
+        label: 'Other',
+        value: 'other',
+        prefixIconName: 'standard:all'
+    },
+    {
+        label: 'Menu item 5',
+        value: 'item-5'
+    },
+    {
+        label: 'Menu item 6',
+        value: 'item-6'
+    },
+    {
+        label: 'Menu item 7',
+        value: 'item-7'
     }
 ];
 
@@ -289,7 +317,49 @@ const Template = (args) => FilterMenu(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    label: 'Base filter menu',
+    items: items
+};
+
+export const Disabled = Template.bind({});
+Disabled.args = {
     items: items,
-    value: ['item-with-no-icon']
+    disabled: true
+};
+
+export const ContainerVariantWithCustomButtonLabels = Template.bind({});
+ContainerVariantWithCustomButtonLabels.args = {
+    items: items,
+    variant: 'container',
+    label: 'Open menu',
+    resetButtonLabel: 'Erase',
+    submitButtonLabel: 'Save'
+};
+
+export const XSmallIcon = Template.bind({});
+XSmallIcon.args = {
+    items: items,
+    iconSize: 'x-small',
+    iconName: 'utility:apps',
+    value: ['item-5', 'meeting', 'wrong-value']
+};
+
+export const Loading = Template.bind({});
+Loading.args = {
+    items: items,
+    isLoading: true,
+    tooltip: 'is-loading is set to true'
+};
+
+export const LargeWidthAndNubbin = Template.bind({});
+LargeWidthAndNubbin.args = {
+    items: items,
+    menuWidth: 'large',
+    nubbin: true
+};
+
+export const FiveItemsLengthNoSearchBox = Template.bind({});
+FiveItemsLengthNoSearchBox.args = {
+    items: items,
+    menuLength: '5-items',
+    hideSearchBox: true
 };
