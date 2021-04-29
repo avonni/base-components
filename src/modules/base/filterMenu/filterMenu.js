@@ -523,7 +523,7 @@ export default class FilterMenu extends LightningElement {
     }
 
     handleDropdownMouseDown(event) {
-        // if the menu contais a scrollbar due to large number of menu-items
+        // if the menu contains a scrollbar due to large number of menu-items
         // this is needed so that menu doesnt close on dragging the scrollbar with the mouse
         const mainButton = 0;
         if (event.button === mainButton) {
@@ -628,5 +628,13 @@ export default class FilterMenu extends LightningElement {
             const label = item.label.toLowerCase();
             item.hidden = searchTerm ? !label.includes(searchTerm) : false;
         });
+
+        this.dispatchEvent(
+            new CustomEvent('search', {
+                detail: {
+                    value: event.currentTarget.value
+                }
+            })
+        );
     }
 }
