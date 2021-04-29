@@ -23,6 +23,10 @@
             "path": "src/modules/base/iso8601Utils/iso8601Utils.js"
         },
         {
+            "name": "c/tooltipLibrary",
+            "path": "src/modules/base/tooltipLibrary/tooltipLibrary.js"
+        },
+        {
             "name": "c/utils",
             "path": "src/modules/base/utils/utils.js"
         },
@@ -209,6 +213,10 @@
         {
             "name": "c/primitiveAvatar",
             "path": "src/modules/base/primitiveAvatar/primitiveAvatar.js"
+        },
+        {
+            "name": "c/primitiveBubble",
+            "path": "src/modules/base/primitiveBubble/primitiveBubble.js"
         },
         {
             "name": "c/primitiveColorpickerButton",
