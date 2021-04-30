@@ -454,3 +454,9 @@ Monthly.args = {
     hideNavigation: true,
     hideDatePicker: true
 };
+
+export const test = Template.bind({});
+test.args = {
+    value: '1651339800',
+    variant: 'weekly'
+};

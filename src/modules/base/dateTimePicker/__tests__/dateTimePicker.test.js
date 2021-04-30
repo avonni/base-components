@@ -1,6 +1,15 @@
 import { createElement } from 'lwc';
 import DateTimePicker from 'c/dateTimePicker';
 
+// Not tested
+// validity
+// value
+// date format day
+// date format month
+// date format weekday
+// date format year
+// disabled date times
+
 describe('DateTimePicker', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -342,6 +351,524 @@ describe('DateTimePicker', () => {
                 '.avonni-date-time-picker__timeline'
             );
             expect(timeline).toBeFalsy();
+        });
+    });
+
+    // read only
+    it('Date time picker read only daily', () => {
+        const element = createElement('base-date-time-picker', {
+            is: DateTimePicker
+        });
+
+        element.readOnly = true;
+        document.body.appendChild(element);
+
+        const buttons = element.shadowRoot.querySelectorAll('button');
+        const firstButton = element.shadowRoot.querySelector('button');
+
+        return Promise.resolve().then(() => {
+            firstButton.click();
+            expect(firstButton.ariaSelected).toBeFalsy();
+            buttons.forEach((button) => {
+                expect(button.ariaReadOnly).toBeTruthy();
+            });
+        });
+    });
+
+    // required
+    it('Date time picker required', () => {
+        const element = createElement('base-date-time-picker', {
+            is: DateTimePicker
+        });
+
+        document.body.appendChild(element);
+
+        element.required = true;
+
+        return Promise.resolve().then(() => {
+            const required = element.shadowRoot.querySelector('.slds-required');
+            expect(required).toBeTruthy();
+            expect(required.textContent).toBe('*');
+        });
+    });
+
+    // message when value is missing
+    // Depends on required, focus(), blur() and showHelpMessageIfInvalid()
+    it('Date time picker message when value is missing', () => {
+        const element = createElement('base-date-time-picker', {
+            is: DateTimePicker
+        });
+
+        document.body.appendChild(element);
+        element.required = true;
+        element.messageWhenValueMissing = 'Missing value!';
+
+        return Promise.resolve()
+            .then(() => {
+                element.focus();
+                element.blur();
+                element.showHelpMessageIfInvalid();
+            })
+            .then(() => {
+                const message = element.shadowRoot.querySelector(
+                    '.slds-form-element__help'
+                );
+                expect(message.textContent).toBe('Missing value!');
+            });
+    });
+
+    // name
+    it('Date time picker name', () => {
+        const element = createElement('base-date-time-picker', {
+            is: DateTimePicker
+        });
+
+        document.body.appendChild(element);
+
+        element.name = 'a-string-name';
+        const input = element.shadowRoot.querySelector('lightning-input');
+
+        return Promise.resolve().then(() => {
+            expect(input.name).toBe('a-string-name');
+        });
+    });
+
+    // start time
+    it('Date time picker start time', () => {
+        const element = createElement('base-date-time-picker', {
+            is: DateTimePicker
+        });
+
+        element.startTime = '10:00';
+
+        document.body.appendChild(element);
+
+        const time = element.shadowRoot.querySelectorAll(
+            'lightning-formatted-date-time'
+        );
+
+        return Promise.resolve().then(() => {
+            // cannot change the time zone so there is always a difference of 4 hours
+            expect(time[0].value).toContain('14:00');
+        });
+    });
+
+    // end time
+    it('Date time picker end time', () => {
+        const element = createElement('base-date-time-picker', {
+            is: DateTimePicker
+        });
+
+        element.startTime = '10:00';
+        element.endTime = '11:00';
+
+        document.body.appendChild(element);
+        const time = element.shadowRoot.querySelectorAll(
+            'lightning-formatted-date-time'
+        );
+
+        return Promise.resolve().then(() => {
+            // cannot change the time zone so there is always a difference of 4 hours
+            // time slot duration of 30 min so only two button 14:00 and 14:30
+            expect(time[1].value).toContain('14:30');
+        });
+    });
+
+    // time slot duration
+    it('Date time picker time slot duration', () => {
+        const element = createElement('base-date-time-picker', {
+            is: DateTimePicker
+        });
+
+        element.startTime = '10:00';
+        element.endTime = '12:00';
+        element.timeSlotDuration = '01:00';
+
+        document.body.appendChild(element);
+
+        const time = element.shadowRoot.querySelectorAll(
+            'lightning-formatted-date-time'
+        );
+
+        return Promise.resolve().then(() => {
+            // cannot change the time zone so there is always a difference of 4 hours
+            // time slot duration of 1 hour so only two button 14:00 and 15:00
+            expect(time).toHaveLength(2);
+            expect(time[1].value).toContain('15:00');
+        });
+    });
+
+    it('Date time picker time slot duration timeline', () => {
+        const element = createElement('base-date-time-picker', {
+            is: DateTimePicker
+        });
+
+        element.startTime = '10:00';
+        element.endTime = '12:00';
+        element.timeSlotDuration = '01:00';
+        element.variant = 'timeline';
+
+        document.body.appendChild(element);
+
+        const time = element.shadowRoot.querySelectorAll(
+            'lightning-formatted-date-time'
+        );
+
+        return Promise.resolve().then(() => {
+            // cannot change the time zone so there is always a difference of 4 hours
+            // time slot duration of 1 hour so only two button 14:00 and 15:00
+            expect(time).toHaveLength(4);
+            expect(time[0].value).toContain('14:00');
+            expect(time[1].value).toContain('14:00');
+            expect(time[2].value).toContain('15:00');
+            expect(time[3].value).toContain('15:00');
+        });
+    });
+
+    // time format hour
+    it('Date time picker time format hour numeric', () => {
+        const element = createElement('base-date-time-picker', {
+            is: DateTimePicker
+        });
+
+        document.body.appendChild(element);
+
+        const times = element.shadowRoot.querySelectorAll(
+            'lightning-formatted-date-time'
+        );
+
+        return Promise.resolve().then(() => {
+            times.forEach((time) => {
+                expect(time.hour).toBe('numeric');
+            });
+        });
+    });
+
+    it('Date time picker time format hour 2-digit', () => {
+        const element = createElement('base-date-time-picker', {
+            is: DateTimePicker
+        });
+
+        document.body.appendChild(element);
+
+        element.timeFormatHour = '2-digit';
+
+        const times = element.shadowRoot.querySelectorAll(
+            'lightning-formatted-date-time'
+        );
+
+        return Promise.resolve().then(() => {
+            times.forEach((time) => {
+                expect(time.hour).toBe('2-digit');
+            });
+        });
+    });
+
+    // time format hour 12
+    it('Date time picker time format hour 12', () => {
+        const element = createElement('base-date-time-picker', {
+            is: DateTimePicker
+        });
+
+        document.body.appendChild(element);
+
+        element.timeFormatHour12 = true;
+
+        const times = element.shadowRoot.querySelectorAll(
+            'lightning-formatted-date-time'
+        );
+
+        return Promise.resolve().then(() => {
+            times.forEach((time) => {
+                expect(time.hour12).toBeTruthy();
+            });
+        });
+    });
+
+    // time format minute
+    it('Date time picker time format minute numeric', () => {
+        const element = createElement('base-date-time-picker', {
+            is: DateTimePicker
+        });
+
+        document.body.appendChild(element);
+
+        const times = element.shadowRoot.querySelectorAll(
+            'lightning-formatted-date-time'
+        );
+
+        element.timeFormatMinute = 'numeric';
+
+        return Promise.resolve().then(() => {
+            times.forEach((time) => {
+                expect(time.minute).toBe('numeric');
+            });
+        });
+    });
+
+    it('Date time picker time format minute 2-digit', () => {
+        const element = createElement('base-date-time-picker', {
+            is: DateTimePicker
+        });
+
+        document.body.appendChild(element);
+
+        const times = element.shadowRoot.querySelectorAll(
+            'lightning-formatted-date-time'
+        );
+
+        element.timeFormatMinute = '2-digit';
+
+        return Promise.resolve().then(() => {
+            times.forEach((time) => {
+                expect(time.minute).toBe('2-digit');
+            });
+        });
+    });
+
+    // time format second
+    it('Date time picker time format second numeric', () => {
+        const element = createElement('base-date-time-picker', {
+            is: DateTimePicker
+        });
+
+        document.body.appendChild(element);
+
+        const times = element.shadowRoot.querySelectorAll(
+            'lightning-formatted-date-time'
+        );
+
+        element.timeFormatSecond = 'numeric';
+
+        return Promise.resolve().then(() => {
+            times.forEach((time) => {
+                expect(time.second).toBe('numeric');
+            });
+        });
+    });
+
+    it('Date time picker time format second 2-digit', () => {
+        const element = createElement('base-date-time-picker', {
+            is: DateTimePicker
+        });
+
+        document.body.appendChild(element);
+
+        const times = element.shadowRoot.querySelectorAll(
+            'lightning-formatted-date-time'
+        );
+
+        element.timeFormatSecond = '2-digit';
+
+        return Promise.resolve().then(() => {
+            times.forEach((time) => {
+                expect(time.second).toBe('2-digit');
+            });
+        });
+    });
+
+    // show end time
+    it('Date time picker show end time', () => {
+        const element = createElement('base-date-time-picker', {
+            is: DateTimePicker
+        });
+
+        element.startTime = '10:00';
+        element.endTime = '12:00';
+        element.timeSlotDuration = '01:00';
+        element.showEndTime = true;
+
+        document.body.appendChild(element);
+
+        const time = element.shadowRoot.querySelectorAll(
+            'lightning-formatted-date-time'
+        );
+
+        return Promise.resolve().then(() => {
+            // cannot change the time zone so there is always a difference of 4 hours
+            // time slot duration of 1 hour so only two button 14:00 and 15:00
+            expect(time).toHaveLength(4);
+            expect(time[3].value).toContain('16:00');
+        });
+    });
+
+    // show disabled dates
+    it('Date time picker show disabled dates daily', () => {
+        const element = createElement('base-date-time-picker', {
+            is: DateTimePicker
+        });
+
+        element.disabled = true;
+        element.showDisabledDates = true;
+
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => {
+            const times = element.shadowRoot.querySelectorAll('button');
+            times.forEach((time) => {
+                expect(time.disabled).toBeTruthy();
+            });
+        });
+    });
+
+    it('Date time picker show disabled dates weekly', () => {
+        const element = createElement('base-date-time-picker', {
+            is: DateTimePicker
+        });
+
+        element.disabled = true;
+        element.showDisabledDates = true;
+        element.variant = 'weekly';
+
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => {
+            const times = element.shadowRoot.querySelectorAll('button');
+            times.forEach((time) => {
+                expect(time.disabled).toBeTruthy();
+            });
+        });
+    });
+
+    it('Date time picker show disabled dates inline', () => {
+        const element = createElement('base-date-time-picker', {
+            is: DateTimePicker
+        });
+
+        element.disabled = true;
+        element.showDisabledDates = true;
+        element.variant = 'inline';
+
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => {
+            const times = element.shadowRoot.querySelectorAll('button');
+            times.forEach((time) => {
+                expect(time.disabled).toBeTruthy();
+            });
+        });
+    });
+
+    it('Date time picker show disabled dates timeline', () => {
+        const element = createElement('base-date-time-picker', {
+            is: DateTimePicker
+        });
+
+        element.disabled = true;
+        element.showDisabledDates = true;
+        element.variant = 'timeline';
+
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => {
+            const times = element.shadowRoot.querySelectorAll('button');
+            times.forEach((time) => {
+                expect(time.disabled).toBeTruthy();
+            });
+        });
+    });
+
+    it('Date time picker show disabled dates monthly', () => {
+        const element = createElement('base-date-time-picker', {
+            is: DateTimePicker
+        });
+
+        element.disabled = true;
+        element.showDisabledDates = true;
+        element.variant = 'monthly';
+
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => {
+            const times = element.shadowRoot.querySelectorAll('button');
+            times.forEach((time) => {
+                expect(time.disabled).toBeTruthy();
+            });
+        });
+    });
+
+    // show time zone
+    it('Date time picker show time zone', () => {
+        const element = createElement('base-date-time-picker', {
+            is: DateTimePicker
+        });
+
+        element.showTimeZone = true;
+
+        document.body.appendChild(element);
+
+        const timeZone = element.shadowRoot.querySelectorAll(
+            'lightning-combobox'
+        );
+
+        return Promise.resolve().then(() => {
+            expect(timeZone).toBeTruthy();
+        });
+    });
+
+    // max and min
+    it('Date time picker max and min', () => {
+        const element = createElement('base-date-time-picker', {
+            is: DateTimePicker
+        });
+
+        document.body.appendChild(element);
+
+        element.max = '2021, 11, 30';
+        element.min = '2021, 12, 01';
+
+        const maxDate = '2021-11-30T05:00:00.000Z';
+        const minDate = '2021-12-01T05:00:00.000Z';
+
+        const input = element.shadowRoot.querySelector('lightning-input');
+
+        return Promise.resolve().then(() => {
+            expect(input.max).toBe(maxDate);
+            expect(input.min).toBe(minDate);
+        });
+    });
+
+    // type
+    // it('Date time picker type radio', () => {
+    //     const element = createElement('base-date-time-picker', {
+    //         is: DateTimePicker
+    //     });
+
+    //     document.body.appendChild(element);
+
+    //     element.type = 'radio'
+
+    //     const input = element.shadowRoot.querySelector('lightning-input')
+
+    //     return Promise.resolve().then(() => {
+
+    //     });
+    // });
+
+    // hide navigation
+    it('Date time picker hide navigation', () => {
+        const element = createElement('base-date-time-picker', {
+            is: DateTimePicker
+        });
+
+        element.hideNavigation = true;
+
+        document.body.appendChild(element);
+
+        const prevButton = element.shadowRoot.querySelector(
+            "lightning-button-icon[title='Previous dates']"
+        );
+        const todayButton = element.shadowRoot.querySelector(
+            "lightning-button[label='today']"
+        );
+        const nextButton = element.shadowRoot.querySelector(
+            "lightning-button-icon[title='Next dates']"
+        );
+
+        return Promise.resolve().then(() => {
+            expect(prevButton).toBeFalsy();
+            expect(todayButton).toBeFalsy();
+            expect(nextButton).toBeFalsy();
         });
     });
 });
