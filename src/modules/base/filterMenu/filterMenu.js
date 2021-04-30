@@ -88,11 +88,13 @@ export default class FilterMenu extends LightningElement {
     _resetButtonLabel = DEFAULT_RESET_BUTTON_LABEL;
     _menuWidth = MENU_WIDTHS.default;
     _menuLength = MENU_LENGTHS.default;
+    _hideSelectedItems = false;
 
     _cancelBlur = false;
     _dropdownVisible = false;
 
     @track computedItems = [];
+    @track selectedItems = [];
     dropdownOpened = false;
 
     connectedCallback() {
@@ -327,6 +329,14 @@ export default class FilterMenu extends LightningElement {
         this._nubbin = normalizeBoolean(bool);
     }
 
+    @api
+    get hideSelectedItems() {
+        return this._hideSelectedItems;
+    }
+    set hideSelectedItems(bool) {
+        this._hideSelectedItems = normalizeBoolean(bool);
+    }
+
     get computedShowDownIcon() {
         return !(
             this.iconName === 'utility:down' ||
@@ -433,6 +443,10 @@ export default class FilterMenu extends LightningElement {
         });
     }
 
+    get showSelectedItems() {
+        return !this.hideSelectedItems && this.selectedItems.length > 0;
+    }
+
     @api
     focus() {
         this.template.querySelector('button').focus();
@@ -457,13 +471,21 @@ export default class FilterMenu extends LightningElement {
     }
 
     computeValue() {
+        // const selectedItems = [];
         this.computedItems.forEach((item) => {
             if (this.value.indexOf(item.value) > -1) {
                 item.checked = true;
+
+                // selectedItems.push({
+                //     label: item.label,
+                //     name: item.value
+                // });
             } else {
                 item.checked = false;
             }
         });
+
+        // this.selectedItems = selectedItems;
     }
 
     allowBlur() {
@@ -663,7 +685,6 @@ export default class FilterMenu extends LightningElement {
 
     handlePrivateBlur(event) {
         event.stopPropagation();
-        this._menuHasFocus = false;
 
         if (this._cancelBlur) {
             return;
@@ -676,8 +697,6 @@ export default class FilterMenu extends LightningElement {
 
     handlePrivateFocus(event) {
         event.stopPropagation();
-
-        this._menuHasFocus = true;
         this.allowBlur();
     }
 
@@ -718,7 +737,33 @@ export default class FilterMenu extends LightningElement {
         }
     }
 
+    handleSelectedItemRemove(event) {
+        const index = event.detail.index;
+        this.selectedItems.splice(index, 1);
+
+        const value = this.selectedItems.map((item) => item.name);
+
+        this.dispatchEvent(
+            new CustomEvent('apply', {
+                detail: {
+                    value: value
+                }
+            })
+        );
+    }
+
     handleSubmitClick() {
+        const selectedItems = [];
+        this.computedItems.forEach((item) => {
+            if (item.checked) {
+                selectedItems.push({
+                    label: item.label,
+                    name: item.value
+                });
+            }
+        });
+        this.selectedItems = selectedItems;
+
         this.dispatchEvent(
             new CustomEvent('apply', {
                 detail: {
@@ -727,7 +772,6 @@ export default class FilterMenu extends LightningElement {
             })
         );
         this.clear();
-        this._menuHasFocus = false;
         this.close();
     }
 

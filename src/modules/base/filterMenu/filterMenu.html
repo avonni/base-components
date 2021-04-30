@@ -1,118 +1,124 @@
 <template>
-    <button
-        class={computedButtonClass}
-        disabled={disabled}
-        aria-expanded={computedAriaExpanded}
-        aria-haspopup="true"
-        title={title}
-        accesskey={accessKey}
-        value={value}
-        type="button"
-        onclick={handleButtonClick}
-        onblur={handleButtonBlur}
-        onfocus={handleButtonFocus}
-        onmousedown={handleButtonMouseDown}
-    >
-        {label}
-
-        <c-primitive-icon
-            icon-name={iconName}
-            svg-class="slds-button__icon"
-            variant="bare"
-        ></c-primitive-icon>
-
-        <template if:true={computedShowDownIcon}>
+    <div class="slds-is-relative">
+        <button
+            class={computedButtonClass}
+            disabled={disabled}
+            aria-expanded={computedAriaExpanded}
+            aria-haspopup="true"
+            title={title}
+            accesskey={accessKey}
+            value={value}
+            type="button"
+            onclick={handleButtonClick}
+            onblur={handleButtonBlur}
+            onfocus={handleButtonFocus}
+            onmousedown={handleButtonMouseDown}
+        >
+            {label}
             <c-primitive-icon
-                icon-name="utility:down"
-                svg-class="slds-button__icon slds-button__icon_x-small slds-m-left_xx-small"
+                icon-name={iconName}
+                svg-class="slds-button__icon"
                 variant="bare"
             ></c-primitive-icon>
-        </template>
-
-        <span class="slds-assistive-text">{alternativeText}</span>
-    </button>
-    <template if:true={dropdownOpened}>
-        <div
-            class={computedDropdownClass}
-            onprivateselect={handlePrivateSelect}
-            onprivateblur={handlePrivateBlur}
-            onprivatefocus={handlePrivateFocus}
-            onmousedown={handleDropdownMouseDown}
-            onclick={handleDropdownClick}
-            onmouseout={allowBlur}
-        >
-            <template if:true={isLoading}>
-                <lightning-spinner
-                    size="small"
-                    alternative-text={loadingStateAlternativeText}
-                ></lightning-spinner>
+            <template if:true={computedShowDownIcon}>
+                <c-primitive-icon
+                    icon-name="utility:down"
+                    svg-class="slds-button__icon slds-button__icon_x-small slds-m-left_xx-small"
+                    variant="bare"
+                ></c-primitive-icon>
             </template>
-            <template if:false={isLoading}>
-                <div class="slds-dropdown__list" role="menu">
-                    <lightning-input
-                        if:true={showSearchBox}
-                        class="slds-p-around_small"
-                        label={searchInputPlaceholder}
-                        placeholder={searchInputPlaceholder}
-                        variant="label-hidden"
-                        type="search"
-                        disabled={disabled}
-                        is-loading={isLoading}
-                        value={searchTerm}
-                        autocomplete="off"
-                        onchange={handleSearch}
-                        onblur={handlePrivateBlur}
-                        onfocus={handlePrivateFocus}
-                        onkeydown={handleKeyDown}
-                    ></lightning-input>
-                    <div class={computedItemListClass}>
-                        <template
-                            for:each={computedItems}
-                            for:item="item"
-                            for:index="index"
-                        >
-                            <lightning-menu-item
-                                if:false={item.hidden}
-                                key={item.value}
-                                label={item.label}
-                                value={item.value}
-                                icon-name={item.iconName}
-                                prefix-icon-name={item.prefixIconName}
-                                checked={item.checked}
-                                disabled={item.disabled}
-                                tab-index={item.tabindex}
-                                data-index={index}
-                                onkeydown={handleKeyDown}
+            <span class="slds-assistive-text">{alternativeText}</span>
+        </button>
+        <template if:true={dropdownOpened}>
+            <div
+                class={computedDropdownClass}
+                onprivateselect={handlePrivateSelect}
+                onprivateblur={handlePrivateBlur}
+                onprivatefocus={handlePrivateFocus}
+                onmousedown={handleDropdownMouseDown}
+                onclick={handleDropdownClick}
+                onmouseout={allowBlur}
+            >
+                <template if:true={isLoading}>
+                    <lightning-spinner
+                        size="small"
+                        alternative-text={loadingStateAlternativeText}
+                    ></lightning-spinner>
+                </template>
+                <template if:false={isLoading}>
+                    <div class="slds-dropdown__list" role="menu">
+                        <lightning-input
+                            if:true={showSearchBox}
+                            class="slds-p-around_small"
+                            label={searchInputPlaceholder}
+                            placeholder={searchInputPlaceholder}
+                            variant="label-hidden"
+                            type="search"
+                            disabled={disabled}
+                            is-loading={isLoading}
+                            value={searchTerm}
+                            autocomplete="off"
+                            onchange={handleSearch}
+                            onblur={handlePrivateBlur}
+                            onfocus={handlePrivateFocus}
+                            onkeydown={handleKeyDown}
+                        ></lightning-input>
+                        <div class={computedItemListClass}>
+                            <template
+                                for:each={computedItems}
+                                for:item="item"
+                                for:index="index"
                             >
-                            </lightning-menu-item>
-                        </template>
+                                <lightning-menu-item
+                                    if:false={item.hidden}
+                                    key={item.value}
+                                    label={item.label}
+                                    value={item.value}
+                                    icon-name={item.iconName}
+                                    prefix-icon-name={item.prefixIconName}
+                                    checked={item.checked}
+                                    disabled={item.disabled}
+                                    tab-index={item.tabindex}
+                                    data-index={index}
+                                    onkeydown={handleKeyDown}
+                                >
+                                </lightning-menu-item>
+                            </template>
+                        </div>
+                        <lightning-menu-divider></lightning-menu-divider>
+                        <div
+                            class="slds-p-horizontal_small slds-p-bottom_x-small slds-text-align_right"
+                        >
+                            <lightning-button
+                                class="slds-m-right_x-small"
+                                variant="base"
+                                label={resetButtonLabel}
+                                title={resetButtonLabel}
+                                onfocus={handlePrivateFocus}
+                                onblur={handlePrivateBlur}
+                                onclick={handleResetClick}
+                                onkeydown={handleKeyDown}
+                            ></lightning-button>
+                            <lightning-button
+                                variant="brand"
+                                label={submitButtonLabel}
+                                title={submitButtonLabel}
+                                onfocus={handlePrivateFocus}
+                                onblur={handlePrivateBlur}
+                                onclick={handleSubmitClick}
+                                onkeydown={handleKeyDown}
+                            ></lightning-button>
+                        </div>
                     </div>
-                    <lightning-menu-divider></lightning-menu-divider>
-                    <div
-                        class="slds-p-horizontal_small slds-p-bottom_x-small slds-text-align_right"
-                    >
-                        <lightning-button
-                            class="slds-m-right_x-small"
-                            variant="base"
-                            label={resetButtonLabel}
-                            title={resetButtonLabel}
-                            onfocus={handlePrivateFocus}
-                            onblur={handlePrivateBlur}
-                            onclick={handleResetClick}
-                            onkeydown={handleKeyDown}
-                        ></lightning-button>
-                        <lightning-button
-                            variant="brand"
-                            label={submitButtonLabel}
-                            title={submitButtonLabel}
-                            onfocus={handlePrivateFocus}
-                            onblur={handlePrivateBlur}
-                            onclick={handleSubmitClick}
-                            onkeydown={handleKeyDown}
-                        ></lightning-button>
-                    </div>
-                </div>
-            </template>
-        </div>
-    </template>
+                </template>
+            </div>
+        </template>
+    </div>
+    <div class="slds-m-top_x-small">
+        <lightning-pill-container
+            if:true={showSelectedItems}
+            items={selectedItems}
+            onitemremove={handleSelectedItemRemove}
+        ></lightning-pill-container>
+    </div>
 </template>

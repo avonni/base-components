@@ -154,6 +154,18 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        hideSelectedItems: {
+            name: 'hide-selected-items',
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description: 'If true, the selected items are hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         searchInputPlaceholder: {
             name: 'search-input-placeholder',
             control: {
@@ -366,6 +378,5 @@ LargeWidthAndNubbin.args = {
 export const FiveItemsLengthNoSearchBox = Template.bind({});
 FiveItemsLengthNoSearchBox.args = {
     items: items,
-    menuLength: '5-items',
-    hideSearchBox: true
+    menuLength: '5-items'
 };

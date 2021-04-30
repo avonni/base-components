@@ -26,7 +26,8 @@ export const FilterMenu = ({
     menuAlignment,
     menuWidth,
     menuLength,
-    nubbin
+    nubbin,
+    hideSelectedItems
 }) => {
     const element = document.createElement('ac-base-filter-menu');
     element.accessKey = accessKey;
@@ -50,5 +51,6 @@ export const FilterMenu = ({
     element.menuWidth = menuWidth;
     element.menuLength = menuLength;
     element.nubbin = nubbin;
+    element.hideSelectedItems = hideSelectedItems;
     return element;
 };
