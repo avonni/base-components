@@ -1,0 +1,70 @@
+<template>
+    <!-- The double div wrap is to prevent the menu from taking the width of the pills -->
+    <div class="slds-grid">
+        <div>
+            <div class="slds-text-heading_small slds-truncate">{label}</div>
+            <template if:true={isLoading}>
+                <div class="slds-is-relative slds-p-vertical_medium">
+                    <lightning-spinner
+                        size="small"
+                        alternative-text={loadingStateAlternativeText}
+                    ></lightning-spinner>
+                </div>
+            </template>
+            <template if:false={isLoading}>
+                <lightning-menu-divider
+                    if:false={showSearchBox}
+                ></lightning-menu-divider>
+                <lightning-input
+                    if:true={showSearchBox}
+                    class="slds-p-vertical_small"
+                    label={searchInputPlaceholder}
+                    placeholder={searchInputPlaceholder}
+                    variant="label-hidden"
+                    type="search"
+                    disabled={disabled}
+                    is-loading={isLoading}
+                    value={searchTerm}
+                    autocomplete="off"
+                    onchange={handleSearch}
+                ></lightning-input>
+                <lightning-checkbox-group
+                    class="slds-p-bottom_xx-small"
+                    disabled={disabled}
+                    label={label}
+                    variant="label-hidden"
+                    options={computedItems}
+                    value={value}
+                    onchange={handleCheckboxChange}
+                ></lightning-checkbox-group>
+                <lightning-menu-divider></lightning-menu-divider>
+                <div
+                    class="slds-p-horizontal_small slds-p-bottom_x-small slds-text-align_right"
+                >
+                    <lightning-button
+                        class="slds-m-right_x-small"
+                        variant="base"
+                        label={resetButtonLabel}
+                        title={resetButtonLabel}
+                        onclick={handleResetClick}
+                        disabled={disabled}
+                    ></lightning-button>
+                    <lightning-button
+                        variant="brand"
+                        label={submitButtonLabel}
+                        title={submitButtonLabel}
+                        onclick={handleSubmitClick}
+                        disabled={disabled}
+                    ></lightning-button>
+                </div>
+            </template>
+        </div>
+    </div>
+    <div class="slds-m-top_x-small">
+        <lightning-pill-container
+            if:true={showSelectedItems}
+            items={selectedItems}
+            onitemremove={handleSelectedItemRemove}
+        ></lightning-pill-container>
+    </div>
+</template>

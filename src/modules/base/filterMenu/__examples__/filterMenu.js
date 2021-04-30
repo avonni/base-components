@@ -19,6 +19,7 @@ export const FilterMenu = ({
     tooltip,
     value,
     variant,
+    buttonVariant,
     searchInputPlaceholder,
     showSearchBox,
     submitButtonLabel,
@@ -43,6 +44,7 @@ export const FilterMenu = ({
     element.tooltip = tooltip;
     element.value = value;
     element.variant = variant;
+    element.buttonVariant = buttonVariant;
     element.searchInputPlaceholder = searchInputPlaceholder;
     element.showSearchBox = showSearchBox;
     element.submitButtonLabel = submitButtonLabel;

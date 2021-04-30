@@ -94,7 +94,7 @@ export default {
                 type: { summary: 'string[]' }
             }
         },
-        variant: {
+        buttonVariant: {
             control: {
                 type: 'select'
             },
@@ -108,10 +108,23 @@ export default {
             ],
             defaultValue: 'border',
             description:
-                'The variant changes the look of the button. Accepted variants include bare, container, border, border-filled, bare-inverse, and border-inverse. This value defaults to border.',
+                'Changes the look of the button. Accepted values include bare, container, border, border-filled, bare-inverse, and border-inverse. This value defaults to border.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'border' }
+            }
+        },
+        variant: {
+            control: {
+                type: 'select'
+            },
+            options: ['horizontal', 'vertical'],
+            defaultValue: 'horizontal',
+            description:
+                'Changes the look of the filter menu. Accepted values include vertical or horizontal.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'horizontal' }
             }
         },
         title: {
@@ -332,6 +345,13 @@ Base.args = {
     items: items
 };
 
+export const Vertical = Template.bind({});
+Vertical.args = {
+    items: items,
+    variant: 'vertical',
+    label: 'Contact'
+};
+
 export const ShowSearch = Template.bind({});
 ShowSearch.args = {
     items: items,
@@ -347,7 +367,7 @@ Disabled.args = {
 export const ContainerVariantWithCustomButtonLabels = Template.bind({});
 ContainerVariantWithCustomButtonLabels.args = {
     items: items,
-    variant: 'container',
+    buttonVariant: 'container',
     label: 'Open menu',
     resetButtonLabel: 'Erase',
     submitButtonLabel: 'Save'

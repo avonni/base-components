@@ -15,6 +15,9 @@ import {
     stopPositioning
 } from 'c/positionLibrary';
 
+import filterMenuVertical from './filterMenuVertical.html';
+import filterMenu from './filterMenu.html';
+
 const ICON_SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
     default: 'medium'
@@ -33,7 +36,7 @@ const MENU_ALIGNMENTS = {
     default: 'left'
 };
 
-const VARIANTS = {
+const BUTTON_VARIANTS = {
     valid: [
         'bare',
         'container',
@@ -43,6 +46,11 @@ const VARIANTS = {
         'border-inverse'
     ],
     default: 'border'
+};
+
+const VARIANTS = {
+    valid: ['horizontal', 'vertical'],
+    default: 'horizontal'
 };
 
 const MENU_WIDTHS = {
@@ -82,6 +90,7 @@ export default class FilterMenu extends LightningElement {
     _nubbin = false;
     _value = [];
     _variant = VARIANTS.default;
+    _buttonVariant = BUTTON_VARIANTS.default;
     _searchInputPlaceholder = DEFAULT_SEARCH_INPUT_PLACEHOLDER;
     _showSearchBox = false;
     _submitButtonLabel = DEFAULT_SUBMIT_BUTTON_LABEL;
@@ -122,6 +131,13 @@ export default class FilterMenu extends LightningElement {
 
     renderedCallback() {
         this.initTooltip();
+    }
+
+    render() {
+        if (this.variant === 'vertical') {
+            return filterMenuVertical;
+        }
+        return filterMenu;
     }
 
     @api
@@ -245,6 +261,17 @@ export default class FilterMenu extends LightningElement {
     }
 
     @api
+    get buttonVariant() {
+        return this._buttonVariant;
+    }
+    set buttonVariant(value) {
+        this._buttonVariant = normalizeString(value, {
+            fallbackValue: BUTTON_VARIANTS.default,
+            validValues: BUTTON_VARIANTS.valid
+        });
+    }
+
+    @api
     get searchInputPlaceholder() {
         return this._searchInputPlaceholder;
     }
@@ -348,21 +375,22 @@ export default class FilterMenu extends LightningElement {
     get computedButtonClass() {
         const isDropdownIcon = !this.computedShowDownIcon;
         const isBare =
-            this.variant === 'bare' || this.variant === 'bare-inverse';
+            this.buttonVariant === 'bare' ||
+            this.buttonVariant === 'bare-inverse';
 
         const classes = classSet('slds-button');
 
         if (this.label) {
             classes.add({
-                'slds-button_neutral': this.variant === 'border',
-                'slds-button_inverse': this.variant === 'border-inverse'
+                'slds-button_neutral': this.buttonVariant === 'border',
+                'slds-button_inverse': this.buttonVariant === 'border-inverse'
             });
         } else {
-            // The inverse check is to allow for a combination of a non-default icon and an -inverse variant
+            // The inverse check is to allow for a combination of a non-default icon and an -inverse buttonVariant
             const useMoreContainer =
-                this.variant === 'container' ||
-                this.variant === 'bare-inverse' ||
-                this.variant === 'border-inverse';
+                this.buttonVariant === 'container' ||
+                this.buttonVariant === 'bare-inverse' ||
+                this.buttonVariant === 'border-inverse';
 
             classes.add({
                 'slds-button_icon': !isDropdownIcon,
@@ -371,14 +399,15 @@ export default class FilterMenu extends LightningElement {
                 'slds-button_icon-container-more':
                     useMoreContainer && !isDropdownIcon,
                 'slds-button_icon-container':
-                    this.variant === 'container' && isDropdownIcon,
+                    this.buttonVariant === 'container' && isDropdownIcon,
                 'slds-button_icon-border':
-                    this.variant === 'border' && isDropdownIcon,
+                    this.buttonVariant === 'border' && isDropdownIcon,
                 'slds-button_icon-border-filled':
-                    this.variant === 'border-filled',
+                    this.buttonVariant === 'border-filled',
                 'slds-button_icon-border-inverse':
-                    this.variant === 'border-inverse',
-                'slds-button_icon-inverse': this.variant === 'bare-inverse',
+                    this.buttonVariant === 'border-inverse',
+                'slds-button_icon-inverse':
+                    this.buttonVariant === 'bare-inverse',
                 'slds-button_icon-xx-small':
                     this.iconSize === 'xx-small' && !isBare,
                 'slds-button_icon-x-small':
@@ -446,7 +475,11 @@ export default class FilterMenu extends LightningElement {
 
     @api
     focus() {
-        this.template.querySelector('button').focus();
+        if (this.variant === 'vertical') {
+            this.template.querySelector('lightning-checkbox-group').focus();
+        } else {
+            this.template.querySelector('button').focus();
+        }
     }
 
     @api
@@ -644,6 +677,11 @@ export default class FilterMenu extends LightningElement {
             this.close();
             this.dispatchEvent(new CustomEvent('blur'));
         }
+    }
+
+    handleCheckboxChange(event) {
+        this._value = event.detail.value;
+        this.computeValue();
     }
 
     handlePrivateSelect(event) {

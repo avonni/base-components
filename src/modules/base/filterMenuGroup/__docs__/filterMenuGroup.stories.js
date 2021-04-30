@@ -3,13 +3,38 @@ import { FilterMenuGroup } from '../__examples__/filterMenuGroup';
 export default {
     title: 'Example/Filter Menu Group',
     argTypes: {
-        label: {
+        items: {
             control: {
-                type: 'text'
+                type: 'object'
             },
-            description: 'Optional text to be shown on the button.',
+            description: 'Array of item objects.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'object[]' }
+            }
+        },
+        hideSelectedItems: {
+            name: 'hide-selected-items',
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description: 'If true, the selected items are hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
+        variant: {
+            control: {
+                type: 'select'
+            },
+            options: ['horizontal', 'vertical'],
+            defaultValue: 'horizontal',
+            description:
+                'Variant of the filter group. Valid values include horizontal and vertical.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'horizontal' }
             }
         }
     }
@@ -155,7 +180,7 @@ const items = [
         name: 'editions',
         items: editions,
         label: 'Editions',
-        variant: 'bare',
+        buttonVariant: 'bare',
         showSearchBox: true,
         menuLength: '5-items'
     },
@@ -178,4 +203,10 @@ const Template = (args) => FilterMenuGroup(args);
 export const Base = Template.bind({});
 Base.args = {
     items: items
+};
+
+export const Vertical = Template.bind({});
+Vertical.args = {
+    items: items,
+    variant: 'vertical'
 };

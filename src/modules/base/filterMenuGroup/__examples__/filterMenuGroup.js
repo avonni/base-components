@@ -5,8 +5,10 @@ customElements.define(
     Component.CustomElementConstructor
 );
 
-export const FilterMenuGroup = ({ items }) => {
+export const FilterMenuGroup = ({ items, hideSelectedItems, variant }) => {
     const element = document.createElement('ac-base-filter-menu-group');
     element.items = items;
+    element.hideSelectedItems = hideSelectedItems;
+    element.variant = variant;
     return element;
 };

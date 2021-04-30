@@ -1,16 +1,34 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeArray, normalizeBoolean } from 'c/utilsPrivate';
+import {
+    normalizeArray,
+    normalizeBoolean,
+    normalizeString
+} from 'c/utilsPrivate';
 
 // QUESTIONS:
 // Use of filterMenuGroup/filterMenu or filterMenu/primitiveFilterMenu?
-// Should some attributes be the same for all menus? variant, iconSize and nubbin, maybe?
+// Should some attributes be the same for all menus? button variant, iconSize and nubbin, maybe?
 // Should the value be given by the user in the items object (current choice) or through one attribute?
 // Are values given by the user only checked (current choice) or should they appear in selected items?
 // Is there only one pill container for all the menus (current choice), or was there supposed to be one per menu? If so, how to manage the width?
+// Should variant be managed only at the group level instead of the menu level?
+// Apply and reset buttons in vertical variant?
+
+// TODO:
+// Update search for vertical variant
+// Implement vertical variant in group
+// Update documentation
+// Update tests and stories
+
+const VARIANTS = {
+    valid: ['horizontal', 'vertical'],
+    default: 'horizontal'
+};
 
 export default class FilterMenuGroup extends LightningElement {
     _items = [];
     _hideSelectedItems = false;
+    _variant = VARIANTS.default;
 
     _selectedItems = [];
     selectedPills = [];
@@ -32,6 +50,17 @@ export default class FilterMenuGroup extends LightningElement {
     }
     set hideSelectedItems(bool) {
         this._hideSelectedItems = normalizeBoolean(bool);
+    }
+
+    @api
+    get variant() {
+        return this._variant;
+    }
+    set variant(value) {
+        this._variant = normalizeString(value, {
+            fallbackValue: VARIANTS.default,
+            validValues: VARIANTS.valid
+        });
     }
 
     get showSelectedItems() {
