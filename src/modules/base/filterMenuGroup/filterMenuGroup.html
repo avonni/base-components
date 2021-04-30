@@ -1,0 +1,29 @@
+<template>
+    <template for:each={items} for:item="item">
+        <c-filter-menu
+            key={generateKey}
+            access-key={item.accessKey}
+            alternative-text={item.alternativeText}
+            disabled={item.disabled}
+            icon-name={item.iconName}
+            icon-size={item.iconSize}
+            is-loading={item.isLoading}
+            label={item.label}
+            loading-state-alternative-text={item.loadingStateAlternativeText}
+            items={item.items}
+            title={item.title}
+            tooltip={item.tooltip}
+            value={item.value}
+            variant={item.variant}
+            search-input-placeholder={item.searchInputPlaceholder}
+            show-search-box={item.showSearchBox}
+            submit-button-label={item.submitButtonLabel}
+            reset-button-label={item.resetButtonLabel}
+            menu-alignment={item.menuAlignment}
+            menu-width={item.menuWidth}
+            menu-length={item.menuLength}
+            nubbin={item.nubbin}
+            hide-selected-items={item.hideSelectedItems}
+        ></c-filter-menu>
+    </template>
+</template>
