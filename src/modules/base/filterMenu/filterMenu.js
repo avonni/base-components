@@ -186,7 +186,7 @@ export default class FilterMenu extends LightningElement {
     set iconSize(value) {
         this._iconSize = normalizeString(value, {
             fallbackValue: ICON_SIZES.default,
-            valid: ICON_SIZES.valid
+            validValues: ICON_SIZES.valid
         });
     }
 
@@ -239,7 +239,7 @@ export default class FilterMenu extends LightningElement {
     set variant(value) {
         this._variant = normalizeString(value, {
             fallbackValue: VARIANTS.default,
-            valid: VARIANTS.valid
+            validValues: VARIANTS.valid
         });
     }
 
@@ -291,7 +291,7 @@ export default class FilterMenu extends LightningElement {
     set menuAlignment(value) {
         this._menuAlignment = normalizeString(value, {
             fallbackValue: MENU_ALIGNMENTS.default,
-            valid: MENU_ALIGNMENTS.valid
+            validValues: MENU_ALIGNMENTS.valid
         });
     }
 
@@ -302,7 +302,7 @@ export default class FilterMenu extends LightningElement {
     set menuWidth(value) {
         this._menuWidth = normalizeString(value, {
             fallbackValue: MENU_WIDTHS.default,
-            valid: MENU_WIDTHS.valid
+            validValues: MENU_WIDTHS.valid
         });
     }
 
@@ -313,7 +313,7 @@ export default class FilterMenu extends LightningElement {
     set menuLength(value) {
         this._menuLength = normalizeString(value, {
             fallbackValue: MENU_LENGTHS.default,
-            valid: MENU_LENGTHS.valid
+            validValues: MENU_LENGTHS.valid
         });
     }
 
