@@ -20,7 +20,7 @@ export const FilterMenu = ({
     value,
     variant,
     searchInputPlaceholder,
-    hideSearchBox,
+    showSearchBox,
     submitButtonLabel,
     resetButtonLabel,
     menuAlignment,
@@ -43,7 +43,7 @@ export const FilterMenu = ({
     element.value = value;
     element.variant = variant;
     element.searchInputPlaceholder = searchInputPlaceholder;
-    element.hideSearchBox = hideSearchBox;
+    element.showSearchBox = showSearchBox;
     element.submitButtonLabel = submitButtonLabel;
     element.resetButtonLabel = resetButtonLabel;
     element.menuAlignment = menuAlignment;

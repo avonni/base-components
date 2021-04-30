@@ -168,13 +168,13 @@ export default {
                 category: 'Search'
             }
         },
-        hideSearchBox: {
-            name: 'hide-search-box',
+        showSearchBox: {
+            name: 'show-search-box',
             control: {
                 type: 'boolean'
             },
             defaultValue: false,
-            description: 'If true, the search box is hidden.',
+            description: 'If true, the search box is visible.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' },
@@ -318,6 +318,12 @@ const Template = (args) => FilterMenu(args);
 export const Base = Template.bind({});
 Base.args = {
     items: items
+};
+
+export const ShowSearch = Template.bind({});
+ShowSearch.args = {
+    items: items,
+    showSearchBox: true
 };
 
 export const Disabled = Template.bind({});

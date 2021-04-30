@@ -83,7 +83,7 @@ export default class FilterMenu extends LightningElement {
     _value = [];
     _variant = VARIANTS.default;
     _searchInputPlaceholder = DEFAULT_SEARCH_INPUT_PLACEHOLDER;
-    _hideSearchBox = false;
+    _showSearchBox = false;
     _submitButtonLabel = DEFAULT_SUBMIT_BUTTON_LABEL;
     _resetButtonLabel = DEFAULT_RESET_BUTTON_LABEL;
     _menuWidth = MENU_WIDTHS.default;
@@ -257,11 +257,11 @@ export default class FilterMenu extends LightningElement {
     }
 
     @api
-    get hideSearchBox() {
-        return this._hideSearchBox;
+    get showSearchBox() {
+        return this._showSearchBox;
     }
-    set hideSearchBox(bool) {
-        this._hideSearchBox = normalizeBoolean(bool);
+    set showSearchBox(bool) {
+        this._showSearchBox = normalizeBoolean(bool);
     }
 
     @api
@@ -599,8 +599,6 @@ export default class FilterMenu extends LightningElement {
     }
 
     handleDropdownMouseDown(event) {
-        // if the menu contains a scrollbar due to large number of menu-items
-        // this is needed so that menu doesnt close on dragging the scrollbar with the mouse
         const mainButton = 0;
         if (event.button === mainButton) {
             this.cancelBlur();
@@ -614,33 +612,11 @@ export default class FilterMenu extends LightningElement {
         }
     }
 
-    handleDropdownMouseUp() {
-        // We need this to make sure that if a scrollbar is being dragged with the mouse, upon release
-        // of the drag we allow blur, otherwise the dropdown would not close on blur since we'd have cancel blur
-        // set
-        this.allowBlur();
-    }
-
-    handleDropdownMouseLeave() {
-        // this is to close the menu after mousedown happens on scrollbar
-        // in this case we close immediately if no menu-items were hovered/focused
-        // without this the menu would remain open since the blur on the menuitems has happened already
-        // when clicking the scrollbar
-        this.allowBlur();
-        if (!this._menuHasFocus) {
-            this.close();
-            this.dispatchEvent(new CustomEvent('blur'));
+    handleDropdownClick() {
+        // On click outside of a focusable element, the focus will go to the button
+        if (!this.template.activeElement) {
+            this.focus();
         }
-    }
-
-    handleDropdownMouseEnter() {
-        this.cancelBlur();
-    }
-
-    handleDropdownScroll(event) {
-        // We don't want this to bubble up to the modal which due to event retargeting wouldn't be able
-        // to know what is actually being scrolled and thus may lead to the scrolling of the modal
-        event.stopPropagation();
     }
 
     handleButtonClick() {
@@ -752,6 +728,7 @@ export default class FilterMenu extends LightningElement {
         );
         this.clear();
         this._menuHasFocus = false;
+        this.close();
     }
 
     handleResetClick() {

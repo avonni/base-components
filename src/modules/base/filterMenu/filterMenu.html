@@ -38,10 +38,8 @@
             onprivateblur={handlePrivateBlur}
             onprivatefocus={handlePrivateFocus}
             onmousedown={handleDropdownMouseDown}
-            onmouseup={handleDropdownMouseUp}
-            onmouseleave={handleDropdownMouseLeave}
-            onmouseenter={handleDropdownMouseEnter}
-            onscroll={handleDropdownScroll}
+            onclick={handleDropdownClick}
+            onmouseout={allowBlur}
         >
             <template if:true={isLoading}>
                 <lightning-spinner
@@ -50,13 +48,9 @@
                 ></lightning-spinner>
             </template>
             <template if:false={isLoading}>
-                <div
-                    class="slds-dropdown__list"
-                    role="menu"
-                    onmouseout={allowBlur}
-                >
+                <div class="slds-dropdown__list" role="menu">
                     <lightning-input
-                        if:false={hideSearchBox}
+                        if:true={showSearchBox}
                         class="slds-p-around_small"
                         label={searchInputPlaceholder}
                         placeholder={searchInputPlaceholder}
