@@ -92,6 +92,7 @@ export default class FilterMenu extends LightningElement {
 
     _cancelBlur = false;
     _dropdownVisible = false;
+    _order;
 
     @track computedItems = [];
     @track selectedItems = [];

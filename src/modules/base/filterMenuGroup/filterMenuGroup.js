@@ -3,7 +3,8 @@ import { normalizeArray, normalizeBoolean } from 'c/utilsPrivate';
 
 // QUESTIONS:
 // Use of filterMenuGroup/filterMenu or filterMenu/primitiveFilterMenu?
-// Should the value be given by the user at the menu level (current choice) or at the group level?
+// Should some attributes be the same for all menus? variant, iconSize and nubbin, maybe?
+// Should the value be given by the user in the items object (current choice) or through one attribute?
 // Are values given by the user only checked (current choice) or should they appear in selected items?
 // Is there only one pill container for all the menus (current choice), or was there supposed to be one per menu? If so, how to manage the width?
 
