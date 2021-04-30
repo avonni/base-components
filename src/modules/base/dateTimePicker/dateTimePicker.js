@@ -43,7 +43,7 @@ export default class DateTimePicker extends LightningElement {
     @api name;
     @api readOnly = false;
     @api required = false;
-    @api disabledDateTimes;
+    @api disabledDateTimes = [];
 
     _hideLabel;
     _variant = VARIANTS.default;
