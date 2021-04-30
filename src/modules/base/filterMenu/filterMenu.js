@@ -758,6 +758,14 @@ export default class FilterMenu extends LightningElement {
                 }
             })
         );
+
+        this.dispatchEvent(
+            new CustomEvent('privateapply', {
+                detail: {
+                    value: this.selectedItems
+                }
+            })
+        );
         this.clear();
         this.close();
     }

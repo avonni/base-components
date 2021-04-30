@@ -1,7 +1,7 @@
 <template>
     <template for:each={items} for:item="item">
         <c-filter-menu
-            key={generateKey}
+            key={item.name}
             access-key={item.accessKey}
             alternative-text={item.alternativeText}
             disabled={item.disabled}
@@ -23,7 +23,16 @@
             menu-width={item.menuWidth}
             menu-length={item.menuLength}
             nubbin={item.nubbin}
-            hide-selected-items={item.hideSelectedItems}
+            hide-selected-items
+            data-name={item.name}
+            onprivateapply={handlePrivateApply}
         ></c-filter-menu>
     </template>
+    <div class="slds-m-top_x-small">
+        <lightning-pill-container
+            if:true={showSelectedItems}
+            items={selectedPills}
+            onitemremove={handleSelectedItemRemove}
+        ></lightning-pill-container>
+    </div>
 </template>

@@ -127,6 +127,7 @@ const languages = [
 
 const items = [
     {
+        name: 'contact',
         accessKey: 'k',
         alternativeText: 'Open contact filter',
         iconName: 'standard:log_a_call',
@@ -142,36 +143,29 @@ const items = [
         nubbin: true
     },
     {
+        name: 'prices',
         disabled: true,
         label: 'Prices',
         items: prices,
-        menuAlignment: 'right',
         menuWidth: 'large',
         nubbin: true,
         hideSelectedItems: true
     },
     {
+        name: 'editions',
         items: editions,
         label: 'Editions',
-        variant: 'border',
+        variant: 'bare',
         showSearchBox: true,
-        menuAlignment: 'right',
         menuLength: '5-items'
     },
     {
+        name: 'ratings',
         isLoading: true,
-        loadingStateAlternativeText: 'Waiting for the items to load...',
-        variant: 'bare'
+        loadingStateAlternativeText: 'Waiting for the items to load...'
     },
     {
-        items: editions,
-        label: 'Editions',
-        variant: 'border',
-        showSearchBox: true,
-        menuAlignment: 'right',
-        menuLength: '5-items'
-    },
-    {
+        name: 'languages',
         items: languages,
         label: 'Laguages',
         showSearchBox: true,
