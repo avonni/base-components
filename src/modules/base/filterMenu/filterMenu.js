@@ -121,10 +121,6 @@ export default class FilterMenu extends LightningElement {
 
     renderedCallback() {
         this.initTooltip();
-
-        if (this._dropdownVisible) {
-            this.cancelBlur();
-        }
     }
 
     @api
@@ -471,21 +467,13 @@ export default class FilterMenu extends LightningElement {
     }
 
     computeValue() {
-        // const selectedItems = [];
         this.computedItems.forEach((item) => {
             if (this.value.indexOf(item.value) > -1) {
                 item.checked = true;
-
-                // selectedItems.push({
-                //     label: item.label,
-                //     name: item.value
-                // });
             } else {
                 item.checked = false;
             }
         });
-
-        // this.selectedItems = selectedItems;
     }
 
     allowBlur() {
@@ -569,7 +557,6 @@ export default class FilterMenu extends LightningElement {
             });
     }
 
-    // remove-next-line-for-c-namespace
     stopPositioning() {
         if (this._autoPosition) {
             stopPositioning(this._autoPosition);
