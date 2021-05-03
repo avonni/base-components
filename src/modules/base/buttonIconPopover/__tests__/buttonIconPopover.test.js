@@ -1,8 +1,8 @@
 import { createElement } from 'lwc';
 import ButtonIconPopover from 'c/buttonIconPopover';
 
-// Not tested because not used:
-// close method
+// not tested
+// triggers : hover
 
 describe('Button Icon Popover', () => {
     afterEach(() => {
@@ -860,11 +860,16 @@ describe('Button Icon Popover', () => {
 
     //     element.triggers = 'hover';
 
+    //     const handler = jest.fn()
+    //     const button = element.shadowRoot.querySelector(
+    //         'lightning-button-icon'
+    //     );
+
+    //     button.addEventListener('onmouseenter', handler)
+    //     button.mouseEnter()
+
     //     return Promise.resolve()
     //         .then(() => {
-    //             const button = element.shadowRoot.querySelector(
-    //                 'lightning-button-icon'
-    //             );
     //             element.focus();
     //         })
     //         .then(() => {
@@ -876,7 +881,7 @@ describe('Button Icon Popover', () => {
     // });
 
     /* ---- METHODS ----- */
-    it('method: click', () => {
+    it('Button Icon Popover method: click', () => {
         const element = createElement('base-button-icon-popover', {
             is: ButtonIconPopover
         });
@@ -893,7 +898,7 @@ describe('Button Icon Popover', () => {
         });
     });
 
-    it('method: focus', () => {
+    it('Button Icon Popover method: focus', () => {
         const element = createElement('base-button-icon-popover', {
             is: ButtonIconPopover
         });
@@ -910,7 +915,7 @@ describe('Button Icon Popover', () => {
         });
     });
 
-    it('method: close', () => {
+    it('Button Icon Popover method: close', () => {
         const element = createElement('base-button-icon-popover', {
             is: ButtonIconPopover
         });
