@@ -771,29 +771,21 @@ describe('Avatar Group', () => {
         });
         document.body.appendChild(element);
 
-        element.items = [
-            {
-                src:
-                    'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
-                fallbackIconName: 'standard:user',
-                alternativeText: 'This is the alternative text',
-                primaryText: 'John Doe',
-                secondaryText: 'VP, Human Resources',
-                tertiaryText: 'FakeCompany Inc.'
-            }
-        ];
+        element.items = item;
+
+        const handler = jest.fn();
+        element.addEventListener('avatarclick', handler);
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
                 '.avonni-avatar-group__avatar'
             );
             avatar.click();
-            element.addEventListener('avatarclick', (event) => {
-                expect(event.detail.clicked).toBeTruthy();
-                expect(event.bubbles).toBeTruthy();
-                expect(event.cancelable).toBeTruthy();
-                expect(event.composed).toBeFalsy();
-            });
+            expect(handler).toHaveBeenCalled();
+            expect([handler.mock.calls[0][0].detail.item]).toMatchObject(item);
+            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
         });
     });
 });

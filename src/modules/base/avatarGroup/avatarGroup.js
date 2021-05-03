@@ -77,11 +77,7 @@ export default class AvatarGroup extends LightningElement {
     }
 
     set maxCount(value) {
-        if (!value) {
-            this._maxCount = this.layout === 'stack' ? 5 : 11;
-        } else {
-            this._maxCount = value;
-        }
+        this._maxCount = value;
     }
 
     @api get size() {
