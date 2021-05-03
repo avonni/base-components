@@ -667,6 +667,24 @@ describe('DateTimePicker', () => {
         });
     });
 
+    // date format day
+    // it('Date time picker date format day numeric', () => {
+    //     const element = createElement('base-date-time-picker', {
+    //         is: DateTimePicker
+    //     });
+
+    //     document.body.appendChild(element);
+
+    //     const now = new Date()
+
+    //     element.dateFormatDay = 'numeric';
+
+    //     const dateText = element.shadowRoot.querySelector('lightning-layout-item > p')
+    //     return Promise.resolve().then(() => {
+
+    //     });
+    // });
+
     // show end time
     it('Date time picker show end time', () => {
         const element = createElement('base-date-time-picker', {
@@ -787,25 +805,6 @@ describe('DateTimePicker', () => {
         });
     });
 
-    // show time zone
-    it('Date time picker show time zone', () => {
-        const element = createElement('base-date-time-picker', {
-            is: DateTimePicker
-        });
-
-        element.showTimeZone = true;
-
-        document.body.appendChild(element);
-
-        const timeZone = element.shadowRoot.querySelectorAll(
-            'lightning-combobox'
-        );
-
-        return Promise.resolve().then(() => {
-            expect(timeZone).toBeTruthy();
-        });
-    });
-
     // max and min
     it('Date time picker max and min', () => {
         const element = createElement('base-date-time-picker', {
@@ -829,21 +828,72 @@ describe('DateTimePicker', () => {
     });
 
     // type
-    // it('Date time picker type radio', () => {
-    //     const element = createElement('base-date-time-picker', {
-    //         is: DateTimePicker
-    //     });
+    it('Date time picker type checkbox', () => {
+        const element = createElement('base-date-time-picker', {
+            is: DateTimePicker
+        });
 
-    //     document.body.appendChild(element);
+        document.body.appendChild(element);
 
-    //     element.type = 'radio'
+        element.type = 'checkbox';
 
-    //     const input = element.shadowRoot.querySelector('lightning-input')
+        const buttons = element.shadowRoot.querySelectorAll('button');
+        const firstButton = buttons[0];
+        const secondButton = buttons[1];
+        const thirdButton = buttons[2];
 
-    //     return Promise.resolve().then(() => {
+        return Promise.resolve().then(() => {
+            firstButton.click();
+            secondButton.click();
+            thirdButton.click();
+            expect(firstButton.ariaSelected).toBeTruthy();
+            expect(secondButton.ariaSelected).toBeTruthy();
+            expect(thirdButton.ariaSelected).toBeTruthy();
+        });
+    });
 
-    //     });
-    // });
+    it('Date time picker type radio', () => {
+        const element = createElement('base-date-time-picker', {
+            is: DateTimePicker
+        });
+
+        document.body.appendChild(element);
+
+        element.type = 'radio';
+
+        const buttons = element.shadowRoot.querySelectorAll('button');
+        const firstButton = buttons[0];
+        const secondButton = buttons[1];
+        const thirdButton = buttons[2];
+
+        return Promise.resolve().then(() => {
+            firstButton.click();
+            secondButton.click();
+            thirdButton.click();
+            expect(firstButton.ariaSelected).toBeFalsy();
+            expect(secondButton.ariaSelected).toBeFalsy();
+            expect(thirdButton.ariaSelected).toBeFalsy();
+        });
+    });
+
+    // show time zone
+    it('Date time picker show time zone', () => {
+        const element = createElement('base-date-time-picker', {
+            is: DateTimePicker
+        });
+
+        element.showTimeZone = true;
+
+        document.body.appendChild(element);
+
+        const timeZone = element.shadowRoot.querySelectorAll(
+            'lightning-combobox'
+        );
+
+        return Promise.resolve().then(() => {
+            expect(timeZone).toBeTruthy();
+        });
+    });
 
     // hide navigation
     it('Date time picker hide navigation', () => {
@@ -869,6 +919,61 @@ describe('DateTimePicker', () => {
             expect(prevButton).toBeFalsy();
             expect(todayButton).toBeFalsy();
             expect(nextButton).toBeFalsy();
+        });
+    });
+
+    // hide date picker
+    it('Date time picker hide date picker', () => {
+        const element = createElement('base-date-time-picker', {
+            is: DateTimePicker
+        });
+
+        element.hideDatePicker = true;
+
+        document.body.appendChild(element);
+
+        const datePicker = element.shadowRoot.querySelector('lightning-input');
+
+        return Promise.resolve().then(() => {
+            expect(datePicker).toBeFalsy();
+        });
+    });
+
+    /* ----- EVENTS ----- */
+
+    // date time picker change
+    it('Date time picker change event', () => {
+        const element = createElement('base-date-time-picker', {
+            is: DateTimePicker
+        });
+        document.body.appendChild(element);
+
+        element.startTime = '8:00';
+        const now = new Date();
+        const day = now.getDate();
+        const month = now.getMonth();
+        const year = now.getFullYear();
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelectorAll('button');
+            button[0].click();
+            const date = new Date(handler.mock.calls[0][0].detail.value);
+            const eventDay = date.getDate();
+            const eventMonth = date.getMonth();
+            const eventYear = date.getFullYear();
+            const eventHour = date.getHours();
+            const eventMinutes = date.getMinutes();
+            expect(handler).toHaveBeenCalled();
+            expect(eventDay).toBe(day);
+            expect(eventMonth).toBe(month);
+            expect(eventYear).toBe(year);
+            expect(eventHour).toBe(8);
+            expect(eventMinutes).toBe(0);
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
     });
 });
