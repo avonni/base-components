@@ -27,7 +27,8 @@
                 nubbin={item.nubbin}
                 hide-selected-items
                 data-name={item.name}
-                onprivateapply={handlePrivateApply}
+                onapply={handleValueChange}
+                onreset={handleValueChange}
             ></c-filter-menu>
         </template>
     </lightning-button-group>

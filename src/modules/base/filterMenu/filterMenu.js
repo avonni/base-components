@@ -235,6 +235,7 @@ export default class FilterMenu extends LightningElement {
         this.computedItems = JSON.parse(JSON.stringify(this._items));
 
         this.computeValue();
+        this.computeSelectedItems();
         this.computeTabindex();
     }
 
@@ -247,6 +248,7 @@ export default class FilterMenu extends LightningElement {
         this._value = JSON.parse(JSON.stringify(array));
 
         this.computeValue();
+        this.computeSelectedItems();
     }
 
     @api
@@ -490,6 +492,7 @@ export default class FilterMenu extends LightningElement {
     clear() {
         this._value = [];
         this.computeValue();
+        this.computeSelectedItems();
     }
 
     computeTabindex() {
@@ -512,6 +515,19 @@ export default class FilterMenu extends LightningElement {
                 item.checked = false;
             }
         });
+    }
+
+    computeSelectedItems() {
+        const selectedItems = [];
+        this.computedItems.forEach((item) => {
+            if (item.checked) {
+                selectedItems.push({
+                    label: item.label,
+                    name: item.value
+                });
+            }
+        });
+        this.selectedItems = selectedItems;
     }
 
     allowBlur() {
@@ -768,31 +784,26 @@ export default class FilterMenu extends LightningElement {
     }
 
     handleSelectedItemRemove(event) {
-        const index = event.detail.index;
-        this.selectedItems.splice(index, 1);
+        const selectedItemIndex = event.detail.index;
+        this.selectedItems.splice(selectedItemIndex, 1);
 
-        const value = this.selectedItems.map((item) => item.name);
+        const valueIndex = this.value.findIndex(
+            (name) => name === event.detail.item.name
+        );
+        this.value.splice(valueIndex, 1);
+        this.computeValue();
 
         this.dispatchEvent(
             new CustomEvent('apply', {
                 detail: {
-                    value: value
+                    value: this.value
                 }
             })
         );
     }
 
     handleSubmitClick() {
-        const selectedItems = [];
-        this.computedItems.forEach((item) => {
-            if (item.checked) {
-                selectedItems.push({
-                    label: item.label,
-                    name: item.value
-                });
-            }
-        });
-        this.selectedItems = selectedItems;
+        this.computeSelectedItems();
 
         this.dispatchEvent(
             new CustomEvent('apply', {
@@ -802,14 +813,6 @@ export default class FilterMenu extends LightningElement {
             })
         );
 
-        this.dispatchEvent(
-            new CustomEvent('privateapply', {
-                detail: {
-                    value: this.selectedItems
-                }
-            })
-        );
-        this.clear();
         this.close();
     }
 
@@ -819,17 +822,19 @@ export default class FilterMenu extends LightningElement {
     }
 
     handleSearch(event) {
-        const searchTerm = event.currentTarget.value.toLowerCase();
+        const searchTerm = event.currentTarget.value;
 
         this.computedItems.forEach((item) => {
             const label = item.label.toLowerCase();
-            item.hidden = searchTerm ? !label.includes(searchTerm) : false;
+            item.hidden = searchTerm
+                ? !label.includes(searchTerm.toLowerCase())
+                : false;
         });
 
         this.dispatchEvent(
             new CustomEvent('search', {
                 detail: {
-                    value: event.currentTarget.value
+                    value: searchTerm
                 }
             })
         );

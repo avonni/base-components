@@ -5,20 +5,15 @@ import {
     normalizeString
 } from 'c/utilsPrivate';
 
-// QUESTIONS:
-// Use of filterMenuGroup/filterMenu or filterMenu/primitiveFilterMenu?
-// Should some attributes be the same for all menus? button variant, iconSize and nubbin, maybe?
-// Should the value be given by the user in the items object (current choice) or through one attribute?
-// Are values given by the user only checked (current choice) or should they appear in selected items?
-// Is there only one pill container for all the menus (current choice), or was there supposed to be one per menu? If so, how to manage the width?
-// Should variant be managed only at the group level instead of the menu level?
-// Apply and reset buttons in vertical variant?
-
 // TODO:
-// Update search for vertical variant
+// Use button row instead of regular button group
 // Implement vertical variant in group
+//   * The pill container is at the top
+//   * The apply/reset buttons are at the bottom
 // Update documentation
 // Update tests and stories
+
+// Note: Some attributes could be the same for all buttons (button variant, icon size and nubbin?).
 
 const VARIANTS = {
     valid: ['horizontal', 'vertical'],
@@ -30,7 +25,6 @@ export default class FilterMenuGroup extends LightningElement {
     _hideSelectedItems = false;
     _variant = VARIANTS.default;
 
-    _selectedItems = [];
     selectedPills = [];
 
     @api
@@ -41,7 +35,7 @@ export default class FilterMenuGroup extends LightningElement {
         const array = normalizeArray(value);
         this._items = JSON.parse(JSON.stringify(array));
 
-        this.initSelectedItems();
+        this.computeSelectedPills();
     }
 
     @api
@@ -67,47 +61,37 @@ export default class FilterMenuGroup extends LightningElement {
         return !this.hideSelectedItems && this.selectedPills.length > 0;
     }
 
-    initSelectedItems() {
-        const selectedItems = [];
-        this.items.forEach((item) => {
-            selectedItems.push({
-                menuName: item.name,
-                menuValue: []
-            });
-        });
-        this._selectedItems = selectedItems;
-    }
-
     computeSelectedPills() {
         const pills = [];
-        this._selectedItems.forEach((item) => {
-            item.menuValue.forEach((value) => {
-                pills.push({
-                    label: value.label,
-                    name: `${item.menuName},${value.name}`
+
+        this.items.forEach((menu) => {
+            const values = menu.value;
+            const items = menu.items;
+
+            if (values && items) {
+                values.forEach((value) => {
+                    const targetItem = items.find(
+                        (item) => item.value === value
+                    );
+                    pills.push({
+                        label: targetItem.label,
+                        name: `${menu.name},${value}`
+                    });
                 });
-            });
+            }
         });
+
         this.selectedPills = pills;
     }
 
-    handlePrivateApply(event) {
-        const menuName = event.target.dataset.name;
-        const menuValue = event.detail.value;
+    handleValueChange(event) {
+        const name = event.target.dataset.name;
+        const value = event.detail ? event.detail.value : [];
 
-        const index = this._selectedItems.findIndex(
-            (menu) => menu.menuName === menuName
-        );
-        this._selectedItems[index].menuValue = menuValue;
+        const index = this.items.findIndex((item) => item.name === name);
+        this.items[index].value = value;
+
         this.computeSelectedPills();
-
-        this.dispatchEvent(
-            new CustomEvent('apply', {
-                detail: {
-                    value: event.detail.value
-                }
-            })
-        );
     }
 
     handleSelectedItemRemove(event) {
@@ -117,26 +101,25 @@ export default class FilterMenuGroup extends LightningElement {
         const valueName = pillName[2];
 
         // Find the menu containing the value that was removed
-        const menuIndex = this._selectedItems.findIndex(
-            (item) => item.menuName === menuName
+        const menuIndex = this.items.findIndex(
+            (item) => item.name === menuName
         );
 
         // Find the value
-        const valueIndex = this._selectedItems[menuIndex].menuValue.findIndex(
-            (value) => value.name === valueName
+        const valueIndex = this.items[menuIndex].value.findIndex(
+            (name) => name === valueName
         );
 
-        // Remove this value from the selected items
-        this._selectedItems[menuIndex].menuValue.splice(valueIndex, 1);
+        // Remove this value from the items
+        this.items[menuIndex].value.splice(valueIndex, 1);
 
+        // Update the pills
         this.computeSelectedPills();
 
-        this.dispatchEvent(
-            new CustomEvent('apply', {
-                detail: {
-                    value: event.detail.value
-                }
-            })
+        // Update the value in the filter menu
+        const menuComponent = this.template.querySelector(
+            `[data-name=${menuName}`
         );
+        menuComponent.value = this.items[menuIndex].value;
     }
 }
