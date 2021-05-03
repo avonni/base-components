@@ -361,6 +361,10 @@ export default class FilterMenu extends LightningElement {
         this._hideSelectedItems = normalizeBoolean(bool);
     }
 
+    get checkboxComputedItems() {
+        return this.computedItems.filter((item) => !item.hidden);
+    }
+
     get computedShowDownIcon() {
         return !(
             this.iconName === 'utility:down' ||

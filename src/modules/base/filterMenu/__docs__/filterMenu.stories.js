@@ -345,16 +345,17 @@ Base.args = {
     items: items
 };
 
-export const Vertical = Template.bind({});
-Vertical.args = {
-    items: items,
-    variant: 'vertical',
-    label: 'Contact'
-};
-
 export const ShowSearch = Template.bind({});
 ShowSearch.args = {
     items: items,
+    showSearchBox: true
+};
+
+export const VerticalWithSearch = Template.bind({});
+VerticalWithSearch.args = {
+    items: items,
+    variant: 'vertical',
+    label: 'Contact',
     showSearchBox: true
 };
 
