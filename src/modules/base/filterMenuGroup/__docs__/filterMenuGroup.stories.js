@@ -189,8 +189,8 @@ const items = [
         disabled: true,
         label: 'Prices',
         items: prices,
-        menuWidth: 'large',
-        nubbin: true,
+        dropdownWidth: 'large',
+        droddownNubbin: true,
         hideSelectedItems: true
     },
     {
@@ -199,7 +199,7 @@ const items = [
         label: 'Editions',
         buttonVariant: 'bare',
         showSearchBox: true,
-        menuLength: '5-items'
+        dropdownLength: '5-items'
     },
     {
         name: 'ratings',
@@ -211,7 +211,7 @@ const items = [
         name: 'languages',
         items: languages,
         label: 'Laguages',
-        menuLength: '10-items'
+        dropdownLength: '10-items'
     }
 ];
 

@@ -7,7 +7,7 @@ export default {
             control: {
                 type: 'text'
             },
-            description: 'Optional text to be shown on the button.',
+            description: 'Label of the menu.',
             table: {
                 type: { summary: 'string' }
             }
@@ -17,12 +17,14 @@ export default {
             control: {
                 type: 'text'
             },
-            defaultValue: 'utility:down',
             description:
-                'The name of the icon to be used in the format "utility:down". If an icon other than "utility:down" or "utility:chevrondown" is used, a utility:down icon is appended to the right of that icon. This value defaults to utility:down.',
+                "The name of the icon to be used in the format 'utility:down'. For the horizontal variant, if an icon other than 'utility:down' or 'utility:chevrondown' is used, a utility:down icon is appended to the right of that icon. This value defaults to utility:down.",
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'utility:down' }
+                defaultValue: {
+                    summary: 'utility:down',
+                    detail: 'Only for horizontal variant'
+                }
             }
         },
         iconSize: {
@@ -44,7 +46,7 @@ export default {
                 type: 'boolean'
             },
             defaultValue: false,
-            description: 'If true, the menu cannot be opened by users.',
+            description: 'If true, the menu cannot be used by users.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -108,7 +110,7 @@ export default {
             ],
             defaultValue: 'border',
             description:
-                'Changes the look of the button. Accepted values include bare, container, border, border-filled, bare-inverse, and border-inverse. This value defaults to border.',
+                'The button variant changes the look of the horizontal variant’s button. Accepted variants include bare, container, border, border-filled, bare-inverse, and border-inverse. This attribute isn’t supported for the vertical variant.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'border' }
@@ -121,7 +123,7 @@ export default {
             options: ['horizontal', 'vertical'],
             defaultValue: 'horizontal',
             description:
-                'Changes the look of the filter menu. Accepted values include vertical or horizontal.',
+                'The variant changes the look of the menu. Accepted variants include horizontal and vertical.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'horizontal' }
@@ -132,7 +134,7 @@ export default {
                 type: 'text'
             },
             description:
-                'Displays tooltip text when the mouse moves over the button menu.',
+                'Title of the button (horizontal variant) or the label (vertical variant).',
             table: {
                 type: { summary: 'string' }
             }
@@ -142,7 +144,7 @@ export default {
                 type: 'text'
             },
             description:
-                'Text to display when the user mouses over or focuses on the button. The tooltip is auto-positioned relative to the button and screen space.',
+                'The tooltip is displayed on hover or focus on the button (horizontal variant), or on the help icon (vertical variant).',
             table: {
                 type: { summary: 'string' }
             }
@@ -152,7 +154,8 @@ export default {
             control: {
                 type: 'text'
             },
-            description: 'The keyboard shortcut for the button menu.',
+            description:
+                'The keyboard shortcut for the button menu (horizontal variant) or the checkbox group (vertical variant).',
             table: {
                 type: { summary: 'string' }
             }
@@ -162,7 +165,8 @@ export default {
             control: {
                 type: 'text'
             },
-            description: 'The assistive text for the button.',
+            description:
+                'The assistive text for the button menu. This attribute isn’t supported for the vertical variant.',
             table: {
                 type: { summary: 'string' }
             }
@@ -186,7 +190,7 @@ export default {
             },
             defaultValue: 'Search...',
             description:
-                'Text that is displayed when the field is empty, to prompt the user for a valid entry.',
+                'Text displayed when the search input is empty, to prompt the user for a valid entry.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'Search...' },
@@ -242,8 +246,8 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         },
-        menuAlignment: {
-            name: 'menu-alignment',
+        dropdownAlignment: {
+            name: 'dropdown-alignment',
             control: {
                 type: 'select'
             },
@@ -258,50 +262,51 @@ export default {
             ],
             defaultValue: 'left',
             description:
-                'Determines the alignment of the menu relative to the button. Available options are: auto, left, center, right, bottom-left, bottom-center, bottom-right. The auto option aligns the dropdown menu based on available space. This value defaults to left.',
+                'Determines the alignment of the dropdown menu relative to the button. Available options are: auto, left, center, right, bottom-left, bottom-center, bottom-right. The auto option aligns the dropdown menu based on available space. This attribute isn’t supported for the vertical variant.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'left' },
                 category: 'Dropdown menu'
             }
         },
-        menuWidth: {
-            name: 'menu-width',
+        dropdownWidth: {
+            name: 'dropdown-width',
             control: {
                 type: 'select'
             },
             options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
             defaultValue: 'small',
             description:
-                'Width of the dropdown menu. Valid values include xx-small, x-small, small, medium and large.',
+                'Minimum width of the dropdown menu. Valid values include xx-small, x-small, small, medium and large. This attribute isn’t supported for the vertical variant.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'small' },
                 category: 'Dropdown menu'
             }
         },
-        menuLength: {
-            name: 'menu-length',
+        dropdownLength: {
+            name: 'dropdown-length',
             control: {
                 type: 'select'
             },
             options: ['5-items', '7-items', '10-items'],
             defaultValue: '7-items',
             description:
-                'Maximum length of the dropdown menu. Valid values include 5-items, 7-items and 10-items.',
+                'Maximum length of the dropdown menu. Valid values include 5-items, 7-items and 10-items. This attribute isn’t supported for the vertical variant.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: '7-items' },
                 category: 'Dropdown menu'
             }
         },
-        nubbin: {
+        dropdownNubbin: {
+            name: 'dropdown-nubbin',
             control: {
                 type: 'boolean'
             },
             defaultValue: false,
             description:
-                'If true, a nubbin is present on the menu. A nubbin is a stub that protrudes from the menu item towards the button menu. The nubbin position is based on the menu-alignment.',
+                'If true, a nubbin is present on the dropdown menu. A nubbin is a stub that protrudes from the menu item towards the button menu. The nubbin position is based on the menu-alignment. This attribute isn’t supported for the vertical variant.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' },
@@ -394,14 +399,14 @@ ContainerVariantWithCustomButtonLabels.args = {
 export const LargeWidthAndNubbin = Template.bind({});
 LargeWidthAndNubbin.args = {
     items: items,
-    menuWidth: 'large',
-    nubbin: true
+    dropdownWidth: 'large',
+    dropdownNubbin: true
 };
 
 export const FiveItemsLength = Template.bind({});
 FiveItemsLength.args = {
     items: items,
-    menuLength: '5-items'
+    dropdownLength: '5-items'
 };
 
 export const Vertical = Template.bind({});

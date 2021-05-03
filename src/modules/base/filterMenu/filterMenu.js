@@ -86,8 +86,8 @@ export default class FilterMenu extends LightningElement {
     _iconSize = ICON_SIZES.default;
     _isLoading = false;
     _items = [];
-    _menuAlignment = MENU_ALIGNMENTS.default;
-    _nubbin = false;
+    _dropdownAlignment = MENU_ALIGNMENTS.default;
+    _dropdownNubbin = false;
     _value = [];
     _variant = VARIANTS.default;
     _buttonVariant = BUTTON_VARIANTS.default;
@@ -96,8 +96,8 @@ export default class FilterMenu extends LightningElement {
     _applyButtonLabel = DEFAULT_APPLY_BUTTON_LABEL;
     _resetButtonLabel = DEFAULT_RESET_BUTTON_LABEL;
     _hideApplyResetButtons = false;
-    _menuWidth = MENU_WIDTHS.default;
-    _menuLength = MENU_LENGTHS.default;
+    _dropdownWidth = MENU_WIDTHS.default;
+    _dropdownLength = MENU_LENGTHS.default;
     _hideSelectedItems = false;
 
     _cancelBlur = false;
@@ -330,44 +330,44 @@ export default class FilterMenu extends LightningElement {
     }
 
     @api
-    get menuAlignment() {
-        return this._menuAlignment;
+    get dropdownAlignment() {
+        return this._dropdownAlignment;
     }
-    set menuAlignment(value) {
-        this._menuAlignment = normalizeString(value, {
+    set dropdownAlignment(value) {
+        this._dropdownAlignment = normalizeString(value, {
             fallbackValue: MENU_ALIGNMENTS.default,
             validValues: MENU_ALIGNMENTS.valid
         });
     }
 
     @api
-    get menuWidth() {
-        return this._menuWidth;
+    get dropdownWidth() {
+        return this._dropdownWidth;
     }
-    set menuWidth(value) {
-        this._menuWidth = normalizeString(value, {
+    set dropdownWidth(value) {
+        this._dropdownWidth = normalizeString(value, {
             fallbackValue: MENU_WIDTHS.default,
             validValues: MENU_WIDTHS.valid
         });
     }
 
     @api
-    get menuLength() {
-        return this._menuLength;
+    get dropdownLength() {
+        return this._dropdownLength;
     }
-    set menuLength(value) {
-        this._menuLength = normalizeString(value, {
+    set dropdownLength(value) {
+        this._dropdownLength = normalizeString(value, {
             fallbackValue: MENU_LENGTHS.default,
             validValues: MENU_LENGTHS.valid
         });
     }
 
     @api
-    get nubbin() {
-        return this._nubbin;
+    get dropdownNubbin() {
+        return this._dropdownNubbin;
     }
-    set nubbin(bool) {
-        this._nubbin = normalizeBoolean(bool);
+    set dropdownNubbin(bool) {
+        this._dropdownNubbin = normalizeBoolean(bool);
     }
 
     @api
@@ -452,41 +452,48 @@ export default class FilterMenu extends LightningElement {
         return classSet('slds-dropdown')
             .add({
                 'slds-dropdown_left':
-                    this.menuAlignment === 'left' || this.isAutoAlignment(),
-                'slds-dropdown_center': this.menuAlignment === 'center',
-                'slds-dropdown_right': this.menuAlignment === 'right',
-                'slds-dropdown_bottom': this.menuAlignment === 'bottom-center',
+                    this.dropdownAlignment === 'left' || this.isAutoAlignment(),
+                'slds-dropdown_center': this.dropdownAlignment === 'center',
+                'slds-dropdown_right': this.dropdownAlignment === 'right',
+                'slds-dropdown_bottom':
+                    this.dropdownAlignment === 'bottom-center',
                 'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right':
-                    this.menuAlignment === 'bottom-right',
+                    this.dropdownAlignment === 'bottom-right',
                 'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left':
-                    this.menuAlignment === 'bottom-left',
+                    this.dropdownAlignment === 'bottom-left',
                 'slds-nubbin_top-left':
-                    this.nubbin && this.menuAlignment === 'left',
+                    this.dropdownNubbin && this.dropdownAlignment === 'left',
                 'slds-nubbin_top-right':
-                    this.nubbin && this.menuAlignment === 'right',
+                    this.dropdownNubbin && this.dropdownAlignment === 'right',
                 'slds-nubbin_top':
-                    this.nubbin && this.menuAlignment === 'center',
+                    this.dropdownNubbin && this.dropdownAlignment === 'center',
                 'slds-nubbin_bottom-left':
-                    this.nubbin && this.menuAlignment === 'bottom-left',
+                    this.dropdownNubbin &&
+                    this.dropdownAlignment === 'bottom-left',
                 'slds-nubbin_bottom-right':
-                    this.nubbin && this.menuAlignment === 'bottom-right',
+                    this.dropdownNubbin &&
+                    this.dropdownAlignment === 'bottom-right',
                 'slds-nubbin_bottom':
-                    this.nubbin && this.menuAlignment === 'bottom-center',
+                    this.dropdownNubbin &&
+                    this.dropdownAlignment === 'bottom-center',
                 'slds-p-vertical_large': this.isLoading,
-                'slds-dropdown_xx-small': this.menuWidth === 'xx-small',
-                'slds-dropdown_x-small': this.menuWidth === 'x-small',
-                'slds-dropdown_small': this.menuWidth === 'small',
-                'slds-dropdown_medium': this.menuWidth === 'medium',
-                'slds-dropdown_large': this.menuWidth === 'large'
+                'slds-dropdown_xx-small': this.dropdownWidth === 'xx-small',
+                'slds-dropdown_x-small': this.dropdownWidth === 'x-small',
+                'slds-dropdown_small': this.dropdownWidth === 'small',
+                'slds-dropdown_medium': this.dropdownWidth === 'medium',
+                'slds-dropdown_large': this.dropdownWidth === 'large'
             })
             .toString();
     }
 
     get computedItemListClass() {
         return classSet('slds-dropdown__list').add({
-            'slds-dropdown_length-with-icon-5': this.menuLength === '5-items',
-            'slds-dropdown_length-with-icon-7': this.menuLength === '7-items',
-            'slds-dropdown_length-with-icon-10': this.menuLength === '10-items'
+            'slds-dropdown_length-with-icon-5':
+                this.dropdownLength === '5-items',
+            'slds-dropdown_length-with-icon-7':
+                this.dropdownLength === '7-items',
+            'slds-dropdown_length-with-icon-10':
+                this.dropdownLength === '10-items'
         });
     }
 
@@ -576,7 +583,7 @@ export default class FilterMenu extends LightningElement {
     }
 
     isAutoAlignment() {
-        return this.menuAlignment.startsWith('auto');
+        return this.dropdownAlignment.startsWith('auto');
     }
 
     startPositioning() {
@@ -723,6 +730,7 @@ export default class FilterMenu extends LightningElement {
     handleCheckboxChange(event) {
         this._value = event.detail.value;
         this.computeValue();
+        this.dispatchSelect();
     }
 
     handlePrivateSelect(event) {
@@ -738,16 +746,7 @@ export default class FilterMenu extends LightningElement {
         this.computeValue();
 
         event.stopPropagation();
-
-        // Dispatch the event with the same properties as LWC button-menu
-        this.dispatchEvent(
-            new CustomEvent('select', {
-                cancelable: true,
-                detail: {
-                    value: event.detail.value
-                }
-            })
-        );
+        this.dispatchSelect();
     }
 
     handlePrivateBlur(event) {
@@ -813,27 +812,12 @@ export default class FilterMenu extends LightningElement {
         );
         this.value.splice(valueIndex, 1);
         this.computeValue();
-
-        this.dispatchEvent(
-            new CustomEvent('apply', {
-                detail: {
-                    value: this.value
-                }
-            })
-        );
+        this.dispatchApply();
     }
 
     handleApplyClick() {
         this.computeSelectedItems();
-
-        this.dispatchEvent(
-            new CustomEvent('apply', {
-                detail: {
-                    value: this.value
-                }
-            })
-        );
-
+        this.dispatchApply();
         this.close();
     }
 
@@ -856,6 +840,28 @@ export default class FilterMenu extends LightningElement {
             new CustomEvent('search', {
                 detail: {
                     value: searchTerm
+                }
+            })
+        );
+    }
+
+    dispatchApply() {
+        this.dispatchEvent(
+            new CustomEvent('apply', {
+                detail: {
+                    value: this.value
+                }
+            })
+        );
+    }
+
+    dispatchSelect() {
+        // Dispatch the event with the same properties as LWC button-menu
+        this.dispatchEvent(
+            new CustomEvent('select', {
+                cancelable: true,
+                detail: {
+                    value: this.value
                 }
             })
         );

@@ -25,10 +25,10 @@ export const FilterMenu = ({
     applyButtonLabel,
     resetButtonLabel,
     hideApplyResetButtons,
-    menuAlignment,
-    menuWidth,
-    menuLength,
-    nubbin,
+    dropdwonAlignment,
+    dropdownWidth,
+    dropdownLength,
+    dropdownNubbin,
     hideSelectedItems
 }) => {
     const element = document.createElement('ac-base-filter-menu');
@@ -51,10 +51,10 @@ export const FilterMenu = ({
     element.applyButtonLabel = applyButtonLabel;
     element.resetButtonLabel = resetButtonLabel;
     element.hideApplyResetButtons = hideApplyResetButtons;
-    element.menuAlignment = menuAlignment;
-    element.menuWidth = menuWidth;
-    element.menuLength = menuLength;
-    element.nubbin = nubbin;
+    element.dropdwonAlignment = dropdwonAlignment;
+    element.dropdownWidth = dropdownWidth;
+    element.dropdownLength = dropdownLength;
+    element.dropdownNubbin = dropdownNubbin;
     element.hideSelectedItems = hideSelectedItems;
     return element;
 };
