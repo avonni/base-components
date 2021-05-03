@@ -6,19 +6,16 @@ Avonni Components are customizable pre-made components built using the Lightning
 
 ## Vision
 
-The Lightning Component Library is an incredible starting point for application development, but with a growing demand for engaging, high-impact business applications, they do not cover all aspects or needs developers are looking for. With Avonni Components, we want to become whatever is generally useful for developing business solutions on the Lightning platform, all in the spirit of the Lightning Web Component framework. 
+The Lightning Component Library is an incredible starting point for application development, but with a growing demand for engaging, high-impact business applications, they do not cover all aspects or needs developers are looking for. With Avonni Components, we want to become whatever is generally useful for developing business solutions on the Lightning platform, all in the spirit of the Lightning Web Component framework.
 
-Avonni Components helps: 
+Avonni Components helps:
 
-*   Standardize Lightning development across different projects
-    
-*   Reduce maintenance overhead 
-    
-*   Deliver fully composable Lightning components
-    
-*   Build new apps faster
+-   Standardize Lightning development across different projects
+-   Reduce maintenance overhead
+-   Deliver fully composable Lightning components
+-   Build new apps faster
 
-### Use Avonni Components Outside of Salesforce Platform 
+### Use Avonni Components Outside of Salesforce Platform
 
 Install the avonni base components package in your project by running yarn or npm install.
 
@@ -52,8 +49,8 @@ We use the [Jest JavaScript Testing Framework](https://jestjs.io/docs/en/getting
 
 ## Documentation
 
-- [Avonni Components Reference](https://www.avonnicomponents.com/)
-- [Storybook](https://storybook.avonnicomponents.com/)
+-   [Avonni Components Reference](https://www.avonnicomponents.com/)
+-   [Storybook](https://storybook.avonnicomponents.com/)
 
 ## Contributing
 
@@ -61,6 +58,6 @@ We are not accepting contributions at this time but you can share any ideas on o
 
 ## License
 
-Avonni Components is a free and open source project, released under the permissable [MIT license](https://opensource.org/licenses/MIT). This means it can be used in personal or commercial projects for free. 
+Avonni Components is a free and open source project, released under the permissable [MIT license](https://opensource.org/licenses/MIT). This means it can be used in personal or commercial projects for free.
 
 This documentation content is licensed under [the Apache 2 license](https://www.apache.org/licenses/LICENSE-2.0).
