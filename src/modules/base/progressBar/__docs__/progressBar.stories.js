@@ -224,7 +224,8 @@ Vertical.args = {
     label: 'Vertical progress bar',
     value: 45,
     orientation: 'vertical',
-    referenceLines: oneReferenceLine
+    referenceLines: oneReferenceLine,
+    size: 'large'
 };
 
 export const MultipleReferenceLines = Template.bind({});
