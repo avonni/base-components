@@ -6,6 +6,8 @@ import {
     observePosition
 } from 'c/utilsPrivate';
 
+import { Tooltip } from 'c/tooltipLibrary';
+
 const i18n = {
     loading: 'Loading',
     showMenu: 'Show Menu'
@@ -50,6 +52,7 @@ export default class ButtonMenu extends LightningElement {
     _isLoading = false;
     _focusOnIndexDuringRenderedCallback = null;
     _tabindex = 0;
+    _tooltip = null;
 
     _order = null;
     _variant = 'border';
@@ -96,6 +99,8 @@ export default class ButtonMenu extends LightningElement {
     }
 
     renderedCallback() {
+        this.initTooltip();
+
         if (
             !this._positioning &&
             this._dropdownVisible &&
@@ -188,6 +193,26 @@ export default class ButtonMenu extends LightningElement {
     }
 
     @api
+    get tooltip() {
+        return this._tooltip ? this._tooltip.value : undefined;
+    }
+
+    // remove-next-line-for-c-namespace
+    set tooltip(value) {
+        if (this._tooltip) {
+            this._tooltip.value = value;
+        } else if (value) {
+            // Note that because the tooltip target is a child element it may not be present in the
+            // dom during initial rendering.
+            this._tooltip = new Tooltip(value, {
+                root: this,
+                target: () => this.template.querySelector('button'),
+            });
+            this._tooltip.initialize();
+        }
+    }
+
+    @api
     focus() {
         if (this._connected) {
             this.focusOnButton();
@@ -203,6 +228,12 @@ export default class ButtonMenu extends LightningElement {
 
     get computedAriaExpanded() {
         return String(this._dropdownVisible);
+    }
+
+    initTooltip() {
+        if (this._tooltip && !this._tooltip.initialized) {
+            this._tooltip.initialize();
+        }
     }
 
     focusOnMenuItemAfterRender() {
@@ -256,8 +287,7 @@ export default class ButtonMenu extends LightningElement {
 
         if (this.label) {
             classes.add({
-                'slds-button_neutral':
-                    this.variant === 'border' && isDropdownIcon,
+                'slds-button_neutral': this.variant === 'border',
                 'slds-button_inverse': this.variant === 'border-inverse'
             });
         } else {
