@@ -1,69 +1,57 @@
 <template>
-    <div>
-        <lightning-layout if:true={showPositionTop}>
-            <lightning-layout-item size="12" class="slds-text-align_center">
-                <span
-                    if:true={showPositionTopLeft}
-                    class="avonni-progress-bar_value"
-                    aria-hidden="true"
-                >
-                    {value}% {valueLabel}
-                </span>
-                <span
-                    if:true={label}
-                    class="slds-p-right_xx-small slds-p-left_xx-small"
-                    >{label}</span
-                >
-                <span
-                    if:true={showPositionTopRight}
-                    class="avonni-progress-bar_value"
-                    aria-hidden="true"
-                >
-                    {value}% {valueLabel}
-                </span>
-            </lightning-layout-item>
-        </lightning-layout>
-        <lightning-layout>
-            <lightning-layout-item
-                size="12"
-                class={computedSizing}
-                style="display: flex; justify-content: center"
+    <lightning-layout if:true={showPositionTop}>
+        <lightning-layout-item size="12" class="slds-text-align_center">
+            <span
+                if:true={showPositionTopLeft}
+                class="avonni-progress-bar_value"
+                aria-hidden="true"
             >
-                <div
-                    class={computedOuterClass}
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                    aria-valuenow={value}
-                    role="progressbar"
-                >
-                    <span class={computedInnerClass} style={computedStyle}>
-                    </span>
-                    <span class="slds-assistive-text">{assistiveText}</span>
-                </div>
-                <div style="position: relative">
-                    <template
-                        for:each={referenceLines}
-                        for:item="referenceLine"
-                    >
-                        <c-primitive-progress-bar-reference-line
-                            key={referenceLine.label}
-                            label={referenceLine.label}
-                            value={referenceLine.value}
-                            variant={referenceLine.variant}
-                            border-style={referenceLine.borderStyle}
-                            thickness={thickness}
-                            orientation={orientation}
-                        ></c-primitive-progress-bar-reference-line>
-                    </template>
-                </div>
-            </lightning-layout-item>
-        </lightning-layout>
-        <lightning-layout if:true={showPositionBottom}>
-            <lightning-layout-item size="12" class="slds-text-align_center">
-                <span class="avonni-progress-bar_value" aria-hidden="true">
-                    {value}% {valueLabel}
-                </span>
-            </lightning-layout-item>
-        </lightning-layout>
+                {value}% {valueLabel}
+            </span>
+            <span
+                if:true={label}
+                class="slds-p-right_xx-small slds-p-left_xx-small"
+                >{label}</span
+            >
+            <span
+                if:true={showPositionTopRight}
+                class="avonni-progress-bar_value"
+                aria-hidden="true"
+            >
+                {value}% {valueLabel}
+            </span>
+        </lightning-layout-item>
+    </lightning-layout>
+    <div class={computedSizing}>
+        <div
+            class={computedOuterClass}
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow={value}
+            role="progressbar"
+        >
+            <span class={computedInnerClass} style={computedStyle}> </span>
+            <span class="slds-assistive-text">{assistiveText}</span>
+        </div>
+        <div class="slds-is-relative">
+            <template for:each={referenceLines} for:item="referenceLine">
+                <c-primitive-progress-bar-reference-line
+                    key={referenceLine.label}
+                    label={referenceLine.label}
+                    value={referenceLine.value}
+                    variant={referenceLine.variant}
+                    border-style={referenceLine.borderStyle}
+                    thickness={thickness}
+                    orientation={orientation}
+                ></c-primitive-progress-bar-reference-line>
+            </template>
+        </div>
     </div>
+    <lightning-layout if:true={showPositionBottom}>
+        <lightning-layout-item size="12" class="slds-text-align_center">
+            <span class="avonni-progress-bar_value" aria-hidden="true">
+                {value}% {valueLabel}
+            </span>
+        </lightning-layout-item>
+    </lightning-layout>
 </template>
