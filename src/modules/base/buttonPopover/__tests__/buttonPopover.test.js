@@ -1,6 +1,9 @@
 import { createElement } from 'lwc';
 import ButtonPopover from 'c/buttonPopover';
 
+// not tested
+// triggers : hover
+
 describe('Button Popover', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -699,11 +702,7 @@ describe('Button Popover', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    'lightning-button'
-                );
                 element.focus();
-                button.focus();
             })
             .then(() => {
                 const popover = element.shadowRoot.querySelector(
@@ -763,7 +762,7 @@ describe('Button Popover', () => {
 
     /* ---- METHODS ----- */
 
-    it('method: click', () => {
+    it('Button Popover method: click', () => {
         const element = createElement('base-button-popover', {
             is: ButtonPopover
         });
@@ -780,44 +779,49 @@ describe('Button Popover', () => {
         });
     });
 
-    it('method: focus', () => {
+    it('Button Popover method: focus', () => {
         const element = createElement('base-button-popover', {
             is: ButtonPopover
         });
         document.body.appendChild(element);
 
-        let focusEvent = false;
-        element.addEventListener('focus', () => {
-            focusEvent = true;
-        });
+        element.triggers = 'focus';
 
-        element.focus();
-        return Promise.resolve().then(() => {
-            expect(focusEvent).toBeTruthy();
-        });
+        return Promise.resolve()
+            .then(() => {
+                element.focus();
+            })
+            .then(() => {
+                const popover = element.shadowRoot.querySelector(
+                    '.slds-popover'
+                );
+                expect(popover).toBeTruthy();
+            });
     });
 
-    it('method: close', () => {
+    it('Button Popover method: close', () => {
         const element = createElement('base-button-popover', {
             is: ButtonPopover
         });
         document.body.appendChild(element);
 
-        let closeEvent = false;
-        element.addEventListener('close', () => {
-            closeEvent = true;
-        });
-
-        element.close();
-        return Promise.resolve().then(() => {
-            expect(closeEvent).toBeTruthy();
-        });
+        return Promise.resolve()
+            .then(() => {
+                element.focus();
+                element.close();
+            })
+            .then(() => {
+                const popover = element.shadowRoot.querySelector(
+                    '.slds-popover'
+                );
+                expect(popover).toBeFalsy();
+            });
     });
 
     /* ----- EVENTS ----- */
 
     // button popover click
-    it('Button Icon Popover event click', () => {
+    it('Button Popover event click', () => {
         const element = createElement('base-button-popover', {
             is: ButtonPopover
         });
