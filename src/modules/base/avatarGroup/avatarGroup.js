@@ -182,7 +182,7 @@ export default class AvatarGroup extends LightningElement {
         let items = JSON.parse(JSON.stringify(this.items));
 
         if (isNaN(maxCount)) {
-            maxCount = this.layout === 'stack' ? 5 : 11;
+            maxCount = 11;
         }
 
         if (length > maxCount) {

@@ -762,6 +762,47 @@ describe('Avatar Group', () => {
         });
     });
 
+    /* ----- JS ----- */
+
+    // list hidden items
+    it('Avatar group list hidden items', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.layout = 'list';
+        element.maxCount = 3;
+        element.items = [
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items
+        ];
+
+        return Promise.resolve()
+            .then(() => {
+                const avatarShow = element.shadowRoot.querySelectorAll(
+                    'c-avatar'
+                );
+                expect(avatarShow).toHaveLength(3);
+            })
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    'lightning-button'
+                );
+                button.click();
+            })
+            .then(() => {
+                const avatarHidden = element.shadowRoot.querySelectorAll(
+                    'c-primitive-avatar'
+                );
+                expect(avatarHidden).toHaveLength(9);
+            });
+    });
+
     /* ----- EVENTS ----- */
 
     // avatar click
