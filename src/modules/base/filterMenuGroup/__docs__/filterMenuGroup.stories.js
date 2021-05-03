@@ -12,6 +12,30 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
+        applyButtonLabel: {
+            name: 'apply-button-label',
+            control: {
+                type: 'text'
+            },
+            defaultValue: 'Apply',
+            description: 'Label of the apply button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Apply' }
+            }
+        },
+        resetButtonLabel: {
+            name: 'reset-button-label',
+            control: {
+                type: 'text'
+            },
+            defaultValue: 'Reset',
+            description: 'Label of the reset button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Reset' }
+            }
+        },
         hideSelectedItems: {
             name: 'hide-selected-items',
             control: {
@@ -153,19 +177,12 @@ const languages = [
 const items = [
     {
         name: 'contact',
+        label: 'Type',
         accessKey: 'k',
-        alternativeText: 'Open contact filter',
-        iconName: 'standard:log_a_call',
-        iconSize: 'small',
+        alternativeText: 'Open contact type filter',
         items: contact,
-        title: 'Contact filter',
-        tooltip: 'Contact filter',
-        value: ['email', 'meeting'],
-        searchInputPlaceholder: 'Search for contact types',
-        showSearchBox: true,
-        submitButtonLabel: 'Save selection',
-        resetButtonLabel: 'Reset selection',
-        nubbin: true
+        tooltip: 'Type of contact',
+        value: ['email', 'meeting']
     },
     {
         name: 'prices',
@@ -186,6 +203,7 @@ const items = [
     },
     {
         name: 'ratings',
+        label: 'Ratings',
         isLoading: true,
         loadingStateAlternativeText: 'Waiting for the items to load...'
     },
@@ -193,7 +211,6 @@ const items = [
         name: 'languages',
         items: languages,
         label: 'Laguages',
-        showSearchBox: true,
         menuLength: '10-items'
     }
 ];

@@ -86,8 +86,11 @@
                                 </lightning-menu-item>
                             </template>
                         </div>
-                        <lightning-menu-divider></lightning-menu-divider>
+                        <lightning-menu-divider
+                            if:false={hideApplyResetButtons}
+                        ></lightning-menu-divider>
                         <div
+                            if:false={hideApplyResetButtons}
                             class="slds-p-horizontal_small slds-p-bottom_x-small slds-text-align_right"
                         >
                             <lightning-button
@@ -102,11 +105,11 @@
                             ></lightning-button>
                             <lightning-button
                                 variant="brand"
-                                label={submitButtonLabel}
-                                title={submitButtonLabel}
+                                label={applyButtonLabel}
+                                title={applyButtonLabel}
                                 onfocus={handlePrivateFocus}
                                 onblur={handlePrivateBlur}
-                                onclick={handleSubmitClick}
+                                onclick={handleApplyClick}
                                 onkeydown={handleKeyDown}
                             ></lightning-button>
                         </div>
@@ -115,9 +118,8 @@
             </div>
         </template>
     </div>
-    <div class="slds-m-top_x-small">
+    <div if:true={showSelectedItems} class="slds-m-top_x-small">
         <lightning-pill-container
-            if:true={showSelectedItems}
             items={selectedItems}
             onitemremove={handleSelectedItemRemove}
         ></lightning-pill-container>

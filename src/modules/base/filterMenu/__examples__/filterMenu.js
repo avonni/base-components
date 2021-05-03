@@ -22,8 +22,9 @@ export const FilterMenu = ({
     buttonVariant,
     searchInputPlaceholder,
     showSearchBox,
-    submitButtonLabel,
+    applyButtonLabel,
     resetButtonLabel,
+    hideApplyResetButtons,
     menuAlignment,
     menuWidth,
     menuLength,
@@ -47,8 +48,9 @@ export const FilterMenu = ({
     element.buttonVariant = buttonVariant;
     element.searchInputPlaceholder = searchInputPlaceholder;
     element.showSearchBox = showSearchBox;
-    element.submitButtonLabel = submitButtonLabel;
+    element.applyButtonLabel = applyButtonLabel;
     element.resetButtonLabel = resetButtonLabel;
+    element.hideApplyResetButtons = hideApplyResetButtons;
     element.menuAlignment = menuAlignment;
     element.menuWidth = menuWidth;
     element.menuLength = menuLength;

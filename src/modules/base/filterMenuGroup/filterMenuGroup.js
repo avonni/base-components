@@ -4,12 +4,9 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utilsPrivate';
+import { classSet } from 'c/utils';
 
 // TODO:
-// Use button row instead of regular button group
-// Implement vertical variant in group
-//   * The pill container is at the top
-//   * The apply/reset buttons are at the bottom
 // Update documentation
 // Update tests and stories
 
@@ -20,10 +17,15 @@ const VARIANTS = {
     default: 'horizontal'
 };
 
+const DEFAULT_APPLY_BUTTON_LABEL = 'Apply';
+const DEFAULT_RESET_BUTTON_LABEL = 'Reset';
+
 export default class FilterMenuGroup extends LightningElement {
     _items = [];
     _hideSelectedItems = false;
     _variant = VARIANTS.default;
+    _applyButtonLabel = DEFAULT_APPLY_BUTTON_LABEL;
+    _resetButtonLabel = DEFAULT_RESET_BUTTON_LABEL;
 
     selectedPills = [];
 
@@ -57,8 +59,47 @@ export default class FilterMenuGroup extends LightningElement {
         });
     }
 
+    @api
+    get applyButtonLabel() {
+        return this._applyButtonLabel;
+    }
+    set applyButtonLabel(value) {
+        this._applyButtonLabel =
+            value && typeof value === 'string'
+                ? value.trim()
+                : DEFAULT_APPLY_BUTTON_LABEL;
+    }
+
+    @api
+    get resetButtonLabel() {
+        return this._resetButtonLabel;
+    }
+    set resetButtonLabel(value) {
+        this._resetButtonLabel =
+            value && typeof value === 'string'
+                ? value.trim()
+                : DEFAULT_RESET_BUTTON_LABEL;
+    }
+
+    get isVertical() {
+        return this.variant === 'vertical';
+    }
+
     get showSelectedItems() {
         return !this.hideSelectedItems && this.selectedPills.length > 0;
+    }
+
+    get filtersWrapperClass() {
+        return classSet().add({
+            'slds-button-group-row': !this.isVertical
+        });
+    }
+
+    get filtersClass() {
+        return classSet().add({
+            'slds-button-group-item': !this.isVertical,
+            'slds-m-bottom_medium': this.isVertical
+        });
     }
 
     computeSelectedPills() {
@@ -84,13 +125,16 @@ export default class FilterMenuGroup extends LightningElement {
         this.selectedPills = pills;
     }
 
+    computeValue(menuName, value) {
+        const index = this.items.findIndex((item) => item.name === menuName);
+        this.items[index].value = value;
+    }
+
     handleValueChange(event) {
         const name = event.target.dataset.name;
         const value = event.detail ? event.detail.value : [];
 
-        const index = this.items.findIndex((item) => item.name === name);
-        this.items[index].value = value;
-
+        this.computeValue(name, value);
         this.computeSelectedPills();
     }
 
@@ -121,5 +165,27 @@ export default class FilterMenuGroup extends LightningElement {
             `[data-name=${menuName}`
         );
         menuComponent.value = this.items[menuIndex].value;
+    }
+
+    handleApplyClick() {
+        const menuComponents = this.template.querySelectorAll('c-filter-menu');
+        menuComponents.forEach((menu) => {
+            const value = menu.value;
+            const name = menu.dataset.name;
+            this.computeValue(name, value);
+        });
+
+        this.computeSelectedPills();
+    }
+
+    handleResetClick() {
+        const menuComponents = this.template.querySelectorAll('c-filter-menu');
+        menuComponents.forEach((menu) => {
+            const value = [];
+            const name = menu.dataset.name;
+            this.computeValue(name, value);
+        });
+
+        this.computeSelectedPills();
     }
 }

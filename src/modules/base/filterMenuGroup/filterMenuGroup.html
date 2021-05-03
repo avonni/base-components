@@ -1,42 +1,67 @@
 <template>
-    <lightning-button-group>
+    <template if:true={isVertical}>
+        <div class="slds-m-bottom_medium" if:true={showSelectedItems}>
+            <lightning-pill-container
+                items={selectedPills}
+                onitemremove={handleSelectedItemRemove}
+            ></lightning-pill-container>
+        </div>
+    </template>
+    <ul class={filtersWrapperClass}>
         <template for:each={items} for:item="item">
-            <c-filter-menu
-                key={item.name}
-                access-key={item.accessKey}
-                alternative-text={item.alternativeText}
-                disabled={item.disabled}
-                icon-name={item.iconName}
-                icon-size={item.iconSize}
-                is-loading={item.isLoading}
-                label={item.label}
-                loading-state-alternative-text={item.loadingStateAlternativeText}
-                items={item.items}
-                title={item.title}
-                tooltip={item.tooltip}
-                value={item.value}
-                variant={variant}
-                button-variant={item.buttonVariant}
-                search-input-placeholder={item.searchInputPlaceholder}
-                show-search-box={item.showSearchBox}
-                submit-button-label={item.submitButtonLabel}
-                reset-button-label={item.resetButtonLabel}
-                menu-alignment={item.menuAlignment}
-                menu-width={item.menuWidth}
-                menu-length={item.menuLength}
-                nubbin={item.nubbin}
-                hide-selected-items
-                data-name={item.name}
-                onapply={handleValueChange}
-                onreset={handleValueChange}
-            ></c-filter-menu>
+            <li class={filtersClass} key={item.name}>
+                <c-filter-menu
+                    access-key={item.accessKey}
+                    alternative-text={item.alternativeText}
+                    disabled={item.disabled}
+                    icon-name={item.iconName}
+                    icon-size={item.iconSize}
+                    is-loading={item.isLoading}
+                    label={item.label}
+                    loading-state-alternative-text={item.loadingStateAlternativeText}
+                    items={item.items}
+                    title={item.title}
+                    tooltip={item.tooltip}
+                    value={item.value}
+                    variant={variant}
+                    button-variant={item.buttonVariant}
+                    search-input-placeholder={item.searchInputPlaceholder}
+                    show-search-box={item.showSearchBox}
+                    hide-apply-reset-buttons={isVertical}
+                    menu-alignment={item.menuAlignment}
+                    menu-width={item.menuWidth}
+                    menu-length={item.menuLength}
+                    nubbin={item.nubbin}
+                    hide-selected-items
+                    data-name={item.name}
+                    onapply={handleValueChange}
+                    onreset={handleValueChange}
+                ></c-filter-menu>
+            </li>
         </template>
-    </lightning-button-group>
-    <div class="slds-m-top_x-small">
-        <lightning-pill-container
-            if:true={showSelectedItems}
-            items={selectedPills}
-            onitemremove={handleSelectedItemRemove}
-        ></lightning-pill-container>
-    </div>
+    </ul>
+    <template if:false={isVertical}>
+        <div class="slds-m-top_x-small">
+            <lightning-pill-container
+                if:true={showSelectedItems}
+                items={selectedPills}
+                onitemremove={handleSelectedItemRemove}
+            ></lightning-pill-container>
+        </div>
+    </template>
+    <template if:true={isVertical}>
+        <lightning-button
+            class="slds-m-right_x-small"
+            variant="base"
+            label={resetButtonLabel}
+            title={resetButtonLabel}
+            onclick={handleResetClick}
+        ></lightning-button>
+        <lightning-button
+            variant="brand"
+            label={applyButtonLabel}
+            title={applyButtonLabel}
+            onclick={handleApplyClick}
+        ></lightning-button>
+    </template>
 </template>

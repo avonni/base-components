@@ -206,17 +206,16 @@ export default {
                 category: 'Search'
             }
         },
-        submitButtonLabel: {
-            name: 'submit-button-label',
+        applyButtonLabel: {
+            name: 'apply-button-label',
             control: {
                 type: 'text'
             },
             defaultValue: 'Apply',
-            description: 'Label of the submit button.',
+            description: 'Label of the apply button.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'Apply' },
-                category: 'Search'
+                defaultValue: { summary: 'Apply' }
             }
         },
         resetButtonLabel: {
@@ -228,8 +227,19 @@ export default {
             description: 'Label of the reset button.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'Reset' },
-                category: 'Search'
+                defaultValue: { summary: 'Reset' }
+            }
+        },
+        hideApplyResetButtons: {
+            name: 'hide-apply-reset-buttons',
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description: 'If true, the apply and reset buttons are hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
             }
         },
         menuAlignment: {
@@ -345,17 +355,9 @@ Base.args = {
     items: items
 };
 
-export const ShowSearch = Template.bind({});
-ShowSearch.args = {
+export const Search = Template.bind({});
+Search.args = {
     items: items,
-    showSearchBox: true
-};
-
-export const VerticalWithSearch = Template.bind({});
-VerticalWithSearch.args = {
-    items: items,
-    variant: 'vertical',
-    label: 'Contact',
     showSearchBox: true
 };
 
@@ -365,13 +367,11 @@ Disabled.args = {
     disabled: true
 };
 
-export const ContainerVariantWithCustomButtonLabels = Template.bind({});
-ContainerVariantWithCustomButtonLabels.args = {
+export const Loading = Template.bind({});
+Loading.args = {
     items: items,
-    buttonVariant: 'container',
-    label: 'Open menu',
-    resetButtonLabel: 'Erase',
-    submitButtonLabel: 'Save'
+    isLoading: true,
+    tooltip: 'is-loading is set to true'
 };
 
 export const XSmallIcon = Template.bind({});
@@ -382,11 +382,13 @@ XSmallIcon.args = {
     value: ['item-5', 'meeting', 'wrong-value']
 };
 
-export const Loading = Template.bind({});
-Loading.args = {
+export const ContainerVariantWithCustomButtonLabels = Template.bind({});
+ContainerVariantWithCustomButtonLabels.args = {
     items: items,
-    isLoading: true,
-    tooltip: 'is-loading is set to true'
+    buttonVariant: 'container',
+    label: 'Open menu',
+    resetButtonLabel: 'Erase',
+    applyButtonLabel: 'Save'
 };
 
 export const LargeWidthAndNubbin = Template.bind({});
@@ -396,8 +398,34 @@ LargeWidthAndNubbin.args = {
     nubbin: true
 };
 
-export const FiveItemsLengthNoSearchBox = Template.bind({});
-FiveItemsLengthNoSearchBox.args = {
+export const FiveItemsLength = Template.bind({});
+FiveItemsLength.args = {
     items: items,
     menuLength: '5-items'
+};
+
+export const Vertical = Template.bind({});
+Vertical.args = {
+    items: items,
+    variant: 'vertical',
+    label: 'Contact'
+};
+
+export const VerticalWithSearchAndIcon = Template.bind({});
+VerticalWithSearchAndIcon.args = {
+    items: items,
+    variant: 'vertical',
+    label: 'Contact',
+    showSearchBox: true,
+    iconName: 'custom:custom22',
+    iconSize: 'small'
+};
+
+export const VerticalLoading = Template.bind({});
+VerticalLoading.args = {
+    items: items,
+    label: 'Contact',
+    isLoading: true,
+    tooltip: 'is-loading is set to true',
+    variant: 'vertical'
 };

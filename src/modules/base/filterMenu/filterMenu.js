@@ -70,7 +70,7 @@ const i18n = {
 
 const DEFAULT_ICON_NAME = 'utility:down';
 const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Search...';
-const DEFAULT_SUBMIT_BUTTON_LABEL = 'Apply';
+const DEFAULT_APPLY_BUTTON_LABEL = 'Apply';
 const DEFAULT_RESET_BUTTON_LABEL = 'Reset';
 
 export default class FilterMenu extends LightningElement {
@@ -93,8 +93,9 @@ export default class FilterMenu extends LightningElement {
     _buttonVariant = BUTTON_VARIANTS.default;
     _searchInputPlaceholder = DEFAULT_SEARCH_INPUT_PLACEHOLDER;
     _showSearchBox = false;
-    _submitButtonLabel = DEFAULT_SUBMIT_BUTTON_LABEL;
+    _applyButtonLabel = DEFAULT_APPLY_BUTTON_LABEL;
     _resetButtonLabel = DEFAULT_RESET_BUTTON_LABEL;
+    _hideApplyResetButtons = false;
     _menuWidth = MENU_WIDTHS.default;
     _menuLength = MENU_LENGTHS.default;
     _hideSelectedItems = false;
@@ -106,12 +107,15 @@ export default class FilterMenu extends LightningElement {
     @track computedItems = [];
     @track selectedItems = [];
     dropdownOpened = false;
+    fieldLevelHelp;
 
     connectedCallback() {
-        this.classList.add(
-            'slds-dropdown-trigger',
-            'slds-dropdown-trigger_click'
-        );
+        if (this.variant === 'horizontal') {
+            this.classList.add(
+                'slds-dropdown-trigger',
+                'slds-dropdown-trigger_click'
+            );
+        }
 
         // button-group necessities
         const privatebuttonregister = new CustomEvent('privatebuttonregister', {
@@ -164,6 +168,9 @@ export default class FilterMenu extends LightningElement {
     }
 
     set tooltip(value) {
+        // Used instead of the tooltip in vertical variant
+        this.fieldLevelHelp = value;
+
         if (this._tooltip) {
             this._tooltip.value = value;
         } else if (value) {
@@ -293,14 +300,14 @@ export default class FilterMenu extends LightningElement {
     }
 
     @api
-    get submitButtonLabel() {
-        return this._submitButtonLabel;
+    get applyButtonLabel() {
+        return this._applyButtonLabel;
     }
-    set submitButtonLabel(value) {
-        this._submitButtonLabel =
+    set applyButtonLabel(value) {
+        this._applyButtonLabel =
             value && typeof value === 'string'
                 ? value.trim()
-                : DEFAULT_SUBMIT_BUTTON_LABEL;
+                : DEFAULT_APPLY_BUTTON_LABEL;
     }
 
     @api
@@ -312,6 +319,14 @@ export default class FilterMenu extends LightningElement {
             value && typeof value === 'string'
                 ? value.trim()
                 : DEFAULT_RESET_BUTTON_LABEL;
+    }
+
+    @api
+    get hideApplyResetButtons() {
+        return this._hideApplyResetButtons;
+    }
+    set hideApplyResetButtons(bool) {
+        this._hideApplyResetButtons = normalizeBoolean(bool);
     }
 
     @api
@@ -486,6 +501,12 @@ export default class FilterMenu extends LightningElement {
         } else {
             this.template.querySelector('button').focus();
         }
+    }
+
+    @api
+    apply() {
+        this.computeSelectedItems();
+        this.close();
     }
 
     @api
@@ -750,7 +771,7 @@ export default class FilterMenu extends LightningElement {
         if (event.code === 'Tab') {
             this.cancelBlur();
 
-            if (event.target.label === this.submitButtonLabel) {
+            if (event.target.label === this.applyButtonLabel) {
                 this.allowBlur();
                 this.close();
                 this.dispatchEvent(new CustomEvent('blur'));
@@ -802,7 +823,7 @@ export default class FilterMenu extends LightningElement {
         );
     }
 
-    handleSubmitClick() {
+    handleApplyClick() {
         this.computeSelectedItems();
 
         this.dispatchEvent(
