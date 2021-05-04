@@ -27,7 +27,7 @@ describe('Color Picker', () => {
         expect(element.variant).toBe('standard');
         expect(element.type).toBe('base');
         expect(element.menuVariant).toBe('border');
-        expect(element.menuIconName).toBe('utility:down');
+        expect(element.menuIconName).toBeUndefined();
         expect(element.menuIconSize).toBe('x-small');
         expect(element.menuLabel).toBeUndefined();
         expect(element.menuAlignment).toBe('left');
@@ -208,11 +208,15 @@ describe('Color Picker', () => {
         });
         document.body.appendChild(element);
 
-        element.value = '#419fec';
+        element.value = 'rgb(65, 159, 236)';
 
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector('lightning-input');
-            expect(input.value).toBe('#419fec');
+            expect(input.value).toBe('rgb(65, 159, 236)');
+        })
+        .then(() => {
+            const swatch = element.shadowRoot.querySelector('span')
+            expect(swatch.style.background).toBe('rgb(65, 159, 236)');
         });
     });
 
@@ -379,7 +383,7 @@ describe('Color Picker', () => {
             });
     });
 
-    // Menu variant with menu icon down
+    // Menu variant without menu icon name
     it('Color Picker menu variant bare', () => {
         const element = createElement('base-color-picker', {
             is: ColorPicker
@@ -390,7 +394,7 @@ describe('Color Picker', () => {
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector('button');
-            expect(button.className).toBe('slds-button slds-button_icon-bare');
+            expect(button.className).toBe('slds-button slds-button_icon slds-button_icon-more slds-button_icon-bare');
         });
     });
 
@@ -405,7 +409,7 @@ describe('Color Picker', () => {
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector('button');
             expect(button.className).toBe(
-                'slds-button slds-button_icon-container'
+                'slds-button slds-button_icon slds-button_icon-container-more'
             );
         });
     });
@@ -421,7 +425,7 @@ describe('Color Picker', () => {
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector('button');
             expect(button.className).toBe(
-                'slds-button slds-button_icon-border'
+                'slds-button slds-button_icon slds-button_icon-more'
             );
         });
     });
@@ -437,7 +441,7 @@ describe('Color Picker', () => {
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector('button');
             expect(button.className).toBe(
-                'slds-button slds-button_icon-border-filled'
+                'slds-button slds-button_icon slds-button_icon-more slds-button_icon-border-filled'
             );
         });
     });
@@ -453,7 +457,7 @@ describe('Color Picker', () => {
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector('button');
             expect(button.className).toBe(
-                'slds-button slds-button_icon-bare slds-button_icon-inverse'
+                'slds-button slds-button_icon slds-button_icon-bare slds-button_icon-container-more slds-button_icon-inverse'
             );
         });
     });
@@ -469,25 +473,25 @@ describe('Color Picker', () => {
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector('button');
             expect(button.className).toBe(
-                'slds-button slds-button_icon-border-inverse'
+                'slds-button slds-button_icon slds-button_icon-container-more slds-button_icon-border-inverse'
             );
         });
     });
 
-    // Menu variant without menu icon down
+    // Menu variant with menu icon name
     it('Color Picker menu variant bare without menu icon down', () => {
         const element = createElement('base-color-picker', {
             is: ColorPicker
         });
         document.body.appendChild(element);
 
-        element.menuIconName = 'utility:close';
+        element.menuIconName = 'utility:down';
         element.menuVariant = 'bare';
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector('button');
             expect(button.className).toBe(
-                'slds-button slds-button_icon slds-button_icon-bare slds-button_icon-more'
+                'slds-button slds-button_icon-bare'
             );
         });
     });
@@ -498,13 +502,13 @@ describe('Color Picker', () => {
         });
         document.body.appendChild(element);
 
-        element.menuIconName = 'utility:close';
+        element.menuIconName = 'utility:down';
         element.menuVariant = 'container';
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector('button');
             expect(button.className).toBe(
-                'slds-button slds-button_icon slds-button_icon-container-more'
+                'slds-button slds-button_icon-container'
             );
         });
     });
@@ -515,13 +519,13 @@ describe('Color Picker', () => {
         });
         document.body.appendChild(element);
 
-        element.menuIconName = 'utility:close';
+        element.menuIconName = 'utility:down';
         element.menuVariant = 'border';
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector('button');
             expect(button.className).toBe(
-                'slds-button slds-button_icon slds-button_icon-more'
+                'slds-button slds-button_icon-border'
             );
         });
     });
@@ -532,13 +536,13 @@ describe('Color Picker', () => {
         });
         document.body.appendChild(element);
 
-        element.menuIconName = 'utility:close';
+        element.menuIconName = 'utility:down';
         element.menuVariant = 'border-filled';
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector('button');
             expect(button.className).toBe(
-                'slds-button slds-button_icon slds-button_icon-more slds-button_icon-border-filled'
+                'slds-button slds-button_icon-border-filled'
             );
         });
     });
@@ -549,13 +553,13 @@ describe('Color Picker', () => {
         });
         document.body.appendChild(element);
 
-        element.menuIconName = 'utility:close';
+        element.menuIconName = 'utility:down';
         element.menuVariant = 'bare-inverse';
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector('button');
             expect(button.className).toBe(
-                'slds-button slds-button_icon slds-button_icon-bare slds-button_icon-container-more slds-button_icon-inverse'
+                'slds-button slds-button_icon-bare slds-button_icon-inverse'
             );
         });
     });
@@ -566,18 +570,18 @@ describe('Color Picker', () => {
         });
         document.body.appendChild(element);
 
-        element.menuIconName = 'utility:close';
+        element.menuIconName = 'utility:down';
         element.menuVariant = 'border-inverse';
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector('button');
             expect(button.className).toBe(
-                'slds-button slds-button_icon slds-button_icon-container-more slds-button_icon-border-inverse'
+                'slds-button slds-button_icon-border-inverse'
             );
         });
     });
 
-    // Menu icon size
+    // Menu icon size without menu icon name
     it('Color Picker menu icon size xx-small', () => {
         const element = createElement('base-color-picker', {
             is: ColorPicker
@@ -602,7 +606,7 @@ describe('Color Picker', () => {
 
         return Promise.resolve().then(() => {
             const icon = element.shadowRoot.querySelector('lightning-icon');
-            expect(icon.size).toBe('x-small');
+            expect(icon.size).toBe('xx-small');
         });
     });
 
@@ -613,10 +617,10 @@ describe('Color Picker', () => {
         document.body.appendChild(element);
 
         element.menuIconSize = 'medium';
-
+        
         return Promise.resolve().then(() => {
             const icon = element.shadowRoot.querySelector('lightning-icon');
-            expect(icon.size).toBe('medium');
+            expect(icon.size).toBe('xx-small');
         });
     });
 
@@ -627,6 +631,67 @@ describe('Color Picker', () => {
         document.body.appendChild(element);
 
         element.menuIconSize = 'large';
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector('lightning-icon');
+            expect(icon.size).toBe('xx-small');
+        });
+    });
+
+    // Menu icon size with menu icon name
+    it('Color Picker menu icon size xx-small with menu icon name', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.menuIconSize = 'xx-small';
+        element.menuIconName = 'utility:down'
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector('lightning-icon');
+            expect(icon.size).toBe('xx-small');
+        });
+    });
+
+    it('Color Picker menu icon size x-small with menu icon name', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.menuIconSize = 'x-small';
+        element.menuIconName = 'utility:down'
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector('lightning-icon');
+            expect(icon.size).toBe('x-small');
+        });
+    });
+
+    it('Color Picker menu icon size medium with menu icon name', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.menuIconSize = 'medium';
+        element.menuIconName = 'utility:down'
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector('lightning-icon');
+            expect(icon.size).toBe('medium');
+        });
+    });
+
+    it('Color Picker menu icon size large with menu icon name', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        element.menuIconSize = 'large';
+        element.menuIconName = 'utility:down'
 
         return Promise.resolve().then(() => {
             const icon = element.shadowRoot.querySelector('lightning-icon');
@@ -646,7 +711,7 @@ describe('Color Picker', () => {
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector('button');
             expect(button.textContent).toBe('This is a menu label text');
-            expect(button.className).toContain('slds-button_neutral');
+            expect(button.className).toContain('slds-button');
         });
     });
 
@@ -1013,16 +1078,89 @@ describe('Color Picker', () => {
         element.opacity = true;
 
         return Promise.resolve()
-            .then(() => {
-                const button = element.shadowRoot.querySelector('button');
-                button.click();
-            })
-            .then(() => {
-                const palette = element.shadowRoot.querySelector(
-                    'c-color-gradient'
-                );
-                expect(palette.opacity).toBeTruthy();
+        .then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            button.click();
+        })
+        .then(() => {
+            const palette = element.shadowRoot.querySelector(
+                'c-color-gradient'
+            );
+            expect(palette.opacity).toBeTruthy();
+        });
+    });
+
+    /* ----- JS ----- */
+
+    // done button
+    it('Color Picker done button ', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            button.click();
+        })
+        .then(() => {
+            const doneButton = element.shadowRoot.querySelector("lightning-button[title='Done']")
+            expect(doneButton).toBeTruthy()
+            doneButton.click()
+        })
+    });
+
+    // cancel button
+    it('Color Picker cancel button ', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            button.click();
+        })
+        .then(() => {
+            const cancelButton = element.shadowRoot.querySelector("lightning-button[title='Cancel']")
+            expect(cancelButton).toBeTruthy()
+            cancelButton.click()
+        })
+    });
+
+    // focus and blur on tab
+    it('Color Picker focus', () => {
+        const element = createElement('base-color-picker', {
+            is: ColorPicker
+        });
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            button.click();
+        })
+        .then(() => {
+
+            const tab = element.shadowRoot.querySelector('li > a')
+            const popover = element.shadowRoot.querySelector('.slds-popover__body')
+
+            element.addEventListener('handleprivatefocus', (event) => {
+                expect(event.bubbles).toBeFalsy();
+                expect(event.cancelable).toBeFalsy();
+                expect(event.composed).toBeFalsy();
             });
+
+            element.addEventListener('handleprivateblur', (event) => {
+                expect(event.bubbles).toBeFalsy();
+                expect(event.cancelable).toBeFalsy();
+                expect(event.composed).toBeFalsy();
+            });
+            
+            tab.focus()
+            tab.blur()
+            popover.focus();
+            popover.blur()
+        })
     });
 
     /* ----- EVENTS ----- */

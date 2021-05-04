@@ -70,15 +70,17 @@ const DEFAULT_COLORS = [
     '#b85d0d'
 ];
 
+const DEFAULT_MESSAGE_WHEN_BAD_INPUT = 'Please ensure value is correct';
+
 export default class ColorPicker extends LightningElement {
     @api accessKey;
     @api fieldLevelHelp;
     @api label;
     @api name;
-    @api menuIconName = 'utility:down';
+    @api menuIconName;
     @api menuLabel;
     @api colors = DEFAULT_COLORS;
-    @api messageWhenBadInput = 'Please ensure value is correct';
+    @api messageWhenBadInput = DEFAULT_MESSAGE_WHEN_BAD_INPUT;
 
     _value;
     _variant = validVariants.default;
