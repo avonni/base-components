@@ -667,24 +667,6 @@ describe('DateTimePicker', () => {
         });
     });
 
-    // date format day
-    // it('Date time picker date format day numeric', () => {
-    //     const element = createElement('base-date-time-picker', {
-    //         is: DateTimePicker
-    //     });
-
-    //     document.body.appendChild(element);
-
-    //     const now = new Date()
-
-    //     element.dateFormatDay = 'numeric';
-
-    //     const dateText = element.shadowRoot.querySelector('lightning-layout-item > p')
-    //     return Promise.resolve().then(() => {
-
-    //     });
-    // });
-
     // show end time
     it('Date time picker show end time', () => {
         const element = createElement('base-date-time-picker', {

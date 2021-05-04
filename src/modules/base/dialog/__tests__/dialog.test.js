@@ -122,6 +122,21 @@ describe('Dialog', () => {
         });
     });
 
+    // show dialog
+    it('Dialog show dialog', () => {
+        const element = createElement('base-dialog', {
+            is: Dialog
+        });
+        document.body.appendChild(element);
+
+        element.showDialog = true;
+
+        return Promise.resolve().then(() => {
+            const modal = element.shadowRoot.querySelector('.slds-modal');
+            expect(modal).toBeTruthy();
+        });
+    });
+
     /* ----- METHODS ----- */
 
     // show
