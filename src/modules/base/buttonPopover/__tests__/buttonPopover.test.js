@@ -736,30 +736,6 @@ describe('Button Popover', () => {
             });
     });
 
-    // it('Button Popover triggers hover', () => {
-    //     const element = createElement('base-button-popover', {
-    //         is: ButtonPopover
-    //     });
-    //     document.body.appendChild(element);
-
-    //     element.triggers = 'hover';
-
-    //     return Promise.resolve()
-    //         .then(() => {
-    //             const button = element.shadowRoot.querySelector(
-    //                 'lightning-button'
-    //             );
-    //             element.focus();
-    //             button.click();
-    //         })
-    //         .then(() => {
-    //             const popover = element.shadowRoot.querySelector(
-    //                 '.slds-popover'
-    //             );
-    //             expect(popover).toBeTruthy();
-    //         });
-    // });
-
     /* ---- METHODS ----- */
 
     it('Button Popover method: click', () => {

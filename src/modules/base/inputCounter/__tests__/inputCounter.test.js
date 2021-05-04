@@ -8,7 +8,8 @@ import InputCounter from 'c/inputCounter';
 // messageWhenRangeUnderflow
 // messageWhenStepMismatch
 // messageWhenValueMissing
-
+// focus method
+// blur method
 
 describe('Input Counter', () => {
     afterEach(() => {
@@ -69,9 +70,9 @@ describe('Input Counter', () => {
             is: InputCounter
         });
         document.body.appendChild(element);
-        
+
         element.label = 'This is a label text';
-        
+
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector('lightning-input');
             expect(input.label).toBe('This is a label text');
@@ -83,15 +84,17 @@ describe('Input Counter', () => {
             is: InputCounter
         });
         document.body.appendChild(element);
-        
+
         element.label = 'This is a label text';
-        element.variant = 'label-inline'
+        element.variant = 'label-inline';
 
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector('lightning-input');
             expect(input.label).toBe('This is a label text');
-            const label = element.shadowRoot.querySelector('.slds-form-element__label')
-            expect(label.textContent).toBe('This is a label text')
+            const label = element.shadowRoot.querySelector(
+                '.slds-form-element__label'
+            );
+            expect(label.textContent).toBe('This is a label text');
         });
     });
 
@@ -193,18 +196,21 @@ describe('Input Counter', () => {
         document.body.appendChild(element);
 
         element.step = 5;
-        element.value = 0
+        element.value = 0;
         const input = element.shadowRoot.querySelector('lightning-input');
 
-        return Promise.resolve().then(() => {
-            expect(input.step).toBe(5);
-            expect(element.value).toBe(0)
-        })
-        .then(() => {
-            const addButton = element.shadowRoot.querySelector("lightning-button-icon[title='Increment counter']")
-            addButton.click()
-            expect(element.value).toBe(5)
-        });
+        return Promise.resolve()
+            .then(() => {
+                expect(input.step).toBe(5);
+                expect(element.value).toBe(0);
+            })
+            .then(() => {
+                const addButton = element.shadowRoot.querySelector(
+                    "lightning-button-icon[title='Increment counter']"
+                );
+                addButton.click();
+                expect(element.value).toBe(5);
+            });
     });
 
     // value
@@ -216,15 +222,20 @@ describe('Input Counter', () => {
 
         element.value = 5;
 
-        return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
-            expect(input.value).toBe(5);
-        })
-        .then(() => {
-            const minus = element.shadowRoot.querySelector("lightning-button-icon[title='Decrement counter']")
-            minus.click()
-            expect(element.value).toBe(4)
-        });
+        return Promise.resolve()
+            .then(() => {
+                const input = element.shadowRoot.querySelector(
+                    'lightning-input'
+                );
+                expect(input.value).toBe(5);
+            })
+            .then(() => {
+                const minus = element.shadowRoot.querySelector(
+                    "lightning-button-icon[title='Decrement counter']"
+                );
+                minus.click();
+                expect(element.value).toBe(4);
+            });
     });
 
     // disabled
@@ -252,7 +263,9 @@ describe('Input Counter', () => {
         element.readOnly = true;
 
         return Promise.resolve().then(() => {
-            const buttonIcon = element.shadowRoot.querySelectorAll('lightning-button-icon')
+            const buttonIcon = element.shadowRoot.querySelectorAll(
+                'lightning-button-icon'
+            );
             expect(buttonIcon).toHaveLength(0);
             const input = element.shadowRoot.querySelector('lightning-input');
             expect(input.className).toBe('');
@@ -267,12 +280,48 @@ describe('Input Counter', () => {
         document.body.appendChild(element);
 
         element.required = true;
-        element.variant = 'label-inline'
+        element.variant = 'label-inline';
 
         return Promise.resolve().then(() => {
             const required = element.shadowRoot.querySelector('abbr');
             expect(required).toBeTruthy();
-            expect(required.textContent).toBe('*')
+            expect(required.textContent).toBe('*');
+        });
+    });
+
+    // field level help
+    it('Input Counter field level help', () => {
+        const element = createElement('base-input-counter', {
+            is: InputCounter
+        });
+        document.body.appendChild(element);
+
+        element.fieldLevelHelp = 'This is a field level help';
+        element.variant = 'label-inline';
+
+        return Promise.resolve().then(() => {
+            const helpText = element.shadowRoot.querySelector(
+                'lightning-helptext'
+            );
+            expect(helpText).toBeTruthy();
+            expect(helpText.content).toBe('This is a field level help');
+        });
+    });
+
+    it('Input Counter field level help label hidden', () => {
+        const element = createElement('base-input-counter', {
+            is: InputCounter
+        });
+        document.body.appendChild(element);
+
+        element.fieldLevelHelp = 'This is a field level help';
+        element.variant = 'label-hidden';
+
+        return Promise.resolve().then(() => {
+            const helpText = element.shadowRoot.querySelector(
+                'lightning-helptext'
+            );
+            expect(helpText).toBeNull();
         });
     });
 
@@ -289,7 +338,9 @@ describe('Input Counter', () => {
         element.addEventListener('change', handler);
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button-icon');
+            const button = element.shadowRoot.querySelector(
+                'lightning-button-icon'
+            );
             button.click();
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.value).toBe(-1);
@@ -297,36 +348,5 @@ describe('Input Counter', () => {
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
-    });
-
-    it('Input counter focus event', () => {
-        const element = createElement('base-input-counter', {
-            is: InputCounter
-        });
-        document.body.appendChild(element);
-
-        element.addEventListener('focus', (event) => {
-            expect(event.bubbles).toBeFalsy();
-            expect(event.cancelable).toBeFalsy();
-            expect(event.composed).toBeFalsy();
-        });
-
-        element.focus();
-    });
-
-    it('Input counter blur event', () => {
-        const element = createElement('base-input-counter', {
-            is: InputCounter
-        });
-        document.body.appendChild(element);
-
-        element.addEventListener('blur', (event) => {
-            expect(event.bubbles).toBeFalsy();
-            expect(event.cancelable).toBeFalsy();
-            expect(event.composed).toBeFalsy();
-        });
-
-        element.focus();
-        element.blur();
     });
 });

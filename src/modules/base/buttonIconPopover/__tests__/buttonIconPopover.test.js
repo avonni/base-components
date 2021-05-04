@@ -852,34 +852,6 @@ describe('Button Icon Popover', () => {
             });
     });
 
-    // it('Button Icon Popover triggers hover', () => {
-    //     const element = createElement('base-button-icon-popover', {
-    //         is: ButtonIconPopover
-    //     });
-    //     document.body.appendChild(element);
-
-    //     element.triggers = 'hover';
-
-    //     const handler = jest.fn()
-    //     const button = element.shadowRoot.querySelector(
-    //         'lightning-button-icon'
-    //     );
-
-    //     button.addEventListener('onmouseenter', handler)
-    //     button.mouseEnter()
-
-    //     return Promise.resolve()
-    //         .then(() => {
-    //             element.focus();
-    //         })
-    //         .then(() => {
-    //             const popover = element.shadowRoot.querySelector(
-    //                 '.slds-popover'
-    //             );
-    //             expect(popover).toBeTruthy();
-    //         });
-    // });
-
     /* ---- METHODS ----- */
     it('Button Icon Popover method: click', () => {
         const element = createElement('base-button-icon-popover', {
