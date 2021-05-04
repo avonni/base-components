@@ -6,11 +6,6 @@ import {
 } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-// TODO:
-// Update tests and stories
-
-// Note: Some attributes could be the same for all buttons (button variant, icon size and nubbin?).
-
 const VARIANTS = {
     valid: ['horizontal', 'vertical'],
     default: 'horizontal'
@@ -107,7 +102,7 @@ export default class FilterMenuGroup extends LightningElement {
 
     @api
     clear() {
-        if (this.menuComponents) {
+        if (this.menuComponents.length > 0) {
             this.menuComponents.forEach((menu) => {
                 const value = [];
                 const name = menu.dataset.name;
@@ -120,7 +115,7 @@ export default class FilterMenuGroup extends LightningElement {
 
     @api
     apply() {
-        if (this.menuComponents) {
+        if (this.menuComponents.length > 0) {
             this.menuComponents.forEach((menu) => {
                 const value = menu.value;
                 const name = menu.dataset.name;
@@ -143,10 +138,12 @@ export default class FilterMenuGroup extends LightningElement {
                     const targetItem = items.find(
                         (item) => item.value === value
                     );
-                    pills.push({
-                        label: targetItem.label,
-                        name: `${menu.name},${value}`
-                    });
+                    if (targetItem) {
+                        pills.push({
+                            label: targetItem.label,
+                            name: `${menu.name},${value}`
+                        });
+                    }
                 });
             }
         });
@@ -191,7 +188,7 @@ export default class FilterMenuGroup extends LightningElement {
 
         // Update the value in the filter menu
         const menuComponent = this.template.querySelector(
-            `[data-name=${menuName}`
+            `[data-name=${menuName}]`
         );
         menuComponent.value = this.menus[menuIndex].value;
     }
