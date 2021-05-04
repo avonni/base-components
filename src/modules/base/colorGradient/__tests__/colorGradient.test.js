@@ -1,6 +1,9 @@
 import { createElement } from 'lwc';
 import ColorGradient from 'c/colorGradient';
 
+// not tested
+// message when bad input
+
 describe('Color Gradient', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -46,6 +49,24 @@ describe('Color Gradient', () => {
                 '.slds-color-picker__custom-range'
             );
             expect(gradient.style.background).toBe('rgb(236, 235, 234)');
+        });
+    });
+
+    // value
+    it('Color Gradient value', () => {
+        const element = createElement('base-color-gradient', {
+            is: ColorGradient
+        });
+
+        document.body.appendChild(element);
+
+        element.value = '#b63e3e';
+
+        return Promise.resolve().then(() => {
+            const input = element.shadowRoot.querySelector(
+                '.slds-form-element__control > input'
+            );
+            expect(input.value).toBe('#b63e3e');
         });
     });
 
@@ -121,29 +142,54 @@ describe('Color Gradient', () => {
         });
     });
 
-    // message when bad input
-    // it('Color Gradient message when bad input', () => {
-    //     const element = createElement('base-color-gradient', {
-    //         is: ColorGradient
-    //     });
-    //     document.body.appendChild(element);
+    /* ----- JS ----- */
 
-    //     element.messageWhenBadInput = 'This is a bad input message'
-    //     const input = element.shadowRoot.querySelector('.slds-input')
-    //     input.value = 'dfsdfgdsfs'
+    // private focus
+    it('Color Gradient private focus', () => {
+        const element = createElement('base-color-gradient', {
+            is: ColorGradient
+        });
+        document.body.appendChild(element);
 
-    //     return Promise.resolve().then(() => {
-    //         const inputs = element.shadowRoot.querySelectorAll('.slds-input')
-    //         inputs.forEach((i) => {
-    //             console.log(i.value)
-    //         })
-    //         element.focus();
-    //         const formElements = element.shadowRoot.querySelectorAll('.slds-form-element')
-    //         formElements.forEach((e)=>{
-    //             console.log(e.className)
-    //         })
-    //     });
-    // });
+        let focusEvent = false;
+        const input = element.shadowRoot.querySelector('input');
+
+        element.addEventListener('privatefocus', (event) => {
+            focusEvent = true;
+            expect(event.bubbles).toBeTruthy();
+            expect(event.cancelable).toBeTruthy();
+            expect(event.composed).toBeFalsy();
+        });
+
+        input.focus();
+        return Promise.resolve().then(() => {
+            expect(focusEvent).toBeTruthy();
+        });
+    });
+
+    // private blur
+    it('Color Gradient private blur', () => {
+        const element = createElement('base-color-gradient', {
+            is: ColorGradient
+        });
+        document.body.appendChild(element);
+
+        let blurEvent = false;
+        const input = element.shadowRoot.querySelector('input');
+
+        element.addEventListener('privateblur', (event) => {
+            blurEvent = true;
+            expect(event.bubbles).toBeTruthy();
+            expect(event.cancelable).toBeTruthy();
+            expect(event.composed).toBeTruthy();
+        });
+
+        input.focus();
+        input.blur();
+        return Promise.resolve().then(() => {
+            expect(blurEvent).toBeTruthy();
+        });
+    });
 
     /* ----- EVENTS ----- */
 
