@@ -1,0 +1,61 @@
+<template>
+    <div class="slds-card">
+        <!-- Navigation -->
+        <div class="slds-p-around_medium slds-border_bottom">
+            <div class="slds-grid">
+                <lightning-progress-indicator
+                    class="slds-col"
+                    current-step={currentStep}
+                    type="path"
+                >
+                    <template for:each={steps} for:item="step">
+                        <lightning-progress-step
+                            key={step.name}
+                            label={step.label}
+                            value={step.name}
+                        ></lightning-progress-step>
+                    </template>
+                </lightning-progress-indicator>
+                <lightning-button
+                    if:false={hidePathUpdateButton}
+                    class="path-update-button slds-m-left_xx-small"
+                    label={pathUpdateButtonLabel}
+                    variant="brand"
+                    icon-name={pathUpdateButtonIconName}
+                    icon-position={pathUpdateButtonIconPosition}
+                ></lightning-button>
+            </div>
+        </div>
+
+        <!-- Current Step -->
+
+        <div class="slds-grid slds-card__body slds-card__body_inner">
+            <div class="slds-col slds-p-right_medium">
+                <div
+                    class="slds-grid slds-grid_vertical-align-center slds-border_bottom slds-m-bottom_small"
+                >
+                    <div
+                        class="slds-col slds-p-right_small slds-p-vertical_x-small slds-has-flexi-truncate"
+                    >
+                        <div class="slds-truncate slds-text-title_caps">
+                            {keyFieldsLabel}
+                        </div>
+                    </div>
+                    <lightning-button
+                        label="Action"
+                        variant="base"
+                    ></lightning-button>
+                </div>
+                <div>LIST OF KEY FIELDS</div>
+            </div>
+            <div class="slds-col slds-p-left_medium">
+                <div
+                    class="slds-truncate slds-text-title_caps slds-p-vertical_x-small slds-border_bottom slds-m-bottom_small"
+                >
+                    {guidanceLabel}
+                </div>
+                GUIDANCE TEXT
+            </div>
+        </div>
+    </div>
+</template>
