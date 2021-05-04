@@ -1,6 +1,9 @@
 import { createElement } from 'lwc';
 import Image from 'c/image';
 
+// not tested
+// blank and blankColor because of canvas
+
 const src =
     'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg';
 
@@ -77,8 +80,9 @@ describe('Image', () => {
         });
         document.body.appendChild(element);
 
-        element.srcset =
-            'https://www.avonni.app/, https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg';
+        element.srcset = [
+            'https://www.avonni.app/, https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
+        ];
 
         return Promise.resolve().then(() => {
             const img = element.shadowRoot.querySelector('img');
@@ -99,6 +103,26 @@ describe('Image', () => {
             'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg 320w';
         element.sizes =
             '(max-width: 320px) 280px, (max-width: 480px) 440px, 800px';
+
+        return Promise.resolve().then(() => {
+            const img = element.shadowRoot.querySelector('img');
+            expect(img.sizes).toBe(
+                '(max-width: 320px) 280px, (max-width: 480px) 440px, 800px'
+            );
+        });
+    });
+
+    it('Image sizes[]', () => {
+        const element = createElement('base-image', {
+            is: Image
+        });
+        document.body.appendChild(element);
+
+        element.srcset =
+            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg 320w';
+        element.sizes = [
+            '(max-width: 320px) 280px, (max-width: 480px) 440px, 800px'
+        ];
 
         return Promise.resolve().then(() => {
             const img = element.shadowRoot.querySelector('img');
@@ -365,19 +389,4 @@ describe('Image', () => {
             );
         });
     });
-
-    // blank
-    // it('Image blank', () => {
-    //     const element = createElement('base-image', {
-    //         is: Image
-    //     });
-    //     document.body.appendChild(element);
-
-    //     element.blank = true
-
-    //     return Promise.resolve().then(() => {
-    //         const img = element.shadowRoot.querySelector('img');
-    //         expect(img).toBeFalsy();
-    //     });
-    // });
 });
