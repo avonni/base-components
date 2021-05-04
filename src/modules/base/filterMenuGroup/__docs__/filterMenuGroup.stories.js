@@ -3,11 +3,11 @@ import { FilterMenuGroup } from '../__examples__/filterMenuGroup';
 export default {
     title: 'Example/Filter Menu Group',
     argTypes: {
-        items: {
+        menus: {
             control: {
                 type: 'object'
             },
-            description: 'Array of item objects.',
+            description: 'Array of menu objects.',
             table: {
                 type: { summary: 'object[]' }
             }
@@ -55,7 +55,7 @@ export default {
             options: ['horizontal', 'vertical'],
             defaultValue: 'horizontal',
             description:
-                'Variant of the filter group. Valid values include horizontal and vertical.',
+                'The variant changes the look of the menu group. Accepted variants include horizontal and vertical.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'horizontal' }
@@ -174,7 +174,7 @@ const languages = [
     }
 ];
 
-const items = [
+const menus = [
     {
         name: 'contact',
         label: 'Type',
@@ -219,11 +219,11 @@ const Template = (args) => FilterMenuGroup(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    items: items
+    menus: menus
 };
 
 export const Vertical = Template.bind({});
 Vertical.args = {
-    items: items,
+    menus: menus,
     variant: 'vertical'
 };

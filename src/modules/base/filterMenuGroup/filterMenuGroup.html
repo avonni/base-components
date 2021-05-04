@@ -8,34 +8,37 @@
         </div>
     </template>
     <ul class={filtersWrapperClass}>
-        <template for:each={items} for:item="item">
-            <li class={filtersClass} key={item.name}>
+        <template for:each={menus} for:item="menu">
+            <li class={filtersClass} key={menu.name}>
                 <c-filter-menu
-                    access-key={item.accessKey}
-                    alternative-text={item.alternativeText}
-                    disabled={item.disabled}
-                    icon-name={item.iconName}
-                    icon-size={item.iconSize}
-                    is-loading={item.isLoading}
-                    label={item.label}
-                    loading-state-alternative-text={item.loadingStateAlternativeText}
-                    items={item.items}
-                    title={item.title}
-                    tooltip={item.tooltip}
-                    value={item.value}
+                    access-key={menu.accessKey}
+                    alternative-text={menu.alternativeText}
+                    disabled={menu.disabled}
+                    icon-name={menu.iconName}
+                    icon-size={menu.iconSize}
+                    is-loading={menu.isLoading}
+                    label={menu.label}
+                    loading-state-alternative-text={menu.loadingStateAlternativeText}
+                    items={menu.items}
+                    title={menu.title}
+                    tooltip={menu.tooltip}
+                    value={menu.value}
                     variant={variant}
-                    button-variant={item.buttonVariant}
-                    search-input-placeholder={item.searchInputPlaceholder}
-                    show-search-box={item.showSearchBox}
+                    button-variant={menu.buttonVariant}
+                    search-input-placeholder={menu.searchInputPlaceholder}
+                    show-search-box={menu.showSearchBox}
+                    apply-button-label={applyButtonLabel}
+                    reset-button-label={resetButtonLabel}
                     hide-apply-reset-buttons={isVertical}
-                    dropdown-alignment={item.dropdownAlignment}
-                    dropdown-width={item.dropdownWidth}
-                    dropdown-length={item.dropdownLength}
-                    dropdown-nubbin={item.dropdownNubbin}
+                    dropdown-alignment={menu.dropdownAlignment}
+                    dropdown-width={menu.dropdownWidth}
+                    dropdown-length={menu.dropdownLength}
+                    dropdown-nubbin={menu.dropdownNubbin}
                     hide-selected-items
-                    data-name={item.name}
+                    data-name={menu.name}
                     onapply={handleValueChange}
                     onreset={handleValueChange}
+                    onselect={dispatchSelect}
                 ></c-filter-menu>
             </li>
         </template>

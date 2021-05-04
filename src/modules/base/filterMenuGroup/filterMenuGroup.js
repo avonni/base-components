@@ -7,7 +7,6 @@ import {
 import { classSet } from 'c/utils';
 
 // TODO:
-// Update documentation
 // Update tests and stories
 
 // Note: Some attributes could be the same for all buttons (button variant, icon size and nubbin?).
@@ -21,7 +20,7 @@ const DEFAULT_APPLY_BUTTON_LABEL = 'Apply';
 const DEFAULT_RESET_BUTTON_LABEL = 'Reset';
 
 export default class FilterMenuGroup extends LightningElement {
-    _items = [];
+    _menus = [];
     _hideSelectedItems = false;
     _variant = VARIANTS.default;
     _applyButtonLabel = DEFAULT_APPLY_BUTTON_LABEL;
@@ -30,12 +29,12 @@ export default class FilterMenuGroup extends LightningElement {
     selectedPills = [];
 
     @api
-    get items() {
-        return this._items;
+    get menus() {
+        return this._menus;
     }
-    set items(value) {
+    set menus(value) {
         const array = normalizeArray(value);
-        this._items = JSON.parse(JSON.stringify(array));
+        this._menus = JSON.parse(JSON.stringify(array));
 
         this.computeSelectedPills();
     }
@@ -102,10 +101,40 @@ export default class FilterMenuGroup extends LightningElement {
         });
     }
 
+    get menuComponents() {
+        return this.template.querySelectorAll('c-filter-menu');
+    }
+
+    @api
+    clear() {
+        if (this.menuComponents) {
+            this.menuComponents.forEach((menu) => {
+                const value = [];
+                const name = menu.dataset.name;
+                this.computeValue(name, value);
+            });
+
+            this.computeSelectedPills();
+        }
+    }
+
+    @api
+    apply() {
+        if (this.menuComponents) {
+            this.menuComponents.forEach((menu) => {
+                const value = menu.value;
+                const name = menu.dataset.name;
+                this.computeValue(name, value);
+            });
+
+            this.computeSelectedPills();
+        }
+    }
+
     computeSelectedPills() {
         const pills = [];
 
-        this.items.forEach((menu) => {
+        this.menus.forEach((menu) => {
             const values = menu.value;
             const items = menu.items;
 
@@ -126,8 +155,8 @@ export default class FilterMenuGroup extends LightningElement {
     }
 
     computeValue(menuName, value) {
-        const index = this.items.findIndex((item) => item.name === menuName);
-        this.items[index].value = value;
+        const index = this.menus.findIndex((menu) => menu.name === menuName);
+        this.menus[index].value = value;
     }
 
     handleValueChange(event) {
@@ -145,17 +174,17 @@ export default class FilterMenuGroup extends LightningElement {
         const valueName = pillName[2];
 
         // Find the menu containing the value that was removed
-        const menuIndex = this.items.findIndex(
-            (item) => item.name === menuName
+        const menuIndex = this.menus.findIndex(
+            (menu) => menu.name === menuName
         );
 
         // Find the value
-        const valueIndex = this.items[menuIndex].value.findIndex(
+        const valueIndex = this.menus[menuIndex].value.findIndex(
             (name) => name === valueName
         );
 
-        // Remove this value from the items
-        this.items[menuIndex].value.splice(valueIndex, 1);
+        // Remove this value from the menus
+        this.menus[menuIndex].value.splice(valueIndex, 1);
 
         // Update the pills
         this.computeSelectedPills();
@@ -164,28 +193,26 @@ export default class FilterMenuGroup extends LightningElement {
         const menuComponent = this.template.querySelector(
             `[data-name=${menuName}`
         );
-        menuComponent.value = this.items[menuIndex].value;
+        menuComponent.value = this.menus[menuIndex].value;
     }
 
     handleApplyClick() {
-        const menuComponents = this.template.querySelectorAll('c-filter-menu');
-        menuComponents.forEach((menu) => {
-            const value = menu.value;
-            const name = menu.dataset.name;
-            this.computeValue(name, value);
-        });
-
-        this.computeSelectedPills();
+        this.apply();
     }
 
     handleResetClick() {
-        const menuComponents = this.template.querySelectorAll('c-filter-menu');
-        menuComponents.forEach((menu) => {
-            const value = [];
-            const name = menu.dataset.name;
-            this.computeValue(name, value);
-        });
+        this.clear();
+    }
 
-        this.computeSelectedPills();
+    dispatchSelect(event) {
+        this.dispatchEvent(
+            new CustomEvent('select', {
+                detail: {
+                    name: event.target.dataset.name,
+                    value: event.detail.value
+                },
+                cancelable: true
+            })
+        );
     }
 }
