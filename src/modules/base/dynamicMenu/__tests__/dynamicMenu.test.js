@@ -648,8 +648,55 @@ describe('Dynamic Menu', () => {
         });
     });
 
+    /* ---- JS ----- */
+
+    it('Dynamic Menu click on item', () => {
+        const element = createElement('base-dynamic-menu', {
+            is: DynamicMenu
+        });
+        document.body.appendChild(element);
+
+        element.items = items;
+
+        const button = element.shadowRoot.querySelector(
+            'lightning-button-icon'
+        );
+
+        const handler = jest.fn();
+        element.addEventListener('select', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                button.click();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '.slds-dropdown'
+                );
+                expect(dropdown).toBeTruthy();
+                const item = element.shadowRoot.querySelector(
+                    '.slds-listbox__item'
+                );
+                item.click();
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].detail.item).toMatchObject({
+                    label: 'Acme',
+                    meta: ['Account', 'San Francisco'],
+                    id: 0,
+                    value: 'acme',
+                    avatar: {
+                        fallbackIconName: 'standard:account',
+                        alternativeText: 'Account'
+                    }
+                });
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            });
+    });
+
     /* ---- METHODS ----- */
-    it('method: click with label', () => {
+    it('Dynamic Menu method: click with label', () => {
         const element = createElement('base-dynamic-menu', {
             is: DynamicMenu
         });
@@ -669,7 +716,7 @@ describe('Dynamic Menu', () => {
         });
     });
 
-    it('method: click without label', () => {
+    it('Dynamic Menu method: click without label', () => {
         const element = createElement('base-dynamic-menu', {
             is: DynamicMenu
         });
@@ -686,7 +733,7 @@ describe('Dynamic Menu', () => {
         });
     });
 
-    it('method: focus without label', () => {
+    it('Dynamic Menu method: focus without label', () => {
         const element = createElement('base-dynamic-menu', {
             is: DynamicMenu
         });
@@ -705,7 +752,7 @@ describe('Dynamic Menu', () => {
         });
     });
 
-    it('method: focus with label', () => {
+    it('Dynamic Menu method: focus with label', () => {
         const element = createElement('base-dynamic-menu', {
             is: DynamicMenu
         });
