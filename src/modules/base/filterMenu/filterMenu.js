@@ -110,13 +110,6 @@ export default class FilterMenu extends LightningElement {
     fieldLevelHelp;
 
     connectedCallback() {
-        if (this.variant === 'horizontal') {
-            this.classList.add(
-                'slds-dropdown-trigger',
-                'slds-dropdown-trigger_click'
-            );
-        }
-
         // button-group necessities
         const privatebuttonregister = new CustomEvent('privatebuttonregister', {
             bubbles: true,
@@ -131,6 +124,12 @@ export default class FilterMenu extends LightningElement {
         });
 
         this.dispatchEvent(privatebuttonregister);
+    }
+
+    disconnectedCallback() {
+        if (this._deRegistrationCallback) {
+            this._deRegistrationCallback();
+        }
     }
 
     renderedCallback() {
@@ -267,6 +266,18 @@ export default class FilterMenu extends LightningElement {
             fallbackValue: VARIANTS.default,
             validValues: VARIANTS.valid
         });
+
+        if (this._variant === 'horizontal') {
+            this.classList.add(
+                'slds-dropdown-trigger',
+                'slds-dropdown-trigger_click'
+            );
+        } else {
+            this.classList.remove(
+                'slds-dropdown-trigger',
+                'slds-dropdown-trigger_click'
+            );
+        }
     }
 
     @api

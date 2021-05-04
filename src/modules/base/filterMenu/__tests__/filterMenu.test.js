@@ -2,10 +2,11 @@ import { createElement } from 'lwc';
 import FilterMenu from 'c/filterMenu';
 
 // Not tested:
-// tooltip (is injected outside of shadow dom)
+// tooltip with horizontal variant (is injected outside of shadow dom)
 // auto positionning
-// dropdown scrolling-related events (mouseup, mousedown, scroll)
+// mousedown events (we can't artificially dispatch an event with a button code)
 // Keyboard navigation (we can't artificially dispatch an event with a key code)
+// focus with vertical variant (the test can't catch the focus dispacthed by lightning-checkbox-group)
 
 const ITEMS = [
     {
@@ -53,25 +54,28 @@ describe('FilterMenu', () => {
 
         expect(element.accessKey).toBeUndefined();
         expect(element.alternativeText).toBe('Show Menu');
+        expect(element.applyButtonLabel).toBe('Apply');
+        expect(element.buttonVariant).toBe('border');
         expect(element.disabled).toBeFalsy();
-        expect(element.hideSearchBox).toBeFalsy();
+        expect(element.dropdownAlignment).toBe('left');
+        expect(element.dropdownLength).toBe('7-items');
+        expect(element.dropdownWidth).toBe('small');
+        expect(element.dropdownNubbin).toBeFalsy();
+        expect(element.hideApplyResetButtons).toBeFalsy();
+        expect(element.hideSelectedItems).toBeFalsy();
         expect(element.iconName).toBe('utility:down');
         expect(element.iconSize).toBe('medium');
         expect(element.isLoading).toBeFalsy();
         expect(element.items).toMatchObject([]);
         expect(element.label).toBeUndefined();
         expect(element.loadingStateAlternativeText).toBe('Loading');
-        expect(element.menuAlignment).toBe('left');
-        expect(element.menuLength).toBe('7-items');
-        expect(element.menuWidth).toBe('small');
-        expect(element.nubbin).toBeFalsy();
         expect(element.resetButtonLabel).toBe('Reset');
         expect(element.searchInputPlaceholder).toBe('Search...');
-        expect(element.submitButtonLabel).toBe('Apply');
+        expect(element.showSearchBox).toBeFalsy();
         expect(element.title).toBeUndefined();
         expect(element.tooltip).toBeUndefined();
         expect(element.value).toMatchObject([]);
-        expect(element.variant).toBe('border');
+        expect(element.variant).toBe('horizontal');
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -110,6 +114,338 @@ describe('FilterMenu', () => {
         });
     });
 
+    // apply-button-label
+    it('applyButtonLabel', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.applyButtonLabel = 'A string label';
+        const button = element.shadowRoot.querySelector('button');
+        button.click();
+
+        return Promise.resolve().then(() => {
+            const submitButton = element.shadowRoot.querySelector(
+                '.slds-dropdown lightning-button:last-of-type'
+            );
+            expect(submitButton.label).toBe('A string label');
+        });
+    });
+
+    // button-variant
+    // Depends on iconName and label
+    it('buttonVariant = border', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.buttonVariant = 'border';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.classList.value).toBe(
+                'slds-button slds-button_icon-border'
+            );
+        });
+    });
+
+    it('buttonVariant = border, with label', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.buttonVariant = 'border';
+        element.label = 'A string label';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.classList.value).toBe(
+                'slds-button slds-button_neutral'
+            );
+        });
+    });
+
+    it('buttonVariant = border, with icon', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.buttonVariant = 'border';
+        element.iconName = 'utility:user';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.classList.value).toBe(
+                'slds-button slds-button_icon slds-button_icon-more'
+            );
+        });
+    });
+
+    it('buttonVariant = bare', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.buttonVariant = 'bare';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.classList.value).toBe(
+                'slds-button slds-button_icon-bare'
+            );
+        });
+    });
+
+    it('buttonVariant = bare, with label', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.buttonVariant = 'bare';
+        element.label = 'A string label';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.classList.value).toBe('slds-button');
+        });
+    });
+
+    it('buttonVariant = bare, with icon', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.buttonVariant = 'bare';
+        element.iconName = 'standard:user';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.classList.value).toBe(
+                'slds-button slds-button_icon slds-button_icon-bare slds-button_icon-more'
+            );
+        });
+    });
+
+    it('buttonVariant = container', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.buttonVariant = 'container';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.classList.value).toBe(
+                'slds-button slds-button_icon-container'
+            );
+        });
+    });
+
+    it('buttonVariant = container, with label', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.buttonVariant = 'container';
+        element.label = 'A string label';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.classList.value).toBe('slds-button');
+        });
+    });
+
+    it('buttonVariant = container, with icon', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.buttonVariant = 'container';
+        element.icon = 'utility:user';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.classList.value).toBe(
+                'slds-button slds-button_icon-container'
+            );
+        });
+    });
+
+    it('buttonVariant = border-filled', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.buttonVariant = 'border-filled';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.classList.value).toBe(
+                'slds-button slds-button_icon-border-filled'
+            );
+        });
+    });
+
+    it('buttonVariant = border-filled, with label', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.buttonVariant = 'border-filled';
+        element.label = 'A string label';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.classList.value).toBe('slds-button');
+        });
+    });
+
+    it('buttonVariant = border-filled, with icon', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.buttonVariant = 'border-filled';
+        element.iconName = 'utility:apps';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.classList.value).toBe(
+                'slds-button slds-button_icon slds-button_icon-more slds-button_icon-border-filled'
+            );
+        });
+    });
+
+    it('buttonVariant = bare-inverse', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.buttonVariant = 'bare-inverse';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.classList.value).toBe(
+                'slds-button slds-button_icon-bare slds-button_icon-inverse'
+            );
+        });
+    });
+
+    it('buttonVariant = bare-inverse, with label', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.buttonVariant = 'bare-inverse';
+        element.label = 'A string label';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.classList.value).toBe('slds-button');
+        });
+    });
+
+    it('buttonVariant = bare-inverse, with icon', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.buttonVariant = 'bare-inverse';
+        element.iconName = 'standard:apps';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.classList.value).toBe(
+                'slds-button slds-button_icon slds-button_icon-bare slds-button_icon-container-more slds-button_icon-inverse'
+            );
+        });
+    });
+
+    it('buttonVariant = border-inverse', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.buttonVariant = 'border-inverse';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.classList.value).toBe(
+                'slds-button slds-button_icon-border-inverse'
+            );
+        });
+    });
+
+    it('buttonVariant = border-inverse, with label', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.buttonVariant = 'border-inverse';
+        element.label = 'A string label';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.classList.value).toBe(
+                'slds-button slds-button_inverse'
+            );
+        });
+    });
+
+    it('buttonVariant = border-inverse, with icon', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.buttonVariant = 'border-inverse';
+        element.icon = 'utility:apps';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.classList.value).toBe(
+                'slds-button slds-button_icon-border-inverse'
+            );
+        });
+    });
+
     // disabled
     it('disabled = false', () => {
         const element = createElement('base-filter-menu', {
@@ -141,38 +477,627 @@ describe('FilterMenu', () => {
         });
     });
 
-    // hide-search-box
-    it('hideSearchBox = false', () => {
+    // dropdown-alignment and dropdownNubbin
+    it('dropdownAlignment = left and dropdownNubbin = true', () => {
         const element = createElement('base-filter-menu', {
             is: FilterMenu
         });
 
         document.body.appendChild(element);
 
-        element.hideSearchBox = false;
+        element.dropdownAlignment = 'left';
+        element.dropdownNubbin = true;
         const button = element.shadowRoot.querySelector('button');
         button.click();
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
-            expect(input).toBeTruthy();
+            const dropdown = element.shadowRoot.querySelector('.slds-dropdown');
+            expect(dropdown.classList).toContain('slds-dropdown_left');
+            expect(dropdown.classList).not.toContain('slds-dropdown_center');
+            expect(dropdown.classList).not.toContain('slds-dropdown_right');
+            expect(dropdown.classList).not.toContain('slds-dropdown_bottom');
+            expect(dropdown.classList).not.toContain(
+                'slds-dropdown_bottom-right'
+            );
+            expect(dropdown.classList).not.toContain(
+                'slds-dropdown_bottom-left'
+            );
+
+            expect(dropdown.classList).toContain('slds-nubbin_top-left');
+            expect(dropdown.classList).not.toContain('slds-nubbin_top-right');
+            expect(dropdown.classList).not.toContain('slds-nubbin_top');
+            expect(dropdown.classList).not.toContain('slds-nubbin_bottom-left');
+            expect(dropdown.classList).not.toContain(
+                'slds-nubbin_bottom-right'
+            );
+            expect(dropdown.classList).not.toContain('slds-nubbin_bottom');
         });
     });
 
-    it('hideSearchBox = true', () => {
+    it('dropdownAlignment = auto and dropdownNubbin = true', () => {
         const element = createElement('base-filter-menu', {
             is: FilterMenu
         });
 
         document.body.appendChild(element);
 
-        element.hideSearchBox = true;
+        element.dropdownAlignment = 'auto';
+        element.dropdownNubbin = true;
         const button = element.shadowRoot.querySelector('button');
         button.click();
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
-            expect(input).toBeFalsy();
+            const dropdown = element.shadowRoot.querySelector('.slds-dropdown');
+            expect(dropdown.classList).toContain('slds-dropdown_left');
+            expect(dropdown.classList).not.toContain('slds-dropdown_center');
+            expect(dropdown.classList).not.toContain('slds-dropdown_right');
+            expect(dropdown.classList).not.toContain('slds-dropdown_bottom');
+            expect(dropdown.classList).not.toContain(
+                'slds-dropdown_bottom-right'
+            );
+            expect(dropdown.classList).not.toContain(
+                'slds-dropdown_bottom-left'
+            );
+
+            expect(dropdown.classList).not.toContain('slds-nubbin_top-left');
+            expect(dropdown.classList).not.toContain('slds-nubbin_top-right');
+            expect(dropdown.classList).not.toContain('slds-nubbin_top');
+            expect(dropdown.classList).not.toContain('slds-nubbin_bottom-left');
+            expect(dropdown.classList).not.toContain(
+                'slds-nubbin_bottom-right'
+            );
+            expect(dropdown.classList).not.toContain('slds-nubbin_bottom');
+        });
+    });
+
+    it('dropdownAlignment = center and dropdownNubbin = true', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.dropdownAlignment = 'center';
+        element.dropdownNubbin = true;
+        const button = element.shadowRoot.querySelector('button');
+        button.click();
+
+        return Promise.resolve().then(() => {
+            const dropdown = element.shadowRoot.querySelector('.slds-dropdown');
+            expect(dropdown.classList).not.toContain('slds-dropdown_left');
+            expect(dropdown.classList).toContain('slds-dropdown_center');
+            expect(dropdown.classList).not.toContain('slds-dropdown_right');
+            expect(dropdown.classList).not.toContain('slds-dropdown_bottom');
+            expect(dropdown.classList).not.toContain(
+                'slds-dropdown_bottom-right'
+            );
+            expect(dropdown.classList).not.toContain(
+                'slds-dropdown_bottom-left'
+            );
+
+            expect(dropdown.classList).not.toContain('slds-nubbin_top-left');
+            expect(dropdown.classList).not.toContain('slds-nubbin_top-right');
+            expect(dropdown.classList).toContain('slds-nubbin_top');
+            expect(dropdown.classList).not.toContain('slds-nubbin_bottom-left');
+            expect(dropdown.classList).not.toContain(
+                'slds-nubbin_bottom-right'
+            );
+            expect(dropdown.classList).not.toContain('slds-nubbin_bottom');
+        });
+    });
+
+    it('dropdownAlignment = right and dropdownNubbin = true', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.dropdownAlignment = 'right';
+        element.dropdownNubbin = true;
+        const button = element.shadowRoot.querySelector('button');
+        button.click();
+
+        return Promise.resolve().then(() => {
+            const dropdown = element.shadowRoot.querySelector('.slds-dropdown');
+            expect(dropdown.classList).not.toContain('slds-dropdown_left');
+            expect(dropdown.classList).not.toContain('slds-dropdown_center');
+            expect(dropdown.classList).toContain('slds-dropdown_right');
+            expect(dropdown.classList).not.toContain('slds-dropdown_bottom');
+            expect(dropdown.classList).not.toContain(
+                'slds-dropdown_bottom-right'
+            );
+            expect(dropdown.classList).not.toContain(
+                'slds-dropdown_bottom-left'
+            );
+
+            expect(dropdown.classList).not.toContain('slds-nubbin_top-left');
+            expect(dropdown.classList).toContain('slds-nubbin_top-right');
+            expect(dropdown.classList).not.toContain('slds-nubbin_top');
+            expect(dropdown.classList).not.toContain('slds-nubbin_bottom-left');
+            expect(dropdown.classList).not.toContain(
+                'slds-nubbin_bottom-right'
+            );
+            expect(dropdown.classList).not.toContain('slds-nubbin_bottom');
+        });
+    });
+
+    it('dropdownAlignment = bottom-left and dropdownNubbin = true', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.dropdownAlignment = 'bottom-left';
+        element.dropdownNubbin = true;
+        const button = element.shadowRoot.querySelector('button');
+        button.click();
+
+        return Promise.resolve().then(() => {
+            const dropdown = element.shadowRoot.querySelector('.slds-dropdown');
+            expect(dropdown.classList).toContain('slds-dropdown_left');
+            expect(dropdown.classList).not.toContain('slds-dropdown_center');
+            expect(dropdown.classList).not.toContain('slds-dropdown_right');
+            expect(dropdown.classList).toContain('slds-dropdown_bottom');
+            expect(dropdown.classList).not.toContain(
+                'slds-dropdown_bottom-right'
+            );
+            expect(dropdown.classList).toContain('slds-dropdown_bottom-left');
+
+            expect(dropdown.classList).not.toContain('slds-nubbin_top-left');
+            expect(dropdown.classList).not.toContain('slds-nubbin_top-right');
+            expect(dropdown.classList).not.toContain('slds-nubbin_top');
+            expect(dropdown.classList).toContain('slds-nubbin_bottom-left');
+            expect(dropdown.classList).not.toContain(
+                'slds-nubbin_bottom-right'
+            );
+            expect(dropdown.classList).not.toContain('slds-nubbin_bottom');
+        });
+    });
+
+    it('dropdownAlignment = bottom-center and dropdownNubbin = true', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.dropdownAlignment = 'bottom-center';
+        element.dropdownNubbin = true;
+        const button = element.shadowRoot.querySelector('button');
+        button.click();
+
+        return Promise.resolve().then(() => {
+            const dropdown = element.shadowRoot.querySelector('.slds-dropdown');
+            expect(dropdown.classList).not.toContain('slds-dropdown_left');
+            expect(dropdown.classList).not.toContain('slds-dropdown_center');
+            expect(dropdown.classList).not.toContain('slds-dropdown_right');
+            expect(dropdown.classList).toContain('slds-dropdown_bottom');
+            expect(dropdown.classList).not.toContain(
+                'slds-dropdown_bottom-right'
+            );
+            expect(dropdown.classList).not.toContain(
+                'slds-dropdown_bottom-left'
+            );
+
+            expect(dropdown.classList).not.toContain('slds-nubbin_top-left');
+            expect(dropdown.classList).not.toContain('slds-nubbin_top-right');
+            expect(dropdown.classList).not.toContain('slds-nubbin_top');
+            expect(dropdown.classList).not.toContain('slds-nubbin_bottom-left');
+            expect(dropdown.classList).not.toContain(
+                'slds-nubbin_bottom-right'
+            );
+            expect(dropdown.classList).toContain('slds-nubbin_bottom');
+        });
+    });
+
+    it('dropdownAlignment = bottom-right and dropdownNubbin = true', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.dropdownAlignment = 'bottom-right';
+        element.dropdownNubbin = true;
+        const button = element.shadowRoot.querySelector('button');
+        button.click();
+
+        return Promise.resolve().then(() => {
+            const dropdown = element.shadowRoot.querySelector('.slds-dropdown');
+            expect(dropdown.classList).not.toContain('slds-dropdown_left');
+            expect(dropdown.classList).not.toContain('slds-dropdown_center');
+            expect(dropdown.classList).toContain('slds-dropdown_right');
+            expect(dropdown.classList).toContain('slds-dropdown_bottom');
+            expect(dropdown.classList).toContain('slds-dropdown_bottom-right');
+            expect(dropdown.classList).not.toContain(
+                'slds-dropdown_bottom-left'
+            );
+
+            expect(dropdown.classList).not.toContain('slds-nubbin_top-left');
+            expect(dropdown.classList).not.toContain('slds-nubbin_top-right');
+            expect(dropdown.classList).not.toContain('slds-nubbin_top');
+            expect(dropdown.classList).not.toContain('slds-nubbin_bottom-left');
+            expect(dropdown.classList).toContain('slds-nubbin_bottom-right');
+            expect(dropdown.classList).not.toContain('slds-nubbin_bottom');
+        });
+    });
+
+    it('dropdownNubbin = false', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.dropdownNubbin = false;
+        const button = element.shadowRoot.querySelector('button');
+        button.click();
+
+        return Promise.resolve().then(() => {
+            const dropdown = element.shadowRoot.querySelector('.slds-dropdown');
+
+            expect(dropdown.classList).not.toContain('slds-nubbin_top-left');
+            expect(dropdown.classList).not.toContain('slds-nubbin_top-right');
+            expect(dropdown.classList).not.toContain('slds-nubbin_top');
+            expect(dropdown.classList).not.toContain('slds-nubbin_bottom-left');
+            expect(dropdown.classList).not.toContain(
+                'slds-nubbin_bottom-right'
+            );
+            expect(dropdown.classList).not.toContain('slds-nubbin_bottom');
+        });
+    });
+
+    // dropdown-length
+    it('dropdownLength = 7-items', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.dropdownLength = '7-items';
+        const button = element.shadowRoot.querySelector('button');
+        button.click();
+
+        return Promise.resolve().then(() => {
+            const itemList = element.shadowRoot.querySelector(
+                '.slds-dropdown__list .slds-dropdown__list'
+            );
+            expect(itemList.classList).toContain(
+                'slds-dropdown_length-with-icon-7'
+            );
+            expect(itemList.classList).not.toContain(
+                'slds-dropdown_length-with-icon-5'
+            );
+            expect(itemList.classList).not.toContain(
+                'slds-dropdown_length-with-icon-10'
+            );
+        });
+    });
+
+    it('dropdownLength = 5-items', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.dropdownLength = '5-items';
+        const button = element.shadowRoot.querySelector('button');
+        button.click();
+
+        return Promise.resolve().then(() => {
+            const itemList = element.shadowRoot.querySelector(
+                '.slds-dropdown__list .slds-dropdown__list'
+            );
+            expect(itemList.classList).not.toContain(
+                'slds-dropdown_length-with-icon-7'
+            );
+            expect(itemList.classList).toContain(
+                'slds-dropdown_length-with-icon-5'
+            );
+            expect(itemList.classList).not.toContain(
+                'slds-dropdown_length-with-icon-10'
+            );
+        });
+    });
+
+    it('dropdownLength = 10-items', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.dropdownLength = '10-items';
+        const button = element.shadowRoot.querySelector('button');
+        button.click();
+
+        return Promise.resolve().then(() => {
+            const itemList = element.shadowRoot.querySelector(
+                '.slds-dropdown__list .slds-dropdown__list'
+            );
+            expect(itemList.classList).not.toContain(
+                'slds-dropdown_length-with-icon-7'
+            );
+            expect(itemList.classList).not.toContain(
+                'slds-dropdown_length-with-icon-5'
+            );
+            expect(itemList.classList).toContain(
+                'slds-dropdown_length-with-icon-10'
+            );
+        });
+    });
+
+    // dropdown-width
+    it('dropdownWidth = small', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.dropdownWidth = 'small';
+        const button = element.shadowRoot.querySelector('button');
+        button.click();
+
+        return Promise.resolve().then(() => {
+            const dropdown = element.shadowRoot.querySelector('.slds-dropdown');
+            expect(dropdown.classList).toContain('slds-dropdown_small');
+            expect(dropdown.classList).not.toContain('slds-dropdown_xx-small');
+            expect(dropdown.classList).not.toContain('slds-dropdown_x-small');
+            expect(dropdown.classList).not.toContain('slds-dropdown_medium');
+            expect(dropdown.classList).not.toContain('slds-dropdown_large');
+        });
+    });
+
+    it('dropdownWidth = xx-small', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.dropdownWidth = 'xx-small';
+        const button = element.shadowRoot.querySelector('button');
+        button.click();
+
+        return Promise.resolve().then(() => {
+            const dropdown = element.shadowRoot.querySelector('.slds-dropdown');
+            expect(dropdown.classList).not.toContain('slds-dropdown_small');
+            expect(dropdown.classList).toContain('slds-dropdown_xx-small');
+            expect(dropdown.classList).not.toContain('slds-dropdown_x-small');
+            expect(dropdown.classList).not.toContain('slds-dropdown_medium');
+            expect(dropdown.classList).not.toContain('slds-dropdown_large');
+        });
+    });
+
+    it('dropdownWidth = x-small', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.dropdownWidth = 'x-small';
+        const button = element.shadowRoot.querySelector('button');
+        button.click();
+
+        return Promise.resolve().then(() => {
+            const dropdown = element.shadowRoot.querySelector('.slds-dropdown');
+            expect(dropdown.classList).not.toContain('slds-dropdown_small');
+            expect(dropdown.classList).not.toContain('slds-dropdown_xx-small');
+            expect(dropdown.classList).toContain('slds-dropdown_x-small');
+            expect(dropdown.classList).not.toContain('slds-dropdown_medium');
+            expect(dropdown.classList).not.toContain('slds-dropdown_large');
+        });
+    });
+
+    it('dropdownWidth = medium', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.dropdownWidth = 'medium';
+        const button = element.shadowRoot.querySelector('button');
+        button.click();
+
+        return Promise.resolve().then(() => {
+            const dropdown = element.shadowRoot.querySelector('.slds-dropdown');
+            expect(dropdown.classList).not.toContain('slds-dropdown_small');
+            expect(dropdown.classList).not.toContain('slds-dropdown_xx-small');
+            expect(dropdown.classList).not.toContain('slds-dropdown_x-small');
+            expect(dropdown.classList).toContain('slds-dropdown_medium');
+            expect(dropdown.classList).not.toContain('slds-dropdown_large');
+        });
+    });
+
+    it('dropdownWidth = large', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.dropdownWidth = 'large';
+        const button = element.shadowRoot.querySelector('button');
+        button.click();
+
+        return Promise.resolve().then(() => {
+            const dropdown = element.shadowRoot.querySelector('.slds-dropdown');
+            expect(dropdown.classList).not.toContain('slds-dropdown_small');
+            expect(dropdown.classList).not.toContain('slds-dropdown_xx-small');
+            expect(dropdown.classList).not.toContain('slds-dropdown_x-small');
+            expect(dropdown.classList).not.toContain('slds-dropdown_medium');
+            expect(dropdown.classList).toContain('slds-dropdown_large');
+        });
+    });
+
+    // hide-apply-reset-buttons
+    // Depends on variant
+    it('hideApplyResetButtons = false, with horizontal variant', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.hideApplyResetButtons = false;
+
+        const button = element.shadowRoot.querySelector('button');
+        button.click();
+
+        return Promise.resolve().then(() => {
+            const buttons = element.shadowRoot.querySelectorAll(
+                'lightning-button'
+            );
+            expect(buttons).toHaveLength(2);
+        });
+    });
+
+    it('hideApplyResetButtons = false, with vertical variant', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.hideApplyResetButtons = false;
+        element.variant = 'vertical';
+
+        return Promise.resolve().then(() => {
+            const buttons = element.shadowRoot.querySelectorAll(
+                'lightning-button'
+            );
+            expect(buttons).toHaveLength(2);
+        });
+    });
+
+    it('hideApplyResetButtons = true, with horizontal variant', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.hideApplyResetButtons = true;
+
+        const button = element.shadowRoot.querySelector('button');
+        button.click();
+
+        return Promise.resolve().then(() => {
+            const buttons = element.shadowRoot.querySelectorAll(
+                'lightning-button'
+            );
+            expect(buttons).toHaveLength(0);
+        });
+    });
+
+    it('hideApplyResetButtons = true, with vertical variant', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.hideApplyResetButtons = true;
+        element.variant = 'vertical';
+
+        return Promise.resolve().then(() => {
+            const buttons = element.shadowRoot.querySelectorAll(
+                'lightning-button'
+            );
+            expect(buttons).toHaveLength(0);
+        });
+    });
+
+    // hide-selected-items
+    // Depends on items, value and variant
+    it('hideSelectedItems = false, with horizontal variant', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.hideSelectedItems = false;
+        element.items = ITEMS;
+        element.value = VALUE;
+
+        const button = element.shadowRoot.querySelector('button');
+        button.click();
+
+        return Promise.resolve().then(() => {
+            const pills = element.shadowRoot.querySelector(
+                'lightning-pill-container'
+            );
+            expect(pills).toBeTruthy();
+        });
+    });
+
+    it('hideSelectedItems = false, with vertical variant', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.hideSelectedItems = false;
+        element.variant = 'vertical';
+        element.items = ITEMS;
+        element.value = VALUE;
+
+        return Promise.resolve().then(() => {
+            const pills = element.shadowRoot.querySelector(
+                'lightning-pill-container'
+            );
+            expect(pills).toBeTruthy();
+        });
+    });
+
+    it('hideSelectedItems = true, with horizontal variant', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.hideSelectedItems = true;
+        element.items = ITEMS;
+        element.value = VALUE;
+
+        const button = element.shadowRoot.querySelector('button');
+        button.click();
+
+        return Promise.resolve().then(() => {
+            const pills = element.shadowRoot.querySelector(
+                'lightning-pill-container'
+            );
+            expect(pills).toBeFalsy();
+        });
+    });
+
+    it('hideSelectedItems = true, with vertical variant', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.hideSelectedItems = true;
+        element.variant = 'vertical';
+        element.items = ITEMS;
+        element.value = VALUE;
+
+        return Promise.resolve().then(() => {
+            const pills = element.shadowRoot.querySelector(
+                'lightning-pill-container'
+            );
+            expect(pills).toBeFalsy();
         });
     });
 
@@ -415,466 +1340,6 @@ describe('FilterMenu', () => {
         });
     });
 
-    // menu-alignment and nubbin
-    it('menuAlignment = left and nubbin = true', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        element.menuAlignment = 'left';
-        element.nubbin = true;
-        const button = element.shadowRoot.querySelector('button');
-        button.click();
-
-        return Promise.resolve().then(() => {
-            const dropdown = element.shadowRoot.querySelector('.slds-dropdown');
-            expect(dropdown.classList).toContain('slds-dropdown_left');
-            expect(dropdown.classList).not.toContain('slds-dropdown_center');
-            expect(dropdown.classList).not.toContain('slds-dropdown_right');
-            expect(dropdown.classList).not.toContain('slds-dropdown_bottom');
-            expect(dropdown.classList).not.toContain(
-                'slds-dropdown_bottom-right'
-            );
-            expect(dropdown.classList).not.toContain(
-                'slds-dropdown_bottom-left'
-            );
-
-            expect(dropdown.classList).toContain('slds-nubbin_top-left');
-            expect(dropdown.classList).not.toContain('slds-nubbin_top-right');
-            expect(dropdown.classList).not.toContain('slds-nubbin_top');
-            expect(dropdown.classList).not.toContain('slds-nubbin_bottom-left');
-            expect(dropdown.classList).not.toContain(
-                'slds-nubbin_bottom-right'
-            );
-            expect(dropdown.classList).not.toContain('slds-nubbin_bottom');
-        });
-    });
-
-    it('menuAlignment = auto and nubbin = true', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        element.menuAlignment = 'auto';
-        element.nubbin = true;
-        const button = element.shadowRoot.querySelector('button');
-        button.click();
-
-        return Promise.resolve().then(() => {
-            const dropdown = element.shadowRoot.querySelector('.slds-dropdown');
-            expect(dropdown.classList).toContain('slds-dropdown_left');
-            expect(dropdown.classList).not.toContain('slds-dropdown_center');
-            expect(dropdown.classList).not.toContain('slds-dropdown_right');
-            expect(dropdown.classList).not.toContain('slds-dropdown_bottom');
-            expect(dropdown.classList).not.toContain(
-                'slds-dropdown_bottom-right'
-            );
-            expect(dropdown.classList).not.toContain(
-                'slds-dropdown_bottom-left'
-            );
-
-            expect(dropdown.classList).not.toContain('slds-nubbin_top-left');
-            expect(dropdown.classList).not.toContain('slds-nubbin_top-right');
-            expect(dropdown.classList).not.toContain('slds-nubbin_top');
-            expect(dropdown.classList).not.toContain('slds-nubbin_bottom-left');
-            expect(dropdown.classList).not.toContain(
-                'slds-nubbin_bottom-right'
-            );
-            expect(dropdown.classList).not.toContain('slds-nubbin_bottom');
-        });
-    });
-
-    it('menuAlignment = center and nubbin = true', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        element.menuAlignment = 'center';
-        element.nubbin = true;
-        const button = element.shadowRoot.querySelector('button');
-        button.click();
-
-        return Promise.resolve().then(() => {
-            const dropdown = element.shadowRoot.querySelector('.slds-dropdown');
-            expect(dropdown.classList).not.toContain('slds-dropdown_left');
-            expect(dropdown.classList).toContain('slds-dropdown_center');
-            expect(dropdown.classList).not.toContain('slds-dropdown_right');
-            expect(dropdown.classList).not.toContain('slds-dropdown_bottom');
-            expect(dropdown.classList).not.toContain(
-                'slds-dropdown_bottom-right'
-            );
-            expect(dropdown.classList).not.toContain(
-                'slds-dropdown_bottom-left'
-            );
-
-            expect(dropdown.classList).not.toContain('slds-nubbin_top-left');
-            expect(dropdown.classList).not.toContain('slds-nubbin_top-right');
-            expect(dropdown.classList).toContain('slds-nubbin_top');
-            expect(dropdown.classList).not.toContain('slds-nubbin_bottom-left');
-            expect(dropdown.classList).not.toContain(
-                'slds-nubbin_bottom-right'
-            );
-            expect(dropdown.classList).not.toContain('slds-nubbin_bottom');
-        });
-    });
-
-    it('menuAlignment = right and nubbin = true', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        element.menuAlignment = 'right';
-        element.nubbin = true;
-        const button = element.shadowRoot.querySelector('button');
-        button.click();
-
-        return Promise.resolve().then(() => {
-            const dropdown = element.shadowRoot.querySelector('.slds-dropdown');
-            expect(dropdown.classList).not.toContain('slds-dropdown_left');
-            expect(dropdown.classList).not.toContain('slds-dropdown_center');
-            expect(dropdown.classList).toContain('slds-dropdown_right');
-            expect(dropdown.classList).not.toContain('slds-dropdown_bottom');
-            expect(dropdown.classList).not.toContain(
-                'slds-dropdown_bottom-right'
-            );
-            expect(dropdown.classList).not.toContain(
-                'slds-dropdown_bottom-left'
-            );
-
-            expect(dropdown.classList).not.toContain('slds-nubbin_top-left');
-            expect(dropdown.classList).toContain('slds-nubbin_top-right');
-            expect(dropdown.classList).not.toContain('slds-nubbin_top');
-            expect(dropdown.classList).not.toContain('slds-nubbin_bottom-left');
-            expect(dropdown.classList).not.toContain(
-                'slds-nubbin_bottom-right'
-            );
-            expect(dropdown.classList).not.toContain('slds-nubbin_bottom');
-        });
-    });
-
-    it('menuAlignment = bottom-left and nubbin = true', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        element.menuAlignment = 'bottom-left';
-        element.nubbin = true;
-        const button = element.shadowRoot.querySelector('button');
-        button.click();
-
-        return Promise.resolve().then(() => {
-            const dropdown = element.shadowRoot.querySelector('.slds-dropdown');
-            expect(dropdown.classList).toContain('slds-dropdown_left');
-            expect(dropdown.classList).not.toContain('slds-dropdown_center');
-            expect(dropdown.classList).not.toContain('slds-dropdown_right');
-            expect(dropdown.classList).toContain('slds-dropdown_bottom');
-            expect(dropdown.classList).not.toContain(
-                'slds-dropdown_bottom-right'
-            );
-            expect(dropdown.classList).toContain('slds-dropdown_bottom-left');
-
-            expect(dropdown.classList).not.toContain('slds-nubbin_top-left');
-            expect(dropdown.classList).not.toContain('slds-nubbin_top-right');
-            expect(dropdown.classList).not.toContain('slds-nubbin_top');
-            expect(dropdown.classList).toContain('slds-nubbin_bottom-left');
-            expect(dropdown.classList).not.toContain(
-                'slds-nubbin_bottom-right'
-            );
-            expect(dropdown.classList).not.toContain('slds-nubbin_bottom');
-        });
-    });
-
-    it('menuAlignment = bottom-center and nubbin = true', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        element.menuAlignment = 'bottom-center';
-        element.nubbin = true;
-        const button = element.shadowRoot.querySelector('button');
-        button.click();
-
-        return Promise.resolve().then(() => {
-            const dropdown = element.shadowRoot.querySelector('.slds-dropdown');
-            expect(dropdown.classList).not.toContain('slds-dropdown_left');
-            expect(dropdown.classList).not.toContain('slds-dropdown_center');
-            expect(dropdown.classList).not.toContain('slds-dropdown_right');
-            expect(dropdown.classList).toContain('slds-dropdown_bottom');
-            expect(dropdown.classList).not.toContain(
-                'slds-dropdown_bottom-right'
-            );
-            expect(dropdown.classList).not.toContain(
-                'slds-dropdown_bottom-left'
-            );
-
-            expect(dropdown.classList).not.toContain('slds-nubbin_top-left');
-            expect(dropdown.classList).not.toContain('slds-nubbin_top-right');
-            expect(dropdown.classList).not.toContain('slds-nubbin_top');
-            expect(dropdown.classList).not.toContain('slds-nubbin_bottom-left');
-            expect(dropdown.classList).not.toContain(
-                'slds-nubbin_bottom-right'
-            );
-            expect(dropdown.classList).toContain('slds-nubbin_bottom');
-        });
-    });
-
-    it('menuAlignment = bottom-right and nubbin = true', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        element.menuAlignment = 'bottom-right';
-        element.nubbin = true;
-        const button = element.shadowRoot.querySelector('button');
-        button.click();
-
-        return Promise.resolve().then(() => {
-            const dropdown = element.shadowRoot.querySelector('.slds-dropdown');
-            expect(dropdown.classList).not.toContain('slds-dropdown_left');
-            expect(dropdown.classList).not.toContain('slds-dropdown_center');
-            expect(dropdown.classList).toContain('slds-dropdown_right');
-            expect(dropdown.classList).toContain('slds-dropdown_bottom');
-            expect(dropdown.classList).toContain('slds-dropdown_bottom-right');
-            expect(dropdown.classList).not.toContain(
-                'slds-dropdown_bottom-left'
-            );
-
-            expect(dropdown.classList).not.toContain('slds-nubbin_top-left');
-            expect(dropdown.classList).not.toContain('slds-nubbin_top-right');
-            expect(dropdown.classList).not.toContain('slds-nubbin_top');
-            expect(dropdown.classList).not.toContain('slds-nubbin_bottom-left');
-            expect(dropdown.classList).toContain('slds-nubbin_bottom-right');
-            expect(dropdown.classList).not.toContain('slds-nubbin_bottom');
-        });
-    });
-
-    it('nubbin = false', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        element.nubbin = false;
-        const button = element.shadowRoot.querySelector('button');
-        button.click();
-
-        return Promise.resolve().then(() => {
-            const dropdown = element.shadowRoot.querySelector('.slds-dropdown');
-
-            expect(dropdown.classList).not.toContain('slds-nubbin_top-left');
-            expect(dropdown.classList).not.toContain('slds-nubbin_top-right');
-            expect(dropdown.classList).not.toContain('slds-nubbin_top');
-            expect(dropdown.classList).not.toContain('slds-nubbin_bottom-left');
-            expect(dropdown.classList).not.toContain(
-                'slds-nubbin_bottom-right'
-            );
-            expect(dropdown.classList).not.toContain('slds-nubbin_bottom');
-        });
-    });
-
-    // menu-length
-    it('menuLength = 7-items', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        element.menuLength = '7-items';
-        const button = element.shadowRoot.querySelector('button');
-        button.click();
-
-        return Promise.resolve().then(() => {
-            const itemList = element.shadowRoot.querySelector(
-                'lightning-input + div'
-            );
-            expect(itemList.classList).toContain(
-                'slds-dropdown_length-with-icon-7'
-            );
-            expect(itemList.classList).not.toContain(
-                'slds-dropdown_length-with-icon-5'
-            );
-            expect(itemList.classList).not.toContain(
-                'slds-dropdown_length-with-icon-10'
-            );
-        });
-    });
-
-    it('menuLength = 5-items', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        element.menuLength = '5-items';
-        const button = element.shadowRoot.querySelector('button');
-        button.click();
-
-        return Promise.resolve().then(() => {
-            const itemList = element.shadowRoot.querySelector(
-                'lightning-input + div'
-            );
-            expect(itemList.classList).not.toContain(
-                'slds-dropdown_length-with-icon-7'
-            );
-            expect(itemList.classList).toContain(
-                'slds-dropdown_length-with-icon-5'
-            );
-            expect(itemList.classList).not.toContain(
-                'slds-dropdown_length-with-icon-10'
-            );
-        });
-    });
-
-    it('menuLength = 10-items', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        element.menuLength = '10-items';
-        const button = element.shadowRoot.querySelector('button');
-        button.click();
-
-        return Promise.resolve().then(() => {
-            const itemList = element.shadowRoot.querySelector(
-                'lightning-input + div'
-            );
-            expect(itemList.classList).not.toContain(
-                'slds-dropdown_length-with-icon-7'
-            );
-            expect(itemList.classList).not.toContain(
-                'slds-dropdown_length-with-icon-5'
-            );
-            expect(itemList.classList).toContain(
-                'slds-dropdown_length-with-icon-10'
-            );
-        });
-    });
-
-    // menu-width
-    it('menuWidth = small', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        element.menuWidth = 'small';
-        const button = element.shadowRoot.querySelector('button');
-        button.click();
-
-        return Promise.resolve().then(() => {
-            const dropdown = element.shadowRoot.querySelector('.slds-dropdown');
-            expect(dropdown.classList).toContain('slds-dropdown_small');
-            expect(dropdown.classList).not.toContain('slds-dropdown_xx-small');
-            expect(dropdown.classList).not.toContain('slds-dropdown_x-small');
-            expect(dropdown.classList).not.toContain('slds-dropdown_medium');
-            expect(dropdown.classList).not.toContain('slds-dropdown_large');
-        });
-    });
-
-    it('menuWidth = xx-small', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        element.menuWidth = 'xx-small';
-        const button = element.shadowRoot.querySelector('button');
-        button.click();
-
-        return Promise.resolve().then(() => {
-            const dropdown = element.shadowRoot.querySelector('.slds-dropdown');
-            expect(dropdown.classList).not.toContain('slds-dropdown_small');
-            expect(dropdown.classList).toContain('slds-dropdown_xx-small');
-            expect(dropdown.classList).not.toContain('slds-dropdown_x-small');
-            expect(dropdown.classList).not.toContain('slds-dropdown_medium');
-            expect(dropdown.classList).not.toContain('slds-dropdown_large');
-        });
-    });
-
-    it('menuWidth = x-small', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        element.menuWidth = 'x-small';
-        const button = element.shadowRoot.querySelector('button');
-        button.click();
-
-        return Promise.resolve().then(() => {
-            const dropdown = element.shadowRoot.querySelector('.slds-dropdown');
-            expect(dropdown.classList).not.toContain('slds-dropdown_small');
-            expect(dropdown.classList).not.toContain('slds-dropdown_xx-small');
-            expect(dropdown.classList).toContain('slds-dropdown_x-small');
-            expect(dropdown.classList).not.toContain('slds-dropdown_medium');
-            expect(dropdown.classList).not.toContain('slds-dropdown_large');
-        });
-    });
-
-    it('menuWidth = medium', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        element.menuWidth = 'medium';
-        const button = element.shadowRoot.querySelector('button');
-        button.click();
-
-        return Promise.resolve().then(() => {
-            const dropdown = element.shadowRoot.querySelector('.slds-dropdown');
-            expect(dropdown.classList).not.toContain('slds-dropdown_small');
-            expect(dropdown.classList).not.toContain('slds-dropdown_xx-small');
-            expect(dropdown.classList).not.toContain('slds-dropdown_x-small');
-            expect(dropdown.classList).toContain('slds-dropdown_medium');
-            expect(dropdown.classList).not.toContain('slds-dropdown_large');
-        });
-    });
-
-    it('menuWidth = large', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        element.menuWidth = 'large';
-        const button = element.shadowRoot.querySelector('button');
-        button.click();
-
-        return Promise.resolve().then(() => {
-            const dropdown = element.shadowRoot.querySelector('.slds-dropdown');
-            expect(dropdown.classList).not.toContain('slds-dropdown_small');
-            expect(dropdown.classList).not.toContain('slds-dropdown_xx-small');
-            expect(dropdown.classList).not.toContain('slds-dropdown_x-small');
-            expect(dropdown.classList).not.toContain('slds-dropdown_medium');
-            expect(dropdown.classList).toContain('slds-dropdown_large');
-        });
-    });
-
     // reset-button-label
     it('resetButtonLabel', () => {
         const element = createElement('base-filter-menu', {
@@ -896,6 +1361,7 @@ describe('FilterMenu', () => {
     });
 
     // search-input-placeholder
+    // Depends on showSearchBox
     it('searchInputPlaceholder', () => {
         const element = createElement('base-filter-menu', {
             is: FilterMenu
@@ -904,6 +1370,7 @@ describe('FilterMenu', () => {
         document.body.appendChild(element);
 
         element.searchInputPlaceholder = 'A string placeholder';
+        element.showSearchBox = true;
         const button = element.shadowRoot.querySelector('button');
         button.click();
 
@@ -913,23 +1380,38 @@ describe('FilterMenu', () => {
         });
     });
 
-    // submit-button-label
-    it('submitButtonLabel', () => {
+    // show-search-box
+    it('showSearchBox = false', () => {
         const element = createElement('base-filter-menu', {
             is: FilterMenu
         });
 
         document.body.appendChild(element);
 
-        element.submitButtonLabel = 'A string label';
+        element.showSearchBox = false;
         const button = element.shadowRoot.querySelector('button');
         button.click();
 
         return Promise.resolve().then(() => {
-            const submitButton = element.shadowRoot.querySelector(
-                '.slds-dropdown lightning-button:last-of-type'
-            );
-            expect(submitButton.label).toBe('A string label');
+            const input = element.shadowRoot.querySelector('lightning-input');
+            expect(input).toBeFalsy();
+        });
+    });
+
+    it('showSearchBox = true', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.showSearchBox = true;
+        const button = element.shadowRoot.querySelector('button');
+        button.click();
+
+        return Promise.resolve().then(() => {
+            const input = element.shadowRoot.querySelector('lightning-input');
+            expect(input).toBeTruthy();
         });
     });
 
@@ -946,6 +1428,25 @@ describe('FilterMenu', () => {
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector('button');
             expect(button.title).toBe('A string title');
+        });
+    });
+
+    // tooltip
+    // Depends on variant
+    it('tooltip with vertical variant', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.tooltip = 'A string tooltip';
+        element.variant = 'vertical';
+
+        return Promise.resolve().then(() => {
+            const help = element.shadowRoot.querySelector('lightning-helptext');
+            expect(help).toBeTruthy();
+            expect(help.content).toBe('A string tooltip');
         });
     });
 
@@ -974,313 +1475,48 @@ describe('FilterMenu', () => {
     });
 
     // variant
-    // Depends on iconName and label
-    it('variant = border', () => {
+    it('variant = horizontal', () => {
         const element = createElement('base-filter-menu', {
             is: FilterMenu
         });
 
         document.body.appendChild(element);
 
-        element.variant = 'border';
+        element.variant = 'horizontal';
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector('button');
-            expect(button.classList.value).toBe(
-                'slds-button slds-button_icon-border'
+
+            expect(button).toBeTruthy();
+            expect(element.shadowRoot.host.classList).toContain(
+                'slds-dropdown-trigger'
+            );
+            expect(element.shadowRoot.host.classList).toContain(
+                'slds-dropdown-trigger_click'
             );
         });
     });
 
-    it('variant = border, with label', () => {
+    it('variant = vertical', () => {
         const element = createElement('base-filter-menu', {
             is: FilterMenu
         });
 
         document.body.appendChild(element);
 
-        element.variant = 'border';
-        element.label = 'A string label';
+        element.variant = 'vertical';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
-            expect(button.classList.value).toBe(
-                'slds-button slds-button_neutral'
+            const checkbox = element.shadowRoot.querySelector(
+                'lightning-checkbox-group'
             );
-        });
-    });
 
-    it('variant = border, with icon', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        element.variant = 'border';
-        element.iconName = 'utility:user';
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
-            expect(button.classList.value).toBe(
-                'slds-button slds-button_icon slds-button_icon-more'
+            expect(checkbox).toBeTruthy();
+            expect(element.shadowRoot.host.classList).not.toContain(
+                'slds-dropdown-trigger'
             );
-        });
-    });
-
-    it('variant = bare', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        element.variant = 'bare';
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
-            expect(button.classList.value).toBe(
-                'slds-button slds-button_icon-bare'
-            );
-        });
-    });
-
-    it('variant = bare, with label', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        element.variant = 'bare';
-        element.label = 'A string label';
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
-            expect(button.classList.value).toBe('slds-button');
-        });
-    });
-
-    it('variant = bare, with icon', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        element.variant = 'bare';
-        element.iconName = 'standard:user';
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
-            expect(button.classList.value).toBe(
-                'slds-button slds-button_icon slds-button_icon-bare slds-button_icon-more'
-            );
-        });
-    });
-
-    it('variant = container', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        element.variant = 'container';
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
-            expect(button.classList.value).toBe(
-                'slds-button slds-button_icon-container'
-            );
-        });
-    });
-
-    it('variant = container, with label', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        element.variant = 'container';
-        element.label = 'A string label';
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
-            expect(button.classList.value).toBe('slds-button');
-        });
-    });
-
-    it('variant = container, with icon', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        element.variant = 'container';
-        element.icon = 'utility:user';
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
-            expect(button.classList.value).toBe(
-                'slds-button slds-button_icon-container'
-            );
-        });
-    });
-
-    it('variant = border-filled', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        element.variant = 'border-filled';
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
-            expect(button.classList.value).toBe(
-                'slds-button slds-button_icon-border-filled'
-            );
-        });
-    });
-
-    it('variant = border-filled, with label', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        element.variant = 'border-filled';
-        element.label = 'A string label';
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
-            expect(button.classList.value).toBe('slds-button');
-        });
-    });
-
-    it('variant = border-filled, with icon', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        element.variant = 'border-filled';
-        element.iconName = 'utility:apps';
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
-            expect(button.classList.value).toBe(
-                'slds-button slds-button_icon slds-button_icon-more slds-button_icon-border-filled'
-            );
-        });
-    });
-
-    it('variant = bare-inverse', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        element.variant = 'bare-inverse';
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
-            expect(button.classList.value).toBe(
-                'slds-button slds-button_icon-bare slds-button_icon-inverse'
-            );
-        });
-    });
-
-    it('variant = bare-inverse, with label', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        element.variant = 'bare-inverse';
-        element.label = 'A string label';
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
-            expect(button.classList.value).toBe('slds-button');
-        });
-    });
-
-    it('variant = bare-inverse, with icon', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        element.variant = 'bare-inverse';
-        element.iconName = 'standard:apps';
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
-            expect(button.classList.value).toBe(
-                'slds-button slds-button_icon slds-button_icon-bare slds-button_icon-container-more slds-button_icon-inverse'
-            );
-        });
-    });
-
-    it('variant = border-inverse', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        element.variant = 'border-inverse';
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
-            expect(button.classList.value).toBe(
-                'slds-button slds-button_icon-border-inverse'
-            );
-        });
-    });
-
-    it('variant = border-inverse, with label', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        element.variant = 'border-inverse';
-        element.label = 'A string label';
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
-            expect(button.classList.value).toBe(
-                'slds-button slds-button_inverse'
-            );
-        });
-    });
-
-    it('variant = border-inverse, with icon', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        element.variant = 'border-inverse';
-        element.icon = 'utility:apps';
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
-            expect(button.classList.value).toBe(
-                'slds-button slds-button_icon-border-inverse'
+            expect(element.shadowRoot.host.classList).not.toContain(
+                'slds-dropdown-trigger_click'
             );
         });
     });
@@ -1305,6 +1541,30 @@ describe('FilterMenu', () => {
         });
     });
 
+    // apply
+    // Depends on value and items
+    it('apply method', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        element.value = VALUE;
+        element.items = ITEMS;
+
+        return Promise.resolve()
+            .then(() => {
+                element.apply();
+            })
+            .then(() => {
+                const pills = element.shadowRoot.querySelector(
+                    'lightning-pill-container'
+                );
+                expect(pills).toBeTruthy();
+            });
+    });
+
     // focus
     it('focus method', () => {
         const element = createElement('base-filter-menu', {
@@ -1324,8 +1584,8 @@ describe('FilterMenu', () => {
     /* ----- EVENTS ----- */
 
     // select
-    // Depends on items
-    it('select event', () => {
+    // Depends on items and variant
+    it('select event, with horizontal variant', () => {
         const element = createElement('base-filter-menu', {
             is: FilterMenu
         });
@@ -1381,6 +1641,36 @@ describe('FilterMenu', () => {
                 );
                 expect(items[2].checked).toBeFalsy();
             });
+    });
+
+    it('select event, with vertical variant', () => {
+        const element = createElement('base-filter-menu', {
+            is: FilterMenu
+        });
+
+        document.body.appendChild(element);
+
+        const handler = jest.fn();
+        element.addEventListener('select', handler);
+        element.variant = 'vertical';
+        element.items = ITEMS;
+
+        return Promise.resolve().then(() => {
+            const checkbox = element.shadowRoot.querySelector(
+                'lightning-checkbox-group'
+            );
+
+            checkbox.dispatchEvent(
+                new CustomEvent('change', {
+                    detail: {
+                        value: ['item-3']
+                    }
+                })
+            );
+
+            expect(handler).toHaveBeenCalled();
+            expect(element.value).toMatchObject(['item-3']);
+        });
     });
 
     // apply
@@ -1471,7 +1761,7 @@ describe('FilterMenu', () => {
     });
 
     // search
-    // Depends on items
+    // Depends on items and showSearchBox
     it('search event', () => {
         const element = createElement('base-filter-menu', {
             is: FilterMenu
@@ -1483,6 +1773,7 @@ describe('FilterMenu', () => {
         element.addEventListener('search', handler);
 
         element.items = ITEMS;
+        element.showSearchBox = true;
         const button = element.shadowRoot.querySelector('button');
         button.click();
 
@@ -1570,67 +1861,34 @@ describe('FilterMenu', () => {
         });
     });
 
-    // mouseleave
-    it('mouseleave event', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        const button = element.shadowRoot.querySelector('button');
-        button.click();
-
-        return Promise.resolve().then(() => {
-            const dropdown = element.shadowRoot.querySelector('.slds-dropdown');
-            dropdown.dispatchEvent(new CustomEvent('mouseleave'));
-            expect(element.shadowRoot.host.classList).not.toContain(
-                'slds-is-open'
-            );
-        });
-    });
-
-    // mouseenter
-    it('mouseenter event', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
-        const button = element.shadowRoot.querySelector('button');
-        button.click();
-
-        return Promise.resolve()
-            .then(() => {
-                const dropdown = element.shadowRoot.querySelector(
-                    '.slds-dropdown'
-                );
-                dropdown.dispatchEvent(new CustomEvent('mouseenter'));
-            })
-            .then(() => {
-                const input = element.shadowRoot.querySelector(
-                    'lightning-input'
-                );
-                input.dispatchEvent(new CustomEvent('blur'));
-
-                expect(element.shadowRoot.host.classList).toContain(
-                    'slds-is-open'
-                );
-            });
-    });
-
     // privatebuttonregister
     it('privatebuttonregister event', () => {
         const element = createElement('base-filter-menu', {
             is: FilterMenu
         });
 
-        const handler = jest.fn();
+        const mockDeRegistrationCallback = jest.fn();
+
+        const handler = jest.fn().mockImplementation((event) => {
+            event.detail.callbacks.setDeRegistrationCallback(
+                mockDeRegistrationCallback
+            );
+        });
         element.addEventListener('privatebuttonregister', handler);
 
         document.body.appendChild(element);
 
         expect(handler).toHaveBeenCalled();
+        expect(
+            handler.mock.calls[0][0].detail.callbacks.setDeRegistrationCallback
+        ).toBeTruthy();
+        expect(handler.mock.calls[0][0].detail.callbacks.setOrder).toBeTruthy();
+        expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+
+        while (document.body.firstChild) {
+            document.body.removeChild(document.body.firstChild);
+        }
+
+        expect(mockDeRegistrationCallback).toHaveBeenCalled();
     });
 });
