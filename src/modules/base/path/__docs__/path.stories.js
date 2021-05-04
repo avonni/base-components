@@ -132,6 +132,20 @@ export default {
     }
 };
 
+const actions = [
+    {
+        name: 'action-edit',
+        label: 'Edit',
+        iconName: 'utility:edit'
+    },
+    {
+        name: 'action-remove',
+        label: 'Remove',
+        iconName: 'utility:delete',
+        disabled: true
+    }
+];
+
 const steps = [
     {
         name: 'open',
@@ -151,7 +165,7 @@ const steps = [
             }
         ],
         guidance:
-            "Respond to lead within 5 minutes. Visit the lead's website to learn about teir business",
+            "Respond to lead within 5 minutes. Visit the lead's website to learn about their business.",
         actions: [
             {
                 name: 'action-add-email',
@@ -218,5 +232,6 @@ const Template = (args) => Path(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    steps: steps
+    steps: steps,
+    actions: actions
 };

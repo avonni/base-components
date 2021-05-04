@@ -13,6 +13,7 @@
                             key={step.name}
                             label={step.label}
                             value={step.name}
+                            onclick={handlePathStepClick}
                         ></lightning-progress-step>
                     </template>
                 </lightning-progress-indicator>
@@ -23,16 +24,18 @@
                     variant="brand"
                     icon-name={pathUpdateButtonIconName}
                     icon-position={pathUpdateButtonIconPosition}
+                    disabled={disabled}
+                    onclick={next}
                 ></lightning-button>
             </div>
         </div>
 
         <!-- Current Step -->
-
-        <div class="slds-grid slds-card__body slds-card__body_inner">
-            <div class="slds-col slds-p-right_medium">
+        <div class="slds-grid slds-card__body slds-card__body_inner slds-wrap">
+            <!-- Key fields -->
+            <div class="slds-p-right_medium slds-col">
                 <div
-                    class="slds-grid slds-grid_vertical-align-center slds-border_bottom slds-m-bottom_small"
+                    class="slds-grid slds-grid_vertical-align-center slds-border_bottom slds-m-bottom_x-small"
                 >
                     <div
                         class="slds-col slds-p-right_small slds-p-vertical_x-small slds-has-flexi-truncate"
@@ -41,20 +44,54 @@
                             {keyFieldsLabel}
                         </div>
                     </div>
-                    <lightning-button
-                        label="Action"
-                        variant="base"
-                    ></lightning-button>
+                    <template
+                        for:each={computedCurrentStep.actions}
+                        for:item="action"
+                    >
+                        <lightning-button
+                            class="slds-p-horizontal_x-small"
+                            key={action.name}
+                            label={action.label}
+                            name={action.name}
+                            icon-name={action.iconName}
+                            disabled={action.disabled}
+                            variant="base"
+                            data-step-name={computedCurrentStep.name}
+                            onclick={handleActionClick}
+                        ></lightning-button>
+                    </template>
                 </div>
-                <div>LIST OF KEY FIELDS</div>
+                <template
+                    for:each={computedCurrentStep.keyFields}
+                    for:item="field"
+                >
+                    <div
+                        key={field.value}
+                        class="slds-form-element slds-form-element_readonly slds-form-element_stacked slds-hint-parent slds-p-horizontal_none slds-m-bottom_small"
+                    >
+                        <span class="slds-form-element__label"
+                            >{field.label}</span
+                        >
+                        <div class="slds-form-element__control">
+                            <div class="slds-form-element__static">
+                                {field.value}
+                            </div>
+                        </div>
+                    </div>
+                </template>
             </div>
-            <div class="slds-col slds-p-left_medium">
+
+            <!-- Guidance -->
+            <div
+                if:true={computedCurrentStep.guidance}
+                class="slds-col slds-p-left_medium slds-size_2-of-2 slds-medium-size_1-of-2"
+            >
                 <div
                     class="slds-truncate slds-text-title_caps slds-p-vertical_x-small slds-border_bottom slds-m-bottom_small"
                 >
                     {guidanceLabel}
                 </div>
-                GUIDANCE TEXT
+                <div>{computedCurrentStep.guidance}</div>
             </div>
         </div>
     </div>
