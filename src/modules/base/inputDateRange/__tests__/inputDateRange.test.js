@@ -4,8 +4,8 @@ import InputDateRange from 'c/inputDateRange';
 // not tested
 // timezone
 
-const startDate =  new Date('7/20/2021 10:00')
-const endDate = new Date('7/21/2021 18:15')
+const startDate = new Date('7/20/2021 10:00');
+const endDate = new Date('7/21/2021 18:15');
 
 describe('Input Date Range', () => {
     afterEach(() => {
@@ -19,7 +19,7 @@ describe('Input Date Range', () => {
             is: InputDateRange
         });
 
-        expect(element.type).toBe('date')
+        expect(element.type).toBe('date');
         expect(element.dateStyle).toBe('medium');
         expect(element.timeStyle).toBe('short');
         expect(element.timezone).toBeUndefined();
@@ -31,7 +31,6 @@ describe('Input Date Range', () => {
         expect(element.required).toBeFalsy();
         expect(element.startDate).toBeUndefined();
         expect(element.endDate).toBeUndefined();
-
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -43,14 +42,16 @@ describe('Input Date Range', () => {
         });
         document.body.appendChild(element);
 
-        element.startDate = startDate
-        element.endDate = endDate
+        element.startDate = startDate;
+        element.endDate = endDate;
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelectorAll('input')
-            expect(input).toHaveLength(2)
-            const lightningInput = element.shadowRoot.querySelectorAll('lightning-input')
-            expect(lightningInput).toHaveLength(0)
+            const input = element.shadowRoot.querySelectorAll('input');
+            expect(input).toHaveLength(2);
+            const lightningInput = element.shadowRoot.querySelectorAll(
+                'lightning-input'
+            );
+            expect(lightningInput).toHaveLength(0);
         });
     });
 
@@ -60,15 +61,17 @@ describe('Input Date Range', () => {
         });
         document.body.appendChild(element);
 
-        element.type = 'datetime'
-        element.startDate = startDate
-        element.endDate = endDate
+        element.type = 'datetime';
+        element.startDate = startDate;
+        element.endDate = endDate;
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelectorAll('input')
-            expect(input).toHaveLength(2)
-            const lightningInput = element.shadowRoot.querySelectorAll('lightning-input')
-            expect(lightningInput).toHaveLength(2)
+            const input = element.shadowRoot.querySelectorAll('input');
+            expect(input).toHaveLength(2);
+            const lightningInput = element.shadowRoot.querySelectorAll(
+                'lightning-input'
+            );
+            expect(lightningInput).toHaveLength(2);
         });
     });
 
@@ -79,17 +82,17 @@ describe('Input Date Range', () => {
         });
         document.body.appendChild(element);
 
-        const sDate = "7/20/2021"
-        const eDate = "7/21/2021"
-        element.dateStyle = 'short'
-        element.startDate = startDate
-        element.endDate = endDate
+        const sDate = '7/20/2021';
+        const eDate = '7/21/2021';
+        element.dateStyle = 'short';
+        element.startDate = startDate;
+        element.endDate = endDate;
 
         return Promise.resolve().then(() => {
-            const startInput = element.shadowRoot.querySelector('.start-date')
-            expect(startInput.value).toBe(sDate)
-            const endInput = element.shadowRoot.querySelector('.end-date')
-            expect(endInput.value).toBe(eDate)
+            const startInput = element.shadowRoot.querySelector('.start-date');
+            expect(startInput.value).toBe(sDate);
+            const endInput = element.shadowRoot.querySelector('.end-date');
+            expect(endInput.value).toBe(eDate);
         });
     });
 
@@ -99,16 +102,16 @@ describe('Input Date Range', () => {
         });
         document.body.appendChild(element);
 
-        const sDate = "juil. 20, 2021"
-        const eDate = "juil. 21, 2021"
-        element.startDate = startDate
-        element.endDate = endDate
+        const sDate = 'juil. 20, 2021';
+        const eDate = 'juil. 21, 2021';
+        element.startDate = startDate;
+        element.endDate = endDate;
 
         return Promise.resolve().then(() => {
-            const startInput = element.shadowRoot.querySelector('.start-date')
-            expect(startInput.value).toBe(sDate)
-            const endInput = element.shadowRoot.querySelector('.end-date')
-            expect(endInput.value).toBe(eDate)
+            const startInput = element.shadowRoot.querySelector('.start-date');
+            expect(startInput.value).toBe(sDate);
+            const endInput = element.shadowRoot.querySelector('.end-date');
+            expect(endInput.value).toBe(eDate);
         });
     });
 
@@ -118,17 +121,17 @@ describe('Input Date Range', () => {
         });
         document.body.appendChild(element);
 
-        const sDate = "juillet 20, 2021"
-        const eDate = "juillet 21, 2021"
-        element.dateStyle = 'long'
-        element.startDate = startDate
-        element.endDate = endDate
+        const sDate = 'juillet 20, 2021';
+        const eDate = 'juillet 21, 2021';
+        element.dateStyle = 'long';
+        element.startDate = startDate;
+        element.endDate = endDate;
 
         return Promise.resolve().then(() => {
-            const startInput = element.shadowRoot.querySelector('.start-date')
-            expect(startInput.value).toBe(sDate)
-            const endInput = element.shadowRoot.querySelector('.end-date')
-            expect(endInput.value).toBe(eDate)
+            const startInput = element.shadowRoot.querySelector('.start-date');
+            expect(startInput.value).toBe(sDate);
+            const endInput = element.shadowRoot.querySelector('.end-date');
+            expect(endInput.value).toBe(eDate);
         });
     });
 
@@ -139,19 +142,21 @@ describe('Input Date Range', () => {
         });
         document.body.appendChild(element);
 
-        element.type = 'datetime'
-        element.startDate = startDate
-        element.endDate = endDate
-        const startTime = "10:00"
-        const endTime = "18:15"
+        element.type = 'datetime';
+        element.startDate = startDate;
+        element.endDate = endDate;
+        const startTime = '10:00';
+        const endTime = '18:15';
 
         return Promise.resolve().then(() => {
-            const lightningInputs = element.shadowRoot.querySelectorAll('lightning-input')
+            const lightningInputs = element.shadowRoot.querySelectorAll(
+                'lightning-input'
+            );
             lightningInputs.forEach((input) => {
-                expect(input.timeStyle).toBe('short')
-            })
-            expect(lightningInputs[0].value).toBe(startTime)
-            expect(lightningInputs[1].value).toBe(endTime)
+                expect(input.timeStyle).toBe('short');
+            });
+            expect(lightningInputs[0].value).toBe(startTime);
+            expect(lightningInputs[1].value).toBe(endTime);
         });
     });
 
@@ -161,20 +166,22 @@ describe('Input Date Range', () => {
         });
         document.body.appendChild(element);
 
-        element.type = 'datetime'
-        element.timeStyle = 'medium'
-        element.startDate = startDate
-        element.endDate = endDate
-        const startTime = "10:00"
-        const endTime = "18:15"
+        element.type = 'datetime';
+        element.timeStyle = 'medium';
+        element.startDate = startDate;
+        element.endDate = endDate;
+        const startTime = '10:00';
+        const endTime = '18:15';
 
         return Promise.resolve().then(() => {
-            const lightningInputs = element.shadowRoot.querySelectorAll('lightning-input')
+            const lightningInputs = element.shadowRoot.querySelectorAll(
+                'lightning-input'
+            );
             lightningInputs.forEach((input) => {
-                expect(input.timeStyle).toBe('medium')
-            })
-            expect(lightningInputs[0].value).toBe(startTime)
-            expect(lightningInputs[1].value).toBe(endTime)
+                expect(input.timeStyle).toBe('medium');
+            });
+            expect(lightningInputs[0].value).toBe(startTime);
+            expect(lightningInputs[1].value).toBe(endTime);
         });
     });
 
@@ -184,41 +191,24 @@ describe('Input Date Range', () => {
         });
         document.body.appendChild(element);
 
-        element.type = 'datetime'
-        element.timeStyle = 'long'
-        element.startDate = startDate
-        element.endDate = endDate
-        const startTime = "10:00"
-        const endTime = "18:15"
+        element.type = 'datetime';
+        element.timeStyle = 'long';
+        element.startDate = startDate;
+        element.endDate = endDate;
+        const startTime = '10:00';
+        const endTime = '18:15';
 
         return Promise.resolve().then(() => {
-            const lightningInputs = element.shadowRoot.querySelectorAll('lightning-input')
+            const lightningInputs = element.shadowRoot.querySelectorAll(
+                'lightning-input'
+            );
             lightningInputs.forEach((input) => {
-                expect(input.timeStyle).toBe('long')
-            })
-            expect(lightningInputs[0].value).toBe(startTime)
-            expect(lightningInputs[1].value).toBe(endTime)
+                expect(input.timeStyle).toBe('long');
+            });
+            expect(lightningInputs[0].value).toBe(startTime);
+            expect(lightningInputs[1].value).toBe(endTime);
         });
     });
-
-    //timezone
-    // it('Input Date Range date timezone', () => {
-    //     const element = createElement('base-input-date-range', {
-    //         is: InputDateRange
-    //     });
-    //     document.body.appendChild(element);
-        
-    //     element.type = 'datetime'
-    //     element.startDate = startDate
-    //     element.endDate = endDate
-        
-    //     console.log(element.startDate)
-        
-    //     return Promise.resolve().then(() => {
-    //         console.log(element.startDate)
-    //         element.timezone = 'utc'
-    //     });
-    // });
 
     // disabled
     it('Input Date Range disabled', () => {
@@ -227,13 +217,13 @@ describe('Input Date Range', () => {
         });
         document.body.appendChild(element);
 
-        element.disabled = true
+        element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('input')
+            const inputs = element.shadowRoot.querySelectorAll('input');
             inputs.forEach((input) => {
                 expect(input.disabled).toBeTruthy();
-            })
+            });
         });
     });
 
@@ -247,7 +237,9 @@ describe('Input Date Range', () => {
         element.fieldLevelHelp = 'This is a field level help text';
 
         return Promise.resolve().then(() => {
-            const helpText = element.shadowRoot.querySelector('lightning-helptext');
+            const helpText = element.shadowRoot.querySelector(
+                'lightning-helptext'
+            );
             expect(helpText).toBeTruthy();
             expect(helpText.content).toBe('This is a field level help text');
         });
@@ -263,7 +255,9 @@ describe('Input Date Range', () => {
         element.label = 'This is a label';
 
         return Promise.resolve().then(() => {
-            const label = element.shadowRoot.querySelector('.avonni-label-container > p');
+            const label = element.shadowRoot.querySelector(
+                '.avonni-label-container > p'
+            );
             expect(label.textContent).toBe('This is a label');
         });
     });
@@ -278,7 +272,9 @@ describe('Input Date Range', () => {
         element.labelStartDate = 'This is a label start date';
 
         return Promise.resolve().then(() => {
-            const label = element.shadowRoot.querySelector('.slds-form-element__label');
+            const label = element.shadowRoot.querySelector(
+                '.slds-form-element__label'
+            );
             expect(label.textContent).toBe('This is a label start date');
         });
     });
@@ -293,7 +289,9 @@ describe('Input Date Range', () => {
         element.labelEndDate = 'This is a label end date';
 
         return Promise.resolve().then(() => {
-            const label = element.shadowRoot.querySelector('.slds-form-element__label');
+            const label = element.shadowRoot.querySelector(
+                '.slds-form-element__label'
+            );
             expect(label.textContent).toBe('This is a label end date');
         });
     });
@@ -305,10 +303,10 @@ describe('Input Date Range', () => {
         });
         document.body.appendChild(element);
 
-        element.required = true
+        element.required = true;
 
         return Promise.resolve().then(() => {
-            const required = element.shadowRoot.querySelector('.slds-required')
+            const required = element.shadowRoot.querySelector('.slds-required');
             expect(required).toBeTruthy();
             expect(required.textContent).toBe('*');
         });
@@ -324,7 +322,7 @@ describe('Input Date Range', () => {
         document.body.appendChild(element);
 
         let focusEvent = false;
-        const startInput = element.shadowRoot.querySelector('.start-date') 
+        const startInput = element.shadowRoot.querySelector('.start-date');
         startInput.addEventListener('focus', () => {
             focusEvent = true;
         });
@@ -343,9 +341,9 @@ describe('Input Date Range', () => {
         document.body.appendChild(element);
 
         let blurEvent = false;
-        const startInput = element.shadowRoot.querySelector('.start-date') 
-        
-        startInput.focus()
+        const startInput = element.shadowRoot.querySelector('.start-date');
+
+        startInput.focus();
 
         startInput.addEventListener('blur', () => {
             blurEvent = true;
@@ -367,21 +365,65 @@ describe('Input Date Range', () => {
         });
         document.body.appendChild(element);
 
-        element.startDate = startDate
-        element.endDate = endDate
-        const startInput = element.shadowRoot.querySelector('.start-date')
+        element.startDate = startDate;
+        element.endDate = endDate;
+        const startInput = element.shadowRoot.querySelector('.start-date');
         const handler = jest.fn();
 
         startInput.addEventListener('change', handler);
-        startInput.dispatchEvent(new CustomEvent('change'));
 
-        return Promise.resolve().then(() => {
-            expect(handler).toHaveBeenCalled();
-            // expect(handler.mock.calls[0][0].detail.startDate).toBe(-1);
-            // expect(handler.mock.calls[0][0].detail.endDate).toBe(-1);
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        return Promise.resolve()
+            .then(() => {
+                startInput.dispatchEvent(
+                    new CustomEvent('change', {
+                        detail: { startDate: startDate, endDate: endDate }
+                    })
+                );
+            })
+            .then(() => {
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].detail.startDate).toBe(
+                    startDate
+                );
+                expect(handler.mock.calls[0][0].detail.endDate).toBe(endDate);
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            });
+    });
+
+    // Input date range change
+    it('Input date range change event with timezone', () => {
+        const element = createElement('base-input-date-range', {
+            is: InputDateRange
         });
+        document.body.appendChild(element);
+
+        element.startDate = startDate;
+        element.endDate = endDate;
+        element.timezone = 'America/Port-au-Prince';
+        const startInput = element.shadowRoot.querySelector('.start-date');
+        const handler = jest.fn();
+
+        startInput.addEventListener('change', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                startInput.dispatchEvent(
+                    new CustomEvent('change', {
+                        detail: { startDate: startDate, endDate: endDate }
+                    })
+                );
+            })
+            .then(() => {
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].detail.startDate).toBe(
+                    startDate
+                );
+                expect(handler.mock.calls[0][0].detail.endDate).toBe(endDate);
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            });
     });
 });
