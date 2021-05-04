@@ -119,6 +119,10 @@
             "path": "src/modules/base/dialog/dialog.js"
         },
         {
+            "name": "c/dualListbox",
+            "path": "src/modules/base/dualListbox/dualListbox.js"
+        },
+        {
             "name": "c/dynamicMenu",
             "path": "src/modules/base/dynamicMenu/dynamicMenu.js"
         },
@@ -459,6 +463,10 @@
             "path": "src/modules/base/dialog/dialog.js"
         },
         {
+            "name": "avonni/dualListbox",
+            "path": "src/modules/base/dualListbox/dualListbox.js"
+        },
+        {
             "name": "avonni/dynamicMenu",
             "path": "src/modules/base/dynamicMenu/dynamicMenu.js"
         },
@@ -667,6 +675,7 @@
         "avonni/confetti",
         "avonni/dateTimePicker",
         "avonni/dialog",
+        "avonni/dualListbox",
         "avonni/dynamicMenu",
         "avonni/emojiPicker",
         "avonni/expandableSection",

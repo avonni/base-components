@@ -10,7 +10,7 @@ import PrimitiveBubble from 'c/primitiveBubble';
 
 export { Direction } from 'c/positionLibrary';
 
-const BUBBLE_ID = `avonni-tooltip-bubble_${guid()}`;
+const BUBBLE_ID = `salesforce-lightning-tooltip-bubble_${guid()}`;
 
 function isResizeObserverSupported() {
     return window.ResizeObserver != null;

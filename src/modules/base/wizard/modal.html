@@ -20,32 +20,45 @@
             <template if:false={hideNavigation}>
                 <div if:true={indicatorInHeader} class="slds-m-top_small">
                     <c-primitive-wizard-navigation
-                        position="header"
+                        position="top"
                         indicator-position={indicatorPosition}
                         current-step={currentStep}
-                        steps={steps}
                         indicator-type={indicatorType}
                         hide-indicator={hideIndicator}
                         fraction-prefix-label={fractionPrefixLabel}
                         fraction-label={fractionLabel}
                     >
-                        <slot name="actions"></slot>
                     </c-primitive-wizard-navigation>
                 </div>
             </template>
         </div>
 
         <!-- Steps -->
-        <p class="slds-text-color_error">{errorMessage}</p>
-        <slot onwizardstepregister={handleStepRegister}></slot>
+        <div class={wrapperClass}>
+            <div class={mainColClass}>
+                <p class="slds-text-color_error">{errorMessage}</p>
+                <slot onwizardstepregister={handleStepRegister}></slot>
+            </div>
+            <div class={sideColClass} if:true={indicatorOnSide}>
+                <c-primitive-wizard-navigation
+                    position="side"
+                    onchange={handleChange}
+                    current-step={currentStep}
+                    indicator-type={indicatorType}
+                    indicator-position={indicatorPosition}
+                    hide-indicator={hideIndicator}
+                    fraction-prefix-label={fractionPrefixLabel}
+                    fraction-label={fractionLabel}
+                ></c-primitive-wizard-navigation>
+            </div>
+        </div>
 
         <!-- Footer -->
         <div slot="footer" if:false={hideNavigation}>
             <c-primitive-wizard-navigation
-                position="footer"
+                position="bottom"
                 onchange={handleChange}
                 current-step={currentStep}
-                steps={steps}
                 indicator-type={indicatorType}
                 indicator-position={indicatorPosition}
                 hide-indicator={hideIndicator}

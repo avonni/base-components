@@ -217,7 +217,10 @@ export default class ProgressBar extends LightningElement {
                 'avonni-progress-bar-vertical-size_large':
                     this._size === 'large' && this._orientation === 'vertical',
                 'avonni-progress-bar-vertical-size_full':
-                    (this._size === 'full') & (this._orientation === 'vertical')
+                    (this._size === 'full') &
+                    (this._orientation === 'vertical'),
+                'slds-grid slds-grid_align-center':
+                    this.orientation === 'vertical'
             })
             .toString();
     }
