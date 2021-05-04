@@ -2,7 +2,7 @@ import { createElement } from 'lwc';
 import ColorPalette from 'c/colorPalette';
 
 // Not tested because not used:
-// value 
+// value
 
 describe('Color Palette', () => {
     afterEach(() => {
@@ -67,14 +67,14 @@ describe('Color Palette', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const a = element.shadowRoot.querySelectorAll('a')
+            const a = element.shadowRoot.querySelectorAll('a');
             a.forEach((color) => {
                 expect(color.getAttribute('is-disabled')).toBe('true');
-            })
-            const colors = element.shadowRoot.querySelectorAll('a > span')
+            });
+            const colors = element.shadowRoot.querySelectorAll('a > span');
             colors.forEach((color) => {
                 expect(color.style.backgroundColor).toBe('rgb(221, 219, 218)');
-            })
+            });
         });
     });
 
@@ -88,10 +88,10 @@ describe('Color Palette', () => {
         element.readOnly = true;
 
         return Promise.resolve().then(() => {
-            const a = element.shadowRoot.querySelectorAll('a')
+            const a = element.shadowRoot.querySelectorAll('a');
             a.forEach((color) => {
                 expect(color.getAttribute('read-only')).toBe('true');
-            })
+            });
         });
     });
 
@@ -105,7 +105,9 @@ describe('Color Palette', () => {
         element.isLoading = true;
 
         return Promise.resolve().then(() => {
-            const spinner = element.shadowRoot.querySelector('lightning-spinner')
+            const spinner = element.shadowRoot.querySelector(
+                'lightning-spinner'
+            );
             expect(spinner).toBeTruthy();
         });
     });
@@ -117,15 +119,21 @@ describe('Color Palette', () => {
         });
         document.body.appendChild(element);
 
-        element.colors = [ "rgb(10, 35, 153)", "rgb(9, 116, 118)", "rgb(9, 106, 80)", "rgb(182, 125, 17)", "rgb(184, 93, 13)" ];
+        element.colors = [
+            'rgb(10, 35, 153)',
+            'rgb(9, 116, 118)',
+            'rgb(9, 106, 80)',
+            'rgb(182, 125, 17)',
+            'rgb(184, 93, 13)'
+        ];
 
         return Promise.resolve().then(() => {
             let colorsArray = [];
-            const colors = element.shadowRoot.querySelectorAll('a > span')
-            expect(colors).toHaveLength(5)
+            const colors = element.shadowRoot.querySelectorAll('a > span');
+            expect(colors).toHaveLength(5);
             colors.forEach((color) => {
-                colorsArray.push(color.style.backgroundColor)
-            })
+                colorsArray.push(color.style.backgroundColor);
+            });
             expect(colorsArray.includes('rgb(10, 35, 153)')).toBeTruthy();
             expect(colorsArray.includes('rgb(9, 116, 118)')).toBeTruthy();
             expect(colorsArray.includes('rgb(9, 106, 80)')).toBeTruthy();
@@ -144,8 +152,10 @@ describe('Color Palette', () => {
         element.columns = 4;
 
         return Promise.resolve().then(() => {
-            const container = element.shadowRoot.querySelector('.avonni-pallet-container')
-            expect(container.style.width).toBe('112px')
+            const container = element.shadowRoot.querySelector(
+                '.avonni-pallet-container'
+            );
+            expect(container.style.width).toBe('112px');
         });
     });
 
@@ -159,10 +169,10 @@ describe('Color Palette', () => {
         element.tileWidth = 4;
 
         return Promise.resolve().then(() => {
-            const colors = element.shadowRoot.querySelectorAll('a > span')
+            const colors = element.shadowRoot.querySelectorAll('a > span');
             colors.forEach((color) => {
-                expect(color.style.width).toBe('4px')
-            })
+                expect(color.style.width).toBe('4px');
+            });
         });
     });
 
@@ -176,10 +186,29 @@ describe('Color Palette', () => {
         element.tileHeight = 10;
 
         return Promise.resolve().then(() => {
-            const colors = element.shadowRoot.querySelectorAll('a > span')
+            const colors = element.shadowRoot.querySelectorAll('a > span');
             colors.forEach((color) => {
-                expect(color.style.height).toBe('10px')
-            })
+                expect(color.style.height).toBe('10px');
+            });
+        });
+    });
+
+    /* ----- JS ----- */
+
+    // click when disabled
+    it('Color Palette click when disabled', () => {
+        const element = createElement('base-color-palette', {
+            is: ColorPalette
+        });
+        document.body.appendChild(element);
+
+        element.disabled = true;
+
+        const color = element.shadowRoot.querySelector('a');
+        color.click();
+
+        return Promise.resolve().then(() => {
+            expect(element.value).toBeFalsy();
         });
     });
 
@@ -192,11 +221,11 @@ describe('Color Palette', () => {
         });
         document.body.appendChild(element);
 
-        element.value = "#ffffff"
-        element.reset()
+        element.value = '#ffffff';
+        element.reset();
 
         return Promise.resolve().then(() => {
-            expect(element.value).toBe('')
+            expect(element.value).toBe('');
         });
     });
 
@@ -237,7 +266,9 @@ describe('Color Palette', () => {
         });
         document.body.appendChild(element);
 
-        const color = element.shadowRoot.querySelector('.slds-color-picker__swatch-trigger')
+        const color = element.shadowRoot.querySelector(
+            '.slds-color-picker__swatch-trigger'
+        );
         element.addEventListener('focus', (event) => {
             expect(event.bubbles).toBeFalsy();
             expect(event.cancelable).toBeFalsy();
@@ -253,7 +284,9 @@ describe('Color Palette', () => {
         });
         document.body.appendChild(element);
 
-        const color = element.shadowRoot.querySelector('.slds-color-picker__swatch-trigger')
+        const color = element.shadowRoot.querySelector(
+            '.slds-color-picker__swatch-trigger'
+        );
         element.addEventListener('blur', (event) => {
             expect(event.bubbles).toBeFalsy();
             expect(event.cancelable).toBeFalsy();
