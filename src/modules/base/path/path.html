@@ -7,10 +7,10 @@
                     <div class="slds-grid slds-path__scroller-container">
                         <lightning-button-icon
                             class="slds-path__trigger"
-                            icon-name="utility:chevronright"
+                            icon-name={toggleCoachingIcon}
                             alternative-text="Toggles Coaching"
                             title="Toggles Coaching"
-                            aria-expanded="false"
+                            aria-expanded={coachingIsVisible}
                             onclick={handleToggleCoaching}
                         ></lightning-button-icon>
                         <div class="slds-path__scroller">
@@ -31,7 +31,6 @@
                                                 class="slds-path__link"
                                                 href="#"
                                                 role="option"
-                                                tabindex="-1"
                                                 onclick={handlePathStepClick}
                                                 data-step-name={step.name}
                                             >
@@ -64,24 +63,38 @@
                         </div>
                     </div>
                     <div class="slds-grid slds-path__action">
-                        <span class="slds-path__stage-name"
-                            >Stage: {computedCurrentStep.label}</span
+                        <span
+                            if:true={showSelectButton}
+                            class="slds-path__stage-name"
+                            >Stage: {activeStep.label}</span
                         >
-                        <lightning-button
-                            if:false={hidePathUpdateButton}
-                            class="slds-m-left_xx-small"
-                            label={pathUpdateButtonLabel}
-                            variant="brand"
-                            icon-name={pathUpdateButtonIconName}
-                            icon-position={pathUpdateButtonIconPosition}
-                            disabled={disabled}
-                            onclick={next}
-                        ></lightning-button>
+                        <template if:false={hideButton}>
+                            <lightning-button
+                                if:false={showSelectButton}
+                                class="slds-m-left_xx-small"
+                                label={nextButtonLabel}
+                                variant="brand"
+                                icon-name={nextButtonIconName}
+                                icon-position={nextButtonIconPosition}
+                                disabled={disabled}
+                                onclick={next}
+                            ></lightning-button>
+                            <lightning-button
+                                if:true={showSelectButton}
+                                class="slds-m-left_xx-small"
+                                label={selectButtonLabel}
+                                variant="brand"
+                                icon-name={selectButtonIconName}
+                                icon-position={selectButtonIconPosition}
+                                disabled={disabled}
+                                onclick={handleSelectButtonClick}
+                            ></lightning-button>
+                        </template>
                     </div>
                 </div>
 
                 <!-- Current Step -->
-                <div class="slds-path__content">
+                <div if:true={coachingIsVisible} class="slds-path__content">
                     <div class="slds-path__coach slds-grid">
                         <div class="slds-path__keys">
                             <div class="slds-grid slds-path__coach-title">

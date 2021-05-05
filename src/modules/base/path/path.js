@@ -1,4 +1,4 @@
-import { LightningElement, api } from 'lwc';
+import { LightningElement, api, track } from 'lwc';
 import {
     normalizeBoolean,
     normalizeString,
@@ -18,28 +18,32 @@ const ICON_POSITIONS = {
 
 const DEFAULT_KEYFIELDS_LABEL = 'Key Fields';
 const DEFAULT_GUIDANCE_LABEL = 'Guidance for Success';
-const DEFAULT_PATH_UPDATE_BUTTON_LABEL = 'Mark as Complete';
+const DEFAULT_NEXT_BUTTON_LABEL = 'Mark as Complete';
+const DEFAULT_SELECT_BUTTON_LABEL = 'Mark as Current Stage';
 
 // TODO:
-// Handle toggle button
-// Change click on step
 // Modal on complete and won/lost status
 // Tests
 
 export default class Path extends LightningElement {
-    @api pathUpdateButtonIconName;
+    @api nextButtonIconName;
+    @api selectButtonIconName;
 
     _currentStep;
     _disabled = false;
     _format = FORMATS.default;
     _keyFieldsLabel = DEFAULT_KEYFIELDS_LABEL;
     _guidanceLabel = DEFAULT_GUIDANCE_LABEL;
-    _hidePathUpdateButton = false;
-    _pathUpdateButtonLabel = DEFAULT_PATH_UPDATE_BUTTON_LABEL;
-    _pathUpdateButtonIconPosition = ICON_POSITIONS.default;
-    _steps = [];
+    _hideButton = false;
+    _nextButtonLabel = DEFAULT_NEXT_BUTTON_LABEL;
+    _nextButtonIconPosition = ICON_POSITIONS.default;
+    _selectButtonLabel = DEFAULT_SELECT_BUTTON_LABEL;
+    _selectButtonIconPosition = ICON_POSITIONS.default;
     _actions = [];
+    @track _steps = [];
 
+    activeStep;
+    coachingIsVisible = false;
     computedCurrentStep;
 
     connectedCallback() {
@@ -97,30 +101,52 @@ export default class Path extends LightningElement {
     }
 
     @api
-    get hidePathUpdateButton() {
-        return this._hidePathUpdateButton;
+    get hideButton() {
+        return this._hideButton;
     }
-    set hidePathUpdateButton(bool) {
-        this._hidePathUpdateButton = normalizeBoolean(bool);
+    set hideButton(bool) {
+        this._hideButton = normalizeBoolean(bool);
     }
 
     @api
-    get pathUpdateButtonLabel() {
-        return this._pathUpdateButtonLabel;
+    get nextButtonLabel() {
+        return this._nextButtonLabel;
     }
-    set pathUpdateButtonLabel(value) {
-        this._pathUpdateButtonLabel =
+    set nextButtonLabel(value) {
+        this._nextButtonLabel =
             typeof value === 'string'
                 ? value.trim()
-                : DEFAULT_PATH_UPDATE_BUTTON_LABEL;
+                : DEFAULT_NEXT_BUTTON_LABEL;
     }
 
     @api
-    get pathUpdateButtonIconPosition() {
-        return this._pathUpdateButtonIconPosition;
+    get nextButtonIconPosition() {
+        return this._nextButtonIconPosition;
     }
-    set pathUpdateButtonIconPosition(value) {
-        this._pathUpdateButtonIconPosition = normalizeString(value, {
+    set nextButtonIconPosition(value) {
+        this._nextButtonIconPosition = normalizeString(value, {
+            fallbackValue: ICON_POSITIONS.default,
+            validValues: ICON_POSITIONS.valid
+        });
+    }
+
+    @api
+    get selectButtonLabel() {
+        return this._selectButtonLabel;
+    }
+    set selectButtonLabel(value) {
+        this._selectButtonLabel =
+            typeof value === 'string'
+                ? value.trim()
+                : DEFAULT_SELECT_BUTTON_LABEL;
+    }
+
+    @api
+    get selectButtonIconPosition() {
+        return this._selectButtonIconPosition;
+    }
+    set selectButtonIconPosition(value) {
+        this._selectButtonIconPosition = normalizeString(value, {
             fallbackValue: ICON_POSITIONS.default,
             validValues: ICON_POSITIONS.valid
         });
@@ -148,6 +174,16 @@ export default class Path extends LightningElement {
         this._actions = normalizeArray(value);
 
         if (this.isConnected) this.initSteps();
+    }
+
+    get toggleCoachingIcon() {
+        return this.coachingIsVisible
+            ? 'utility:chevrondown'
+            : 'utility:chevronright';
+    }
+
+    get showSelectButton() {
+        return this.activeStep && this.activeStep.name !== this.currentStep;
     }
 
     @api
@@ -200,18 +236,26 @@ export default class Path extends LightningElement {
         let currentStepPassed = false;
 
         this.steps.forEach((step) => {
+            let isActive = false;
             step.isCurrentStep = step.name === this.currentStep;
 
             if (this.format === 'linear' && step.isCurrentStep) {
                 currentStepPassed = true;
             }
 
+            if (this.activeStep && this.activeStep.name === step.name) {
+                isActive = true;
+            }
+
             step.class = classSet('slds-path__item').add({
                 'slds-is-complete':
                     this.format === 'linear' && !currentStepPassed,
-                'slds-is-active slds-is-current': step.isCurrentStep,
+                'slds-is-current': step.isCurrentStep,
                 'slds-is-incomplete':
-                    currentStepPassed || this.format === 'non-linear'
+                    !step.isCurrentStep &&
+                    (this.format === 'non-linear' || currentStepPassed),
+                'slds-is-active':
+                    isActive || (step.isCurrentStep && !this.activeStep)
             });
         });
     }
@@ -235,11 +279,18 @@ export default class Path extends LightningElement {
         event.preventDefault();
 
         if (!this.disabled) {
-            const currentStep = this.currentStep;
-            const nextStep = event.currentTarget.dataset.stepName;
-            this.moveToStep(nextStep);
-            this.dispatchChange(currentStep);
+            const name = event.currentTarget.dataset.stepName;
+            this.activeStep = this.steps.find((step) => step.name === name);
+            this.updateStepsStatus();
         }
+    }
+
+    handleSelectButtonClick() {
+        const currentStep = this.currentStep;
+        const nextStep = this.activeStep.name;
+        this.moveToStep(nextStep);
+        this.dispatchChange(currentStep);
+        this.activeStep = undefined;
     }
 
     handleActionClick(event) {
@@ -254,7 +305,7 @@ export default class Path extends LightningElement {
     }
 
     handleToggleCoaching() {
-        console.log('toggle coaching');
+        this.coachingIsVisible = !this.coachingIsVisible;
     }
 
     dispatchChange(oldStep) {
