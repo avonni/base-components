@@ -2,7 +2,7 @@
     <div class="slds-card">
         <!-- Navigation -->
         <div class="slds-p-around_medium slds-border_bottom">
-            <div class="slds-path slds-path_has-coaching slds-is-expanded">
+            <div class={pathClass}>
                 <div class="slds-grid slds-path__track">
                     <div class="slds-grid slds-path__scroller-container">
                         <lightning-button-icon
@@ -63,22 +63,10 @@
                         </div>
                     </div>
                     <div class="slds-grid slds-path__action">
-                        <span
-                            if:true={showSelectButton}
-                            class="slds-path__stage-name"
+                        <span if:true={activeStep} class="slds-path__stage-name"
                             >Stage: {activeStep.label}</span
                         >
                         <template if:false={hideButton}>
-                            <lightning-button
-                                if:false={showSelectButton}
-                                class="slds-m-left_xx-small"
-                                label={nextButtonLabel}
-                                variant="brand"
-                                icon-name={nextButtonIconName}
-                                icon-position={nextButtonIconPosition}
-                                disabled={disabled}
-                                onclick={next}
-                            ></lightning-button>
                             <lightning-button
                                 if:true={showSelectButton}
                                 class="slds-m-left_xx-small"
@@ -89,7 +77,63 @@
                                 disabled={disabled}
                                 onclick={handleSelectButtonClick}
                             ></lightning-button>
+                            <lightning-button
+                                if:true={showNextButton}
+                                class="slds-m-left_xx-small"
+                                label={nextButtonLabel}
+                                variant="brand"
+                                icon-name={nextButtonIconName}
+                                icon-position={nextButtonIconPosition}
+                                disabled={disabled}
+                                onclick={next}
+                            ></lightning-button>
+                            <lightning-button
+                                if:true={showSelectLastStepButton}
+                                class="slds-m-left_xx-small"
+                                label={selectLastStepButtonLabel}
+                                variant="brand"
+                                icon-name={selectLastStepButtonIconName}
+                                icon-position={selectLastStepButtonIconPosition}
+                                disabled={disabled}
+                                onclick={openDialog}
+                            ></lightning-button>
+                            <lightning-button
+                                if:true={showChangeClosedStatusButton}
+                                class="slds-m-left_xx-small"
+                                label={changeClosedStatusButtonLabel}
+                                variant="brand"
+                                icon-name={changeClosedStatusButtonIconName}
+                                icon-position={changeClosedStatusButtonIconPosition}
+                                disabled={disabled}
+                                onclick={openDialog}
+                            ></lightning-button>
                         </template>
+
+                        <c-dialog title="Close this Opportunity">
+                            <div
+                                class="slds-p-bottom_x-large slds-p-horizontal_medium"
+                            >
+                                <lightning-combobox
+                                    class="slds-p-bottom_xx-large"
+                                    label="Stage"
+                                    placeholder="Select a closed stage..."
+                                    required
+                                    options={statusOptions}
+                                ></lightning-combobox>
+                            </div>
+                            <div slot="footer">
+                                <lightning-button
+                                    label="Cancel"
+                                    onclick={hideDialog}
+                                ></lightning-button>
+                                <lightning-button
+                                    variant="brand"
+                                    class="slds-p-left_x-small"
+                                    label="Save"
+                                    onclick={handleSaveDialog}
+                                ></lightning-button>
+                            </div>
+                        </c-dialog>
                     </div>
                 </div>
 

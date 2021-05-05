@@ -20,14 +20,30 @@ const DEFAULT_KEYFIELDS_LABEL = 'Key Fields';
 const DEFAULT_GUIDANCE_LABEL = 'Guidance for Success';
 const DEFAULT_NEXT_BUTTON_LABEL = 'Mark as Complete';
 const DEFAULT_SELECT_BUTTON_LABEL = 'Mark as Current Stage';
+const DEFAULT_SELECT_LAST_STEP_BUTTON_LABEL = 'Select Closed Stage';
+const DEFAULT_CHANGE_CLOSED_STATUS_BUTTON_LABEL = 'Change Closed Stage';
+const DEFAULT_STATUS_OPTIONS = [
+    {
+        label: 'Closed Lost',
+        value: 'lost'
+    },
+    {
+        label: 'Closed Won',
+        value: 'won'
+    }
+];
+// QUESTIONS :
+// Should we have that many button attributes?
 
 // TODO:
-// Modal on complete and won/lost status
+// Fix styling of path when closed
 // Tests
 
 export default class Path extends LightningElement {
     @api nextButtonIconName;
     @api selectButtonIconName;
+    @api selectLastStepButtonIconName;
+    @api changeClosedStatusButtonIconName;
 
     _currentStep;
     _disabled = false;
@@ -39,9 +55,15 @@ export default class Path extends LightningElement {
     _nextButtonIconPosition = ICON_POSITIONS.default;
     _selectButtonLabel = DEFAULT_SELECT_BUTTON_LABEL;
     _selectButtonIconPosition = ICON_POSITIONS.default;
+    _selectLastStepButtonLabel = DEFAULT_SELECT_LAST_STEP_BUTTON_LABEL;
+    _selectLastStepButtonIconPosition = ICON_POSITIONS.default;
+    _changeClosedStatusButtonLabel = DEFAULT_CHANGE_CLOSED_STATUS_BUTTON_LABEL;
+    _changeClosedStatusButtonIconPosition = ICON_POSITIONS.default;
     _actions = [];
     @track _steps = [];
 
+    _status;
+    statusOptions = DEFAULT_STATUS_OPTIONS;
     activeStep;
     coachingIsVisible = false;
     computedCurrentStep;
@@ -153,6 +175,50 @@ export default class Path extends LightningElement {
     }
 
     @api
+    get selectLastStepButtonLabel() {
+        return this._selectLastStepButtonLabel;
+    }
+    set selectLastStepButtonLabel(value) {
+        this._selectLastStepButtonLabel =
+            typeof value === 'string'
+                ? value.trim()
+                : DEFAULT_SELECT_LAST_STEP_BUTTON_LABEL;
+    }
+
+    @api
+    get selectLastStepButtonIconPosition() {
+        return this._selectLastStepButtonIconPosition;
+    }
+    set selectLastStepButtonIconPosition(value) {
+        this._selectLastStepButtonIconPosition = normalizeString(value, {
+            fallbackValue: ICON_POSITIONS.default,
+            validValues: ICON_POSITIONS.valid
+        });
+    }
+
+    @api
+    get changeClosedStatusButtonLabel() {
+        return this._changeClosedStatusButtonLabel;
+    }
+    set changeClosedStatusButtonLabel(value) {
+        this._changeClosedStatusButtonLabel =
+            typeof value === 'string'
+                ? value.trim()
+                : DEFAULT_CHANGE_CLOSED_STATUS_BUTTON_LABEL;
+    }
+
+    @api
+    get changeClosedStatusButtonIconPosition() {
+        return this._changeClosedStatusButtonIconPosition;
+    }
+    set changeClosedStatusButtonIconPosition(value) {
+        this._changeClosedStatusButtonIconPosition = normalizeString(value, {
+            fallbackValue: ICON_POSITIONS.default,
+            validValues: ICON_POSITIONS.valid
+        });
+    }
+
+    @api
     get steps() {
         return this._steps;
     }
@@ -182,42 +248,87 @@ export default class Path extends LightningElement {
             : 'utility:chevronright';
     }
 
+    get lastStepName() {
+        return this.steps[this.steps.length - 1].name;
+    }
+
+    get lastStepIsCurrent() {
+        return this.lastStepName === this.currentStep;
+    }
+
+    get lastStepIsActive() {
+        return this.activeStep && this.lastStepName === this.activeStep.name;
+    }
+
+    get currentStepIsActive() {
+        return this.activeStep && this.activeStep.name === this.currentStep;
+    }
+
+    get showChangeClosedStatusButton() {
+        return (
+            this.lastStepIsCurrent &&
+            (!this.activeStep || this.lastStepIsActive)
+        );
+    }
+
     get showSelectButton() {
-        return this.activeStep && this.activeStep.name !== this.currentStep;
+        return (
+            this.activeStep &&
+            !this.currentStepIsActive &&
+            !this.lastStepIsActive
+        );
+    }
+
+    get showNextButton() {
+        return (
+            !this.lastStepIsCurrent &&
+            (!this.activeStep || this.currentStepIsActive)
+        );
+    }
+
+    get showSelectLastStepButton() {
+        return !this.lastStepIsCurrent && this.lastStepIsActive;
+    }
+
+    get currentStepIndex() {
+        return this.steps.findIndex((step) => step.name === this.currentStep);
+    }
+
+    get pathClass() {
+        return classSet('slds-path slds-path_has-coaching').add({
+            'slds-is-expanded': this.coachingIsVisible,
+            'slds-is-won': this._status === 'won',
+            'slds-is-lost': this._status === 'lost'
+        });
     }
 
     @api
     next() {
-        const currentStepIndex = this.steps.findIndex(
-            (step) => step.name === this.currentStep
-        );
-        const nextStepIndex = currentStepIndex + 1;
+        const oldStepIndex = this.currentStepIndex;
+        const nextStepIndex = oldStepIndex + 1;
 
-        if (nextStepIndex < this.steps.length) {
+        if (nextStepIndex < this.steps.length - 1) {
             this._currentStep = this.steps[nextStepIndex].name;
             this.computedCurrentStep = this.steps[nextStepIndex];
+            this.activeStep = undefined;
             this.updateStepsStatus();
 
-            if (this.nextStepIndex === this.steps.length - 1) {
-                this.dispatchEvent(new CustomEvent('complete'));
-            } else {
-                this.dispatchChange(this.steps[currentStepIndex].name);
-            }
+            this.dispatchChange(this.steps[oldStepIndex].name);
+        } else if (nextStepIndex === this.steps.length - 1) {
+            this.openDialog();
         }
     }
 
     @api
     previous() {
-        const currentStepIndex = this.steps.findIndex(
-            (step) => step.name === this.currentStep
-        );
-        const previousStepIndex = currentStepIndex - 1;
+        const oldStepIndex = this.currentStepIndex;
+        const previousStepIndex = oldStepIndex - 1;
 
         if (previousStepIndex >= 0) {
             this._currentStep = this.steps[previousStepIndex].name;
             this.computedCurrentStep = this.steps[previousStepIndex];
             this.updateStepsStatus();
-            this.dispatchChange(this.steps[currentStepIndex].name);
+            this.dispatchChange(this.steps[oldStepIndex].name);
         }
     }
 
@@ -233,6 +344,8 @@ export default class Path extends LightningElement {
     }
 
     updateStepsStatus() {
+        const isLost = this._status === 'lost';
+        const isWon = this._status === 'won';
         let currentStepPassed = false;
 
         this.steps.forEach((step) => {
@@ -249,13 +362,17 @@ export default class Path extends LightningElement {
 
             step.class = classSet('slds-path__item').add({
                 'slds-is-complete':
-                    this.format === 'linear' && !currentStepPassed,
+                    isWon ||
+                    (this.format === 'linear' && !currentStepPassed && !isLost),
                 'slds-is-current': step.isCurrentStep,
                 'slds-is-incomplete':
                     !step.isCurrentStep &&
-                    (this.format === 'non-linear' || currentStepPassed),
+                    (this.format === 'non-linear' ||
+                        currentStepPassed ||
+                        isLost),
                 'slds-is-active':
-                    isActive || (step.isCurrentStep && !this.activeStep)
+                    !isWon &&
+                    (isActive || (step.isCurrentStep && !this.activeStep))
             });
         });
     }
@@ -275,6 +392,34 @@ export default class Path extends LightningElement {
         this.updateStepsStatus();
     }
 
+    hideDialog() {
+        this.template.querySelector('c-dialog').hide();
+    }
+
+    openDialog() {
+        this.template.querySelector('c-dialog').show();
+    }
+
+    handleSaveDialog() {
+        const combobox = this.template.querySelector('lightning-combobox');
+        this._status = combobox.value;
+
+        const currentStep = this.steps[this.steps.length - 1];
+        this.computedCurrentStep = currentStep;
+        this._currentStep = currentStep.name;
+        this.activeStep = undefined;
+
+        this.updateStepsStatus();
+        this.hideDialog();
+        this.dispatchEvent(
+            new CustomEvent('complete', {
+                detail: {
+                    value: this._status
+                }
+            })
+        );
+    }
+
     handlePathStepClick(event) {
         event.preventDefault();
 
@@ -288,9 +433,11 @@ export default class Path extends LightningElement {
     handleSelectButtonClick() {
         const currentStep = this.currentStep;
         const nextStep = this.activeStep.name;
+        this.activeStep = undefined;
+        this._status = undefined;
+
         this.moveToStep(nextStep);
         this.dispatchChange(currentStep);
-        this.activeStep = undefined;
     }
 
     handleActionClick(event) {
