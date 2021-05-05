@@ -232,6 +232,26 @@ const Template = (args) => Path(args);
 
 export const Base = Template.bind({});
 Base.args = {
+    steps: steps
+};
+
+export const NonLinearButtonHidden = Template.bind({});
+NonLinearButtonHidden.args = {
     steps: steps,
-    actions: actions
+    actions: actions,
+    format: 'non-linear',
+    hidePathUpdateButton: true
+};
+
+export const DisabledWithCurrentStep = Template.bind({});
+DisabledWithCurrentStep.args = {
+    steps: steps,
+    currentStep: 'contacted',
+    disabled: true,
+    format: 'non-linear',
+    keyFieldsLabel: 'Details',
+    guidanceLabel: 'Instructions',
+    pathUpdateButtonLabel: 'Done',
+    pathUpdateButtonIconName: 'utility:check',
+    pathUpdateButtonIconPosition: 'right'
 };
