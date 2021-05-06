@@ -83,8 +83,8 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['footer', 'header'],
-            defaultValue: 'footer',
+            options: ['bottom', 'top', 'right', 'left'],
+            defaultValue: 'bottom',
             description:
                 'Changes the indicator position. Valid values are footer and header.',
             table: {
@@ -347,14 +347,43 @@ const ModalTemplate = (args) => ModalWizard(args);
 const BeforeChangeTemplate = (args) => BeforeChangeWizard(args);
 
 export const Base = Template.bind({});
+export const IndicatorRight = Template.bind({});
+export const PathLeft = Template.bind({});
 export const Modal = ModalTemplate.bind({});
+export const ModalLeft = ModalTemplate.bind({});
 export const Card = Template.bind({});
+export const CardRight = Template.bind({});
 export const BeforeChangeOnSteps = BeforeChangeTemplate.bind({});
+
+IndicatorRight.args = {
+    indicatorPosition: 'right'
+};
+
+PathLeft.args = {
+    indicatorType: 'path',
+    indicatorPosition: 'left'
+};
+
+ModalLeft.args = {
+    indicatorPosition: 'left',
+    title: 'Modal Wizard Example',
+    variant: 'modal',
+    indicatorType: 'path',
+    buttonPreviousLabel: 'Back',
+    buttonPreviousIconName: 'utility:back',
+    buttonNextIconName: 'utility:forward',
+    buttonNextIconPosition: 'right',
+    buttonNextLabel: 'Continue',
+    buttonNextVariant: 'brand',
+    buttonFinishIconName: 'utility:check',
+    buttonFinishLabel: 'Done',
+    buttonFinishVariant: 'success'
+};
 
 Modal.args = {
     title: 'Modal Wizard Example',
     variant: 'modal',
-    indicatorPosition: 'header',
+    indicatorPosition: 'top',
     indicatorType: 'path',
     buttonPreviousLabel: 'Back',
     buttonPreviousIconName: 'utility:back',
@@ -368,6 +397,18 @@ Modal.args = {
 };
 
 Card.args = {
+    title: 'Card Wizard Example',
+    variant: 'card',
+    iconName: 'custom:custom26',
+    buttonAlignmentBump: 'right',
+    actionPosition: 'right',
+    indicatorType: 'fractions',
+    buttonNextVariant: 'brand',
+    buttonFinishVariant: 'destructive'
+};
+
+CardRight.args = {
+    indicatorPosition: 'right',
     title: 'Card Wizard Example',
     variant: 'card',
     iconName: 'custom:custom26',

@@ -1,6 +1,6 @@
 <template>
     <div class={computedSizing}>
-        <lightning-layout vertical-align="end">
+        <lightning-layout vertical-align="end" pull-to-boundary="small">
             <lightning-layout-item
                 if:true={showPositionLeft}
                 class="slds-p-bottom_x-small"
@@ -12,13 +12,15 @@
                     {value}% {valueLabel}
                 </span>
             </lightning-layout-item>
-            <lightning-layout-item flexibility="auto" padding="around-small">
-                <lightning-layout
-                    horizontal-align="spread"
-                    class="slds-p-bottom_x-small"
-                >
+            <lightning-layout-item
+                flexibility="auto"
+                padding="horizontal-small"
+            >
+                <lightning-layout horizontal-align="spread">
                     <lightning-layout-item>
-                        <span>{label}</span>
+                        <div class="slds-p-bottom_x-small" if:true={label}>
+                            {label}
+                        </div>
                         <span
                             if:true={showPositionTopLeft}
                             aria-hidden="true"
