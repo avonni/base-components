@@ -346,6 +346,9 @@ export default class Path extends LightningElement {
         if (previousStepIndex >= 0) {
             this._currentStep = this.steps[previousStepIndex].name;
             this.computedCurrentStep = this.steps[previousStepIndex];
+            this._activeStep = undefined;
+            this._status = undefined;
+
             this.updateStepsStatus();
             this.dispatchChange(this.steps[oldStepIndex].name);
         }
@@ -398,13 +401,10 @@ export default class Path extends LightningElement {
                 isActive = true;
             }
 
-            if (
+            step.isComplete =
                 this.format === 'linear' &&
                 ((isWon && !step.isCurrentStep) ||
-                    (!currentStepPassed && !isLost))
-            ) {
-                step.isComplete = true;
-            }
+                    (!currentStepPassed && !isLost));
 
             step.class = classSet('slds-path__item')
                 .add({
@@ -460,7 +460,7 @@ export default class Path extends LightningElement {
         this.updateStepsStatus();
         this.hideDialog();
         this.dispatchEvent(
-            new CustomEvent('complete', {
+            new CustomEvent('close', {
                 detail: {
                     value: this._status
                 }

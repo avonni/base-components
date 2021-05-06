@@ -707,25 +707,249 @@ describe('Path', () => {
             is: Path
         });
 
+        // Make sure that steps can be changed after connectedCallback
+        element.steps = [{ name: 'temporary-step' }];
+        document.body.appendChild(element);
+        element.steps = STEPS;
+
+        return Promise.resolve().then(() => {
+            const steps = element.shadowRoot.querySelectorAll('li');
+            expect(steps).toHaveLength(STEPS.length);
+
+            steps.forEach((step, index) => {
+                expect(step.classList.toString()).toBe(
+                    element.steps[index].class
+                );
+
+                const link = step.querySelector('a');
+                expect(link.dataset.stepName).toBe(STEPS[index].name);
+
+                const title = step.querySelector('.slds-path__title');
+                expect(title.textContent).toBe(STEPS[index].label);
+            });
+
+            const stageTitle = element.shadowRoot.querySelector(
+                '.slds-path__stage-name'
+            );
+            expect(stageTitle.textContent).toContain(STEPS[0].label);
+        });
+    });
+
+    /* ---- METHODS ----- */
+
+    // next
+    // Depends on currentStep
+    it('next method', () => {
+        const element = createElement('base-path', {
+            is: Path
+        });
+
         element.steps = STEPS;
         document.body.appendChild(element);
 
-        const steps = element.shadowRoot.querySelectorAll('li');
-        expect(steps).toHaveLength(STEPS.length);
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
 
-        steps.forEach((step, index) => {
-            expect(step.classList.toString()).toBe(element.steps[index].class);
+        element.next();
 
-            const link = step.querySelector('a');
-            expect(link.dataset.stepName).toBe(STEPS[index].name);
+        expect(handler).toHaveBeenCalled();
+        expect(handler.mock.calls[0][0].detail.currentStep).toBe(STEPS[1].name);
+        expect(handler.mock.calls[0][0].detail.oldStep).toBe(STEPS[0].name);
+        expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+        expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        expect(handler.mock.calls[0][0].composed).toBeFalsy();
+    });
 
-            const title = step.querySelector('.slds-path__title');
-            expect(title.textContent).toBe(STEPS[index].label);
+    it('next method on penultimate step', () => {
+        const element = createElement('base-path', {
+            is: Path
         });
 
-        const stageTitle = element.shadowRoot.querySelector(
-            '.slds-path__stage-name'
+        element.steps = STEPS;
+        document.body.appendChild(element);
+
+        const changeHandler = jest.fn();
+        element.addEventListener('change', changeHandler);
+        element.currentStep = STEPS[STEPS.length - 2].name;
+
+        const dialog = element.shadowRoot.querySelector('c-dialog');
+        const openDialog = jest.spyOn(dialog, 'show');
+
+        return Promise.resolve().then(() => {
+            element.next();
+            expect(changeHandler).not.toHaveBeenCalled();
+            expect(openDialog).toHaveBeenCalled();
+        });
+    });
+
+    // previous
+    // Depends on current step
+    it('previous method', () => {
+        const element = createElement('base-path', {
+            is: Path
+        });
+
+        element.steps = STEPS;
+        document.body.appendChild(element);
+
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+        element.currentStep = STEPS[2].name;
+
+        return Promise.resolve().then(() => {
+            element.previous();
+            expect(element.currentStep).toBe(STEPS[1].name);
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.currentStep).toBe(
+                STEPS[1].name
+            );
+            expect(handler.mock.calls[0][0].detail.oldStep).toBe(STEPS[2].name);
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        });
+    });
+
+    it('previous method on first step', () => {
+        const element = createElement('base-path', {
+            is: Path
+        });
+
+        element.steps = STEPS;
+        document.body.appendChild(element);
+
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        return Promise.resolve().then(() => {
+            element.previous();
+            expect(element.currentStep).toBe(STEPS[0].name);
+            expect(handler).not.toHaveBeenCalled();
+        });
+    });
+
+    /* ---- EVENTS ----- */
+
+    // change
+    it('change event, linear progression', () => {
+        const element = createElement('base-path', {
+            is: Path
+        });
+
+        element.steps = STEPS;
+        document.body.appendChild(element);
+
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        const button = element.shadowRoot.querySelector('lightning-button');
+        button.click();
+
+        expect(handler).toHaveBeenCalled();
+        expect(handler.mock.calls[0][0].detail.currentStep).toBe(STEPS[1].name);
+        expect(handler.mock.calls[0][0].detail.oldStep).toBe(STEPS[0].name);
+        expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+        expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        expect(handler.mock.calls[0][0].composed).toBeFalsy();
+    });
+
+    it('change event, click on a specific step', () => {
+        const element = createElement('base-path', {
+            is: Path
+        });
+
+        element.steps = STEPS;
+        document.body.appendChild(element);
+
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        const steps = element.shadowRoot.querySelectorAll('li a');
+        steps[2].click();
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('lightning-button');
+            button.click();
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.currentStep).toBe(
+                STEPS[2].name
+            );
+            expect(handler.mock.calls[0][0].detail.oldStep).toBe(STEPS[0].name);
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        });
+    });
+
+    // close
+    it('close event', () => {
+        const element = createElement('base-path', {
+            is: Path
+        });
+
+        element.steps = STEPS;
+        document.body.appendChild(element);
+
+        const handler = jest.fn();
+        element.addEventListener('close', handler);
+
+        const dialog = element.shadowRoot.querySelector('c-dialog');
+        dialog.show();
+
+        return Promise.resolve().then(() => {
+            // Change status to won
+            const combobox = element.shadowRoot.querySelector(
+                'lightning-combobox'
+            );
+            combobox.value = 'won';
+            const saveButton = dialog.querySelector(
+                'lightning-button:nth-of-type(2)'
+            );
+            saveButton.click();
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.value).toBe('won');
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        });
+    });
+
+    // actionclick
+    // Depends on custom actions and toggle coaching button working
+    it('actionclick event', () => {
+        const element = createElement('base-path', {
+            is: Path
+        });
+
+        element.steps = STEPS;
+        document.body.appendChild(element);
+
+        const handler = jest.fn();
+        element.addEventListener('actionclick', handler);
+
+        const coachingToggle = element.shadowRoot.querySelector(
+            '.slds-path__trigger'
         );
-        expect(stageTitle.textContent).toContain(STEPS[0].label);
+        coachingToggle.click();
+
+        return Promise.resolve().then(() => {
+            const actionButton = element.shadowRoot.querySelector(
+                '.slds-path__coach-edit'
+            );
+            actionButton.click();
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.name).toBe(
+                STEPS[0].actions[0].name
+            );
+            expect(handler.mock.calls[0][0].detail.targetName).toBe(
+                STEPS[0].name
+            );
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        });
     });
 });
