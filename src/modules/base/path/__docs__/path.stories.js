@@ -150,6 +150,7 @@ const steps = [
     {
         name: 'open',
         label: 'Open',
+        tooltip: '1 day in Open',
         keyFields: [
             {
                 label: 'Name',
@@ -177,6 +178,7 @@ const steps = [
     {
         name: 'qualification',
         label: 'Qualification',
+        tooltip: '3 days in Open',
         keyFields: [
             {
                 label: 'Company',
@@ -197,6 +199,7 @@ const steps = [
     {
         name: 'contacted',
         label: 'Contacted',
+        tooltip: '5 days in Open',
         keyFields: [
             {
                 label: 'Date of call',
@@ -214,6 +217,7 @@ const steps = [
     {
         name: 'closed',
         label: 'Closed',
+        tooltip: 'Closed',
         keyFields: [
             {
                 label: 'Close date',

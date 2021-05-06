@@ -5,6 +5,7 @@ import {
     normalizeArray
 } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
+import { Tooltip } from 'c/tooltipLibrary';
 
 const FORMATS = {
     valid: ['linear', 'non-linear'],
@@ -36,6 +37,7 @@ const DEFAULT_STATUS_OPTIONS = [
 // Should we have that many button attributes?
 
 // TODO:
+// Responsive
 // Tests
 
 export default class Path extends LightningElement {
@@ -70,6 +72,10 @@ export default class Path extends LightningElement {
     connectedCallback() {
         this.initSteps();
         this.moveToStep(this.currentStep);
+    }
+
+    renderedCallback() {
+        this.initTooltips();
     }
 
     @api
@@ -338,6 +344,25 @@ export default class Path extends LightningElement {
 
             if (!step.hideDefaultActions) {
                 step.actions = step.actions.concat(this.actions);
+            }
+
+            if (step.tooltip) {
+                const tooltip = new Tooltip(step.tooltip, {
+                    root: this,
+                    target: () =>
+                        this.template.querySelector(
+                            `a[data-step-name=${step.name}]`
+                        )
+                });
+                step.tooltip = tooltip;
+            }
+        });
+    }
+
+    initTooltips() {
+        this.steps.forEach((step) => {
+            if (step.tooltip) {
+                step.tooltip.initialize();
             }
         });
     }
