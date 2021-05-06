@@ -37,9 +37,6 @@ const DEFAULT_STATUS_OPTIONS = [
 // Should we have that many button attributes?
 // Scrollable x instead of scroll buttons?
 
-// TODO:
-// Tests
-
 export default class Path extends LightningElement {
     @api nextButtonIconName;
     @api selectButtonIconName;
@@ -65,8 +62,8 @@ export default class Path extends LightningElement {
     @track _steps = [];
 
     _status;
+    _activeStep;
     statusOptions = DEFAULT_STATUS_OPTIONS;
-    activeStep;
     coachingIsVisible = false;
     computedCurrentStep;
 
@@ -271,23 +268,23 @@ export default class Path extends LightningElement {
     }
 
     get lastStepIsActive() {
-        return this.activeStep && this.lastStepName === this.activeStep.name;
+        return this._activeStep && this.lastStepName === this._activeStep.name;
     }
 
     get currentStepIsActive() {
-        return this.activeStep && this.activeStep.name === this.currentStep;
+        return this._activeStep && this._activeStep.name === this.currentStep;
     }
 
     get showChangeClosedStatusButton() {
         return (
             this.lastStepIsCurrent &&
-            (!this.activeStep || this.lastStepIsActive)
+            (!this._activeStep || this.lastStepIsActive)
         );
     }
 
     get showSelectButton() {
         return (
-            this.activeStep &&
+            this._activeStep &&
             !this.currentStepIsActive &&
             !this.lastStepIsActive
         );
@@ -296,7 +293,7 @@ export default class Path extends LightningElement {
     get showNextButton() {
         return (
             !this.lastStepIsCurrent &&
-            (!this.activeStep || this.currentStepIsActive)
+            (!this._activeStep || this.currentStepIsActive)
         );
     }
 
@@ -309,16 +306,18 @@ export default class Path extends LightningElement {
     }
 
     get pathClass() {
-        return classSet('slds-path slds-path_has-coaching').add({
-            'slds-is-expanded': this.coachingIsVisible,
-            'slds-is-won': this._status === 'won',
-            'slds-is-lost': this._status === 'lost'
-        });
+        return classSet('slds-path slds-path_has-coaching')
+            .add({
+                'slds-is-expanded': this.coachingIsVisible,
+                'slds-is-won': this._status === 'won',
+                'slds-is-lost': this._status === 'lost'
+            })
+            .toString();
     }
 
     get stageTitle() {
-        return this.activeStep
-            ? this.activeStep.label
+        return this._activeStep
+            ? this._activeStep.label
             : this.computedCurrentStep.label;
     }
 
@@ -330,7 +329,7 @@ export default class Path extends LightningElement {
         if (nextStepIndex < this.steps.length - 1) {
             this._currentStep = this.steps[nextStepIndex].name;
             this.computedCurrentStep = this.steps[nextStepIndex];
-            this.activeStep = undefined;
+            this._activeStep = undefined;
             this.updateStepsStatus();
 
             this.dispatchChange(this.steps[oldStepIndex].name);
@@ -395,27 +394,34 @@ export default class Path extends LightningElement {
                 currentStepPassed = true;
             }
 
-            if (this.activeStep && this.activeStep.name === step.name) {
+            if (this._activeStep && this._activeStep.name === step.name) {
                 isActive = true;
             }
 
-            step.class = classSet('slds-path__item').add({
-                'slds-is-complete':
-                    this.format === 'linear' &&
-                    ((isWon && !step.isCurrentStep) ||
-                        (!currentStepPassed && !isLost)),
-                'slds-is-current': step.isCurrentStep,
-                'slds-is-incomplete':
-                    !step.isCurrentStep &&
-                    (this.format === 'non-linear' ||
-                        currentStepPassed ||
-                        isLost),
-                'slds-is-active':
-                    ((isWon || isLost) && step.isCurrentStep) ||
-                    isActive ||
-                    (step.isCurrentStep && !this.activeStep),
-                'slds-is-won': isWon && step.isCurrentStep
-            });
+            if (
+                this.format === 'linear' &&
+                ((isWon && !step.isCurrentStep) ||
+                    (!currentStepPassed && !isLost))
+            ) {
+                step.isComplete = true;
+            }
+
+            step.class = classSet('slds-path__item')
+                .add({
+                    'slds-is-complete': step.isComplete,
+                    'slds-is-current': step.isCurrentStep,
+                    'slds-is-incomplete':
+                        !step.isCurrentStep &&
+                        (this.format === 'non-linear' ||
+                            currentStepPassed ||
+                            isLost),
+                    'slds-is-active':
+                        ((isWon || isLost) && step.isCurrentStep) ||
+                        isActive ||
+                        (step.isCurrentStep && !this._activeStep),
+                    'slds-is-won': isWon && step.isCurrentStep
+                })
+                .toString();
         });
     }
 
@@ -449,7 +455,7 @@ export default class Path extends LightningElement {
         const currentStep = this.steps[this.steps.length - 1];
         this.computedCurrentStep = currentStep;
         this._currentStep = currentStep.name;
-        this.activeStep = undefined;
+        this._activeStep = undefined;
 
         this.updateStepsStatus();
         this.hideDialog();
@@ -467,15 +473,15 @@ export default class Path extends LightningElement {
 
         if (!this.disabled) {
             const name = event.currentTarget.dataset.stepName;
-            this.activeStep = this.steps.find((step) => step.name === name);
+            this._activeStep = this.steps.find((step) => step.name === name);
             this.updateStepsStatus();
         }
     }
 
     handleSelectButtonClick() {
         const currentStep = this.currentStep;
-        const nextStep = this.activeStep.name;
-        this.activeStep = undefined;
+        const nextStep = this._activeStep.name;
+        this._activeStep = undefined;
         this._status = undefined;
 
         this.moveToStep(nextStep);

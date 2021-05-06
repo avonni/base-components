@@ -157,6 +157,7 @@
                                         onclick={handleActionClick}
                                     >
                                         <lightning-icon
+                                            if:true={action.iconName}
                                             class="slds-current-color slds-m-right_x-small"
                                             icon-name={action.iconName}
                                             size="xx-small"
