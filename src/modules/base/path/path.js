@@ -33,9 +33,6 @@ const DEFAULT_STATUS_OPTIONS = [
         value: 'won'
     }
 ];
-// QUESTIONS :
-// Should we have that many button attributes?
-// Scrollable x instead of scroll buttons?
 
 export default class Path extends LightningElement {
     @api nextButtonIconName;
