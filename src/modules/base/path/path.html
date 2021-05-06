@@ -6,6 +6,7 @@
                 <div class="slds-grid slds-path__track">
                     <div class="slds-grid slds-path__scroller-container">
                         <lightning-button-icon
+                            if:false={hideCoaching}
                             class="slds-path__trigger"
                             icon-name={toggleCoachingIcon}
                             alternative-text="Toggles Coaching"
@@ -13,10 +14,10 @@
                             aria-expanded={coachingIsVisible}
                             onclick={handleToggleCoaching}
                         ></lightning-button-icon>
-                        <div class="slds-path__scroller">
+                        <div class="slds-path__scroller slds-scrollable_x">
                             <div class="slds-path__scroller_inner">
                                 <ul
-                                    class="slds-path__nav"
+                                    class="slds-path__nav slds-scrollable_x"
                                     role="listbox"
                                     aria-orientation="horizontal"
                                 >
@@ -63,8 +64,8 @@
                         </div>
                     </div>
                     <div class="slds-grid slds-path__action">
-                        <span if:true={activeStep} class="slds-path__stage-name"
-                            >Stage: {activeStep.label}</span
+                        <span class="slds-path__stage-name"
+                            >Stage: {stageTitle}</span
                         >
                         <template if:false={hideButton}>
                             <lightning-button

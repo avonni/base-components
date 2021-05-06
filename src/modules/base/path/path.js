@@ -35,9 +35,9 @@ const DEFAULT_STATUS_OPTIONS = [
 ];
 // QUESTIONS :
 // Should we have that many button attributes?
+// Scrollable x instead of scroll buttons?
 
 // TODO:
-// Responsive
 // Tests
 
 export default class Path extends LightningElement {
@@ -51,6 +51,7 @@ export default class Path extends LightningElement {
     _format = FORMATS.default;
     _keyFieldsLabel = DEFAULT_KEYFIELDS_LABEL;
     _guidanceLabel = DEFAULT_GUIDANCE_LABEL;
+    _hideCoaching = false;
     _hideButton = false;
     _nextButtonLabel = DEFAULT_NEXT_BUTTON_LABEL;
     _nextButtonIconPosition = ICON_POSITIONS.default;
@@ -125,6 +126,14 @@ export default class Path extends LightningElement {
     set guidanceLabel(value) {
         this._guidanceLabel =
             typeof value === 'string' ? value.trim() : DEFAULT_GUIDANCE_LABEL;
+    }
+
+    @api
+    get hideCoaching() {
+        return this._hideCoaching;
+    }
+    set hideCoaching(bool) {
+        this._hideCoaching = normalizeBoolean(bool);
     }
 
     @api
@@ -305,6 +314,12 @@ export default class Path extends LightningElement {
             'slds-is-won': this._status === 'won',
             'slds-is-lost': this._status === 'lost'
         });
+    }
+
+    get stageTitle() {
+        return this.activeStep
+            ? this.activeStep.label
+            : this.computedCurrentStep.label;
     }
 
     @api

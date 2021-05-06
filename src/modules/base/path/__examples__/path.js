@@ -8,10 +8,20 @@ export const Path = ({
     guidanceLabel,
     disabled,
     format,
-    hidePathUpdateButton,
-    pathUpdateButtonLabel,
-    pathUpdateButtonIconName,
-    pathUpdateButtonIconPosition,
+    hideCoaching,
+    hideButton,
+    nextButtonLabel,
+    nextButtonIconName,
+    nextButtonIconPosition,
+    selectButtonLabel,
+    selectButtonIconName,
+    selectButtonIconPosition,
+    selectLastStepButtonLabel,
+    selectLastStepButtonIconName,
+    selectLastStepButtonIconPosition,
+    changeClosedStatusButtonLabel,
+    changeClosedStatusButtonIconName,
+    changeClosedStatusButtonIconPosition,
     steps,
     actions
 }) => {
@@ -21,10 +31,20 @@ export const Path = ({
     element.guidanceLabel = guidanceLabel;
     element.disabled = disabled;
     element.format = format;
-    element.hidePathUpdateButton = hidePathUpdateButton;
-    element.pathUpdateButtonLabel = pathUpdateButtonLabel;
-    element.pathUpdateButtonIconName = pathUpdateButtonIconName;
-    element.pathUpdateButtonIconPosition = pathUpdateButtonIconPosition;
+    element.hideCoaching = hideCoaching;
+    element.hideButton = hideButton;
+    element.nextButtonLabel = nextButtonLabel;
+    element.nextButtonIconName = nextButtonIconName;
+    element.nextButtonIconPosition = nextButtonIconPosition;
+    element.selectButtonLabel = selectButtonLabel;
+    element.selectButtonIconName = selectButtonIconName;
+    element.selectButtonIconPosition = selectButtonIconPosition;
+    element.selectLastStepButtonLabel = selectLastStepButtonLabel;
+    element.selectLastStepButtonIconName = selectLastStepButtonIconName;
+    element.selectLastStepButtonIconPosition = selectLastStepButtonIconPosition;
+    element.changeClosedStatusButtonLabel = changeClosedStatusButtonLabel;
+    element.changeClosedStatusButtonIconName = changeClosedStatusButtonIconName;
+    element.changeClosedStatusButtonIconPosition = changeClosedStatusButtonIconPosition;
     element.steps = steps;
     element.actions = actions;
     return element;

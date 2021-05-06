@@ -25,6 +25,19 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        hideCoaching: {
+            name: 'hide-coaching',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If true, the coaching section will be hidden.',
+            defaultValue: false,
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Coaching'
+            }
+        },
         keyFieldsLabel: {
             name: 'key-fields-label',
             control: {
@@ -34,7 +47,8 @@ export default {
             defaultValue: 'Key Fields',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'Key Fields' }
+                defaultValue: { summary: 'Key Fields' },
+                category: 'Coaching'
             }
         },
         guidanceLabel: {
@@ -46,7 +60,8 @@ export default {
             defaultValue: 'Guidance for Success',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'Guidance for Success' }
+                defaultValue: { summary: 'Guidance for Success' },
+                category: 'Coaching'
             }
         },
         disabled: {
@@ -69,55 +84,8 @@ export default {
             defaultValue: 'linear',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'linear' }
-            }
-        },
-        hidePathUpdateButton: {
-            name: 'hide-path-update-button',
-            control: {
-                type: 'boolean'
-            },
-            description: 'If true, hide the path update button.',
-            defaultValue: false,
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
-            }
-        },
-        pathUpdateButtonLabel: {
-            name: 'path-update-button-label',
-            control: {
-                type: 'text'
-            },
-            description: 'Label of the update button.',
-            defaultValue: 'Mark as Complete',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'Mark as Complete' }
-            }
-        },
-        pathUpdateButtonIconName: {
-            name: 'path-update-button-icon-name',
-            control: {
-                type: 'text'
-            },
-            description:
-                "The Lightning Design System name of the icon used for the path update button.\n Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.",
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        pathUpdateButtonIconPosition: {
-            name: 'path-update-button-icon-position',
-            control: {
-                type: 'radio'
-            },
-            options: ['left', 'right'],
-            description: 'Valid values include left and right.',
-            defaultValue: 'left',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'left' }
+                defaultValue: { summary: 'linear' },
+                category: 'Path navigation'
             }
         },
         actions: {
@@ -126,7 +94,194 @@ export default {
             },
             description: 'Array of default step actions.',
             table: {
-                type: { summary: 'object[]' }
+                type: { summary: 'object[]' },
+                category: 'Coaching'
+            }
+        },
+        hideButton: {
+            name: 'hide-button',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If true, hide the path button.',
+            defaultValue: false,
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Path navigation',
+                subcategory: 'Button'
+            }
+        },
+        nextButtonLabel: {
+            name: 'next-button-label',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Default label of the path button. On click on the button, the path will go to the next step.',
+            defaultValue: 'Mark as Complete',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Mark as Complete' },
+                category: 'Path navigation',
+                subcategory: 'Button'
+            }
+        },
+        nextButtonIconName: {
+            name: 'next-button-icon-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                "The Lightning Design System name of the icon used for the path update button.\n Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.",
+            table: {
+                type: { summary: 'string' },
+                category: 'Path navigation',
+                subcategory: 'Button'
+            }
+        },
+        nextButtonIconPosition: {
+            name: 'next-button-icon-position',
+            control: {
+                type: 'radio'
+            },
+            options: ['left', 'right'],
+            description: 'Valid values include left and right.',
+            defaultValue: 'left',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'left' },
+                category: 'Path navigation',
+                subcategory: 'Button'
+            }
+        },
+        selectButtonLabel: {
+            name: 'select-button-label',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Label of the path button, when the user clicked on a different step than the current one. On click on the button, the selected step will become the current step.',
+            defaultValue: 'Mark as Current Stage',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Mark as Current Stage' },
+                category: 'Path navigation',
+                subcategory: 'Button'
+            }
+        },
+        selectButtonIconName: {
+            name: 'select-button-icon-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                "The Lightning Design System name of the icon used for the path update button.\n Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.",
+            table: {
+                type: { summary: 'string' },
+                category: 'Path navigation',
+                subcategory: 'Button'
+            }
+        },
+        selectButtonIconPosition: {
+            name: 'select-button-icon-position',
+            control: {
+                type: 'radio'
+            },
+            options: ['left', 'right'],
+            description: 'Valid values include left and right.',
+            defaultValue: 'left',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'left' },
+                category: 'Path navigation',
+                subcategory: 'Button'
+            }
+        },
+        selectLastStepButtonLabel: {
+            name: 'select-last-step-button-label',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Label of the path button, when the user clicks on the last step. On click on the button, the closing dialog will be opened.',
+            defaultValue: 'Select Closed Stage',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Select Closed Stage' },
+                category: 'Path navigation',
+                subcategory: 'Button'
+            }
+        },
+        selectLastStepButtonIconName: {
+            name: 'select-last-step-button-icon-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                "The Lightning Design System name of the icon used for the path update button.\n Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.",
+            table: {
+                type: { summary: 'string' },
+                category: 'Path navigation',
+                subcategory: 'Button'
+            }
+        },
+        selectLastStepButtonIconPosition: {
+            name: 'select-last-step-button-icon-position',
+            control: {
+                type: 'radio'
+            },
+            options: ['left', 'right'],
+            description: 'Valid values include left and right.',
+            defaultValue: 'left',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'left' },
+                category: 'Path navigation',
+                subcategory: 'Button'
+            }
+        },
+        changeClosedStatusButtonLabel: {
+            name: 'change-closed-status-button-label',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Label of the path button, when the path has been closed. On click on the button, the closing dialog will be opened.',
+            defaultValue: 'Change Closed Stage',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Change Closed Stage' },
+                category: 'Path navigation',
+                subcategory: 'Button'
+            }
+        },
+        changeClosedStatusButtonIconName: {
+            name: 'change-closed-status-button-icon-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                "The Lightning Design System name of the icon used for the path update button.\n Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.",
+            table: {
+                type: { summary: 'string' },
+                category: 'Path navigation',
+                subcategory: 'Button'
+            }
+        },
+        changeClosedStatusButtonIconPosition: {
+            name: 'change-closed-status-button-icon-position',
+            control: {
+                type: 'radio'
+            },
+            options: ['left', 'right'],
+            description: 'Valid values include left and right.',
+            defaultValue: 'left',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'left' },
+                category: 'Path navigation',
+                subcategory: 'Button'
             }
         }
     }
@@ -244,7 +399,7 @@ NonLinearButtonHidden.args = {
     steps: steps,
     actions: actions,
     format: 'non-linear',
-    hidePathUpdateButton: true
+    hideButton: true
 };
 
 export const DisabledWithCurrentStep = Template.bind({});
@@ -252,10 +407,23 @@ DisabledWithCurrentStep.args = {
     steps: steps,
     currentStep: 'contacted',
     disabled: true,
-    format: 'non-linear',
     keyFieldsLabel: 'Details',
-    guidanceLabel: 'Instructions',
-    pathUpdateButtonLabel: 'Done',
-    pathUpdateButtonIconName: 'utility:check',
-    pathUpdateButtonIconPosition: 'right'
+    guidanceLabel: 'Instructions'
+};
+
+export const NoCoachingWithCustomButtonLabels = Template.bind({});
+NoCoachingWithCustomButtonLabels.args = {
+    steps: steps,
+    actions: actions,
+    hideCoaching: true,
+    nextButtonLabel: 'Next',
+    nextButtonIconName: 'utility:chevronright',
+    nextButtonIconPosition: 'right',
+    selectButtonLabel: 'Move to this step',
+    selectButtonIconName: 'utility:level_down',
+    selectLastStepButtonLabel: 'Close',
+    selectLastStepButtonIconName: 'utility:check',
+    selectLastStepButtonIconPosition: 'right',
+    changeClosedStatusButtonLabel: 'Change status',
+    changeClosedStatusButtonIconName: 'utility:replace'
 };
