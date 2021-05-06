@@ -35,6 +35,14 @@
             "path": "src/modules/base/utilsPrivate/utilsPrivate.js"
         },
         {
+            "name": "c/activityTimeline",
+            "path": "src/modules/base/activityTimeline/activityTimeline.js"
+        },
+        {
+            "name": "c/activityTimelineItem",
+            "path": "src/modules/base/activityTimelineItem/activityTimelineItem.js"
+        },
+        {
             "name": "c/alert",
             "path": "src/modules/base/alert/alert.js"
         },
@@ -387,6 +395,14 @@
             "path": "src/modules/base/wizardStep/wizardStep.js"
         },
         {
+            "name": "avonni/activityTimeline",
+            "path": "src/modules/base/activityTimeline/activityTimeline.js"
+        },
+        {
+            "name": "avonni/activityTimelineItem",
+            "path": "src/modules/base/activityTimelineItem/activityTimelineItem.js"
+        },
+        {
             "name": "avonni/alert",
             "path": "src/modules/base/alert/alert.js"
         },
@@ -656,6 +672,8 @@
         }
     ],
     "expose": [
+        "avonni/activityTimeline",
+        "avonni/activityTimelineItem",
         "avonni/alert",
         "avonni/avatar",
         "avonni/avatarGroup",
