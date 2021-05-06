@@ -11,7 +11,8 @@ export const ActivityTimeline = ({
     collapsible,
     closed,
     groupBy,
-    variant
+    variant,
+    items
 }) => {
     const element = document.createElement('ac-base-activity-timeline');
     element.title = title;
@@ -20,5 +21,6 @@ export const ActivityTimeline = ({
     element.closed = closed;
     element.groupBy = groupBy;
     element.variant = variant;
+    element.items = items;
     return element;
 };

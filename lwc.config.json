@@ -399,10 +399,6 @@
             "path": "src/modules/base/activityTimeline/activityTimeline.js"
         },
         {
-            "name": "avonni/activityTimelineItem",
-            "path": "src/modules/base/activityTimelineItem/activityTimelineItem.js"
-        },
-        {
             "name": "avonni/alert",
             "path": "src/modules/base/alert/alert.js"
         },
@@ -673,7 +669,6 @@
     ],
     "expose": [
         "avonni/activityTimeline",
-        "avonni/activityTimelineItem",
         "avonni/alert",
         "avonni/avatar",
         "avonni/avatarGroup",

@@ -80,7 +80,122 @@ export default {
     }
 };
 
+const items = [
+    {
+        title: 'Item Title',
+        description: 'Item Description',
+        datetimeValue: '10/12/1991',
+        href: 'salesforce.com',
+        iconName: 'standard:log_a_call',
+        icons: ['utility:add', 'utility:away', 'utility:alert'],
+        fields: [
+            {
+                label: 'Name',
+                value: 'Renaud AF',
+                type: 'text'
+            },
+            {
+                label: 'Name',
+                value: 'Thierry AF',
+                type: 'text'
+            }
+        ]
+    },
+    {
+        title: 'Item Title 2',
+        datetimeValue: '10/12/1991',
+        href: 'salesforce.com',
+        iconName: 'standard:event',
+        hasCheckbox: true,
+        fields: [
+            {
+                label: 'Name',
+                value: 'Renaud AF 2',
+                type: 'text'
+            },
+            {
+                label: 'Name',
+                value: 'Thierry AF 2',
+                type: 'text'
+            },
+            {
+                label: 'Name',
+                value: 'Jee AF 2',
+                type: 'text'
+            },
+            {
+                label: 'Name',
+                value: 'Max AF 2',
+                type: 'text'
+            }
+        ]
+    },
+    {
+        title: 'Item Title 3',
+        datetimeValue: '10/12/1991',
+        href: 'salesforce.com',
+        iconName: 'standard:task',
+        hasCheckbox: true,
+        fields: [
+            {
+                label: 'Name',
+                value: 'Renaud AF 3',
+                type: 'text'
+            },
+            {
+                label: 'Name',
+                value: 'Thierry AF 3',
+                type: 'text'
+            },
+            {
+                label: 'Name',
+                value: 'Jee AF 3',
+                type: 'text'
+            },
+            {
+                label: 'Name',
+                value: 'Max AF 3',
+                type: 'text'
+            }
+        ]
+    },
+    {
+        title: 'Item Title 4',
+        datetimeValue: '10/12/1991',
+        href: 'salesforce.com',
+        iconName: 'standard:email',
+        fields: [
+            {
+                label: 'Name',
+                value: 'Renaud AF 4',
+                type: 'text'
+            },
+            {
+                label: 'Name',
+                value: 'Thierry AF 4',
+                type: 'text'
+            },
+            {
+                label: 'Name',
+                value: 'Jee AF 4',
+                type: 'text'
+            },
+            {
+                label: 'Name',
+                value: 'Max AF 4',
+                type: 'text'
+            }
+        ],
+        buttonLabel: 'click me'
+    }
+];
+
 const Template = (args) => ActivityTimeline(args);
 
 export const Base = Template.bind({});
-Base.args = {};
+Base.args = {
+    title: 'Title',
+    iconName: 'standard:case',
+    items: items,
+    collapsible: true
+};

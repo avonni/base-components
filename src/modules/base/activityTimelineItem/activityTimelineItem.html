@@ -1,1 +1,115 @@
-<template></template>
+<template>
+    <div class={activityTimelineItemOuterClass}>
+        <div class="slds-media">
+            <div class="slds-media__figure">
+                <template if:false={closed}>
+                    <lightning-button-icon
+                        icon-name="utility:chevrondown"
+                        size="small"
+                        variant="bare"
+                        onclick={handleSectionStatus}
+                    ></lightning-button-icon>
+                </template>
+                <template if:true={closed}>
+                    <lightning-button-icon
+                        icon-name="utility:chevronright"
+                        size="small"
+                        variant="bare"
+                        onclick={handleSectionStatus}
+                    ></lightning-button-icon>
+                </template>
+                <lightning-icon
+                    icon-name={iconName}
+                    size="small"
+                ></lightning-icon>
+            </div>
+            <div class="slds-media__body">
+                <div
+                    class="slds-grid slds-grid_align-spread slds-timeline__trigger"
+                >
+                    <div
+                        class="slds-grid slds-grid_vertical-align-center slds-truncate_container_75 slds-no-space"
+                    >
+                        <template if:true={hasCheckbox}>
+                            <lightning-input
+                                type="checkbox"
+                                label="checkbox"
+                                variant="label-hidden"
+                            >
+                            </lightning-input>
+                        </template>
+                        <h3>{title}</h3>
+                        <div if:true={icons} class="slds-no-flex">
+                            <template for:each={icons} for:item="icon">
+                                <lightning-button-icon
+                                    key={icon}
+                                    icon-name={icon}
+                                    variant="bare"
+                                    size="small"
+                                    class="slds-p-left_x-small"
+                                ></lightning-button-icon>
+                            </template>
+                        </div>
+                    </div>
+                    <div
+                        class="slds-timeline__actions slds-timeline__actions_inline"
+                    >
+                        <p class="slds-timeline__date">{datetimeValue}</p>
+                        <lightning-button-icon
+                            icon-name="utility:down"
+                            variant="border-filled"
+                            size="x-small"
+                        ></lightning-button-icon>
+                    </div>
+                </div>
+                <p class="slds-m-horizontal_xx-small" if:true={description}>
+                    {description}
+                </p>
+                <template if:false={closed}>
+                    <template if:true={emptyFields}>
+                        <div
+                            class="slds-box slds-theme_shade slds-m-top_x-small slds-m-horizontal_xx-small slds-p-around_medium"
+                        >
+                            <ul class="slds-list_horizontal slds-wrap">
+                                <template
+                                    for:each={fields}
+                                    for:item="field"
+                                    for:index="index"
+                                >
+                                    <li
+                                        class="slds-grid slds-grid_vertical slds-size_1-of-2 slds-p-bottom_small"
+                                        key={field.value}
+                                    >
+                                        <div
+                                            class="slds-text-title slds-truncate"
+                                            title={field.label}
+                                        >
+                                            {field.label}
+                                        </div>
+                                        <div
+                                            class="slds-truncate"
+                                            title={field.value}
+                                        >
+                                            <c-primitive-page-header-field
+                                                field={field}
+                                                label={field.label}
+                                                value={field.value}
+                                                type={field.type}
+                                            ></c-primitive-page-header-field>
+                                        </div>
+                                    </li>
+                                </template>
+                            </ul>
+                            <template if:true={buttonLabel}>
+                                <lightning-button
+                                    label={buttonLabel}
+                                    variant={buttonVariant}
+                                ></lightning-button>
+                            </template>
+                        </div>
+                    </template>
+                </template>
+            </div>
+        </div>
+    </div>
+</template>
