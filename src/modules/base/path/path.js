@@ -36,7 +36,6 @@ const DEFAULT_STATUS_OPTIONS = [
 // Should we have that many button attributes?
 
 // TODO:
-// Fix styling of path when closed
 // Tests
 
 export default class Path extends LightningElement {
@@ -362,8 +361,9 @@ export default class Path extends LightningElement {
 
             step.class = classSet('slds-path__item').add({
                 'slds-is-complete':
-                    isWon ||
-                    (this.format === 'linear' && !currentStepPassed && !isLost),
+                    this.format === 'linear' &&
+                    ((isWon && !step.isCurrentStep) ||
+                        (!currentStepPassed && !isLost)),
                 'slds-is-current': step.isCurrentStep,
                 'slds-is-incomplete':
                     !step.isCurrentStep &&
@@ -371,8 +371,10 @@ export default class Path extends LightningElement {
                         currentStepPassed ||
                         isLost),
                 'slds-is-active':
-                    !isWon &&
-                    (isActive || (step.isCurrentStep && !this.activeStep))
+                    ((isWon || isLost) && step.isCurrentStep) ||
+                    isActive ||
+                    (step.isCurrentStep && !this.activeStep),
+                'slds-is-won': isWon && step.isCurrentStep
             });
         });
     }
