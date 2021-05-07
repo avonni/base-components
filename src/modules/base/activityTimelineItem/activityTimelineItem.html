@@ -78,6 +78,13 @@
                     {description}
                 </p>
                 <template if:false={closed}>
+                    <template if:true={isLoading}>
+                        <lightning-spinner
+                            size="small"
+                            class="slds-spinner_container"
+                            alternative-text={loadingStateAlternativeText}
+                        ></lightning-spinner>
+                    </template>
                     <template if:true={hasError}>
                         <div
                             class="slds-grid slds-text-color_error slds-m-top_x-small slds-m-horizontal_xx-small"

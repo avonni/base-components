@@ -252,7 +252,9 @@ const items = [
                 type: 'text'
             }
         ],
-        hasCheckbox: true
+        hasCheckbox: true,
+        isLoading: true,
+        closed: true
     }
 ];
 

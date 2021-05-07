@@ -25,35 +25,11 @@
             </div>
         </div>
     </div>
-    <template if:true={collapsible}>
-        <c-expandable-section title="Section" collapsible={collapsible}>
-            <ul class="slds-timeline">
-                <template for:each={items} for:item="item" for:index="index">
-                    <li key={item.title}>
-                        <c-activity-timeline-item
-                            title={item.title}
-                            description={item.description}
-                            datetime-value={item.datetimeValue}
-                            href={item.href}
-                            icon-name={item.iconName}
-                            icons={item.icons}
-                            fields={item.fields}
-                            has-checkbox={item.hasCheckbox}
-                            has-error={item.hasError}
-                            collapsible={item.collapsible}
-                            closed={item.closed}
-                            button-label={item.buttonLabel}
-                            button-icon-name={item.buttonIconName}
-                            button-variant={item.buttonVariant}
-                            button-icon-position={item.buttonIconPosition}
-                        >
-                        </c-activity-timeline-item>
-                    </li>
-                </template>
-            </ul>
-        </c-expandable-section>
-    </template>
-    <template if:false={collapsible}>
+    <c-expandable-section
+        title="Section"
+        collapsible={collapsible}
+        closed={closed}
+    >
         <ul class="slds-timeline">
             <template for:each={items} for:item="item" for:index="index">
                 <li key={item.title}>
@@ -67,12 +43,17 @@
                         fields={item.fields}
                         has-checkbox={item.hasCheckbox}
                         has-error={item.hasError}
-                        collapsible={item.collapsible}
                         closed={item.closed}
+                        button-label={item.buttonLabel}
+                        button-icon-name={item.buttonIconName}
+                        button-variant={item.buttonVariant}
+                        button-icon-position={item.buttonIconPosition}
+                        is-loading={item.isLoading}
+                        loading-state-alternative-text={item.loadingStateAlternativeText}
                     >
                     </c-activity-timeline-item>
                 </li>
             </template>
         </ul>
-    </template>
+    </c-expandable-section>
 </template>

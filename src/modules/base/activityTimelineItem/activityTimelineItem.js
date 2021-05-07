@@ -32,11 +32,12 @@ export default class ActivityTimelineItem extends LightningElement {
     @api icons = [];
     @api buttonLabel;
     @api buttonIconName;
+    @api loadingStateAlternativeText;
 
     _fields = [];
     _hasCheckbox = false;
     _hasError = false;
-    _collapsible = false;
+    _isLoading = false;
     _closed = false;
     _buttonIconPosition;
     _buttonVariant;
@@ -57,15 +58,6 @@ export default class ActivityTimelineItem extends LightningElement {
 
     set hasError(value) {
         this._hasError = normalizeBoolean(value);
-    }
-
-    @api
-    get collapsible() {
-        return this._collapsible;
-    }
-
-    set collapsible(value) {
-        this._collapsible = normalizeBoolean(value);
     }
 
     @api
@@ -108,6 +100,15 @@ export default class ActivityTimelineItem extends LightningElement {
             fallbackValue: validButtonVariants.default,
             validValues: validButtonVariants.valid
         });
+    }
+
+    @api
+    get isLoading() {
+        return this._isLoading;
+    }
+
+    set isLoading(value) {
+        this._isLoading = normalizeBoolean(value);
     }
 
     get emptyFields() {
