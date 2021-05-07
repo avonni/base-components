@@ -8,6 +8,7 @@
                         size="small"
                         variant="bare"
                         onclick={handleSectionStatus}
+                        aria-expanded="true"
                     ></lightning-button-icon>
                 </template>
                 <template if:true={closed}>
@@ -16,6 +17,7 @@
                         size="small"
                         variant="bare"
                         onclick={handleSectionStatus}
+                        aria-expanded="false"
                     ></lightning-button-icon>
                 </template>
                 <lightning-icon
@@ -28,7 +30,7 @@
                     class="slds-grid slds-grid_align-spread slds-timeline__trigger"
                 >
                     <div
-                        class="slds-grid slds-grid_vertical-align-center slds-truncate_container_75 slds-no-space"
+                        class="slds-grid slds-grid_vertical-align-center slds-truncate slds-no-space"
                     >
                         <template if:true={hasCheckbox}>
                             <lightning-input
@@ -69,7 +71,10 @@
                         ></lightning-button-icon>
                     </div>
                 </div>
-                <p class="slds-m-horizontal_xx-small" if:true={description}>
+                <p
+                    class="slds-m-horizontal_xx-small slds-truncate"
+                    if:true={description}
+                >
                     {description}
                 </p>
                 <template if:false={closed}>
@@ -91,16 +96,20 @@
                     <template if:false={hasError}>
                         <template if:true={emptyFields}>
                             <div
+                                aria-hidden="false"
                                 class="slds-box slds-theme_shade slds-m-top_x-small slds-m-horizontal_xx-small slds-p-around_medium"
                             >
-                                <ul class="slds-list_horizontal slds-wrap">
+                                <lightning-layout
+                                    horizontal-align="spread"
+                                    multiple-rows="true"
+                                >
                                     <template
                                         for:each={fields}
                                         for:item="field"
                                         for:index="index"
                                     >
-                                        <li
-                                            class="slds-grid slds-grid_vertical slds-size_1-of-2 slds-p-bottom_small"
+                                        <lightning-layout-item
+                                            class="slds-truncate slds-m-around_small"
                                             key={field.value}
                                         >
                                             <div
@@ -120,9 +129,9 @@
                                                     type={field.type}
                                                 ></c-primitive-page-header-field>
                                             </div>
-                                        </li>
+                                        </lightning-layout-item>
                                     </template>
-                                </ul>
+                                </lightning-layout>
                                 <template if:true={buttonLabel}>
                                     <lightning-button
                                         label={buttonLabel}
