@@ -135,12 +135,16 @@
             "path": "src/modules/base/expandableSection/expandableSection.js"
         },
         {
+            "name": "c/filterMenu",
+            "path": "src/modules/base/filterMenu/filterMenu.js"
+        },
+        {
             "name": "c/filterMenuGroup",
             "path": "src/modules/base/filterMenuGroup/filterMenuGroup.js"
         },
         {
-            "name": "c/filterMenu",
-            "path": "src/modules/base/filterMenu/filterMenu.js"
+            "name": "c/hoverableLink",
+            "path": "src/modules/base/hoverableLink/hoverableLink.js"
         },
         {
             "name": "c/externalLink",
@@ -487,6 +491,10 @@
             "path": "src/modules/base/filterMenuGroup/filterMenuGroup.js"
         },
         {
+            "name": "avonni/hoverableLink",
+            "path": "src/modules/base/hoverableLink/hoverableLink.js"
+        },
+        {
             "name": "avonni/illustration",
             "path": "src/modules/base/illustration/illustration.js"
         },
@@ -679,8 +687,9 @@
         "avonni/dynamicMenu",
         "avonni/emojiPicker",
         "avonni/expandableSection",
-        "avonni/filterMenuGroup",
         "avonni/filterMenu",
+        "avonni/filterMenuGroup",
+        "avonni/hoverableLink",
         "avonni/illustration",
         "avonni/image",
         "avonni/inputCounter",
