@@ -63,7 +63,16 @@
                     <div
                         class="slds-timeline__actions slds-timeline__actions_inline"
                     >
-                        <p class="slds-timeline__date">{datetimeValue}</p>
+                        <lightning-formatted-date-time
+                            value={datetimeValue}
+                            class="slds-timeline__date"
+                            day="2-digit"
+                            month="long"
+                            year="numeric"
+                            hour="2-digit"
+                            minute="2-digit"
+                            hour12="true"
+                        ></lightning-formatted-date-time>
                         <lightning-button-icon
                             icon-name="utility:down"
                             variant="border-filled"
