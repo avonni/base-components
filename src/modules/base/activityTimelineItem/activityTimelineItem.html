@@ -73,49 +73,66 @@
                     {description}
                 </p>
                 <template if:false={closed}>
-                    <template if:true={emptyFields}>
+                    <template if:true={hasError}>
                         <div
-                            class="slds-box slds-theme_shade slds-m-top_x-small slds-m-horizontal_xx-small slds-p-around_medium"
+                            class="slds-grid slds-text-color_error slds-m-top_x-small slds-m-horizontal_xx-small"
+                            id="task-item-error"
                         >
-                            <ul class="slds-list_horizontal slds-wrap">
-                                <template
-                                    for:each={fields}
-                                    for:item="field"
-                                    for:index="index"
-                                >
-                                    <li
-                                        class="slds-grid slds-grid_vertical slds-size_1-of-2 slds-p-bottom_small"
-                                        key={field.value}
-                                    >
-                                        <div
-                                            class="slds-text-title slds-truncate"
-                                            title={field.label}
-                                        >
-                                            {field.label}
-                                        </div>
-                                        <div
-                                            class="slds-truncate"
-                                            title={field.value}
-                                        >
-                                            <c-primitive-page-header-field
-                                                field={field}
-                                                label={field.label}
-                                                value={field.value}
-                                                type={field.type}
-                                            ></c-primitive-page-header-field>
-                                        </div>
-                                    </li>
-                                </template>
-                            </ul>
-                            <template if:true={buttonLabel}>
-                                <lightning-button
-                                    label={buttonLabel}
-                                    variant={buttonVariant}
-                                    icon-name={buttonIconName}
-                                    icon-position={buttonIconPosition}
-                                ></lightning-button>
-                            </template>
+                            <lightning-icon
+                                icon-name="utility:error"
+                                alternative-text="Error!"
+                                variant="error"
+                                size="x-small"
+                                class="slds-m-right_x-small"
+                            ></lightning-icon>
+                            <p>There was an error loading the details</p>
                         </div>
+                    </template>
+                    <template if:false={hasError}>
+                        <template if:true={emptyFields}>
+                            <div
+                                class="slds-box slds-theme_shade slds-m-top_x-small slds-m-horizontal_xx-small slds-p-around_medium"
+                            >
+                                <ul class="slds-list_horizontal slds-wrap">
+                                    <template
+                                        for:each={fields}
+                                        for:item="field"
+                                        for:index="index"
+                                    >
+                                        <li
+                                            class="slds-grid slds-grid_vertical slds-size_1-of-2 slds-p-bottom_small"
+                                            key={field.value}
+                                        >
+                                            <div
+                                                class="slds-text-title slds-truncate"
+                                                title={field.label}
+                                            >
+                                                {field.label}
+                                            </div>
+                                            <div
+                                                class="slds-truncate"
+                                                title={field.value}
+                                            >
+                                                <c-primitive-page-header-field
+                                                    field={field}
+                                                    label={field.label}
+                                                    value={field.value}
+                                                    type={field.type}
+                                                ></c-primitive-page-header-field>
+                                            </div>
+                                        </li>
+                                    </template>
+                                </ul>
+                                <template if:true={buttonLabel}>
+                                    <lightning-button
+                                        label={buttonLabel}
+                                        variant={buttonVariant}
+                                        icon-name={buttonIconName}
+                                        icon-position={buttonIconPosition}
+                                    ></lightning-button>
+                                </template>
+                            </div>
+                        </template>
                     </template>
                 </template>
             </div>

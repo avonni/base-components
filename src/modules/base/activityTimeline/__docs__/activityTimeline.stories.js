@@ -88,7 +88,7 @@ const items = [
         datetimeValue: '9:00am | 03/20/17',
         href: 'salesforce.com',
         iconName: 'standard:task',
-        icons: ['utility:refres'],
+        icons: ['utility:refresh'],
         fields: [
             {
                 label: 'Name',
@@ -221,6 +221,38 @@ const items = [
         ],
         buttonLabel: 'Public Sharing',
         buttonIconName: 'utility:world'
+    },
+    {
+        title: 'Create a new task',
+        datetimeValue: '11:00am | 03/20/17',
+        href: '#',
+        iconName: 'standard:dashboard',
+        hasError: true,
+        fields: [
+            {
+                label: 'Name',
+                value: 'Charlie Gomez',
+                type: 'url',
+                typeAttributes: {
+                    label: 'Charlie Gomez'
+                }
+            },
+            {
+                label: 'Related To',
+                value: 'Tesla Cloudhub + Anypoint Connectors',
+                type: 'url',
+                typeAttributes: {
+                    label: 'Tesla Cloudhub + Anypoint Connectors'
+                }
+            },
+            {
+                label: 'Description',
+                value:
+                    'Need to finalize proposals and brand details before the meeting',
+                type: 'text'
+            }
+        ],
+        hasCheckbox: true
     }
 ];
 
@@ -228,8 +260,8 @@ const Template = (args) => ActivityTimeline(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    title: 'Title',
-    iconName: 'standard:case',
+    title: 'Activity Timeline',
+    iconName: 'standard:timesheet_entry',
     items: items,
     collapsible: true
 };
