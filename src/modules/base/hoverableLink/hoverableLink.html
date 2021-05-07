@@ -13,7 +13,15 @@
             {computedLabel}
         </a>
         <div if:true={popoverVisible} class={computedPopoverWrapperClass}>
-            <div class={computedPopoverClass} tabindex="0" role="dialog">
+            <div
+                class={computedPopoverClass}
+                tabindex="0"
+                role="dialog"
+                aria-labelledby="dialog-label"
+            >
+                <span id="dialog-label" class="slds-assistive-text"
+                    >{computedAriaLabel}</span
+                >
                 <template if:true={isLoading}>
                     <lightning-spinner
                         alternative-text={loadingStateAlternativeText}
@@ -21,21 +29,16 @@
                     ></lightning-spinner>
                 </template>
                 <template if:false={isLoading}>
-                    <div
-                        class="slds-p-around_small"
-                        if:true={showPopoverHeader}
-                    >
-                        <c-media-object size="small" vertical-align="center">
+                    <div class="slds-p-around_small" if:true={computedTitle}>
+                        <c-media-object vertical-align="center">
                             <c-avatar
                                 if:true={showAvatar}
                                 slot="figure"
                                 src={avatarSrc}
                                 fallback-icon-name={avatarFallbackIconName}
+                                hide-avatar-details="true"
                             ></c-avatar>
-                            <div
-                                if:true={computedTitle}
-                                class="slds-text-heading_medium"
-                            >
+                            <div class="slds-text-heading_medium">
                                 <a if:true={titleHref} href={titleHref}
                                     >{computedTitle}</a
                                 >
@@ -46,33 +49,47 @@
                         </c-media-object>
                     </div>
 
-                    <div if:true={showFields} class="slds-popover__body">
-                        <div class="slds-grid slds-wrap slds-grid_pull-padded">
-                            <template for:each={fields} for:item="field">
-                                <div
-                                    key={field.label}
-                                    class="slds-p-horizontal_small slds-size_1-of-2 slds-p-bottom_x-small"
-                                >
-                                    <dl>
-                                        <dt>
-                                            <p
-                                                class="slds-popover_panel__label slds-truncate"
-                                                title={field.label}
-                                            >
-                                                {field.label}
-                                            </p>
-                                        </dt>
-                                        <dd>
-                                            <c-primitive-page-header-field
-                                                field={field}
-                                                label={field.label}
-                                                value={field.value}
-                                                type={field.type}
-                                            ></c-primitive-page-header-field>
-                                        </dd>
-                                    </dl>
-                                </div>
-                            </template>
+                    <div class="slds-grid slds-popover__body">
+                        <div
+                            if:true={showAvatarWithoutTitle}
+                            class="slds-p-right_small"
+                        >
+                            <c-avatar
+                                src={avatarSrc}
+                                fallback-icon-name={avatarFallbackIconName}
+                                hide-avatar-details="true"
+                            ></c-avatar>
+                        </div>
+                        <div if:true={showFields} class="slds-col">
+                            <div
+                                class="slds-grid slds-wrap slds-grid_pull-padded"
+                            >
+                                <template for:each={fields} for:item="field">
+                                    <div
+                                        key={field.label}
+                                        class="slds-p-horizontal_small slds-size_1-of-2 slds-p-bottom_x-small"
+                                    >
+                                        <dl>
+                                            <dt>
+                                                <p
+                                                    class="slds-popover_panel__label slds-truncate"
+                                                    title={field.label}
+                                                >
+                                                    {field.label}
+                                                </p>
+                                            </dt>
+                                            <dd>
+                                                <c-primitive-page-header-field
+                                                    field={field}
+                                                    label={field.label}
+                                                    value={field.value}
+                                                    type={field.type}
+                                                ></c-primitive-page-header-field>
+                                            </dd>
+                                        </dl>
+                                    </div>
+                                </template>
+                            </div>
                         </div>
                     </div>
                 </template>

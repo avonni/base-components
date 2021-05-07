@@ -126,6 +126,13 @@ export default class HoverableLink extends LightningElement {
         return this.fields.length > 0;
     }
 
+    get showAvatarWithoutTitle() {
+        return (
+            !this.computedTitle &&
+            (this.avatarFallbackIconName || this.avatarSrc)
+        );
+    }
+
     get computedLabel() {
         return this.label || this.href;
     }
@@ -136,6 +143,10 @@ export default class HoverableLink extends LightningElement {
 
     get computedAriaExpanded() {
         return String(this.popoverVisible);
+    }
+
+    get computedAriaLabel() {
+        return this.computedTitle || this.computedLabel;
     }
 
     get computedPopoverClass() {
@@ -159,7 +170,9 @@ export default class HoverableLink extends LightningElement {
                 'slds-p-vertical_large': this.isLoading,
                 'slds-popover_small': this.popoverSize === 'small',
                 'slds-popover_medium': this.popoverSize === 'medium',
-                'slds-popover_large': this.popoverSize === 'large'
+                'slds-popover_large': this.popoverSize === 'large',
+                'slds-theme_inverse': this.theme === 'inverse',
+                'slds-theme_shade': this.theme === 'shade'
             })
             .toString();
     }

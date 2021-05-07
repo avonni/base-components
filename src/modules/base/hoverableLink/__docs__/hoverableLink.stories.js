@@ -174,18 +174,84 @@ const fields = [
     }
 ];
 
+const longFields = [
+    {
+        label: 'Account Name',
+        value: 'Jane Doe',
+        type: 'text'
+    },
+    {
+        label: 'Phone',
+        value: '514-222-3333',
+        type: 'phone'
+    },
+    {
+        label: 'Close date',
+        value: new Date(),
+        type: 'date',
+        typeAttributes: {
+            day: 'numeric',
+            month: 'long'
+        }
+    },
+    {
+        label: 'Address',
+        value: '6578 Holland avenue, Fake City on the Lake',
+        type: 'text'
+    },
+    {
+        label: 'Website',
+        value: 'https://www.avonni.app/',
+        type: 'text',
+        typeAttributes: 'linkify'
+    },
+    {
+        label: 'Email',
+        value: 'janedoe@gmail.com',
+        type: 'email'
+    },
+    {
+        label: 'Company',
+        value: 'Jane Doe Yarn Import Inc.',
+        type: 'text'
+    }
+];
+
 const Template = (args) => HoverableLink(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    label: 'Hoverable link',
+    label: 'Hover me',
+    href: 'https://www.avonni.app/',
+    fields: fields
+};
+
+export const LargePopover = Template.bind({});
+LargePopover.args = {
     href: 'https://www.avonni.app/',
     title: 'Title of the popover',
     titleHref: 'https://www.avonni.app/',
+    fields: longFields,
+    popoverSize: 'large'
+};
+
+export const ShadeWithTitleAndAvatar = Template.bind({});
+ShadeWithTitleAndAvatar.args = {
+    label: 'Shade theme with a popover title and an avatar',
+    href: 'https://www.avonni.app/',
+    title: 'Title of the popover',
+    fields: fields,
     avatarSrc:
         'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
     avatarFallbackIconName: 'standard:user',
-    fields: fields,
-    popoverSize: 'large',
     theme: 'shade'
+};
+
+export const InverseWithAvatar = Template.bind({});
+InverseWithAvatar.args = {
+    label: 'Inverse theme with an icon and no title',
+    href: 'https://www.avonni.app/',
+    avatarFallbackIconName: 'standard:user',
+    fields: fields,
+    theme: 'inverse'
 };

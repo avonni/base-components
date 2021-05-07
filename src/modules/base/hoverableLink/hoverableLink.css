@@ -2,6 +2,10 @@
     position: absolute;
 }
 
+.slds-popover.slds-theme_shade {
+    border: 1px solid var(--lwc-colorBorder, #dddbda);
+}
+
 .slds-nubbin_top,
 .slds-nubbin_bottom {
     transform: translateX(-50%);
