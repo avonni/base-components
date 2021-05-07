@@ -3,15 +3,28 @@
         class="slds-dropdown-trigger slds-dropdown-trigger_click"
         onmouseover={open}
         onmouseleave={close}
+        onkeyup={handleKeyUp}
     >
-        <a
-            href={href}
-            onfocus={open}
+        <a if:true={href} href={href} class="hoverable-label"
+            >{computedLabel}</a
+        >
+        <span if:false={href} class="hoverable-label">{computedLabel}</span>
+
+        <!-- Accessibility button -->
+        <lightning-button-icon
+            class="accessibility-button accessibility-button-hidden"
+            icon-name="utility:preview"
+            size="small"
+            title="Open preview"
+            variant="bare"
             aria-haspopup="true"
             aria-expanded={computedAriaExpanded}
-        >
-            {computedLabel}
-        </a>
+            onclick={open}
+            onfocus={toggleAccessibilityButtonVisibility}
+            onblur={toggleAccessibilityButtonVisibility}
+        ></lightning-button-icon>
+
+        <!-- Popover -->
         <div if:true={popoverVisible} class={computedPopoverWrapperClass}>
             <div
                 class={computedPopoverClass}
@@ -22,13 +35,28 @@
                 <span id="dialog-label" class="slds-assistive-text"
                     >{computedAriaLabel}</span
                 >
+
+                <!-- Loading spinner -->
                 <template if:true={isLoading}>
                     <lightning-spinner
                         alternative-text={loadingStateAlternativeText}
                         size="small"
                     ></lightning-spinner>
                 </template>
+
                 <template if:false={isLoading}>
+                    <!-- Close button -->
+                    <lightning-button-icon
+                        icon-name="utility:close"
+                        size="small"
+                        title="Close dialog"
+                        variant="bare"
+                        class="slds-float_right slds-popover__close"
+                        onclick={close}
+                        onkeydown={handleButtonCloseKeyDown}
+                    ></lightning-button-icon>
+
+                    <!-- Title and avatar -->
                     <div class="slds-p-around_small" if:true={computedTitle}>
                         <c-media-object vertical-align="center">
                             <c-avatar
@@ -49,7 +77,8 @@
                         </c-media-object>
                     </div>
 
-                    <div class="slds-grid slds-popover__body">
+                    <div class={computedPopoverBodyClass}>
+                        <!-- If avatar but no title -->
                         <div
                             if:true={showAvatarWithoutTitle}
                             class="slds-p-right_small"
@@ -60,6 +89,8 @@
                                 hide-avatar-details="true"
                             ></c-avatar>
                         </div>
+
+                        <!-- Fields -->
                         <div if:true={showFields} class="slds-col">
                             <div
                                 class="slds-grid slds-wrap slds-grid_pull-padded"
@@ -79,12 +110,12 @@
                                                 </p>
                                             </dt>
                                             <dd>
-                                                <c-primitive-page-header-field
+                                                <c-primitive-field
                                                     field={field}
                                                     label={field.label}
                                                     value={field.value}
                                                     type={field.type}
-                                                ></c-primitive-page-header-field>
+                                                ></c-primitive-field>
                                             </dd>
                                         </dl>
                                     </div>

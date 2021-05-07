@@ -143,8 +143,8 @@
             "path": "src/modules/base/filterMenuGroup/filterMenuGroup.js"
         },
         {
-            "name": "c/hoverableLink",
-            "path": "src/modules/base/hoverableLink/hoverableLink.js"
+            "name": "c/hoverableText",
+            "path": "src/modules/base/hoverableText/hoverableText.js"
         },
         {
             "name": "c/externalLink",
@@ -251,8 +251,8 @@
             "path": "src/modules/base/primitiveIframe/primitiveIframe.js"
         },
         {
-            "name": "c/primitivePageHeaderField",
-            "path": "src/modules/base/primitivePageHeaderField/primitivePageHeaderField.js"
+            "name": "c/primitiveField",
+            "path": "src/modules/base/primitiveField/primitiveField.js"
         },
         {
             "name": "c/primitiveProgressBarReferenceLine",
@@ -491,8 +491,8 @@
             "path": "src/modules/base/filterMenuGroup/filterMenuGroup.js"
         },
         {
-            "name": "avonni/hoverableLink",
-            "path": "src/modules/base/hoverableLink/hoverableLink.js"
+            "name": "avonni/hoverableText",
+            "path": "src/modules/base/hoverableText/hoverableText.js"
         },
         {
             "name": "avonni/illustration",
@@ -689,7 +689,7 @@
         "avonni/expandableSection",
         "avonni/filterMenu",
         "avonni/filterMenuGroup",
-        "avonni/hoverableLink",
+        "avonni/hoverableText",
         "avonni/illustration",
         "avonni/image",
         "avonni/inputCounter",

@@ -62,7 +62,7 @@ const STANDARD_TYPES = {
     location: true
 };
 
-export default class PrimitivePageHeaderField extends LightningElement {
+export default class PrimitiveField extends LightningElement {
     @api field;
     @api label;
     @api value;

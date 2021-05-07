@@ -1,11 +1,11 @@
-import Component from 'avonni/hoverableLink';
+import Component from 'avonni/hoverableText';
 
 customElements.define(
-    'ac-base-hoverable-link',
+    'ac-base-hoverable-text',
     Component.CustomElementConstructor
 );
 
-export const HoverableLink = ({
+export const HoverableText = ({
     label,
     href,
     title,
@@ -19,7 +19,7 @@ export const HoverableLink = ({
     loadingStateAlternativeText,
     theme
 }) => {
-    const element = document.createElement('ac-base-hoverable-link');
+    const element = document.createElement('ac-base-hoverable-text');
     element.label = label;
     element.href = href;
     element.title = title;

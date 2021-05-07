@@ -26,13 +26,13 @@ const PLACEMENTS = {
 };
 
 const THEMES = {
-    valid: ['default', 'shade', 'inverse'],
+    valid: ['default', 'shade', 'default-shade', 'inverse'],
     default: 'default'
 };
 
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
 
-export default class HoverableLink extends LightningElement {
+export default class HoverableText extends LightningElement {
     @api label;
     @api href;
     @api title;
@@ -48,6 +48,12 @@ export default class HoverableLink extends LightningElement {
     _theme = THEMES.default;
 
     popoverVisible = false;
+
+    renderedCallback() {
+        if (this.popoverVisible) {
+            this.template.querySelector('.slds-popover__close').focus();
+        }
+    }
 
     @api
     get fields() {
@@ -109,15 +115,6 @@ export default class HoverableLink extends LightningElement {
         });
     }
 
-    get showPopoverHeader() {
-        return (
-            this.title ||
-            this.titleHref ||
-            this.avatarSrc ||
-            this.avatarFallbackIconName
-        );
-    }
-
     get showAvatar() {
         return this.avatarSrc || this.avatarFallbackIconName;
     }
@@ -172,7 +169,9 @@ export default class HoverableLink extends LightningElement {
                 'slds-popover_medium': this.popoverSize === 'medium',
                 'slds-popover_large': this.popoverSize === 'large',
                 'slds-theme_inverse': this.theme === 'inverse',
-                'slds-theme_shade': this.theme === 'shade'
+                'slds-theme_shade':
+                    this.theme === 'shade' ||
+                    (this.theme === 'default-shade' && this.computedTitle)
             })
             .toString();
     }
@@ -192,10 +191,21 @@ export default class HoverableLink extends LightningElement {
             .toString();
     }
 
+    get computedPopoverBodyClass() {
+        return classSet('slds-grid slds-popover__body')
+            .add({
+                'slds-theme_default': this.theme === 'default-shade',
+                'slds-border_top':
+                    this.theme === 'default-shade' && this.computedTitle
+            })
+            .toString();
+    }
+
     @api
     open() {
         if (!this.popoverVisible) {
             this.toggleMenuVisibility();
+            this.dispatchEvent(new CustomEvent('open'));
         }
     }
 
@@ -203,9 +213,18 @@ export default class HoverableLink extends LightningElement {
     close() {
         if (this.popoverVisible) {
             this.toggleMenuVisibility();
+            this.dispatchEvent(new CustomEvent('close'));
         }
+    }
 
-        console.log('leave');
+    @api
+    focus() {
+        const link = this.template.querySelector('a.hoverable-label');
+        if (link) {
+            link.focus();
+        } else {
+            this.template.querySelector('.accessibility-button').focus();
+        }
     }
 
     toggleMenuVisibility() {
@@ -217,6 +236,10 @@ export default class HoverableLink extends LightningElement {
         }
 
         this.classList.toggle('slds-is-open');
+    }
+
+    toggleAccessibilityButtonVisibility(event) {
+        event.currentTarget.classList.toggle('accessibility-button-hidden');
     }
 
     pollBoundingRect() {
@@ -237,11 +260,18 @@ export default class HoverableLink extends LightningElement {
         return this.placement.startsWith('auto');
     }
 
-    allowBlur() {
-        this._cancelBlur = false;
+    handleKeyUp(event) {
+        if (event.key === 'Escape' && this.popoverVisible) {
+            this.close();
+            this.focus();
+        }
     }
 
-    cancelBlur() {
-        this._cancelBlur = true;
+    handleButtonCloseKeyDown(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            this.close();
+            this.focus();
+        }
     }
 }

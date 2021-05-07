@@ -26,3 +26,13 @@
     transform: translateY(-50%);
     padding-bottom: 2rem;
 }
+
+.hoverable-label {
+    cursor: pointer;
+}
+
+.accessibility-button-hidden {
+    position: absolute;
+    clip: rect(1px 1px 1px 1px);
+    clip-path: polygon(0 0, 0 0, 0 0, 0 0);
+}

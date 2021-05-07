@@ -1,7 +1,7 @@
 import { createElement } from 'lwc';
-import HoverableLink from 'c/hoverableLink';
+import HoverableText from 'c/hoverableText';
 
-describe('HoverableLink', () => {
+describe('HoverableText', () => {
     afterEach(() => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
@@ -9,8 +9,8 @@ describe('HoverableLink', () => {
     });
 
     it('Default attributes', () => {
-        const element = createElement('base-hoverable-link', {
-            is: HoverableLink
+        const element = createElement('base-hoverable-text', {
+            is: HoverableText
         });
 
         expect(element.label).toBeUndefined();
@@ -20,8 +20,8 @@ describe('HoverableLink', () => {
 
     // label
     // it('label', () => {
-    //     const element = createElement('base-hoverable-link', {
-    //         is: HoverableLink
+    //     const element = createElement('base-hoverable-text', {
+    //         is: HoverableText
     //     });
 
     //     document.body.appendChild(element);

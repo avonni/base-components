@@ -1,14 +1,14 @@
-import { HoverableLink } from '../__examples__/hoverableLink';
+import { HoverableText } from '../__examples__/hoverableText';
 
 export default {
-    title: 'Example/Hoverable Link',
+    title: 'Example/Hoverable Text',
     argTypes: {
         label: {
             control: {
                 type: 'text'
             },
             description:
-                'Label of the hoverable link. If no label is given, the href attribute will be used as a label.',
+                'Hoverable text. If no label is given, the href attribute will be used as a label.',
             table: {
                 type: { summary: 'string' }
             }
@@ -18,8 +18,7 @@ export default {
                 type: 'text'
             },
             description:
-                'href property of the link. If no label is given, the href will also be used as a label.',
-            type: { required: true },
+                'href property of the label. If no label is given, the href will also be used as a label.',
             table: {
                 type: { summary: 'string' }
             }
@@ -140,7 +139,7 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['default', 'shade', 'inverse'],
+            options: ['default', 'shade', 'default-shade', 'inverse'],
             defaultValue: 'default',
             description:
                 'Theme of the popover. Valid values include default, shade and inverse.',
@@ -217,12 +216,11 @@ const longFields = [
     }
 ];
 
-const Template = (args) => HoverableLink(args);
+const Template = (args) => HoverableText(args);
 
 export const Base = Template.bind({});
 Base.args = {
     label: 'Hover me',
-    href: 'https://www.avonni.app/',
     fields: fields
 };
 
@@ -232,26 +230,52 @@ LargePopover.args = {
     title: 'Title of the popover',
     titleHref: 'https://www.avonni.app/',
     fields: longFields,
-    popoverSize: 'large'
+    popoverSize: 'large',
+    avatarSrc:
+        'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+    avatarFallbackIconName: 'standard:user'
 };
 
-export const ShadeWithTitleAndAvatar = Template.bind({});
-ShadeWithTitleAndAvatar.args = {
-    label: 'Shade theme with a popover title and an avatar',
+export const SmallPopover = Template.bind({});
+SmallPopover.args = {
+    label: 'Small popover',
+    fields: fields,
+    popoverSize: 'small'
+};
+
+export const DefaultShadeTheme = Template.bind({});
+DefaultShadeTheme.args = {
+    label: 'Default-shade theme',
+    title: 'Title of the popover',
+    avatarFallbackIconName: 'standard:user',
+    fields: fields,
+    theme: 'default-shade'
+};
+
+export const ShadeTheme = Template.bind({});
+ShadeTheme.args = {
+    label: 'Shade theme',
     href: 'https://www.avonni.app/',
     title: 'Title of the popover',
     fields: fields,
-    avatarSrc:
-        'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
-    avatarFallbackIconName: 'standard:user',
     theme: 'shade'
 };
 
-export const InverseWithAvatar = Template.bind({});
-InverseWithAvatar.args = {
-    label: 'Inverse theme with an icon and no title',
+export const InverseTheme = Template.bind({});
+InverseTheme.args = {
+    label: 'Inverse theme',
     href: 'https://www.avonni.app/',
     avatarFallbackIconName: 'standard:user',
     fields: fields,
     theme: 'inverse'
+};
+
+export const Loading = Template.bind({});
+Loading.args = {
+    label: 'Loading popover',
+    title: 'Title of the popover',
+    isLoading: true,
+    loadingStateAlternativeText: 'Content loading...',
+    avatarFallbackIconName: 'standard:user',
+    fields: fields
 };
