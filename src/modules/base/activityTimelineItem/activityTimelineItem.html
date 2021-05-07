@@ -38,7 +38,14 @@
                             >
                             </lightning-input>
                         </template>
-                        <h3>{title}</h3>
+                        <template if:true={href}>
+                            <a href={href}>
+                                <h3>{title}</h3>
+                            </a>
+                        </template>
+                        <template if:false={href}>
+                            <h3>{title}</h3>
+                        </template>
                         <div if:true={icons} class="slds-no-flex">
                             <template for:each={icons} for:item="icon">
                                 <lightning-button-icon
@@ -104,6 +111,8 @@
                                 <lightning-button
                                     label={buttonLabel}
                                     variant={buttonVariant}
+                                    icon-name={buttonIconName}
+                                    icon-position={buttonIconPosition}
                                 ></lightning-button>
                             </template>
                         </div>

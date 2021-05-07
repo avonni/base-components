@@ -82,111 +82,145 @@ export default {
 
 const items = [
     {
-        title: 'Item Title',
-        description: 'Item Description',
-        datetimeValue: '10/12/1991',
-        href: 'salesforce.com',
-        iconName: 'standard:log_a_call',
-        icons: ['utility:add', 'utility:away', 'utility:alert'],
-        fields: [
-            {
-                label: 'Name',
-                value: 'Renaud AF',
-                type: 'text'
-            },
-            {
-                label: 'Name',
-                value: 'Thierry AF',
-                type: 'text'
-            }
-        ]
-    },
-    {
-        title: 'Item Title 2',
-        datetimeValue: '10/12/1991',
-        href: 'salesforce.com',
-        iconName: 'standard:event',
-        hasCheckbox: true,
-        fields: [
-            {
-                label: 'Name',
-                value: 'Renaud AF 2',
-                type: 'text'
-            },
-            {
-                label: 'Name',
-                value: 'Thierry AF 2',
-                type: 'text'
-            },
-            {
-                label: 'Name',
-                value: 'Jee AF 2',
-                type: 'text'
-            },
-            {
-                label: 'Name',
-                value: 'Max AF 2',
-                type: 'text'
-            }
-        ]
-    },
-    {
-        title: 'Item Title 3',
-        datetimeValue: '10/12/1991',
+        title:
+            'Review proposals for EBC deck with larger team and have marketing review this',
+        description: 'You created a task with Charlie Gomez',
+        datetimeValue: '9:00am | 03/20/17',
         href: 'salesforce.com',
         iconName: 'standard:task',
-        hasCheckbox: true,
+        icons: ['utility:refres'],
         fields: [
             {
                 label: 'Name',
-                value: 'Renaud AF 3',
-                type: 'text'
+                value: 'Charlie Gomez',
+                type: 'url',
+                typeAttributes: {
+                    label: 'Charlie Gomez'
+                }
             },
             {
-                label: 'Name',
-                value: 'Thierry AF 3',
-                type: 'text'
+                label: 'Related To',
+                value: 'Tesla Cloudhub + Anypoint Connectors',
+                type: 'url',
+                typeAttributes: {
+                    label: 'Tesla Cloudhub + Anypoint Connectors'
+                }
             },
             {
-                label: 'Name',
-                value: 'Jee AF 3',
-                type: 'text'
-            },
-            {
-                label: 'Name',
-                value: 'Max AF 3',
-                type: 'text'
-            }
-        ]
-    },
-    {
-        title: 'Item Title 4',
-        datetimeValue: '10/12/1991',
-        href: 'salesforce.com',
-        iconName: 'standard:email',
-        fields: [
-            {
-                label: 'Name',
-                value: 'Renaud AF 4',
-                type: 'text'
-            },
-            {
-                label: 'Name',
-                value: 'Thierry AF 4',
-                type: 'text'
-            },
-            {
-                label: 'Name',
-                value: 'Jee AF 4',
-                type: 'text'
-            },
-            {
-                label: 'Name',
-                value: 'Max AF 4',
+                label: 'Description',
+                value:
+                    'Need to finalize proposals and brand details before the meeting',
                 type: 'text'
             }
         ],
-        buttonLabel: 'click me'
+        hasCheckbox: true
+    },
+    {
+        title: 'Mobile conversation on Monday',
+        description: 'You logged a call with Adam Chan',
+        href: '#',
+        datetimeValue: '10:00am | 03/23/17',
+        iconName: 'standard:log_a_call',
+        fields: [
+            {
+                label: 'Name',
+                value: 'Adam Chan',
+                type: 'url',
+                typeAttributes: {
+                    label: 'Adam Chan'
+                }
+            },
+            {
+                label: 'Related To',
+                value: 'Tesla Cloudhub + Anypoint Connectors',
+                type: 'url',
+                typeAttributes: {
+                    label: 'Tesla Cloudhub + Anypoint Connectors'
+                }
+            },
+            {
+                label: 'Description',
+                value:
+                    'Adam seemed interested in closing this deal quickly! Let’s move.',
+                type: 'text'
+            }
+        ]
+    },
+    {
+        title: 'Re: Mobile conversation on Monday with the new global team',
+        description: 'You emailed Lea Chan',
+        datetimeValue: '10:00am | 03/24/17',
+        href: '#',
+        iconName: 'standard:email',
+        icons: ['utility:groups', 'utility:attach'],
+        fields: [
+            {
+                label: 'Name',
+                value: 'Jackie Dewar',
+                type: 'url',
+                typeAttributes: {
+                    label: 'Jackie Dewar'
+                }
+            },
+            {
+                label: 'To Address',
+                value: 'Lea Chan',
+                type: 'url',
+                typeAttributes: {
+                    label: 'Lea Chan'
+                }
+            },
+            {
+                label: 'Text Body',
+                value:
+                    'Hi everyone, Thanks for meeting with the team today and going through the proposals we saw. This goes on and wraps if needed.',
+                type: 'text'
+            }
+        ],
+        buttonLabel: 'Public Sharing',
+        buttonIconName: 'utility:world'
+    },
+    {
+        title: 'EBC Follow up call',
+        description: 'You created an event with Aida Lee and 5 others',
+        icons: ['utility:world'],
+        datetimeValue: '10:30am | 03/24/17',
+        href: '#',
+        iconName: 'standard:event',
+        fields: [
+            {
+                label: 'Location',
+                value: 'Westen St. Francis, San Francisco, CA, 94622',
+                type: 'url',
+                typeAttributes: {
+                    label: 'Westen St. Francis, San Francisco, CA, 94622'
+                }
+            },
+            {
+                label: 'Attendees',
+                value: 'Jason Dewar (Organizer) + 5 others',
+                type: 'url',
+                typeAttributes: {
+                    label: 'Jason Dewar (Organizer) + 5 others'
+                }
+            },
+            {
+                label: 'When',
+                value: 'March 26, 10:00 AM - 11:00 AM',
+                type: 'url',
+                typeAttributes: {
+                    label: 'March 26, 10:00 AM - 11:00 AM'
+                }
+            },
+            {
+                label: 'Description',
+                value:
+                    "Let's discuss the 2017 product roadmap and address any questions",
+                type: 'text'
+            }
+        ],
+        buttonLabel: 'Public Sharing',
+        buttonIconName: 'utility:world'
     }
 ];
 
