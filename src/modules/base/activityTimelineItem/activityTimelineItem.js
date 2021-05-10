@@ -137,7 +137,7 @@ export default class ActivityTimelineItem extends LightningElement {
     }
 
     get activityTimelineItemOuterClass() {
-        return classSet('slds-timeline__item_expandable')
+        return classSet('slds-timeline__item_expandable barre')
             .add({
                 'slds-is-open': !this.closed
             })
@@ -160,14 +160,12 @@ export default class ActivityTimelineItem extends LightningElement {
         const name = event.currentTarget.value;
 
         this.dispatchEvent(
-            this.dispatchEvent(
-                new CustomEvent('actionclick', {
-                    detail: {
-                        name: name,
-                        fieldData: this._fields
-                    }
-                })
-            )
+            new CustomEvent('actionclick', {
+                detail: {
+                    name: name,
+                    fieldData: this._fields
+                }
+            })
         );
     }
 

@@ -21,6 +21,13 @@ export default class ActivityTimeline extends LightningElement {
     _variant = validVariants.default;
     _items = [];
     _actions = [];
+    groupDates = [];
+    orderedDates = [];
+    key;
+
+    connectedCallback() {
+        this.groupedBy();
+    }
 
     @api
     get collapsible() {
@@ -80,5 +87,41 @@ export default class ActivityTimeline extends LightningElement {
 
     set actions(value) {
         this._actions = normalizeArray(value);
+    }
+
+    groupedBy() {
+        this.groupDates = this.items.reduce((prev, cur) => {
+            const date = new Date(cur.datetimeValue);
+            if (this._groupBy === 'month') {
+                this.key = `${date.getMonth() + 1}-${date.getFullYear()}`;
+            } else if (this._groupBy === 'week') {
+                this.key = `${this.getNumberOfWeek(
+                    date
+                )}-${date.getFullYear()}`;
+            } else if (this._groupBy === 'year') {
+                this.key = `${date.getFullYear()}`;
+            }
+
+            if (!prev[this.key]) {
+                prev[this.key] = [cur];
+            } else {
+                prev[this.key].push(cur);
+            }
+
+            return prev;
+        }, []);
+        Object.keys(this.groupDates).forEach((date) => {
+            this.orderedDates.push({
+                label: date,
+                items: this.groupDates[date]
+            });
+        });
+    }
+
+    getNumberOfWeek(date) {
+        const today = new Date(date);
+        const firstDayOfYear = new Date(today.getFullYear(), 0, 1);
+        const pastDaysOfYear = (today - firstDayOfYear) / 86400000;
+        return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
     }
 }
