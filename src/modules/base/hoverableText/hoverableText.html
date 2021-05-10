@@ -36,26 +36,28 @@
                     >{computedAriaLabel}</span
                 >
 
+                <!-- Close button -->
+                <lightning-button-icon
+                    icon-name="utility:close"
+                    size="small"
+                    title="Close dialog"
+                    variant="bare"
+                    class="slds-float_right slds-popover__close"
+                    onclick={close}
+                    onkeydown={handleButtonCloseKeyDown}
+                ></lightning-button-icon>
+
                 <!-- Loading spinner -->
                 <template if:true={isLoading}>
-                    <lightning-spinner
-                        alternative-text={loadingStateAlternativeText}
-                        size="small"
-                    ></lightning-spinner>
+                    <div class="slds-p-vertical_large">
+                        <lightning-spinner
+                            alternative-text={loadingStateAlternativeText}
+                            size="small"
+                        ></lightning-spinner>
+                    </div>
                 </template>
 
                 <template if:false={isLoading}>
-                    <!-- Close button -->
-                    <lightning-button-icon
-                        icon-name="utility:close"
-                        size="small"
-                        title="Close dialog"
-                        variant="bare"
-                        class="slds-float_right slds-popover__close"
-                        onclick={close}
-                        onkeydown={handleButtonCloseKeyDown}
-                    ></lightning-button-icon>
-
                     <!-- Title and avatar -->
                     <div class="slds-p-around_small" if:true={computedTitle}>
                         <c-media-object vertical-align="center">

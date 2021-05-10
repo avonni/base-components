@@ -164,7 +164,6 @@ export default class HoverableText extends LightningElement {
                 'slds-nubbin_bottom-left': this.placement === 'bottom-left',
                 'slds-nubbin_bottom-right': this.placement === 'bottom-right',
                 'slds-nubbin_bottom': this.placement === 'bottom-center',
-                'slds-p-vertical_large': this.isLoading,
                 'slds-popover_small': this.popoverSize === 'small',
                 'slds-popover_medium': this.popoverSize === 'medium',
                 'slds-popover_large': this.popoverSize === 'large',
