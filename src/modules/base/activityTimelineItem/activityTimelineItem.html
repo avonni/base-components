@@ -37,6 +37,7 @@
                                 type="checkbox"
                                 label="checkbox"
                                 variant="label-hidden"
+                                onclick={handleCheck}
                             >
                             </lightning-input>
                         </template>
@@ -48,7 +49,7 @@
                         <template if:false={href}>
                             <h3>{title}</h3>
                         </template>
-                        <div if:true={actionsIcon} class="slds-no-flex">
+                        <div if:true={actions} class="slds-no-flex">
                             <template for:each={icons} for:item="icon">
                                 <lightning-button-icon
                                     key={icon}

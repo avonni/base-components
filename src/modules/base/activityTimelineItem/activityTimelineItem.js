@@ -23,6 +23,8 @@ const validButtonVariants = {
     default: 'neutral'
 };
 
+const DEFAULT_LOADING_TEXT = 'Loading';
+
 export default class ActivityTimelineItem extends LightningElement {
     @api title;
     @api description;
@@ -32,7 +34,7 @@ export default class ActivityTimelineItem extends LightningElement {
     @api icons = [];
     @api buttonLabel;
     @api buttonIconName;
-    @api loadingStateAlternativeText;
+    @api loadingStateAlternativeText = DEFAULT_LOADING_TEXT;
     @api actions;
 
     _fields = [];
@@ -42,8 +44,11 @@ export default class ActivityTimelineItem extends LightningElement {
     _closed = false;
     _buttonIconPosition;
     _buttonVariant;
+    _rendered = false;
 
-    connectedCallback() {}
+    connectedCallback() {
+        this.actionsIcon();
+    }
 
     @api
     get hasCheckbox() {
@@ -122,8 +127,8 @@ export default class ActivityTimelineItem extends LightningElement {
         return this.actions.length > 0;
     }
 
-    get actionsIcon() {
-        Array.from(this.actions).forEach((action) => {
+    actionsIcon() {
+        this.actions.forEach((action) => {
             if (action.iconName) {
                 this.icons.push(action.iconName);
             }
@@ -141,7 +146,8 @@ export default class ActivityTimelineItem extends LightningElement {
                     this.iconName === 'standard:log_a_call',
                 'slds-timeline__item_email': this.iconName === 'standard:email',
                 'slds-timeline__item_event': this.iconName === 'standard:event',
-                'slds-timeline__item_task': this.iconName === 'standard:task'
+                'slds-timeline__item_task': this.iconName === 'standard:task',
+                'slds-timeline__item_case': this.iconName === 'standard:case'
             })
             .toString();
     }
