@@ -239,6 +239,10 @@ export default class HoverableText extends LightningElement {
 
     toggleAccessibilityButtonVisibility(event) {
         event.currentTarget.classList.toggle('accessibility-button-hidden');
+
+        if (!this.href) {
+            this.dispatchEvent(new CustomEvent('focus'));
+        }
     }
 
     pollBoundingRect() {
@@ -272,5 +276,9 @@ export default class HoverableText extends LightningElement {
             this.close();
             this.focus();
         }
+    }
+
+    handleFocus() {
+        this.dispatchEvent(new CustomEvent('focus'));
     }
 }

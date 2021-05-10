@@ -5,7 +5,11 @@
         onmouseleave={close}
         onkeyup={handleKeyUp}
     >
-        <a if:true={href} href={href} class="hoverable-label"
+        <a
+            if:true={href}
+            href={href}
+            class="hoverable-label"
+            onfocus={handleFocus}
             >{computedLabel}</a
         >
         <span if:false={href} class="hoverable-label">{computedLabel}</span>
