@@ -20,6 +20,7 @@ export default class ActivityTimeline extends LightningElement {
     _groupBy = validGroupByOptions.default;
     _variant = validVariants.default;
     _items = [];
+    _actions = [];
 
     @api
     get collapsible() {
@@ -70,5 +71,14 @@ export default class ActivityTimeline extends LightningElement {
 
     set items(value) {
         this._items = normalizeArray(value);
+    }
+
+    @api
+    get actions() {
+        return this._actions;
+    }
+
+    set actions(value) {
+        this._actions = normalizeArray(value);
     }
 }

@@ -73,11 +73,26 @@
                             minute="2-digit"
                             hour12="true"
                         ></lightning-formatted-date-time>
-                        <lightning-button-icon
-                            icon-name="utility:down"
-                            variant="border-filled"
-                            size="x-small"
-                        ></lightning-button-icon>
+                        <div slot="figure-inverse" if:true={hasActions}>
+                            <lightning-button-menu
+                                alternative-text="Show menu"
+                                icon-size="small"
+                                menu-alignment="right"
+                                variant={buttonMenuVariant}
+                            >
+                                <template for:each={actions} for:item="action">
+                                    <lightning-menu-item
+                                        key={action.name}
+                                        value={action.name}
+                                        label={action.label}
+                                        onclick={handleActionClick}
+                                        disabled={action.disabled}
+                                        prefix-icon-name={action.iconName}
+                                        class="slds-text-color_default"
+                                    ></lightning-menu-item>
+                                </template>
+                            </lightning-button-menu>
+                        </div>
                     </div>
                 </div>
                 <p
@@ -110,7 +125,7 @@
                         </div>
                     </template>
                     <template if:false={hasError}>
-                        <template if:true={emptyFields}>
+                        <template if:true={hasFields}>
                             <div
                                 aria-hidden="false"
                                 class="slds-box slds-theme_shade slds-m-top_x-small slds-m-horizontal_xx-small slds-p-around_medium"

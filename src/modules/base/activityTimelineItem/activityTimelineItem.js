@@ -33,6 +33,7 @@ export default class ActivityTimelineItem extends LightningElement {
     @api buttonLabel;
     @api buttonIconName;
     @api loadingStateAlternativeText;
+    @api actions;
 
     _fields = [];
     _hasCheckbox = false;
@@ -41,6 +42,10 @@ export default class ActivityTimelineItem extends LightningElement {
     _closed = false;
     _buttonIconPosition;
     _buttonVariant;
+
+    renderedCallback() {
+        console.log(this.actions);
+    }
 
     @api
     get hasCheckbox() {
@@ -111,8 +116,12 @@ export default class ActivityTimelineItem extends LightningElement {
         this._isLoading = normalizeBoolean(value);
     }
 
-    get emptyFields() {
+    get hasFields() {
         return this._fields.length > 0;
+    }
+
+    get hasActions() {
+        return this.actions.length > 0;
     }
 
     get activityTimelineItemOuterClass() {

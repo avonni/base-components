@@ -60,17 +60,21 @@ export default {
                 defaultValue: { summary: 'week' }
             }
         },
-        variant: {
+        items: {
             control: {
-                type: 'select'
+                type: 'object'
             },
-            options: ['base', 'shaded'],
-            defaultValue: 'base',
-            description:
-                'Changes the appearance of the activity time line. Valid values are base or shaded. The shaded variant adds a light gray box to the activity timeline titles.',
             table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'base' }
+                type: { summary: 'object[]' }
+            }
+        },
+        actions: {
+            control: {
+                type: 'object'
+            },
+            description: 'A list of different actions for dropdown menu.',
+            table: {
+                type: { summary: 'object[]' }
             }
         }
     },
@@ -258,6 +262,19 @@ const items = [
     }
 ];
 
+const actions = [
+    {
+        label: 'Add relationship',
+        name: 'add-relationship',
+        iconName: 'utility:add'
+    },
+    {
+        label: 'Remove relationship',
+        name: 'remove-relationship',
+        disabled: true
+    }
+];
+
 const Template = (args) => ActivityTimeline(args);
 
 export const Base = Template.bind({});
@@ -265,5 +282,6 @@ Base.args = {
     title: 'Activity Timeline',
     iconName: 'standard:timesheet_entry',
     items: items,
-    collapsible: true
+    collapsible: true,
+    actions: actions
 };
