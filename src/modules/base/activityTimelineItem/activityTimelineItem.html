@@ -48,7 +48,7 @@
                         <template if:false={href}>
                             <h3>{title}</h3>
                         </template>
-                        <div if:true={icons} class="slds-no-flex">
+                        <div if:true={actionsIcon} class="slds-no-flex">
                             <template for:each={icons} for:item="icon">
                                 <lightning-button-icon
                                     key={icon}
@@ -56,6 +56,7 @@
                                     variant="bare"
                                     size="small"
                                     class="slds-p-left_x-small"
+                                    onclick={handleActionClick}
                                 ></lightning-button-icon>
                             </template>
                         </div>
@@ -169,6 +170,7 @@
                                         variant={buttonVariant}
                                         icon-name={buttonIconName}
                                         icon-position={buttonIconPosition}
+                                        onclick={handleButtonClick}
                                     ></lightning-button>
                                 </template>
                             </div>

@@ -264,14 +264,14 @@ const items = [
 
 const actions = [
     {
-        label: 'Add relationship',
-        name: 'add-relationship',
+        label: 'Add item',
+        name: 'add-item',
         iconName: 'utility:add'
     },
     {
-        label: 'Remove relationship',
-        name: 'remove-relationship',
-        disabled: true
+        label: 'Edit item',
+        name: 'edit-item',
+        iconName: 'utility:edit'
     }
 ];
 

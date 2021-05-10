@@ -43,9 +43,7 @@ export default class ActivityTimelineItem extends LightningElement {
     _buttonIconPosition;
     _buttonVariant;
 
-    renderedCallback() {
-        console.log(this.actions);
-    }
+    connectedCallback() {}
 
     @api
     get hasCheckbox() {
@@ -124,6 +122,15 @@ export default class ActivityTimelineItem extends LightningElement {
         return this.actions.length > 0;
     }
 
+    get actionsIcon() {
+        Array.from(this.actions).forEach((action) => {
+            if (action.iconName) {
+                this.icons.push(action.iconName);
+            }
+        });
+        return this.icons;
+    }
+
     get activityTimelineItemOuterClass() {
         return classSet('slds-timeline__item_expandable')
             .add({
@@ -141,5 +148,35 @@ export default class ActivityTimelineItem extends LightningElement {
 
     handleSectionStatus() {
         this._closed = !this._closed;
+    }
+
+    handleActionClick(event) {
+        const name = event.currentTarget.value;
+
+        this.dispatchEvent(
+            this.dispatchEvent(
+                new CustomEvent('actionclick', {
+                    detail: {
+                        name: name,
+                        fieldData: this._fields
+                    }
+                })
+            )
+        );
+    }
+
+    handleButtonClick() {
+        this.dispatchEvent(new CustomEvent('buttonclick'));
+    }
+
+    handleCheck(event) {
+        this.dispatchEvent(
+            new CustomEvent('check', {
+                detail: event.target.checked,
+                bubbles: true,
+                cancelable: false,
+                composed: true
+            })
+        );
     }
 }
