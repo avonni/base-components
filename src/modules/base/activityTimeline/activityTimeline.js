@@ -21,9 +21,10 @@ export default class ActivityTimeline extends LightningElement {
     _variant = validVariants.default;
     _items = [];
     _actions = [];
-    groupDates = [];
+
+    _groupDates = [];
+    _key;
     orderedDates = [];
-    key;
 
     connectedCallback() {
         this.groupedBy();
@@ -90,30 +91,32 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     groupedBy() {
-        this.groupDates = this.items.reduce((prev, cur) => {
+        this._groupDates = this.items.reduce((prev, cur) => {
             const date = new Date(cur.datetimeValue);
             if (this._groupBy === 'month') {
-                this.key = `${date.getMonth() + 1}-${date.getFullYear()}`;
+                this._key = `${date.toLocaleString('en-EN', {
+                    month: 'long'
+                })} ${date.getFullYear()}`;
             } else if (this._groupBy === 'week') {
-                this.key = `${this.getNumberOfWeek(
+                this._key = `Week: ${this.getNumberOfWeek(
                     date
-                )}-${date.getFullYear()}`;
+                )}, ${date.getFullYear()}`;
             } else if (this._groupBy === 'year') {
-                this.key = `${date.getFullYear()}`;
+                this._key = `${date.getFullYear()}`;
             }
 
-            if (!prev[this.key]) {
-                prev[this.key] = [cur];
+            if (!prev[this._key]) {
+                prev[this._key] = [cur];
             } else {
-                prev[this.key].push(cur);
+                prev[this._key].push(cur);
             }
 
             return prev;
         }, []);
-        Object.keys(this.groupDates).forEach((date) => {
+        Object.keys(this._groupDates).forEach((date) => {
             this.orderedDates.push({
                 label: date,
-                items: this.groupDates[date]
+                items: this._groupDates[date]
             });
         });
     }
