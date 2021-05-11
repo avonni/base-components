@@ -1,15 +1,29 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeArray } from '../utilsPrivate/normalize';
+import {
+    normalizeArray,
+    normalizeBoolean,
+    normalizeString
+} from 'c/utilsPrivate';
+
+const ICON_POSITIONS = {
+    valid: ['left', 'right'],
+    default: 'right'
+};
 
 export default class SortableMenu extends LightningElement {
     @api label;
-    @api disabled;
+    @api iconName;
+    @api alternativeText = 'Drag item';
 
     _items = [];
+    _disabled = false;
+    _iconPosition = ICON_POSITIONS.default;
+
     _draggedIndex;
     _draggedElement;
     _initialY;
-    _menuPosition;
+    _menuTop;
+    _menuBottom;
     _lastHoveredItem;
     _itemElements;
 
@@ -24,40 +38,40 @@ export default class SortableMenu extends LightningElement {
         this.computedItems = JSON.parse(JSON.stringify(this._items));
     }
 
-    dragStart(event) {
-        this._menuPosition = this.template
-            .querySelector('.menu')
-            .getBoundingClientRect();
-        this._itemElements = Array.from(
-            this.template.querySelectorAll('.sortable-item')
-        );
-        this._initialY = event.clientY;
-        this._draggedElement = event.currentTarget;
-        this._draggedIndex = this._draggedElement.dataset.index;
-        this._draggedElement.classList.toggle('sortable-item_dragged');
+    @api
+    get disabled() {
+        return this._disabled;
+    }
+    set disabled(bool) {
+        this._disabled = normalizeBoolean(bool);
+
+        if (this._disabled) {
+            this.template.host.classList.add('is-disabled');
+        }
     }
 
-    drag(event) {
-        if (this._draggedIndex) {
-            const mouseY = event.clientY;
-            const menuTop = this._menuPosition.top;
-            const menuBottom = this._menuPosition.bottom;
+    @api
+    get iconPosition() {
+        return this._iconPosition;
+    }
+    set iconPosition(value) {
+        this._iconPosition = normalizeString(value, {
+            fallbackValue: ICON_POSITIONS.default,
+            validValues: ICON_POSITIONS.valid
+        });
+    }
 
-            // Make sure it is not possible to drag the item out of the menu
-            let currentY;
-            if (mouseY < menuTop) {
-                currentY = menuTop - this._initialY;
-            } else if (mouseY > menuBottom) {
-                currentY = menuBottom - this._initialY;
-            } else {
-                currentY = mouseY - this._initialY;
-            }
+    get showIconRight() {
+        return this.iconName && !this.disabled && this.iconPosition === 'right';
+    }
 
-            // Stick the dragged item to the mouse position
-            this._draggedElement.style.transform = `translateY(${currentY}px)`;
+    get showIconLeft() {
+        return this.iconName && !this.disabled && this.iconPosition === 'left';
+    }
 
-            this.toggleItems();
-        }
+    @api
+    reset() {
+        this.computedItems = JSON.parse(JSON.stringify(this.items));
     }
 
     getHoveredItem(position) {
@@ -105,7 +119,7 @@ export default class SortableMenu extends LightningElement {
                         : 'translateY(44px)';
             }
 
-            // Make the swith in this.items
+            // Make the swith in computed items
             [this.computedItems[hoveredIndex], this.computedItems[index]] = [
                 this.computedItems[index],
                 this.computedItems[hoveredIndex]
@@ -114,6 +128,48 @@ export default class SortableMenu extends LightningElement {
             this._draggedIndex = hoveredIndex;
             this._draggedElement.dataset.index = hoveredIndex;
             hoveredItem.dataset.index = index;
+        }
+    }
+
+    dragStart(event) {
+        if (!this.disabled) {
+            const menuPosition = this.template
+                .querySelector('.menu')
+                .getBoundingClientRect();
+            this._menuTop = menuPosition.top;
+            this._menuBottom = menuPosition.bottom;
+            this._itemElements = Array.from(
+                this.template.querySelectorAll('.sortable-item')
+            );
+            this._initialY = event.clientY;
+            this._draggedElement = event.currentTarget;
+            this._draggedIndex = this._draggedElement.dataset.index;
+            this._draggedElement.classList.add('sortable-item_dragged');
+        }
+    }
+
+    drag(event) {
+        if (this._draggedIndex) {
+            const mouseY = event.clientY;
+            const menuTop = this._menuTop;
+            const menuBottom = this._menuBottom;
+
+            // Make sure it is not possible to drag the item out of the menu
+            let currentY;
+            if (mouseY < menuTop) {
+                currentY = menuTop;
+            } else if (mouseY > menuBottom) {
+                currentY = menuBottom;
+            } else {
+                currentY = mouseY;
+            }
+
+            // Stick the dragged item to the mouse position
+            this._draggedElement.style.transform = `translateY(${
+                currentY - this._initialY
+            }px)`;
+
+            this.toggleItems();
         }
     }
 
@@ -126,10 +182,19 @@ export default class SortableMenu extends LightningElement {
             this._itemElements.forEach((item) => {
                 item.style = undefined;
             });
-            this._draggedElement.classList.toggle('sortable-item_dragged');
+            this._draggedElement.classList.remove('sortable-item_dragged');
 
             // Clean the tracked variables
             this._draggedElement = this._draggedIndex = this._initialY = undefined;
+
+            // Dispatch reorder event
+            this.dispatchEvent(
+                new CustomEvent('reorder', {
+                    detail: {
+                        items: this.computedItems
+                    }
+                })
+            );
         }
     }
 }

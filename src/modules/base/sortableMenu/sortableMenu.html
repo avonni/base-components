@@ -1,17 +1,41 @@
 <template>
-    <p>{label}</p>
+    <p class="slds-text-heading_small">{label}</p>
 
     <div class="menu">
         <template for:each={computedItems} for:item="item" for:index="index">
             <div
                 key={item.label}
-                class="slds-is-relative sortable-item slds-p-vertical_small slds-border_bottom"
+                class="sortable-item slds-border_bottom slds-grid"
                 onmousedown={dragStart}
                 onmousemove={drag}
                 onmouseup={dragEnd}
                 data-index={index}
             >
-                {item.label}
+                <div class="slds-grid slds-grid_vertical-align-center">
+                    <lightning-icon
+                        if:true={showIconLeft}
+                        class="slds-m-right_x-small"
+                        icon-name={iconName}
+                        size="x-small"
+                    ></lightning-icon>
+                    <lightning-icon
+                        if:true={item.iconName}
+                        class="slds-m-right_x-small"
+                        icon-name={item.iconName}
+                        size="small"
+                    ></lightning-icon>
+                    <div
+                        class="slds-col slds-truncate slds-m-horizontal_x-small"
+                    >
+                        {item.label}
+                    </div>
+                    <lightning-icon
+                        if:true={showIconRight}
+                        class="slds-m-left_x-small"
+                        icon-name={iconName}
+                        size="x-small"
+                    ></lightning-icon>
+                </div>
             </div>
         </template>
     </div>
