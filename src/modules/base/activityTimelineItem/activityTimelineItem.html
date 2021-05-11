@@ -1,11 +1,11 @@
 <template>
-    <div class={activityTimelineItemOuterClass}>
+    <div class={activityTimelineItemOuterClass} style={backgroundColor}>
         <div class="slds-media">
             <div class="slds-media__figure">
                 <template if:false={closed}>
                     <lightning-button-icon
                         icon-name="utility:chevrondown"
-                        size="small"
+                        size="medium"
                         variant="bare"
                         onclick={handleSectionStatus}
                         aria-expanded="true"
@@ -14,7 +14,7 @@
                 <template if:true={closed}>
                     <lightning-button-icon
                         icon-name="utility:chevronright"
-                        size="small"
+                        size="medium"
                         variant="bare"
                         onclick={handleSectionStatus}
                         aria-expanded="false"
@@ -23,6 +23,7 @@
                 <lightning-icon
                     icon-name={iconName}
                     size="small"
+                    class="slds-timeline__icon"
                 ></lightning-icon>
             </div>
             <div class="slds-media__body">

@@ -42,12 +42,19 @@ export default class ActivityTimelineItem extends LightningElement {
     _hasError = false;
     _isLoading = false;
     _closed = false;
-    _buttonIconPosition;
-    _buttonVariant;
+    _buttonIconPosition = validButtonIconPositions.default;
+    _buttonVariant = validButtonVariants.default;
     _rendered = false;
+    _color;
 
     connectedCallback() {
         this.actionsIcon();
+    }
+
+    renderedCallback() {
+        const icon = this.template.querySelector('lightning-icon');
+        const style = getComputedStyle(icon);
+        this._color = style.backgroundColor;
     }
 
     @api
@@ -127,6 +134,18 @@ export default class ActivityTimelineItem extends LightningElement {
         return this.actions.length > 0;
     }
 
+    get backgroundColor() {
+        return `--line-color: ${this._color}`;
+    }
+
+    get activityTimelineItemOuterClass() {
+        return classSet('slds-timeline__item_expandable')
+            .add({
+                'slds-is-open': !this.closed
+            })
+            .toString();
+    }
+
     actionsIcon() {
         this.actions.forEach((action) => {
             if (action.iconName) {
@@ -134,22 +153,6 @@ export default class ActivityTimelineItem extends LightningElement {
             }
         });
         return this.icons;
-    }
-
-    get activityTimelineItemOuterClass() {
-        return classSet('slds-timeline__item_expandable barre')
-            .add({
-                'slds-is-open': !this.closed
-            })
-            .add({
-                'slds-timeline__item_call':
-                    this.iconName === 'standard:log_a_call',
-                'slds-timeline__item_email': this.iconName === 'standard:email',
-                'slds-timeline__item_event': this.iconName === 'standard:event',
-                'slds-timeline__item_task': this.iconName === 'standard:task',
-                'slds-timeline__item_case': this.iconName === 'standard:case'
-            })
-            .toString();
     }
 
     handleSectionStatus() {

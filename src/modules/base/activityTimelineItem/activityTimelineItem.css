@@ -1,3 +1,11 @@
-.slds-timeline__item_case:before {
-    background: #f2cf5b;
+.slds-timeline__item_expandable:before {
+    content: '';
+    background: var(--line-color);
+    height: 100%;
+    width: 2px;
+    position: absolute;
+    left: 2.25rem;
+    top: 0;
+    bottom: 0;
+    margin-left: 1px;
 }
