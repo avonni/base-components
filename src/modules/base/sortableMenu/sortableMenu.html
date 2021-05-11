@@ -1,0 +1,18 @@
+<template>
+    <p>{label}</p>
+
+    <div class="menu">
+        <template for:each={computedItems} for:item="item" for:index="index">
+            <div
+                key={item.label}
+                class="slds-is-relative sortable-item slds-p-vertical_small slds-border_bottom"
+                onmousedown={dragStart}
+                onmousemove={drag}
+                onmouseup={dragEnd}
+                data-index={index}
+            >
+                {item.label}
+            </div>
+        </template>
+    </div>
+</template>

@@ -1,0 +1,9 @@
+.sortable-item {
+    /* transition: transform 300ms; */
+    cursor: grab;
+}
+
+.sortable-item.sortable-item_dragged {
+    cursor: grabbing;
+    transition: none;
+}
