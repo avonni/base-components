@@ -36,8 +36,6 @@ export default class ActivityTimeline extends LightningElement {
         this.sortLastArray();
     }
 
-    renderedCallback() {}
-
     @api
     get collapsible() {
         return this._collapsible;

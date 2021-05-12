@@ -12,7 +12,7 @@
             </div>
         </div>
     </div>
-    <template for:each={orderedDates} for:item="date" for:index="index">
+    <template for:each={orderedDates} for:item="date">
         <c-expandable-section
             key={date.label}
             title={date.label}
@@ -23,7 +23,6 @@
                 <template
                     for:each={date.items}
                     for:item="item"
-                    for:index="index"
                 >
                     <li key={item.title}>
                         <c-activity-timeline-item
