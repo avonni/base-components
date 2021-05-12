@@ -1,0 +1,142 @@
+import { List } from '../__examples__/list';
+
+export default {
+    title: 'Example/List',
+    argTypes: {
+        label: {
+            control: {
+                type: 'text'
+            },
+            description: 'Label of the list.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        alternativeText: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'Alternative text used to describe the list. If the list is sortable, it should describe its behavior, for example: “Sortable menu. Press spacebar to grab or drop an item. Press up and down arrow keys to change position. Press escape to cancel.”',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        items: {
+            control: {
+                type: 'object'
+            },
+            description: 'Array of item objects.',
+            table: {
+                type: { summary: 'object[]' }
+            }
+        },
+        sortable: {
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description:
+                'If true, it will be possible to reorder the list items.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
+        sortableIconName: {
+            name: 'sortable-icon-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                "The Lightning Design System name of the sortable icon. \nNames are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed.",
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        sortableIconPosition: {
+            name: 'sortable-icon-position',
+            control: {
+                type: 'select'
+            },
+            options: ['left', 'right'],
+            defaultValue: 'right',
+            description:
+                'Position of the sortable icon. Valid values include left and right.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'right' }
+            }
+        }
+    }
+};
+
+const Template = (args) => List(args);
+
+const items = [
+    {
+        label: 'Item 1'
+    },
+    {
+        label: 'Item 2'
+    },
+    {
+        label: 'Item 3'
+    },
+    {
+        label: 'Item 4'
+    },
+    {
+        label: 'Item 5'
+    }
+];
+
+const itemsWithIcons = [
+    {
+        label: 'Item 1',
+        iconName: 'custom:custom5'
+    },
+    {
+        label: 'Item 2',
+        iconName: 'custom:custom9'
+    },
+    {
+        label: 'Item 3',
+        iconName: 'custom:custom1'
+    },
+    {
+        label: 'Item 4',
+        iconName: 'custom:custom11'
+    },
+    {
+        label: 'Item 5',
+        iconName: 'custom:custom51'
+    }
+];
+
+export const Base = Template.bind({});
+Base.args = {
+    items: items
+};
+
+export const ListWithIcons = Template.bind({});
+ListWithIcons.args = {
+    label: 'List with icons',
+    items: itemsWithIcons
+};
+
+export const SortableList = Template.bind({});
+SortableList.args = {
+    label: 'Sortable list',
+    sortable: true,
+    items: items
+};
+
+export const SortableListWithIcons = Template.bind({});
+SortableListWithIcons.args = {
+    label: 'Sortable list with Icons',
+    items: itemsWithIcons,
+    sortableIconName: 'utility:drag_and_drop',
+    sortableIconPosition: 'left',
+    sortable: true
+};

@@ -1,11 +1,10 @@
-:host.is-disabled .sortable-item {
-    cursor: initial;
+.list-item {
+    height: 44px;
 }
 
 .sortable-item {
     /* transition: transform 300ms; */
     cursor: grab;
-    height: 44px;
 }
 
 .sortable-item > div {
