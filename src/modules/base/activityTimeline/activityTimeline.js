@@ -101,7 +101,7 @@ export default class ActivityTimeline extends LightningElement {
     sortItems() {
         this._sortedItems = [...this.items];
         this._sortedItems.sort(function (a, b) {
-            return new Date(a.datetimeValue) + new Date(b.datetimeValue);
+            return a.datetimeValue + b.datetimeValue;
         });
     }
 
@@ -185,14 +185,9 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     sortLastArray() {
-        console.log(this.orderedDates);
         this.orderedDates.forEach((object) => {
             object.items.sort(function (a, b) {
-                console.log(new Date(a.datetimeValue).getTime());
-                return (
-                    new Date(a.datetimeValue).getTime() -
-                    new Date(b.datetimeValue).getTime()
-                );
+                return a.datetimeValue - b.datetimeValue;
             });
         });
     }
