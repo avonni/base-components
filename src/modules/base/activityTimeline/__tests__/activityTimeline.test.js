@@ -252,20 +252,86 @@ describe('ActivityTimeline', () => {
         });
 
         
+        element.items = items
         document.body.appendChild(element);
         
-        element.items = items
         element.collapsible = true
+        
+        return Promise.resolve().then(() => {
+            const expandableSection = element.shadowRoot.querySelector('c-expandable-section');
+            expect(expandableSection.collapsible).toBeTruthy();
+        });
+    });
+
+    // closed
+    it('Activity timeline closed', () => {
+        const element = createElement('base-activity-timeline', {
+            is: ActivityTimeline
+        });
+
+        element.items = items
+        
+        document.body.appendChild(element);
+        
+        element.closed = true
+        
+        return Promise.resolve().then(() => {
+            const expandableSection = element.shadowRoot.querySelector('c-expandable-section');
+            expect(expandableSection.closed).toBeTruthy();
+        });
+    });
+
+    // group by
+    it('Activity timeline group by week', () => {
+        const element = createElement('base-activity-timeline', {
+            is: ActivityTimeline
+        });
+
+        element.items = items
+        
+        document.body.appendChild(element);
+        
+        const firstSection = 'Upcoming'
+        const secondSection = 'Week: 17, 2021'
+        const thirdSection = 'Week: 20, 2021'
+
+        return Promise.resolve().then(() => {
+
+        })
+        .then(() => {
+            const expandableSection = element.shadowRoot.querySelectorAll('c-expandable-section');
+            expect(expandableSection).toHaveLength(3);
+            expect(expandableSection[0].title).toBe(firstSection);
+            expect(expandableSection[1].title).toBe(secondSection);
+            expect(expandableSection[2].title).toBe(thirdSection);
+        });
+    });
+
+
+    // group by
+    it('Activity timeline group by year', () => {
+        const element = createElement('base-activity-timeline', {
+            is: ActivityTimeline
+        });
+                
+        element.items = items
+        element.groupBy = 'year'
+        
+        document.body.appendChild(element);
+        
+
+        const firstSection = 'Upcoming'
+        const secondSection = '2021 '
         
         return Promise.resolve().then(() => {
 
         })
         .then(() => {
-        })
-        .then(() => {
-            // console.log(element.shadowRoot.innerHTML)
-            const expandableSection = element.shadowRoot.querySelector('c-expandable-section');
-            expect(expandableSection.collapsible).toBe('standard:case');
+            console.log(element.shadowRoot.innerHTML)
+            const expandableSection = element.shadowRoot.querySelectorAll('c-expandable-section');
+            expect(expandableSection).toHaveLength(2);
+            expect(expandableSection[0].title).toBe(firstSection);
+            expect(expandableSection[1].title).toBe(secondSection);
         });
     });
 });

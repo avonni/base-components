@@ -50,11 +50,9 @@ export default class ActivityTimelineItem extends LightningElement {
     connectedCallback() {
         this.actionsIcon();
     }
-
+    
     renderedCallback() {
-        const icon = this.template.querySelector('lightning-icon');
-        const style = getComputedStyle(icon);
-        this._color = style.backgroundColor;
+        this.setLineColor()
     }
 
     @api
@@ -185,5 +183,12 @@ export default class ActivityTimelineItem extends LightningElement {
                 composed: true
             })
         );
+    }
+
+    setLineColor(){
+        const icon = this.template.querySelector('lightning-icon')
+        if(icon === null) return;
+        const style = getComputedStyle(icon);
+        this._color = style.backgroundColor;
     }
 }
