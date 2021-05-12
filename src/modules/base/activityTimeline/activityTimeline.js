@@ -22,13 +22,21 @@ export default class ActivityTimeline extends LightningElement {
     _items = [];
     _actions = [];
 
+    _sortedItems = [];
     _groupDates = [];
-    _key;
+    _beforeDates = [];
+    _upcomingDates = [];
     orderedDates = [];
+    _key;
 
     connectedCallback() {
+        this.sortItems();
+        this.sortDates();
         this.groupedBy();
+        this.sortLastArray();
     }
+
+    renderedCallback() {}
 
     @api
     get collapsible() {
@@ -90,8 +98,46 @@ export default class ActivityTimeline extends LightningElement {
         this._actions = normalizeArray(value);
     }
 
+    sortItems() {
+        this._sortedItems = [...this.items];
+        this._sortedItems.sort(function (a, b) {
+            return new Date(a.datetimeValue) + new Date(b.datetimeValue);
+        });
+    }
+
+    sortDates() {
+        this._sortedItems.forEach((item) => {
+            const date = new Date(item.datetimeValue);
+            const today = new Date();
+            if (date.getFullYear() > today.getFullYear()) {
+                this._upcomingDates.push(item);
+            } else if (date.getFullYear() <= today.getFullYear()) {
+                if (this._groupBy === 'month') {
+                    if (date.getMonth() > today.getMonth()) {
+                        this._upcomingDates.push(item);
+                    } else if (date.getMonth() <= today.getMonth()) {
+                        this._beforeDates.push(item);
+                    }
+                } else if (this._groupBy === 'year') {
+                    this._beforeDates.push(item);
+                } else if (this._groupBy === 'week') {
+                    if (
+                        this.getNumberOfWeek(date) > this.getNumberOfWeek(today)
+                    ) {
+                        this._upcomingDates.push(item);
+                    } else if (
+                        this.getNumberOfWeek(date) <=
+                        this.getNumberOfWeek(today)
+                    ) {
+                        this._beforeDates.push(item);
+                    }
+                }
+            }
+        });
+    }
+
     groupedBy() {
-        this._groupDates = this.items.reduce((prev, cur) => {
+        this._groupDates = this._beforeDates.reduce((prev, cur) => {
             const date = new Date(cur.datetimeValue);
             if (this._groupBy === 'month') {
                 this._key = `${date.toLocaleString('en-EN', {
@@ -102,7 +148,7 @@ export default class ActivityTimeline extends LightningElement {
                     date
                 )}, ${date.getFullYear()}`;
             } else if (this._groupBy === 'year') {
-                this._key = `${date.getFullYear()}`;
+                this._key = `${date.getFullYear()} `;
             }
 
             if (!prev[this._key]) {
@@ -110,13 +156,43 @@ export default class ActivityTimeline extends LightningElement {
             } else {
                 prev[this._key].push(cur);
             }
-
             return prev;
         }, []);
+
+        this._upcomingDates = this._upcomingDates.reduce((prev, cur) => {
+            this._key = 'Upcoming';
+            if (!prev[this._key]) {
+                prev[this._key] = [cur];
+            } else {
+                prev[this._key].push(cur);
+            }
+            return prev;
+        }, []);
+
+        Object.keys(this._upcomingDates).forEach((date) => {
+            this.orderedDates.push({
+                label: 'Upcoming',
+                items: this._upcomingDates[date]
+            });
+        });
+
         Object.keys(this._groupDates).forEach((date) => {
             this.orderedDates.push({
                 label: date,
                 items: this._groupDates[date]
+            });
+        });
+    }
+
+    sortLastArray() {
+        console.log(this.orderedDates);
+        this.orderedDates.forEach((object) => {
+            object.items.sort(function (a, b) {
+                console.log(new Date(a.datetimeValue).getTime());
+                return (
+                    new Date(a.datetimeValue).getTime() -
+                    new Date(b.datetimeValue).getTime()
+                );
             });
         });
     }

@@ -89,7 +89,7 @@ const items = [
         title:
             'Review proposals for EBC deck with larger team and have marketing review this',
         description: 'You created a task with Charlie Gomez',
-        datetimeValue: '2021-05-21T09:00:00.000-04:00',
+        datetimeValue: '2021-05-10T09:00:00.000-04:00',
         href: 'salesforce.com',
         iconName: 'standard:task',
         icons: ['utility:refresh'],
@@ -123,7 +123,7 @@ const items = [
         title: 'Mobile conversation on Monday',
         description: 'You logged a call with Adam Chan',
         href: '#',
-        datetimeValue: '2021-05-21T10:00:00.000-04:00',
+        datetimeValue: '2022-05-21T10:00:00.000-04:00',
         iconName: 'standard:log_a_call',
         fields: [
             {
@@ -153,7 +153,7 @@ const items = [
     {
         title: 'Re: Mobile conversation on Monday with the new global team',
         description: 'You emailed Lea Chan',
-        datetimeValue: '2021-05-21T10:00:00.000-04:00',
+        datetimeValue: '2021-04-21T10:00:00.000-04:00',
         href: '#',
         iconName: 'standard:email',
         icons: ['utility:groups', 'utility:attach'],
@@ -188,7 +188,7 @@ const items = [
         title: 'EBC Follow up call',
         description: 'You created an event with Aida Lee and 5 others',
         icons: ['utility:world'],
-        datetimeValue: '2021-04-21T11:00:00.000-04:00',
+        datetimeValue: '2021-04-21T08:00:00.000-04:00',
         href: '#',
         iconName: 'standard:event',
         fields: [
@@ -228,7 +228,7 @@ const items = [
     },
     {
         title: 'Create a new task',
-        datetimeValue: '2020-05-21T11:30:00.000-04:00',
+        datetimeValue: '2021-05-21T08:30:00.000-04:00',
         href: '#',
         iconName: 'standard:dashboard',
         hasError: true,
