@@ -31,6 +31,8 @@ export default class List extends LightningElement {
     _savedComputedItems;
 
     computedItems = [];
+    menuRole;
+    itemRole;
 
     @api
     get items() {
@@ -47,6 +49,11 @@ export default class List extends LightningElement {
     }
     set sortable(bool) {
         this._sortable = normalizeBoolean(bool);
+
+        if (this._sortable) {
+            this.menuRole = 'listbox';
+            this.itemRole = 'option';
+        }
     }
 
     @api
@@ -88,16 +95,9 @@ export default class List extends LightningElement {
         return this.sortable ? '0' : '-1';
     }
 
-    get menuRole() {
-        return this.sortable ? 'listbox' : undefined;
-    }
-
-    get itemRole() {
-        return this.sortable ? 'option' : undefined;
-    }
-
     @api
     reset() {
+        this.clearSelection();
         this.computedItems = JSON.parse(JSON.stringify(this.items));
     }
 
@@ -108,20 +108,21 @@ export default class List extends LightningElement {
         const element = this.template.querySelector(
             '.slds-assistive-text[aria-live="assertive"]'
         );
+        // We don't use a variable to avoid rerendering
         element.textContent = `${label}. ${position} / ${total}`;
     }
 
-    getHoveredItem(position) {
-        const { top, bottom, center } = position;
-
+    getHoveredItem(center) {
         return this._itemElements.find((item) => {
             if (item !== this._draggedElement) {
-                const itemTop = item.getBoundingClientRect().top;
-                const itemBottom = item.getBoundingClientRect().bottom;
+                const itemIndex = Number(item.dataset.index);
+                const itemPosition = item.getBoundingClientRect();
+                const itemCenter =
+                    itemPosition.bottom - itemPosition.height / 2;
 
                 if (
-                    (bottom > itemBottom && center < itemBottom) ||
-                    (top < itemTop && center > itemTop)
+                    (this._draggedIndex > itemIndex && center < itemCenter) ||
+                    (this._draggedIndex < itemIndex && center > itemCenter)
                 ) {
                     return item;
                 }
@@ -133,19 +134,24 @@ export default class List extends LightningElement {
     switchWithItem(target) {
         const targetIndex = Number(target.dataset.index);
         const index = this._draggedIndex;
+        target.classList.add('sortable-item_moved');
 
         // If the target has already been moved, move it back to its original position
-        // Else, move it
-        if (target.style.transform) {
-            target.style = undefined;
+        // Else, move it up or down
+        if (target.className.match(/.*sortable-item_moved-.*/)) {
+            target.classList.remove(
+                'sortable-item_moved-up',
+                'sortable-item_moved-down'
+            );
         } else {
-            target.style.transform =
+            const moveClass =
                 targetIndex > index
-                    ? `translateY(-${DEFAULT_ITEM_HEIGHT}px)`
-                    : `translateY(${DEFAULT_ITEM_HEIGHT}px)`;
+                    ? 'sortable-item_moved-up'
+                    : 'sortable-item_moved-down';
+            target.classList.add(moveClass);
         }
 
-        // Make the swith in computed items
+        // Make the switch in computed items
         [this.computedItems[targetIndex], this.computedItems[index]] = [
             this.computedItems[index],
             this.computedItems[targetIndex]
@@ -163,6 +169,10 @@ export default class List extends LightningElement {
             item.style = undefined;
             item.dataset.position = 0;
             item.dataset.index = index;
+            item.className = item.className.replaceAll(
+                /sortable-item_moved.*/g,
+                ''
+            );
         });
         this._draggedElement.classList.remove('sortable-item_dragged');
 
@@ -236,11 +246,9 @@ export default class List extends LightningElement {
 
         // Get the position of the dragged item
         const position = this._draggedElement.getBoundingClientRect();
-        const top = position.top;
-        const bottom = position.bottom;
-        const center = bottom - position.height / 2;
+        const center = position.bottom - position.height / 2;
 
-        const hoveredItem = this.getHoveredItem({ top, bottom, center });
+        const hoveredItem = this.getHoveredItem(center);
         if (hoveredItem) this.switchWithItem(hoveredItem);
     }
 
@@ -263,7 +271,7 @@ export default class List extends LightningElement {
     handleKeyDown(event) {
         if (!this.sortable) return;
 
-        // If space bar is pressed, select or drop an item
+        // If space bar is pressed, select or drop the item
         if (event.key === ' ' || event.key === 'Spacebar') {
             if (this._draggedElement) {
                 this.dragEnd();
@@ -277,6 +285,7 @@ export default class List extends LightningElement {
                 this.clearSelection();
             }
 
+            // If up/down arrow is pressed, move the item
             const index = Number(event.currentTarget.dataset.index);
             let targetIndex;
 
@@ -289,7 +298,6 @@ export default class List extends LightningElement {
                 targetIndex = index - 1;
             }
 
-            // Switch items
             if (targetIndex >= 0) {
                 const targetItem = this._itemElements.find(
                     (item) => Number(item.dataset.index) === targetIndex
