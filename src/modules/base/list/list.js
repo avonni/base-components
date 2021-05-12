@@ -11,13 +11,12 @@ const ICON_POSITIONS = {
     default: 'right'
 };
 
-const DEFAULT_ALTERNATIVE_TEXT =
-    'Press spacebar to grab or drop an item. Press up and down arrow keys to change position.';
+const DEFAULT_ITEM_HEIGHT = 44;
 
 export default class List extends LightningElement {
     @api label;
     @api sortableIconName;
-    @api alternativeText = DEFAULT_ALTERNATIVE_TEXT;
+    @api alternativeText;
 
     _items = [];
     _sortable = false;
@@ -28,12 +27,10 @@ export default class List extends LightningElement {
     _initialY;
     _menuTop;
     _menuBottom;
-    _lastHoveredItem;
     _itemElements;
-    _unsavedComputedItems;
+    _savedComputedItems;
 
     computedItems = [];
-    computedAssistiveText;
 
     @api
     get items() {
@@ -87,9 +84,31 @@ export default class List extends LightningElement {
             .toString();
     }
 
+    get tabindex() {
+        return this.sortable ? '0' : '-1';
+    }
+
+    get menuRole() {
+        return this.sortable ? 'listbox' : undefined;
+    }
+
+    get itemRole() {
+        return this.sortable ? 'option' : undefined;
+    }
+
     @api
     reset() {
         this.computedItems = JSON.parse(JSON.stringify(this.items));
+    }
+
+    updateAssistiveText() {
+        const label = this.computedItems[this._draggedIndex].label;
+        const position = this._draggedIndex + 1;
+        const total = this.computedItems.length;
+        const element = this.template.querySelector(
+            '.slds-assistive-text[aria-live="assertive"]'
+        );
+        element.textContent = `${label}. ${position} / ${total}`;
     }
 
     getHoveredItem(position) {
@@ -111,53 +130,48 @@ export default class List extends LightningElement {
         });
     }
 
-    toggleItems() {
-        // Get the position of the dragged item
-        const position = this._draggedElement.getBoundingClientRect();
-        const top = position.top;
-        const bottom = position.bottom;
-        const center = bottom - position.height / 2;
+    switchWithItem(target) {
+        const targetIndex = Number(target.dataset.index);
+        const index = this._draggedIndex;
 
-        // Get the hovered item
-        const hoveredItem = this.getHoveredItem({ top, bottom, center });
-
-        // Switch the hovered item with the dragged item
-        if (hoveredItem !== this._lastHoveredItem) {
-            const index = this._draggedIndex;
-            const hoveredIndex = hoveredItem.dataset.index;
-
-            // If the hovered item has already been moved, move it back to its original position
-            // Else, move it
-            if (hoveredItem.style.transform) {
-                hoveredItem.style = undefined;
-            } else {
-                hoveredItem.style.transform =
-                    hoveredIndex > index
-                        ? 'translateY(-44px)'
-                        : 'translateY(44px)';
-            }
-
-            // Make the swith in computed items
-            [this.computedItems[hoveredIndex], this.computedItems[index]] = [
-                this.computedItems[index],
-                this.computedItems[hoveredIndex]
-            ];
-
-            this._draggedIndex = hoveredIndex;
-            this._draggedElement.dataset.index = hoveredIndex;
-            hoveredItem.dataset.index = index;
+        // If the target has already been moved, move it back to its original position
+        // Else, move it
+        if (target.style.transform) {
+            target.style = undefined;
+        } else {
+            target.style.transform =
+                targetIndex > index
+                    ? `translateY(-${DEFAULT_ITEM_HEIGHT}px)`
+                    : `translateY(${DEFAULT_ITEM_HEIGHT}px)`;
         }
+
+        // Make the swith in computed items
+        [this.computedItems[targetIndex], this.computedItems[index]] = [
+            this.computedItems[index],
+            this.computedItems[targetIndex]
+        ];
+
+        this._draggedIndex = targetIndex;
+        this._draggedElement.dataset.index = targetIndex;
+        target.dataset.index = index;
+        this.updateAssistiveText();
     }
 
     clearSelection() {
-        // Clean the styles
-        this._itemElements.forEach((item) => {
+        // Clean the styles and dataset
+        this._itemElements.forEach((item, index) => {
             item.style = undefined;
+            item.dataset.position = 0;
+            item.dataset.index = index;
         });
         this._draggedElement.classList.remove('sortable-item_dragged');
 
+        this.template.querySelector(
+            '.slds-assistive-text[aria-live="assertive"]'
+        ).textContent = '';
+
         // Clean the tracked variables
-        this._draggedElement = this._draggedIndex = this._initialY = undefined;
+        this._draggedElement = this._draggedIndex = this._initialY = this._savedComputedItems = undefined;
     }
 
     initPositions(event) {
@@ -179,25 +193,24 @@ export default class List extends LightningElement {
         // Make sure touch events don't trigger mouse events
         event.preventDefault();
 
-        // If the user went from keyboard to mouse in the middle of an action, make sure to start anew
-        if (this._draggedIndex) this.clearSelection();
-
         this._itemElements = Array.from(
             this.template.querySelectorAll('.sortable-item')
         );
         this._draggedElement = event.currentTarget;
-        this._draggedIndex = this._draggedElement.dataset.index;
+        this._draggedIndex = Number(this._draggedElement.dataset.index);
         this._draggedElement.classList.add('sortable-item_dragged');
 
         if (event.type !== 'keydown') {
             this.initPositions(event);
         } else {
-            this._unsavedComputedItems = [...this.computedItems];
+            this._savedComputedItems = [...this.computedItems];
         }
+
+        this.updateAssistiveText();
     }
 
     drag(event) {
-        if (!this._draggedIndex) return;
+        if (!this._draggedElement) return;
 
         const mouseY =
             event.type === 'touchmove'
@@ -221,11 +234,18 @@ export default class List extends LightningElement {
             currentY - this._initialY
         }px)`;
 
-        this.toggleItems();
+        // Get the position of the dragged item
+        const position = this._draggedElement.getBoundingClientRect();
+        const top = position.top;
+        const bottom = position.bottom;
+        const center = bottom - position.height / 2;
+
+        const hoveredItem = this.getHoveredItem({ top, bottom, center });
+        if (hoveredItem) this.switchWithItem(hoveredItem);
     }
 
     dragEnd() {
-        if (!this._draggedIndex) return;
+        if (!this._draggedElement) return;
 
         this.computedItems = [...this.computedItems];
 
@@ -240,29 +260,55 @@ export default class List extends LightningElement {
         );
     }
 
-    // handleKeyDown(event) {
-    // if (!this.sortable) return;
-    // If there is a selected item, check for use of arrows up/down and reorder accordingly
-    // On enter, save the reordering
+    handleKeyDown(event) {
+        if (!this.sortable) return;
 
-    // const index = event.currentTarget.dataset.index;
+        // If space bar is pressed, select or drop an item
+        if (event.key === ' ' || event.key === 'Spacebar') {
+            if (this._draggedElement) {
+                this.dragEnd();
+            } else {
+                this.dragStart(event);
+            }
+        } else if (this._draggedElement) {
+            // If escape is pressed, cancel the move
+            if (event.key === 'Escape' || event.key === 'Esc') {
+                this.computedItems = [...this._savedComputedItems];
+                this.clearSelection();
+            }
 
-    // if (event.key === ' ' || event.key === 'Spacebar') {
-    //     // Select or drop an item
-    //     if (this._draggedIndex) {
-    //         this.dragEnd();
-    //     } else {
-    //         this.dragStart(event);
-    //     }
-    // } else if (this._draggedIndex && event.key === 'ArrowDown') {
-    //     if (this._unsavedComputedItems.length === index + 1)
+            const index = Number(event.currentTarget.dataset.index);
+            let targetIndex;
 
-    //     [this._unsavedComputedItems[index], this._unsavedComputedItems[index + 1]] = [
-    //         this._unsavedComputedItems[index + 1],
-    //         this._unsavedComputedItems[index]
-    //     ];
-    // } else if (this._draggedIndex && event.key === 'ArrowUp') {
+            if (
+                event.key === 'ArrowDown' &&
+                index + 1 < this.computedItems.length
+            ) {
+                targetIndex = index + 1;
+            } else if (event.key === 'ArrowUp') {
+                targetIndex = index - 1;
+            }
 
-    // }
-    // }
+            // Switch items
+            if (targetIndex >= 0) {
+                const targetItem = this._itemElements.find(
+                    (item) => Number(item.dataset.index) === targetIndex
+                );
+
+                this.switchWithItem(targetItem);
+
+                // Move the dragged element
+                const currentPosition = Number(
+                    this._draggedElement.dataset.position
+                );
+                const position =
+                    targetIndex > index
+                        ? currentPosition + DEFAULT_ITEM_HEIGHT
+                        : currentPosition - DEFAULT_ITEM_HEIGHT;
+
+                this._draggedElement.style.transform = `translateY(${position}px)`;
+                this._draggedElement.dataset.position = position;
+            }
+        }
+    }
 }

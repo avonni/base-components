@@ -1,14 +1,17 @@
 <template>
     <p class="slds-text-heading_small">{label}</p>
-    <span id="instructions" class="slds-assistive-text" aria-live="assertive"
-        >{computedAssistiveText}</span
-    >
+    <span
+        id="instructions"
+        class="slds-assistive-text"
+        aria-live="assertive"
+        lwc:dom="manual"
+    ></span>
 
     <span class="slds-assistive-text">{alternativeText}</span>
 
-    <div class="menu" role="listbox">
+    <ul class="menu" role={menuRole}>
         <template for:each={computedItems} for:item="item" for:index="index">
-            <div
+            <li
                 key={item.label}
                 class={itemClass}
                 onmousedown={dragStart}
@@ -19,8 +22,9 @@
                 ontouchend={dragEnd}
                 onkeydown={handleKeyDown}
                 data-index={index}
-                role="option"
-                tabindex="0"
+                data-position="0"
+                role={itemRole}
+                tabindex={tabindex}
                 aria-label={item.label}
                 aria-describedby="instructions"
             >
@@ -49,7 +53,7 @@
                         size="x-small"
                     ></lightning-icon>
                 </div>
-            </div>
+            </li>
         </template>
-    </div>
+    </ul>
 </template>
