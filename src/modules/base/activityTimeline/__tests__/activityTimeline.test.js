@@ -263,7 +263,7 @@ describe('ActivityTimeline', () => {
         .then(() => {
         })
         .then(() => {
-            console.log(element.shadowRoot.innerHTML)
+            // console.log(element.shadowRoot.innerHTML)
             const expandableSection = element.shadowRoot.querySelector('c-expandable-section');
             expect(expandableSection.collapsible).toBe('standard:case');
         });

@@ -22,18 +22,17 @@ export default class ActivityTimeline extends LightningElement {
     _items = [];
     _actions = [];
 
+    _key;
     _sortedItems = [];
-    _groupDates = [];
     _beforeDates = [];
     _upcomingDates = [];
     orderedDates = [];
-    _key;
 
     connectedCallback() {
         this.sortItems();
         this.sortDates();
-        this.groupedBy();
-        this.sortLastArray();
+        this.groupDates();
+        this.sortHours();
     }
 
     @api
@@ -96,6 +95,13 @@ export default class ActivityTimeline extends LightningElement {
         this._actions = normalizeArray(value);
     }
 
+    getNumberOfWeek(date) {
+        const today = new Date(date);
+        const firstDayOfYear = new Date(today.getFullYear(), 0, 1);
+        const pastDaysOfYear = (today - firstDayOfYear) / 86400000;
+        return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+    }
+
     sortItems() {
         this._sortedItems = [...this.items];
         this._sortedItems.sort(function (a, b) {
@@ -134,8 +140,8 @@ export default class ActivityTimeline extends LightningElement {
         });
     }
 
-    groupedBy() {
-        this._groupDates = this._beforeDates.reduce((prev, cur) => {
+    groupDates() {
+        this._beforeDates = this._beforeDates.reduce((prev, cur) => {
             const date = new Date(cur.datetimeValue);
             if (this._groupBy === 'month') {
                 this._key = `${date.toLocaleString('en-EN', {
@@ -174,26 +180,19 @@ export default class ActivityTimeline extends LightningElement {
             });
         });
 
-        Object.keys(this._groupDates).forEach((date) => {
+        Object.keys(this._beforeDates).forEach((date) => {
             this.orderedDates.push({
                 label: date,
-                items: this._groupDates[date]
+                items: this._beforeDates[date]
             });
         });
     }
 
-    sortLastArray() {
+    sortHours() {
         this.orderedDates.forEach((object) => {
             object.items.sort(function (a, b) {
                 return a.datetimeValue - b.datetimeValue;
             });
         });
-    }
-
-    getNumberOfWeek(date) {
-        const today = new Date(date);
-        const firstDayOfYear = new Date(today.getFullYear(), 0, 1);
-        const pastDaysOfYear = (today - firstDayOfYear) / 86400000;
-        return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
     }
 }
