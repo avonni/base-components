@@ -179,7 +179,7 @@ const ITEMS = [
     }
 ];
 
-const actions = [
+const ACTIONS = [
     {
         label: 'Add item',
         name: 'add-item',
@@ -221,11 +221,13 @@ describe('ActivityTimeline', () => {
             is: ActivityTimeline
         });
         document.body.appendChild(element);
-        
+
         element.title = 'This is an title text';
 
         return Promise.resolve().then(() => {
-            const title = element.shadowRoot.querySelector('.slds-section__title');
+            const title = element.shadowRoot.querySelector(
+                '.slds-section__title'
+            );
             expect(title.textContent).toBe('This is an title text');
         });
     });
@@ -236,11 +238,13 @@ describe('ActivityTimeline', () => {
             is: ActivityTimeline
         });
         document.body.appendChild(element);
-        
-        element.iconName = 'standard:case'
+
+        element.iconName = 'standard:case';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('.slds-media__figure > lightning-icon');
+            const icon = element.shadowRoot.querySelector(
+                '.slds-media__figure > lightning-icon'
+            );
             expect(icon.iconName).toBe('standard:case');
         });
     });
@@ -251,14 +255,15 @@ describe('ActivityTimeline', () => {
             is: ActivityTimeline
         });
 
-        
-        element.items = ITEMS
+        element.items = ITEMS;
         document.body.appendChild(element);
-        
-        element.collapsible = true
-        
+
+        element.collapsible = true;
+
         return Promise.resolve().then(() => {
-            const expandableSection = element.shadowRoot.querySelector('c-expandable-section');
+            const expandableSection = element.shadowRoot.querySelector(
+                'c-expandable-section'
+            );
             expect(expandableSection.collapsible).toBeTruthy();
         });
     });
@@ -269,14 +274,16 @@ describe('ActivityTimeline', () => {
             is: ActivityTimeline
         });
 
-        element.items = ITEMS
-        
+        element.items = ITEMS;
+
         document.body.appendChild(element);
-        
-        element.closed = true
-        
+
+        element.closed = true;
+
         return Promise.resolve().then(() => {
-            const expandableSection = element.shadowRoot.querySelector('c-expandable-section');
+            const expandableSection = element.shadowRoot.querySelector(
+                'c-expandable-section'
+            );
             expect(expandableSection.closed).toBeTruthy();
         });
     });
@@ -287,24 +294,25 @@ describe('ActivityTimeline', () => {
             is: ActivityTimeline
         });
 
-        element.items = ITEMS
-        
+        element.items = ITEMS;
+
         document.body.appendChild(element);
-        
-        const firstSection = 'Upcoming'
-        const secondSection = 'Week: 17, 2021'
-        const thirdSection = 'Week: 20, 2021'
 
-        return Promise.resolve().then(() => {
+        const firstSection = 'Upcoming';
+        const secondSection = 'Week: 17, 2021';
+        const thirdSection = 'Week: 20, 2021';
 
-        })
-        .then(() => {
-            const expandableSection = element.shadowRoot.querySelectorAll('c-expandable-section');
-            expect(expandableSection).toHaveLength(3);
-            expect(expandableSection[0].title).toBe(firstSection);
-            expect(expandableSection[1].title).toBe(secondSection);
-            expect(expandableSection[2].title).toBe(thirdSection);
-        });
+        return Promise.resolve()
+            .then(() => {})
+            .then(() => {
+                const expandableSection = element.shadowRoot.querySelectorAll(
+                    'c-expandable-section'
+                );
+                expect(expandableSection).toHaveLength(3);
+                expect(expandableSection[0].title).toBe(firstSection);
+                expect(expandableSection[1].title).toBe(secondSection);
+                expect(expandableSection[2].title).toBe(thirdSection);
+            });
     });
 
     it('Activity timeline group by year', () => {
@@ -312,25 +320,24 @@ describe('ActivityTimeline', () => {
             is: ActivityTimeline
         });
 
-        element.items = ITEMS
-        element.groupBy = 'year'
-        
+        element.items = ITEMS;
+        element.groupBy = 'year';
+
         document.body.appendChild(element);
-        
 
-        const firstSection = 'Upcoming'
-        const secondSection = '2021'
-        
-        return Promise.resolve().then(() => {
+        const firstSection = 'Upcoming';
+        const secondSection = '2021';
 
-        })
-        .then(() => {
-            console.log(element.shadowRoot.innerHTML)
-            const expandableSection = element.shadowRoot.querySelectorAll('c-expandable-section');
-            expect(expandableSection).toHaveLength(2);
-            expect(expandableSection[0].title).toBe(firstSection);
-            expect(expandableSection[1].title).toBe(secondSection);
-        });
+        return Promise.resolve()
+            .then(() => {})
+            .then(() => {
+                const expandableSection = element.shadowRoot.querySelectorAll(
+                    'c-expandable-section'
+                );
+                expect(expandableSection).toHaveLength(2);
+                expect(expandableSection[0].title).toBe(firstSection);
+                expect(expandableSection[1].title).toBe(secondSection);
+            });
     });
 
     it('Activity timeline group by month', () => {
@@ -338,27 +345,26 @@ describe('ActivityTimeline', () => {
             is: ActivityTimeline
         });
 
-        element.items = ITEMS
-        element.groupBy = 'month'
-        
+        element.items = ITEMS;
+        element.groupBy = 'month';
+
         document.body.appendChild(element);
-        
 
-        const firstSection = 'Upcoming'
-        const secondSection = 'May 2021'
-        const thirdSection = 'April 2021'
-        
-        return Promise.resolve().then(() => {
+        const firstSection = 'Upcoming';
+        const secondSection = 'May 2021';
+        const thirdSection = 'April 2021';
 
-        })
-        .then(() => {
-            console.log(element.shadowRoot.innerHTML)
-            const expandableSection = element.shadowRoot.querySelectorAll('c-expandable-section');
-            expect(expandableSection).toHaveLength(3);
-            expect(expandableSection[0].title).toBe(firstSection);
-            expect(expandableSection[1].title).toBe(secondSection);
-            expect(expandableSection[2].title).toBe(thirdSection);
-        });
+        return Promise.resolve()
+            .then(() => {})
+            .then(() => {
+                const expandableSection = element.shadowRoot.querySelectorAll(
+                    'c-expandable-section'
+                );
+                expect(expandableSection).toHaveLength(3);
+                expect(expandableSection[0].title).toBe(firstSection);
+                expect(expandableSection[1].title).toBe(secondSection);
+                expect(expandableSection[2].title).toBe(thirdSection);
+            });
     });
 
     // items
@@ -366,75 +372,131 @@ describe('ActivityTimeline', () => {
         const element = createElement('base-activity-timeline', {
             is: ActivityTimeline
         });
+        const ITEM = [
+            {
+                title: 'Mobile conversation on Monday',
+                description: 'You logged a call with Adam Chan',
+                href: '#',
+                datetimeValue: 1653141600000,
+                iconName: 'standard:log_a_call',
+                fields: [
+                    {
+                        label: 'Name',
+                        value: 'Adam Chan',
+                        type: 'url',
+                        typeAttributes: {
+                            label: 'Adam Chan'
+                        }
+                    },
+                    {
+                        label: 'Related To',
+                        value: 'Tesla Cloudhub + Anypoint Connectors',
+                        type: 'url',
+                        typeAttributes: {
+                            label: 'Tesla Cloudhub + Anypoint Connectors'
+                        }
+                    },
+                    {
+                        label: 'Description',
+                        value:
+                            'Adam seemed interested in closing this deal quickly! Let’s move.',
+                        type: 'text'
+                    }
+                ]
+            },
+            {
+                title:
+                    'Re: Mobile conversation on Monday with the new global team',
+                description: 'You emailed Lea Chan',
+                datetimeValue: 1619013600000,
+                href: '#',
+                iconName: 'standard:email',
+                icons: ['utility:groups', 'utility:attach'],
+                fields: [
+                    {
+                        label: 'Name',
+                        value: 'Jackie Dewar',
+                        type: 'url',
+                        typeAttributes: {
+                            label: 'Jackie Dewar'
+                        }
+                    },
+                    {
+                        label: 'To Address',
+                        value: 'Lea Chan',
+                        type: 'url',
+                        typeAttributes: {
+                            label: 'Lea Chan'
+                        }
+                    },
+                    {
+                        label: 'Text Body',
+                        value:
+                            'Hi everyone, Thanks for meeting with the team today and going through the proposals we saw. This goes on and wraps if needed.',
+                        type: 'text'
+                    }
+                ],
+                buttonLabel: 'Public Sharing',
+                buttonIconName: 'utility:world'
+            }
+        ];
+        element.items = ITEM;
 
-        element.items = ITEMS
-        
         document.body.appendChild(element);
 
         return Promise.resolve().then(() => {
-            const item = element.shadowRoot.querySelectorAll(
+            const items = element.shadowRoot.querySelectorAll(
                 'c-activity-timeline-item'
             );
 
-            expect(item).toHaveLength(4);
+            expect(items).toHaveLength(2);
 
-            // primitives.forEach((primitive, index) => {
-            //     expect(primitive.label).toBe(STEPS[index].label);
-            //     expect(primitive.labelPosition).toBe(
-            //         STEPS[index].labelPosition || 'top'
-            //     );
-            //     expect(primitive.description).toBe(STEPS[index].description);
-            //     expect(primitive.descriptionPosition).toBe(
-            //         STEPS[index].descriptionPosition || 'top'
-            //     );
-            //     expect(primitive.value).toBe(STEPS[index].value);
-            //     expect(primitive.buttonLabel).toBe(STEPS[index].buttonLabel);
-            //     expect(primitive.buttonName).toBe(STEPS[index].buttonName);
-            //     expect(primitive.buttonIconName).toBe(
-            //         STEPS[index].buttonIconName
-            //     );
-            //     expect(primitive.buttonIconPosition).toBe(
-            //         STEPS[index].buttonIconPosition || 'left'
-            //     );
-            //     expect(primitive.buttonDisabled).toBe(
-            //         STEPS[index].buttonDisabled || false
-            //     );
-            //     expect(primitive.buttonTitle).toBe(STEPS[index].buttonTitle);
-            //     expect(primitive.buttonVariant).toBe(
-            //         STEPS[index].buttonVariant || 'neutral'
-            //     );
-            //     expect(primitive.popoverVariant).toBe(
-            //         STEPS[index].popoverVariant || 'base'
-            //     );
-            //     expect(primitive.popoverIconName).toBe(
-            //         STEPS[index].popoverIconName
-            //     );
-            //     expect(primitive.popoverIconSrc).toBe(
-            //         STEPS[index].popoverIconSrc
-            //     );
-            //     expect(primitive.popoverIconNameWhenHover).toBe(
-            //         STEPS[index].popoverIconNameWhenHover
-            //     );
-            //     expect(primitive.popoverIconSrcWhenHover).toBe(
-            //         STEPS[index].popoverIconSrcWhenHover
-            //     );
-            //     expect(primitive.popoverSize).toBe(
-            //         STEPS[index].popoverSize || 'medium'
-            //     );
-            //     expect(primitive.popoverRatio).toBe(
-            //         STEPS[index].popoverRatio || '1-by-1'
-            //     );
-            //     expect(primitive.popoverLabel).toBe(STEPS[index].popoverLabel);
-            //     expect(primitive.popoverDescription).toBe(
-            //         STEPS[index].popoverDescription
-            //     );
-            //     expect(primitive.popoverHidden).toBe(
-            //         STEPS[index].popoverHidden || false
-            //     );
-            //     expect(primitive.assistiveText).toBe(
-            //         STEPS[index].assistiveText
-            //     );
-            // });
+            items.forEach((item, index) => {
+                expect(item.title).toBe(ITEM[index].title);
+                expect(item.description).toBe(ITEM[index].description);
+                expect(item.datetimeValue).toBe(ITEM[index].datetimeValue);
+                expect(item.href).toBe(ITEM[index].href);
+                expect(item.iconName).toBe(ITEM[index].iconName);
+                expect(item.fields).toMatchObject(ITEM[index].fields);
+                expect(item.hasCheckbox).toBe(ITEM[index].hasCheckbox || false);
+                expect(item.hasError).toBe(ITEM[index].hasError || false);
+                expect(item.isLoading).toBe(ITEM[index].isLoading || false);
+                expect(item.loadingStateAlternativeText).toBe(
+                    ITEM[index].loadingStateAlternativeText
+                );
+                expect(item.closed).toBe(ITEM[index].closed || false);
+                expect(item.buttonLabel).toBe(ITEM[index].buttonLabel);
+                expect(item.buttonIconName).toBe(ITEM[index].buttonIconName);
+                expect(item.buttonIconPosition).toBe(
+                    ITEM[index].buttonIconPosition || 'left'
+                );
+                expect(item.buttonDisabled).toBe(
+                    ITEM[index].buttonDisabled || false
+                );
+                expect(item.buttonVariant).toBe(
+                    ITEM[index].buttonVariant || 'neutral'
+                );
+            });
+        });
+    });
+
+    // actions
+    it('Activity timeline actions', () => {
+        const element = createElement('base-activity-timeline', {
+            is: ActivityTimeline
+        });
+
+        element.items = ITEMS;
+        element.actions = ACTIONS;
+
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => {
+            const items = element.shadowRoot.querySelector(
+                'c-activity-timeline-item'
+            );
+
+            expect(items.actions).toMatchObject(ACTIONS);
         });
     });
 });
