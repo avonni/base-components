@@ -1,4 +1,4 @@
-import { LightningElement, api } from 'lwc';
+import { LightningElement, api, track } from 'lwc';
 import {
     normalizeBoolean,
     normalizeString,
@@ -26,12 +26,16 @@ export default class ActivityTimeline extends LightningElement {
     _sortedItems = [];
     _beforeDates = [];
     _upcomingDates = [];
-    orderedDates = [];
+    @track orderedDates = [];
 
     connectedCallback() {
-        this.initActivityTimeline();
-        this.connected = true;
+        if (!this.connected) {
+            this.initActivityTimeline();
+            this.connected = true;
+        }
     }
+
+    renderedCallback() {}
 
     @api
     get collapsible() {
@@ -40,9 +44,6 @@ export default class ActivityTimeline extends LightningElement {
 
     set collapsible(value) {
         this._collapsible = normalizeBoolean(value);
-        if (this.connected) {
-            this.initActivityTimeline();
-        }
     }
 
     @api
@@ -64,9 +65,9 @@ export default class ActivityTimeline extends LightningElement {
             fallbackValue: validGroupByOptions.default,
             validValues: validGroupByOptions.valid
         });
-        if (this.connected) {
-            this.initActivityTimeline();
-        }
+        // if (this.connected) {
+        //     this.initActivityTimeline();
+        // }
     }
 
     @api
@@ -88,9 +89,6 @@ export default class ActivityTimeline extends LightningElement {
 
     set actions(value) {
         this._actions = normalizeArray(value);
-        if (this.connected) {
-            this.initActivityTimeline();
-        }
     }
 
     getNumberOfWeek(date) {
@@ -173,7 +171,7 @@ export default class ActivityTimeline extends LightningElement {
 
         Object.keys(this._upcomingDates).forEach((date) => {
             this.orderedDates.push({
-                label: 'Upcoming',
+                label: date,
                 items: this._upcomingDates[date]
             });
         });
@@ -203,5 +201,9 @@ export default class ActivityTimeline extends LightningElement {
 
     get hasDates() {
         return this.orderedDates.length > 0;
+    }
+
+    get hasHeader() {
+        return this.title || this.iconName;
     }
 }

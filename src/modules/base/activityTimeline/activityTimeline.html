@@ -1,17 +1,19 @@
 <template>
-    <div class="slds-card__header">
-        <div class="slds-media slds-media_center">
-            <div class="slds-media__figure" if:true={iconName}>
-                <lightning-icon
-                    icon-name={iconName}
-                    size="medium"
-                ></lightning-icon>
-            </div>
-            <div class="slds-media__body" if:true={title}>
-                <h2 class="slds-section__title">{title}</h2>
+    <template if:true={hasHeader}>
+        <div class="slds-card__header">
+            <div class="slds-media slds-media_center">
+                <div class="slds-media__figure" if:true={iconName}>
+                    <lightning-icon
+                        icon-name={iconName}
+                        size="medium"
+                    ></lightning-icon>
+                </div>
+                <div class="slds-media__body" if:true={title}>
+                    <h2 class="slds-section__title">{title}</h2>
+                </div>
             </div>
         </div>
-    </div>
+    </template>
     <template if:true={hasDates}>
         <template for:each={orderedDates} for:item="date">
             <c-expandable-section
@@ -21,10 +23,7 @@
                 closed={closed}
             >
                 <ul class="slds-timeline">
-                    <template
-                        for:each={date.items}
-                        for:item="item"
-                    >
+                    <template for:each={date.items} for:item="item">
                         <li key={item.title}>
                             <c-activity-timeline-item
                                 title={item.title}

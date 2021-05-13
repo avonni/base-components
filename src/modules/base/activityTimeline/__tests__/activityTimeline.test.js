@@ -257,20 +257,16 @@ describe('ActivityTimeline', () => {
 
         document.body.appendChild(element);
 
+        // element.iconName = 'standard:hello'
         element.items = ITEMS;
         element.collapsible = true;
 
-        return Promise.resolve()
-            .then(() => {})
-            .then(() => {})
-            .then(() => {})
-            .then(() => {})
-            .then(() => {
-                const expandableSection = element.shadowRoot.querySelector(
-                    'c-expandable-section'
-                );
-                expect(expandableSection.collapsible).toBeTruthy();
-            });
+        return Promise.resolve().then(() => {
+            const expandableSection = element.shadowRoot.querySelector(
+                'c-expandable-section'
+            );
+            expect(expandableSection.collapsible).toBeTruthy();
+        });
     });
 
     // closed
@@ -299,10 +295,9 @@ describe('ActivityTimeline', () => {
             is: ActivityTimeline
         });
 
-        element.items = ITEMS;
-
         document.body.appendChild(element);
 
+        element.items = ITEMS;
         const firstSection = 'Upcoming';
         const secondSection = 'Week: 17, 2021';
         const thirdSection = 'Week: 20, 2021';
@@ -325,11 +320,10 @@ describe('ActivityTimeline', () => {
             is: ActivityTimeline
         });
 
-        element.items = ITEMS;
-        element.groupBy = 'year';
-
         document.body.appendChild(element);
 
+        element.groupBy = 'year';
+        element.items = ITEMS;
         const firstSection = 'Upcoming';
         const secondSection = '2021';
 
@@ -350,11 +344,10 @@ describe('ActivityTimeline', () => {
             is: ActivityTimeline
         });
 
-        element.items = ITEMS;
-        element.groupBy = 'month';
-
         document.body.appendChild(element);
 
+        element.groupBy = 'month';
+        element.items = ITEMS;
         const firstSection = 'Upcoming';
         const secondSection = 'May 2021';
         const thirdSection = 'April 2021';
@@ -445,10 +438,10 @@ describe('ActivityTimeline', () => {
                 buttonIconName: 'utility:world'
             }
         ];
-        element.items = ITEM;
 
         document.body.appendChild(element);
 
+        element.items = ITEM;
         return Promise.resolve().then(() => {
             const items = element.shadowRoot.querySelectorAll(
                 'c-activity-timeline-item'
@@ -491,10 +484,10 @@ describe('ActivityTimeline', () => {
             is: ActivityTimeline
         });
 
+        document.body.appendChild(element);
+
         element.items = ITEMS;
         element.actions = ACTIONS;
-
-        document.body.appendChild(element);
 
         return Promise.resolve().then(() => {
             const items = element.shadowRoot.querySelector(
