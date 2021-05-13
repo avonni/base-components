@@ -178,6 +178,20 @@
                                 </template>
                             </div>
                         </template>
+                        <template if:false={hasFields}>
+                            <template if:true={buttonLabel}>
+                                <div class="slds-m-top_small">
+                                    <lightning-button
+                                        label={buttonLabel}
+                                        variant={buttonVariant}
+                                        icon-name={buttonIconName}
+                                        icon-position={buttonIconPosition}
+                                        disabled={buttonDisabled}
+                                        onclick={handleButtonClick}
+                                    ></lightning-button>
+                                </div>
+                            </template>
+                        </template>
                     </template>
                 </template>
             </div>
