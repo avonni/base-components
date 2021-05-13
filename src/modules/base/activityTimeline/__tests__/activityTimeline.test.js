@@ -1,7 +1,7 @@
 import { createElement } from 'lwc';
 import ActivityTimeline from 'c/activityTimeline';
 
-const items = [
+const ITEMS = [
     {
         title:
             'Review proposals for EBC deck with larger team and have marketing review this',
@@ -252,7 +252,7 @@ describe('ActivityTimeline', () => {
         });
 
         
-        element.items = items
+        element.items = ITEMS
         document.body.appendChild(element);
         
         element.collapsible = true
@@ -269,7 +269,7 @@ describe('ActivityTimeline', () => {
             is: ActivityTimeline
         });
 
-        element.items = items
+        element.items = ITEMS
         
         document.body.appendChild(element);
         
@@ -287,7 +287,7 @@ describe('ActivityTimeline', () => {
             is: ActivityTimeline
         });
 
-        element.items = items
+        element.items = ITEMS
         
         document.body.appendChild(element);
         
@@ -307,21 +307,19 @@ describe('ActivityTimeline', () => {
         });
     });
 
-
-    // group by
     it('Activity timeline group by year', () => {
         const element = createElement('base-activity-timeline', {
             is: ActivityTimeline
         });
-                
-        element.items = items
+
+        element.items = ITEMS
         element.groupBy = 'year'
         
         document.body.appendChild(element);
         
 
         const firstSection = 'Upcoming'
-        const secondSection = '2021 '
+        const secondSection = '2021'
         
         return Promise.resolve().then(() => {
 
@@ -332,6 +330,111 @@ describe('ActivityTimeline', () => {
             expect(expandableSection).toHaveLength(2);
             expect(expandableSection[0].title).toBe(firstSection);
             expect(expandableSection[1].title).toBe(secondSection);
+        });
+    });
+
+    it('Activity timeline group by month', () => {
+        const element = createElement('base-activity-timeline', {
+            is: ActivityTimeline
+        });
+
+        element.items = ITEMS
+        element.groupBy = 'month'
+        
+        document.body.appendChild(element);
+        
+
+        const firstSection = 'Upcoming'
+        const secondSection = 'May 2021'
+        const thirdSection = 'April 2021'
+        
+        return Promise.resolve().then(() => {
+
+        })
+        .then(() => {
+            console.log(element.shadowRoot.innerHTML)
+            const expandableSection = element.shadowRoot.querySelectorAll('c-expandable-section');
+            expect(expandableSection).toHaveLength(3);
+            expect(expandableSection[0].title).toBe(firstSection);
+            expect(expandableSection[1].title).toBe(secondSection);
+            expect(expandableSection[2].title).toBe(thirdSection);
+        });
+    });
+
+    // items
+    it('Activity timeline items', () => {
+        const element = createElement('base-activity-timeline', {
+            is: ActivityTimeline
+        });
+
+        element.items = ITEMS
+        
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => {
+            const item = element.shadowRoot.querySelectorAll(
+                'c-activity-timeline-item'
+            );
+
+            expect(item).toHaveLength(4);
+
+            // primitives.forEach((primitive, index) => {
+            //     expect(primitive.label).toBe(STEPS[index].label);
+            //     expect(primitive.labelPosition).toBe(
+            //         STEPS[index].labelPosition || 'top'
+            //     );
+            //     expect(primitive.description).toBe(STEPS[index].description);
+            //     expect(primitive.descriptionPosition).toBe(
+            //         STEPS[index].descriptionPosition || 'top'
+            //     );
+            //     expect(primitive.value).toBe(STEPS[index].value);
+            //     expect(primitive.buttonLabel).toBe(STEPS[index].buttonLabel);
+            //     expect(primitive.buttonName).toBe(STEPS[index].buttonName);
+            //     expect(primitive.buttonIconName).toBe(
+            //         STEPS[index].buttonIconName
+            //     );
+            //     expect(primitive.buttonIconPosition).toBe(
+            //         STEPS[index].buttonIconPosition || 'left'
+            //     );
+            //     expect(primitive.buttonDisabled).toBe(
+            //         STEPS[index].buttonDisabled || false
+            //     );
+            //     expect(primitive.buttonTitle).toBe(STEPS[index].buttonTitle);
+            //     expect(primitive.buttonVariant).toBe(
+            //         STEPS[index].buttonVariant || 'neutral'
+            //     );
+            //     expect(primitive.popoverVariant).toBe(
+            //         STEPS[index].popoverVariant || 'base'
+            //     );
+            //     expect(primitive.popoverIconName).toBe(
+            //         STEPS[index].popoverIconName
+            //     );
+            //     expect(primitive.popoverIconSrc).toBe(
+            //         STEPS[index].popoverIconSrc
+            //     );
+            //     expect(primitive.popoverIconNameWhenHover).toBe(
+            //         STEPS[index].popoverIconNameWhenHover
+            //     );
+            //     expect(primitive.popoverIconSrcWhenHover).toBe(
+            //         STEPS[index].popoverIconSrcWhenHover
+            //     );
+            //     expect(primitive.popoverSize).toBe(
+            //         STEPS[index].popoverSize || 'medium'
+            //     );
+            //     expect(primitive.popoverRatio).toBe(
+            //         STEPS[index].popoverRatio || '1-by-1'
+            //     );
+            //     expect(primitive.popoverLabel).toBe(STEPS[index].popoverLabel);
+            //     expect(primitive.popoverDescription).toBe(
+            //         STEPS[index].popoverDescription
+            //     );
+            //     expect(primitive.popoverHidden).toBe(
+            //         STEPS[index].popoverHidden || false
+            //     );
+            //     expect(primitive.assistiveText).toBe(
+            //         STEPS[index].assistiveText
+            //     );
+            // });
         });
     });
 });

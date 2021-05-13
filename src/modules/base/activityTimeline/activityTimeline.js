@@ -153,7 +153,7 @@ export default class ActivityTimeline extends LightningElement {
                     date
                 )}, ${date.getFullYear()}`;
             } else if (this._groupBy === 'year') {
-                this._key = `${date.getFullYear()} `;
+                this._key = `${date.getFullYear()}`;
             }
 
             if (!prev[this._key]) {

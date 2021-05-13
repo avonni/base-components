@@ -44,6 +44,7 @@ export default class ActivityTimelineItem extends LightningElement {
     _closed = false;
     _buttonIconPosition = validButtonIconPositions.default;
     _buttonVariant = validButtonVariants.default;
+    _buttonDisabled = false
     _rendered = false;
     _color;
 
@@ -113,6 +114,15 @@ export default class ActivityTimelineItem extends LightningElement {
             fallbackValue: validButtonVariants.default,
             validValues: validButtonVariants.valid
         });
+    }
+
+    @api
+    get buttonDisabled() {
+        return this._buttonDisabled;
+    }
+
+    set buttonDisabled(value) {
+        this._buttonDisabled = normalizeBoolean(value);
     }
 
     @api
