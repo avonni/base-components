@@ -255,17 +255,22 @@ describe('ActivityTimeline', () => {
             is: ActivityTimeline
         });
 
-        element.items = ITEMS;
         document.body.appendChild(element);
 
+        element.items = ITEMS;
         element.collapsible = true;
 
-        return Promise.resolve().then(() => {
-            const expandableSection = element.shadowRoot.querySelector(
-                'c-expandable-section'
-            );
-            expect(expandableSection.collapsible).toBeTruthy();
-        });
+        return Promise.resolve()
+            .then(() => {})
+            .then(() => {})
+            .then(() => {})
+            .then(() => {})
+            .then(() => {
+                const expandableSection = element.shadowRoot.querySelector(
+                    'c-expandable-section'
+                );
+                expect(expandableSection.collapsible).toBeTruthy();
+            });
     });
 
     // closed

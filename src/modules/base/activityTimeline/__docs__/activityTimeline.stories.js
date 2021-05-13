@@ -279,8 +279,37 @@ const Template = (args) => ActivityTimeline(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    title: 'Activity Timeline',
+    title: 'Activity Timeline grouped by week',
     iconName: 'standard:timesheet_entry',
+    items: items,
+    collapsible: true,
+    actions: actions
+};
+
+export const BaseNotCollapsible = Template.bind({});
+BaseNotCollapsible.args = {
+    title: 'Activity Timeline not collapsible',
+    iconName: 'standard:timesheet_entry',
+    items: items,
+    collapsible: false,
+    actions: actions
+};
+
+export const Yearly = Template.bind({});
+Yearly.args = {
+    title: 'Activity Timeline grouped by year',
+    iconName: 'standard:timesheet_entry',
+    groupBy: 'year',
+    items: items,
+    collapsible: true,
+    actions: actions
+};
+
+export const Monthly = Template.bind({});
+Monthly.args = {
+    title: 'Activity Timeline grouped by month',
+    iconName: 'standard:timesheet_entry',
+    groupBy: 'month',
     items: items,
     collapsible: true,
     actions: actions

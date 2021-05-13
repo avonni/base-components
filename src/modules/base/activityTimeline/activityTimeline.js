@@ -29,8 +29,8 @@ export default class ActivityTimeline extends LightningElement {
     orderedDates = [];
 
     connectedCallback() {
-        this.initActivityTimeline()
-        this.connected = true
+        this.initActivityTimeline();
+        this.connected = true;
     }
 
     @api
@@ -41,7 +41,7 @@ export default class ActivityTimeline extends LightningElement {
     set collapsible(value) {
         this._collapsible = normalizeBoolean(value);
         if (this.connected) {
-            this.initActivityTimeline()
+            this.initActivityTimeline();
         }
     }
 
@@ -52,9 +52,6 @@ export default class ActivityTimeline extends LightningElement {
 
     set closed(value) {
         this._closed = normalizeBoolean(value);
-        if (this.connected) {
-            this.initActivityTimeline()
-        }
     }
 
     @api
@@ -68,7 +65,7 @@ export default class ActivityTimeline extends LightningElement {
             validValues: validGroupByOptions.valid
         });
         if (this.connected) {
-            this.initActivityTimeline()
+            this.initActivityTimeline();
         }
     }
 
@@ -80,7 +77,7 @@ export default class ActivityTimeline extends LightningElement {
     set items(value) {
         this._items = normalizeArray(value);
         if (this.connected) {
-            this.initActivityTimeline()
+            this.initActivityTimeline();
         }
     }
 
@@ -92,7 +89,7 @@ export default class ActivityTimeline extends LightningElement {
     set actions(value) {
         this._actions = normalizeArray(value);
         if (this.connected) {
-            this.initActivityTimeline()
+            this.initActivityTimeline();
         }
     }
 
@@ -174,9 +171,8 @@ export default class ActivityTimeline extends LightningElement {
             return prev;
         }, []);
 
-        Object.keys(this._upcomingDates).forEach((date, index) => {
+        Object.keys(this._upcomingDates).forEach((date) => {
             this.orderedDates.push({
-                index: index,
                 label: 'Upcoming',
                 items: this._upcomingDates[date]
             });
@@ -206,6 +202,6 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     get hasDates() {
-        return this.orderedDates.length > 0
+        return this.orderedDates.length > 0;
     }
 }
