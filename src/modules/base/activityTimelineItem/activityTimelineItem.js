@@ -35,7 +35,7 @@ export default class ActivityTimelineItem extends LightningElement {
     @api buttonLabel;
     @api buttonIconName;
     @api loadingStateAlternativeText = DEFAULT_LOADING_TEXT;
-    @api actions;
+    @api actions = [];
 
     _fields = [];
     _hasCheckbox = false;
