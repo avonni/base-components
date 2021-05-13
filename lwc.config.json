@@ -255,8 +255,8 @@
             "path": "src/modules/base/primitiveIframe/primitiveIframe.js"
         },
         {
-            "name": "c/primitivePageHeaderField",
-            "path": "src/modules/base/primitivePageHeaderField/primitivePageHeaderField.js"
+            "name": "c/primitiveField",
+            "path": "src/modules/base/primitiveField/primitiveField.js"
         },
         {
             "name": "c/primitiveProgressBarReferenceLine",
