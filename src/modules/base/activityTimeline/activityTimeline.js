@@ -26,16 +26,13 @@ export default class ActivityTimeline extends LightningElement {
     _sortedItems = [];
     _beforeDates = [];
     _upcomingDates = [];
+
     @track orderedDates = [];
 
     connectedCallback() {
-        if (!this.connected) {
-            this.initActivityTimeline();
-            this.connected = true;
-        }
+        this.initActivityTimeline();
+        this.connected = true;
     }
-
-    renderedCallback() {}
 
     @api
     get collapsible() {
@@ -65,9 +62,6 @@ export default class ActivityTimeline extends LightningElement {
             fallbackValue: validGroupByOptions.default,
             validValues: validGroupByOptions.valid
         });
-        // if (this.connected) {
-        //     this.initActivityTimeline();
-        // }
     }
 
     @api
