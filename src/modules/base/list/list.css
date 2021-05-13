@@ -10,6 +10,10 @@
     cursor: grab;
 }
 
+.sortable-item:hover {
+    background-color: var(--lwc-colorBackground, #f3f2f2);
+}
+
 .sortable-item > div {
     width: 100%;
 }

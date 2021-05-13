@@ -13,6 +13,7 @@ export default {
             }
         },
         alternativeText: {
+            name: 'alternative-text',
             control: {
                 type: 'text'
             },

@@ -169,12 +169,13 @@ export default class List extends LightningElement {
             item.style = undefined;
             item.dataset.position = 0;
             item.dataset.index = index;
-            item.className = item.className.replaceAll(
+            item.className = item.className.replace(
                 /sortable-item_moved.*/g,
                 ''
             );
         });
-        this._draggedElement.classList.remove('sortable-item_dragged');
+        if (this._draggedElement)
+            this._draggedElement.classList.remove('sortable-item_dragged');
 
         this.template.querySelector(
             '.slds-assistive-text[aria-live="assertive"]'

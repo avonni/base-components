@@ -1,5 +1,5 @@
 <template>
-    <p class="slds-text-heading_small">{label}</p>
+    <p if:true={label} class="slds-text-heading_small">{label}</p>
     <span
         id="instructions"
         class="slds-assistive-text"
@@ -7,7 +7,9 @@
         lwc:dom="manual"
     ></span>
 
-    <span class="slds-assistive-text">{alternativeText}</span>
+    <span if:true={alternativeText} class="slds-assistive-text"
+        >{alternativeText}</span
+    >
 
     <ul class="menu" role={menuRole}>
         <template for:each={computedItems} for:item="item" for:index="index">
