@@ -41,7 +41,6 @@ describe('Button Menu', () => {
         const element = createElement('base-button-menu', {
             is: ButtonMenu
         });
-
         document.body.appendChild(element);
 
         element.accessKey = 'K';
@@ -57,7 +56,6 @@ describe('Button Menu', () => {
         const element = createElement('base-button-menu', {
             is: ButtonMenu
         });
-
         document.body.appendChild(element);
 
         element.alternativeText = 'This is an alternative text';
@@ -77,7 +75,6 @@ describe('Button Menu', () => {
         const element = createElement('base-button-menu', {
             is: ButtonMenu
         });
-
         document.body.appendChild(element);
 
         element.disabled = true;
@@ -93,19 +90,17 @@ describe('Button Menu', () => {
         const element = createElement('base-button-menu', {
             is: ButtonMenu
         });
-
-        element.isDraft = true;
-
         document.body.appendChild(element);
 
+        element.isDraft = true;
         element.draftAlternativeText = 'This is a draft alternative text';
 
-        const draft = element.shadowRoot.querySelector('abbr');
-
         return Promise.resolve().then(() => {
+            const draft = element.shadowRoot.querySelector(
+                '.slds-indicator_unsaved'
+            );
             expect(draft.title).toBe('This is a draft alternative text');
             expect(draft.textContent).toBe('*');
-            expect(element.classList).toContain('slds-is-unsaved');
         });
     });
 
@@ -114,7 +109,6 @@ describe('Button Menu', () => {
         const element = createElement('base-button-menu', {
             is: ButtonMenu
         });
-
         document.body.appendChild(element);
 
         element.iconName = 'utility:close';
@@ -130,7 +124,6 @@ describe('Button Menu', () => {
         const element = createElement('base-button-menu', {
             is: ButtonMenu
         });
-
         document.body.appendChild(element);
 
         element.iconSize = 'xx-small';
@@ -145,7 +138,6 @@ describe('Button Menu', () => {
         const element = createElement('base-button-menu', {
             is: ButtonMenu
         });
-
         document.body.appendChild(element);
 
         element.iconSize = 'x-small';
@@ -160,7 +152,6 @@ describe('Button Menu', () => {
         const element = createElement('base-button-menu', {
             is: ButtonMenu
         });
-
         document.body.appendChild(element);
 
         element.iconSize = 'small';
@@ -175,7 +166,6 @@ describe('Button Menu', () => {
         const element = createElement('base-button-menu', {
             is: ButtonMenu
         });
-
         document.body.appendChild(element);
 
         element.iconSize = 'medium';
@@ -193,7 +183,6 @@ describe('Button Menu', () => {
         const element = createElement('base-button-menu', {
             is: ButtonMenu
         });
-
         document.body.appendChild(element);
 
         element.isLoading = true;
@@ -221,7 +210,6 @@ describe('Button Menu', () => {
         const element = createElement('base-button-menu', {
             is: ButtonMenu
         });
-
         document.body.appendChild(element);
 
         element.label = 'This is a label';
@@ -510,7 +498,6 @@ describe('Button Menu', () => {
         const element = createElement('base-button-menu', {
             is: ButtonMenu
         });
-
         document.body.appendChild(element);
 
         element.title = 'This is a title';
@@ -527,7 +514,6 @@ describe('Button Menu', () => {
         const element = createElement('base-button-menu', {
             is: ButtonMenu
         });
-
         document.body.appendChild(element);
 
         element.value = 'This is a value';

@@ -81,17 +81,18 @@ export default class ButtonMenu extends LightningElement {
     _needsFocusAfterRender = false;
 
     connectedCallback() {
-        this._connected = true;
-
         this.classList.add(
             'slds-dropdown-trigger',
             'slds-dropdown-trigger_click'
         );
 
-        if (this.isDraft) {
-            this.classList.add('slds-is-unsaved');
+        if (!this._connected) {
+            if (this.isDraft) {
+                this.classList.add('slds-is-unsaved');
+            }
         }
 
+        this._connected = true;
         const privatebuttonregister = new CustomEvent('privatebuttonregister', {
             bubbles: true,
             detail: {
