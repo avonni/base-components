@@ -57,7 +57,6 @@ describe('Color Gradient', () => {
         const element = createElement('base-color-gradient', {
             is: ColorGradient
         });
-
         document.body.appendChild(element);
 
         element.value = '#b63e3e';
@@ -199,6 +198,7 @@ describe('Color Gradient', () => {
             is: ColorGradient
         });
         document.body.appendChild(element);
+
         element.value = '#ffffff';
 
         const handler = jest.fn();

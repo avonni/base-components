@@ -123,9 +123,9 @@ describe('Color Picker', () => {
         const element = createElement('base-color-picker', {
             is: ColorPicker
         });
+        document.body.appendChild(element);
 
         element.isLoading = true;
-        document.body.appendChild(element);
 
         return Promise.resolve()
             .then(() => {
@@ -210,14 +210,17 @@ describe('Color Picker', () => {
 
         element.value = 'rgb(65, 159, 236)';
 
-        return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
-            expect(input.value).toBe('rgb(65, 159, 236)');
-        })
-        .then(() => {
-            const swatch = element.shadowRoot.querySelector('span')
-            expect(swatch.style.background).toBe('rgb(65, 159, 236)');
-        });
+        return Promise.resolve()
+            .then(() => {
+                const input = element.shadowRoot.querySelector(
+                    'lightning-input'
+                );
+                expect(input.value).toBe('rgb(65, 159, 236)');
+            })
+            .then(() => {
+                const swatch = element.shadowRoot.querySelector('span');
+                expect(swatch.style.background).toBe('rgb(65, 159, 236)');
+            });
     });
 
     // variant
@@ -324,9 +327,9 @@ describe('Color Picker', () => {
         const element = createElement('base-color-picker', {
             is: ColorPicker
         });
+        document.body.appendChild(element);
 
         element.type = 'base';
-        document.body.appendChild(element);
 
         return Promise.resolve()
             .then(() => {
@@ -366,9 +369,9 @@ describe('Color Picker', () => {
         const element = createElement('base-color-picker', {
             is: ColorPicker
         });
+        document.body.appendChild(element);
 
         element.type = 'predefined';
-        document.body.appendChild(element);
 
         return Promise.resolve()
             .then(() => {
@@ -394,7 +397,9 @@ describe('Color Picker', () => {
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector('button');
-            expect(button.className).toBe('slds-button slds-button_icon slds-button_icon-more slds-button_icon-bare');
+            expect(button.className).toBe(
+                'slds-button slds-button_icon slds-button_icon-more slds-button_icon-bare'
+            );
         });
     });
 
@@ -490,9 +495,7 @@ describe('Color Picker', () => {
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector('button');
-            expect(button.className).toBe(
-                'slds-button slds-button_icon-bare'
-            );
+            expect(button.className).toBe('slds-button slds-button_icon-bare');
         });
     });
 
@@ -617,7 +620,7 @@ describe('Color Picker', () => {
         document.body.appendChild(element);
 
         element.menuIconSize = 'medium';
-        
+
         return Promise.resolve().then(() => {
             const icon = element.shadowRoot.querySelector('lightning-icon');
             expect(icon.size).toBe('xx-small');
@@ -646,7 +649,7 @@ describe('Color Picker', () => {
         document.body.appendChild(element);
 
         element.menuIconSize = 'xx-small';
-        element.menuIconName = 'utility:down'
+        element.menuIconName = 'utility:down';
 
         return Promise.resolve().then(() => {
             const icon = element.shadowRoot.querySelector('lightning-icon');
@@ -661,7 +664,7 @@ describe('Color Picker', () => {
         document.body.appendChild(element);
 
         element.menuIconSize = 'x-small';
-        element.menuIconName = 'utility:down'
+        element.menuIconName = 'utility:down';
 
         return Promise.resolve().then(() => {
             const icon = element.shadowRoot.querySelector('lightning-icon');
@@ -676,7 +679,7 @@ describe('Color Picker', () => {
         document.body.appendChild(element);
 
         element.menuIconSize = 'medium';
-        element.menuIconName = 'utility:down'
+        element.menuIconName = 'utility:down';
 
         return Promise.resolve().then(() => {
             const icon = element.shadowRoot.querySelector('lightning-icon');
@@ -691,7 +694,7 @@ describe('Color Picker', () => {
         document.body.appendChild(element);
 
         element.menuIconSize = 'large';
-        element.menuIconName = 'utility:down'
+        element.menuIconName = 'utility:down';
 
         return Promise.resolve().then(() => {
             const icon = element.shadowRoot.querySelector('lightning-icon');
@@ -1078,16 +1081,16 @@ describe('Color Picker', () => {
         element.opacity = true;
 
         return Promise.resolve()
-        .then(() => {
-            const button = element.shadowRoot.querySelector('button');
-            button.click();
-        })
-        .then(() => {
-            const palette = element.shadowRoot.querySelector(
-                'c-color-gradient'
-            );
-            expect(palette.opacity).toBeTruthy();
-        });
+            .then(() => {
+                const button = element.shadowRoot.querySelector('button');
+                button.click();
+            })
+            .then(() => {
+                const palette = element.shadowRoot.querySelector(
+                    'c-color-gradient'
+                );
+                expect(palette.opacity).toBeTruthy();
+            });
     });
 
     /* ----- JS ----- */
@@ -1099,15 +1102,18 @@ describe('Color Picker', () => {
         });
         document.body.appendChild(element);
 
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
-            button.click();
-        })
-        .then(() => {
-            const doneButton = element.shadowRoot.querySelector("lightning-button[title='Done']")
-            expect(doneButton).toBeTruthy()
-            doneButton.click()
-        })
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector('button');
+                button.click();
+            })
+            .then(() => {
+                const doneButton = element.shadowRoot.querySelector(
+                    "lightning-button[title='Done']"
+                );
+                expect(doneButton).toBeTruthy();
+                doneButton.click();
+            });
     });
 
     // cancel button
@@ -1117,15 +1123,18 @@ describe('Color Picker', () => {
         });
         document.body.appendChild(element);
 
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
-            button.click();
-        })
-        .then(() => {
-            const cancelButton = element.shadowRoot.querySelector("lightning-button[title='Cancel']")
-            expect(cancelButton).toBeTruthy()
-            cancelButton.click()
-        })
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector('button');
+                button.click();
+            })
+            .then(() => {
+                const cancelButton = element.shadowRoot.querySelector(
+                    "lightning-button[title='Cancel']"
+                );
+                expect(cancelButton).toBeTruthy();
+                cancelButton.click();
+            });
     });
 
     // focus and blur on tab
@@ -1135,32 +1144,34 @@ describe('Color Picker', () => {
         });
         document.body.appendChild(element);
 
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
-            button.click();
-        })
-        .then(() => {
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector('button');
+                button.click();
+            })
+            .then(() => {
+                const tab = element.shadowRoot.querySelector('li > a');
+                const popover = element.shadowRoot.querySelector(
+                    '.slds-popover__body'
+                );
 
-            const tab = element.shadowRoot.querySelector('li > a')
-            const popover = element.shadowRoot.querySelector('.slds-popover__body')
+                element.addEventListener('handleprivatefocus', (event) => {
+                    expect(event.bubbles).toBeFalsy();
+                    expect(event.cancelable).toBeFalsy();
+                    expect(event.composed).toBeFalsy();
+                });
 
-            element.addEventListener('handleprivatefocus', (event) => {
-                expect(event.bubbles).toBeFalsy();
-                expect(event.cancelable).toBeFalsy();
-                expect(event.composed).toBeFalsy();
+                element.addEventListener('handleprivateblur', (event) => {
+                    expect(event.bubbles).toBeFalsy();
+                    expect(event.cancelable).toBeFalsy();
+                    expect(event.composed).toBeFalsy();
+                });
+
+                tab.focus();
+                tab.blur();
+                popover.focus();
+                popover.blur();
             });
-
-            element.addEventListener('handleprivateblur', (event) => {
-                expect(event.bubbles).toBeFalsy();
-                expect(event.cancelable).toBeFalsy();
-                expect(event.composed).toBeFalsy();
-            });
-            
-            tab.focus()
-            tab.blur()
-            popover.focus();
-            popover.blur()
-        })
     });
 
     /* ----- EVENTS ----- */
