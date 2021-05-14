@@ -1,4 +1,4 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { keyCodes } from 'c/utilsPrivate';
 import {
     normalizeBoolean,
@@ -46,7 +46,7 @@ export default class Carousel extends LightningElement {
     };
     _carouselItems = [];
     _itemsPerPanel = DEFAULT_ITEMS_PER_PANEL;
-    _initialRender = true;
+    _initialRender = false;
     _indicatorVariant = VARIANTS.default;
     _hideIndicator = false;
 
@@ -58,20 +58,22 @@ export default class Carousel extends LightningElement {
     paginationItems = [];
     panelStyle;
 
-    _connected = false
+    _connected = false;
 
     connectedCallback() {
-        this.initCarousel();
-        this._connected = true
+        if (!this._connected) {
+            this.initCarousel();
+        }
+        this._connected = true;
     }
 
     renderedCallback() {
-        if (this._initialRender) {
+        if (!this._initialRender) {
             if (!this.disableAutoScroll) {
                 this.setAutoScroll();
             }
         }
-        this._initialRender = false;
+        this._initialRender = true;
     }
 
     @api
@@ -273,11 +275,13 @@ export default class Carousel extends LightningElement {
         );
         const itemNumber = parseInt(event.currentTarget.dataset.itemIndex, 10);
         const itemData = this.panelItems[panelNumber].items[itemNumber];
-        this.dispatchEvent(new CustomEvent('itemclick', {
-            detail: {
-                item: itemData
-            }
-        }));
+        this.dispatchEvent(
+            new CustomEvent('itemclick', {
+                detail: {
+                    item: itemData
+                }
+            })
+        );
     }
 
     keyDownHandler(event) {

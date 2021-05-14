@@ -265,7 +265,7 @@ describe('Carousel', () => {
             is: Carousel
         });
         document.body.appendChild(element);
-        
+
         element.indicatorVariant = 'shaded';
         element.items = items;
 
@@ -290,9 +290,9 @@ describe('Carousel', () => {
         const element = createElement('base-carousel', {
             is: Carousel
         });
-        element.currentPanel = 2;
         document.body.appendChild(element);
 
+        element.currentPanel = 2;
         element.items = items;
 
         return Promise.resolve()
@@ -311,7 +311,6 @@ describe('Carousel', () => {
         const element = createElement('base-carousel', {
             is: Carousel
         });
-
         document.body.appendChild(element);
 
         element.items = items;
@@ -328,7 +327,6 @@ describe('Carousel', () => {
         const element = createElement('base-carousel', {
             is: Carousel
         });
-
         document.body.appendChild(element);
 
         element.items = items;
@@ -366,9 +364,9 @@ describe('Carousel', () => {
         const element = createElement('base-carousel', {
             is: Carousel
         });
-        element.itemsPerPanel = 2;
         document.body.appendChild(element);
 
+        element.itemsPerPanel = 2;
         element.items = items;
 
         return Promise.resolve().then(() => {
@@ -494,11 +492,9 @@ describe('Carousel', () => {
         const element = createElement('base-carousel', {
             is: Carousel
         });
-
-        element.items = items;
-
         document.body.appendChild(element);
 
+        element.items = items;
         const buttons = element.shadowRoot.querySelectorAll(
             'lightning-button-icon'
         );
@@ -523,10 +519,9 @@ describe('Carousel', () => {
             is: Carousel
         });
 
-        element.items = items;
-
         document.body.appendChild(element);
 
+        element.items = items;
         const buttons = element.shadowRoot.querySelectorAll(
             'lightning-button-icon'
         );
