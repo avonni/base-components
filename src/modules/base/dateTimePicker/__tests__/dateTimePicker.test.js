@@ -66,10 +66,9 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
+        document.body.appendChild(element);
 
         element.disabled = true;
-
-        document.body.appendChild(element);
 
         return Promise.resolve().then(() => {
             const paragraph = element.shadowRoot.querySelectorAll('p');
@@ -87,11 +86,10 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
+        document.body.appendChild(element);
 
         element.variant = 'weekly';
         element.disabled = true;
-
-        document.body.appendChild(element);
 
         return Promise.resolve().then(() => {
             const paragraph = element.shadowRoot.querySelectorAll('p');
@@ -109,11 +107,10 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
+        document.body.appendChild(element);
 
         element.variant = 'inline';
         element.disabled = true;
-
-        document.body.appendChild(element);
 
         return Promise.resolve().then(() => {
             const paragraph = element.shadowRoot.querySelectorAll('p');
@@ -131,11 +128,10 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
+        document.body.appendChild(element);
 
         element.variant = 'timeline';
         element.disabled = true;
-
-        document.body.appendChild(element);
 
         return Promise.resolve().then(() => {
             const paragraph = element.shadowRoot.querySelectorAll('p');
@@ -153,11 +149,10 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
+        document.body.appendChild(element);
 
         element.variant = 'monthly';
         element.disabled = true;
-
-        document.body.appendChild(element);
 
         return Promise.resolve().then(() => {
             const paragraph = element.shadowRoot.querySelectorAll('p');
@@ -178,7 +173,6 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
-
         document.body.appendChild(element);
 
         element.fieldLevelHelp = 'This is a field level help text';
@@ -197,7 +191,6 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
-
         document.body.appendChild(element);
 
         element.label = 'This is a label text';
@@ -216,7 +209,6 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
-
         document.body.appendChild(element);
 
         element.label = 'This is a label text';
@@ -235,7 +227,6 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
-
         document.body.appendChild(element);
 
         element.variant = 'daily';
@@ -258,7 +249,6 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
-
         document.body.appendChild(element);
 
         element.variant = 'weekly';
@@ -281,7 +271,6 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
-
         document.body.appendChild(element);
 
         element.variant = 'inline';
@@ -304,7 +293,6 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
-
         document.body.appendChild(element);
 
         element.variant = 'timeline';
@@ -331,7 +319,6 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
-
         document.body.appendChild(element);
 
         element.variant = 'monthly';
@@ -359,10 +346,9 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
-
-        element.readOnly = true;
         document.body.appendChild(element);
 
+        element.readOnly = true;
         const buttons = element.shadowRoot.querySelectorAll('button');
         const firstButton = element.shadowRoot.querySelector('button');
 
@@ -380,7 +366,6 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
-
         document.body.appendChild(element);
 
         element.required = true;
@@ -398,8 +383,8 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
-
         document.body.appendChild(element);
+
         element.required = true;
         element.messageWhenValueMissing = 'Missing value!';
 
@@ -422,7 +407,6 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
-
         document.body.appendChild(element);
 
         element.name = 'a-string-name';
@@ -438,17 +422,15 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
+        document.body.appendChild(element);
 
         element.startTime = '10:00';
 
-        document.body.appendChild(element);
-
-        const time = element.shadowRoot.querySelectorAll(
-            'lightning-formatted-date-time'
-        );
-
         return Promise.resolve().then(() => {
             // cannot change the time zone so there is always a difference of 4 hours
+            const time = element.shadowRoot.querySelectorAll(
+                'lightning-formatted-date-time'
+            );
             expect(time[0].value).toContain('14:00');
         });
     });
@@ -458,18 +440,17 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
+        document.body.appendChild(element);
 
         element.startTime = '10:00';
         element.endTime = '11:00';
 
-        document.body.appendChild(element);
-        const time = element.shadowRoot.querySelectorAll(
-            'lightning-formatted-date-time'
-        );
-
         return Promise.resolve().then(() => {
             // cannot change the time zone so there is always a difference of 4 hours
             // time slot duration of 30 min so only two button 14:00 and 14:30
+            const time = element.shadowRoot.querySelectorAll(
+                'lightning-formatted-date-time'
+            );
             expect(time[1].value).toContain('14:30');
         });
     });
@@ -479,20 +460,18 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
+        document.body.appendChild(element);
 
         element.startTime = '10:00';
         element.endTime = '12:00';
         element.timeSlotDuration = '01:00';
 
-        document.body.appendChild(element);
-
-        const time = element.shadowRoot.querySelectorAll(
-            'lightning-formatted-date-time'
-        );
-
         return Promise.resolve().then(() => {
             // cannot change the time zone so there is always a difference of 4 hours
             // time slot duration of 1 hour so only two button 14:00 and 15:00
+            const time = element.shadowRoot.querySelectorAll(
+                'lightning-formatted-date-time'
+            );
             expect(time).toHaveLength(2);
             expect(time[1].value).toContain('15:00');
         });
@@ -502,21 +481,19 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
+        document.body.appendChild(element);
 
         element.startTime = '10:00';
         element.endTime = '12:00';
         element.timeSlotDuration = '01:00';
         element.variant = 'timeline';
 
-        document.body.appendChild(element);
-
-        const time = element.shadowRoot.querySelectorAll(
-            'lightning-formatted-date-time'
-        );
-
         return Promise.resolve().then(() => {
             // cannot change the time zone so there is always a difference of 4 hours
             // time slot duration of 1 hour so only two button 14:00 and 15:00
+            const time = element.shadowRoot.querySelectorAll(
+                'lightning-formatted-date-time'
+            );
             expect(time).toHaveLength(4);
             expect(time[0].value).toContain('14:00');
             expect(time[1].value).toContain('14:00');
@@ -530,7 +507,6 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
-
         document.body.appendChild(element);
 
         const times = element.shadowRoot.querySelectorAll(
@@ -548,7 +524,6 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
-
         document.body.appendChild(element);
 
         element.timeFormatHour = '2-digit';
@@ -569,7 +544,6 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
-
         document.body.appendChild(element);
 
         element.timeFormatHour12 = true;
@@ -590,7 +564,6 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
-
         document.body.appendChild(element);
 
         const times = element.shadowRoot.querySelectorAll(
@@ -610,7 +583,6 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
-
         document.body.appendChild(element);
 
         const times = element.shadowRoot.querySelectorAll(
@@ -631,7 +603,6 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
-
         document.body.appendChild(element);
 
         const times = element.shadowRoot.querySelectorAll(
@@ -651,7 +622,6 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
-
         document.body.appendChild(element);
 
         const times = element.shadowRoot.querySelectorAll(
@@ -672,21 +642,19 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
+        document.body.appendChild(element);
 
         element.startTime = '10:00';
         element.endTime = '12:00';
         element.timeSlotDuration = '01:00';
         element.showEndTime = true;
 
-        document.body.appendChild(element);
-
-        const time = element.shadowRoot.querySelectorAll(
-            'lightning-formatted-date-time'
-        );
-
         return Promise.resolve().then(() => {
             // cannot change the time zone so there is always a difference of 4 hours
             // time slot duration of 1 hour so only two button 14:00 and 15:00
+            const time = element.shadowRoot.querySelectorAll(
+                'lightning-formatted-date-time'
+            );
             expect(time).toHaveLength(4);
             expect(time[3].value).toContain('16:00');
         });
@@ -697,11 +665,10 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
+        document.body.appendChild(element);
 
         element.disabled = true;
         element.showDisabledDates = true;
-
-        document.body.appendChild(element);
 
         return Promise.resolve().then(() => {
             const times = element.shadowRoot.querySelectorAll('button');
@@ -715,12 +682,11 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
+        document.body.appendChild(element);
 
         element.disabled = true;
         element.showDisabledDates = true;
         element.variant = 'weekly';
-
-        document.body.appendChild(element);
 
         return Promise.resolve().then(() => {
             const times = element.shadowRoot.querySelectorAll('button');
@@ -734,12 +700,11 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
+        document.body.appendChild(element);
 
         element.disabled = true;
         element.showDisabledDates = true;
         element.variant = 'inline';
-
-        document.body.appendChild(element);
 
         return Promise.resolve().then(() => {
             const times = element.shadowRoot.querySelectorAll('button');
@@ -753,12 +718,11 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
+        document.body.appendChild(element);
 
         element.disabled = true;
         element.showDisabledDates = true;
         element.variant = 'timeline';
-
-        document.body.appendChild(element);
 
         return Promise.resolve().then(() => {
             const times = element.shadowRoot.querySelectorAll('button');
@@ -772,12 +736,11 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
+        document.body.appendChild(element);
 
         element.disabled = true;
         element.showDisabledDates = true;
         element.variant = 'monthly';
-
-        document.body.appendChild(element);
 
         return Promise.resolve().then(() => {
             const times = element.shadowRoot.querySelectorAll('button');
@@ -792,7 +755,6 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
-
         document.body.appendChild(element);
 
         element.max = '2021, 11, 30';
@@ -814,7 +776,6 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
-
         document.body.appendChild(element);
 
         element.type = 'checkbox';
@@ -838,7 +799,6 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
-
         document.body.appendChild(element);
 
         element.type = 'radio';
@@ -863,10 +823,9 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
+        document.body.appendChild(element);
 
         element.showTimeZone = true;
-
-        document.body.appendChild(element);
 
         const timeZone = element.shadowRoot.querySelectorAll(
             'lightning-combobox'
@@ -882,22 +841,20 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
+        document.body.appendChild(element);
 
         element.hideNavigation = true;
 
-        document.body.appendChild(element);
-
-        const prevButton = element.shadowRoot.querySelector(
-            "lightning-button-icon[title='Previous dates']"
-        );
-        const todayButton = element.shadowRoot.querySelector(
-            "lightning-button[label='today']"
-        );
-        const nextButton = element.shadowRoot.querySelector(
-            "lightning-button-icon[title='Next dates']"
-        );
-
         return Promise.resolve().then(() => {
+            const prevButton = element.shadowRoot.querySelector(
+                "lightning-button-icon[title='Previous dates']"
+            );
+            const todayButton = element.shadowRoot.querySelector(
+                "lightning-button[label='today']"
+            );
+            const nextButton = element.shadowRoot.querySelector(
+                "lightning-button-icon[title='Next dates']"
+            );
             expect(prevButton).toBeFalsy();
             expect(todayButton).toBeFalsy();
             expect(nextButton).toBeFalsy();
@@ -909,14 +866,14 @@ describe('DateTimePicker', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
+        document.body.appendChild(element);
 
         element.hideDatePicker = true;
 
-        document.body.appendChild(element);
-
-        const datePicker = element.shadowRoot.querySelector('lightning-input');
-
         return Promise.resolve().then(() => {
+            const datePicker = element.shadowRoot.querySelector(
+                'lightning-input'
+            );
             expect(datePicker).toBeFalsy();
         });
     });

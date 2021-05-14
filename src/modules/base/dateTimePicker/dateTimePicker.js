@@ -36,7 +36,6 @@ const DEFAULT_MAX = new Date(new Date(2099, 11, 31).setHours(0, 0, 0, 0));
 const DEFAULT_MIN = new Date(new Date(1900, 0, 1).setHours(0, 0, 0, 0));
 
 export default class DateTimePicker extends LightningElement {
-    @api disabled;
     @api fieldLevelHelp;
     @api label;
     @api messageWhenValueMissing;
@@ -68,6 +67,7 @@ export default class DateTimePicker extends LightningElement {
     _showTimeZone = false;
     _hideNavigation = false;
     _hideDatePicker = false;
+    _disabled = false;
 
     table;
     today;
@@ -81,30 +81,38 @@ export default class DateTimePicker extends LightningElement {
     dayClass = 'avonni-date-time-picker__day';
     calendarDisabledDates = [];
 
+    _connected = false;
+
     connectedCallback() {
-        this._processValue();
-        this.selectedTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        this._initTimeSlots();
-        const now = new Date();
-        this.today = now;
-        this.datePickerValue = now.toISOString();
+        if (!this._connected) {
+            this._processValue();
+            this.selectedTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            this._initTimeSlots();
+            const now = new Date();
+            this.today = now;
+            this.datePickerValue = now.toISOString();
 
-        const firstDay = this.today < this.min ? this.min : this.today;
-        this._setFirstWeekDay(firstDay);
+            const firstDay = this.today < this.min ? this.min : this.today;
+            this._setFirstWeekDay(firstDay);
 
-        // If no time format is provided, defaults to hour:minutes (0:00)
-        // The default is set here so it is possible to have only the hour, minutes:seconds, etc.
-        this._initTimeFormat();
+            // If no time format is provided, defaults to hour:minutes (0:00)
+            // The default is set here so it is possible to have only the hour, minutes:seconds, etc.
+            this._initTimeFormat();
 
-        if (this.isMonthly) this._disableMonthlyCalendarDates();
+            if (this.isMonthly) {
+                this._disableMonthlyCalendarDates();
+            }
 
-        this._generateTable();
+            this._generateTable();
+        }
+        this._connected = true;
     }
 
     @api
     get hideLabel() {
         return this._hideLabel;
     }
+
     set hideLabel(boolean) {
         this._hideLabel = normalizeBoolean(boolean);
     }
@@ -113,6 +121,7 @@ export default class DateTimePicker extends LightningElement {
     get variant() {
         return this._variant;
     }
+
     set variant(value) {
         this._variant = normalizeString(value, {
             fallbackValue: VARIANTS.default,
@@ -124,9 +133,10 @@ export default class DateTimePicker extends LightningElement {
             'avonni-date-time-picker__day': this._variant !== 'inline'
         });
 
-        if (this.isConnected) {
-            if (this._variant === 'monthly')
+        if (this._connected) {
+            if (this._variant === 'monthly') {
                 this._disableMonthlyCalendarDates();
+            }
 
             const firstDay = this.today < this.min ? this.min : this.today;
             this._setFirstWeekDay(firstDay);
@@ -138,26 +148,30 @@ export default class DateTimePicker extends LightningElement {
     get max() {
         return this._max;
     }
+
     set max(value) {
         const date = this._processDate(value);
         if (date) {
             this._max = new Date(date.setHours(0, 0, 0, 0));
         }
 
-        if (this.isConnected) this._generateTable();
+        if (this._connected) {
+            this._generateTable();
+        }
     }
 
     @api
     get min() {
         return this._min;
     }
+
     set min(value) {
         const date = this._processDate(value);
         if (date) {
             this._min = new Date(date.setHours(0, 0, 0, 0));
         }
 
-        if (this.isConnected) {
+        if (this._connected) {
             const firstDay = this.today < this.min ? this.min : this.today;
             this._setFirstWeekDay(firstDay);
             this._generateTable();
@@ -172,27 +186,23 @@ export default class DateTimePicker extends LightningElement {
     get value() {
         return this._value;
     }
+
     set value(value) {
         this._value = value;
-
-        if (this.isConnected) {
-            this._processValue();
-            this._generateTable();
-        }
     }
 
     @api
     get startTime() {
         return this._startTime;
     }
+
     set startTime(value) {
         const start = new Date(`1970-01-01T${value}`);
         // Return start time in ms. Default value is 08:00.
         this._startTime = isNaN(start.getTime())
             ? DEFAULT_START_TIME
             : start.getTime();
-
-        if (this.isConnected) {
+        if (this._connected) {
             this._initTimeSlots();
             this._generateTable();
         }
@@ -202,12 +212,12 @@ export default class DateTimePicker extends LightningElement {
     get endTime() {
         return this._endTime;
     }
+
     set endTime(value) {
         const end = new Date(`1970-01-01T${value}`);
         // Return end time in ms. Default value is 18:00.
         this._endTime = isNaN(end.getTime()) ? DEFAULT_END_TIME : end.getTime();
-
-        if (this.isConnected) {
+        if (this._connected) {
             this._initTimeSlots();
             this._generateTable();
         }
@@ -217,6 +227,7 @@ export default class DateTimePicker extends LightningElement {
     get timeSlotDuration() {
         return this._timeSlotDuration;
     }
+
     set timeSlotDuration(value) {
         const duration =
             typeof value === 'string' &&
@@ -238,7 +249,7 @@ export default class DateTimePicker extends LightningElement {
                 ? durationMilliseconds
                 : DEFAULT_TIME_SLOT_DURATION;
 
-        if (this.isConnected) {
+        if (this._connected) {
             this._initTimeSlots();
             this._generateTable();
         }
@@ -248,21 +259,18 @@ export default class DateTimePicker extends LightningElement {
     get timeFormatHour() {
         return this._timeFormatHour || undefined;
     }
+
     set timeFormatHour(value) {
         this._timeFormatHour = normalizeString(value, {
             validValues: DATE_TIME_FORMAT.valid
         });
-
-        if (this.isConnected) {
-            this._initTimeFormat();
-            this._generateTable();
-        }
     }
 
     @api
     get timeFormatHour12() {
         return this._timeFormatHour12;
     }
+
     set timeFormatHour12(boolean) {
         if (boolean !== undefined) {
             this._timeFormatHour12 = normalizeBoolean(boolean);
@@ -273,36 +281,29 @@ export default class DateTimePicker extends LightningElement {
     get timeFormatMinute() {
         return this._timeFormatMinute || undefined;
     }
+
     set timeFormatMinute(value) {
         this._timeFormatMinute = normalizeString(value, {
             validValues: DATE_TIME_FORMAT.valid
         });
-
-        if (this.isConnected) {
-            this._initTimeFormat();
-            this._generateTable();
-        }
     }
 
     @api
     get timeFormatSecond() {
         return this._timeFormatSecond || undefined;
     }
+
     set timeFormatSecond(value) {
         this._timeFormatSecond = normalizeString(value, {
             validValues: DATE_TIME_FORMAT.valid
         });
-
-        if (this.isConnected) {
-            this._initTimeFormat();
-            this._generateTable();
-        }
     }
 
     @api
     get dateFormatDay() {
         return this._dateFormatDay;
     }
+
     set dateFormatDay(value) {
         this._dateFormatDay = normalizeString(value, {
             fallbackValue: DATE_TIME_FORMAT.dayDefault,
@@ -317,6 +318,7 @@ export default class DateTimePicker extends LightningElement {
     get dateFormatMonth() {
         return this._dateFormatMonth;
     }
+
     set dateFormatMonth(value) {
         this._dateFormatMonth = normalizeString(value, {
             fallbackValue: MONTH_FORMAT.default,
@@ -328,20 +330,21 @@ export default class DateTimePicker extends LightningElement {
     get dateFormatWeekday() {
         return this._dateFormatWeekday;
     }
+
     set dateFormatWeekday(value) {
         this._dateFormatWeekday = normalizeString(value, {
             fallbackValue: WEEKDAY_FORMAT.default,
             validValues: WEEKDAY_FORMAT.valid
         });
 
-        if (this.isConnected && this.variant === 'weekly')
-            this._generateTable();
+        if (this._connected && this.variant === 'weekly') this._generateTable();
     }
 
     @api
     get dateFormatYear() {
         return this._dateFormatYear;
     }
+
     set dateFormatYear(value) {
         this._dateFormatYear = normalizeString(value, {
             validValues: DATE_TIME_FORMAT.valid
@@ -352,6 +355,7 @@ export default class DateTimePicker extends LightningElement {
     get showEndTime() {
         return this._showEndTime;
     }
+
     set showEndTime(boolean) {
         this._showEndTime = normalizeBoolean(boolean);
     }
@@ -360,23 +364,26 @@ export default class DateTimePicker extends LightningElement {
     get showDisabledDates() {
         return this._showDisabledDates;
     }
+
     set showDisabledDates(boolean) {
         this._showDisabledDates = normalizeBoolean(boolean);
 
-        if (this.isConnected) this._generateTable();
+        if (this._connected) {
+            this._generateTable();
+        }
     }
 
     @api
     get type() {
         return this._type;
     }
+
     set type(value) {
         this._type = normalizeString(value, {
             fallbackValue: TYPES.default,
             validValues: TYPES.valid
         });
-
-        if (this.isConnected) {
+        if (this._connected) {
             this._processValue();
             this._generateTable();
         }
@@ -386,6 +393,7 @@ export default class DateTimePicker extends LightningElement {
     get showTimeZone() {
         return this._showTimeZone;
     }
+
     set showTimeZone(value) {
         this._showTimeZone = normalizeBoolean(value);
     }
@@ -394,6 +402,7 @@ export default class DateTimePicker extends LightningElement {
     get hideNavigation() {
         return this._hideNavigation;
     }
+
     set hideNavigation(value) {
         this._hideNavigation = normalizeBoolean(value);
     }
@@ -402,6 +411,7 @@ export default class DateTimePicker extends LightningElement {
     get hideDatePicker() {
         return this._hideDatePicker;
     }
+
     set hideDatePicker(value) {
         this._hideDatePicker = normalizeBoolean(value);
     }
@@ -414,6 +424,19 @@ export default class DateTimePicker extends LightningElement {
             });
         }
         return this._constraintApi;
+    }
+
+    @api
+    get disabled() {
+        return this._disabled;
+    }
+
+    set disabled(value) {
+        this._disabled = normalizeBoolean(value);
+        if (this._connected) {
+            this._initTimeFormat();
+            this._generateTable();
+        }
     }
 
     @api
