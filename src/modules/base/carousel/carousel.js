@@ -1,4 +1,4 @@
-import { LightningElement, api } from 'lwc';
+import { LightningElement, api, track } from 'lwc';
 import { keyCodes } from 'c/utilsPrivate';
 import {
     normalizeBoolean,
@@ -58,8 +58,11 @@ export default class Carousel extends LightningElement {
     paginationItems = [];
     panelStyle;
 
+    _connected = false
+
     connectedCallback() {
         this.initCarousel();
+        this._connected = true
     }
 
     renderedCallback() {
@@ -109,8 +112,7 @@ export default class Carousel extends LightningElement {
                 src: item.src
             });
         });
-
-        if (this.isConnected) {
+        if (this._connected) {
             this.initCarousel();
         }
     }
@@ -136,7 +138,7 @@ export default class Carousel extends LightningElement {
             fallbackValue: VARIANTS.default,
             validValues: VARIANTS.valid
         });
-        if (this.isConnected) {
+        if (this._connected) {
             this.initCarousel();
         }
     }
