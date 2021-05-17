@@ -104,6 +104,11 @@ export default class Carousel extends LightningElement {
                 buttonIconPosition: item.buttonIconPosition,
                 buttonVariant: item.buttonVariant,
                 buttonDisabled: item.buttonDisabled,
+                secondaryButtonLabel: item.secondaryButtonLabel || null,
+                secondaryButtonIconName: item.secondaryButtonIconName,
+                secondaryButtonIconPosition: item.secondaryButtonIconPosition,
+                secondaryButtonVariant: item.secondaryButtonVariant,
+                secondaryButtonDisabled: item.secondaryButtonDisabled,
                 imageAssistiveText: item.imageAssistiveText || item.title,
                 href: item.href,
                 src: item.src
