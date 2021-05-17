@@ -54,17 +54,6 @@
                 tabindex="0"
             ></c-primitive-avatar>
         </span>
-        <div class={avatarGroupClass}>
-            <c-primitive-avatar
-                fallback-icon-name={actionIconName}
-                variant={variant}
-                size={size}
-                role="button"
-                data-type="show"
-                onclick={actionClick}
-                class="slds-avatar-group avonni-avatar-group__action-button"
-            ></c-primitive-avatar>
-        </div>
     </template>
     <template if:false={isClassic}>
         <template for:each={listItems} for:item="item" for:index="index">
@@ -200,16 +189,31 @@
                 </div>
             </template>
         </template>
-        <div class={avatarGroupClass}>
-            <c-primitive-avatar
-                fallback-icon-name={actionIconName}
-                variant={variant}
-                size={size}
-                role="button"
-                data-type="show"
-                onclick={actionClick}
-                class={avatarInlineClass}
-            ></c-primitive-avatar>
-        </div>
+        <template if:false={isNotList}>
+            <div class={avatarWrapperClass}>
+                <c-primitive-avatar
+                    fallback-icon-name="action:new"
+                    variant={variant}
+                    size={size}
+                    role="button"
+                    data-type="show"
+                    onclick={actionClick}
+                    class={avatarInlineClass}
+                ></c-primitive-avatar>
+            </div>
+        </template>
+        <template if:true={isNotList}>
+            <div class={avatarGroupClass}>
+                <c-primitive-avatar
+                    fallback-icon-name="custom:custom1"
+                    variant={variant}
+                    size={size}
+                    role="button"
+                    data-type="show"
+                    onclick={actionClick}
+                    class={avatarInlineClass}
+                ></c-primitive-avatar>
+            </div>
+        </template>
     </template>
 </template>
