@@ -111,6 +111,10 @@
             "path": "src/modules/base/confetti/confetti.js"
         },
         {
+            "name": "c/datatable",
+            "path": "src/modules/base/datatable/datatable.js"
+        },
+        {
             "name": "c/dateTimePicker",
             "path": "src/modules/base/dateTimePicker/dateTimePicker.js"
         },
@@ -237,6 +241,10 @@
         {
             "name": "c/primitiveCoordinateItem",
             "path": "src/modules/base/primitiveCoordinateItem/primitiveCoordinateItem.js"
+        },
+        {
+            "name": "c/primitiveDatatableAvatar",
+            "path": "src/modules/base/primitiveDatatableAvatar/primitiveDatatableAvatar.js"
         },
         {
             "name": "c/primitiveIcon",
@@ -453,6 +461,10 @@
         {
             "name": "avonni/confetti",
             "path": "src/modules/base/confetti/confetti.js"
+        },
+        {
+            "name": "avonni/datatable",
+            "path": "src/modules/base/datatable/datatable.js"
         },
         {
             "name": "avonni/dateTimePicker",
@@ -673,6 +685,7 @@
         "avonni/colorPalette",
         "avonni/colorPicker",
         "avonni/confetti",
+        "avonni/datatable",
         "avonni/dateTimePicker",
         "avonni/dialog",
         "avonni/dualListbox",
