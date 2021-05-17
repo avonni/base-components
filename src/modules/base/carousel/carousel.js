@@ -97,14 +97,14 @@ export default class Carousel extends LightningElement {
         allItems.forEach((item) => {
             this._carouselItems.push({
                 key: item.id,
-                heading: item.heading,
+                title: item.title,
                 description: item.description,
                 buttonLabel: item.buttonLabel || null,
                 buttonIconName: item.buttonIconName,
                 buttonIconPosition: item.buttonIconPosition,
                 buttonVariant: item.buttonVariant,
                 buttonDisabled: item.buttonDisabled,
-                imageAssistiveText: item.imageAssistiveText || item.heading,
+                imageAssistiveText: item.imageAssistiveText || item.title,
                 href: item.href,
                 src: item.src
             });
@@ -268,11 +268,13 @@ export default class Carousel extends LightningElement {
         );
         const itemNumber = parseInt(event.currentTarget.dataset.itemIndex, 10);
         const itemData = this.panelItems[panelNumber].items[itemNumber];
-        this.dispatchEvent(new CustomEvent('itemclick', {
-            detail: {
-                item: itemData
-            }
-        }));
+        this.dispatchEvent(
+            new CustomEvent('itemclick', {
+                detail: {
+                    item: itemData
+                }
+            })
+        );
     }
 
     keyDownHandler(event) {
