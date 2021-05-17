@@ -30,6 +30,7 @@ const validButtonVariants = [
 export default class AvatarGroup extends LightningElement {
     @api listButtonLabel = 'Show more';
     @api listButtonIconName;
+    @api actionIconName;
 
     _items = [];
     _maxCount;

@@ -133,6 +133,18 @@ export default {
                 defaultValue: { summary: 'left' },
                 category: 'List button'
             }
+        },
+        actionIconName: {
+            name: 'action-icon-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                "The Lightning Design System name of the action icon name. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.",
+            table: {
+                type: { summary: 'string' },
+                category: 'List button'
+            }
         }
     }
 };
