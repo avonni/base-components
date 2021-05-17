@@ -13,7 +13,7 @@ const vertical_alignement_options = {
     default: 'center'
 };
 const font_size_options = {
-    valid: ['x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'],
+    valid: ['small', 'medium', 'large', 'x-large', 'xx-large'],
     titleDefault: 'large',
     descriptionDefault: 'medium'
 };
@@ -32,6 +32,17 @@ export default class HeroBanner extends LightningElement {
     _textVerticalAlignment = vertical_alignement_options.default;
     _titleFontSize = font_size_options.titleDefault;
     _descriptionFontSize = font_size_options.descriptionDefault;
+    showSlot = true;
+
+    renderedCallback() {
+        if (this.slot) {
+            this.showSlot = this.slot.assignedElements().length !== 0;
+        }
+    }
+
+    get slot() {
+        return this.template.querySelector('slot');
+    }
 
     @api
     get textHorizontalAlignment() {
@@ -94,6 +105,50 @@ export default class HeroBanner extends LightningElement {
     }
 
     get computedTextContainer() {
-        return classSet('').add({}).toString();
+        return classSet('')
+            .add({
+                'avonni-hero-banner-text-container-without-slot': !this
+                    .showSlot,
+                'avonni-hero-banner-text-container-with-slot': this.showSlot,
+                'slds-text-align_left': this.textHorizontalAlignment === 'left',
+                'slds-text-align_center':
+                    this.textHorizontalAlignment === 'center',
+                'slds-text-align_right':
+                    this.textHorizontalAlignment === 'right',
+                'avonni-hero-banner-vertical-alignement-bottom':
+                    this.textVerticalAlignment === 'bottom',
+                'avonni-hero-banner-vertical-alignement-center':
+                    this.textVerticalAlignment === 'center'
+            })
+            .toString();
+    }
+
+    get computedTitleClass() {
+        return classSet('')
+            .add({
+                'slds-text-heading_large': this.titleFontSize === 'large',
+                'slds-text-heading_medium': this.titleFontSize === 'medium',
+                'slds-text-heading_small': this.titleFontSize === 'small',
+                'avonni-hero-banner-text-x_large':
+                    this.titleFontSize === 'x-large',
+                'avonni-hero-banner-text-xx_large':
+                    this.titleFontSize === 'xx-large'
+            })
+            .toString();
+    }
+
+    get computedDescriptionClass() {
+        return classSet('')
+            .add({
+                'slds-text-heading_large': this.descriptionFontSize === 'large',
+                'slds-text-heading_medium':
+                    this.descriptionFontSize === 'medium',
+                'slds-text-heading_small': this.descriptionFontSize === 'small',
+                'avonni-hero-banner-text-x_large':
+                    this.descriptionFontSize === 'x-large',
+                'avonni-hero-banner-text-xx_large':
+                    this.descriptionFontSize === 'xx-large'
+            })
+            .toString();
     }
 }

@@ -29,17 +29,10 @@ export default {
             control: {
                 type: 'select'
             },
-            options: [
-                'x-small',
-                'small',
-                'medium',
-                'large',
-                'x-large',
-                'xx-large'
-            ],
+            options: ['small', 'medium', 'large', 'x-large', 'xx-large'],
             defaultValue: 'large',
             description:
-                'Valid values include x-small, small, medium, large, x-large, xx-large.',
+                'Valid values include small, medium, large, x-large, xx-large.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'large' }
@@ -71,17 +64,10 @@ export default {
             control: {
                 type: 'select'
             },
-            options: [
-                'x-small',
-                'small',
-                'medium',
-                'large',
-                'x-large',
-                'xx-large'
-            ],
+            options: ['small', 'medium', 'large', 'x-large', 'xx-large'],
             defaultValue: 'medium',
             description:
-                'Valid values include x-small, small, medium, large, x-large, xx-large.',
+                'Valid values include small, medium, large, x-large, xx-large.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'medium' }
@@ -129,7 +115,7 @@ const Template = (args) => HeroBanner(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    title: 'THIS IS A TITLE',
+    title: 'This is a title',
     description: 'This is the description',
     src:
         'https://acadienouvelle-6143.kxcdn.com/wp-content/uploads/2020/06/moon-416973_1280.jpg.gallery.jpg'

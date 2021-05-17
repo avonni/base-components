@@ -6,5 +6,8 @@
                 {description}
             </h3>
         </div>
+        <template if:true={showSlot}>
+            <slot></slot>
+        </template>
     </div>
 </template>
