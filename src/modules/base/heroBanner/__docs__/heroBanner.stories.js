@@ -13,6 +13,38 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        titleFontColor: {
+            name: 'title-font-color',
+            control: {
+                type: 'color'
+            },
+            defaultValue: '#ffffff',
+            description: '',
+            table: {
+                type: { summary: 'color' }
+            }
+        },
+        titleFontSize: {
+            name: 'title-font-size',
+            control: {
+                type: 'select'
+            },
+            options: [
+                'x-small',
+                'small',
+                'medium',
+                'large',
+                'x-large',
+                'xx-large'
+            ],
+            defaultValue: 'large',
+            description:
+                'Valid values include x-small, small, medium, large, x-large, xx-large.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'large' }
+            }
+        },
         description: {
             control: {
                 type: 'text'
@@ -21,6 +53,38 @@ export default {
                 'The description can include text, and is displayed under the title.',
             table: {
                 type: { summary: 'string' }
+            }
+        },
+        descriptionFontColor: {
+            name: 'description-font-color',
+            control: {
+                type: 'color'
+            },
+            defaultValue: '#ffffff',
+            description: '',
+            table: {
+                type: { summary: 'color' }
+            }
+        },
+        descriptionFontSize: {
+            name: 'description-font-size',
+            control: {
+                type: 'select'
+            },
+            options: [
+                'x-small',
+                'small',
+                'medium',
+                'large',
+                'x-large',
+                'xx-large'
+            ],
+            defaultValue: 'medium',
+            description:
+                'Valid values include x-small, small, medium, large, x-large, xx-large.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'medium' }
             }
         },
         src: {
@@ -64,4 +128,9 @@ export default {
 const Template = (args) => HeroBanner(args);
 
 export const Base = Template.bind({});
-Base.args = {};
+Base.args = {
+    title: 'THIS IS A TITLE',
+    description: 'This is the description',
+    src:
+        'https://acadienouvelle-6143.kxcdn.com/wp-content/uploads/2020/06/moon-416973_1280.jpg.gallery.jpg'
+};
