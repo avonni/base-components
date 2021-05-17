@@ -247,6 +247,10 @@
             "path": "src/modules/base/primitiveDatatableAvatar/primitiveDatatableAvatar.js"
         },
         {
+            "name": "c/primitiveDatatableAvatarGroup",
+            "path": "src/modules/base/primitiveDatatableAvatarGroup/primitiveDatatableAvatarGroup.js"
+        },
+        {
             "name": "c/primitiveIcon",
             "path": "src/modules/base/primitiveIcon/primitiveIcon.js"
         },

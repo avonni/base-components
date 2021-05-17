@@ -85,7 +85,7 @@ export default {
             }
         },
         hideCheckboxColumn: {
-            name: 'enable-infinite-loading',
+            name: 'hide-checkbox-column',
             control: {
                 type: 'boolean'
             },
@@ -305,83 +305,180 @@ export default {
 
 const Template = (args) => Datatable(args);
 
+const avatars = [
+    {
+        fallbackIconName: 'standard:person_account',
+        initials: 'NG',
+        secondaryText: 'Approved',
+        src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+        variant: 'circle',
+        status: 'approved',
+        statusPosition: 'bottom-right',
+        primaryText: 'Nina Gomez'
+    },
+    {
+        fallbackIconName: 'standard:person_account',
+        initials: 'DM',
+        src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+        secondaryText: 'Declined',
+        variant: 'circle',
+        status: 'declined',
+        statusPosition: 'bottom-right',
+        primaryText: 'Dave McKinsley'
+    },
+    {
+        fallbackIconName: 'standard:person_account',
+        initials: 'JP',
+        secondaryText: 'Unknown',
+        variant: 'circle',
+        status: 'unknown',
+        statusPosition: 'bottom-right',
+        primaryText: 'Jung Phung'
+    },
+    {
+        fallbackIconName: 'standard:person_account',
+        secondaryText: 'Approved',
+        variant: 'circle',
+        status: 'approved',
+        statusPosition: 'bottom-right',
+        primaryText: 'Lily Murray'
+    },
+    {
+        fallbackIconName: 'standard:person_account',
+        initials: 'RM',
+        src: 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
+        secondaryText: 'Approved',
+        variant: 'circle',
+        status: 'approved',
+        statusPosition: 'bottom-right',
+        primaryText: 'Reginald Martin'
+    }
+];
+
+const avatarsSimplified = [
+    {
+        fallbackIconName: 'standard:person_account',
+        initials: 'NG',
+        src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+        hideAvatarDetails: true
+    },
+    {
+        fallbackIconName: 'standard:person_account',
+        initials: 'DM',
+        src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+        hideAvatarDetails: true
+    },
+    {
+        fallbackIconName: 'standard:person_account',
+        initials: 'JP',
+        hideAvatarDetails: true
+    },
+    {
+        fallbackIconName: 'standard:person_account',
+        secondaryText: 'Approved',
+        hideAvatarDetails: true
+    },
+    {
+        fallbackIconName: 'standard:person_account',
+        initials: 'RM',
+        src: 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
+        hideAvatarDetails: true
+    }
+];
+
 const columns = [
     {
         label: 'Avatar',
         fieldName: 'avatar',
         type: 'avatar'
-        // cellAttributes: {
-        //     class: 'slds-p-around_small'
-        // }
+    },
+    {
+        label: 'Avatar Group',
+        fieldName: 'avatarGroup',
+        type: 'avatar-group'
+    },
+    {
+        label: 'Currency',
+        fieldName: 'currency',
+        type: 'currency',
+        typeAttributes: {
+            currencyCode: 'CAD'
+        }
     }
 ];
 
 const data = [
     {
         id: 1,
-        avatar: {
-            fallbackIconName: 'standard:user',
-            initials: 'NG',
-            secondaryText: 'Approved',
-            src:
-                'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
-            variant: 'circle',
-            status: 'approved',
-            statusPosition: 'bottom-right',
-            primaryText: 'Nina Gomez'
-        }
+        avatar: avatars[0],
+        avatarGroup: {
+            items: [
+                avatarsSimplified[1],
+                avatarsSimplified[4],
+                avatarsSimplified[3]
+            ],
+            maxCount: 3,
+            variant: 'circle'
+        },
+        currency: 200
     },
     {
         id: 2,
-        avatar: {
-            fallbackIconName: 'standard:user',
-            initials: 'DM',
-            src:
-                'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
-            secondaryText: 'Declined',
-            variant: 'circle',
-            status: 'declined',
-            statusPosition: 'bottom-right',
-            primaryText: 'Dave McKinsley'
-        }
+        avatar: avatars[1],
+        avatarGroup: {
+            items: [
+                avatarsSimplified[0],
+                avatarsSimplified[2],
+                avatarsSimplified[4],
+                avatarsSimplified[3]
+            ],
+            maxCount: 3,
+            variant: 'circle'
+        },
+        currency: 230
     },
     {
         id: 3,
-        avatar: {
-            fallbackIconName: 'standard:user',
-            initials: 'JP',
-            secondaryText: 'Unknown',
-            variant: 'circle',
-            status: 'unknown',
-            statusPosition: 'bottom-right',
-            primaryText: 'Jung Phung'
-        }
+        avatar: avatars[2],
+        avatarGroup: {
+            items: [
+                avatarsSimplified[0],
+                avatarsSimplified[1],
+                avatarsSimplified[3]
+            ],
+            maxCount: 3,
+            variant: 'circle'
+        },
+        currency: 3045
     },
     {
         id: 4,
-        avatar: {
-            fallbackIconName: 'standard:user',
-            initials: 'LM',
-            secondaryText: 'Approved',
-            variant: 'circle',
-            status: 'approved',
-            statusPosition: 'bottom-right',
-            primaryText: 'Lily Murray'
-        }
+        avatar: avatars[3],
+        avatarGroup: {
+            items: [
+                avatarsSimplified[1],
+                avatarsSimplified[2],
+                avatarsSimplified[0]
+            ],
+            maxCount: 3,
+            variant: 'circle'
+        },
+        currency: 432
     },
     {
         id: 5,
-        avatar: {
-            fallbackIconName: 'standard:user',
-            initials: 'LM',
-            src:
-                'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
-            secondaryText: 'Approved',
-            variant: 'circle',
-            status: 'approved',
-            statusPosition: 'bottom-right',
-            primaryText: 'Reginald Martin'
-        }
+        avatar: avatars[4],
+        avatarGroup: {
+            items: [
+                avatarsSimplified[4],
+                avatarsSimplified[2],
+                avatarsSimplified[1],
+                avatarsSimplified[3]
+            ],
+            maxCount: 3,
+            variant: 'circle'
+        },
+        currency: 217
     }
 ];
 
