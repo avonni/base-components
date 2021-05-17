@@ -30,7 +30,7 @@ const validButtonVariants = [
 export default class AvatarGroup extends LightningElement {
     @api listButtonLabel = 'Show more';
     @api listButtonIconName;
-    @api actionIconName;
+    @api actionIconName = 'action:new';
 
     _items = [];
     _maxCount;
@@ -290,5 +290,9 @@ export default class AvatarGroup extends LightningElement {
             this.showPopover = false;
             this.cancelBlur();
         }
+    }
+
+    actionClick() {
+        // * actions *
     }
 }

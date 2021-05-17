@@ -7,6 +7,11 @@
     cursor: pointer;
 }
 
+/* .avonni-avatar-group__action-button {
+    background-color: #f30404;
+    color:rgb(53, 125, 219);
+} */
+
 .avonni-avatar-group_x-large {
     width: 4.5rem;
     height: 4.5rem;
