@@ -38,6 +38,20 @@ export default {
                 defaultValue: { summary: 'large' }
             }
         },
+        titleFontWeight: {
+            name: 'title-font-weight',
+            control: {
+                type: 'select'
+            },
+            options: ['light', 'normal', 'bold'],
+            defaultValue: 'normal',
+            description:
+                'Defines the font weight of the title. Valid values include light, normal and bold.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'normal' }
+            }
+        },
         description: {
             control: {
                 type: 'text'
@@ -67,10 +81,24 @@ export default {
             options: ['small', 'medium', 'large', 'x-large', 'xx-large'],
             defaultValue: 'medium',
             description:
-                'Valid values include small, medium, large, x-large, xx-large.',
+                'Defines the size of the description. Valid values include small, medium, large, x-large, xx-large.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'medium' }
+            }
+        },
+        descriptionFontWeight: {
+            name: 'description-font-weight',
+            control: {
+                type: 'select'
+            },
+            options: ['light', 'normal', 'bold'],
+            defaultValue: 'normal',
+            description:
+                'Defines the font weight of the description. Valid values include light, normal and bold.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'normal' }
             }
         },
         src: {

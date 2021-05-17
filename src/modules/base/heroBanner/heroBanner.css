@@ -1,29 +1,26 @@
 .avonni-hero-banner-background-class {
     background-size: cover;
     background-position: center;
+    padding: 10px;
 }
 
 .avonni-hero-banner-text-container-without-slot {
     height: 100%;
     width: 100%;
-    padding: 30px;
 }
 
 .avonni-hero-banner-text-container-with-slot {
     height: 75%;
     width: 100%;
-    padding: 30px;
 }
 
 .avonni-hero-banner-text-x_large {
     font-size: 2rem;
-    font-weight: 300;
     line-height: 1.25;
 }
 
 .avonni-hero-banner-text-xx_large {
     font-size: 2.625rem;
-    font-weight: 300;
     line-height: 1.25;
 }
 
@@ -42,4 +39,16 @@
     justify-content: center;
     display: flex;
     flex-direction: column;
+}
+
+.avonni-hero-banner-font-weight_light {
+    font-weight: 100;
+}
+
+.avonni-hero-banner-font-weight_normal {
+    font-weight: 500;
+}
+
+.avonni-hero-banner-font-weight_bold {
+    font-weight: 700;
 }

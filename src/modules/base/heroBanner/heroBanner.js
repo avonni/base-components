@@ -18,6 +18,12 @@ const font_size_options = {
     descriptionDefault: 'medium'
 };
 
+const font_weight_options = {
+    valid: ['light', 'normal', 'bold'],
+    titleDefault: 'bold',
+    descriptionDefault: 'normal'
+};
+
 const DEFAULT_TITLE_FONT_COLOR = '#ffffff';
 const DEFAULT_DESCRIPTION_FONT_COLOR = '#ffffff';
 const DEFAULT_HEIGHT = '400';
@@ -33,7 +39,9 @@ export default class HeroBanner extends LightningElement {
     _textHorizontalAlignment = horizontal_alignement_options.default;
     _textVerticalAlignment = vertical_alignement_options.default;
     _titleFontSize = font_size_options.titleDefault;
+    _titleFontWeight = font_weight_options.titleDefault;
     _descriptionFontSize = font_size_options.descriptionDefault;
+    _descriptionFontWeight = font_weight_options.descriptionDefault;
     showSlot = true;
 
     renderedCallback() {
@@ -83,6 +91,18 @@ export default class HeroBanner extends LightningElement {
     }
 
     @api
+    get titleFontWeight() {
+        return this._titleFontWeight;
+    }
+
+    set titleFontWeight(weight) {
+        this._titleFontWeight = normalizeString(weight, {
+            fallbackValue: font_weight_options.titleDefault,
+            validValues: font_weight_options.valid
+        });
+    }
+
+    @api
     get descriptionFontSize() {
         return this._descriptionFontSize;
     }
@@ -91,6 +111,18 @@ export default class HeroBanner extends LightningElement {
         this._descriptionFontSize = normalizeString(size, {
             fallbackValue: font_size_options.descriptionDefault,
             validValues: font_size_options.valid
+        });
+    }
+
+    @api
+    get descriptionFontWeight() {
+        return this._descriptionFontWeight;
+    }
+
+    set descriptionFontWeight(weight) {
+        this._descriptionFontWeight = normalizeString(weight, {
+            fallbackValue: font_weight_options.titleDefault,
+            validValues: font_weight_options.valid
         });
     }
 
@@ -136,6 +168,14 @@ export default class HeroBanner extends LightningElement {
                 'avonni-hero-banner-text-xx_large':
                     this.titleFontSize === 'xx-large'
             })
+            .add({
+                'avonni-hero-banner-font-weight_light':
+                    this.titleFontWeight === 'light',
+                'avonni-hero-banner-font-weight_normal':
+                    this.titleFontWeight === 'normal',
+                'avonni-hero-banner-font-weight_bold':
+                    this.titleFontWeight === 'bold'
+            })
             .toString();
     }
 
@@ -150,6 +190,14 @@ export default class HeroBanner extends LightningElement {
                     this.descriptionFontSize === 'x-large',
                 'avonni-hero-banner-text-xx_large':
                     this.descriptionFontSize === 'xx-large'
+            })
+            .add({
+                'avonni-hero-banner-font-weight_light':
+                    this.descriptionFontWeight === 'light',
+                'avonni-hero-banner-font-weight_normal':
+                    this.descriptionFontWeight === 'normal',
+                'avonni-hero-banner-font-weight_bold':
+                    this.descriptionFontWeight === 'bold'
             })
             .toString();
     }

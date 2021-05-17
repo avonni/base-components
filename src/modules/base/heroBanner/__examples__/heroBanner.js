@@ -9,9 +9,11 @@ export const HeroBanner = ({
     title,
     titleFontColor,
     titleFontSize,
+    titleFontWeight,
     description,
     descriptionFontColor,
     descriptionFontSize,
+    descriptionFontWeight,
     src,
     height,
     textHorizontalAlignment,
@@ -21,9 +23,11 @@ export const HeroBanner = ({
     element.title = title;
     element.titleFontColor = titleFontColor;
     element.titleFontSize = titleFontSize;
+    element.titleFontWeight = titleFontWeight;
     element.description = description;
     element.descriptionFontColor = descriptionFontColor;
     element.descriptionFontSize = descriptionFontSize;
+    element.descriptionFontWeight = descriptionFontWeight;
     element.src = src;
     element.height = height;
     element.textHorizontalAlignment = textHorizontalAlignment;
