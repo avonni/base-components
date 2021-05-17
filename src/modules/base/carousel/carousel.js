@@ -97,14 +97,14 @@ export default class Carousel extends LightningElement {
         allItems.forEach((item) => {
             this._carouselItems.push({
                 key: item.id,
-                title: item.title,
+                heading: item.heading,
                 description: item.description,
                 buttonLabel: item.buttonLabel || null,
                 buttonIconName: item.buttonIconName,
                 buttonIconPosition: item.buttonIconPosition,
                 buttonVariant: item.buttonVariant,
                 buttonDisabled: item.buttonDisabled,
-                imageAssistiveText: item.imageAssistiveText || item.title,
+                imageAssistiveText: item.imageAssistiveText || item.heading,
                 href: item.href,
                 src: item.src
             });
