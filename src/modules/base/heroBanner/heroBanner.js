@@ -20,6 +20,7 @@ const font_size_options = {
 
 const DEFAULT_TITLE_FONT_COLOR = '#ffffff';
 const DEFAULT_DESCRIPTION_FONT_COLOR = '#ffffff';
+const DEFAULT_HEIGHT = '400';
 
 export default class HeroBanner extends LightningElement {
     @api title;
@@ -27,6 +28,7 @@ export default class HeroBanner extends LightningElement {
     @api description;
     @api descriptionFontColor = DEFAULT_DESCRIPTION_FONT_COLOR;
     @api src;
+    @api height = DEFAULT_HEIGHT;
 
     _textHorizontalAlignment = horizontal_alignement_options.default;
     _textVerticalAlignment = vertical_alignement_options.default;
@@ -93,7 +95,7 @@ export default class HeroBanner extends LightningElement {
     }
 
     get imgSrc() {
-        return `background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(${this.src});`;
+        return `background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(${this.src}); height: ${this.height}px`;
     }
 
     get titleColor() {

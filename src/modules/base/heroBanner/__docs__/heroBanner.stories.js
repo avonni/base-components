@@ -82,6 +82,17 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        height: {
+            control: {
+                type: 'text'
+            },
+            defaultValue: '400',
+            description: 'Defines the height of the banner. ',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: '400' }
+            }
+        },
         textHorizontalAlignment: {
             name: 'text-horizontal-alignment',
             control: {

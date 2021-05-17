@@ -6,6 +6,7 @@ const DEFAULT_TITLE_FONT_COLOR = '#ffffff';
 const DEFAULT_DESCRIPTION_FONT_COLOR = '#ffffff';
 const DEFAULT_TITLE_FONT_SIZE = 'large';
 const DEFAULT_DESCRIPTION_FONT_SIZE = 'medium';
+const DEFAULT_HEIGHT = '400';
 
 export default class DynamicMenu extends LightningElement {
     @api title;
@@ -15,6 +16,7 @@ export default class DynamicMenu extends LightningElement {
     @api descriptionFontColor = DEFAULT_DESCRIPTION_FONT_COLOR;
     @api descriptionFontSize = DEFAULT_DESCRIPTION_FONT_SIZE;
     @api src;
+    @api height = DEFAULT_HEIGHT;
     @api textHorizontalAlignment = DEFAULT_TEXT_HORIZONTAL_ALIGNMENT;
     @api textVerticalAlignment = DEFAULT_TEXT_VERTICAL_ALIGNMENT;
 }

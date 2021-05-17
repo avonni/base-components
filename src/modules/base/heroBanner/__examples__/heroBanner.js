@@ -13,6 +13,7 @@ export const HeroBanner = ({
     descriptionFontColor,
     descriptionFontSize,
     src,
+    height,
     textHorizontalAlignment,
     textVerticalAlignment
 }) => {
@@ -24,6 +25,7 @@ export const HeroBanner = ({
     element.descriptionFontColor = descriptionFontColor;
     element.descriptionFontSize = descriptionFontSize;
     element.src = src;
+    element.height = height;
     element.textHorizontalAlignment = textHorizontalAlignment;
     element.textVerticalAlignment = textVerticalAlignment;
     return element;
