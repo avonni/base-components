@@ -157,6 +157,7 @@ export default {
 const items = [
     {
         buttonLabel: 'Get Started',
+        secondaryButtonLabel: 'Subscribe',
         id: 1,
         title: 'Visit App Exchange',
         description: 'Extend Salesforce with the #1 business marketplace.',
@@ -167,6 +168,7 @@ const items = [
     },
     {
         buttonLabel: 'Get Started',
+        secondaryButtonLabel: 'Subscribe',
         id: 2,
         title: 'Click to Customize',
         description:
@@ -178,6 +180,7 @@ const items = [
     },
     {
         buttonLabel: 'Get Started',
+        secondaryButtonLabel: 'Subscribe',
         id: 3,
         title: 'Download Salesforce Apps',
         description: "Get the mobile app that's just for Salesforce admins.",
@@ -188,6 +191,7 @@ const items = [
     },
     {
         buttonLabel: 'Get Started',
+        secondaryButtonLabel: 'Subscribe',
         id: 4,
         title: 'Carousel Item 4',
         description: 'Description for carousel item #4',
@@ -198,6 +202,7 @@ const items = [
     },
     {
         buttonLabel: 'Learn More',
+        secondaryButtonLabel: 'Not interested',
         id: 5,
         title: 'Carousel Item 5',
         description: 'Description for carousel item #5',
@@ -208,6 +213,7 @@ const items = [
     },
     {
         buttonLabel: 'Learn More',
+        secondaryButtonLabel: 'Not interested',
         id: 6,
         title: 'Carousel Item 6',
         description: 'Description for carousel item #6',
@@ -218,6 +224,7 @@ const items = [
     },
     {
         buttonLabel: 'Learn More',
+        secondaryButtonLabel: 'Not interested',
         id: 7,
         title: 'Carousel Item 7',
         description: 'Description for carousel item #7',

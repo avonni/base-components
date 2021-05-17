@@ -79,6 +79,21 @@
                                                         ></lightning-button>
                                                     </div>
                                                 </template>
+                                                <template
+                                                    if:true={item.secondaryButtonLabel}
+                                                >
+                                                    <div
+                                                        class="slds-m-top_small"
+                                                    >
+                                                        <lightning-button
+                                                            label={item.secondaryButtonLabel}
+                                                            icon-name={item.secondaryButtonIconName}
+                                                            icon-position={item.secondaryButtonIconPosition}
+                                                            variant={item.secondaryButtonVariant}
+                                                            disabled={item.secondaryButtonDisabled}
+                                                        ></lightning-button>
+                                                    </div>
+                                                </template>
                                             </div>
                                         </a>
                                     </div>
