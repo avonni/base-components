@@ -6,7 +6,13 @@ import avatarGroup from './avatarGroup.html';
 import colorPicker from './colorPicker.html';
 import image from './image.html';
 
-const TYPES_ALWAYS_WRAPPED = ['avatar', 'avatar-group', 'color-picker'];
+const TYPES_ALWAYS_WRAPPED = [
+    'avatar',
+    'avatar-group',
+    'color-picker',
+    'image',
+    'input-counter'
+];
 
 export default class Datatable extends LightningDatatable {
     static customTypes = {
@@ -23,6 +29,23 @@ export default class Datatable extends LightningDatatable {
             template: image
         }
     };
+
+    connectedCallback() {
+        this.template.addEventListener('avatarclick', this.dispatchAvatarClick);
+        this.template.addEventListener('change', this.dispatchChange);
+        this.template.addEventListener('blur', this.dispatchBlur);
+        this.template.addEventListener('focus', this.dispatchFocus);
+    }
+
+    disconnectedCallback() {
+        this.template.removeEventListener(
+            'avatarclick',
+            this.dispatchAvatarClick
+        );
+        this.template.removeEventListener('change', this.dispatchChange);
+        this.template.removeEventListener('blur', this.dispatchBlur);
+        this.template.removeEventListener('focus', this.dispatchFocus);
+    }
 
     @api
     get columns() {
@@ -41,4 +64,40 @@ export default class Datatable extends LightningDatatable {
             }
         });
     }
+
+    dispatchAvatarClick = (event) => {
+        event.stopPropagation();
+
+        this.dispatchEvent(
+            new CustomEvent('avatarclick', {
+                detail: event.detail,
+                bubbles: true,
+                cancelable: true
+            })
+        );
+    };
+
+    dispatchChange = (event) => {
+        event.stopPropagation();
+
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                detail: event.detail,
+                bubbles: true,
+                cancelable: true
+            })
+        );
+    };
+
+    dispatchFocus = (event) => {
+        event.stopPropagation();
+
+        this.dispatchEvent(new CustomEvent('focus'));
+    };
+
+    dispatchBlur = (event) => {
+        event.stopPropagation();
+
+        this.dispatchEvent(new CustomEvent('blur'));
+    };
 }

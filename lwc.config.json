@@ -243,6 +243,14 @@
             "path": "src/modules/base/primitiveCoordinateItem/primitiveCoordinateItem.js"
         },
         {
+            "name": "c/primitiveDatatableAvatarGroup",
+            "path": "src/modules/base/primitiveDatatableAvatarGroup/primitiveDatatableAvatarGroup.js"
+        },
+        {
+            "name": "c/primitiveDatatableColorPicker",
+            "path": "src/modules/base/primitiveDatatableColorPicker/primitiveDatatableColorPicker.js"
+        },
+        {
             "name": "c/primitiveIcon",
             "path": "src/modules/base/primitiveIcon/primitiveIcon.js"
         },
