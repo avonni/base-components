@@ -575,7 +575,7 @@ describe('Carousel', () => {
             }
         ];
 
-        element.items = example;
+        element.items = items;
 
         const handler = jest.fn();
         element.addEventListener('itemclick', handler);
