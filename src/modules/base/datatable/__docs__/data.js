@@ -101,12 +101,19 @@ const columns = [
         type: 'currency',
         typeAttributes: {
             currencyCode: 'CAD'
-        }
+        },
+        editable: true
     },
     {
         label: 'Image',
         fieldName: 'image',
-        type: 'image'
+        type: 'image',
+        editable: true
+    },
+    {
+        label: 'Input Counter',
+        fieldName: 'inputCounter',
+        type: 'input-counter'
     }
 ];
 
@@ -130,6 +137,10 @@ const data = [
         image: {
             src:
                 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
+        },
+        inputCounter: {
+            label: 'Counter',
+            variant: 'label-hidden'
         }
     },
     {
@@ -152,6 +163,10 @@ const data = [
         image: {
             src:
                 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg'
+        },
+        inputCounter: {
+            label: 'Counter',
+            variant: 'label-hidden'
         }
     },
     {
@@ -177,6 +192,10 @@ const data = [
             height: 50,
             width: 50,
             alt: 'Blank image'
+        },
+        inputCounter: {
+            label: 'Counter',
+            variant: 'label-hidden'
         }
     },
     {
@@ -198,6 +217,10 @@ const data = [
         image: {
             src:
                 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-home-bg_2x.png'
+        },
+        inputCounter: {
+            label: 'Counter',
+            variant: 'label-hidden'
         }
     },
     {
@@ -220,6 +243,10 @@ const data = [
         image: {
             src:
                 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-header-bg_2x.png'
+        },
+        inputCounter: {
+            label: 'Counter',
+            variant: 'label-hidden'
         }
     }
 ];
