@@ -102,16 +102,18 @@ describe('Input Date Range', () => {
         });
         document.body.appendChild(element);
 
-        const sDate = 'Jul. 20, 2021';
-        const eDate = 'Jul. 21, 2021';
+        const sDate = 'juil. 20, 2021';
+        const sDateLocale = sDate.toLocaleString();
+        const eDate = 'juil. 21, 2021';
+        const eDateLocale = eDate.toLocaleString();
         element.startDate = startDate;
         element.endDate = endDate;
 
         return Promise.resolve().then(() => {
             const startInput = element.shadowRoot.querySelector('.start-date');
-            expect(startInput.value).toBe(sDate);
+            expect(startInput.value).toBe(sDateLocale);
             const endInput = element.shadowRoot.querySelector('.end-date');
-            expect(endInput.value).toBe(eDate);
+            expect(endInput.value).toBe(eDateLocale);
         });
     });
 
@@ -121,17 +123,19 @@ describe('Input Date Range', () => {
         });
         document.body.appendChild(element);
 
-        const sDate = 'July 20, 2021';
-        const eDate = 'July 21, 2021';
+        const sDate = 'juillet 20, 2021';
+        const sDateLocale = sDate.toLocaleString();
+        const eDate = 'juillet 21, 2021';
+        const eDateLocale = eDate.toLocaleString();
         element.dateStyle = 'long';
         element.startDate = startDate;
         element.endDate = endDate;
 
         return Promise.resolve().then(() => {
             const startInput = element.shadowRoot.querySelector('.start-date');
-            expect(startInput.value).toBe(sDate);
+            expect(startInput.value).toBe(sDateLocale);
             const endInput = element.shadowRoot.querySelector('.end-date');
-            expect(endInput.value).toBe(eDate);
+            expect(endInput.value).toBe(eDateLocale);
         });
     });
 
