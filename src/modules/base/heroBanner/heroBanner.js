@@ -42,16 +42,31 @@ export default class HeroBanner extends LightningElement {
     _titleFontWeight = font_weight_options.titleDefault;
     _descriptionFontSize = font_size_options.descriptionDefault;
     _descriptionFontWeight = font_weight_options.descriptionDefault;
+
+    _rendered = false;
     showSlot = true;
+    showFooterSlot = true;
 
     renderedCallback() {
-        if (this.slot) {
-            this.showSlot = this.slot.assignedElements().length !== 0;
+        if (!this._rendered) {
+            this._rendered = true;
+            if (this.slot) {
+                this.showSlot = this.slot.assignedElements().length !== 0;
+            }
+
+            if (this.footerSlot) {
+                this.showFooterSlot =
+                    this.footerSlot.assignedElements().length !== 0;
+            }
         }
     }
 
     get slot() {
         return this.template.querySelector('slot');
+    }
+
+    get footerSlot() {
+        return this.template.querySelector('slot[name=footer]');
     }
 
     @api
@@ -142,8 +157,9 @@ export default class HeroBanner extends LightningElement {
         return classSet('')
             .add({
                 'avonni-hero-banner-text-container-without-slot': !this
-                    .showSlot,
-                'avonni-hero-banner-text-container-with-slot': this.showSlot,
+                    .ShowFooterSlot,
+                'avonni-hero-banner-text-container-with-slot': this
+                    .ShowFooterSlot,
                 'slds-text-align_left': this.textHorizontalAlignment === 'left',
                 'slds-text-align_center':
                     this.textHorizontalAlignment === 'center',

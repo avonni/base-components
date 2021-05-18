@@ -5,9 +5,12 @@
             <span class={computedDescriptionClass} style={descriptionColor}>
                 {description}
             </span>
+            <template if:true={showSlot}>
+                <slot></slot>
+            </template>
         </div>
-        <template if:true={showSlot}>
-            <slot></slot>
+        <template if:true={showFooterSlot}>
+            <slot name="footer"></slot>
         </template>
     </div>
 </template>
