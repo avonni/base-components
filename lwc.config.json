@@ -255,6 +255,10 @@
             "path": "src/modules/base/primitiveDatatableInputCounter/primitiveDatatableInputCounter.js"
         },
         {
+            "name": "c/primitiveDatatableInputDateRange",
+            "path": "src/modules/base/primitiveDatatableInputDateRange/primitiveDatatableInputDateRange.js"
+        },
+        {
             "name": "c/primitiveIcon",
             "path": "src/modules/base/primitiveIcon/primitiveIcon.js"
         },

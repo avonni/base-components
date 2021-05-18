@@ -107,13 +107,17 @@ const columns = [
     {
         label: 'Image',
         fieldName: 'image',
-        type: 'image',
-        editable: true
+        type: 'image'
     },
     {
         label: 'Input Counter',
         fieldName: 'inputCounter',
         type: 'input-counter'
+    },
+    {
+        label: 'Input Date Range',
+        fieldName: 'inputDateRange',
+        type: 'input-date-range'
     }
 ];
 
@@ -141,6 +145,10 @@ const data = [
         inputCounter: {
             label: 'Counter',
             variant: 'label-hidden'
+        },
+        inputDateRange: {
+            startDate: new Date('2021/10/02'),
+            endDate: new Date('2021/10/05')
         }
     },
     {
@@ -167,6 +175,10 @@ const data = [
         inputCounter: {
             label: 'Counter',
             variant: 'label-hidden'
+        },
+        inputDateRange: {
+            startDate: new Date('2021/09/12'),
+            endDate: new Date('2021/10/05')
         }
     },
     {
@@ -196,6 +208,10 @@ const data = [
         inputCounter: {
             label: 'Counter',
             variant: 'label-hidden'
+        },
+        inputDateRange: {
+            startDate: new Date('2021/11/16'),
+            endDate: new Date('2021/11/30')
         }
     },
     {
@@ -221,6 +237,10 @@ const data = [
         inputCounter: {
             label: 'Counter',
             variant: 'label-hidden'
+        },
+        inputDateRange: {
+            startDate: new Date('2021/09/17'),
+            endDate: new Date('2021/09/25')
         }
     },
     {
@@ -247,6 +267,10 @@ const data = [
         inputCounter: {
             label: 'Counter',
             variant: 'label-hidden'
+        },
+        inputDateRange: {
+            startDate: new Date('2021/08/02'),
+            endDate: new Date('2021/09/15')
         }
     }
 ];

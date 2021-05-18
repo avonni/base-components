@@ -6,13 +6,15 @@ import avatarGroup from './avatarGroup.html';
 import colorPicker from './colorPicker.html';
 import image from './image.html';
 import inputCounter from './inputCounter.html';
+import inputDateRange from './inputDateRange.html';
 
 const TYPES_ALWAYS_WRAPPED = [
     'avatar',
     'avatar-group',
     'color-picker',
     'image',
-    'input-counter'
+    'input-counter',
+    'input-date-range'
 ];
 
 export default class Datatable extends LightningDatatable {
@@ -31,10 +33,15 @@ export default class Datatable extends LightningDatatable {
         },
         'input-counter': {
             template: inputCounter
+        },
+        'input-date-range': {
+            template: inputDateRange
         }
     };
 
     connectedCallback() {
+        super.connectedCallback();
+
         this.template.addEventListener('avatarclick', this.dispatchAvatarClick);
         this.template.addEventListener('change', this.dispatchChange);
         this.template.addEventListener('blur', this.dispatchBlur);
@@ -42,6 +49,8 @@ export default class Datatable extends LightningDatatable {
     }
 
     disconnectedCallback() {
+        super.disconnectedCallback();
+
         this.template.removeEventListener(
             'avatarclick',
             this.dispatchAvatarClick
