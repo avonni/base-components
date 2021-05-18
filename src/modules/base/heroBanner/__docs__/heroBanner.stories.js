@@ -1,4 +1,6 @@
 import { HeroBanner } from '../__examples__/heroBanner';
+import { HeroBannerWithButton } from '../__examples__/heroBannerWithButton';
+import { HeroBannerWithSearchBar } from '../__examples__/heroBannerWithSearchBar';
 
 export default {
     title: 'Example/Hero Banner',
@@ -151,9 +153,27 @@ export default {
 };
 
 const Template = (args) => HeroBanner(args);
+const TemplateWithButton = (args) => HeroBannerWithButton(args);
+const TemplateWithSearchBar = (args) => HeroBannerWithSearchBar(args);
 
 export const Base = Template.bind({});
 Base.args = {
+    title: 'This is a title',
+    description: 'This is the description',
+    src:
+        'https://acadienouvelle-6143.kxcdn.com/wp-content/uploads/2020/06/moon-416973_1280.jpg.gallery.jpg'
+};
+
+export const BaseWithButton = TemplateWithButton.bind({});
+BaseWithButton.args = {
+    title: 'This is a title',
+    description: 'This is the description',
+    src:
+        'https://acadienouvelle-6143.kxcdn.com/wp-content/uploads/2020/06/moon-416973_1280.jpg.gallery.jpg'
+};
+
+export const BaseWithSearchBar = TemplateWithSearchBar.bind({});
+BaseWithSearchBar.args = {
     title: 'This is a title',
     description: 'This is the description',
     src:

@@ -10,7 +10,7 @@ const DEFAULT_HEIGHT = '400';
 const DEFAULT_TITLE_FONT_WEIGHT = 'bold';
 const DEFAULT_DESCRIPTION_FONT_WEIGHT = 'normal';
 
-export default class HeroBanner extends LightningElement {
+export default class HeroBannerWithSearchBar extends LightningElement {
     @api title;
     @api titleFontColor = DEFAULT_TITLE_FONT_COLOR;
     @api titleFontSize = DEFAULT_TITLE_FONT_SIZE;
