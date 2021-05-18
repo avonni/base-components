@@ -262,6 +262,7 @@ export default class AvatarGroup extends LightningElement {
         border-width: 0px;
         padding: 0px;
         overflow: hidden;
+        vertical-align: middle;
         `;
     }
 
