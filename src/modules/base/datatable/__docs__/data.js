@@ -102,6 +102,11 @@ const columns = [
         typeAttributes: {
             currencyCode: 'CAD'
         }
+    },
+    {
+        label: 'Image',
+        fieldName: 'image',
+        type: 'image'
     }
 ];
 
@@ -121,7 +126,11 @@ const data = [
         colorPicker: {
             value: '#bd35bd'
         },
-        currency: 200
+        currency: 200,
+        image: {
+            src:
+                'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
+        }
     },
     {
         id: 2,
@@ -139,6 +148,10 @@ const data = [
         currency: 230,
         colorPicker: {
             value: '#5ebbff'
+        },
+        image: {
+            src:
+                'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg'
         }
     },
     {
@@ -157,6 +170,13 @@ const data = [
         colorPicker: {
             value: '#3bba4c',
             disabled: true
+        },
+        image: {
+            blankColor: '#CCC',
+            blank: true,
+            height: 50,
+            width: 50,
+            alt: 'Blank image'
         }
     },
     {
@@ -174,7 +194,11 @@ const data = [
         colorPicker: {
             value: '#f4bc25'
         },
-        currency: 432
+        currency: 432,
+        image: {
+            src:
+                'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-home-bg_2x.png'
+        }
     },
     {
         id: 5,
@@ -192,7 +216,11 @@ const data = [
         colorPicker: {
             value: '#f99120'
         },
-        currency: 217
+        currency: 217,
+        image: {
+            src:
+                'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-header-bg_2x.png'
+        }
     }
 ];
 
