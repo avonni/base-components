@@ -191,48 +191,40 @@
         </template>
         <template if:false={isNotList}>
             <div class={avatarWrapperClass}>
-                <!-- <c-primitive-avatar
-                    fallback-icon-name={actionIconName}
-                    variant={variant}
-                    size={size}
-                    role="button"
-                    data-type="show"
-                    onclick={actionClick}
-                    class={avatarInlineClass}
-                ></c-primitive-avatar> -->
                 <button
                     type="button"
                     title="ActionButton"
                     onclick={actionClick}
-                    class="slds-button"
-                    style="
-                        color: #303030;
-                        background-color: #dcdcdc;
-                        height: 4.5rem;
-                        width: 4.5rem;
-                        border-radius: 50%;
-                    "
+                    class={actionButtonClass}
+                    style={actionButtonStyle}
                 >
                     <lightning-icon
                         icon-name={actionIconName}
-                        size={size}
-                        class="slds-button__icon slds-current-color slds-text-align_center"
+                        size={iconSize}
+                        onclick={actionClick}
+                        style={actionButtonStyle}
+                        class="slds-button slds-button_icon slds-current-color slds-text-align_center"
                     ></lightning-icon>
                 </button>
             </div>
         </template>
         <template if:true={isNotList}>
             <div class={avatarGroupClass}>
-                <c-primitive-avatar
-                    fallback-icon-name={actionIconName}
-                    variant={variant}
-                    size={size}
-                    role="button"
-                    data-type="show"
-                    alternative-text="Action button"
+                <button
+                    type="button"
+                    title="ActionButton"
                     onclick={actionClick}
-                    class={avatarInlineClass}
-                ></c-primitive-avatar>
+                    class={actionButtonClass}
+                    style={actionButtonStyle}
+                >
+                    <lightning-icon
+                        icon-name={actionIconName}
+                        size={iconSize}
+                        onclick={actionClick}
+                        style={actionButtonStyle}
+                        class="slds-button slds-button_icon slds-current-color slds-text-align_center"
+                    ></lightning-icon>
+                </button>
             </div>
         </template>
     </template>

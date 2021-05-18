@@ -139,7 +139,7 @@ export default {
             control: {
                 type: 'text'
             },
-            defaultValue: 'utility:new',
+            defaultValue: 'utility:add',
             description:
                 "The Lightning Design System name of the action icon name. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.",
             table: {

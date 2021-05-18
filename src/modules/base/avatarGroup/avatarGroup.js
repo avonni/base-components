@@ -235,6 +235,49 @@ export default class AvatarGroup extends LightningElement {
         });
     }
 
+    get actionButtonClass() {
+        return classSet('avonni-avatar-group__avatar')
+            .add({
+                'avonni-avatar-group_in-line': this.layout === 'stack'
+            })
+            .add(`avonni-avatar-${this.size}`)
+            .add({
+                'avonni-avatar-action-button_circle': this.variant === 'circle',
+                'avonni-avatar-action-button_square': this.variant === 'square',
+                'avonni-avatar-action-button_x-large': this.size === 'x-large',
+                'avonni-avatar-action-button_xx-large':
+                    this.size === 'xx-large',
+                'avonni-avatar-action-button_large': this.size === 'large',
+                'avonni-avatar-action-button_medium': this.size === 'medium',
+                'avonni-avatar-action-button_small': this.size === 'small',
+                'avonni-avatar-action-button_x-small': this.size === 'x-small'
+            })
+            .toString();
+    }
+
+    get actionButtonStyle() {
+        return `
+        color: #42526E;
+        background-color: #E1E4E9;
+        border-width: 0px;
+        padding: 0px;
+        overflow: hidden;
+        `;
+    }
+
+    get iconSize() {
+        switch (this.size) {
+            case 'x-small':
+            case 'small':
+            case 'medium':
+                return 'x-small';
+            case 'xx-large':
+                return 'medium';
+            default:
+                return 'small';
+        }
+    }
+
     get isClassic() {
         return this.layout === 'stack' && this.items.length === 2;
     }
