@@ -145,7 +145,7 @@ export default {
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'action:new' },
-                category: 'List button'
+                category: 'Action Button'
             }
         }
     }
