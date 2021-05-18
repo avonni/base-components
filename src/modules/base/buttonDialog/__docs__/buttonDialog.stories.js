@@ -4,18 +4,44 @@ export default {
     title: 'Example/Button Dialog',
     argTypes: {
         accessKey: {
+            name: 'access-key',
             control: {
                 type: 'text'
+            },
+            description: 'The keyboard shortcut for the button.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        alternativeText: {
+            name: 'alternative-text',
+            control: {
+                type: 'text'
+            },
+            description: 'The assistive text for the button.',
+            table: {
+                type: { summary: 'string' }
             }
         },
         label: {
             control: {
                 type: 'text'
+            },
+            description: 'Optional text to be shown on the button.',
+            table: {
+                type: { summary: 'string' }
             }
         },
         iconName: {
+            name: 'icon-name',
             control: {
                 type: 'text'
+            },
+            description:
+                "The name of the icon to be used in the format 'utility:down'.",
+            table: {
+                type: { summary: 'string' },
+                category: 'icon'
             }
         },
         variant: {
@@ -33,18 +59,26 @@ export default {
                 'success'
             ],
             defaultValue: 'neutral',
+            description:
+                'The variant changes the appearance of the button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success.',
             table: {
-                defaultValue: { summary: 'neutral' }
+                defaultValue: { summary: 'neutral' },
+                type: { summary: 'string' }
             }
         },
         iconPosition: {
+            name: 'icon-position',
             control: {
-                type: 'select'
+                type: 'radio'
             },
             options: ['left', 'right'],
             defaultValue: 'left',
+            description:
+                'Describes the position of the icon with respect to body. Options include left and right.',
             table: {
-                defaultValue: { summary: 'left' }
+                defaultValue: { summary: 'left' },
+                type: { summary: 'string' },
+                category: 'icon'
             }
         },
         disabled: {
@@ -52,8 +86,10 @@ export default {
                 type: 'boolean'
             },
             defaultValue: 0,
+            description: 'If present, the popover can be opened by users.',
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         }
     },

@@ -6,11 +6,22 @@ export default {
         title: {
             control: {
                 type: 'text'
+            },
+            description:
+                'The title can include text and is displayed in the header.',
+            table: {
+                type: { summary: 'string' }
             }
         },
         iconName: {
+            name: 'icon-name',
             control: {
                 type: 'text'
+            },
+            description: 'Icon display next to the tile',
+            table: {
+                type: { summary: 'string' },
+                category: 'Icon'
             }
         },
         variant: {
@@ -19,28 +30,41 @@ export default {
             },
             options: ['default', 'brand', 'warning', 'error', 'success'],
             defaultValue: 'default',
+            description:
+                'Valid values include default, brand, warning, error, success.',
             table: {
+                type: { summary: 'string' },
                 defaultValue: { summary: 'default' }
             }
         },
         iconPosition: {
+            name: 'icon-position',
             control: {
                 type: 'select'
             },
             options: ['left', 'right'],
             defaultValue: 'left',
+            description:
+                'Describes the position of the icon. Options include left and right.',
             table: {
-                defaultValue: { summary: 'left' }
+                type: { summary: 'string' },
+                defaultValue: { summary: 'left' },
+                category: 'Icon'
             }
         },
         iconSize: {
+            name: 'icon-size',
             control: {
                 type: 'select'
             },
             options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
             defaultValue: 'small',
+            description:
+                'Valid values include xx-small, x-small, small, medium, large.',
             table: {
-                defaultValue: { summary: 'small' }
+                type: { summary: 'string' },
+                defaultValue: { summary: 'small' },
+                category: 'Icon'
             }
         }
     }

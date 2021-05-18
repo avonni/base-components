@@ -32,7 +32,8 @@ export default {
             description:
                 'Allowed values are coverable, non-coverable and vertical.',
             table: {
-                defaultValue: { summary: 'non-coverable' }
+                defaultValue: { summary: 'non-coverable' },
+                type: { summary: 'string' }
             }
         },
         type: {
@@ -43,7 +44,8 @@ export default {
             defaultValue: 'radio',
             description: 'Allowed values are radio and checkbox.',
             table: {
-                defaultValue: { summary: 'radio' }
+                defaultValue: { summary: 'radio' },
+                type: { summary: 'string' }
             }
         },
         size: {
@@ -55,7 +57,8 @@ export default {
             description:
                 'Allowed values are xx-small (4rem x 4 rem), x-small (6rem x 6 rem), small (8rem x 8rem), medium and large.',
             table: {
-                defaultValue: { summary: 'medium' }
+                defaultValue: { summary: 'medium' },
+                type: { summary: 'string' }
             }
         },
         ratio: {
@@ -66,7 +69,8 @@ export default {
             defaultValue: '1-by-1',
             description: 'Values include 1-by-1, 4-by-3 and 16-by-9.',
             table: {
-                defaultValue: { summary: '1-by-1' }
+                defaultValue: { summary: '1-by-1' },
+                type: { summary: 'string' }
             }
         },
         hideCheckMark: {
@@ -77,7 +81,8 @@ export default {
             defaultValue: 0,
             description: 'If true, hide the check mark.',
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         },
         hideBorder: {
@@ -89,7 +94,8 @@ export default {
             description:
                 'If true, hide the border and box-shadow on item picker. Still displayed border on hover.',
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         },
         disabled: {
@@ -100,6 +106,7 @@ export default {
             description: 'If present, the visual picker is disabled.',
             table: {
                 defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' },
                 category: 'Validations'
             }
         },
@@ -111,6 +118,7 @@ export default {
             description: 'If present, at least one item must be selected.',
             table: {
                 defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' },
                 category: 'Validations'
             }
         },
@@ -121,7 +129,7 @@ export default {
             description:
                 'Value of the selected item. For the checkbox type, the value is an array (Ex: [value1, value2])',
             table: {
-                type: { summary: 'string or striing[]' }
+                type: { summary: 'string or string[]' }
             }
         },
         items: {

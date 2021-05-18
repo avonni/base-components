@@ -23,6 +23,10 @@
             "path": "src/modules/base/iso8601Utils/iso8601Utils.js"
         },
         {
+            "name": "c/tooltipLibrary",
+            "path": "src/modules/base/tooltipLibrary/tooltipLibrary.js"
+        },
+        {
             "name": "c/utils",
             "path": "src/modules/base/utils/utils.js"
         },
@@ -115,6 +119,10 @@
             "path": "src/modules/base/dialog/dialog.js"
         },
         {
+            "name": "c/dualListbox",
+            "path": "src/modules/base/dualListbox/dualListbox.js"
+        },
+        {
             "name": "c/dynamicMenu",
             "path": "src/modules/base/dynamicMenu/dynamicMenu.js"
         },
@@ -125,6 +133,14 @@
         {
             "name": "c/expandableSection",
             "path": "src/modules/base/expandableSection/expandableSection.js"
+        },
+        {
+            "name": "c/filterMenuGroup",
+            "path": "src/modules/base/filterMenuGroup/filterMenuGroup.js"
+        },
+        {
+            "name": "c/filterMenu",
+            "path": "src/modules/base/filterMenu/filterMenu.js"
         },
         {
             "name": "c/externalLink",
@@ -209,6 +225,10 @@
         {
             "name": "c/primitiveAvatar",
             "path": "src/modules/base/primitiveAvatar/primitiveAvatar.js"
+        },
+        {
+            "name": "c/primitiveBubble",
+            "path": "src/modules/base/primitiveBubble/primitiveBubble.js"
         },
         {
             "name": "c/primitiveColorpickerButton",
@@ -443,6 +463,10 @@
             "path": "src/modules/base/dialog/dialog.js"
         },
         {
+            "name": "avonni/dualListbox",
+            "path": "src/modules/base/dualListbox/dualListbox.js"
+        },
+        {
             "name": "avonni/dynamicMenu",
             "path": "src/modules/base/dynamicMenu/dynamicMenu.js"
         },
@@ -453,6 +477,14 @@
         {
             "name": "avonni/expandableSection",
             "path": "src/modules/base/expandableSection/expandableSection.js"
+        },
+        {
+            "name": "avonni/filterMenu",
+            "path": "src/modules/base/filterMenu/filterMenu.js"
+        },
+        {
+            "name": "avonni/filterMenuGroup",
+            "path": "src/modules/base/filterMenuGroup/filterMenuGroup.js"
         },
         {
             "name": "avonni/illustration",
@@ -643,9 +675,12 @@
         "avonni/confetti",
         "avonni/dateTimePicker",
         "avonni/dialog",
+        "avonni/dualListbox",
         "avonni/dynamicMenu",
         "avonni/emojiPicker",
         "avonni/expandableSection",
+        "avonni/filterMenuGroup",
+        "avonni/filterMenu",
         "avonni/illustration",
         "avonni/image",
         "avonni/inputCounter",

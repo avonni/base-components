@@ -3,14 +3,15 @@ import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
 import BaseView from './base.html';
 import ModalView from './modal.html';
 import CardView from './card.html';
+import { classSet } from '../utils/classSet';
 
 const VARIANTS = {
     valid: ['base', 'modal', 'card'],
     default: 'base'
 };
 const INDICATOR_POSITIONS = {
-    valid: ['header', 'footer'],
-    default: 'footer'
+    valid: ['top', 'bottom', 'right', 'left'],
+    default: 'bottom'
 };
 
 const INDICATOR_TYPES = {
@@ -93,6 +94,17 @@ export default class Wizard extends LightningElement {
         if (this.variant === 'modal') this.hide();
     }
 
+    renderedCallback() {
+        if (this.steps.length > 0) {
+            const navigations = this.template.querySelectorAll(
+                'c-primitive-wizard-navigation'
+            );
+            navigations.forEach((nav) => {
+                nav.steps = this.steps;
+            });
+        }
+    }
+
     render() {
         if (this.variant === 'modal') {
             return ModalView;
@@ -122,15 +134,6 @@ export default class Wizard extends LightningElement {
             step.callbacks.setClass('slds-hide');
         });
         this.steps[this.currentStepIndex].callbacks.setClass(undefined);
-    }
-
-    get currentStepIndex() {
-        const stepNames = this.steps.map((step) => step.name);
-        return stepNames.indexOf(this.currentStep);
-    }
-
-    get indicatorInHeader() {
-        return this.indicatorPosition === 'header';
     }
 
     @api
@@ -329,6 +332,102 @@ export default class Wizard extends LightningElement {
             DEFAULT_FRACTION_LABEL;
     }
 
+    get currentStepIndex() {
+        const stepNames = this.steps.map((step) => step.name);
+        return stepNames.indexOf(this.currentStep);
+    }
+
+    get indicatorInHeader() {
+        return !this.hideIndicator && this.indicatorPosition === 'top';
+    }
+
+    get indicatorOnSide() {
+        return (
+            !this.hideIndicator &&
+            !this.hideNavigation &&
+            (this.indicatorPosition === 'left' ||
+                this.indicatorPosition === 'right')
+        );
+    }
+
+    get baseIndicator() {
+        return (
+            this.indicatorType === 'base-shaded' ||
+            this.indicatorType === 'base'
+        );
+    }
+
+    get wrapperClass() {
+        return classSet().add({
+            'slds-grid slds-gutters slds-has-flexi-truncate slds-grid_vertical-stretch':
+                this.indicatorPosition === 'right' ||
+                this.indicatorPosition === 'left'
+        });
+    }
+
+    get mainColClass() {
+        return classSet().add({
+            'slds-col':
+                this.indicatorPosition === 'right' ||
+                this.indicatorPosition === 'left',
+            'slds-order_2': this.indicatorPosition === 'left'
+        });
+    }
+
+    get sideColClass() {
+        return classSet('slds-container_small').add({
+            'slds-align-bottom': this.indicatorType === 'fractions',
+            'slds-p-right_medium': this.indicatorPosition === 'right',
+            'slds-p-left_medium': this.indicatorPosition === 'left',
+            'slds-p-bottom_medium':
+                this.variant === 'base' && !this.indicatorType === 'fractions',
+            'slds-p-bottom_large':
+                this.variant === 'base' && this.indicatorType === 'fractions'
+        });
+    }
+
+    @api
+    get buttonAlignmentBump() {
+        return this._buttonAlignmentBump;
+    }
+    set buttonAlignmentBump(position) {
+        this._buttonAlignmentBump = normalizeString(position, {
+            fallbackValue: null,
+            validValues: POSITIONS.valid
+        });
+    }
+
+    @api
+    get actionPosition() {
+        return this._actionPosition;
+    }
+    set actionPosition(position) {
+        this._actionPosition = normalizeString(position, {
+            fallbackValue: POSITIONS.defaultAction,
+            validValues: POSITIONS.valid
+        });
+    }
+
+    @api
+    get fractionPrefixLabel() {
+        return this._fractionPrefixLabel;
+    }
+    set fractionPrefixLabel(prefix) {
+        this._fractionPrefixLabel =
+            (typeof prefix === 'string' && prefix.trim()) ||
+            DEFAULT_FRACTION_PREFIX_LABEL;
+    }
+
+    @api
+    get fractionLabel() {
+        return this._fractionLabel;
+    }
+    set fractionLabel(label) {
+        this._fractionLabel =
+            (typeof label === 'string' && label.trim()) ||
+            DEFAULT_FRACTION_LABEL;
+    }
+
     @api
     show() {
         this.showWizard = true;
@@ -386,6 +485,12 @@ export default class Wizard extends LightningElement {
 
     async handleChange(event) {
         this.errorMessage = undefined;
+        const verticalIndicator = this.template.querySelector(
+            'c-vertical-progress-indicator'
+        );
+        if (verticalIndicator) {
+            verticalIndicator.hasError = false;
+        }
 
         // Execute beforeChange function set on the step
         // If the function returns false, the change does not happen
@@ -396,6 +501,10 @@ export default class Wizard extends LightningElement {
             this.errorMessage = this.steps[
                 this.currentStepIndex
             ].beforeChangeErrorMessage;
+
+            if (verticalIndicator) {
+                verticalIndicator.hasError = true;
+            }
             return;
         }
 

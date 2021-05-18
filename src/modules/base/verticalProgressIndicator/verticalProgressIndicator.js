@@ -26,6 +26,11 @@ export default class VerticalProgressIndicator extends LightningElement {
         });
 
         elements.forEach((element, index) => {
+            element.classList.remove('slds-has-error');
+            element.classList.remove('slds-is-active');
+            element.classList.remove('slds-is-completed');
+            element.setIcon(undefined);
+
             if (indexCompleted > index) {
                 element.classList.add('slds-is-completed');
                 element.setIcon('utility:success');

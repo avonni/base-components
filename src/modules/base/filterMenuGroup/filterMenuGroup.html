@@ -1,0 +1,70 @@
+<template>
+    <template if:true={isVertical}>
+        <div class="slds-m-bottom_medium" if:true={showSelectedItems}>
+            <lightning-pill-container
+                items={selectedPills}
+                onitemremove={handleSelectedItemRemove}
+            ></lightning-pill-container>
+        </div>
+    </template>
+    <ul class={filtersWrapperClass}>
+        <template for:each={menus} for:item="menu">
+            <li class={filtersClass} key={menu.name}>
+                <c-filter-menu
+                    access-key={menu.accessKey}
+                    alternative-text={menu.alternativeText}
+                    disabled={menu.disabled}
+                    icon-name={menu.iconName}
+                    icon-size={menu.iconSize}
+                    is-loading={menu.isLoading}
+                    label={menu.label}
+                    loading-state-alternative-text={menu.loadingStateAlternativeText}
+                    items={menu.items}
+                    title={menu.title}
+                    tooltip={menu.tooltip}
+                    value={menu.value}
+                    variant={variant}
+                    button-variant={menu.buttonVariant}
+                    search-input-placeholder={menu.searchInputPlaceholder}
+                    show-search-box={menu.showSearchBox}
+                    apply-button-label={applyButtonLabel}
+                    reset-button-label={resetButtonLabel}
+                    hide-apply-reset-buttons={isVertical}
+                    dropdown-alignment={menu.dropdownAlignment}
+                    dropdown-width={menu.dropdownWidth}
+                    dropdown-length={menu.dropdownLength}
+                    dropdown-nubbin={menu.dropdownNubbin}
+                    hide-selected-items
+                    data-name={menu.name}
+                    onapply={handleValueChange}
+                    onreset={handleValueChange}
+                    onselect={dispatchSelect}
+                ></c-filter-menu>
+            </li>
+        </template>
+    </ul>
+    <template if:false={isVertical}>
+        <div class="slds-m-top_x-small">
+            <lightning-pill-container
+                if:true={showSelectedItems}
+                items={selectedPills}
+                onitemremove={handleSelectedItemRemove}
+            ></lightning-pill-container>
+        </div>
+    </template>
+    <template if:true={isVertical}>
+        <lightning-button
+            class="slds-m-right_x-small"
+            variant="base"
+            label={resetButtonLabel}
+            title={resetButtonLabel}
+            onclick={handleResetClick}
+        ></lightning-button>
+        <lightning-button
+            variant="brand"
+            label={applyButtonLabel}
+            title={applyButtonLabel}
+            onclick={handleApplyClick}
+        ></lightning-button>
+    </template>
+</template>

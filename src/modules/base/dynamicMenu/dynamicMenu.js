@@ -295,7 +295,11 @@ export default class DynamicMenu extends LightningElement {
         let index = event.currentTarget.id.split('-')[0];
         let item = this.items[index];
 
-        const selectedEvent = new CustomEvent('select', { detail: item });
+        const selectedEvent = new CustomEvent('select', {
+            detail: {
+                item
+            }
+        });
         this.dispatchEvent(selectedEvent);
 
         this.toggleMenuVisibility();

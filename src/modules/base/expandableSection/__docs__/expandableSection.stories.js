@@ -6,6 +6,11 @@ export default {
         title: {
             control: {
                 type: 'text'
+            },
+            description:
+                'The title can include text, and is displayed in the header.',
+            table: {
+                type: { summary: 'string' }
             }
         },
         closed: {
@@ -13,8 +18,10 @@ export default {
                 type: 'boolean'
             },
             defaultValue: 0,
+            description: 'If true, close the section.',
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         },
         collapsible: {
@@ -25,7 +32,8 @@ export default {
             description:
                 'If the section is not collapsible, the left icon is hidden.',
             table: {
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         }
     },
