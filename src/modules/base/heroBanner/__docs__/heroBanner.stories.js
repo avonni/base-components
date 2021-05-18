@@ -158,18 +158,66 @@ const TemplateWithSearchBar = (args) => HeroBannerWithSearchBar(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    title: 'This is a title',
-    description: 'This is the description',
+    title: 'Lost In The Woods',
+    titleFontSize: 'xx-large',
+    titleFontWeight: 'bold',
+    description: 'Find your true self',
     src:
-        'https://acadienouvelle-6143.kxcdn.com/wp-content/uploads/2020/06/moon-416973_1280.jpg.gallery.jpg'
+        'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
+    height: 300
+};
+
+export const BaseTopLeft = Template.bind({});
+BaseTopLeft.args = {
+    title: 'Lost In The Woods',
+    titleFontSize: 'xx-large',
+    titleFontWeight: 'bold',
+    description: 'Find your true self',
+    src:
+        'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
+    height: 300,
+    textVerticalAlignment: 'top'
+};
+
+export const BaseTopRight = Template.bind({});
+BaseTopRight.args = {
+    title: 'Lost In The Woods',
+    titleFontSize: 'xx-large',
+    titleFontWeight: 'bold',
+    description: 'Find your true self',
+    src:
+        'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
+    height: 300,
+    textVerticalAlignment: 'top',
+    textHorizontalAlignment: 'right'
+};
+
+export const BaseBottomRight = Template.bind({});
+BaseBottomRight.args = {
+    title: 'Lost In The Woods',
+    titleFontSize: 'xx-large',
+    titleFontWeight: 'bold',
+    description: 'Find your true self',
+    src:
+        'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
+    height: 300,
+    textVerticalAlignment: 'bottom',
+    textHorizontalAlignment: 'right'
 };
 
 export const BaseWithButton = TemplateWithButton.bind({});
 BaseWithButton.args = {
-    title: 'This is a title',
-    description: 'This is the description',
+    title: 'Trailblazer Community Group',
+    titleFontColor: '#4aca82',
+    titleFontSize: 'xx-large',
+    titleFontWeight: 'bold',
+    description: 'Summer camp',
+    descriptionFontSize: 'large',
+    descriptionFontWeight: 'light',
     src:
-        'https://acadienouvelle-6143.kxcdn.com/wp-content/uploads/2020/06/moon-416973_1280.jpg.gallery.jpg'
+        'https://backofficethinking.com/sites/default/files/styles/title_banner/public/images/Basic%20page/hero/salesforce-trail.jpg?itok=56jumEDa',
+    height: 350,
+    textHorizontalAlignment: 'center'
 };
 
 export const BaseWithSearchBar = TemplateWithSearchBar.bind({});
@@ -177,5 +225,6 @@ BaseWithSearchBar.args = {
     title: 'This is a title',
     description: 'This is the description',
     src:
-        'https://acadienouvelle-6143.kxcdn.com/wp-content/uploads/2020/06/moon-416973_1280.jpg.gallery.jpg'
+        'https://www.pwc.ch/de/images/hero/salesforce-hero-banner-1600x600-2.jpg',
+    height: 600
 };

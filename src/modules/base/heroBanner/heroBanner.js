@@ -152,7 +152,9 @@ export default class HeroBanner extends LightningElement {
                 'avonni-hero-banner-vertical-alignement-bottom':
                     this.textVerticalAlignment === 'bottom',
                 'avonni-hero-banner-vertical-alignement-center':
-                    this.textVerticalAlignment === 'center'
+                    this.textVerticalAlignment === 'center',
+                'avonni-hero-banner-column-div':
+                    this.textVerticalAlignment === 'top'
             })
             .toString();
     }
