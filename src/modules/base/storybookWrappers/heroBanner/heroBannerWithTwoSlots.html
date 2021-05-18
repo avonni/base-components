@@ -1,0 +1,45 @@
+<template>
+    <c-hero-banner
+        title={title}
+        title-font-color={titleFontColor}
+        title-font-size={titleFontSize}
+        title-font-weight={titleFontWeight}
+        description={description}
+        description-font-color={descriptionFontColor}
+        description-font-size={descriptionFontSize}
+        description-font-weight={descriptionFontWeight}
+        src={src}
+        height={height}
+        text-horizontal-alignment={textHorizontalAlignment}
+        text-vertical-alignment={textVerticalAlignment}
+    >
+        <lightning-button
+            label="Feeling Lucky?"
+            variant="brand-outline"
+            class="slds-m-top_small"
+        ></lightning-button>
+        <div
+            slot="footer"
+            style="
+                width: 100%;
+                height: 25%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            "
+        >
+            <lightning-input
+                name="enter-search"
+                label="Search when user hits the 'enter' key"
+                type="search"
+                variant="label-hidden"
+                class="slds-size--1-of-2"
+            ></lightning-input>
+            <lightning-button
+                label="Search"
+                variant="brand"
+                class="slds-m-left_small"
+            ></lightning-button>
+        </div>
+    </c-hero-banner>
+</template>

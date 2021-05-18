@@ -157,9 +157,9 @@ export default class HeroBanner extends LightningElement {
         return classSet('')
             .add({
                 'avonni-hero-banner-text-container-without-slot': !this
-                    .ShowFooterSlot,
+                    .showFooterSlot,
                 'avonni-hero-banner-text-container-with-slot': this
-                    .ShowFooterSlot,
+                    .showFooterSlot,
                 'slds-text-align_left': this.textHorizontalAlignment === 'left',
                 'slds-text-align_center':
                     this.textHorizontalAlignment === 'center',

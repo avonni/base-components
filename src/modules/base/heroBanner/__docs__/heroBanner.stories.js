@@ -1,6 +1,7 @@
 import { HeroBanner } from '../__examples__/heroBanner';
 import { HeroBannerWithButton } from '../__examples__/heroBannerWithButton';
 import { HeroBannerWithSearchBar } from '../__examples__/heroBannerWithSearchBar';
+import { HeroBannerWithTwoSlots } from '../__examples__/heroBannerWithTwoSlots';
 
 export default {
     title: 'Example/Hero Banner',
@@ -155,6 +156,7 @@ export default {
 const Template = (args) => HeroBanner(args);
 const TemplateWithButton = (args) => HeroBannerWithButton(args);
 const TemplateWithSearchBar = (args) => HeroBannerWithSearchBar(args);
+const TemplateWithTwoSlots = (args) => HeroBannerWithTwoSlots(args);
 
 export const Base = Template.bind({});
 Base.args = {
@@ -167,6 +169,30 @@ Base.args = {
     height: 300
 };
 
+export const BaseAbsoluteCenter = Template.bind({});
+BaseAbsoluteCenter.args = {
+    title: 'Lost In The Woods',
+    titleFontSize: 'xx-large',
+    titleFontWeight: 'bold',
+    description: 'Find your true self',
+    src:
+        'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
+    height: 300,
+    textHorizontalAlignment: 'center'
+};
+
+export const BaseCenteredRight = Template.bind({});
+BaseCenteredRight.args = {
+    title: 'Lost In The Woods',
+    titleFontSize: 'xx-large',
+    titleFontWeight: 'bold',
+    description: 'Find your true self',
+    src:
+        'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
+    height: 300,
+    textHorizontalAlignment: 'right'
+};
+
 export const BaseTopLeft = Template.bind({});
 BaseTopLeft.args = {
     title: 'Lost In The Woods',
@@ -177,6 +203,19 @@ BaseTopLeft.args = {
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
     textVerticalAlignment: 'top'
+};
+
+export const BaseTopCenter = Template.bind({});
+BaseTopCenter.args = {
+    title: 'Lost In The Woods',
+    titleFontSize: 'xx-large',
+    titleFontWeight: 'bold',
+    description: 'Find your true self',
+    src:
+        'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
+    height: 300,
+    textVerticalAlignment: 'top',
+    textHorizontalAlignment: 'center'
 };
 
 export const BaseTopRight = Template.bind({});
@@ -192,6 +231,31 @@ BaseTopRight.args = {
     textHorizontalAlignment: 'right'
 };
 
+export const BaseBottomLeft = Template.bind({});
+BaseBottomLeft.args = {
+    title: 'Lost In The Woods',
+    titleFontSize: 'xx-large',
+    titleFontWeight: 'bold',
+    description: 'Find your true self',
+    src:
+        'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
+    height: 300,
+    textVerticalAlignment: 'bottom'
+};
+
+export const BaseBottomCenter = Template.bind({});
+BaseBottomCenter.args = {
+    title: 'Lost In The Woods',
+    titleFontSize: 'xx-large',
+    titleFontWeight: 'bold',
+    description: 'Find your true self',
+    src:
+        'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
+    height: 300,
+    textVerticalAlignment: 'bottom',
+    textHorizontalAlignment: 'center'
+};
+
 export const BaseBottomRight = Template.bind({});
 BaseBottomRight.args = {
     title: 'Lost In The Woods',
@@ -205,8 +269,8 @@ BaseBottomRight.args = {
     textHorizontalAlignment: 'right'
 };
 
-export const BaseWithButton = TemplateWithButton.bind({});
-BaseWithButton.args = {
+export const withButtonInFooterSlot = TemplateWithButton.bind({});
+withButtonInFooterSlot.args = {
     title: 'Trailblazer Community Group',
     titleFontColor: '#4aca82',
     titleFontSize: 'xx-large',
@@ -220,11 +284,32 @@ BaseWithButton.args = {
     textHorizontalAlignment: 'center'
 };
 
-export const BaseWithSearchBar = TemplateWithSearchBar.bind({});
-BaseWithSearchBar.args = {
-    title: 'This is a title',
-    description: 'This is the description',
+export const withSearchBarInFooterSlot = TemplateWithSearchBar.bind({});
+withSearchBarInFooterSlot.args = {
+    title: 'Looking for a vacation?',
+    titleFontColor: '#2b98c7',
+    titleFontSize: 'xx-large',
+    titleFontWeight: 'bold',
+    description: 'Find the right one',
+    descriptionFontSize: 'small',
+    descriptionFontWeight: 'bold',
     src:
-        'https://www.pwc.ch/de/images/hero/salesforce-hero-banner-1600x600-2.jpg',
-    height: 600
+        'https://res.cloudinary.com/hy4kyit2a/image/upload/2019-10-Developer_Website_Hero_Banner-1280%C3%97248%20%281%29.png',
+    height: 500,
+    textHorizontalAlignment: 'center'
+};
+
+export const withTwoSlots = TemplateWithTwoSlots.bind({});
+withTwoSlots.args = {
+    title: 'Looking for a vacation?',
+    titleFontColor: '#2b98c7',
+    titleFontSize: 'xx-large',
+    titleFontWeight: 'bold',
+    description: 'Find the right one',
+    descriptionFontSize: 'small',
+    descriptionFontWeight: 'bold',
+    src:
+        'https://res.cloudinary.com/hy4kyit2a/image/upload/2019-10-Developer_Website_Hero_Banner-1280%C3%97248%20%281%29.png',
+    height: 300,
+    textHorizontalAlignment: 'center'
 };
