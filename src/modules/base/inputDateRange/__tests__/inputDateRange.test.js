@@ -102,8 +102,8 @@ describe('Input Date Range', () => {
         });
         document.body.appendChild(element);
 
-        const sDate = 'juil. 20, 2021';
-        const eDate = 'juil. 21, 2021';
+        const sDate = 'Jul. 20, 2021';
+        const eDate = 'Jul. 21, 2021';
         element.startDate = startDate;
         element.endDate = endDate;
 
@@ -121,8 +121,8 @@ describe('Input Date Range', () => {
         });
         document.body.appendChild(element);
 
-        const sDate = 'juillet 20, 2021';
-        const eDate = 'juillet 21, 2021';
+        const sDate = 'July 20, 2021';
+        const eDate = 'July 21, 2021';
         element.dateStyle = 'long';
         element.startDate = startDate;
         element.endDate = endDate;
