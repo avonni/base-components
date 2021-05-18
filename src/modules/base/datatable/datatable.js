@@ -1,18 +1,22 @@
 import LightningDatatable from 'lightning/datatable';
-import avatar from './avatar.html';
-import avatarGroup from './avatarGroup.html';
 import { api } from 'lwc';
 
-const TYPES_ALWAYS_WRAPPED = ['avatar', 'avatar-group'];
+import avatar from './avatar.html';
+import avatarGroup from './avatarGroup.html';
+import colorPicker from './colorPicker.html';
+
+const TYPES_ALWAYS_WRAPPED = ['avatar', 'avatar-group', 'color-picker'];
 
 export default class Datatable extends LightningDatatable {
     static customTypes = {
         avatar: {
             template: avatar
-            // typeAttributes: []
         },
         'avatar-group': {
             template: avatarGroup
+        },
+        'color-picker': {
+            template: colorPicker
         }
     };
 

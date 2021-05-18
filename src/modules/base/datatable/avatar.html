@@ -1,3 +1,29 @@
 <template>
-    <c-primitive-datatable-avatar value={value}></c-primitive-datatable-avatar>
+    <div class="slds-p-around_x-small">
+        <c-avatar
+            alternative-text={value.alternativeText}
+            fallback-icon-name={value.fallbackIconName}
+            initials={value.initials}
+            size={value.size}
+            src={value.src}
+            variant={value.variant}
+            status={value.status}
+            status-title={value.statusTitle}
+            status-position={value.statusPosition}
+            presence={value.presence}
+            presence-title={value.presenceTitle}
+            presence-position={value.presencePosition}
+            entity-icon-name={value.entityIconName}
+            entity-initials={value.entityInitials}
+            entity-variant={value.entityVariant}
+            entity-src={value.entitySrc}
+            entity-title={value.entityTitle}
+            entity-position={value.entityPosition}
+            hide-avatar-details={value.hideAvatarDetails}
+            primary-text={value.primaryText}
+            secondary-text={value.secondaryText}
+            tertiary-text={value.tertiaryText}
+            text-position={value.textPosition}
+        ></c-avatar>
+    </div>
 </template>
