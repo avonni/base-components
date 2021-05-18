@@ -259,6 +259,13 @@ const items = [
         hasCheckbox: true,
         isLoading: true,
         closed: true
+    },
+    {
+        title: 'Create a new task',
+        datetimeValue: 1621605600000,
+        href: '#',
+        iconName: 'standard:dashboard',
+        hasCheckbox: true
     }
 ];
 

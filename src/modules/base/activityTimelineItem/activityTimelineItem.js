@@ -44,16 +44,16 @@ export default class ActivityTimelineItem extends LightningElement {
     _closed = false;
     _buttonIconPosition = validButtonIconPositions.default;
     _buttonVariant = validButtonVariants.default;
-    _buttonDisabled = false
+    _buttonDisabled = false;
     _rendered = false;
     _color;
 
     connectedCallback() {
         this.actionsIcon();
     }
-    
+
     renderedCallback() {
-        this.setLineColor()
+        this.setLineColor();
     }
 
     @api
@@ -154,6 +154,15 @@ export default class ActivityTimelineItem extends LightningElement {
             .toString();
     }
 
+    get computedSldsMedia() {
+        return classSet('slds-media')
+            .add({
+                'avonni-activity-timeline-item-no-fields_margin': !this
+                    .hasFields
+            })
+            .toString();
+    }
+
     actionsIcon() {
         this.actions.forEach((action) => {
             if (action.iconName) {
@@ -195,9 +204,9 @@ export default class ActivityTimelineItem extends LightningElement {
         );
     }
 
-    setLineColor(){
-        const icon = this.template.querySelector('lightning-icon')
-        if(icon === null) return;
+    setLineColor() {
+        const icon = this.template.querySelector('lightning-icon');
+        if (icon === null) return;
         const style = getComputedStyle(icon);
         this._color = style.backgroundColor;
     }

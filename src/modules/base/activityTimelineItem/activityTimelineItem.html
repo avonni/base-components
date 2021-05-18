@@ -1,24 +1,26 @@
 <template>
     <div class={activityTimelineItemOuterClass} style={backgroundColor}>
-        <div class="slds-media">
+        <div class={computedSldsMedia}>
             <div class="slds-media__figure">
-                <template if:false={closed}>
-                    <lightning-button-icon
-                        icon-name="utility:chevrondown"
-                        size="medium"
-                        variant="bare"
-                        onclick={handleSectionStatus}
-                        aria-expanded="true"
-                    ></lightning-button-icon>
-                </template>
-                <template if:true={closed}>
-                    <lightning-button-icon
-                        icon-name="utility:chevronright"
-                        size="medium"
-                        variant="bare"
-                        onclick={handleSectionStatus}
-                        aria-expanded="false"
-                    ></lightning-button-icon>
+                <template if:true={hasFields}>
+                    <template if:false={closed}>
+                        <lightning-button-icon
+                            icon-name="utility:chevrondown"
+                            size="medium"
+                            variant="bare"
+                            onclick={handleSectionStatus}
+                            aria-expanded="true"
+                        ></lightning-button-icon>
+                    </template>
+                    <template if:true={closed}>
+                        <lightning-button-icon
+                            icon-name="utility:chevronright"
+                            size="medium"
+                            variant="bare"
+                            onclick={handleSectionStatus}
+                            aria-expanded="false"
+                        ></lightning-button-icon>
+                    </template>
                 </template>
                 <lightning-icon
                     icon-name={iconName}
