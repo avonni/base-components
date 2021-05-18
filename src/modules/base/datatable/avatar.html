@@ -1,6 +1,7 @@
 <template>
     <div class="slds-p-around_x-small">
         <c-avatar
+            if:true={value}
             alternative-text={value.alternativeText}
             fallback-icon-name={value.fallbackIconName}
             initials={value.initials}
