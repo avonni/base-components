@@ -1,6 +1,16 @@
 import { LightningElement, api } from 'lwc';
 import { generateUniqueId, classSet } from 'c/utils';
-import { normalizeArray } from 'c/utilsPrivate';
+import { normalizeArray, normalizeString } from 'c/utilsPrivate';
+
+const THEMES = {
+    valid: ['default', 'shade', 'inverse'],
+    default: 'default'
+};
+
+const VARIANTS = {
+    valid: ['horizontal', 'vertical'],
+    default: 'horizontal'
+};
 
 export default class PrimitiveRelationshipGraphItem extends LightningElement {
     @api label;
@@ -9,13 +19,15 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
     @api avatarFallbackIconName;
     @api href;
     @api contentData;
-    @api groups;
-    @api hideDefaultActions;
-    @api theme;
-    @api defaultActions;
-    @api variant;
+    @api hideDefaultActions = false;
 
-    _customActions;
+    _activeSelection = false;
+    _customActions = [];
+    _defaultActions = [];
+    _groups = [];
+    _selected = false;
+    _theme = THEMES.default;
+    _variant = VARIANTS.default;
     wrapperClass;
 
     connectedCallback() {
@@ -31,11 +43,28 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
     }
 
     @api
+    get defaultActions() {
+        return this._defaultActions;
+    }
+    set defaultActions(value) {
+        this._defaultActions = normalizeArray(value);
+    }
+
+    @api
     get activeSelection() {
         return this._activeSelection;
     }
     set activeSelection(value) {
         this._activeSelection = value;
+        this.updateClasses();
+    }
+
+    @api
+    get groups() {
+        return this._groups;
+    }
+    set groups(value) {
+        this._groups = normalizeArray(value);
         this.updateClasses();
     }
 
@@ -48,11 +77,35 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
         this.updateClasses();
     }
 
+    @api
+    get theme() {
+        return this._theme;
+    }
+    set theme(value) {
+        this._theme = normalizeString(value, {
+            validValues: THEMES.valid,
+            fallbackValue: THEMES.default
+        });
+        this.updateClasses();
+    }
+
+    @api
+    get variant() {
+        return this._variant;
+    }
+    set variant(value) {
+        this._variant = normalizeString(value, {
+            validValues: VARIANTS.valid,
+            fallbackValue: VARIANTS.default
+        });
+        this.updateClasses();
+    }
+
     updateClasses() {
         this.wrapperClass = classSet(
             'slds-box slds-box_small slds-m-bottom_small slds-is-relative item'
         ).add({
-            'item_has-groups': this.groups,
+            'item_has-groups': this.groups.length > 0,
             'item_has-children': this.hasChildren,
             'item_is-selected': this.selected,
             'item_is-active': this.activeSelection,
@@ -64,7 +117,7 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
     }
 
     get hasChildren() {
-        if (!this.groups) return false;
+        if (this.groups.length === 0) return false;
 
         return this.groups.some((group) => group.items);
     }
@@ -94,9 +147,9 @@ export default class PrimitiveRelationshipGraphItem extends LightningElement {
     }
 
     get ariaExpanded() {
-        if (this.groups && !this.selected) {
+        if (this.groups.length > 0 && !this.selected) {
             return false;
-        } else if (this.groups && this.selected) {
+        } else if (this.groups.length > 0 && this.selected) {
             return true;
         }
         return undefined;

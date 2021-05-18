@@ -17,7 +17,7 @@
         </c-media-object>
     </div>
 
-    <div if:true={actions} class={actionsClass}>
+    <div if:true={hasActions} class={actionsClass}>
         <template for:each={actions} for:item="action">
             <div key={action.name}>
                 <button
