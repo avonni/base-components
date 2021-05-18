@@ -4,7 +4,8 @@ import {
     generateColors,
     observePosition,
     normalizeBoolean,
-    normalizeString
+    normalizeString,
+    normalizeArray
 } from 'c/utilsPrivate';
 
 import { classSet } from 'c/utils';
@@ -70,6 +71,8 @@ const DEFAULT_COLORS = [
     '#b85d0d'
 ];
 
+const DEFAULT_MESSAGE_WHEN_BAD_INPUT = 'Please ensure value is correct';
+
 export default class ColorPicker extends LightningElement {
     @api accessKey;
     @api fieldLevelHelp;
@@ -77,8 +80,6 @@ export default class ColorPicker extends LightningElement {
     @api name;
     @api menuIconName;
     @api menuLabel;
-    @api colors = DEFAULT_COLORS;
-    @api messageWhenBadInput = 'Please ensure value is correct';
 
     _value;
     _variant = 'standard';
@@ -92,7 +93,9 @@ export default class ColorPicker extends LightningElement {
     _required = false;
     _hideColorInput = false;
     _menuNubbin = false;
+    _colors = DEFAULT_COLORS;
     _opacity = false;
+    _messageWhenBadInput = DEFAULT_MESSAGE_WHEN_BAD_INPUT;
 
     _dropdownVisible = false;
     _dropdownOpened = false;
@@ -223,6 +226,16 @@ export default class ColorPicker extends LightningElement {
     }
 
     @api
+    get colors() {
+        return this._colors;
+    }
+
+    set colors(value) {
+        const colors = normalizeArray(value);
+        this._colors = colors.length > 0 ? colors : DEFAULT_COLORS;
+    }
+    
+    @api
     get hideColorInput() {
         return this._hideColorInput;
     }
@@ -247,6 +260,15 @@ export default class ColorPicker extends LightningElement {
 
     set opacity(value) {
         this._opacity = normalizeBoolean(value);
+    }
+
+    @api
+    get messageWhenBadInput() {
+        return this._messageWhenBadInput;
+    }
+
+    set messageWhenBadInput(value) {
+        this._messageWhenBadInput = typeof value === 'string' ? value.trim() : DEFAULT_MESSAGE_WHEN_BAD_INPUT;
     }
 
     get isBase() {
