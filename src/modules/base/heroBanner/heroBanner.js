@@ -26,7 +26,7 @@ const font_weight_options = {
 
 const DEFAULT_TITLE_FONT_COLOR = '#ffffff';
 const DEFAULT_DESCRIPTION_FONT_COLOR = '#ffffff';
-const DEFAULT_HEIGHT = '400';
+const DEFAULT_HEIGHT = 400;
 
 export default class HeroBanner extends LightningElement {
     @api title;
@@ -34,7 +34,6 @@ export default class HeroBanner extends LightningElement {
     @api description;
     @api descriptionFontColor = DEFAULT_DESCRIPTION_FONT_COLOR;
     @api src;
-    @api height = DEFAULT_HEIGHT;
 
     _textHorizontalAlignment = horizontal_alignement_options.default;
     _textVerticalAlignment = vertical_alignement_options.default;
@@ -42,6 +41,7 @@ export default class HeroBanner extends LightningElement {
     _titleFontWeight = font_weight_options.titleDefault;
     _descriptionFontSize = font_size_options.descriptionDefault;
     _descriptionFontWeight = font_weight_options.descriptionDefault;
+    _height = DEFAULT_HEIGHT;
 
     _rendered = false;
     showSlot = true;
@@ -139,6 +139,16 @@ export default class HeroBanner extends LightningElement {
             fallbackValue: font_weight_options.titleDefault,
             validValues: font_weight_options.valid
         });
+    }
+
+    @api
+    get height() {
+        return this._height;
+    }
+
+    set height(value) {
+        const number = typeof value === 'number' ? value : DEFAULT_HEIGHT;
+        this._height = parseInt(number, 10);
     }
 
     get imgSrc() {
