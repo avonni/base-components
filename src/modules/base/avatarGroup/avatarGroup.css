@@ -11,9 +11,7 @@
     width: 4.5rem;
     height: 4.5rem;
 }
-.avonni-avatar-group_x-large
-    .slds-avatar-grouped__primary
-    .avonni-avatar-action-button_x-large {
+.avonni-avatar-group_x-large .slds-avatar-grouped__primary {
     width: 58px;
     height: 58px;
 }
@@ -118,6 +116,7 @@
 .avonni-avatar-action-button_circle {
     border-radius: var(--lwc-BorderRadiusCircle, 50%);
 }
+
 .avonni-avatar-action-button_square {
     border-radius: var(--lwc-borderRadiusMedium, 0.3rem);
 }
@@ -127,8 +126,8 @@
     height: 72px;
 }
 .avonni-avatar-action-button_x-large {
-    width: 58px;
-    height: 58px;
+    width: 56px;
+    height: 56px;
 }
 .avonni-avatar-action-button_large {
     width: 3rem;
