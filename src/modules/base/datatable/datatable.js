@@ -3,6 +3,7 @@ import { api } from 'lwc';
 
 import avatar from './avatar.html';
 import avatarGroup from './avatarGroup.html';
+import checkboxButton from './checkboxButton.html';
 import colorPicker from './colorPicker.html';
 import image from './image.html';
 import inputCounter from './inputCounter.html';
@@ -47,6 +48,11 @@ export default class Datatable extends LightningDatatable {
         'avatar-group': {
             template: avatarGroup,
             typeAttributes: ['layout', 'maxCount', 'size', 'variant'],
+            standardCellLayout: true
+        },
+        'checkbox-button': {
+            template: checkboxButton,
+            typeAttributes: ['disabled', 'label', 'name'],
             standardCellLayout: true
         },
         'color-picker': {

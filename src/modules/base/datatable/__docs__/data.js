@@ -56,6 +56,15 @@ const columns = [
         }
     },
     {
+        label: 'Checkbox button',
+        fieldName: 'checkboxButton',
+        type: 'checkbox-button',
+        typeAttributes: {
+            disabled: { fieldName: 'checkboxButtonDisabled' },
+            label: 'Checkbox'
+        }
+    },
+    {
         label: 'Color Picker',
         fieldName: 'colorPicker',
         type: 'color-picker',
@@ -177,6 +186,8 @@ const data = [
             avatarGroupItems[1],
             avatarGroupItems[3]
         ],
+        checkboxButton: true,
+        checkboxButtonDisabled: true,
         currency: 3045,
         colorPickerDisabled: true,
         image:
@@ -223,6 +234,7 @@ const data = [
             avatarGroupItems[1],
             avatarGroupItems[3]
         ],
+        checkboxButton: true,
         colorPicker: '#f99120',
         currency: 217,
         image:
