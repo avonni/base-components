@@ -1,10 +1,17 @@
 <template>
-    <div class="slds-p-around_x-small">
-        <c-primitive-datatable-color-picker
-            if:true={value}
-            column-type={columnType}
-            row-number={rowKeyValue}
-            value={value}
-        ></c-primitive-datatable-color-picker>
-    </div>
+    <c-primitive-cell-color-picker
+        column-type={columnType}
+        row-key-value={rowKeyValue}
+        value={value}
+        colors={typeAttributes.colors}
+        disabled={typeAttributes.disabled}
+        hide-color-input={typeAttributes.hideColorInput}
+        label={typeAttributes.label}
+        menu-alignment={typeAttributes.menuAlignment}
+        menu-icon-name={typeAttributes.menuIconName}
+        menu-icon-size={typeAttributes.menuIconSize}
+        menu-variant={typeAttributes.menuVariant}
+        opacity={typeAttributes.opacity}
+        type={typeAttributes.type}
+    ></c-primitive-cell-color-picker>
 </template>

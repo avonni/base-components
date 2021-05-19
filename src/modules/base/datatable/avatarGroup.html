@@ -1,10 +1,9 @@
 <template>
-    <div class="slds-p-around_x-small">
-        <c-primitive-datatable-avatar-group
-            if:true={value}
-            column-type={columnType}
-            row-number={rowKeyValue}
-            value={value}
-        ></c-primitive-datatable-avatar-group>
-    </div>
+    <c-avatar-group
+        size={typeAttributes.size}
+        variant={typeAttributes.variant}
+        items={value}
+        layout={typeAttributes.layout}
+        max-count={typeAttributes.maxCount}
+    ></c-avatar-group>
 </template>

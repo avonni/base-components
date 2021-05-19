@@ -11,53 +11,106 @@ import inputDateRange from './inputDateRange.html';
 const TYPES_ALWAYS_WRAPPED = [
     'avatar',
     'avatar-group',
+    'checkbox-button',
     'color-picker',
+    'dynamic-icon',
     'image',
     'input-counter',
-    'input-date-range'
+    'input-date-range',
+    'input-toggle',
+    'progress-bar',
+    'progress-ring',
+    'qrcode',
+    'range',
+    'slider'
 ];
 
 export default class Datatable extends LightningDatatable {
     static customTypes = {
         avatar: {
-            template: avatar
+            template: avatar,
+            typeAttributes: [
+                'alternativeText',
+                'entityIconName',
+                'entitySrc',
+                'fallbackIconName',
+                'initials',
+                'size',
+                'presence',
+                'primaryText',
+                'secondaryText',
+                'status',
+                'variant'
+            ],
+            standardCellLayout: true
         },
         'avatar-group': {
-            template: avatarGroup
+            template: avatarGroup,
+            typeAttributes: ['layout', 'maxCount', 'size', 'variant'],
+            standardCellLayout: true
         },
         'color-picker': {
-            template: colorPicker
+            template: colorPicker,
+            typeAttributes: [
+                'colors',
+                'disabled',
+                'hideColorInput',
+                'label',
+                'menuAlignment',
+                'menuIconName',
+                'menuIconSize',
+                'menuVariant',
+                'name',
+                'opacity',
+                'type'
+            ],
+            standardCellLayout: true
         },
         image: {
-            template: image
+            template: image,
+            typeAttributes: [
+                'alt',
+                'blank',
+                'blankColor',
+                'height',
+                'rounded',
+                'sizes',
+                'srcset',
+                'thumbnail',
+                'width'
+            ]
         },
         'input-counter': {
-            template: inputCounter
+            template: inputCounter,
+            typeAttributes: ['disabled', 'label', 'max', 'min', 'name', 'step'],
+            standardCellLayout: true
         },
         'input-date-range': {
-            template: inputDateRange
+            template: inputDateRange,
+            typeAttributes: [
+                'dateStyle',
+                'disabled',
+                'label',
+                'labelStartDate',
+                'labelEndDate',
+                'timeStyle',
+                'timezone',
+                'type'
+            ],
+            standardCellLayout: true
         }
     };
 
     connectedCallback() {
         super.connectedCallback();
 
-        this.template.addEventListener('avatarclick', this.dispatchAvatarClick);
         this.template.addEventListener('change', this.dispatchChange);
-        this.template.addEventListener('blur', this.dispatchBlur);
-        this.template.addEventListener('focus', this.dispatchFocus);
     }
 
     disconnectedCallback() {
         super.disconnectedCallback();
 
-        this.template.removeEventListener(
-            'avatarclick',
-            this.dispatchAvatarClick
-        );
         this.template.removeEventListener('change', this.dispatchChange);
-        this.template.removeEventListener('blur', this.dispatchBlur);
-        this.template.removeEventListener('focus', this.dispatchFocus);
     }
 
     @api
@@ -65,7 +118,8 @@ export default class Datatable extends LightningDatatable {
         return this._columns;
     }
     set columns(value) {
-        this._columns = JSON.parse(JSON.stringify(value));
+        super.columns = value;
+        this._columns = JSON.parse(JSON.stringify(this._columns));
         this.removeWrapOption();
     }
 
@@ -78,18 +132,6 @@ export default class Datatable extends LightningDatatable {
         });
     }
 
-    dispatchAvatarClick = (event) => {
-        event.stopPropagation();
-
-        this.dispatchEvent(
-            new CustomEvent('avatarclick', {
-                detail: event.detail,
-                bubbles: true,
-                cancelable: true
-            })
-        );
-    };
-
     dispatchChange = (event) => {
         event.stopPropagation();
 
@@ -100,17 +142,5 @@ export default class Datatable extends LightningDatatable {
                 cancelable: true
             })
         );
-    };
-
-    dispatchFocus = (event) => {
-        event.stopPropagation();
-
-        this.dispatchEvent(new CustomEvent('focus'));
-    };
-
-    dispatchBlur = (event) => {
-        event.stopPropagation();
-
-        this.dispatchEvent(new CustomEvent('blur'));
     };
 }

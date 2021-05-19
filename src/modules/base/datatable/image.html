@@ -1,20 +1,16 @@
 <template>
     <c-image
-        src={value.src}
-        srcset={value.srcset}
-        sizes={value.sizes}
-        alt={value.alt}
-        width={value.width}
-        height={value.height}
-        block={value.block}
-        fluid={value.fluid}
-        fluid-grow={value.fluidGrow}
-        rounded={value.rounded}
-        thumbnail={value.thumbnail}
-        left={value.left}
-        right={value.right}
-        center={value.center}
-        blank={value.blank}
-        blank-color={value.blankColor}
+        src={value}
+        alt={typeAttributes.alt}
+        srcset={typeAttributes.srcset}
+        sizes={typeAttributes.sizes}
+        width={typeAttributes.width}
+        height={typeAttributes.height}
+        block="true"
+        fluid="true"
+        rounded={typeAttributes.rounded}
+        thumbnail={typeAttributes.thumbnail}
+        blank={typeAttributes.blank}
+        blank-color={typeAttributes.blankColor}
     ></c-image>
 </template>

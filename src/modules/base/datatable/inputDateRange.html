@@ -1,10 +1,15 @@
 <template>
-    <div class="slds-p-around_x-small">
-        <c-primitive-datatable-input-date-range
-            if:true={value}
-            column-type={columnType}
-            row-number={rowKeyValue}
-            value={value}
-        ></c-primitive-datatable-input-date-range>
-    </div>
+    <c-primitive-cell-input-date-range
+        column-type={columnType}
+        row-key-value={rowKeyValue}
+        value={value}
+        date-style={typeAttributes.dateStyle}
+        time-style={typeAttributes.timeStyle}
+        timezone={typeAttributes.timezone}
+        disabled={typeAttributes.disabled}
+        label={typeAttributes.label}
+        label-start-date={typeAttributes.labelStartDate}
+        label-end-date={typeAttributes.labelEndDate}
+        type={typeAttributes.type}
+    ></c-primitive-cell-input-date-range>
 </template>

@@ -1,22 +1,23 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeAriaAttribute } from 'c/utilsPrivate';
 
-export default class PrimitiveDatatableInputCounter extends LightningElement {
+export default class PrimitiveCellInputCounter extends LightningElement {
     @api columnType;
-    @api rowNumber;
+    @api rowKeyValue;
     @api value;
+    @api name;
+    @api label;
+    @api max;
+    @api min;
+    @api step;
+    @api disabled;
 
-    get ariaControls() {
-        return normalizeAriaAttribute(this.value.ariaControls);
-    }
-
-    handleEvent(event) {
+    handleChange(event) {
         const detail = event.detail;
         detail.columnType = this.columnType;
         detail.rowNumber = this.rowNumber;
 
         this.dispatchEvent(
-            new CustomEvent(event.type, {
+            new CustomEvent('change', {
                 detail: detail,
                 bubbles: true,
                 composed: true
