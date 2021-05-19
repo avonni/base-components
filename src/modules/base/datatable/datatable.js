@@ -5,6 +5,7 @@ import avatar from './avatar.html';
 import avatarGroup from './avatarGroup.html';
 import checkboxButton from './checkboxButton.html';
 import colorPicker from './colorPicker.html';
+import dynamicIcon from './dynamicIcon.html';
 import image from './image.html';
 import inputCounter from './inputCounter.html';
 import inputDateRange from './inputDateRange.html';
@@ -71,6 +72,10 @@ export default class Datatable extends LightningDatatable {
                 'type'
             ],
             standardCellLayout: true
+        },
+        'dynamic-icon': {
+            template: dynamicIcon,
+            typeAttributes: ['alternativeText', 'option']
         },
         image: {
             template: image,

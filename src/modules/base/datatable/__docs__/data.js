@@ -92,6 +92,15 @@ const columns = [
         editable: true
     },
     {
+        label: 'Dynamic icon',
+        fieldName: 'dynamicIcon',
+        type: 'dynamic-icon',
+        typeAttributes: {
+            alternativeText: { fieldName: 'dynamicIcon' },
+            option: { fieldName: 'dynamicIconOption' }
+        }
+    },
+    {
         label: 'Image',
         fieldName: 'image',
         type: 'image',
@@ -141,6 +150,7 @@ const data = [
         ],
         colorPicker: '#00a1e0',
         currency: 200,
+        dynamicIcon: 'ellie',
         image:
             'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
         inputDateRange: {
@@ -165,6 +175,8 @@ const data = [
         ],
         currency: 230,
         colorPicker: '#16325c',
+        dynamicIcon: 'score',
+        dynamicIconOption: 'negative',
         image:
             'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
         inputCounter: 3,
@@ -190,6 +202,8 @@ const data = [
         checkboxButtonDisabled: true,
         currency: 3045,
         colorPickerDisabled: true,
+        dynamicIcon: 'strength',
+        dynamicIconOption: -3,
         image:
             'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
         imageBlank: true,
@@ -211,6 +225,7 @@ const data = [
         ],
         colorPicker: '#f4bc25',
         currency: 432,
+        dynamicIcon: 'eq',
         image:
             'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-home-bg_2x.png',
         inputCounter: 5,
@@ -237,6 +252,7 @@ const data = [
         checkboxButton: true,
         colorPicker: '#f99120',
         currency: 217,
+        dynamicIcon: 'waffle',
         image:
             'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-header-bg_2x.png',
         inputCounterStep: 2,
