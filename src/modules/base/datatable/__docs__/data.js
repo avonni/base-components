@@ -29,7 +29,7 @@ const avatarGroupItems = [
     }
 ];
 
-const columns = [
+const columnsAB = [
     {
         label: 'Avatar',
         fieldName: 'avatar',
@@ -54,7 +54,10 @@ const columns = [
             maxCount: 3,
             size: 'small'
         }
-    },
+    }
+];
+
+const columnsCE = [
     {
         label: 'Checkbox button',
         fieldName: 'checkboxButton',
@@ -99,7 +102,10 @@ const columns = [
             alternativeText: { fieldName: 'dynamicIcon' },
             option: { fieldName: 'dynamicIconOption' }
         }
-    },
+    }
+];
+
+const columnsFN = [
     {
         label: 'Image',
         fieldName: 'image',
@@ -130,10 +136,24 @@ const columns = [
             disabled: { fieldName: 'inputDateRangeDisabled' },
             dateStyle: 'short'
         }
+    },
+    {
+        label: 'Input Toggle',
+        fieldName: 'inputToggle',
+        type: 'input-toggle',
+        typeAttributes: {
+            disabled: { fieldName: 'inputToggleDisabled' },
+            size: 'large',
+            label: 'Toggle'
+        }
     }
 ];
 
-const data = [
+const columnsOQ = [];
+
+const columnsRZ = [];
+
+const dataAB = [
     {
         id: 1,
         avatar:
@@ -147,16 +167,7 @@ const data = [
             avatarGroupItems[1],
             avatarGroupItems[4],
             avatarGroupItems[3]
-        ],
-        colorPicker: '#00a1e0',
-        currency: 200,
-        dynamicIcon: 'ellie',
-        image:
-            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-        inputDateRange: {
-            startDate: new Date('2021/10/02'),
-            endDate: new Date('2021/10/05')
-        }
+        ]
     },
     {
         id: 2,
@@ -172,18 +183,7 @@ const data = [
             avatarGroupItems[3],
             avatarGroupItems[4],
             avatarGroupItems[2]
-        ],
-        currency: 230,
-        colorPicker: '#16325c',
-        dynamicIcon: 'score',
-        dynamicIconOption: 'negative',
-        image:
-            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
-        inputCounter: 3,
-        inputDateRange: {
-            startDate: new Date('2021/09/12'),
-            endDate: new Date('2021/10/05')
-        }
+        ]
     },
     {
         id: 3,
@@ -197,20 +197,7 @@ const data = [
             avatarGroupItems[0],
             avatarGroupItems[1],
             avatarGroupItems[3]
-        ],
-        checkboxButton: true,
-        checkboxButtonDisabled: true,
-        currency: 3045,
-        colorPickerDisabled: true,
-        dynamicIcon: 'strength',
-        dynamicIconOption: -3,
-        image:
-            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
-        imageBlank: true,
-        imageBlankColor: '#CCC',
-        imageHeight: 50,
-        inputCounterDisabled: true,
-        inputDateRangeDisabled: true
+        ]
     },
     {
         id: 4,
@@ -222,17 +209,7 @@ const data = [
             avatarGroupItems[1],
             avatarGroupItems[2],
             avatarGroupItems[0]
-        ],
-        colorPicker: '#f4bc25',
-        currency: 432,
-        dynamicIcon: 'eq',
-        image:
-            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-home-bg_2x.png',
-        inputCounter: 5,
-        inputDateRange: {
-            startDate: new Date('2021/09/17'),
-            endDate: new Date('2021/09/25')
-        }
+        ]
     },
     {
         id: 5,
@@ -248,11 +225,91 @@ const data = [
             avatarGroupItems[2],
             avatarGroupItems[1],
             avatarGroupItems[3]
-        ],
+        ]
+    }
+];
+
+const dataCE = [
+    {
+        id: 1,
+        colorPicker: '#00a1e0',
+        currency: 200,
+        dynamicIcon: 'ellie'
+    },
+    {
+        id: 2,
+        currency: 230,
+        colorPicker: '#16325c',
+        dynamicIcon: 'score',
+        dynamicIconOption: 'negative'
+    },
+    {
+        id: 3,
+        checkboxButton: true,
+        checkboxButtonDisabled: true,
+        currency: 3045,
+        colorPickerDisabled: true,
+        dynamicIcon: 'strength',
+        dynamicIconOption: -3
+    },
+    {
+        id: 4,
+        colorPicker: '#f4bc25',
+        currency: 432,
+        dynamicIcon: 'eq'
+    },
+    {
+        id: 5,
         checkboxButton: true,
         colorPicker: '#f99120',
         currency: 217,
-        dynamicIcon: 'waffle',
+        dynamicIcon: 'waffle'
+    }
+];
+const dataFN = [
+    {
+        id: 1,
+        image:
+            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+        inputDateRange: {
+            startDate: new Date('2021/10/02'),
+            endDate: new Date('2021/10/05')
+        }
+    },
+    {
+        id: 2,
+        image:
+            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
+        inputCounter: 3,
+        inputDateRange: {
+            startDate: new Date('2021/09/12'),
+            endDate: new Date('2021/10/05')
+        },
+        inputToggle: true
+    },
+    {
+        id: 3,
+        image:
+            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
+        imageBlank: true,
+        imageBlankColor: '#CCC',
+        imageHeight: 50,
+        inputCounterDisabled: true,
+        inputDateRangeDisabled: true,
+        inputToggleDisabled: true
+    },
+    {
+        id: 4,
+        image:
+            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-home-bg_2x.png',
+        inputCounter: 5,
+        inputDateRange: {
+            startDate: new Date('2021/09/17'),
+            endDate: new Date('2021/09/25')
+        }
+    },
+    {
+        id: 5,
         image:
             'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-header-bg_2x.png',
         inputCounterStep: 2,
@@ -264,4 +321,18 @@ const data = [
     }
 ];
 
-export { columns, data };
+const dataOQ = [];
+const dataRZ = [];
+
+export {
+    columnsAB,
+    columnsCE,
+    columnsFN,
+    columnsOQ,
+    columnsRZ,
+    dataAB,
+    dataCE,
+    dataFN,
+    dataOQ,
+    dataRZ
+};

@@ -1,5 +1,16 @@
 import { Datatable } from '../__examples__/datatable';
-import { columns, data } from './data';
+import {
+    columnsAB,
+    columnsCE,
+    columnsFN,
+    columnsOQ,
+    columnsRZ,
+    dataAB,
+    dataCE,
+    dataFN,
+    dataOQ,
+    dataRZ
+} from './data';
 
 export default {
     title: 'Example/Datatable',
@@ -306,9 +317,37 @@ export default {
 
 const Template = (args) => Datatable(args);
 
-export const Base = Template.bind({});
-Base.args = {
-    columns: columns,
-    data: data,
+export const DataTypesFromAToB = Template.bind({});
+DataTypesFromAToB.args = {
+    columns: columnsAB,
+    data: dataAB,
+    keyField: 'id'
+};
+
+export const DataTypesFromCToE = Template.bind({});
+DataTypesFromCToE.args = {
+    columns: columnsCE,
+    data: dataCE,
+    keyField: 'id'
+};
+
+export const DataTypesFromFToN = Template.bind({});
+DataTypesFromFToN.args = {
+    columns: columnsFN,
+    data: dataFN,
+    keyField: 'id'
+};
+
+export const DataTypesFromOToQ = Template.bind({});
+DataTypesFromOToQ.args = {
+    columns: columnsOQ,
+    data: dataOQ,
+    keyField: 'id'
+};
+
+export const DataTypesFromRToZ = Template.bind({});
+DataTypesFromRToZ.args = {
+    columns: columnsRZ,
+    data: dataRZ,
     keyField: 'id'
 };

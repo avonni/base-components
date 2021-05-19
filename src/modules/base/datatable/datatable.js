@@ -9,6 +9,7 @@ import dynamicIcon from './dynamicIcon.html';
 import image from './image.html';
 import inputCounter from './inputCounter.html';
 import inputDateRange from './inputDateRange.html';
+import inputToggle from './inputToggle.html';
 
 const TYPES_ALWAYS_WRAPPED = [
     'avatar',
@@ -109,6 +110,18 @@ export default class Datatable extends LightningDatatable {
                 'type'
             ],
             standardCellLayout: true
+        },
+        'input-toggle': {
+            template: inputToggle,
+            typeAttributes: [
+                'disabled',
+                'hideMark',
+                'label',
+                'messageToggleActive',
+                'messageToggleInactive',
+                'name',
+                'size'
+            ]
         }
     };
 
