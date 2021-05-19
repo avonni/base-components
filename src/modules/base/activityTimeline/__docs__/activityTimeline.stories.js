@@ -232,13 +232,14 @@ const items = [
             }
         ],
         hasCheckbox: true,
-        isLoading: true
+        isLoading: true,
+        closed: true
     },
     {
         title: 'Create another task',
         datetimeValue: 1621611000000,
         href: '#',
-        iconName: 'standard:dashboard',
+        iconName: 'standard:case',
         hasCheckbox: true,
         hasError: true
     }

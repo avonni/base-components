@@ -10,30 +10,6 @@ const ITEMS = [
         href: 'salesforce.com',
         iconName: 'standard:task',
         icons: ['utility:refresh'],
-        fields: [
-            {
-                label: 'Name',
-                value: 'Charlie Gomez',
-                type: 'url',
-                typeAttributes: {
-                    label: 'Charlie Gomez'
-                }
-            },
-            {
-                label: 'Related To',
-                value: 'Tesla Cloudhub + Anypoint Connectors',
-                type: 'url',
-                typeAttributes: {
-                    label: 'Tesla Cloudhub + Anypoint Connectors'
-                }
-            },
-            {
-                label: 'Description',
-                value:
-                    'Need to finalize proposals and brand details before the meeting',
-                type: 'text'
-            }
-        ],
         hasCheckbox: true
     },
     {
@@ -141,14 +117,15 @@ const ITEMS = [
             }
         ],
         buttonLabel: 'Public Sharing',
-        buttonIconName: 'utility:world'
+        buttonIconName: 'utility:world',
+        closed: true
     },
     {
-        title: 'Create a new task',
+        title: 'Create one task',
         datetimeValue: 1621605600000,
         href: '#',
         iconName: 'standard:dashboard',
-        hasError: true,
+        loadingStateAlternativeText: 'Is Loading',
         fields: [
             {
                 label: 'Name',
@@ -176,6 +153,14 @@ const ITEMS = [
         hasCheckbox: true,
         isLoading: true,
         closed: true
+    },
+    {
+        title: 'Create another task',
+        datetimeValue: 1621611000000,
+        href: '#',
+        iconName: 'standard:case',
+        hasCheckbox: true,
+        hasError: true
     }
 ];
 
@@ -208,7 +193,7 @@ describe('ActivityTimeline', () => {
         expect(element.iconName).toBeUndefined();
         expect(element.collapsible).toBeFalsy();
         expect(element.closed).toBeFalsy();
-        expect(element.groupBy).toBe('week');
+        expect(element.groupBy).toBeUndefined();
         expect(element.items).toMatchObject([]);
         expect(element.actions).toMatchObject([]);
     });
@@ -250,6 +235,7 @@ describe('ActivityTimeline', () => {
     });
 
     // collapsible
+    // needs to specify the group by to have sections
     it('Activity timeline collapsible', () => {
         const element = createElement('base-activity-timeline', {
             is: ActivityTimeline
@@ -259,6 +245,7 @@ describe('ActivityTimeline', () => {
 
         // element.iconName = 'standard:hello'
         element.items = ITEMS;
+        element.groupBy = 'week';
         element.collapsible = true;
 
         return Promise.resolve().then(() => {
@@ -270,15 +257,16 @@ describe('ActivityTimeline', () => {
     });
 
     // closed
+    // needs to specify the group by to have sections
     it('Activity timeline closed', () => {
         const element = createElement('base-activity-timeline', {
             is: ActivityTimeline
         });
 
-        element.items = ITEMS;
-
         document.body.appendChild(element);
 
+        element.items = ITEMS;
+        element.groupBy = 'week';
         element.closed = true;
 
         return Promise.resolve().then(() => {
@@ -290,6 +278,25 @@ describe('ActivityTimeline', () => {
     });
 
     // group by
+    it('Activity timeline group by undefined', () => {
+        const element = createElement('base-activity-timeline', {
+            is: ActivityTimeline
+        });
+
+        document.body.appendChild(element);
+
+        element.items = ITEMS;
+
+        return Promise.resolve()
+            .then(() => {})
+            .then(() => {
+                const expandableSection = element.shadowRoot.querySelectorAll(
+                    'c-expandable-section'
+                );
+                expect(expandableSection).toHaveLength(0);
+            });
+    });
+
     it('Activity timeline group by week', () => {
         const element = createElement('base-activity-timeline', {
             is: ActivityTimeline
@@ -298,21 +305,22 @@ describe('ActivityTimeline', () => {
         document.body.appendChild(element);
 
         element.items = ITEMS;
+        element.groupBy = 'week';
         const firstSection = 'Upcoming';
-        const secondSection = 'Week: 17, 2021';
+        const secondSection = 'Week: 21, 2021';
         const thirdSection = 'Week: 20, 2021';
+        const fourthSection = 'Week: 17, 2021';
 
-        return Promise.resolve()
-            .then(() => {})
-            .then(() => {
-                const expandableSection = element.shadowRoot.querySelectorAll(
-                    'c-expandable-section'
-                );
-                expect(expandableSection).toHaveLength(3);
-                expect(expandableSection[0].title).toBe(firstSection);
-                expect(expandableSection[1].title).toBe(secondSection);
-                expect(expandableSection[2].title).toBe(thirdSection);
-            });
+        return Promise.resolve().then(() => {
+            const expandableSection = element.shadowRoot.querySelectorAll(
+                'c-expandable-section'
+            );
+            expect(expandableSection).toHaveLength(4);
+            expect(expandableSection[0].title).toBe(firstSection);
+            expect(expandableSection[1].title).toBe(secondSection);
+            expect(expandableSection[2].title).toBe(thirdSection);
+            expect(expandableSection[3].title).toBe(fourthSection);
+        });
     });
 
     it('Activity timeline group by year', () => {
@@ -327,16 +335,14 @@ describe('ActivityTimeline', () => {
         const firstSection = 'Upcoming';
         const secondSection = '2021';
 
-        return Promise.resolve()
-            .then(() => {})
-            .then(() => {
-                const expandableSection = element.shadowRoot.querySelectorAll(
-                    'c-expandable-section'
-                );
-                expect(expandableSection).toHaveLength(2);
-                expect(expandableSection[0].title).toBe(firstSection);
-                expect(expandableSection[1].title).toBe(secondSection);
-            });
+        return Promise.resolve().then(() => {
+            const expandableSection = element.shadowRoot.querySelectorAll(
+                'c-expandable-section'
+            );
+            expect(expandableSection).toHaveLength(2);
+            expect(expandableSection[0].title).toBe(firstSection);
+            expect(expandableSection[1].title).toBe(secondSection);
+        });
     });
 
     it('Activity timeline group by month', () => {
@@ -352,17 +358,15 @@ describe('ActivityTimeline', () => {
         const secondSection = 'May 2021';
         const thirdSection = 'April 2021';
 
-        return Promise.resolve()
-            .then(() => {})
-            .then(() => {
-                const expandableSection = element.shadowRoot.querySelectorAll(
-                    'c-expandable-section'
-                );
-                expect(expandableSection).toHaveLength(3);
-                expect(expandableSection[0].title).toBe(firstSection);
-                expect(expandableSection[1].title).toBe(secondSection);
-                expect(expandableSection[2].title).toBe(thirdSection);
-            });
+        return Promise.resolve().then(() => {
+            const expandableSection = element.shadowRoot.querySelectorAll(
+                'c-expandable-section'
+            );
+            expect(expandableSection).toHaveLength(3);
+            expect(expandableSection[0].title).toBe(firstSection);
+            expect(expandableSection[1].title).toBe(secondSection);
+            expect(expandableSection[2].title).toBe(thirdSection);
+        });
     });
 
     // items

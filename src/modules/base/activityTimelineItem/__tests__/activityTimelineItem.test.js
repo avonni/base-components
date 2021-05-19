@@ -240,6 +240,7 @@ describe('ActivityTimeline', () => {
         });
         document.body.appendChild(element);
 
+        element.fields = FIELDS;
         element.closed = true;
 
         return Promise.resolve().then(() => {
