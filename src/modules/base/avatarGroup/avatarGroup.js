@@ -339,6 +339,16 @@ export default class AvatarGroup extends LightningElement {
 
     actionClick() {
         // * action event *
-        this.dispatchEvent(new CustomEvent('actionclick'));
+        const name = this.name;
+
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                bubbles: true,
+                cancelable: true,
+                detail: {
+                    name
+                }
+            })
+        );
     }
 }
