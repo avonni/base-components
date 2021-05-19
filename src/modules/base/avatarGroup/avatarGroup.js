@@ -51,9 +51,12 @@ export default class AvatarGroup extends LightningElement {
     }
 
     renderedCallback() {
-        if (!this.isClassic) {
+        if (
+            !this.isClassic &&
+            (this.layout === 'stack' || this.layout === 'grid')
+        ) {
             let avatars = this.template.querySelectorAll(
-                '.avonni-avatar-group_in-line'
+                '.avonni-avatar-group__avatar'
             );
 
             avatars.forEach((avatar, index) => {
