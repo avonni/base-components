@@ -387,48 +387,6 @@ export default class Wizard extends LightningElement {
     }
 
     @api
-    get buttonAlignmentBump() {
-        return this._buttonAlignmentBump;
-    }
-    set buttonAlignmentBump(position) {
-        this._buttonAlignmentBump = normalizeString(position, {
-            fallbackValue: null,
-            validValues: POSITIONS.valid
-        });
-    }
-
-    @api
-    get actionPosition() {
-        return this._actionPosition;
-    }
-    set actionPosition(position) {
-        this._actionPosition = normalizeString(position, {
-            fallbackValue: POSITIONS.defaultAction,
-            validValues: POSITIONS.valid
-        });
-    }
-
-    @api
-    get fractionPrefixLabel() {
-        return this._fractionPrefixLabel;
-    }
-    set fractionPrefixLabel(prefix) {
-        this._fractionPrefixLabel =
-            (typeof prefix === 'string' && prefix.trim()) ||
-            DEFAULT_FRACTION_PREFIX_LABEL;
-    }
-
-    @api
-    get fractionLabel() {
-        return this._fractionLabel;
-    }
-    set fractionLabel(label) {
-        this._fractionLabel =
-            (typeof label === 'string' && label.trim()) ||
-            DEFAULT_FRACTION_LABEL;
-    }
-
-    @api
     show() {
         this.showWizard = true;
     }
