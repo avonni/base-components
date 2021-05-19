@@ -60,40 +60,51 @@
                                             >
                                                 <h2
                                                     class="slds-carousel__content-title"
+                                                    style={itemTitleCustomLineClamp}
                                                 >
                                                     {item.title}
                                                 </h2>
-                                                <p>{item.description}</p>
-                                                <template
-                                                    if:true={item.buttonLabel}
+
+                                                <p
+                                                    class="slds-line-clamp_x-small"
                                                 >
-                                                    <div
-                                                        class="slds-m-top_small"
-                                                    >
-                                                        <lightning-button
-                                                            label={item.buttonLabel}
-                                                            icon-name={item.buttonIconName}
-                                                            icon-position={item.buttonIconPosition}
-                                                            variant={item.buttonVariant}
-                                                            disabled={item.buttonDisabled}
-                                                        ></lightning-button>
-                                                    </div>
-                                                </template>
-                                                <template
-                                                    if:true={item.secondaryButtonLabel}
+                                                    {item.description}
+                                                </p>
+
+                                                <div
+                                                    style={buttonsAbsolutePositioning}
                                                 >
-                                                    <div
-                                                        class="slds-m-top_small"
+                                                    <template
+                                                        if:true={item.buttonLabel}
                                                     >
-                                                        <lightning-button
-                                                            label={item.secondaryButtonLabel}
-                                                            icon-name={item.secondaryButtonIconName}
-                                                            icon-position={item.secondaryButtonIconPosition}
-                                                            variant={item.secondaryButtonVariant}
-                                                            disabled={item.secondaryButtonDisabled}
-                                                        ></lightning-button>
-                                                    </div>
-                                                </template>
+                                                        <div
+                                                            class="slds-m-top_small"
+                                                        >
+                                                            <lightning-button
+                                                                label={item.buttonLabel}
+                                                                icon-name={item.buttonIconName}
+                                                                icon-position={item.buttonIconPosition}
+                                                                variant={item.buttonVariant}
+                                                                disabled={item.buttonDisabled}
+                                                            ></lightning-button>
+                                                        </div>
+                                                    </template>
+                                                    <template
+                                                        if:true={item.secondaryButtonLabel}
+                                                    >
+                                                        <div
+                                                            class="slds-m-top_small"
+                                                        >
+                                                            <lightning-button
+                                                                label={item.secondaryButtonLabel}
+                                                                icon-name={item.secondaryButtonIconName}
+                                                                icon-position={item.secondaryButtonIconPosition}
+                                                                variant={item.secondaryButtonVariant}
+                                                                disabled={item.secondaryButtonDisabled}
+                                                            ></lightning-button>
+                                                        </div>
+                                                    </template>
+                                                </div>
                                             </div>
                                         </a>
                                     </div>

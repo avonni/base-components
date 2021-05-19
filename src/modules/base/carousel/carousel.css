@@ -8,6 +8,10 @@
     height: 12rem;
 }
 
+.slds-carousel__content.avonni-carousel__content {
+    position: relative;
+}
+
 .avonni-carousel__nav-button {
     display: block;
 }
