@@ -1,8 +1,14 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
-const validVariants = ['bottom-toolbar', 'top-toolbar'];
-const validModes = ['draw', 'erase'];
+const validVariants = {
+    valid: ['bottom-toolbar', 'top-toolbar'],
+    default: 'bottom-toolbar'
+};
+const validModes = { valid: ['draw', 'erase'], default: 'draw' };
+
+const DEFAULT_COLOR = '#000';
+const DEFAULT_SIZE = 2;
 
 export default class InputPen extends LightningElement {
     @api fieldLevelHelp;
@@ -10,10 +16,10 @@ export default class InputPen extends LightningElement {
     @api disabledButtons = [];
 
     _value;
-    _color = '#000';
-    _size = 2;
-    _variant = 'bottom-toolbar';
-    _mode = 'draw';
+    _color = DEFAULT_COLOR;
+    _size = DEFAULT_SIZE;
+    _variant = validVariants.default;
+    _mode = validModes.default;
     _disabled = false;
     _readOnly = false;
     _required = false;
@@ -125,8 +131,8 @@ export default class InputPen extends LightningElement {
 
     set variant(value) {
         this._variant = normalizeString(value, {
-            fallbackValue: 'bottom-toolbar',
-            validValues: validVariants
+            fallbackValue: validVariants.default,
+            validValues: validVariants.valid
         });
 
         if (this._variant === 'bottom-toolbar') {
@@ -142,8 +148,8 @@ export default class InputPen extends LightningElement {
 
     set mode(value) {
         this._mode = normalizeString(value, {
-            fallbackValue: 'draw',
-            validValues: validModes
+            fallbackValue: validModes.default,
+            validValues: validModes.valid
         });
         this.initCusrsorStyles();
     }

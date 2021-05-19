@@ -1,24 +1,28 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
-const validVariants = [
-    'base',
-    'neutral',
-    'brand',
-    'brand-outline',
-    'destructive',
-    'destructive-text',
-    'inverse',
-    'success'
-];
-const validIconPositions = ['left', 'right'];
+const validVariants = {
+    valid: [
+        'base',
+        'neutral',
+        'brand',
+        'brand-outline',
+        'destructive',
+        'destructive-text',
+        'inverse',
+        'success'
+    ],
+    default: 'neutral'
+};
+const validIconPositions = { valid: ['left', 'right'], default: 'left' };
 
 export default class ButtonDialog extends LightningElement {
     @api accessKey;
     @api label;
     @api iconName;
+    @api alternativeText;
 
-    _disabled;
+    _disabled = false;
     _variant = 'neutral';
     _iconPosition = 'left';
 
@@ -29,8 +33,8 @@ export default class ButtonDialog extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: 'border',
-            validValues: validVariants
+            fallbackValue: validVariants.default,
+            validValues: validVariants.valid
         });
     }
 
@@ -41,8 +45,8 @@ export default class ButtonDialog extends LightningElement {
 
     set iconPosition(iconPosition) {
         this._iconPosition = normalizeString(iconPosition, {
-            fallbackValue: 'left',
-            validValues: validIconPositions
+            fallbackValue: validIconPositions.default,
+            validValues: validIconPositions.valid
         });
     }
 
@@ -62,10 +66,12 @@ export default class ButtonDialog extends LightningElement {
         if (dialogSlot.assignedElements().length !== 0) {
             dialogSlot.assignedElements()[0].show();
         }
+        this.dispatchEvent(new CustomEvent('click'));
     }
 
     @api
     focus() {
-        this.template.querySelector('button').focus();
+        this.template.querySelector('lightning-button').focus();
+        this.dispatchEvent(new CustomEvent('focus'));
     }
 }

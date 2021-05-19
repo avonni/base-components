@@ -32,7 +32,6 @@ describe('Alert', () => {
         const element = createElement('base-alert', {
             is: Alert
         });
-
         document.body.appendChild(element);
 
         const div = element.shadowRoot.querySelector('div');
@@ -49,7 +48,6 @@ describe('Alert', () => {
         const element = createElement('base-alert', {
             is: Alert
         });
-
         document.body.appendChild(element);
 
         const div = element.shadowRoot.querySelector('div');
@@ -66,7 +64,6 @@ describe('Alert', () => {
         const element = createElement('base-alert', {
             is: Alert
         });
-
         document.body.appendChild(element);
 
         const div = element.shadowRoot.querySelector('div');
@@ -118,7 +115,6 @@ describe('Alert', () => {
         const element = createElement('base-alert', {
             is: Alert
         });
-
         document.body.appendChild(element);
 
         let lightningIcon = element.shadowRoot.querySelector('lightning-icon');
@@ -139,7 +135,6 @@ describe('Alert', () => {
         const element = createElement('base-alert', {
             is: Alert
         });
-
         document.body.appendChild(element);
 
         const mockCallBack = jest.fn();
