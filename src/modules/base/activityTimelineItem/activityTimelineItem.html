@@ -52,7 +52,7 @@
                         <template if:false={href}>
                             <h3>{title}</h3>
                         </template>
-                        <div if:true={actions} class="slds-no-flex">
+                        <div if:true={icons} class="slds-no-flex">
                             <template for:each={icons} for:item="icon">
                                 <lightning-button-icon
                                     key={icon}
@@ -107,13 +107,6 @@
                     {description}
                 </p>
                 <template if:false={closed}>
-                    <template if:true={isLoading}>
-                        <lightning-spinner
-                            size="small"
-                            class="slds-spinner_container"
-                            alternative-text={loadingStateAlternativeText}
-                        ></lightning-spinner>
-                    </template>
                     <template if:true={hasError}>
                         <div
                             class="slds-grid slds-text-color_error slds-m-top_x-small slds-m-horizontal_xx-small"
@@ -181,6 +174,15 @@
                             </div>
                         </template>
                         <template if:false={hasFields}>
+                            <template if:true={isLoading}>
+                                <div class="spins">
+                                    <lightning-spinner
+                                        size="small"
+                                        class="slds-spinner_container"
+                                        alternative-text={loadingStateAlternativeText}
+                                    ></lightning-spinner>
+                                </div>
+                            </template>
                             <template if:true={buttonLabel}>
                                 <div class="slds-m-top_small">
                                     <lightning-button

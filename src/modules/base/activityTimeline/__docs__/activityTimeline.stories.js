@@ -91,7 +91,31 @@ const items = [
         href: 'salesforce.com',
         iconName: 'standard:task',
         icons: ['utility:refresh'],
-        hasCheckbox: true
+        hasCheckbox: true,
+        fields: [
+            {
+                label: 'Name',
+                value: 'Charlie Gomez',
+                type: 'url',
+                typeAttributes: {
+                    label: 'Charlie Gomez'
+                }
+            },
+            {
+                label: 'Related To',
+                value: 'Tesla Cloudhub + Anypoint Connectors',
+                type: 'url',
+                typeAttributes: {
+                    label: 'Tesla Cloudhub + Anypoint Connectors'
+                }
+            },
+            {
+                label: 'Description',
+                value:
+                    'Need to finalize proposals and brand details before the meeting',
+                type: 'text'
+            }
+        ]
     },
     {
         title: 'Mobile conversation on Monday',
@@ -203,37 +227,13 @@ const items = [
     },
     {
         title: 'Create one task',
+        description: 'Fields are loading',
         datetimeValue: 1621605600000,
         href: '#',
         iconName: 'standard:dashboard',
         loadingStateAlternativeText: 'Is Loading',
-        fields: [
-            {
-                label: 'Name',
-                value: 'Charlie Gomez',
-                type: 'url',
-                typeAttributes: {
-                    label: 'Charlie Gomez'
-                }
-            },
-            {
-                label: 'Related To',
-                value: 'Tesla Cloudhub + Anypoint Connectors',
-                type: 'url',
-                typeAttributes: {
-                    label: 'Tesla Cloudhub + Anypoint Connectors'
-                }
-            },
-            {
-                label: 'Description',
-                value:
-                    'Need to finalize proposals and brand details before the meeting',
-                type: 'text'
-            }
-        ],
         hasCheckbox: true,
-        isLoading: true,
-        closed: true
+        isLoading: true
     },
     {
         title: 'Create another task',

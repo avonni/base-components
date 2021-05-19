@@ -31,7 +31,7 @@ export default class ActivityTimelineItem extends LightningElement {
     @api datetimeValue;
     @api href;
     @api iconName;
-    @api icons = [];
+    @api icons;
     @api buttonLabel;
     @api buttonIconName;
     @api loadingStateAlternativeText = DEFAULT_LOADING_TEXT;
@@ -47,10 +47,6 @@ export default class ActivityTimelineItem extends LightningElement {
     _buttonDisabled = false;
     _rendered = false;
     _color;
-
-    connectedCallback() {
-        this.actionsIcon();
-    }
 
     renderedCallback() {
         this.setLineColor();
@@ -161,15 +157,6 @@ export default class ActivityTimelineItem extends LightningElement {
                     .hasFields
             })
             .toString();
-    }
-
-    actionsIcon() {
-        this.actions.forEach((action) => {
-            if (action.iconName) {
-                this.icons.push(action.iconName);
-            }
-        });
-        return this.icons;
     }
 
     handleSectionStatus() {
