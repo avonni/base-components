@@ -52,12 +52,10 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['week', 'month', 'year', 'none'],
-            defaultValue: 'week',
+            options: ['week', 'month', 'year', ''],
             description: 'Values include week, month, year.',
             table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'week' }
+                type: { summary: 'string' }
             }
         },
         items: {
@@ -93,30 +91,6 @@ const items = [
         href: 'salesforce.com',
         iconName: 'standard:task',
         icons: ['utility:refresh'],
-        fields: [
-            {
-                label: 'Name',
-                value: 'Charlie Gomez',
-                type: 'url',
-                typeAttributes: {
-                    label: 'Charlie Gomez'
-                }
-            },
-            {
-                label: 'Related To',
-                value: 'Tesla Cloudhub + Anypoint Connectors',
-                type: 'url',
-                typeAttributes: {
-                    label: 'Tesla Cloudhub + Anypoint Connectors'
-                }
-            },
-            {
-                label: 'Description',
-                value:
-                    'Need to finalize proposals and brand details before the meeting',
-                type: 'text'
-            }
-        ],
         hasCheckbox: true
     },
     {
@@ -224,14 +198,15 @@ const items = [
             }
         ],
         buttonLabel: 'Public Sharing',
-        buttonIconName: 'utility:world'
+        buttonIconName: 'utility:world',
+        closed: true
     },
     {
-        title: 'Create a new task',
+        title: 'Create one task',
         datetimeValue: 1621605600000,
         href: '#',
         iconName: 'standard:dashboard',
-        hasError: true,
+        loadingStateAlternativeText: 'Is Loading',
         fields: [
             {
                 label: 'Name',
@@ -257,15 +232,15 @@ const items = [
             }
         ],
         hasCheckbox: true,
-        isLoading: true,
-        closed: true
+        isLoading: true
     },
     {
-        title: 'Create a new tasks',
+        title: 'Create another task',
         datetimeValue: 1621611000000,
         href: '#',
         iconName: 'standard:dashboard',
-        hasCheckbox: true
+        hasCheckbox: true,
+        hasError: true
     }
 ];
 
@@ -286,19 +261,40 @@ const Template = (args) => ActivityTimeline(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    title: 'Activity Timeline grouped by week',
+    title: 'Activity Timeline',
     iconName: 'standard:timesheet_entry',
     items: items,
     collapsible: true,
     actions: actions
 };
 
-export const BaseNotCollapsible = Template.bind({});
-BaseNotCollapsible.args = {
+export const Weekly = Template.bind({});
+Weekly.args = {
+    title: 'Activity Timeline grouped by week',
+    iconName: 'standard:timesheet_entry',
+    items: items,
+    collapsible: true,
+    actions: actions,
+    groupBy: 'week'
+};
+
+export const WeeklyNotCollapsible = Template.bind({});
+WeeklyNotCollapsible.args = {
     title: 'Activity Timeline not collapsible',
     iconName: 'standard:timesheet_entry',
     items: items,
     collapsible: false,
+    actions: actions,
+    groupBy: 'week'
+};
+
+export const Monthly = Template.bind({});
+Monthly.args = {
+    title: 'Activity Timeline grouped by month',
+    iconName: 'standard:timesheet_entry',
+    groupBy: 'month',
+    items: items,
+    collapsible: true,
     actions: actions
 };
 
@@ -307,16 +303,6 @@ Yearly.args = {
     title: 'Activity Timeline grouped by year',
     iconName: 'standard:timesheet_entry',
     groupBy: 'year',
-    items: items,
-    collapsible: true,
-    actions: actions
-};
-
-export const Monthly = Template.bind({});
-Monthly.args = {
-    title: 'Activity Timeline grouped by month',
-    iconName: 'standard:timesheet_entry',
-    groupBy: 'month',
     items: items,
     collapsible: true,
     actions: actions

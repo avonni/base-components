@@ -6,8 +6,8 @@ import {
 } from 'c/utilsPrivate';
 
 const validGroupByOptions = {
-    valid: ['week', 'month', 'year', 'none'],
-    default: 'week'
+    valid: ['week', 'month', 'year'],
+    default: undefined
 };
 const validVariants = { valid: ['base', 'shaded'], default: 'base' };
 
@@ -27,15 +27,12 @@ export default class ActivityTimeline extends LightningElement {
     _beforeDates = [];
     _upcomingDates = [];
 
+    @track ungroupedItems = [];
     @track orderedDates = [];
-
-    _rendered = false;
 
     connectedCallback() {
         this.initActivityTimeline();
         this.connected = true;
-        console.log(this._sortedItems);
-        console.log(this._items);
     }
 
     @api
@@ -98,9 +95,7 @@ export default class ActivityTimeline extends LightningElement {
 
     sortItems() {
         this._sortedItems = [...this.items];
-        this._sortedItems.sort(function (a, b) {
-            return a.datetimeValue + b.datetimeValue;
-        });
+        this._sortedItems.sort((a, b) => b.datetimeValue - a.datetimeValue);
     }
 
     sortDates() {
@@ -118,7 +113,7 @@ export default class ActivityTimeline extends LightningElement {
                     }
                 } else if (this._groupBy === 'year') {
                     this._beforeDates.push(item);
-                } else if (this._groupBy === 'week') {
+                } else if (this._groupBy === 'week' || !this._groupBy) {
                     if (
                         this.getNumberOfWeek(date) > this.getNumberOfWeek(today)
                     ) {
@@ -135,20 +130,8 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     groupDates() {
-        this._beforeDates = this._beforeDates.reduce((prev, cur) => {
-            const date = new Date(cur.datetimeValue);
-            if (this._groupBy === 'month') {
-                this._key = `${date.toLocaleString('en-EN', {
-                    month: 'long'
-                })} ${date.getFullYear()}`;
-            } else if (this._groupBy === 'week') {
-                this._key = `Week: ${this.getNumberOfWeek(
-                    date
-                )}, ${date.getFullYear()}`;
-            } else if (this._groupBy === 'year') {
-                this._key = `${date.getFullYear()}`;
-            }
-
+        this._upcomingDates = this._upcomingDates.reduce((prev, cur) => {
+            this._key = 'Upcoming';
             if (!prev[this._key]) {
                 prev[this._key] = [cur];
             } else {
@@ -157,8 +140,20 @@ export default class ActivityTimeline extends LightningElement {
             return prev;
         }, []);
 
-        this._upcomingDates = this._upcomingDates.reduce((prev, cur) => {
-            this._key = 'Upcoming';
+        this._beforeDates = this._beforeDates.reduce((prev, cur) => {
+            const date = new Date(cur.datetimeValue);
+            if (this._groupBy === 'month') {
+                this._key = `${date.toLocaleString('en-EN', {
+                    month: 'long'
+                })} ${date.getFullYear()}`;
+            } else if (this._groupBy === 'week' || !this._groupBy) {
+                this._key = `Week: ${this.getNumberOfWeek(
+                    date
+                )}, ${date.getFullYear()}`;
+            } else if (this._groupBy === 'year') {
+                this._key = `${date.getFullYear()}`;
+            }
+
             if (!prev[this._key]) {
                 prev[this._key] = [cur];
             } else {
@@ -184,10 +179,19 @@ export default class ActivityTimeline extends LightningElement {
 
     sortHours() {
         this.orderedDates.forEach((object) => {
-            object.items.sort(function (a, b) {
-                return a.datetimeValue - b.datetimeValue;
-            });
+            object.items.sort((a, b) => a.datetimeValue - b.datetimeValue);
         });
+    }
+
+    createUngroupedItems() {
+        // we need this function to have the dates ordered by dates and hours
+        this.orderedDates.forEach((group) => {
+            this.ungroupedItems.push(group.items);
+        });
+        this.ungroupedItems = this.ungroupedItems.reduce(
+            (acc, val) => acc.concat(val),
+            []
+        );
     }
 
     initActivityTimeline() {
@@ -195,6 +199,7 @@ export default class ActivityTimeline extends LightningElement {
         this.sortDates();
         this.groupDates();
         this.sortHours();
+        this.createUngroupedItems();
     }
 
     get hasDates() {
@@ -206,6 +211,6 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     get noGroupBy() {
-        return this.groupBy === 'none';
+        return !this.groupBy;
     }
 }

@@ -16,7 +16,7 @@
     </template>
     <template if:true={noGroupBy}>
         <ul class="slds-timeline">
-            <template for:each={items} for:item="item">
+            <template for:each={ungroupedItems} for:item="item">
                 <li key={item.title}>
                     <c-activity-timeline-item
                         title={item.title}
