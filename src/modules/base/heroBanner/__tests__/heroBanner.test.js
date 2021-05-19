@@ -1,6 +1,9 @@
 import { createElement } from 'lwc';
 import HeroBanner from 'c/heroBanner';
 
+// not tested
+// src & linear gradient
+
 describe('Hero Banner', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -15,13 +18,20 @@ describe('Hero Banner', () => {
 
         expect(element.title).toBeUndefined();
         expect(element.titleFontColor).toBe('#ffffff');
+        expect(element.titleFontFamily).toBe(
+            '"Salesforce Sans", Arial, sans-serif'
+        );
         expect(element.titleFontSize).toBe('large');
         expect(element.titleFontWeight).toBe('bold');
         expect(element.description).toBeUndefined();
         expect(element.descriptionFontColor).toBe('#ffffff');
+        expect(element.descriptionFontFamily).toBe(
+            '"Salesforce Sans", Arial, sans-serif'
+        );
         expect(element.descriptionFontSize).toBe('medium');
         expect(element.descriptionFontWeight).toBe('normal');
         expect(element.src).toBeUndefined();
+        expect(element.linearGradient).toBe('rgba(0,0,0,0.4), rgba(0,0,0,0.4)');
         expect(element.height).toBe(400);
         expect(element.textHorizontalAlignment).toBe('left');
         expect(element.textVerticalAlignment).toBe('center');
@@ -57,6 +67,22 @@ describe('Hero Banner', () => {
         return Promise.resolve().then(() => {
             const title = element.shadowRoot.querySelector('h1');
             expect(title.style.color).toBe('rgb(0, 0, 0)');
+        });
+    });
+
+    // title font family
+    it('Hero Banner title font family', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.title = 'This is a title text';
+        element.titleFontFamily = 'Arial';
+
+        return Promise.resolve().then(() => {
+            const title = element.shadowRoot.querySelector('h1');
+            expect(title.style.fontFamily).toBe('Arial');
         });
     });
 
@@ -223,6 +249,22 @@ describe('Hero Banner', () => {
         });
     });
 
+    // description font family
+    it('Hero Banner description font family', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.description = 'This is a description text';
+        element.descriptionFontFamily = 'Arial';
+
+        return Promise.resolve().then(() => {
+            const description = element.shadowRoot.querySelector('h2');
+            expect(description.style.fontFamily).toBe('Arial');
+        });
+    });
+
     // description font size
     it('Hero Banner description font size small', () => {
         const element = createElement('base-hero-banner', {
@@ -355,20 +397,135 @@ describe('Hero Banner', () => {
         });
     });
 
-    // src
-    it('Hero Banner src', () => {
+    // height
+    it('Hero Banner height', () => {
         const element = createElement('base-hero-banner', {
             is: HeroBanner
         });
         document.body.appendChild(element);
 
-        element.src =
-            'https://res.cloudinary.com/hy4kyit2a/image/upload/2019-10-Developer_Website_Hero_Banner-1280%C3%97248%20%281%29.png';
+        element.height = 200;
 
         return Promise.resolve().then(() => {
-            const background = element.shadowRoot.querySelector('div');
-            expect(background.style.background).toContain(
-                'avonni-hero-banner-font-weight_light'
+            const background = element.shadowRoot.querySelector(
+                '.avonni-hero-banner-background-class'
+            );
+            expect(background.style.height).toBe('200px');
+        });
+    });
+
+    // text horizontal alignment
+    it('Hero Banner text horizontal alignment center', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.title = 'This is a title text';
+        element.textHorizontalAlignment = 'center';
+
+        return Promise.resolve().then(() => {
+            const textContainer = element.shadowRoot.querySelector('span');
+            expect(textContainer.className).toContain('slds-text-align_center');
+        });
+    });
+
+    it('Hero Banner text horizontal alignment left', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.title = 'This is a title text';
+        element.textHorizontalAlignment = 'left';
+
+        return Promise.resolve().then(() => {
+            const textContainer = element.shadowRoot.querySelector('span');
+            expect(textContainer.className).toContain('slds-text-align_left');
+        });
+    });
+
+    it('Hero Banner text horizontal alignment right', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.title = 'This is a title text';
+        element.textHorizontalAlignment = 'right';
+
+        return Promise.resolve().then(() => {
+            const textContainer = element.shadowRoot.querySelector('span');
+            expect(textContainer.className).toContain('slds-text-align_right');
+        });
+    });
+
+    // text vertical alignment
+    it('Hero Banner text vertical alignment center', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.title = 'This is a title text';
+        element.textVerticalAlignment = 'center';
+
+        return Promise.resolve().then(() => {
+            const textContainer = element.shadowRoot.querySelector('span');
+            expect(textContainer.className).toContain(
+                'avonni-hero-banner-vertical-alignement-center'
+            );
+            expect(textContainer.className).not.toContain(
+                'avonni-hero-banner-vertical-alignement-bottom'
+            );
+            expect(textContainer.className).not.toContain(
+                'avonni-hero-banner-column-div'
+            );
+        });
+    });
+
+    it('Hero Banner text vertical alignment top', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.title = 'This is a title text';
+        element.textVerticalAlignment = 'top';
+
+        return Promise.resolve().then(() => {
+            const textContainer = element.shadowRoot.querySelector('span');
+            expect(textContainer.className).not.toContain(
+                'avonni-hero-banner-vertical-alignement-center'
+            );
+            expect(textContainer.className).not.toContain(
+                'avonni-hero-banner-vertical-alignement-bottom'
+            );
+            expect(textContainer.className).toContain(
+                'avonni-hero-banner-column-div'
+            );
+        });
+    });
+
+    it('Hero Banner text vertical alignment bottom', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.title = 'This is a title text';
+        element.textVerticalAlignment = 'bottom';
+
+        return Promise.resolve().then(() => {
+            const textContainer = element.shadowRoot.querySelector('span');
+            expect(textContainer.className).not.toContain(
+                'avonni-hero-banner-vertical-alignement-center'
+            );
+            expect(textContainer.className).toContain(
+                'avonni-hero-banner-vertical-alignement-bottom'
+            );
+            expect(textContainer.className).not.toContain(
+                'avonni-hero-banner-column-div'
             );
         });
     });

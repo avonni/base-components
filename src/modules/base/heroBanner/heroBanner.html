@@ -1,6 +1,6 @@
 <template>
     <div class="avonni-hero-banner-background-class" style={imgSrc}>
-        <div class={computedTextContainer}>
+        <span class={computedTextContainer}>
             <template if:true={title}>
                 <h1 class={computedTitleClass} style={computedTitleStyling}>
                     {title}
@@ -17,7 +17,7 @@
             <template if:true={showSlot}>
                 <slot></slot>
             </template>
-        </div>
+        </span>
         <template if:true={showFooterSlot}>
             <slot name="footer"></slot>
         </template>
