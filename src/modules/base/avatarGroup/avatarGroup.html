@@ -53,6 +53,21 @@
                 onkeyup={handleAvatarClick}
                 tabindex="0"
             ></c-primitive-avatar>
+            <button
+                type="button"
+                title="ActionButton"
+                onclick={actionClick}
+                class={actionButtonClassicClass}
+                style={actionButtonStyle}
+            >
+                <lightning-icon
+                    icon-name={actionIconName}
+                    size={iconSize}
+                    onclick={actionClick}
+                    style={actionButtonStyle}
+                    class="slds-button slds-button_icon slds-current-color"
+                ></lightning-icon>
+            </button>
         </span>
     </template>
     <template if:false={isClassic}>
