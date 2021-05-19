@@ -15,7 +15,8 @@ export const AvatarGroup = ({
     listButtonVariant,
     listButtonIconName,
     listButtonIconPosition,
-    actionIconName
+    actionIconName,
+    name
 }) => {
     const element = document.createElement('ac-base-avatar-group');
     element.items = items;
@@ -28,5 +29,6 @@ export const AvatarGroup = ({
     element.listButtonIconName = listButtonIconName;
     element.listButtonIconPosition = listButtonIconPosition;
     element.actionIconName = actionIconName;
+    element.name = name;
     return element;
 };

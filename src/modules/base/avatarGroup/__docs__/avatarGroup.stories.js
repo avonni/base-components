@@ -147,6 +147,16 @@ export default {
                 defaultValue: { summary: 'utility:add' },
                 category: 'Action Button'
             }
+        },
+        name: {
+            name: 'name',
+            control: {
+                type: 'text'
+            },
+            description: 'Avatar group Name identifier',
+            table: {
+                type: { summary: 'string' }
+            }
         }
     }
 };

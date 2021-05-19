@@ -31,6 +31,7 @@ export default class AvatarGroup extends LightningElement {
     @api listButtonLabel = 'Show more';
     @api listButtonIconName;
     @api actionIconName;
+    @api name;
 
     _items = [];
     _maxCount;
