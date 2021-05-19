@@ -52,7 +52,7 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['week', 'month', 'year'],
+            options: ['week', 'month', 'year', 'none'],
             defaultValue: 'week',
             description: 'Values include week, month, year.',
             table: {
@@ -261,8 +261,8 @@ const items = [
         closed: true
     },
     {
-        title: 'Create a new task',
-        datetimeValue: 1621605600000,
+        title: 'Create a new tasks',
+        datetimeValue: 1621611000000,
         href: '#',
         iconName: 'standard:dashboard',
         hasCheckbox: true

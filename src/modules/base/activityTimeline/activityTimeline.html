@@ -14,41 +14,71 @@
             </div>
         </div>
     </template>
+    <template if:true={noGroupBy}>
+        <ul class="slds-timeline">
+            <template for:each={items} for:item="item">
+                <li key={item.title}>
+                    <c-activity-timeline-item
+                        title={item.title}
+                        description={item.description}
+                        datetime-value={item.datetimeValue}
+                        href={item.href}
+                        icon-name={item.iconName}
+                        fields={item.fields}
+                        has-checkbox={item.hasCheckbox}
+                        has-error={item.hasError}
+                        closed={item.closed}
+                        button-label={item.buttonLabel}
+                        button-icon-name={item.buttonIconName}
+                        button-variant={item.buttonVariant}
+                        button-icon-position={item.buttonIconPosition}
+                        button-disabled={item.buttonDisabled}
+                        is-loading={item.isLoading}
+                        loading-state-alternative-text={item.loadingStateAlternativeText}
+                        actions={actions}
+                    >
+                    </c-activity-timeline-item>
+                </li>
+            </template>
+        </ul>
+    </template>
     <template if:true={hasDates}>
         <template for:each={orderedDates} for:item="date">
-            <c-expandable-section
-                key={date.label}
-                title={date.label}
-                collapsible={collapsible}
-                closed={closed}
-            >
-                <ul class="slds-timeline">
-                    <template for:each={date.items} for:item="item">
-                        <li key={item.title}>
-                            <c-activity-timeline-item
-                                title={item.title}
-                                description={item.description}
-                                datetime-value={item.datetimeValue}
-                                href={item.href}
-                                icon-name={item.iconName}
-                                fields={item.fields}
-                                has-checkbox={item.hasCheckbox}
-                                has-error={item.hasError}
-                                closed={item.closed}
-                                button-label={item.buttonLabel}
-                                button-icon-name={item.buttonIconName}
-                                button-variant={item.buttonVariant}
-                                button-icon-position={item.buttonIconPosition}
-                                button-disabled={item.buttonDisabled}
-                                is-loading={item.isLoading}
-                                loading-state-alternative-text={item.loadingStateAlternativeText}
-                                actions={actions}
-                            >
-                            </c-activity-timeline-item>
-                        </li>
-                    </template>
-                </ul>
-            </c-expandable-section>
+            <template if:false={noGroupBy}>
+                <c-expandable-section
+                    key={date.label}
+                    title={date.label}
+                    collapsible={collapsible}
+                    closed={closed}
+                >
+                    <ul class="slds-timeline">
+                        <template for:each={date.items} for:item="item">
+                            <li key={item.title}>
+                                <c-activity-timeline-item
+                                    title={item.title}
+                                    description={item.description}
+                                    datetime-value={item.datetimeValue}
+                                    href={item.href}
+                                    icon-name={item.iconName}
+                                    fields={item.fields}
+                                    has-checkbox={item.hasCheckbox}
+                                    has-error={item.hasError}
+                                    closed={item.closed}
+                                    button-label={item.buttonLabel}
+                                    button-icon-name={item.buttonIconName}
+                                    button-variant={item.buttonVariant}
+                                    button-icon-position={item.buttonIconPosition}
+                                    button-disabled={item.buttonDisabled}
+                                    is-loading={item.isLoading}
+                                    loading-state-alternative-text={item.loadingStateAlternativeText}
+                                    actions={actions}
+                                >
+                                </c-activity-timeline-item>
+                            </li>
+                        </template>
+                    </ul>
+                </c-expandable-section>
+            </template>
         </template>
     </template>
 </template>

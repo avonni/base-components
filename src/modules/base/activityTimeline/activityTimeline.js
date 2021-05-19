@@ -6,7 +6,7 @@ import {
 } from 'c/utilsPrivate';
 
 const validGroupByOptions = {
-    valid: ['week', 'month', 'year'],
+    valid: ['week', 'month', 'year', 'none'],
     default: 'week'
 };
 const validVariants = { valid: ['base', 'shaded'], default: 'base' };
@@ -29,9 +29,13 @@ export default class ActivityTimeline extends LightningElement {
 
     @track orderedDates = [];
 
+    _rendered = false;
+
     connectedCallback() {
         this.initActivityTimeline();
         this.connected = true;
+        console.log(this._sortedItems);
+        console.log(this._items);
     }
 
     @api
@@ -199,5 +203,9 @@ export default class ActivityTimeline extends LightningElement {
 
     get hasHeader() {
         return this.title || this.iconName;
+    }
+
+    get noGroupBy() {
+        return this.groupBy === 'none';
     }
 }
