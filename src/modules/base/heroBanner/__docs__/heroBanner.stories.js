@@ -22,9 +22,23 @@ export default {
                 type: 'color'
             },
             defaultValue: '#ffffff',
-            description: '',
+            description: 'Defines the font color of the title.',
             table: {
                 type: { summary: 'color' }
+            }
+        },
+        titleFontFamily: {
+            name: 'title-font-family',
+            control: {
+                type: 'text'
+            },
+            defaultValue: "'Salesforce Sans', Arial, sans-serif",
+            description: 'Defines the font family of the title.',
+            table: {
+                type: { summary: 'text' },
+                defaultValue: {
+                    summary: "'Salesforce Sans', Arial, sans-serif"
+                }
             }
         },
         titleFontSize: {
@@ -76,6 +90,20 @@ export default {
                 type: { summary: 'color' }
             }
         },
+        descriptionFontFamily: {
+            name: 'description-font-family',
+            control: {
+                type: 'text'
+            },
+            defaultValue: "'Salesforce Sans', Arial, sans-serif",
+            description: 'Defines the font family of the description.',
+            table: {
+                type: { summary: 'text' },
+                defaultValue: {
+                    summary: "'Salesforce Sans', Arial, sans-serif"
+                }
+            }
+        },
         descriptionFontSize: {
             name: 'description-font-size',
             control: {
@@ -111,6 +139,19 @@ export default {
             description: 'URL for the background image.',
             table: {
                 type: { summary: 'string' }
+            }
+        },
+        linearGradient: {
+            name: 'linear-gradient',
+            control: {
+                type: 'text'
+            },
+            defaultValue: 'rgba(0,0,0,0.4), rgba(0,0,0,0.4)',
+            description:
+                'Defines the linear-gradient for the background image.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'rgba(0,0,0,0.4), rgba(0,0,0,0.4)' }
             }
         },
         height: {

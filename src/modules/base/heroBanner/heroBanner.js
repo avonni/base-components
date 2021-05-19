@@ -27,13 +27,18 @@ const font_weight_options = {
 const DEFAULT_TITLE_FONT_COLOR = '#ffffff';
 const DEFAULT_DESCRIPTION_FONT_COLOR = '#ffffff';
 const DEFAULT_HEIGHT = 400;
+const DEFAULT_LINEAR_GRADIENT = 'rgba(0,0,0,0.4), rgba(0,0,0,0.4)';
+const DEFAULT_FONT_FAMILY = '"Salesforce Sans", Arial, sans-serif';
 
 export default class HeroBanner extends LightningElement {
     @api title;
     @api titleFontColor = DEFAULT_TITLE_FONT_COLOR;
+    @api titleFontFamily = DEFAULT_FONT_FAMILY;
     @api description;
     @api descriptionFontColor = DEFAULT_DESCRIPTION_FONT_COLOR;
+    @api descriptionFontFamily = DEFAULT_FONT_FAMILY;
     @api src;
+    @api linearGradient = DEFAULT_LINEAR_GRADIENT;
 
     _textHorizontalAlignment = horizontal_alignement_options.default;
     _textVerticalAlignment = vertical_alignement_options.default;
@@ -152,15 +157,15 @@ export default class HeroBanner extends LightningElement {
     }
 
     get imgSrc() {
-        return `background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(${this.src}); height: ${this.height}px`;
+        return `background-image: linear-gradient(${this.linearGradient}), url(${this.src}); height: ${this.height}px`;
     }
 
-    get titleColor() {
-        return `color: ${this.titleFontColor}`;
+    get computedTitleStyling() {
+        return `font-family: ${this.titleFontFamily}; color: ${this.titleFontColor}`;
     }
 
-    get descriptionColor() {
-        return `color: ${this.descriptionFontColor}`;
+    get computedDescriptionStyling() {
+        return `font-family: ${this.descriptionFontFamily}; color: ${this.descriptionFontColor}`;
     }
 
     get computedTextContainer() {
