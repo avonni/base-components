@@ -142,13 +142,19 @@ export default class Datatable extends LightningDatatable {
     connectedCallback() {
         super.connectedCallback();
 
-        this.template.addEventListener('change', this.dispatchChange);
+        this.template.addEventListener(
+            'privateeditcustomcell',
+            this.handleEditCell
+        );
     }
 
     disconnectedCallback() {
         super.disconnectedCallback();
 
-        this.template.removeEventListener('change', this.dispatchChange);
+        this.template.removeEventListener(
+            'privateeditcustomcell',
+            this.handleEditCell
+        );
     }
 
     @api
@@ -192,13 +198,12 @@ export default class Datatable extends LightningDatatable {
                 // Transform the value into an object containing the editable property
                 if (CUSTOM_TYPES_EDITABLE.includes(column.type)) {
                     const fieldName = column.fieldName;
-                    const editable = !!column.editable;
 
                     this._data.forEach((row) => {
                         const value = row[fieldName];
                         row[fieldName] = {
                             value: value,
-                            readOnly: !editable
+                            editable: !!column.editable
                         };
                     });
                 }
@@ -206,15 +211,22 @@ export default class Datatable extends LightningDatatable {
         }
     }
 
-    dispatchChange = (event) => {
+    handleEditCell = (event) => {
         event.stopPropagation();
 
-        this.dispatchEvent(
-            new CustomEvent('change', {
-                detail: event.detail,
-                bubbles: true,
-                cancelable: true
-            })
-        );
+        const { colKeyValue, rowKeyValue, value } = event.detail;
+        const dirtyValues = this.state.inlineEdit.dirtyValues;
+
+        // If no values have been edited in the row yet,
+        // create the row object in the state dirty values
+        if (!dirtyValues[rowKeyValue]) {
+            dirtyValues[rowKeyValue] = {};
+        }
+
+        // Add the new cell value to the state dirty values
+        dirtyValues[rowKeyValue][colKeyValue] = value;
+
+        // Show yellow background and save/cancel button
+        super.updateRowsState(this.state);
     };
 }

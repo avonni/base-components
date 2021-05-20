@@ -1,9 +1,8 @@
 import { LightningElement, api } from 'lwc';
 
 export default class PrimitiveCellInputDateRange extends LightningElement {
-    @api columnType;
+    @api colKeyValue;
     @api rowKeyValue;
-    @api value;
     @api dateStyle;
     @api timeStyle;
     @api timezone;
@@ -11,8 +10,24 @@ export default class PrimitiveCellInputDateRange extends LightningElement {
     @api label;
     @api labelStartDate;
     @api labelEndDate;
-    @api readOnly;
     @api type;
+    _value;
+    readOnly;
+
+    @api
+    get value() {
+        return this._value;
+    }
+    set value(value) {
+        // When data is first set, the value is an object containing the editable state
+        // When the cell is edited, only the value is sent back
+        if (typeof value === 'object' && value.editable !== undefined) {
+            this.readOnly = !value.editable;
+            this._value = value.value;
+        } else {
+            this._value = value;
+        }
+    }
 
     get startDate() {
         return typeof this.value === 'object'
@@ -25,12 +40,17 @@ export default class PrimitiveCellInputDateRange extends LightningElement {
     }
 
     handleChange(event) {
-        const detail = event.detail;
-        detail.columnType = this.columnType;
-        detail.rowNumber = this.rowNumber;
+        const detail = {
+            value: {
+                startDate: event.detail.startDate,
+                endDate: event.detail.endDate
+            },
+            colKeyValue: this.colKeyValue,
+            rowKeyValue: this.rowKeyValue
+        };
 
         this.dispatchEvent(
-            new CustomEvent('change', {
+            new CustomEvent('privateeditcustomcell', {
                 detail: detail,
                 bubbles: true,
                 composed: true

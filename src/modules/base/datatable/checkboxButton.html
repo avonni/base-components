@@ -1,5 +1,5 @@
 <template>
-    <template if:false={value.readOnly}>
+    <template if:true={value.editable}>
         <lightning-input
             checked={value.value}
             type="checkbox-button"
@@ -9,7 +9,7 @@
             name={typeAttributes.name}
         ></lightning-input>
     </template>
-    <template if:true={value.readOnly}>
+    <template if:false={value.editable}>
         <lightning-input
             checked={value.value}
             read-only="true"

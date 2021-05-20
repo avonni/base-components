@@ -1,13 +1,12 @@
 <template>
     <c-primitive-cell-input-counter
-        column-type={columnType}
+        col-key-value={colKeyValue}
         row-key-value={rowKeyValue}
-        value={value.value}
+        value={value}
         name={typeAttributes.name}
         label={typeAttributes.label}
         max={typeAttributes.max}
         min={typeAttributes.min}
-        read-only={value.readOnly}
         step={typeAttributes.step}
         disabled={typeAttributes.disabled}
     ></c-primitive-cell-input-counter>

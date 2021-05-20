@@ -1,8 +1,8 @@
 <template>
     <c-primitive-cell-color-picker
-        column-type={columnType}
+        col-key-value={colKeyValue}
         row-key-value={rowKeyValue}
-        value={value.value}
+        value={value}
         colors={typeAttributes.colors}
         disabled={typeAttributes.disabled}
         hide-color-input={typeAttributes.hideColorInput}
@@ -12,7 +12,6 @@
         menu-icon-size={typeAttributes.menuIconSize}
         menu-variant={typeAttributes.menuVariant}
         opacity={typeAttributes.opacity}
-        read-only={value.readOnly}
         type={typeAttributes.type}
     ></c-primitive-cell-color-picker>
 </template>

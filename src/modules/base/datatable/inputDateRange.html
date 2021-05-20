@@ -1,8 +1,8 @@
 <template>
     <c-primitive-cell-input-date-range
-        column-type={columnType}
+        col-key-value={colKeyValue}
         row-key-value={rowKeyValue}
-        value={value.value}
+        value={value}
         date-style={typeAttributes.dateStyle}
         time-style={typeAttributes.timeStyle}
         timezone={typeAttributes.timezone}
@@ -10,7 +10,6 @@
         label={typeAttributes.label}
         label-start-date={typeAttributes.labelStartDate}
         label-end-date={typeAttributes.labelEndDate}
-        read-only={value.readOnly}
         type={typeAttributes.type}
     ></c-primitive-cell-input-date-range>
 </template>
