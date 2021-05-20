@@ -12,6 +12,7 @@ import inputCounter from './inputCounter.html';
 import inputDateRange from './inputDateRange.html';
 import inputToggle from './inputToggle.html';
 import progressBar from './progressBar.html';
+import progressRing from './progressRing.html';
 
 const CUSTOM_TYPES_ALWAYS_WRAPPED = [
     'avatar',
@@ -151,6 +152,11 @@ export default class Datatable extends LightningDatatable {
                 'valuePostion',
                 'variant'
             ]
+        },
+        'progress-ring': {
+            template: progressRing,
+            typeAttributes: ['direction', 'hideIcon', 'size', 'variant'],
+            standardCellLayout: true
         }
     };
 

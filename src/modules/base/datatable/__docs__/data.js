@@ -156,13 +156,22 @@ const columnsFN = [
 const columnsOQ = [
     {
         label: 'Progress Bar',
-        fieldName: 'progressBar',
+        fieldName: 'progress',
         type: 'progress-bar',
         typeAttributes: {
             referenceLines: { fieldName: 'progressBarReferenceLines' },
             theme: { fieldName: 'progressBarTheme' },
             variant: 'circular',
             thickness: 'large'
+        }
+    },
+    {
+        label: 'Progress Ring',
+        fieldName: 'progress',
+        type: 'progress-ring',
+        typeAttributes: {
+            variant: { fieldName: 'progressRingVariant' },
+            size: 'large'
         }
     }
 ];
@@ -340,7 +349,7 @@ const dataFN = [
 const dataOQ = [
     {
         id: 1,
-        progressBar: 34,
+        progress: 34,
         progressBarReferenceLines: [
             {
                 label: 'IT',
@@ -352,25 +361,28 @@ const dataOQ = [
                 value: 45,
                 variant: 'success'
             }
-        ]
+        ],
+        progressRingVariant: 'warning'
     },
     {
         id: 2,
-        progressBar: 100,
-        progressBarTheme: 'success'
+        progress: 100,
+        progressBarTheme: 'success',
+        progressRingVariant: 'base-autocomplete'
     },
     {
         id: 3,
-        progressBar: 43
+        progress: 43
     },
     {
         id: 4,
-        progressBar: 5,
-        progressBarTheme: 'info'
+        progress: 5,
+        progressBarTheme: 'info',
+        progressRingVariant: 'expired'
     },
     {
         id: 5,
-        progressBar: 66,
+        progress: 66,
         progressBarTheme: 'alt-inverse',
         progressBarReferenceLines: [
             {
