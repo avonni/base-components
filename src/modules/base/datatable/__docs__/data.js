@@ -183,6 +183,16 @@ const columnsOQ = [
             variant: { fieldName: 'progressRingVariant' },
             size: 'large'
         }
+    },
+    {
+        label: 'QR Code',
+        fieldName: 'qrcode',
+        type: 'qrcode',
+        typeAttributes: {
+            borderColor: { fieldName: 'qrcodeBorderColor' },
+            borderWidth: { fieldName: 'qrcodeBorderWidth' },
+            size: 50
+        }
     }
 ];
 
@@ -372,24 +382,30 @@ const dataOQ = [
                 variant: 'success'
             }
         ],
-        progressRingVariant: 'warning'
+        progressRingVariant: 'warning',
+        qrcode: 'https://www.avonni.app/'
     },
     {
         id: 2,
         progress: 100,
         progressBarTheme: 'success',
         progressRingVariant: 'base-autocomplete',
-        progressCircleColor: '#45c65a'
+        progressCircleColor: '#45c65a',
+        qrcode: 'https://www.avonni.app/',
+        qrcodeBorderColor: '#45c65a',
+        qrcodeBorderWidth: 5
     },
     {
         id: 3,
-        progress: 43
+        progress: 43,
+        qrcode: 'https://www.avonni.app/'
     },
     {
         id: 4,
         progress: 5,
         progressBarTheme: 'info',
-        progressRingVariant: 'expired'
+        progressRingVariant: 'expired',
+        qrcode: 'https://www.avonni.app/'
     },
     {
         id: 5,
@@ -406,7 +422,8 @@ const dataOQ = [
                 value: 33,
                 borderStyle: 'solid'
             }
-        ]
+        ],
+        qrcode: 'https://www.avonni.app/'
     }
 ];
 const dataRZ = [];

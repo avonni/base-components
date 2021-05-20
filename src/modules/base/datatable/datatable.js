@@ -14,6 +14,7 @@ import inputToggle from './inputToggle.html';
 import progressBar from './progressBar.html';
 import progressCircle from './progressCircle.html';
 import progressRing from './progressRing.html';
+import qrcode from './qrcode.html';
 
 const CUSTOM_TYPES_ALWAYS_WRAPPED = [
     'avatar',
@@ -169,6 +170,21 @@ export default class Datatable extends LightningDatatable {
                 'size',
                 'thickness',
                 'variant'
+            ],
+            standardCellLayout: true
+        },
+        qrcode: {
+            template: qrcode,
+            typeAttributes: [
+                'background',
+                'borderColor',
+                'borderWidth',
+                'color',
+                'encoding',
+                'errorCorrection',
+                'padding',
+                'renderAs',
+                'size'
             ],
             standardCellLayout: true
         }
