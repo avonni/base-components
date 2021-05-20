@@ -12,6 +12,7 @@ import inputCounter from './inputCounter.html';
 import inputDateRange from './inputDateRange.html';
 import inputToggle from './inputToggle.html';
 import progressBar from './progressBar.html';
+import progressCircle from './progressCircle.html';
 import progressRing from './progressRing.html';
 
 const CUSTOM_TYPES_ALWAYS_WRAPPED = [
@@ -25,6 +26,7 @@ const CUSTOM_TYPES_ALWAYS_WRAPPED = [
     'input-date-range',
     'input-toggle',
     'progress-bar',
+    'progress-circle',
     'progress-ring',
     'qrcode',
     'range',
@@ -156,6 +158,18 @@ export default class Datatable extends LightningDatatable {
         'progress-ring': {
             template: progressRing,
             typeAttributes: ['direction', 'hideIcon', 'size', 'variant'],
+            standardCellLayout: true
+        },
+        'progress-circle': {
+            template: progressCircle,
+            typeAttributes: [
+                'color',
+                'direction',
+                'label',
+                'size',
+                'thickness',
+                'variant'
+            ],
             standardCellLayout: true
         }
     };

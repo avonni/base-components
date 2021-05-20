@@ -166,6 +166,16 @@ const columnsOQ = [
         }
     },
     {
+        label: 'Progress Circle',
+        fieldName: 'progress',
+        type: 'progress-circle',
+        typeAttributes: {
+            thickness: 'large',
+            size: 'small',
+            color: { fieldName: 'progressCircleColor' }
+        }
+    },
+    {
         label: 'Progress Ring',
         fieldName: 'progress',
         type: 'progress-ring',
@@ -368,7 +378,8 @@ const dataOQ = [
         id: 2,
         progress: 100,
         progressBarTheme: 'success',
-        progressRingVariant: 'base-autocomplete'
+        progressRingVariant: 'base-autocomplete',
+        progressCircleColor: '#45c65a'
     },
     {
         id: 3,
