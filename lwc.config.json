@@ -367,6 +367,10 @@
             "path": "src/modules/base/timer/timer.js"
         },
         {
+            "name": "c/tooltipLibrary",
+            "path": "src/modules/base/tooltipLibrary/tooltipLibrary.js"
+        },
+        {
             "name": "c/verticalProgressIndicator",
             "path": "src/modules/base/verticalProgressIndicator/verticalProgressIndicator.js"
         },

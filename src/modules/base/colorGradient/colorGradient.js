@@ -7,6 +7,7 @@ import {
 } from 'c/utilsPrivate';
 
 const indicatorSize = 12;
+const DEFAULT_VALUE = '#ffffff';
 
 export default class ColorGradient extends LightningElement {
     @api messageWhenBadInput = 'Please ensure value is correct';
@@ -15,8 +16,8 @@ export default class ColorGradient extends LightningElement {
     _readOnly = false;
     _opacity = false;
 
-    _value = '#ffffff';
-    colors = generateColors('#ffffff');
+    _value = DEFAULT_VALUE;
+    colors = generateColors(DEFAULT_VALUE);
     positionX;
     positionY;
     paletteWidth;

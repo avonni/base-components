@@ -1,6 +1,23 @@
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
-import { normalizeArray } from 'c/utilsPrivate';
+import { normalizeArray, normalizeString } from 'c/utilsPrivate';
+
+const THEMES = {
+    valid: ['default', 'shade', 'inverse'],
+    default: 'default'
+};
+
+const VARIANTS = {
+    valid: ['horizontal', 'vertical'],
+    default: 'horizontal'
+};
+const ACTIONS_POSITIONS = {
+    valid: ['top', 'bottom'],
+    default: 'top'
+};
+
+const DEFAULT_SHRINK_ICON_NAME = 'utility:chevrondown';
+const DEFAULT_EXPAND_ICON_NAME = 'utility:chevronright';
 
 export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     @api label;
@@ -8,27 +25,25 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     @api avatarSrc;
     @api avatarFallbackIconName;
     @api href;
-    @api items;
-    @api expanded;
-    @api defaultActions;
     @api hideDefaultActions;
     @api selected;
-    @api shrinkIconName;
-    @api expandIconName;
-    @api activeChild;
-    @api actionsPosition;
-    @api theme;
+    @api shrinkIconName = DEFAULT_SHRINK_ICON_NAME;
+    @api expandIconName = DEFAULT_EXPAND_ICON_NAME;
+    @api activeChild = false;
     @api itemActions;
     @api itemTheme;
-    @api hideItemsCount;
-    @api variant;
+    @api hideItemsCount = false;
     @api isFirstChild;
 
-    _hasSelectedChildren;
+    _actionsPosition = ACTIONS_POSITIONS.default;
     _closed;
-    _expanded;
-    _customActions;
-    _defaultActions;
+    _customActions = [];
+    _defaultActions = [];
+    _expanded = true;
+    _hasSelectedChildren;
+    _items = [];
+    _theme = THEMES.default;
+    _variant = VARIANTS.default;
 
     connectedCallback() {
         this._closed = this.expanded === false;
@@ -38,8 +53,27 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
         // Accessibility: sets focus on the first group child of the active item
         if (this.activeChild && this.isFirstChild) {
             const wrapper = this.template.querySelector('.group');
-            wrapper.focus();
+            if (wrapper) wrapper.focus();
         }
+    }
+
+    @api
+    get actionsPosition() {
+        return this._actionsPosition;
+    }
+    set actionsPosition(value) {
+        this._actionsPosition = normalizeString(value, {
+            validValues: ACTIONS_POSITIONS.valid,
+            fallbackValue: ACTIONS_POSITIONS.default
+        });
+    }
+
+    @api
+    get items() {
+        return this._items;
+    }
+    set items(value) {
+        this._items = normalizeArray(value);
     }
 
     @api
@@ -58,7 +92,7 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     @api
     get height() {
         const group = this.template.querySelector('.group');
-        return group.offsetHeight;
+        return group ? group.offsetHeight : 0;
     }
 
     @api
@@ -67,6 +101,49 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     }
     set customActions(value) {
         this._customActions = normalizeArray(value);
+    }
+
+    @api
+    get defaultActions() {
+        return this._defaultActions;
+    }
+    set defaultActions(value) {
+        this._defaultActions = normalizeArray(value);
+    }
+
+    @api
+    get expanded() {
+        return this._expanded;
+    }
+    set expanded(value) {
+        // Because the default is true, falsy values (undefined, null, etc.) are considered true
+        this._expanded = value === false ? false : true;
+
+        if (this.isConnected) {
+            this._closed = this.expanded === false;
+        }
+    }
+
+    @api
+    get theme() {
+        return this._theme;
+    }
+    set theme(value) {
+        this._theme = normalizeString(value, {
+            validValues: THEMES.valid,
+            fallbackValue: THEMES.defaultActions
+        });
+    }
+
+    @api
+    get variant() {
+        return this._variant;
+    }
+    set variant(value) {
+        this._variant = normalizeString(value, {
+            validValues: VARIANTS.valid,
+            fallbackValue: VARIANTS.defaultActions
+        });
     }
 
     get title() {

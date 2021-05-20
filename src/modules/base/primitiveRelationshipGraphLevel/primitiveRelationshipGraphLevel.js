@@ -13,9 +13,8 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
     @api expandIconName;
     @api activeGroups;
     @api hideItemsCount;
-    @api activeSelection;
 
-    _groups;
+    _groups = [];
     _selectedGroups;
     _selectedItemName;
     _selectedItem;
@@ -48,10 +47,12 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
     @api
     get currentLevelHeight() {
         const currentLevel = this.currentLevel;
+        if (!currentLevel) return 0;
+
         const lastGroup = currentLevel.querySelector(
             'c-primitive-relationship-graph-group:last-child'
         );
-        if (!currentLevel || !lastGroup) return 0;
+        if (!lastGroup) return 0;
 
         const currentLevelHeight = currentLevel.offsetHeight;
         const lastGroupHeight = lastGroup.height;
@@ -61,6 +62,7 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
 
     @api
     get currentLevelWidth() {
+        if (!this.currentLevel) return 0;
         return this.currentLevel.getBoundingClientRect().width;
     }
 
@@ -172,17 +174,20 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
             const itemPosition = selectedItem.getBoundingClientRect();
 
             // Distance between the center of the selected item and the top of the first child group
+            // 24 is removed to compensate for the line not starting at the complete top of the level
             const itemHeight =
                 itemPosition.top +
                 itemPosition.height / 2 +
                 scroll -
-                currentLevelTop;
+                currentLevelTop -
+                24;
             // Distance between the top of the two boundary child groups
+
             const childHeight = child.currentLevelHeight;
 
             const height =
                 itemHeight > childHeight
-                    ? `calc(${itemHeight}px - 1.5rem)`
+                    ? `${itemHeight}px`
                     : `${childHeight}px`;
             line.setAttribute('style', `height: ${height};`);
         }
@@ -197,7 +202,8 @@ export default class PrimitiveRelationshipGraphLevel extends LightningElement {
             const selectedItem = selectedGroup.items.find(
                 (item) => item.selected
             );
-            if (selectedItem.groups) this._selectedGroups = selectedItem.groups;
+            if (selectedItem && selectedItem.groups)
+                this._selectedGroups = selectedItem.groups;
         }
     }
 

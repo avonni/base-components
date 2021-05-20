@@ -23,6 +23,10 @@
     border: none;
 }
 
+.avonni-progress-step-icon-margin-bottom {
+    margin-bottom: 2px;
+}
+
 .avonni-progress-step-outer-class {
     position: relative;
     min-width: 9rem;

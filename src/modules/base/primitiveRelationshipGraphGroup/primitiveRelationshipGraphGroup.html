@@ -100,7 +100,11 @@
             <template if:true={actions}>
                 <template if:false={topActions}>
                     <template for:each={actions} for:item="action">
-                        <div key={action.name} class="slds-m-bottom_xx-small">
+                        <div
+                            key={action.name}
+                            class="slds-m-bottom_xx-small"
+                            data-bottom-actions
+                        >
                             <button
                                 name={action.name}
                                 class={actionButtonClass}
