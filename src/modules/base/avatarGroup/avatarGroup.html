@@ -1,6 +1,6 @@
 <template>
     <template if:true={isClassic}>
-        <span class={avatarGroupClass}>
+        <span class={avatarWrapperClass}>
             <c-primitive-avatar
                 alternative-text={primaryItem.alternativeText}
                 fallback-icon-name={primaryItem.fallbackIconName}
@@ -21,7 +21,7 @@
                 entity-position={primaryItem.entityPosition}
                 data-item-id="0"
                 data-type="show"
-                class="slds-avatar-grouped slds-avatar-grouped__primary"
+                class={avatarInlineClass}
                 onclick={handleAvatarClick}
                 role="button"
                 onkeyup={handleAvatarClick}
@@ -47,28 +47,26 @@
                 entity-position={secondaryItem.entityPosition}
                 data-item-id="1"
                 data-type="show"
-                class="slds-avatar-grouped slds-avatar-grouped__secondary"
+                class={avatarInlineClass}
                 onclick={handleAvatarClick}
                 role="button"
                 onkeyup={handleAvatarClick}
                 tabindex="0"
             ></c-primitive-avatar>
-            <button
-                type="button"
-                title="ActionButton"
-                onclick={actionClick}
-                class={actionButtonClassicClass}
-                style={actionButtonStyle}
-            >
-                <lightning-icon
-                    icon-name={actionIconName}
-                    size={iconSize}
-                    onclick={actionClick}
-                    style={actionButtonStyle}
-                    class="slds-button slds-button_icon slds-current-color"
-                ></lightning-icon>
-            </button>
         </span>
+        <button
+            type="button"
+            title="ActionButton"
+            onclick={actionClick}
+            class={actionButtonClass}
+        >
+            <lightning-icon
+                icon-name={actionIconName}
+                size={iconSize}
+                onclick={actionClick}
+                class="slds-button slds-button_icon slds-current-color avonni-avatar_action-button"
+            ></lightning-icon>
+        </button>
     </template>
     <template if:false={isClassic}>
         <template for:each={listItems} for:item="item" for:index="index">
@@ -211,14 +209,12 @@
                     title="ActionButton"
                     onclick={actionClick}
                     class={actionButtonClass}
-                    style={actionButtonStyle}
                 >
                     <lightning-icon
                         icon-name={actionIconName}
                         size={iconSize}
                         onclick={actionClick}
-                        style={actionButtonStyle}
-                        class="slds-button slds-button_icon slds-current-color"
+                        class="slds-button slds-button_icon slds-current-color avonni-avatar_action-button"
                     ></lightning-icon>
                 </button>
             </div>
@@ -230,14 +226,12 @@
                     title="ActionButton"
                     onclick={actionClick}
                     class={actionButtonClass}
-                    style={actionButtonStyle}
                 >
                     <lightning-icon
                         icon-name={actionIconName}
                         size={iconSize}
                         onclick={actionClick}
-                        style={actionButtonStyle}
-                        class="slds-button slds-button_icon slds-current-color"
+                        class="slds-button slds-button_icon slds-current-color avonni-avatar_action-button"
                     ></lightning-icon>
                 </button>
             </div>

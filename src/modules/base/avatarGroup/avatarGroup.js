@@ -51,10 +51,7 @@ export default class AvatarGroup extends LightningElement {
     }
 
     renderedCallback() {
-        if (
-            !this.isClassic &&
-            (this.layout === 'stack' || this.layout === 'grid')
-        ) {
+        if (this.layout === 'stack' || this.layout === 'grid') {
             let avatars = this.template.querySelectorAll(
                 '.avonni-avatar-group__avatar'
             );
@@ -240,7 +237,9 @@ export default class AvatarGroup extends LightningElement {
     }
 
     get actionButtonClass() {
-        return classSet('avonni-avatar-group__avatar')
+        return classSet(
+            'avonni-avatar-group__avatar avonni-avatar_action-button'
+        )
             .add({
                 'avonni-avatar-group_in-line': this.layout === 'stack'
             })
@@ -259,17 +258,6 @@ export default class AvatarGroup extends LightningElement {
             .toString();
     }
 
-    get actionButtonStyle() {
-        return `
-        color: #42526E;
-        background-color: #E1E4E9;
-        border-width: 0px;
-        padding: 0px;
-        overflow: hidden;
-        vertical-align: middle;
-        `;
-    }
-
     get iconSize() {
         switch (this.size) {
             case 'x-small':
@@ -284,7 +272,7 @@ export default class AvatarGroup extends LightningElement {
     }
 
     get isClassic() {
-        return this.layout === 'stack' && this.items.length === 3;
+        return this.layout === 'stack' && this.items.length === 2;
     }
 
     get isNotList() {
