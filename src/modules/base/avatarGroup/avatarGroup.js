@@ -238,24 +238,38 @@ export default class AvatarGroup extends LightningElement {
 
     get actionButtonClass() {
         return classSet(
-            'avonni-avatar-group__avatar avonni-avatar_action-button'
+            'avonni-avatar-group__avatar avonni-avatar-group__action-button'
         )
             .add({
                 'avonni-avatar-group_in-line': this.layout === 'stack'
             })
             .add(`avonni-avatar-${this.size}`)
             .add({
-                'avonni-avatar-action-button_circle': this.variant === 'circle',
-                'avonni-avatar-action-button_square': this.variant === 'square',
-                'avonni-avatar-action-button_x-large': this.size === 'x-large',
-                'avonni-avatar-action-button_xx-large':
+                'avonni-avatar-group__action-button_circle':
+                    this.variant === 'circle',
+                'avonni-avatar-group__action-button_square':
+                    this.variant === 'square',
+                'avonni-avatar-group__action-button_x-large':
+                    this.size === 'x-large',
+                'avonni-avatar-group__action-button_xx-large':
                     this.size === 'xx-large',
-                'avonni-avatar-action-button_large': this.size === 'large',
-                'avonni-avatar-action-button_medium': this.size === 'medium',
-                'avonni-avatar-action-button_small': this.size === 'small',
-                'avonni-avatar-action-button_x-small': this.size === 'x-small'
+                'avonni-avatar-group__action-button_large':
+                    this.size === 'large',
+                'avonni-avatar-group__action-button_medium':
+                    this.size === 'medium',
+                'avonni-avatar-group__action-button_small':
+                    this.size === 'small',
+                'avonni-avatar-group__action-button_x-small':
+                    this.size === 'x-small'
             })
             .toString();
+    }
+
+    get actionButtonLayoutClass() {
+        if (this.layout === 'list') {
+            return this.avatarWrapperClass;
+        }
+        return this.avatarGroupClass;
     }
 
     get iconSize() {

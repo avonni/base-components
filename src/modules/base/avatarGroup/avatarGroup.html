@@ -64,7 +64,7 @@
                 icon-name={actionIconName}
                 size={iconSize}
                 onclick={actionClick}
-                class="slds-button slds-button_icon slds-current-color avonni-avatar_action-button"
+                class="slds-button slds-button_icon slds-current-color avonni-avatar-group__action-button"
             ></lightning-icon>
         </button>
     </template>
@@ -202,39 +202,20 @@
                 </div>
             </template>
         </template>
-        <template if:false={isNotList}>
-            <div class={avatarWrapperClass}>
-                <button
-                    type="button"
-                    title="ActionButton"
+        <div class={actionButtonLayoutClass}>
+            <button
+                type="button"
+                title="ActionButton"
+                onclick={actionClick}
+                class={actionButtonClass}
+            >
+                <lightning-icon
+                    icon-name={actionIconName}
+                    size={iconSize}
                     onclick={actionClick}
-                    class={actionButtonClass}
-                >
-                    <lightning-icon
-                        icon-name={actionIconName}
-                        size={iconSize}
-                        onclick={actionClick}
-                        class="slds-button slds-button_icon slds-current-color avonni-avatar_action-button"
-                    ></lightning-icon>
-                </button>
-            </div>
-        </template>
-        <template if:true={isNotList}>
-            <div class={avatarGroupClass}>
-                <button
-                    type="button"
-                    title="ActionButton"
-                    onclick={actionClick}
-                    class={actionButtonClass}
-                >
-                    <lightning-icon
-                        icon-name={actionIconName}
-                        size={iconSize}
-                        onclick={actionClick}
-                        class="slds-button slds-button_icon slds-current-color avonni-avatar_action-button"
-                    ></lightning-icon>
-                </button>
-            </div>
-        </template>
+                    class="slds-button slds-button_icon slds-current-color avonni-avatar-group__action-button"
+                ></lightning-icon>
+            </button>
+        </div>
     </template>
 </template>
