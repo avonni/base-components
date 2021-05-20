@@ -73,6 +73,7 @@ export default class DualListbox extends LightningElement {
     _variant = VALID_VARIANTS.default;
     _disabled;
     _disableReordering = false;
+    _draggable = false;
     _required = false;
     _size;
 
@@ -290,6 +291,15 @@ export default class DualListbox extends LightningElement {
     }
 
     @api
+    get draggable() {
+        return this._draggable;
+    }
+
+    set draggable(value) {
+        this._draggable = normalizeBoolean(value);
+    }
+
+    @api
     focus() {
         const firstOption = this.template.querySelector(`div[data-index='0']`);
         if (firstOption) {
@@ -435,7 +445,7 @@ export default class DualListbox extends LightningElement {
         return {
             ...option,
             tabIndex: option.value === focusableValue ? '0' : '-1',
-            selected: isSelected ? 'true' : 'false',
+            selected: isSelected ? true : false,
             primaryText: option.description ? option.label : '',
             secondaryText: option.description ? option.description : '',
             iconSize: option.iconSize

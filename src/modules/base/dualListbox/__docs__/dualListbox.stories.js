@@ -122,6 +122,17 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        draggable: {
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description: 'If present, the options are draggable.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: false }
+            }
+        },
         fieldLevelHelp: {
             name: 'field-level-help',
             control: {

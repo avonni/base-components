@@ -71,6 +71,13 @@
                                         data-type={computedSourceListId}
                                         onclick={handleOptionClick}
                                         onkeydown={handleOptionKeyDown}
+                                        draggable={draggable}
+                                        onmousedown={dragStart}
+                                        onmousemove={drag}
+                                        onmouseup={dragEnd}
+                                        ontouchstart={dragStart}
+                                        ontouchmove={drag}
+                                        ontouchend={dragEnd}
                                     >
                                         <div class="slds-media__figure">
                                             <c-avatar
@@ -173,6 +180,12 @@
                                         data-type={computedSelectedListId}
                                         onclick={handleOptionClick}
                                         onkeydown={handleOptionKeyDown}
+                                        onmousedown={dragStart}
+                                        onmousemove={drag}
+                                        onmouseup={dragEnd}
+                                        ontouchstart={dragStart}
+                                        ontouchmove={drag}
+                                        ontouchend={dragEnd}
                                     >
                                         <div class="slds-media__figure">
                                             <c-avatar
