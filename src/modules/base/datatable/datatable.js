@@ -11,6 +11,7 @@ import image from './image.html';
 import inputCounter from './inputCounter.html';
 import inputDateRange from './inputDateRange.html';
 import inputToggle from './inputToggle.html';
+import progressBar from './progressBar.html';
 
 const CUSTOM_TYPES_ALWAYS_WRAPPED = [
     'avatar',
@@ -136,6 +137,20 @@ export default class Datatable extends LightningDatatable {
                 'size'
             ],
             standardCellLayout: true
+        },
+        'progress-bar': {
+            template: progressBar,
+            typeAttributes: [
+                'label',
+                'referenceLines',
+                'showValue',
+                'textured',
+                'theme',
+                'thickness',
+                'valueLabel',
+                'valuePostion',
+                'variant'
+            ]
         }
     };
 

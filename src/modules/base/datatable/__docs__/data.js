@@ -153,7 +153,19 @@ const columnsFN = [
     }
 ];
 
-const columnsOQ = [];
+const columnsOQ = [
+    {
+        label: 'Progress Bar',
+        fieldName: 'progressBar',
+        type: 'progress-bar',
+        typeAttributes: {
+            referenceLines: { fieldName: 'progressBarReferenceLines' },
+            theme: { fieldName: 'progressBarTheme' },
+            variant: 'circular',
+            thickness: 'large'
+        }
+    }
+];
 
 const columnsRZ = [];
 
@@ -325,7 +337,55 @@ const dataFN = [
     }
 ];
 
-const dataOQ = [];
+const dataOQ = [
+    {
+        id: 1,
+        progressBar: 34,
+        progressBarReferenceLines: [
+            {
+                label: 'IT',
+                value: 12,
+                variant: 'warning'
+            },
+            {
+                label: 'R&D',
+                value: 45,
+                variant: 'success'
+            }
+        ]
+    },
+    {
+        id: 2,
+        progressBar: 100,
+        progressBarTheme: 'success'
+    },
+    {
+        id: 3,
+        progressBar: 43
+    },
+    {
+        id: 4,
+        progressBar: 5,
+        progressBarTheme: 'info'
+    },
+    {
+        id: 5,
+        progressBar: 66,
+        progressBarTheme: 'alt-inverse',
+        progressBarReferenceLines: [
+            {
+                label: 'IT',
+                value: 78,
+                borderStyle: 'solid'
+            },
+            {
+                label: 'R&D',
+                value: 33,
+                borderStyle: 'solid'
+            }
+        ]
+    }
+];
 const dataRZ = [];
 
 export {
