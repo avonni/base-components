@@ -92,26 +92,30 @@ const items = [
     }
 ];
 
-const itemsWithIcons = [
+const itemsWithAvatars = [
     {
         label: 'Item 1',
-        iconName: 'custom:custom5'
+        avatarSrc:
+            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+        avatarFallbackIconName: 'custom:custom5'
     },
     {
         label: 'Item 2',
-        iconName: 'custom:custom9'
+        avatarFallbackIconName: 'custom:custom9'
     },
     {
         label: 'Item 3',
-        iconName: 'custom:custom1'
+        avatarFallbackIconName: 'custom:custom1',
+        avatarSrc:
+            'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg'
     },
     {
         label: 'Item 4',
-        iconName: 'custom:custom11'
+        avatarFallbackIconName: 'custom:custom11'
     },
     {
         label: 'Item 5',
-        iconName: 'custom:custom51'
+        avatarFallbackIconName: 'custom:custom51'
     }
 ];
 
@@ -120,10 +124,10 @@ Base.args = {
     items: items
 };
 
-export const ListWithIcons = Template.bind({});
-ListWithIcons.args = {
+export const ListWithAvatars = Template.bind({});
+ListWithAvatars.args = {
     label: 'List with icons',
-    items: itemsWithIcons
+    items: itemsWithAvatars
 };
 
 export const SortableList = Template.bind({});
@@ -133,10 +137,10 @@ SortableList.args = {
     items: items
 };
 
-export const SortableListWithIcons = Template.bind({});
-SortableListWithIcons.args = {
+export const SortableListWithAvatars = Template.bind({});
+SortableListWithAvatars.args = {
     label: 'Sortable list with Icons',
-    items: itemsWithIcons,
+    items: itemsWithAvatars,
     sortableIconName: 'utility:drag_and_drop',
     sortableIconPosition: 'left',
     sortable: true

@@ -37,12 +37,13 @@
                         icon-name={sortableIconName}
                         size="x-small"
                     ></lightning-icon>
-                    <lightning-icon
-                        if:true={item.iconName}
+                    <c-avatar
                         class="slds-m-left_x-small"
-                        icon-name={item.iconName}
+                        fallback-icon-name={item.avatarFallbackIconName}
+                        src={item.avatarSrc}
                         size="small"
-                    ></lightning-icon>
+                        hide-avatar-details="true"
+                    ></c-avatar>
                     <div
                         class="slds-col slds-truncate slds-m-horizontal_x-small"
                     >
