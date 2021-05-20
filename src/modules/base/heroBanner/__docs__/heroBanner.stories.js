@@ -202,8 +202,6 @@ const TemplateWithTwoSlots = (args) => HeroBannerWithTwoSlots(args);
 export const Base = Template.bind({});
 Base.args = {
     title: 'Lost In The Woods',
-    titleFontSize: 'xx-large',
-    titleFontWeight: 'bold',
     description: 'Find your true self',
     src:
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
@@ -214,7 +212,8 @@ export const BaseAbsoluteCenter = Template.bind({});
 BaseAbsoluteCenter.args = {
     title: 'Lost In The Woods',
     titleFontSize: 'xx-large',
-    titleFontWeight: 'bold',
+    titleFontWeight: 'normal',
+    titleFontFamily: 'cursive',
     description: 'Find your true self',
     src:
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
@@ -228,10 +227,12 @@ BaseCenteredRight.args = {
     titleFontSize: 'xx-large',
     titleFontWeight: 'bold',
     description: 'Find your true self',
+    descriptionFontFamily: 'monospace',
     src:
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
-    textHorizontalAlignment: 'right'
+    textHorizontalAlignment: 'right',
+    linearGradient: 'rgba(0,0,0,0), rgba(0,0,0,0)'
 };
 
 export const BaseTopLeft = Template.bind({});
@@ -239,6 +240,7 @@ BaseTopLeft.args = {
     title: 'Lost In The Woods',
     titleFontSize: 'xx-large',
     titleFontWeight: 'bold',
+    titleFontFamily: 'Tahoma, sans-serif',
     description: 'Find your true self',
     src:
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
