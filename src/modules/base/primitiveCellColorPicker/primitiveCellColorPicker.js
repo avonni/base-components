@@ -14,6 +14,7 @@ export default class PrimitiveCellColorPicker extends LightningElement {
     @api menuIconSize;
     @api menuVariant;
     @api opacity;
+    @api readOnly;
     @api type;
 
     handleChange(event) {

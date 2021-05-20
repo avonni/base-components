@@ -1,5 +1,6 @@
 import LightningDatatable from 'lightning/datatable';
 import { api } from 'lwc';
+import { normalizeArray } from 'c/utilsPrivate';
 
 import avatar from './avatar.html';
 import avatarGroup from './avatarGroup.html';
@@ -11,7 +12,7 @@ import inputCounter from './inputCounter.html';
 import inputDateRange from './inputDateRange.html';
 import inputToggle from './inputToggle.html';
 
-const TYPES_ALWAYS_WRAPPED = [
+const CUSTOM_TYPES_ALWAYS_WRAPPED = [
     'avatar',
     'avatar-group',
     'checkbox-button',
@@ -25,6 +26,17 @@ const TYPES_ALWAYS_WRAPPED = [
     'progress-ring',
     'qrcode',
     'range',
+    'slider'
+];
+
+const CUSTOM_TYPES_EDITABLE = [
+    'checkbox-button',
+    'color-picker',
+    'input-counter',
+    'input-date-range',
+    'input-toggle',
+    'range',
+    'rating',
     'slider'
 ];
 
@@ -76,7 +88,8 @@ export default class Datatable extends LightningDatatable {
         },
         'dynamic-icon': {
             template: dynamicIcon,
-            typeAttributes: ['alternativeText', 'option']
+            typeAttributes: ['alternativeText', 'option'],
+            standardCellLayout: true
         },
         image: {
             template: image,
@@ -121,7 +134,8 @@ export default class Datatable extends LightningDatatable {
                 'messageToggleInactive',
                 'name',
                 'size'
-            ]
+            ],
+            standardCellLayout: true
         }
     };
 
@@ -143,17 +157,53 @@ export default class Datatable extends LightningDatatable {
     }
     set columns(value) {
         super.columns = value;
+
         this._columns = JSON.parse(JSON.stringify(this._columns));
         this.removeWrapOption();
+        this.computeEditableOption();
+    }
+
+    @api
+    // eslint-disable-next-line @lwc/lwc/valid-api
+    get data() {
+        return super.data;
+    }
+    set data(proxy) {
+        // Normalize proxy
+        this._data = JSON.parse(JSON.stringify(normalizeArray(proxy)));
+        this.computeEditableOption();
+
+        super.data = this._data;
     }
 
     removeWrapOption() {
         this.columns.forEach((column) => {
-            if (TYPES_ALWAYS_WRAPPED.includes(column.type)) {
+            if (CUSTOM_TYPES_ALWAYS_WRAPPED.includes(column.type)) {
                 column.wrapText = true;
                 column.hideDefaultActions = true;
             }
         });
+    }
+
+    computeEditableOption() {
+        if (this.columns && this._data) {
+            this.columns.forEach((column) => {
+                // If the data type is editable,
+                // Transform the value into an object containing the editable property
+                if (CUSTOM_TYPES_EDITABLE.includes(column.type)) {
+                    const fieldName = column.fieldName;
+                    const editable = !!column.editable;
+
+                    this._data.forEach((row) => {
+                        const value = row[fieldName];
+                        row[fieldName] = {
+                            value: value,
+                            readOnly: !editable
+                        };
+                    });
+                }
+            });
+        }
     }
 
     dispatchChange = (event) => {

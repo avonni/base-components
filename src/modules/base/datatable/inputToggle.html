@@ -2,13 +2,14 @@
     <c-primitive-cell-input-toggle
         column-type={columnType}
         row-key-value={rowKeyValue}
-        checked={value}
+        checked={value.value}
         disabled={typeAttributes.disabled}
         hide-mark={typeAttributes.hideMark}
         label={typeAttributes.label}
         message-toggle-active={typeAttributes.messageToggleActive}
         message-toggle-inactive={typeAttributes.messageToggleInactive}
         name={typeAttributes.name}
+        read-only={value.readOnly}
         size={typeAttributes.size}
     ></c-primitive-cell-input-toggle>
 </template>

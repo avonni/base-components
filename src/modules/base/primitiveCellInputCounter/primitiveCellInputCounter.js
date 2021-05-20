@@ -8,6 +8,7 @@ export default class PrimitiveCellInputCounter extends LightningElement {
     @api label;
     @api max;
     @api min;
+    @api readOnly;
     @api step;
     @api disabled;
 

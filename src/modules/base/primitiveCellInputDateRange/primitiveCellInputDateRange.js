@@ -11,6 +11,7 @@ export default class PrimitiveCellInputDateRange extends LightningElement {
     @api label;
     @api labelStartDate;
     @api labelEndDate;
+    @api readOnly;
     @api type;
 
     get startDate() {

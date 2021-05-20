@@ -83,7 +83,8 @@ const columnsCE = [
             disabled: { fieldName: 'colorPickerDisabled' },
             label: 'Pick a color',
             opacity: true
-        }
+        },
+        editable: true
     },
     {
         label: 'Currency',
@@ -126,7 +127,8 @@ const columnsFN = [
             disabled: { fieldName: 'inputCounterDisabled' },
             label: 'Counter',
             step: { fieldName: 'inputCounterStep' }
-        }
+        },
+        editable: true
     },
     {
         label: 'Input Date Range',
@@ -135,7 +137,8 @@ const columnsFN = [
         typeAttributes: {
             disabled: { fieldName: 'inputDateRangeDisabled' },
             dateStyle: 'short'
-        }
+        },
+        editable: true
     },
     {
         label: 'Input Toggle',
@@ -145,7 +148,8 @@ const columnsFN = [
             disabled: { fieldName: 'inputToggleDisabled' },
             size: 'large',
             label: 'Toggle'
-        }
+        },
+        editable: true
     }
 ];
 

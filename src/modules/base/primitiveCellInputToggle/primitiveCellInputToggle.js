@@ -10,6 +10,7 @@ export default class PrimitiveCellInputDateRange extends LightningElement {
     @api messageToggleActive;
     @api messageToggleInactive;
     @api name;
+    @api readOnly;
     @api size;
 
     handleChange(event) {
