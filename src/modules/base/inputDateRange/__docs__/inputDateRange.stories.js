@@ -92,6 +92,20 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        readOnly: {
+            name: 'read-only',
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description:
+                'If present, the input is read-only and cannot be edited by users.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Validation'
+            }
+        },
         timeStyle: {
             name: 'time-style',
             control: {

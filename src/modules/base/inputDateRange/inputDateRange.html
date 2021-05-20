@@ -26,6 +26,8 @@
                     onfocus={handleFocusStartDate}
                     onblur={handleBlurStartDate}
                     disabled={disabled}
+                    aria-readonly={readOnly}
+                    readonly={readOnly}
                 />
                 <lightning-icon
                     icon-name="utility:event"
@@ -58,6 +60,7 @@
             time-style={timeStyle}
             onchange={handleChangeStartTime}
             disabled={disabled}
+            read-only={readOnly}
         ></lightning-input>
 
         <div class="slds-form-element">
@@ -78,6 +81,8 @@
                     onfocus={handleFocusEndDate}
                     onblur={handleBlurEndDate}
                     disabled={disabled}
+                    aria-readonly={readOnly}
+                    readonly={readOnly}
                 />
                 <lightning-icon
                     icon-name="utility:event"
@@ -110,6 +115,7 @@
             time-style={timeStyle}
             onchange={handleChangeEndTime}
             disabled={disabled}
+            read-only={readOnly}
         ></lightning-input>
     </div>
 </template>

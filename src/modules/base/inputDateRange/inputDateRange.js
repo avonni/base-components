@@ -20,6 +20,7 @@ export default class InputDateRange extends LightningElement {
     _type = validTypes.default;
     _disabled = false;
     _required = false;
+    _readOnly = false;
 
     startTime;
     endTime;
@@ -106,6 +107,15 @@ export default class InputDateRange extends LightningElement {
 
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
+    }
+
+    @api 
+    get readOnly() {
+        return this._readOnly;
+    }
+
+    set readOnly(value) {
+        this._readOnly = normalizeBoolean(value);
     }
 
     @api 
@@ -214,6 +224,8 @@ export default class InputDateRange extends LightningElement {
     }
 
     handleFocusStartDate() {
+        if (this.readOnly) return;
+
         this.allowBlurStartDate();
 
         if (!this.isOpenStartDate) {
@@ -291,6 +303,8 @@ export default class InputDateRange extends LightningElement {
     }
 
     handleFocusEndDate() {
+        if (this.readOnly) return;
+        
         this.allowBlurEndDate();
 
         if (!this.isOpenEndDate) {

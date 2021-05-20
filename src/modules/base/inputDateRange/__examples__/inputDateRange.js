@@ -14,6 +14,7 @@ export const InputDateRange = ({
     startDate,
     endDate,
     dateStyle,
+    readOnly,
     timeStyle,
     timezone,
     disabled,
@@ -28,6 +29,7 @@ export const InputDateRange = ({
     element.startDate = startDate;
     element.endDate = endDate;
     element.dateStyle = dateStyle;
+    element.readOnly = readOnly;
     element.timeStyle = timeStyle;
     element.timezone = timezone;
     element.disabled = disabled;
