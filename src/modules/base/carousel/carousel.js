@@ -410,27 +410,4 @@ export default class Carousel extends LightningElement {
             ? this.cancelAutoScrollTimeOut()
             : this.setAutoScroll();
     }
-
-    get itemTitleCustomLineClamp() {
-        // line-clamp changed to 1 for item title resizing
-        return `
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 1;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: pre-line;
-        `;
-    }
-
-    get buttonsAbsolutePositioning() {
-        return `
-        position:absolute;
-        top:4.5rem;
-        margin-left: auto;
-        margin-right: auto;
-        left: 0;
-        right: 0;
-        text-align: center;`;
-    }
 }
