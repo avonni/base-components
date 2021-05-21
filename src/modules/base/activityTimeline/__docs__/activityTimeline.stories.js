@@ -233,7 +233,9 @@ const items = [
         iconName: 'standard:dashboard',
         loadingStateAlternativeText: 'Is Loading',
         hasCheckbox: true,
-        isLoading: true
+        isLoading: true,
+        buttonLabel: 'Public Sharing',
+        buttonIconName: 'utility:world'
     },
     {
         title: 'Create another task',
