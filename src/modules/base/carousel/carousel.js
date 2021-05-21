@@ -49,6 +49,8 @@ export default class Carousel extends LightningElement {
     _initialRender = true;
     _indicatorVariant = VARIANTS.default;
     _hideIndicator = false;
+    _buttonCount = [];
+    _carouselContentHeight;
 
     activeIndexPanel;
     autoScrollIcon = DEFAULT_AUTOCROLL_PLAY_ICON;
@@ -69,6 +71,25 @@ export default class Carousel extends LightningElement {
             }
         }
         this._initialRender = false;
+
+        this._buttonCount = this._carouselItems.map((item) => {
+            let count = 0;
+            if (item.buttonLabel) {
+                count++;
+            }
+            if (item.secondaryButtonLabel) {
+                count++;
+            }
+            return count;
+        });
+
+        if (Math.max(...this._buttonCount) === 2) {
+            this._carouselContentHeight = '12';
+        } else if (Math.max(...this._buttonCount) === 1) {
+            this._carouselContentHeight = '8.5';
+        } else {
+            this._carouselContentHeight = '6.625';
+        }
     }
 
     @api
@@ -409,5 +430,9 @@ export default class Carousel extends LightningElement {
         this.autoScrollOn
             ? this.cancelAutoScrollTimeOut()
             : this.setAutoScroll();
+    }
+
+    get computedCarouselContentSize() {
+        return `height: ${this._carouselContentHeight}rem`;
     }
 }

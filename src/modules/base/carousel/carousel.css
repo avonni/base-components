@@ -8,21 +8,7 @@
     height: 12rem;
 }
 
-.slds-carousel__content.avonni-carousel__content {
-    position: relative;
-}
-
-.avonni-carousel__buttons-container {
-    position: absolute;
-    top: 4.5rem;
-    margin-left: auto;
-    margin-right: auto;
-    left: 0;
-    right: 0;
-    text-align: center;
-}
-
-.slds-carousel__content-title {
+.avonni-carousel__content-title {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
