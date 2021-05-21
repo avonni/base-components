@@ -4,10 +4,6 @@
     max-width: 100%;
 }
 
-.avonni-carousel__content {
-    height: 12rem;
-}
-
 .avonni-carousel__content-title {
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -15,6 +11,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: pre-line;
+}
+
+.avonni-carousel__content-description {
+    height: 2.25rem;
 }
 
 .avonni-carousel__nav-button {

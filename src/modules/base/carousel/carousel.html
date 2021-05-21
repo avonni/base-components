@@ -59,42 +59,34 @@
                                                 class="slds-carousel__content avonni-carousel__content"
                                                 style={computedCarouselContentSize}
                                             >
-                                                <!-- <div class="slds-carousel__content-title" style="width:200px"> -->
-                                                <!-- <div class="slds-has-flexi-truncate"> -->
                                                 <h2
                                                     class="slds-carousel__content-title avonni-carousel__content-title"
                                                 >
                                                     {item.title}
                                                 </h2>
-                                                <!-- </div> -->
-                                                <!-- </div> -->
                                                 <p
-                                                    class="slds-line-clamp_x-small"
+                                                    class="avonni-carousel__content-description slds-line-clamp_x-small"
                                                 >
                                                     {item.description}
                                                 </p>
-
-                                                <div class="">
-                                                    <lightning-button
-                                                        if:true={item.buttonLabel}
-                                                        label={item.buttonLabel}
-                                                        icon-name={item.buttonIconName}
-                                                        class="slds-m-top_small slds-align_absolute-center"
-                                                        icon-position={item.buttonIconPosition}
-                                                        variant={item.buttonVariant}
-                                                        disabled={item.buttonDisabled}
-                                                    ></lightning-button>
-
-                                                    <lightning-button
-                                                        if:true={item.secondaryButtonLabel}
-                                                        label={item.secondaryButtonLabel}
-                                                        icon-name={item.secondaryButtonIconName}
-                                                        class="slds-m-top_small slds-align_absolute-center"
-                                                        icon-position={item.secondaryButtonIconPosition}
-                                                        variant={item.secondaryButtonVariant}
-                                                        disabled={item.secondaryButtonDisabled}
-                                                    ></lightning-button>
-                                                </div>
+                                                <lightning-button
+                                                    if:true={item.buttonLabel}
+                                                    label={item.buttonLabel}
+                                                    icon-name={item.buttonIconName}
+                                                    class="slds-m-top_small slds-align_absolute-center"
+                                                    icon-position={item.buttonIconPosition}
+                                                    variant={item.buttonVariant}
+                                                    disabled={item.buttonDisabled}
+                                                ></lightning-button>
+                                                <lightning-button
+                                                    if:true={item.secondaryButtonLabel}
+                                                    label={item.secondaryButtonLabel}
+                                                    icon-name={item.secondaryButtonIconName}
+                                                    class="slds-m-top_small slds-align_absolute-center"
+                                                    icon-position={item.secondaryButtonIconPosition}
+                                                    variant={item.secondaryButtonVariant}
+                                                    disabled={item.secondaryButtonDisabled}
+                                                ></lightning-button>
                                             </div>
                                         </a>
                                     </div>
