@@ -247,6 +247,10 @@
             "path": "src/modules/base/primitiveCellAvatarGroup/primitiveCellAvatarGroup.js"
         },
         {
+            "name": "c/primitiveCellCheckboxButton",
+            "path": "src/modules/base/primitiveCellCheckboxButton/primitiveCellCheckboxButton.js"
+        },
+        {
             "name": "c/primitiveCellColorPicker",
             "path": "src/modules/base/primitiveCellColorPicker/primitiveCellColorPicker.js"
         },

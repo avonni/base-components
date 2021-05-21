@@ -1,23 +1,10 @@
 <template>
-    <template if:true={value.editable}>
-        <lightning-input
-            checked={value.value}
-            type="checkbox-button"
-            variant="label-hidden"
-            disabled={typeAttributes.disabled}
-            label={typeAttributes.label}
-            name={typeAttributes.name}
-        ></lightning-input>
-    </template>
-    <template if:false={value.editable}>
-        <lightning-input
-            checked={value.value}
-            read-only="true"
-            type="checkbox-button"
-            variant="label-hidden"
-            disabled={typeAttributes.disabled}
-            label={typeAttributes.label}
-            name={typeAttributes.name}
-        ></lightning-input>
-    </template>
+    <c-primitive-cell-checkbox-button
+        col-key-value={colKeyValue}
+        row-key-value={rowKeyValue}
+        value={value}
+        disabled={typeAttributes.disabled}
+        label={typeAttributes.label}
+        name={typeAttributes.name}
+    ></c-primitive-cell-checkbox-button>
 </template>

@@ -1,18 +1,11 @@
 import { LightningElement, api } from 'lwc';
 
-export default class PrimitiveCellColorPicker extends LightningElement {
+export default class PrimitiveCellCheckboxButton extends LightningElement {
     @api colKeyValue;
     @api rowKeyValue;
-    @api colors;
     @api disabled;
-    @api hideColorInput;
     @api label;
-    @api menuAlignment;
-    @api menuIconName;
-    @api menuIconSize;
-    @api menuVariant;
-    @api opacity;
-    @api type;
+    @api name;
 
     _value;
     readOnly;
@@ -32,9 +25,17 @@ export default class PrimitiveCellColorPicker extends LightningElement {
         }
     }
 
+    get showInput() {
+        return this.value || !this.computedDisabled;
+    }
+
+    get computedDisabled() {
+        return this.disabled || this.readOnly;
+    }
+
     handleChange(event) {
         const detail = {
-            value: event.detail.hex,
+            value: event.detail.checked,
             colKeyValue: this.colKeyValue,
             rowKeyValue: this.rowKeyValue
         };

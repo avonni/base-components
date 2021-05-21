@@ -65,7 +65,8 @@ const columnsCE = [
         typeAttributes: {
             disabled: { fieldName: 'checkboxButtonDisabled' },
             label: 'Checkbox'
-        }
+        },
+        editable: true
     },
     {
         label: 'Color Picker',
