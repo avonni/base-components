@@ -130,7 +130,7 @@ export default class Rating extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            defaultValue: VALID_LABEL_VARIANTS.default,
+            fallbackValue: VALID_LABEL_VARIANTS.default,
             validValues: VALID_LABEL_VARIANTS.valid
         });
     }
@@ -142,7 +142,7 @@ export default class Rating extends LightningElement {
 
     set iconSize(size) {
         this._iconSize = normalizeString(size, {
-            defaultValue: VALID_SIZES.default,
+            fallbackValue: VALID_SIZES.default,
             validValues: VALID_SIZES.valid
         });
     }
