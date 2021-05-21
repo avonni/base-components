@@ -1,9 +1,11 @@
 <template>
-    <c-avatar-group
-        size={typeAttributes.size}
-        variant={typeAttributes.variant}
-        items={value}
-        layout={typeAttributes.layout}
-        max-count={typeAttributes.maxCount}
-    ></c-avatar-group>
+    <div class="reset-z-index">
+        <c-avatar-group
+            size={typeAttributes.size}
+            variant={typeAttributes.variant}
+            items={value}
+            layout={typeAttributes.layout}
+            max-count={typeAttributes.maxCount}
+        ></c-avatar-group>
+    </div>
 </template>

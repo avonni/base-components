@@ -1,15 +1,17 @@
 <template>
-    <c-primitive-cell-input-date-range
-        col-key-value={colKeyValue}
-        row-key-value={rowKeyValue}
-        value={value}
-        date-style={typeAttributes.dateStyle}
-        time-style={typeAttributes.timeStyle}
-        timezone={typeAttributes.timezone}
-        disabled={typeAttributes.disabled}
-        label={typeAttributes.label}
-        label-start-date={typeAttributes.labelStartDate}
-        label-end-date={typeAttributes.labelEndDate}
-        type={typeAttributes.type}
-    ></c-primitive-cell-input-date-range>
+    <div class="reset-z-index">
+        <c-primitive-cell-input-date-range
+            col-key-value={colKeyValue}
+            row-key-value={rowKeyValue}
+            value={value}
+            date-style={typeAttributes.dateStyle}
+            time-style={typeAttributes.timeStyle}
+            timezone={typeAttributes.timezone}
+            disabled={typeAttributes.disabled}
+            label={typeAttributes.label}
+            label-start-date={typeAttributes.labelStartDate}
+            label-end-date={typeAttributes.labelEndDate}
+            type={typeAttributes.type}
+        ></c-primitive-cell-input-date-range>
+    </div>
 </template>

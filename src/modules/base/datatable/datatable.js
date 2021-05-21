@@ -32,7 +32,7 @@ const CUSTOM_TYPES_ALWAYS_WRAPPED = [
     'progress-circle',
     'progress-ring',
     'qrcode',
-    'range',
+    'rating',
     'slider'
 ];
 
@@ -42,7 +42,6 @@ const CUSTOM_TYPES_EDITABLE = [
     'input-counter',
     'input-date-range',
     'input-toggle',
-    'range',
     'rating',
     'slider'
 ];
