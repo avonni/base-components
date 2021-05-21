@@ -263,6 +263,10 @@
             "path": "src/modules/base/primitiveCellInputToggle/primitiveCellInputToggle.js"
         },
         {
+            "name": "c/primitiveCellSlider",
+            "path": "src/modules/base/primitiveCellSlider/primitiveCellSlider.js"
+        },
+        {
             "name": "c/primitiveIcon",
             "path": "src/modules/base/primitiveIcon/primitiveIcon.js"
         },

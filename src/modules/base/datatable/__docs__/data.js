@@ -196,7 +196,19 @@ const columnsOQ = [
     }
 ];
 
-const columnsRZ = [];
+const columnsRZ = [
+    {
+        label: 'Slider',
+        fieldName: 'slider',
+        type: 'slider',
+        typeAttributes: {
+            disabled: { fieldName: 'sliderDisabled' },
+            label: 'Slider',
+            step: { fieldName: 'sliderStep' }
+        },
+        editable: true
+    }
+];
 
 const dataAB = [
     {
@@ -426,7 +438,28 @@ const dataOQ = [
         qrcode: 'https://www.avonni.app/'
     }
 ];
-const dataRZ = [];
+const dataRZ = [
+    {
+        id: 1,
+        slider: 36
+    },
+    {
+        id: 2,
+        slider: 78
+    },
+    {
+        id: 3,
+        sliderDisabled: true
+    },
+    {
+        id: 4,
+        slider: 3,
+        sliderStep: 4
+    },
+    {
+        id: 5
+    }
+];
 
 export {
     columnsAB,
