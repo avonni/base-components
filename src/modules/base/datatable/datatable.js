@@ -16,6 +16,7 @@ import progressCircle from './progressCircle.html';
 import progressRing from './progressRing.html';
 import qrcode from './qrcode.html';
 import slider from './slider.html';
+import rating from './rating.html';
 
 const CUSTOM_TYPES_ALWAYS_WRAPPED = [
     'avatar',
@@ -184,8 +185,21 @@ export default class Datatable extends LightningDatatable {
                 'encoding',
                 'errorCorrection',
                 'padding',
-                'renderAs',
                 'size'
+            ],
+            standardCellLayout: true
+        },
+        rating: {
+            template: rating,
+            typeAttributes: [
+                'disabled',
+                'iconName',
+                'iconSize',
+                'label',
+                'max',
+                'min',
+                'selection',
+                'valueHidden'
             ],
             standardCellLayout: true
         },

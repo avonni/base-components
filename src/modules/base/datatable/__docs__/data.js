@@ -198,6 +198,17 @@ const columnsOQ = [
 
 const columnsRZ = [
     {
+        label: 'Rating',
+        fieldName: 'rating',
+        type: 'rating',
+        typeAttributes: {
+            iconName: 'utility:favorite',
+            label: 'Rating on 5',
+            disabled: { fieldName: 'ratingDisabled' }
+        },
+        editable: true
+    },
+    {
         label: 'Slider',
         fieldName: 'slider',
         type: 'slider',
@@ -449,7 +460,8 @@ const dataRZ = [
     },
     {
         id: 3,
-        sliderDisabled: true
+        sliderDisabled: true,
+        ratingDisabled: true
     },
     {
         id: 4,
