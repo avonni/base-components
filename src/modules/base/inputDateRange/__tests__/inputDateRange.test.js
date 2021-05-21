@@ -28,6 +28,7 @@ describe('Input Date Range', () => {
         expect(element.label).toBeUndefined();
         expect(element.labelStartDate).toBeUndefined();
         expect(element.labelEndDate).toBeUndefined();
+        expect(element.readOnly).toBeFalsy();
         expect(element.required).toBeFalsy();
         expect(element.startDate).toBeUndefined();
         expect(element.endDate).toBeUndefined();
@@ -298,6 +299,118 @@ describe('Input Date Range', () => {
             );
             expect(label.textContent).toBe('This is a label end date');
         });
+    });
+
+    // read-only
+    // Depends on type
+    it('Input Date Range read only (false)', () => {
+        const element = createElement('base-input-date-range', {
+            is: InputDateRange
+        });
+        document.body.appendChild(element);
+
+        element.readOnly = false;
+        element.type = 'datetime';
+
+        return Promise.resolve()
+            .then(() => {
+                // Time inputs should not be read only
+                const timeInputs = element.shadowRoot.querySelectorAll(
+                    'lightning-input'
+                );
+                timeInputs.forEach((input) => {
+                    expect(input.readOnly).toBeFalsy();
+                });
+
+                // Start date input should not be read only
+                const startDateInput = element.shadowRoot.querySelector(
+                    'input.start-date'
+                );
+
+                expect(startDateInput.readOnly).toBeFalsy();
+                expect(startDateInput.ariaReadOnly).toBe('false');
+
+                // On focus on start date input, the date picker should open
+                startDateInput.dispatchEvent(new CustomEvent('focus'));
+            })
+            .then(() => {
+                const datePicker = element.shadowRoot.querySelector(
+                    '.slds-datepicker'
+                );
+                expect(datePicker).toBeTruthy();
+
+                // End date input should not be read only
+                const endDateInput = element.shadowRoot.querySelector(
+                    'input.end-date'
+                );
+
+                expect(endDateInput.readOnly).toBeFalsy();
+                expect(endDateInput.ariaReadOnly).toBe('false');
+
+                // On focus on end date input, the date picker should open
+                endDateInput.dispatchEvent(new CustomEvent('focus'));
+            })
+            .then(() => {
+                const datePicker = element.shadowRoot.querySelector(
+                    '.slds-datepicker'
+                );
+                expect(datePicker).toBeTruthy();
+            });
+    });
+
+    it('Input Date Range read only (true)', () => {
+        const element = createElement('base-input-date-range', {
+            is: InputDateRange
+        });
+        document.body.appendChild(element);
+
+        element.readOnly = true;
+        element.type = 'datetime';
+
+        return Promise.resolve()
+            .then(() => {
+                // Time inputs should be read only
+                const timeInputs = element.shadowRoot.querySelectorAll(
+                    'lightning-input'
+                );
+                timeInputs.forEach((input) => {
+                    expect(input.readOnly).toBeTruthy();
+                });
+
+                // Start date input should be read only
+                const startDateInput = element.shadowRoot.querySelector(
+                    'input.start-date'
+                );
+
+                expect(startDateInput.readOnly).toBeTruthy();
+                expect(startDateInput.ariaReadOnly).toBe('true');
+
+                // On focus on start date input, the date picker should not open
+                startDateInput.dispatchEvent(new CustomEvent('focus'));
+            })
+            .then(() => {
+                const datePicker = element.shadowRoot.querySelector(
+                    '.slds-datepicker'
+                );
+                expect(datePicker).toBeFalsy();
+
+                // End date input should be read only
+                const endDateInput = element.shadowRoot.querySelector(
+                    'input.end-date'
+                );
+
+                expect(endDateInput.readOnly).toBeTruthy();
+                expect(endDateInput.ariaReadOnly).toBe('true');
+
+                // On focus on end date input, the date picker should not open
+                endDateInput.dispatchEvent(new CustomEvent('focus'));
+            })
+            .then(() => {
+                const datePicker = element.shadowRoot.querySelector(
+                    '.slds-datepicker'
+                );
+                expect(datePicker).toBeFalsy();
+            });
     });
 
     // required
