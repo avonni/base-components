@@ -232,6 +232,14 @@ BorderWithPopoverWarning.args = {
     popoverVariant: 'warning'
 };
 
+export const Brand = Template.bind({});
+Brand.args = {
+    iconName: 'utility:check',
+    tooltip: 'Tooltip text',
+    size: 'small',
+    variant: 'brand'
+};
+
 export const BorderFilledWithGreenSuccessIcon = Template.bind({});
 BorderFilledWithGreenSuccessIcon.args = {
     iconName: 'utility:success',

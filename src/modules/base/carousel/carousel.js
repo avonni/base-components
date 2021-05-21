@@ -46,7 +46,7 @@ export default class Carousel extends LightningElement {
     };
     _carouselItems = [];
     _itemsPerPanel = DEFAULT_ITEMS_PER_PANEL;
-    _initialRender = true;
+    _initialRender = false;
     _indicatorVariant = VARIANTS.default;
     _hideIndicator = false;
     _carouselContentHeight = 6.625;
@@ -59,12 +59,17 @@ export default class Carousel extends LightningElement {
     paginationItems = [];
     panelStyle;
 
+    _connected = false;
+
     connectedCallback() {
-        this.initCarousel();
+        if (!this._connected) {
+            this.initCarousel();
+        }
+        this._connected = true;
     }
 
     renderedCallback() {
-        if (this._initialRender) {
+        if (!this._initialRender) {
             if (!this.disableAutoScroll) {
                 this.setAutoScroll();
             }
@@ -77,7 +82,7 @@ export default class Carousel extends LightningElement {
             });
             this._carouselContentHeight = Math.max(...carouselContentHeights);
         }
-        this._initialRender = false;
+        this._initialRender = true;
     }
 
     @api
@@ -123,8 +128,7 @@ export default class Carousel extends LightningElement {
                 src: item.src
             });
         });
-
-        if (this.isConnected) {
+        if (this._connected) {
             this.initCarousel();
         }
     }
@@ -150,6 +154,9 @@ export default class Carousel extends LightningElement {
             fallbackValue: VARIANTS.default,
             validValues: VARIANTS.valid
         });
+        if (this._connected) {
+            this.initCarousel();
+        }
     }
 
     @api

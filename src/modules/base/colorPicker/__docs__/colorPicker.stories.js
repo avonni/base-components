@@ -154,8 +154,7 @@ export default {
                 category: 'menu'
             }
         },
-        colorsValue: {
-            name: 'colors-value',
+        colors: {
             control: {
                 type: 'object'
             },
@@ -289,7 +288,7 @@ Standard.args = {
     fieldLevelHelp: 'Help text',
     value: '#419fec',
     messageWhenBadInput: 'Please ensure value is correct',
-    colorsValue: colorsValue
+    colors: colorsValue
 };
 
 export const StandardWithIcon = Template.bind({});
@@ -300,7 +299,7 @@ StandardWithIcon.args = {
     messageWhenBadInput: 'Please ensure value is correct',
     menuIconName: 'utility:down',
     menuLabel: 'Pick a color',
-    colorsValue: colorsValue
+    colors: colorsValue
 };
 
 export const StandardWithIconWithoutColorInput = Template.bind({});
@@ -312,7 +311,7 @@ StandardWithIconWithoutColorInput.args = {
     menuIconName: 'utility:down',
     menuLabel: 'Pick a color',
     hideColorInput: 'true',
-    colorsValue: colorsValue
+    colors: colorsValue
 };
 
 export const LabelInlineWithMenuVariantContainer = Template.bind({});
@@ -323,7 +322,7 @@ LabelInlineWithMenuVariantContainer.args = {
     messageWhenBadInput: 'Please ensure value is correct',
     variant: 'label-inline',
     menuVariant: 'container',
-    colorsValue: colorsValue
+    colors: colorsValue
 };
 
 export const LabelInlineWithoutColorInput = Template.bind({});
@@ -346,7 +345,7 @@ LabelHiddenWithoutHelpMessage.args = {
     variant: 'label-hidden',
     hideColorInput: 'true',
     menuVariant: 'bare-inverse',
-    colorsValue: colorsValue
+    colors: colorsValue
 };
 
 export const LabelHiddenWithoutHelpMessageBorderInverse = Template.bind({});
@@ -357,7 +356,7 @@ LabelHiddenWithoutHelpMessageBorderInverse.args = {
     variant: 'label-hidden',
     hideColorInput: 'true',
     menuVariant: 'border-inverse',
-    colorsValue: colorsValue
+    colors: colorsValue
 };
 
 export const LabelHiddenWithMenuLabel = Template.bind({});
@@ -369,7 +368,7 @@ LabelHiddenWithMenuLabel.args = {
     hideColorInput: 'true',
     menuVariant: 'border-inverse',
     menuLabel: 'Pick a color',
-    colorsValue: colorsValue
+    colors: colorsValue
 };
 
 export const Xx_smallIconWithColorInput = Template.bind({});
@@ -391,7 +390,7 @@ X_smallIconWithColorInput.args = {
     messageWhenBadInput: 'Please ensure value is correct',
     menuIconName: 'utility:down',
     menuIconSize: 'x-small',
-    colorsValue: colorsValue
+    colors: colorsValue
 };
 
 export const SmallIconWithColorInput = Template.bind({});
@@ -402,7 +401,7 @@ SmallIconWithColorInput.args = {
     messageWhenBadInput: 'Please ensure value is correct',
     menuIconName: 'utility:down',
     menuIconSize: 'small',
-    colorsValue: colorsValue
+    colors: colorsValue
 };
 
 export const MediumIconWithColorInput = Template.bind({});
@@ -413,7 +412,7 @@ MediumIconWithColorInput.args = {
     messageWhenBadInput: 'Please ensure value is correct',
     menuIconName: 'utility:down',
     menuIconSize: 'medium',
-    colorsValue: colorsValue
+    colors: colorsValue
 };
 
 export const LargeIconWithColorInput = Template.bind({});
@@ -424,5 +423,5 @@ LargeIconWithColorInput.args = {
     messageWhenBadInput: 'Please ensure value is correct',
     menuIconName: 'utility:down',
     menuIconSize: 'large',
-    colorsValue: colorsValue
+    colors: colorsValue
 };

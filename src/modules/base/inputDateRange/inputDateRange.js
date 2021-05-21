@@ -2,8 +2,8 @@ import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { parseDateTime } from 'c/internationalizationLibrary';
 
-const validTypes = ['date', 'datetime'];
-const validDateStyle = ['short', 'medium', 'long'];
+const validTypes = {valid: ['date', 'datetime'], default: 'date'};
+const validDateStyle = {valid: ['short', 'medium', 'long'], defaultDate: 'medium', defaultTime:'short' };
 
 export default class InputDateRange extends LightningElement {
     @api fieldLevelHelp;
@@ -12,12 +12,12 @@ export default class InputDateRange extends LightningElement {
     @api labelEndDate;
 
     _timezone;
-    _startDate = '';
-    _endDate = '';
+    _startDate;
+    _endDate;
 
-    _dateStyle = 'medium';
-    _timeStyle = 'short';
-    _type = 'date';
+    _dateStyle = validDateStyle.defaultDate;
+    _timeStyle = validDateStyle.defaultTime;
+    _type = validTypes.default;
     _disabled = false;
     _required = false;
 
@@ -61,42 +61,46 @@ export default class InputDateRange extends LightningElement {
         this.initEndtDate();
     }
 
-    @api get dateStyle() {
+    @api 
+    get dateStyle() {
         return this._dateStyle;
     }
 
     set dateStyle(value) {
         this._dateStyle = normalizeString(value, {
-            fallbackValue: 'medium',
-            validValues: validDateStyle
+            fallbackValue: validDateStyle.defaultDate,
+            validValues: validDateStyle.valid
         });
     }
 
-    @api get timeStyle() {
+    @api 
+    get timeStyle() {
         return this._timeStyle;
     }
 
     set timeStyle(value) {
         this._timeStyle = normalizeString(value, {
-            fallbackValue: 'medium',
-            validValues: validDateStyle
+            fallbackValue: validDateStyle.defaultTime,
+            validValues: validDateStyle.valid
         });
     }
 
-    @api get type() {
+    @api 
+    get type() {
         return this._type;
     }
 
     set type(type) {
         this._type = normalizeString(type, {
-            fallbackValue: 'date',
-            validValues: validTypes
+            fallbackValue: validTypes.default,
+            validValues: validTypes.valid
         });
         this.initStartDate();
         this.initEndtDate();
     }
 
-    @api get disabled() {
+    @api 
+    get disabled() {
         return this._disabled;
     }
 
@@ -104,7 +108,8 @@ export default class InputDateRange extends LightningElement {
         this._disabled = normalizeBoolean(value);
     }
 
-    @api get required() {
+    @api 
+    get required() {
         return this._required;
     }
 

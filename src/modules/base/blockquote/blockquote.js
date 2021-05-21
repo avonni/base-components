@@ -2,17 +2,23 @@ import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-const validVariants = ['default', 'brand', 'warning', 'error', 'success'];
-const validIconPositions = ['left', 'right'];
-const validIconSizes = ['xx-small', 'x-small', 'small', 'medium', 'large'];
+const validVariants = {
+    valid: ['default', 'brand', 'warning', 'error', 'success'],
+    default: 'default'
+};
+const validIconPositions = { valid: ['left', 'right'], default: 'left' };
+const validIconSizes = {
+    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+    default: 'small'
+};
 
 export default class Blockquote extends LightningElement {
     @api title;
     @api iconName;
 
-    _variant = 'default';
-    _iconPosition = 'left';
-    _iconSize = 'small';
+    _variant = validVariants.default;
+    _iconPosition = validIconPositions.default;
+    _iconSize = validIconSizes.default;
 
     @api
     get variant() {
@@ -21,8 +27,8 @@ export default class Blockquote extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: 'default',
-            validValues: validVariants
+            fallbackValue: validVariants.default,
+            validValues: validVariants.valid
         });
     }
 
@@ -33,8 +39,8 @@ export default class Blockquote extends LightningElement {
 
     set iconPosition(position) {
         this._iconPosition = normalizeString(position, {
-            fallbackValue: 'left',
-            validValues: validIconPositions
+            fallbackValue: validIconPositions.default,
+            validValues: validIconPositions.valid
         });
     }
 
@@ -45,8 +51,8 @@ export default class Blockquote extends LightningElement {
 
     set iconSize(size) {
         this._iconSize = normalizeString(size, {
-            fallbackValue: 'small',
-            validValues: validIconSizes
+            fallbackValue: validIconSizes.default,
+            validValues: validIconSizes.valid
         });
     }
 

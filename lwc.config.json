@@ -339,6 +339,10 @@
             "path": "src/modules/base/slides/slides.js"
         },
         {
+            "name": "c/list",
+            "path": "src/modules/base/list/list.js"
+        },
+        {
             "name": "c/splitter",
             "path": "src/modules/base/splitter/splitter.js"
         },
@@ -357,6 +361,10 @@
         {
             "name": "c/timer",
             "path": "src/modules/base/timer/timer.js"
+        },
+        {
+            "name": "c/tooltipLibrary",
+            "path": "src/modules/base/tooltipLibrary/tooltipLibrary.js"
         },
         {
             "name": "c/verticalProgressIndicator",
@@ -607,6 +615,10 @@
             "path": "src/modules/base/slides/slides.js"
         },
         {
+            "name": "avonni/list",
+            "path": "src/modules/base/list/list.js"
+        },
+        {
             "name": "avonni/splitter",
             "path": "src/modules/base/splitter/splitter.js"
         },
@@ -711,6 +723,7 @@
         "avonni/segmentButton",
         "avonni/slide",
         "avonni/slides",
+        "avonni/list",
         "avonni/splitter",
         "avonni/splitterPane",
         "avonni/submenu",

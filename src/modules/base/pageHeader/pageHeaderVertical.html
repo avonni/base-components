@@ -14,24 +14,22 @@
             <div class="slds-media__body">
                 <div class="slds-page-header__name">
                     <div class="slds-page-header__name-title">
-                        <h1>
-                            <template if:false={hasStringLabel}>
-                                <slot name="label"></slot>
+                        <template if:false={hasStringLabel}>
+                            <slot name="label"></slot>
+                        </template>
+                        <template if:true={hasStringLabel}>
+                            <span>{label}</span>
+                        </template>
+                        <span
+                            class="slds-page-header__title slds-hyphenate slds-truncate"
+                        >
+                            <template if:true={hasStringTitle}>
+                                {title}
                             </template>
-                            <template if:true={hasStringLabel}>
-                                <span>{label}</span>
+                            <template if:false={hasStringTitle}>
+                                <slot name="title"></slot>
                             </template>
-                            <span
-                                class="slds-page-header__title slds-hyphenate slds-truncate"
-                            >
-                                <template if:true={hasStringTitle}>
-                                    {title}
-                                </template>
-                                <template if:false={hasStringTitle}>
-                                    <slot name="title"></slot>
-                                </template>
-                            </span>
-                        </h1>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -52,7 +50,7 @@
                 <slot name="actions"></slot>
             </div>
         </template>
-        <template if:true={fields}>
+        <template if:false={fieldsIsEmpty}>
             <ul class="slds-page-header__detail-list">
                 <template for:each={fields} for:item="field">
                     <li key={field.label} class="slds-page-header__detail-item">
@@ -75,7 +73,7 @@
                 </template>
             </ul>
         </template>
-        <template if:false={fields}>
+        <template if:true={fieldsIsEmpty}>
             <slot name="details"></slot>
         </template>
     </div>
