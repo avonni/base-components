@@ -55,6 +55,7 @@
             ></c-primitive-avatar>
         </span>
         <button
+            if:true={actionIconName}
             type="button"
             title="ActionButton"
             onclick={actionClick}
@@ -202,20 +203,22 @@
                 </div>
             </template>
         </template>
-        <div class={actionButtonLayoutClass}>
-            <button
-                type="button"
-                title="ActionButton"
-                onclick={actionClick}
-                class={actionButtonClass}
-            >
-                <lightning-icon
-                    icon-name={actionIconName}
-                    size={iconSize}
+        <template if:true={actionIconName}>
+            <div class={actionButtonLayoutClass}>
+                <button
+                    type="button"
+                    title="ActionButton"
                     onclick={actionClick}
-                    class="slds-button slds-button_icon slds-current-color avonni-avatar-group__action-button"
-                ></lightning-icon>
-            </button>
-        </div>
+                    class={actionButtonClass}
+                >
+                    <lightning-icon
+                        icon-name={actionIconName}
+                        size={iconSize}
+                        onclick={actionClick}
+                        class="slds-button slds-button_icon slds-current-color avonni-avatar-group__action-button"
+                    ></lightning-icon>
+                </button>
+            </div>
+        </template>
     </template>
 </template>
