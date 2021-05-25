@@ -81,6 +81,69 @@ export default {
                 defaultValue: { summary: '1px 1px 0 rgb(0 0 0 / 50%)' }
             }
         },
+        caption: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'The caption can include text, and is displayed under the title.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        captionColor: {
+            name: 'caption-color',
+            control: {
+                type: 'color'
+            },
+            defaultValue: '#ffffff',
+            description: 'Defines the font color of the caption.',
+            table: {
+                type: { summary: 'color' }
+            }
+        },
+        captionFontFamily: {
+            name: 'caption-font-family',
+            control: {
+                type: 'text'
+            },
+            defaultValue: "'Salesforce Sans', Arial, sans-serif",
+            description: 'Defines the font family of the caption.',
+            table: {
+                type: { summary: 'text' },
+                defaultValue: {
+                    summary: "'Salesforce Sans', Arial, sans-serif"
+                }
+            }
+        },
+        captionFontSize: {
+            name: 'caption-font-size',
+            control: {
+                type: 'select'
+            },
+            options: ['small', 'medium', 'large', 'x-large', 'xx-large'],
+            defaultValue: 'small',
+            description:
+                'Defines the size of the caption. Valid values include small, medium, large, x-large, xx-large.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'small' }
+            }
+        },
+        captionFontWeight: {
+            name: 'caption-font-weight',
+            control: {
+                type: 'select'
+            },
+            options: ['light', 'normal', 'bold'],
+            defaultValue: 'light',
+            description:
+                'Defines the font weight of the caption. Valid values include light, normal and bold.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'light' }
+            }
+        },
         subtitle: {
             control: {
                 type: 'text'

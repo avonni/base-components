@@ -24,6 +24,13 @@ describe('Hero Banner', () => {
         expect(element.titleFontSize).toBe('large');
         expect(element.titleFontWeight).toBe('bold');
         expect(element.titleShadowColor).toBe('1px 1px 0 rgb(0 0 0 / 50%)');
+        expect(element.caption).toBeUndefined();
+        expect(element.captionColor).toBe('#ffffff');
+        expect(element.captionFontFamily).toBe(
+            '"Salesforce Sans", Arial, sans-serif'
+        );
+        expect(element.captionFontSize).toBe('small');
+        expect(element.captionFontWeight).toBe('light');
         expect(element.subtitle).toBeUndefined();
         expect(element.subtitleColor).toBe('#ffffff');
         expect(element.subtitleFontFamily).toBe(
@@ -232,6 +239,185 @@ describe('Hero Banner', () => {
         return Promise.resolve().then(() => {
             const title = element.shadowRoot.querySelector('h1');
             expect(title.style.textShadow).toBe('5px 5px #558abb');
+        });
+    });
+
+    // caption
+    it('Hero Banner caption', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.caption = 'This is a caption text';
+
+        return Promise.resolve().then(() => {
+            const caption = element.shadowRoot.querySelector('h3');
+            expect(caption.textContent).toBe('This is a caption text');
+        });
+    });
+
+    // caption color
+    it('Hero Banner caption color', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.caption = 'This is a caption text';
+        element.captionColor = 'rgb(0, 0, 0)';
+
+        return Promise.resolve().then(() => {
+            const caption = element.shadowRoot.querySelector('h3');
+            expect(caption.style.color).toBe('rgb(0, 0, 0)');
+        });
+    });
+
+    // caption font family
+    it('Hero Banner caption font family', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.caption = 'This is a caption text';
+        element.captionFontFamily = 'Arial';
+
+        return Promise.resolve().then(() => {
+            const caption = element.shadowRoot.querySelector('h3');
+            expect(caption.style.fontFamily).toBe('Arial');
+        });
+    });
+
+    // caption font size
+    it('Hero Banner caption font size small', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.caption = 'This is a caption text';
+        element.captionFontSize = 'small';
+
+        return Promise.resolve().then(() => {
+            const caption = element.shadowRoot.querySelector('h3');
+            expect(caption.classList).toContain('slds-text-heading_small');
+        });
+    });
+
+    it('Hero Banner caption font size medium', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.caption = 'This is a caption text';
+        element.captionFontSize = 'medium';
+
+        return Promise.resolve().then(() => {
+            const caption = element.shadowRoot.querySelector('h3');
+            expect(caption.classList).toContain('slds-text-heading_medium');
+        });
+    });
+
+    it('Hero Banner caption font size large', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.caption = 'This is a caption text';
+        element.captionFontSize = 'large';
+
+        return Promise.resolve().then(() => {
+            const caption = element.shadowRoot.querySelector('h3');
+            expect(caption.classList).toContain('slds-text-heading_large');
+        });
+    });
+
+    it('Hero Banner caption font size x-large', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.caption = 'This is a caption text';
+        element.captionFontSize = 'x-large';
+
+        return Promise.resolve().then(() => {
+            const caption = element.shadowRoot.querySelector('h3');
+            expect(caption.classList).toContain(
+                'avonni-hero-banner-text-x_large'
+            );
+        });
+    });
+
+    it('Hero Banner caption font size xx-large', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.caption = 'This is a caption text';
+        element.captionFontSize = 'xx-large';
+
+        return Promise.resolve().then(() => {
+            const caption = element.shadowRoot.querySelector('h3');
+            expect(caption.classList).toContain(
+                'avonni-hero-banner-text-xx_large'
+            );
+        });
+    });
+
+    // caption font weight
+    it('Hero Banner caption font weight light', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.caption = 'This is a caption text';
+        element.captionFontWeight = 'light';
+
+        return Promise.resolve().then(() => {
+            const caption = element.shadowRoot.querySelector('h3');
+            expect(caption.classList).toContain(
+                'avonni-hero-banner-font-weight_light'
+            );
+        });
+    });
+
+    it('Hero Banner caption font weight normal', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.caption = 'This is a caption text';
+        element.captionFontWeight = 'normal';
+
+        return Promise.resolve().then(() => {
+            const caption = element.shadowRoot.querySelector('h3');
+            expect(caption.classList).toContain(
+                'avonni-hero-banner-font-weight_normal'
+            );
+        });
+    });
+
+    it('Hero Banner caption font weight bold', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.caption = 'This is a caption text';
+        element.captionFontWeight = 'bold';
+
+        return Promise.resolve().then(() => {
+            const caption = element.shadowRoot.querySelector('h3');
+            expect(caption.classList).toContain(
+                'avonni-hero-banner-font-weight_bold'
+            );
         });
     });
 
