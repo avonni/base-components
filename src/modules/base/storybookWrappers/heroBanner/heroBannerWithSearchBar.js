@@ -13,7 +13,7 @@ const DEFAULT_CAPTION_FONT_WEIGHT = 'light';
 const DEFAULT_SUBTITLE_FONT_WEIGHT = 'normal';
 const DEFAULT_LINEAR_GRADIENT = 'rgba(0,0,0,0.4), rgba(0,0,0,0.4)';
 const DEFAULT_FONT_FAMILY = '"Salesforce Sans", Arial, sans-serif';
-const DEFAULT_TITLE_SHADOW_COLOR = '1px 1px 0 rgb(0 0 0 / 50%)';
+const DEFAULT_SHADOW_COLOR = '1px 1px 0 rgb(0 0 0 / 50%)';
 
 export default class HeroBannerWithSearchBar extends LightningElement {
     @api title;
@@ -21,17 +21,19 @@ export default class HeroBannerWithSearchBar extends LightningElement {
     @api titleFontFamily = DEFAULT_FONT_FAMILY;
     @api titleFontSize = DEFAULT_TITLE_FONT_SIZE;
     @api titleFontWeight = DEFAULT_TITLE_FONT_WEIGHT;
-    @api titleShadowColor = DEFAULT_TITLE_SHADOW_COLOR;
+    @api titleShadowColor = DEFAULT_SHADOW_COLOR;
     @api caption;
     @api captionColor = DEFAULT_TEXT_COLOR;
     @api captionFontFamily = DEFAULT_FONT_FAMILY;
     @api captionFontSize = DEFAULT_CAPTION_FONT_SIZE;
     @api captionFontWeight = DEFAULT_CAPTION_FONT_WEIGHT;
+    @api captionShadowColor = DEFAULT_SHADOW_COLOR;
     @api subtitle;
     @api subtitleColor = DEFAULT_TEXT_COLOR;
     @api subtitleFontFamily = DEFAULT_FONT_FAMILY;
     @api subtitleFontSize = DEFAULT_SUBTITLE_FONT_SIZE;
     @api subtitleFontWeight = DEFAULT_SUBTITLE_FONT_WEIGHT;
+    @api subtitleShadowColor = DEFAULT_SHADOW_COLOR;
     @api src;
     @api linearGradient = DEFAULT_LINEAR_GRADIENT;
     @api height = DEFAULT_HEIGHT;

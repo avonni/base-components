@@ -17,11 +17,13 @@ export const HeroBanner = ({
     captionFontFamily,
     captionFontSize,
     captionFontWeight,
+    captionShadowColor,
     subtitle,
     subtitleColor,
     subtitleFontFamily,
     subtitleFontSize,
     subtitleFontWeight,
+    subtitleShadowColor,
     src,
     linearGradient,
     height,
@@ -41,11 +43,13 @@ export const HeroBanner = ({
     element.captionColor = captionColor;
     element.captionFontSize = captionFontSize;
     element.captionFontWeight = captionFontWeight;
+    element.captionShadowColor = captionShadowColor;
     element.subtitle = subtitle;
     element.subtitleFontFamily = subtitleFontFamily;
     element.subtitleColor = subtitleColor;
     element.subtitleFontSize = subtitleFontSize;
     element.subtitleFontWeight = subtitleFontWeight;
+    element.subtitleShadowColor = subtitleShadowColor;
     element.src = src;
     element.linearGradient = linearGradient;
     element.height = height;

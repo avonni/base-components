@@ -31,19 +31,21 @@ const DEFAULT_HEIGHT = 400;
 const DEFAULT_MAX_WIDTH = 960;
 const DEFAULT_LINEAR_GRADIENT = 'rgba(0,0,0,0.4), rgba(0,0,0,0.4)';
 const DEFAULT_FONT_FAMILY = '"Salesforce Sans", Arial, sans-serif';
-const DEFAULT_TITLE_SHADOW_COLOR = '1px 1px 0 rgb(0 0 0 / 50%)';
+const DEFAULT_SHADOW_COLOR = '1px 1px 0 rgb(0 0 0 / 50%)';
 
 export default class HeroBanner extends LightningElement {
     @api title;
     @api titleColor = DEFAULT_TEXT_COLOR;
     @api titleFontFamily = DEFAULT_FONT_FAMILY;
-    @api titleShadowColor = DEFAULT_TITLE_SHADOW_COLOR;
+    @api titleShadowColor = DEFAULT_SHADOW_COLOR;
     @api caption;
     @api captionColor = DEFAULT_TEXT_COLOR;
     @api captionFontFamily = DEFAULT_FONT_FAMILY;
+    @api captionShadowColor = DEFAULT_SHADOW_COLOR;
     @api subtitle;
     @api subtitleColor = DEFAULT_TEXT_COLOR;
     @api subtitleFontFamily = DEFAULT_FONT_FAMILY;
+    @api subtitleShadowColor = DEFAULT_SHADOW_COLOR;
     @api src;
     @api linearGradient = DEFAULT_LINEAR_GRADIENT;
 
@@ -208,15 +210,15 @@ export default class HeroBanner extends LightningElement {
     }
 
     get computedTitleStyling() {
-        return `font-family: ${this.titleFontFamily}; color: ${this.titleColor}; text-shadow: ${this.titleShadowColor}`;
+        return `font-family: ${this.titleFontFamily}; color: ${this.titleColor}; text-shadow: ${this.titleShadowColor};`;
     }
 
     get computedCaptionStyling() {
-        return `font-family: ${this.captionFontFamily}; color: ${this.captionColor};`;
+        return `font-family: ${this.captionFontFamily}; color: ${this.captionColor}; text-shadow: ${this.captionShadowColor};`;
     }
 
     get computedSubtitleStyling() {
-        return `font-family: ${this.subtitleFontFamily}; color: ${this.subtitleColor}`;
+        return `font-family: ${this.subtitleFontFamily}; color: ${this.subtitleColor}; text-shadow: ${this.subtitleShadowColor};`;
     }
 
     get computedContentContainer() {

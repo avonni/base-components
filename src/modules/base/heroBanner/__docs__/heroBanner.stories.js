@@ -144,6 +144,18 @@ export default {
                 defaultValue: { summary: 'light' }
             }
         },
+        captionShadowColor: {
+            name: 'caption-shadow-color',
+            control: {
+                type: 'text'
+            },
+            defaultValue: '1px 1px 0 rgb(0 0 0 / 50%)',
+            description: 'Defines the text shadow of the caption.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: '1px 1px 0 rgb(0 0 0 / 50%)' }
+            }
+        },
         subtitle: {
             control: {
                 type: 'text'
@@ -205,6 +217,18 @@ export default {
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'normal' }
+            }
+        },
+        subtitleShadowColor: {
+            name: 'subtitle-shadow-color',
+            control: {
+                type: 'text'
+            },
+            defaultValue: '1px 1px 0 rgb(0 0 0 / 50%)',
+            description: 'Defines the text shadow of the subtitle.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: '1px 1px 0 rgb(0 0 0 / 50%)' }
             }
         },
         src: {

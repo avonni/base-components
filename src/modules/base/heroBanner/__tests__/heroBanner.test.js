@@ -31,6 +31,7 @@ describe('Hero Banner', () => {
         );
         expect(element.captionFontSize).toBe('small');
         expect(element.captionFontWeight).toBe('light');
+        expect(element.captionShadowColor).toBe('1px 1px 0 rgb(0 0 0 / 50%)');
         expect(element.subtitle).toBeUndefined();
         expect(element.subtitleColor).toBe('#ffffff');
         expect(element.subtitleFontFamily).toBe(
@@ -38,6 +39,7 @@ describe('Hero Banner', () => {
         );
         expect(element.subtitleFontSize).toBe('medium');
         expect(element.subtitleFontWeight).toBe('normal');
+        expect(element.subtitleShadowColor).toBe('1px 1px 0 rgb(0 0 0 / 50%)');
         expect(element.src).toBeUndefined();
         expect(element.linearGradient).toBe('rgba(0,0,0,0.4), rgba(0,0,0,0.4)');
         expect(element.height).toBe(400);
@@ -422,6 +424,22 @@ describe('Hero Banner', () => {
         });
     });
 
+    // caption Shadow color
+    it('Hero Banner caption Shadow color', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.caption = 'This is a caption text';
+        element.captionShadowColor = '5px 5px #558abb';
+
+        return Promise.resolve().then(() => {
+            const caption = element.shadowRoot.querySelector('h3');
+            expect(caption.style.textShadow).toBe('5px 5px #558abb');
+        });
+    });
+
     // subtitle
     it('Hero Banner subtitle', () => {
         const element = createElement('base-hero-banner', {
@@ -598,6 +616,22 @@ describe('Hero Banner', () => {
             expect(subtitle.classList).toContain(
                 'avonni-hero-banner-font-weight_bold'
             );
+        });
+    });
+
+    // subtitle Shadow color
+    it('Hero Banner subtitle Shadow color', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.subtitle = 'This is a subtitle text';
+        element.subtitleShadowColor = '5px 5px #558abb';
+
+        return Promise.resolve().then(() => {
+            const subtitle = element.shadowRoot.querySelector('h2');
+            expect(subtitle.style.textShadow).toBe('5px 5px #558abb');
         });
     });
 
