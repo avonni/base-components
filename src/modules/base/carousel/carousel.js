@@ -73,14 +73,15 @@ export default class Carousel extends LightningElement {
             if (!this.disableAutoScroll) {
                 this.setAutoScroll();
             }
-            let carouselContentHeights = this._carouselItems.map((item) => {
-                return item.buttonLabel && item.secondaryButtonLabel
-                    ? 12
-                    : item.buttonLabel || item.secondaryButtonLabel
-                    ? 8.5
-                    : 6.625;
-            });
-            this._carouselContentHeight = Math.max(...carouselContentHeights);
+            // let carouselContentHeights = this.items.map((item) => {
+            //     return item.buttonLabel && item.secondaryButtonLabel
+            //         ? 12
+            //         : item.buttonLabel || item.secondaryButtonLabel
+            //         ? 8.5
+            //         : 6.625;
+            // });
+            // this._carouselContentHeight = Math.max(...carouselContentHeights);
+            // console.log(this._carouselContentHeight);
         }
         this._initialRender = true;
     }
@@ -338,6 +339,18 @@ export default class Carousel extends LightningElement {
         indicatorActionsElements[this.activeIndexPanel].focus();
     }
 
+    initializeCarouselHeight() {
+        let carouselContentHeights = this.items.map((item) => {
+            return item.buttonLabel && item.secondaryButtonLabel
+                ? 12
+                : item.buttonLabel || item.secondaryButtonLabel
+                ? 8.5
+                : 6.625;
+        });
+        this._carouselContentHeight = Math.max(...carouselContentHeights);
+        // console.log(this._carouselContentHeight);
+    }
+
     initCarousel() {
         const numberOfPanels = Math.ceil(
             this._carouselItems.length / this.itemsPerPanel
@@ -346,6 +359,7 @@ export default class Carousel extends LightningElement {
         this.initializeCurrentPanel(numberOfPanels);
         this.initializePaginationItems(numberOfPanels);
         this.initializePanels();
+        this.initializeCarouselHeight();
     }
 
     onPanelSelect(event) {
@@ -428,6 +442,7 @@ export default class Carousel extends LightningElement {
     }
 
     get computedCarouselContentSize() {
+        // console.log(this._carouselContentHeight);
         return `height: ${this._carouselContentHeight}rem`;
     }
 }

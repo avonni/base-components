@@ -9,7 +9,7 @@ const items = [
     {
         buttonLabel: 'Get Started',
         id: 1,
-        heading: 'Visit App Exchange',
+        title: 'Visit App Exchange',
         description: 'Extend Salesforce with the #1 business marketplace.',
         imageAssistiveText: 'Appy',
         src:
@@ -19,7 +19,7 @@ const items = [
     {
         buttonLabel: 'Get Started',
         id: 2,
-        heading: 'Click to Customize',
+        title: 'Click to Customize',
         description:
             'Use the Object Manager to add fields, build layouts, and more.',
         imageAssistiveText: 'Apps',
@@ -30,7 +30,7 @@ const items = [
     {
         buttonLabel: 'Get Started',
         id: 3,
-        heading: 'Download Salesforce Apps',
+        title: 'Download Salesforce Apps',
         description: "Get the mobile app that's just for Salesforce admins.",
         imageAssistiveText: 'Salesforce Apps',
         src:
@@ -40,7 +40,7 @@ const items = [
     {
         buttonLabel: 'Get Started',
         id: 4,
-        heading: 'Carousel Item 4',
+        title: 'Carousel Item 4',
         description: 'Description for carousel item #4',
         imageAssistiveText: 'Apps',
         src:
@@ -50,7 +50,7 @@ const items = [
     {
         buttonLabel: 'Learn More',
         id: 5,
-        heading: 'Carousel Item 5',
+        title: 'Carousel Item 5',
         description: 'Description for carousel item #5',
         imageAssistiveText: 'Appy',
         src:
@@ -60,7 +60,7 @@ const items = [
     {
         buttonLabel: 'Learn More',
         id: 6,
-        heading: 'Carousel Item 6',
+        title: 'Carousel Item 6',
         description: 'Description for carousel item #6',
         imageAssistiveText: 'Salesforce Apps',
         src:
@@ -70,7 +70,7 @@ const items = [
     {
         buttonLabel: 'Learn More',
         id: 7,
-        heading: 'Carousel Item 7',
+        title: 'Carousel Item 7',
         description: 'Description for carousel item #7',
         imageAssistiveText: 'Apps',
         src:
@@ -85,6 +85,8 @@ describe('Carousel', () => {
             document.body.removeChild(document.body.firstChild);
         }
     });
+
+    // const flushPromises = () => new Promise(setImmediate);
 
     it('Default attributes', () => {
         const element = createElement('base-carousel', {
@@ -390,8 +392,12 @@ describe('Carousel', () => {
                 buttonIconName: 'utility:close',
                 buttonVariant: 'neutral',
                 buttonIconPosition: 'left',
+                secondaryButtonLabel: 'Learn more',
+                secondaryButtonIconName: 'utility:check',
+                secondaryButtonVariant: 'neutral',
+                secondaryButtonIconPosition: 'left',
                 id: 1,
-                heading: 'Visit App Exchange',
+                title: 'Visit App Exchange',
                 description:
                     'Extend Salesforce with the #1 business marketplace.',
                 imageAssistiveText: 'Appy',
@@ -409,21 +415,29 @@ describe('Carousel', () => {
                 '.slds-carousel__panel-action'
             );
             expect(a.href).toBe(item.href);
-            const button = element.shadowRoot.querySelector('lightning-button');
-            expect(button.label).toBe(item.buttonLabel);
-            expect(button.iconName).toBe(item.buttonIconName);
-            expect(button.variant).toBe(item.buttonVariant);
-            expect(button.iconPosition).toBe(item.buttonIconPosition);
+            const button = element.shadowRoot.querySelectorAll(
+                'lightning-button'
+            );
+            expect(button[0].label).toBe(item.buttonLabel);
+            expect(button[0].iconName).toBe(item.buttonIconName);
+            expect(button[0].variant).toBe(item.buttonVariant);
+            expect(button[0].iconPosition).toBe(item.buttonIconPosition);
+            expect(button[1].label).toBe(item.secondaryButtonLabel);
+            expect(button[1].iconName).toBe(item.secondaryButtonIconName);
+            expect(button[1].variant).toBe(item.secondaryButtonVariant);
+            expect(button[1].iconPosition).toBe(
+                item.secondaryButtonIconPosition
+            );
             const description = element.shadowRoot.querySelector(
                 '.slds-carousel__content > p'
             );
             expect(description.textContent).toBe(
                 'Extend Salesforce with the #1 business marketplace.'
             );
-            const heading = element.shadowRoot.querySelector(
+            const title = element.shadowRoot.querySelector(
                 '.slds-carousel__content-title'
             );
-            expect(heading.textContent).toBe('Visit App Exchange');
+            expect(title.textContent).toBe('Visit App Exchange');
             const img = element.shadowRoot.querySelector('img');
             expect(img.src).toBe(
                 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
@@ -553,6 +567,182 @@ describe('Carousel', () => {
             });
     });
 
+    // Carousel content height based on number of buttons ( 4 scenarios )
+    it('Carousel content height with 2 buttons on 1 item', () => {
+        const element = createElement('base-carousel', {
+            is: Carousel
+        });
+        document.body.appendChild(element);
+
+        const example1 = [
+            {
+                buttonLabel: 'Get Started',
+                buttonIconName: 'utility:close',
+                buttonVariant: 'neutral',
+                buttonIconPosition: 'left',
+                secondaryButtonLabel: 'Learn more',
+                secondaryButtonIconName: 'utility:check',
+                secondaryButtonVariant: 'neutral',
+                secondaryButtonIconPosition: 'left',
+                id: 1,
+                title: 'Visit App Exchange',
+                description:
+                    'Extend Salesforce with the #1 business marketplace.',
+                imageAssistiveText: 'Appy',
+                src:
+                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+                href: 'https://www.salesforce.com/'
+            }
+        ];
+
+        element.items = example1;
+
+        return Promise.resolve().then(() => {
+            const carouselContent = element.shadowRoot.querySelector(
+                '.avonni-carousel__content'
+            );
+            expect(carouselContent.style.height).toBe('12rem');
+        });
+    });
+
+    it('Carousel content height with 2 buttons on 1 item and 1 button on second item', () => {
+        const element = createElement('base-carousel', {
+            is: Carousel
+        });
+        document.body.appendChild(element);
+
+        const example2 = [
+            {
+                buttonLabel: 'Get Started',
+                buttonIconName: 'utility:close',
+                buttonVariant: 'neutral',
+                buttonIconPosition: 'left',
+                secondaryButtonLabel: 'Learn more',
+                secondaryButtonIconName: 'utility:check',
+                secondaryButtonVariant: 'neutral',
+                secondaryButtonIconPosition: 'left',
+                id: 1,
+                title: 'Visit App Exchange',
+                description:
+                    'Extend Salesforce with the #1 business marketplace.',
+                imageAssistiveText: 'Appy',
+                src:
+                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+                href: 'https://www.salesforce.com/'
+            },
+            {
+                buttonLabel: 'Get Started',
+                buttonIconName: 'utility:close',
+                buttonVariant: 'neutral',
+                buttonIconPosition: 'left',
+                id: 2,
+                title: 'Visit App Exchange',
+                description:
+                    'Extend Salesforce with the #1 business marketplace.',
+                imageAssistiveText: 'Appy',
+                src:
+                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+                href: 'https://www.salesforce.com/'
+            }
+        ];
+
+        element.items = example2;
+
+        return Promise.resolve().then(() => {
+            const carouselContent = element.shadowRoot.querySelectorAll(
+                '.avonni-carousel__content'
+            );
+            carouselContent.forEach((content) => {
+                expect(content.style.height).toBe('12rem');
+            });
+        });
+    });
+
+    it('Carousel content height with 1 button on 1 item and no button on second item', () => {
+        const element = createElement('base-carousel', {
+            is: Carousel
+        });
+        document.body.appendChild(element);
+
+        const example3 = [
+            {
+                buttonLabel: 'Get Started',
+                buttonIconName: 'utility:close',
+                buttonVariant: 'neutral',
+                buttonIconPosition: 'left',
+                id: 1,
+                title: 'Visit App Exchange',
+                description:
+                    'Extend Salesforce with the #1 business marketplace.',
+                imageAssistiveText: 'Appy',
+                src:
+                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+                href: 'https://www.salesforce.com/'
+            },
+            {
+                id: 2,
+                title: 'Visit App Exchange',
+                description:
+                    'Extend Salesforce with the #1 business marketplace.',
+                imageAssistiveText: 'Appy',
+                src:
+                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+                href: 'https://www.salesforce.com/'
+            }
+        ];
+
+        element.items = example3;
+
+        return Promise.resolve().then(() => {
+            const carouselContent = element.shadowRoot.querySelectorAll(
+                '.avonni-carousel__content'
+            );
+            carouselContent.forEach((content) => {
+                expect(content.style.height).toBe('8.5rem');
+            });
+        });
+    });
+    it('Carousel content height with no buttons', () => {
+        const element = createElement('base-carousel', {
+            is: Carousel
+        });
+        document.body.appendChild(element);
+
+        const example4 = [
+            {
+                id: 1,
+                title: 'Visit App Exchange',
+                description:
+                    'Extend Salesforce with the #1 business marketplace.',
+                imageAssistiveText: 'Appy',
+                src:
+                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+                href: 'https://www.salesforce.com/'
+            },
+            {
+                id: 2,
+                title: 'Visit App Exchange',
+                description:
+                    'Extend Salesforce with the #1 business marketplace.',
+                imageAssistiveText: 'Appy',
+                src:
+                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+                href: 'https://www.salesforce.com/'
+            }
+        ];
+
+        element.items = example4;
+
+        return Promise.resolve().then(() => {
+            const carouselContent = element.shadowRoot.querySelectorAll(
+                '.avonni-carousel__content'
+            );
+            carouselContent.forEach((content) => {
+                expect(content.style.height).toBe('6.625rem');
+            });
+        });
+    });
+
     /* ----- EVENTS ----- */
 
     // carousel itemclick
@@ -565,7 +755,7 @@ describe('Carousel', () => {
         const example = [
             {
                 buttonLabel: 'Get Started',
-                heading: 'Visit App Exchange',
+                title: 'Visit App Exchange',
                 description:
                     'Extend Salesforce with the #1 business marketplace.',
                 imageAssistiveText: 'Appy',
