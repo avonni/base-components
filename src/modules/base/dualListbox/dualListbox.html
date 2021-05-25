@@ -47,7 +47,7 @@
                             aria-describedby="keyboard-interacton"
                             aria-labelledby="source-list-label"
                             aria-multiselectable="true"
-                            class="slds-listbox slds-listbox_vertical"
+                            class="slds-listbox slds-listbox_vertical source-list"
                             role="listbox"
                             aria-disabled={ariaDisabled}
                         >
@@ -64,7 +64,7 @@
                                     <div
                                         class={option.classList}
                                         aria-selected={option.selected}
-                                        role="option"
+                                        role="option source"
                                         tabindex={option.tabIndex}
                                         data-index={index}
                                         data-value={option.value}
@@ -173,7 +173,7 @@
                                     <div
                                         class={option.classList}
                                         aria-selected={option.selected}
-                                        role="option"
+                                        role="option selected"
                                         tabindex={option.tabIndex}
                                         data-index={index}
                                         data-value={option.value}

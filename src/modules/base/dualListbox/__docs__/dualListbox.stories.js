@@ -610,7 +610,8 @@ Base.args = {
     downButtonLabel: 'Down Button Label',
     upButtonLabel: 'Up Button Label',
     options: Options,
-    value: ['2', '3', '4', '5', '6']
+    value: ['2', '3', '4', '5', '6'],
+    draggable: true
 };
 
 export const BaseBordered = Template.bind({});
