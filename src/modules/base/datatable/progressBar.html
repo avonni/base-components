@@ -1,5 +1,5 @@
 <template>
-    <div class="slds-p-around_x-small">
+    <span class="slds-p-around_x-small slds-show">
         <c-progress-bar
             value={value}
             label={typeAttributes.label}
@@ -12,10 +12,10 @@
             value-position={typeAttributes.valuePosition}
             variant={typeAttributes.variant}
         ></c-progress-bar>
-    </div>
+    </span>
 
     <!-- Make the cell artificially higher to avoid useless scroll bar-->
     <template if:true={typeAttributes.referenceLines}>
-        <div class="slds-m-bottom_large"></div>
+        <span class="slds-m-bottom_large slds-show"></span>
     </template>
 </template>

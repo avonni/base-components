@@ -71,12 +71,7 @@ const columnsCE = [
             disabled: { fieldName: 'checkboxButtonDisabled' },
             label: 'Checkbox'
         },
-        editable: true,
-        actions: [
-            { label: 'All', checked: true, name: 'all' },
-            { label: 'Published', checked: false, name: 'show_published' },
-            { label: 'Unpublished', checked: false, name: 'show_unpublished' }
-        ]
+        editable: true
     },
     {
         label: 'Color Picker',
@@ -95,12 +90,7 @@ const columnsCE = [
             label: 'Pick a color',
             opacity: true
         },
-        editable: true,
-        actions: [
-            { label: 'All', checked: true, name: 'all' },
-            { label: 'Published', checked: false, name: 'show_published' },
-            { label: 'Unpublished', checked: false, name: 'show_unpublished' }
-        ]
+        editable: true
     },
     {
         label: 'Currency',
@@ -118,12 +108,7 @@ const columnsCE = [
         typeAttributes: {
             alternativeText: { fieldName: 'dynamicIcon' },
             option: { fieldName: 'dynamicIconOption' }
-        },
-        actions: [
-            { label: 'All', checked: true, name: 'all' },
-            { label: 'Published', checked: false, name: 'show_published' },
-            { label: 'Unpublished', checked: false, name: 'show_unpublished' }
-        ]
+        }
     }
 ];
 
@@ -155,11 +140,9 @@ const columnsFN = [
             step: { fieldName: 'inputCounterStep' }
         },
         editable: true,
-        actions: [
-            { label: 'All', checked: true, name: 'all' },
-            { label: 'Published', checked: false, name: 'show_published' },
-            { label: 'Unpublished', checked: false, name: 'show_unpublished' }
-        ]
+        cellAttributes: {
+            alignment: 'center'
+        }
     },
     {
         label: 'Input Date Range',
@@ -167,14 +150,11 @@ const columnsFN = [
         type: 'input-date-range',
         typeAttributes: {
             disabled: { fieldName: 'inputDateRangeDisabled' },
-            dateStyle: 'short'
+            dateStyle: 'short',
+            labelStartDate: 'Start',
+            labelEndDate: 'End'
         },
-        editable: true,
-        actions: [
-            { label: 'All', checked: true, name: 'all' },
-            { label: 'Published', checked: false, name: 'show_published' },
-            { label: 'Unpublished', checked: false, name: 'show_unpublished' }
-        ]
+        editable: true
     },
     {
         label: 'Input Toggle',
@@ -186,11 +166,9 @@ const columnsFN = [
             label: 'Toggle'
         },
         editable: true,
-        actions: [
-            { label: 'All', checked: true, name: 'all' },
-            { label: 'Published', checked: false, name: 'show_published' },
-            { label: 'Unpublished', checked: false, name: 'show_unpublished' }
-        ]
+        cellAttributes: {
+            alignment: 'center'
+        }
     }
 ];
 
@@ -204,12 +182,7 @@ const columnsOQ = [
             theme: { fieldName: 'progressBarTheme' },
             variant: 'circular',
             thickness: 'large'
-        },
-        actions: [
-            { label: 'All', checked: true, name: 'all' },
-            { label: 'Published', checked: false, name: 'show_published' },
-            { label: 'Unpublished', checked: false, name: 'show_unpublished' }
-        ]
+        }
     },
     {
         label: 'Progress Circle',
@@ -219,12 +192,7 @@ const columnsOQ = [
             thickness: 'large',
             size: 'small',
             color: { fieldName: 'progressCircleColor' }
-        },
-        actions: [
-            { label: 'All', checked: true, name: 'all' },
-            { label: 'Published', checked: false, name: 'show_published' },
-            { label: 'Unpublished', checked: false, name: 'show_unpublished' }
-        ]
+        }
     },
     {
         label: 'Progress Ring',
@@ -233,12 +201,7 @@ const columnsOQ = [
         typeAttributes: {
             variant: { fieldName: 'progressRingVariant' },
             size: 'large'
-        },
-        actions: [
-            { label: 'All', checked: true, name: 'all' },
-            { label: 'Published', checked: false, name: 'show_published' },
-            { label: 'Unpublished', checked: false, name: 'show_unpublished' }
-        ]
+        }
     },
     {
         label: 'QR Code',
@@ -248,12 +211,7 @@ const columnsOQ = [
             borderColor: { fieldName: 'qrcodeBorderColor' },
             borderWidth: { fieldName: 'qrcodeBorderWidth' },
             size: 50
-        },
-        actions: [
-            { label: 'All', checked: true, name: 'all' },
-            { label: 'Published', checked: false, name: 'show_published' },
-            { label: 'Unpublished', checked: false, name: 'show_unpublished' }
-        ]
+        }
     }
 ];
 
@@ -267,12 +225,7 @@ const columnsRZ = [
             label: 'Rating on 5',
             disabled: { fieldName: 'ratingDisabled' }
         },
-        editable: true,
-        actions: [
-            { label: 'All', checked: true, name: 'all' },
-            { label: 'Published', checked: false, name: 'show_published' },
-            { label: 'Unpublished', checked: false, name: 'show_unpublished' }
-        ]
+        editable: true
     },
     {
         label: 'Slider',
@@ -283,12 +236,7 @@ const columnsRZ = [
             label: 'Slider',
             step: { fieldName: 'sliderStep' }
         },
-        editable: true,
-        actions: [
-            { label: 'All', checked: true, name: 'all' },
-            { label: 'Published', checked: false, name: 'show_published' },
-            { label: 'Unpublished', checked: false, name: 'show_unpublished' }
-        ]
+        editable: true
     }
 ];
 

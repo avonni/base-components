@@ -217,6 +217,16 @@ export default class Datatable extends LightningDatatable {
         );
     }
 
+    renderedCallback() {
+        super.renderedCallback();
+
+        // Make sure custom edited cells stay yellow on hover
+        const edited = this.template.querySelectorAll('.slds-is-edited');
+        edited.forEach((cell) => {
+            cell.classList.add('slds-cell-edit');
+        });
+    }
+
     disconnectedCallback() {
         super.disconnectedCallback();
 
