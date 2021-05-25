@@ -73,15 +73,6 @@ export default class Carousel extends LightningElement {
             if (!this.disableAutoScroll) {
                 this.setAutoScroll();
             }
-            // let carouselContentHeights = this.items.map((item) => {
-            //     return item.buttonLabel && item.secondaryButtonLabel
-            //         ? 12
-            //         : item.buttonLabel || item.secondaryButtonLabel
-            //         ? 8.5
-            //         : 6.625;
-            // });
-            // this._carouselContentHeight = Math.max(...carouselContentHeights);
-            // console.log(this._carouselContentHeight);
         }
         this._initialRender = true;
     }
