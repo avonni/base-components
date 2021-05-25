@@ -1,7 +1,7 @@
 import { LightningElement, api } from 'lwc';
 
-const DEFAULT_TEXT_HORIZONTAL_ALIGNMENT = 'left';
-const DEFAULT_TEXT_VERTICAL_ALIGNMENT = 'center';
+const DEFAULT_CONTENT_HORIZONTAL_ALIGNMENT = 'left';
+const DEFAULT_CONTENT_VERTICAL_ALIGNMENT = 'center';
 const DEFAULT_TEXT_COLOR = '#ffffff';
 const DEFAULT_TITLE_FONT_SIZE = 'large';
 const DEFAULT_CAPTION_FONT_SIZE = 'small';
@@ -36,6 +36,6 @@ export default class HeroBannerWithButton extends LightningElement {
     @api linearGradient = DEFAULT_LINEAR_GRADIENT;
     @api height = DEFAULT_HEIGHT;
     @api maxWidth = DEFAULT_MAX_WIDTH;
-    @api textHorizontalAlignment = DEFAULT_TEXT_HORIZONTAL_ALIGNMENT;
-    @api textVerticalAlignment = DEFAULT_TEXT_VERTICAL_ALIGNMENT;
+    @api contentHorizontalAlignment = DEFAULT_CONTENT_HORIZONTAL_ALIGNMENT;
+    @api contentVerticalAlignment = DEFAULT_CONTENT_VERTICAL_ALIGNMENT;
 }

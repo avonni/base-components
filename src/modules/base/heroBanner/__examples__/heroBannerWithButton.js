@@ -26,8 +26,8 @@ export const HeroBannerWithButton = ({
     linearGradient,
     height,
     maxWidth,
-    textHorizontalAlignment,
-    textVerticalAlignment
+    contentHorizontalAlignment,
+    contentVerticalAlignment
 }) => {
     const element = document.createElement('ac-hero-banner-with-button');
     element.title = title;
@@ -50,7 +50,7 @@ export const HeroBannerWithButton = ({
     element.linearGradient = linearGradient;
     element.height = height;
     element.maxWidth = maxWidth;
-    element.textHorizontalAlignment = textHorizontalAlignment;
-    element.textVerticalAlignment = textVerticalAlignment;
+    element.contentHorizontalAlignment = contentHorizontalAlignment;
+    element.contentVerticalAlignment = contentVerticalAlignment;
     return element;
 };

@@ -252,27 +252,29 @@ export default {
                 defaultValue: { summary: 960 }
             }
         },
-        textHorizontalAlignment: {
-            name: 'text-horizontal-alignment',
+        contentHorizontalAlignment: {
+            name: 'content-horizontal-alignment',
             control: {
                 type: 'select'
             },
             options: ['left', 'center', 'right'],
             defaultValue: 'left',
-            description: 'Valid values include left, center and right.',
+            description:
+                'Defines the horizontal alignment of the title, caption and description. Valid values include left, center and right.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'left' }
             }
         },
-        textVerticalAlignment: {
-            name: 'text-vertical-alignment',
+        contentVerticalAlignment: {
+            name: 'content-vertical-alignment',
             control: {
                 type: 'select'
             },
             options: ['top', 'center', 'bottom'],
             defaultValue: 'center',
-            description: 'Valid values include top, center and bottom.',
+            description:
+                'Defines the vertical alignment of the title, caption and description. Valid values include top, center and bottom.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'center' }
@@ -305,7 +307,7 @@ BaseAbsoluteCenter.args = {
     src:
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
-    textHorizontalAlignment: 'center'
+    contentHorizontalAlignment: 'center'
 };
 
 export const BaseCenteredRight = Template.bind({});
@@ -318,7 +320,7 @@ BaseCenteredRight.args = {
     src:
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
-    textHorizontalAlignment: 'right',
+    contentHorizontalAlignment: 'right',
     linearGradient: 'rgba(0,0,0,0), rgba(0,0,0,0)'
 };
 
@@ -332,7 +334,7 @@ BaseTopLeft.args = {
     src:
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
-    textVerticalAlignment: 'top'
+    contentVerticalAlignment: 'top'
 };
 
 export const BaseTopCenter = Template.bind({});
@@ -344,8 +346,8 @@ BaseTopCenter.args = {
     src:
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
-    textVerticalAlignment: 'top',
-    textHorizontalAlignment: 'center'
+    contentVerticalAlignment: 'top',
+    contentHorizontalAlignment: 'center'
 };
 
 export const BaseTopRight = Template.bind({});
@@ -357,8 +359,8 @@ BaseTopRight.args = {
     src:
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
-    textVerticalAlignment: 'top',
-    textHorizontalAlignment: 'right'
+    contentVerticalAlignment: 'top',
+    contentHorizontalAlignment: 'right'
 };
 
 export const BaseBottomLeft = Template.bind({});
@@ -370,7 +372,7 @@ BaseBottomLeft.args = {
     src:
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
-    textVerticalAlignment: 'bottom'
+    contentVerticalAlignment: 'bottom'
 };
 
 export const BaseBottomCenter = Template.bind({});
@@ -382,8 +384,8 @@ BaseBottomCenter.args = {
     src:
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
-    textVerticalAlignment: 'bottom',
-    textHorizontalAlignment: 'center'
+    contentVerticalAlignment: 'bottom',
+    contentHorizontalAlignment: 'center'
 };
 
 export const BaseBottomRight = Template.bind({});
@@ -395,8 +397,8 @@ BaseBottomRight.args = {
     src:
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
-    textVerticalAlignment: 'bottom',
-    textHorizontalAlignment: 'right'
+    contentVerticalAlignment: 'bottom',
+    contentHorizontalAlignment: 'right'
 };
 
 export const withButtonInFooterSlot = TemplateWithButton.bind({});
@@ -411,7 +413,7 @@ withButtonInFooterSlot.args = {
     src:
         'https://backofficethinking.com/sites/default/files/styles/title_banner/public/images/Basic%20page/hero/salesforce-trail.jpg?itok=56jumEDa',
     height: 350,
-    textHorizontalAlignment: 'center'
+    contentHorizontalAlignment: 'center'
 };
 
 export const withSearchBarInFooterSlot = TemplateWithSearchBar.bind({});
@@ -426,7 +428,7 @@ withSearchBarInFooterSlot.args = {
     src:
         'https://res.cloudinary.com/hy4kyit2a/image/upload/2019-10-Developer_Website_Hero_Banner-1280%C3%97248%20%281%29.png',
     height: 500,
-    textHorizontalAlignment: 'center'
+    contentHorizontalAlignment: 'center'
 };
 
 export const withTwoSlots = TemplateWithTwoSlots.bind({});
@@ -441,5 +443,5 @@ withTwoSlots.args = {
     src:
         'https://res.cloudinary.com/hy4kyit2a/image/upload/2019-10-Developer_Website_Hero_Banner-1280%C3%97248%20%281%29.png',
     height: 300,
-    textHorizontalAlignment: 'center'
+    contentHorizontalAlignment: 'center'
 };

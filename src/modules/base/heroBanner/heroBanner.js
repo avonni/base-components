@@ -47,8 +47,8 @@ export default class HeroBanner extends LightningElement {
     @api src;
     @api linearGradient = DEFAULT_LINEAR_GRADIENT;
 
-    _textHorizontalAlignment = horizontal_alignement_options.default;
-    _textVerticalAlignment = vertical_alignement_options.default;
+    _contentHorizontalAlignment = horizontal_alignement_options.default;
+    _contentVerticalAlignment = vertical_alignement_options.default;
     _titleFontSize = font_size_options.titleDefault;
     _titleFontWeight = font_weight_options.titleDefault;
     _captionFontSize = font_size_options.captionDefault;
@@ -85,24 +85,24 @@ export default class HeroBanner extends LightningElement {
     }
 
     @api
-    get textHorizontalAlignment() {
-        return this._textHorizontalAlignment;
+    get contentHorizontalAlignment() {
+        return this._contentHorizontalAlignment;
     }
 
-    set textHorizontalAlignment(alignement) {
-        this._textHorizontalAlignment = normalizeString(alignement, {
+    set contentHorizontalAlignment(alignement) {
+        this._contentHorizontalAlignment = normalizeString(alignement, {
             fallbackValue: horizontal_alignement_options.default,
             validValues: horizontal_alignement_options.valid
         });
     }
 
     @api
-    get textVerticalAlignment() {
-        return this._textVerticalAlignment;
+    get contentVerticalAlignment() {
+        return this._contentVerticalAlignment;
     }
 
-    set textVerticalAlignment(alignement) {
-        this._textVerticalAlignment = normalizeString(alignement, {
+    set contentVerticalAlignment(alignement) {
+        this._contentVerticalAlignment = normalizeString(alignement, {
             fallbackValue: vertical_alignement_options.default,
             validValues: vertical_alignement_options.valid
         });
@@ -219,24 +219,25 @@ export default class HeroBanner extends LightningElement {
         return `font-family: ${this.subtitleFontFamily}; color: ${this.subtitleColor}`;
     }
 
-    get computedTextContainer() {
+    get computedContentContainer() {
         return classSet('')
             .add({
                 'avonni-hero-banner-text-container-without-slot': !this
                     .showFooterSlot,
                 'avonni-hero-banner-text-container-with-slot': this
                     .showFooterSlot,
-                'slds-text-align_left': this.textHorizontalAlignment === 'left',
+                'slds-text-align_left':
+                    this.contentHorizontalAlignment === 'left',
                 'slds-text-align_center':
-                    this.textHorizontalAlignment === 'center',
+                    this.contentHorizontalAlignment === 'center',
                 'slds-text-align_right':
-                    this.textHorizontalAlignment === 'right',
+                    this.contentHorizontalAlignment === 'right',
                 'avonni-hero-banner-vertical-alignement-bottom':
-                    this.textVerticalAlignment === 'bottom',
+                    this.contentVerticalAlignment === 'bottom',
                 'avonni-hero-banner-vertical-alignement-center':
-                    this.textVerticalAlignment === 'center',
+                    this.contentVerticalAlignment === 'center',
                 'avonni-hero-banner-column-div':
-                    this.textVerticalAlignment === 'top'
+                    this.contentVerticalAlignment === 'top'
             })
             .toString();
     }

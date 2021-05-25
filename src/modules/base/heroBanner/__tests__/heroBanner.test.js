@@ -42,8 +42,8 @@ describe('Hero Banner', () => {
         expect(element.linearGradient).toBe('rgba(0,0,0,0.4), rgba(0,0,0,0.4)');
         expect(element.height).toBe(400);
         expect(element.maxWidth).toBe(960);
-        expect(element.textHorizontalAlignment).toBe('left');
-        expect(element.textVerticalAlignment).toBe('center');
+        expect(element.contentHorizontalAlignment).toBe('left');
+        expect(element.contentVerticalAlignment).toBe('center');
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -637,15 +637,15 @@ describe('Hero Banner', () => {
         });
     });
 
-    // text horizontal alignment
-    it('Hero Banner text horizontal alignment center', () => {
+    // content horizontal alignment
+    it('Hero Banner content horizontal alignment center', () => {
         const element = createElement('base-hero-banner', {
             is: HeroBanner
         });
         document.body.appendChild(element);
 
         element.title = 'This is a title text';
-        element.textHorizontalAlignment = 'center';
+        element.contentHorizontalAlignment = 'center';
 
         return Promise.resolve().then(() => {
             const textContainer = element.shadowRoot.querySelector('span');
@@ -653,14 +653,14 @@ describe('Hero Banner', () => {
         });
     });
 
-    it('Hero Banner text horizontal alignment left', () => {
+    it('Hero Banner content horizontal alignment left', () => {
         const element = createElement('base-hero-banner', {
             is: HeroBanner
         });
         document.body.appendChild(element);
 
         element.title = 'This is a title text';
-        element.textHorizontalAlignment = 'left';
+        element.contentHorizontalAlignment = 'left';
 
         return Promise.resolve().then(() => {
             const textContainer = element.shadowRoot.querySelector('span');
@@ -668,14 +668,14 @@ describe('Hero Banner', () => {
         });
     });
 
-    it('Hero Banner text horizontal alignment right', () => {
+    it('Hero Banner content horizontal alignment right', () => {
         const element = createElement('base-hero-banner', {
             is: HeroBanner
         });
         document.body.appendChild(element);
 
         element.title = 'This is a title text';
-        element.textHorizontalAlignment = 'right';
+        element.contentHorizontalAlignment = 'right';
 
         return Promise.resolve().then(() => {
             const textContainer = element.shadowRoot.querySelector('span');
@@ -683,15 +683,15 @@ describe('Hero Banner', () => {
         });
     });
 
-    // text vertical alignment
-    it('Hero Banner text vertical alignment center', () => {
+    // content vertical alignment
+    it('Hero Banner content vertical alignment center', () => {
         const element = createElement('base-hero-banner', {
             is: HeroBanner
         });
         document.body.appendChild(element);
 
         element.title = 'This is a title text';
-        element.textVerticalAlignment = 'center';
+        element.contentVerticalAlignment = 'center';
 
         return Promise.resolve().then(() => {
             const textContainer = element.shadowRoot.querySelector('span');
@@ -707,14 +707,14 @@ describe('Hero Banner', () => {
         });
     });
 
-    it('Hero Banner text vertical alignment top', () => {
+    it('Hero Banner content vertical alignment top', () => {
         const element = createElement('base-hero-banner', {
             is: HeroBanner
         });
         document.body.appendChild(element);
 
         element.title = 'This is a title text';
-        element.textVerticalAlignment = 'top';
+        element.contentVerticalAlignment = 'top';
 
         return Promise.resolve().then(() => {
             const textContainer = element.shadowRoot.querySelector('span');
@@ -730,14 +730,14 @@ describe('Hero Banner', () => {
         });
     });
 
-    it('Hero Banner text vertical alignment bottom', () => {
+    it('Hero Banner content vertical alignment bottom', () => {
         const element = createElement('base-hero-banner', {
             is: HeroBanner
         });
         document.body.appendChild(element);
 
         element.title = 'This is a title text';
-        element.textVerticalAlignment = 'bottom';
+        element.contentVerticalAlignment = 'bottom';
 
         return Promise.resolve().then(() => {
             const textContainer = element.shadowRoot.querySelector('span');

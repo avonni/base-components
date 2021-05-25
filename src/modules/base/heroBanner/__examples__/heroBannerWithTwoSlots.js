@@ -26,8 +26,8 @@ export const HeroBannerWithTwoSlots = ({
     linearGradient,
     height,
     maxWidth,
-    textHorizontalAlignment,
-    textVerticalAlignment
+    contentHorizontalAlignment,
+    contentVerticalAlignment
 }) => {
     const element = document.createElement('ac-hero-banner-with-two-slots');
     element.title = title;
@@ -50,7 +50,7 @@ export const HeroBannerWithTwoSlots = ({
     element.linearGradient = linearGradient;
     element.height = height;
     element.maxWidth = maxWidth;
-    element.textHorizontalAlignment = textHorizontalAlignment;
-    element.textVerticalAlignment = textVerticalAlignment;
+    element.contentHorizontalAlignment = contentHorizontalAlignment;
+    element.contentVerticalAlignment = contentVerticalAlignment;
     return element;
 };

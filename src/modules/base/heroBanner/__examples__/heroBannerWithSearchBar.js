@@ -26,8 +26,8 @@ export const HeroBannerWithSearchBar = ({
     linearGradient,
     height,
     maxWidth,
-    textHorizontalAlignment,
-    textVerticalAlignment
+    contentHorizontalAlignment,
+    contentVerticalAlignment
 }) => {
     const element = document.createElement('ac-hero-banner-with-search-bar');
     element.title = title;
@@ -50,7 +50,7 @@ export const HeroBannerWithSearchBar = ({
     element.linearGradient = linearGradient;
     element.height = height;
     element.maxWidth = maxWidth;
-    element.textHorizontalAlignment = textHorizontalAlignment;
-    element.textVerticalAlignment = textVerticalAlignment;
+    element.contentHorizontalAlignment = contentHorizontalAlignment;
+    element.contentVerticalAlignment = contentVerticalAlignment;
     return element;
 };
