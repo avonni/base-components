@@ -221,8 +221,16 @@ export default class Datatable extends LightningDatatable {
         super.renderedCallback();
 
         // Make sure custom edited cells stay yellow on hover
-        const edited = this.template.querySelectorAll('.slds-is-edited');
-        edited.forEach((cell) => {
+        // Make sure error cells appear edited and with a red border
+        const edited = Array.from(
+            this.template.querySelectorAll('td.slds-is-edited')
+        );
+        const error = Array.from(
+            this.template.querySelectorAll('td.slds-has-error')
+        );
+        const editCells = edited.concat(error);
+
+        editCells.forEach((cell) => {
             cell.classList.add('slds-cell-edit');
         });
     }
@@ -238,7 +246,7 @@ export default class Datatable extends LightningDatatable {
 
     @api
     get columns() {
-        return this._columns;
+        return super.columns;
     }
     set columns(value) {
         super.columns = value;

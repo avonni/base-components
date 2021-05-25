@@ -26,5 +26,4 @@ export default class Datatable extends LightningElement {
     @api sortedBy;
     @api sortedDirection;
     @api suppressBottomBar;
-    @api wrapTextMaxLines;
 }

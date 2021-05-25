@@ -149,6 +149,7 @@ const columnsFN = [
         fieldName: 'inputDateRange',
         type: 'input-date-range',
         typeAttributes: {
+            label: 'Date range',
             disabled: { fieldName: 'inputDateRangeDisabled' },
             dateStyle: 'short',
             labelStartDate: 'Start',
@@ -326,7 +327,7 @@ const dataCE = [
     {
         id: 2,
         currency: 230,
-        colorPicker: '#16325c',
+        colorPicker: '#e65cd1',
         dynamicIcon: 'score',
         dynamicIconOption: 'negative'
     },

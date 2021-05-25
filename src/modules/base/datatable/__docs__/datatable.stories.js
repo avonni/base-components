@@ -26,7 +26,8 @@ export default {
                 "Specifies how column widths are calculated. Set to 'fixed' for columns with equal widths. Set to 'auto' for column widths that are based on the width of the column content and the table width.",
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'fixed' }
+                defaultValue: { summary: 'fixed' },
+                category: 'Display'
             }
         },
         columns: {
@@ -36,7 +37,8 @@ export default {
             description:
                 "Array of the columns object that's used to define the data types. Required properties include 'label', 'fieldName', and 'type'. The default type is 'text'. See the table below for more information.",
             table: {
-                type: { summary: 'object[]' }
+                type: { summary: 'object[]' },
+                category: 'Data'
             }
         },
         data: {
@@ -45,7 +47,8 @@ export default {
             },
             description: 'The array of data to be displayed.',
             table: {
-                type: { summary: 'object[]' }
+                type: { summary: 'object[]' },
+                category: 'Data'
             }
         },
         defaultSortDirection: {
@@ -59,7 +62,8 @@ export default {
                 "Specifies the default sorting direction on an unsorted column. Valid options include 'asc' and 'desc'.",
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'asc' }
+                defaultValue: { summary: 'asc' },
+                category: 'Data'
             }
         },
         draftValues: {
@@ -70,7 +74,8 @@ export default {
             description:
                 'The current values per row that are provided during inline edit.',
             table: {
-                type: { summary: 'string[]' }
+                type: { summary: 'string[]' },
+                category: 'Data'
             }
         },
         enableInfiniteLoading: {
@@ -83,7 +88,8 @@ export default {
                 'If present, you can load a subset of data and then display more when users scroll to the end of the table. Use with the onloadmore event handler to retrieve more data.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Display'
             }
         },
         errors: {
@@ -93,7 +99,8 @@ export default {
             description:
                 "Specifies an object containing information about cell level, row level, and table level errors. When it's set, error messages are displayed on the table accordingly.",
             table: {
-                type: { summary: 'object' }
+                type: { summary: 'object' },
+                category: 'Data'
             }
         },
         hideCheckboxColumn: {
@@ -106,7 +113,8 @@ export default {
                 'If present, the checkbox column for row selection is hidden.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Display'
             }
         },
         hideTableHeader: {
@@ -118,7 +126,8 @@ export default {
             description: 'If present, the table header is hidden.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Display'
             }
         },
         isLoading: {
@@ -131,7 +140,8 @@ export default {
                 'If present, a spinner is shown to indicate that more data is loading.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Display'
             }
         },
         keyField: {
@@ -142,7 +152,8 @@ export default {
             type: { required: true },
             description: 'Associates each row with a unique ID.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Data'
             }
         },
         loadMoreOffset: {
@@ -155,7 +166,8 @@ export default {
                 "Determines when to trigger infinite loading based on how many pixels the table's scroll position is from the bottom of the table.",
             table: {
                 type: { summary: 'number' },
-                defaultValue: { summary: '20' }
+                defaultValue: { summary: '20' },
+                category: 'Display'
             }
         },
         maxColumnWidth: {
@@ -168,7 +180,8 @@ export default {
                 'The maximum width for all columns. The default is 1000px.',
             table: {
                 type: { summary: 'number' },
-                defaultValue: { summary: '1000' }
+                defaultValue: { summary: '1000' },
+                category: 'Display'
             }
         },
         maxRowSelection: {
@@ -180,7 +193,8 @@ export default {
             description:
                 'The maximum number of rows that can be selected. Checkboxes are used for selection by default, and radio buttons are used when max-row-selection is 1.',
             table: {
-                type: { summary: 'number' }
+                type: { summary: 'number' },
+                category: 'Display'
             }
         },
         minColumnWidth: {
@@ -193,13 +207,9 @@ export default {
                 'The minimum width for all columns. The default is 50px.',
             table: {
                 type: { summary: 'number' },
-                defaultValue: { summary: '50' }
+                defaultValue: { summary: '50' },
+                category: 'Display'
             }
-        },
-        renderConfig: {
-            name: 'render-config',
-            description:
-                'Reserved for internal use. Enables and configures advanced rendering modes.'
         },
         resizeColumnDisabled: {
             name: 'resize-column-disabled',
@@ -210,7 +220,8 @@ export default {
             description: 'If present, column resizing is disabled.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Display'
             }
         },
         resizeStep: {
@@ -223,7 +234,8 @@ export default {
                 'The width to resize the column when a user presses left or right arrow. The default is 10px.',
             table: {
                 type: { summary: 'number' },
-                defaultValue: { summary: '10' }
+                defaultValue: { summary: '10' },
+                category: 'Display'
             }
         },
         rowNumberOffset: {
@@ -236,7 +248,8 @@ export default {
                 'Determines where to start counting the row number. The default is 0.',
             table: {
                 type: { summary: 'number' },
-                defaultValue: { summary: '0' }
+                defaultValue: { summary: '0' },
+                category: 'Display'
             }
         },
         selectedRows: {
@@ -248,7 +261,8 @@ export default {
             description:
                 'Enables programmatic row selection with a list of key-field values.',
             table: {
-                type: { summary: 'string[]' }
+                type: { summary: 'string[]' },
+                category: 'Display'
             }
         },
         showRowNumberColumn: {
@@ -261,7 +275,8 @@ export default {
                 'If present, the row numbers are shown in the first column.',
             table: {
                 type: { summary: 'string[]' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Display'
             }
         },
         sortedBy: {
@@ -272,7 +287,8 @@ export default {
             description:
                 'The column fieldName that controls the sorting order. Sort the data using the onsort event handler.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Data'
             }
         },
         sortedDirection: {
@@ -285,7 +301,8 @@ export default {
             description:
                 "Specifies the sorting direction. Sort the data using the onsort event handler. Valid options include 'asc' and 'desc'.",
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Data'
             }
         },
         suppressBottomBar: {
@@ -298,18 +315,25 @@ export default {
                 'If present, the footer that displays the Save and Cancel buttons is hidden during inline editing.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Display'
             }
         },
         wrapTextMaxLines: {
-            name: 'suppress-bottom-bar',
-            control: {
-                type: 'number'
-            },
+            name: 'wrap-text-max-lines',
             description:
                 'This value specifies the number of lines after which the content will be cut off and hidden. It must be at least 1 or more. The text in the last line is truncated and shown with an ellipsis.',
             table: {
-                type: { summary: 'number' }
+                type: { summary: 'number' },
+                category: 'Display'
+            }
+        },
+        renderConfig: {
+            name: 'render-config',
+            description:
+                'Reserved for internal use. Enables and configures advanced rendering modes.',
+            table: {
+                category: 'Display'
             }
         }
     }
@@ -321,33 +345,59 @@ export const DataTypesFromAToB = Template.bind({});
 DataTypesFromAToB.args = {
     columns: columnsAB,
     data: dataAB,
-    keyField: 'id'
+    keyField: 'id',
+    columnWidthsMode: 'auto'
 };
 
 export const DataTypesFromCToE = Template.bind({});
 DataTypesFromCToE.args = {
     columns: columnsCE,
     data: dataCE,
-    keyField: 'id'
+    keyField: 'id',
+    columnWidthsMode: 'auto',
+    draftValues: [
+        {
+            colorPicker: '#76ded9',
+            id: '1'
+        },
+        {
+            currency: '3044',
+            id: '3'
+        }
+    ],
+    errors: {
+        rows: {
+            2: {
+                title: 'Invalid',
+                messages: ['The color picked is invalid.'],
+                fieldNames: ['colorPicker']
+            }
+        }
+    }
 };
 
 export const DataTypesFromFToN = Template.bind({});
 DataTypesFromFToN.args = {
     columns: columnsFN,
     data: dataFN,
-    keyField: 'id'
+    keyField: 'id',
+    columnWidthsMode: 'auto',
+    hideCheckboxColumn: true
 };
 
 export const DataTypesFromOToQ = Template.bind({});
 DataTypesFromOToQ.args = {
     columns: columnsOQ,
     data: dataOQ,
-    keyField: 'id'
+    keyField: 'id',
+    columnWidthsMode: 'auto',
+    selectedRows: ['2']
 };
 
 export const DataTypesFromRToZ = Template.bind({});
 DataTypesFromRToZ.args = {
     columns: columnsRZ,
     data: dataRZ,
-    keyField: 'id'
+    keyField: 'id',
+    columnWidthsMode: 'auto'
 };
