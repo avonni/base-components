@@ -6,12 +6,12 @@
                     {title}
                 </h1>
             </template>
-            <template if:true={description}>
+            <template if:true={subtitle}>
                 <h2
-                    class={computedDescriptionClass}
-                    style={computedDescriptionStyling}
+                    class={computedSubtitleClass}
+                    style={computedSubtitleStyling}
                 >
-                    {description}
+                    {subtitle}
                 </h2>
             </template>
             <template if:true={showSlot}>

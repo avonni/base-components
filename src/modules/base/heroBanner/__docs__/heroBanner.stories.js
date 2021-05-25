@@ -69,34 +69,34 @@ export default {
                 defaultValue: { summary: 'normal' }
             }
         },
-        description: {
+        subtitle: {
             control: {
                 type: 'text'
             },
             description:
-                'The description can include text, and is displayed under the title.',
+                'The subtitle can include text, and is displayed under the title.',
             table: {
                 type: { summary: 'string' }
             }
         },
-        descriptionFontColor: {
-            name: 'description-font-color',
+        subtitleFontColor: {
+            name: 'subtitle-font-color',
             control: {
                 type: 'color'
             },
             defaultValue: '#ffffff',
-            description: '',
+            description: 'Defines the font color of the subtitle.',
             table: {
                 type: { summary: 'color' }
             }
         },
-        descriptionFontFamily: {
-            name: 'description-font-family',
+        subtitleFontFamily: {
+            name: 'subtitle-font-family',
             control: {
                 type: 'text'
             },
             defaultValue: "'Salesforce Sans', Arial, sans-serif",
-            description: 'Defines the font family of the description.',
+            description: 'Defines the font family of the subtitle.',
             table: {
                 type: { summary: 'text' },
                 defaultValue: {
@@ -104,29 +104,29 @@ export default {
                 }
             }
         },
-        descriptionFontSize: {
-            name: 'description-font-size',
+        subtitleFontSize: {
+            name: 'subtitle-font-size',
             control: {
                 type: 'select'
             },
             options: ['small', 'medium', 'large', 'x-large', 'xx-large'],
             defaultValue: 'medium',
             description:
-                'Defines the size of the description. Valid values include small, medium, large, x-large, xx-large.',
+                'Defines the size of the subtitle. Valid values include small, medium, large, x-large, xx-large.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'medium' }
             }
         },
-        descriptionFontWeight: {
-            name: 'description-font-weight',
+        subtitleFontWeight: {
+            name: 'subtitle-font-weight',
             control: {
                 type: 'select'
             },
             options: ['light', 'normal', 'bold'],
             defaultValue: 'normal',
             description:
-                'Defines the font weight of the description. Valid values include light, normal and bold.',
+                'Defines the font weight of the subtitle. Valid values include light, normal and bold.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'normal' }
@@ -202,7 +202,7 @@ const TemplateWithTwoSlots = (args) => HeroBannerWithTwoSlots(args);
 export const Base = Template.bind({});
 Base.args = {
     title: 'Lost In The Woods',
-    description: 'Find your true self',
+    subtitle: 'Find your true self',
     src:
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300
@@ -214,7 +214,7 @@ BaseAbsoluteCenter.args = {
     titleFontSize: 'xx-large',
     titleFontWeight: 'normal',
     titleFontFamily: 'cursive',
-    description: 'Find your true self',
+    subtitle: 'Find your true self',
     src:
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
@@ -226,8 +226,8 @@ BaseCenteredRight.args = {
     title: 'Lost In The Woods',
     titleFontSize: 'xx-large',
     titleFontWeight: 'bold',
-    description: 'Find your true self',
-    descriptionFontFamily: 'monospace',
+    subtitle: 'Find your true self',
+    subtitleFontFamily: 'monospace',
     src:
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
@@ -241,7 +241,7 @@ BaseTopLeft.args = {
     titleFontSize: 'xx-large',
     titleFontWeight: 'bold',
     titleFontFamily: 'Tahoma, sans-serif',
-    description: 'Find your true self',
+    subtitle: 'Find your true self',
     src:
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
@@ -253,7 +253,7 @@ BaseTopCenter.args = {
     title: 'Lost In The Woods',
     titleFontSize: 'xx-large',
     titleFontWeight: 'bold',
-    description: 'Find your true self',
+    subtitle: 'Find your true self',
     src:
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
@@ -266,7 +266,7 @@ BaseTopRight.args = {
     title: 'Lost In The Woods',
     titleFontSize: 'xx-large',
     titleFontWeight: 'bold',
-    description: 'Find your true self',
+    subtitle: 'Find your true self',
     src:
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
@@ -279,7 +279,7 @@ BaseBottomLeft.args = {
     title: 'Lost In The Woods',
     titleFontSize: 'xx-large',
     titleFontWeight: 'bold',
-    description: 'Find your true self',
+    subtitle: 'Find your true self',
     src:
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
@@ -291,7 +291,7 @@ BaseBottomCenter.args = {
     title: 'Lost In The Woods',
     titleFontSize: 'xx-large',
     titleFontWeight: 'bold',
-    description: 'Find your true self',
+    subtitle: 'Find your true self',
     src:
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
@@ -304,7 +304,7 @@ BaseBottomRight.args = {
     title: 'Lost In The Woods',
     titleFontSize: 'xx-large',
     titleFontWeight: 'bold',
-    description: 'Find your true self',
+    subtitle: 'Find your true self',
     src:
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
@@ -318,9 +318,9 @@ withButtonInFooterSlot.args = {
     titleFontColor: '#4aca82',
     titleFontSize: 'xx-large',
     titleFontWeight: 'bold',
-    description: 'Summer camp',
-    descriptionFontSize: 'large',
-    descriptionFontWeight: 'light',
+    subtitle: 'Summer camp',
+    subtitleFontSize: 'large',
+    subtitleFontWeight: 'light',
     src:
         'https://backofficethinking.com/sites/default/files/styles/title_banner/public/images/Basic%20page/hero/salesforce-trail.jpg?itok=56jumEDa',
     height: 350,
@@ -333,9 +333,9 @@ withSearchBarInFooterSlot.args = {
     titleFontColor: '#2b98c7',
     titleFontSize: 'xx-large',
     titleFontWeight: 'bold',
-    description: 'Find the right one',
-    descriptionFontSize: 'small',
-    descriptionFontWeight: 'bold',
+    subtitle: 'Find the right one',
+    subtitleFontSize: 'small',
+    subtitleFontWeight: 'bold',
     src:
         'https://res.cloudinary.com/hy4kyit2a/image/upload/2019-10-Developer_Website_Hero_Banner-1280%C3%97248%20%281%29.png',
     height: 500,
@@ -348,9 +348,9 @@ withTwoSlots.args = {
     titleFontColor: '#2b98c7',
     titleFontSize: 'xx-large',
     titleFontWeight: 'bold',
-    description: 'Find the right one',
-    descriptionFontSize: 'small',
-    descriptionFontWeight: 'bold',
+    subtitle: 'Find the right one',
+    subtitleFontSize: 'small',
+    subtitleFontWeight: 'bold',
     src:
         'https://res.cloudinary.com/hy4kyit2a/image/upload/2019-10-Developer_Website_Hero_Banner-1280%C3%97248%20%281%29.png',
     height: 300,

@@ -11,11 +11,11 @@ export const HeroBannerWithSearchBar = ({
     titleFontFamily,
     titleFontSize,
     titleFontWeight,
-    description,
-    descriptionFontColor,
-    descriptionFontFamily,
-    descriptionFontSize,
-    descriptionFontWeight,
+    subtitle,
+    subtitleFontColor,
+    subtitleFontFamily,
+    subtitleFontSize,
+    subtitleFontWeight,
     src,
     linearGradient,
     height,
@@ -28,11 +28,11 @@ export const HeroBannerWithSearchBar = ({
     element.titleFontFamily = titleFontFamily;
     element.titleFontSize = titleFontSize;
     element.titleFontWeight = titleFontWeight;
-    element.description = description;
-    element.descriptionFontFamily = descriptionFontFamily;
-    element.descriptionFontColor = descriptionFontColor;
-    element.descriptionFontSize = descriptionFontSize;
-    element.descriptionFontWeight = descriptionFontWeight;
+    element.subtitle = subtitle;
+    element.subtitleFontFamily = subtitleFontFamily;
+    element.subtitleFontColor = subtitleFontColor;
+    element.subtitleFontSize = subtitleFontSize;
+    element.subtitleFontWeight = subtitleFontWeight;
     element.src = src;
     element.linearGradient = linearGradient;
     element.height = height;
