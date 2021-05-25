@@ -23,6 +23,7 @@ describe('Hero Banner', () => {
         );
         expect(element.titleFontSize).toBe('large');
         expect(element.titleFontWeight).toBe('bold');
+        expect(element.titleShadowColor).toBe('1px 1px 0 rgb(0 0 0 / 50%)');
         expect(element.subtitle).toBeUndefined();
         expect(element.subtitleColor).toBe('#ffffff');
         expect(element.subtitleFontFamily).toBe(
@@ -215,6 +216,22 @@ describe('Hero Banner', () => {
             expect(title.classList).toContain(
                 'avonni-hero-banner-font-weight_bold'
             );
+        });
+    });
+
+    // title Shadow color
+    it('Hero Banner title Shadow color', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.title = 'This is a title text';
+        element.titleShadowColor = '5px 5px #558abb';
+
+        return Promise.resolve().then(() => {
+            const title = element.shadowRoot.querySelector('h1');
+            expect(title.style.textShadow).toBe('5px 5px #558abb');
         });
     });
 

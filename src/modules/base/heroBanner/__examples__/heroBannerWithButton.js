@@ -11,6 +11,7 @@ export const HeroBannerWithButton = ({
     titleFontFamily,
     titleFontSize,
     titleFontWeight,
+    titleShadowColor,
     subtitle,
     subtitleColor,
     subtitleFontFamily,
@@ -28,6 +29,7 @@ export const HeroBannerWithButton = ({
     element.titleFontFamily = titleFontFamily;
     element.titleFontSize = titleFontSize;
     element.titleFontWeight = titleFontWeight;
+    element.titleShadowColor = titleShadowColor;
     element.subtitle = subtitle;
     element.subtitleFontFamily = subtitleFontFamily;
     element.subtitleColor = subtitleColor;

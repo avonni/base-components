@@ -11,6 +11,7 @@ const DEFAULT_TITLE_FONT_WEIGHT = 'bold';
 const DEFAULT_SUBTITLE_FONT_WEIGHT = 'normal';
 const DEFAULT_LINEAR_GRADIENT = 'rgba(0,0,0,0.4), rgba(0,0,0,0.4)';
 const DEFAULT_FONT_FAMILY = '"Salesforce Sans", Arial, sans-serif';
+const DEFAULT_TITLE_SHADOW_COLOR = '1px 1px 0 rgb(0 0 0 / 50%)';
 
 export default class HeroBanner extends LightningElement {
     @api title;
@@ -18,6 +19,7 @@ export default class HeroBanner extends LightningElement {
     @api titleFontFamily = DEFAULT_FONT_FAMILY;
     @api titleFontSize = DEFAULT_TITLE_FONT_SIZE;
     @api titleFontWeight = DEFAULT_TITLE_FONT_WEIGHT;
+    @api titleShadowColor = DEFAULT_TITLE_SHADOW_COLOR;
     @api subtitle;
     @api subtitleColor = DEFAULT_SUBTITLE_COLOR;
     @api subtitleFontFamily = DEFAULT_FONT_FAMILY;

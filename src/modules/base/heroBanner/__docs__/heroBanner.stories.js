@@ -69,6 +69,18 @@ export default {
                 defaultValue: { summary: 'normal' }
             }
         },
+        titleShadowColor: {
+            name: 'title-shadow-color',
+            control: {
+                type: 'text'
+            },
+            defaultValue: '1px 1px 0 rgb(0 0 0 / 50%)',
+            description: 'Defines the text shadow of the title.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: '1px 1px 0 rgb(0 0 0 / 50%)' }
+            }
+        },
         subtitle: {
             control: {
                 type: 'text'

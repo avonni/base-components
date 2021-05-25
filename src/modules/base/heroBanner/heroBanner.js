@@ -29,11 +29,13 @@ const DEFAULT_SUBTITLE_COLOR = '#ffffff';
 const DEFAULT_HEIGHT = 400;
 const DEFAULT_LINEAR_GRADIENT = 'rgba(0,0,0,0.4), rgba(0,0,0,0.4)';
 const DEFAULT_FONT_FAMILY = '"Salesforce Sans", Arial, sans-serif';
+const DEFAULT_TITLE_SHADOW_COLOR = '1px 1px 0 rgb(0 0 0 / 50%)';
 
 export default class HeroBanner extends LightningElement {
     @api title;
     @api titleColor = DEFAULT_TITLE_COLOR;
     @api titleFontFamily = DEFAULT_FONT_FAMILY;
+    @api titleShadowColor = DEFAULT_TITLE_SHADOW_COLOR;
     @api subtitle;
     @api subtitleColor = DEFAULT_SUBTITLE_COLOR;
     @api subtitleFontFamily = DEFAULT_FONT_FAMILY;
@@ -161,7 +163,7 @@ export default class HeroBanner extends LightningElement {
     }
 
     get computedTitleStyling() {
-        return `font-family: ${this.titleFontFamily}; color: ${this.titleColor}`;
+        return `font-family: ${this.titleFontFamily}; color: ${this.titleColor}; text-shadow: ${this.titleShadowColor}`;
     }
 
     get computedSubtitleStyling() {
