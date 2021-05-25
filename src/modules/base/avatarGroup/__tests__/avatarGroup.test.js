@@ -935,6 +935,73 @@ describe('Avatar Group', () => {
         });
     });
 
+    //Action button: absence of action-icon-name
+    it('Action Button absence of action-icon-name makes action button disappear', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.actionIconName = '';
+        element.items = [...items, ...items, ...items];
+
+        return Promise.resolve().then(() => {
+            const actionButton = element.shadowRoot.querySelector(
+                '.avonni-avatar-group__action-button'
+            );
+            expect(actionButton).toBeNull();
+        });
+    });
+
+    it('Action Button action-icon-name button icon', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.actionIconName = 'utility:check';
+        element.items = [...items, ...items, ...items];
+
+        return Promise.resolve().then(() => {
+            const actionButton = element.shadowRoot.querySelector(
+                '.avonni-avatar-group__action-button > lightning-icon'
+            );
+            expect(actionButton.iconName).toBe('utility:check');
+        });
+    });
+
+    // Action button icon size predicated on switch case due to utility icon default sizing
+    it('Action Button button icon size x-small', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        // get iconSize() {
+        //     switch (this.size) {
+        //         case 'x-small':
+        //         case 'small':
+        //         case 'medium':
+        //             return 'x-small';
+        //         case 'xx-large':
+        //             return 'medium';
+        //         default:
+        //             return 'small';
+        //     }
+        // }
+
+        element.actionIconName = 'utility:check';
+        element.size = 'x-small';
+        element.items = [...items, ...items, ...items];
+
+        return Promise.resolve().then(() => {
+            const actionButton = element.shadowRoot.querySelector(
+                '.avonni-avatar-group__action-button > lightning-icon'
+            );
+            expect(actionButton.size).toBe('x-small');
+        });
+    });
+
     /* ----- JS ----- */
 
     // list hidden items
