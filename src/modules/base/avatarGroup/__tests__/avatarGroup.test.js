@@ -282,14 +282,9 @@ describe('Avatar Group', () => {
 
         return Promise.resolve().then(() => {
             const group = element.shadowRoot.querySelector(
-                '.slds-avatar-group'
+                '.avonni-avatar-group__avatar-container'
             );
             expect(group.className).toContain('avonni-avatar-group__avatar');
-
-            const noGroup = element.shadowRoot.querySelector(
-                '.slds-avatar-grouped'
-            );
-            expect(noGroup).toBeTruthy();
         });
     });
 
@@ -824,6 +819,31 @@ describe('Avatar Group', () => {
             avatar.click();
             expect(handler).toHaveBeenCalled();
             expect([handler.mock.calls[0][0].detail.item]).toMatchObject(item);
+            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
+        });
+    });
+    it('Avatar Action button click event', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.items = item;
+        element.name = 'Avatar group name';
+        element.actionIconName = 'utility:add';
+
+        const handler = jest.fn();
+        element.addEventListener('actionclick', handler);
+
+        return Promise.resolve().then(() => {
+            const avatar = element.shadowRoot.querySelector(
+                '.avonni-avatar-group__action-button'
+            );
+            avatar.click();
+            expect(handler).toHaveBeenCalled();
+            expect([handler.mock.calls[0][0].detail.name]).toBe(element.name);
             expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
