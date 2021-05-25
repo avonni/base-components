@@ -7,12 +7,12 @@ customElements.define(
 
 export const HeroBanner = ({
     title,
-    titleFontColor,
+    titleColor,
     titleFontFamily,
     titleFontSize,
     titleFontWeight,
     subtitle,
-    subtitleFontColor,
+    subtitleColor,
     subtitleFontFamily,
     subtitleFontSize,
     subtitleFontWeight,
@@ -24,13 +24,13 @@ export const HeroBanner = ({
 }) => {
     const element = document.createElement('ac-base-hero-banner');
     element.title = title;
-    element.titleFontColor = titleFontColor;
+    element.titleColor = titleColor;
     element.titleFontFamily = titleFontFamily;
     element.titleFontSize = titleFontSize;
     element.titleFontWeight = titleFontWeight;
     element.subtitle = subtitle;
     element.subtitleFontFamily = subtitleFontFamily;
-    element.subtitleFontColor = subtitleFontColor;
+    element.subtitleColor = subtitleColor;
     element.subtitleFontSize = subtitleFontSize;
     element.subtitleFontWeight = subtitleFontWeight;
     element.src = src;

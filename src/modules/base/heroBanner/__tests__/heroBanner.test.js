@@ -17,19 +17,19 @@ describe('Hero Banner', () => {
         });
 
         expect(element.title).toBeUndefined();
-        expect(element.titleFontColor).toBe('#ffffff');
+        expect(element.titleColor).toBe('#ffffff');
         expect(element.titleFontFamily).toBe(
             '"Salesforce Sans", Arial, sans-serif'
         );
         expect(element.titleFontSize).toBe('large');
         expect(element.titleFontWeight).toBe('bold');
-        expect(element.description).toBeUndefined();
-        expect(element.descriptionFontColor).toBe('#ffffff');
-        expect(element.descriptionFontFamily).toBe(
+        expect(element.subtitle).toBeUndefined();
+        expect(element.subtitleColor).toBe('#ffffff');
+        expect(element.subtitleFontFamily).toBe(
             '"Salesforce Sans", Arial, sans-serif'
         );
-        expect(element.descriptionFontSize).toBe('medium');
-        expect(element.descriptionFontWeight).toBe('normal');
+        expect(element.subtitleFontSize).toBe('medium');
+        expect(element.subtitleFontWeight).toBe('normal');
         expect(element.src).toBeUndefined();
         expect(element.linearGradient).toBe('rgba(0,0,0,0.4), rgba(0,0,0,0.4)');
         expect(element.height).toBe(400);
@@ -54,15 +54,15 @@ describe('Hero Banner', () => {
         });
     });
 
-    // title font color
-    it('Hero Banner title font color', () => {
+    // title color
+    it('Hero Banner title color', () => {
         const element = createElement('base-hero-banner', {
             is: HeroBanner
         });
         document.body.appendChild(element);
 
         element.title = 'This is a title text';
-        element.titleFontColor = 'rgb(0, 0, 0)';
+        element.titleColor = 'rgb(0, 0, 0)';
 
         return Promise.resolve().then(() => {
             const title = element.shadowRoot.querySelector('h1');
@@ -218,180 +218,180 @@ describe('Hero Banner', () => {
         });
     });
 
-    // description
-    it('Hero Banner description', () => {
+    // subtitle
+    it('Hero Banner subtitle', () => {
         const element = createElement('base-hero-banner', {
             is: HeroBanner
         });
         document.body.appendChild(element);
 
-        element.description = 'This is a description text';
+        element.subtitle = 'This is a subtitle text';
 
         return Promise.resolve().then(() => {
-            const description = element.shadowRoot.querySelector('h2');
-            expect(description.textContent).toBe('This is a description text');
+            const subtitle = element.shadowRoot.querySelector('h2');
+            expect(subtitle.textContent).toBe('This is a subtitle text');
         });
     });
 
-    // description font color
-    it('Hero Banner description font color', () => {
+    // subtitle color
+    it('Hero Banner subtitle color', () => {
         const element = createElement('base-hero-banner', {
             is: HeroBanner
         });
         document.body.appendChild(element);
 
-        element.description = 'This is a description text';
-        element.descriptionFontColor = 'rgb(0, 0, 0)';
+        element.subtitle = 'This is a subtitle text';
+        element.subtitleColor = 'rgb(0, 0, 0)';
 
         return Promise.resolve().then(() => {
-            const description = element.shadowRoot.querySelector('h2');
-            expect(description.style.color).toBe('rgb(0, 0, 0)');
+            const subtitle = element.shadowRoot.querySelector('h2');
+            expect(subtitle.style.color).toBe('rgb(0, 0, 0)');
         });
     });
 
-    // description font family
-    it('Hero Banner description font family', () => {
+    // subtitle font family
+    it('Hero Banner subtitle font family', () => {
         const element = createElement('base-hero-banner', {
             is: HeroBanner
         });
         document.body.appendChild(element);
 
-        element.description = 'This is a description text';
-        element.descriptionFontFamily = 'Arial';
+        element.subtitle = 'This is a subtitle text';
+        element.subtitleFontFamily = 'Arial';
 
         return Promise.resolve().then(() => {
-            const description = element.shadowRoot.querySelector('h2');
-            expect(description.style.fontFamily).toBe('Arial');
+            const subtitle = element.shadowRoot.querySelector('h2');
+            expect(subtitle.style.fontFamily).toBe('Arial');
         });
     });
 
-    // description font size
-    it('Hero Banner description font size small', () => {
+    // subtitle font size
+    it('Hero Banner subtitle font size small', () => {
         const element = createElement('base-hero-banner', {
             is: HeroBanner
         });
         document.body.appendChild(element);
 
-        element.description = 'This is a description text';
-        element.descriptionFontSize = 'small';
+        element.subtitle = 'This is a subtitle text';
+        element.subtitleFontSize = 'small';
 
         return Promise.resolve().then(() => {
-            const description = element.shadowRoot.querySelector('h2');
-            expect(description.classList).toContain('slds-text-heading_small');
+            const subtitle = element.shadowRoot.querySelector('h2');
+            expect(subtitle.classList).toContain('slds-text-heading_small');
         });
     });
 
-    it('Hero Banner description font size medium', () => {
+    it('Hero Banner subtitle font size medium', () => {
         const element = createElement('base-hero-banner', {
             is: HeroBanner
         });
         document.body.appendChild(element);
 
-        element.description = 'This is a description text';
-        element.descriptionFontSize = 'medium';
+        element.subtitle = 'This is a subtitle text';
+        element.subtitleFontSize = 'medium';
 
         return Promise.resolve().then(() => {
-            const description = element.shadowRoot.querySelector('h2');
-            expect(description.classList).toContain('slds-text-heading_medium');
+            const subtitle = element.shadowRoot.querySelector('h2');
+            expect(subtitle.classList).toContain('slds-text-heading_medium');
         });
     });
 
-    it('Hero Banner description font size large', () => {
+    it('Hero Banner subtitle font size large', () => {
         const element = createElement('base-hero-banner', {
             is: HeroBanner
         });
         document.body.appendChild(element);
 
-        element.description = 'This is a description text';
-        element.descriptionFontSize = 'large';
+        element.subtitle = 'This is a subtitle text';
+        element.subtitleFontSize = 'large';
 
         return Promise.resolve().then(() => {
-            const description = element.shadowRoot.querySelector('h2');
-            expect(description.classList).toContain('slds-text-heading_large');
+            const subtitle = element.shadowRoot.querySelector('h2');
+            expect(subtitle.classList).toContain('slds-text-heading_large');
         });
     });
 
-    it('Hero Banner description font size x-large', () => {
+    it('Hero Banner subtitle font size x-large', () => {
         const element = createElement('base-hero-banner', {
             is: HeroBanner
         });
         document.body.appendChild(element);
 
-        element.description = 'This is a description text';
-        element.descriptionFontSize = 'x-large';
+        element.subtitle = 'This is a subtitle text';
+        element.subtitleFontSize = 'x-large';
 
         return Promise.resolve().then(() => {
-            const description = element.shadowRoot.querySelector('h2');
-            expect(description.classList).toContain(
+            const subtitle = element.shadowRoot.querySelector('h2');
+            expect(subtitle.classList).toContain(
                 'avonni-hero-banner-text-x_large'
             );
         });
     });
 
-    it('Hero Banner description font size xx-large', () => {
+    it('Hero Banner subtitle font size xx-large', () => {
         const element = createElement('base-hero-banner', {
             is: HeroBanner
         });
         document.body.appendChild(element);
 
-        element.description = 'This is a description text';
-        element.descriptionFontSize = 'xx-large';
+        element.subtitle = 'This is a subtitle text';
+        element.subtitleFontSize = 'xx-large';
 
         return Promise.resolve().then(() => {
-            const description = element.shadowRoot.querySelector('h2');
-            expect(description.classList).toContain(
+            const subtitle = element.shadowRoot.querySelector('h2');
+            expect(subtitle.classList).toContain(
                 'avonni-hero-banner-text-xx_large'
             );
         });
     });
 
-    // description font weight
-    it('Hero Banner description font weight light', () => {
+    // subtitle font weight
+    it('Hero Banner subtitle font weight light', () => {
         const element = createElement('base-hero-banner', {
             is: HeroBanner
         });
         document.body.appendChild(element);
 
-        element.description = 'This is a description text';
-        element.descriptionFontWeight = 'light';
+        element.subtitle = 'This is a subtitle text';
+        element.subtitleFontWeight = 'light';
 
         return Promise.resolve().then(() => {
-            const description = element.shadowRoot.querySelector('h2');
-            expect(description.classList).toContain(
+            const subtitle = element.shadowRoot.querySelector('h2');
+            expect(subtitle.classList).toContain(
                 'avonni-hero-banner-font-weight_light'
             );
         });
     });
 
-    it('Hero Banner description font weight normal', () => {
+    it('Hero Banner subtitle font weight normal', () => {
         const element = createElement('base-hero-banner', {
             is: HeroBanner
         });
         document.body.appendChild(element);
 
-        element.description = 'This is a description text';
-        element.descriptionFontWeight = 'normal';
+        element.subtitle = 'This is a subtitle text';
+        element.subtitleFontWeight = 'normal';
 
         return Promise.resolve().then(() => {
-            const description = element.shadowRoot.querySelector('h2');
-            expect(description.classList).toContain(
+            const subtitle = element.shadowRoot.querySelector('h2');
+            expect(subtitle.classList).toContain(
                 'avonni-hero-banner-font-weight_normal'
             );
         });
     });
 
-    it('Hero Banner description font weight bold', () => {
+    it('Hero Banner subtitle font weight bold', () => {
         const element = createElement('base-hero-banner', {
             is: HeroBanner
         });
         document.body.appendChild(element);
 
-        element.description = 'This is a description text';
-        element.descriptionFontWeight = 'bold';
+        element.subtitle = 'This is a subtitle text';
+        element.subtitleFontWeight = 'bold';
 
         return Promise.resolve().then(() => {
-            const description = element.shadowRoot.querySelector('h2');
-            expect(description.classList).toContain(
+            const subtitle = element.shadowRoot.querySelector('h2');
+            expect(subtitle.classList).toContain(
                 'avonni-hero-banner-font-weight_bold'
             );
         });

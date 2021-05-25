@@ -16,8 +16,8 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        titleFontColor: {
-            name: 'title-font-color',
+        titleColor: {
+            name: 'title-color',
             control: {
                 type: 'color'
             },
@@ -79,8 +79,8 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        subtitleFontColor: {
-            name: 'subtitle-font-color',
+        subtitleColor: {
+            name: 'subtitle-color',
             control: {
                 type: 'color'
             },
@@ -315,7 +315,7 @@ BaseBottomRight.args = {
 export const withButtonInFooterSlot = TemplateWithButton.bind({});
 withButtonInFooterSlot.args = {
     title: 'Trailblazer Community Group',
-    titleFontColor: '#4aca82',
+    titleColor: '#4aca82',
     titleFontSize: 'xx-large',
     titleFontWeight: 'bold',
     subtitle: 'Summer camp',
@@ -330,7 +330,7 @@ withButtonInFooterSlot.args = {
 export const withSearchBarInFooterSlot = TemplateWithSearchBar.bind({});
 withSearchBarInFooterSlot.args = {
     title: 'Looking for a vacation?',
-    titleFontColor: '#2b98c7',
+    titleColor: '#2b98c7',
     titleFontSize: 'xx-large',
     titleFontWeight: 'bold',
     subtitle: 'Find the right one',
@@ -345,7 +345,7 @@ withSearchBarInFooterSlot.args = {
 export const withTwoSlots = TemplateWithTwoSlots.bind({});
 withTwoSlots.args = {
     title: 'Looking for a vacation?',
-    titleFontColor: '#2b98c7',
+    titleColor: '#2b98c7',
     titleFontSize: 'xx-large',
     titleFontWeight: 'bold',
     subtitle: 'Find the right one',
