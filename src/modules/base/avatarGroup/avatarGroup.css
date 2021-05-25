@@ -12,9 +12,27 @@
     height: 4.5rem;
 }
 
+.avonni-avatar-group_x-large .slds-avatar-grouped__primary {
+    width: 58px;
+    height: 58px;
+}
+.avonni-avatar-group_x-large .slds-avatar-grouped__secondary {
+    width: 35px;
+    height: 35px;
+}
+
 .avonni-avatar-group_xx-large {
     width: 5.5rem;
     height: 5.5rem;
+}
+
+.avonni-avatar-group_xx-large .slds-avatar-grouped__primary {
+    width: 72px;
+    height: 72px;
+}
+.avonni-avatar-group_xx-large .slds-avatar-grouped__secondary {
+    width: 43px;
+    height: 43px;
 }
 
 .avonni-avatar-group_in-line.avonni-avatar-x-small {
