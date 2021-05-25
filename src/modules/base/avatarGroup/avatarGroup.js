@@ -15,6 +15,8 @@ const validVariants = {
 
 const validButtonIconPositions = { valid: ['left', 'right'], default: 'left' };
 
+const defaultActionIconName = 'utility:add';
+
 const validButtonVariants = {
     valid: [
         'neutral',
@@ -32,7 +34,6 @@ const validButtonVariants = {
 export default class AvatarGroup extends LightningElement {
     @api listButtonLabel = 'Show more';
     @api listButtonIconName;
-    @api actionIconName;
     @api name;
 
     _items = [];
@@ -43,6 +44,7 @@ export default class AvatarGroup extends LightningElement {
     _listButtonVariant = validButtonVariants.default;
     _listButtonIconPosition = validButtonIconPositions.default;
     _variant = validVariants.default;
+    _actionIconName = defaultActionIconName;
     showPopover = false;
     hiddenItems = [];
 
@@ -91,6 +93,15 @@ export default class AvatarGroup extends LightningElement {
             fallbackValue: validSizes.default,
             validValues: validSizes.valid
         });
+    }
+
+    @api get actionIconName() {
+        return this._actionIconName;
+    }
+
+    set actionIconName(value) {
+        this._actionIconName =
+            typeof value === 'string' ? value : defaultActionIconName;
     }
 
     @api get layout() {
