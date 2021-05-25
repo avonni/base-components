@@ -25,6 +25,7 @@ export const HeroBannerWithTwoSlots = ({
     src,
     linearGradient,
     height,
+    maxWidth,
     textHorizontalAlignment,
     textVerticalAlignment
 }) => {
@@ -48,6 +49,7 @@ export const HeroBannerWithTwoSlots = ({
     element.src = src;
     element.linearGradient = linearGradient;
     element.height = height;
+    element.maxWidth = maxWidth;
     element.textHorizontalAlignment = textHorizontalAlignment;
     element.textVerticalAlignment = textVerticalAlignment;
     return element;

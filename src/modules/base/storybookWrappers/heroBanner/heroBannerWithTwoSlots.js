@@ -6,7 +6,8 @@ const DEFAULT_TEXT_COLOR = '#ffffff';
 const DEFAULT_TITLE_FONT_SIZE = 'large';
 const DEFAULT_CAPTION_FONT_SIZE = 'small';
 const DEFAULT_SUBTITLE_FONT_SIZE = 'medium';
-const DEFAULT_HEIGHT = '400';
+const DEFAULT_HEIGHT = 400;
+const DEFAULT_MAX_WIDTH = 960;
 const DEFAULT_TITLE_FONT_WEIGHT = 'bold';
 const DEFAULT_CAPTION_FONT_WEIGHT = 'light';
 const DEFAULT_SUBTITLE_FONT_WEIGHT = 'normal';
@@ -34,6 +35,7 @@ export default class HeroBannerWithTwoSlots extends LightningElement {
     @api src;
     @api linearGradient = DEFAULT_LINEAR_GRADIENT;
     @api height = DEFAULT_HEIGHT;
+    @api maxWidth = DEFAULT_MAX_WIDTH;
     @api textHorizontalAlignment = DEFAULT_TEXT_HORIZONTAL_ALIGNMENT;
     @api textVerticalAlignment = DEFAULT_TEXT_VERTICAL_ALIGNMENT;
 }

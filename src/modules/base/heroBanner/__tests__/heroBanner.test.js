@@ -41,6 +41,7 @@ describe('Hero Banner', () => {
         expect(element.src).toBeUndefined();
         expect(element.linearGradient).toBe('rgba(0,0,0,0.4), rgba(0,0,0,0.4)');
         expect(element.height).toBe(400);
+        expect(element.maxWidth).toBe(960);
         expect(element.textHorizontalAlignment).toBe('left');
         expect(element.textVerticalAlignment).toBe('center');
     });
@@ -607,13 +608,32 @@ describe('Hero Banner', () => {
         });
         document.body.appendChild(element);
 
+        const height = '200px';
         element.height = 200;
 
         return Promise.resolve().then(() => {
             const background = element.shadowRoot.querySelector(
                 '.avonni-hero-banner-background-class'
             );
-            expect(background.style.height).toBe('200px');
+            expect(background.style.height).toBe(height);
+        });
+    });
+
+    // max width
+    it('Hero Banner max width', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        const maxWidth = '1000px';
+        element.maxWidth = 1000;
+
+        return Promise.resolve().then(() => {
+            const background = element.shadowRoot.querySelector(
+                '.avonni-hero-banner-background-class'
+            );
+            expect(background.style.maxWidth).toBe(maxWidth);
         });
     });
 

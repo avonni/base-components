@@ -28,6 +28,7 @@ const font_weight_options = {
 
 const DEFAULT_TEXT_COLOR = '#ffffff';
 const DEFAULT_HEIGHT = 400;
+const DEFAULT_MAX_WIDTH = 960;
 const DEFAULT_LINEAR_GRADIENT = 'rgba(0,0,0,0.4), rgba(0,0,0,0.4)';
 const DEFAULT_FONT_FAMILY = '"Salesforce Sans", Arial, sans-serif';
 const DEFAULT_TITLE_SHADOW_COLOR = '1px 1px 0 rgb(0 0 0 / 50%)';
@@ -55,6 +56,7 @@ export default class HeroBanner extends LightningElement {
     _subtitleFontSize = font_size_options.subtitleDefault;
     _subtitleFontWeight = font_weight_options.subtitleDefault;
     _height = DEFAULT_HEIGHT;
+    _maxWidth = DEFAULT_MAX_WIDTH;
 
     _rendered = false;
     showSlot = true;
@@ -188,9 +190,19 @@ export default class HeroBanner extends LightningElement {
         this._height = parseInt(number, 10);
     }
 
+    @api
+    get maxWidth() {
+        return this._maxWidth;
+    }
+
+    set maxWidth(value) {
+        const number = typeof value === 'number' ? value : DEFAULT_MAX_WIDTH;
+        this._maxWidth = parseInt(number, 10);
+    }
+
     get imgSrc() {
         if (this.linearGradient) {
-            return `background-image: linear-gradient(${this.linearGradient}), url(${this.src}); height: ${this.height}px`;
+            return `background-image: linear-gradient(${this.linearGradient}), url(${this.src}); height: ${this._height}px; max-width: ${this._maxWidth}px;`;
         }
         return `background-image: url(${this.src}); height: ${this.height}px`;
     }

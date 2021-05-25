@@ -233,11 +233,23 @@ export default {
             control: {
                 type: 'text'
             },
-            defaultValue: '400',
+            defaultValue: 400,
             description: 'Defines the height of the banner. ',
             table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: '400' }
+                type: { summary: 'number' },
+                defaultValue: { summary: 400 }
+            }
+        },
+        maxWidth: {
+            name: 'max-width',
+            control: {
+                type: 'text'
+            },
+            defaultValue: 960,
+            description: 'Defines the height of the banner. ',
+            table: {
+                type: { summary: 'number' },
+                defaultValue: { summary: 960 }
             }
         },
         textHorizontalAlignment: {
