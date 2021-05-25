@@ -189,7 +189,10 @@ export default class HeroBanner extends LightningElement {
     }
 
     get imgSrc() {
-        return `background-image: linear-gradient(${this.linearGradient}), url(${this.src}); height: ${this.height}px`;
+        if (this.linearGradient) {
+            return `background-image: linear-gradient(${this.linearGradient}), url(${this.src}); height: ${this.height}px`;
+        }
+        return `background-image: url(${this.src}); height: ${this.height}px`;
     }
 
     get computedTitleStyling() {
