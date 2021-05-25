@@ -25,11 +25,27 @@ export const HeroBannerWithTwoSlots = ({
     subtitleFontWeight,
     subtitleShadowColor,
     src,
+    backgroundColor,
     linearGradient,
     height,
     maxWidth,
     contentHorizontalAlignment,
-    contentVerticalAlignment
+    contentVerticalAlignment,
+    contentWidth,
+    primaryButtonLabel,
+    primaryButtonTextColor,
+    primaryButtonTextHoverColor,
+    primaryButtonBackgroundColor,
+    primaryButtonBackgroundHoverColor,
+    primaryButtonBorderColor,
+    primaryButtonBorderRadius,
+    secondaryButtonLabel,
+    secondaryButtonTextColor,
+    secondaryButtonTextHoverColor,
+    secondaryButtonBackgroundColor,
+    secondaryButtonBackgroundHoverColor,
+    secondaryButtonBorderColor,
+    secondaryButtonBorderRadius
 }) => {
     const element = document.createElement('ac-hero-banner-with-two-slots');
     element.title = title;
@@ -51,10 +67,26 @@ export const HeroBannerWithTwoSlots = ({
     element.subtitleFontWeight = subtitleFontWeight;
     element.subtitleShadowColor = subtitleShadowColor;
     element.src = src;
+    element.backgroundColor = backgroundColor;
     element.linearGradient = linearGradient;
     element.height = height;
     element.maxWidth = maxWidth;
     element.contentHorizontalAlignment = contentHorizontalAlignment;
     element.contentVerticalAlignment = contentVerticalAlignment;
+    element.contentWidth = contentWidth;
+    element.primaryButtonLabel = primaryButtonLabel;
+    element.primaryButtonTextColor = primaryButtonTextColor;
+    element.primaryButtonTextHoverColor = primaryButtonTextHoverColor;
+    element.primaryButtonBackgroundColor = primaryButtonBackgroundColor;
+    element.primaryButtonBackgroundHoverColor = primaryButtonBackgroundHoverColor;
+    element.primaryButtonBorderColor = primaryButtonBorderColor;
+    element.primaryButtonBorderRadius = primaryButtonBorderRadius;
+    element.secondaryButtonLabel = secondaryButtonLabel;
+    element.secondaryButtonTextColor = secondaryButtonTextColor;
+    element.secondaryButtonTextHoverColor = secondaryButtonTextHoverColor;
+    element.secondaryButtonBackgroundColor = secondaryButtonBackgroundColor;
+    element.secondaryButtonBackgroundHoverColor = secondaryButtonBackgroundHoverColor;
+    element.secondaryButtonBorderColor = secondaryButtonBorderColor;
+    element.secondaryButtonBorderRadius = secondaryButtonBorderRadius;
     return element;
 };

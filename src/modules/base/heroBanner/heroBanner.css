@@ -52,3 +52,26 @@
 .avonni-hero-banner-font-weight_bold {
     font-weight: 700;
 }
+
+.avonni-hero-banner-primary-button {
+    display: inline-block;
+    border-width: 2px;
+    border-style: solid;
+    padding: 5px 24px;
+    min-width: 135px;
+    transition: all 0.2s;
+}
+
+.avonni-hero-banner-primary-button:hover {
+    background-color: var(--background-color);
+    color: var(--color-hover);
+}
+
+.avonni-hero-banner-secondary-button {
+    display: inline-block;
+    border-width: 2px;
+    border-style: solid;
+    padding: 5px 24px;
+    min-width: 135px;
+    transition: all 0.2s;
+}

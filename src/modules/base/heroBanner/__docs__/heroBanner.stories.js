@@ -240,6 +240,18 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        backgroundColor: {
+            name: 'background-color',
+            control: {
+                type: 'color'
+            },
+            defaultValue: '#ffffff',
+            description: 'Defines the background color if there is no image.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: '#ffffff' }
+            }
+        },
         linearGradient: {
             name: 'linear-gradient',
             control: {
@@ -302,6 +314,188 @@ export default {
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'center' }
+            }
+        },
+        contentWidth: {
+            name: 'content-width',
+            control: {
+                type: 'range',
+                min: 0,
+                max: 100,
+                step: 1
+            },
+            defaultValue: 50,
+            description:
+                'Defines the width of the content inside of the banner in percentage.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 50 }
+            }
+        },
+        primaryButtonLabel: {
+            name: 'primary-button-label',
+            control: {
+                type: 'text'
+            },
+            description: 'The text to be displayed inside the primary button.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        primaryButtonTextColor: {
+            name: 'primary-button-text-color',
+            control: {
+                type: 'color'
+            },
+            defaultValue: '#ffffff',
+            description: 'Defines the text color of the primary button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: '#ffffff' }
+            }
+        },
+        primaryButtonTextHoverColor: {
+            name: 'primary-button-text-hover-color',
+            control: {
+                type: 'color'
+            },
+            defaultValue: '#ffffff',
+            description: 'Defines the text hover color of the primary button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: '#ffffff' }
+            }
+        },
+        primaryButtonBackgroundColor: {
+            name: 'primary-button-background-color',
+            control: {
+                type: 'color'
+            },
+            defaultValue: '#0932c6',
+            description: 'Defines the primary button background color.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: '#0932c6' }
+            }
+        },
+        primaryButtonBackgroundHoverColor: {
+            name: 'primary-button-background-hover-color',
+            control: {
+                type: 'color'
+            },
+            defaultValue: '#0932c6',
+            description: 'Defines the primary button background hover color.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: '#0932c6' }
+            }
+        },
+        primaryButtonBorderColor: {
+            name: 'primary-button-border-color',
+            control: {
+                type: 'color'
+            },
+            description: 'Defines the primary button border color.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        primaryButtonBorderRadius: {
+            name: 'primary-button-border-radius',
+            control: {
+                type: 'range',
+                min: 0,
+                max: 50,
+                step: 1
+            },
+            defaultValue: 4,
+            description: 'Defines the primary button border radius in px.',
+            table: {
+                type: { summary: 'number' }
+            }
+        },
+        secondaryButtonLabel: {
+            name: 'secondary-button-label',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The text to be displayed inside the secondary button.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        secondaryButtonTextColor: {
+            name: 'secondary-button-text-color',
+            control: {
+                type: 'color'
+            },
+            defaultValue: '#ffffff',
+            description: 'Defines the text color of the secondary button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: '#ffffff' }
+            }
+        },
+        secondaryButtonTextHoverColor: {
+            name: 'secondary-button-text-hover-color',
+            control: {
+                type: 'color'
+            },
+            defaultValue: '#ffffff',
+            description:
+                'Defines the text hover color of the secondary button.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: '#ffffff' }
+            }
+        },
+        secondaryButtonBackgroundColor: {
+            name: 'secondary-button-background-color',
+            control: {
+                type: 'color'
+            },
+            defaultValue: '#0932c6',
+            description: 'Defines the secondary button background color.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: '#0932c6' }
+            }
+        },
+        secondaryButtonBackgroundHoverColor: {
+            name: 'secondary-button-background-hover-color',
+            control: {
+                type: 'color'
+            },
+            defaultValue: '#0932c6',
+            description: 'Defines the secondary button background hover color.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: '#0932c6' }
+            }
+        },
+        secondaryButtonBorderColor: {
+            name: 'secondary-button-border-color',
+            control: {
+                type: 'color'
+            },
+            description: 'Defines the secondary button border color.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        secondaryButtonBorderRadius: {
+            name: 'secondary-button-border-radius',
+            control: {
+                type: 'range',
+                min: 0,
+                max: 50,
+                step: 1
+            },
+            defaultValue: 4,
+            description: 'Defines the secondary button border radius in px.',
+            table: {
+                type: { summary: 'number' }
             }
         }
     }

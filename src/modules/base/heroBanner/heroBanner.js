@@ -27,11 +27,16 @@ const font_weight_options = {
 };
 
 const DEFAULT_TEXT_COLOR = '#ffffff';
+const DEFAULT_BACKGROUND_COLOR = '#ffffff';
+const DEFAULT_BUTTON_BACKGROUND_COLOR = '#0932c6';
+const DEFAULT_BUTTON_BACKGROUND_HOVER_COLOR = '#092695';
 const DEFAULT_HEIGHT = 400;
 const DEFAULT_MAX_WIDTH = 960;
+const DEFAULT_CONTENT_WIDTH = 50;
 const DEFAULT_LINEAR_GRADIENT = 'rgba(0,0,0,0.4), rgba(0,0,0,0.4)';
 const DEFAULT_FONT_FAMILY = '"Salesforce Sans", Arial, sans-serif';
 const DEFAULT_SHADOW_COLOR = '1px 1px 0 rgb(0 0 0 / 50%)';
+const DEFAULT_BUTTON_BORDER_RADIUS = 4;
 
 export default class HeroBanner extends LightningElement {
     @api title;
@@ -47,7 +52,24 @@ export default class HeroBanner extends LightningElement {
     @api subtitleFontFamily = DEFAULT_FONT_FAMILY;
     @api subtitleShadowColor = DEFAULT_SHADOW_COLOR;
     @api src;
+    @api backgroundColor = DEFAULT_BACKGROUND_COLOR;
     @api linearGradient = DEFAULT_LINEAR_GRADIENT;
+    @api primaryButtonLabel;
+    @api primaryButtonTextColor = DEFAULT_TEXT_COLOR;
+    @api primaryButtonTextHoverColor = DEFAULT_TEXT_COLOR;
+    @api primaryButtonBackgroundColor = DEFAULT_BUTTON_BACKGROUND_COLOR;
+    @api
+    primaryButtonBackgroundHoverColor = DEFAULT_BUTTON_BACKGROUND_HOVER_COLOR;
+    @api primaryButtonBorderColor;
+    @api primaryButtonBorderRadius = DEFAULT_BUTTON_BORDER_RADIUS;
+    @api secondaryButtonLabel;
+    @api secondaryButtonTextColor = DEFAULT_TEXT_COLOR;
+    @api secondaryButtonTextHoverColor = DEFAULT_TEXT_COLOR;
+    @api secondaryButtonBackgroundColor = DEFAULT_BUTTON_BACKGROUND_COLOR;
+    @api
+    secondaryButtonBackgroundHoverColor = DEFAULT_BUTTON_BACKGROUND_HOVER_COLOR;
+    @api secondaryButtonBorderColor;
+    @api secondaryButtonBorderRadius = DEFAULT_BUTTON_BORDER_RADIUS;
 
     _contentHorizontalAlignment = horizontal_alignement_options.default;
     _contentVerticalAlignment = vertical_alignement_options.default;
@@ -59,6 +81,7 @@ export default class HeroBanner extends LightningElement {
     _subtitleFontWeight = font_weight_options.subtitleDefault;
     _height = DEFAULT_HEIGHT;
     _maxWidth = DEFAULT_MAX_WIDTH;
+    _contentWidth = DEFAULT_CONTENT_WIDTH;
 
     _rendered = false;
     showSlot = true;
@@ -202,11 +225,26 @@ export default class HeroBanner extends LightningElement {
         this._maxWidth = parseInt(number, 10);
     }
 
+    @api
+    get contentWidth() {
+        return this._contentWidth;
+    }
+
+    set contentWidth(value) {
+        const number =
+            typeof value === 'number' ? value : DEFAULT_CONTENT_WIDTH;
+        this._contentWidth = parseInt(number, 10);
+    }
+
     get imgSrc() {
         if (this.linearGradient) {
-            return `background-image: linear-gradient(${this.linearGradient}), url(${this.src}); height: ${this._height}px; max-width: ${this._maxWidth}px;`;
+            return `background-color: ${this.backgroundColor}; background-image: linear-gradient(${this.linearGradient}), url(${this.src}); height: ${this._height}px; max-width: ${this._maxWidth}px;`;
         }
-        return `background-image: url(${this.src}); height: ${this.height}px`;
+        return `background-color: ${this.backgroundColor}; background-image: url(${this.src}); height: ${this.height}px; max-width: ${this._maxWidth}px;`;
+    }
+
+    get computedContentStyling() {
+        return `width: ${this.contentWidth}%`;
     }
 
     get computedTitleStyling() {
@@ -219,6 +257,14 @@ export default class HeroBanner extends LightningElement {
 
     get computedSubtitleStyling() {
         return `font-family: ${this.subtitleFontFamily}; color: ${this.subtitleColor}; text-shadow: ${this.subtitleShadowColor};`;
+    }
+
+    get computedPrimaryButtonStyling() {
+        return `background-color: ${this.primaryButtonBackgroundColor}; color: ${this.primaryButtonTextColor}; border-radius: ${this.primaryButtonBorderRadius}px; border-color: ${this.primaryButtonBorderColor}; --background-color: ${this.primaryButtonBackgroundHoverColor}; --color-hover: ${this.primaryButtonTextHoverColor};`;
+    }
+
+    get computedSecondaryButtonStyling() {
+        return `background-color: ${this.secondaryButtonBackgroundColor}; color: ${this.secondaryButtonTextColor}; border-radius: ${this.secondaryButtonBorderRadius}px; border-color: ${this.secondaryButtonBorderColor}; --background-color: ${this.secondaryButtonBackgroundHoverColor}; --color-hover: ${this.secondaryButtonTextHoverColor};`;
     }
 
     get computedContentContainer() {
@@ -308,5 +354,9 @@ export default class HeroBanner extends LightningElement {
                     this.subtitleFontWeight === 'bold'
             })
             .toString();
+    }
+
+    get hasButton() {
+        return this.primaryButtonLabel || this.secondaryButtonLabel;
     }
 }

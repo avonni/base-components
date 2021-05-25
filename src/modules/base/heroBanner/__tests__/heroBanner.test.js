@@ -41,11 +41,13 @@ describe('Hero Banner', () => {
         expect(element.subtitleFontWeight).toBe('normal');
         expect(element.subtitleShadowColor).toBe('1px 1px 0 rgb(0 0 0 / 50%)');
         expect(element.src).toBeUndefined();
+        expect(element.backgroundColor).toBe('#ffffff');
         expect(element.linearGradient).toBe('rgba(0,0,0,0.4), rgba(0,0,0,0.4)');
         expect(element.height).toBe(400);
         expect(element.maxWidth).toBe(960);
         expect(element.contentHorizontalAlignment).toBe('left');
         expect(element.contentVerticalAlignment).toBe('center');
+        expect(element.contentWidth).toBe(50);
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -635,6 +637,24 @@ describe('Hero Banner', () => {
         });
     });
 
+    // background color
+    it('Hero Banner background color', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        const backgroundColor = 'rgb(0, 0, 0)';
+        element.backgroundColor = 'rgb(0, 0, 0)';
+
+        return Promise.resolve().then(() => {
+            const background = element.shadowRoot.querySelector(
+                '.avonni-hero-banner-background-class'
+            );
+            expect(background.style.backgroundColor).toBe(backgroundColor);
+        });
+    });
+
     // height
     it('Hero Banner height', () => {
         const element = createElement('base-hero-banner', {
@@ -784,6 +804,22 @@ describe('Hero Banner', () => {
             expect(textContainer.className).not.toContain(
                 'avonni-hero-banner-column-div'
             );
+        });
+    });
+
+    // content width
+    it('Hero Banner content width', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.title = 'This is a title text';
+        element.contentWidth = 100;
+
+        return Promise.resolve().then(() => {
+            const textContainer = element.shadowRoot.querySelector('span');
+            expect(textContainer.style.width).toBe('100%');
         });
     });
 });

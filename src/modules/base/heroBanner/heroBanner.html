@@ -1,6 +1,6 @@
 <template>
     <div class="avonni-hero-banner-background-class" style={imgSrc}>
-        <span class={computedContentContainer}>
+        <span class={computedContentContainer} style={computedContentStyling}>
             <template if:true={caption}>
                 <h3 class={computedCaptionClass} style={computedCaptionStyling}>
                     {caption}
@@ -18,6 +18,22 @@
                 >
                     {subtitle}
                 </h2>
+            </template>
+            <template if:true={hasButton}>
+                <div class="slds-grid slds-m-top_large">
+                    <a
+                        class="slds-button slds-truncate avonni-hero-banner-primary-button"
+                        style={computedPrimaryButtonStyling}
+                        >{primaryButtonLabel}</a
+                    >
+                    <template if:true={secondaryButtonLabel}>
+                        <a
+                            class="slds-button slds-truncate avonni-hero-banner-secondary-button"
+                            style={computedSecondaryButtonStyling}
+                            >{secondaryButtonLabel}</a
+                        >
+                    </template>
+                </div>
             </template>
             <template if:true={showSlot}>
                 <slot></slot>
