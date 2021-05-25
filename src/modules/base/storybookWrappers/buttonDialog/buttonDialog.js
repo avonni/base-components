@@ -7,4 +7,5 @@ export default class ButtonDialog extends LightningElement {
     @api disabled;
     @api variant;
     @api iconPosition;
+    @api alternativeText;
 }

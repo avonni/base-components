@@ -64,7 +64,7 @@ export default class Avatar extends LightningElement {
     _presencePosition = POSITION.presenceDefault;
     _presenceTitle = DEFAULT_PRESENCE_TITLE;
     _size = SIZE.default;
-    _src = '';
+    _src;
     _status = STATUS.default;
     _statusPosition = POSITION.statusDefault;
     _statusTitle = DEFAULT_STATUS_TITLE;

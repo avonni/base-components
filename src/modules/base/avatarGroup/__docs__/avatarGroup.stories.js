@@ -304,7 +304,7 @@ export const BaseLargeWithMoreThanTwoAvatars = Template.bind({});
 BaseLargeWithMoreThanTwoAvatars.args = {
     items: [...items, ...items, ...items],
     size: 'large',
-    maxCount: '6',
+    maxCount: 6,
     variant: 'circle'
 };
 
@@ -312,7 +312,7 @@ export const Grid = Template.bind({});
 Grid.args = {
     items: [...items, ...items, ...items, ...items, ...items, ...items],
     layout: 'grid',
-    maxCount: '6'
+    maxCount: 6
 };
 
 export const GridWithPresence = Template.bind({});
@@ -326,7 +326,7 @@ GridWithPresence.args = {
         ...itemsWithPresence
     ],
     layout: 'grid',
-    maxCount: '6',
+    maxCount: 6,
     variant: 'circle'
 };
 
@@ -335,7 +335,7 @@ GridSmall.args = {
     items: [...items, ...items, ...items, ...items, ...items, ...items],
     size: 'small',
     layout: 'grid',
-    maxCount: '7'
+    maxCount: 7
 };
 
 export const ListDoubleExtraLarge = Template.bind({});
@@ -346,6 +346,6 @@ ListDoubleExtraLarge.args = {
         ...itemsWithStatusAndEntity
     ],
     layout: 'list',
-    maxCount: '3',
+    maxCount: 3,
     size: 'xx-large'
 };

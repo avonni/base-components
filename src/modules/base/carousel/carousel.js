@@ -46,7 +46,7 @@ export default class Carousel extends LightningElement {
     };
     _carouselItems = [];
     _itemsPerPanel = DEFAULT_ITEMS_PER_PANEL;
-    _initialRender = true;
+    _initialRender = false;
     _indicatorVariant = VARIANTS.default;
     _hideIndicator = false;
 
@@ -58,17 +58,22 @@ export default class Carousel extends LightningElement {
     paginationItems = [];
     panelStyle;
 
+    _connected = false;
+
     connectedCallback() {
-        this.initCarousel();
+        if (!this._connected) {
+            this.initCarousel();
+        }
+        this._connected = true;
     }
 
     renderedCallback() {
-        if (this._initialRender) {
+        if (!this._initialRender) {
             if (!this.disableAutoScroll) {
                 this.setAutoScroll();
             }
         }
-        this._initialRender = false;
+        this._initialRender = true;
     }
 
     @api
@@ -109,8 +114,7 @@ export default class Carousel extends LightningElement {
                 src: item.src
             });
         });
-
-        if (this.isConnected) {
+        if (this._connected) {
             this.initCarousel();
         }
     }
@@ -136,6 +140,9 @@ export default class Carousel extends LightningElement {
             fallbackValue: VARIANTS.default,
             validValues: VARIANTS.valid
         });
+        if (this._connected) {
+            this.initCarousel();
+        }
     }
 
     @api
@@ -268,11 +275,13 @@ export default class Carousel extends LightningElement {
         );
         const itemNumber = parseInt(event.currentTarget.dataset.itemIndex, 10);
         const itemData = this.panelItems[panelNumber].items[itemNumber];
-        this.dispatchEvent(new CustomEvent('itemclick', {
-            detail: {
-                item: itemData
-            }
-        }));
+        this.dispatchEvent(
+            new CustomEvent('itemclick', {
+                detail: {
+                    item: itemData
+                }
+            })
+        );
     }
 
     keyDownHandler(event) {

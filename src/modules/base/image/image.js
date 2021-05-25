@@ -3,6 +3,7 @@ import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
 const validRounded = ['top', 'right', 'bottom', 'left', 'circle', '0'];
+const BLANK_COLOR_DEFAULT = 'transparent';
 
 export default class Image extends LightningElement {
     @api alt;
@@ -10,7 +11,7 @@ export default class Image extends LightningElement {
     _src;
     _width;
     _height;
-    _blankColor = 'transparent';
+    _blankColor = BLANK_COLOR_DEFAULT;
     _srcset;
     _sizes;
     _block = false;
