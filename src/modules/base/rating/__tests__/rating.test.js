@@ -529,7 +529,7 @@ describe('Rating', () => {
             buttons[2].click();
 
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail).toBe(3);
+            expect(handler.mock.calls[0][0].detail.value).toBe(3);
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
@@ -554,7 +554,7 @@ describe('Rating', () => {
             buttons[2].click();
 
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail).toBe(3);
+            expect(handler.mock.calls[0][0].detail.value).toBe(3);
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
