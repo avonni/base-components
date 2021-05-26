@@ -339,7 +339,6 @@ export default class Carousel extends LightningElement {
                 : 6.625;
         });
         this._carouselContentHeight = Math.max(...carouselContentHeights);
-        // console.log(this._carouselContentHeight);
     }
 
     initCarousel() {
@@ -433,7 +432,6 @@ export default class Carousel extends LightningElement {
     }
 
     get computedCarouselContentSize() {
-        // console.log(this._carouselContentHeight);
         return `height: ${this._carouselContentHeight}rem`;
     }
 }
