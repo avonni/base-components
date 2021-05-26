@@ -28,9 +28,11 @@ describe('Input Date Range', () => {
         expect(element.label).toBeUndefined();
         expect(element.labelStartDate).toBeUndefined();
         expect(element.labelEndDate).toBeUndefined();
+        expect(element.readOnly).toBeFalsy();
         expect(element.required).toBeFalsy();
         expect(element.startDate).toBeUndefined();
         expect(element.endDate).toBeUndefined();
+        expect(element.variant).toBe('standard');
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -300,6 +302,118 @@ describe('Input Date Range', () => {
         });
     });
 
+    // read-only
+    // Depends on type
+    it('Input Date Range read only false', () => {
+        const element = createElement('base-input-date-range', {
+            is: InputDateRange
+        });
+        document.body.appendChild(element);
+
+        element.readOnly = false;
+        element.type = 'datetime';
+
+        return Promise.resolve()
+            .then(() => {
+                // Time inputs should not be read only
+                const timeInputs = element.shadowRoot.querySelectorAll(
+                    'lightning-input'
+                );
+                timeInputs.forEach((input) => {
+                    expect(input.readOnly).toBeFalsy();
+                });
+
+                // Start date input should not be read only
+                const startDateInput = element.shadowRoot.querySelector(
+                    'input.start-date'
+                );
+
+                expect(startDateInput.readOnly).toBeFalsy();
+                expect(startDateInput.ariaReadOnly).toBe('false');
+
+                // On focus on start date input, the date picker should open
+                startDateInput.dispatchEvent(new CustomEvent('focus'));
+            })
+            .then(() => {
+                const datePicker = element.shadowRoot.querySelector(
+                    '.slds-datepicker'
+                );
+                expect(datePicker).toBeTruthy();
+
+                // End date input should not be read only
+                const endDateInput = element.shadowRoot.querySelector(
+                    'input.end-date'
+                );
+
+                expect(endDateInput.readOnly).toBeFalsy();
+                expect(endDateInput.ariaReadOnly).toBe('false');
+
+                // On focus on end date input, the date picker should open
+                endDateInput.dispatchEvent(new CustomEvent('focus'));
+            })
+            .then(() => {
+                const datePicker = element.shadowRoot.querySelector(
+                    '.slds-datepicker'
+                );
+                expect(datePicker).toBeTruthy();
+            });
+    });
+
+    it('Input Date Range read only true', () => {
+        const element = createElement('base-input-date-range', {
+            is: InputDateRange
+        });
+        document.body.appendChild(element);
+
+        element.readOnly = true;
+        element.type = 'datetime';
+
+        return Promise.resolve()
+            .then(() => {
+                // Time inputs should be read only
+                const timeInputs = element.shadowRoot.querySelectorAll(
+                    'lightning-input'
+                );
+                timeInputs.forEach((input) => {
+                    expect(input.readOnly).toBeTruthy();
+                });
+
+                // Start date input should be read only
+                const startDateInput = element.shadowRoot.querySelector(
+                    'input.start-date'
+                );
+
+                expect(startDateInput.readOnly).toBeTruthy();
+                expect(startDateInput.ariaReadOnly).toBe('true');
+
+                // On focus on start date input, the date picker should not open
+                startDateInput.dispatchEvent(new CustomEvent('focus'));
+            })
+            .then(() => {
+                const datePicker = element.shadowRoot.querySelector(
+                    '.slds-datepicker'
+                );
+                expect(datePicker).toBeFalsy();
+
+                // End date input should be read only
+                const endDateInput = element.shadowRoot.querySelector(
+                    'input.end-date'
+                );
+
+                expect(endDateInput.readOnly).toBeTruthy();
+                expect(endDateInput.ariaReadOnly).toBe('true');
+
+                // On focus on end date input, the date picker should not open
+                endDateInput.dispatchEvent(new CustomEvent('focus'));
+            })
+            .then(() => {
+                const datePicker = element.shadowRoot.querySelector(
+                    '.slds-datepicker'
+                );
+                expect(datePicker).toBeFalsy();
+            });
+    });
+
     // required
     it('Input Date Range required', () => {
         const element = createElement('base-input-date-range', {
@@ -313,6 +427,87 @@ describe('Input Date Range', () => {
             const required = element.shadowRoot.querySelector('.slds-required');
             expect(required).toBeTruthy();
             expect(required.textContent).toBe('*');
+        });
+    });
+
+    // variant
+    it('Input Date Range variant standard', () => {
+        const element = createElement('base-input-date-range', {
+            is: InputDateRange
+        });
+        document.body.appendChild(element);
+
+        element.variant = 'standard';
+
+        return Promise.resolve().then(() => {
+            const label = element.shadowRoot.querySelector(
+                '.avonni-label-container'
+            );
+            const wrapper = element.shadowRoot.querySelector('div');
+
+            expect(label.classList).not.toContain('slds-assistive-text');
+            expect(label.classList).not.toContain('slds-m-right_small');
+            expect(wrapper.classList).not.toContain('slds-grid');
+        });
+    });
+
+    it('Input Date Range variant label-hidden', () => {
+        const element = createElement('base-input-date-range', {
+            is: InputDateRange
+        });
+        document.body.appendChild(element);
+
+        element.variant = 'label-hidden';
+
+        return Promise.resolve().then(() => {
+            const label = element.shadowRoot.querySelector(
+                '.avonni-label-container'
+            );
+            const wrapper = element.shadowRoot.querySelector('div');
+
+            expect(label.classList).toContain('slds-assistive-text');
+            expect(label.classList).not.toContain('slds-m-right_small');
+            expect(wrapper.classList).not.toContain('slds-grid');
+        });
+    });
+
+    it('Input Date Range variant label-inline', () => {
+        const element = createElement('base-input-date-range', {
+            is: InputDateRange
+        });
+        document.body.appendChild(element);
+
+        element.variant = 'label-inline';
+
+        return Promise.resolve().then(() => {
+            const label = element.shadowRoot.querySelector(
+                '.avonni-label-container'
+            );
+            const wrapper = element.shadowRoot.querySelector('div');
+
+            expect(label.classList).not.toContain('slds-assistive-text');
+            expect(label.classList).toContain('slds-m-right_small');
+            expect(wrapper.classList).toContain('slds-grid');
+        });
+    });
+
+    it('Input Date Range variant stacked', () => {
+        const element = createElement('base-input-date-range', {
+            is: InputDateRange
+        });
+        document.body.appendChild(element);
+
+        element.variant = 'stacked';
+
+        return Promise.resolve().then(() => {
+            const label = element.shadowRoot.querySelector(
+                '.avonni-label-container'
+            );
+            const wrapper = element.shadowRoot.querySelector('div');
+
+            expect(label.classList).not.toContain('slds-assistive-text');
+            expect(label.classList).not.toContain('slds-m-right_small');
+            expect(wrapper.classList).not.toContain('slds-grid');
         });
     });
 
