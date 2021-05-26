@@ -6,89 +6,6 @@ import { HeroBannerWithTwoSlots } from '../__examples__/heroBannerWithTwoSlots';
 export default {
     title: 'Example/Hero Banner',
     argTypes: {
-        title: {
-            control: {
-                type: 'text'
-            },
-            description:
-                'The title can include text, and is displayed in the banner.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        titleColor: {
-            name: 'title-color',
-            control: {
-                type: 'color'
-            },
-            defaultValue: '#ffffff',
-            description: 'Defines the font color of the title.',
-            table: {
-                type: { summary: 'color' }
-            }
-        },
-        titleFontFamily: {
-            name: 'title-font-family',
-            control: {
-                type: 'text'
-            },
-            defaultValue: "'Salesforce Sans', Arial, sans-serif",
-            description: 'Defines the font family of the title.',
-            table: {
-                type: { summary: 'text' },
-                defaultValue: {
-                    summary: "'Salesforce Sans', Arial, sans-serif"
-                }
-            }
-        },
-        titleFontSize: {
-            name: 'title-font-size',
-            control: {
-                type: 'select'
-            },
-            options: [
-                'small',
-                'medium',
-                'large',
-                'x-large',
-                'xx-large',
-                'xxx-large',
-                'xxxx-large'
-            ],
-            defaultValue: 'large',
-            description:
-                'Valid values include small, medium, large, x-large, xx-large, xxx-large and xxxx-large.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'large' }
-            }
-        },
-        titleFontWeight: {
-            name: 'title-font-weight',
-            control: {
-                type: 'select'
-            },
-            options: ['light', 'normal', 'bold'],
-            defaultValue: 'normal',
-            description:
-                'Defines the font weight of the title. Valid values include light, normal and bold.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'normal' }
-            }
-        },
-        titleShadowColor: {
-            name: 'title-shadow-color',
-            control: {
-                type: 'text'
-            },
-            defaultValue: '1px 1px 0 rgb(0 0 0 / 50%)',
-            description: 'Defines the text shadow of the title.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: '1px 1px 0 rgb(0 0 0 / 50%)' }
-            }
-        },
         caption: {
             control: {
                 type: 'text'
@@ -167,6 +84,89 @@ export default {
             },
             defaultValue: '1px 1px 0 rgb(0 0 0 / 50%)',
             description: 'Defines the text shadow of the caption.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: '1px 1px 0 rgb(0 0 0 / 50%)' }
+            }
+        },
+        title: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'The title can include text, and is displayed in the banner.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        titleColor: {
+            name: 'title-color',
+            control: {
+                type: 'color'
+            },
+            defaultValue: '#ffffff',
+            description: 'Defines the font color of the title.',
+            table: {
+                type: { summary: 'color' }
+            }
+        },
+        titleFontFamily: {
+            name: 'title-font-family',
+            control: {
+                type: 'text'
+            },
+            defaultValue: "'Salesforce Sans', Arial, sans-serif",
+            description: 'Defines the font family of the title.',
+            table: {
+                type: { summary: 'text' },
+                defaultValue: {
+                    summary: "'Salesforce Sans', Arial, sans-serif"
+                }
+            }
+        },
+        titleFontSize: {
+            name: 'title-font-size',
+            control: {
+                type: 'select'
+            },
+            options: [
+                'small',
+                'medium',
+                'large',
+                'x-large',
+                'xx-large',
+                'xxx-large',
+                'xxxx-large'
+            ],
+            defaultValue: 'large',
+            description:
+                'Valid values include small, medium, large, x-large, xx-large, xxx-large and xxxx-large.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'large' }
+            }
+        },
+        titleFontWeight: {
+            name: 'title-font-weight',
+            control: {
+                type: 'select'
+            },
+            options: ['light', 'normal', 'bold'],
+            defaultValue: 'normal',
+            description:
+                'Defines the font weight of the title. Valid values include light, normal and bold.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'normal' }
+            }
+        },
+        titleShadowColor: {
+            name: 'title-shadow-color',
+            control: {
+                type: 'text'
+            },
+            defaultValue: '1px 1px 0 rgb(0 0 0 / 50%)',
+            description: 'Defines the text shadow of the title.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: '1px 1px 0 rgb(0 0 0 / 50%)' }
@@ -331,17 +331,14 @@ export default {
         maxWidth: {
             name: 'max-width',
             control: {
-                type: 'range',
-                min: 0,
-                max: 100,
-                step: 1
+                type: 'number'
             },
-            defaultValue: 100,
+            defaultValue: 960,
             description:
                 'Defines the width inside of the banner in percentage.',
             table: {
                 type: { summary: 'number' },
-                defaultValue: { summary: 100 }
+                defaultValue: { summary: 960 }
             }
         },
         contentWidth: {
@@ -541,8 +538,9 @@ const TemplateWithTwoSlots = (args) => HeroBannerWithTwoSlots(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    title: 'Lost In The Woods',
-    subtitle: 'Find your true self',
+    caption: 'This is a caption',
+    title: 'This is a title',
+    subtitle: 'This is a subtitle',
     src:
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300
@@ -550,11 +548,12 @@ Base.args = {
 
 export const BaseAbsoluteCenter = Template.bind({});
 BaseAbsoluteCenter.args = {
-    title: 'Lost In The Woods',
+    caption: 'This is a caption',
+    title: 'This is a title',
     titleFontSize: 'xx-large',
     titleFontWeight: 'normal',
     titleFontFamily: 'cursive',
-    subtitle: 'Find your true self',
+    subtitle: 'This is a subtitle',
     src:
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
@@ -563,10 +562,11 @@ BaseAbsoluteCenter.args = {
 
 export const BaseCenteredRight = Template.bind({});
 BaseCenteredRight.args = {
-    title: 'Lost In The Woods',
-    titleFontSize: 'xx-large',
+    caption: 'This is a caption',
+    title: 'This is a title',
+    titleFontSize: 'xxx-large',
     titleFontWeight: 'bold',
-    subtitle: 'Find your true self',
+    subtitle: 'This is a subtitle',
     subtitleFontFamily: 'monospace',
     src:
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
@@ -577,23 +577,27 @@ BaseCenteredRight.args = {
 
 export const BaseTopLeft = Template.bind({});
 BaseTopLeft.args = {
-    title: 'Lost In The Woods',
-    titleFontSize: 'xx-large',
+    caption: 'This is a caption',
+    title: 'This is a title',
+    titleFontSize: 'xxxx-large',
     titleFontWeight: 'bold',
     titleFontFamily: 'Tahoma, sans-serif',
-    subtitle: 'Find your true self',
+    subtitle: 'This is a subtitle',
     src:
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
-    contentVerticalAlignment: 'top'
+    contentVerticalAlignment: 'top',
+    contentWidth: 10,
+    maxWidth: 40
 };
 
 export const BaseTopCenter = Template.bind({});
 BaseTopCenter.args = {
-    title: 'Lost In The Woods',
+    caption: 'This is a caption',
+    title: 'This is a title',
     titleFontSize: 'xx-large',
     titleFontWeight: 'bold',
-    subtitle: 'Find your true self',
+    subtitle: 'This is a subtitle',
     src:
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
@@ -603,10 +607,11 @@ BaseTopCenter.args = {
 
 export const BaseTopRight = Template.bind({});
 BaseTopRight.args = {
-    title: 'Lost In The Woods',
+    caption: 'This is a caption',
+    title: 'This is a title',
     titleFontSize: 'xx-large',
     titleFontWeight: 'bold',
-    subtitle: 'Find your true self',
+    subtitle: 'This is a subtitle',
     src:
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
@@ -616,10 +621,11 @@ BaseTopRight.args = {
 
 export const BaseBottomLeft = Template.bind({});
 BaseBottomLeft.args = {
-    title: 'Lost In The Woods',
+    caption: 'This is a caption',
+    title: 'This is a title',
     titleFontSize: 'xx-large',
     titleFontWeight: 'bold',
-    subtitle: 'Find your true self',
+    subtitle: 'This is a subtitle',
     src:
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
@@ -628,10 +634,10 @@ BaseBottomLeft.args = {
 
 export const BaseBottomCenter = Template.bind({});
 BaseBottomCenter.args = {
-    title: 'Lost In The Woods',
+    title: 'This is a title',
     titleFontSize: 'xx-large',
     titleFontWeight: 'bold',
-    subtitle: 'Find your true self',
+    subtitle: 'This is a subtitle',
     src:
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
@@ -641,10 +647,11 @@ BaseBottomCenter.args = {
 
 export const BaseBottomRight = Template.bind({});
 BaseBottomRight.args = {
-    title: 'Lost In The Woods',
+    caption: 'This is a caption',
+    title: 'This is a title',
     titleFontSize: 'xx-large',
     titleFontWeight: 'bold',
-    subtitle: 'Find your true self',
+    subtitle: 'This is a subtitle',
     src:
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,

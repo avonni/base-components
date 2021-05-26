@@ -44,7 +44,7 @@ describe('Hero Banner', () => {
         expect(element.backgroundColor).toBe('#ffffff');
         expect(element.linearGradient).toBe('rgba(0,0,0,0.4), rgba(0,0,0,0.4)');
         expect(element.height).toBe(400);
-        expect(element.maxWidth).toBe(100);
+        expect(element.maxWidth).toBe(960);
         expect(element.contentHorizontalAlignment).toBe('left');
         expect(element.contentVerticalAlignment).toBe('center');
         expect(element.contentWidth).toBe(100);
@@ -796,7 +796,7 @@ describe('Hero Banner', () => {
         });
         document.body.appendChild(element);
 
-        const maxWidth = '50%';
+        const maxWidth = '50px';
         element.maxWidth = 50;
 
         return Promise.resolve().then(() => {

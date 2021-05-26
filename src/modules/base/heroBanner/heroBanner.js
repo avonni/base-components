@@ -38,7 +38,7 @@ const DEFAULT_BUTTON_BACKGROUND_COLOR = '#0070d2';
 const DEFAULT_BUTTON_BACKGROUND_HOVER_COLOR = '#005fb2';
 const DEFAULT_BUTTON_BORDER_COLOR = '#0070d2';
 const DEFAULT_HEIGHT = 400;
-const DEFAULT_MAX_WIDTH = 100;
+const DEFAULT_MAX_WIDTH = 960;
 const DEFAULT_CONTENT_WIDTH = 100;
 const DEFAULT_LINEAR_GRADIENT = 'rgba(0,0,0,0.4), rgba(0,0,0,0.4)';
 const DEFAULT_FONT_FAMILY = '"Salesforce Sans", Arial, sans-serif';
@@ -251,7 +251,7 @@ export default class HeroBanner extends LightningElement {
     }
 
     get computedMaxWidth() {
-        return `width: ${this._maxWidth}%;`;
+        return `width: ${this._maxWidth}px;`;
     }
 
     get computedContentStyling() {
