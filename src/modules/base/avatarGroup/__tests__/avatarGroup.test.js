@@ -482,7 +482,7 @@ describe('Avatar Group', () => {
                 '.avonni-avatar-group__avatar'
             );
             avatars.forEach((avatar, index) => {
-                // Checking for avatars. Last element is ActionButton which has 'avonni-avatar-group_in-line' nested deeper // re-check
+                // Checking for avatars. Last element is ActionButton which has 'avonni-avatar-group_in-line' nested deeper on button
                 if (index < avatars.length - 2)
                     expect(avatar.className).toContain(
                         'avonni-avatar-group_in-line'
@@ -626,15 +626,11 @@ describe('Avatar Group', () => {
         ];
         element.layout = 'list';
 
-        // including Action Button presence expect 12
         return Promise.resolve().then(() => {
             const avatars = element.shadowRoot.querySelectorAll(
                 '.avonni-avatar-group__avatar-container'
             );
-            // avatars.forEach((avatar) => {
-            // console.table(avatar.innerHTML);
-            // });
-            expect(avatars).toHaveLength(12);
+            expect(avatars).toHaveLength(11);
         });
     });
 

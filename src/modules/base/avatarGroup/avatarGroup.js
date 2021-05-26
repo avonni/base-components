@@ -278,9 +278,15 @@ export default class AvatarGroup extends LightningElement {
             .toString();
     }
 
+    get actionButtonListClass() {
+        return classSet('avonni-avatar-group__action-button-container').add({
+            'slds-show': this.layout === 'list'
+        });
+    }
+
     get actionButtonLayoutClass() {
         if (this.layout === 'list') {
-            return this.avatarWrapperClass;
+            return this.actionButtonListClass;
         }
         return this.avatarGroupClass;
     }

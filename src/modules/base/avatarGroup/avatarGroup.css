@@ -68,6 +68,7 @@
     display: block;
 }
 .avonni-avatar-group__avatar-container.slds-show,
+.avonni-avatar-group__action-button-container.slds-show,
 .avonni-avatar-group__hidden-avatar-container {
     padding: 0.5rem 0.75rem;
 }
