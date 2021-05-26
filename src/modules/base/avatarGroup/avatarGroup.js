@@ -250,13 +250,11 @@ export default class AvatarGroup extends LightningElement {
     }
 
     get actionButtonClass() {
-        return classSet(
-            'avonni-avatar-group__avatar avonni-avatar-group__action-button'
-        )
+        return classSet('avonni-avatar-group__action-button')
             .add({
-                'avonni-avatar-group_in-line': this.layout === 'stack'
+                'avonni-avatar-group_action-button-in-line':
+                    this.layout === 'stack'
             })
-            .add(`avonni-avatar-${this.size}`)
             .add({
                 'avonni-avatar-group__action-button_circle':
                     this.variant === 'circle',
@@ -278,17 +276,35 @@ export default class AvatarGroup extends LightningElement {
             .toString();
     }
 
+    get actionButtonBaseLayoutClass() {
+        return classSet(
+            'avonni-avatar-group__action-button-base-layout'
+        ).toString();
+    }
+
     get actionButtonListClass() {
-        return classSet('avonni-avatar-group__action-button-container').add({
+        return classSet('avonni-avatar-group__action-button-list').add({
             'slds-show': this.layout === 'list'
         });
+    }
+
+    get actionButtonInlineClass() {
+        return classSet('avonni-avatar-group__action-button-base-layout')
+            .add({
+                'avonni-avatar-group_action-button-in-line':
+                    this.layout === 'stack'
+            })
+            .add(`avonni-action-button-${this.size}`)
+            .toString();
     }
 
     get actionButtonLayoutClass() {
         if (this.layout === 'list') {
             return this.actionButtonListClass;
+        } else if (this.layout === 'stack') {
+            return this.actionButtonInlineClass;
         }
-        return this.avatarGroupClass;
+        return this.actionButtonBaseLayoutClass;
     }
 
     get actionButtonIconSize() {

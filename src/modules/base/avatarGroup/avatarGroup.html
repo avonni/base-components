@@ -55,19 +55,21 @@
                     tabindex="0"
                 ></c-primitive-avatar>
             </span>
-            <button
-                type="button"
-                title="ActionButton"
-                onclick={actionClick}
-                class={actionButtonClass}
-            >
-                <lightning-icon
-                    icon-name={actionIconName}
-                    size={actionButtonIconSize}
+            <div class={actionButtonLayoutClass}>
+                <button
+                    type="button"
+                    title="ActionButton"
                     onclick={actionClick}
-                    class="slds-button slds-button_icon slds-current-color avonni-avatar-group__action-button"
-                ></lightning-icon>
-            </button>
+                    class={actionButtonClass}
+                >
+                    <lightning-icon
+                        icon-name={actionIconName}
+                        size={actionButtonIconSize}
+                        onclick={actionClick}
+                        class="slds-button slds-button_icon slds-current-color avonni-avatar-group__action-button"
+                    ></lightning-icon>
+                </button>
+            </div>
         </template>
         <template if:false={actionIconName}>
             <span class={avatarGroupClass}>

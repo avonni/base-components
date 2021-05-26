@@ -35,27 +35,33 @@
     height: 43px;
 }
 
-.avonni-avatar-group_in-line.avonni-avatar-x-small {
+.avonni-avatar-group_in-line.avonni-avatar-x-small,
+.avonni-avatar-group_action-button-in-line.avonni-action-button-x-small {
     margin-left: -4px;
 }
 
-.avonni-avatar-group_in-line.avonni-avatar-small {
+.avonni-avatar-group_in-line.avonni-avatar-small,
+.avonni-avatar-group_action-button-in-line.avonni-action-button-small {
     margin-left: -6px;
 }
 
-.avonni-avatar-group_in-line.avonni-avatar-medium {
+.avonni-avatar-group_in-line.avonni-avatar-medium,
+.avonni-avatar-group_action-button-in-line.avonni-action-button-medium {
     margin-left: -8px;
 }
 
-.avonni-avatar-group_in-line.avonni-avatar-large {
+.avonni-avatar-group_in-line.avonni-avatar-large,
+.avonni-avatar-group_action-button-in-line.avonni-action-button-large {
     margin-left: -10px;
 }
 
-.avonni-avatar-group_in-line.avonni-avatar-x-large {
+.avonni-avatar-group_in-line.avonni-avatar-x-large,
+.avonni-avatar-group_action-button-in-line.avonni-action-button-x-large {
     margin-left: -12px;
 }
 
-.avonni-avatar-group_in-line.avonni-avatar-xx-large {
+.avonni-avatar-group_in-line.avonni-avatar-xx-large,
+.avonni-avatar-group_action-button-in-line.avonni-action-button-xx-large {
     margin-left: -14px;
 }
 
@@ -68,7 +74,7 @@
     display: block;
 }
 .avonni-avatar-group__avatar-container.slds-show,
-.avonni-avatar-group__action-button-container.slds-show,
+.avonni-avatar-group__action-button-list.slds-show,
 .avonni-avatar-group__hidden-avatar-container {
     padding: 0.5rem 0.75rem;
 }
@@ -98,7 +104,8 @@
 /* Outline --- */
 .slds-avatar:focus,
 .avonni-avatar-group__avatar:focus,
-.slds-avatar-grouped:focus {
+.slds-avatar-grouped:focus,
+.avonni-avatar-group__action-button:focus {
     outline: none;
     box-shadow: rgb(53, 125, 219) 0 0 0 2px !important;
 }
@@ -116,6 +123,14 @@
 }
 
 /* Action Button */
+.avonni-avatar-group__action-button-base-layout {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+}
+.avonni-avatar-group__action-button-list {
+    display: block;
+}
 
 .avonni-avatar-group__action-button {
     color: #42526e;
@@ -154,7 +169,7 @@
     width: 1.5rem;
     height: 1.5rem;
 }
-.avonni-avatar-action-button_x-small {
+.avonni-avatar-group__action-button_x-small {
     width: 1.25rem;
     height: 1.25rem;
 }
