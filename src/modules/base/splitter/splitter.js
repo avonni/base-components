@@ -262,7 +262,7 @@ export default class Splitter extends LightningElement {
                 }
             });
         }
-        slot.remove();
+        // slot.remove();
 
         this.template
             .querySelectorAll('.splitter-orientation-horizontal')
