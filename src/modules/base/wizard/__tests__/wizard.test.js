@@ -4,6 +4,9 @@ import Wizard from 'c/wizard';
 // Not tested due to impossibility of targetting child component (mediaObject) slot content:
 // iconName
 
+// Not tested because it is asynchronous:
+// handleChange
+
 const STEPS = [
     {
         callbacks: {
@@ -69,7 +72,7 @@ describe('Wizard', () => {
         expect(element.hideNavigation).toBeFalsy();
         expect(element.iconName).toBeUndefined();
         expect(element.indicatorType).toBe('base');
-        expect(element.indicatorPosition).toBe('footer');
+        expect(element.indicatorPosition).toBe('bottom');
         expect(element.title).toBeUndefined();
         expect(element.variant).toBe('base');
     });
@@ -344,9 +347,9 @@ describe('Wizard', () => {
 
         element.currentStep = 'second-step';
 
-        const slotWrapper = element.shadowRoot.querySelector('main div');
+        const slot = element.shadowRoot.querySelector('main slot');
         STEPS.forEach((step) => {
-            slotWrapper.dispatchEvent(
+            slot.dispatchEvent(
                 new CustomEvent('wizardstepregister', {
                     bubbles: true,
                     detail: step
@@ -469,14 +472,14 @@ describe('Wizard', () => {
     });
 
     // indicator-position
-    it('indicatorPosition = footer', () => {
+    it('indicatorPosition = bottom', () => {
         const element = createElement('base-wizard', {
             is: Wizard
         });
 
         document.body.appendChild(element);
 
-        element.indicatorPosition = 'footer';
+        element.indicatorPosition = 'bottom';
 
         return Promise.resolve().then(() => {
             const footerNavigation = element.shadowRoot.querySelector(
@@ -485,20 +488,28 @@ describe('Wizard', () => {
             const headerNavigation = element.shadowRoot.querySelector(
                 'header c-primitive-wizard-navigation'
             );
+            const sideNavigation = element.shadowRoot.querySelector(
+                '.side-col c-primitive-wizard-navigation'
+            );
+            const mainCol = element.shadowRoot.querySelector('.main-col');
+            const wrapper = element.shadowRoot.querySelector('article');
 
-            expect(footerNavigation.indicatorPosition).toBe('footer');
+            expect(footerNavigation.indicatorPosition).toBe('bottom');
             expect(headerNavigation).toBeFalsy();
+            expect(sideNavigation).toBeFalsy();
+            expect(mainCol.classList).not.toContain('slds-col');
+            expect(wrapper.classList).not.toContain('slds-grid');
         });
     });
 
-    it('indicatorPosition = header', () => {
+    it('indicatorPosition = top', () => {
         const element = createElement('base-wizard', {
             is: Wizard
         });
 
         document.body.appendChild(element);
 
-        element.indicatorPosition = 'header';
+        element.indicatorPosition = 'top';
 
         return Promise.resolve().then(() => {
             const footerNavigation = element.shadowRoot.querySelector(
@@ -507,10 +518,80 @@ describe('Wizard', () => {
             const headerNavigation = element.shadowRoot.querySelector(
                 'header c-primitive-wizard-navigation'
             );
+            const sideNavigation = element.shadowRoot.querySelector(
+                '.side-col c-primitive-wizard-navigation'
+            );
+            const mainCol = element.shadowRoot.querySelector('.main-col');
+            const wrapper = element.shadowRoot.querySelector('article');
 
-            expect(footerNavigation.indicatorPosition).toBe('header');
+            expect(footerNavigation.indicatorPosition).toBe('top');
             expect(headerNavigation).toBeTruthy();
-            expect(headerNavigation.indicatorPosition).toBe('header');
+            expect(headerNavigation.indicatorPosition).toBe('top');
+            expect(sideNavigation).toBeFalsy();
+            expect(mainCol.classList).not.toContain('slds-col');
+            expect(wrapper.classList).not.toContain('slds-grid');
+        });
+    });
+
+    it('indicatorPosition = right', () => {
+        const element = createElement('base-wizard', {
+            is: Wizard
+        });
+
+        document.body.appendChild(element);
+
+        element.indicatorPosition = 'right';
+
+        return Promise.resolve().then(() => {
+            const footerNavigation = element.shadowRoot.querySelector(
+                'footer c-primitive-wizard-navigation'
+            );
+            const headerNavigation = element.shadowRoot.querySelector(
+                'header c-primitive-wizard-navigation'
+            );
+            const sideNavigation = element.shadowRoot.querySelector(
+                '.side-col c-primitive-wizard-navigation'
+            );
+            const mainCol = element.shadowRoot.querySelector('.main-col');
+            const wrapper = element.shadowRoot.querySelector('article');
+
+            expect(footerNavigation.indicatorPosition).toBe('right');
+            expect(headerNavigation).toBeFalsy();
+            expect(sideNavigation.indicatorPosition).toBe('right');
+            expect(mainCol.classList).toContain('slds-col');
+            expect(mainCol.classList).not.toContain('slds-order_2');
+            expect(wrapper.classList).toContain('slds-grid');
+        });
+    });
+
+    it('indicatorPosition = left', () => {
+        const element = createElement('base-wizard', {
+            is: Wizard
+        });
+
+        document.body.appendChild(element);
+
+        element.indicatorPosition = 'left';
+
+        return Promise.resolve().then(() => {
+            const footerNavigation = element.shadowRoot.querySelector(
+                'footer c-primitive-wizard-navigation'
+            );
+            const headerNavigation = element.shadowRoot.querySelector(
+                'header c-primitive-wizard-navigation'
+            );
+            const sideNavigation = element.shadowRoot.querySelector(
+                '.side-col c-primitive-wizard-navigation'
+            );
+            const mainCol = element.shadowRoot.querySelector('.main-col');
+            const wrapper = element.shadowRoot.querySelector('article');
+
+            expect(footerNavigation.indicatorPosition).toBe('left');
+            expect(headerNavigation).toBeFalsy();
+            expect(sideNavigation.indicatorPosition).toBe('left');
+            expect(mainCol.classList).toContain('slds-col');
+            expect(mainCol.classList).toContain('slds-order_2');
+            expect(wrapper.classList).toContain('slds-grid');
         });
     });
 
@@ -630,9 +711,9 @@ describe('Wizard', () => {
 
         document.body.appendChild(element);
 
-        const slotWrapper = element.shadowRoot.querySelector('main div');
+        const slot = element.shadowRoot.querySelector('main slot');
         STEPS.forEach((step) => {
-            slotWrapper.dispatchEvent(
+            slot.dispatchEvent(
                 new CustomEvent('wizardstepregister', {
                     bubbles: true,
                     detail: step
@@ -684,16 +765,16 @@ describe('Wizard', () => {
 
     // change
     // Depends on next()
-    it('change event', () => {
+    it('change event based on next()', () => {
         const element = createElement('base-wizard', {
             is: Wizard
         });
 
         document.body.appendChild(element);
 
-        const slotWrapper = element.shadowRoot.querySelector('main div');
+        const slot = element.shadowRoot.querySelector('main slot');
         STEPS.forEach((step) => {
-            slotWrapper.dispatchEvent(
+            slot.dispatchEvent(
                 new CustomEvent('wizardstepregister', {
                     bubbles: true,
                     detail: step

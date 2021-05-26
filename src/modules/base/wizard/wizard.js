@@ -350,13 +350,6 @@ export default class Wizard extends LightningElement {
         );
     }
 
-    get baseIndicator() {
-        return (
-            this.indicatorType === 'base-shaded' ||
-            this.indicatorType === 'base'
-        );
-    }
-
     get wrapperClass() {
         return classSet().add({
             'slds-grid slds-gutters slds-has-flexi-truncate slds-grid_vertical-stretch':
@@ -366,7 +359,7 @@ export default class Wizard extends LightningElement {
     }
 
     get mainColClass() {
-        return classSet().add({
+        return classSet('main-col').add({
             'slds-col':
                 this.indicatorPosition === 'right' ||
                 this.indicatorPosition === 'left',
@@ -375,7 +368,7 @@ export default class Wizard extends LightningElement {
     }
 
     get sideColClass() {
-        return classSet('slds-container_small').add({
+        return classSet('slds-container_small side-col').add({
             'slds-align-bottom': this.indicatorType === 'fractions',
             'slds-p-right_medium': this.indicatorPosition === 'right',
             'slds-p-left_medium': this.indicatorPosition === 'left',
