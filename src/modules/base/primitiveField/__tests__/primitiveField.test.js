@@ -1,7 +1,7 @@
 import { createElement } from 'lwc';
-import PrimitivePageHeaderField from 'c/primitivePageHeaderField';
+import PrimitiveField from 'c/primitiveField';
 
-describe('PrimitivePageHeaderField', () => {
+describe('PrimitiveField', () => {
     afterEach(() => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
@@ -10,7 +10,7 @@ describe('PrimitivePageHeaderField', () => {
 
     it('Default attributes', () => {
         const element = createElement('base-primitive-page-header-field', {
-            is: PrimitivePageHeaderField
+            is: PrimitiveField
         });
 
         expect(element.field).toBeUndefined();
@@ -22,7 +22,7 @@ describe('PrimitivePageHeaderField', () => {
     // All tests by type
     it('type = text', () => {
         const element = createElement('base-primitive-page-header-field', {
-            is: PrimitivePageHeaderField
+            is: PrimitiveField
         });
 
         element.field = {
@@ -71,7 +71,7 @@ describe('PrimitivePageHeaderField', () => {
 
     it('type = boolean, with true value', () => {
         const element = createElement('base-primitive-page-header-field', {
-            is: PrimitivePageHeaderField
+            is: PrimitiveField
         });
 
         element.field = {
@@ -115,7 +115,7 @@ describe('PrimitivePageHeaderField', () => {
 
     it('type = boolean, with false value', () => {
         const element = createElement('base-primitive-page-header-field', {
-            is: PrimitivePageHeaderField
+            is: PrimitiveField
         });
 
         element.field = {
@@ -164,7 +164,7 @@ describe('PrimitivePageHeaderField', () => {
 
     it('type = boolean, with no value', () => {
         const element = createElement('base-primitive-page-header-field', {
-            is: PrimitivePageHeaderField
+            is: PrimitiveField
         });
 
         element.field = {
@@ -212,7 +212,7 @@ describe('PrimitivePageHeaderField', () => {
 
     it('type = currency', () => {
         const element = createElement('base-primitive-page-header-field', {
-            is: PrimitivePageHeaderField
+            is: PrimitiveField
         });
 
         const field = {
@@ -287,7 +287,7 @@ describe('PrimitivePageHeaderField', () => {
 
     it('type = date', () => {
         const element = createElement('base-primitive-page-header-field', {
-            is: PrimitivePageHeaderField
+            is: PrimitiveField
         });
 
         const field = {
@@ -360,7 +360,7 @@ describe('PrimitivePageHeaderField', () => {
 
     it('type = email', () => {
         const element = createElement('base-primitive-page-header-field', {
-            is: PrimitivePageHeaderField
+            is: PrimitiveField
         });
 
         const field = {
@@ -407,7 +407,7 @@ describe('PrimitivePageHeaderField', () => {
 
     it('type = location', () => {
         const element = createElement('base-primitive-page-header-field', {
-            is: PrimitivePageHeaderField
+            is: PrimitiveField
         });
 
         const field = {
@@ -458,7 +458,7 @@ describe('PrimitivePageHeaderField', () => {
 
     it('type = number', () => {
         const element = createElement('base-primitive-page-header-field', {
-            is: PrimitivePageHeaderField
+            is: PrimitiveField
         });
 
         const field = {
@@ -527,7 +527,7 @@ describe('PrimitivePageHeaderField', () => {
 
     it('type = percent', () => {
         const element = createElement('base-primitive-page-header-field', {
-            is: PrimitivePageHeaderField
+            is: PrimitiveField
         });
 
         const field = {
@@ -597,7 +597,7 @@ describe('PrimitivePageHeaderField', () => {
 
     it('type = phone', () => {
         const element = createElement('base-primitive-page-header-field', {
-            is: PrimitivePageHeaderField
+            is: PrimitiveField
         });
 
         const field = {
@@ -644,7 +644,7 @@ describe('PrimitivePageHeaderField', () => {
 
     it('type = url', () => {
         const element = createElement('base-primitive-page-header-field', {
-            is: PrimitivePageHeaderField
+            is: PrimitiveField
         });
 
         const field = {

@@ -35,6 +35,14 @@
             "path": "src/modules/base/utilsPrivate/utilsPrivate.js"
         },
         {
+            "name": "c/activityTimeline",
+            "path": "src/modules/base/activityTimeline/activityTimeline.js"
+        },
+        {
+            "name": "c/activityTimelineItem",
+            "path": "src/modules/base/activityTimelineItem/activityTimelineItem.js"
+        },
+        {
             "name": "c/alert",
             "path": "src/modules/base/alert/alert.js"
         },
@@ -283,8 +291,8 @@
             "path": "src/modules/base/primitiveIframe/primitiveIframe.js"
         },
         {
-            "name": "c/primitivePageHeaderField",
-            "path": "src/modules/base/primitivePageHeaderField/primitivePageHeaderField.js"
+            "name": "c/primitiveField",
+            "path": "src/modules/base/primitiveField/primitiveField.js"
         },
         {
             "name": "c/primitiveProgressBarReferenceLine",
@@ -429,6 +437,10 @@
         {
             "name": "c/wizardStep",
             "path": "src/modules/base/wizardStep/wizardStep.js"
+        },
+        {
+            "name": "avonni/activityTimeline",
+            "path": "src/modules/base/activityTimeline/activityTimeline.js"
         },
         {
             "name": "avonni/alert",
@@ -708,6 +720,7 @@
         }
     ],
     "expose": [
+        "avonni/activityTimeline",
         "avonni/alert",
         "avonni/avatar",
         "avonni/avatarGroup",
