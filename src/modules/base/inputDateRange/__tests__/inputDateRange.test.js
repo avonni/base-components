@@ -32,6 +32,7 @@ describe('Input Date Range', () => {
         expect(element.required).toBeFalsy();
         expect(element.startDate).toBeUndefined();
         expect(element.endDate).toBeUndefined();
+        expect(element.variant).toBe('standard');
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -303,7 +304,7 @@ describe('Input Date Range', () => {
 
     // read-only
     // Depends on type
-    it('Input Date Range read only (false)', () => {
+    it('Input Date Range read only false', () => {
         const element = createElement('base-input-date-range', {
             is: InputDateRange
         });
@@ -358,7 +359,7 @@ describe('Input Date Range', () => {
             });
     });
 
-    it('Input Date Range read only (true)', () => {
+    it('Input Date Range read only true', () => {
         const element = createElement('base-input-date-range', {
             is: InputDateRange
         });
@@ -426,6 +427,87 @@ describe('Input Date Range', () => {
             const required = element.shadowRoot.querySelector('.slds-required');
             expect(required).toBeTruthy();
             expect(required.textContent).toBe('*');
+        });
+    });
+
+    // variant
+    it('Input Date Range variant standard', () => {
+        const element = createElement('base-input-date-range', {
+            is: InputDateRange
+        });
+        document.body.appendChild(element);
+
+        element.variant = 'standard';
+
+        return Promise.resolve().then(() => {
+            const label = element.shadowRoot.querySelector(
+                '.avonni-label-container'
+            );
+            const wrapper = element.shadowRoot.querySelector('div');
+
+            expect(label.classList).not.toContain('slds-assistive-text');
+            expect(label.classList).not.toContain('slds-m-right_small');
+            expect(wrapper.classList).not.toContain('slds-grid');
+        });
+    });
+
+    it('Input Date Range variant label-hidden', () => {
+        const element = createElement('base-input-date-range', {
+            is: InputDateRange
+        });
+        document.body.appendChild(element);
+
+        element.variant = 'label-hidden';
+
+        return Promise.resolve().then(() => {
+            const label = element.shadowRoot.querySelector(
+                '.avonni-label-container'
+            );
+            const wrapper = element.shadowRoot.querySelector('div');
+
+            expect(label.classList).toContain('slds-assistive-text');
+            expect(label.classList).not.toContain('slds-m-right_small');
+            expect(wrapper.classList).not.toContain('slds-grid');
+        });
+    });
+
+    it('Input Date Range variant label-inline', () => {
+        const element = createElement('base-input-date-range', {
+            is: InputDateRange
+        });
+        document.body.appendChild(element);
+
+        element.variant = 'label-inline';
+
+        return Promise.resolve().then(() => {
+            const label = element.shadowRoot.querySelector(
+                '.avonni-label-container'
+            );
+            const wrapper = element.shadowRoot.querySelector('div');
+
+            expect(label.classList).not.toContain('slds-assistive-text');
+            expect(label.classList).toContain('slds-m-right_small');
+            expect(wrapper.classList).toContain('slds-grid');
+        });
+    });
+
+    it('Input Date Range variant stacked', () => {
+        const element = createElement('base-input-date-range', {
+            is: InputDateRange
+        });
+        document.body.appendChild(element);
+
+        element.variant = 'stacked';
+
+        return Promise.resolve().then(() => {
+            const label = element.shadowRoot.querySelector(
+                '.avonni-label-container'
+            );
+            const wrapper = element.shadowRoot.querySelector('div');
+
+            expect(label.classList).not.toContain('slds-assistive-text');
+            expect(label.classList).not.toContain('slds-m-right_small');
+            expect(wrapper.classList).not.toContain('slds-grid');
         });
     });
 
