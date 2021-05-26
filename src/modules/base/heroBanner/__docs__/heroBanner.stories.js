@@ -324,12 +324,12 @@ export default {
                 max: 100,
                 step: 1
             },
-            defaultValue: 50,
+            defaultValue: 100,
             description:
                 'Defines the width of the content inside of the banner in percentage.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 50 }
+                defaultValue: { summary: 100 }
             }
         },
         primaryButtonLabel: {
@@ -371,11 +371,11 @@ export default {
             control: {
                 type: 'color'
             },
-            defaultValue: '#0932c6',
+            defaultValue: '#0070d2',
             description: 'Defines the primary button background color.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: '#0932c6' }
+                defaultValue: { summary: '#0070d2' }
             }
         },
         primaryButtonBackgroundHoverColor: {
@@ -383,11 +383,11 @@ export default {
             control: {
                 type: 'color'
             },
-            defaultValue: '#0932c6',
+            defaultValue: '#005fb2',
             description: 'Defines the primary button background hover color.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: '#0932c6' }
+                defaultValue: { summary: '#005fb2' }
             }
         },
         primaryButtonBorderColor: {
@@ -395,9 +395,11 @@ export default {
             control: {
                 type: 'color'
             },
+            defaultValue: '#0070d2',
             description: 'Defines the primary button border color.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                defaultValue: { summary: '#0070d2' }
             }
         },
         primaryButtonBorderRadius: {
@@ -411,7 +413,8 @@ export default {
             defaultValue: 4,
             description: 'Defines the primary button border radius in px.',
             table: {
-                type: { summary: 'number' }
+                type: { summary: 'number' },
+                defaultValue: { summary: 4 }
             }
         },
         secondaryButtonLabel: {
@@ -455,11 +458,11 @@ export default {
             control: {
                 type: 'color'
             },
-            defaultValue: '#0932c6',
+            defaultValue: '#0070d2',
             description: 'Defines the secondary button background color.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: '#0932c6' }
+                defaultValue: { summary: '#0070d2' }
             }
         },
         secondaryButtonBackgroundHoverColor: {
@@ -467,11 +470,11 @@ export default {
             control: {
                 type: 'color'
             },
-            defaultValue: '#0932c6',
+            defaultValue: '#005fb2',
             description: 'Defines the secondary button background hover color.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: '#0932c6' }
+                defaultValue: { summary: '#005fb2' }
             }
         },
         secondaryButtonBorderColor: {
@@ -479,6 +482,7 @@ export default {
             control: {
                 type: 'color'
             },
+            defaultValue: '#0070d2',
             description: 'Defines the secondary button border color.',
             table: {
                 type: { summary: 'string' }
@@ -495,7 +499,8 @@ export default {
             defaultValue: 4,
             description: 'Defines the secondary button border radius in px.',
             table: {
-                type: { summary: 'number' }
+                type: { summary: 'number' },
+                defaultValue: { summary: 4 }
             }
         }
     }

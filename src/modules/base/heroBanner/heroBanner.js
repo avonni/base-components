@@ -28,11 +28,12 @@ const font_weight_options = {
 
 const DEFAULT_TEXT_COLOR = '#ffffff';
 const DEFAULT_BACKGROUND_COLOR = '#ffffff';
-const DEFAULT_BUTTON_BACKGROUND_COLOR = '#0932c6';
-const DEFAULT_BUTTON_BACKGROUND_HOVER_COLOR = '#092695';
+const DEFAULT_BUTTON_BACKGROUND_COLOR = '#0070d2';
+const DEFAULT_BUTTON_BACKGROUND_HOVER_COLOR = '#005fb2';
+const DEFAULT_BUTTON_BORDER_COLOR = '#0070d2';
 const DEFAULT_HEIGHT = 400;
 const DEFAULT_MAX_WIDTH = 960;
-const DEFAULT_CONTENT_WIDTH = 50;
+const DEFAULT_CONTENT_WIDTH = 100;
 const DEFAULT_LINEAR_GRADIENT = 'rgba(0,0,0,0.4), rgba(0,0,0,0.4)';
 const DEFAULT_FONT_FAMILY = '"Salesforce Sans", Arial, sans-serif';
 const DEFAULT_SHADOW_COLOR = '1px 1px 0 rgb(0 0 0 / 50%)';
@@ -60,7 +61,7 @@ export default class HeroBanner extends LightningElement {
     @api primaryButtonBackgroundColor = DEFAULT_BUTTON_BACKGROUND_COLOR;
     @api
     primaryButtonBackgroundHoverColor = DEFAULT_BUTTON_BACKGROUND_HOVER_COLOR;
-    @api primaryButtonBorderColor;
+    @api primaryButtonBorderColor = DEFAULT_BUTTON_BORDER_COLOR;
     @api primaryButtonBorderRadius = DEFAULT_BUTTON_BORDER_RADIUS;
     @api secondaryButtonLabel;
     @api secondaryButtonTextColor = DEFAULT_TEXT_COLOR;
@@ -68,7 +69,7 @@ export default class HeroBanner extends LightningElement {
     @api secondaryButtonBackgroundColor = DEFAULT_BUTTON_BACKGROUND_COLOR;
     @api
     secondaryButtonBackgroundHoverColor = DEFAULT_BUTTON_BACKGROUND_HOVER_COLOR;
-    @api secondaryButtonBorderColor;
+    @api secondaryButtonBorderColor = DEFAULT_BUTTON_BORDER_COLOR;
     @api secondaryButtonBorderRadius = DEFAULT_BUTTON_BORDER_RADIUS;
 
     _contentHorizontalAlignment = horizontal_alignement_options.default;
@@ -260,11 +261,11 @@ export default class HeroBanner extends LightningElement {
     }
 
     get computedPrimaryButtonStyling() {
-        return `--background-primary: ${this.primaryButtonBackgroundColor}; --color-primary: ${this.primaryButtonTextColor}; border-radius: ${this.primaryButtonBorderRadius}px; border-color: ${this.primaryButtonBorderColor}; --background-primary_hover: ${this.primaryButtonBackgroundHoverColor}; --color-primary_hover: ${this.primaryButtonTextHoverColor};`;
+        return `--background-primary: ${this.primaryButtonBackgroundColor}; --color-primary: ${this.primaryButtonTextColor}; border-radius: ${this.primaryButtonBorderRadius}px; --border-primary_color: ${this.primaryButtonBorderColor}; --background-primary_hover: ${this.primaryButtonBackgroundHoverColor}; --color-primary_hover: ${this.primaryButtonTextHoverColor};`;
     }
 
     get computedSecondaryButtonStyling() {
-        return `--background-secondary: ${this.secondaryButtonBackgroundColor}; --color-secondary: ${this.secondaryButtonTextColor}; border-radius: ${this.secondaryButtonBorderRadius}px; border-color: ${this.secondaryButtonBorderColor}; --background-secondary_hover: ${this.secondaryButtonBackgroundHoverColor}; --color-secondary_hover: ${this.secondaryButtonTextHoverColor};`;
+        return `--background-secondary: ${this.secondaryButtonBackgroundColor}; --color-secondary: ${this.secondaryButtonTextColor}; border-radius: ${this.secondaryButtonBorderRadius}px; --border-secondary_color: ${this.secondaryButtonBorderColor}; --background-secondary_hover: ${this.secondaryButtonBackgroundHoverColor}; --color-secondary_hover: ${this.secondaryButtonTextHoverColor};`;
     }
 
     get computedContentContainer() {

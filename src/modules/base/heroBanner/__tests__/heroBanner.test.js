@@ -47,7 +47,21 @@ describe('Hero Banner', () => {
         expect(element.maxWidth).toBe(960);
         expect(element.contentHorizontalAlignment).toBe('left');
         expect(element.contentVerticalAlignment).toBe('center');
-        expect(element.contentWidth).toBe(50);
+        expect(element.contentWidth).toBe(100);
+        expect(element.primaryButtonLabel).toBeUndefined();
+        expect(element.primaryButtonTextColor).toBe('#ffffff');
+        expect(element.primaryButtonTextHoverColor).toBe('#ffffff');
+        expect(element.primaryButtonBackgroundColor).toBe('#0070d2');
+        expect(element.primaryButtonBackgroundHoverColor).toBe('#005fb2');
+        expect(element.primaryButtonBorderColor).toBe('#0070d2');
+        expect(element.primaryButtonBorderRadius).toBe(4);
+        expect(element.secondaryButtonLabel).toBeUndefined();
+        expect(element.secondaryButtonTextColor).toBe('#ffffff');
+        expect(element.secondaryButtonTextHoverColor).toBe('#ffffff');
+        expect(element.secondaryButtonBackgroundColor).toBe('#0070d2');
+        expect(element.secondaryButtonBackgroundHoverColor).toBe('#005fb2');
+        expect(element.secondaryButtonBorderColor).toBe('#0070d2');
+        expect(element.secondaryButtonBorderRadius).toBe(4);
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -820,6 +834,288 @@ describe('Hero Banner', () => {
         return Promise.resolve().then(() => {
             const textContainer = element.shadowRoot.querySelector('span');
             expect(textContainer.style.width).toBe('100%');
+        });
+    });
+
+    // Primary button label
+    it('Hero Banner primary button label', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.primaryButtonLabel = 'This is a primary button label';
+
+        return Promise.resolve().then(() => {
+            const primaryButton = element.shadowRoot.querySelector(
+                '.avonni-hero-banner-primary-button'
+            );
+            expect(primaryButton.textContent).toBe(
+                'This is a primary button label'
+            );
+        });
+    });
+
+    // Primary button text color
+    it('Hero Banner primary button text color', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.primaryButtonLabel = 'This is a primary button label';
+        element.primaryButtonTextColor = 'rgba(0,0,0,0)';
+
+        return Promise.resolve().then(() => {
+            const primaryButton = element.shadowRoot.querySelector(
+                '.avonni-hero-banner-primary-button'
+            );
+            expect(Object.values(primaryButton.style._values)).toContain(
+                'rgba(0,0,0,0)'
+            );
+        });
+    });
+
+    // Primary button text hover color
+    it('Hero Banner primary button text hover color', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.primaryButtonLabel = 'This is a primary button label';
+        element.primaryButtonTextHoverColor = 'rgba(1,1,1,1)';
+
+        return Promise.resolve().then(() => {
+            const primaryButton = element.shadowRoot.querySelector(
+                '.avonni-hero-banner-primary-button'
+            );
+            expect(Object.values(primaryButton.style._values)).toContain(
+                'rgba(1,1,1,1)'
+            );
+        });
+    });
+
+    // Primary button background color
+    it('Hero Banner primary button background color', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.primaryButtonLabel = 'This is a primary button label';
+        element.primaryButtonBackgroundColor = 'rgba(2,2,2,2)';
+
+        return Promise.resolve().then(() => {
+            const primaryButton = element.shadowRoot.querySelector(
+                '.avonni-hero-banner-primary-button'
+            );
+            expect(Object.values(primaryButton.style._values)).toContain(
+                'rgba(2,2,2,2)'
+            );
+        });
+    });
+
+    // Primary button background hover color
+    it('Hero Banner primary button background hover color', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.primaryButtonLabel = 'This is a primary button label';
+        element.primaryButtonBackgroundHoverColor = 'rgba(3,3,3,3)';
+
+        return Promise.resolve().then(() => {
+            const primaryButton = element.shadowRoot.querySelector(
+                '.avonni-hero-banner-primary-button'
+            );
+            expect(Object.values(primaryButton.style._values)).toContain(
+                'rgba(3,3,3,3)'
+            );
+        });
+    });
+
+    // Primary button border color
+    it('Hero Banner primary button border color', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.primaryButtonLabel = 'This is a primary button label';
+        element.primaryButtonBorderColor = 'rgba(4,4,4,4)';
+
+        return Promise.resolve().then(() => {
+            const primaryButton = element.shadowRoot.querySelector(
+                '.avonni-hero-banner-primary-button'
+            );
+            expect(Object.values(primaryButton.style._values)).toContain(
+                'rgba(4,4,4,4)'
+            );
+        });
+    });
+
+    // Primary button border radius
+    it('Hero Banner primary button border radius', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.primaryButtonLabel = 'This is a primary button label';
+        element.primaryButtonBorderRadius = 2;
+
+        const borderRadius = '2px';
+
+        return Promise.resolve().then(() => {
+            const primaryButton = element.shadowRoot.querySelector(
+                '.avonni-hero-banner-primary-button'
+            );
+            expect(Object.values(primaryButton.style._values)).toContain(
+                borderRadius
+            );
+        });
+    });
+
+    // Secondary button label
+    it('Hero Banner secondary button label', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.secondaryButtonLabel = 'This is a secondary button label';
+
+        return Promise.resolve().then(() => {
+            const secondaryButton = element.shadowRoot.querySelector(
+                '.avonni-hero-banner-secondary-button'
+            );
+            expect(secondaryButton.textContent).toBe(
+                'This is a secondary button label'
+            );
+        });
+    });
+
+    // Secondary button text color
+    it('Hero Banner secondary button text color', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.secondaryButtonLabel = 'This is a secondary button label';
+        element.secondaryButtonTextColor = 'rgba(0,0,0,0)';
+
+        return Promise.resolve().then(() => {
+            const secondaryButton = element.shadowRoot.querySelector(
+                '.avonni-hero-banner-secondary-button'
+            );
+            expect(Object.values(secondaryButton.style._values)).toContain(
+                'rgba(0,0,0,0)'
+            );
+        });
+    });
+
+    // Secondary button text hover color
+    it('Hero Banner secondary button text hover color', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.secondaryButtonLabel = 'This is a secondary button label';
+        element.secondaryButtonTextHoverColor = 'rgba(1,1,1,1)';
+
+        return Promise.resolve().then(() => {
+            const secondaryButton = element.shadowRoot.querySelector(
+                '.avonni-hero-banner-secondary-button'
+            );
+            expect(Object.values(secondaryButton.style._values)).toContain(
+                'rgba(1,1,1,1)'
+            );
+        });
+    });
+
+    // Secondary button background color
+    it('Hero Banner secondary button background color', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.secondaryButtonLabel = 'This is a secondary button label';
+        element.secondaryButtonBackgroundColor = 'rgba(2,2,2,2)';
+
+        return Promise.resolve().then(() => {
+            const secondaryButton = element.shadowRoot.querySelector(
+                '.avonni-hero-banner-secondary-button'
+            );
+            expect(Object.values(secondaryButton.style._values)).toContain(
+                'rgba(2,2,2,2)'
+            );
+        });
+    });
+
+    // Secondary button background hover color
+    it('Hero Banner secondary button background hover color', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.secondaryButtonLabel = 'This is a secondary button label';
+        element.secondaryButtonBackgroundHoverColor = 'rgba(3,3,3,3)';
+
+        return Promise.resolve().then(() => {
+            const secondaryButton = element.shadowRoot.querySelector(
+                '.avonni-hero-banner-secondary-button'
+            );
+            expect(Object.values(secondaryButton.style._values)).toContain(
+                'rgba(3,3,3,3)'
+            );
+        });
+    });
+
+    // Secondary button border color
+    it('Hero Banner secondary button border color', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.secondaryButtonLabel = 'This is a secondary button label';
+        element.secondaryButtonBorderColor = 'rgba(4,4,4,4)';
+
+        return Promise.resolve().then(() => {
+            const secondaryButton = element.shadowRoot.querySelector(
+                '.avonni-hero-banner-secondary-button'
+            );
+            expect(Object.values(secondaryButton.style._values)).toContain(
+                'rgba(4,4,4,4)'
+            );
+        });
+    });
+
+    // Secondary button border radius
+    it('Hero Banner secondary button border radius', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.secondaryButtonLabel = 'This is a secondary button label';
+        element.secondaryButtonBorderRadius = 2;
+
+        const borderRadius = '2px';
+
+        return Promise.resolve().then(() => {
+            const secondaryButton = element.shadowRoot.querySelector(
+                '.avonni-hero-banner-secondary-button'
+            );
+            expect(Object.values(secondaryButton.style._values)).toContain(
+                borderRadius
+            );
         });
     });
 });
