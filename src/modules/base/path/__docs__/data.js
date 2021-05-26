@@ -37,6 +37,11 @@ const STEPS = [
             "Respond to lead within 5 minutes. Visit the lead's website to learn about their business.",
         actions: [
             {
+                name: 'action-edit-phone',
+                label: 'Edit phone',
+                iconName: 'utility:edit'
+            },
+            {
                 name: 'action-add-email',
                 label: 'Add email',
                 iconName: 'utility:email'
@@ -63,7 +68,21 @@ const STEPS = [
             }
         ],
         guidance:
-            "Qualify the opportunity and confirm budget. What's their business? What problems are they trying to solve? How does solving these problems help them?"
+            "Qualify the opportunity and confirm budget. What's their business? What problems are they trying to solve? How does solving these problems help them?",
+        actions: [
+            {
+                name: 'action-edit',
+                iconName: 'utility:edit'
+            },
+            {
+                name: 'action-add',
+                iconName: 'utility:add'
+            },
+            {
+                name: 'action-remove',
+                iconName: 'utility:delete'
+            }
+        ]
     },
     {
         name: 'contacted',

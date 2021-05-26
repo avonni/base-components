@@ -142,29 +142,35 @@
                 <div if:true={coachingIsVisible} class="slds-path__content">
                     <div class="slds-path__coach slds-grid">
                         <div class="slds-path__keys">
-                            <div class="slds-grid slds-path__coach-title">
-                                <h2 class="slds-col">{keyFieldsLabel}</h2>
+                            <div class="slds-grid">
+                                <h2 class="slds-col slds-path__coach-title">
+                                    {keyFieldsLabel}
+                                </h2>
                                 <template
                                     for:each={computedCurrentStep.actions}
                                     for:item="action"
                                 >
-                                    <button
-                                        class="slds-p-horizontal_small slds-path__coach-edit slds-text-body_small slds-button"
+                                    <lightning-button
+                                        if:true={action.label}
+                                        class="slds-m-horizontal_xx-small"
                                         key={action.name}
+                                        icon-name={action.iconName}
+                                        label={action.label}
                                         name={action.name}
                                         disabled={action.disabled}
                                         data-step-name={computedCurrentStep.name}
                                         onclick={handleActionClick}
-                                    >
-                                        <lightning-icon
-                                            if:true={action.iconName}
-                                            class="slds-current-color slds-m-right_x-small"
-                                            icon-name={action.iconName}
-                                            size="xx-small"
-                                            aria-hidden="true"
-                                        ></lightning-icon>
-                                        {action.label}
-                                    </button>
+                                    ></lightning-button>
+                                    <lightning-button-icon
+                                        if:false={action.label}
+                                        class="slds-m-horizontal_xx-small"
+                                        key={action.name}
+                                        icon-name={action.iconName}
+                                        name={action.name}
+                                        disabled={action.disabled}
+                                        data-step-name={computedCurrentStep.name}
+                                        onclick={handleActionClick}
+                                    ></lightning-button-icon>
                                 </template>
                             </div>
                             <div class="slds-form" role="list">
