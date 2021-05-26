@@ -1,121 +1,122 @@
 <template>
-    <div class="avonni-label-container">
-        <abbr if:true={required} title="required" class="slds-required">*</abbr>
-        <p if:true={label}>{label}</p>
-        <lightning-helptext
-            if:true={fieldLevelHelp}
-            content={fieldLevelHelp}
-        ></lightning-helptext>
-    </div>
-    <div class="avonni-date-range-container">
-        <div class="slds-form-element">
-            <label
-                if:true={labelStartDate}
-                class="slds-form-element__label"
-                for="start-date"
-                >{labelStartDate}</label
-            >
-            <div
-                class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right"
-            >
-                <input
-                    type="text"
-                    id="start-date"
-                    class="slds-input start-date"
-                    value={startDateString}
-                    onfocus={handleFocusStartDate}
-                    onblur={handleBlurStartDate}
-                    disabled={disabled}
-                    aria-readonly={readOnly}
-                    readonly={readOnly}
-                />
-                <lightning-icon
-                    icon-name="utility:event"
-                    size="xx-small"
-                    class="slds-input__icon slds-input__icon_right"
-                ></lightning-icon>
-            </div>
-            <div
-                if:true={isOpenStartDate}
-                class="slds-datepicker slds-dropdown slds-dropdown_left"
-                onmouseenter={cancelBlurStartDate}
-                onmouseleave={allowBlurStartDate}
-            >
-                <c-calendar
-                    value={startDate}
-                    multi-value={endDate}
-                    onchange={handleChangeStartDate}
-                    onprivatefocus={handlePrivateFocusStartDate}
-                    onprivateblur={handlePrivateBlurStartDate}
-                ></c-calendar>
-            </div>
+    <div class={computedWrapperClass}>
+        <div class={computedLabelClass}>
+            <abbr if:true={required} title="required" class="slds-required">*</abbr>
+            <p if:true={label}>{label}</p>
+            <lightning-helptext
+                if:true={fieldLevelHelp}
+                content={fieldLevelHelp}
+            ></lightning-helptext>
         </div>
-        <lightning-input
-            if:true={showTime}
-            type="time"
-            name="start-time"
-            label="Start time"
-            variant="label-hidden"
-            value={startTime}
-            time-style={timeStyle}
-            onchange={handleChangeStartTime}
-            disabled={disabled}
-            read-only={readOnly}
-        ></lightning-input>
-
-        <div class="slds-form-element">
-            <label
-                if:true={labelEndDate}
-                class="slds-form-element__label"
-                for="end-date"
-                >{labelEndDate}</label
-            >
-            <div
-                class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right"
-            >
-                <input
-                    type="text"
-                    id="end-date"
-                    class="slds-input end-date"
-                    value={endDateString}
-                    onfocus={handleFocusEndDate}
-                    onblur={handleBlurEndDate}
-                    disabled={disabled}
-                    aria-readonly={readOnly}
-                    readonly={readOnly}
-                />
-                <lightning-icon
-                    icon-name="utility:event"
-                    size="xx-small"
-                    class="slds-input__icon slds-input__icon_right"
-                ></lightning-icon>
+        <div class="avonni-date-range-container">
+            <div class="slds-form-element">
+                <label
+                    if:true={labelStartDate}
+                    class="slds-form-element__label"
+                    for="start-date"
+                    >{labelStartDate}</label
+                >
+                <div
+                    class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right"
+                >
+                    <input
+                        type="text"
+                        id="start-date"
+                        class="slds-input start-date"
+                        value={startDateString}
+                        onfocus={handleFocusStartDate}
+                        onblur={handleBlurStartDate}
+                        disabled={disabled}
+                        aria-readonly={readOnly}
+                        readonly={readOnly}
+                    />
+                    <lightning-icon
+                        icon-name="utility:event"
+                        size="xx-small"
+                        class="slds-input__icon slds-input__icon_right"
+                    ></lightning-icon>
+                </div>
+                <div
+                    if:true={isOpenStartDate}
+                    class="slds-datepicker slds-dropdown slds-dropdown_left"
+                    onmouseenter={cancelBlurStartDate}
+                    onmouseleave={allowBlurStartDate}
+                >
+                    <c-calendar
+                        value={startDate}
+                        multi-value={endDate}
+                        onchange={handleChangeStartDate}
+                        onprivatefocus={handlePrivateFocusStartDate}
+                        onprivateblur={handlePrivateBlurStartDate}
+                    ></c-calendar>
+                </div>
             </div>
-            <div
-                if:true={isOpenEndDate}
-                class="slds-datepicker slds-dropdown slds-dropdown_left"
-                onmouseenter={cancelBlurEndDate}
-                onmouseleave={allowBlurEndDate}
-            >
-                <c-calendar
-                    value={endDate}
-                    multi-value={startDate}
-                    onchange={handleChangeEndDate}
-                    onprivatefocus={handlePrivateFocusEndDate}
-                    onprivateblur={handlePrivateBlurEndDate}
-                ></c-calendar>
+            <lightning-input
+                if:true={showTime}
+                type="time"
+                name="start-time"
+                label="Start time"
+                variant="label-hidden"
+                value={startTime}
+                time-style={timeStyle}
+                onchange={handleChangeStartTime}
+                disabled={disabled}
+                read-only={readOnly}
+            ></lightning-input>
+            <div class="slds-form-element">
+                <label
+                    if:true={labelEndDate}
+                    class="slds-form-element__label"
+                    for="end-date"
+                    >{labelEndDate}</label
+                >
+                <div
+                    class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right"
+                >
+                    <input
+                        type="text"
+                        id="end-date"
+                        class="slds-input end-date"
+                        value={endDateString}
+                        onfocus={handleFocusEndDate}
+                        onblur={handleBlurEndDate}
+                        disabled={disabled}
+                        aria-readonly={readOnly}
+                        readonly={readOnly}
+                    />
+                    <lightning-icon
+                        icon-name="utility:event"
+                        size="xx-small"
+                        class="slds-input__icon slds-input__icon_right"
+                    ></lightning-icon>
+                </div>
+                <div
+                    if:true={isOpenEndDate}
+                    class="slds-datepicker slds-dropdown slds-dropdown_left"
+                    onmouseenter={cancelBlurEndDate}
+                    onmouseleave={allowBlurEndDate}
+                >
+                    <c-calendar
+                        value={endDate}
+                        multi-value={startDate}
+                        onchange={handleChangeEndDate}
+                        onprivatefocus={handlePrivateFocusEndDate}
+                        onprivateblur={handlePrivateBlurEndDate}
+                    ></c-calendar>
+                </div>
             </div>
+            <lightning-input
+                if:true={showTime}
+                type="time"
+                name="end-time"
+                label="End time"
+                variant="label-hidden"
+                value={endTime}
+                time-style={timeStyle}
+                onchange={handleChangeEndTime}
+                disabled={disabled}
+                read-only={readOnly}
+            ></lightning-input>
         </div>
-        <lightning-input
-            if:true={showTime}
-            type="time"
-            name="end-time"
-            label="End time"
-            variant="label-hidden"
-            value={endTime}
-            time-style={timeStyle}
-            onchange={handleChangeEndTime}
-            disabled={disabled}
-            read-only={readOnly}
-        ></lightning-input>
     </div>
 </template>

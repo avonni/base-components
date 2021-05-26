@@ -1,9 +1,21 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { parseDateTime } from 'c/internationalizationLibrary';
+import { classSet } from 'c/utils';
 
-const validTypes = {valid: ['date', 'datetime'], default: 'date'};
-const validDateStyle = {valid: ['short', 'medium', 'long'], defaultDate: 'medium', defaultTime:'short' };
+const TYPES = {
+    valid: ['date', 'datetime'],
+    default: 'date'
+};
+const DATE_STYLES = {
+    valid: ['short', 'medium', 'long'],
+    defaultDate: 'medium',
+    defaultTime:'short'
+};
+const VARIANTS = {
+    valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked'],
+    default: 'standard'
+};
 
 export default class InputDateRange extends LightningElement {
     @api fieldLevelHelp;
@@ -15,12 +27,13 @@ export default class InputDateRange extends LightningElement {
     _startDate;
     _endDate;
 
-    _dateStyle = validDateStyle.defaultDate;
-    _timeStyle = validDateStyle.defaultTime;
-    _type = validTypes.default;
+    _dateStyle = DATE_STYLES.defaultDate;
+    _timeStyle = DATE_STYLES.defaultTime;
+    _type = TYPES.default;
     _disabled = false;
     _required = false;
     _readOnly = false;
+    _variant = VARIANTS.default;
 
     startTime;
     endTime;
@@ -69,8 +82,8 @@ export default class InputDateRange extends LightningElement {
 
     set dateStyle(value) {
         this._dateStyle = normalizeString(value, {
-            fallbackValue: validDateStyle.defaultDate,
-            validValues: validDateStyle.valid
+            fallbackValue: DATE_STYLES.defaultDate,
+            validValues: DATE_STYLES.valid
         });
     }
 
@@ -81,8 +94,8 @@ export default class InputDateRange extends LightningElement {
 
     set timeStyle(value) {
         this._timeStyle = normalizeString(value, {
-            fallbackValue: validDateStyle.defaultTime,
-            validValues: validDateStyle.valid
+            fallbackValue: DATE_STYLES.defaultTime,
+            validValues: DATE_STYLES.valid
         });
     }
 
@@ -93,8 +106,8 @@ export default class InputDateRange extends LightningElement {
 
     set type(type) {
         this._type = normalizeString(type, {
-            fallbackValue: validTypes.default,
-            validValues: validTypes.valid
+            fallbackValue: TYPES.default,
+            validValues: TYPES.valid
         });
         this.initStartDate();
         this.initEndtDate();
@@ -127,6 +140,18 @@ export default class InputDateRange extends LightningElement {
         this._required = normalizeBoolean(value);
     }
 
+    @api 
+    get variant() {
+        return this._variant;
+    }
+
+    set variant(value) {
+        this._variant = normalizeString(value, {
+            fallbackValue: VARIANTS.default,
+            validValues: VARIANTS.valid
+        });
+    }
+
     get showTime() {
         return this.type === 'datetime';
     }
@@ -149,6 +174,19 @@ export default class InputDateRange extends LightningElement {
         }
 
         return dateStr;
+    }
+
+    get computedLabelClass() {
+        return classSet('avonni-label-container').add({
+            'slds-assistive-text': this.variant === 'label-hidden',
+            'slds-m-right_small': this.variant === 'label-inline'
+        }).toString();
+    }
+
+    get computedWrapperClass() {
+        return classSet().add({
+            'slds-grid': this.variant === 'label-inline'
+        }).toString();
     }
 
     @api
