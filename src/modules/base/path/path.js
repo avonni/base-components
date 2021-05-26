@@ -366,7 +366,9 @@ export default class Path extends LightningElement {
                     target: () =>
                         this.template.querySelector(
                             `a[data-step-name=${step.name}]`
-                        )
+                        ),
+                    align: { horizontal: 'center' },
+                    targetAlign: { horizontal: 'center' }
                 });
                 step.tooltip = tooltip;
             }
