@@ -97,6 +97,18 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        iconSize: {
+            name: 'icon-size',
+            control: {
+                type: 'select'
+            },
+            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+            defaultValue: 'medium',
+            description: 'The size of the icon',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         variant: {
             control: {
                 type: 'select'

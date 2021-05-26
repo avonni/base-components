@@ -20,7 +20,8 @@ export const DynamicMenu = ({
     isLoading,
     variant,
     menuAlignment,
-    disabled
+    disabled,
+    iconSize
 }) => {
     const element = document.createElement('ac-base-dynamic-menu');
     element.iconName = iconName;
@@ -38,5 +39,6 @@ export const DynamicMenu = ({
     element.variant = variant;
     element.menuAlignment = menuAlignment;
     element.disabled = disabled;
+    element.iconSize = iconSize;
     return element;
 };
