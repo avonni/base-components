@@ -190,11 +190,11 @@
                                                 <div
                                                     class="slds-form-element__control"
                                                 >
-                                                    <div
-                                                        class="slds-form-element__static"
-                                                    >
-                                                        {field.value}
-                                                    </div>
+                                                    <c-output-data
+                                                        type={field.type}
+                                                        type-attributes={field.typeAttributes}
+                                                        value={field.value}
+                                                    ></c-output-data>
                                                 </div>
                                             </div>
                                         </div>

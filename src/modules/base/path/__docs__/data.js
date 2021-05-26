@@ -24,11 +24,13 @@ const STEPS = [
             },
             {
                 label: 'Phone',
-                value: '514-234-5678'
+                value: '514-234-5678',
+                type: 'phone'
             },
             {
                 label: 'Website',
-                value: 'https://www.avonni.app/'
+                value: 'https://www.avonni.app/',
+                type: 'url'
             }
         ],
         guidance:
@@ -56,7 +58,8 @@ const STEPS = [
             },
             {
                 label: 'Number of employees',
-                value: '2300'
+                value: '2300',
+                type: 'number'
             }
         ],
         guidance:
@@ -69,7 +72,13 @@ const STEPS = [
         keyFields: [
             {
                 label: 'Date of call',
-                value: '2021/10/23'
+                value: new Date('2021/10/23'),
+                type: 'date',
+                typeAttributes: {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit'
+                }
             },
             {
                 label: 'Notes',
@@ -87,11 +96,16 @@ const STEPS = [
         keyFields: [
             {
                 label: 'Close date',
-                value: '2021/10/30'
+                value: new Date('2021/10/30'),
+                type: 'date'
             },
             {
                 label: 'Budget Confirmed',
-                value: '$300.000'
+                value: 300000,
+                type: 'currency',
+                typeAttributes: {
+                    currencyCode: 'CAD'
+                }
             }
         ],
         hideDefaultActions: true
