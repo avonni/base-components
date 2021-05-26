@@ -267,25 +267,13 @@ export default {
         },
         height: {
             control: {
-                type: 'text'
+                type: 'number'
             },
             defaultValue: 400,
             description: 'Defines the height of the banner. ',
             table: {
                 type: { summary: 'number' },
                 defaultValue: { summary: 400 }
-            }
-        },
-        maxWidth: {
-            name: 'max-width',
-            control: {
-                type: 'text'
-            },
-            defaultValue: 960,
-            description: 'Defines the height of the banner. ',
-            table: {
-                type: { summary: 'number' },
-                defaultValue: { summary: 960 }
             }
         },
         contentHorizontalAlignment: {
@@ -314,6 +302,22 @@ export default {
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'center' }
+            }
+        },
+        maxWidth: {
+            name: 'max-width',
+            control: {
+                type: 'range',
+                min: 0,
+                max: 100,
+                step: 1
+            },
+            defaultValue: 100,
+            description:
+                'Defines the width inside of the banner in percentage.',
+            table: {
+                type: { summary: 'number' },
+                defaultValue: { summary: 100 }
             }
         },
         contentWidth: {

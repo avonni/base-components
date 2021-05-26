@@ -6,12 +6,10 @@
 
 .avonni-hero-banner-text-container-without-slot {
     height: 100%;
-    width: 100%;
 }
 
 .avonni-hero-banner-text-container-with-slot {
     height: 75%;
-    width: 100%;
 }
 
 .avonni-hero-banner-text-x_large {
@@ -24,18 +22,28 @@
     line-height: 1.25;
 }
 
-.avonni-hero-banner-column-div {
+.avonni-hero-banner-horizontal-alignment_right {
+    justify-content: flex-end;
+    text-align: right;
+}
+
+.avonni-hero-banner-horizontal-alignment_center {
+    justify-content: center;
+    text-align: center;
+}
+
+.avonni-hero-banner-vertical-alignement_top {
     display: flex;
     flex-direction: column;
 }
 
-.avonni-hero-banner-vertical-alignement-bottom {
+.avonni-hero-banner-vertical-alignement_bottom {
     justify-content: flex-end;
     display: flex;
     flex-direction: column;
 }
 
-.avonni-hero-banner-vertical-alignement-center {
+.avonni-hero-banner-vertical-alignement_center {
     justify-content: center;
     display: flex;
     flex-direction: column;
@@ -81,4 +89,18 @@
     background-color: var(--background-secondary_hover);
     color: var(--color-secondary_hover);
     border: solid 1px transparent;
+}
+
+.avonni-hero-banner-button-align_right {
+    justify-content: flex-end;
+    text-align: right;
+}
+
+.avonni-hero-banner-button-align_center {
+    justify-content: center;
+    text-align: center;
+}
+
+.avonni-hero-banner-justify_center {
+    justify-content: center;
 }

@@ -32,7 +32,7 @@ const DEFAULT_BUTTON_BACKGROUND_COLOR = '#0070d2';
 const DEFAULT_BUTTON_BACKGROUND_HOVER_COLOR = '#005fb2';
 const DEFAULT_BUTTON_BORDER_COLOR = '#0070d2';
 const DEFAULT_HEIGHT = 400;
-const DEFAULT_MAX_WIDTH = 960;
+const DEFAULT_MAX_WIDTH = 100;
 const DEFAULT_CONTENT_WIDTH = 100;
 const DEFAULT_LINEAR_GRADIENT = 'rgba(0,0,0,0.4), rgba(0,0,0,0.4)';
 const DEFAULT_FONT_FAMILY = '"Salesforce Sans", Arial, sans-serif';
@@ -239,9 +239,13 @@ export default class HeroBanner extends LightningElement {
 
     get imgSrc() {
         if (this.linearGradient) {
-            return `background-color: ${this.backgroundColor}; background-image: linear-gradient(${this.linearGradient}), url(${this.src}); height: ${this._height}px; max-width: ${this._maxWidth}px;`;
+            return `background-color: ${this.backgroundColor}; background-image: linear-gradient(${this.linearGradient}), url(${this.src}); height: ${this._height}px;`;
         }
-        return `background-color: ${this.backgroundColor}; background-image: url(${this.src}); height: ${this.height}px; max-width: ${this._maxWidth}px;`;
+        return `background-color: ${this.backgroundColor}; background-image: url(${this.src}); height: ${this.height}px;`;
+    }
+
+    get computedMaxWidth() {
+        return `width: ${this._maxWidth}%;`;
     }
 
     get computedContentStyling() {
@@ -275,18 +279,25 @@ export default class HeroBanner extends LightningElement {
                     .showFooterSlot,
                 'avonni-hero-banner-text-container-with-slot': this
                     .showFooterSlot,
-                'slds-text-align_left':
-                    this.contentHorizontalAlignment === 'left',
-                'slds-text-align_center':
-                    this.contentHorizontalAlignment === 'center',
-                'slds-text-align_right':
-                    this.contentHorizontalAlignment === 'right',
-                'avonni-hero-banner-vertical-alignement-bottom':
+                'avonni-hero-banner-vertical-alignement_bottom':
                     this.contentVerticalAlignment === 'bottom',
-                'avonni-hero-banner-vertical-alignement-center':
+                'avonni-hero-banner-vertical-alignement_center':
                     this.contentVerticalAlignment === 'center',
-                'avonni-hero-banner-column-div':
+                'avonni-hero-banner-vertical-alignement_top':
                     this.contentVerticalAlignment === 'top'
+            })
+            .toString();
+    }
+
+    get computedWidthContainer() {
+        return classSet('slds-grid')
+            .add({
+                'avonni-hero-banner-horizontal-alignment_left':
+                    this.contentHorizontalAlignment === 'left',
+                'avonni-hero-banner-horizontal-alignment_center':
+                    this.contentHorizontalAlignment === 'center',
+                'avonni-hero-banner-horizontal-alignment_right':
+                    this.contentHorizontalAlignment === 'right'
             })
             .toString();
     }
@@ -309,6 +320,17 @@ export default class HeroBanner extends LightningElement {
                     this.titleFontWeight === 'normal',
                 'avonni-hero-banner-font-weight_bold':
                     this.titleFontWeight === 'bold'
+            })
+            .toString();
+    }
+
+    get computedButtonClass() {
+        return classSet('slds-grid slds-m-top_small')
+            .add({
+                'avonni-hero-banner-button-align_right':
+                    this.contentHorizontalAlignment === 'right',
+                'avonni-hero-banner-button-align_center':
+                    this.contentHorizontalAlignment === 'center'
             })
             .toString();
     }
@@ -359,5 +381,9 @@ export default class HeroBanner extends LightningElement {
 
     get hasButton() {
         return this.primaryButtonLabel || this.secondaryButtonLabel;
+    }
+
+    get hasButtons() {
+        return this.primaryButtonLabel && this.secondaryButtonLabel;
     }
 }
