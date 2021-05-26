@@ -260,11 +260,11 @@ export default class HeroBanner extends LightningElement {
     }
 
     get computedPrimaryButtonStyling() {
-        return `background-color: ${this.primaryButtonBackgroundColor}; color: ${this.primaryButtonTextColor}; border-radius: ${this.primaryButtonBorderRadius}px; border-color: ${this.primaryButtonBorderColor}; --background-color: ${this.primaryButtonBackgroundHoverColor}; --color-hover: ${this.primaryButtonTextHoverColor};`;
+        return `--background-primary: ${this.primaryButtonBackgroundColor}; --color-primary: ${this.primaryButtonTextColor}; border-radius: ${this.primaryButtonBorderRadius}px; border-color: ${this.primaryButtonBorderColor}; --background-primary_hover: ${this.primaryButtonBackgroundHoverColor}; --color-primary_hover: ${this.primaryButtonTextHoverColor};`;
     }
 
     get computedSecondaryButtonStyling() {
-        return `background-color: ${this.secondaryButtonBackgroundColor}; color: ${this.secondaryButtonTextColor}; border-radius: ${this.secondaryButtonBorderRadius}px; border-color: ${this.secondaryButtonBorderColor}; --background-color: ${this.secondaryButtonBackgroundHoverColor}; --color-hover: ${this.secondaryButtonTextHoverColor};`;
+        return `--background-secondary: ${this.secondaryButtonBackgroundColor}; --color-secondary: ${this.secondaryButtonTextColor}; border-radius: ${this.secondaryButtonBorderRadius}px; border-color: ${this.secondaryButtonBorderColor}; --background-secondary_hover: ${this.secondaryButtonBackgroundHoverColor}; --color-secondary_hover: ${this.secondaryButtonTextHoverColor};`;
     }
 
     get computedContentContainer() {

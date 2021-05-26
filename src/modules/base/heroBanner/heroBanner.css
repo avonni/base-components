@@ -60,11 +60,13 @@
     padding: 5px 24px;
     min-width: 135px;
     transition: all 0.2s;
+    background: var(--background-primary);
+    color: var(--color-primary);
 }
 
 .avonni-hero-banner-primary-button:hover {
-    background-color: var(--background-color);
-    color: var(--color-hover);
+    background-color: var(--background-primary_hover);
+    color: var(--color-primary_hover);
 }
 
 .avonni-hero-banner-secondary-button {
@@ -74,4 +76,11 @@
     padding: 5px 24px;
     min-width: 135px;
     transition: all 0.2s;
+    background: var(--background-secondary);
+    color: var(--color-secondary);
+}
+
+.avonni-hero-banner-secondary-button:hover {
+    background-color: var(--background-secondary_hover);
+    color: var(--color-secondary_hover);
 }
