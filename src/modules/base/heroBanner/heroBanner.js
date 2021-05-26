@@ -279,7 +279,7 @@ export default class HeroBanner extends LightningElement {
     }
 
     get computedContentContainer() {
-        return classSet('')
+        return classSet('avonni-hero-banner-content-container')
             .add({
                 'avonni-hero-banner-text-container-without-slot': !this
                     .showFooterSlot,
@@ -296,7 +296,7 @@ export default class HeroBanner extends LightningElement {
     }
 
     get computedWidthContainer() {
-        return classSet('slds-grid')
+        return classSet('slds-grid avonni-hero-banner-width-container')
             .add({
                 'avonni-hero-banner-horizontal-alignment_left':
                     this.contentHorizontalAlignment === 'left',

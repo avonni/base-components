@@ -44,7 +44,7 @@ describe('Hero Banner', () => {
         expect(element.backgroundColor).toBe('#ffffff');
         expect(element.linearGradient).toBe('rgba(0,0,0,0.4), rgba(0,0,0,0.4)');
         expect(element.height).toBe(400);
-        expect(element.maxWidth).toBe(960);
+        expect(element.maxWidth).toBe(100);
         expect(element.contentHorizontalAlignment).toBe('left');
         expect(element.contentVerticalAlignment).toBe('center');
         expect(element.contentWidth).toBe(100);
@@ -76,7 +76,7 @@ describe('Hero Banner', () => {
         element.title = 'This is a title text';
 
         return Promise.resolve().then(() => {
-            const title = element.shadowRoot.querySelector('h1');
+            const title = element.shadowRoot.querySelector('h2');
             expect(title.textContent).toBe('This is a title text');
         });
     });
@@ -92,7 +92,7 @@ describe('Hero Banner', () => {
         element.titleColor = 'rgb(0, 0, 0)';
 
         return Promise.resolve().then(() => {
-            const title = element.shadowRoot.querySelector('h1');
+            const title = element.shadowRoot.querySelector('h2');
             expect(title.style.color).toBe('rgb(0, 0, 0)');
         });
     });
@@ -108,7 +108,7 @@ describe('Hero Banner', () => {
         element.titleFontFamily = 'Arial';
 
         return Promise.resolve().then(() => {
-            const title = element.shadowRoot.querySelector('h1');
+            const title = element.shadowRoot.querySelector('h2');
             expect(title.style.fontFamily).toBe('Arial');
         });
     });
@@ -124,7 +124,7 @@ describe('Hero Banner', () => {
         element.titleFontSize = 'small';
 
         return Promise.resolve().then(() => {
-            const title = element.shadowRoot.querySelector('h1');
+            const title = element.shadowRoot.querySelector('h2');
             expect(title.classList).toContain('slds-text-heading_small');
         });
     });
@@ -139,7 +139,7 @@ describe('Hero Banner', () => {
         element.titleFontSize = 'medium';
 
         return Promise.resolve().then(() => {
-            const title = element.shadowRoot.querySelector('h1');
+            const title = element.shadowRoot.querySelector('h2');
             expect(title.classList).toContain('slds-text-heading_medium');
         });
     });
@@ -154,7 +154,7 @@ describe('Hero Banner', () => {
         element.titleFontSize = 'large';
 
         return Promise.resolve().then(() => {
-            const title = element.shadowRoot.querySelector('h1');
+            const title = element.shadowRoot.querySelector('h2');
             expect(title.classList).toContain('slds-text-heading_large');
         });
     });
@@ -169,7 +169,7 @@ describe('Hero Banner', () => {
         element.titleFontSize = 'x-large';
 
         return Promise.resolve().then(() => {
-            const title = element.shadowRoot.querySelector('h1');
+            const title = element.shadowRoot.querySelector('h2');
             expect(title.classList).toContain(
                 'avonni-hero-banner-text-x_large'
             );
@@ -186,9 +186,43 @@ describe('Hero Banner', () => {
         element.titleFontSize = 'xx-large';
 
         return Promise.resolve().then(() => {
-            const title = element.shadowRoot.querySelector('h1');
+            const title = element.shadowRoot.querySelector('h2');
             expect(title.classList).toContain(
                 'avonni-hero-banner-text-xx_large'
+            );
+        });
+    });
+
+    it('Hero Banner title font size xxx-large', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.title = 'This is a title text';
+        element.titleFontSize = 'xxx-large';
+
+        return Promise.resolve().then(() => {
+            const title = element.shadowRoot.querySelector('h2');
+            expect(title.classList).toContain(
+                'avonni-hero-banner-text-xxx_large'
+            );
+        });
+    });
+
+    it('Hero Banner title font size xxxx-large', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.title = 'This is a title text';
+        element.titleFontSize = 'xxxx-large';
+
+        return Promise.resolve().then(() => {
+            const title = element.shadowRoot.querySelector('h2');
+            expect(title.classList).toContain(
+                'avonni-hero-banner-text-xxxx_large'
             );
         });
     });
@@ -204,7 +238,7 @@ describe('Hero Banner', () => {
         element.titleFontWeight = 'light';
 
         return Promise.resolve().then(() => {
-            const title = element.shadowRoot.querySelector('h1');
+            const title = element.shadowRoot.querySelector('h2');
             expect(title.classList).toContain(
                 'avonni-hero-banner-font-weight_light'
             );
@@ -221,7 +255,7 @@ describe('Hero Banner', () => {
         element.titleFontWeight = 'normal';
 
         return Promise.resolve().then(() => {
-            const title = element.shadowRoot.querySelector('h1');
+            const title = element.shadowRoot.querySelector('h2');
             expect(title.classList).toContain(
                 'avonni-hero-banner-font-weight_normal'
             );
@@ -238,7 +272,7 @@ describe('Hero Banner', () => {
         element.titleFontWeight = 'bold';
 
         return Promise.resolve().then(() => {
-            const title = element.shadowRoot.querySelector('h1');
+            const title = element.shadowRoot.querySelector('h2');
             expect(title.classList).toContain(
                 'avonni-hero-banner-font-weight_bold'
             );
@@ -256,7 +290,7 @@ describe('Hero Banner', () => {
         element.titleShadowColor = '5px 5px #558abb';
 
         return Promise.resolve().then(() => {
-            const title = element.shadowRoot.querySelector('h1');
+            const title = element.shadowRoot.querySelector('h2');
             expect(title.style.textShadow).toBe('5px 5px #558abb');
         });
     });
@@ -271,7 +305,7 @@ describe('Hero Banner', () => {
         element.caption = 'This is a caption text';
 
         return Promise.resolve().then(() => {
-            const caption = element.shadowRoot.querySelector('h3');
+            const caption = element.shadowRoot.querySelector('h1');
             expect(caption.textContent).toBe('This is a caption text');
         });
     });
@@ -287,7 +321,7 @@ describe('Hero Banner', () => {
         element.captionColor = 'rgb(0, 0, 0)';
 
         return Promise.resolve().then(() => {
-            const caption = element.shadowRoot.querySelector('h3');
+            const caption = element.shadowRoot.querySelector('h1');
             expect(caption.style.color).toBe('rgb(0, 0, 0)');
         });
     });
@@ -303,7 +337,7 @@ describe('Hero Banner', () => {
         element.captionFontFamily = 'Arial';
 
         return Promise.resolve().then(() => {
-            const caption = element.shadowRoot.querySelector('h3');
+            const caption = element.shadowRoot.querySelector('h1');
             expect(caption.style.fontFamily).toBe('Arial');
         });
     });
@@ -319,7 +353,7 @@ describe('Hero Banner', () => {
         element.captionFontSize = 'small';
 
         return Promise.resolve().then(() => {
-            const caption = element.shadowRoot.querySelector('h3');
+            const caption = element.shadowRoot.querySelector('h1');
             expect(caption.classList).toContain('slds-text-heading_small');
         });
     });
@@ -334,7 +368,7 @@ describe('Hero Banner', () => {
         element.captionFontSize = 'medium';
 
         return Promise.resolve().then(() => {
-            const caption = element.shadowRoot.querySelector('h3');
+            const caption = element.shadowRoot.querySelector('h1');
             expect(caption.classList).toContain('slds-text-heading_medium');
         });
     });
@@ -349,7 +383,7 @@ describe('Hero Banner', () => {
         element.captionFontSize = 'large';
 
         return Promise.resolve().then(() => {
-            const caption = element.shadowRoot.querySelector('h3');
+            const caption = element.shadowRoot.querySelector('h1');
             expect(caption.classList).toContain('slds-text-heading_large');
         });
     });
@@ -364,7 +398,7 @@ describe('Hero Banner', () => {
         element.captionFontSize = 'x-large';
 
         return Promise.resolve().then(() => {
-            const caption = element.shadowRoot.querySelector('h3');
+            const caption = element.shadowRoot.querySelector('h1');
             expect(caption.classList).toContain(
                 'avonni-hero-banner-text-x_large'
             );
@@ -381,9 +415,43 @@ describe('Hero Banner', () => {
         element.captionFontSize = 'xx-large';
 
         return Promise.resolve().then(() => {
-            const caption = element.shadowRoot.querySelector('h3');
+            const caption = element.shadowRoot.querySelector('h1');
             expect(caption.classList).toContain(
                 'avonni-hero-banner-text-xx_large'
+            );
+        });
+    });
+
+    it('Hero Banner caption font size xxx-large', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.caption = 'This is a caption text';
+        element.captionFontSize = 'xxx-large';
+
+        return Promise.resolve().then(() => {
+            const caption = element.shadowRoot.querySelector('h1');
+            expect(caption.classList).toContain(
+                'avonni-hero-banner-text-xxx_large'
+            );
+        });
+    });
+
+    it('Hero Banner caption font size xxxx-large', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.caption = 'This is a caption text';
+        element.captionFontSize = 'xxxx-large';
+
+        return Promise.resolve().then(() => {
+            const caption = element.shadowRoot.querySelector('h1');
+            expect(caption.classList).toContain(
+                'avonni-hero-banner-text-xxxx_large'
             );
         });
     });
@@ -399,7 +467,7 @@ describe('Hero Banner', () => {
         element.captionFontWeight = 'light';
 
         return Promise.resolve().then(() => {
-            const caption = element.shadowRoot.querySelector('h3');
+            const caption = element.shadowRoot.querySelector('h1');
             expect(caption.classList).toContain(
                 'avonni-hero-banner-font-weight_light'
             );
@@ -416,7 +484,7 @@ describe('Hero Banner', () => {
         element.captionFontWeight = 'normal';
 
         return Promise.resolve().then(() => {
-            const caption = element.shadowRoot.querySelector('h3');
+            const caption = element.shadowRoot.querySelector('h1');
             expect(caption.classList).toContain(
                 'avonni-hero-banner-font-weight_normal'
             );
@@ -433,7 +501,7 @@ describe('Hero Banner', () => {
         element.captionFontWeight = 'bold';
 
         return Promise.resolve().then(() => {
-            const caption = element.shadowRoot.querySelector('h3');
+            const caption = element.shadowRoot.querySelector('h1');
             expect(caption.classList).toContain(
                 'avonni-hero-banner-font-weight_bold'
             );
@@ -451,7 +519,7 @@ describe('Hero Banner', () => {
         element.captionShadowColor = '5px 5px #558abb';
 
         return Promise.resolve().then(() => {
-            const caption = element.shadowRoot.querySelector('h3');
+            const caption = element.shadowRoot.querySelector('h1');
             expect(caption.style.textShadow).toBe('5px 5px #558abb');
         });
     });
@@ -466,7 +534,7 @@ describe('Hero Banner', () => {
         element.subtitle = 'This is a subtitle text';
 
         return Promise.resolve().then(() => {
-            const subtitle = element.shadowRoot.querySelector('h2');
+            const subtitle = element.shadowRoot.querySelector('p');
             expect(subtitle.textContent).toBe('This is a subtitle text');
         });
     });
@@ -482,7 +550,7 @@ describe('Hero Banner', () => {
         element.subtitleColor = 'rgb(0, 0, 0)';
 
         return Promise.resolve().then(() => {
-            const subtitle = element.shadowRoot.querySelector('h2');
+            const subtitle = element.shadowRoot.querySelector('p');
             expect(subtitle.style.color).toBe('rgb(0, 0, 0)');
         });
     });
@@ -498,7 +566,7 @@ describe('Hero Banner', () => {
         element.subtitleFontFamily = 'Arial';
 
         return Promise.resolve().then(() => {
-            const subtitle = element.shadowRoot.querySelector('h2');
+            const subtitle = element.shadowRoot.querySelector('p');
             expect(subtitle.style.fontFamily).toBe('Arial');
         });
     });
@@ -514,7 +582,7 @@ describe('Hero Banner', () => {
         element.subtitleFontSize = 'small';
 
         return Promise.resolve().then(() => {
-            const subtitle = element.shadowRoot.querySelector('h2');
+            const subtitle = element.shadowRoot.querySelector('p');
             expect(subtitle.classList).toContain('slds-text-heading_small');
         });
     });
@@ -529,7 +597,7 @@ describe('Hero Banner', () => {
         element.subtitleFontSize = 'medium';
 
         return Promise.resolve().then(() => {
-            const subtitle = element.shadowRoot.querySelector('h2');
+            const subtitle = element.shadowRoot.querySelector('p');
             expect(subtitle.classList).toContain('slds-text-heading_medium');
         });
     });
@@ -544,7 +612,7 @@ describe('Hero Banner', () => {
         element.subtitleFontSize = 'large';
 
         return Promise.resolve().then(() => {
-            const subtitle = element.shadowRoot.querySelector('h2');
+            const subtitle = element.shadowRoot.querySelector('p');
             expect(subtitle.classList).toContain('slds-text-heading_large');
         });
     });
@@ -559,7 +627,7 @@ describe('Hero Banner', () => {
         element.subtitleFontSize = 'x-large';
 
         return Promise.resolve().then(() => {
-            const subtitle = element.shadowRoot.querySelector('h2');
+            const subtitle = element.shadowRoot.querySelector('p');
             expect(subtitle.classList).toContain(
                 'avonni-hero-banner-text-x_large'
             );
@@ -576,9 +644,43 @@ describe('Hero Banner', () => {
         element.subtitleFontSize = 'xx-large';
 
         return Promise.resolve().then(() => {
-            const subtitle = element.shadowRoot.querySelector('h2');
+            const subtitle = element.shadowRoot.querySelector('p');
             expect(subtitle.classList).toContain(
                 'avonni-hero-banner-text-xx_large'
+            );
+        });
+    });
+
+    it('Hero Banner subtitle font size xxx-large', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.subtitle = 'This is a subtitle text';
+        element.subtitleFontSize = 'xxx-large';
+
+        return Promise.resolve().then(() => {
+            const subtitle = element.shadowRoot.querySelector('p');
+            expect(subtitle.classList).toContain(
+                'avonni-hero-banner-text-xxx_large'
+            );
+        });
+    });
+
+    it('Hero Banner subtitle font size xxxx-large', () => {
+        const element = createElement('base-hero-banner', {
+            is: HeroBanner
+        });
+        document.body.appendChild(element);
+
+        element.subtitle = 'This is a subtitle text';
+        element.subtitleFontSize = 'xxxx-large';
+
+        return Promise.resolve().then(() => {
+            const subtitle = element.shadowRoot.querySelector('p');
+            expect(subtitle.classList).toContain(
+                'avonni-hero-banner-text-xxxx_large'
             );
         });
     });
@@ -594,7 +696,7 @@ describe('Hero Banner', () => {
         element.subtitleFontWeight = 'light';
 
         return Promise.resolve().then(() => {
-            const subtitle = element.shadowRoot.querySelector('h2');
+            const subtitle = element.shadowRoot.querySelector('p');
             expect(subtitle.classList).toContain(
                 'avonni-hero-banner-font-weight_light'
             );
@@ -611,7 +713,7 @@ describe('Hero Banner', () => {
         element.subtitleFontWeight = 'normal';
 
         return Promise.resolve().then(() => {
-            const subtitle = element.shadowRoot.querySelector('h2');
+            const subtitle = element.shadowRoot.querySelector('p');
             expect(subtitle.classList).toContain(
                 'avonni-hero-banner-font-weight_normal'
             );
@@ -628,7 +730,7 @@ describe('Hero Banner', () => {
         element.subtitleFontWeight = 'bold';
 
         return Promise.resolve().then(() => {
-            const subtitle = element.shadowRoot.querySelector('h2');
+            const subtitle = element.shadowRoot.querySelector('p');
             expect(subtitle.classList).toContain(
                 'avonni-hero-banner-font-weight_bold'
             );
@@ -646,7 +748,7 @@ describe('Hero Banner', () => {
         element.subtitleShadowColor = '5px 5px #558abb';
 
         return Promise.resolve().then(() => {
-            const subtitle = element.shadowRoot.querySelector('h2');
+            const subtitle = element.shadowRoot.querySelector('p');
             expect(subtitle.style.textShadow).toBe('5px 5px #558abb');
         });
     });
@@ -694,14 +796,14 @@ describe('Hero Banner', () => {
         });
         document.body.appendChild(element);
 
-        const maxWidth = '1000px';
-        element.maxWidth = 1000;
+        const maxWidth = '50%';
+        element.maxWidth = 50;
 
         return Promise.resolve().then(() => {
             const background = element.shadowRoot.querySelector(
-                '.avonni-hero-banner-background-class'
+                '.avonni-hero-banner-width-container'
             );
-            expect(background.style.maxWidth).toBe(maxWidth);
+            expect(background.style.width).toBe(maxWidth);
         });
     });
 
@@ -716,8 +818,18 @@ describe('Hero Banner', () => {
         element.contentHorizontalAlignment = 'center';
 
         return Promise.resolve().then(() => {
-            const textContainer = element.shadowRoot.querySelector('span');
-            expect(textContainer.className).toContain('slds-text-align_center');
+            const textContainer = element.shadowRoot.querySelector(
+                '.avonni-hero-banner-width-container'
+            );
+            expect(textContainer.className).toContain(
+                'avonni-hero-banner-horizontal-alignment_center'
+            );
+            expect(textContainer.className).not.toContain(
+                'avonni-hero-banner-horizontal-alignment_right'
+            );
+            expect(textContainer.className).not.toContain(
+                'avonni-hero-banner-horizontal-alignment_left'
+            );
         });
     });
 
@@ -731,8 +843,18 @@ describe('Hero Banner', () => {
         element.contentHorizontalAlignment = 'left';
 
         return Promise.resolve().then(() => {
-            const textContainer = element.shadowRoot.querySelector('span');
-            expect(textContainer.className).toContain('slds-text-align_left');
+            const textContainer = element.shadowRoot.querySelector(
+                '.avonni-hero-banner-width-container'
+            );
+            expect(textContainer.className).not.toContain(
+                'avonni-hero-banner-horizontal-alignment_center'
+            );
+            expect(textContainer.className).not.toContain(
+                'avonni-hero-banner-horizontal-alignment_right'
+            );
+            expect(textContainer.className).toContain(
+                'avonni-hero-banner-horizontal-alignment_left'
+            );
         });
     });
 
@@ -746,8 +868,18 @@ describe('Hero Banner', () => {
         element.contentHorizontalAlignment = 'right';
 
         return Promise.resolve().then(() => {
-            const textContainer = element.shadowRoot.querySelector('span');
-            expect(textContainer.className).toContain('slds-text-align_right');
+            const textContainer = element.shadowRoot.querySelector(
+                '.avonni-hero-banner-width-container'
+            );
+            expect(textContainer.className).not.toContain(
+                'avonni-hero-banner-horizontal-alignment_center'
+            );
+            expect(textContainer.className).toContain(
+                'avonni-hero-banner-horizontal-alignment_right'
+            );
+            expect(textContainer.className).not.toContain(
+                'avonni-hero-banner-horizontal-alignment_left'
+            );
         });
     });
 
@@ -762,15 +894,17 @@ describe('Hero Banner', () => {
         element.contentVerticalAlignment = 'center';
 
         return Promise.resolve().then(() => {
-            const textContainer = element.shadowRoot.querySelector('span');
+            const textContainer = element.shadowRoot.querySelector(
+                '.avonni-hero-banner-content-container'
+            );
             expect(textContainer.className).toContain(
-                'avonni-hero-banner-vertical-alignement-center'
+                'avonni-hero-banner-vertical-alignement_center'
             );
             expect(textContainer.className).not.toContain(
-                'avonni-hero-banner-vertical-alignement-bottom'
+                'avonni-hero-banner-vertical-alignement_bottom'
             );
             expect(textContainer.className).not.toContain(
-                'avonni-hero-banner-column-div'
+                'avonni-hero-banner-vertical-alignement_top'
             );
         });
     });
@@ -785,15 +919,17 @@ describe('Hero Banner', () => {
         element.contentVerticalAlignment = 'top';
 
         return Promise.resolve().then(() => {
-            const textContainer = element.shadowRoot.querySelector('span');
-            expect(textContainer.className).not.toContain(
-                'avonni-hero-banner-vertical-alignement-center'
+            const textContainer = element.shadowRoot.querySelector(
+                '.avonni-hero-banner-content-container'
             );
             expect(textContainer.className).not.toContain(
-                'avonni-hero-banner-vertical-alignement-bottom'
+                'avonni-hero-banner-vertical-alignement_center'
+            );
+            expect(textContainer.className).not.toContain(
+                'avonni-hero-banner-vertical-alignement_bottom'
             );
             expect(textContainer.className).toContain(
-                'avonni-hero-banner-column-div'
+                'avonni-hero-banner-vertical-alignement_top'
             );
         });
     });
@@ -808,15 +944,17 @@ describe('Hero Banner', () => {
         element.contentVerticalAlignment = 'bottom';
 
         return Promise.resolve().then(() => {
-            const textContainer = element.shadowRoot.querySelector('span');
+            const textContainer = element.shadowRoot.querySelector(
+                '.avonni-hero-banner-content-container'
+            );
             expect(textContainer.className).not.toContain(
-                'avonni-hero-banner-vertical-alignement-center'
+                'avonni-hero-banner-vertical-alignement_center'
             );
             expect(textContainer.className).toContain(
-                'avonni-hero-banner-vertical-alignement-bottom'
+                'avonni-hero-banner-vertical-alignement_bottom'
             );
             expect(textContainer.className).not.toContain(
-                'avonni-hero-banner-column-div'
+                'avonni-hero-banner-vertical-alignement_top'
             );
         });
     });
@@ -829,11 +967,14 @@ describe('Hero Banner', () => {
         document.body.appendChild(element);
 
         element.title = 'This is a title text';
-        element.contentWidth = 100;
+        element.contentWidth = 10;
+        const contentWidth = '10%';
 
         return Promise.resolve().then(() => {
-            const textContainer = element.shadowRoot.querySelector('span');
-            expect(textContainer.style.width).toBe('100%');
+            const textContainer = element.shadowRoot.querySelector(
+                '.avonni-hero-banner-content'
+            );
+            expect(textContainer.style.width).toBe(contentWidth);
         });
     });
 
@@ -978,6 +1119,7 @@ describe('Hero Banner', () => {
         });
     });
 
+    // Needs a primary button
     // Secondary button label
     it('Hero Banner secondary button label', () => {
         const element = createElement('base-hero-banner', {
@@ -985,6 +1127,7 @@ describe('Hero Banner', () => {
         });
         document.body.appendChild(element);
 
+        element.primaryButtonLabel = 'This is a primary button label';
         element.secondaryButtonLabel = 'This is a secondary button label';
 
         return Promise.resolve().then(() => {
@@ -1004,6 +1147,7 @@ describe('Hero Banner', () => {
         });
         document.body.appendChild(element);
 
+        element.primaryButtonLabel = 'This is a primary button label';
         element.secondaryButtonLabel = 'This is a secondary button label';
         element.secondaryButtonTextColor = 'rgba(0,0,0,0)';
 
@@ -1024,6 +1168,7 @@ describe('Hero Banner', () => {
         });
         document.body.appendChild(element);
 
+        element.primaryButtonLabel = 'This is a primary button label';
         element.secondaryButtonLabel = 'This is a secondary button label';
         element.secondaryButtonTextHoverColor = 'rgba(1,1,1,1)';
 
@@ -1044,6 +1189,7 @@ describe('Hero Banner', () => {
         });
         document.body.appendChild(element);
 
+        element.primaryButtonLabel = 'This is a primary button label';
         element.secondaryButtonLabel = 'This is a secondary button label';
         element.secondaryButtonBackgroundColor = 'rgba(2,2,2,2)';
 
@@ -1064,6 +1210,7 @@ describe('Hero Banner', () => {
         });
         document.body.appendChild(element);
 
+        element.primaryButtonLabel = 'This is a primary button label';
         element.secondaryButtonLabel = 'This is a secondary button label';
         element.secondaryButtonBackgroundHoverColor = 'rgba(3,3,3,3)';
 
@@ -1084,6 +1231,7 @@ describe('Hero Banner', () => {
         });
         document.body.appendChild(element);
 
+        element.primaryButtonLabel = 'This is a primary button label';
         element.secondaryButtonLabel = 'This is a secondary button label';
         element.secondaryButtonBorderColor = 'rgba(4,4,4,4)';
 
@@ -1104,6 +1252,7 @@ describe('Hero Banner', () => {
         });
         document.body.appendChild(element);
 
+        element.primaryButtonLabel = 'This is a primary button label';
         element.secondaryButtonLabel = 'This is a secondary button label';
         element.secondaryButtonBorderRadius = 2;
 
