@@ -389,9 +389,9 @@ export default class HeroBanner extends LightningElement {
     get computedButtonClass() {
         return classSet('slds-grid slds-m-top_small')
             .add({
-                'avonni-hero-banner-button-align_right':
+                'avonni-hero-banner-horizontal-alignment_right':
                     this.contentHorizontalAlignment === 'right',
-                'avonni-hero-banner-button-align_center':
+                'avonni-hero-banner-horizontal-alignment_center':
                     this.contentHorizontalAlignment === 'center'
             })
             .toString();

@@ -101,16 +101,6 @@
     border: solid 1px transparent;
 }
 
-.avonni-hero-banner-button-align_right {
-    justify-content: flex-end;
-    text-align: right;
-}
-
-.avonni-hero-banner-button-align_center {
-    justify-content: center;
-    text-align: center;
-}
-
 .avonni-hero-banner-justify_center {
     justify-content: center;
 }
