@@ -1,11 +1,11 @@
-import Component from '../../storybookWrappers/heroBanner/heroBannerWithSearchBar';
+import Component from '../../storybookWrappers/heroBanner/heroBannerWithSearchBarInDefault';
 
 customElements.define(
-    'ac-hero-banner-with-search-bar',
+    'ac-hero-banner-with-search-bar-in-default',
     Component.CustomElementConstructor
 );
 
-export const HeroBannerWithSearchBar = ({
+export const HeroBannerWithSearchBarInDefault = ({
     title,
     titleColor,
     titleFontFamily,
@@ -47,7 +47,9 @@ export const HeroBannerWithSearchBar = ({
     secondaryButtonBorderColor,
     secondaryButtonBorderRadius
 }) => {
-    const element = document.createElement('ac-hero-banner-with-search-bar');
+    const element = document.createElement(
+        'ac-hero-banner-with-search-bar-in-default'
+    );
     element.title = title;
     element.titleColor = titleColor;
     element.titleFontFamily = titleFontFamily;

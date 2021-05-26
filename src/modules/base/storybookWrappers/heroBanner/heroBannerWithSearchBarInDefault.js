@@ -11,7 +11,7 @@ const DEFAULT_CAPTION_FONT_SIZE = 'small';
 const DEFAULT_SUBTITLE_FONT_SIZE = 'medium';
 const DEFAULT_HEIGHT = 400;
 const DEFAULT_MAX_WIDTH = 960;
-const DEFAULT_CONTENT_WIDTH = 50;
+const DEFAULT_CONTENT_WIDTH = 100;
 const DEFAULT_TITLE_FONT_WEIGHT = 'bold';
 const DEFAULT_CAPTION_FONT_WEIGHT = 'light';
 const DEFAULT_SUBTITLE_FONT_WEIGHT = 'normal';
@@ -20,7 +20,7 @@ const DEFAULT_FONT_FAMILY = '"Salesforce Sans", Arial, sans-serif';
 const DEFAULT_SHADOW_COLOR = '1px 1px 0 rgb(0 0 0 / 50%)';
 const DEFAULT_BUTTON_BORDER_RADIUS = 4;
 
-export default class HeroBannerWithSearchBar extends LightningElement {
+export default class HeroBannerWithSearchBarInDefault extends LightningElement {
     @api title;
     @api titleColor = DEFAULT_TEXT_COLOR;
     @api titleFontFamily = DEFAULT_FONT_FAMILY;

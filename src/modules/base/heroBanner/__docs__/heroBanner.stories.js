@@ -1,6 +1,7 @@
 import { HeroBanner } from '../__examples__/heroBanner';
 import { HeroBannerWithButton } from '../__examples__/heroBannerWithButton';
-import { HeroBannerWithSearchBar } from '../__examples__/heroBannerWithSearchBar';
+import { HeroBannerWithSearchBarInDefault } from '../__examples__/heroBannerWithSearchBarInDefault';
+import { HeroBannerWithSearchBarInFooter } from '../__examples__/heroBannerWithSearchBarInFooter';
 import { HeroBannerWithTwoSlots } from '../__examples__/heroBannerWithTwoSlots';
 
 export default {
@@ -533,7 +534,10 @@ export default {
 
 const Template = (args) => HeroBanner(args);
 const TemplateWithButton = (args) => HeroBannerWithButton(args);
-const TemplateWithSearchBar = (args) => HeroBannerWithSearchBar(args);
+const TemplateWithSearchBarInDefault = (args) =>
+    HeroBannerWithSearchBarInDefault(args);
+const TemplateWithSearchBarInFooter = (args) =>
+    HeroBannerWithSearchBarInFooter(args);
 const TemplateWithTwoSlots = (args) => HeroBannerWithTwoSlots(args);
 
 export const Base = Template.bind({});
@@ -546,8 +550,10 @@ Base.args = {
     height: 300
 };
 
-export const BaseAbsoluteCenter = Template.bind({});
-BaseAbsoluteCenter.args = {
+export const BaseAbsoluteCenterWithCursiveTitleAndContentWidth = Template.bind(
+    {}
+);
+BaseAbsoluteCenterWithCursiveTitleAndContentWidth.args = {
     caption: 'This is a caption',
     title: 'This is a title',
     titleFontSize: 'xx-large',
@@ -557,11 +563,12 @@ BaseAbsoluteCenter.args = {
     src:
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
-    contentHorizontalAlignment: 'center'
+    contentHorizontalAlignment: 'center',
+    contentWidth: 15
 };
 
-export const BaseCenteredRight = Template.bind({});
-BaseCenteredRight.args = {
+export const BaseCenteredRightWithLinearGradient = Template.bind({});
+BaseCenteredRightWithLinearGradient.args = {
     caption: 'This is a caption',
     title: 'This is a title',
     titleFontSize: 'xxx-large',
@@ -575,8 +582,8 @@ BaseCenteredRight.args = {
     linearGradient: 'rgba(0,0,0,0), rgba(0,0,0,0)'
 };
 
-export const BaseTopLeft = Template.bind({});
-BaseTopLeft.args = {
+export const BaseTopLeftWithMaxWidth = Template.bind({});
+BaseTopLeftWithMaxWidth.args = {
     caption: 'This is a caption',
     title: 'This is a title',
     titleFontSize: 'xxxx-large',
@@ -587,12 +594,11 @@ BaseTopLeft.args = {
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
     contentVerticalAlignment: 'top',
-    contentWidth: 10,
-    maxWidth: 40
+    maxWidth: 2000
 };
 
-export const BaseTopCenter = Template.bind({});
-BaseTopCenter.args = {
+export const BaseTopCenterWithButtons = Template.bind({});
+BaseTopCenterWithButtons.args = {
     caption: 'This is a caption',
     title: 'This is a title',
     titleFontSize: 'xx-large',
@@ -602,11 +608,13 @@ BaseTopCenter.args = {
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
     contentVerticalAlignment: 'top',
-    contentHorizontalAlignment: 'center'
+    contentHorizontalAlignment: 'center',
+    primaryButtonLabel: 'Primary Button',
+    secondaryButtonLabel: 'Secondary Button'
 };
 
-export const BaseTopRight = Template.bind({});
-BaseTopRight.args = {
+export const BaseTopRightWithGreenButton = Template.bind({});
+BaseTopRightWithGreenButton.args = {
     caption: 'This is a caption',
     title: 'This is a title',
     titleFontSize: 'xx-large',
@@ -616,7 +624,11 @@ BaseTopRight.args = {
         'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
     contentVerticalAlignment: 'top',
-    contentHorizontalAlignment: 'right'
+    contentHorizontalAlignment: 'right',
+    primaryButtonLabel: 'Green Button',
+    primaryButtonBackgroundColor: '#2e844a',
+    primaryButtonBorderColor: '#2e844a',
+    primaryButtonBackgroundHoverColor: '#194e31'
 };
 
 export const BaseBottomLeft = Template.bind({});
@@ -632,8 +644,11 @@ BaseBottomLeft.args = {
     contentVerticalAlignment: 'bottom'
 };
 
-export const BaseBottomCenter = Template.bind({});
-BaseBottomCenter.args = {
+export const BaseBottomCenterWithGreenCaption = Template.bind({});
+BaseBottomCenterWithGreenCaption.args = {
+    caption: 'This is a caption',
+    captionFontSize: 'large',
+    captionColor: 'green',
     title: 'This is a title',
     titleFontSize: 'xx-large',
     titleFontWeight: 'bold',
@@ -674,7 +689,24 @@ withButtonInFooterSlot.args = {
     contentHorizontalAlignment: 'center'
 };
 
-export const withSearchBarInFooterSlot = TemplateWithSearchBar.bind({});
+export const withSearchBarInDefaultSlot = TemplateWithSearchBarInDefault.bind(
+    {}
+);
+withSearchBarInDefaultSlot.args = {
+    title: 'Looking for a vacation?',
+    titleColor: '#2b98c7',
+    titleFontSize: 'xx-large',
+    titleFontWeight: 'bold',
+    subtitle: 'Find the right one',
+    subtitleFontSize: 'small',
+    subtitleFontWeight: 'bold',
+    src:
+        'https://res.cloudinary.com/hy4kyit2a/image/upload/2019-10-Developer_Website_Hero_Banner-1280%C3%97248%20%281%29.png',
+    height: 200,
+    contentHorizontalAlignment: 'center'
+};
+
+export const withSearchBarInFooterSlot = TemplateWithSearchBarInFooter.bind({});
 withSearchBarInFooterSlot.args = {
     title: 'Looking for a vacation?',
     titleColor: '#2b98c7',

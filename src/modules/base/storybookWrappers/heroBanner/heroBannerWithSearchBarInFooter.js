@@ -20,7 +20,7 @@ const DEFAULT_FONT_FAMILY = '"Salesforce Sans", Arial, sans-serif';
 const DEFAULT_SHADOW_COLOR = '1px 1px 0 rgb(0 0 0 / 50%)';
 const DEFAULT_BUTTON_BORDER_RADIUS = 4;
 
-export default class HeroBannerWithTwoSlots extends LightningElement {
+export default class HeroBannerWithSearchBarInFooter extends LightningElement {
     @api title;
     @api titleColor = DEFAULT_TEXT_COLOR;
     @api titleFontFamily = DEFAULT_FONT_FAMILY;
