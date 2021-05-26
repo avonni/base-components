@@ -53,7 +53,7 @@ export default class AvatarGroup extends LightningElement {
     }
 
     renderedCallback() {
-        if (this.layout === 'stack' || this.layout === 'grid') {
+        if (!this.isClassic) {
             let avatars = this.template.querySelectorAll(
                 '.avonni-avatar-group__avatar'
             );
