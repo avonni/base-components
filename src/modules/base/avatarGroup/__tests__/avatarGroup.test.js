@@ -453,13 +453,18 @@ describe('Avatar Group', () => {
 
         element.layout = 'stack';
         element.items = items;
+        element.actionIconName = '';
 
-        // still relevant ? No more 'classic' layout for less than 3
         return Promise.resolve().then(() => {
             const group = element.shadowRoot.querySelector(
-                '.avonni-avatar-group__avatar-container'
+                '.slds-avatar-group'
             );
             expect(group.className).toContain('avonni-avatar-group__avatar');
+
+            const noGroup = element.shadowRoot.querySelector(
+                '.slds-avatar-grouped'
+            );
+            expect(noGroup).toBeTruthy();
         });
     });
 
@@ -477,7 +482,7 @@ describe('Avatar Group', () => {
                 '.avonni-avatar-group__avatar'
             );
             avatars.forEach((avatar, index) => {
-                // Checking for avatars. Last element is ActionButton which has 'avonni-avatar-group_in-line' nested deeper
+                // Checking for avatars. Last element is ActionButton which has 'avonni-avatar-group_in-line' nested deeper // re-check
                 if (index < avatars.length - 2)
                     expect(avatar.className).toContain(
                         'avonni-avatar-group_in-line'
@@ -626,6 +631,9 @@ describe('Avatar Group', () => {
             const avatars = element.shadowRoot.querySelectorAll(
                 '.avonni-avatar-group__avatar-container'
             );
+            // avatars.forEach((avatar) => {
+            // console.table(avatar.innerHTML);
+            // });
             expect(avatars).toHaveLength(12);
         });
     });
@@ -971,24 +979,12 @@ describe('Avatar Group', () => {
     });
 
     // Action button icon size predicated on switch case due to utility icon default sizing
+    // size : x-small, small, medium = x-small icon // size: large, x-large = small icon // size: xx-large = medium icon
     it('Action Button button icon size x-small', () => {
         const element = createElement('base-avatar-group', {
             is: AvatarGroup
         });
         document.body.appendChild(element);
-
-        // get iconSize() {
-        //     switch (this.size) {
-        //         case 'x-small':
-        //         case 'small':
-        //         case 'medium':
-        //             return 'x-small';
-        //         case 'xx-large':
-        //             return 'medium';
-        //         default:
-        //             return 'small';
-        //     }
-        // }
 
         element.actionIconName = 'utility:check';
         element.size = 'x-small';
@@ -999,6 +995,96 @@ describe('Avatar Group', () => {
                 '.avonni-avatar-group__action-button > lightning-icon'
             );
             expect(actionButton.size).toBe('x-small');
+        });
+    });
+
+    it('Action Button button icon size small', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.actionIconName = 'utility:check';
+        element.size = 'small';
+        element.items = [...items, ...items, ...items];
+
+        return Promise.resolve().then(() => {
+            const actionButton = element.shadowRoot.querySelector(
+                '.avonni-avatar-group__action-button > lightning-icon'
+            );
+            expect(actionButton.size).toBe('x-small');
+        });
+    });
+
+    it('Action Button button icon size medium', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.actionIconName = 'utility:check';
+        element.size = 'medium';
+        element.items = [...items, ...items, ...items];
+
+        return Promise.resolve().then(() => {
+            const actionButton = element.shadowRoot.querySelector(
+                '.avonni-avatar-group__action-button > lightning-icon'
+            );
+            expect(actionButton.size).toBe('x-small');
+        });
+    });
+
+    it('Action Button button icon size large', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.actionIconName = 'utility:check';
+        element.size = 'large';
+        element.items = [...items, ...items, ...items];
+
+        return Promise.resolve().then(() => {
+            const actionButton = element.shadowRoot.querySelector(
+                '.avonni-avatar-group__action-button > lightning-icon'
+            );
+            expect(actionButton.size).toBe('small');
+        });
+    });
+
+    it('Action Button button icon size x-large', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.actionIconName = 'utility:check';
+        element.size = 'x-large';
+        element.items = [...items, ...items, ...items];
+
+        return Promise.resolve().then(() => {
+            const actionButton = element.shadowRoot.querySelector(
+                '.avonni-avatar-group__action-button > lightning-icon'
+            );
+            expect(actionButton.size).toBe('small');
+        });
+    });
+
+    it('Action Button button icon size xx-large', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.actionIconName = 'utility:check';
+        element.size = 'xx-large';
+        element.items = [...items, ...items, ...items];
+
+        return Promise.resolve().then(() => {
+            const actionButton = element.shadowRoot.querySelector(
+                '.avonni-avatar-group__action-button > lightning-icon'
+            );
+            expect(actionButton.size).toBe('medium');
         });
     });
 

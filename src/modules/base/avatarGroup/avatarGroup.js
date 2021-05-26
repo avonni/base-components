@@ -285,7 +285,7 @@ export default class AvatarGroup extends LightningElement {
         return this.avatarGroupClass;
     }
 
-    get iconSize() {
+    get actionButtonIconSize() {
         switch (this.size) {
             case 'x-small':
             case 'small':
