@@ -58,10 +58,10 @@ describe('PrimitiveWizardNavigation', () => {
         expect(element.fractionLabel).toBe('of');
         expect(element.fractionPrefixLabel).toBe('Step');
         expect(element.hideIndicator).toBeFalsy();
-        expect(element.indicatorPosition).toBe('footer');
+        expect(element.indicatorPosition).toBe('bottom');
         expect(element.indicatorType).toBe('base');
         expect(element.steps).toMatchObject([]);
-        expect(element.position).toBe('footer');
+        expect(element.position).toBe('bottom');
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -525,15 +525,15 @@ describe('PrimitiveWizardNavigation', () => {
     });
 
     // indicatorPosition and position
-    it('indicatorPosition = header and position = header', () => {
+    it('indicatorPosition = top and position = top', () => {
         const element = createElement('base-primitive-wizard-navigation', {
             is: PrimitiveWizardNavigation
         });
 
         document.body.appendChild(element);
 
-        element.indicatorPosition = 'header';
-        element.position = 'header';
+        element.indicatorPosition = 'top';
+        element.position = 'top';
 
         return Promise.resolve().then(() => {
             const actionsSlotCol = element.shadowRoot.querySelector(
@@ -547,18 +547,41 @@ describe('PrimitiveWizardNavigation', () => {
         });
     });
 
-    it('indicatorPosition = header and position = footer', () => {
+    it('indicatorPosition = top and position = bottom', () => {
         const element = createElement('base-primitive-wizard-navigation', {
             is: PrimitiveWizardNavigation
         });
 
         document.body.appendChild(element);
 
-        element.indicatorPosition = 'header';
-        element.position = 'footer';
+        element.indicatorPosition = 'top';
+        element.position = 'bottom';
 
         return Promise.resolve().then(() => {
             expect(element.hideIndicator).toBeTruthy();
+        });
+    });
+
+    it('indicatorPosition = left and position = side', () => {
+        const element = createElement('base-primitive-wizard-navigation', {
+            is: PrimitiveWizardNavigation
+        });
+
+        document.body.appendChild(element);
+
+        element.indicatorPosition = 'left';
+        element.position = 'side';
+
+        return Promise.resolve().then(() => {
+            const indicator = element.shadowRoot.querySelector(
+                'c-vertical-progress-indicator'
+            );
+            const buttons = element.shadowRoot.querySelectorAll(
+                'lightning-button'
+            );
+
+            expect(indicator).toBeTruthy();
+            expect(buttons).toHaveLength(0);
         });
     });
 
@@ -581,10 +604,10 @@ describe('PrimitiveWizardNavigation', () => {
                 '.slds-carousel__indicators'
             );
             const fractionsIndicator = element.shadowRoot.querySelector(
-                'lightning-layout-item > p'
+                '.fractions-indicator'
             );
             const barIndicator = element.shadowRoot.querySelector(
-                'lightning-progress-bar'
+                'c-progress-bar'
             );
 
             expect(progressIndicator).toBeTruthy();
@@ -612,14 +635,14 @@ describe('PrimitiveWizardNavigation', () => {
                 '.slds-carousel__indicators'
             );
             const fractionsIndicator = element.shadowRoot.querySelector(
-                'lightning-layout-item > p'
+                '.fractions-indicator'
             );
             const barIndicator = element.shadowRoot.querySelector(
-                'lightning-progress-bar'
+                'c-progress-bar'
             );
 
             expect(progressIndicator).toBeTruthy();
-            expect(progressIndicator.variant).toBe('shaded');
+            expect(progressIndicator.variant).toBe('shade');
             expect(bulletIndicator).toBeFalsy();
             expect(fractionsIndicator).toBeFalsy();
             expect(barIndicator).toBeFalsy();
@@ -643,10 +666,10 @@ describe('PrimitiveWizardNavigation', () => {
                 '.slds-carousel__indicators'
             );
             const fractionsIndicator = element.shadowRoot.querySelector(
-                'lightning-layout-item > p'
+                '.fractions-indicator'
             );
             const barIndicator = element.shadowRoot.querySelector(
-                'lightning-progress-bar'
+                'c-progress-bar'
             );
 
             expect(progressIndicator).toBeTruthy();
@@ -675,10 +698,10 @@ describe('PrimitiveWizardNavigation', () => {
                 '.slds-carousel__indicators'
             );
             const fractionsIndicator = element.shadowRoot.querySelector(
-                'lightning-layout-item > p'
+                '.fractions-indicator'
             );
             const barIndicator = element.shadowRoot.querySelector(
-                'lightning-progress-bar'
+                'c-progress-bar'
             );
 
             const bullets = element.shadowRoot.querySelectorAll(
@@ -711,10 +734,10 @@ describe('PrimitiveWizardNavigation', () => {
                 '.slds-carousel__indicators'
             );
             const fractionsIndicator = element.shadowRoot.querySelector(
-                'lightning-layout-item > p'
+                '.fractions-indicator'
             );
             const barIndicator = element.shadowRoot.querySelector(
-                'lightning-progress-bar'
+                'c-progress-bar'
             );
 
             expect(progressIndicator).toBeFalsy();
@@ -742,10 +765,10 @@ describe('PrimitiveWizardNavigation', () => {
                 '.slds-carousel__indicators'
             );
             const fractionsIndicator = element.shadowRoot.querySelector(
-                'lightning-layout-item > p'
+                '.fractions-indicator'
             );
             const barIndicator = element.shadowRoot.querySelector(
-                'lightning-progress-bar'
+                'c-progress-bar'
             );
 
             expect(progressIndicator).toBeFalsy();
@@ -771,7 +794,7 @@ describe('PrimitiveWizardNavigation', () => {
 
         return Promise.resolve().then(() => {
             const fractionsIndicator = element.shadowRoot.querySelector(
-                'lightning-layout-item > p'
+                '.fractions-indicator'
             );
 
             expect(fractionsIndicator.textContent).toContain('Prefix');
@@ -817,6 +840,36 @@ describe('PrimitiveWizardNavigation', () => {
 
             expect(indicator).toBeTruthy();
         });
+    });
+
+    // Attributes updates after first render
+    // Depends on steps, indicatorType and currentStep
+    it('Attributes updated after first render', () => {
+        const element = createElement('base-primitive-wizard-navigation', {
+            is: PrimitiveWizardNavigation
+        });
+
+        document.body.appendChild(element);
+
+        // Only steps are set
+        element.steps = [STEPS[0], STEPS[2]];
+
+        return Promise.resolve()
+            .then(() => {
+                // Steps, indicatorType and currentStep are changed after first render
+                element.steps = STEPS;
+                element.currentStep = 'step-2';
+                element.indicatorType = 'fractions';
+            })
+            .then(() => {
+                // We should have a fraction indicator, displaying the current step (2) and the total number of steps (4)
+                const fractionsIndicator = element.shadowRoot.querySelector(
+                    '.fractions-indicator'
+                );
+
+                expect(fractionsIndicator.textContent).toContain('2');
+                expect(fractionsIndicator.textContent).toContain('4');
+            });
     });
 
     /* ----- EVENTS ----- */
