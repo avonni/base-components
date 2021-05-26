@@ -17,9 +17,9 @@ const validTypes = [
 
 export default class OutputData extends LightningElement {
     @api label;
-    @api typeAttributes = {};
 
     _type = 'text';
+    _typeAttributes = {};
     _value;
 
     @api get type() {
@@ -31,6 +31,14 @@ export default class OutputData extends LightningElement {
             fallbackValue: 'text',
             validValues: validTypes
         });
+    }
+
+    @api
+    get typeAttributes() {
+        return this._typeAttributes;
+    }
+    set typeAttributes(value) {
+        this._typeAttributes = typeof value === 'object' ? value : {};
     }
 
     @api get value() {
