@@ -1,7 +1,5 @@
 import { LightningElement, api } from 'lwc';
-
 import { normalizeString } from 'c/utilsPrivate';
-
 import { classSet } from 'c/utils';
 
 const horizontal_alignement_options = {
@@ -13,7 +11,15 @@ const vertical_alignement_options = {
     default: 'center'
 };
 const font_size_options = {
-    valid: ['small', 'medium', 'large', 'x-large', 'xx-large'],
+    valid: [
+        'small',
+        'medium',
+        'large',
+        'x-large',
+        'xx-large',
+        'xxx-large',
+        'xxxx-large'
+    ],
     titleDefault: 'large',
     captionDefault: 'small',
     subtitleDefault: 'medium'
@@ -305,13 +311,17 @@ export default class HeroBanner extends LightningElement {
     get computedTitleClass() {
         return classSet('')
             .add({
-                'slds-text-heading_large': this.titleFontSize === 'large',
-                'slds-text-heading_medium': this.titleFontSize === 'medium',
                 'slds-text-heading_small': this.titleFontSize === 'small',
+                'slds-text-heading_medium': this.titleFontSize === 'medium',
+                'slds-text-heading_large': this.titleFontSize === 'large',
                 'avonni-hero-banner-text-x_large':
                     this.titleFontSize === 'x-large',
                 'avonni-hero-banner-text-xx_large':
-                    this.titleFontSize === 'xx-large'
+                    this.titleFontSize === 'xx-large',
+                'avonni-hero-banner-text-xxx_large':
+                    this.titleFontSize === 'xxx-large',
+                'avonni-hero-banner-text-xxxx_large':
+                    this.titleFontSize === 'xxxx-large'
             })
             .add({
                 'avonni-hero-banner-font-weight_light':
@@ -324,27 +334,20 @@ export default class HeroBanner extends LightningElement {
             .toString();
     }
 
-    get computedButtonClass() {
-        return classSet('slds-grid slds-m-top_small')
-            .add({
-                'avonni-hero-banner-button-align_right':
-                    this.contentHorizontalAlignment === 'right',
-                'avonni-hero-banner-button-align_center':
-                    this.contentHorizontalAlignment === 'center'
-            })
-            .toString();
-    }
-
     get computedCaptionClass() {
         return classSet('')
             .add({
-                'slds-text-heading_large': this.captionFontSize === 'large',
-                'slds-text-heading_medium': this.captionFontSize === 'medium',
                 'slds-text-heading_small': this.captionFontSize === 'small',
+                'slds-text-heading_medium': this.captionFontSize === 'medium',
+                'slds-text-heading_large': this.captionFontSize === 'large',
                 'avonni-hero-banner-text-x_large':
                     this.captionFontSize === 'x-large',
                 'avonni-hero-banner-text-xx_large':
-                    this.captionFontSize === 'xx-large'
+                    this.captionFontSize === 'xx-large',
+                'avonni-hero-banner-text-xxx_large':
+                    this.captionFontSize === 'xxx-large',
+                'avonni-hero-banner-text-xxxx_large':
+                    this.captionFontSize === 'xxxx-large'
             })
             .add({
                 'avonni-hero-banner-font-weight_light':
@@ -360,13 +363,17 @@ export default class HeroBanner extends LightningElement {
     get computedSubtitleClass() {
         return classSet('')
             .add({
-                'slds-text-heading_large': this.subtitleFontSize === 'large',
-                'slds-text-heading_medium': this.subtitleFontSize === 'medium',
                 'slds-text-heading_small': this.subtitleFontSize === 'small',
+                'slds-text-heading_medium': this.subtitleFontSize === 'medium',
+                'slds-text-heading_large': this.subtitleFontSize === 'large',
                 'avonni-hero-banner-text-x_large':
                     this.subtitleFontSize === 'x-large',
                 'avonni-hero-banner-text-xx_large':
-                    this.subtitleFontSize === 'xx-large'
+                    this.subtitleFontSize === 'xx-large',
+                'avonni-hero-banner-text-xxx_large':
+                    this.subtitleFontSize === 'xxx-large',
+                'avonni-hero-banner-text-xxxx_large':
+                    this.subtitleFontSize === 'xxxx-large'
             })
             .add({
                 'avonni-hero-banner-font-weight_light':
@@ -375,6 +382,17 @@ export default class HeroBanner extends LightningElement {
                     this.subtitleFontWeight === 'normal',
                 'avonni-hero-banner-font-weight_bold':
                     this.subtitleFontWeight === 'bold'
+            })
+            .toString();
+    }
+
+    get computedButtonClass() {
+        return classSet('slds-grid slds-m-top_small')
+            .add({
+                'avonni-hero-banner-button-align_right':
+                    this.contentHorizontalAlignment === 'right',
+                'avonni-hero-banner-button-align_center':
+                    this.contentHorizontalAlignment === 'center'
             })
             .toString();
     }

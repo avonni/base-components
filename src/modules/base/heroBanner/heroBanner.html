@@ -5,28 +5,28 @@
                 <div class={computedWidthContainer} style={computedMaxWidth}>
                     <div style={computedContentStyling}>
                         <template if:true={caption}>
-                            <h3
+                            <h1
                                 class={computedCaptionClass}
                                 style={computedCaptionStyling}
                             >
                                 {caption}
-                            </h3>
+                            </h1>
                         </template>
                         <template if:true={title}>
-                            <h1
+                            <h2
                                 class={computedTitleClass}
                                 style={computedTitleStyling}
                             >
                                 {title}
-                            </h1>
+                            </h2>
                         </template>
                         <template if:true={subtitle}>
-                            <h2
+                            <p
                                 class={computedSubtitleClass}
                                 style={computedSubtitleStyling}
                             >
                                 {subtitle}
-                            </h2>
+                            </p>
                         </template>
                         <template if:true={hasButton}>
                             <div class={computedButtonClass}>

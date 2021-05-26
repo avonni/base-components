@@ -46,10 +46,18 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['small', 'medium', 'large', 'x-large', 'xx-large'],
+            options: [
+                'small',
+                'medium',
+                'large',
+                'x-large',
+                'xx-large',
+                'xxx-large',
+                'xxxx-large'
+            ],
             defaultValue: 'large',
             description:
-                'Valid values include small, medium, large, x-large, xx-large.',
+                'Valid values include small, medium, large, x-large, xx-large, xxx-large and xxxx-large.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'large' }
@@ -121,10 +129,18 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['small', 'medium', 'large', 'x-large', 'xx-large'],
+            options: [
+                'small',
+                'medium',
+                'large',
+                'x-large',
+                'xx-large',
+                'xxx-large',
+                'xxxx-large'
+            ],
             defaultValue: 'small',
             description:
-                'Defines the size of the caption. Valid values include small, medium, large, x-large, xx-large.',
+                'Defines the size of the caption. Valid values include small, medium, large, x-large, xx-large, xxx-large and xxxx-large.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'small' }
@@ -196,10 +212,18 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['small', 'medium', 'large', 'x-large', 'xx-large'],
+            options: [
+                'small',
+                'medium',
+                'large',
+                'x-large',
+                'xx-large',
+                'xxx-large',
+                'xxxx-large'
+            ],
             defaultValue: 'medium',
             description:
-                'Defines the size of the subtitle. Valid values include small, medium, large, x-large, xx-large.',
+                'Defines the size of the subtitle. Valid values include small, medium, large, x-large, xx-large, xxx-large and xxxx-large.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'medium' }
