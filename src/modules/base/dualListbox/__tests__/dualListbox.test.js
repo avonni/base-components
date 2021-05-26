@@ -37,7 +37,7 @@ describe('DualListbox', () => {
         });
         expect(element.addButtonIconName).toBe('utility:right');
         expect(element.addButtonLabel).toBeUndefined();
-        expect(element.borderedListItem).toBeFalsy();
+        expect(element.hideBottomDivider).toBeFalsy();
         expect(element.buttonSize).toBe('medium');
         expect(element.buttonVariant).toBe('border');
         expect(element.disableReordering).toBeFalsy();
@@ -88,8 +88,8 @@ describe('DualListbox', () => {
         });
     });
 
-    // bordered list item
-    it('Dual Listbox bordered list item', () => {
+    // hide bottom divider
+    it('Dual Listbox hide bottom divider', () => {
         const element = createElement('base-dual-listbox', {
             is: DualListbox
         });
@@ -97,14 +97,14 @@ describe('DualListbox', () => {
 
         element.options = options;
 
-        element.borderedListItem = true;
+        element.hideBottomDivider = true;
 
         return Promise.resolve().then(() => {
             const li = element.shadowRoot.querySelectorAll(
                 '.slds-listbox__item'
             );
             li.forEach((item) => {
-                expect(item.className).toContain(
+                expect(item.className).not.toContain(
                     'avonni-dual-listbox-option-border_bottom'
                 );
             });
