@@ -259,7 +259,7 @@ export default class Range extends LightningElement {
         }
 
         if (type === 'vertical') {
-            classes.add('avoni-vertical');
+            classes.add('avonni-vertical');
         }
 
         return classes.toString();

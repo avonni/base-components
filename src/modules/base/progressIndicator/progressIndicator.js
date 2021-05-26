@@ -8,23 +8,53 @@ const VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
 
 export default class ProgressIndicator extends LightningElement {
     @api currentStep;
-    @api errorSteps = [];
-    @api warningSteps = [];
-    @api completedSteps = [];
-    @api disabledSteps = [];
 
+    _completedSteps = [];
+    _disabledSteps = [];
+    _warningSteps = [];
+    _errorSteps = [];
     _variant = 'base';
     _type = 'base';
     _initialRender = true;
+    _steps = [];
 
     renderedCallback() {
-        if (this._initialRender) {
-            this.updateErrorSteps();
-            this.updateWarningSteps();
-            this.updateCompletedSteps();
-            this.updateCurrentStep();
-        }
-        this._initialRender = false;
+        this.updateErrorSteps();
+        this.updateWarningSteps();
+        this.updateCompletedSteps();
+        this.updateCurrentStep();
+    }
+
+    @api
+    get completedSteps() {
+        return this._completedSteps;
+    }
+    set completedSteps(value) {
+        this._completedSteps = normalizeArray(value);
+    }
+
+    @api
+    get disabledSteps() {
+        return this._disabledSteps;
+    }
+    set disabledSteps(value) {
+        this._disabledSteps = normalizeArray(value);
+    }
+
+    @api
+    get warningSteps() {
+        return this._warningSteps;
+    }
+    set warningSteps(value) {
+        this._warningSteps = normalizeArray(value);
+    }
+
+    @api
+    get errorSteps() {
+        return this._errorSteps;
+    }
+    set errorSteps(value) {
+        this._errorSteps = normalizeArray(value);
     }
 
     @api
@@ -72,16 +102,14 @@ export default class ProgressIndicator extends LightningElement {
     // Set what type of step (active, completed, warning, error, disabled)
     getSteps() {
         return Array.from(
-            this.template.querySelectorAll(
-                '[data-name="primitiveProgressStep"]'
-            )
+            this.template.querySelectorAll('c-primitive-progress-step')
         );
     }
 
     updateCurrentStep() {
         const steps = this.getSteps();
         steps.forEach((step) => {
-            if (step.getAttribute('data-step') === this.currentStep) {
+            if (step.value === this.currentStep) {
                 step.classList.add('slds-is-active');
             }
         });
@@ -90,8 +118,8 @@ export default class ProgressIndicator extends LightningElement {
     updateErrorSteps() {
         const steps = this.getSteps();
         steps.forEach((step) => {
-            Array.from(this.errorSteps).forEach((error) => {
-                if (step.getAttribute('data-step') === error) {
+            this.errorSteps.forEach((error) => {
+                if (step.value === error) {
                     step.setIcon('utility:error');
                     step.classList.add('slds-has-error');
                 }
@@ -102,8 +130,8 @@ export default class ProgressIndicator extends LightningElement {
     updateWarningSteps() {
         const steps = this.getSteps();
         steps.forEach((step) => {
-            Array.from(this.warningSteps).forEach((warning) => {
-                if (step.getAttribute('data-step') === warning) {
+            this.warningSteps.forEach((warning) => {
+                if (step.value === warning) {
                     step.setIcon('utility:warning');
                     step.classList.add('slds-has-warning');
                     if (this._variant === 'shaded') {
@@ -118,12 +146,40 @@ export default class ProgressIndicator extends LightningElement {
     updateCompletedSteps() {
         const steps = this.getSteps();
         steps.forEach((step) => {
-            Array.from(this.completedSteps).forEach((completed) => {
-                if (step.getAttribute('data-step') === completed) {
+            this.completedSteps.forEach((completed) => {
+                if (step.value === completed) {
                     step.setIcon('utility:success');
                     step.classList.add('slds-is-completed');
                 }
             });
         });
+    }
+
+    dispatchStepClick() {
+        this.dispatchEvent(new CustomEvent('stepclick'));
+    }
+
+    dispatchStepBlur() {
+        this.dispatchEvent(new CustomEvent('stepblur'));
+    }
+
+    dispatchStepFocus() {
+        this.dispatchEvent(new CustomEvent('stepfocus'));
+    }
+
+    dispatchStepMouseEnter() {
+        this.dispatchEvent(new CustomEvent('stepmouseenter'));
+    }
+
+    dispatchStepMouseLeave() {
+        this.dispatchEvent(new CustomEvent('stepmouseleave'));
+    }
+
+    dispatchStepButtonClick() {
+        this.dispatchEvent(new CustomEvent('stepbuttonclick'));
+    }
+
+    dispatchStepPopoverClick() {
+        this.dispatchEvent(new CustomEvent('steppopoverclick'));
     }
 }

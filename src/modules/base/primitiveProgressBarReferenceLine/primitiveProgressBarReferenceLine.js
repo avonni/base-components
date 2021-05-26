@@ -86,7 +86,7 @@ export default class PrimitiveProgressBarReferenceLine extends LightningElement 
     get computedBadgeClass() {
         return classSet('avonni-progress-bar-reference-line')
             .add({
-                'avonni-progress-bar-reference-line_inverse':
+                'avonni-progress-bar-reference-line_darker':
                     this._variant === 'darker',
                 'avonni-progress-bar-reference-line_lightest':
                     this._variant === 'lightest',

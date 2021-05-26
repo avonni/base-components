@@ -14,10 +14,12 @@ export const InputDateRange = ({
     startDate,
     endDate,
     dateStyle,
+    readOnly,
     timeStyle,
     timezone,
     disabled,
-    required
+    required,
+    variant
 }) => {
     const element = document.createElement('ac-base-input-date-range');
     element.type = type;
@@ -28,9 +30,11 @@ export const InputDateRange = ({
     element.startDate = startDate;
     element.endDate = endDate;
     element.dateStyle = dateStyle;
+    element.readOnly = readOnly;
     element.timeStyle = timeStyle;
     element.timezone = timezone;
     element.disabled = disabled;
     element.required = required;
+    element.variant = variant;
     return element;
 };
