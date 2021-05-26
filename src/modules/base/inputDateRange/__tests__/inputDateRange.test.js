@@ -104,18 +104,26 @@ describe('Input Date Range', () => {
         });
         document.body.appendChild(element);
 
-        const sDate = 'juil. 20, 2021';
-        const sDateLocale = sDate.toLocaleString();
-        const eDate = 'juil. 21, 2021';
-        const eDateLocale = eDate.toLocaleString();
+        const startMonth = startDate.toLocaleString('default', {
+            month: 'short'
+        });
+        const startDay = startDate.getDate();
+        const startYear = startDate.getFullYear();
+        const start = `${startMonth} ${startDay}, ${startYear}`;
+
+        const endMonth = endDate.toLocaleString('default', { month: 'short' });
+        const endDay = endDate.getDate();
+        const endYear = endDate.getFullYear();
+        const end = `${endMonth} ${endDay}, ${endYear}`;
+
         element.startDate = startDate;
         element.endDate = endDate;
 
         return Promise.resolve().then(() => {
             const startInput = element.shadowRoot.querySelector('.start-date');
-            expect(startInput.value).toBe(sDateLocale);
+            expect(startInput.value).toBe(start);
             const endInput = element.shadowRoot.querySelector('.end-date');
-            expect(endInput.value).toBe(eDateLocale);
+            expect(endInput.value).toBe(end);
         });
     });
 
@@ -125,19 +133,27 @@ describe('Input Date Range', () => {
         });
         document.body.appendChild(element);
 
-        const sDate = 'juillet 20, 2021';
-        const sDateLocale = sDate.toLocaleString();
-        const eDate = 'juillet 21, 2021';
-        const eDateLocale = eDate.toLocaleString();
+        const startMonth = startDate.toLocaleString('default', {
+            month: 'long'
+        });
+        const startDay = startDate.getDate();
+        const startYear = startDate.getFullYear();
+        const start = `${startMonth} ${startDay}, ${startYear}`;
+
+        const endMonth = endDate.toLocaleString('default', { month: 'long' });
+        const endDay = endDate.getDate();
+        const endYear = endDate.getFullYear();
+        const end = `${endMonth} ${endDay}, ${endYear}`;
+
         element.dateStyle = 'long';
         element.startDate = startDate;
         element.endDate = endDate;
 
         return Promise.resolve().then(() => {
             const startInput = element.shadowRoot.querySelector('.start-date');
-            expect(startInput.value).toBe(sDateLocale);
+            expect(startInput.value).toBe(start);
             const endInput = element.shadowRoot.querySelector('.end-date');
-            expect(endInput.value).toBe(eDateLocale);
+            expect(endInput.value).toBe(end);
         });
     });
 

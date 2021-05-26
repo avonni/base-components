@@ -11,14 +11,26 @@ import List from 'c/list';
 const ITEMS = [
     {
         label: 'Item 1',
-        iconName: 'standard:apps'
+        avatarSrc:
+            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+        avatarFallbackIconName: 'custom:custom5'
     },
     {
         label: 'Item 2',
-        iconName: 'standard:user'
+        avatarFallbackIconName: 'custom:custom9'
     },
     {
-        label: 'Item 3'
+        label: 'Item 3',
+        avatarFallbackIconName: 'custom:custom1',
+        avatarSrc:
+            'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg'
+    },
+    {
+        label: 'Item 4'
+    },
+    {
+        label: 'Item 5',
+        avatarFallbackIconName: 'custom:custom51'
     }
 ];
 
@@ -89,19 +101,23 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const items = element.shadowRoot.querySelectorAll('li');
-            expect(items).toHaveLength(3);
+            expect(items).toHaveLength(5);
 
             items.forEach((item, index) => {
-                expect(item.dataset.index).toBe(index.toString());
-                expect(item.ariaLabel).toBe(ITEMS[index].label);
-                expect(item.textContent).toBe(ITEMS[index].label);
+                const originalItem = ITEMS[index];
 
-                const icon = item.querySelector('lightning-icon');
-                if (ITEMS[index].iconName) {
-                    expect(icon).toBeTruthy();
-                    expect(icon.iconName).toBe(ITEMS[index].iconName);
-                } else {
-                    expect(icon).toBeFalsy();
+                expect(item.dataset.index).toBe(index.toString());
+                expect(item.ariaLabel).toBe(originalItem.label);
+                expect(item.textContent).toBe(originalItem.label);
+
+                const avatar = item.querySelector('c-avatar');
+                if (originalItem.avatarFallbackIconName) {
+                    expect(avatar.fallbackIconName).toBe(
+                        originalItem.avatarFallbackIconName
+                    );
+                }
+                if (originalItem.avatarSrc) {
+                    expect(avatar.src).toBe(originalItem.avatarSrc);
                 }
             });
         });
@@ -244,13 +260,11 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const iconsRight = element.shadowRoot.querySelectorAll(
-                'li div > div + lightning-icon'
+                '.icon-right'
             );
-            const divWithIconLeft = element.shadowRoot.querySelectorAll(
-                'li div > lightning-icon + div'
-            );
+            const iconsLeft = element.shadowRoot.querySelectorAll('.icon-left');
             expect(iconsRight).toHaveLength(4);
-            expect(divWithIconLeft).toHaveLength(0);
+            expect(iconsLeft).toHaveLength(0);
         });
     });
 
@@ -268,13 +282,11 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const iconsRight = element.shadowRoot.querySelectorAll(
-                'li div > div + lightning-icon'
+                '.icon-ight'
             );
-            const divWithIconLeft = element.shadowRoot.querySelectorAll(
-                'li div > lightning-icon + div'
-            );
+            const iconsLeft = element.shadowRoot.querySelectorAll('.icon-left');
             expect(iconsRight).toHaveLength(0);
-            expect(divWithIconLeft).toHaveLength(4);
+            expect(iconsLeft).toHaveLength(4);
         });
     });
 
