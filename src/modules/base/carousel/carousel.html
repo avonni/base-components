@@ -57,28 +57,36 @@
                                             </div>
                                             <div
                                                 class="slds-carousel__content avonni-carousel__content"
+                                                style={computedCarouselContentSize}
                                             >
                                                 <h2
-                                                    class="slds-carousel__content-title"
+                                                    class="slds-carousel__content-title avonni-carousel__content-title"
                                                 >
-                                                    {item.heading}
+                                                    {item.title}
                                                 </h2>
-                                                <p>{item.description}</p>
-                                                <template
-                                                    if:true={item.buttonLabel}
+                                                <p
+                                                    class="avonni-carousel__content-description slds-line-clamp_x-small"
                                                 >
-                                                    <div
-                                                        class="slds-m-top_small"
-                                                    >
-                                                        <lightning-button
-                                                            label={item.buttonLabel}
-                                                            icon-name={item.buttonIconName}
-                                                            icon-position={item.buttonIconPosition}
-                                                            variant={item.buttonVariant}
-                                                            disabled={item.buttonDisabled}
-                                                        ></lightning-button>
-                                                    </div>
-                                                </template>
+                                                    {item.description}
+                                                </p>
+                                                <lightning-button
+                                                    if:true={item.buttonLabel}
+                                                    label={item.buttonLabel}
+                                                    icon-name={item.buttonIconName}
+                                                    class="slds-m-top_small slds-align_absolute-center"
+                                                    icon-position={item.buttonIconPosition}
+                                                    variant={item.buttonVariant}
+                                                    disabled={item.buttonDisabled}
+                                                ></lightning-button>
+                                                <lightning-button
+                                                    if:true={item.secondaryButtonLabel}
+                                                    label={item.secondaryButtonLabel}
+                                                    icon-name={item.secondaryButtonIconName}
+                                                    class="slds-m-top_small slds-align_absolute-center"
+                                                    icon-position={item.secondaryButtonIconPosition}
+                                                    variant={item.secondaryButtonVariant}
+                                                    disabled={item.secondaryButtonDisabled}
+                                                ></lightning-button>
                                             </div>
                                         </a>
                                     </div>
