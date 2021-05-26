@@ -111,6 +111,10 @@
             "path": "src/modules/base/confetti/confetti.js"
         },
         {
+            "name": "c/datatable",
+            "path": "src/modules/base/datatable/datatable.js"
+        },
+        {
             "name": "c/dateTimePicker",
             "path": "src/modules/base/dateTimePicker/dateTimePicker.js"
         },
@@ -237,6 +241,38 @@
         {
             "name": "c/primitiveCoordinateItem",
             "path": "src/modules/base/primitiveCoordinateItem/primitiveCoordinateItem.js"
+        },
+        {
+            "name": "c/primitiveCellAvatarGroup",
+            "path": "src/modules/base/primitiveCellAvatarGroup/primitiveCellAvatarGroup.js"
+        },
+        {
+            "name": "c/primitiveCellCheckboxButton",
+            "path": "src/modules/base/primitiveCellCheckboxButton/primitiveCellCheckboxButton.js"
+        },
+        {
+            "name": "c/primitiveCellColorPicker",
+            "path": "src/modules/base/primitiveCellColorPicker/primitiveCellColorPicker.js"
+        },
+        {
+            "name": "c/primitiveCellInputCounter",
+            "path": "src/modules/base/primitiveCellInputCounter/primitiveCellInputCounter.js"
+        },
+        {
+            "name": "c/primitiveCellInputDateRange",
+            "path": "src/modules/base/primitiveCellInputDateRange/primitiveCellInputDateRange.js"
+        },
+        {
+            "name": "c/primitiveCellInputToggle",
+            "path": "src/modules/base/primitiveCellInputToggle/primitiveCellInputToggle.js"
+        },
+        {
+            "name": "c/primitiveCellRating",
+            "path": "src/modules/base/primitiveCellRating/primitiveCellRating.js"
+        },
+        {
+            "name": "c/primitiveCellSlider",
+            "path": "src/modules/base/primitiveCellSlider/primitiveCellSlider.js"
         },
         {
             "name": "c/primitiveIcon",
@@ -463,6 +499,10 @@
             "path": "src/modules/base/confetti/confetti.js"
         },
         {
+            "name": "avonni/datatable",
+            "path": "src/modules/base/datatable/datatable.js"
+        },
+        {
             "name": "avonni/dateTimePicker",
             "path": "src/modules/base/dateTimePicker/dateTimePicker.js"
         },
@@ -685,6 +725,7 @@
         "avonni/colorPalette",
         "avonni/colorPicker",
         "avonni/confetti",
+        "avonni/datatable",
         "avonni/dateTimePicker",
         "avonni/dialog",
         "avonni/dualListbox",
