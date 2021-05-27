@@ -314,10 +314,12 @@ export default {
             control: {
                 type: 'number'
             },
+            defaultValue: 5,
             description:
                 'Number of items that display in the listboxes before vertical scrollbars are displayed. Determines the vertical size of the listbox.',
             table: {
-                type: { summary: 'number' }
+                type: { summary: 'number' },
+                defaultValue: { summary: 5 }
             }
         },
         sourceLabel: {
@@ -482,7 +484,7 @@ const OptionsWithAvatarSrc = [
     {
         value: '1',
         label: 'Carl Smith',
-        description: 'CS',
+        // description: 'CS',
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
     },
     {
@@ -731,8 +733,8 @@ BaseWithAvatarSize10.args = {
     value: ['2', '3']
 };
 
-export const BaseWithAvatarSrcSize6 = Template.bind({});
-BaseWithAvatarSrcSize6.args = {
+export const BaseWithAvatarDescriptionSize6 = Template.bind({});
+BaseWithAvatarDescriptionSize6.args = {
     label: 'Invitations',
     sourceLabel: 'Available',
     selectedLabel: 'Invited',

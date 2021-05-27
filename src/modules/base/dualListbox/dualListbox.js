@@ -14,6 +14,7 @@ const DEFAULT_ADD_BUTTON_ICON_NAME = 'utility:right';
 const DEFAULT_DOWN_BUTTON_ICON_NAME = 'utility:down';
 const DEFAULT_REMOVE_BUTTON_ICON_NAME = 'utility:left';
 const DEFAULT_UP_BUTTON_ICON_NAME = 'utility:up';
+const DEFAULT_SIZE = 5;
 
 const VALID_VARIANTS = {
     valid: ['standard', 'label-hidden', 'label-stacked'],
@@ -50,8 +51,6 @@ export default class DualListbox extends LightningElement {
     @api selectedLabel;
     @api selectedPlaceholder;
     @api label;
-    @api min = DEFAULT_MIN;
-    @api max;
     @api name;
     @api addButtonIconName = DEFAULT_ADD_BUTTON_ICON_NAME;
     @api downButtonIconName = DEFAULT_DOWN_BUTTON_ICON_NAME;
@@ -74,7 +73,9 @@ export default class DualListbox extends LightningElement {
     _disabled;
     _disableReordering = false;
     _required = false;
-    _size;
+    _size = DEFAULT_SIZE;
+    _min = DEFAULT_MIN;
+    _max;
 
     _selectedValues = [];
     highlightedOptions = [];
@@ -86,6 +87,8 @@ export default class DualListbox extends LightningElement {
     _upButtonDisabled = false;
     _downButtonDisabled = false;
     _oldIndex;
+    _sourceBoxHeight;
+    _selectedBoxHeight;
 
     connectedCallback() {
         this.classList.add('slds-form-element');
@@ -112,6 +115,9 @@ export default class DualListbox extends LightningElement {
 
     renderedCallback() {
         this.assertRequiredAttributes();
+        this.computedColumnStyleSource();
+        this.computedColumnStyleSelected();
+
         if (this.disabled) {
             this._upButtonDisabled = true;
             this._downButtonDisabled = true;
@@ -275,9 +281,28 @@ export default class DualListbox extends LightningElement {
     }
 
     set size(value) {
-        if (typeof value === 'number') {
-            this._size = value;
-        } else this._size = 5;
+        const number = typeof value === 'number' ? value : DEFAULT_SIZE;
+        this._size = parseInt(number, 10);
+    }
+
+    @api
+    get max() {
+        return this._max;
+    }
+
+    set max(value) {
+        const number = typeof value === 'number' ? value : '';
+        this._max = parseInt(number, 10);
+    }
+
+    @api
+    get min() {
+        return this._min;
+    }
+
+    set min(value) {
+        const number = typeof value === 'number' ? value : DEFAULT_MIN;
+        this._min = parseInt(number, 10);
     }
 
     @api
@@ -424,7 +449,7 @@ export default class DualListbox extends LightningElement {
 
     computeOptionProperties(option, focusableValue) {
         const isSelected = this.highlightedOptions.indexOf(option.value) > -1;
-        const hasDescription = option.hasDescription;
+        const hasDescription = option.description;
         const classList = classSet(
             'slds-listbox__option slds-listbox__option_plain slds-media slds-media_center slds-media_inline'
         )
@@ -436,37 +461,93 @@ export default class DualListbox extends LightningElement {
             ...option,
             tabIndex: option.value === focusableValue ? '0' : '-1',
             selected: isSelected ? 'true' : 'false',
-            primaryText: option.description ? option.label : '',
-            secondaryText: option.description ? option.description : '',
+            primaryText: hasDescription ? option.label : '',
+            secondaryText: hasDescription ? hasDescription : '',
             iconSize: option.iconSize
                 ? option.iconSize
-                : option.description
+                : hasDescription
                 ? 'medium'
                 : 'small',
             classList
         };
     }
 
-    get computedColumnStyleSource() {
-        if (this.size) {
-            if (this.searchEngine && this.size > 1) {
-                const newHeight = parseInt(this.size, 10) * 2.5 - 2.75;
-                return `height:${newHeight}rem`;
-            }
-            const newHeight = parseInt(this.size, 10) * 2.5 + 0.15;
-            return `height:${newHeight}rem`;
-        } else if (this.searchEngine) {
-            return `height:11.75rem`;
+    computedColumnStyleSource() {
+        let hasDescription = 0;
+        let noDescription = 0;
+        if (this.computedSourceList.length > this._size) {
+            const newArray = this.computedSourceList.slice(0, this._size);
+            newArray.forEach((option) => {
+                if (option.description) {
+                    hasDescription++;
+                } else if (!option.description) {
+                    noDescription++;
+                }
+            });
+            this._sourceBoxHeight = 40 * noDescription + 57 * hasDescription;
+            return this._sourceBoxHeight;
+        } else if (this.computedSourceList.length === this._size) {
+            this.computedSourceList.forEach((option) => {
+                if (option.description) {
+                    hasDescription++;
+                } else if (!option.description) {
+                    noDescription++;
+                }
+            });
+            this._sourceBoxHeight = 40 * noDescription + 57 * hasDescription;
+            return this._sourceBoxHeight;
         }
-        return 'height:14.75rem';
+        this.computedSourceList.forEach((option) => {
+            if (option.description) {
+                hasDescription++;
+            } else if (!option.description) {
+                noDescription++;
+            }
+        });
+        this._sourceBoxHeight =
+            40 * noDescription +
+            57 * hasDescription +
+            40 * (this._size - this.computedSourceList.length);
+        return this._sourceBoxHeight;
     }
 
-    get computedColumnStyle() {
-        if (this.size) {
-            const newHeight = parseInt(this.size, 10) * 2.5 + 0.15;
-            return `height:${newHeight}rem`;
+    computedColumnStyleSelected() {
+        let hasDescription = 0;
+        let noDescription = 0;
+        if (this.computedSelectedList.length > this._size) {
+            const newArray = this.computedSelectedList.slice(0, this._size);
+            newArray.forEach((option) => {
+                if (option.description) {
+                    hasDescription++;
+                } else if (!option.description) {
+                    noDescription++;
+                }
+            });
+            this._selectedBoxHeight = 40 * noDescription + 57 * hasDescription;
+            return this._selectedBoxHeight;
+        } else if (this.computedSelectedList.length === this._size) {
+            this.computedSelectedList.forEach((option) => {
+                if (option.description) {
+                    hasDescription++;
+                } else if (!option.description) {
+                    noDescription++;
+                }
+            });
+            this._selectedBoxHeight = 40 * noDescription + 57 * hasDescription;
+            return this._selectedBoxHeight;
         }
-        return 'height:14.75rem';
+        this.computedSelectedList.forEach((option) => {
+            if (option.description) {
+                hasDescription++;
+            } else if (!option.description) {
+                noDescription++;
+            }
+        });
+        this._selectedBoxHeight =
+            40 * noDescription +
+            57 * hasDescription +
+            40 * (this._size - this.computedSelectedList.length);
+        return this._selectedBoxHeight;
     }
 
     get isLabelHidden() {
@@ -490,6 +571,26 @@ export default class DualListbox extends LightningElement {
 
     get moveButtonsDisabled() {
         return this.disabled;
+    }
+
+    get sourceHeight() {
+        if (this._sourceBoxHeight >= this._selectedBoxHeight) {
+            return `height: ${this._sourceBoxHeight}px`;
+        }
+        return `height: ${this._selectedBoxHeight}px`;
+    }
+
+    get selectedHeight() {
+        if (this.searchEngine) {
+            if (this._sourceBoxHeight >= this._selectedBoxHeight) {
+                return `height: ${this._sourceBoxHeight + 48}px`;
+            }
+            return `height: ${this._selectedBoxHeight + 48}px`;
+        }
+        if (this._sourceBoxHeight >= this._selectedBoxHeight) {
+            return `height: ${this._sourceBoxHeight}px`;
+        }
+        return `height: ${this._selectedBoxHeight}px`;
     }
 
     get computedOuterClass() {

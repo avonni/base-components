@@ -59,6 +59,7 @@ describe('DualListbox', () => {
         expect(element.searchEngine).toBeFalsy();
         expect(element.selectedLabel).toBeUndefined();
         expect(element.selectedPlaceholder).toBeUndefined();
+        expect(element.size).toBe(5);
         expect(element.sourceLabel).toBeUndefined();
         expect(element.upButtonIconName).toBe('utility:up');
         expect(element.upButtonLabel).toBeUndefined();
