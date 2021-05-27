@@ -14,7 +14,8 @@ export default {
             description:
                 'The caption can include text, and is displayed under the title.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Caption'
             }
         },
         captionColor: {
@@ -25,7 +26,8 @@ export default {
             defaultValue: '#ffffff',
             description: 'Defines the font color of the caption.',
             table: {
-                type: { summary: 'color' }
+                type: { summary: 'color' },
+                category: 'Caption'
             }
         },
         captionFontFamily: {
@@ -39,7 +41,8 @@ export default {
                 type: { summary: 'text' },
                 defaultValue: {
                     summary: "'Salesforce Sans', Arial, sans-serif"
-                }
+                },
+                category: 'Caption'
             }
         },
         captionFontSize: {
@@ -61,7 +64,8 @@ export default {
                 'Defines the size of the caption. Valid values include small, medium, large, x-large, xx-large, xxx-large and xxxx-large.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'small' }
+                defaultValue: { summary: 'small' },
+                category: 'Caption'
             }
         },
         captionFontWeight: {
@@ -75,7 +79,8 @@ export default {
                 'Defines the font weight of the caption. Valid values include light, normal and bold.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'light' }
+                defaultValue: { summary: 'light' },
+                category: 'Caption'
             }
         },
         captionShadowColor: {
@@ -87,7 +92,8 @@ export default {
             description: 'Defines the text shadow of the caption.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: '1px 1px 0 rgb(0 0 0 / 50%)' }
+                defaultValue: { summary: '1px 1px 0 rgb(0 0 0 / 50%)' },
+                category: 'Caption'
             }
         },
         title: {
@@ -97,7 +103,8 @@ export default {
             description:
                 'The title can include text, and is displayed in the banner.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Title'
             }
         },
         titleColor: {
@@ -108,7 +115,8 @@ export default {
             defaultValue: '#ffffff',
             description: 'Defines the font color of the title.',
             table: {
-                type: { summary: 'color' }
+                type: { summary: 'color' },
+                category: 'Title'
             }
         },
         titleFontFamily: {
@@ -122,7 +130,8 @@ export default {
                 type: { summary: 'text' },
                 defaultValue: {
                     summary: "'Salesforce Sans', Arial, sans-serif"
-                }
+                },
+                category: 'Title'
             }
         },
         titleFontSize: {
@@ -144,7 +153,8 @@ export default {
                 'Valid values include small, medium, large, x-large, xx-large, xxx-large and xxxx-large.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'large' }
+                defaultValue: { summary: 'large' },
+                category: 'Title'
             }
         },
         titleFontWeight: {
@@ -158,7 +168,8 @@ export default {
                 'Defines the font weight of the title. Valid values include light, normal and bold.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'normal' }
+                defaultValue: { summary: 'normal' },
+                category: 'Title'
             }
         },
         titleShadowColor: {
@@ -170,7 +181,8 @@ export default {
             description: 'Defines the text shadow of the title.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: '1px 1px 0 rgb(0 0 0 / 50%)' }
+                defaultValue: { summary: '1px 1px 0 rgb(0 0 0 / 50%)' },
+                category: 'Title'
             }
         },
         subtitle: {
@@ -180,7 +192,8 @@ export default {
             description:
                 'The subtitle can include text, and is displayed under the title.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Subtitle'
             }
         },
         subtitleColor: {
@@ -191,7 +204,8 @@ export default {
             defaultValue: '#ffffff',
             description: 'Defines the font color of the subtitle.',
             table: {
-                type: { summary: 'color' }
+                type: { summary: 'color' },
+                category: 'Subtitle'
             }
         },
         subtitleFontFamily: {
@@ -205,7 +219,8 @@ export default {
                 type: { summary: 'text' },
                 defaultValue: {
                     summary: "'Salesforce Sans', Arial, sans-serif"
-                }
+                },
+                category: 'Subtitle'
             }
         },
         subtitleFontSize: {
@@ -227,7 +242,8 @@ export default {
                 'Defines the size of the subtitle. Valid values include small, medium, large, x-large, xx-large, xxx-large and xxxx-large.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'medium' }
+                defaultValue: { summary: 'medium' },
+                category: 'Subtitle'
             }
         },
         subtitleFontWeight: {
@@ -241,7 +257,8 @@ export default {
                 'Defines the font weight of the subtitle. Valid values include light, normal and bold.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'normal' }
+                defaultValue: { summary: 'normal' },
+                category: 'Subtitle'
             }
         },
         subtitleShadowColor: {
@@ -253,7 +270,8 @@ export default {
             description: 'Defines the text shadow of the subtitle.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: '1px 1px 0 rgb(0 0 0 / 50%)' }
+                defaultValue: { summary: '1px 1px 0 rgb(0 0 0 / 50%)' },
+                category: 'Subtitle'
             }
         },
         src: {
@@ -262,7 +280,8 @@ export default {
             },
             description: 'URL for the background image.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Background'
             }
         },
         backgroundColor: {
@@ -274,7 +293,8 @@ export default {
             description: 'Defines the background color if there is no image.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: '#ffffff' }
+                defaultValue: { summary: '#ffffff' },
+                category: 'Background'
             }
         },
         linearGradient: {
@@ -287,7 +307,8 @@ export default {
                 'Defines the linear-gradient for the background image.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'rgba(0,0,0,0.4), rgba(0,0,0,0.4)' }
+                defaultValue: { summary: 'rgba(0,0,0,0.4), rgba(0,0,0,0.4)' },
+                category: 'Background'
             }
         },
         height: {
@@ -298,7 +319,8 @@ export default {
             description: 'Defines the height of the banner. ',
             table: {
                 type: { summary: 'number' },
-                defaultValue: { summary: 400 }
+                defaultValue: { summary: 400 },
+                category: 'Layout'
             }
         },
         contentHorizontalAlignment: {
@@ -312,7 +334,8 @@ export default {
                 'Defines the horizontal alignment of the title, caption and description. Valid values include left, center and right.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'left' }
+                defaultValue: { summary: 'left' },
+                category: 'Layout'
             }
         },
         contentVerticalAlignment: {
@@ -326,7 +349,8 @@ export default {
                 'Defines the vertical alignment of the title, caption and description. Valid values include top, center and bottom.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'center' }
+                defaultValue: { summary: 'center' },
+                category: 'Layout'
             }
         },
         maxWidth: {
@@ -339,7 +363,8 @@ export default {
                 'Defines the width inside of the banner in percentage.',
             table: {
                 type: { summary: 'number' },
-                defaultValue: { summary: 960 }
+                defaultValue: { summary: 960 },
+                category: 'Layout'
             }
         },
         contentWidth: {
@@ -355,7 +380,8 @@ export default {
                 'Defines the width of the content inside of the banner in percentage.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 100 }
+                defaultValue: { summary: 100 },
+                category: 'Layout'
             }
         },
         primaryButtonLabel: {
@@ -365,7 +391,8 @@ export default {
             },
             description: 'The text to be displayed inside the primary button.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Primary button'
             }
         },
         primaryButtonTextColor: {
@@ -377,7 +404,8 @@ export default {
             description: 'Defines the text color of the primary button.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: '#ffffff' }
+                defaultValue: { summary: '#ffffff' },
+                category: 'Primary button'
             }
         },
         primaryButtonTextHoverColor: {
@@ -389,7 +417,8 @@ export default {
             description: 'Defines the text hover color of the primary button.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: '#ffffff' }
+                defaultValue: { summary: '#ffffff' },
+                category: 'Primary button'
             }
         },
         primaryButtonBackgroundColor: {
@@ -401,7 +430,8 @@ export default {
             description: 'Defines the primary button background color.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: '#0070d2' }
+                defaultValue: { summary: '#0070d2' },
+                category: 'Primary button'
             }
         },
         primaryButtonBackgroundHoverColor: {
@@ -413,7 +443,8 @@ export default {
             description: 'Defines the primary button background hover color.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: '#005fb2' }
+                defaultValue: { summary: '#005fb2' },
+                category: 'Primary button'
             }
         },
         primaryButtonBorderColor: {
@@ -423,7 +454,8 @@ export default {
             },
             description: 'Defines the primary button border color.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Primary button'
             }
         },
         primaryButtonBorderRadius: {
@@ -438,7 +470,8 @@ export default {
             description: 'Defines the primary button border radius in px.',
             table: {
                 type: { summary: 'number' },
-                defaultValue: { summary: 4 }
+                defaultValue: { summary: 4 },
+                category: 'Primary button'
             }
         },
         secondaryButtonLabel: {
@@ -449,7 +482,8 @@ export default {
             description:
                 'The text to be displayed inside the secondary button.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Secondary button'
             }
         },
         secondaryButtonTextColor: {
@@ -461,7 +495,8 @@ export default {
             description: 'Defines the text color of the secondary button.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: '#ffffff' }
+                defaultValue: { summary: '#ffffff' },
+                category: 'Secondary button'
             }
         },
         secondaryButtonTextHoverColor: {
@@ -474,7 +509,8 @@ export default {
                 'Defines the text hover color of the secondary button.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: '#ffffff' }
+                defaultValue: { summary: '#ffffff' },
+                category: 'Secondary button'
             }
         },
         secondaryButtonBackgroundColor: {
@@ -486,7 +522,8 @@ export default {
             description: 'Defines the secondary button background color.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: '#0070d2' }
+                defaultValue: { summary: '#0070d2' },
+                category: 'Secondary button'
             }
         },
         secondaryButtonBackgroundHoverColor: {
@@ -498,7 +535,8 @@ export default {
             description: 'Defines the secondary button background hover color.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: '#005fb2' }
+                defaultValue: { summary: '#005fb2' },
+                category: 'Secondary button'
             }
         },
         secondaryButtonBorderColor: {
@@ -508,7 +546,8 @@ export default {
             },
             description: 'Defines the secondary button border color.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                category: 'Secondary button'
             }
         },
         secondaryButtonBorderRadius: {
@@ -523,7 +562,8 @@ export default {
             description: 'Defines the secondary button border radius in px.',
             table: {
                 type: { summary: 'number' },
-                defaultValue: { summary: 4 }
+                defaultValue: { summary: 4 },
+                category: 'Secondary button'
             }
         }
     }
