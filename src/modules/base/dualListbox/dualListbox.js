@@ -77,7 +77,7 @@ export default class DualListbox extends LightningElement {
     _disableReordering = false;
     _required = false;
     _size;
-    _width = VALID_WIDTH;
+    _width = VALID_WIDTH.default;
 
     _selectedValues = [];
     highlightedOptions = [];
@@ -522,9 +522,7 @@ export default class DualListbox extends LightningElement {
     }
 
     get computedListboxColumnsClass() {
-        return classSet(
-            'avonni-dual-listbox-list__column avonni-dual-listbox-list__column_responsive'
-        )
+        return classSet('avonni-dual-listbox-list__column')
             .add({
                 'avonni-dual-listbox-list__column_responsive_small ':
                     this._width === 'small',
