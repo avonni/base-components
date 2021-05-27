@@ -36,7 +36,6 @@ const DEFAULT_TEXT_COLOR = '#ffffff';
 const DEFAULT_BACKGROUND_COLOR = '#ffffff';
 const DEFAULT_BUTTON_BACKGROUND_COLOR = '#0070d2';
 const DEFAULT_BUTTON_BACKGROUND_HOVER_COLOR = '#005fb2';
-const DEFAULT_BUTTON_BORDER_COLOR = '#0070d2';
 const DEFAULT_HEIGHT = 400;
 const DEFAULT_MAX_WIDTH = 960;
 const DEFAULT_CONTENT_WIDTH = 100;
@@ -67,7 +66,7 @@ export default class HeroBanner extends LightningElement {
     @api primaryButtonBackgroundColor = DEFAULT_BUTTON_BACKGROUND_COLOR;
     @api
     primaryButtonBackgroundHoverColor = DEFAULT_BUTTON_BACKGROUND_HOVER_COLOR;
-    @api primaryButtonBorderColor = DEFAULT_BUTTON_BORDER_COLOR;
+    @api primaryButtonBorderColor;
     @api primaryButtonBorderRadius = DEFAULT_BUTTON_BORDER_RADIUS;
     @api secondaryButtonLabel;
     @api secondaryButtonTextColor = DEFAULT_TEXT_COLOR;
@@ -75,7 +74,7 @@ export default class HeroBanner extends LightningElement {
     @api secondaryButtonBackgroundColor = DEFAULT_BUTTON_BACKGROUND_COLOR;
     @api
     secondaryButtonBackgroundHoverColor = DEFAULT_BUTTON_BACKGROUND_HOVER_COLOR;
-    @api secondaryButtonBorderColor = DEFAULT_BUTTON_BORDER_COLOR;
+    @api secondaryButtonBorderColor;
     @api secondaryButtonBorderRadius = DEFAULT_BUTTON_BORDER_RADIUS;
 
     _contentHorizontalAlignment = horizontal_alignement_options.default;

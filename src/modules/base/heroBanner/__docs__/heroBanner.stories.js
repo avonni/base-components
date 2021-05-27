@@ -421,11 +421,9 @@ export default {
             control: {
                 type: 'color'
             },
-            defaultValue: '#0070d2',
             description: 'Defines the primary button border color.',
             table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: '#0070d2' }
+                type: { summary: 'string' }
             }
         },
         primaryButtonBorderRadius: {
@@ -508,7 +506,6 @@ export default {
             control: {
                 type: 'color'
             },
-            defaultValue: '#0070d2',
             description: 'Defines the secondary button border color.',
             table: {
                 type: { summary: 'string' }

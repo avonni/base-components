@@ -73,7 +73,7 @@
 
 .avonni-hero-banner-primary-button {
     display: inline-block;
-    border: solid 1px var(--border-primary_color);
+    border: solid 2px var(--border-primary_color);
     min-width: 135px;
     transition: all 0.2s;
     background: var(--background-primary);
@@ -83,12 +83,11 @@
 .avonni-hero-banner-primary-button:hover {
     background-color: var(--background-primary_hover);
     color: var(--color-primary_hover);
-    border: solid 1px transparent;
 }
 
 .avonni-hero-banner-secondary-button {
     display: inline-block;
-    border: solid 1px var(--border-secondary_color);
+    border: solid 2px var(--border-secondary_color);
     min-width: 135px;
     transition: all 0.2s;
     background: var(--background-secondary);
@@ -98,7 +97,6 @@
 .avonni-hero-banner-secondary-button:hover {
     background-color: var(--background-secondary_hover);
     color: var(--color-secondary_hover);
-    border: solid 1px transparent;
 }
 
 .avonni-hero-banner-justify_center {
