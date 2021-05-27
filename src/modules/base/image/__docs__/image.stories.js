@@ -41,6 +41,17 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        ratio: {
+            control: {
+                type: 'select'
+            },
+            options: ['1x1', '4x3', '16x9'],
+            description:
+                'Specifies the cropping ratio for the image, which is constrained to the parents width.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         width: {
             control: {
                 type: 'text'

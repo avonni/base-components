@@ -7,6 +7,7 @@ const BLANK_COLOR_DEFAULT = 'transparent';
 
 export default class Image extends LightningElement {
     @api alt;
+    @api ratio;
 
     _src;
     _width;
