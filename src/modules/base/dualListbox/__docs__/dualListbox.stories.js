@@ -386,6 +386,19 @@ export default {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'standard' }
             }
+        },
+        width: {
+            control: {
+                type: 'select'
+            },
+            options: ['small', 'medium', 'large'],
+            defaultValue: 'medium',
+            description:
+                'It defines the width of the source options listbox and the selected options listbox. Valid values include small, medium and large.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'medium' }
+            }
         }
     }
 };
@@ -600,6 +613,36 @@ Base.args = {
     upButtonLabel: 'Up Button Label',
     options: Options,
     value: ['2', '3', '4', '5', '6']
+};
+
+export const BaseSmall = Template.bind({});
+BaseSmall.args = {
+    label: 'Select Options',
+    fieldLevelHelp: 'This is a Dual Listbox',
+    sourceLabel: 'Available Items',
+    selectedLabel: 'Selected Items',
+    addButtonLabel: 'Add Button Label',
+    removeButtonLabel: 'Remove Button Label',
+    downButtonLabel: 'Down Button Label',
+    upButtonLabel: 'Up Button Label',
+    options: Options,
+    value: ['2', '3', '4', '5', '6'],
+    width: 'small'
+};
+
+export const BaseLarge = Template.bind({});
+BaseLarge.args = {
+    label: 'Select Options',
+    fieldLevelHelp: 'This is a Dual Listbox',
+    sourceLabel: 'Available Items',
+    selectedLabel: 'Selected Items',
+    addButtonLabel: 'Add Button Label',
+    removeButtonLabel: 'Remove Button Label',
+    downButtonLabel: 'Down Button Label',
+    upButtonLabel: 'Up Button Label',
+    options: Options,
+    value: ['2', '3', '4', '5', '6'],
+    width: 'large'
 };
 
 export const BaseNoBorder = Template.bind({});

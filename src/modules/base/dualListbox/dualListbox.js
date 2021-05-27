@@ -38,6 +38,8 @@ const VALID_BUTTON_SIZES = {
     default: 'medium'
 };
 
+const VALID_WIDTH = { valid: ['small', 'medium', 'large'], default: 'medium' };
+
 const i18n = {
     optionLockAssistiveText: 'Option Lock AssistiveText',
     required: 'Required',
@@ -75,6 +77,7 @@ export default class DualListbox extends LightningElement {
     _disableReordering = false;
     _required = false;
     _size;
+    _width = VALID_WIDTH;
 
     _selectedValues = [];
     highlightedOptions = [];
@@ -290,6 +293,18 @@ export default class DualListbox extends LightningElement {
     }
 
     @api
+    get width() {
+        return this._width;
+    }
+
+    set width(width) {
+        this._width = normalizeString(width, {
+            fallbackValue: VALID_WIDTH.default,
+            validValues: VALID_WIDTH.valid
+        });
+    }
+
+    @api
     focus() {
         const firstOption = this.template.querySelector(`div[data-index='0']`);
         if (firstOption) {
@@ -495,7 +510,7 @@ export default class DualListbox extends LightningElement {
     get computedOuterClass() {
         return classSet('')
             .add({
-                'slds-form-element_stacked': this.variant === 'label-stacked'
+                'slds-form-element_stacked': this._variant === 'label-stacked'
             })
             .toString();
     }
@@ -506,13 +521,31 @@ export default class DualListbox extends LightningElement {
             .toString();
     }
 
-    get computedListboxContainerClass() {
+    get computedListboxColumnsClass() {
+        return classSet(
+            'avonni-dual-listbox-list__column avonni-dual-listbox-list__column_responsive'
+        )
+            .add({
+                'avonni-dual-listbox-list__column_responsive_small ':
+                    this._width === 'small',
+                'avonni-dual-listbox-list__column_responsive_medium ':
+                    this._width === 'medium',
+                'avonni-dual-listbox-list__column_responsive_large ':
+                    this._width === 'large'
+            })
+            .toString();
+    }
+
+    get computedListboxSourceContainerClass() {
         return classSet(
             'slds-dueling-list__options avonni-dual-listbox-option-is-selected'
         )
-            .add({ 'slds-is-disabled': this.disabled })
+            .add({ 'slds-is-disabled': this._disabled })
+            .add({ 'slds-is-relative': this._isLoading })
             .add({
-                'slds-is-relative': this.isLoading
+                'avonni-dual-listbox-width_small': this._width === 'small',
+                'avonni-dual-listbox-width_medium': this._width === 'medium',
+                'avonni-dual-listbox-width_large': this._width === 'large'
             })
             .toString();
     }
@@ -521,13 +554,18 @@ export default class DualListbox extends LightningElement {
         return classSet(
             'slds-dueling-list__options avonni-dual-listbox-option-is-selected'
         )
-            .add({ 'slds-is-disabled': this.disabled })
+            .add({ 'slds-is-disabled': this._disabled })
             .add({
                 'avonni-dual-listbox-selected-list-with-search': this
-                    .searchEngine
+                    ._searchEngine
             })
             .add({
                 'avonni-dual-listbox-empty-column': this.isSelectedBoxEmpty
+            })
+            .add({
+                'avonni-dual-listbox-width_small': this._width === 'small',
+                'avonni-dual-listbox-width_medium': this._width === 'medium',
+                'avonni-dual-listbox-width_large': this._width === 'large'
             })
             .toString();
     }

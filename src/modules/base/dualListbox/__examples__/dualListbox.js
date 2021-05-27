@@ -38,7 +38,8 @@ export const DualListbox = ({
     upButtonLabel,
     validity,
     value,
-    variant
+    variant,
+    width
 }) => {
     const element = document.createElement('ac-base-dual-listbox');
     element.addButtonIconName = addButtonIconName;
@@ -74,5 +75,6 @@ export const DualListbox = ({
     element.validity = validity;
     element.value = value;
     element.variant = variant;
+    element.width = width;
     return element;
 };

@@ -24,10 +24,30 @@
     margin: var(--lwc-spacingMedium, 1rem);
 }
 
-.avonni-dual-listbox-list__column_responsive {
+.avonni-dual-listbox-list__column_responsive_small {
     -webkit-box-flex: 0;
     -ms-flex: 0 1 15rem;
     flex: 0 1 15rem;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    overflow: hidden;
+    min-width: 6rem;
+}
+
+.avonni-dual-listbox-list__column_responsive_medium {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 1 20rem;
+    flex: 0 1 20rem;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    overflow: hidden;
+    min-width: 6rem;
+}
+
+.avonni-dual-listbox-list__column_responsive_large {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 1 25rem;
+    flex: 0 1 25rem;
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
     overflow: hidden;
@@ -78,4 +98,16 @@
 
 .avonni-dual-listbox-list-item-min_height {
     min-height: 40px;
+}
+
+.avonni-dual-listbox-width_small {
+    width: 15rem;
+}
+
+.avonni-dual-listbox-width_medium {
+    width: 20rem;
+}
+
+.avonni-dual-listbox-width_large {
+    width: 25rem;
 }
