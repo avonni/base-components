@@ -5,29 +5,12 @@ import { classSet } from 'c/utils';
 export default class SummaryDetail extends LightningElement {
     @api title;
 
-    titleClass;
-    bodyClass;
-    contentClass;
     _removeBodyIndentation;
     _shrinkIconName = 'utility:chevrondown';
     _expandIconName = 'utility:chevronright';
     _fullWidth;
     _closed;
     _hideIcon;
-
-    connectedCallback() {
-        this.titleClass = classSet('avonni-min-width_0').add({
-            'slds-col': this.fullWidth
-        });
-
-        this.bodyClass = classSet('avonni-min-width_0').add({
-            'slds-col': this.fullWidth
-        });
-
-        this.contentClass = classSet('slds-summary-detail__content').add({
-            'content_no-indent': this.removeBodyIndentation && !this.hideIcon
-        });
-    }
 
     @api
     get shrinkIconName() {
@@ -87,6 +70,24 @@ export default class SummaryDetail extends LightningElement {
                 'slds-is-open': this.sectionIsOpen
             })
             .toString();
+    }
+
+    get titleClass() {
+        return classSet('avonni-min-width_0').add({
+            'slds-col': this.fullWidth
+        });
+    }
+
+    get bodyClass() {
+        return classSet('avonni-min-width_0').add({
+            'slds-col': this.fullWidth
+        });
+    }
+
+    get contentClass() {
+        return classSet('slds-summary-detail__content').add({
+            'content_no-indent': this.removeBodyIndentation && !this.hideIcon
+        });
     }
 
     get iconName() {

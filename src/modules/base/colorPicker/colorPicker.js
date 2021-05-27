@@ -4,40 +4,41 @@ import {
     generateColors,
     observePosition,
     normalizeBoolean,
-    normalizeString
+    normalizeString,
+    normalizeArray
 } from 'c/utilsPrivate';
 
 import { classSet } from 'c/utils';
 import { generateUniqueId } from 'c/utils';
 
-const validVariants = [
+const validVariants = {valid: [
     'standard',
     'label-inline',
     'label-hidden',
     'label-stacked'
-];
+], default: 'standard'};
 
-const validTypes = ['base', 'custom', 'predefined'];
+const validTypes = {valid: ['base', 'custom', 'predefined'], default: 'base'};
 
-const validMenuVariants = [
+const validMenuVariants = {valid: [
     'bare',
     'container',
     'border',
     'border-filled',
     'bare-inverse',
     'border-inverse'
-];
+], default: 'border'};
 
-const validMenuIconSizes = ['xx-small', 'x-small', 'small', 'medium', 'large'];
+const validMenuIconSizes = {valid: ['xx-small', 'x-small', 'small', 'medium', 'large'], default: 'x-small'};
 
-const validMenuAlignments = [
+const validMenuAlignments = {valid: [
     'left',
     'center',
     'right',
     'bottom-left',
     'bottom-center',
     'bottom-right'
-];
+], default: 'left'};
 
 const DEFAULT_COLORS = [
     '#e3abec',
@@ -70,6 +71,8 @@ const DEFAULT_COLORS = [
     '#b85d0d'
 ];
 
+const DEFAULT_MESSAGE_WHEN_BAD_INPUT = 'Please ensure value is correct';
+
 export default class ColorPicker extends LightningElement {
     @api accessKey;
     @api fieldLevelHelp;
@@ -77,22 +80,22 @@ export default class ColorPicker extends LightningElement {
     @api name;
     @api menuIconName;
     @api menuLabel;
-    @api colors = DEFAULT_COLORS;
-    @api messageWhenBadInput = 'Please ensure value is correct';
 
     _value;
-    _variant = 'standard';
-    _type = 'base';
-    _menuVariant = 'border';
-    _menuIconSize = 'x-small';
-    _menuAlignment = 'left';
+    _variant = validVariants.default;
+    _type = validTypes.default;
+    _menuVariant = validMenuVariants.default;
+    _menuIconSize = validMenuIconSizes.default;
+    _menuAlignment = validMenuAlignments.default;
     _disabled = false;
     _isLoading = false;
     _readOnly = false;
     _required = false;
     _hideColorInput = false;
     _menuNubbin = false;
+    _colors = DEFAULT_COLORS;
     _opacity = false;
+    _messageWhenBadInput = DEFAULT_MESSAGE_WHEN_BAD_INPUT;
 
     _dropdownVisible = false;
     _dropdownOpened = false;
@@ -133,8 +136,8 @@ export default class ColorPicker extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: 'standard',
-            validValues: validVariants
+            fallbackValue: validVariants.default,
+            validValues: validVariants.valid
         });
     }
 
@@ -145,8 +148,8 @@ export default class ColorPicker extends LightningElement {
 
     set type(type) {
         this._type = normalizeString(type, {
-            fallbackValue: 'base',
-            validValues: validTypes
+            fallbackValue: validTypes.default,
+            validValues: validTypes.valid
         });
     }
 
@@ -157,8 +160,8 @@ export default class ColorPicker extends LightningElement {
 
     set menuVariant(variant) {
         this._menuVariant = normalizeString(variant, {
-            fallbackValue: 'border',
-            validValues: validMenuVariants
+            fallbackValue: validMenuVariants.default,
+            validValues: validMenuVariants.valid
         });
     }
 
@@ -169,8 +172,8 @@ export default class ColorPicker extends LightningElement {
 
     set menuIconSize(size) {
         this._menuIconSize = normalizeString(size, {
-            fallbackValue: 'x-small',
-            validValues: validMenuIconSizes
+            fallbackValue: validMenuIconSizes.default,
+            validValues: validMenuIconSizes.valid
         });
     }
 
@@ -181,8 +184,8 @@ export default class ColorPicker extends LightningElement {
 
     set menuAlignment(value) {
         this._menuAlignment = normalizeString(value, {
-            fallbackValue: 'left',
-            validValues: validMenuAlignments
+            fallbackValue: validMenuAlignments.default,
+            validValues: validMenuAlignments.valid
         });
     }
 
@@ -223,6 +226,16 @@ export default class ColorPicker extends LightningElement {
     }
 
     @api
+    get colors() {
+        return this._colors;
+    }
+
+    set colors(value) {
+        const colors = normalizeArray(value);
+        this._colors = colors.length > 0 ? colors : DEFAULT_COLORS;
+    }
+    
+    @api
     get hideColorInput() {
         return this._hideColorInput;
     }
@@ -247,6 +260,15 @@ export default class ColorPicker extends LightningElement {
 
     set opacity(value) {
         this._opacity = normalizeBoolean(value);
+    }
+
+    @api
+    get messageWhenBadInput() {
+        return this._messageWhenBadInput;
+    }
+
+    set messageWhenBadInput(value) {
+        this._messageWhenBadInput = typeof value === 'string' ? value.trim() : DEFAULT_MESSAGE_WHEN_BAD_INPUT;
     }
 
     get isBase() {

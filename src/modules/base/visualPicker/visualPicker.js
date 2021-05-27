@@ -339,7 +339,7 @@ export default class VisualPicker extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
-                    value
+                    value: value.toString()
                 }
             })
         );

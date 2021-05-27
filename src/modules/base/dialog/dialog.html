@@ -15,11 +15,11 @@
                     <template if:true={showHeader}>
                         <h2
                             class="slds-modal__title slds-hyphenate"
-                            if:false={showTitleSlot}
+                            if:true={hasStringTitle}
                         >
                             {title}
                         </h2>
-                        <template if:true={showTitleSlot}>
+                        <template if:false={hasStringTitle}>
                             <slot name="title"></slot>
                         </template>
                     </template>

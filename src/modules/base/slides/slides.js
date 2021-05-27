@@ -34,7 +34,6 @@ export default class Slides extends LightningElement {
     @api slidesPerView = 1;
     @api spaceBetween = 0;
     @api autoplayDelay;
-    @api initialSlide = 0;
     @api speed = 300;
     @api buttonPreviousIconName = 'utility:left';
     @api buttonPreviousLabel;
@@ -56,6 +55,7 @@ export default class Slides extends LightningElement {
     _buttonPosition = 'middle';
     _indicatorType = 'bullets';
     _indicatorPosition = 'bottom-center';
+    _initialSlide = 0;
 
     _navigation = false;
     _buttonInner = false;
@@ -366,6 +366,13 @@ export default class Slides extends LightningElement {
             fallbackValue: 'middle',
             validValues: validButtonPositions
         });
+
+        const wrapperClasses = Array.from(this.classList);
+        const currentClass = wrapperClasses.find(wrapperClass => {
+            return wrapperClass.match(/avonni-flex-(middle|top|bottom)/)
+        });
+        this.classList.remove(currentClass);
+        this.classList.add(`avonni-flex-${this._buttonPosition}`);
     }
 
     @api get indicatorType() {
@@ -390,6 +397,16 @@ export default class Slides extends LightningElement {
         });
     }
 
+    @api
+    get initialSlide() {
+        return this._initialSlide;
+    }
+    set initialSlide(value) {
+        this._initialSlide = isNaN(Number(value)) ? 0 : Number(value);
+
+        this.slide = Number(this.initialSlide);
+    }
+
     @api get navigation() {
         return this._navigation;
     }
@@ -404,6 +421,12 @@ export default class Slides extends LightningElement {
 
     set buttonInner(value) {
         this._buttonInner = normalizeBoolean(value);
+
+        if (this._buttonInner) {
+            this.classList.add('avonni-button-inner');
+        } else {
+            this.classList.remove('avonni-button-inner');
+        }
     }
 
     @api get indicators() {

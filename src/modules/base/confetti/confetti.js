@@ -2,14 +2,14 @@ import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 import './confettiLib';
 
-const VALID_VARIANTS = [
+const VALID_VARIANTS = {valid: [
     'base',
     'random-direction',
     'realistic',
     'fireworks',
     'snow',
     'pride'
-];
+], default: 'base'};
 const DEFAULT_COLORS = [
     '#529EE0',
     '#F0E442',
@@ -26,7 +26,7 @@ export default class Confetti extends LightningElement {
     @api originY = 0.5;
     @api zIndex = 100;
 
-    _variant = 'base';
+    _variant = VALID_VARIANTS.default;
     _name;
 
     @api
@@ -36,8 +36,8 @@ export default class Confetti extends LightningElement {
 
     set variant(value) {
         this._variant = normalizeString(value, {
-            fallbackValue: 'base',
-            validValues: VALID_VARIANTS
+            fallbackValue: VALID_VARIANTS.default,
+            validValues: VALID_VARIANTS.valid
         });
     }
 

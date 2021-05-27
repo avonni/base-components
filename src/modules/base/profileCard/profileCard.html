@@ -2,7 +2,13 @@
     <div class={computedMainContainerClass}>
         <article class="slds-card">
             <div class={computedContainerClass}>
-                <header class={computedHeaderClass}></header>
+                <header class={computedHeaderClass}>
+                    <span
+                        if:true={backgroundAlternativeText}
+                        class="slds-assistive-text"
+                        >{backgroundAlternativeText}</span
+                    >
+                </header>
                 <div class={computedAvatarClass}>
                     <div if:true={isError} class={isCircle}>
                         <lightning-icon

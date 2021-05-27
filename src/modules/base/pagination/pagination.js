@@ -9,7 +9,6 @@ export default class Pagination extends LightningElement {
     @api perPage = 20;
     @api totalRows = 0;
     @api ellipsisText = '...';
-    @api ellipsisClass;
     @api firstButtonLabel;
     @api firstButtonIconName;
     @api previousButtonLabel;

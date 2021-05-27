@@ -112,17 +112,6 @@ export default {
                 defaultValue: { summary: 'medium' },
                 type: { summary: 'string' }
             }
-        },
-        round: {
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: false,
-            description: 'If true, round the line ends.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
-            }
         }
     },
     args: {

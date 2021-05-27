@@ -1,0 +1,62 @@
+<template>
+    <p if:true={label} class="slds-text-heading_small">{label}</p>
+    <span
+        id="instructions"
+        class="slds-assistive-text"
+        aria-live="assertive"
+        lwc:dom="manual"
+    ></span>
+
+    <span if:true={alternativeText} class="slds-assistive-text"
+        >{alternativeText}</span
+    >
+
+    <ul class="menu" role={menuRole}>
+        <template for:each={computedItems} for:item="item" for:index="index">
+            <li
+                key={item.label}
+                class={itemClass}
+                onmousedown={dragStart}
+                onmousemove={drag}
+                onmouseup={dragEnd}
+                ontouchstart={dragStart}
+                ontouchmove={drag}
+                ontouchend={dragEnd}
+                onkeydown={handleKeyDown}
+                data-index={index}
+                data-position="0"
+                role={itemRole}
+                tabindex={tabindex}
+                aria-label={item.label}
+                aria-describedby="instructions"
+            >
+                <div class="slds-grid slds-grid_vertical-align-center">
+                    <lightning-icon
+                        if:true={showIconLeft}
+                        class="slds-m-left_x-small icon-left"
+                        icon-name={sortableIconName}
+                        size="x-small"
+                    ></lightning-icon>
+                    <c-avatar
+                        class="slds-m-left_x-small"
+                        fallback-icon-name={item.avatarFallbackIconName}
+                        src={item.avatarSrc}
+                        size="small"
+                        hide-avatar-details="true"
+                    ></c-avatar>
+                    <div
+                        class="slds-col slds-truncate slds-m-horizontal_x-small"
+                    >
+                        {item.label}
+                    </div>
+                    <lightning-icon
+                        if:true={showIconRight}
+                        class="slds-m-right_x-small icon-right"
+                        icon-name={sortableIconName}
+                        size="x-small"
+                    ></lightning-icon>
+                </div>
+            </li>
+        </template>
+    </ul>
+</template>

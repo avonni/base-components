@@ -2,12 +2,14 @@ import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-const validVariants = [
+const validVariants = {valid: [
     'standard',
     'label-inline',
     'label-hidden',
     'label-stacked'
-];
+], default: 'standard'};
+
+const DEFAULT_STEP = 1
 
 export default class InputCounter extends LightningElement {
     @api name;
@@ -17,25 +19,20 @@ export default class InputCounter extends LightningElement {
     @api messageWhenRangeOverflow;
     @api messageWhenRangeUnderflow;
     @api messageWhenStepMismatch;
-    @api messageWhenTooShort;
-    @api messageWhenTooLong;
-    @api messageWhenTypeMismatch;
     @api messageWhenValueMissing;
-    @api messageToggleActive;
-    @api messageToggleInactive;
     @api ariaLabel;
     @api ariaControls;
     @api ariaLabelledBy;
     @api ariaDescribedBy;
     @api max;
     @api min;
-    @api step = 1;
     @api value;
     @api fieldLevelHelp;
     @api accessKey;
 
-    _variant = 'standard';
+    _variant = validVariants.default;
     _disabled;
+    _step = DEFAULT_STEP;
     _readOnly;
     _required;
     labelVariant;
@@ -65,8 +62,8 @@ export default class InputCounter extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: 'standard',
-            validValues: validVariants
+            fallbackValue: validVariants.default,
+            validValues: validVariants.valid
         });
 
         if (this._variant === 'label-inline') {
@@ -79,7 +76,8 @@ export default class InputCounter extends LightningElement {
         }
     }
 
-    @api get disabled() {
+    @api
+    get disabled() {
         return this._disabled;
     }
 
@@ -87,15 +85,26 @@ export default class InputCounter extends LightningElement {
         this._disabled = normalizeBoolean(value);
     }
 
-    @api get readOnly() {
+    @api
+    get readOnly() {
         return this._readOnly;
     }
 
     set readOnly(value) {
         this._readOnly = normalizeBoolean(value);
     }
+    
+    @api
+    get step() {
+        return this._step;
+    }
 
-    @api get required() {
+    set step(value) {
+        this._step = typeof value === 'number' ? value : DEFAULT_STEP;
+    }
+
+    @api
+    get required() {
         return this._required;
     }
 
