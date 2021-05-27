@@ -46,6 +46,18 @@ const STEPS = [
                 label: 'Add email',
                 iconName: 'utility:email'
             }
+        ],
+        completedOptions: [
+            {
+                label: 'Base',
+                value: 'completed-base',
+                variant: 'base'
+            },
+            {
+                label: 'Success',
+                value: 'completed-success',
+                variant: 'success'
+            }
         ]
     },
     {
@@ -82,6 +94,13 @@ const STEPS = [
                 name: 'action-remove',
                 iconName: 'utility:delete'
             }
+        ],
+        completedOptions: [
+            {
+                label: 'Error',
+                value: 'completed-error',
+                variant: 'error'
+            }
         ]
     },
     {
@@ -106,7 +125,34 @@ const STEPS = [
             }
         ],
         guidance:
-            'Verify contact information and qualify your lead. Gather all the contact information you can. The better armed you are, the higher the likelihood of developing positive communications with your lead and improving your prospecting success.'
+            'Verify contact information and qualify your lead. Gather all the contact information you can. The better armed you are, the higher the likelihood of developing positive communications with your lead and improving your prospecting success.',
+        completedOptions: [
+            {
+                label: 'Base',
+                value: 'completed-base',
+                variant: 'base'
+            },
+            {
+                label: 'Success',
+                value: 'completed-success',
+                variant: 'success'
+            },
+            {
+                label: 'Error',
+                value: 'completed-error',
+                variant: 'error'
+            },
+            {
+                label: 'Warning',
+                value: 'completed-warning',
+                variant: 'warning'
+            },
+            {
+                label: 'Offline',
+                value: 'completed-offline',
+                variant: 'offline'
+            }
+        ]
     },
     {
         name: 'closed',

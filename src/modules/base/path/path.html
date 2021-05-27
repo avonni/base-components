@@ -37,7 +37,7 @@
                                             >
                                                 <span class="slds-path__stage">
                                                     <lightning-icon
-                                                        icon-name="utility:check"
+                                                        icon-name={step.iconName}
                                                         variant="inverse"
                                                         size="x-small"
                                                         aria-hidden="true"
@@ -69,6 +69,16 @@
                         >
                         <template if:false={hideButton}>
                             <lightning-button
+                                if:true={showChangeClosedStatusButton}
+                                class="slds-m-left_xx-small"
+                                label={changeClosedStatusButtonLabel}
+                                variant="brand"
+                                icon-name={changeClosedStatusButtonIconName}
+                                icon-position={changeClosedStatusButtonIconPosition}
+                                disabled={disabled}
+                                onclick={handleChangeClosedStatus}
+                            ></lightning-button>
+                            <lightning-button
                                 if:true={showSelectButton}
                                 class="slds-m-left_xx-small"
                                 label={selectButtonLabel}
@@ -88,38 +98,23 @@
                                 disabled={disabled}
                                 onclick={next}
                             ></lightning-button>
-                            <lightning-button
-                                if:true={showSelectLastStepButton}
-                                class="slds-m-left_xx-small"
-                                label={selectLastStepButtonLabel}
-                                variant="brand"
-                                icon-name={selectLastStepButtonIconName}
-                                icon-position={selectLastStepButtonIconPosition}
-                                disabled={disabled}
-                                onclick={openDialog}
-                            ></lightning-button>
-                            <lightning-button
-                                if:true={showChangeClosedStatusButton}
-                                class="slds-m-left_xx-small"
-                                label={changeClosedStatusButtonLabel}
-                                variant="brand"
-                                icon-name={changeClosedStatusButtonIconName}
-                                icon-position={changeClosedStatusButtonIconPosition}
-                                disabled={disabled}
-                                onclick={openDialog}
-                            ></lightning-button>
                         </template>
 
-                        <c-dialog title="Close this Opportunity">
+                        <c-dialog
+                            show-dialog={showDialog}
+                            title="Mark as Complete"
+                            onclosedialog={hideDialog}
+                        >
                             <div
                                 class="slds-p-bottom_x-large slds-p-horizontal_medium"
                             >
                                 <lightning-combobox
                                     class="slds-p-bottom_xx-large"
-                                    label="Stage"
-                                    placeholder="Select a closed stage..."
+                                    label="Stage completion"
+                                    placeholder="Select an option..."
                                     required
-                                    options={statusOptions}
+                                    options={completedOptions}
+                                    autocomplete="off"
                                 ></lightning-combobox>
                             </div>
                             <div slot="footer">
