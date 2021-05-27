@@ -32,8 +32,8 @@ const validVariants = {
 };
 
 const validIconSizes = {
-    valid: ['x-small', 'small', 'medium', 'large'],
-    default: 'large'
+    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+    default: 'medium'
 };
 
 export default class DynamicMenu extends LightningElement {
@@ -47,7 +47,6 @@ export default class DynamicMenu extends LightningElement {
     @api title;
     @api searchInputPlaceholder = 'Search…';
     @api tooltip;
-    // @api iconSize;
 
     _items = [];
     _isLoading;
@@ -79,7 +78,6 @@ export default class DynamicMenu extends LightningElement {
         if (this.footerSlot) {
             this.showFooter = this.footerSlot.assignedElements().length !== 0;
         }
-        console.log(this.iconSize);
     }
 
     get footerSlot() {
@@ -118,12 +116,11 @@ export default class DynamicMenu extends LightningElement {
     }
 
     @api get iconSize() {
-        console.log(this._iconSize);
         return this._iconSize;
     }
 
-    set iconSize(value) {
-        this._iconSize = normalizeString(value, {
+    set iconSize(iconSize) {
+        this._iconSize = normalizeString(iconSize, {
             fallbackValue: validIconSizes.default,
             validValues: validIconSizes.valid
         });

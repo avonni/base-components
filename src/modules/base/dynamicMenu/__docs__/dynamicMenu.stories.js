@@ -106,7 +106,8 @@ export default {
             defaultValue: 'medium',
             description: 'The size of the icon',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                defaultValue: { summary: 'medium' }
             }
         },
         variant: {
@@ -237,6 +238,8 @@ const items = [
         }
     }
 ];
+
+// const iconSizes  = ['xx-small','x-small', 'small', 'medium'];
 
 const Template = (args) => DynamicMenu(args);
 
