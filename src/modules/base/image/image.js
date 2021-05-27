@@ -24,6 +24,7 @@ export default class Image extends LightningElement {
     _right = false;
     _center = false;
     _blank = false;
+    _cropSize;
 
     @api
     get src() {
@@ -216,5 +217,22 @@ export default class Image extends LightningElement {
 
             this._src = canvas.toDataURL('image/png', '');
         }
+    }
+
+    cropRatio() {
+        if (this.ratio)
+            switch (this.ratio) {
+                case '1x1':
+                    this._cropSize = 1;
+                    break;
+                case '4x3':
+                    this._cropSize = 4 / 3;
+                    break;
+                case '16x9':
+                    this._cropSize = 16 / 9;
+                    break;
+                default:
+                    this._cropSize = null;
+            }
     }
 }
