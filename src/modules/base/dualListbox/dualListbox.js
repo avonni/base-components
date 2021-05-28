@@ -620,6 +620,8 @@ export default class DualListbox extends LightningElement {
         } else if (!this._searchEngine) {
             if (this._sourceBoxHeight >= this._selectedBoxHeight) {
                 sourceHeight = `height: ${this._sourceBoxHeight}px`;
+            } else if (this._sourceBoxHeight < this._selectedBoxHeight) {
+                sourceHeight = `height: ${this._selectedBoxHeight}px`;
             }
         }
         return sourceHeight;
@@ -638,6 +640,8 @@ export default class DualListbox extends LightningElement {
         } else if (!this._searchEngine) {
             if (this._sourceBoxHeight >= this._selectedBoxHeight) {
                 selectedHeight = `height: ${this._sourceBoxHeight}px`;
+            } else if (this._sourceBoxHeight < this._selectedBoxHeight) {
+                selectedHeight = `height: ${this._selectedBoxHeight}px`;
             }
         }
         return selectedHeight;
