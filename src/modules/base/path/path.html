@@ -63,24 +63,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="slds-grid slds-path__action">
+                    <div class="slds-grid slds-path__action slds-m-left_small">
                         <span class="slds-path__stage-name"
                             >Stage: {stageTitle}</span
                         >
-                        <template if:false={hideButton}>
-                            <lightning-button
-                                if:true={showChangeClosedStatusButton}
-                                class="slds-m-left_xx-small"
-                                label={changeClosedStatusButtonLabel}
-                                variant="brand"
-                                icon-name={changeClosedStatusButtonIconName}
-                                icon-position={changeClosedStatusButtonIconPosition}
-                                disabled={disabled}
-                                onclick={handleChangeClosedStatus}
-                            ></lightning-button>
+                        <lightning-button-group if:false={hideButton}>
                             <lightning-button
                                 if:true={showSelectButton}
-                                class="slds-m-left_xx-small"
                                 label={selectButtonLabel}
                                 variant="brand"
                                 icon-name={selectButtonIconName}
@@ -90,7 +79,6 @@
                             ></lightning-button>
                             <lightning-button
                                 if:true={showNextButton}
-                                class="slds-m-left_xx-small"
                                 label={nextButtonLabel}
                                 variant="brand"
                                 icon-name={nextButtonIconName}
@@ -98,7 +86,18 @@
                                 disabled={disabled}
                                 onclick={next}
                             ></lightning-button>
-                        </template>
+                            <lightning-button-menu
+                                if:true={showChangeCompletionStatusButton}
+                                alternative-text={changeCompletionStatusLabel}
+                                disabled={disabled}
+                                menu-alignment="right"
+                            >
+                                <lightning-menu-item
+                                    label={changeCompletionStatusLabel}
+                                    onclick={handleChangeCompletionStatus}
+                                ></lightning-menu-item>
+                            </lightning-button-menu>
+                        </lightning-button-group>
 
                         <c-dialog
                             show-dialog={showDialog}
@@ -220,5 +219,6 @@
                 </div>
             </div>
         </div>
+        <c-confetti class="path__confetti"></c-confetti>
     </div>
 </template>

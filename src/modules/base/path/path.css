@@ -11,7 +11,7 @@
 }
 
 .path__item_warning:hover,
-.path-is-closed_warning .path__item-last {
+.path-is-complete_warning .path__item-last {
     background: #a96404;
 }
 
@@ -20,19 +20,19 @@
 }
 
 .path__item_offline:hover,
-.path-is-closed_offline .path__item-last {
+.path-is-complete_offline .path__item-last {
     background: #2b2826;
 }
 
 .path__item::before,
 .path__item::after,
-.path-is-closed:not(.path-is-closed_base) .path__item-last::before,
-.path-is-closed:not(.path-is-closed_base) .path__item-last::after {
+.path-is-complete:not(.path-is-complete_base) .path__item-last::before,
+.path-is-complete:not(.path-is-complete_base) .path__item-last::after {
     background: inherit;
 }
 
 .path__item a,
-.path-is-closed:not(.path-is-closed_base) .path__item-last a {
+.path-is-complete:not(.path-is-complete_base) .path__item-last a {
     color: #fff;
 }
 

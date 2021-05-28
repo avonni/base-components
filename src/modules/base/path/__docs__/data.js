@@ -101,7 +101,9 @@ const STEPS = [
                 value: 'completed-error',
                 variant: 'error'
             }
-        ]
+        ],
+        showConfetti: true,
+        confettiFrequency: 'rarely'
     },
     {
         name: 'contacted',
@@ -152,7 +154,9 @@ const STEPS = [
                 value: 'completed-offline',
                 variant: 'offline'
             }
-        ]
+        ],
+        showConfetti: true,
+        confettiFrequency: 'always'
     },
     {
         name: 'closed',

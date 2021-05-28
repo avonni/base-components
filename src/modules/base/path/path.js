@@ -21,14 +21,36 @@ const DEFAULT_KEYFIELDS_LABEL = 'Key Fields';
 const DEFAULT_GUIDANCE_LABEL = 'Guidance for Success';
 const DEFAULT_NEXT_BUTTON_LABEL = 'Mark as Complete';
 const DEFAULT_SELECT_BUTTON_LABEL = 'Mark as Current Stage';
-const DEFAULT_SELECT_LAST_STEP_BUTTON_LABEL = 'Select Closed Stage';
-const DEFAULT_CHANGE_CLOSED_STATUS_BUTTON_LABEL = 'Change Closed Stage';
+const DEFAULT_CHANGE_COMPLETION_OPTION_LABEL = 'Change Completion Status';
+
+const CONFETTI_FREQUENCY = {
+    valid: [
+        {
+            label: 'rarely',
+            value: 0.25
+        },
+        {
+            label: 'sometimes',
+            value: 0.5
+        },
+        {
+            label: 'often',
+            value: 0.75
+        },
+        {
+            label: 'always',
+            value: 1
+        }
+    ],
+    default: {
+        label: 'sometimes',
+        value: 0.5
+    }
+};
 
 export default class Path extends LightningElement {
     @api nextButtonIconName;
     @api selectButtonIconName;
-    @api selectLastStepButtonIconName;
-    @api changeClosedStatusButtonIconName;
 
     _currentStep;
     _disabled = false;
@@ -41,14 +63,11 @@ export default class Path extends LightningElement {
     _nextButtonIconPosition = ICON_POSITIONS.default;
     _selectButtonLabel = DEFAULT_SELECT_BUTTON_LABEL;
     _selectButtonIconPosition = ICON_POSITIONS.default;
-    _selectLastStepButtonLabel = DEFAULT_SELECT_LAST_STEP_BUTTON_LABEL;
-    _selectLastStepButtonIconPosition = ICON_POSITIONS.default;
-    _changeClosedStatusButtonLabel = DEFAULT_CHANGE_CLOSED_STATUS_BUTTON_LABEL;
-    _changeClosedStatusButtonIconPosition = ICON_POSITIONS.default;
+    _changeCompletionStatusLabel = DEFAULT_CHANGE_COMPLETION_OPTION_LABEL;
     _actions = [];
     @track _steps = [];
 
-    _status = 'success';
+    _status = 'base';
     _activeStep;
     _candidateStep;
     coachingIsVisible = false;
@@ -175,47 +194,14 @@ export default class Path extends LightningElement {
     }
 
     @api
-    get selectLastStepButtonLabel() {
-        return this._selectLastStepButtonLabel;
+    get changeCompletionStatusLabel() {
+        return this._changeCompletionStatusLabel;
     }
-    set selectLastStepButtonLabel(value) {
-        this._selectLastStepButtonLabel =
+    set changeCompletionStatusLabel(value) {
+        this._changeCompletionStatusLabel =
             typeof value === 'string'
                 ? value.trim()
-                : DEFAULT_SELECT_LAST_STEP_BUTTON_LABEL;
-    }
-
-    @api
-    get selectLastStepButtonIconPosition() {
-        return this._selectLastStepButtonIconPosition;
-    }
-    set selectLastStepButtonIconPosition(value) {
-        this._selectLastStepButtonIconPosition = normalizeString(value, {
-            fallbackValue: ICON_POSITIONS.default,
-            validValues: ICON_POSITIONS.valid
-        });
-    }
-
-    @api
-    get changeClosedStatusButtonLabel() {
-        return this._changeClosedStatusButtonLabel;
-    }
-    set changeClosedStatusButtonLabel(value) {
-        this._changeClosedStatusButtonLabel =
-            typeof value === 'string'
-                ? value.trim()
-                : DEFAULT_CHANGE_CLOSED_STATUS_BUTTON_LABEL;
-    }
-
-    @api
-    get changeClosedStatusButtonIconPosition() {
-        return this._changeClosedStatusButtonIconPosition;
-    }
-    set changeClosedStatusButtonIconPosition(value) {
-        this._changeClosedStatusButtonIconPosition = normalizeString(value, {
-            fallbackValue: ICON_POSITIONS.default,
-            validValues: ICON_POSITIONS.valid
-        });
+                : DEFAULT_CHANGE_COMPLETION_OPTION_LABEL;
     }
 
     @api
@@ -264,7 +250,7 @@ export default class Path extends LightningElement {
         return this._activeStep && this._activeStep.name === this.currentStep;
     }
 
-    get showChangeClosedStatusButton() {
+    get showChangeCompletionStatusButton() {
         const previousStep = this.steps[this.currentStepIndex - 1];
         return (
             previousStep &&
@@ -289,18 +275,18 @@ export default class Path extends LightningElement {
     }
 
     get pathClass() {
-        const isClosed = this.currentStepIndex === this.steps.length - 1;
+        const isComplete = this.currentStepIndex === this.steps.length - 1;
         return classSet('slds-path slds-path_has-coaching')
             .add({
                 'slds-is-expanded': this.coachingIsVisible,
-                'slds-is-won': this._status === 'success' && isClosed,
-                'slds-is-lost': this._status === 'error' && isClosed,
-                'path-is-closed': isClosed,
-                'path-is-closed_warning':
-                    isClosed && this._status === 'warning',
-                'path-is-closed_offline':
-                    isClosed && this._status === 'offline',
-                'path-is-closed_base': isClosed && this._status === 'base'
+                'slds-is-won': this._status === 'success' && isComplete,
+                'slds-is-lost': this._status === 'error' && isComplete,
+                'path-is-complete': isComplete,
+                'path-is-complete_warning':
+                    isComplete && this._status === 'warning',
+                'path-is-complete_offline':
+                    isComplete && this._status === 'offline',
+                'path-is-complete_base': isComplete && this._status === 'base'
             })
             .toString();
     }
@@ -396,11 +382,11 @@ export default class Path extends LightningElement {
             this.showDialog = true;
         } else {
             // If there is only one completed option,
-            // the new status of the path will be its variant
+            // the new status of the path will be its variant.
+            // If there is no completed option, the current status is kept
             if (options && options.length === 1) {
                 this._status = options[0].variant;
             }
-            // If there is no completed option, the current status is kept
 
             this.dispatchChange(this.currentStep);
             this.moveToStep(toStep.name);
@@ -412,6 +398,7 @@ export default class Path extends LightningElement {
         this.computedCurrentStep = this.getStepFromName(name);
         this._activeStep = undefined;
         this.updateStepsStatus();
+        this.fireConfetti();
     }
 
     getStepFromName(name) {
@@ -459,8 +446,10 @@ export default class Path extends LightningElement {
                 })
                 .toString();
 
-            if (isWarning || isError || isOffline) {
+            if (isWarning || isError) {
                 step.iconName = `utility:${this._status}`;
+            } else if (isOffline) {
+                step.iconName = 'utility:routing_offline';
             } else {
                 step.iconName = 'utility:check';
             }
@@ -470,6 +459,27 @@ export default class Path extends LightningElement {
     hideDialog() {
         this._candidateStep = undefined;
         this.showDialog = false;
+    }
+
+    fireConfetti() {
+        const showConfetti = this.computedCurrentStep.showConfetti;
+
+        if (showConfetti) {
+            const stepFrequency = CONFETTI_FREQUENCY.valid.find((frequency) => {
+                return (
+                    frequency.label ===
+                    this.computedCurrentStep.confettiFrequency
+                );
+            });
+            const frequency = stepFrequency
+                ? stepFrequency.value
+                : CONFETTI_FREQUENCY.default.value;
+
+            const randomConfetti = Math.random() < frequency;
+            if (randomConfetti) {
+                this.template.querySelector('.path__confetti').fire();
+            }
+        }
     }
 
     handleSaveDialog() {
@@ -486,16 +496,12 @@ export default class Path extends LightningElement {
         const previousStep = this.currentStep;
 
         // Go to new step
-        this._currentStep = this._candidateStep.name;
-        this.computedCurrentStep = this._candidateStep;
-        this._activeStep = undefined;
-
-        this.updateStepsStatus();
+        this.moveToStep(this._candidateStep.name);
         this.hideDialog();
         this.dispatchChange(previousStep);
     }
 
-    handleChangeClosedStatus() {
+    handleChangeCompletionStatus() {
         const previousStep = this.steps[this.currentStepIndex - 1];
         this.completedOptions = previousStep.completedOptions;
         this._candidateStep = this.computedCurrentStep;
