@@ -59,7 +59,7 @@ export default class Path extends LightningElement {
     _keyFieldsLabel = DEFAULT_KEYFIELDS_LABEL;
     _guidanceLabel = DEFAULT_GUIDANCE_LABEL;
     _hideCoaching = false;
-    _hideButton = false;
+    _hideButtons = false;
     _nextButtonLabel = DEFAULT_NEXT_BUTTON_LABEL;
     _nextButtonIconPosition = ICON_POSITIONS.default;
     _selectButtonLabel = DEFAULT_SELECT_BUTTON_LABEL;
@@ -143,11 +143,11 @@ export default class Path extends LightningElement {
     }
 
     @api
-    get hideButton() {
-        return this._hideButton;
+    get hideButtons() {
+        return this._hideButtons;
     }
-    set hideButton(bool) {
-        this._hideButton = normalizeBoolean(bool);
+    set hideButtons(bool) {
+        this._hideButtons = normalizeBoolean(bool);
     }
 
     @api

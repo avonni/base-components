@@ -9,19 +9,14 @@ export const Path = ({
     disabled,
     format,
     hideCoaching,
-    hideButton,
+    hideButtons,
     nextButtonLabel,
     nextButtonIconName,
     nextButtonIconPosition,
     selectButtonLabel,
     selectButtonIconName,
     selectButtonIconPosition,
-    selectLastStepButtonLabel,
-    selectLastStepButtonIconName,
-    selectLastStepButtonIconPosition,
-    changeClosedStatusButtonLabel,
-    changeClosedStatusButtonIconName,
-    changeClosedStatusButtonIconPosition,
+    changeCompletionStatusLabel,
     steps,
     actions
 }) => {
@@ -32,19 +27,14 @@ export const Path = ({
     element.disabled = disabled;
     element.format = format;
     element.hideCoaching = hideCoaching;
-    element.hideButton = hideButton;
+    element.hideButtons = hideButtons;
     element.nextButtonLabel = nextButtonLabel;
     element.nextButtonIconName = nextButtonIconName;
     element.nextButtonIconPosition = nextButtonIconPosition;
     element.selectButtonLabel = selectButtonLabel;
     element.selectButtonIconName = selectButtonIconName;
     element.selectButtonIconPosition = selectButtonIconPosition;
-    element.selectLastStepButtonLabel = selectLastStepButtonLabel;
-    element.selectLastStepButtonIconName = selectLastStepButtonIconName;
-    element.selectLastStepButtonIconPosition = selectLastStepButtonIconPosition;
-    element.changeClosedStatusButtonLabel = changeClosedStatusButtonLabel;
-    element.changeClosedStatusButtonIconName = changeClosedStatusButtonIconName;
-    element.changeClosedStatusButtonIconPosition = changeClosedStatusButtonIconPosition;
+    element.changeCompletionStatusLabel = changeCompletionStatusLabel;
     element.steps = steps;
     element.actions = actions;
     return element;

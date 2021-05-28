@@ -12,6 +12,34 @@ const ACTIONS = [
     }
 ];
 
+const COMPLETED_OPTIONS = [
+    {
+        label: 'Base',
+        value: 'completed-base',
+        variant: 'base'
+    },
+    {
+        label: 'Success',
+        value: 'completed-success',
+        variant: 'success'
+    },
+    {
+        label: 'Error',
+        value: 'completed-error',
+        variant: 'error'
+    },
+    {
+        label: 'Warning',
+        value: 'completed-warning',
+        variant: 'warning'
+    },
+    {
+        label: 'Offline',
+        value: 'completed-offline',
+        variant: 'offline'
+    }
+];
+
 const STEPS = [
     {
         name: 'open',
@@ -45,18 +73,6 @@ const STEPS = [
                 name: 'action-add-email',
                 label: 'Add email',
                 iconName: 'utility:email'
-            }
-        ],
-        completedOptions: [
-            {
-                label: 'Base',
-                value: 'completed-base',
-                variant: 'base'
-            },
-            {
-                label: 'Success',
-                value: 'completed-success',
-                variant: 'success'
             }
         ]
     },
@@ -121,33 +137,6 @@ const STEPS = [
         ],
         guidance:
             'Verify contact information and qualify your lead. Gather all the contact information you can. The better armed you are, the higher the likelihood of developing positive communications with your lead and improving your prospecting success.',
-        completedOptions: [
-            {
-                label: 'Base',
-                value: 'completed-base',
-                variant: 'base'
-            },
-            {
-                label: 'Success',
-                value: 'completed-success',
-                variant: 'success'
-            },
-            {
-                label: 'Error',
-                value: 'completed-error',
-                variant: 'error'
-            },
-            {
-                label: 'Warning',
-                value: 'completed-warning',
-                variant: 'warning'
-            },
-            {
-                label: 'Offline',
-                value: 'completed-offline',
-                variant: 'offline'
-            }
-        ],
         showConfetti: true,
         confettiFrequency: 'always'
     },
@@ -174,4 +163,19 @@ const STEPS = [
     }
 ];
 
-export { ACTIONS, STEPS };
+const ALL_STEPS_WITH_COMPLETED_OPTIONS = JSON.parse(JSON.stringify(STEPS));
+ALL_STEPS_WITH_COMPLETED_OPTIONS.forEach((step) => {
+    step.completedOptions = COMPLETED_OPTIONS;
+});
+
+const SUCCESS_STEPS_WITH_CLOSING_OPTIONS = JSON.parse(JSON.stringify(STEPS));
+SUCCESS_STEPS_WITH_CLOSING_OPTIONS[0].completedOptions = [COMPLETED_OPTIONS[1]];
+SUCCESS_STEPS_WITH_CLOSING_OPTIONS[1].completedOptions = [COMPLETED_OPTIONS[1]];
+SUCCESS_STEPS_WITH_CLOSING_OPTIONS[2].completedOptions = COMPLETED_OPTIONS;
+
+export {
+    ACTIONS,
+    STEPS,
+    ALL_STEPS_WITH_COMPLETED_OPTIONS,
+    SUCCESS_STEPS_WITH_CLOSING_OPTIONS
+};

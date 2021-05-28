@@ -1,5 +1,10 @@
 import { Path } from '../__examples__/path';
-import { ACTIONS, STEPS } from './data';
+import {
+    ACTIONS,
+    STEPS,
+    ALL_STEPS_WITH_COMPLETED_OPTIONS,
+    SUCCESS_STEPS_WITH_CLOSING_OPTIONS
+} from './data';
 
 export default {
     title: 'Example/Path',
@@ -99,12 +104,12 @@ export default {
                 category: 'Coaching'
             }
         },
-        hideButton: {
-            name: 'hide-button',
+        hideButtons: {
+            name: 'hide-buttons',
             control: {
                 type: 'boolean'
             },
-            description: 'If true, hide the path button.',
+            description: 'If true, hide the path buttons.',
             defaultValue: false,
             table: {
                 type: { summary: 'boolean' },
@@ -199,88 +204,17 @@ export default {
                 subcategory: 'Button'
             }
         },
-        selectLastStepButtonLabel: {
-            name: 'select-last-step-button-label',
+        changeCompletionStatusLabel: {
+            name: 'change-completion-status-label',
             control: {
                 type: 'text'
             },
             description:
-                'Label of the path button, when the user clicks on the last step. On click on the button, the closing dialog will be opened.',
-            defaultValue: 'Select Closed Stage',
+                'Label of the menu item that appears when the previous step had completed options. On click on the menu item, the dialog will reopen, and the user will be able to change the completion status.',
+            defaultValue: 'Change Completion Status',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'Select Closed Stage' },
-                category: 'Path navigation',
-                subcategory: 'Button'
-            }
-        },
-        selectLastStepButtonIconName: {
-            name: 'select-last-step-button-icon-name',
-            control: {
-                type: 'text'
-            },
-            description:
-                "The Lightning Design System name of the icon used for the path update button.\n Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.",
-            table: {
-                type: { summary: 'string' },
-                category: 'Path navigation',
-                subcategory: 'Button'
-            }
-        },
-        selectLastStepButtonIconPosition: {
-            name: 'select-last-step-button-icon-position',
-            control: {
-                type: 'radio'
-            },
-            options: ['left', 'right'],
-            description: 'Valid values include left and right.',
-            defaultValue: 'left',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'left' },
-                category: 'Path navigation',
-                subcategory: 'Button'
-            }
-        },
-        changeClosedStatusButtonLabel: {
-            name: 'change-closed-status-button-label',
-            control: {
-                type: 'text'
-            },
-            description:
-                'Label of the path button, when the path has been closed. On click on the button, the closing dialog will be opened.',
-            defaultValue: 'Change Closed Stage',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'Change Closed Stage' },
-                category: 'Path navigation',
-                subcategory: 'Button'
-            }
-        },
-        changeClosedStatusButtonIconName: {
-            name: 'change-closed-status-button-icon-name',
-            control: {
-                type: 'text'
-            },
-            description:
-                "The Lightning Design System name of the icon used for the path update button.\n Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.",
-            table: {
-                type: { summary: 'string' },
-                category: 'Path navigation',
-                subcategory: 'Button'
-            }
-        },
-        changeClosedStatusButtonIconPosition: {
-            name: 'change-closed-status-button-icon-position',
-            control: {
-                type: 'radio'
-            },
-            options: ['left', 'right'],
-            description: 'Valid values include left and right.',
-            defaultValue: 'left',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'left' },
+                defaultValue: { summary: 'Change Completion Status' },
                 category: 'Path navigation',
                 subcategory: 'Button'
             }
@@ -295,9 +229,26 @@ Base.args = {
     steps: STEPS
 };
 
+export const SuccessWithClosingOptions = Template.bind({});
+SuccessWithClosingOptions.args = {
+    steps: SUCCESS_STEPS_WITH_CLOSING_OPTIONS
+};
+
+export const CompletedOptionsForEachStep = Template.bind({});
+CompletedOptionsForEachStep.args = {
+    steps: ALL_STEPS_WITH_COMPLETED_OPTIONS
+};
+
 export const NonLinear = Template.bind({});
 NonLinear.args = {
     steps: STEPS,
+    format: 'non-linear',
+    actions: ACTIONS
+};
+
+export const NonLinearWithCompletedOptions = Template.bind({});
+NonLinearWithCompletedOptions.args = {
+    steps: ALL_STEPS_WITH_COMPLETED_OPTIONS,
     format: 'non-linear',
     actions: ACTIONS
 };
@@ -306,7 +257,7 @@ export const ButtonHiddenWithCurrentStep = Template.bind({});
 ButtonHiddenWithCurrentStep.args = {
     steps: STEPS,
     actions: ACTIONS,
-    hideButton: true,
+    hideButtons: true,
     currentStep: 'contacted'
 };
 
@@ -320,7 +271,7 @@ Disabled.args = {
 
 export const NoCoachingWithCustomButtonLabels = Template.bind({});
 NoCoachingWithCustomButtonLabels.args = {
-    steps: STEPS,
+    steps: SUCCESS_STEPS_WITH_CLOSING_OPTIONS,
     actions: ACTIONS,
     hideCoaching: true,
     nextButtonLabel: 'Next',
@@ -328,9 +279,5 @@ NoCoachingWithCustomButtonLabels.args = {
     nextButtonIconPosition: 'right',
     selectButtonLabel: 'Move to this step',
     selectButtonIconName: 'utility:level_down',
-    selectLastStepButtonLabel: 'Close',
-    selectLastStepButtonIconName: 'utility:check',
-    selectLastStepButtonIconPosition: 'right',
-    changeClosedStatusButtonLabel: 'Change status',
-    changeClosedStatusButtonIconName: 'utility:replace'
+    changeCompletionStatusLabel: 'Change status'
 };
