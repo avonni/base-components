@@ -22,6 +22,7 @@ const DEFAULT_GUIDANCE_LABEL = 'Guidance for Success';
 const DEFAULT_NEXT_BUTTON_LABEL = 'Mark as Complete';
 const DEFAULT_SELECT_BUTTON_LABEL = 'Mark as Current Stage';
 const DEFAULT_CHANGE_COMPLETION_OPTION_LABEL = 'Change Completion Status';
+const DEFAULT_COMPLETED_OPTION = 'base';
 
 const CONFETTI_FREQUENCY = {
     valid: [
@@ -67,7 +68,7 @@ export default class Path extends LightningElement {
     _actions = [];
     @track _steps = [];
 
-    _status = 'base';
+    _status = DEFAULT_COMPLETED_OPTION;
     _activeStep;
     _candidateStep;
     coachingIsVisible = false;
@@ -383,9 +384,11 @@ export default class Path extends LightningElement {
         } else {
             // If there is only one completed option,
             // the new status of the path will be its variant.
-            // If there is no completed option, the current status is kept
             if (options && options.length === 1) {
                 this._status = options[0].variant;
+            } else {
+                // If there is no completed option, the default is used
+                this._status = DEFAULT_COMPLETED_OPTION;
             }
 
             this.dispatchChange(this.currentStep);
@@ -462,19 +465,16 @@ export default class Path extends LightningElement {
     }
 
     fireConfetti() {
-        const showConfetti = this.computedCurrentStep.showConfetti;
+        const previousStep = this.steps[this.currentStepIndex - 1];
+        const showConfetti = previousStep && previousStep.showConfetti;
 
         if (showConfetti) {
             const stepFrequency = CONFETTI_FREQUENCY.valid.find((frequency) => {
-                return (
-                    frequency.label ===
-                    this.computedCurrentStep.confettiFrequency
-                );
+                return frequency.label === previousStep.confettiFrequency;
             });
             const frequency = stepFrequency
                 ? stepFrequency.value
                 : CONFETTI_FREQUENCY.default.value;
-
             const randomConfetti = Math.random() < frequency;
             if (randomConfetti) {
                 this.template.querySelector('.path__confetti').fire();
