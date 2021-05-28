@@ -145,6 +145,9 @@ export default class DualListbox extends LightningElement {
             }
         }
         this.disabledButtons();
+
+        console.log(`source: ${this._sourceBoxHeight}`);
+        console.log(`selected: ${this._selectedBoxHeight}`);
     }
 
     @api
@@ -515,6 +518,7 @@ export default class DualListbox extends LightningElement {
     }
 
     computeSize(noDescription, hasDescription) {
+        console.log(`inside: ${41.3 * noDescription + 57 * hasDescription}`);
         return 41.3 * noDescription + 57 * hasDescription;
     }
 
@@ -528,24 +532,35 @@ export default class DualListbox extends LightningElement {
                 this._sourceNoDescription,
                 this._sourceHasDescription
             );
+            console.log(`8: ${this._sourceBoxHeight}`);
         } else if (this.computedSourceList.length === this._size) {
             this.computeSourceIncrement(this.computedSourceList);
             this._sourceBoxHeight = this.computeSize(
                 this._sourceNoDescription,
                 this._sourceHasDescription
             );
-        } else if (this.computedSourceList.length < this._size) {
+            console.log(`7: ${this._sourceBoxHeight}`);
+        } else if (
+            this.computedSourceList.length < this._size &&
+            this.computedSourceList.length >= this.computedSelectedList.length
+        ) {
             this.computeSourceIncrement(this.computedSourceList);
             if (this._sourceHasDescription >= 1) {
-                this._sourceBoxHeight = this.computeSize(
-                    this._sourceNoDescription,
-                    this._sourceHasDescription
-                );
+                this._sourceBoxHeight =
+                    this.computeSize(
+                        this._sourceNoDescription,
+                        this._sourceHasDescription
+                    ) +
+                    57 * (this._size - this.computedSourceList.length);
+                console.log(`6: ${this._sourceBoxHeight}`);
             } else if (this._sourceHasDescription === 0) {
-                this._sourceBoxHeight = this.computeSize(
-                    this._sourceNoDescription,
-                    this._sourceHasDescription
-                );
+                this._sourceBoxHeight =
+                    this.computeSize(
+                        this._sourceNoDescription,
+                        this._sourceHasDescription
+                    ) +
+                    41.3 * (this._size - this.computedSourceList.length);
+                console.log(`5: ${this._sourceBoxHeight}`);
             }
         }
         return this._sourceBoxHeight;
@@ -561,24 +576,35 @@ export default class DualListbox extends LightningElement {
                 this._selectedNoDescription,
                 this._selectedHasDescription
             );
+            console.log(`4: ${this._selectedBoxHeight}`);
         } else if (this.computedSelectedList.length === this._size) {
             this.computeSelectedIncrement(this.computedSelectedList);
             this._selectedBoxHeight = this.computeSize(
                 this._selectedNoDescription,
                 this._selectedHasDescription
             );
-        } else if (this.computedSelectedList.length < this._size) {
+            console.log(`3: ${this._selectedBoxHeight}`);
+        } else if (
+            this.computedSelectedList.length < this._size &&
+            this.computedSourceList.length >= this.computedSelectedList.length
+        ) {
             this.computeSelectedIncrement(this.computedSelectedList);
             if (this._selectedHasDescription > 1) {
-                this._selectedBoxHeight = this.computeSize(
-                    this._selectedNoDescription,
-                    this._selectedHasDescription
-                );
-            } else if (this._sourceHasDescription === 0) {
-                this._selectedBoxHeight = this.computeSize(
-                    this._selectedNoDescription,
-                    this._selectedHasDescription
-                );
+                this._selectedBoxHeight =
+                    this.computeSize(
+                        this._selectedNoDescription,
+                        this._selectedHasDescription
+                    ) +
+                    57 * (this._size - this.computedSelectedList.length);
+                console.log(`1: ${this._selectedBoxHeight}`);
+            } else if (this._selectedHasDescription === 0) {
+                this._selectedBoxHeight =
+                    this.computeSize(
+                        this._selectedNoDescription,
+                        this._selectedHasDescription
+                    ) +
+                    41.3 * (this._size - this.computedSelectedList.length);
+                console.log(`2: ${this._selectedBoxHeight}`);
             }
         }
         return this._selectedBoxHeight;
