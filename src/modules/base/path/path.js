@@ -383,13 +383,16 @@ export default class Path extends LightningElement {
             // the new status of the path will be its variant.
             if (options && options.length === 1) {
                 this._status = options[0].variant;
+                this._completedOptionValue = options[0].value;
             } else {
                 // If there is no completed option, the default is used
                 this._status = DEFAULT_COMPLETED_OPTION;
+                this._completedOptionValue = undefined;
             }
 
-            this.dispatchChange(this.currentStep);
+            const fromName = this.currentStep;
             this.moveToStep(toStep.name);
+            this.dispatchChange(fromName);
         }
     }
 
@@ -480,12 +483,14 @@ export default class Path extends LightningElement {
     }
 
     handleSaveDialog() {
-        const value = this.template.querySelector('lightning-combobox').value;
-        if (!value) return;
+        this._completedOptionValue = this.template.querySelector(
+            'lightning-combobox'
+        ).value;
+        if (!this._completedOptionValue) return;
 
-        // Get the new path status
+        // Get the new path status (base, success, etc.)
         const selectedOption = this.completedOptions.find(
-            (option) => option.value === value
+            (option) => option.value === this._completedOptionValue
         );
         this._status = selectedOption.variant;
 
@@ -540,7 +545,9 @@ export default class Path extends LightningElement {
             new CustomEvent('change', {
                 detail: {
                     currentStep: this.currentStep,
-                    oldStep: oldStep
+                    oldStep: oldStep,
+                    completedValue: this._completedOptionValue,
+                    lastStep: this.lastStepIsCurrent
                 }
             })
         );

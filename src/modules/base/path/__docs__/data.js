@@ -95,13 +95,6 @@ const STEPS = [
                 iconName: 'utility:delete'
             }
         ],
-        completedOptions: [
-            {
-                label: 'Error',
-                value: 'completed-error',
-                variant: 'error'
-            }
-        ],
         showConfetti: true,
         confettiFrequency: 'rarely'
     },
