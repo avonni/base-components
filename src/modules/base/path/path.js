@@ -243,10 +243,6 @@ export default class Path extends LightningElement {
         return this.lastStepName === this.currentStep;
     }
 
-    get lastStepIsActive() {
-        return this._activeStep && this.lastStepName === this._activeStep.name;
-    }
-
     get currentStepIsActive() {
         return this._activeStep && this._activeStep.name === this.currentStep;
     }
@@ -351,10 +347,12 @@ export default class Path extends LightningElement {
         if (currentStep) {
             this._currentStep = name;
             this.computedCurrentStep = currentStep;
+            this._activeStep = currentStep;
         } else {
             // Sets current step to first step
             this._currentStep = this.steps[0].name;
             this.computedCurrentStep = this.steps[0];
+            this._activeStep = this.steps[0];
         }
 
         this.updateStepsStatus();
