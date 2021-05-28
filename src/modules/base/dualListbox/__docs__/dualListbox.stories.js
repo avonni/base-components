@@ -521,7 +521,7 @@ const OptionsWithAvatarSrc = [
     {
         value: '7',
         label: 'John Smith',
-        description: 'JS',
+        // description: 'JS',
         iconName: 'standard:address',
         initials: 'JS'
     },

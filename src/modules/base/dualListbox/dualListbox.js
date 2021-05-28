@@ -89,6 +89,11 @@ export default class DualListbox extends LightningElement {
     _oldIndex;
     _sourceBoxHeight;
     _selectedBoxHeight;
+    _rendered = false;
+    _sourceNoDescription = 0;
+    _sourceHasDescription = 0;
+    _selectedNoDescription = 0;
+    _selectedHasDescription = 0;
 
     connectedCallback() {
         this.classList.add('slds-form-element');
@@ -115,9 +120,11 @@ export default class DualListbox extends LightningElement {
 
     renderedCallback() {
         this.assertRequiredAttributes();
-        this.computedColumnStyleSource();
-        this.computedColumnStyleSelected();
-
+        if (!this._rendered) {
+            this.computedColumnSourceHeight();
+            this.computedColumnSelectedHeight();
+            this._rendered = true;
+        }
         if (this.disabled) {
             this._upButtonDisabled = true;
             this._downButtonDisabled = true;
@@ -472,81 +479,101 @@ export default class DualListbox extends LightningElement {
         };
     }
 
-    computedColumnStyleSource() {
-        let hasDescription = 0;
-        let noDescription = 0;
-        if (this.computedSourceList.length > this._size) {
-            const newArray = this.computedSourceList.slice(0, this._size);
-            newArray.forEach((option) => {
-                if (option.description) {
-                    hasDescription++;
-                } else if (!option.description) {
-                    noDescription++;
-                }
-            });
-            this._sourceBoxHeight = 40 * noDescription + 57 * hasDescription;
-            return this._sourceBoxHeight;
-        } else if (this.computedSourceList.length === this._size) {
-            this.computedSourceList.forEach((option) => {
-                if (option.description) {
-                    hasDescription++;
-                } else if (!option.description) {
-                    noDescription++;
-                }
-            });
-            this._sourceBoxHeight = 40 * noDescription + 57 * hasDescription;
-            return this._sourceBoxHeight;
-        }
-        this.computedSourceList.forEach((option) => {
+    computeSourceIncrement(array) {
+        array.forEach((option) => {
             if (option.description) {
-                hasDescription++;
+                this._sourceHasDescription++;
             } else if (!option.description) {
-                noDescription++;
+                this._sourceNoDescription++;
             }
         });
-        this._sourceBoxHeight =
-            40 * noDescription +
-            57 * hasDescription +
-            40 * (this._size - this.computedSourceList.length);
+    }
+
+    computeSelectedIncrement(array) {
+        array.forEach((option) => {
+            if (option.description) {
+                this._selectedHasDescription++;
+            } else if (!option.description) {
+                this._selectedNoDescription++;
+            }
+        });
+    }
+
+    computeSize(noDescription, hasDescription) {
+        return 41.3 * noDescription + 57 * hasDescription;
+    }
+
+    computedColumnSourceHeight() {
+        this._sourceNoDescription = 0;
+        this._sourceHasDescription = 0;
+        if (this.computedSourceList.length > this._size) {
+            const newArray = this.computedSourceList.slice(0, this._size);
+            this.computeSourceIncrement(newArray);
+            this._sourceBoxHeight = this.computeSize(
+                this._sourceNoDescription,
+                this._sourceHasDescription
+            );
+        } else if (this.computedSourceList.length === this._size) {
+            this.computeSourceIncrement(this.computedSourceList);
+            this._sourceBoxHeight = this.computeSize(
+                this._sourceNoDescription,
+                this._sourceHasDescription
+            );
+        } else if (this.computedSourceList.length < this._size) {
+            this.computeSourceIncrement(this.computedSourceList);
+            if (this._sourceHasDescription >= 1) {
+                this._sourceBoxHeight =
+                    this.computeSize(
+                        this._sourceNoDescription,
+                        this._sourceHasDescription
+                    ) +
+                    57 * (this._size - this.computedSourceList.length);
+            } else if (this._sourceHasDescription === 0) {
+                this._sourceBoxHeight =
+                    this.computeSize(
+                        this._sourceNoDescription,
+                        this._sourceHasDescription
+                    ) +
+                    41.3 * (this._size - this.computedSourceList.length);
+            }
+        }
         return this._sourceBoxHeight;
     }
 
-    computedColumnStyleSelected() {
-        let hasDescription = 0;
-        let noDescription = 0;
+    computedColumnSelectedHeight() {
+        this._selectedNoDescription = 0;
+        this._selectedHasDescription = 0;
         if (this.computedSelectedList.length > this._size) {
             const newArray = this.computedSelectedList.slice(0, this._size);
-            newArray.forEach((option) => {
-                if (option.description) {
-                    hasDescription++;
-                } else if (!option.description) {
-                    noDescription++;
-                }
-            });
-            this._selectedBoxHeight = 40 * noDescription + 57 * hasDescription;
-            return this._selectedBoxHeight;
+            this.computeSelectedIncrement(newArray);
+            this._selectedBoxHeight = this.computeSize(
+                this._selectedNoDescription,
+                this._selectedHasDescription
+            );
         } else if (this.computedSelectedList.length === this._size) {
-            this.computedSelectedList.forEach((option) => {
-                if (option.description) {
-                    hasDescription++;
-                } else if (!option.description) {
-                    noDescription++;
-                }
-            });
-            this._selectedBoxHeight = 40 * noDescription + 57 * hasDescription;
-            return this._selectedBoxHeight;
-        }
-        this.computedSelectedList.forEach((option) => {
-            if (option.description) {
-                hasDescription++;
-            } else if (!option.description) {
-                noDescription++;
+            this.computeSelectedIncrement(this.computedSelectedList);
+            this._selectedBoxHeight = this.computeSize(
+                this._selectedNoDescription,
+                this._selectedHasDescription
+            );
+        } else if (this.computedSelectedList.length < this._size) {
+            this.computeSelectedIncrement(this.computedSelectedList);
+            if (this._selectedHasDescription > 1) {
+                this._selectedBoxHeight =
+                    this.computeSize(
+                        this._selectedNoDescription,
+                        this._selectedHasDescription
+                    ) +
+                    57 * (this._size - this.computedSelectedList.length);
+            } else if (this._sourceHasDescription === 0) {
+                this._selectedBoxHeight =
+                    this.computeSize(
+                        this._selectedNoDescription,
+                        this._selectedHasDescription
+                    ) +
+                    41.3 * (this._size - this.computedSelectedList.length);
             }
-        });
-        this._selectedBoxHeight =
-            40 * noDescription +
-            57 * hasDescription +
-            40 * (this._size - this.computedSelectedList.length);
+        }
         return this._selectedBoxHeight;
     }
 
@@ -574,23 +601,26 @@ export default class DualListbox extends LightningElement {
     }
 
     get sourceHeight() {
-        if (this._sourceBoxHeight >= this._selectedBoxHeight) {
-            return `height: ${this._sourceBoxHeight}px`;
-        }
-        return `height: ${this._selectedBoxHeight}px`;
+        const height =
+            this._sourceBoxHeight >= this._selectedBoxHeight
+                ? `height: ${this._sourceBoxHeight}px`
+                : `height: ${this._selectedBoxHeight}px`;
+        return height;
     }
 
     get selectedHeight() {
         if (this.searchEngine) {
-            if (this._sourceBoxHeight >= this._selectedBoxHeight) {
-                return `height: ${this._sourceBoxHeight + 48}px`;
-            }
-            return `height: ${this._selectedBoxHeight + 48}px`;
+            const height =
+                this._sourceBoxHeight >= this._selectedBoxHeight
+                    ? `height: ${this._sourceBoxHeight + 48}px`
+                    : `height: ${this._selectedBoxHeight + 48}px`;
+            return height;
         }
-        if (this._sourceBoxHeight >= this._selectedBoxHeight) {
-            return `height: ${this._sourceBoxHeight}px`;
-        }
-        return `height: ${this._selectedBoxHeight}px`;
+        const height =
+            this._sourceBoxHeight >= this._selectedBoxHeight
+                ? `height: ${this._sourceBoxHeight}px`
+                : `height: ${this._selectedBoxHeight}px`;
+        return height;
     }
 
     get computedOuterClass() {
@@ -780,6 +810,8 @@ export default class DualListbox extends LightningElement {
         this.highlightedOptions.find((option) => {
             return this._selectedValues.indexOf(option);
         });
+        this.computedColumnSourceHeight();
+        this.computedColumnSelectedHeight();
     }
 
     oldIndexValue(option) {
