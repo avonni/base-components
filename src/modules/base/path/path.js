@@ -309,13 +309,10 @@ export default class Path extends LightningElement {
 
     @api
     previous() {
-        const oldStepIndex = this.currentStepIndex;
-        const previousStepIndex = oldStepIndex - 1;
+        const toIndex = this.currentStepIndex - 1;
 
-        if (previousStepIndex >= 0) {
-            const previousStep = this.steps[previousStepIndex];
-            this.moveToStep(previousStep.name);
-            this.dispatchChange(this.steps[oldStepIndex].name);
+        if (toIndex >= 0) {
+            this.computeMovement({ toIndex });
         }
     }
 
