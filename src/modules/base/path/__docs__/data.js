@@ -1,8 +1,7 @@
 const ACTIONS = [
     {
-        name: 'action-edit',
-        label: 'Edit',
-        iconName: 'utility:edit'
+        name: 'action-add',
+        iconName: 'utility:add'
     },
     {
         name: 'action-remove',
@@ -177,5 +176,6 @@ export {
     ACTIONS,
     STEPS,
     ALL_STEPS_WITH_COMPLETED_OPTIONS,
-    SUCCESS_STEPS_WITH_CLOSING_OPTIONS
+    SUCCESS_STEPS_WITH_CLOSING_OPTIONS,
+    COMPLETED_OPTIONS
 };
