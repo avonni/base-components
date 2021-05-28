@@ -537,19 +537,15 @@ export default class DualListbox extends LightningElement {
         } else if (this.computedSourceList.length < this._size) {
             this.computeSourceIncrement(this.computedSourceList);
             if (this._sourceHasDescription >= 1) {
-                this._sourceBoxHeight =
-                    this.computeSize(
-                        this._sourceNoDescription,
-                        this._sourceHasDescription
-                    ) +
-                    57 * (this._size - this.computedSourceList.length);
+                this._sourceBoxHeight = this.computeSize(
+                    this._sourceNoDescription,
+                    this._sourceHasDescription
+                );
             } else if (this._sourceHasDescription === 0) {
-                this._sourceBoxHeight =
-                    this.computeSize(
-                        this._sourceNoDescription,
-                        this._sourceHasDescription
-                    ) +
-                    41.3 * (this._size - this.computedSourceList.length);
+                this._sourceBoxHeight = this.computeSize(
+                    this._sourceNoDescription,
+                    this._sourceHasDescription
+                );
             }
         }
         return this._sourceBoxHeight;
@@ -574,19 +570,15 @@ export default class DualListbox extends LightningElement {
         } else if (this.computedSelectedList.length < this._size) {
             this.computeSelectedIncrement(this.computedSelectedList);
             if (this._selectedHasDescription > 1) {
-                this._selectedBoxHeight =
-                    this.computeSize(
-                        this._selectedNoDescription,
-                        this._selectedHasDescription
-                    ) +
-                    57 * (this._size - this.computedSelectedList.length);
+                this._selectedBoxHeight = this.computeSize(
+                    this._selectedNoDescription,
+                    this._selectedHasDescription
+                );
             } else if (this._sourceHasDescription === 0) {
-                this._selectedBoxHeight =
-                    this.computeSize(
-                        this._selectedNoDescription,
-                        this._selectedHasDescription
-                    ) +
-                    41.3 * (this._size - this.computedSelectedList.length);
+                this._selectedBoxHeight = this.computeSize(
+                    this._selectedNoDescription,
+                    this._selectedHasDescription
+                );
             }
         }
         return this._selectedBoxHeight;
@@ -616,26 +608,39 @@ export default class DualListbox extends LightningElement {
     }
 
     get sourceHeight() {
-        const height =
-            this._sourceBoxHeight >= this._selectedBoxHeight
-                ? `height: ${this._sourceBoxHeight}px`
-                : `height: ${this._selectedBoxHeight}px`;
-        return height;
+        let sourceHeight = 0;
+        if (this.searchEngine) {
+            if (this._sourceBoxHeight < this._selectedBoxHeight) {
+                sourceHeight = `height: ${this._selectedBoxHeight - 48}px`;
+            } else if (this._sourceBoxHeight > this._selectedBoxHeight) {
+                sourceHeight = `height: ${this._sourceBoxHeight}px`;
+            } else if (this._sourceBoxHeight === this._selectedBoxHeight) {
+                sourceHeight = `height: ${this._selectedBoxHeight}px`;
+            }
+        } else if (!this._searchEngine) {
+            if (this._sourceBoxHeight >= this._selectedBoxHeight) {
+                sourceHeight = `height: ${this._sourceBoxHeight}px`;
+            }
+        }
+        return sourceHeight;
     }
 
     get selectedHeight() {
+        let selectedHeight = 0;
         if (this.searchEngine) {
-            const height =
-                this._sourceBoxHeight >= this._selectedBoxHeight
-                    ? `height: ${this._sourceBoxHeight + 48}px`
-                    : `height: ${this._selectedBoxHeight + 48}px`;
-            return height;
+            if (this._sourceBoxHeight < this._selectedBoxHeight) {
+                selectedHeight = `height: ${this._selectedBoxHeight}px`;
+            } else if (this._sourceBoxHeight > this._selectedBoxHeight) {
+                selectedHeight = `height: ${this._sourceBoxHeight + 48}px`;
+            } else if (this._sourceBoxHeight === this._selectedBoxHeight) {
+                selectedHeight = `height: ${this._selectedBoxHeight + 48}px`;
+            }
+        } else if (!this._searchEngine) {
+            if (this._sourceBoxHeight >= this._selectedBoxHeight) {
+                selectedHeight = `height: ${this._sourceBoxHeight}px`;
+            }
         }
-        const height =
-            this._sourceBoxHeight >= this._selectedBoxHeight
-                ? `height: ${this._sourceBoxHeight}px`
-                : `height: ${this._selectedBoxHeight}px`;
-        return height;
+        return selectedHeight;
     }
 
     get computedOuterClass() {
@@ -898,6 +903,8 @@ export default class DualListbox extends LightningElement {
         this.updateFocusableOption(this.selectedList, toMove[0]);
         this.optionToFocus = null;
         this.dispatchChangeEvent(values);
+        this.computedColumnSourceHeight();
+        this.computedColumnSelectedHeight();
     }
 
     disabledButtons() {
