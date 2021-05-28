@@ -277,17 +277,22 @@ export default class Path extends LightningElement {
 
     get pathClass() {
         const isComplete = this.currentStepIndex === this.steps.length - 1;
+        const isLinear = this.format === 'linear';
+
         return classSet('slds-path slds-path_has-coaching')
             .add({
                 'slds-is-expanded': this.coachingIsVisible,
-                'slds-is-won': this._status === 'success' && isComplete,
-                'slds-is-lost': this._status === 'error' && isComplete,
-                'path-is-complete': isComplete,
+                'slds-is-won':
+                    this._status === 'success' && (isComplete || !isLinear),
+                'slds-is-lost':
+                    this._status === 'error' && (isComplete || !isLinear),
+                'path-is-complete': isComplete || !isLinear,
                 'path-is-complete_warning':
-                    isComplete && this._status === 'warning',
+                    this._status === 'warning' && (isComplete || !isLinear),
                 'path-is-complete_offline':
-                    isComplete && this._status === 'offline',
-                'path-is-complete_base': isComplete && this._status === 'base'
+                    this._status === 'offline' && (isComplete || !isLinear),
+                'path-is-complete_base':
+                    this._status === 'base' && (isComplete || !isLinear)
             })
             .toString();
     }
@@ -445,7 +450,8 @@ export default class Path extends LightningElement {
                     path__item_warning: isWarning,
                     path__item_offline: isOffline,
                     path__item: isError || isWarning || isOffline,
-                    'path__item-last': isLast
+                    'path__item-last':
+                        (isLast && linear) || (isCurrentStep && !linear)
                 })
                 .toString();
 
