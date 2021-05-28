@@ -5,7 +5,7 @@ export default {
     argTypes: {
         completedSteps: {
             control: {
-                type: 'text'
+                type: 'object'
             },
             description: 'All completed steps values.',
             table: {
@@ -14,7 +14,7 @@ export default {
         },
         disabledSteps: {
             control: {
-                type: 'text'
+                type: 'object'
             },
             description: 'All disabled steps values.',
             table: {
@@ -23,7 +23,7 @@ export default {
         },
         errorSteps: {
             control: {
-                type: 'text'
+                type: 'object'
             },
             description: 'All error steps values.',
             table: {
@@ -32,7 +32,7 @@ export default {
         },
         warningSteps: {
             control: {
-                type: 'text'
+                type: 'object'
             },
             description: 'All warning steps values.',
             table: {

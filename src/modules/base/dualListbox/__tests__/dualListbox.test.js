@@ -37,7 +37,7 @@ describe('DualListbox', () => {
         });
         expect(element.addButtonIconName).toBe('utility:right');
         expect(element.addButtonLabel).toBeUndefined();
-        expect(element.borderedListItem).toBeFalsy();
+        expect(element.hideBottomDivider).toBeFalsy();
         expect(element.buttonSize).toBe('medium');
         expect(element.buttonVariant).toBe('border');
         expect(element.disableReordering).toBeFalsy();
@@ -88,8 +88,8 @@ describe('DualListbox', () => {
         });
     });
 
-    // bordered list item
-    it('Dual Listbox bordered list item', () => {
+    // hide bottom divider
+    it('Dual Listbox hide bottom divider', () => {
         const element = createElement('base-dual-listbox', {
             is: DualListbox
         });
@@ -97,14 +97,14 @@ describe('DualListbox', () => {
 
         element.options = options;
 
-        element.borderedListItem = true;
+        element.hideBottomDivider = true;
 
         return Promise.resolve().then(() => {
             const li = element.shadowRoot.querySelectorAll(
                 '.slds-listbox__item'
             );
             li.forEach((item) => {
-                expect(item.className).toContain(
+                expect(item.className).not.toContain(
                     'avonni-dual-listbox-option-border_bottom'
                 );
             });
@@ -889,6 +889,30 @@ describe('DualListbox', () => {
         });
     });
 
+    /* ----- JS ----- */
+
+    // testing selection
+    it('Dual Listbox selection', () => {
+        const element = createElement('base-dual-listbox', {
+            is: DualListbox
+        });
+        document.body.appendChild(element);
+
+        element.options = options;
+
+        return Promise.resolve().then(() => {
+            const option = element.shadowRoot.querySelectorAll(
+                '.slds-listbox__option'
+            );
+            const firstOption = option[0];
+            firstOption.click();
+            const secondOption = option[1];
+            expect(firstOption.tabIndex).toBe(0);
+            expect(firstOption.getAttribute('data-type')).toContain('source');
+            expect(secondOption.tabIndex).toBe(-1);
+        });
+    });
+
     /* ----- EVENTS ----- */
 
     // change
@@ -902,19 +926,27 @@ describe('DualListbox', () => {
         element.value = ['1', '2'];
         element.addButtonLabel = 'add';
 
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
         return Promise.resolve().then(() => {
+            const option = element.shadowRoot.querySelector(
+                '.slds-listbox__option'
+            );
             const lightningButtonIcon = element.shadowRoot.querySelector(
                 "lightning-button-icon[title='add']"
             );
-            element.focus();
+            option.click();
             lightningButtonIcon.click();
-            element.blur();
-            element.addEventListener('change', (event) => {
-                expect(event.detail.checked).toBeTruthy();
-                expect(event.bubbles).toBeFalsy();
-                expect(event.cancelable).toBeFalsy();
-                expect(event.composed).toBeFalsy();
-            });
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.value).toMatchObject([
+                '1',
+                '2',
+                '3'
+            ]);
+            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+            expect(handler.mock.calls[0][0].composed).toBeTruthy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
     });
 });

@@ -10,7 +10,6 @@
 
 .avonni-label-container {
     display: flex;
-    align-items: center;
 }
 
 .avonni-label-container p {
@@ -20,4 +19,8 @@
 
 .slds-datepicker {
     padding: 0.25rem;
+}
+
+.slds-input[readonly] + lightning-icon {
+    opacity: 0.3;
 }

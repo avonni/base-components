@@ -120,7 +120,7 @@ export default class ProgressRing extends LightningElement {
         if (this.variant === 'expired') {
             return 'Expired';
         }
-        if (this.isComplete) {
+        if (this._variant === 'base-autocomplete' && this._value === 100) {
             return 'Complete';
         }
         return undefined;

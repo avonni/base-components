@@ -6,23 +6,30 @@ import {
     observePosition
 } from 'c/utilsPrivate';
 
-const validMenuAlignments = [
-    'left',
-    'center',
-    'right',
-    'bottom-left',
-    'bottom-center',
-    'bottom-right'
-];
+const validMenuAlignments = {
+    valid: [
+        'left',
+        'center',
+        'right',
+        'bottom-left',
+        'bottom-center',
+        'bottom-right'
+    ],
+    default: 'left'
+};
 
-const validVariants = [
-    'border',
-    'border-inverse',
-    'border-filled',
-    'bare',
-    'bare-inverse',
-    'container'
-];
+const validVariants = {
+    valid: [
+        'border',
+        'border-inverse',
+        'border-filled',
+        'brand',
+        'bare',
+        'bare-inverse',
+        'container'
+    ],
+    default: 'border'
+};
 
 export default class DynamicMenu extends LightningElement {
     @api iconName;
@@ -38,8 +45,8 @@ export default class DynamicMenu extends LightningElement {
 
     _items = [];
     _isLoading;
-    _variant = 'border';
-    _menuAlignment = 'left';
+    _variant = validVariants.default;
+    _menuAlignment = validMenuAlignments.default;
     _disabled;
     queryTerm;
     _dropdownVisible = false;
@@ -97,8 +104,8 @@ export default class DynamicMenu extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: 'border',
-            validValues: validVariants
+            fallbackValue: validVariants.default,
+            validValues: validVariants.valid
         });
     }
 
@@ -109,8 +116,8 @@ export default class DynamicMenu extends LightningElement {
 
     set menuAlignment(value) {
         this._menuAlignment = normalizeString(value, {
-            fallbackValue: 'left',
-            validValues: validMenuAlignments
+            fallbackValue: validMenuAlignments.default,
+            validValues: validMenuAlignments.valid
         });
     }
 
@@ -137,6 +144,7 @@ export default class DynamicMenu extends LightningElement {
         if (this._connected) {
             this.focusOnButton();
         }
+        this.dispatchEvent(new CustomEvent('focus'));
     }
 
     @api
@@ -237,10 +245,6 @@ export default class DynamicMenu extends LightningElement {
 
             this.classList.toggle('slds-is-open');
         }
-    }
-
-    handleFocus() {
-        this.dispatchEvent(new CustomEvent('focus'));
     }
 
     handleBlur() {

@@ -133,6 +133,30 @@ export default {
                 defaultValue: { summary: 'left' },
                 category: 'List button'
             }
+        },
+        actionIconName: {
+            name: 'action-icon-name',
+            control: {
+                type: 'text'
+            },
+            defaultValue: 'utility:add',
+            description:
+                "The Lightning Design System name of the action icon name. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.",
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'utility:add' },
+                category: 'Action Button'
+            }
+        },
+        name: {
+            name: 'name',
+            control: {
+                type: 'text'
+            },
+            description: 'Avatar group Name identifier',
+            table: {
+                type: { summary: 'string' }
+            }
         }
     }
 };
@@ -280,7 +304,7 @@ export const BaseLargeWithMoreThanTwoAvatars = Template.bind({});
 BaseLargeWithMoreThanTwoAvatars.args = {
     items: [...items, ...items, ...items],
     size: 'large',
-    maxCount: '6',
+    maxCount: 6,
     variant: 'circle'
 };
 
@@ -288,7 +312,7 @@ export const Grid = Template.bind({});
 Grid.args = {
     items: [...items, ...items, ...items, ...items, ...items, ...items],
     layout: 'grid',
-    maxCount: '6'
+    maxCount: 6
 };
 
 export const GridWithPresence = Template.bind({});
@@ -302,7 +326,7 @@ GridWithPresence.args = {
         ...itemsWithPresence
     ],
     layout: 'grid',
-    maxCount: '6',
+    maxCount: 6,
     variant: 'circle'
 };
 
@@ -311,7 +335,7 @@ GridSmall.args = {
     items: [...items, ...items, ...items, ...items, ...items, ...items],
     size: 'small',
     layout: 'grid',
-    maxCount: '7'
+    maxCount: 7
 };
 
 export const ListDoubleExtraLarge = Template.bind({});
@@ -322,6 +346,6 @@ ListDoubleExtraLarge.args = {
         ...itemsWithStatusAndEntity
     ],
     layout: 'list',
-    maxCount: '3',
+    maxCount: 3,
     size: 'xx-large'
 };

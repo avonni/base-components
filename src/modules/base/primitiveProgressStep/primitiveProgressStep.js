@@ -4,11 +4,6 @@ import { classSet } from 'c/utils';
 
 const POSITIONS = { valid: ['top', 'bottom'], default: 'top' };
 
-const SIZES = {
-    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
-    default: 'medium'
-};
-
 const BUTTON_ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
 
 const BUTTON_VARIANTS = {
@@ -38,9 +33,9 @@ const POPOVER_RATIOS = {
 
 export default class ProgressStep extends LightningElement {
     stepIconName;
-    @api disabledSteps;
+    @api disabledSteps = [];
     @api warningSteps;
-    @api completedSteps;
+    @api completedSteps = [];
     @api assistiveText;
     @api label;
     @api description;
@@ -83,7 +78,6 @@ export default class ProgressStep extends LightningElement {
 
     set value(value) {
         this._value = value;
-        this.setAttribute('data-step', value);
     }
 
     @api
@@ -107,30 +101,6 @@ export default class ProgressStep extends LightningElement {
         this._descriptionPosition = normalizeString(position, {
             fallbackValue: POSITIONS.default,
             validValues: POSITIONS.valid
-        });
-    }
-
-    @api
-    get iconPosition() {
-        return this._iconPosition;
-    }
-
-    set iconPosition(position) {
-        this._iconPosition = normalizeString(position, {
-            fallbackValue: POSITIONS.default,
-            validValues: POSITIONS.valid
-        });
-    }
-
-    @api
-    get iconSize() {
-        return this._iconSize;
-    }
-
-    set iconSize(size) {
-        this._iconSize = normalizeString(size, {
-            fallbackValue: SIZES.default,
-            validValues: SIZES.valid
         });
     }
 
@@ -226,7 +196,7 @@ export default class ProgressStep extends LightningElement {
         )
             .add({
                 'avonni-progress-step-popover-completed': this.completedSteps.includes(
-                    this.getAttribute('data-step')
+                    this.value
                 )
             })
             .add({
@@ -270,11 +240,16 @@ export default class ProgressStep extends LightningElement {
         return this._descriptionPosition === 'bottom' && this.description;
     }
 
+    get showPopoverIcon() {
+        return this.popoverIconSrc || this.popoverIconName;
+    }
+
+    get showPopoverIconWhenHover() {
+        return this.popoverIconSrcWhenHover || this.popoverIconNameWhenHover;
+    }
+
     get isButtonDisabled() {
-        return (
-            this._buttonDisabled ||
-            this.disabledSteps.includes(this.getAttribute('data-step'))
-        );
+        return this._buttonDisabled || this.disabledSteps.includes(this.value);
     }
 
     get displayPopover() {
@@ -300,7 +275,7 @@ export default class ProgressStep extends LightningElement {
     isDisabled() {
         const buttons = this.template.querySelectorAll('button');
         buttons.forEach((button) => {
-            if (this.disabledSteps.includes(this.getAttribute('data-step'))) {
+            if (this.disabledSteps.includes(this.value)) {
                 button.setAttribute('disabled', 'true');
             }
         });
@@ -312,14 +287,14 @@ export default class ProgressStep extends LightningElement {
     }
 
     get primitiveButtonIconVariant() {
-        if (this.warningSteps.includes(this.getAttribute('data-step'))) {
+        if (this.warningSteps.includes(this.value)) {
             return 'warning';
         }
         return 'bare';
     }
 
     get primitivePopoverIconVariant() {
-        if (this.completedSteps.includes(this.getAttribute('data-step'))) {
+        if (this.completedSteps.includes(this.value)) {
             return 'inverse';
         }
         return '';

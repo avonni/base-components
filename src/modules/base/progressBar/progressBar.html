@@ -4,6 +4,7 @@
             <lightning-layout-item
                 if:true={showPositionLeft}
                 class="slds-p-bottom_x-small"
+                data-position-left
             >
                 <span
                     class="avonni-progress-bar-font-weight_large"
@@ -18,18 +19,25 @@
             >
                 <lightning-layout horizontal-align="spread">
                     <lightning-layout-item>
-                        <div class="slds-p-bottom_x-small" if:true={label}>
+                        <div
+                            class="slds-p-bottom_x-small progress-bar-label"
+                            if:true={label}
+                        >
                             {label}
                         </div>
                         <span
                             if:true={showPositionTopLeft}
+                            data-position-top-left
                             aria-hidden="true"
                             class="slds-p-left_xx-small avonni-progress-bar_value"
                         >
                             {value}% {valueLabel}
                         </span>
                     </lightning-layout-item>
-                    <lightning-layout-item if:true={showPositionTopRight}>
+                    <lightning-layout-item
+                        if:true={showPositionTopRight}
+                        data-position-top-right
+                    >
                         <span
                             class="avonni-progress-bar_value"
                             aria-hidden="true"
@@ -54,6 +62,7 @@
                     >
                         <lightning-layout-item
                             if:true={showPositionBottomRight}
+                            data-position-bottom-right
                         >
                             <span
                                 aria-hidden="true"
@@ -62,7 +71,10 @@
                                 {value}% {valueLabel}
                             </span>
                         </lightning-layout-item>
-                        <lightning-layout-item if:true={showPositionBottomLeft}>
+                        <lightning-layout-item
+                            if:true={showPositionBottomLeft}
+                            data-position-bottom-left
+                        >
                             <span
                                 aria-hidden="true"
                                 class="avonni-progress-bar-value_bottom-left avonni-progress-bar_value"
@@ -90,6 +102,7 @@
             <lightning-layout-item
                 if:true={showPositionRight}
                 class="slds-p-bottom_x-small"
+                data-position-right
             >
                 <span class="avonni-progress-bar_value" aria-hidden="true">
                     {value}% {valueLabel}

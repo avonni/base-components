@@ -4,7 +4,7 @@ import { generateUniqueId, classSet } from 'c/utils';
 
 const VALID_SELECTIONS = {
     valid: ['continuous', 'single'],
-    default: 'continues'
+    default: 'continuous'
 };
 
 const VALID_SIZES = {
@@ -19,9 +19,6 @@ const VALID_LABEL_VARIANTS = {
 
 const DEFAULT_MIN = 1;
 const DEFAULT_MAX = 5;
-const DEFAULT_VARIANT = 'standard';
-const DEFAULT_ICON_SIZE = 'large';
-const DEFAULT_SELECTION = 'continuous';
 
 export default class Rating extends LightningElement {
     @api label;
@@ -32,9 +29,9 @@ export default class Rating extends LightningElement {
     _min = DEFAULT_MIN;
     _max = DEFAULT_MAX;
     _value;
-    _variant = DEFAULT_VARIANT;
-    _iconSize = DEFAULT_ICON_SIZE;
-    _selection = DEFAULT_SELECTION;
+    _variant = VALID_LABEL_VARIANTS.default;
+    _iconSize = VALID_SIZES.default;
+    _selection = VALID_SELECTIONS.default;
     _disabled;
     _readOnly;
     _valueHidden;
@@ -133,7 +130,7 @@ export default class Rating extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            defaultValue: VALID_LABEL_VARIANTS.default,
+            fallbackValue: VALID_LABEL_VARIANTS.default,
             validValues: VALID_LABEL_VARIANTS.valid
         });
     }
@@ -145,7 +142,7 @@ export default class Rating extends LightningElement {
 
     set iconSize(size) {
         this._iconSize = normalizeString(size, {
-            defaultValue: VALID_SIZES.default,
+            fallbackValue: VALID_SIZES.default,
             validValues: VALID_SIZES.valid
         });
     }
@@ -203,10 +200,6 @@ export default class Rating extends LightningElement {
 
     get showRating() {
         return !this._valueHidden && this.value;
-    }
-
-    get isNumber() {
-        return this._variant === 'number';
     }
 
     get items() {

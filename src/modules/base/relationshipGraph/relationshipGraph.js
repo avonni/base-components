@@ -6,32 +6,45 @@ import {
 } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-const VARIANTS = ['horizontal', 'vertical'];
-const THEMES = ['default', 'shade', 'inverse'];
-const POSITIONS = ['top', 'bottom'];
+const THEMES = {
+    valid: ['default', 'shade', 'inverse'],
+    default: 'default'
+};
+
+const VARIANTS = {
+    valid: ['horizontal', 'vertical'],
+    default: 'horizontal'
+};
+const POSITIONS = {
+    valid: ['top', 'bottom'],
+    default: 'top'
+};
+
+const DEFAULT_SHRINK_ICON_NAME = 'utility:chevrondown';
+const DEFAULT_EXPAND_ICON_NAME = 'utility:chevronright';
 
 export default class RelationshipGraph extends LightningElement {
     @api label;
     @api avatarSrc;
     @api avatarFallbackIconName;
     @api href;
-    @api actions;
-    @api groups;
-    @api shrinkIconName = 'utility:chevrondown';
-    @api expandIconName = 'utility:chevronright';
+    @api shrinkIconName = DEFAULT_SHRINK_ICON_NAME;
+    @api expandIconName = DEFAULT_EXPAND_ICON_NAME;
 
     processedGroups;
     selectedItemPosition;
     inlineHeader;
 
-    _variant = 'horizontal';
+    _variant = VARIANTS.default;
+    _actions = [];
     _selectedItemName;
     _selectedItem;
-    _groupActions;
-    _groupActionsPosition = 'top';
-    _groupTheme = 'default';
-    _itemActions;
-    _itemTheme = 'default';
+    _groups = [];
+    _groupActions = [];
+    _groupActionsPosition = POSITIONS.default;
+    _groupTheme = THEMES.default;
+    _itemActions = [];
+    _itemTheme = THEMES.default;
     _hideItemsCount = false;
 
     connectedCallback() {
@@ -52,9 +65,17 @@ export default class RelationshipGraph extends LightningElement {
     }
     set variant(value) {
         this._variant = normalizeString(value, {
-            fallbackValue: 'horizontal',
-            validValues: VARIANTS
+            fallbackValue: VARIANTS.default,
+            validValues: VARIANTS.valid
         });
+    }
+
+    @api
+    get actions() {
+        return this._actions;
+    }
+    set actions(value) {
+        this._actions = normalizeArray(value);
     }
 
     @api
@@ -64,6 +85,20 @@ export default class RelationshipGraph extends LightningElement {
     set selectedItemName(name) {
         this._selectedItemName =
             (typeof name === 'string' && name.trim()) || '';
+
+        if (this.isConnected) this.updateSelection();
+    }
+
+    @api
+    get groups() {
+        return this._groups;
+    }
+    set groups(value) {
+        this._groups = normalizeArray(value);
+
+        if (this.isConnected) {
+            this.updateSelection();
+        }
     }
 
     @api
@@ -80,8 +115,8 @@ export default class RelationshipGraph extends LightningElement {
     }
     set groupActionsPosition(value) {
         this._groupActionsPosition = normalizeString(value, {
-            fallbackValue: 'top',
-            validValues: POSITIONS
+            fallbackValue: POSITIONS.default,
+            validValues: POSITIONS.valid
         });
     }
 
@@ -91,8 +126,8 @@ export default class RelationshipGraph extends LightningElement {
     }
     set groupTheme(value) {
         this._groupTheme = normalizeString(value, {
-            fallbackValue: 'default',
-            validValues: THEMES
+            fallbackValue: THEMES.default,
+            validValues: THEMES.valid
         });
     }
 
@@ -110,8 +145,8 @@ export default class RelationshipGraph extends LightningElement {
     }
     set itemTheme(value) {
         this._itemTheme = normalizeString(value, {
-            fallbackValue: 'default',
-            validValues: THEMES
+            fallbackValue: THEMES.default,
+            validValues: THEMES.valid
         });
     }
 
@@ -125,6 +160,10 @@ export default class RelationshipGraph extends LightningElement {
 
     get hasAvatar() {
         return this.avatarSrc || this.avatarFallbackIconName;
+    }
+
+    get hasActions() {
+        return this.actions.length > 0;
     }
 
     get childLevel() {
@@ -191,7 +230,7 @@ export default class RelationshipGraph extends LightningElement {
     }
 
     updateSelection() {
-        if (!this.groups) return;
+        if (!this.groups.length > 0) return;
 
         // Reset the selection and go through the tree with the new selection
         this._selectedItem = undefined;

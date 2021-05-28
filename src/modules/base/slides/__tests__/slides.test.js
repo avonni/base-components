@@ -1,3 +1,528 @@
+import { createElement } from 'lwc';
+import Slides from 'c/slides';
+
+// Not tested because depends on slot content:
+// autoplayDelay
+// coverflowSlideHeight
+// coverflowSlideWidth
+// direction
+// effect
+// height
+// indicatorPosition
+// slidesPerView
+// spaceBetween
+// speed
+// width
+// all methods (first, last, next, previous, pause and setSlide)
+// change event
+
 describe('Slides', () => {
-    test.todo('please pass');
+    afterEach(() => {
+        while (document.body.firstChild) {
+            document.body.removeChild(document.body.firstChild);
+        }
+    });
+
+    it('Default attributes', () => {
+        const element = createElement('base-slides', {
+            is: Slides
+        });
+
+        expect(element.autoplayDelay).toBeUndefined();
+        expect(element.buttonInner).toBeFalsy();
+        expect(element.buttonNextIconName).toBe('utility:right');
+        expect(element.buttonNextIconPosition).toBe('right');
+        expect(element.buttonNextLabel).toBeUndefined();
+        expect(element.buttonNextVariant).toBe('neutral');
+        expect(element.buttonPosition).toBe('middle');
+        expect(element.buttonPreviousIconName).toBe('utility:left');
+        expect(element.buttonPreviousIconPosition).toBe('left');
+        expect(element.buttonPreviousLabel).toBeUndefined();
+        expect(element.buttonPreviousVariant).toBe('neutral');
+        expect(element.coverflowSlideHeight).toBeUndefined();
+        expect(element.coverflowSlideWidth).toBeUndefined();
+        expect(element.direction).toBe('horizontal');
+        expect(element.effect).toBe('slide');
+        expect(element.fractionLabel).toBe('/');
+        expect(element.fractionPrefixLabel).toBeUndefined();
+        expect(element.height).toBeUndefined();
+        expect(element.indicatorPosition).toBe('bottom-center');
+        expect(element.indicators).toBeFalsy();
+        expect(element.indicatorType).toBe('bullets');
+        expect(element.initialSlide).toBe(0);
+        expect(element.loop).toBeFalsy();
+        expect(element.navigation).toBeFalsy();
+        expect(element.slidesPerView).toBe(1);
+        expect(element.spaceBetween).toBe(0);
+        expect(element.speed).toBe(300);
+        expect(element.width).toBeUndefined();
+    });
+
+    /* ----- ATTRIBUTES ----- */
+
+    // button-inner
+    it('buttonInner = false', () => {
+        const element = createElement('base-slides', {
+            is: Slides
+        });
+
+        document.body.appendChild(element);
+        element.buttonInner = false;
+
+        return Promise.resolve().then(() => {
+            expect(element.classList).not.toContain('avonni-button-inner');
+        });
+    });
+
+    it('buttonInner = true', () => {
+        const element = createElement('base-slides', {
+            is: Slides
+        });
+
+        document.body.appendChild(element);
+        element.buttonInner = true;
+
+        return Promise.resolve().then(() => {
+            expect(element.classList).toContain('avonni-button-inner');
+        });
+    });
+
+    // button-next-icon-name
+    // Depends on navigation
+    it('buttonNextIconName', () => {
+        const element = createElement('base-slides', {
+            is: Slides
+        });
+
+        document.body.appendChild(element);
+        element.buttonNextIconName = 'utility:apps';
+        element.navigation = true;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '.avonni-right-button lightning-button'
+            );
+            expect(button.iconName).toBe('utility:apps');
+        });
+    });
+
+    // button-next-icon-position
+    // Depends on navigation
+    it('buttonNextIconPosition', () => {
+        const element = createElement('base-slides', {
+            is: Slides
+        });
+
+        document.body.appendChild(element);
+        element.buttonNextIconPosition = 'left';
+        element.navigation = true;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '.avonni-right-button lightning-button'
+            );
+            expect(button.iconPosition).toBe('left');
+        });
+    });
+
+    // button-next-label
+    // Depends on navigation
+    it('buttonNextLabel', () => {
+        const element = createElement('base-slides', {
+            is: Slides
+        });
+
+        document.body.appendChild(element);
+        element.buttonNextLabel = 'A string label';
+        element.navigation = true;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '.avonni-right-button lightning-button'
+            );
+            expect(button.label).toBe('A string label');
+        });
+    });
+
+    // button-next-variant
+    // Depends on navigation
+    it('buttonNextVariant', () => {
+        const element = createElement('base-slides', {
+            is: Slides
+        });
+
+        document.body.appendChild(element);
+        element.buttonNextVariant = 'brand';
+        element.navigation = true;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '.avonni-right-button lightning-button'
+            );
+            expect(button.variant).toBe('brand');
+        });
+    });
+
+    // button-position
+    it('buttonPosition = middle', () => {
+        const element = createElement('base-slides', {
+            is: Slides
+        });
+
+        document.body.appendChild(element);
+        element.buttonPosition = 'middle';
+
+        return Promise.resolve().then(() => {
+            expect(element.classList).toContain('avonni-flex-middle');
+            expect(element.classList).not.toContain('avonni-flex-top');
+            expect(element.classList).not.toContain('avonni-flex-bottom');
+        });
+    });
+
+    it('buttonPosition = top', () => {
+        const element = createElement('base-slides', {
+            is: Slides
+        });
+
+        document.body.appendChild(element);
+        element.buttonPosition = 'top';
+
+        return Promise.resolve().then(() => {
+            expect(element.classList).not.toContain('avonni-flex-middle');
+            expect(element.classList).toContain('avonni-flex-top');
+            expect(element.classList).not.toContain('avonni-flex-bottom');
+        });
+    });
+
+    it('buttonPosition = bottom', () => {
+        const element = createElement('base-slides', {
+            is: Slides
+        });
+
+        document.body.appendChild(element);
+        element.buttonPosition = 'bottom';
+
+        return Promise.resolve().then(() => {
+            expect(element.classList).not.toContain('avonni-flex-middle');
+            expect(element.classList).not.toContain('avonni-flex-top');
+            expect(element.classList).toContain('avonni-flex-bottom');
+        });
+    });
+
+    // button-previous-icon-name
+    // Depends on navigation
+    it('buttonPreviousIconName', () => {
+        const element = createElement('base-slides', {
+            is: Slides
+        });
+
+        document.body.appendChild(element);
+        element.buttonPreviousIconName = 'utility:apps';
+        element.navigation = true;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '.avonni-left-button lightning-button'
+            );
+            expect(button.iconName).toBe('utility:apps');
+        });
+    });
+
+    // button-previous-icon-position
+    // Depends on navigation
+    it('buttonPreviousIconPosition', () => {
+        const element = createElement('base-slides', {
+            is: Slides
+        });
+
+        document.body.appendChild(element);
+        element.buttonPreviousIconPosition = 'right';
+        element.navigation = true;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '.avonni-left-button lightning-button'
+            );
+            expect(button.iconPosition).toBe('right');
+        });
+    });
+
+    // button-previous-label
+    // Depends on navigation
+    it('buttonPreviousLabel', () => {
+        const element = createElement('base-slides', {
+            is: Slides
+        });
+
+        document.body.appendChild(element);
+        element.buttonPreviousLabel = 'A string label';
+        element.navigation = true;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '.avonni-left-button lightning-button'
+            );
+            expect(button.label).toBe('A string label');
+        });
+    });
+
+    // button-previous-variant
+    // Depends on navigation
+    it('buttonPreviousVariant', () => {
+        const element = createElement('base-slides', {
+            is: Slides
+        });
+
+        document.body.appendChild(element);
+        element.buttonPreviousVariant = 'brand';
+        element.navigation = true;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '.avonni-left-button lightning-button'
+            );
+            expect(button.variant).toBe('brand');
+        });
+    });
+
+    // fraction-label and initial-slide
+    // Depends on indicators and indicatorType
+    it('fractionLabel and initialSlide', () => {
+        const element = createElement('base-slides', {
+            is: Slides
+        });
+
+        document.body.appendChild(element);
+        element.fractionLabel = 'of';
+        element.indicatorType = 'fractions';
+        element.indicators = true;
+        element.initialSlide = 12;
+
+        return Promise.resolve().then(() => {
+            const fraction = element.shadowRoot.querySelector(
+                '.avonni-fractions'
+            );
+            expect(fraction.textContent.trim()).toBe('13 of 0');
+        });
+    });
+
+    // fraction-prefix-label
+    // Depends on indicators and indicatorType
+    it('fractionPrefixLabel', () => {
+        const element = createElement('base-slides', {
+            is: Slides
+        });
+
+        document.body.appendChild(element);
+        element.fractionPrefixLabel = 'Slide';
+        element.indicatorType = 'fractions';
+        element.indicators = true;
+
+        return Promise.resolve().then(() => {
+            const fraction = element.shadowRoot.querySelector(
+                '.avonni-fractions'
+            );
+            expect(fraction.textContent.trim()).toBe('Slide 1 / 0');
+        });
+    });
+
+    // indicators
+    it('indicators = false', () => {
+        const element = createElement('base-slides', {
+            is: Slides
+        });
+
+        document.body.appendChild(element);
+        element.indicators = false;
+
+        return Promise.resolve().then(() => {
+            const bullets = element.shadowRoot.querySelector('.avonni-bullets');
+            expect(bullets).toBeFalsy();
+        });
+    });
+
+    it('indicators = true', () => {
+        const element = createElement('base-slides', {
+            is: Slides
+        });
+
+        document.body.appendChild(element);
+        element.indicators = true;
+
+        return Promise.resolve().then(() => {
+            const bullets = element.shadowRoot.querySelector('.avonni-bullets');
+            expect(bullets).toBeTruthy();
+        });
+    });
+
+    // indicator-type
+    // Depends on indicator
+    it('indicatorType = bullets', () => {
+        const element = createElement('base-slides', {
+            is: Slides
+        });
+
+        document.body.appendChild(element);
+        element.indicators = true;
+        element.indicatorType = 'bullets';
+
+        return Promise.resolve().then(() => {
+            const bullets = element.shadowRoot.querySelector('.avonni-bullets');
+            const fractions = element.shadowRoot.querySelector(
+                '.avonni-fractions'
+            );
+            const progressBar = element.shadowRoot.querySelector(
+                '.slds-progress-bar'
+            );
+
+            expect(bullets).toBeTruthy();
+            expect(fractions).toBeFalsy();
+            expect(progressBar).toBeFalsy();
+        });
+    });
+
+    it('indicatorType = progress-bar', () => {
+        const element = createElement('base-slides', {
+            is: Slides
+        });
+
+        document.body.appendChild(element);
+        element.indicators = true;
+        element.indicatorType = 'progress-bar';
+
+        return Promise.resolve().then(() => {
+            const bullets = element.shadowRoot.querySelector('.avonni-bullets');
+            const fractions = element.shadowRoot.querySelector(
+                '.avonni-fractions'
+            );
+            const progressBar = element.shadowRoot.querySelector(
+                '.slds-progress-bar'
+            );
+
+            expect(bullets).toBeFalsy();
+            expect(fractions).toBeFalsy();
+            expect(progressBar).toBeTruthy();
+        });
+    });
+
+    it('indicatorType = dynamic-bullets', () => {
+        const element = createElement('base-slides', {
+            is: Slides
+        });
+
+        document.body.appendChild(element);
+        element.indicators = true;
+        element.indicatorType = 'dynamic-bullets';
+
+        return Promise.resolve().then(() => {
+            const bullets = element.shadowRoot.querySelector('.avonni-bullets');
+            const fractions = element.shadowRoot.querySelector(
+                '.avonni-fractions'
+            );
+            const progressBar = element.shadowRoot.querySelector(
+                '.slds-progress-bar'
+            );
+
+            expect(bullets).toBeTruthy();
+            expect(fractions).toBeFalsy();
+            expect(progressBar).toBeFalsy();
+        });
+    });
+
+    it('indicatorType = fractions', () => {
+        const element = createElement('base-slides', {
+            is: Slides
+        });
+
+        document.body.appendChild(element);
+        element.indicators = true;
+        element.indicatorType = 'fractions';
+
+        return Promise.resolve().then(() => {
+            const bullets = element.shadowRoot.querySelector('.avonni-bullets');
+            const fractions = element.shadowRoot.querySelector(
+                '.avonni-fractions'
+            );
+            const progressBar = element.shadowRoot.querySelector(
+                '.slds-progress-bar'
+            );
+
+            expect(bullets).toBeFalsy();
+            expect(fractions).toBeTruthy();
+            expect(progressBar).toBeFalsy();
+        });
+    });
+
+    // loop
+    // Depends on navigation
+    it('loop = false', () => {
+        const element = createElement('base-slides', {
+            is: Slides
+        });
+
+        document.body.appendChild(element);
+        element.navigation = true;
+        element.loop = false;
+
+        return Promise.resolve().then(() => {
+            const leftButton = element.shadowRoot.querySelector(
+                '.avonni-left-button lightning-button'
+            );
+
+            expect(leftButton.disabled).toBeTruthy();
+        });
+    });
+
+    it('loop = true', () => {
+        const element = createElement('base-slides', {
+            is: Slides
+        });
+
+        document.body.appendChild(element);
+        element.navigation = true;
+        element.loop = true;
+
+        return Promise.resolve().then(() => {
+            const leftButton = element.shadowRoot.querySelector(
+                '.avonni-left-button lightning-button'
+            );
+
+            expect(leftButton.disabled).toBeFalsy();
+        });
+    });
+
+    // navigation
+    it('navigation = false', () => {
+        const element = createElement('base-slides', {
+            is: Slides
+        });
+
+        document.body.appendChild(element);
+        element.navigation = false;
+
+        return Promise.resolve().then(() => {
+            const buttons = element.shadowRoot.querySelectorAll(
+                'lightning-button'
+            );
+
+            expect(buttons).toHaveLength(0);
+        });
+    });
+
+    it('navigation = true', () => {
+        const element = createElement('base-slides', {
+            is: Slides
+        });
+
+        document.body.appendChild(element);
+        element.navigation = true;
+
+        return Promise.resolve().then(() => {
+            const buttons = element.shadowRoot.querySelectorAll(
+                'lightning-button'
+            );
+
+            expect(buttons).toHaveLength(2);
+        });
+    });
 });
