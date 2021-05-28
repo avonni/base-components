@@ -101,13 +101,13 @@
 }
 
 .avonni-dual-listbox-width_small {
-    width: 15rem;
+    width: var(--lwc-sizeSmall, 15rem);
 }
 
 .avonni-dual-listbox-width_medium {
-    width: 20rem;
+    width: var(--lwc-sizeMedium, 20rem);
 }
 
 .avonni-dual-listbox-width_large {
-    width: 25rem;
+    width: var(--lwc-sizeLarge, 25rem);
 }
