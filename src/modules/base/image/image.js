@@ -7,7 +7,7 @@ const BLANK_COLOR_DEFAULT = 'transparent';
 
 export default class Image extends LightningElement {
     @api alt;
-    @api ratio;
+    @api cropSize;
 
     _src;
     _width;
@@ -24,7 +24,15 @@ export default class Image extends LightningElement {
     _right = false;
     _center = false;
     _blank = false;
-    _cropSize;
+    _cropSize = 0;
+
+    renderedCallback() {
+        const parentWidth = this.template.querySelector('img').parentNode;
+        console.table(parentWidth);
+
+        this.cropRatio();
+        console.log(this._cropSize);
+    }
 
     @api
     get src() {
@@ -220,19 +228,41 @@ export default class Image extends LightningElement {
     }
 
     cropRatio() {
-        if (this.ratio)
-            switch (this.ratio) {
-                case '1x1':
-                    this._cropSize = 1;
-                    break;
-                case '4x3':
-                    this._cropSize = 4 / 3;
-                    break;
-                case '16x9':
-                    this._cropSize = 16 / 9;
-                    break;
-                default:
-                    this._cropSize = null;
-            }
+        switch (this.cropSize) {
+            case '1x1':
+                this._cropSize = 1;
+                break;
+            case '4x3':
+                this._cropSize = 4 / 3;
+                break;
+            case '16x9':
+                this._cropSize = 16 / 9;
+                break;
+            default:
+                this._cropSize = 0;
+        }
+        console.log(this._cropSize);
+    }
+
+    crop() {
+        //     // use spec width for now
+        //     canvas.width = this.width;
+        //     canvas.height = this.height;
+
+        const inputImage = this._src;
+
+        inputImage.onload = () => {
+            const outputImage = document.createElement('canvas');
+
+            outputImage.width = inputImage.naturalWidth;
+            outputImage.height = inputImage.naturalHeight;
+
+            const ctx = outputImage.getContext('2d');
+            ctx.drawImage(inputImage, 0, 0); // aspectRatio implement
+
+            this._src = outputImage.toDataURL('image/png', '');
+        };
+
+        // this._src = canvas.toDataURL('image/png', '');
     }
 }

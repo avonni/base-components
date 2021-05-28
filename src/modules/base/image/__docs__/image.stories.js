@@ -41,7 +41,7 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        ratio: {
+        cropSize: {
             control: {
                 type: 'select'
             },
