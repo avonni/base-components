@@ -16,9 +16,7 @@
                 onfocusin={handleFocus}
                 onfocusout={handleBlur}
             >
-                <div
-                    class="avonni-dual-listbox-list__column avonni-dual-listbox-list__column_responsive"
-                >
+                <div class={computedListboxColumnsClass}>
                     <span
                         class="slds-form-element__label"
                         id="source-list-label"
@@ -131,9 +129,7 @@
                     >
                     </lightning-button-icon>
                 </div>
-                <div
-                    class="avonni-dual-listbox-list__column avonni-dual-listbox-list__column_responsive"
-                >
+                <div class={computedListboxColumnsClass}>
                     <span
                         class="slds-form-element__label"
                         id="selected-list-label"
