@@ -65,6 +65,7 @@ describe('Avatar Group', () => {
         expect(element.listButtonVariant).toBe('neutral');
         expect(element.listButtonIconName).toBeUndefined();
         expect(element.listButtonIconPosition).toBe('left');
+        expect(element.actionIconName).toBe('utility:add');
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -89,6 +90,25 @@ describe('Avatar Group', () => {
         });
     });
 
+    it('Action Button size x-small', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.size = 'x-small';
+        element.items = items;
+
+        return Promise.resolve().then(() => {
+            const actionButton = element.shadowRoot.querySelector(
+                '.avonni-avatar-group__action-button'
+            );
+            expect(actionButton.className).toContain(
+                'avonni-avatar-group__action-button_x-small'
+            );
+        });
+    });
+
     it('Avatar group size small', () => {
         const element = createElement('base-avatar-group', {
             is: AvatarGroup
@@ -105,6 +125,25 @@ describe('Avatar Group', () => {
             avatars.forEach((avatar) => {
                 expect(avatar.className).toContain('slds-avatar-group_small');
             });
+        });
+    });
+
+    it('Action Button size small', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.size = 'small';
+        element.items = items;
+
+        return Promise.resolve().then(() => {
+            const actionButton = element.shadowRoot.querySelector(
+                '.avonni-avatar-group__action-button'
+            );
+            expect(actionButton.className).toContain(
+                'avonni-avatar-group__action-button_small'
+            );
         });
     });
 
@@ -127,6 +166,25 @@ describe('Avatar Group', () => {
         });
     });
 
+    it('Action Button size medium', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.size = 'medium';
+        element.items = items;
+
+        return Promise.resolve().then(() => {
+            const actionButton = element.shadowRoot.querySelector(
+                '.avonni-avatar-group__action-button'
+            );
+            expect(actionButton.className).toContain(
+                'avonni-avatar-group__action-button_medium'
+            );
+        });
+    });
+
     it('Avatar group size large', () => {
         const element = createElement('base-avatar-group', {
             is: AvatarGroup
@@ -143,6 +201,65 @@ describe('Avatar Group', () => {
             avatars.forEach((avatar) => {
                 expect(avatar.className).toContain('slds-avatar-group_large');
             });
+        });
+    });
+
+    it('Action Button size large', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.size = 'large';
+        element.items = items;
+
+        return Promise.resolve().then(() => {
+            const actionButton = element.shadowRoot.querySelector(
+                '.avonni-avatar-group__action-button'
+            );
+            expect(actionButton.className).toContain(
+                'avonni-avatar-group__action-button_large'
+            );
+        });
+    });
+
+    it('Avatar group size x-large', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.size = 'x-large';
+        element.items = items;
+
+        return Promise.resolve().then(() => {
+            const avatars = element.shadowRoot.querySelectorAll(
+                '.slds-avatar-group'
+            );
+            avatars.forEach((avatar) => {
+                expect(avatar.className).toContain(
+                    'avonni-avatar-group_x-large'
+                );
+            });
+        });
+    });
+
+    it('Action Button size x-large', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.size = 'x-large';
+        element.items = items;
+
+        return Promise.resolve().then(() => {
+            const actionButton = element.shadowRoot.querySelector(
+                '.avonni-avatar-group__action-button'
+            );
+            expect(actionButton.className).toContain(
+                'avonni-avatar-group__action-button_x-large'
+            );
         });
     });
 
@@ -164,6 +281,25 @@ describe('Avatar Group', () => {
                     'avonni-avatar-group_xx-large'
                 );
             });
+        });
+    });
+
+    it('Action Button size xx-large', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.size = 'xx-large';
+        element.items = items;
+
+        return Promise.resolve().then(() => {
+            const actionButton = element.shadowRoot.querySelector(
+                '.avonni-avatar-group__action-button'
+            );
+            expect(actionButton.className).toContain(
+                'avonni-avatar-group__action-button_xx-large'
+            );
         });
     });
 
@@ -189,6 +325,25 @@ describe('Avatar Group', () => {
         });
     });
 
+    it('Action button variant square', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.variant = 'square';
+        element.items = items;
+
+        return Promise.resolve().then(() => {
+            const actionButton = element.shadowRoot.querySelector(
+                '.avonni-avatar-group__action-button'
+            );
+            expect(actionButton.className).not.toContain(
+                '.avonni-avatar-group__action-button_circle'
+            );
+        });
+    });
+
     it('Avatar group variant circle', () => {
         const element = createElement('base-avatar-group', {
             is: AvatarGroup
@@ -207,6 +362,25 @@ describe('Avatar Group', () => {
                     'avonni-avatar-group_circle'
                 );
             });
+        });
+    });
+
+    it('Action button variant circle', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.variant = 'circle';
+        element.items = items;
+
+        return Promise.resolve().then(() => {
+            const actionButton = element.shadowRoot.querySelector(
+                '.avonni-avatar-group__action-button'
+            );
+            expect(actionButton.className).not.toContain(
+                '.avonni-avatar-group__action-button_square'
+            );
         });
     });
 
@@ -279,6 +453,7 @@ describe('Avatar Group', () => {
 
         element.layout = 'stack';
         element.items = items;
+        element.actionIconName = '';
 
         return Promise.resolve().then(() => {
             const group = element.shadowRoot.querySelector(
@@ -306,10 +481,11 @@ describe('Avatar Group', () => {
             const avatars = element.shadowRoot.querySelectorAll(
                 '.avonni-avatar-group__avatar'
             );
-            avatars.forEach((avatar) => {
-                expect(avatar.className).toContain(
-                    'avonni-avatar-group_in-line'
-                );
+            avatars.forEach((avatar, index) => {
+                if (index < avatars.length)
+                    expect(avatar.className).toContain(
+                        'avonni-avatar-group_in-line'
+                    );
             });
 
             const groups = element.shadowRoot.querySelectorAll(
@@ -762,6 +938,151 @@ describe('Avatar Group', () => {
         });
     });
 
+    //Action button: absence of action-icon-name
+    it('Action Button absence of action-icon-name makes action button disappear', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.actionIconName = '';
+        element.items = [...items, ...items, ...items];
+
+        return Promise.resolve().then(() => {
+            const actionButton = element.shadowRoot.querySelector(
+                '.avonni-avatar-group__action-button'
+            );
+            expect(actionButton).toBeNull();
+        });
+    });
+
+    it('Action Button action-icon-name button icon', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.actionIconName = 'utility:check';
+        element.items = [...items, ...items, ...items];
+
+        return Promise.resolve().then(() => {
+            const actionButton = element.shadowRoot.querySelector(
+                '.avonni-avatar-group__action-button > lightning-icon'
+            );
+            expect(actionButton.iconName).toBe('utility:check');
+        });
+    });
+
+    // Action button icon size predicated on switch case due to utility icon default sizing
+    // size : x-small, small, medium = x-small icon // size: large, x-large = small icon // size: xx-large = medium icon
+    it('Action Button button icon size x-small', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.actionIconName = 'utility:check';
+        element.size = 'x-small';
+        element.items = [...items, ...items, ...items];
+
+        return Promise.resolve().then(() => {
+            const actionButton = element.shadowRoot.querySelector(
+                '.avonni-avatar-group__action-button > lightning-icon'
+            );
+            expect(actionButton.size).toBe('x-small');
+        });
+    });
+
+    it('Action Button button icon size small', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.actionIconName = 'utility:check';
+        element.size = 'small';
+        element.items = [...items, ...items, ...items];
+
+        return Promise.resolve().then(() => {
+            const actionButton = element.shadowRoot.querySelector(
+                '.avonni-avatar-group__action-button > lightning-icon'
+            );
+            expect(actionButton.size).toBe('x-small');
+        });
+    });
+
+    it('Action Button button icon size medium', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.actionIconName = 'utility:check';
+        element.size = 'medium';
+        element.items = [...items, ...items, ...items];
+
+        return Promise.resolve().then(() => {
+            const actionButton = element.shadowRoot.querySelector(
+                '.avonni-avatar-group__action-button > lightning-icon'
+            );
+            expect(actionButton.size).toBe('x-small');
+        });
+    });
+
+    it('Action Button button icon size large', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.actionIconName = 'utility:check';
+        element.size = 'large';
+        element.items = [...items, ...items, ...items];
+
+        return Promise.resolve().then(() => {
+            const actionButton = element.shadowRoot.querySelector(
+                '.avonni-avatar-group__action-button > lightning-icon'
+            );
+            expect(actionButton.size).toBe('small');
+        });
+    });
+
+    it('Action Button button icon size x-large', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.actionIconName = 'utility:check';
+        element.size = 'x-large';
+        element.items = [...items, ...items, ...items];
+
+        return Promise.resolve().then(() => {
+            const actionButton = element.shadowRoot.querySelector(
+                '.avonni-avatar-group__action-button > lightning-icon'
+            );
+            expect(actionButton.size).toBe('small');
+        });
+    });
+
+    it('Action Button button icon size xx-large', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.actionIconName = 'utility:check';
+        element.size = 'xx-large';
+        element.items = [...items, ...items, ...items];
+
+        return Promise.resolve().then(() => {
+            const actionButton = element.shadowRoot.querySelector(
+                '.avonni-avatar-group__action-button > lightning-icon'
+            );
+            expect(actionButton.size).toBe('medium');
+        });
+    });
+
     /* ----- JS ----- */
 
     // list hidden items
@@ -824,6 +1145,35 @@ describe('Avatar Group', () => {
             avatar.click();
             expect(handler).toHaveBeenCalled();
             expect([handler.mock.calls[0][0].detail.item]).toMatchObject(item);
+            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
+        });
+    });
+
+    // Action button click
+    it('Avatar Action button click event', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.items = item;
+        element.name = 'Avatar group name';
+        element.actionIconName = 'utility:add';
+
+        const handler = jest.fn();
+        element.addEventListener('actionclick', handler);
+
+        return Promise.resolve().then(() => {
+            const actionButton = element.shadowRoot.querySelector(
+                '.avonni-avatar-group__action-button'
+            );
+            actionButton.click();
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.name).toBe(
+                'Avatar group name'
+            );
             expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeTruthy();

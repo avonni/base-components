@@ -26,13 +26,13 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        borderedListItem: {
-            name: 'bordered-list-item',
+        hideBottomDivider: {
+            name: 'hide-bottom-divider',
             control: {
                 type: 'boolean'
             },
             defaultValue: false,
-            description: 'If present, the options are bordered.',
+            description: 'If present, hides the bottom divider.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: false }
@@ -614,8 +614,8 @@ Base.args = {
     draggable: true
 };
 
-export const BaseBordered = Template.bind({});
-BaseBordered.args = {
+export const BaseNoBorder = Template.bind({});
+BaseNoBorder.args = {
     label: 'Select Options',
     fieldLevelHelp: 'This is a Dual Listbox',
     sourceLabel: 'Available Items',
@@ -625,7 +625,7 @@ BaseBordered.args = {
     downButtonLabel: 'Down Button Label',
     upButtonLabel: 'Up Button Label',
     options: Options,
-    borderedListItem: true,
+    hideBottomDivider: true,
     value: ['2', '3', '4', '5', '6']
 };
 
@@ -723,7 +723,7 @@ BaseWithAvatarLabelHidden.args = {
     required: true,
     requiredOptions: ['1'],
     value: ['2', '3'],
-    borderedListItem: true,
+    hideBottomDivider: true,
     variant: 'label-hidden'
 };
 

@@ -1,5 +1,5 @@
 import { createElement } from 'lwc';
-import VerticalProgressIndicator from 'c/verticalProgressIndicator';
+import VerticalProgressIndicator from '../verticalProgressIndicator';
 
 // Not tested because depends on slot content
 // currentStep

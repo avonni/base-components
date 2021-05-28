@@ -19,7 +19,10 @@
             >
                 <lightning-layout horizontal-align="spread">
                     <lightning-layout-item>
-                        <div class="slds-p-bottom_x-small" if:true={label}>
+                        <div
+                            class="slds-p-bottom_x-small progress-bar-label"
+                            if:true={label}
+                        >
                             {label}
                         </div>
                         <span

@@ -61,7 +61,7 @@ describe('ProgressBar', () => {
 
         return Promise.resolve().then(() => {
             const label = element.shadowRoot.querySelector(
-                'lightning-layout lightning-layout-item lightning-layout lightning-layout-item:first-child > span'
+                '.progress-bar-label'
             );
             expect(label.textContent).toBe('A string label');
         });

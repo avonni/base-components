@@ -1,5 +1,5 @@
 import { createElement } from 'lwc';
-import InputRichText from 'c/inputRichText';
+import InputRichText from '../inputRichText';
 
 describe('InputRichText', () => {
     afterEach(() => {
@@ -38,18 +38,24 @@ describe('InputRichText', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const comboboxes = element.shadowRoot.querySelectorAll('lightning-combobox');
-            comboboxes.forEach(combobox => {
+            const comboboxes = element.shadowRoot.querySelectorAll(
+                'lightning-combobox'
+            );
+            comboboxes.forEach((combobox) => {
                 expect(combobox.disabled).toBeTruthy();
             });
 
-            const colorPicker = element.shadowRoot.querySelector('c-primitive-colorpicker-button');
+            const colorPicker = element.shadowRoot.querySelector(
+                'c-primitive-colorpicker-button'
+            );
             if (colorPicker) {
                 expect(colorPicker.disabled).toBeTruthy();
             }
 
-            const buttons = element.shadowRoot.querySelectorAll('.slds-rich-text-editor__toolbar > ul li .slds-button, .overflow-menu > ul > li .slds-button');
-            buttons.forEach(button => {
+            const buttons = element.shadowRoot.querySelectorAll(
+                '.slds-rich-text-editor__toolbar > ul li .slds-button, .overflow-menu > ul > li .slds-button'
+            );
+            buttons.forEach((button) => {
                 expect(button.disabled).toBeTruthy();
             });
         });
@@ -64,16 +70,22 @@ describe('InputRichText', () => {
         element.disabled = false;
 
         return Promise.resolve().then(() => {
-            const comboboxes = element.shadowRoot.querySelectorAll('lightning-combobox');
-            comboboxes.forEach(combobox => {
+            const comboboxes = element.shadowRoot.querySelectorAll(
+                'lightning-combobox'
+            );
+            comboboxes.forEach((combobox) => {
                 expect(combobox.disabled).toBeFalsy();
             });
 
-            const colorPicker = element.shadowRoot.querySelector('c-primitive-colorpicker-button');
+            const colorPicker = element.shadowRoot.querySelector(
+                'c-primitive-colorpicker-button'
+            );
             if (colorPicker) expect(colorPicker.disabled).toBeFalsy();
 
-            const buttons = element.shadowRoot.querySelectorAll('.slds-rich-text-editor__toolbar > ul li .slds-button, .overflow-menu > ul > li .slds-button');
-            buttons.forEach(button => {
+            const buttons = element.shadowRoot.querySelectorAll(
+                '.slds-rich-text-editor__toolbar > ul li .slds-button, .overflow-menu > ul > li .slds-button'
+            );
+            buttons.forEach((button) => {
                 if (button.classList.contains('ql-link')) {
                     expect(button.disabled).toBeTruthy();
                 } else {
@@ -93,13 +105,19 @@ describe('InputRichText', () => {
         element.disabledCategories = ['FORMAT_TEXT', 'ALIGN_TEXT'];
 
         return Promise.resolve().then(() => {
-            const formatText = element.shadowRoot.querySelector('[aria-label="Format text"]');
+            const formatText = element.shadowRoot.querySelector(
+                '[aria-label="Format text"]'
+            );
             expect(formatText).toBeFalsy();
 
-            const alignText = element.shadowRoot.querySelector('[aria-label="Align text"]');
+            const alignText = element.shadowRoot.querySelector(
+                '[aria-label="Align text"]'
+            );
             expect(alignText).toBeFalsy();
 
-            const formatBody = element.shadowRoot.querySelector('[aria-label="Format body"]');
+            const formatBody = element.shadowRoot.querySelector(
+                '[aria-label="Format body"]'
+            );
             expect(formatBody).toBeTruthy();
         });
     });
@@ -137,7 +155,7 @@ describe('InputRichText', () => {
         return Promise.resolve().then(() => {
             const emoji = element.shadowRoot.querySelector('.ql-emoji');
             expect(emoji).toBeTruthy();
-            
+
             const adduser = element.shadowRoot.querySelector('.ql-adduser');
             expect(adduser).toBeTruthy();
         });
@@ -153,7 +171,9 @@ describe('InputRichText', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
-            const label = element.shadowRoot.querySelector('.slds-form-element__label');
+            const label = element.shadowRoot.querySelector(
+                '.slds-form-element__label'
+            );
             expect(label.textContent).toBe('A string label');
         });
     });
@@ -168,8 +188,12 @@ describe('InputRichText', () => {
         element.labelVisible = true;
 
         return Promise.resolve().then(() => {
-            const label = element.shadowRoot.querySelector('.slds-form-element__label');
-            const assistiveText = element.shadowRoot.querySelector('.slds-form-element__label.slds-assistive-text');
+            const label = element.shadowRoot.querySelector(
+                '.slds-form-element__label'
+            );
+            const assistiveText = element.shadowRoot.querySelector(
+                '.slds-form-element__label.slds-assistive-text'
+            );
             expect(label).toBeTruthy();
             expect(assistiveText).toBeFalsy();
         });
@@ -185,7 +209,9 @@ describe('InputRichText', () => {
         element.labelVisible = false;
 
         return Promise.resolve().then(() => {
-            const assistiveText = element.shadowRoot.querySelector('.slds-form-element__label.slds-assistive-text');
+            const assistiveText = element.shadowRoot.querySelector(
+                '.slds-form-element__label.slds-assistive-text'
+            );
             expect(assistiveText.textContent).toBe('A string label');
         });
     });
@@ -200,7 +226,9 @@ describe('InputRichText', () => {
         element.messageWhenBadInput = 'A string error message';
 
         return Promise.resolve().then(() => {
-            const message = element.shadowRoot.querySelector('.slds-form-element__help');
+            const message = element.shadowRoot.querySelector(
+                '.slds-form-element__help'
+            );
             expect(message.textContent).toBe('A string error message');
         });
     });
@@ -215,7 +243,9 @@ describe('InputRichText', () => {
         element.placeholder = 'A string placeholder';
 
         return Promise.resolve().then(() => {
-            const placeholder = element.shadowRoot.querySelector('.input-rich-text-placeholder');
+            const placeholder = element.shadowRoot.querySelector(
+                '.input-rich-text-placeholder'
+            );
             expect(placeholder.textContent).toBe('A string placeholder');
         });
     });
@@ -228,7 +258,9 @@ describe('InputRichText', () => {
         document.body.appendChild(element);
 
         element.value = 'A string value';
-        const textArea = element.shadowRoot.querySelector('lightning-formatted-rich-text');
+        const textArea = element.shadowRoot.querySelector(
+            'lightning-formatted-rich-text'
+        );
 
         return Promise.resolve().then(() => {
             expect(textArea.value).toBe('A string value');
@@ -245,7 +277,9 @@ describe('InputRichText', () => {
         element.variant = 'top-toolbar';
 
         return Promise.resolve().then(() => {
-            const toolbar = element.shadowRoot.querySelector('.slds-rich-text-editor__toolbar + .slds-rich-text-editor__textarea');
+            const toolbar = element.shadowRoot.querySelector(
+                '.slds-rich-text-editor__toolbar + .slds-rich-text-editor__textarea'
+            );
             expect(toolbar).toBeTruthy();
         });
     });
@@ -259,7 +293,9 @@ describe('InputRichText', () => {
         element.variant = 'bottom-toolbar';
 
         return Promise.resolve().then(() => {
-            const toolbar = element.shadowRoot.querySelector('.slds-rich-text-editor__textarea + .slds-rich-text-editor__toolbar');
+            const toolbar = element.shadowRoot.querySelector(
+                '.slds-rich-text-editor__textarea + .slds-rich-text-editor__toolbar'
+            );
             expect(toolbar).toBeTruthy();
         });
     });

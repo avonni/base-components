@@ -133,6 +133,30 @@ export default {
                 defaultValue: { summary: 'left' },
                 category: 'List button'
             }
+        },
+        actionIconName: {
+            name: 'action-icon-name',
+            control: {
+                type: 'text'
+            },
+            defaultValue: 'utility:add',
+            description:
+                "The Lightning Design System name of the action icon name. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.",
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'utility:add' },
+                category: 'Action Button'
+            }
+        },
+        name: {
+            name: 'name',
+            control: {
+                type: 'text'
+            },
+            description: 'Avatar group Name identifier',
+            table: {
+                type: { summary: 'string' }
+            }
         }
     }
 };

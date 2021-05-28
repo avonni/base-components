@@ -200,7 +200,9 @@ describe('Publisher', () => {
 
             button.click();
             expect(handler).toHaveBeenCalledTimes(1);
-            expect(handler.mock.calls[0][0].detail).toBe('A string value');
+            expect(handler.mock.calls[0][0].detail.value).toBe(
+                'A string value'
+            );
         });
     });
 });

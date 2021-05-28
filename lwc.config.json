@@ -35,6 +35,14 @@
             "path": "src/modules/base/utilsPrivate/utilsPrivate.js"
         },
         {
+            "name": "c/activityTimeline",
+            "path": "src/modules/base/activityTimeline/activityTimeline.js"
+        },
+        {
+            "name": "c/activityTimelineItem",
+            "path": "src/modules/base/activityTimelineItem/activityTimelineItem.js"
+        },
+        {
             "name": "c/alert",
             "path": "src/modules/base/alert/alert.js"
         },
@@ -109,6 +117,10 @@
         {
             "name": "c/confetti",
             "path": "src/modules/base/confetti/confetti.js"
+        },
+        {
+            "name": "c/datatable",
+            "path": "src/modules/base/datatable/datatable.js"
         },
         {
             "name": "c/dateTimePicker",
@@ -239,6 +251,38 @@
             "path": "src/modules/base/primitiveCoordinateItem/primitiveCoordinateItem.js"
         },
         {
+            "name": "c/primitiveCellAvatarGroup",
+            "path": "src/modules/base/primitiveCellAvatarGroup/primitiveCellAvatarGroup.js"
+        },
+        {
+            "name": "c/primitiveCellCheckboxButton",
+            "path": "src/modules/base/primitiveCellCheckboxButton/primitiveCellCheckboxButton.js"
+        },
+        {
+            "name": "c/primitiveCellColorPicker",
+            "path": "src/modules/base/primitiveCellColorPicker/primitiveCellColorPicker.js"
+        },
+        {
+            "name": "c/primitiveCellInputCounter",
+            "path": "src/modules/base/primitiveCellInputCounter/primitiveCellInputCounter.js"
+        },
+        {
+            "name": "c/primitiveCellInputDateRange",
+            "path": "src/modules/base/primitiveCellInputDateRange/primitiveCellInputDateRange.js"
+        },
+        {
+            "name": "c/primitiveCellInputToggle",
+            "path": "src/modules/base/primitiveCellInputToggle/primitiveCellInputToggle.js"
+        },
+        {
+            "name": "c/primitiveCellRating",
+            "path": "src/modules/base/primitiveCellRating/primitiveCellRating.js"
+        },
+        {
+            "name": "c/primitiveCellSlider",
+            "path": "src/modules/base/primitiveCellSlider/primitiveCellSlider.js"
+        },
+        {
             "name": "c/primitiveIcon",
             "path": "src/modules/base/primitiveIcon/primitiveIcon.js"
         },
@@ -247,8 +291,8 @@
             "path": "src/modules/base/primitiveIframe/primitiveIframe.js"
         },
         {
-            "name": "c/primitivePageHeaderField",
-            "path": "src/modules/base/primitivePageHeaderField/primitivePageHeaderField.js"
+            "name": "c/primitiveField",
+            "path": "src/modules/base/primitiveField/primitiveField.js"
         },
         {
             "name": "c/primitiveProgressBarReferenceLine",
@@ -395,6 +439,10 @@
             "path": "src/modules/base/wizardStep/wizardStep.js"
         },
         {
+            "name": "avonni/activityTimeline",
+            "path": "src/modules/base/activityTimeline/activityTimeline.js"
+        },
+        {
             "name": "avonni/alert",
             "path": "src/modules/base/alert/alert.js"
         },
@@ -461,6 +509,10 @@
         {
             "name": "avonni/confetti",
             "path": "src/modules/base/confetti/confetti.js"
+        },
+        {
+            "name": "avonni/datatable",
+            "path": "src/modules/base/datatable/datatable.js"
         },
         {
             "name": "avonni/dateTimePicker",
@@ -668,6 +720,7 @@
         }
     ],
     "expose": [
+        "avonni/activityTimeline",
         "avonni/alert",
         "avonni/avatar",
         "avonni/avatarGroup",
@@ -685,6 +738,7 @@
         "avonni/colorPalette",
         "avonni/colorPicker",
         "avonni/confetti",
+        "avonni/datatable",
         "avonni/dateTimePicker",
         "avonni/dialog",
         "avonni/dualListbox",

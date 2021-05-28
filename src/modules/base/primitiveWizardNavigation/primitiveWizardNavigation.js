@@ -437,8 +437,6 @@ export default class PrimitiveWizardNavigation extends LightningElement {
             fallbackValue: null,
             validValues: BUTTON_POSITIONS.valid
         });
-
-        if (this.isConnected) this._reorderColumns();
     }
 
     @api
@@ -450,7 +448,6 @@ export default class PrimitiveWizardNavigation extends LightningElement {
             fallbackValue: BUTTON_POSITIONS.defaultAction,
             validValues: BUTTON_POSITIONS.valid
         });
-        if (this.isConnected) this._reorderColumns();
     }
 
     @api

@@ -65,7 +65,7 @@ export default class DualListbox extends LightningElement {
 
     _requiredOptions = [];
     _options = [];
-    _borderedListItem = false;
+    _hideBottomDivider = false;
     _buttonSize = VALID_BUTTON_SIZES.default;
     _buttonVariant = VALID_BUTTON_VARIANTS.default;
     _isLoading = false;
@@ -174,12 +174,12 @@ export default class DualListbox extends LightningElement {
     }
 
     @api
-    get borderedListItem() {
-        return this._borderedListItem || false;
+    get hideBottomDivider() {
+        return this._hideBottomDivider || false;
     }
 
-    set borderedListItem(value) {
-        this._borderedListItem = normalizeBoolean(value);
+    set hideBottomDivider(value) {
+        this._hideBottomDivider = normalizeBoolean(value);
     }
 
     @api
@@ -562,8 +562,8 @@ export default class DualListbox extends LightningElement {
             'slds-listbox__item avonni-dual-listbox-list-item-min_height'
         )
             .add({
-                'avonni-dual-listbox-option-border_bottom': this
-                    .borderedListItem
+                'avonni-dual-listbox-option-border_bottom': !this
+                    .hideBottomDivider
             })
             .toString();
     }
