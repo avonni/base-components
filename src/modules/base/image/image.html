@@ -1,11 +1,44 @@
 <template>
-    <img
-        src={src}
-        srcset={srcset}
-        sizes={sizes}
-        alt={alt}
-        width={width}
-        height={height}
-        class={computedImageClass}
-    />
+    <div class="avonni-img-container">
+        <!-- <figure class="slds-image"> -->
+        <!-- <div class="slds-image__crop slds-image__crop_4-by-3"> -->
+        <img
+            src={src}
+            srcset={srcset}
+            sizes={sizes}
+            alt={alt}
+            width={width}
+            height={height}
+            class={computedImageClass}
+        />
+        <img
+            src={src}
+            srcset={srcset}
+            sizes={sizes}
+            alt={alt}
+            width={width}
+            height={height}
+            class="avonni-img_aspect-ratio_16-by-9"
+        />
+        <img
+            src={src}
+            srcset={srcset}
+            sizes={sizes}
+            alt={alt}
+            width={width}
+            height={height}
+            class="avonni-img_aspect-ratio_4-by-3"
+        />
+        <img
+            src={src}
+            srcset={srcset}
+            sizes={sizes}
+            alt={alt}
+            width={width}
+            height={height}
+            class="avonni-img_aspect-ratio_1-by-1"
+        />
+        <!-- </div> -->
+        <!-- </figure> -->
+    </div>
 </template>

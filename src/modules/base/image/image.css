@@ -1,3 +1,21 @@
+.avonni-img-container {
+    width: 100%;
+    height: 100%;
+}
+
+.avonni-img_aspect-ratio_16-by-9 {
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
+.avonni-img_aspect-ratio_4-by-3 {
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+}
+.avonni-img_aspect-ratio_1-by-1 {
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+}
+
 .avonni-img-fluid {
     max-width: 100%;
     height: auto;

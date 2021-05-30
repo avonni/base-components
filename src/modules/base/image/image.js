@@ -25,13 +25,57 @@ export default class Image extends LightningElement {
     _center = false;
     _blank = false;
     _cropSize = 0;
+    _inputImage;
+    _imgDataURL = 'https://unsplash.com/photos/EHlp8e-nQ3g';
+
+    connectedCallback() {
+        // const inputImage = document.createElement('img');
+        // // const inputImage = new Image();
+        // // inputImage.src = this._src;
+        // inputImage.crossOrigin = "Anonymous";
+        // inputImage.src = this._imgDataURL + "?not-from-cache-please";
+        // this._inputImage = inputImage;
+        // console.log(this._inputImage);
+        // this.crop();
+        // const url = "https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg";
+        // // // const _imgDataURL = "https://unsplash.com/photos/EHlp8e-nQ3g";
+        // // // const url = "https://chrome-cors-testing.s3.eu-central-1.amazonaws.com/hacksoft.svg";
+        // // const image = document.createElement('img');
+        // // image.src = url;
+        // // console.log(image);
+        // const corsImageModified = document.createElement('img');
+        // corsImageModified.crossOrigin = "Anonymous";
+        // corsImageModified.src = url + "?not-from-cache";
+        // console.log(corsImageModified);
+    }
 
     renderedCallback() {
-        const parentWidth = this.template.querySelector('img').parentNode;
+        const parentWidth = this.template.querySelector('img').parentNode
+            .clientWidth;
         console.table(parentWidth);
 
         this.cropRatio();
         console.log(this._cropSize);
+
+        // const inputImage = new Image();
+        // this.inputImage.src = this._src;
+        // this.crop(this.inputImage);
+
+        // const url = "https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg";
+        // // const _imgDataURL = "https://unsplash.com/photos/EHlp8e-nQ3g";
+        // // const url = "https://chrome-cors-testing.s3.eu-central-1.amazonaws.com/hacksoft.svg";
+        // const image = document.createElement('img');
+        // image.src = url;
+
+        // console.log(image);
+
+        // this.crop();
+
+        // const corsImageModified = document.createElement('img');
+        // corsImageModified.crossOrigin = "Anonymous";
+        // corsImageModified.src = url + "?not-from-cache";
+
+        // console.log(corsImageModified);
     }
 
     @api
@@ -241,7 +285,6 @@ export default class Image extends LightningElement {
             default:
                 this._cropSize = 0;
         }
-        console.log(this._cropSize);
     }
 
     crop() {
@@ -249,19 +292,33 @@ export default class Image extends LightningElement {
         //     canvas.width = this.width;
         //     canvas.height = this.height;
 
-        const inputImage = this._src;
+        // const inputImage = new Image();
+        const url =
+            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg';
+        // const _imgDataURL = "https://unsplash.com/photos/EHlp8e-nQ3g";
+        // const url = "https://chrome-cors-testing.s3.eu-central-1.amazonaws.com/hacksoft.svg";
+        const image = document.createElement('img');
+        image.src = url;
 
-        inputImage.onload = () => {
+        const imageMod = document.createElement('img');
+
+        imageMod.onload = () => {
             const outputImage = document.createElement('canvas');
 
-            outputImage.width = inputImage.naturalWidth;
-            outputImage.height = inputImage.naturalHeight;
+            outputImage.width = image.naturalWidth;
+            outputImage.height = image.naturalHeight;
 
             const ctx = outputImage.getContext('2d');
-            ctx.drawImage(inputImage, 0, 0); // aspectRatio implement
+            ctx.drawImage(image, 0, 0); // aspectRatio implement
 
-            this._src = outputImage.toDataURL('image/png', '');
+            // console.log(outputImage.toDataURL('image/png'));
+
+            this._src = outputImage.toDataURL('image/png');
         };
+        imageMod.crossOrigin = 'Anonymous';
+        imageMod.src = url + '?not-cached'; //this._imgDataURL + "?not-from-cache-please";
+        console.log(image);
+        console.log(imageMod);
 
         // this._src = canvas.toDataURL('image/png', '');
     }
