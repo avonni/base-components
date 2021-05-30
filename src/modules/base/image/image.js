@@ -8,6 +8,9 @@ const BLANK_COLOR_DEFAULT = 'transparent';
 export default class Image extends LightningElement {
     @api alt;
     @api cropSize;
+    @api cropFit;
+    @api cropPositionX;
+    @api cropPositionY;
 
     _src;
     _width;
@@ -25,8 +28,8 @@ export default class Image extends LightningElement {
     _center = false;
     _blank = false;
     _cropSize = 0;
-    _inputImage;
-    _imgDataURL = 'https://unsplash.com/photos/EHlp8e-nQ3g';
+    // _inputImage;
+    // _imgDataURL = 'https://unsplash.com/photos/EHlp8e-nQ3g';
 
     connectedCallback() {
         // const inputImage = document.createElement('img');
@@ -274,17 +277,25 @@ export default class Image extends LightningElement {
     cropRatio() {
         switch (this.cropSize) {
             case '1x1':
-                this._cropSize = 1;
+                this._cropSize = '1 / 1';
                 break;
             case '4x3':
-                this._cropSize = 4 / 3;
+                this._cropSize = '4 / 3';
                 break;
             case '16x9':
-                this._cropSize = 16 / 9;
+                this._cropSize = '16 / 9';
                 break;
             default:
-                this._cropSize = 0;
+                this._cropSize = null;
         }
+    }
+
+    get computedImgStyle() {
+        return `
+        aspect-ratio: ${this._cropSize};
+        object-fit: ${this.cropFit};
+        object-position: ${this.cropPositionX}% ${this.cropPositionY}%; 
+        `;
     }
 
     crop() {

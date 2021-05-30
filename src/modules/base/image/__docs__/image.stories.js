@@ -42,14 +42,62 @@ export default {
             }
         },
         cropSize: {
+            name: 'crop-size',
             control: {
                 type: 'select'
             },
             options: ['1x1', '4x3', '16x9', 'none'],
+            defaultValue: 'none',
             description:
-                'Specifies the cropping ratio for the image, which is constrained to the parents width.',
+                'Specifies the cropping ratio for the image, which is constrained to the parents width. Options : 1:1, 4:3, 16:9, none',
             table: {
-                type: { summary: 'string' }
+                defaultValue: { summary: 'none' },
+                type: { summary: 'string' },
+                category: 'Crop'
+            }
+        },
+        cropFit: {
+            name: 'crop-fit',
+            control: {
+                type: 'select'
+            },
+            options: ['cover', 'contain', 'fill', 'none'],
+            defaultValue: 'cover',
+            description: 'Specifies the cropping ratio fit for the image',
+            table: {
+                defaultValue: { summary: 'cover' },
+                type: { summary: 'string' },
+                category: 'Crop'
+            }
+        },
+        cropPositionX: {
+            name: 'crop-position-X(%)',
+            control: {
+                type: 'text'
+            },
+            defaultValue: '50',
+            description:
+                'Specifies the cropping point of interest on the X axis of the image, in percentage',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: '50' },
+                category: 'Crop',
+                detail: 'Percent'
+            }
+        },
+        cropPositionY: {
+            name: 'crop-position-Y(%)',
+            control: {
+                type: 'text'
+            },
+            defaultValue: '50',
+            description:
+                'Specifies the cropping point of interest on the Y axis of the image, in percentage',
+            table: {
+                defaultValue: { summary: '50' },
+                type: { summary: 'string' },
+                category: 'Crop',
+                detail: 'Percent'
             }
         },
         width: {
