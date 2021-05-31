@@ -497,7 +497,6 @@ const OptionsWithAvatarSrc = [
     {
         value: '1',
         label: 'Carl Smith',
-        // description: 'CS',
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
     },
     {
@@ -534,7 +533,6 @@ const OptionsWithAvatarSrc = [
     {
         value: '7',
         label: 'John Smith',
-        // description: 'JS',
         iconName: 'standard:address',
         initials: 'JS'
     },

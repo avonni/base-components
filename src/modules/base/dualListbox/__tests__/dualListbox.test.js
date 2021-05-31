@@ -720,50 +720,38 @@ describe('DualListbox', () => {
             is: DualListbox
         });
         document.body.appendChild(element);
-        const size = 4 * 2.5 - 2.75;
+
+        const size = 4 * 41.3;
 
         element.size = 4;
+        element.option = options;
         element.searchEngine = true;
 
         return Promise.resolve().then(() => {
             const div = element.shadowRoot.querySelectorAll(
                 '.slds-dueling-list__options.avonni-dual-listbox-option-is-selected'
             );
-            expect(div[0].getAttribute('style')).toBe(`height:${size}rem`);
+            expect(div[0].getAttribute('style')).toBe(`height: ${size}px`);
         });
     });
 
-    it('Dual Listbox no size source with search engine', () => {
+    it('Dual Listbox size selected with search engine', () => {
         const element = createElement('base-dual-listbox', {
             is: DualListbox
         });
         document.body.appendChild(element);
-        const size = 11.75;
 
+        const size = 4 * 41.3 + 48;
+
+        element.size = 4;
+        element.option = options;
         element.searchEngine = true;
 
         return Promise.resolve().then(() => {
             const div = element.shadowRoot.querySelectorAll(
                 '.slds-dueling-list__options.avonni-dual-listbox-option-is-selected'
             );
-            expect(div[0].getAttribute('style')).toBe(`height:${size}rem`);
-        });
-    });
-
-    it('Dual Listbox size source without search engine', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
-        const size = 4 * 2.5 + 0.15;
-        element.size = 4;
-
-        return Promise.resolve().then(() => {
-            const div = element.shadowRoot.querySelectorAll(
-                '.slds-dueling-list__options.avonni-dual-listbox-option-is-selected'
-            );
-            expect(div[0].getAttribute('style')).toBe(`height:${size}rem`);
+            expect(div[1].getAttribute('style')).toBe(`height: ${size}px`);
         });
     });
 
@@ -772,47 +760,28 @@ describe('DualListbox', () => {
             is: DualListbox
         });
         document.body.appendChild(element);
-
-        const size = 14.75;
+        const size = 5 * 41.3;
 
         return Promise.resolve().then(() => {
             const div = element.shadowRoot.querySelectorAll(
                 '.slds-dueling-list__options.avonni-dual-listbox-option-is-selected'
             );
-            expect(div[0].getAttribute('style')).toBe(`height:${size}rem`);
+            expect(div[0].getAttribute('style')).toBe(`height: ${size}px`);
         });
     });
 
-    // size selected
-    it('Dual Listbox size selected', () => {
+    it('Dual Listbox no size selected without search engine', () => {
         const element = createElement('base-dual-listbox', {
             is: DualListbox
         });
         document.body.appendChild(element);
-        const size = 4 * 2.5 + 0.15;
-
-        element.size = 4;
+        const size = 5 * 41.3;
 
         return Promise.resolve().then(() => {
             const div = element.shadowRoot.querySelectorAll(
                 '.slds-dueling-list__options.avonni-dual-listbox-option-is-selected'
             );
-            expect(div[1].getAttribute('style')).toBe(`height:${size}rem`);
-        });
-    });
-
-    it('Dual Listbox no size selected', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-        const size = 14.75;
-
-        return Promise.resolve().then(() => {
-            const div = element.shadowRoot.querySelectorAll(
-                '.slds-dueling-list__options.avonni-dual-listbox-option-is-selected'
-            );
-            expect(div[1].getAttribute('style')).toBe(`height:${size}rem`);
+            expect(div[0].getAttribute('style')).toBe(`height: ${size}px`);
         });
     });
 
