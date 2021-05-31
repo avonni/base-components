@@ -100,14 +100,14 @@
     min-height: 41px;
 }
 
-.avonni-dual-listbox-width_small {
+.avonni-dual-listbox-size_small {
     width: var(--lwc-sizeSmall, 15rem);
 }
 
-.avonni-dual-listbox-width_medium {
+.avonni-dual-listbox-size_medium {
     width: var(--lwc-sizeMedium, 20rem);
 }
 
-.avonni-dual-listbox-width_large {
+.avonni-dual-listbox-size_large {
     width: var(--lwc-sizeLarge, 25rem);
 }

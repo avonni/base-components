@@ -310,7 +310,8 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        size: {
+        maxVisibleOptions: {
+            name: 'max-visible-options',
             control: {
                 type: 'number'
             },
@@ -389,7 +390,7 @@ export default {
                 defaultValue: { summary: 'standard' }
             }
         },
-        width: {
+        size: {
             control: {
                 type: 'select'
             },
@@ -627,7 +628,7 @@ BaseSmall.args = {
     upButtonLabel: 'Up Button Label',
     options: Options,
     value: ['2', '3', '4', '5', '6'],
-    width: 'small'
+    size: 'small'
 };
 
 export const BaseLarge = Template.bind({});
@@ -642,7 +643,7 @@ BaseLarge.args = {
     upButtonLabel: 'Up Button Label',
     options: Options,
     value: ['2', '3', '4', '5', '6'],
-    width: 'large'
+    size: 'large'
 };
 
 export const BaseNoBorder = Template.bind({});
@@ -758,8 +759,8 @@ BaseWithAvatarLabelHidden.args = {
     variant: 'label-hidden'
 };
 
-export const BaseWithAvatarSize10 = Template.bind({});
-BaseWithAvatarSize10.args = {
+export const BaseWithAvatarVisibleOptions10 = Template.bind({});
+BaseWithAvatarVisibleOptions10.args = {
     label: 'Select Items',
     sourceLabel: 'Available Items',
     selectedLabel: 'Selected Items',
@@ -770,12 +771,12 @@ BaseWithAvatarSize10.args = {
     options: OptionsWithAvatar,
     required: true,
     requiredOptions: ['1'],
-    size: 10,
+    maxVisibleOptions: 10,
     value: ['2', '3']
 };
 
-export const BaseWithAvatarDescriptionSize6 = Template.bind({});
-BaseWithAvatarDescriptionSize6.args = {
+export const BaseWithAvatarDescriptionVisibleOptions6 = Template.bind({});
+BaseWithAvatarDescriptionVisibleOptions6.args = {
     label: 'Invitations',
     sourceLabel: 'Available',
     selectedLabel: 'Invited',
@@ -785,7 +786,7 @@ BaseWithAvatarDescriptionSize6.args = {
     upButtonLabel: 'Up Button Label',
     options: OptionsWithAvatarSrc,
     requiredOptions: ['1'],
-    size: 6,
+    maxVisibleOptions: 6,
     value: ['2', '3']
 };
 
