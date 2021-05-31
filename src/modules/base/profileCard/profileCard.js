@@ -2,16 +2,22 @@ import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-const validSizes = ['x-small', 'small', 'medium', 'large', 'x-large'];
-const validAvatarPositions = [
-    'top-left',
-    'top-center',
-    'top-right',
-    'bottom-left',
-    'bottom-center',
-    'bottom-right'
-];
-const validAvatarVariants = ['circle', 'square'];
+const validSizes = {
+    valid: ['x-small', 'small', 'medium', 'large', 'x-large'],
+    default: 'medium'
+};
+const validAvatarPositions = {
+    valid: [
+        'top-left',
+        'top-center',
+        'top-right',
+        'bottom-left',
+        'bottom-center',
+        'bottom-right'
+    ],
+    default: 'top-left'
+};
+const validAvatarVariants = { valid: ['circle', 'square'], default: 'circle' };
 
 export default class ProfileCard extends LightningElement {
     @api title;
@@ -23,9 +29,10 @@ export default class ProfileCard extends LightningElement {
     @api avatarAlternativeText;
     @api avatarFallbackIconName;
 
-    _size = 'medium';
-    _avatarPosition = 'top-left';
-    _avatarVariant = 'circle';
+    _size = validSizes.default;
+    _avatarPosition = validAvatarPositions.default;
+    _avatarMobilePosition = validAvatarPositions.default;
+    _avatarVariant = validAvatarVariants.default;
     isError = false;
     showActions = true;
     showFooter = true;
@@ -83,36 +90,51 @@ export default class ProfileCard extends LightningElement {
         return this.template.querySelector('slot[name=footer]');
     }
 
-    @api get size() {
+    @api
+    get size() {
         return this._size;
     }
 
     set size(size) {
         this._size = normalizeString(size, {
-            fallbackValue: 'medium',
-            validValues: validSizes
+            fallbackValue: validSizes.default,
+            validValues: validSizes.valid
         });
     }
 
-    @api get avatarPosition() {
+    @api
+    get avatarPosition() {
         return this._avatarPosition;
     }
 
     set avatarPosition(avatarPosition) {
         this._avatarPosition = normalizeString(avatarPosition, {
-            fallbackValue: 'top-left',
-            validValues: validAvatarPositions
+            fallbackValue: validAvatarPositions.default,
+            validValues: validAvatarPositions.valid
         });
     }
 
-    @api get avatarVariant() {
+    @api
+    get avatarMobilePosition() {
+        return this._avatarMobilePosition;
+    }
+
+    set avatarMobilePosition(avatarMobilePosition) {
+        this._avatarMobilePosition = normalizeString(avatarMobilePosition, {
+            fallbackValue: validAvatarPositions.default,
+            validValues: validAvatarPositions.valid
+        });
+    }
+
+    @api
+    get avatarVariant() {
         return this._avatarVariant;
     }
 
     set avatarVariant(avatarVariant) {
         this._avatarVariant = normalizeString(avatarVariant, {
-            fallbackValue: 'circle',
-            validValues: validAvatarVariants
+            fallbackValue: validAvatarVariants.default,
+            validValues: validAvatarVariants.valid
         });
     }
 

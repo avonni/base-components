@@ -113,6 +113,28 @@ export default {
                 category: 'Avatar'
             }
         },
+        avatarMobilePosition: {
+            name: 'avatar-mobile-position',
+            control: {
+                type: 'select'
+            },
+            options: [
+                'top-left',
+                'top-center',
+                'top-right',
+                'bottom-left',
+                'bottom-center',
+                'bottom-right'
+            ],
+            description:
+                'Values include top-left, top-center, top-right, bottom-left, bottom-center, bottom-right.',
+            defaultValue: 'top-left',
+            table: {
+                defaultValue: { summary: 'top-left' },
+                type: { summary: 'string' },
+                category: 'Avatar'
+            }
+        },
         avatarVariant: {
             name: 'avatar-variant',
             control: {
