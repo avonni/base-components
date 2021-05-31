@@ -1,6 +1,8 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
+import profileCard from './profileCard.html';
+import mobileProfileCard from './mobileProfileCard.html';
 
 const validSizes = {
     valid: ['x-small', 'small', 'medium', 'large', 'x-large'],
@@ -38,6 +40,13 @@ export default class ProfileCard extends LightningElement {
     showFooter = true;
     showAvatarActions = true;
 
+    render() {
+        if (window.innerWidth <= 480) {
+            return mobileProfileCard;
+        }
+        return profileCard;
+    }
+
     renderedCallback() {
         let header = this.template.querySelector('header');
 
@@ -58,8 +67,11 @@ export default class ProfileCard extends LightningElement {
             this.showActions = this.actionsSlot.assignedElements().length !== 0;
 
             if (
-                this.showActions &&
-                this._avatarPosition.indexOf('right') > -1
+                (this.showActions &&
+                    window.innerWidth > 480 &&
+                    this._avatarPosition.indexOf('right') > -1) ||
+                (window.innerWidth <= 480 &&
+                    this._avatarMobilePosition.indexOf('right') > -1)
             ) {
                 let actionsContainer = this.template.querySelector(
                     '.avonni-actions'
@@ -154,8 +166,30 @@ export default class ProfileCard extends LightningElement {
             .toString();
     }
 
+    get computedMobileContainerClass() {
+        return classSet('avonni-flex-container')
+            .add({
+                'avonni-flex-align-start':
+                    this._avatarMobilePosition === 'top-left' ||
+                    this._avatarMobilePosition === 'bottom-left',
+                'avonni-flex-align-center':
+                    this._avatarMobilePosition === 'top-center' ||
+                    this._avatarMobilePosition === 'bottom-center',
+                'avonni-flex-align-end':
+                    this._avatarMobilePosition === 'top-right' ||
+                    this._avatarMobilePosition === 'bottom-right'
+            })
+            .toString();
+    }
+
     get computedMainContainerClass() {
         return classSet(this.avatarPosition)
+            .add(`card-${this._size}`)
+            .toString();
+    }
+
+    get computedMobileMainContainerClass() {
+        return classSet(this._avatarMobilePosition)
             .add(`card-${this._size}`)
             .toString();
     }

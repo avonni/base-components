@@ -246,3 +246,18 @@ NoImage.args = {
     avatarFallbackIconName: 'standard:user',
     avatarSrc: 'wrong path'
 };
+
+export const BaseMobile = Template.bind({});
+BaseMobile.parameters = {
+    viewport: {
+        defaultViewport: 'mobile1'
+    }
+};
+BaseMobile.args = {
+    title: 'Title',
+    subtitle: 'Subtitle',
+    avatarSrc:
+        'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+    backgroundSrc:
+        'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg'
+};
