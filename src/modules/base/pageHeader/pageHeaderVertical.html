@@ -54,21 +54,13 @@
             <ul class="slds-page-header__detail-list">
                 <template for:each={fields} for:item="field">
                     <li key={field.label} class="slds-page-header__detail-item">
-                        <div
-                            class="slds-text-title slds-truncate"
-                            title={field.label}
+                        <c-output-data
+                            label={field.label}
+                            value={field.value}
+                            type={field.type}
+                            type-attributes={field.typeAttributes}
                         >
-                            {field.label}
-                        </div>
-                        <div title={field.value}>
-                            <c-primitive-field
-                                field={field}
-                                label={field.label}
-                                value={field.value}
-                                type={field.type}
-                            >
-                            </c-primitive-field>
-                        </div>
+                        </c-output-data>
                     </li>
                 </template>
             </ul>

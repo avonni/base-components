@@ -95,7 +95,7 @@ const fields = [
     },
     {
         label: 'Date',
-        value: '10/12/1991',
+        value: '1991-12-10',
         type: 'date',
         typeAttributes: {
             weekday: 'long',
@@ -107,7 +107,6 @@ const fields = [
     {
         label: 'Text',
         value: 'This is a text',
-        type: 'text',
         typeAttributes: {
             linkify: 'false'
         }
