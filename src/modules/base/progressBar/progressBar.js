@@ -8,6 +8,8 @@ import { classSet } from 'c/utils';
 import progressBar from './progressBar.html';
 import progressBarVertical from './progressBarVertical.html';
 
+const DEFAULT_VALUE = 0;
+
 const SIZES = {
     valid: ['x-small', 'small', 'medium', 'large', 'full'],
     default: 'full'
@@ -46,7 +48,7 @@ const THICKNESS = {
     default: 'medium'
 };
 
-const ORIENTATION = {
+const ORIENTATIONS = {
     valid: ['horizontal', 'vertical'],
     default: 'horizontal'
 };
@@ -55,16 +57,16 @@ export default class ProgressBar extends LightningElement {
     @api label;
     @api valueLabel;
 
-    _size = 'full';
-    _value = 0;
+    _size = SIZES.default;
+    _value = DEFAULT_VALUE;
     _showValue = false;
-    _valuePosition = 'top-right';
+    _valuePosition = POSITIONS.default;
     _referenceLines = [];
-    _variant = 'base';
-    _theme = 'base';
+    _variant = VARIANTS.default;
+    _theme = THEMES.default;
     _textured = false;
-    _thickness = 'medium';
-    _orientation = 'horizontal';
+    _thickness = THICKNESS.default;
+    _orientation = ORIENTATIONS.default;
 
     // render the progress bar depending on its orientation
     render() {
@@ -187,8 +189,8 @@ export default class ProgressBar extends LightningElement {
 
     set orientation(orientation) {
         this._orientation = normalizeString(orientation, {
-            fallbackValue: ORIENTATION.default,
-            validValues: ORIENTATION.valid
+            fallbackValue: ORIENTATIONS.default,
+            validValues: ORIENTATIONS.valid
         });
     }
 
@@ -229,10 +231,13 @@ export default class ProgressBar extends LightningElement {
         return classSet('slds-progress-bar slds-text-align_center')
             .add({
                 'slds-progress-bar_vertical': this._orientation === 'vertical',
-                'slds-progress-bar_circular': this.variant === 'circular',
+                'slds-progress-bar_circular': this._variant === 'circular',
                 'slds-progress-bar_x-small': this._thickness === 'x-small',
                 'slds-progress-bar_small': this._thickness === 'small',
                 'slds-progress-bar_large': this._thickness === 'large'
+            })
+            .add({
+                'slds-m-bottom_large': this._referenceLines.length > 0
             })
             .toString();
     }
