@@ -721,7 +721,7 @@ describe('DualListbox', () => {
         });
         document.body.appendChild(element);
 
-        const maxVisibleOptions = 4 * 41.3;
+        const maxVisibleOptions = 4 * 42.3;
 
         element.maxVisibleOptions = 4;
         element.option = options;
@@ -743,7 +743,7 @@ describe('DualListbox', () => {
         });
         document.body.appendChild(element);
 
-        const maxVisibleOptions = 4 * 41.3 + 48;
+        const maxVisibleOptions = 4 * 42.3 + 48;
 
         element.maxVisibleOptions = 4;
         element.option = options;
@@ -764,7 +764,7 @@ describe('DualListbox', () => {
             is: DualListbox
         });
         document.body.appendChild(element);
-        const maxVisibleOptions = 5 * 41.3;
+        const maxVisibleOptions = 5 * 42.3;
 
         return Promise.resolve().then(() => {
             const div = element.shadowRoot.querySelectorAll(
@@ -781,7 +781,7 @@ describe('DualListbox', () => {
             is: DualListbox
         });
         document.body.appendChild(element);
-        const maxVisibleOptions = 5 * 41.3;
+        const maxVisibleOptions = 5 * 42.3;
 
         return Promise.resolve().then(() => {
             const div = element.shadowRoot.querySelectorAll(

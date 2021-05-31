@@ -480,7 +480,7 @@ export default class DualListbox extends LightningElement {
         const isSelected = this.highlightedOptions.indexOf(option.value) > -1;
         const hasDescription = option.description;
         const classList = classSet(
-            'slds-listbox__option slds-listbox__option_plain slds-media slds-media_center slds-media_inline'
+            'slds-listbox__option slds-listbox__option_plain slds-media slds-media_center slds-media_inline avonni-dual-listbox-list-item-min_height '
         )
             .add({ 'slds-media_small': !hasDescription })
             .add({ 'slds-is-selected': isSelected })
@@ -522,7 +522,7 @@ export default class DualListbox extends LightningElement {
     }
 
     computeHeight(noDescription, hasDescription) {
-        return 41.3 * noDescription + 57 * hasDescription;
+        return 42.3 * noDescription + 57 * hasDescription;
     }
 
     computedColumnSourceHeight() {
@@ -565,7 +565,7 @@ export default class DualListbox extends LightningElement {
                             this._sourceNoDescription,
                             this._sourceHasDescription
                         ) +
-                        41.3 *
+                        42.3 *
                             (this._maxVisibleOptions -
                                 this.computedSourceList.length);
                 }
@@ -621,7 +621,7 @@ export default class DualListbox extends LightningElement {
                         this._selectedNoDescription,
                         this._selectedHasDescription
                     ) +
-                    41.3 *
+                    42.3 *
                         (this._maxVisibleOptions -
                             this.computedSelectedList.length);
             }
@@ -750,9 +750,7 @@ export default class DualListbox extends LightningElement {
     }
 
     get computedListItemClass() {
-        return classSet(
-            'slds-listbox__item avonni-dual-listbox-list-item-min_height'
-        )
+        return classSet('slds-listbox__item')
             .add({
                 'avonni-dual-listbox-option-border_bottom': !this
                     .hideBottomDivider
