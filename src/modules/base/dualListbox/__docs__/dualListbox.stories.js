@@ -156,6 +156,19 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        maxVisibleOptions: {
+            name: 'max-visible-options',
+            control: {
+                type: 'number'
+            },
+            defaultValue: 5,
+            description:
+                'Number of items that display in the listboxes before vertical scrollbars are displayed. Determines the vertical size of the listbox.',
+            table: {
+                type: { summary: 'number' },
+                defaultValue: { summary: 5 }
+            }
+        },
         max: {
             control: {
                 type: 'number'
@@ -310,17 +323,17 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        maxVisibleOptions: {
-            name: 'max-visible-options',
+        size: {
             control: {
-                type: 'number'
+                type: 'select'
             },
-            defaultValue: 5,
+            options: ['small', 'medium', 'large'],
+            defaultValue: 'medium',
             description:
-                'Number of items that display in the listboxes before vertical scrollbars are displayed. Determines the vertical size of the listbox.',
+                'It defines the width of the source options listbox and the selected options listbox. Valid values include small, medium and large.',
             table: {
-                type: { summary: 'number' },
-                defaultValue: { summary: 5 }
+                type: { summary: 'string' },
+                defaultValue: { summary: 'medium' }
             }
         },
         sourceLabel: {
@@ -388,19 +401,6 @@ export default {
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'standard' }
-            }
-        },
-        size: {
-            control: {
-                type: 'select'
-            },
-            options: ['small', 'medium', 'large'],
-            defaultValue: 'medium',
-            description:
-                'It defines the width of the source options listbox and the selected options listbox. Valid values include small, medium and large.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'medium' }
             }
         }
     }
