@@ -92,10 +92,6 @@ export default class ProfileCard extends LightningElement {
         }
     }
 
-    computedWidth() {
-        this._innerWidth = window.innerWidth;
-    }
-
     get avatarActionsSlot() {
         return this.template.querySelector('slot[name=avataractions]');
     }
@@ -232,5 +228,9 @@ export default class ProfileCard extends LightningElement {
         ) {
             this.isError = true;
         }
+    }
+
+    computedWidth() {
+        this._innerWidth = window.innerWidth;
     }
 }
