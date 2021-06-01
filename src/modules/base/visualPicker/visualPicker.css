@@ -41,10 +41,9 @@
 }
 
 .avonni-visual-picker_xx-small .slds-visual-picker__figure .slds-text-title {
-    font-size: 0.3rem;
+    font-size: 0.625rem;
     line-height: var(--lwc-lineHeightHeading, 1.25);
     color: var(--lwc-colorTextWeak, rgb(62, 62, 60));
-    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     width: 3.75rem;
@@ -89,7 +88,7 @@
 }
 
 .avonni-visual-picker_x-small .slds-visual-picker__figure .slds-text-title {
-    font-size: 0.45rem;
+    font-size: 0.625rem;
     line-height: var(--lwc-lineHeightHeading, 1.25);
     color: var(--lwc-colorTextWeak, rgb(62, 62, 60));
     white-space: nowrap;
