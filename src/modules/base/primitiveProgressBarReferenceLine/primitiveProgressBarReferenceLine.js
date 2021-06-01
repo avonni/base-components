@@ -17,14 +17,16 @@ const ORIENTATION = {
     default: 'horizontal'
 };
 
+const DEFAULT_VALUE = 0;
+
 export default class PrimitiveProgressBarReferenceLine extends LightningElement {
     @api label;
     @api thickness;
 
-    _value = 0;
-    _variant = 'default';
-    _borderStyle = 'none';
-    _orientation = 'horizontal';
+    _value = DEFAULT_VALUE;
+    _variant = VARIANTS.default;
+    _borderStyle = BORDER_STYLES.default;
+    _orientation = ORIENTATION.default;
 
     @api
     get value() {

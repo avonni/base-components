@@ -255,7 +255,13 @@ export default class InputDateRange extends LightningElement {
     }
 
     handleChangeStartDate(event) {
-        this.startDate = new Date(event.detail.value);
+        // Date format received is: YYYY-MM-DD
+        const date = event.detail.value.split('-');
+        const year = Number(date[0]);
+        const month = Number(date[1]) - 1;
+        const day = Number(date[2]);
+
+        this.startDate = new Date(year, month, day);
         event.stopPropagation();
         this._cancelBlurStartDate = false;
         this.handleBlurStartDate();
@@ -334,7 +340,13 @@ export default class InputDateRange extends LightningElement {
     }
 
     handleChangeEndDate(event) {
-        this.endDate = new Date(event.detail.value);
+        // Date format received is: YYYY-MM-DD
+        const date = event.detail.value.split('-');
+        const year = Number(date[0]);
+        const month = Number(date[1]) - 1;
+        const day = Number(date[2]);
+        
+        this.endDate = new Date(year, month, day);
         event.stopPropagation();
         this._cancelBlurEndDate = false;
         this.handleBlurEndDate();
