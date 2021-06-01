@@ -20,7 +20,6 @@ export default {
                 'boolean',
                 'currency',
                 'date',
-                'date-local',
                 'email',
                 'location',
                 'number',
@@ -65,15 +64,17 @@ Base.args = {
     value: 'Some text value'
 };
 
-export const DateLocal = Template.bind({});
-DateLocal.args = {
-    label: 'Date local',
-    type: 'date-local',
+export const DateTime = Template.bind({});
+DateTime.args = {
+    label: 'Date',
+    type: 'date',
     value: new Date().toISOString(),
     typeAttributes: {
         month: 'long',
         day: 'numeric',
-        year: 'numeric'
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit'
     }
 };
 
