@@ -258,8 +258,7 @@ BaseSmall.args = {
         'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
     alt: 'Alt text',
     blankColor: 'transparent',
-    width: '150',
-    height: '75'
+    width: '150'
 };
 
 export const Base = Template.bind({});
@@ -276,8 +275,7 @@ BaseLarge.args = {
         'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
     alt: 'Alt text',
     blankColor: 'transparent',
-    width: '600',
-    height: '300'
+    width: '600'
 };
 
 export const BaseBlankGrayLarge = Template.bind({});
