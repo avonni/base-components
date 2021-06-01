@@ -1,14 +1,14 @@
-import { CheckboxGroup } from '../__examples__/checkboxGroup';
+import { InputChoiceSet } from '../__examples__/checkboxGroup';
 
 export default {
-    title: 'Example/Checkbox Group',
+    title: 'Example/Input Choice Set',
     argTypes: {
         label: {
             control: {
                 type: 'text'
             },
             type: { required: true },
-            description: 'Text label for the checkbox group.',
+            description: 'Text label for the input choice set.',
             table: {
                 type: { summary: 'string' }
             }
@@ -29,7 +29,7 @@ export default {
                 type: 'radio'
             },
             description:
-                'The style of the checkbox group. Options are checkbox or button.',
+                'The style of the input choice set. Options are checkbox or button.',
             options: ['checkbox', 'button'],
             defaultValue: 'checkbox',
             table: {
@@ -50,7 +50,7 @@ export default {
             type: { required: true },
             defaultValue: 'standard',
             description:
-                'The variant changes the appearance of the checkbox group. Accepted variants include standard, label-hidden, label-inline, and label-stacked. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and checkbox group. Use label-stacked to place the label above the checkbox group.',
+                'The variant changes the appearance of the input choice set. Accepted variants include standard, label-hidden, label-inline, and label-stacked. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and input choice set. Use label-stacked to place the label above the input choice set.',
             table: {
                 defaultValue: { summary: 'standard' },
                 type: { summary: 'string' }
@@ -61,7 +61,7 @@ export default {
                 type: 'boolean'
             },
             description:
-                "If present, the checkbox group is disabled. Checkbox selections can't be changed for a disabled checkbox group.",
+                "If present, the input choice set is disabled. Checkbox selections can't be changed for a disabled input choice set.",
             defaultValue: 0,
             table: {
                 defaultValue: { summary: 'false' },
@@ -106,7 +106,7 @@ export default {
     }
 };
 
-const Template = (args) => CheckboxGroup(args);
+const Template = (args) => InputChoiceSet(args);
 
 const options = [
     { label: 'Mon', value: 'mon' },
@@ -119,25 +119,25 @@ const primaryValue = ['wed', 'fri'];
 const secondaryValue = ['mon', 'tue'];
 const thirdValue = ['thu'];
 
-export const Checkbox = Template.bind({});
-Checkbox.args = {
+export const InputSet = Template.bind({});
+InputSet.args = {
     label: 'Please select a value',
     messageWhenValueMissing: 'Value missing',
     options: options,
     value: primaryValue
 };
 
-export const CheckboxDisabled = Template.bind({});
-CheckboxDisabled.args = {
+export const InputChoiceSetDisabled = Template.bind({});
+InputChoiceSetDisabled.args = {
     label: 'Please select a value',
     messageWhenValueMissing: 'Value missing',
     options: options,
     value: secondaryValue,
-    disabled: 'true'
+    disabled: true
 };
 
-export const CheckboxWithNoLabel = Template.bind({});
-CheckboxWithNoLabel.args = {
+export const InputChoiceSetWithNoLabel = Template.bind({});
+InputChoiceSetWithNoLabel.args = {
     label: 'Please select a value',
     variant: 'label-hidden',
     messageWhenValueMissing: 'Value missing',
@@ -145,8 +145,8 @@ CheckboxWithNoLabel.args = {
     value: thirdValue
 };
 
-export const CheckboxWithLabelStacked = Template.bind({});
-CheckboxWithLabelStacked.args = {
+export const InputChoiceSetWithLabelStacked = Template.bind({});
+InputChoiceSetWithLabelStacked.args = {
     label: 'Please select a value',
     variant: 'label-stacked',
     messageWhenValueMissing: 'Value missing',
@@ -154,11 +154,11 @@ CheckboxWithLabelStacked.args = {
     value: primaryValue
 };
 
-export const CheckboxRequired = Template.bind({});
-CheckboxRequired.args = {
+export const InputChoiceSetRequired = Template.bind({});
+InputChoiceSetRequired.args = {
     label: 'Please select a value',
     messageWhenValueMissing: 'Value missing',
-    required: 'true',
+    required: true,
     options: options,
     value: secondaryValue
 };
@@ -186,7 +186,7 @@ export const ButtonDisabled = Template.bind({});
 ButtonDisabled.args = {
     label: 'Please select a value',
     type: 'button',
-    disabled: 'true',
+    disabled: true,
     messageWhenValueMissing: 'Value missing',
     options: options,
     value: thirdValue

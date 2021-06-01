@@ -1,11 +1,11 @@
 import Component from 'avonni/checkboxGroup';
 
 customElements.define(
-    'ac-base-checkbox-group',
+    'ac-base-input-choice-set',
     Component.CustomElementConstructor
 );
 
-export const CheckboxGroup = ({
+export const InputChoiceSet = ({
     disabled,
     label,
     type,
@@ -15,7 +15,7 @@ export const CheckboxGroup = ({
     value,
     variant
 }) => {
-    const element = document.createElement('ac-base-checkbox-group');
+    const element = document.createElement('ac-base-input-choice-set');
     element.disabled = disabled;
     element.label = label;
     element.type = type;
