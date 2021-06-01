@@ -18,6 +18,7 @@ export const DualListbox = ({
     fieldLevelHelp,
     isLoading,
     label,
+    maxVisibleOptions,
     max,
     min,
     messageWhenRangeOverflow,
@@ -38,8 +39,7 @@ export const DualListbox = ({
     upButtonLabel,
     validity,
     value,
-    variant,
-    width
+    variant
 }) => {
     const element = document.createElement('ac-base-dual-listbox');
     element.addButtonIconName = addButtonIconName;
@@ -54,6 +54,7 @@ export const DualListbox = ({
     element.fieldLevelHelp = fieldLevelHelp;
     element.isLoading = isLoading;
     element.label = label;
+    element.maxVisibleOptions = maxVisibleOptions;
     element.max = max;
     element.min = min;
     element.messageWhenRangeOverflow = messageWhenRangeOverflow;
@@ -75,6 +76,5 @@ export const DualListbox = ({
     element.validity = validity;
     element.value = value;
     element.variant = variant;
-    element.width = width;
     return element;
 };
