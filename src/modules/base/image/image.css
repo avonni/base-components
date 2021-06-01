@@ -1,32 +1,25 @@
 .avonni-img-container {
     width: 100%;
-    height: 100%;
+    height: auto;
     position: relative;
     overflow: hidden;
+    background-color: red;
 }
 
-.avonni-img_aspect-ratio_16-by-9 {
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    /* object-position: 80% 50%; */
-}
-.avonni-img_aspect-ratio_4-by-3 {
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
-}
-.avonni-img_aspect-ratio_1-by-1 {
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    /* object-position: 20% 10%; */
-}
+/* .avonni-img-container::before {
+        display: block;
+        content: "";
+        width: 100%;
+} */
 
 .avonni-img-fluid {
-    max-width: 100%;
+    max-width: 100% !important;
     height: auto;
 }
 
 .avonni-img-fluid-grow {
-    width: 100%;
+    width: 100% !important;
+    height: auto !important;
 }
 
 .avonni-img-thumbnail {
@@ -91,4 +84,10 @@
 
 .avonni-display-block {
     display: block;
+}
+
+.avonni-img_cropped-centered {
+    transform: translate(50%);
+    right: 50%;
+    margin-left: auto;
 }

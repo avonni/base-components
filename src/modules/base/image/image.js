@@ -30,9 +30,15 @@ export default class Image extends LightningElement {
     _cropSize = 0;
 
     renderedCallback() {
-        const parentWidth = this.template.querySelector('img').parentNode
+        const parentWidth = this.template.querySelector('.avonni-img-container')
             .clientWidth;
-        console.table(parentWidth);
+        const parentHeight = this.template.querySelector(
+            '.avonni-img-container'
+        ).clientHeight;
+        console.table(
+            'Container Width:' + parentWidth,
+            'Height:' + parentHeight
+        );
 
         this.cropRatio();
         console.log(this._cropSize);
@@ -210,9 +216,18 @@ export default class Image extends LightningElement {
             'avonni-not-rounded': this.rounded === '0',
             'avonni-float-left': this.left,
             'avonni-float-right': this.right,
-            'avonni-margin-auto': this.center,
+            'avonni-margin-auto': this.center && this._cropSize === null,
             'avonni-display-block': this.center || this.block
-        }).toString();
+        })
+            .add({
+                'avonni-img_cropped-centered':
+                    this.center && this._cropSize !== null
+            })
+            .toString();
+    }
+
+    get computedImgContainerClass() {
+        return classSet('avonni-img-container').toString();
     }
 
     initBlank() {
@@ -234,24 +249,52 @@ export default class Image extends LightningElement {
     cropRatio() {
         switch (this.cropSize) {
             case '1x1':
-                this._cropSize = '1 / 1';
+                this._cropSize = '100';
                 break;
             case '4x3':
-                this._cropSize = '4 / 3';
+                this._cropSize = '75';
                 break;
             case '16x9':
-                this._cropSize = '16 / 9';
+                this._cropSize = '56.25';
                 break;
             default:
                 this._cropSize = null;
         }
     }
 
+    get computedImgContainerStyle() {
+        return this._cropSize !== null
+            ? `padding-top: ${this._cropSize}%;`
+            : '';
+    }
+
     get computedImgStyle() {
+        if (!this.width && this._cropSize === null) {
+            return `width: 100%`;
+        } else if (!this.width && this._cropSize) {
+            return `
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: ${this.cropFit};
+            object-position: ${this.cropPositionX}% ${this.cropPositionY}%; 
+            position: absolute;
+            `;
+        } else if (this.width && this._cropSize) {
+            return `
+            top: 0;
+            left: 0;
+            width: ${this.width}px;
+            height: ${this.width * (this._cropSize / 100)}px;
+            object-fit: ${this.cropFit};
+            object-position: ${this.cropPositionX}% ${this.cropPositionY}%; 
+            position: absolute;
+            `;
+        }
         return `
-        aspect-ratio: ${this._cropSize};
-        object-fit: ${this.cropFit};
-        object-position: ${this.cropPositionX}% ${this.cropPositionY}%; 
-        `;
+            width: ${this.width}px;
+            height: ${this.height}px;
+            `;
     }
 }
