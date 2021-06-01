@@ -19,6 +19,7 @@ export const DualListbox = ({
     fieldLevelHelp,
     isLoading,
     label,
+    maxVisibleOptions,
     max,
     min,
     messageWhenRangeOverflow,
@@ -55,6 +56,7 @@ export const DualListbox = ({
     element.fieldLevelHelp = fieldLevelHelp;
     element.isLoading = isLoading;
     element.label = label;
+    element.maxVisibleOptions = maxVisibleOptions;
     element.max = max;
     element.min = min;
     element.messageWhenRangeOverflow = messageWhenRangeOverflow;

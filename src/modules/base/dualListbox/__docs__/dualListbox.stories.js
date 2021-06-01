@@ -167,6 +167,19 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        maxVisibleOptions: {
+            name: 'max-visible-options',
+            control: {
+                type: 'number'
+            },
+            defaultValue: 5,
+            description:
+                'Number of items that display in the listboxes before vertical scrollbars are displayed. Determines the vertical size of the listbox.',
+            table: {
+                type: { summary: 'number' },
+                defaultValue: { summary: 5 }
+            }
+        },
         max: {
             control: {
                 type: 'number'
@@ -323,12 +336,15 @@ export default {
         },
         size: {
             control: {
-                type: 'number'
+                type: 'select'
             },
+            options: ['small', 'medium', 'large'],
+            defaultValue: 'medium',
             description:
-                'Number of items that display in the listboxes before vertical scrollbars are displayed. Determines the vertical size of the listbox.',
+                'It defines the width of the source options listbox and the selected options listbox. Valid values include small, medium and large.',
             table: {
-                type: { summary: 'number' }
+                type: { summary: 'string' },
+                defaultValue: { summary: 'medium' }
             }
         },
         sourceLabel: {
@@ -493,7 +509,6 @@ const OptionsWithAvatarSrc = [
     {
         value: '1',
         label: 'Carl Smith',
-        description: 'CS',
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
     },
     {
@@ -530,7 +545,6 @@ const OptionsWithAvatarSrc = [
     {
         value: '7',
         label: 'John Smith',
-        description: 'JS',
         iconName: 'standard:address',
         initials: 'JS'
     },
@@ -612,6 +626,36 @@ Base.args = {
     options: Options,
     value: ['2', '3', '4', '5', '6'],
     draggable: true
+};
+
+export const BaseSmall = Template.bind({});
+BaseSmall.args = {
+    label: 'Select Options',
+    fieldLevelHelp: 'This is a Dual Listbox',
+    sourceLabel: 'Available Items',
+    selectedLabel: 'Selected Items',
+    addButtonLabel: 'Add Button Label',
+    removeButtonLabel: 'Remove Button Label',
+    downButtonLabel: 'Down Button Label',
+    upButtonLabel: 'Up Button Label',
+    options: Options,
+    value: ['2', '3', '4', '5', '6'],
+    size: 'small'
+};
+
+export const BaseLarge = Template.bind({});
+BaseLarge.args = {
+    label: 'Select Options',
+    fieldLevelHelp: 'This is a Dual Listbox',
+    sourceLabel: 'Available Items',
+    selectedLabel: 'Selected Items',
+    addButtonLabel: 'Add Button Label',
+    removeButtonLabel: 'Remove Button Label',
+    downButtonLabel: 'Down Button Label',
+    upButtonLabel: 'Up Button Label',
+    options: Options,
+    value: ['2', '3', '4', '5', '6'],
+    size: 'large'
 };
 
 export const BaseNoBorder = Template.bind({});
@@ -727,8 +771,8 @@ BaseWithAvatarLabelHidden.args = {
     variant: 'label-hidden'
 };
 
-export const BaseWithAvatarSize10 = Template.bind({});
-BaseWithAvatarSize10.args = {
+export const BaseWithAvatarVisibleOptions10 = Template.bind({});
+BaseWithAvatarVisibleOptions10.args = {
     label: 'Select Items',
     sourceLabel: 'Available Items',
     selectedLabel: 'Selected Items',
@@ -739,12 +783,12 @@ BaseWithAvatarSize10.args = {
     options: OptionsWithAvatar,
     required: true,
     requiredOptions: ['1'],
-    size: 10,
+    maxVisibleOptions: 10,
     value: ['2', '3']
 };
 
-export const BaseWithAvatarSrcSize6 = Template.bind({});
-BaseWithAvatarSrcSize6.args = {
+export const BaseWithAvatarDescriptionVisibleOptions6 = Template.bind({});
+BaseWithAvatarDescriptionVisibleOptions6.args = {
     label: 'Invitations',
     sourceLabel: 'Available',
     selectedLabel: 'Invited',
@@ -754,7 +798,7 @@ BaseWithAvatarSrcSize6.args = {
     upButtonLabel: 'Up Button Label',
     options: OptionsWithAvatarSrc,
     requiredOptions: ['1'],
-    size: 6,
+    maxVisibleOptions: 6,
     value: ['2', '3']
 };
 

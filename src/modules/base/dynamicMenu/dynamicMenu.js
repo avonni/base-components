@@ -31,6 +31,11 @@ const validVariants = {
     default: 'border'
 };
 
+const validIconSizes = {
+    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+    default: 'medium'
+};
+
 export default class DynamicMenu extends LightningElement {
     @api iconName;
     @api value;
@@ -54,6 +59,7 @@ export default class DynamicMenu extends LightningElement {
     showFooter = true;
     filteredItems = [];
     _boundingRect = {};
+    _iconSize = validIconSizes.default;
 
     connectedCallback() {
         this._connected = true;
@@ -106,6 +112,17 @@ export default class DynamicMenu extends LightningElement {
         this._variant = normalizeString(variant, {
             fallbackValue: validVariants.default,
             validValues: validVariants.valid
+        });
+    }
+
+    @api get iconSize() {
+        return this._iconSize;
+    }
+
+    set iconSize(iconSize) {
+        this._iconSize = normalizeString(iconSize, {
+            fallbackValue: validIconSizes.default,
+            validValues: validIconSizes.valid
         });
     }
 
