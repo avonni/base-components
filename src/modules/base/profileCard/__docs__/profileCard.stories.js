@@ -1,5 +1,6 @@
 import { ProfileCard } from '../__examples__/profileCard';
 import { NoActionsProfileCard } from '../__examples__/noActions';
+import { MobileProfileCard } from '../__examples__/mobileProfileCard';
 
 export default {
     title: 'Example/Profile Card',
@@ -168,6 +169,7 @@ export default {
 
 const Template = (args) => ProfileCard(args);
 const NoActionsTemplate = (args) => NoActionsProfileCard(args);
+const MobileTemplate = (args) => MobileProfileCard(args);
 
 export const Base = Template.bind({});
 Base.args = {
@@ -247,7 +249,7 @@ NoImage.args = {
     avatarSrc: 'wrong path'
 };
 
-export const BaseMobile = Template.bind({});
+export const BaseMobile = MobileTemplate.bind({});
 BaseMobile.parameters = {
     viewport: {
         defaultViewport: 'mobile1'
@@ -259,5 +261,6 @@ BaseMobile.args = {
     avatarSrc:
         'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
     backgroundSrc:
-        'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg'
+        'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg',
+    avatarMobilePosition: 'top-left'
 };

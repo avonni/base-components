@@ -39,15 +39,17 @@ export default class ProfileCard extends LightningElement {
     showActions = true;
     showFooter = true;
     showAvatarActions = true;
+    _innerWidth;
 
     render() {
-        if (window.innerWidth <= 480) {
+        if (this._innerWidth <= 480) {
             return mobileProfileCard;
         }
         return profileCard;
     }
 
     renderedCallback() {
+        window.addEventListener('resize', this.computedWidth());
         let header = this.template.querySelector('header');
 
         if (this.backgroundColor) {
@@ -68,9 +70,9 @@ export default class ProfileCard extends LightningElement {
 
             if (
                 (this.showActions &&
-                    window.innerWidth > 480 &&
+                    this._innerWidth > 480 &&
                     this._avatarPosition.indexOf('right') > -1) ||
-                (window.innerWidth <= 480 &&
+                (this._innerWidth <= 480 &&
                     this._avatarMobilePosition.indexOf('right') > -1)
             ) {
                 let actionsContainer = this.template.querySelector(
@@ -88,6 +90,10 @@ export default class ProfileCard extends LightningElement {
         if (this.footerSlot) {
             this.showFooter = this.footerSlot.assignedElements().length !== 0;
         }
+    }
+
+    computedWidth() {
+        this._innerWidth = window.innerWidth;
     }
 
     get avatarActionsSlot() {
