@@ -74,7 +74,6 @@ export default {
             name: 'crop-position-X(%)',
             control: {
                 type: 'range'
-                // type: 'text'
             },
             defaultValue: '50',
             description:
@@ -90,7 +89,6 @@ export default {
             name: 'crop-position-Y(%)',
             control: {
                 type: 'range'
-                // type: 'text'
             },
             defaultValue: '50',
             description:

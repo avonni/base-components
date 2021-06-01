@@ -12,11 +12,13 @@ const CROP_SIZE = {
     default: 'none'
 };
 const BLANK_COLOR_DEFAULT = 'transparent';
+const CROP_POSITION_X_DEFAULT = '50';
+const CROP_POSITION_Y_DEFAULT = '50';
 
 export default class Image extends LightningElement {
     @api alt;
-    @api cropPositionX;
-    @api cropPositionY;
+    @api cropPositionX = CROP_POSITION_X_DEFAULT;
+    @api cropPositionY = CROP_POSITION_Y_DEFAULT;
 
     _src;
     _width;
