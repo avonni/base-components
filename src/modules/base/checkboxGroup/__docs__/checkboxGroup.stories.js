@@ -19,7 +19,7 @@ export default {
                 type: 'text'
             },
             description:
-                'Optional message to be displayed when no checkbox is selected and the required attribute is set.',
+                'Optional message to be displayed when no input is selected and the required attribute is set.',
             table: {
                 type: { summary: 'string' }
             }
@@ -61,7 +61,7 @@ export default {
                 type: 'boolean'
             },
             description:
-                "If present, the input choice set is disabled. Checkbox selections can't be changed for a disabled input choice set.",
+                "If present, the input choice set is disabled. Input selections can't be changed for a disabled input choice set.",
             defaultValue: 0,
             table: {
                 defaultValue: { summary: 'false' },
@@ -72,7 +72,7 @@ export default {
             control: {
                 type: 'boolean'
             },
-            description: 'If present, at least one checkbox must be selected.',
+            description: 'If present, at least one input must be selected.',
             defaultValue: 0,
             table: {
                 defaultValue: { summary: 'false' },
@@ -83,7 +83,7 @@ export default {
             control: {
                 type: 'object'
             },
-            description: 'Array of label-value pairs for each checkbox.',
+            description: 'Array of label-value pairs for each checkbox or button.',
             table: {
                 type: { summary: 'object[]' }
             }
@@ -94,7 +94,7 @@ export default {
             },
             type: { required: true },
             description:
-                'The list of selected checkboxes. Each array entry contains the value of a selected checkbox. The value of each checkbox is set in the options attribute.',
+                'The list of selected checkboxes or buttons. Each array entry contains the value of a selected checkbox or button. The value of each input is set in the options attribute.',
             table: {
                 type: { summary: 'string[]' }
             }
