@@ -286,7 +286,7 @@ BaseBlankGrayLarge.args = {
     blankColor: 'gray',
     width: '600',
     height: '300',
-    blank: 'true'
+    blank: true
 };
 
 export const Thumbnail = Template.bind({});
@@ -295,7 +295,7 @@ Thumbnail.args = {
         'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
     alt: 'Alt text',
     blankColor: 'transparent',
-    thumbnail: 'true'
+    thumbnail: true
 };
 
 export const CenterCornerRounded = Template.bind({});
@@ -305,7 +305,7 @@ CenterCornerRounded.args = {
     alt: 'Alt text',
     rounded: 'true',
     blankColor: 'transparent',
-    center: 'true'
+    center: true
 };
 
 export const RightCornerTop = Template.bind({});
@@ -315,7 +315,7 @@ RightCornerTop.args = {
     alt: 'Alt text',
     rounded: 'top',
     blankColor: 'transparent',
-    right: 'true'
+    right: true
 };
 
 export const CornerBottom = Template.bind({});
@@ -376,7 +376,7 @@ ThumbnailMediumCircle.args = {
     width: '150',
     rounded: 'circle',
     blankColor: 'transparent',
-    thumbnail: 'true'
+    thumbnail: true
 };
 
 export const LargeCircle = Template.bind({});
@@ -398,6 +398,21 @@ LargeBlankGrayCircle.args = {
     height: '300',
     width: '300',
     rounded: 'circle',
-    blank: 'true',
+    blank: true,
     blankColor: 'gray'
+};
+
+export const CropImageCircleThumbnail = Template.bind({});
+CropImageCircleThumbnail.args = {
+    src:
+        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+    alt: 'Alt text',
+    width: '300',
+    cropSize: '1x1',
+    rounded: 'circle',
+    cropFit: 'cover',
+    cropPositionX: '18',
+    cropPositionY: '50',
+    thumbnail: true,
+    center: true
 };
