@@ -22,7 +22,7 @@ const DEBOUNCE_PERIOD = 200;
 
 const validTypes = { valid: ['checkbox', 'button'], default: 'checkbox' };
 
-export default class InputChoiceSet extends LightningElement {
+export default class CheckboxGroup extends LightningElement {
     static delegatesFocus = true;
 
     @api label;
