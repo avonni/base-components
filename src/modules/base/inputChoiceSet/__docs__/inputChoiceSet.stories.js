@@ -1,14 +1,14 @@
-import { CheckboxGroup } from '../__examples__/checkboxGroup';
+import { InputChoiceSet } from '../__examples__/inputChoiceSet';
 
 export default {
-    title: 'Example/Checkbox Group',
+    title: 'Example/Input Choice Set',
     argTypes: {
         label: {
             control: {
                 type: 'text'
             },
             type: { required: true },
-            description: 'Text label for the checkbox group.',
+            description: 'Text label for the input choice set.',
             table: {
                 type: { summary: 'string' }
             }
@@ -29,7 +29,7 @@ export default {
                 type: 'radio'
             },
             description:
-                'The style of the checkbox group. Options are checkbox or button.',
+                'The style of the input choice set. Options are checkbox or button.',
             options: ['checkbox', 'button'],
             defaultValue: 'checkbox',
             table: {
@@ -50,7 +50,7 @@ export default {
             type: { required: true },
             defaultValue: 'standard',
             description:
-                'The variant changes the appearance of the checkbox group. Accepted variants include standard, label-hidden, label-inline, and label-stacked. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and checkbox group. Use label-stacked to place the label above the checkbox group.',
+                'The variant changes the appearance of the input choice set. Accepted variants include standard, label-hidden, label-inline, and label-stacked. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and input choice set. Use label-stacked to place the label above the input choice set.',
             table: {
                 defaultValue: { summary: 'standard' },
                 type: { summary: 'string' }
@@ -61,7 +61,7 @@ export default {
                 type: 'boolean'
             },
             description:
-                "If present, the checkbox group is disabled. Checkbox selections can't be changed for a disabled checkbox group.",
+                "If present, the input choice set is disabled. Checkbox selections can't be changed for a disabled input choice set.",
             defaultValue: 0,
             table: {
                 defaultValue: { summary: 'false' },
@@ -72,7 +72,7 @@ export default {
             control: {
                 type: 'boolean'
             },
-            description: 'If present, at least one checkbox must be selected.',
+            description: 'If present, at least one input must be selected.',
             defaultValue: 0,
             table: {
                 defaultValue: { summary: 'false' },
@@ -106,7 +106,7 @@ export default {
     }
 };
 
-const Template = (args) => CheckboxGroup(args);
+const Template = (args) => InputChoiceSet(args);
 
 const options = [
     { label: 'Mon', value: 'mon' },
