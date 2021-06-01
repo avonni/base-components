@@ -21,7 +21,9 @@ export const InputCounter = ({
     messageWhenRangeOverflow,
     messageWhenRangeUnderflow,
     messageWhenStepMismatch,
-    messageWhenValueMissing
+    messageWhenValueMissing,
+    type,
+    typeAttributes
 }) => {
     const element = document.createElement('ac-base-input-counter');
     element.label = label;
@@ -40,5 +42,7 @@ export const InputCounter = ({
     element.messageWhenRangeUnderflow = messageWhenRangeUnderflow;
     element.messageWhenStepMismatch = messageWhenStepMismatch;
     element.messageWhenValueMissing = messageWhenValueMissing;
+    element.type = type;
+    element.typeAttributes = typeAttributes;
     return element;
 };

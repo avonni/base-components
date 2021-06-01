@@ -29,6 +29,8 @@ export default class InputCounter extends LightningElement {
     @api value;
     @api fieldLevelHelp;
     @api accessKey;
+    @api type;
+    @api typeAttributes;
 
     _variant = validVariants.default;
     _disabled;

@@ -201,7 +201,36 @@ export default {
                 subcategory: 'Error messages',
                 type: { summary: 'string' }
             }
-        }
+        },
+        type: {
+            name: 'type',
+            control: {
+                type: 'select'
+            },
+            options: [
+                'number',
+                'currency',
+                'percent'
+            ],
+            defaultValue: 'number',
+            description:
+            'Input counter type. Valid values include number (default), currency, percent.',
+            table: {
+                default: { summary: 'number' },
+                type: { summary: 'string' }
+            }
+        },
+        typeAttributes: {
+            name: 'type-attributes',
+            control: {
+                type: 'object'
+            },
+            description:
+                'Type attributes object',
+            table: {
+                type: { summary: 'object[]' }
+            }
+        },
     },
     args: {
         disabled: false,
@@ -210,22 +239,53 @@ export default {
     }
 };
 
+const typeAttributes = [{
+    number : {
+        minimumIntegerDigits: 1, 
+        minimumFractionDigits: 1, 
+        maximumFractionDigits: 2, 
+        minimumSignificantDigits: 1, 
+        maximumSignificantDigits: 99
+    },
+    currency : {
+        currencyCode: 'USD', 
+        currencyDisplayAs: '$', 
+        minimumIntegerDigits: 1, 
+        minimumFractionDigits: 1, 
+        maximumFractionDigits: 2, 
+        minimumSignificantDigits: 1, 
+        maximumSignificantDigits: 99, 
+        step: 1
+    },
+    percent : {
+        minimumIntegerDigits: 1, 
+        minimumFractionDigits: 1, 
+        maximumFractionDigits: 2, 
+        minimumSignificantDigits: 1, 
+        maximumSignificantDigits: 99, 
+        step: 1
+    }
+}]
+
 const Template = (args) => InputCounter(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    label: 'Text label'
+    label: 'Text label',
+    typeAttributes: typeAttributes
 };
 export const InlineLabel = Template.bind({});
 InlineLabel.args = {
     label: 'Input with inline label',
     fieldLevelHelp: 'Help text',
-    variant: 'label-inline'
+    variant: 'label-inline',
+    typeAttributes: typeAttributes
 };
 export const HiddenLabel = Template.bind({});
 HiddenLabel.args = {
     label: 'Input with hidden label',
-    variant: 'label-hidden'
+    variant: 'label-hidden',
+    typeAttributes: typeAttributes
 };
 
 export const ReadOnly = Template.bind({});
@@ -233,7 +293,8 @@ ReadOnly.args = {
     label: 'Read only input',
     fieldLevelHelp: 'The value has been set to 3',
     value: 3,
-    readOnly: true
+    readOnly: true,
+    typeAttributes: typeAttributes
 };
 
 export const Disabled = Template.bind({});
@@ -241,7 +302,8 @@ Disabled.args = {
     label: 'Disabled input',
     fieldLevelHelp: 'The value has been set to 16',
     value: 16,
-    disabled: true
+    disabled: true,
+    typeAttributes: typeAttributes
 };
 
 export const Validations = Template.bind({});
@@ -251,5 +313,6 @@ Validations.args = {
     min: 3,
     max: 6,
     messageWhenRangeOverflow: 'The value needs to be equal or lesser than 6',
-    messageWhenRangeUnderflow: 'The value needs to be equal or greater than 3'
+    messageWhenRangeUnderflow: 'The value needs to be equal or greater than 3',
+    typeAttributes: typeAttributes
 };
