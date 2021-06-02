@@ -31,8 +31,8 @@ export default class InputChoiceSet extends LightningElement {
     @api messageWhenValueMissing;
     @api name;
     
-    _orientation; //
-
+    
+    _orientation = validOrientations.default;
     _type = validTypes.default;
     _helpMessage;
     _disabled = false;
@@ -82,6 +82,7 @@ export default class InputChoiceSet extends LightningElement {
     get value() {
         return this._value;
     }
+    
     set value(value) {
         this._value = value;
     }
