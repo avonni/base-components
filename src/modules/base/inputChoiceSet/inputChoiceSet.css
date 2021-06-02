@@ -1,3 +1,8 @@
 :host {
     display: block;
 }
+
+.slds-checkbox.horizontal{
+    display: inline !important;
+}
+
