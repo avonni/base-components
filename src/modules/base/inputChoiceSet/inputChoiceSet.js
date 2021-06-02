@@ -38,7 +38,7 @@ export default class InputChoiceSet extends LightningElement {
     _disabled = false;
     _required = false;
     _value = [];
-    _isMultiSelect = false; //
+    _isMultiSelect = false;
 
 
     constructor() {
@@ -151,11 +151,33 @@ export default class InputChoiceSet extends LightningElement {
             return options.map((option) => ({
                 label: option.label,
                 value: option.value,
+                iconName: option.iconName,
+                iconPosition : option.iconPosition,
                 id: `checkbox-${this.itemIndex++}`,
-                isChecked: value.indexOf(option.value) !== -1
+                isChecked: value.indexOf(option.value) !== -1,
+                iconClass: this.computeIconClass(option.iconPosition),
+                isTop: (option.iconPosition === "top"),
+                isBottom: (option.iconPosition === "bottom"),
+                isLeft : (option.iconPosition === "left"),
+                isRight : (option.iconPosition === "right")
             }));
         }
         return [];
+    }
+
+    computeIconClass(iconPosition){
+        switch(iconPosition){
+            case "top":
+                return "";
+            case "bottom":
+                return "";
+            case "left":
+                return "";
+            case "bottom":
+                return "";
+            default :
+                return "";
+        }
     }
 
     @api
