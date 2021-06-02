@@ -160,26 +160,6 @@
         top: 0.5rem;
         z-index: 1000;
     }
-
-    .top-center .avonni-title-container {
-        padding: 1rem 1rem 0 1rem;
-    }
-
-    .bottom-center .avonni-title-container {
-        padding: 0 1rem;
-    }
-
-    [class^='top-'].card-x-small {
-        margin-top: 0.75rem;
-    }
-
-    [class^='top-'].card-x-small .avatar-img {
-        top: -0.75rem;
-    }
-
-    [class^='bottom-'].card-x-small .avatar-img {
-        top: 0.75rem;
-    }
 }
 
 @media (max-width: 480px) {
@@ -207,29 +187,9 @@
         top: 0.5rem;
         z-index: 1000;
     }
-
-    .mobile-top-center .avonni-title-container {
-        padding: 1rem 1rem 0 1rem;
-    }
-
-    .mobile-bottom-center .avonni-title-container {
-        padding: 0 1rem;
-    }
-
-    [class*='mobile-top-'].card-x-small {
-        margin-top: 0.75rem;
-    }
-
-    [class*='mobile-top-'].card-x-small .avatar-img {
-        top: -0.75rem;
-    }
-
-    [class*='mobile-bottom-'].card-x-small .avatar-img {
-        top: 0.75rem;
-    }
 }
 
-/* [class^='top-'].card-x-small {
+[class^='top-'].card-x-small {
     margin-top: 0.75rem;
 }
 
@@ -327,9 +287,9 @@
 
 [class$='-right card-x-large'] .avatar-img {
     right: 1.75rem;
-} */
+}
 
-/* [class$='-left card-x-small'] .avonni-title-container {
+[class$='-left card-x-small'] .avonni-title-container {
     position: absolute;
     padding: 0.5rem;
     padding-left: 4.75rem;
@@ -397,9 +357,9 @@
     padding: 3.8rem;
     padding-right: 14.75rem;
     padding-left: 1.75rem;
-} */
+}
 
-/* .bottom-left.card-x-small .slds-card__body,
+.bottom-left.card-x-small .slds-card__body,
 .bottom-right.card-x-small .slds-card__body {
     margin-top: 1.5rem;
     margin-bottom: 1rem;
@@ -427,8 +387,8 @@
 .bottom-right.card-x-large .slds-card__body {
     margin-top: 2.5rem;
     margin-bottom: 1rem;
-} */
-/* 
+}
+
 [class$='-left card-medium'] .slds-card__body,
 [class$='-right card-medium'] .slds-card__body {
     padding: 0 1.25rem;
@@ -442,9 +402,9 @@
 [class$='-left card-x-large'] .slds-card__body,
 [class$='-right card-x-large'] .slds-card__body {
     padding: 0 1.75rem;
-} */
+}
 
-/* .bottom-center .avonni-title-container {
+.bottom-center .avonni-title-container {
     padding: 0 1rem;
 }
 
@@ -471,4 +431,4 @@
 
 .top-center .avonni-title-container {
     padding: 1rem 1rem 0 1rem;
-} */
+}
