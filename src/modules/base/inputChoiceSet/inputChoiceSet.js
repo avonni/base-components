@@ -158,10 +158,21 @@ export default class InputChoiceSet extends LightningElement {
                 isIconBottom: (option.iconPosition === "bottom"),
                 isIconLeft : (option.iconPosition === "left"),
                 isIconRight : (option.iconPosition === "right"),
-
+                labelButtonClass: this.computeLabelButtonClass(option.iconPosition),
             }));
         }
         return [];
+    }
+
+    computeLabelButtonClass(iconPosition){
+        switch(iconPosition){
+            case "top":
+                return "slds-checkbox_faux slds-align_absolute-center";
+            case "bottom":
+                return "slds-checkbox_faux slds-align_absolute-center";
+            default:
+                return "slds-checkbox_faux";
+        }
     }
 
     @api
@@ -277,11 +288,11 @@ export default class InputChoiceSet extends LightningElement {
         let checkboxClass = "slds-checkbox "+ this.orientation;
         return this.checkboxVariant
             ? checkboxClass
-            : 'slds-button slds-checkbox_button';
+            : 'slds-button slds-checkbox_button test';
     }
 
     get computedLabelClass() {
-        let buttonLabelClass = "slds-checkbox_button__label "+ this.orientation;
+        let buttonLabelClass = "slds-checkbox_button__label slds-media slds-media_center slds-align_absolute-center "+ this.orientation;
         return this.checkboxVariant
             ? 'slds-checkbox__label'
             : buttonLabelClass;

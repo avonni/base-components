@@ -9,7 +9,20 @@
 .slds-checkbox_button-group.vertical{
     flex-direction: column !important;
 }
+
 .slds-checkbox_button__label.vertical{
     width: 100%;
     border-radius: 0 !important;
+}
+
+.test{
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+.slds-checkbox_button__label.horizontal{
+    height: 100%;
+}
+.block{
+    display: block;
 }
