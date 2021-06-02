@@ -30,6 +30,8 @@ export default class List extends LightningElement {
     _itemElements;
     _savedComputedItems;
     _actions = [];
+    _hasActions = false;
+
     computedActions = [];
     computedItems = [];
     menuRole;
@@ -42,6 +44,7 @@ export default class List extends LightningElement {
     set items(proxy) {
         this._items = normalizeArray(proxy);
         this.computedItems = JSON.parse(JSON.stringify(this._items));
+        this._hasActions = true;
     }
 
     @api
@@ -94,7 +97,8 @@ export default class List extends LightningElement {
     get itemClass() {
         return classSet('slds-border_bottom slds-grid list-item')
             .add({
-                'sortable-item': this.sortable
+                'sortable-item': this.sortable,
+                'expanded-item': this._hasActions
             })
             .toString();
     }

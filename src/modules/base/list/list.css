@@ -18,6 +18,10 @@
     width: 100%;
 }
 
+.expanded-item > div {
+    width: 100%;
+}
+
 .sortable-item_moved {
     transition: transform 300ms;
 }
