@@ -1,8 +1,6 @@
 import { createElement } from 'lwc';
 import ProfileCard from 'c/profileCard';
 
-// not tested avatar mobile position
-
 describe('ProfileCard', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -210,6 +208,137 @@ describe('ProfileCard', () => {
         document.body.appendChild(element);
 
         element.avatarPosition = 'bottom-right';
+
+        return Promise.resolve().then(() => {
+            const container = element.shadowRoot.querySelector(
+                '.avonni-flex-container'
+            );
+            const mainContainer = element.shadowRoot.querySelector(
+                '.bottom-right'
+            );
+            expect(container.classList).toContain('avonni-flex-align-end');
+            expect(mainContainer).toBeTruthy();
+        });
+    });
+
+    // avatar-mobile-position
+    it('avatarMobilePosition = top-left', () => {
+        const element = createElement('base-profile-card', {
+            is: ProfileCard
+        });
+
+        window.innerWidth = 200;
+        document.body.appendChild(element);
+
+        element.avatarMobilePosition = 'top-left';
+
+        return Promise.resolve().then(() => {
+            const container = element.shadowRoot.querySelector(
+                '.avonni-flex-container'
+            );
+            const mainContainer = element.shadowRoot.querySelector('.top-left');
+            expect(container.classList).toContain('avonni-flex-align-start');
+            expect(mainContainer).toBeTruthy();
+        });
+    });
+
+    it('avatarMobilePosition = top-center', () => {
+        const element = createElement('base-profile-card', {
+            is: ProfileCard
+        });
+
+        window.innerWidth = 200;
+        document.body.appendChild(element);
+
+        element.avatarMobilePosition = 'top-center';
+
+        return Promise.resolve().then(() => {
+            const container = element.shadowRoot.querySelector(
+                '.avonni-flex-container'
+            );
+            const mainContainer = element.shadowRoot.querySelector(
+                '.top-center'
+            );
+            expect(container.classList).toContain('avonni-flex-align-center');
+            expect(mainContainer).toBeTruthy();
+        });
+    });
+
+    it('avatarMobilePosition = top-right', () => {
+        const element = createElement('base-profile-card', {
+            is: ProfileCard
+        });
+
+        window.innerWidth = 200;
+        document.body.appendChild(element);
+
+        element.avatarMobilePosition = 'top-right';
+
+        return Promise.resolve().then(() => {
+            const container = element.shadowRoot.querySelector(
+                '.avonni-flex-container'
+            );
+            const mainContainer = element.shadowRoot.querySelector(
+                '.top-right'
+            );
+            expect(container.classList).toContain('avonni-flex-align-end');
+            expect(mainContainer).toBeTruthy();
+        });
+    });
+
+    it('avatarMobilePosition = bottom-left', () => {
+        const element = createElement('base-profile-card', {
+            is: ProfileCard
+        });
+
+        window.innerWidth = 200;
+        document.body.appendChild(element);
+
+        element.avatarMobilePosition = 'bottom-left';
+
+        return Promise.resolve().then(() => {
+            const container = element.shadowRoot.querySelector(
+                '.avonni-flex-container'
+            );
+            const mainContainer = element.shadowRoot.querySelector(
+                '.bottom-left'
+            );
+            expect(container.classList).toContain('avonni-flex-align-start');
+            expect(mainContainer).toBeTruthy();
+        });
+    });
+
+    it('avatarMobilePosition = bottom-center', () => {
+        const element = createElement('base-profile-card', {
+            is: ProfileCard
+        });
+
+        window.innerWidth = 200;
+        document.body.appendChild(element);
+
+        element.avatarMobilePosition = 'bottom-center';
+
+        return Promise.resolve().then(() => {
+            const container = element.shadowRoot.querySelector(
+                '.avonni-flex-container'
+            );
+            const mainContainer = element.shadowRoot.querySelector(
+                '.bottom-center'
+            );
+            expect(container.classList).toContain('avonni-flex-align-center');
+            expect(mainContainer).toBeTruthy();
+        });
+    });
+
+    it('avatarMobilePosition = bottom-right', () => {
+        const element = createElement('base-profile-card', {
+            is: ProfileCard
+        });
+
+        window.innerWidth = 200;
+        document.body.appendChild(element);
+
+        element.avatarMobilePosition = 'bottom-right';
 
         return Promise.resolve().then(() => {
             const container = element.shadowRoot.querySelector(
