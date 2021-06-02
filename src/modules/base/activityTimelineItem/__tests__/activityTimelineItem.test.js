@@ -152,21 +152,21 @@ describe('ActivityTimeline', () => {
         element.fields = FIELDS;
 
         return Promise.resolve().then(() => {
-            const fields = element.shadowRoot.querySelectorAll(
-                'c-primitive-field'
-            );
+            const fields = element.shadowRoot.querySelectorAll('c-output-data');
 
             expect(fields).toHaveLength(3);
 
             fields.forEach((field, index) => {
-                const correspondingField = fields[index];
+                const correspondingField = FIELDS[index];
                 expect(correspondingField).toBeTruthy();
                 expect(field.label).toBe(correspondingField.label);
                 expect(field.value).toBe(correspondingField.value);
                 expect(field.type).toBe(correspondingField.type);
-                expect(field.typeAttributes).toBe(
-                    correspondingField.typeAttributes
-                );
+                if (correspondingField.typeAttributes) {
+                    expect(field.typeAttributes).toMatchObject(
+                        correspondingField.typeAttributes
+                    );
+                }
             });
         });
     });
