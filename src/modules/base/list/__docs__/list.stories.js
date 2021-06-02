@@ -32,6 +32,15 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
+        action: {
+            control: {
+                type: 'object'
+            },
+            description: 'Array of actions',
+            table: {
+                type: { summary: 'object[]' }
+            }
+        },
         sortable: {
             control: {
                 type: 'boolean'
@@ -119,6 +128,26 @@ const itemsWithAvatars = [
     }
 ];
 
+const actions = [
+    {
+        label: 'active',
+        name: 'active-action',
+        iconName: 'standard:opportunity',
+        disabled: false
+    },
+    {
+        label: 'pending',
+        name: 'prending-action',
+        iconName: 'standard:opportunity',
+        disabled: false
+    },
+    {
+        label: 'Deactivate',
+        name: 'deactivate-action',
+        iconName: 'standard:opportunity',
+        disabled: false
+    }
+];
 export const Base = Template.bind({});
 Base.args = {
     items: items
@@ -144,4 +173,11 @@ SortableListWithAvatars.args = {
     sortableIconName: 'utility:drag_and_drop',
     sortableIconPosition: 'left',
     sortable: true
+};
+
+export const ListWithActions = Template.bind({});
+ListWithActions.args = {
+    label: 'List with actions menu',
+    items: items,
+    actions: actions
 };

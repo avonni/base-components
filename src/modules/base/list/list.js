@@ -29,7 +29,8 @@ export default class List extends LightningElement {
     _menuBottom;
     _itemElements;
     _savedComputedItems;
-
+    _actions = [];
+    computedActions = [];
     computedItems = [];
     menuRole;
     itemRole;
@@ -66,7 +67,15 @@ export default class List extends LightningElement {
             validValues: ICON_POSITIONS.valid
         });
     }
-
+    @api
+    get actions() {
+        return this._actions;
+    }
+    set actions(proxy) {
+        this._actions = normalizeArray(proxy);
+        this.computedActions = JSON.parse(JSON.stringify(this._actions));
+        console.log(this.computedActions);
+    }
     get showIconRight() {
         return (
             this.sortable &&
