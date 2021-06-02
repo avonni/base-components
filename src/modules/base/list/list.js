@@ -80,10 +80,10 @@ export default class List extends LightningElement {
     }
 
     @api
-    get isDynamicRowAction() {
+    get isDynamic() {
         return this._isDynamic;
     }
-    set isDynamicRowAction(bool) {
+    set isDynamic(bool) {
         this._isDynamic = normalizeBoolean(bool);
     }
     get showIconRight() {
@@ -114,7 +114,7 @@ export default class List extends LightningElement {
     get tabindex() {
         return this.sortable ? '0' : '-1';
     }
-    handleClick(element) {
+    onDropDownMenuClick(element) {
         if (!this._isDynamic) return;
         const itemClicked = element.target.parentNode.textContent;
         this.computedActions = [];
