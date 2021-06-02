@@ -152,7 +152,13 @@ export default class InputChoiceSet extends LightningElement {
                 label: option.label,
                 value: option.value,
                 id: `checkbox-${this.itemIndex++}`,
-                isChecked: value.indexOf(option.value) !== -1
+                isChecked: value.indexOf(option.value) !== -1,
+                iconName: option.iconName,
+                isIconTop: (option.iconPosition === "top"),
+                isIconBottom: (option.iconPosition === "bottom"),
+                isIconLeft : (option.iconPosition === "left"),
+                isIconRight : (option.iconPosition === "right"),
+
             }));
         }
         return [];
