@@ -97,7 +97,7 @@ export default class InputChoiceSet extends LightningElement {
 
     @api
     get orientation() {
-        return this._type;
+        return this._orientation;
     }
 
     set orientation(orientation) {
@@ -263,22 +263,19 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     get computedButtonClass() {
-        let buttonGroupClass = 'slds-checkbox_button-group';
-        if(this._orientation === "vertical") buttonGroupClass += ' vertical';
+        let buttonGroupClass = 'slds-checkbox_button-group '+ this.orientation;
         return this.checkboxVariant ? '' : buttonGroupClass;
     }
 
     get computedCheckboxContainerClass() {
-        let checkboxClass = "slds-checkbox";
-        if(this._orientation === "horizontal") checkboxClass += " horizontal"
+        let checkboxClass = "slds-checkbox "+ this.orientation;
         return this.checkboxVariant
             ? checkboxClass
             : 'slds-button slds-checkbox_button';
     }
 
     get computedLabelClass() {
-        let buttonLabelClass = "slds-checkbox_button__label";
-        if(this._orientation === "vertical") buttonLabelClass += " vertical"
+        let buttonLabelClass = "slds-checkbox_button__label "+ this.orientation;
         return this.checkboxVariant
             ? 'slds-checkbox__label'
             : buttonLabelClass;
