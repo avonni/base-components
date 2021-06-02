@@ -28,50 +28,14 @@
                         <label class={computedLabelClass} for={option.id}>
                             <template if:true={checkboxVariant}>
                                 <span class="slds-checkbox_faux"></span>
-                                <lightning-icon if:true= {option.isTop}
-                                    icon-name={option.iconName}
-                                    size="xx-small"
-                                    class="slds-m-top_xx-small slds-align_absolute-center"
-                                ></lightning-icon>
-                                <lightning-icon if:true= {option.isLeft}
-                                    icon-name={option.iconName}
-                                    size="xx-small"
-                                    class="slds-m-left_xx-small slds-m-right_xx-small"
-                                ></lightning-icon>
-                                <span class="slds-form-element__label">{option.label}</span>
-                                <lightning-icon if:true= {option.isRight}
-                                    icon-name={option.iconName}
-                                    size="xx-small"
-                                    class="slds-m-left_xx-small slds-m-right_xx-small"
-                                ></lightning-icon>
-                                <lightning-icon if:true= {option.isBottom}
-                                    icon-name={option.iconName}
-                                    size="xx-small"
-                                    class="slds-m-bottom_xx-small slds-align_absolute-center"
-                                ></lightning-icon>
+                                <span class="slds-form-element__label"
+                                    >{option.label}</span
+                                >
                             </template>
                             <template if:false={checkboxVariant}>
-                                <lightning-icon if:true= {option.isTop}
-                                    icon-name={option.iconName}
-                                    size="xx-small"
-                                    class="slds-m-top_xx-small slds-align_absolute-center"
-                                ></lightning-icon>
-                                <lightning-icon if:true= {option.isLeft}
-                                    icon-name={option.iconName}
-                                    size="xx-small"
-                                    class="slds-m-left_xx-small slds-m-right_xx-small"
-                                ></lightning-icon>
-                                <span class="slds-checkbox_faux">{option.label}</span>
-                                <lightning-icon if:true= {option.isRight}
-                                    icon-name={option.iconName}
-                                    size="xx-small"
-                                    class="slds-m-left_xx-small slds-m-right_xx-small"
-                                ></lightning-icon>
-                                <lightning-icon if:true= {option.isBottom}
-                                    icon-name={option.iconName}
-                                    size="xx-small"
-                                    class="slds-m-bottom_xx-small slds-align_absolute-center"
-                                ></lightning-icon>
+                                <span class="slds-checkbox_faux"
+                                    >{option.label}</span
+                                >
                             </template>
                         </label>
                     </span>

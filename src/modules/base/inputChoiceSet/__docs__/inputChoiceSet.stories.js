@@ -124,9 +124,9 @@ const Template = (args) => InputChoiceSet(args);
 
 const options = [
     { label: 'Mon', value: 'mon', iconName: 'utility:smiley_and_people', iconPosition: 'left' },
-    { label: 'Tue', value: 'tue', iconName: 'utility:smiley_and_people', iconPosition: 'right' },
-    { label: 'Wed', value: 'wed', iconName: 'utility:smiley_and_people', iconPosition: 'top' },
-    { label: 'Thu', value: 'thu', iconName: 'utility:smiley_and_people', iconPosition: 'bottom' },
+    { label: 'Tue', value: 'tue', iconName: 'utility:smiley_and_people', iconPosition: 'left' },
+    { label: 'Wed', value: 'wed', iconName: 'utility:smiley_and_people', iconPosition: 'left' },
+    { label: 'Thu', value: 'thu', iconName: 'utility:smiley_and_people', iconPosition: 'left' },
     { label: 'Fri', value: 'fri', iconName: 'utility:smiley_and_people', iconPosition: 'left' }
 ];
 const primaryValue = ['wed', 'fri'];
