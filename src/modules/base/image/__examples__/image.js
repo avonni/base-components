@@ -22,7 +22,8 @@ export const Image = ({
     cropSize,
     cropFit,
     cropPositionX,
-    cropPositionY
+    cropPositionY,
+    staticImages
 }) => {
     const element = document.createElement('ac-base-image');
     element.src = src;
@@ -45,5 +46,6 @@ export const Image = ({
     element.cropFit = cropFit;
     element.cropPositionX = cropPositionX;
     element.cropPositionY = cropPositionY;
+    element.staticImages = staticImages;
     return element;
 };

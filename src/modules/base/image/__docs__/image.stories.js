@@ -63,7 +63,8 @@ export default {
             },
             options: ['cover', 'contain', 'fill', 'none'],
             defaultValue: 'cover',
-            description: 'Specifies the cropping ratio fit for the image',
+            description:
+                'Specifies the "fit" behaviour for the cropped image. Options: "cover"(default), "contain", "fill", "none"',
             table: {
                 defaultValue: { summary: 'cover' },
                 type: { summary: 'string' },
@@ -234,6 +235,19 @@ export default {
                 defaultValue: { summary: false },
                 type: { summary: 'boolean' }
             }
+        },
+        staticImages: {
+            name: 'static-images',
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description:
+                'Set Images as Static - images will be fixed dimensions and will not be responsive on resize',
+            table: {
+                default: { summary: false },
+                type: { summary: 'boolean' }
+            }
         }
     },
     args: {
@@ -244,7 +258,8 @@ export default {
         left: false,
         right: false,
         center: false,
-        blank: false
+        blank: false,
+        staticImages: false
     }
 };
 
