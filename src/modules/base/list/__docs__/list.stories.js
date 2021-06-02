@@ -130,21 +130,44 @@ const itemsWithAvatars = [
 
 const actions = [
     {
-        label: 'active',
-        name: 'active-action',
-        iconName: 'standard:opportunity',
+        label: 'Completed',
+        name: 'completed-action',
+        iconName: 'utility:check',
         disabled: false
     },
     {
-        label: 'pending',
+        label: 'Pending',
         name: 'prending-action',
-        iconName: 'standard:opportunity',
+        iconName: 'utility:spinner',
         disabled: false
     },
     {
-        label: 'Deactivate',
-        name: 'deactivate-action',
-        iconName: 'standard:opportunity',
+        label: 'Delete',
+        name: 'delete-action',
+        iconName: 'utility:delete',
+        disabled: true
+    }
+];
+const dynamicActions = [
+    {
+        parentLabel: 'Item 1',
+        label: 'Completed',
+        name: 'completed-action',
+        iconName: 'utility:check',
+        disabled: false
+    },
+    {
+        parentLabel: 'Item 2',
+        label: 'Pending',
+        name: 'prending-action',
+        iconName: 'utility:spinner',
+        disabled: false
+    },
+    {
+        parentLabel: 'Item 1',
+        label: 'Delete',
+        name: 'delete-action',
+        iconName: 'utility:delete',
         disabled: true
     }
 ];
@@ -180,4 +203,12 @@ ListWithActions.args = {
     label: 'List with actions menu',
     items: items,
     actions: actions
+};
+
+export const ListWithDynamicRowActions = Template.bind({});
+ListWithDynamicRowActions.args = {
+    label: 'List with dynamic row actions',
+    items: items,
+    actions: dynamicActions,
+    isDynamicRowAction: true
 };
