@@ -38,7 +38,7 @@ export default class InputChoiceSet extends LightningElement {
     _disabled = false;
     _required = false;
     _value = [];
-    _isMultiSelect = false; //
+    _isMultiSelect = false; 
 
 
     constructor() {
@@ -105,6 +105,14 @@ export default class InputChoiceSet extends LightningElement {
             fallbackValue: validOrientations.default,
             validValues: validOrientations.valid
         });
+    }
+
+    @api
+    get isMultiSelect() {
+        return this._isMultiSelect || false;
+    }
+    set isMultiSelect(value) {
+        this._isMultiSelect = normalizeBoolean(value);
     }
 
     @api
@@ -212,7 +220,6 @@ export default class InputChoiceSet extends LightningElement {
 
     handleFocus() {
         this.containsFocus = true;
-
         this.dispatchEvent(new CustomEvent('focus'));
     }
 
@@ -231,20 +238,28 @@ export default class InputChoiceSet extends LightningElement {
 
     handleChange(event) {
         event.stopPropagation();
-
+        let value = [];
         const checkboxes = this.template.querySelectorAll('input');
-        const value = Array.from(checkboxes)
-            .filter((checkbox) => checkbox.checked)
-            .map((checkbox) => checkbox.value);
-
-        this._value = value;
-
+        if(this.isMultiSelect){
+            value = Array.from(checkboxes)
+                .filter((checkbox) => checkbox.checked)
+                .map((checkbox) => checkbox.value);
+        }
+        else{
+            let checkboxesList = Array.from(checkboxes)
+                .filter((checkbox) => checkbox.value != event.target.value)
+                .map((checkbox) => checkbox);
+                checkboxesList.forEach((checkbox)=>{
+                checkbox.checked = false;
+            })
+            
+            value = event.target.value;
+        }
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
                     value
                 },
-
                 composed: true,
                 bubbles: true,
                 cancelable: true

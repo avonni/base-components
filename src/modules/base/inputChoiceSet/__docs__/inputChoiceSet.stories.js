@@ -77,7 +77,7 @@ export default {
                 "If present, the input is disabled.",
             defaultValue: 0,
             table: {
-                defaultValue: { summary: 'false' },
+                defaultValue: { summary: false },
                 type: { summary: 'boolean' }
             }
         },
@@ -88,7 +88,19 @@ export default {
             description: 'If present, at least one input must be selected.',
             defaultValue: 0,
             table: {
-                defaultValue: { summary: 'false' },
+                defaultValue: { summary: false },
+                type: { summary: 'boolean' }
+            }
+        },
+        isMultiSelect: {
+            name: "is-multi-select",
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, multiple choices can be selected.',
+            defaultValue: 0,
+            table: {
+                defaultValue: { summary: false },
                 type: { summary: 'boolean' }
             }
         },
@@ -138,7 +150,8 @@ InputSet.args = {
     label: 'Please select a value',
     messageWhenValueMissing: 'Value missing',
     options: options,
-    value: primaryValue
+    value: primaryValue,
+    isMultiSelect: false,
 };
 
 export const InputChoiceSetDisabled = Template.bind({});
