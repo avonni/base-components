@@ -238,23 +238,21 @@ export default class InputChoiceSet extends LightningElement {
 
     handleChange(event) {
         event.stopPropagation();
-        let value = [];
+
+        let value = event.target.value;
         const checkboxes = this.template.querySelectorAll('input');
+
         if(this.isMultiSelect){
             value = Array.from(checkboxes)
                 .filter((checkbox) => checkbox.checked)
                 .map((checkbox) => checkbox.value);
         }
         else{
-            let checkboxesList = Array.from(checkboxes)
-                .filter((checkbox) => checkbox.value != event.target.value)
-                .map((checkbox) => checkbox);
-                checkboxesList.forEach((checkbox)=>{
-                checkbox.checked = false;
-            })
-            
-            value = event.target.value;
+            const checkboxesToUncheck = Array.from(checkboxes)
+                .filter((checkbox) => checkbox.value !== value);
+                checkboxesToUncheck.forEach((checkbox)=>{checkbox.checked = false;});
         }
+        
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
