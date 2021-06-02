@@ -29,9 +29,20 @@
                         <label class={computedLabelClass} for={option.id}>
                             <span>
                                 <template if:true={checkboxVariant}>
-                                    <span class="slds-checkbox_faux"></span>
-                                    <lightning-icon if:true={option.isIconLeft} class="slds-m-right_x-small" icon-name={option.iconName} size="x-small"></lightning-icon>
-                                    <span class="slds-form-element__label">{option.label}</span>
+                                    <div>
+                                        <lightning-layout>
+                                            <lightning-layout-item padding="around-small">
+                                                <span class="slds-checkbox_faux"></span>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item padding="around-small">
+                                                <lightning-icon if:true={option.isIconTop} class="slds-m-right_x-small block" icon-name={option.iconName} size="x-small"></lightning-icon>
+                                                <lightning-icon if:true={option.isIconLeft} class="slds-m-right_x-small" icon-name={option.iconName} size="x-small"></lightning-icon>
+                                                <span class="slds-form-element__label block">{option.label}</span>
+                                                <lightning-icon if:true={option.isIconRight} class="slds-m-right_x-small" icon-name={option.iconName} size="x-small"></lightning-icon>
+                                                <lightning-icon if:true={option.isIconBottom} class="slds-m-right_x-small block" icon-name={option.iconName} size="x-small"></lightning-icon>
+                                            </lightning-layout-item>
+                                        </lightning-layout>
+                                    </div>
                                 </template>
     
                                 <template if:false={checkboxVariant} >

@@ -3,7 +3,7 @@
 }
 
 .slds-checkbox.horizontal{
-    display: inline !important;
+    display: inline-flex !important;
 }
 
 .slds-checkbox_button-group.vertical{
