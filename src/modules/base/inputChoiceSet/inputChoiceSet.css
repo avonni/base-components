@@ -6,3 +6,10 @@
     display: inline !important;
 }
 
+.slds-checkbox_button-group.vertical{
+    flex-direction: column !important;
+}
+.slds-checkbox_button__label.vertical{
+    width: 100%;
+    border-radius: 0 !important;
+}

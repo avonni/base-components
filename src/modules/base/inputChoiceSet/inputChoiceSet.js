@@ -263,23 +263,24 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     get computedButtonClass() {
-        return this.checkboxVariant ? '' : 'slds-checkbox_button-group';
+        let buttonGroupClass = 'slds-checkbox_button-group';
+        if(this._orientation === "vertical") buttonGroupClass += ' vertical';
+        return this.checkboxVariant ? '' : buttonGroupClass;
     }
 
     get computedCheckboxContainerClass() {
-        let checkboxClass = "slds-checkbox"
-        if(this._orientation === "horizontal"){
-            checkboxClass += " horizontal"
-        }
-        
+        let checkboxClass = "slds-checkbox";
+        if(this._orientation === "horizontal") checkboxClass += " horizontal"
         return this.checkboxVariant
             ? checkboxClass
             : 'slds-button slds-checkbox_button';
     }
 
     get computedLabelClass() {
+        let buttonLabelClass = "slds-checkbox_button__label";
+        if(this._orientation === "vertical") buttonLabelClass += " vertical"
         return this.checkboxVariant
             ? 'slds-checkbox__label'
-            : 'slds-checkbox_button__label';
+            : buttonLabelClass;
     }
 }
