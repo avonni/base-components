@@ -1,0 +1,53 @@
+.path__item_error {
+    background: #ba0517;
+}
+
+.path__item_error:hover {
+    background: #8e030f;
+}
+
+.path__item_warning {
+    background: #fe9339;
+}
+
+.path__item_warning:hover,
+.path-is-complete_warning .path__item-last {
+    background: #a96404;
+}
+
+.path__item_offline {
+    background: #3e3e3c;
+}
+
+.path__item_offline:hover,
+.path-is-complete_offline .path__item-last {
+    background: #2b2826;
+}
+
+.path__item::before,
+.path__item::after,
+.path-is-complete:not(.path-is-complete_base) .path__item-last::before,
+.path-is-complete:not(.path-is-complete_base) .path__item-last::after {
+    background: inherit;
+}
+
+.path__item a,
+.path-is-complete:not(.path-is-complete_base) .path__item-last a {
+    color: #fff;
+}
+
+/* Icon and text toggle on step hover ---- */
+
+.path__item .slds-path__stage {
+    transform: translate(-50%, -50%) rotateX(0deg);
+}
+.path__item:hover .slds-path__stage {
+    transform: translate(-50%, -50%) rotateX(-180deg);
+}
+.path__item .slds-path__title {
+    transform: rotateX(180deg);
+}
+.path__item:hover .slds-path__title {
+    transform: rotateX(0deg);
+}
+/* ---------- */
