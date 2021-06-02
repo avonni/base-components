@@ -1,5 +1,5 @@
 import { createElement } from 'lwc';
-import CheckboxGroup from 'c/checkboxGroup';
+import InputChoiceSet from 'c/inputChoiceSet';
 
 const options = [
     { label: 'Mon', value: 'mon' },
@@ -9,15 +9,15 @@ const options = [
     { label: 'Fri', value: 'fri' }
 ];
 
-describe('Checkbox Group', () => {
+describe('Input choice set', () => {
     afterEach(() => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
     });
 
-    it('Checkbox Group Default attributes', () => {
-        const element = createElement('base-checkbox-group', {
+    it('Input choice set Default attributes', () => {
+        const element = createElement('base-input-choice-set', {
             is: CheckboxGroup
         });
 
@@ -36,9 +36,9 @@ describe('Checkbox Group', () => {
     /* ----- ATTRIBUTES ----- */
 
     // disabled
-    it('Checkbox Group disabled', () => {
-        const element = createElement('base-checkbox-group', {
-            is: CheckboxGroup
+    it('Input choice set disabled', () => {
+        const element = createElement('base-input-choice-set', {
+            is: InputChoiceSet
         });
         document.body.appendChild(element);
 
@@ -54,9 +54,9 @@ describe('Checkbox Group', () => {
     });
 
     // label
-    it('Checkbox Group label', () => {
-        const element = createElement('base-checkbox-group', {
-            is: CheckboxGroup
+    it('Input choice set label', () => {
+        const element = createElement('base-input-choice-set', {
+            is: InputChoiceSet
         });
         document.body.appendChild(element);
 
@@ -72,9 +72,9 @@ describe('Checkbox Group', () => {
     });
 
     // type
-    it('Checkbox Group type checkbox', () => {
-        const element = createElement('base-checkbox-group', {
-            is: CheckboxGroup
+    it('Input choice set type checkbox', () => {
+        const element = createElement('base-input-choice-set', {
+            is: InputChoiceSet
         });
         document.body.appendChild(element);
 
@@ -91,9 +91,9 @@ describe('Checkbox Group', () => {
         });
     });
 
-    it('Checkbox Group type button', () => {
-        const element = createElement('base-checkbox-group', {
-            is: CheckboxGroup
+    it('Input choice set type button', () => {
+        const element = createElement('base-input-choice-set', {
+            is: InputChoiceSet
         });
         document.body.appendChild(element);
 
@@ -113,9 +113,9 @@ describe('Checkbox Group', () => {
 
     // Message when value is missing
     // Depends on required, focus(), blur() and showHelpMessageIfInvalid()
-    it('Checkbox Group message when value is missing', () => {
-        const element = createElement('base-checkbox-group', {
-            is: CheckboxGroup
+    it('Input choice set message when value is missing', () => {
+        const element = createElement('base-input-choice-set', {
+            is: InputChoiceSet
         });
         document.body.appendChild(element);
 
@@ -138,9 +138,9 @@ describe('Checkbox Group', () => {
     });
 
     // name
-    it('Checkbox Group name', () => {
-        const element = createElement('base-checkbox-group', {
-            is: CheckboxGroup
+    it('Input choice set name', () => {
+        const element = createElement('base-input-choice-set', {
+            is: InputChoiceSet
         });
         document.body.appendChild(element);
 
@@ -156,9 +156,9 @@ describe('Checkbox Group', () => {
     });
 
     // options
-    it('Checkbox Group options', () => {
-        const element = createElement('base-checkbox-group', {
-            is: CheckboxGroup
+    it('Input choice set options', () => {
+        const element = createElement('base-input-choice-set', {
+            is: InputChoiceSet
         });
         document.body.appendChild(element);
 
@@ -175,9 +175,9 @@ describe('Checkbox Group', () => {
     });
 
     // required
-    it('Checkbox Group required', () => {
-        const element = createElement('base-checkbox-group', {
-            is: CheckboxGroup
+    it('Input choice set required', () => {
+        const element = createElement('base-input-choice-set', {
+            is: InputChoiceSet
         });
         document.body.appendChild(element);
 
@@ -191,9 +191,9 @@ describe('Checkbox Group', () => {
     });
 
     // value
-    it('Checkbox Group value', () => {
-        const element = createElement('base-checkbox-group', {
-            is: CheckboxGroup
+    it('Input choice set value', () => {
+        const element = createElement('base-input-choice-set', {
+            is: InputChoiceSet
         });
         document.body.appendChild(element);
 
@@ -213,9 +213,9 @@ describe('Checkbox Group', () => {
     });
 
     // variant
-    it('Checkbox Group variant standard', () => {
-        const element = createElement('base-checkbox-group', {
-            is: CheckboxGroup
+    it('Input choice set variant standard', () => {
+        const element = createElement('base-input-choice-set', {
+            is: InputChoiceSet
         });
         document.body.appendChild(element);
 
@@ -235,9 +235,9 @@ describe('Checkbox Group', () => {
         });
     });
 
-    it('Checkbox Group variant label hidden', () => {
-        const element = createElement('base-checkbox-group', {
-            is: CheckboxGroup
+    it('Input choice set variant label hidden', () => {
+        const element = createElement('base-input-choice-set', {
+            is: InputChoiceSet
         });
         document.body.appendChild(element);
 
@@ -258,9 +258,9 @@ describe('Checkbox Group', () => {
         });
     });
 
-    it('Checkbox Group variant label inline', () => {
-        const element = createElement('base-checkbox-group', {
-            is: CheckboxGroup
+    it('Input choice set variant label inline', () => {
+        const element = createElement('base-input-choice-set', {
+            is: InputChoiceSet
         });
         document.body.appendChild(element);
 
@@ -279,9 +279,9 @@ describe('Checkbox Group', () => {
         });
     });
 
-    it('Checkbox Group variant label stacked', () => {
-        const element = createElement('base-checkbox-group', {
-            is: CheckboxGroup
+    it('Input choice set variant label stacked', () => {
+        const element = createElement('base-input-choice-set', {
+            is: InputChoiceSet
         });
         document.body.appendChild(element);
 
@@ -303,9 +303,9 @@ describe('Checkbox Group', () => {
     /* ----- EVENTS ----- */
 
     // change event
-    it('Checkbox group change event', () => {
-        const element = createElement('base-checkbox-group', {
-            is: CheckboxGroup
+    it('Input choice set change event', () => {
+        const element = createElement('base-input-choice-set', {
+            is: InputChoiceSet
         });
         document.body.appendChild(element);
 
@@ -325,9 +325,9 @@ describe('Checkbox Group', () => {
     });
 
     // blur event
-    it('Checkbox group blur event', () => {
-        const element = createElement('base-checkbox-group', {
-            is: CheckboxGroup
+    it('Input choice set blur event', () => {
+        const element = createElement('base-input-choice-set', {
+            is: InputChoiceSet
         });
         document.body.appendChild(element);
 
@@ -346,9 +346,9 @@ describe('Checkbox Group', () => {
     });
 
     // focus event
-    it('Checkbox group focus event', () => {
-        const element = createElement('base-checkbox-group', {
-            is: CheckboxGroup
+    it('Input choice set focus event', () => {
+        const element = createElement('base-input-choice-set', {
+            is: InputChoiceSet
         });
         document.body.appendChild(element);
 

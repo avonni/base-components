@@ -1,4 +1,4 @@
-import Component from 'avonni/checkboxGroup';
+import Component from '../inputChoiceSet';
 
 customElements.define(
     'ac-base-input-choice-set',

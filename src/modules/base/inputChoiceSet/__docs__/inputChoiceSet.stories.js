@@ -1,4 +1,4 @@
-import { InputChoiceSet } from '../__examples__/checkboxGroup';
+import { InputChoiceSet } from '../__examples__/inputChoiceSet';
 
 export default {
     title: 'Example/Input Choice Set',
