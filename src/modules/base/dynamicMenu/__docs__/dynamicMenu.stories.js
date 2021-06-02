@@ -97,6 +97,19 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        iconSize: {
+            name: 'icon-size',
+            control: {
+                type: 'select'
+            },
+            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+            defaultValue: 'medium',
+            description: 'The size of the icon',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'medium' }
+            }
+        },
         variant: {
             control: {
                 type: 'select'
@@ -225,6 +238,8 @@ const items = [
         }
     }
 ];
+
+// const iconSizes  = ['xx-small','x-small', 'small', 'medium'];
 
 const Template = (args) => DynamicMenu(args);
 

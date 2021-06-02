@@ -1,9 +1,6 @@
 import { createElement } from 'lwc';
 import DynamicMenu from 'c/dynamicMenu';
 
-// not tested
-// iconSize because not in code
-
 const items = [
     {
         label: 'Acme',
@@ -51,7 +48,7 @@ describe('Dynamic Menu', () => {
 
         expect(element.label).toBeUndefined();
         expect(element.iconName).toBeUndefined();
-        // expect(element.iconSize).toBeUndefined();
+        expect(element.iconSize).toBe('medium');
         expect(element.items).toMatchObject([]);
         expect(element.alternativeText).toBeUndefined();
         expect(element.menuAlignment).toBe('left');
@@ -116,8 +113,28 @@ describe('Dynamic Menu', () => {
         });
     });
 
-    // items
+    //icon size
     it('Dynamic Menu icon size without label', () => {
+        const element = createElement('base-dynamic-menu', {
+            is: DynamicMenu
+        });
+        document.body.appendChild(element);
+
+        element.iconName = 'utility:add';
+        element.iconSize = 'medium';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                'lightning-button-icon'
+            );
+            console.log(button);
+            expect(button.iconName).toBe('utility:add');
+            expect(button.size).toBe('medium');
+        });
+    });
+
+    // items
+    it('Dynamic Menu items', () => {
         const element = createElement('base-dynamic-menu', {
             is: DynamicMenu
         });

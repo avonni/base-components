@@ -1,37 +1,28 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 
-const validTypes = [
-    'boolean',
-    'currency',
-    'date',
-    'date-local',
-    'email',
-    'location',
-    'number',
-    'percent',
-    'phone',
-    'text',
-    'url'
-];
+const TYPES = {
+    valid: [
+        'boolean',
+        'currency',
+        'date',
+        'email',
+        'location',
+        'number',
+        'percent',
+        'phone',
+        'text',
+        'url'
+    ],
+    default: 'text'
+};
 
 export default class OutputData extends LightningElement {
     @api label;
 
-    _type = 'text';
     _typeAttributes = {};
+    _type = TYPES.default;
     _value;
-
-    @api get type() {
-        return this._type;
-    }
-
-    set type(value) {
-        this._type = normalizeString(value, {
-            fallbackValue: 'text',
-            validValues: validTypes
-        });
-    }
 
     @api
     get typeAttributes() {
@@ -41,14 +32,25 @@ export default class OutputData extends LightningElement {
         this._typeAttributes = typeof value === 'object' ? value : {};
     }
 
-    @api get value() {
+    @api
+    get type() {
+        return this._type;
+    }
+    set type(value) {
+        this._type = normalizeString(value, {
+            fallbackValue: TYPES.default,
+            validValues: TYPES.valid
+        });
+    }
+
+    @api
+    get value() {
         if (this.isBoolean) {
             return this._value === 'true' || this._value;
         }
 
         return this._value;
     }
-
     set value(value) {
         this._value = value;
     }
@@ -57,16 +59,8 @@ export default class OutputData extends LightningElement {
         return this.type === 'boolean';
     }
 
-    get isCurrency() {
-        return this.type === 'currency';
-    }
-
     get isDate() {
         return this.type === 'date';
-    }
-
-    get isDateLocal() {
-        return this.type === 'date-local';
     }
 
     get isEmail() {
@@ -78,11 +72,11 @@ export default class OutputData extends LightningElement {
     }
 
     get isNumber() {
-        return this.type === 'number';
-    }
-
-    get isPercent() {
-        return this.type === 'percent';
+        return (
+            this.type === 'number' ||
+            this.type === 'percent' ||
+            this.type === 'currency'
+        );
     }
 
     get isPhone() {
@@ -95,5 +89,16 @@ export default class OutputData extends LightningElement {
 
     get isUrl() {
         return this.type === 'url';
+    }
+
+    get numberFormatStyle() {
+        if (this.type === 'currency' || this.type === 'percent') {
+            return this.type;
+        }
+        return 'decimal';
+    }
+
+    get showBoolean() {
+        return this.isBoolean && this.value;
     }
 }

@@ -16,4 +16,5 @@ export default class DynamicMenu extends LightningElement {
     @api variant = 'border';
     @api menuAlignment = 'left';
     @api disabled;
+    @api iconSize = 'medium';
 }
