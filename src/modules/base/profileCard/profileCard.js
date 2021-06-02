@@ -191,15 +191,15 @@ export default class ProfileCard extends LightningElement {
                 'bottom-center': this._avatarPosition === 'bottom-center'
             })
             .add({
-                'top-left-mobile': this._avatarMobilePosition === 'top-left',
-                'bottom-left-mobile':
+                'mobile-top-left': this._avatarMobilePosition === 'top-left',
+                'mobile-bottom-left':
                     this._avatarMobilePosition === 'bottom-left',
-                'bottom-right-mobile':
+                'mobile-bottom-right':
                     this._avatarMobilePosition === 'bottom-right',
-                'top-right-mobile': this._avatarMobilePosition === 'top-right',
-                'top-center-mobile':
+                'mobile-top-right': this._avatarMobilePosition === 'top-right',
+                'mobile-top-center':
                     this._avatarMobilePosition === 'top-center',
-                'bottom-center-mobile':
+                'mobile-bottom-center':
                     this._avatarMobilePosition === 'bottom-center'
             })
             .add(`card-${this._size}`)
