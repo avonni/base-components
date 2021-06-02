@@ -145,7 +145,7 @@ const actions = [
         label: 'Deactivate',
         name: 'deactivate-action',
         iconName: 'standard:opportunity',
-        disabled: false
+        disabled: true
     }
 ];
 export const Base = Template.bind({});

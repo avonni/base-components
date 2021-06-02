@@ -74,7 +74,6 @@ export default class List extends LightningElement {
     set actions(proxy) {
         this._actions = normalizeArray(proxy);
         this.computedActions = JSON.parse(JSON.stringify(this._actions));
-        console.log(this.computedActions);
     }
     get showIconRight() {
         return (
