@@ -72,6 +72,20 @@ export default class ProfileCard extends LightningElement {
                 );
                 actionsContainer.classList.add('avonni-actions-right');
             }
+            if (
+                this.showActions &&
+                this._avatarMobilePosition.indexOf('right') > -1
+            ) {
+                let actionsContainer = this.template.querySelector(
+                    '.avonni-actions'
+                );
+                actionsContainer.classList.add('avonni-mobile-actions-left');
+            } else {
+                let actionsContainer = this.template.querySelector(
+                    '.avonni-actions'
+                );
+                actionsContainer.classList.add('avonni-mobile-actions-right');
+            }
         }
 
         if (this.footerSlot) {
@@ -152,11 +166,42 @@ export default class ProfileCard extends LightningElement {
                     this._avatarPosition === 'top-right' ||
                     this._avatarPosition === 'bottom-right'
             })
+            .add({
+                'avonni-flex-mobile-align-start':
+                    this._avatarMobilePosition === 'top-left' ||
+                    this._avatarMObilePosition === 'bottom-left',
+                'avonni-flex-mobile-align-center':
+                    this._avatarMobilePosition === 'top-center' ||
+                    this._avatarMobilePosition === 'bottom-center',
+                'avonni-flex-mobile-align-end':
+                    this._avatarMobilePosition === 'top-right' ||
+                    this._avatarMobilePosition === 'bottom-right'
+            })
             .toString();
     }
 
     get computedMainContainerClass() {
-        return classSet(this.avatarPosition)
+        return classSet('')
+            .add({
+                'top-left': this._avatarPosition === 'top-left',
+                'bottom-left': this._avatarPosition === 'bottom-left',
+                'bottom-right': this._avatarPosition === 'bottom-right',
+                'top-right': this._avatarPosition === 'top-right',
+                'top-center': this._avatarPosition === 'top-center',
+                'bottom-center': this._avatarPosition === 'bottom-center'
+            })
+            .add({
+                'top-left-mobile': this._avatarMobilePosition === 'top-left',
+                'bottom-left-mobile':
+                    this._avatarMobilePosition === 'bottom-left',
+                'bottom-right-mobile':
+                    this._avatarMobilePosition === 'bottom-right',
+                'top-right-mobile': this._avatarMobilePosition === 'top-right',
+                'top-center-mobile':
+                    this._avatarMobilePosition === 'top-center',
+                'bottom-center-mobile':
+                    this._avatarMobilePosition === 'bottom-center'
+            })
             .add(`card-${this._size}`)
             .toString();
     }

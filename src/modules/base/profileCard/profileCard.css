@@ -3,16 +3,40 @@
     flex-direction: column;
 }
 
-.avonni-flex-align-start {
-    align-items: flex-start;
+@media (min-width: 480px) {
+    .avonni-flex-align-start {
+        align-items: flex-start;
+    }
 }
 
-.avonni-flex-align-center {
-    align-items: center;
+@media (max-width: 480px) {
+    .avonni-flex-mobile-align-start {
+        align-items: flex-start;
+    }
 }
 
-.avonni-flex-align-end {
-    align-items: flex-end;
+@media (min-width: 480px) {
+    .avonni-flex-align-center {
+        align-items: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .avonni-flex-mobile-align-center {
+        align-items: center;
+    }
+}
+
+@media (min-width: 480px) {
+    .avonni-flex-align-end {
+        align-items: flex-end;
+    }
+}
+
+@media (max-width: 480px) {
+    .avonni-flex-mobile-align-end {
+        align-items: flex-end;
+    }
 }
 
 .slds-media {
@@ -261,14 +285,13 @@
     font-size: 22px;
 }
 
-[class$='-left card-x-large'] .avonni-subtitle,
-[class$='-right card-x-large'] .avonni-subtitle {
+[class$='card-x-large'] .avonni-subtitle {
     font-size: 18px;
 }
 
-.avonni-title-container {
+/* .avonni-title-container {
     width: 100%;
-}
+} */
 
 [class$='-left card-x-small'] .avonni-title-container {
     position: absolute;
@@ -419,18 +442,40 @@
     padding: 1rem 1rem 0 1rem;
 }
 
-.avonni-actions-right {
-    position: absolute;
-    right: 0.5rem;
-    top: 0.5rem;
-    z-index: 1000;
+@media (min-width: 480px) {
+    .avonni-actions-right {
+        position: absolute;
+        right: 0.5rem;
+        top: 0.5rem;
+        z-index: 1000;
+    }
 }
 
-.avonni-actions-left {
-    position: absolute;
-    left: 0.5rem;
-    top: 0.5rem;
-    z-index: 1000;
+@media (max-width: 480px) {
+    .avonni-mobile-actions-right {
+        position: absolute;
+        right: 0.5rem;
+        top: 0.5rem;
+        z-index: 1000;
+    }
+}
+
+@media (min-width: 480px) {
+    .avonni-actions-left {
+        position: absolute;
+        left: 0.5rem;
+        top: 0.5rem;
+        z-index: 1000;
+    }
+}
+
+@media (max-width: 480px) {
+    .avonni-mobile-actions-left {
+        position: absolute;
+        left: 0.5rem;
+        top: 0.5rem;
+        z-index: 1000;
+    }
 }
 
 .avonni-avatar-actions {
