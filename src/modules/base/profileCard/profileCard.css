@@ -160,6 +160,266 @@
         top: 0.5rem;
         z-index: 1000;
     }
+
+    [class^='top-'].card-x-small {
+        margin-top: 0.75rem;
+    }
+
+    [class^='top-'].card-x-small .avatar-img {
+        top: -0.75rem;
+    }
+
+    [class^='bottom-'].card-x-small .avatar-img {
+        top: 0.75rem;
+    }
+
+    [class*='-left'][class$='card-x-small'] .avatar-img {
+        left: 0.75rem;
+    }
+
+    [class*='-right'][class$='card-x-small'] .avatar-img {
+        right: 0.75rem;
+    }
+
+    [class^='top-'].card-small {
+        margin-top: 1rem;
+    }
+
+    [class^='top-'].card-small .avatar-img {
+        top: -1rem;
+    }
+
+    [class^='bottom-'].card-small .avatar-img {
+        top: 1rem;
+    }
+
+    [class$='-left card-small'] .avatar-img {
+        left: 1rem;
+    }
+
+    [class$='-right card-small'] .avatar-img {
+        right: 1rem;
+    }
+
+    [class^='top-'].card-medium {
+        margin-top: 1.25rem;
+    }
+
+    [class^='top-'].card-medium .avatar-img {
+        top: -1.25rem;
+    }
+
+    [class^='bottom-'].card-medium .avatar-img {
+        top: 1.25rem;
+    }
+
+    [class$='-left-desktop card-medium'] .avatar-img {
+        left: 1.25rem;
+    }
+
+    [class$='-right card-medium'] .avatar-img {
+        right: 1.25rem;
+    }
+
+    [class^='top-'].card-large {
+        margin-top: 1.5rem;
+    }
+
+    [class^='top-'].card-large .avatar-img {
+        top: -1.5rem;
+    }
+
+    [class^='bottom-'].card-large .avatar-img {
+        top: 1.5rem;
+    }
+
+    [class$='-left card-large'] .avatar-img {
+        left: 1.5rem;
+    }
+
+    [class$='-right card-large'] .avatar-img {
+        right: 1.5rem;
+    }
+
+    [class^='top-'].card-x-large {
+        margin-top: 1.75rem;
+    }
+
+    [class^='top-'].card-x-large .avatar-img {
+        top: -1.75rem;
+    }
+
+    [class^='bottom-'].card-x-large .avatar-img {
+        top: 1.75rem;
+    }
+
+    [class$='-left card-x-large'] .avatar-img {
+        left: 1.75rem;
+    }
+
+    [class$='-right card-x-large'] .avatar-img {
+        right: 1.75rem;
+    }
+
+    [class$='-left card-x-small'] .avonni-title-container {
+        position: absolute;
+        padding: 0.5rem;
+        padding-left: 4.75rem;
+        padding-right: 0.75rem;
+    }
+
+    [class*='-left card-small'] .avonni-title-container {
+        position: absolute;
+        padding: 0.8rem;
+        padding-left: 6.5rem;
+        padding-right: 1rem;
+    }
+
+    [class$='-left card-medium'] .avonni-title-container {
+        position: absolute;
+        padding: 1.5rem;
+        padding-left: 8.25rem;
+        padding-right: 1.25rem;
+    }
+
+    [class$='-left card-large'] .avonni-title-container {
+        position: absolute;
+        padding: 2.8rem;
+        padding-left: 12.25rem;
+        padding-right: 1.5rem;
+    }
+
+    [class$='-left card-x-large'] .avonni-title-container {
+        position: absolute;
+        padding: 3.8rem;
+        padding-left: 14.75rem;
+        padding-right: 1.75rem;
+    }
+
+    [class$='-right card-x-small'] .avonni-title-container {
+        position: absolute;
+        padding: 0.5rem;
+        padding-right: 4.75rem;
+        padding-left: 0.75rem;
+    }
+
+    [class$='-right card-small'] .avonni-title-container {
+        position: absolute;
+        padding: 0.8rem;
+        padding-right: 6.5rem;
+        padding-left: 1rem;
+    }
+
+    [class$='-right card-medium'] .avonni-title-container {
+        position: absolute;
+        padding: 1.5rem;
+        padding-right: 8.25rem;
+        padding-left: 1.25rem;
+    }
+
+    [class$='-right card-large'] .avonni-title-container {
+        position: absolute;
+        padding: 2.8rem;
+        padding-right: 12.25rem;
+        padding-left: 1.5rem;
+    }
+
+    [class$='-right card-x-large'] .avonni-title-container {
+        position: absolute;
+        padding: 3.8rem;
+        padding-right: 14.75rem;
+        padding-left: 1.75rem;
+    }
+
+    .bottom-left.card-x-small .slds-card__body,
+    .bottom-right.card-x-small .slds-card__body {
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .bottom-left.card-small .slds-card__body,
+    .bottom-right.card-small .slds-card__body {
+        margin-top: 1.75rem;
+        margin-bottom: 1rem;
+    }
+
+    .bottom-left.card-medium .slds-card__body,
+    .bottom-right.card-medium .slds-card__body {
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .bottom-left.card-large .slds-card__body,
+    .bottom-right.card-large .slds-card__body {
+        margin-top: 2.25rem;
+        margin-bottom: 1rem;
+    }
+
+    .bottom-left.card-x-large .slds-card__body,
+    .bottom-right.card-x-large .slds-card__body {
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+    }
+
+    [class$='-left card-medium'] .slds-card__body,
+    [class$='-right card-medium'] .slds-card__body {
+        padding: 0 1.25rem;
+    }
+
+    [class$='-left card-large'] .slds-card__body,
+    [class$='-right card-large'] .slds-card__body {
+        padding: 0 1.5rem;
+    }
+
+    [class$='-left card-x-large'] .slds-card__body,
+    [class$='-right card-x-large'] .slds-card__body {
+        padding: 0 1.75rem;
+    }
+
+    .bottom-center .avonni-title-container {
+        padding: 0 1rem;
+    }
+
+    .bottom-center.card-x-small .avonni-title-container {
+        margin-top: 1.5rem;
+    }
+
+    .bottom-center.card-small .avonni-title-container {
+        margin-top: 1.75rem;
+    }
+
+    .bottom-center.card-medium .avonni-title-container {
+        margin-top: 2rem;
+    }
+
+    .bottom-center.card-large .avonni-title-container {
+        margin-top: 2.25rem;
+    }
+
+    .bottom-center.card-x-large .avonni-title-container {
+        margin-top: 2.5rem;
+        padding: 0 1rem;
+    }
+
+    .top-center .avonni-title-container {
+        padding: 1rem 1rem 0 1rem;
+    }
+
+    .bottom-center .avonni-title-container {
+        padding: 0 1rem;
+    }
+
+    [class^='top-'].card-x-small {
+        margin-top: 0.75rem;
+    }
+
+    [class^='top-'].card-x-small .avatar-img {
+        top: -0.75rem;
+    }
+
+    [class^='bottom-'].card-x-small .avatar-img {
+        top: 0.75rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -187,248 +447,261 @@
         top: 0.5rem;
         z-index: 1000;
     }
-}
 
-[class^='top-'].card-x-small {
-    margin-top: 0.75rem;
-}
+    [class*='mobile-top-'].card-x-small {
+        margin-top: 0.75rem;
+    }
 
-[class^='top-'].card-x-small .avatar-img {
-    top: -0.75rem;
-}
+    [class*='mobile-top-'].card-x-small .avatar-img {
+        top: -0.75rem;
+    }
 
-[class^='bottom-'].card-x-small .avatar-img {
-    top: 0.75rem;
-}
+    [class*='mobile-bottom-'].card-x-small .avatar-img {
+        top: 0.75rem;
+    }
 
-[class$='-left card-x-small'] .avatar-img {
-    left: 0.75rem;
-}
+    [class$='-left-mobile card-x-small'] .avatar-img {
+        left: 0.75rem;
+    }
 
-[class$='-right card-x-small'] .avatar-img {
-    right: 0.75rem;
-}
+    [class$='-right-mobile card-x-small'] .avatar-img {
+        right: 0.75rem;
+    }
 
-[class^='top-'].card-small {
-    margin-top: 1rem;
-}
+    [class*='mobile-top-'].card-small {
+        margin-top: 1rem;
+    }
 
-[class^='top-'].card-small .avatar-img {
-    top: -1rem;
-}
+    [class*='mobile-top-'].card-small .avatar-img {
+        top: -1rem;
+    }
 
-[class^='bottom-'].card-small .avatar-img {
-    top: 1rem;
-}
+    [class*='mobile-bottom-'].card-small .avatar-img {
+        top: 1rem;
+    }
 
-[class$='-left card-small'] .avatar-img {
-    left: 1rem;
-}
+    [class$='-left-mobile card-small'] .avatar-img {
+        left: 1rem;
+    }
 
-[class$='-right card-small'] .avatar-img {
-    right: 1rem;
-}
+    [class$='-right-mobile card-small'] .avatar-img {
+        right: 1rem;
+    }
 
-[class^='top-'].card-medium {
-    margin-top: 1.25rem;
-}
+    [class*='mobile-top-'].card-medium {
+        margin-top: 1.25rem;
+    }
 
-[class^='top-'].card-medium .avatar-img {
-    top: -1.25rem;
-}
+    [class*='mobile-top-'].card-medium .avatar-img {
+        top: -1.25rem;
+    }
 
-[class^='bottom-'].card-medium .avatar-img {
-    top: 1.25rem;
-}
+    [class*='mobile-bottom-'].card-medium .avatar-img {
+        top: 1.25rem;
+    }
 
-[class$='-left card-medium'] .avatar-img {
-    left: 1.25rem;
-}
+    [class$='-left-mobile card-medium'] .avatar-img {
+        left: 1.25rem;
+    }
 
-[class$='-right card-medium'] .avatar-img {
-    right: 1.25rem;
-}
+    [class$='-right-mobile card-medium'] .avatar-img {
+        right: 1.25rem;
+    }
 
-[class^='top-'].card-large {
-    margin-top: 1.5rem;
-}
+    [class*='mobile-top-'].card-large {
+        margin-top: 1.5rem;
+    }
 
-[class^='top-'].card-large .avatar-img {
-    top: -1.5rem;
-}
+    [class*='mobile-top-'].card-large .avatar-img {
+        top: -1.5rem;
+    }
 
-[class^='bottom-'].card-large .avatar-img {
-    top: 1.5rem;
-}
+    [class*='mobile-bottom-'].card-large .avatar-img {
+        top: 1.5rem;
+    }
 
-[class$='-left card-large'] .avatar-img {
-    left: 1.5rem;
-}
+    [class$='-left-mobile card-large'] .avatar-img {
+        left: 1.5rem;
+    }
 
-[class$='-right card-large'] .avatar-img {
-    right: 1.5rem;
-}
+    [class$='-right-mobile card-large'] .avatar-img {
+        right: 1.5rem;
+    }
 
-[class^='top-'].card-x-large {
-    margin-top: 1.75rem;
-}
+    [class*='mobile-top-'].card-x-large {
+        margin-top: 1.75rem;
+    }
 
-[class^='top-'].card-x-large .avatar-img {
-    top: -1.75rem;
-}
+    [class*='mobile-top-'].card-x-large .avatar-img {
+        top: -1.75rem;
+    }
 
-[class^='bottom-'].card-x-large .avatar-img {
-    top: 1.75rem;
-}
+    [class*='mobile-bottom-'].card-x-large .avatar-img {
+        top: 1.75rem;
+    }
 
-[class$='-left card-x-large'] .avatar-img {
-    left: 1.75rem;
-}
+    [class$='-left-mobile card-x-large'] .avatar-img {
+        left: 1.75rem;
+    }
 
-[class$='-right card-x-large'] .avatar-img {
-    right: 1.75rem;
-}
+    [class$='-right-mobile card-x-large'] .avatar-img {
+        right: 1.75rem;
+    }
 
-[class$='-left card-x-small'] .avonni-title-container {
-    position: absolute;
-    padding: 0.5rem;
-    padding-left: 4.75rem;
-    padding-right: 0.75rem;
-}
+    [class$='-left-mobile card-x-small'] .avonni-title-container {
+        position: absolute;
+        padding: 0.5rem;
+        padding-left: 4.75rem;
+        padding-right: 0.75rem;
+    }
 
-[class$='-left card-small'] .avonni-title-container {
-    position: absolute;
-    padding: 0.8rem;
-    padding-left: 6.5rem;
-    padding-right: 1rem;
-}
+    [class$='-left-mobile card-small'] .avonni-title-container {
+        position: absolute;
+        padding: 0.8rem;
+        padding-left: 6.5rem;
+        padding-right: 1rem;
+    }
 
-[class$='-left card-medium'] .avonni-title-container {
-    position: absolute;
-    padding: 1.5rem;
-    padding-left: 8.25rem;
-    padding-right: 1.25rem;
-}
+    [class$='-left-mobile card-medium'] .avonni-title-container {
+        position: absolute;
+        padding: 1.5rem;
+        padding-left: 8.25rem;
+        padding-right: 1.25rem;
+    }
 
-[class$='-left card-large'] .avonni-title-container {
-    position: absolute;
-    padding: 2.8rem;
-    padding-left: 12.25rem;
-    padding-right: 1.5rem;
-}
+    [class$='-left-mobile card-large'] .avonni-title-container {
+        position: absolute;
+        padding: 2.8rem;
+        padding-left: 12.25rem;
+        padding-right: 1.5rem;
+    }
 
-[class$='-left card-x-large'] .avonni-title-container {
-    position: absolute;
-    padding: 3.8rem;
-    padding-left: 14.75rem;
-    padding-right: 1.75rem;
-}
+    [class$='-left-mobile card-x-large'] .avonni-title-container {
+        position: absolute;
+        padding: 3.8rem;
+        padding-left: 14.75rem;
+        padding-right: 1.75rem;
+    }
 
-[class$='-right card-x-small'] .avonni-title-container {
-    position: absolute;
-    padding: 0.5rem;
-    padding-right: 4.75rem;
-    padding-left: 0.75rem;
-}
+    [class$='-right-mobile card-x-small'] .avonni-title-container {
+        position: absolute;
+        padding: 0.5rem;
+        padding-right: 4.75rem;
+        padding-left: 0.75rem;
+    }
 
-[class$='-right card-small'] .avonni-title-container {
-    position: absolute;
-    padding: 0.8rem;
-    padding-right: 6.5rem;
-    padding-left: 1rem;
-}
+    [class$='-right-mobile card-small'] .avonni-title-container {
+        position: absolute;
+        padding: 0.8rem;
+        padding-right: 6.5rem;
+        padding-left: 1rem;
+    }
 
-[class$='-right card-medium'] .avonni-title-container {
-    position: absolute;
-    padding: 1.5rem;
-    padding-right: 8.25rem;
-    padding-left: 1.25rem;
-}
+    [class$='-right-mobile card-medium'] .avonni-title-container {
+        position: absolute;
+        padding: 1.5rem;
+        padding-right: 8.25rem;
+        padding-left: 1.25rem;
+    }
 
-[class$='-right card-large'] .avonni-title-container {
-    position: absolute;
-    padding: 2.8rem;
-    padding-right: 12.25rem;
-    padding-left: 1.5rem;
-}
+    [class$='-right-mobile card-large'] .avonni-title-container {
+        position: absolute;
+        padding: 2.8rem;
+        padding-right: 12.25rem;
+        padding-left: 1.5rem;
+    }
 
-[class$='-right card-x-large'] .avonni-title-container {
-    position: absolute;
-    padding: 3.8rem;
-    padding-right: 14.75rem;
-    padding-left: 1.75rem;
-}
+    [class$='-right-mobile card-x-large'] .avonni-title-container {
+        position: absolute;
+        padding: 3.8rem;
+        padding-right: 14.75rem;
+        padding-left: 1.75rem;
+    }
 
-.bottom-left.card-x-small .slds-card__body,
-.bottom-right.card-x-small .slds-card__body {
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
-}
+    .mobile-bottom-left-mobile.card-x-small .slds-card__body,
+    .mobile-bottom-right-mobile.card-x-small .slds-card__body {
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+    }
 
-.bottom-left.card-small .slds-card__body,
-.bottom-right.card-small .slds-card__body {
-    margin-top: 1.75rem;
-    margin-bottom: 1rem;
-}
+    .mobile-bottom-left.card-small .slds-card__body,
+    .mobile-bottom-right-mobile.card-small .slds-card__body {
+        margin-top: 1.75rem;
+        margin-bottom: 1rem;
+    }
 
-.bottom-left.card-medium .slds-card__body,
-.bottom-right.card-medium .slds-card__body {
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-}
+    .mobile-bottom-left-mobile.card-medium .slds-card__body,
+    .mobile-bottom-right-mobile.card-medium .slds-card__body {
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+    }
 
-.bottom-left.card-large .slds-card__body,
-.bottom-right.card-large .slds-card__body {
-    margin-top: 2.25rem;
-    margin-bottom: 1rem;
-}
+    .mobile-bottom-left-mobile.card-large .slds-card__body,
+    .mobile-bottom-right-mobile.card-large .slds-card__body {
+        margin-top: 2.25rem;
+        margin-bottom: 1rem;
+    }
 
-.bottom-left.card-x-large .slds-card__body,
-.bottom-right.card-x-large .slds-card__body {
-    margin-top: 2.5rem;
-    margin-bottom: 1rem;
-}
+    .mobile-bottom-left-mobile.card-x-large .slds-card__body,
+    .mobile-bottom-right-mobile.card-x-large .slds-card__body {
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+    }
 
-[class$='-left card-medium'] .slds-card__body,
-[class$='-right card-medium'] .slds-card__body {
-    padding: 0 1.25rem;
-}
+    [class$='mobile card-medium'] .slds-card__body {
+        padding: 0 1.25rem;
+    }
 
-[class$='-left card-large'] .slds-card__body,
-[class$='-right card-large'] .slds-card__body {
-    padding: 0 1.5rem;
-}
+    [class$='mobile card-large'] .slds-card__body {
+        padding: 0 1.5rem;
+    }
 
-[class$='-left card-x-large'] .slds-card__body,
-[class$='-right card-x-large'] .slds-card__body {
-    padding: 0 1.75rem;
-}
+    [class$='mobile card-x-large'] .slds-card__body {
+        padding: 0 1.75rem;
+    }
 
-.bottom-center .avonni-title-container {
-    padding: 0 1rem;
-}
+    .mobile-bottom-center-mobile .avonni-title-container {
+        padding: 0 1rem;
+    }
 
-.bottom-center.card-x-small .avonni-title-container {
-    margin-top: 1.5rem;
-}
+    .mobile-bottom-center-mobile.card-x-small .avonni-title-container {
+        margin-top: 1.5rem;
+    }
 
-.bottom-center.card-small .avonni-title-container {
-    margin-top: 1.75rem;
-}
+    .mobile-bottom-center-mobile.card-small .avonni-title-container {
+        margin-top: 1.75rem;
+    }
 
-.bottom-center.card-medium .avonni-title-container {
-    margin-top: 2rem;
-}
+    .mobile-bottom-center-mobile.card-medium .avonni-title-container {
+        margin-top: 2rem;
+    }
 
-.bottom-center.card-large .avonni-title-container {
-    margin-top: 2.25rem;
-}
+    .mobile-bottom-center-mobile.card-large .avonni-title-container {
+        margin-top: 2.25rem;
+    }
 
-.bottom-center.card-x-large .avonni-title-container {
-    margin-top: 2.5rem;
-    padding: 0 1rem;
-}
+    .mobile-bottom-center-mobile.card-x-large .avonni-title-container {
+        margin-top: 2.5rem;
+        padding: 0 1rem;
+    }
 
-.top-center .avonni-title-container {
-    padding: 1rem 1rem 0 1rem;
+    .mobile-top-center-mobile .avonni-title-container {
+        padding: 1rem 1rem 0 1rem;
+    }
+
+    .mobile-bottom-center .avonni-title-container {
+        padding: 0 1rem;
+    }
+
+    [class*='mobile-top-'].card-x-small {
+        margin-top: 0.75rem;
+    }
+
+    [class*='mobile-top-'].card-x-small .avatar-img {
+        top: -0.75rem;
+    }
+
+    [class*='mobile-bottom-'].card-x-small .avatar-img {
+        top: 0.75rem;
+    }
 }
