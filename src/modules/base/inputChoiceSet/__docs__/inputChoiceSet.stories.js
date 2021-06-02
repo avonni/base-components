@@ -8,7 +8,7 @@ export default {
                 type: 'text'
             },
             type: { required: true },
-            description: 'Text label for the input choice set.',
+            description: 'Text label for the input.',
             table: {
                 type: { summary: 'string' }
             }
@@ -19,7 +19,7 @@ export default {
                 type: 'text'
             },
             description:
-                'Optional message to be displayed when no input is selected and the required attribute is set.',
+                'Optional message to be displayed when no option is selected and the required attribute is set.',
             table: {
                 type: { summary: 'string' }
             }
@@ -29,11 +29,24 @@ export default {
                 type: 'radio'
             },
             description:
-                'The style of the input choice set. Options are checkbox or button.',
-            options: ['checkbox', 'button'],
-            defaultValue: 'checkbox',
+                'Type of the input. Valid value include default and button.',
+            options: ['default', 'button'],
+            defaultValue: 'default',
             table: {
-                defaultValue: { summary: 'checkbox' },
+                defaultValue: { summary: 'default' },
+                type: { summary: 'string' }
+            }
+        },
+        orientation: {
+            control: {
+                type: 'radio'
+            },
+            description:
+                'Orientation of the input options. Valid values include vertical and horizontal.',
+            options: ['vertical', 'horizontal'],
+            defaultValue: 'vertical',
+            table: {
+                defaultValue: { summary: 'vertical' },
                 type: { summary: 'string' }
             }
         },
@@ -50,7 +63,7 @@ export default {
             type: { required: true },
             defaultValue: 'standard',
             description:
-                'The variant changes the appearance of the input choice set. Accepted variants include standard, label-hidden, label-inline, and label-stacked. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and input choice set. Use label-stacked to place the label above the input choice set.',
+                'The variant changes the appearance of the input label. Accepted variants include standard, label-hidden, label-inline, and label-stacked. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and checkbox group. Use label-stacked to place the label above the checkbox group.',
             table: {
                 defaultValue: { summary: 'standard' },
                 type: { summary: 'string' }
@@ -61,7 +74,7 @@ export default {
                 type: 'boolean'
             },
             description:
-                "If present, the input choice set is disabled. Input selections can't be changed for a disabled input choice set.",
+                "If present, the input is disabled.",
             defaultValue: 0,
             table: {
                 defaultValue: { summary: 'false' },
@@ -83,18 +96,19 @@ export default {
             control: {
                 type: 'object'
             },
-            description: 'Array of label-value pairs for each checkbox or button.',
+            description: 'Array of option objects.',
             table: {
                 type: { summary: 'object[]' }
             }
         },
+        
         value: {
             control: {
                 type: 'object'
             },
             type: { required: true },
             description:
-                'The list of selected checkboxes or buttons. Each array entry contains the value of a selected checkbox or button. The value of each input is set in the options attribute.',
+                'The list of selected options. Each array entry contains the value of a selected option. The value of each option is set in the options attribute.',
             table: {
                 type: { summary: 'string[]' }
             }

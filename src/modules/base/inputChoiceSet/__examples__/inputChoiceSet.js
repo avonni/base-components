@@ -11,6 +11,7 @@ export const InputChoiceSet = ({
     type,
     messageWhenValueMissing,
     options,
+    orientation,
     required,
     value,
     variant
@@ -19,6 +20,7 @@ export const InputChoiceSet = ({
     element.disabled = disabled;
     element.label = label;
     element.type = type;
+    element.orientation = orientation;
     element.messageWhenValueMissing = messageWhenValueMissing;
     element.options = options;
     element.required = required;

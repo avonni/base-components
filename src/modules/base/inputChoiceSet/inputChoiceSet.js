@@ -20,7 +20,8 @@ const i18n = {
 
 const DEBOUNCE_PERIOD = 200;
 
-const validTypes = { valid: ['checkbox', 'button'], default: 'checkbox' };
+const validOrientations = {valid: ['vertical', 'horizontal'], default:'vertical'};
+const validTypes = { valid: ['default', 'button'], default: 'default' };
 
 export default class InputChoiceSet extends LightningElement {
     static delegatesFocus = true;
@@ -29,12 +30,16 @@ export default class InputChoiceSet extends LightningElement {
     @api options;
     @api messageWhenValueMissing;
     @api name;
+    
+    _orientation; //
 
     _type = validTypes.default;
     _helpMessage;
     _disabled = false;
     _required = false;
     _value = [];
+    _isMultiSelect = false; //
+
 
     constructor() {
         super();
@@ -77,7 +82,6 @@ export default class InputChoiceSet extends LightningElement {
     get value() {
         return this._value;
     }
-
     set value(value) {
         this._value = value;
     }
@@ -88,6 +92,18 @@ export default class InputChoiceSet extends LightningElement {
     }
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
+    }
+
+    @api
+    get orientation() {
+        return this._type;
+    }
+
+    set orientation(orientation) {
+        this._orientation = normalizeString(orientation, {
+            fallbackValue: validOrientations.default,
+            validValues: validOrientations.valid
+        });
     }
 
     @api
@@ -121,7 +137,7 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     get checkboxVariant() {
-        return this.type === 'checkbox';
+        return this.type === 'default';
     }
 
     get i18n() {
