@@ -1,6 +1,8 @@
 import { createElement } from 'lwc';
 import ProfileCard from 'c/profileCard';
 
+// not tested avatar mobile position
+
 describe('ProfileCard', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -16,6 +18,7 @@ describe('ProfileCard', () => {
         expect(element.avatarAlternativeText).toBeUndefined();
         expect(element.avatarFallbackIconName).toBeUndefined();
         expect(element.avatarPosition).toBe('top-left');
+        expect(element.avatarMobilePosition).toBe('top-left');
         expect(element.avatarSrc).toBeUndefined();
         expect(element.avatarVariant).toBe('circle');
         expect(element.backgroundAlternativeText).toBeUndefined();
