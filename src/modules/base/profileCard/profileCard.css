@@ -173,11 +173,11 @@
         top: 0.75rem;
     }
 
-    [class*='-left'][class$='card-x-small'] .avatar-img {
+    [class$='-left card-x-small'] .avatar-img {
         left: 0.75rem;
     }
 
-    [class*='-right'][class$='card-x-small'] .avatar-img {
+    [class$='-right card-x-small'] .avatar-img {
         right: 0.75rem;
     }
 
@@ -213,7 +213,7 @@
         top: 1.25rem;
     }
 
-    [class$='-left-desktop card-medium'] .avatar-img {
+    [class$='-left card-medium'] .avatar-img {
         left: 1.25rem;
     }
 
@@ -268,7 +268,7 @@
         padding-right: 0.75rem;
     }
 
-    [class*='-left card-small'] .avonni-title-container {
+    [class$='-left card-small'] .avonni-title-container {
         position: absolute;
         padding: 0.8rem;
         padding-left: 6.5rem;
