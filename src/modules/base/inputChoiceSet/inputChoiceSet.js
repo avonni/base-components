@@ -156,7 +156,7 @@ export default class InputChoiceSet extends LightningElement {
                 iconName: option.iconName,
                 isIconTop: (option.iconPosition === "top"),
                 isIconBottom: (option.iconPosition === "bottom"),
-                isIconLeft : (option.iconPosition === "left"),
+                isIconLeft : (option.iconPosition === "left" || (!option.iconPosition && option.iconName)),
                 isIconRight : (option.iconPosition === "right"),
                 labelButtonClass: this.computeLabelButtonClass(option.iconPosition),
             }));

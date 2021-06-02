@@ -23,6 +23,11 @@
 .slds-checkbox_button__label.horizontal{
     height: 100%;
 }
+
 .block{
     display: block;
+}
+
+.slds-checkbox_faux{
+    padding: 0 !important;
 }
