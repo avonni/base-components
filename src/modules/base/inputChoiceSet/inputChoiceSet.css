@@ -26,6 +26,8 @@
 
 .block{
     display: block;
+    padding: 0;
+    margin: 0;
 }
 
 .slds-checkbox_faux{

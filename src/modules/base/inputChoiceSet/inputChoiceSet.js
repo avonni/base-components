@@ -165,14 +165,9 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     computeLabelButtonClass(iconPosition){
-        switch(iconPosition){
-            case "top":
-                return "slds-checkbox_faux slds-align_absolute-center";
-            case "bottom":
-                return "slds-checkbox_faux slds-align_absolute-center";
-            default:
-                return "slds-checkbox_faux";
-        }
+        let labelClass = "slds-checkbox_faux";
+        if(iconPosition === "top" || iconPosition === "bottom") labelClass += " slds-align_absolute-center";
+        return labelClass
     }
 
     @api
