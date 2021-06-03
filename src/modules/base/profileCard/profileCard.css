@@ -115,6 +115,23 @@
     right: 0;
 }
 
+.slds-card__body {
+    margin-top: var(--lwc-varSpacingVerticalSmall, 0.75rem);
+    margin-bottom: var(--lwc-varSpacingVerticalSmall, 0.75rem);
+}
+
+.card-medium .slds-card__body {
+    padding: 0 1.25rem;
+}
+
+.card-large .slds-card__body {
+    padding: 0 1.5rem;
+}
+
+.card-x-large .slds-card__body {
+    padding: 0 1.75rem;
+}
+
 .card-large .avonni-avatar-actions {
     bottom: 0.25rem;
     right: 0.25rem;
@@ -127,11 +144,6 @@
 
 .avonni-title-container {
     width: 100%;
-}
-
-.slds-card__body {
-    margin-top: var(--lwc-varSpacingVerticalSmall, 0.75rem);
-    margin-bottom: var(--lwc-varSpacingVerticalSmall, 0.75rem);
 }
 
 @media (min-width: 480px) {
@@ -261,6 +273,39 @@
         right: 1.75rem;
     }
 
+    .bottom-center-desktop .avonni-title-container {
+        padding: 0 1rem;
+    }
+
+    .bottom-center-desktop.card-x-small .avonni-title-container {
+        margin-top: 1.5rem;
+    }
+
+    .bottom-center-desktop.card-small .avonni-title-container {
+        margin-top: 1.75rem;
+    }
+
+    .bottom-center-desktop.card-medium .avonni-title-container {
+        margin-top: 2rem;
+    }
+
+    .bottom-center-desktop.card-large .avonni-title-container {
+        margin-top: 2.25rem;
+    }
+
+    .bottom-center-desktop.card-x-large .avonni-title-container {
+        margin-top: 2.5rem;
+        padding: 0 1rem;
+    }
+
+    .top-center-desktop .avonni-title-container {
+        padding: 1rem 1rem 0 1rem;
+    }
+
+    .bottom-center-desktop .avonni-title-container {
+        padding: 0 1rem;
+    }
+
     [class*='-left-desktop'][class$='card-x-small'] .avonni-title-container {
         position: absolute;
         padding: 0.5rem;
@@ -361,51 +406,6 @@
         margin-bottom: 1rem;
     }
 
-    .card-medium .slds-card__body {
-        padding: 0 1.25rem;
-    }
-
-    .card-large .slds-card__body {
-        padding: 0 1.25rem;
-    }
-
-    .card-x-large .slds-card__body {
-        padding: 0 1.25rem;
-    }
-
-    .bottom-center-desktop .avonni-title-container {
-        padding: 0 1rem;
-    }
-
-    .bottom-center-desktop.card-x-small .avonni-title-container {
-        margin-top: 1.5rem;
-    }
-
-    .bottom-center-desktop.card-small .avonni-title-container {
-        margin-top: 1.75rem;
-    }
-
-    .bottom-center-desktop.card-medium .avonni-title-container {
-        margin-top: 2rem;
-    }
-
-    .bottom-center-desktop.card-large .avonni-title-container {
-        margin-top: 2.25rem;
-    }
-
-    .bottom-center-desktop.card-x-large .avonni-title-container {
-        margin-top: 2.5rem;
-        padding: 0 1rem;
-    }
-
-    .top-center-desktop .avonni-title-container {
-        padding: 1rem 1rem 0 1rem;
-    }
-
-    .bottom-center-desktop .avonni-title-container {
-        padding: 0 1rem;
-    }
-
     [class^='top-'].card-x-small {
         margin-top: 0.75rem;
     }
@@ -457,11 +457,11 @@
         top: 0.75rem;
     }
 
-    [class$='-left-mobile card-x-small'] .avatar-img {
+    [class$='-left card-x-small'] .avatar-img {
         left: 0.75rem;
     }
 
-    [class$='-right-mobile card-x-small'] .avatar-img {
+    [class$='-right card-x-small'] .avatar-img {
         right: 0.75rem;
     }
 
@@ -477,11 +477,11 @@
         top: 1rem;
     }
 
-    [class$='-left-mobile card-small'] .avatar-img {
+    [class$='-left card-small'] .avatar-img {
         left: 1rem;
     }
 
-    [class$='-right-mobile card-small'] .avatar-img {
+    [class$='-right card-small'] .avatar-img {
         right: 1rem;
     }
 
@@ -497,11 +497,11 @@
         top: 1.25rem;
     }
 
-    [class$='-left-mobile card-medium'] .avatar-img {
+    [class$='-left card-medium'] .avatar-img {
         left: 1.25rem;
     }
 
-    [class$='-right-mobile card-medium'] .avatar-img {
+    [class$='-right card-medium'] .avatar-img {
         right: 1.25rem;
     }
 
@@ -517,11 +517,11 @@
         top: 1.5rem;
     }
 
-    [class$='-left-mobile card-large'] .avatar-img {
+    [class$='-left card-large'] .avatar-img {
         left: 1.5rem;
     }
 
-    [class$='-right-mobile card-large'] .avatar-img {
+    [class$='-right card-large'] .avatar-img {
         right: 1.5rem;
     }
 
@@ -537,157 +537,145 @@
         top: 1.75rem;
     }
 
-    [class$='-left-mobile card-x-large'] .avatar-img {
+    [class$='-left card-x-large'] .avatar-img {
         left: 1.75rem;
     }
 
-    [class$='-right-mobile card-x-large'] .avatar-img {
+    [class$='-right card-x-large'] .avatar-img {
         right: 1.75rem;
     }
 
-    [class$='-left-mobile card-x-small'] .avonni-title-container {
+    .mobile-bottom-center .avonni-title-container {
+        padding: 0 1rem;
+    }
+
+    .mobile-bottom-center.card-x-small .avonni-title-container {
+        margin-top: 1.5rem;
+    }
+
+    .mobile-bottom-center.card-small .avonni-title-container {
+        margin-top: 1.75rem;
+    }
+
+    .mobile-bottom-center.card-medium .avonni-title-container {
+        margin-top: 2rem;
+    }
+
+    .mobile-bottom-center.card-large .avonni-title-container {
+        margin-top: 2.25rem;
+    }
+
+    .mobile-bottom-center.card-x-large .avonni-title-container {
+        margin-top: 2.5rem;
+        padding: 0 1rem;
+    }
+
+    .mobile-top-center .avonni-title-container {
+        padding: 1rem 1rem 0 1rem;
+    }
+
+    .mobile-bottom-center .avonni-title-container {
+        padding: 0 1rem;
+    }
+
+    [class$='-left card-x-small'] .avonni-title-container {
         position: absolute;
         padding: 0.5rem;
         padding-left: 4.75rem;
         padding-right: 0.75rem;
     }
 
-    [class$='-left-mobile card-small'] .avonni-title-container {
+    [class$='-left card-small'] .avonni-title-container {
         position: absolute;
         padding: 0.8rem;
         padding-left: 6.5rem;
         padding-right: 1rem;
     }
 
-    [class$='-left-mobile card-medium'] .avonni-title-container {
+    [class$='-left card-medium'] .avonni-title-container {
         position: absolute;
         padding: 1.5rem;
         padding-left: 8.25rem;
         padding-right: 1.25rem;
     }
 
-    [class$='-left-mobile card-large'] .avonni-title-container {
+    [class$='-left card-large'] .avonni-title-container {
         position: absolute;
         padding: 2.8rem;
         padding-left: 12.25rem;
         padding-right: 1.5rem;
     }
 
-    [class$='-left-mobile card-x-large'] .avonni-title-container {
+    [class$='-left card-x-large'] .avonni-title-container {
         position: absolute;
         padding: 3.8rem;
         padding-left: 14.75rem;
         padding-right: 1.75rem;
     }
 
-    [class$='-right-mobile card-x-small'] .avonni-title-container {
+    [class$='-right card-x-small'] .avonni-title-container {
         position: absolute;
         padding: 0.5rem;
         padding-right: 4.75rem;
         padding-left: 0.75rem;
     }
 
-    [class$='-right-mobile card-small'] .avonni-title-container {
+    [class$='-right card-small'] .avonni-title-container {
         position: absolute;
         padding: 0.8rem;
         padding-right: 6.5rem;
         padding-left: 1rem;
     }
 
-    [class$='-right-mobile card-medium'] .avonni-title-container {
+    [class$='-right card-medium'] .avonni-title-container {
         position: absolute;
         padding: 1.5rem;
         padding-right: 8.25rem;
         padding-left: 1.25rem;
     }
 
-    [class$='-right-mobile card-large'] .avonni-title-container {
+    [class$='-right card-large'] .avonni-title-container {
         position: absolute;
         padding: 2.8rem;
         padding-right: 12.25rem;
         padding-left: 1.5rem;
     }
 
-    [class$='-right-mobile card-x-large'] .avonni-title-container {
+    [class$='-right card-x-large'] .avonni-title-container {
         position: absolute;
         padding: 3.8rem;
         padding-right: 14.75rem;
         padding-left: 1.75rem;
     }
 
-    .mobile-bottom-left-mobile.card-x-small .slds-card__body,
-    .mobile-bottom-right-mobile.card-x-small .slds-card__body {
+    .mobile-bottom-left.card-x-small .slds-card__body,
+    .mobile-bottom-right.card-x-small .slds-card__body {
         margin-top: 1.5rem;
         margin-bottom: 1rem;
     }
 
     .mobile-bottom-left.card-small .slds-card__body,
-    .mobile-bottom-right-mobile.card-small .slds-card__body {
+    .mobile-bottom-right.card-small .slds-card__body {
         margin-top: 1.75rem;
         margin-bottom: 1rem;
     }
 
-    .mobile-bottom-left-mobile.card-medium .slds-card__body,
-    .mobile-bottom-right-mobile.card-medium .slds-card__body {
+    .mobile-bottom-left.card-medium .slds-card__body,
+    .mobile-bottom-right.card-medium .slds-card__body {
         margin-top: 2rem;
         margin-bottom: 1rem;
     }
 
-    .mobile-bottom-left-mobile.card-large .slds-card__body,
-    .mobile-bottom-right-mobile.card-large .slds-card__body {
+    .mobile-bottom-left.card-large .slds-card__body,
+    .mobile-bottom-right.card-large .slds-card__body {
         margin-top: 2.25rem;
         margin-bottom: 1rem;
     }
 
-    .mobile-bottom-left-mobile.card-x-large .slds-card__body,
-    .mobile-bottom-right-mobile.card-x-large .slds-card__body {
+    .mobile-bottom-left.card-x-large .slds-card__body,
+    .mobile-bottom-right.card-x-large .slds-card__body {
         margin-top: 2.5rem;
         margin-bottom: 1rem;
-    }
-
-    [class$='mobile card-medium'] .slds-card__body {
-        padding: 0 1.25rem;
-    }
-
-    [class$='mobile card-large'] .slds-card__body {
-        padding: 0 1.5rem;
-    }
-
-    [class$='mobile card-x-large'] .slds-card__body {
-        padding: 0 1.75rem;
-    }
-
-    .mobile-bottom-center-mobile .avonni-title-container {
-        padding: 0 1rem;
-    }
-
-    .mobile-bottom-center-mobile.card-x-small .avonni-title-container {
-        margin-top: 1.5rem;
-    }
-
-    .mobile-bottom-center-mobile.card-small .avonni-title-container {
-        margin-top: 1.75rem;
-    }
-
-    .mobile-bottom-center-mobile.card-medium .avonni-title-container {
-        margin-top: 2rem;
-    }
-
-    .mobile-bottom-center-mobile.card-large .avonni-title-container {
-        margin-top: 2.25rem;
-    }
-
-    .mobile-bottom-center-mobile.card-x-large .avonni-title-container {
-        margin-top: 2.5rem;
-        padding: 0 1rem;
-    }
-
-    .mobile-top-center-mobile .avonni-title-container {
-        padding: 1rem 1rem 0 1rem;
-    }
-
-    .mobile-bottom-center .avonni-title-container {
-        padding: 0 1rem;
     }
 
     [class*='mobile-top-'].card-x-small {
