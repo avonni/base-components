@@ -84,6 +84,7 @@
     transform: translate(50%);
     right: 50%;
     margin-left: auto;
+    margin-right: 0;
 }
 
 .avonni-img_cropped-right {
@@ -91,8 +92,18 @@
     margin-left: auto;
 }
 
-.avonni-img_no-crop_no-width {
+.avonni-img_no-crop_no-width_no-height {
     width: 100%;
+    max-width: 100%;
+    height: auto;
+}
+
+.avonni-img_no-crop_no-width_height {
+    max-width: 100%;
+    max-height: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
 }
 
 .avonni-img_cropped {
@@ -106,8 +117,7 @@
     height: 100%;
 }
 
-.avonni-img_cropped_width,
-.avonni-img_width_height {
+.avonni-img_cropped_width {
     max-width: 100%;
     max-height: 100%;
 }
@@ -115,6 +125,14 @@
 .avonni-img_no-crop_width_blank {
     max-width: 100%;
     height: auto;
+}
+
+.avonni-img_width_height {
+    max-width: 100%;
+    max-height: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
 }
 
 .avonni-img_static_height_no-crop_no-width {
