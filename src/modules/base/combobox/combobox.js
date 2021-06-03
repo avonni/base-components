@@ -1,0 +1,282 @@
+import { LightningElement, api } from 'lwc';
+import {
+    normalizeArray,
+    normalizeBoolean,
+    normalizeString
+} from 'c/utilsPrivate';
+import { FieldConstraintApi } from 'c/inputUtils';
+
+const DROPDOWN_ALIGNMENTS = {
+    valid: [
+        'auto',
+        'left',
+        'center',
+        'right',
+        'bottom-left',
+        'bottom-center',
+        'bottom-right'
+    ],
+    default: 'left'
+};
+
+const VARIANTS = {
+    valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'],
+    default: 'standard'
+};
+
+const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
+const DEFAULT_PLACEHOLDER = 'Select an Option';
+const DEFAULT_PLACEHOLDER_WHEN_SEARCH_ALLOWED = 'Search...';
+
+export default class Combobox extends LightningElement {
+    @api fieldLevelHelp;
+    @api label;
+    @api messageWhenValueMissing;
+    @api name;
+
+    _actions = [];
+    _allowSearch = false;
+    _disabled = false;
+    _dropdownAlignment = DROPDOWN_ALIGNMENTS.default;
+    _groups = [];
+    _hideSelectedOptions = false;
+    _isLoading = false;
+    _isMultiSelect = false;
+    _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
+    _multiLevelGroups = false;
+    _options = [];
+    _placeholder;
+    _readOnly = false;
+    _removeSelectedOptions = false;
+    _required = false;
+    _scopes = [];
+    _search;
+    _value = [];
+    _variant = VARIANTS.default;
+
+    helpMessage;
+
+    @api
+    get actions() {
+        return this._actions;
+    }
+    set actions(value) {
+        this._actions = normalizeArray(value);
+    }
+
+    @api
+    get allowSearch() {
+        return this._allowSearch;
+    }
+    set allowSearch(value) {
+        this._allowSearch = normalizeBoolean(value);
+    }
+
+    @api
+    get disabled() {
+        return this._disabled;
+    }
+    set disabled(value) {
+        this._disabled = normalizeBoolean(value);
+    }
+
+    @api
+    get dropdownAlignment() {
+        return this._dropdownAlignment;
+    }
+    set dropdownAlignment(value) {
+        this._dropdownAlignment = normalizeString(value, {
+            validValues: DROPDOWN_ALIGNMENTS.valid,
+            fallbackValue: DROPDOWN_ALIGNMENTS.default
+        });
+    }
+
+    @api
+    get groups() {
+        return this._groups;
+    }
+    set groups(value) {
+        this._groups = normalizeArray(value);
+    }
+
+    @api
+    get hideSelectedOptions() {
+        return this._hideSelectedOptions;
+    }
+    set hideSelectedOptions(value) {
+        this._hideSelectedOptions = normalizeBoolean(value);
+    }
+
+    @api
+    get isLoading() {
+        return this._isLoading;
+    }
+    set isLoading(value) {
+        this._isLoading = normalizeBoolean(value);
+    }
+
+    @api
+    get isMultiSelect() {
+        return this._isMultiSelect;
+    }
+    set isMultiSelect(value) {
+        this._isMultiSelect = normalizeBoolean(value);
+    }
+
+    @api
+    get loadingStateAlternativeText() {
+        return this._loadingStateAlternativeText;
+    }
+    set loadingStateAlternativeText(value) {
+        this._loadingStateAlternativeText =
+            typeof value === 'string'
+                ? value.trim()
+                : DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
+    }
+
+    @api
+    get multiLevelGroups() {
+        return this._multiLevelGroups;
+    }
+    set multiLevelGroups(value) {
+        this._multiLevelGroups = normalizeBoolean(value);
+    }
+
+    @api
+    get options() {
+        return this._options;
+    }
+    set options(value) {
+        this._options = normalizeArray(value);
+    }
+
+    @api
+    get placeholder() {
+        if (this._placeholder) return this._placeholder;
+
+        return this.allowSearch
+            ? DEFAULT_PLACEHOLDER_WHEN_SEARCH_ALLOWED
+            : DEFAULT_PLACEHOLDER;
+    }
+    set placeholder(value) {
+        this._placeholder = value;
+    }
+
+    @api
+    get readOnly() {
+        return this._readOnly;
+    }
+    set readOnly(value) {
+        this._readOnly = normalizeBoolean(value);
+    }
+
+    @api
+    get removeSelectedOptions() {
+        return this._removeSelectedOptions;
+    }
+    set removeSelectedOptions(value) {
+        this._removeSelectedOptions = normalizeBoolean(value);
+    }
+
+    @api
+    get required() {
+        return this._required;
+    }
+    set required(value) {
+        this._required = normalizeBoolean(value);
+    }
+
+    @api
+    get scopes() {
+        return this._scopes;
+    }
+    set scopes(value) {
+        this._scopes = normalizeArray(value);
+    }
+
+    @api
+    get search() {
+        return this._search;
+    }
+    set search(value) {
+        this._search = typeof value === 'function' ? value : undefined;
+    }
+
+    @api
+    get validity() {
+        return this._constraint.validity;
+    }
+
+    @api
+    get value() {
+        return this._value;
+    }
+    set value(value) {
+        this._value = normalizeArray(value);
+    }
+
+    @api
+    get variant() {
+        return this._variant;
+    }
+    set variant(value) {
+        this._variant = normalizeString(value, {
+            validValues: VARIANTS.valid,
+            fallbackValue: VARIANTS.default
+        });
+    }
+
+    get _constraint() {
+        if (!this._constraintApi) {
+            this._constraintApi = new FieldConstraintApi(() => this, {
+                valueMissing: () =>
+                    !this.disabled && this.required && this.value.length === 0
+            });
+        }
+        return this._constraintApi;
+    }
+
+    @api
+    blur() {
+        const input = this.template.querySelector('input');
+        if (input) input.blur();
+    }
+
+    @api
+    checkValidity() {
+        return this._constraint.checkValidity();
+    }
+
+    @api
+    close() {
+        // Todo
+    }
+
+    @api
+    focus() {
+        const input = this.template.querySelector('input');
+        if (input) input.focus();
+    }
+
+    @api
+    open() {
+        // Todo
+    }
+
+    @api
+    reportValidity() {
+        return this._constraint.reportValidity((message) => {
+            this.helpMessage = this.messageWhenValueMissing || message;
+        });
+    }
+
+    @api
+    setCustomValidity(message) {
+        this._constraint.setCustomValidity(message);
+    }
+
+    @api
+    showHelpMessageIfInvalid() {
+        this.reportValidity();
+    }
+}

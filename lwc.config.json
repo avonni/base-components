@@ -115,6 +115,10 @@
             "path": "src/modules/base/colorPickerPanel/colorPickerPanel.js"
         },
         {
+            "name": "c/combobox",
+            "path": "src/modules/base/combobox/combobox.js"
+        },
+        {
             "name": "c/confetti",
             "path": "src/modules/base/confetti/confetti.js"
         },
@@ -503,6 +507,10 @@
             "path": "src/modules/base/colorPalette/colorPalette.js"
         },
         {
+            "name": "avonni/combobox",
+            "path": "src/modules/base/combobox/combobox.js"
+        },
+        {
             "name": "avonni/colorPicker",
             "path": "src/modules/base/colorPicker/colorPicker.js"
         },
@@ -741,6 +749,7 @@
         "avonni/colorGradient",
         "avonni/colorPalette",
         "avonni/colorPicker",
+        "avonni/combobox",
         "avonni/confetti",
         "avonni/datatable",
         "avonni/dateTimePicker",
