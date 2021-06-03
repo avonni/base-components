@@ -220,9 +220,9 @@ export default class List extends LightningElement {
             this.template.querySelectorAll('.sortable-item')
         );
         this._draggedElement = event.currentTarget;
+        console.log(this._draggedElement);
         this._draggedIndex = Number(this._draggedElement.dataset.index);
         this._draggedElement.classList.add('sortable-item_dragged');
-
         if (event.type !== 'keydown') {
             this.initPositions(event);
         } else {
@@ -263,6 +263,9 @@ export default class List extends LightningElement {
 
         const hoveredItem = this.getHoveredItem(center);
         if (hoveredItem) this.switchWithItem(hoveredItem);
+        event.currentTarget
+            .querySelector('lightning-button-menu')
+            .classList.remove('slds-is-open');
     }
 
     dragEnd() {

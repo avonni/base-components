@@ -164,13 +164,15 @@ export const SortableList = Template.bind({});
 SortableList.args = {
     label: 'Sortable list',
     sortable: true,
-    items: items
+    items: items,
+    actions: actions
 };
 
 export const SortableListWithAvatars = Template.bind({});
 SortableListWithAvatars.args = {
     label: 'Sortable list with Icons',
     items: itemsWithAvatars,
+    actions: actions,
     sortableIconName: 'utility:drag_and_drop',
     sortableIconPosition: 'left',
     sortable: true
