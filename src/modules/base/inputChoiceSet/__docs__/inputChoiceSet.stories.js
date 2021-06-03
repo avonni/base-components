@@ -134,87 +134,152 @@ export default {
 
 const Template = (args) => InputChoiceSet(args);
 
-const options = [
-    { label: 'Mon', value: 'mon', iconName: 'utility:smiley_and_people', iconPosition: 'left' },
-    { label: 'Tue', value: 'tue', iconName: 'utility:smiley_and_people', iconPosition: 'right' },
-    { label: 'Wed', value: 'wed', iconName: 'utility:smiley_and_people', iconPosition: 'top' },
-    { label: 'Thu', value: 'thu', iconName: 'utility:smiley_and_people', iconPosition: 'bottom' },
-    { label: 'Fri', value: 'fri', iconName: 'utility:smiley_and_people', iconPosition: 'left' }
+const optionsWithIcon = [
+    { label: 'Left', value: 'left', iconName: 'utility:left_align_text', iconPosition: 'right' },
+    { label: 'Center', value: 'center', iconName: 'utility:center_align_text', iconPosition: 'right' },
+    { label: 'Right', value: 'right', iconName: 'utility:right_align_text', iconPosition: 'right' },
 ];
-const primaryValue = ['wed', 'fri'];
-const secondaryValue = ['mon', 'tue'];
-const thirdValue = ['thu'];
+const optionsWithoutIcon = [
+    { label: 'Mon', value: 'mon', },
+    { label: 'Tue', value: 'tue', },
+    { label: 'Wed', value: 'wed', },
+    { label: 'Thu', value: 'thu', },
+    { label: 'Fri', value: 'fri', }
+];
+const dayValue = ['fri'];
+const alignmentValue = ['center'];
 
-export const InputSet = Template.bind({});
-InputSet.args = {
+export const Checkboxes = Template.bind({});
+Checkboxes.args = {
     label: 'Please select a value',
     messageWhenValueMissing: 'Value missing',
-    options: options,
-    value: primaryValue,
+    options: optionsWithoutIcon,
+    value: dayValue,
     isMultiSelect: false,
 };
 
-export const InputChoiceSetDisabled = Template.bind({});
-InputChoiceSetDisabled.args = {
+export const HorizontalCheckboxes = Template.bind({});
+HorizontalCheckboxes.args = {
     label: 'Please select a value',
     messageWhenValueMissing: 'Value missing',
-    options: options,
-    value: secondaryValue,
+    options: optionsWithoutIcon,
+    orientation: 'horizontal',
+    value: dayValue,
+    isMultiSelect: false,
+};
+
+export const CheckboxesDisabled = Template.bind({});
+CheckboxesDisabled.args = {
+    label: 'Please select a value',
+    messageWhenValueMissing: 'Value missing',
+    options: optionsWithoutIcon,
+    value: dayValue,
     disabled: true
 };
 
-export const InputChoiceSetWithNoLabel = Template.bind({});
-InputChoiceSetWithNoLabel.args = {
+export const CheckboxesWithNoLabel = Template.bind({});
+CheckboxesWithNoLabel.args = {
     label: 'Please select a value',
     variant: 'label-hidden',
     messageWhenValueMissing: 'Value missing',
-    options: options,
-    value: thirdValue
+    options: optionsWithoutIcon,
+    value: dayValue
 };
 
-export const InputChoiceSetWithLabelStacked = Template.bind({});
-InputChoiceSetWithLabelStacked.args = {
+export const CheckboxesWithLabelStacked = Template.bind({});
+CheckboxesWithLabelStacked.args = {
     label: 'Please select a value',
     variant: 'label-stacked',
     messageWhenValueMissing: 'Value missing',
-    options: options,
-    value: primaryValue
+    options: optionsWithoutIcon,
+    value: dayValue
 };
 
-export const InputChoiceSetRequired = Template.bind({});
-InputChoiceSetRequired.args = {
+export const CheckboxesRequired = Template.bind({});
+CheckboxesRequired.args = {
     label: 'Please select a value',
     messageWhenValueMissing: 'Value missing',
     required: true,
-    options: options,
-    value: secondaryValue
+    options: optionsWithoutIcon,
+    value: dayValue
 };
 
-export const Button = Template.bind({});
-Button.args = {
+export const CheckboxesWithMultiSelect = Template.bind({});
+CheckboxesWithMultiSelect.args = {
+    label: 'Please select a value',
+    messageWhenValueMissing: 'Value missing',
+    required: true,
+    isMultiSelect: true,
+    options: optionsWithoutIcon,
+    value: dayValue
+};
+
+export const CheckboxesWithLeftIcons = Template.bind({});
+CheckboxesWithLeftIcons.args = {
+    label: 'Please select a value',
+    messageWhenValueMissing: 'Value missing',
+    required: true,
+    isMultiSelect: true,
+    options: optionsWithIcon,
+    value: alignmentValue
+};
+
+export const Buttons = Template.bind({});
+Buttons.args = {
     label: 'Please select a value',
     type: 'button',
     messageWhenValueMissing: 'Value missing',
-    options: options,
-    value: primaryValue
+    options: optionsWithoutIcon,
+    value: dayValue
 };
 
-export const ButtonWithLabelInline = Template.bind({});
-ButtonWithLabelInline.args = {
+export const HorizontalButtons = Template.bind({});
+HorizontalButtons.args = {
+    label: 'Please select a value',
+    type: 'button',
+    orientation: 'horizontal',
+    messageWhenValueMissing: 'Value missing',
+    options: optionsWithoutIcon,
+    value: dayValue
+};
+
+export const ButtonsWithLabelInline = Template.bind({});
+ButtonsWithLabelInline.args = {
     label: 'Please select a value',
     type: 'button',
     variant: 'label-inline',
     messageWhenValueMissing: 'Value missing',
-    options: options,
-    value: secondaryValue
+    options: optionsWithoutIcon,
+    value: dayValue
 };
 
-export const ButtonDisabled = Template.bind({});
-ButtonDisabled.args = {
+export const ButtonsDisabled = Template.bind({});
+ButtonsDisabled.args = {
     label: 'Please select a value',
     type: 'button',
     disabled: true,
     messageWhenValueMissing: 'Value missing',
-    options: options,
-    value: thirdValue
+    options: optionsWithoutIcon,
+    value: dayValue
+};
+
+export const ButtonsWithMultiSelect = Template.bind({});
+ButtonsWithMultiSelect.args = {
+    label: 'Please select a value',
+    type: 'button',
+    disabled: false,
+    isMultiSelect : true,
+    messageWhenValueMissing: 'Value missing',
+    options: optionsWithoutIcon,
+    value: dayValue
+};
+
+export const ButtonsWithRightIcons = Template.bind({});
+ButtonsWithRightIcons.args = {
+    label: 'Please select a value',
+    type: 'button',
+    disabled: false,
+    messageWhenValueMissing: 'Value missing',
+    options: optionsWithIcon,
+    value: alignmentValue
 };
