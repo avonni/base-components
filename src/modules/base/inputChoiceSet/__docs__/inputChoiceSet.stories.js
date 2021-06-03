@@ -215,7 +215,7 @@ CheckboxesWithMultiSelect.args = {
 };
 
 export const CheckboxesRightIcons = Template.bind({});
-CheckboxesWithLeftIcons.args = {
+CheckboxesWithRightIcons.args = {
     label: 'Please select a value',
     messageWhenValueMissing: 'Value missing',
     required: true,
