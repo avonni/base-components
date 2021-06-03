@@ -105,13 +105,16 @@ describe('ProfileCard', () => {
         document.body.appendChild(element);
 
         element.avatarPosition = 'top-left';
+        element.showActions = true;
 
         return Promise.resolve().then(() => {
             const container = element.shadowRoot.querySelector(
                 '.avonni-flex-container'
             );
-            const mainContainer = element.shadowRoot.querySelector('.top-left');
-            expect(container.classList).toContain('avonni-flex-align-start');
+            const mainContainer = element.shadowRoot.querySelector(
+                '.top-left-desktop'
+            );
+            expect(container.className).toBe('avonni-flex-container');
             expect(mainContainer).toBeTruthy();
         });
     });
@@ -130,7 +133,7 @@ describe('ProfileCard', () => {
                 '.avonni-flex-container'
             );
             const mainContainer = element.shadowRoot.querySelector(
-                '.top-center'
+                '.top-center-desktop'
             );
             expect(container.classList).toContain('avonni-flex-align-center');
             expect(mainContainer).toBeTruthy();
@@ -151,7 +154,7 @@ describe('ProfileCard', () => {
                 '.avonni-flex-container'
             );
             const mainContainer = element.shadowRoot.querySelector(
-                '.top-right'
+                '.top-right-desktop'
             );
             expect(container.classList).toContain('avonni-flex-align-end');
             expect(mainContainer).toBeTruthy();
@@ -172,9 +175,9 @@ describe('ProfileCard', () => {
                 '.avonni-flex-container'
             );
             const mainContainer = element.shadowRoot.querySelector(
-                '.bottom-left'
+                '.bottom-left-desktop'
             );
-            expect(container.classList).toContain('avonni-flex-align-start');
+            expect(container.className).toBe('avonni-flex-container');
             expect(mainContainer).toBeTruthy();
         });
     });
@@ -193,7 +196,7 @@ describe('ProfileCard', () => {
                 '.avonni-flex-container'
             );
             const mainContainer = element.shadowRoot.querySelector(
-                '.bottom-center'
+                '.bottom-center-desktop'
             );
             expect(container.classList).toContain('avonni-flex-align-center');
             expect(mainContainer).toBeTruthy();
@@ -214,7 +217,7 @@ describe('ProfileCard', () => {
                 '.avonni-flex-container'
             );
             const mainContainer = element.shadowRoot.querySelector(
-                '.bottom-right'
+                '.bottom-right-desktop'
             );
             expect(container.classList).toContain('avonni-flex-align-end');
             expect(mainContainer).toBeTruthy();
@@ -236,8 +239,10 @@ describe('ProfileCard', () => {
             const container = element.shadowRoot.querySelector(
                 '.avonni-flex-container'
             );
-            const mainContainer = element.shadowRoot.querySelector('.top-left');
-            expect(container.classList).toContain('avonni-flex-align-start');
+            const mainContainer = element.shadowRoot.querySelector(
+                '.mobile-top-left'
+            );
+            expect(container.className).toBe('avonni-flex-container');
             expect(mainContainer).toBeTruthy();
         });
     });
@@ -257,9 +262,11 @@ describe('ProfileCard', () => {
                 '.avonni-flex-container'
             );
             const mainContainer = element.shadowRoot.querySelector(
-                '.top-center'
+                '.mobile-top-center'
             );
-            expect(container.classList).toContain('avonni-flex-align-center');
+            expect(container.classList).toContain(
+                'avonni-flex-mobile-align-center'
+            );
             expect(mainContainer).toBeTruthy();
         });
     });
@@ -279,9 +286,11 @@ describe('ProfileCard', () => {
                 '.avonni-flex-container'
             );
             const mainContainer = element.shadowRoot.querySelector(
-                '.top-right'
+                '.mobile-top-right'
             );
-            expect(container.classList).toContain('avonni-flex-align-end');
+            expect(container.classList).toContain(
+                'avonni-flex-mobile-align-end'
+            );
             expect(mainContainer).toBeTruthy();
         });
     });
@@ -301,9 +310,9 @@ describe('ProfileCard', () => {
                 '.avonni-flex-container'
             );
             const mainContainer = element.shadowRoot.querySelector(
-                '.bottom-left'
+                '.mobile-bottom-left'
             );
-            expect(container.classList).toContain('avonni-flex-align-start');
+            expect(container.className).toBe('avonni-flex-container');
             expect(mainContainer).toBeTruthy();
         });
     });
@@ -323,9 +332,11 @@ describe('ProfileCard', () => {
                 '.avonni-flex-container'
             );
             const mainContainer = element.shadowRoot.querySelector(
-                '.bottom-center'
+                '.mobile-bottom-center'
             );
-            expect(container.classList).toContain('avonni-flex-align-center');
+            expect(container.classList).toContain(
+                'avonni-flex-mobile-align-center'
+            );
             expect(mainContainer).toBeTruthy();
         });
     });
@@ -345,9 +356,11 @@ describe('ProfileCard', () => {
                 '.avonni-flex-container'
             );
             const mainContainer = element.shadowRoot.querySelector(
-                '.bottom-right'
+                '.mobile-bottom-right'
             );
-            expect(container.classList).toContain('avonni-flex-align-end');
+            expect(container.classList).toContain(
+                'avonni-flex-mobile-align-end'
+            );
             expect(mainContainer).toBeTruthy();
         });
     });

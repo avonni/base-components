@@ -37,7 +37,6 @@ export default class ProfileCard extends LightningElement {
     showActions = true;
     showFooter = true;
     showAvatarActions = true;
-    _innerWidth;
 
     renderedCallback() {
         let header = this.template.querySelector('header');
@@ -156,9 +155,6 @@ export default class ProfileCard extends LightningElement {
     get computedContainerClass() {
         return classSet('avonni-flex-container')
             .add({
-                'avonni-flex-align-start':
-                    this._avatarPosition === 'top-left' ||
-                    this._avatarPosition === 'bottom-left',
                 'avonni-flex-align-center':
                     this._avatarPosition === 'top-center' ||
                     this._avatarPosition === 'bottom-center',
@@ -167,9 +163,6 @@ export default class ProfileCard extends LightningElement {
                     this._avatarPosition === 'bottom-right'
             })
             .add({
-                'avonni-flex-mobile-align-start':
-                    this._avatarMobilePosition === 'top-left' ||
-                    this._avatarMObilePosition === 'bottom-left',
                 'avonni-flex-mobile-align-center':
                     this._avatarMobilePosition === 'top-center' ||
                     this._avatarMobilePosition === 'bottom-center',
@@ -186,8 +179,7 @@ export default class ProfileCard extends LightningElement {
                 'top-left-desktop': this._avatarPosition === 'top-left',
                 'bottom-left-desktop': this._avatarPosition === 'bottom-left',
                 'bottom-right-desktop': this._avatarPosition === 'bottom-right',
-                'top-right-desktop-desktop':
-                    this._avatarPosition === 'top-right',
+                'top-right-desktop': this._avatarPosition === 'top-right',
                 'top-center-desktop': this._avatarPosition === 'top-center',
                 'bottom-center-desktop':
                     this._avatarPosition === 'bottom-center'
@@ -240,9 +232,5 @@ export default class ProfileCard extends LightningElement {
         ) {
             this.isError = true;
         }
-    }
-
-    computedWidth() {
-        this._innerWidth = window.innerWidth;
     }
 }
