@@ -122,6 +122,11 @@
     max-height: 100%;
 }
 
+.avonni-img_cropped_no-width_no-height {
+    width: 100%;
+    height: 100%;
+}
+
 .avonni-img_no-crop_width_blank {
     max-width: 100%;
     height: auto;

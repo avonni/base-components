@@ -292,6 +292,11 @@ export default class Image extends LightningElement {
                     this.height &&
                     this._cropSize &&
                     !this.staticImages,
+                'avonni-img_cropped_no-width_no-height':
+                    !this.width &&
+                    !this.height &&
+                    this._cropSize &&
+                    !this.staticImages,
                 'avonni-img_cropped_width':
                     this.width &&
                     !this.height &&
