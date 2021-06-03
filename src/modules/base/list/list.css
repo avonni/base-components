@@ -38,3 +38,8 @@
 .sortable-item_moved-down {
     transform: translateY(var(--item-height));
 }
+.description-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
