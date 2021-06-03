@@ -246,3 +246,52 @@ NoImage.args = {
     avatarFallbackIconName: 'standard:user',
     avatarSrc: 'wrong path'
 };
+
+export const BaseMobile = Template.bind({});
+BaseMobile.parameters = {
+    viewport: {
+        defaultViewport: 'mobile1'
+    }
+};
+BaseMobile.args = {
+    title: 'Title',
+    subtitle: 'Subtitle',
+    avatarSrc:
+        'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+    backgroundSrc:
+        'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg',
+    avatarMobilePosition: 'top-left'
+};
+
+export const TopCenterMobile = Template.bind({});
+TopCenterMobile.parameters = {
+    viewport: {
+        defaultViewport: 'mobile1'
+    }
+};
+TopCenterMobile.args = {
+    title: 'Title',
+    subtitle: 'Subtitle',
+    avatarSrc:
+        'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+    backgroundSrc:
+        'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg',
+    avatarMobilePosition: 'top-center'
+};
+
+export const SmallBottomCenterMobile = Template.bind({});
+SmallBottomCenterMobile.parameters = {
+    viewport: {
+        defaultViewport: 'mobile1'
+    }
+};
+SmallBottomCenterMobile.args = {
+    title: 'Title',
+    subtitle: 'Subtitle',
+    size: 'small',
+    avatarSrc:
+        'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+    backgroundSrc:
+        'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg',
+    avatarMobilePosition: 'bottom-center'
+};
