@@ -92,7 +92,7 @@ describe('Input choice set', () => {
         return Promise.resolve().then(() => {
             const inputs = element.shadowRoot.querySelectorAll('div > span');
             inputs.forEach((input) => {
-                expect(input.className).toBe('slds-checkbox vertical');
+                expect(input.className).toContain('slds-checkbox vertical');
                 expect(input.className).not.toContain(
                     'slds-button slds-checkbox_button'
                 );
@@ -108,11 +108,12 @@ describe('Input choice set', () => {
 
         element.options = options;
         element.type = 'button';
+        element.orientation = 'vertical';
 
         return Promise.resolve().then(() => {
             const inputs = element.shadowRoot.querySelectorAll('div > span');
             inputs.forEach((input) => {
-                const expected = (input.className === 'slds-button slds-checkbox_button' || input.className === "slds-checkbox_faux")
+                const expected = (input.className === 'slds-button slds-checkbox_button vertical' || input.className === "slds-checkbox_faux")
                 expect(expected).toBe(true);
                 expect(input.className).not.toBe('slds-checkbox');
             });
