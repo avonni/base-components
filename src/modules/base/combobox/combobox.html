@@ -14,6 +14,7 @@
         <div class={computedDropdownTriggerClass}>
             <div
                 class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right"
+                onclick={handleTriggerClick}
             >
                 <lightning-icon
                     class="slds-icon_container slds-input__icon slds-input__icon_right"
@@ -31,12 +32,13 @@
                     autocomplete="off"
                     name={name}
                     placeholder={placeholder}
-                    disabled={disabled}
+                    disabled={inputIsDisabled}
                     aria-readonly={readOnly}
                     aria-autocomplete={computedAriaAutocomplete}
                     aria-owns="dropdown-element"
                     onfocus={handleFocus}
                     onblur={handleBlur}
+                    onkeydown={handleInputKeyDown}
                 />
             </div>
             <div
@@ -55,7 +57,7 @@
 
                 <!-- Options -->
                 <ul if:false={isLoading} role="listbox">
-                    <template for:each={options} for:item="option">
+                    <template for:each={computedOptions} for:item="option">
                         <li
                             key={option.value}
                             class={option.computedClass}
@@ -108,6 +110,40 @@
                 </ul>
             </div>
         </div>
+
+        <!-- Selected options -->
+        <ul
+            if:true={showSelectedOptions}
+            class="slds-grid slds-wrap slds-p-vertical_xx-small"
+            role="listbox"
+            aria-label="Selected Options:"
+            aria-orientation="horizontal"
+        >
+            <template for:each={selectedOptions} for:item="option">
+                <li
+                    key={option.value}
+                    class="slds-m-right_xx-small"
+                    role="presentation"
+                >
+                    <lightning-pill
+                        label={option.label}
+                        variant="plain"
+                        name={option.value}
+                        role="option"
+                        tabindex="0"
+                        onremove={handleRemoveSelectedOption}
+                    >
+                        <c-avatar
+                            if:true={option.hasAvatar}
+                            src={option.avatarSrc}
+                            fallback-icon-name={option.avatarFallbackIconName}
+                            hide-avatar-details="true"
+                            size="x-small"
+                        ></c-avatar>
+                    </lightning-pill>
+                </li>
+            </template>
+        </ul>
     </div>
 
     <template if:true={helpMessage}>
