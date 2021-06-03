@@ -63,11 +63,12 @@
                 onmouseup={handleDropdownMouseUp}
             >
                 <!-- Loading spinner -->
-                <lightning-spinner
-                    if:true={isLoading}
-                    size="small"
-                    alternative-text={loadingStateAlternativeText}
-                ></lightning-spinner>
+                <div if:true={isLoading} class="slds-p-around_large">
+                    <lightning-spinner
+                        size="small"
+                        alternative-text={loadingStateAlternativeText}
+                    ></lightning-spinner>
+                </div>
 
                 <!-- Options -->
                 <ul if:false={isLoading} role="listbox">

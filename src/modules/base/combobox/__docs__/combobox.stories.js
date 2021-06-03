@@ -308,5 +308,6 @@ const Template = (args) => Combobox(args);
 export const Base = Template.bind({});
 Base.args = {
     label: 'Combobox label',
-    options: OPTIONS
+    options: OPTIONS,
+    value: ['burlington', 'edge']
 };

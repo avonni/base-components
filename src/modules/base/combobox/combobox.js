@@ -62,6 +62,10 @@ export default class Combobox extends LightningElement {
     inputValue = '';
     selectedOptions = [];
 
+    connectedCallback() {
+        this.initValue();
+    }
+
     @api
     get actions() {
         return this._actions;
@@ -127,6 +131,7 @@ export default class Combobox extends LightningElement {
     }
     set isMultiSelect(value) {
         this._isMultiSelect = normalizeBoolean(value);
+        if (this.isConnected) this.initValue();
     }
 
     @api
@@ -161,6 +166,8 @@ export default class Combobox extends LightningElement {
         }
         this._options = options;
         this.computedOptions = options;
+
+        if (this.isConnected) this.initValue();
     }
 
     @api
@@ -189,6 +196,10 @@ export default class Combobox extends LightningElement {
     }
     set removeSelectedOptions(value) {
         this._removeSelectedOptions = normalizeBoolean(value);
+
+        if (this.isConnected) {
+            this.updateComputedOptions();
+        }
     }
 
     @api
@@ -225,7 +236,9 @@ export default class Combobox extends LightningElement {
         return this._value;
     }
     set value(value) {
-        this._value = normalizeArray(value);
+        this._value =
+            typeof value === 'string' ? [value] : normalizeArray(value);
+        if (this.isConnected) this.initValue();
     }
 
     @api
@@ -357,6 +370,25 @@ export default class Combobox extends LightningElement {
     @api
     showHelpMessageIfInvalid() {
         this.reportValidity();
+    }
+
+    initValue() {
+        if (this.isMultiSelect) {
+            this.value.forEach((value) => {
+                const selectedOption = this.computedOptions.find(
+                    (option) => option.value === value
+                );
+                if (selectedOption) selectedOption.selected = true;
+            });
+            this.updateSelectedOptions();
+        } else {
+            const selectedOption = this.computedOptions.find(
+                (option) => option.value === this.value[0]
+            );
+            if (selectedOption) selectedOption.selected = true;
+        }
+
+        if (this.removeSelectedOptions) this.updateComputedOptions();
     }
 
     updateSelectedOptions() {
