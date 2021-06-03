@@ -31,7 +31,7 @@
                 aria-describedby="instructions"
             >
                 <div
-                    class="slds-grid slds-grid_vertical-align-center slds-p-vertical_x-small"
+                    class="slds-grid slds-grid_vertical-align-center slds-p-top_xx-small"
                 >
                     <lightning-icon
                         if:true={showIconLeft}
@@ -40,7 +40,7 @@
                         size="x-small"
                     ></lightning-icon>
                     <c-avatar
-                        class="slds-m-left_x-small"
+                        class="slds-m-horizontal_x-small"
                         fallback-icon-name={item.avatarFallbackIconName}
                         src={item.avatarSrc}
                         size="small"
@@ -48,7 +48,7 @@
                     ></c-avatar>
                     <div class="slds-col slds-truncate">
                         <div
-                            class="slds-grid slds-grid-align-center slds-truncate slds-no-space slds-margin-bottom_xx-small slds-text-title_bold"
+                            class="slds-grid slds-grid-align-center slds-truncate slds-no-space slds-margin-bottom_xx-small"
                         >
                             <template if:true={item.href}>
                                 <a href={item.href}>{item.label}</a>
@@ -58,22 +58,26 @@
                             </template>
                             <div if:true={item.icons} class="slds-no-flex">
                                 <template for:each={item.icons} for:item="icon">
-                                    <lightning-button-icon
+                                    <lightning-icon
                                         key={icon.title}
                                         icon-name={icon.iconName}
-                                        variant="bare"
                                         alternative-text={icon.alternativeText}
                                         title={icon.title}
+                                        size="x-small"
                                         class="slds-p-left_x-small"
-                                    ></lightning-button-icon>
+                                    ></lightning-icon>
                                 </template>
                             </div>
                         </div>
-                        <p class="description-text slds-text-body_regular">
+                        <p
+                            if:true={item.description}
+                            class="slds-text-body_regular"
+                        >
                             {item.description}
                         </p>
                         <ul
-                            class="slds-list_horizontal slds-has-dividers_left slds-has-block-links_space"
+                            if:true={item.infos.length}
+                            class="slds-list_horizontal slds-has-dividers_left slds-has-block-links"
                         >
                             <template for:each={item.infos} for:item="info">
                                 <li key={info.label} class="slds-item">

@@ -192,25 +192,60 @@ const itemsWithAvatars = [
         label: 'Item 1',
         avatarSrc:
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
-        avatarFallbackIconName: 'custom:custom5'
+        avatarFallbackIconName: 'custom:custom5',
+        description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        infos: [
+            { label: 'info 1', href: '' },
+            { label: 'info 2', href: '' }
+        ],
+        icons: []
     },
     {
         label: 'Item 2',
-        avatarFallbackIconName: 'custom:custom9'
+        avatarFallbackIconName: 'custom:custom9',
+        description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        infos: [
+            { label: 'info 1', href: '' },
+            { label: 'info 2', href: '' }
+        ],
+        icons: []
     },
     {
         label: 'Item 3',
         avatarFallbackIconName: 'custom:custom1',
         avatarSrc:
-            'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg'
+            'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
+        description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        infos: [
+            { label: 'info 1', href: '' },
+            { label: 'info 2', href: '' }
+        ],
+        icons: []
     },
     {
         label: 'Item 4',
-        avatarFallbackIconName: 'custom:custom11'
+        avatarFallbackIconName: 'custom:custom11',
+        description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        infos: [
+            { label: 'info 1', href: '' },
+            { label: 'info 2', href: '' }
+        ],
+        icons: []
     },
     {
         label: 'Item 5',
-        avatarFallbackIconName: 'custom:custom51'
+        avatarFallbackIconName: 'custom:custom51',
+        description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        infos: [
+            { label: 'info 1', href: '' },
+            { label: 'info 2', href: '' }
+        ],
+        icons: []
     }
 ];
 
