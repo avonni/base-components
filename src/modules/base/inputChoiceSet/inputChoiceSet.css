@@ -38,3 +38,7 @@
     border-right: 1px solid #dddbda;
     border-bottom: none;
 }
+
+.slds-checkbox_button [type="checkbox"]:checked + .slds-checkbox_button__label{ 
+    --sds-c-icon-color-foreground-default: white; 
+}

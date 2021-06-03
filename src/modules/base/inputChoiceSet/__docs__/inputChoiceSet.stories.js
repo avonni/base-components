@@ -214,7 +214,7 @@ CheckboxesWithMultiSelect.args = {
     value: dayValue
 };
 
-export const CheckboxesWithLeftIcons = Template.bind({});
+export const CheckboxesRightIcons = Template.bind({});
 CheckboxesWithLeftIcons.args = {
     label: 'Please select a value',
     messageWhenValueMissing: 'Value missing',

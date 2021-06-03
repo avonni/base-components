@@ -172,6 +172,8 @@ export default class InputChoiceSet extends LightningElement {
         return [];
     }
 
+
+
     computeLabelButtonClass(iconPosition){
         let labelClass = "slds-checkbox_faux";
         if(iconPosition === "top" || iconPosition === "bottom") labelClass += " slds-align_absolute-center";
@@ -252,7 +254,6 @@ export default class InputChoiceSet extends LightningElement {
                 .filter((checkbox) => checkbox.value !== value);
                 checkboxesToUncheck.forEach((checkbox)=>{checkbox.checked = false;});
         }
-
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
