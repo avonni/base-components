@@ -294,9 +294,10 @@ export default class InputChoiceSet extends LightningElement {
 
     get computedCheckboxContainerClass() {
         let checkboxClass = "slds-checkbox "+ this.orientation;
+        let buttonClass = "slds-button slds-checkbox_button "+this.orientation
         return this.checkboxVariant
             ? checkboxClass
-            : 'slds-button slds-checkbox_button';
+            : buttonClass;
     }
 
     get computedLabelClass() {

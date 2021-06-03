@@ -28,3 +28,13 @@
 .slds-checkbox_faux{
     padding: 0 !important;
 }
+
+.slds-checkbox_button{
+    border-left: none;
+    border-bottom: 1px solid #dddbda;
+}
+
+.slds-checkbox_button.horizontal{
+    border-right: 1px solid #dddbda;
+    border-bottom: none;
+}
