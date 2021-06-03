@@ -31,7 +31,6 @@ export default class List extends LightningElement {
     _savedComputedItems;
     _actions = [];
     _hasActions = false;
-    _isDynamic = false;
     computedActions = [];
     computedItems = [];
     menuRole;
@@ -79,13 +78,6 @@ export default class List extends LightningElement {
         this._hasActions = true;
     }
 
-    @api
-    get isDynamic() {
-        return this._isDynamic;
-    }
-    set isDynamic(bool) {
-        this._isDynamic = normalizeBoolean(bool);
-    }
     get showIconRight() {
         return (
             this.sortable &&
@@ -114,16 +106,7 @@ export default class List extends LightningElement {
     get tabindex() {
         return this.sortable ? '0' : '-1';
     }
-    onDropDownMenuClick(element) {
-        if (!this._isDynamic) return;
-        const itemClicked = element.target.parentNode.textContent;
-        this.computedActions = [];
-        for (const action of this.actions) {
-            if (action.parentLabel === itemClicked) {
-                this.computedActions.push(action);
-            }
-        }
-    }
+
     @api
     reset() {
         this.clearSelection();

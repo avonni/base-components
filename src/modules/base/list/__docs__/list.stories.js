@@ -148,68 +148,7 @@ const actions = [
         disabled: true
     }
 ];
-const dynamicActions = [
-    {
-        parentLabel: 'Item 1',
-        label: 'Custom action 1',
-        name: 'custom-action-1',
-        disabled: false
-    },
-    {
-        parentLabel: 'Item 1',
-        label: 'Custom action 2',
-        name: 'custom-action-2',
-        disabled: true
-    },
-    {
-        parentLabel: 'Item 2',
-        label: 'Custom action 3',
-        name: 'custom-action-3',
-        disabled: true
-    },
-    {
-        parentLabel: 'Item 2',
-        label: 'Custom action 4',
-        name: 'custom-action-4',
-        disabled: false
-    },
-    {
-        parentLabel: 'Item 3',
-        label: 'Custom action 5',
-        name: 'custom-action-5',
-        disabled: false
-    },
-    {
-        parentLabel: 'Item 3',
-        label: 'Custom action 6',
-        name: 'custom-action-6',
-        disabled: false
-    },
-    {
-        parentLabel: 'Item 4',
-        label: 'Custom action 7',
-        name: 'custom-action-7',
-        disabled: false
-    },
-    {
-        parentLabel: 'Item 4',
-        label: 'Custom action 8',
-        name: 'custom-action-8',
-        disabled: false
-    },
-    {
-        parentLabel: 'Item 5',
-        label: 'Custom action 9',
-        name: 'custom-action-9',
-        disabled: false
-    },
-    {
-        parentLabel: 'Item 5',
-        label: 'Custom action 10',
-        name: 'custom-action-10',
-        disabled: false
-    }
-];
+
 export const Base = Template.bind({});
 Base.args = {
     items: items
@@ -242,12 +181,4 @@ ListWithActions.args = {
     label: 'List with actions menu',
     items: items,
     actions: actions
-};
-
-export const ListWithDynamicRowActions = Template.bind({});
-ListWithDynamicRowActions.args = {
-    label: 'List with dynamic row actions',
-    items: items,
-    actions: dynamicActions,
-    isDynamic: true
 };

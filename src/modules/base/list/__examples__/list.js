@@ -8,7 +8,6 @@ export const List = ({
     sortable,
     items,
     actions,
-    isDynamic,
     sortableIconName,
     sortableIconPosition
 }) => {
@@ -20,6 +19,5 @@ export const List = ({
     element.actions = actions;
     element.sortableIconName = sortableIconName;
     element.sortableIconPosition = sortableIconPosition;
-    element.isDynamic = isDynamic;
     return element;
 };
