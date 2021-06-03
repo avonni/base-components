@@ -611,7 +611,34 @@ const Options = [
     }
 ];
 
+const drop = [
+    {
+        value: '1',
+        label: 'Option 1'
+    },
+    {
+        value: '2',
+        label: 'Option 2'
+    }
+];
+
 const Template = (args) => DualListbox(args);
+
+export const drops = Template.bind({});
+drops.args = {
+    label: 'Select Options',
+    fieldLevelHelp: 'This is a Dual Listbox',
+    sourceLabel: 'Available Items',
+    selectedLabel: 'Selected Items',
+    addButtonLabel: 'Add Button Label',
+    removeButtonLabel: 'Remove Button Label',
+    downButtonLabel: 'Down Button Label',
+    upButtonLabel: 'Up Button Label',
+    options: drop,
+    value: ['2'],
+    draggable: true,
+    hideBottomDivider: true
+};
 
 export const Base = Template.bind({});
 Base.args = {
@@ -625,7 +652,8 @@ Base.args = {
     upButtonLabel: 'Up Button Label',
     options: Options,
     value: ['2', '3', '4', '5', '6'],
-    draggable: true
+    draggable: true,
+    hideBottomDivider: true
 };
 
 export const BaseSmall = Template.bind({});

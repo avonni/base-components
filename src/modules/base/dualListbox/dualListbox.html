@@ -62,7 +62,7 @@
                                     <div
                                         class={option.classList}
                                         aria-selected={option.selected}
-                                        role="option source"
+                                        role="option"
                                         tabindex={option.tabIndex}
                                         data-index={index}
                                         data-value={option.value}
@@ -70,12 +70,6 @@
                                         onclick={handleOptionClick}
                                         onkeydown={handleOptionKeyDown}
                                         draggable={draggable}
-                                        onmousedown={dragStart}
-                                        onmousemove={drag}
-                                        onmouseup={dragEnd}
-                                        ontouchstart={dragStart}
-                                        ontouchmove={drag}
-                                        ontouchend={dragEnd}
                                     >
                                         <div class="slds-media__figure">
                                             <c-avatar
@@ -169,19 +163,14 @@
                                     <div
                                         class={option.classList}
                                         aria-selected={option.selected}
-                                        role="option selected"
+                                        role="option"
                                         tabindex={option.tabIndex}
                                         data-index={index}
                                         data-value={option.value}
                                         data-type={computedSelectedListId}
                                         onclick={handleOptionClick}
                                         onkeydown={handleOptionKeyDown}
-                                        onmousedown={dragStart}
-                                        onmousemove={drag}
-                                        onmouseup={dragEnd}
-                                        ontouchstart={dragStart}
-                                        ontouchmove={drag}
-                                        ontouchend={dragEnd}
+                                        draggable={draggable}
                                     >
                                         <div class="slds-media__figure">
                                             <c-avatar

@@ -99,15 +99,6 @@ export default class DualListbox extends LightningElement {
     _selectedNoDescription = 0;
     _selectedHasDescription = 0;
 
-    _draggedIndex;
-    _draggedElement;
-    _initialY;
-    _menuTop;
-    _menuBottom;
-    _optionElements;
-    _savedComputedOptions;
-    _computedOptions = [];
-
     connectedCallback() {
         this.classList.add('slds-form-element');
         this.keyboardInterface = this.selectKeyboardInterface();
@@ -153,8 +144,6 @@ export default class DualListbox extends LightningElement {
             }
         }
         this.disabledButtons();
-        // console.log(this._computedOptions)
-        // console.log(this.computedSourceList)
     }
 
     @api
@@ -352,7 +341,7 @@ export default class DualListbox extends LightningElement {
         this._draggable = normalizeBoolean(value);
     }
 
-    @api    
+    @api
     get size() {
         return this._size;
     }
@@ -417,6 +406,14 @@ export default class DualListbox extends LightningElement {
         );
     }
 
+    get computedSourceListbox() {
+        return this.template.querySelector('[data-source-list]');
+    }
+
+    get computedSelectedListbox() {
+        return this.template.querySelector('[data-selected-list]');
+    }
+
     get ariaDisabled() {
         return String(this.disabled);
     }
@@ -437,10 +434,6 @@ export default class DualListbox extends LightningElement {
             sourceListOptions = sourceListOptions.filter((option) => {
                 return option.label.toLowerCase().includes(this._searchTerm);
             });
-        }
-
-        if (this._computedOptions.length > 0) {
-            return [...this._computedOptions];
         }
 
         return this.computeListOptions(
@@ -742,7 +735,7 @@ export default class DualListbox extends LightningElement {
 
     get computedListboxSourceContainerClass() {
         return classSet(
-            'slds-dueling-list__options avonni-dual-listbox-option-is-selected'
+            'SOURCE slds-dueling-list__options avonni-dual-listbox-option-is-selected'
         )
             .add({ 'slds-is-disabled': this._disabled })
             .add({ 'slds-is-relative': this._isLoading })
@@ -756,7 +749,7 @@ export default class DualListbox extends LightningElement {
 
     get computedListboxSelectedContainerClass() {
         return classSet(
-            'slds-dueling-list__options avonni-dual-listbox-option-is-selected'
+            'SELECTED slds-dueling-list__options avonni-dual-listbox-option-is-selected'
         )
             .add({ 'slds-is-disabled': this._disabled })
             .add({
@@ -1184,164 +1177,5 @@ export default class DualListbox extends LightningElement {
         if (!isSame) {
             this.highlightedOptions = [];
         }
-    }
-
-    getHoveredOption(center) {
-        return this._optionElements.find((option) => {
-            if (option !== this._draggedElement) {
-                const optionIndex = Number(option.dataset.index);
-                const optionPosition = option.getBoundingClientRect();
-                const optionCenter =
-                    optionPosition.bottom - optionPosition.height / 2;
-
-                if (
-                    (this._draggedIndex > optionIndex &&
-                        center < optionCenter) ||
-                    (this._draggedIndex < optionIndex && center > optionCenter)
-                ) {
-                    return option;
-                }
-            }
-            return undefined;
-        });
-    }
-
-    switchWithOption(target) {
-        this._computedOptions = [...this.computedSourceList];
-        const targetIndex = Number(target.dataset.index);
-        const index = this._draggedIndex;
-        target.classList.add('sortable-option_moved');
-
-        // If the target has already been moved, move it back to its original position
-        // Else, move it up or down
-        if (target.className.match(/.*sortable-option_moved-.*/)) {
-            target.classList.remove(
-                'sortable-option_moved-up',
-                'sortable-option_moved-down'
-            );
-        } else {
-            const moveClass =
-                targetIndex > index
-                    ? 'sortable-option_moved-up'
-                    : 'sortable-option_moved-down';
-            target.classList.add(moveClass);
-        }
-
-        // Make the switch in computed options
-        [this._computedOptions[targetIndex], this._computedOptions[index]] = [
-            this._computedOptions[index],
-            this._computedOptions[targetIndex]
-        ];
-
-        this._draggedIndex = targetIndex;
-        this._draggedElement.dataset.index = targetIndex;
-        target.dataset.index = index;
-        // this.updateAssistiveText();
-    }
-
-    clearSelection() {
-        // Clean the styles and dataset
-        this._optionElements.forEach((option, index) => {
-            option.style = undefined;
-            option.dataset.position = 0;
-            option.dataset.index = index;
-            option.className = option.className.replace(
-                /sortable-option_moved.*/g,
-                ''
-            );
-        });
-        if (this._draggedElement)
-            this._draggedElement.classList.remove('sortable-option_dragged');
-
-        // this.template.querySelector(
-        //     '.slds-assistive-text[aria-live="assertive"]'
-        // ).textContent = '';
-
-        // Clean the tracked variables
-        this._draggedElement = this._draggedIndex = this._initialY = this._savedComputedOptions = undefined;
-    }
-
-    initPositions(event) {
-        const menuPosition = this.template
-            .querySelector('.source-list')
-            .getBoundingClientRect();
-        this._menuTop = menuPosition.top;
-        this._menuBottom = menuPosition.bottom;
-
-        this._initialY =
-            event.type === 'touchstart'
-                ? event.touches[0].clientY
-                : event.clientY;
-    }
-
-    dragStart(event) {
-        if (!this.draggable) return;
-
-        // Make sure touch events don't trigger mouse events
-        event.preventDefault();
-
-        this._optionElements = Array.from(
-            this.template.querySelectorAll('#SOURCE')
-        );
-        this._draggedElement = event.currentTarget;
-        this._draggedIndex = Number(this._draggedElement.dataset.index);
-        this._draggedElement.classList.add('sortable-option_dragged');
-
-        if (event.type !== 'keydown') {
-            this.initPositions(event);
-        } else {
-            this._savedComputedOptions = [...this._computedOptions];
-        }
-
-        // this.updateAssistiveText();
-    }
-
-    drag(event) {
-        if (!this._draggedElement) return;
-
-        const mouseY =
-            event.type === 'touchmove'
-                ? event.touches[0].clientY
-                : event.clientY;
-        const menuTop = this._menuTop;
-        const menuBottom = this._menuBottom;
-
-        // Make sure it is not possible to drag the option out of the menu
-        let currentY;
-        if (mouseY < menuTop) {
-            currentY = menuTop;
-        } else if (mouseY > menuBottom) {
-            currentY = menuBottom;
-        } else {
-            currentY = mouseY;
-        }
-
-        // Stick the dragged option to the mouse position
-        this._draggedElement.style.transform = `translateY(${
-            currentY - this._initialY
-        }px)`;
-
-        // Get the position of the dragged option
-        const position = this._draggedElement.getBoundingClientRect();
-        const center = position.bottom - position.height / 2;
-
-        const hoveredOption = this.getHoveredOption(center);
-        if (hoveredOption) this.switchWithOption(hoveredOption);
-    }
-
-    dragEnd() {
-        if (!this._draggedElement) return;
-
-        this._computedOptions = [...this._computedOptions];
-
-        this.clearSelection();
-
-        this.dispatchEvent(
-            new CustomEvent('reorder', {
-                detail: {
-                    options: this._computedOptions
-                }
-            })
-        );
     }
 }
