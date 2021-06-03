@@ -6,6 +6,7 @@
             </template>
             {label}
         </legend>
+
         <div class="slds-form-element__control">
             <div class={computedButtonClass}>
                 <template for:each={transformedOptions} for:item="option">
@@ -33,7 +34,7 @@
                                         <lightning-layout class="slds-media slds-media_center">
                             
                                             <lightning-layout-item>
-                                                <span class="slds-checkbox_faux"></span>
+                                                <span class={checkboxShapeClass}></span>
                                             </lightning-layout-item>
 
                                             <lightning-layout-item class="slds-p-right_small">

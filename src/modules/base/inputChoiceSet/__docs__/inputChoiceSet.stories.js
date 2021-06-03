@@ -149,13 +149,23 @@ const optionsWithoutIcon = [
 const dayValue = ['fri'];
 const alignmentValue = ['center'];
 
-export const Checkboxes = Template.bind({});
-Checkboxes.args = {
+export const RadioButtons = Template.bind({});
+RadioButtons.args = {
     label: 'Please select a value',
     messageWhenValueMissing: 'Value missing',
     options: optionsWithoutIcon,
     value: dayValue,
     isMultiSelect: false,
+};
+
+export const Checkboxes = Template.bind({});
+Checkboxes.args = {
+    label: 'Please select a value',
+    messageWhenValueMissing: 'Value missing',
+    required: true,
+    isMultiSelect: true,
+    options: optionsWithoutIcon,
+    value: dayValue
 };
 
 export const HorizontalCheckboxes = Template.bind({});
@@ -165,7 +175,7 @@ HorizontalCheckboxes.args = {
     options: optionsWithoutIcon,
     orientation: 'horizontal',
     value: dayValue,
-    isMultiSelect: false,
+    isMultiSelect: true,
 };
 
 export const CheckboxesDisabled = Template.bind({});
@@ -174,7 +184,8 @@ CheckboxesDisabled.args = {
     messageWhenValueMissing: 'Value missing',
     options: optionsWithoutIcon,
     value: dayValue,
-    disabled: true
+    disabled: true,
+    isMultiSelect: true,
 };
 
 export const CheckboxesWithNoLabel = Template.bind({});
@@ -183,7 +194,8 @@ CheckboxesWithNoLabel.args = {
     variant: 'label-hidden',
     messageWhenValueMissing: 'Value missing',
     options: optionsWithoutIcon,
-    value: dayValue
+    value: dayValue,
+    isMultiSelect: true,
 };
 
 export const CheckboxesWithLabelStacked = Template.bind({});
@@ -192,7 +204,8 @@ CheckboxesWithLabelStacked.args = {
     variant: 'label-stacked',
     messageWhenValueMissing: 'Value missing',
     options: optionsWithoutIcon,
-    value: dayValue
+    value: dayValue,
+    isMultiSelect: true,
 };
 
 export const CheckboxesRequired = Template.bind({});
@@ -201,20 +214,12 @@ CheckboxesRequired.args = {
     messageWhenValueMissing: 'Value missing',
     required: true,
     options: optionsWithoutIcon,
-    value: dayValue
-};
-
-export const CheckboxesWithMultiSelect = Template.bind({});
-CheckboxesWithMultiSelect.args = {
-    label: 'Please select a value',
-    messageWhenValueMissing: 'Value missing',
-    required: true,
+    value: dayValue,
     isMultiSelect: true,
-    options: optionsWithoutIcon,
-    value: dayValue
 };
 
-export const CheckboxesRightIcons = Template.bind({});
+
+export const CheckboxesWithRightIcons = Template.bind({});
 CheckboxesWithRightIcons.args = {
     label: 'Please select a value',
     messageWhenValueMissing: 'Value missing',

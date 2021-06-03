@@ -295,6 +295,7 @@ export default class InputChoiceSet extends LightningElement {
 
     get computedCheckboxContainerClass() {
         let checkboxClass = "slds-checkbox "+ this.orientation;
+        if(!this.isMultiSelect) checkboxClass += " radio";
         let buttonClass = "slds-button slds-checkbox_button "+this.orientation
         return this.checkboxVariant
             ? checkboxClass
@@ -306,5 +307,11 @@ export default class InputChoiceSet extends LightningElement {
         return this.checkboxVariant
             ? 'slds-checkbox__label'
             : buttonLabelClass;
+    }
+
+    get checkboxShapeClass(){
+        return this.isMultiSelect
+            ? "slds-checkbox_faux"
+            : "slds-checkbox_faux radio";
     }
 }

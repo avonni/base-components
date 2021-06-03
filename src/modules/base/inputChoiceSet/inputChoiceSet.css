@@ -42,3 +42,13 @@
 .slds-checkbox_button [type="checkbox"]:checked + .slds-checkbox_button__label{ 
     --sds-c-icon-color-foreground-default: white; 
 }
+.slds-checkbox_faux.radio{
+    border-radius: 25px;
+}
+.slds-checkbox.radio [type="checkbox"]:checked + .slds-checkbox__label .slds-checkbox_faux::after{
+    background-color: #0070d2;
+    width: 60%;
+    height: 60%;
+    border-radius: 25px;
+}
+
