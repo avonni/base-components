@@ -57,9 +57,10 @@ export default class Combobox extends LightningElement {
     _variant = VARIANTS.default;
 
     _cancelBlur = false;
-    selectedOptions = [];
-    helpMessage;
     dropdownVisible = false;
+    helpMessage;
+    inputValue = '';
+    selectedOptions = [];
 
     @api
     get actions() {
@@ -248,12 +249,20 @@ export default class Combobox extends LightningElement {
         return this._constraintApi;
     }
 
+    get input() {
+        return this.template.querySelector('input');
+    }
+
     get inputIconName() {
         return this.allowSearch ? 'utility:search' : 'utility:down';
     }
 
     get inputIsDisabled() {
         return this.disabled || this.readOnly;
+    }
+
+    get hasNoSearch() {
+        return !this.allowSearch;
     }
 
     get computedAriaExpanded() {
@@ -266,6 +275,10 @@ export default class Combobox extends LightningElement {
 
     get showSelectedOptions() {
         return !this.hideSelectedOptions && this.selectedOptions.length > 0;
+    }
+
+    get showClearInputIcon() {
+        return !this.isMultiSelect && this.input && this.inputValue !== '';
     }
 
     get computedLabelClass() {
@@ -304,8 +317,7 @@ export default class Combobox extends LightningElement {
 
     @api
     blur() {
-        const input = this.template.querySelector('input');
-        if (input) input.blur();
+        if (this.input) this.input.blur();
     }
 
     @api
@@ -320,8 +332,7 @@ export default class Combobox extends LightningElement {
 
     @api
     focus() {
-        const input = this.template.querySelector('input');
-        if (input) input.focus();
+        if (this.input) this.input.focus();
     }
 
     @api
@@ -364,6 +375,8 @@ export default class Combobox extends LightningElement {
             return;
         }
         this.close();
+
+        this.dispatchEvent(new CustomEvent('blur'));
     }
 
     handleFocus() {
@@ -389,8 +402,14 @@ export default class Combobox extends LightningElement {
             this.dispatchEvent(new CustomEvent('open'));
         }
     }
+    handleClearInput(event) {
+        event.stopPropagation();
+        this.inputValue = '';
+        this.focus();
+    }
 
     handleOptionClick(event) {
+        // Find the selected option
         const target = event.target.dataset.value
             ? event.target
             : event.target.closest('.slds-listbox__option');
@@ -399,9 +418,28 @@ export default class Combobox extends LightningElement {
             return option.value === value;
         });
 
+        // Toggle selection
+        if (!this.isMultiSelect) {
+            const previouslySelectedOption = this.options.find(
+                (option) => option.selected
+            );
+            if (
+                previouslySelectedOption &&
+                previouslySelectedOption !== selectedOption
+            ) {
+                previouslySelectedOption.selected = false;
+            }
+        }
         selectedOption.selected = !selectedOption.selected;
-        this.updateSelectedOptions();
+        if (this.isMultiSelect) this.updateSelectedOptions();
         if (this.removeSelectedOptions) this.updateComputedOptions();
+
+        // Update the input value
+        if (selectedOption.selected) {
+            this.inputValue = selectedOption.label;
+        } else {
+            this.inputValue = '';
+        }
 
         this.dispatchEvent(
             new CustomEvent('select', {
@@ -412,8 +450,8 @@ export default class Combobox extends LightningElement {
             })
         );
 
-        this.focus();
         this.close();
+        this.focus();
     }
 
     handleRemoveSelectedOption(event) {
@@ -422,6 +460,12 @@ export default class Combobox extends LightningElement {
             (option) => option.value === value
         );
         selectedOption.selected = false;
+
+        // If the option removed is the one showed in the input, clear the input
+        if (this.inputValue === selectedOption.label) {
+            this.inputValue = '';
+        }
+
         this.updateSelectedOptions();
         if (this.removeSelectedOptions) this.updateComputedOptions();
     }

@@ -17,11 +17,23 @@
                 onclick={handleTriggerClick}
             >
                 <lightning-icon
+                    if:false={showClearInputIcon}
                     class="slds-icon_container slds-input__icon slds-input__icon_right"
                     icon-name={inputIconName}
                     aria-hidden="true"
                     size="x-small"
                 ></lightning-icon>
+                <button
+                    if:true={showClearInputIcon}
+                    class="slds-button slds-button_icon slds-input__icon slds-input__icon_right"
+                    onclick={handleClearInput}
+                >
+                    <lightning-icon
+                        icon-name="utility:close"
+                        alternative-text="Remove selected option"
+                        size="x-small"
+                    ></lightning-icon>
+                </button>
                 <input
                     id="input"
                     class="slds-input slds-combobox__input"
@@ -33,9 +45,11 @@
                     name={name}
                     placeholder={placeholder}
                     disabled={inputIsDisabled}
+                    readonly={hasNoSearch}
                     aria-readonly={readOnly}
                     aria-autocomplete={computedAriaAutocomplete}
                     aria-owns="dropdown-element"
+                    value={inputValue}
                     onfocus={handleFocus}
                     onblur={handleBlur}
                     onkeydown={handleInputKeyDown}
