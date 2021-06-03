@@ -423,9 +423,9 @@ CropImageCircleThumbnail.args = {
     width: '300',
     cropSize: '1x1',
     rounded: 'circle',
-    cropFit: 'cover',
-    cropPositionX: '18',
-    cropPositionY: '50',
+    cropFit: 'none',
+    cropPositionX: '23',
+    cropPositionY: '80',
     thumbnail: true,
     center: true
 };
