@@ -84,7 +84,9 @@ export default class List extends LightningElement {
     }
 
     get itemClass() {
-        return classSet('slds-border_bottom slds-grid list-item')
+        return classSet(
+            'slds-border_bottom slds-grid list-item slds-m-bottom_x-small'
+        )
             .add({
                 'sortable-item': this.sortable
             })

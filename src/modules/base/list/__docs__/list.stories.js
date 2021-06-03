@@ -76,19 +76,114 @@ const Template = (args) => List(args);
 
 const items = [
     {
-        label: 'Item 1'
+        label: 'Item 1',
+        href: '',
+        description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        infos: [
+            { label: 'info 1', href: '' },
+            { label: 'info 2', href: '' }
+        ],
+        icons: [
+            {
+                iconName: 'utility:share',
+                alternativeText: 'share button',
+                title: 'Share'
+            },
+            {
+                iconName: 'utility:refresh',
+                alternativeText: 'refresh button',
+                title: 'Refresh'
+            }
+        ]
     },
     {
-        label: 'Item 2'
+        label: 'Item 2',
+        href: '/path/to_somewhere',
+        description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        infos: [
+            { label: 'info 1', href: '' },
+            { label: 'info 2', href: '' }
+        ],
+        icons: [
+            {
+                iconName: 'utility:share',
+                alternativeText: 'share button',
+                title: 'Share'
+            },
+            {
+                iconName: 'utility:refresh',
+                alternativeText: 'refresh button',
+                title: 'Refresh'
+            }
+        ]
     },
     {
-        label: 'Item 3'
+        label: 'Item 3',
+        href: '',
+        description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        infos: [
+            { label: 'info 1', href: '' },
+            { label: 'info 2', href: '' }
+        ],
+        icons: [
+            {
+                iconName: 'utility:share',
+                alternativeText: 'share button',
+                title: 'Share'
+            },
+            {
+                iconName: 'utility:refresh',
+                alternativeText: 'refresh button',
+                title: 'Refresh'
+            }
+        ]
     },
     {
-        label: 'Item 4'
+        label: 'Item 4',
+        href: '',
+        description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        infos: [
+            { label: 'info 1', href: '' },
+            { label: 'info 2', href: '' }
+        ],
+        icons: [
+            {
+                iconName: 'utility:share',
+                alternativeText: 'share button',
+                title: 'Share'
+            },
+            {
+                iconName: 'utility:refresh',
+                alternativeText: 'refresh button',
+                title: 'Refresh'
+            }
+        ]
     },
     {
-        label: 'Item 5'
+        label: 'Item 5',
+        href: '',
+        description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        infos: [
+            { label: 'info 1', href: '' },
+            { label: 'info 2', href: '' }
+        ],
+        icons: [
+            {
+                iconName: 'utility:share',
+                alternativeText: 'share button',
+                title: 'Share'
+            },
+            {
+                iconName: 'utility:refresh',
+                alternativeText: 'refresh button',
+                title: 'Refresh'
+            }
+        ]
     }
 ];
 

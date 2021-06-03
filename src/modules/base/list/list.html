@@ -30,7 +30,9 @@
                 aria-label={item.label}
                 aria-describedby="instructions"
             >
-                <div class="slds-grid slds-grid_vertical-align-center">
+                <div
+                    class="slds-grid slds-grid_vertical-align-center slds-p-vertical_x-small"
+                >
                     <lightning-icon
                         if:true={showIconLeft}
                         class="slds-m-left_x-small icon-left"
@@ -44,10 +46,41 @@
                         size="small"
                         hide-avatar-details="true"
                     ></c-avatar>
-                    <div
-                        class="slds-col slds-truncate slds-m-horizontal_x-small"
-                    >
-                        {item.label}
+                    <div class="slds-col slds-truncate">
+                        <div
+                            class="slds-grid slds-grid-align-center slds-truncate slds-no-space slds-margin-bottom_xx-small"
+                        >
+                            <template if:true={item.href}>
+                                <a href={item.href}>{item.label}</a>
+                            </template>
+                            <template if:false={item.href}>
+                                <h3>{item.label}</h3>
+                            </template>
+                            <div if:true={item.icons} class="slds-no-flex">
+                                <template for:each={item.icons} for:item="icon">
+                                    <lightning-button-icon
+                                        key={icon.title}
+                                        icon-name={icon.iconName}
+                                        variant="bare"
+                                        alternative-text={icon.alternativeText}
+                                        title={icon.title}
+                                        class="slds-p-left_x-small"
+                                    ></lightning-button-icon>
+                                </template>
+                            </div>
+                        </div>
+                        <p class="description-text slds-text-body_regular">
+                            {item.description}
+                        </p>
+                        <ul
+                            class="slds-list_horizontal slds-has-dividers_left slds-has-block-links_space"
+                        >
+                            <template for:each={item.infos} for:item="info">
+                                <li key={info.label} class="slds-item">
+                                    <a href={info.href}>{info.label}</a>
+                                </li>
+                            </template>
+                        </ul>
                     </div>
                     <lightning-icon
                         if:true={showIconRight}
