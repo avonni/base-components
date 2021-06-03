@@ -1,5 +1,5 @@
 import { createElement } from 'lwc';
-import InputChoiceSet from 'c/inputChoiceSet';
+import InputChoiceSet from '../inputChoiceSet';
 
 const options = [
     { label: 'Mon', value: 'mon' },
@@ -7,6 +7,12 @@ const options = [
     { label: 'Wed', value: 'wed' },
     { label: 'Thu', value: 'thu' },
     { label: 'Fri', value: 'fri' }
+];
+
+const optionsWithIcon = [
+    { label: 'Left', value: 'left', iconName: 'utility:left_align_text', iconPosition: 'right' },
+    { label: 'Center', value: 'center', iconName: 'utility:center_align_text', iconPosition: 'right' },
+    { label: 'Right', value: 'right', iconName: 'utility:right_align_text', iconPosition: 'right' },
 ];
 
 describe('Input choice set', () => {
@@ -18,15 +24,17 @@ describe('Input choice set', () => {
 
     it('Input choice set Default attributes', () => {
         const element = createElement('base-input-choice-set', {
-            is: CheckboxGroup
+            is: InputChoiceSet
         });
 
         expect(element.disabled).toBeFalsy();
         expect(element.label).toBeUndefined();
-        expect(element.type).toBe('checkbox');
+        expect(element.type).toBe('default');
+        expect(element.isMultiSelect).toBe(false);
         expect(element.messageWhenValueMissing).toBeUndefined();
         expect(element.name).toBeUndefined();
         expect(element.options).toBeUndefined();
+        expect(element.orientation).toBe('vertical');
         expect(element.required).toBeFalsy();
         expect(element.validity).toMatchObject({});
         expect(element.value).toMatchObject([]);
@@ -79,11 +87,12 @@ describe('Input choice set', () => {
         document.body.appendChild(element);
 
         element.options = options;
+        element.orientation = "vertical";
 
         return Promise.resolve().then(() => {
             const inputs = element.shadowRoot.querySelectorAll('div > span');
             inputs.forEach((input) => {
-                expect(input.className).toBe('slds-checkbox');
+                expect(input.className).toBe('slds-checkbox vertical');
                 expect(input.className).not.toContain(
                     'slds-button slds-checkbox_button'
                 );
@@ -103,9 +112,8 @@ describe('Input choice set', () => {
         return Promise.resolve().then(() => {
             const inputs = element.shadowRoot.querySelectorAll('div > span');
             inputs.forEach((input) => {
-                expect(input.className).toBe(
-                    'slds-button slds-checkbox_button'
-                );
+                const expected = (input.className === 'slds-button slds-checkbox_button' || input.className === "slds-checkbox_faux")
+                expect(expected).toBe(true);
                 expect(input.className).not.toBe('slds-checkbox');
             });
         });
@@ -174,6 +182,27 @@ describe('Input choice set', () => {
         });
     });
 
+    // options with icons
+    it('Input choice set options with icons', () => {
+        const element = createElement('base-input-choice-set', {
+            is: InputChoiceSet
+        });
+        document.body.appendChild(element);
+
+        element.options = optionsWithIcon;
+
+        return Promise.resolve().then(() => {
+            options.forEach((option, index) => {
+                const correspondingOption = options[index];
+                expect(correspondingOption).toBeTruthy();
+                expect(option.label).toBe(correspondingOption.label);
+                expect(option.value).toBe(correspondingOption.value);
+                expect(option.iconName).toBe(correspondingOption.iconName);
+                expect(option.iconPosition).toBe(correspondingOption.iconPosition);
+            });
+        });
+    });
+
     // required
     it('Input choice set required', () => {
         const element = createElement('base-input-choice-set', {
@@ -209,6 +238,47 @@ describe('Input choice set', () => {
                 }
             });
             expect(values).toHaveLength(2);
+        });
+    });
+
+    // orientation
+    it('Input choice set vertical orientation', () => {
+        const element = createElement('base-input-choice-set', {
+            is: InputChoiceSet
+        });
+        document.body.appendChild(element);
+
+        element.options = options;
+        element.orientation = "vertical";
+
+        return Promise.resolve().then(() => {
+            const inputs = element.shadowRoot.querySelectorAll('div > span');
+            inputs.forEach((input) => {
+                expect(input.className).not.toContain(
+                    'horizontal'
+                );
+                expect(input.className).toContain('vertical');
+            });
+        });
+    });
+
+    it('Input choice set horizontal orientation', () => {
+        const element = createElement('base-input-choice-set', {
+            is: InputChoiceSet
+        });
+        document.body.appendChild(element);
+
+        element.options = options;
+        element.orientation = "horizontal";
+
+        return Promise.resolve().then(() => {
+            const inputs = element.shadowRoot.querySelectorAll('div > span');
+            inputs.forEach((input) => {
+                expect(input.className).not.toContain(
+                    'vertical'
+                );
+                expect(input.className).toContain('horizontal');
+            });
         });
     });
 

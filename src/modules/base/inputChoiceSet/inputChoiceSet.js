@@ -252,7 +252,7 @@ export default class InputChoiceSet extends LightningElement {
                 .filter((checkbox) => checkbox.value !== value);
                 checkboxesToUncheck.forEach((checkbox)=>{checkbox.checked = false;});
         }
-        
+
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
@@ -296,7 +296,7 @@ export default class InputChoiceSet extends LightningElement {
         let checkboxClass = "slds-checkbox "+ this.orientation;
         return this.checkboxVariant
             ? checkboxClass
-            : 'slds-button slds-checkbox_button test';
+            : 'slds-button slds-checkbox_button';
     }
 
     get computedLabelClass() {
