@@ -99,6 +99,9 @@ export default class DualListbox extends LightningElement {
     _selectedNoDescription = 0;
     _selectedHasDescription = 0;
 
+    _dropItSelected = false;
+    _dropItSource = false;
+
     connectedCallback() {
         this.classList.add('slds-form-element');
         this.keyboardInterface = this.selectKeyboardInterface();
@@ -144,6 +147,8 @@ export default class DualListbox extends LightningElement {
             }
         }
         this.disabledButtons();
+
+        console.log(this.isDragable);
     }
 
     @api
@@ -334,6 +339,9 @@ export default class DualListbox extends LightningElement {
 
     @api
     get draggable() {
+        if (this.disabled) {
+            return false;
+        }
         return this._draggable;
     }
 
@@ -820,9 +828,21 @@ export default class DualListbox extends LightningElement {
         this.moveOptionsBetweenLists(true, true);
     }
 
+    handleDragRight() {
+        this.interactingState.interacting();
+        this.moveOptionsBetweenLists(true, false);
+        this._dropItSelected = false;
+    }
+
     handleLeftButtonClick() {
         this.interactingState.interacting();
         this.moveOptionsBetweenLists(false, true);
+    }
+
+    handleDragLeft() {
+        this.interactingState.interacting();
+        this.moveOptionsBetweenLists(false, false);
+        this._dropItSource = false;
     }
 
     handleUpButtonClick() {
@@ -1177,5 +1197,47 @@ export default class DualListbox extends LightningElement {
         if (!isSame) {
             this.highlightedOptions = [];
         }
+    }
+
+    dragStartSource(event) {
+        event.currentTarget.classList.add('dragging');
+    }
+
+    dragEndSource(event) {
+        event.preventDefault();
+        event.currentTarget.classList.remove('dragging');
+        if (this._dropItSelected) {
+            this.handleDragRight();
+        }
+    }
+
+    dragStartSelected(event) {
+        event.currentTarget.classList.add('dragging');
+    }
+
+    dragEndSelected(event) {
+        event.preventDefault();
+        event.currentTarget.classList.remove('dragging');
+        if (this._dropItSource) {
+            this.handleDragLeft();
+        }
+    }
+
+    dragOverSource(event) {
+        event.preventDefault();
+        this._dropItSource = true;
+    }
+
+    dragLeaveSource() {
+        this._dropItSource = false;
+    }
+
+    dragOverSelected(event) {
+        event.preventDefault();
+        this._dropItSelected = true;
+    }
+
+    dragLeaveSelected() {
+        this._dropItSelected = false;
     }
 }

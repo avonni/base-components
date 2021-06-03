@@ -111,3 +111,7 @@
 .avonni-dual-listbox-size_large {
     width: var(--lwc-sizeLarge, 25rem);
 }
+
+.dragging {
+    opacity: 0.2;
+}

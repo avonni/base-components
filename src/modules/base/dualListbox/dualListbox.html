@@ -38,6 +38,8 @@
                     <div
                         class={computedListboxSourceContainerClass}
                         style={sourceHeight}
+                        ondragover={dragOverSource}
+                        ondragleave={dragLeaveSource}
                     >
                         <ul
                             data-source-list
@@ -70,6 +72,8 @@
                                         onclick={handleOptionClick}
                                         onkeydown={handleOptionKeyDown}
                                         draggable={draggable}
+                                        ondragstart={dragStartSource}
+                                        ondragend={dragEndSource}
                                     >
                                         <div class="slds-media__figure">
                                             <c-avatar
@@ -139,6 +143,8 @@
                     <div
                         class={computedListboxSelectedContainerClass}
                         style={selectedHeight}
+                        ondragover={dragOverSelected}
+                        ondragleave={dragLeaveSelected}
                     >
                         <ul
                             data-selected-list
@@ -171,6 +177,8 @@
                                         onclick={handleOptionClick}
                                         onkeydown={handleOptionKeyDown}
                                         draggable={draggable}
+                                        ondragstart={dragStartSelected}
+                                        ondragend={dragEndSelected}
                                     >
                                         <div class="slds-media__figure">
                                             <c-avatar
