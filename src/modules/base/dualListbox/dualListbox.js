@@ -147,8 +147,6 @@ export default class DualListbox extends LightningElement {
             }
         }
         this.disabledButtons();
-
-        console.log(this.isDragable);
     }
 
     @api
@@ -743,7 +741,7 @@ export default class DualListbox extends LightningElement {
 
     get computedListboxSourceContainerClass() {
         return classSet(
-            'SOURCE slds-dueling-list__options avonni-dual-listbox-option-is-selected'
+            'slds-dueling-list__options avonni-dual-listbox-option-is-selected'
         )
             .add({ 'slds-is-disabled': this._disabled })
             .add({ 'slds-is-relative': this._isLoading })
@@ -757,7 +755,7 @@ export default class DualListbox extends LightningElement {
 
     get computedListboxSelectedContainerClass() {
         return classSet(
-            'SELECTED slds-dueling-list__options avonni-dual-listbox-option-is-selected'
+            'slds-dueling-list__options avonni-dual-listbox-option-is-selected'
         )
             .add({ 'slds-is-disabled': this._disabled })
             .add({
