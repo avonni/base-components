@@ -1,10 +1,12 @@
 import { LightningElement, api } from 'lwc';
+import ComboboxOption from './comboboxOption';
 import {
     normalizeArray,
     normalizeBoolean,
     normalizeString
 } from 'c/utilsPrivate';
 import { FieldConstraintApi } from 'c/inputUtils';
+import { classSet } from 'c/utils';
 
 const DROPDOWN_ALIGNMENTS = {
     valid: [
@@ -54,7 +56,9 @@ export default class Combobox extends LightningElement {
     _value = [];
     _variant = VARIANTS.default;
 
+    _cancelBlur = false;
     helpMessage;
+    dropdownVisible = false;
 
     @api
     get actions() {
@@ -147,7 +151,13 @@ export default class Combobox extends LightningElement {
         return this._options;
     }
     set options(value) {
-        this._options = normalizeArray(value);
+        let options = normalizeArray(value);
+        if (options.length > 0) {
+            options = options.map((option) => {
+                return new ComboboxOption(option);
+            });
+        }
+        this._options = options;
     }
 
     @api
@@ -236,6 +246,52 @@ export default class Combobox extends LightningElement {
         return this._constraintApi;
     }
 
+    get inputIconName() {
+        return this.allowSearch ? 'utility:search' : 'utility:down';
+    }
+
+    get computedAriaExpanded() {
+        return this.dropdownVisible ? 'true' : 'false';
+    }
+
+    get computedAriaAutocomplete() {
+        return this.readOnly || this.disabled ? 'none' : 'list';
+    }
+
+    get computedLabelClass() {
+        return classSet('slds-form-element__label')
+            .add({ 'slds-assistive-text': this.variant === 'label-hidden' })
+            .toString();
+    }
+
+    get computedDropdownTriggerClass() {
+        return classSet(
+            'slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click'
+        )
+            .add({ 'slds-is-open': this.dropdownVisible })
+            .toString();
+    }
+
+    get computedDropdownClass() {
+        const alignment = this.dropdownAlignment;
+
+        return classSet(
+            'slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid'
+        )
+            .add({
+                'slds-dropdown_left':
+                    alignment === 'left' || alignment === 'auto',
+                'slds-dropdown_center': alignment === 'center',
+                'slds-dropdown_right': alignment === 'right',
+                'slds-dropdown_bottom': alignment === 'bottom-center',
+                'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right':
+                    alignment === 'bottom-right',
+                'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left':
+                    alignment === 'bottom-left'
+            })
+            .toString();
+    }
+
     @api
     blur() {
         const input = this.template.querySelector('input');
@@ -249,7 +305,7 @@ export default class Combobox extends LightningElement {
 
     @api
     close() {
-        // Todo
+        this.dropdownVisible = false;
     }
 
     @api
@@ -260,7 +316,10 @@ export default class Combobox extends LightningElement {
 
     @api
     open() {
-        // Todo
+        this.focus();
+        if (this.options.length > 0) {
+            this.dropdownVisible = true;
+        }
     }
 
     @api
@@ -278,5 +337,43 @@ export default class Combobox extends LightningElement {
     @api
     showHelpMessageIfInvalid() {
         this.reportValidity();
+    }
+
+    handleBlur() {
+        if (this._cancelBlur) {
+            return;
+        }
+        this.close();
+    }
+
+    handleFocus() {
+        this.open();
+    }
+
+    handleDropdownMouseDown(event) {
+        const mainButton = 0;
+        if (event.button === mainButton) {
+            this._cancelBlur = true;
+        }
+    }
+
+    handleDropdownMouseUp() {
+        // We need this to make sure that if a scrollbar is being dragged with the mouse, upon release
+        // of the drag we allow blur, otherwise the dropdown would not close on blur since we'd have cancel blur set
+        this._cancelBlur = false;
+    }
+
+    handleOptionClick(event) {
+        const target = event.target.dataset.value
+            ? event.target
+            : event.target.closest('.slds-listbox__option');
+        const value = target.dataset.value;
+        const selectedOption = this.options.find((option) => {
+            return option.value === value;
+        });
+
+        selectedOption.selected = !selectedOption.selected;
+
+        this.close();
     }
 }

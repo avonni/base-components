@@ -1,3 +1,118 @@
 <template>
-    <p>{label}</p>
+    <label class={computedLabelClass} for="input">
+        <template if:true={required}>
+            <abbr class="slds-required" title="Required">*</abbr>
+        </template>
+        {label}
+    </label>
+    <lightning-helptext
+        if:true={fieldLevelHelp}
+        content={fieldLevelHelp}
+    ></lightning-helptext>
+
+    <div class="slds-form-element__control">
+        <div class={computedDropdownTriggerClass}>
+            <div
+                class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right"
+            >
+                <lightning-icon
+                    class="slds-icon_container slds-input__icon slds-input__icon_right"
+                    icon-name={inputIconName}
+                    aria-hidden="true"
+                    size="x-small"
+                ></lightning-icon>
+                <input
+                    id="input"
+                    class="slds-input slds-combobox__input"
+                    type="text"
+                    role="combobox"
+                    aria-expanded={computedAriaExpanded}
+                    aria-haspopup="listbox"
+                    autocomplete="off"
+                    name={name}
+                    placeholder={placeholder}
+                    disabled={disabled}
+                    aria-readonly={readOnly}
+                    aria-autocomplete={computedAriaAutocomplete}
+                    aria-owns="dropdown-element"
+                    onfocus={handleFocus}
+                    onblur={handleBlur}
+                />
+            </div>
+            <div
+                id="dropdown-element"
+                class={computedDropdownClass}
+                onclick={handleOptionClick}
+                onmousedown={handleDropdownMouseDown}
+                onmouseup={handleDropdownMouseUp}
+            >
+                <!-- Loading spinner -->
+                <lightning-spinner
+                    if:true={isLoading}
+                    size="small"
+                    alternative-text={loadingStateAlternativeText}
+                ></lightning-spinner>
+
+                <!-- Options -->
+                <ul if:false={isLoading} role="listbox">
+                    <template for:each={options} for:item="option">
+                        <li
+                            key={option.value}
+                            class={option.computedClass}
+                            role="option"
+                            aria-checked={option.selected}
+                            data-value={option.value}
+                        >
+                            <!-- Checkmark -->
+                            <div
+                                if:false={removeSelectedOptions}
+                                class="slds-media__figure slds-listbox__option-icon"
+                            >
+                                <lightning-icon
+                                    if:true={option.selected}
+                                    class="slds-current-color"
+                                    icon-name="utility:check"
+                                    size="x-small"
+                                    aria-hidden="true"
+                                ></lightning-icon>
+                            </div>
+
+                            <!-- Option data -->
+                            <div class="slds-media__body">
+                                <div class="slds-media slds-media_center">
+                                    <div
+                                        if:true={option.hasAvatar}
+                                        class="slds-media__figure slds-listbox__option-icon"
+                                    >
+                                        <c-avatar
+                                            size="small"
+                                            src={option.avatarSrc}
+                                            fallback-icon-name={option.avatarFallbackIconName}
+                                            hide-avatar-details="true"
+                                        ></c-avatar>
+                                    </div>
+                                    <div class="slds-media__body">
+                                        <span
+                                            class="slds-listbox__option-text slds-listbox__option-text_entity"
+                                            >{option.label}</span
+                                        >
+                                        <span
+                                            class="slds-listbox__option-meta slds-listbox__option-meta_entity"
+                                            >{option.secondaryText}</span
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <template if:true={helpMessage}>
+        <div class="slds-form-element__help" aria-live="assertive">
+            {helpMessage}
+        </div>
+    </template>
 </template>

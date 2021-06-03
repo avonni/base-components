@@ -285,9 +285,28 @@ export default {
     }
 };
 
+const OPTIONS = [
+    {
+        label: 'Burlington Textiles Corp of America',
+        value: 'burlington',
+        avatarFallbackIconName: 'standard:account',
+        secondaryText: 'Account - Burlington, NC'
+    },
+    {
+        label: 'Dickenson plc',
+        value: 'dickenson',
+        secondaryText: 'Account - Lawrence, KS'
+    },
+    {
+        label: 'Edge Communication',
+        value: 'edge'
+    }
+];
+
 const Template = (args) => Combobox(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    label: 'Combobox'
+    label: 'Combobox label',
+    options: OPTIONS
 };
