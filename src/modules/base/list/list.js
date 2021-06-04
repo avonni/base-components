@@ -41,6 +41,14 @@ export default class List extends LightningElement {
     set items(proxy) {
         this._items = normalizeArray(proxy);
         this.computedItems = JSON.parse(JSON.stringify(this._items));
+        this.computedItems.forEach((item) => {
+            if (item.infos === undefined) {
+                item.infos = [];
+            }
+            if (item.icons === undefined) {
+                item.icons = [];
+            }
+        });
     }
 
     @api
