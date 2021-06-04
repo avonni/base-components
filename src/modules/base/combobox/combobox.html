@@ -32,7 +32,7 @@
                                 role="combobox"
                             >
                                 <div
-                                    class={computedScopesDropdownClass}
+                                    class={computedScopesInputContainerClass}
                                     role="none"
                                     onclick={handleScopeTriggerClick}
                                 >
@@ -69,7 +69,7 @@
 
                                 <!-- Scopes dropdown -->
                                 <div
-                                    class="slds-dropdown slds-dropdown_x-small slds-dropdown_left"
+                                    class={computedDropdownClass}
                                     role="listbox"
                                     onclick={handleScopeClick}
                                     onmousedown={handleDropdownMouseDown}
@@ -137,30 +137,19 @@
             </div>
             <div class={computedDropdownTriggerClass}>
                 <div
-                    class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right"
+                    class={computedInputContainerClass}
                     onclick={handleTriggerClick}
                 >
-                    <!-- Right icon: down arrow or magnifying glass -->
-                    <lightning-icon
-                        if:false={showClearInputIcon}
-                        class="slds-icon_container slds-input__icon slds-input__icon_right"
-                        icon-name={inputIconName}
+                    <!-- Selected option avatar -->
+                    <c-avatar
+                        if:true={showInputValueAvatar}
+                        class="slds-combobox__input-entity-icon"
+                        fallback-icon-name={lastSelectedOption.avatarFallbackIconName}
+                        src={lastSelectedOption.avatarSrc}
                         aria-hidden="true"
+                        hide-avatar-details="true"
                         size="x-small"
-                    ></lightning-icon>
-
-                    <!-- Clear input icon -->
-                    <button
-                        if:true={showClearInputIcon}
-                        class="slds-button slds-button_icon slds-input__icon slds-input__icon_right"
-                        onclick={handleClearInput}
-                    >
-                        <lightning-icon
-                            icon-name="utility:close"
-                            alternative-text="Remove selected option"
-                            size="x-small"
-                        ></lightning-icon>
-                    </button>
+                    ></c-avatar>
 
                     <!-- Main input -->
                     <input
@@ -183,6 +172,28 @@
                         onblur={handleBlur}
                         onkeydown={handleInputKeyDown}
                     />
+
+                    <!-- Clear input icon -->
+                    <button
+                        if:true={showClearInputIcon}
+                        class="slds-button slds-button_icon slds-input__icon slds-input__icon_right"
+                        onclick={handleClearInput}
+                    >
+                        <lightning-icon
+                            icon-name="utility:close"
+                            alternative-text="Remove selected option"
+                            size="x-small"
+                        ></lightning-icon>
+                    </button>
+
+                    <!-- Right icon: down arrow or magnifying glass -->
+                    <lightning-icon
+                        if:false={showClearInputIcon}
+                        class="slds-icon_container slds-input__icon slds-input__icon_right"
+                        icon-name={inputIconName}
+                        aria-hidden="true"
+                        size="x-small"
+                    ></lightning-icon>
                 </div>
 
                 <!-- Main dropdown -->
@@ -227,8 +238,9 @@
                                 </div>
                             </li>
                         </template>
+
                         <!-- Options -->
-                        <template for:each={computedOptions} for:item="option">
+                        <template for:each={visibleOptions} for:item="option">
                             <li
                                 key={option.value}
                                 class={option.computedClass}
@@ -257,6 +269,7 @@
                                             class="slds-media__figure slds-listbox__option-icon"
                                         >
                                             <c-avatar
+                                                aria-hidden="true"
                                                 size="small"
                                                 src={option.avatarSrc}
                                                 fallback-icon-name={option.avatarFallbackIconName}

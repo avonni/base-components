@@ -10,10 +10,7 @@ export default class ComboboxOption {
         this.options = normalizeArray(option.options);
         this.secondaryText = option.secondaryText;
         this.value = option.value;
-    }
-
-    get hasAvatar() {
-        return this.avatarFallbackIconName || this.avatarSrc;
+        this.hasAvatar = this.avatarFallbackIconName || this.avatarSrc;
     }
 
     get computedClass() {

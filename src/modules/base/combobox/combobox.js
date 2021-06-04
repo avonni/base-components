@@ -62,7 +62,7 @@ export default class Combobox extends LightningElement {
     dropdownVisible = false;
     scopesDropdownVisible = false;
     helpMessage;
-    inputValue = '';
+    lastSelectedOption;
     scopesInputValue = '';
     selectedOptions = [];
     topActions = [];
@@ -166,14 +166,12 @@ export default class Combobox extends LightningElement {
         return this._options;
     }
     set options(value) {
-        let options = normalizeArray(value);
-        if (options.length > 0) {
-            options = options.map((option) => {
-                return new ComboboxOption(option);
-            });
-        }
-        this._options = options;
-        this.computedOptions = options;
+        const options = normalizeArray(value);
+        const optionObjects = [];
+        options.forEach((option) => {
+            optionObjects.push(new ComboboxOption(option));
+        });
+        this._options = optionObjects;
 
         if (this.isConnected) this.initValue();
     }
@@ -204,10 +202,6 @@ export default class Combobox extends LightningElement {
     }
     set removeSelectedOptions(value) {
         this._removeSelectedOptions = normalizeBoolean(value);
-
-        if (this.isConnected) {
-            this.updateComputedOptions();
-        }
     }
 
     @api
@@ -289,6 +283,24 @@ export default class Combobox extends LightningElement {
         return this.allowSearch ? 'utility:search' : 'utility:down';
     }
 
+    get inputValue() {
+        return (
+            (!this.isMultiSelect &&
+                this.lastSelectedOption &&
+                this.lastSelectedOption.label) ||
+            ''
+        );
+    }
+
+    get showInputValueAvatar() {
+        return (
+            this.inputValue &&
+            this.lastSelectedOption &&
+            (this.lastSelectedOption.avatarSrc ||
+                this.lastSelectedOption.avatarFallbackIconName)
+        );
+    }
+
     get inputIsDisabled() {
         return this.disabled || this.readOnly;
     }
@@ -314,11 +326,22 @@ export default class Combobox extends LightningElement {
     }
 
     get showSelectedOptions() {
-        return !this.hideSelectedOptions && this.selectedOptions.length > 0;
+        return (
+            !this.hideSelectedOptions &&
+            this.isMultiSelect &&
+            this.selectedOptions.length > 0
+        );
     }
 
     get showClearInputIcon() {
         return !this.isMultiSelect && this.input && this.inputValue !== '';
+    }
+
+    get visibleOptions() {
+        if (this.removeSelectedOptions) {
+            return this.options.filter((option) => !option.selected);
+        }
+        return this.options;
     }
 
     get computedLabelClass() {
@@ -366,13 +389,21 @@ export default class Combobox extends LightningElement {
             .toString();
     }
 
-    get computedScopesDropdownClass() {
+    get computedScopesInputContainerClass() {
         return classSet('slds-combobox__form-element slds-input-has-icon')
             .add({
                 'slds-input-has-icon_left-right': this.selectedScopeIconName,
                 'slds-input-has-icon_right': !this.selectedScopeIconName
             })
-            .add(this.alignmentClasses)
+            .toString();
+    }
+
+    get computedInputContainerClass() {
+        return classSet('slds-combobox__form-element slds-input-has-icon')
+            .add({
+                'slds-input-has-icon_left-right': this.showInputValueAvatar,
+                'slds-input-has-icon_right': !this.showInputValueAvatar
+            })
             .toString();
     }
 
@@ -413,7 +444,7 @@ export default class Combobox extends LightningElement {
 
     @api
     open() {
-        if (this.computedOptions.length > 0 && !this.inputIsDisabled) {
+        if (this.visibleOptions.length > 0 && !this.inputIsDisabled) {
             this.dropdownVisible = true;
         }
     }
@@ -450,31 +481,28 @@ export default class Combobox extends LightningElement {
     initValue() {
         if (this.isMultiSelect) {
             this.value.forEach((value) => {
-                const selectedOption = this.computedOptions.find(
+                const selectedOption = this.options.find(
                     (option) => option.value === value
                 );
                 if (selectedOption) selectedOption.selected = true;
             });
-            this.updateSelectedOptions();
         } else {
-            const selectedOption = this.computedOptions.find(
+            const selectedOption = this.options.find(
                 (option) => option.value === this.value[0]
             );
             if (selectedOption) selectedOption.selected = true;
         }
 
-        if (this.removeSelectedOptions) this.updateComputedOptions();
+        this.selectedOptions = this.options.filter((option) => {
+            return option.selected;
+        });
     }
 
-    updateSelectedOptions() {
-        this.selectedOptions = this.options.filter((option) => option.selected);
+    updateValue() {
+        this.selectedOptions = this.options.filter((option) => {
+            return option.selected;
+        });
         this._value = this.selectedOptions.map((option) => option.value);
-    }
-
-    updateComputedOptions() {
-        this.computedOptions = this.options.filter(
-            (option) => !option.selected
-        );
     }
 
     handleBlur() {
@@ -519,7 +547,19 @@ export default class Combobox extends LightningElement {
 
     handleClearInput(event) {
         event.stopPropagation();
-        this.inputValue = '';
+        this.lastSelectedOption.selected = false;
+        this.lastSelectedOption = undefined;
+        this.updateValue();
+
+        const value = event.currentTarget.dataset.value;
+        this.dispatchEvent(
+            new CustomEvent('remove', {
+                detail: {
+                    value: value
+                }
+            })
+        );
+
         this.focus();
     }
 
@@ -596,14 +636,13 @@ export default class Combobox extends LightningElement {
             }
         }
         selectedOption.selected = !selectedOption.selected;
-        if (this.isMultiSelect) this.updateSelectedOptions();
-        if (this.removeSelectedOptions) this.updateComputedOptions();
+        this.updateValue();
 
         // Update the input value
         if (selectedOption.selected) {
-            this.inputValue = selectedOption.label;
+            this.lastSelectedOption = selectedOption;
         } else {
-            this.inputValue = '';
+            this.lastSelectedOption = undefined;
         }
 
         this.dispatchEvent(
@@ -627,12 +666,11 @@ export default class Combobox extends LightningElement {
         selectedOption.selected = false;
 
         // If the option removed is the one showed in the input, clear the input
-        if (this.inputValue === selectedOption.label) {
-            this.inputValue = '';
+        if (this.lastSelectedOption === selectedOption) {
+            this.lastSelectedOption = undefined;
         }
 
-        this.updateSelectedOptions();
-        if (this.removeSelectedOptions) this.updateComputedOptions();
+        this.updateValue();
 
         this.dispatchEvent(
             new CustomEvent('remove', {
