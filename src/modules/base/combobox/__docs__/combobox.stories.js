@@ -288,14 +288,19 @@ export default {
 const OPTIONS = [
     {
         label: 'Burlington Textiles Corp of America',
-        value: 'burlington',
-        avatarFallbackIconName: 'standard:account',
-        secondaryText: 'Account - Burlington, NC'
+        value: 'burlington'
     },
     {
         label: 'Dickenson plc',
-        value: 'dickenson',
-        secondaryText: 'Account - Lawrence, KS'
+        value: 'dickenson'
+    },
+    {
+        label: 'United Oil SLA',
+        value: 'oil-sla'
+    },
+    {
+        label: 'United Oil Standby Generators',
+        value: 'united-oil'
     },
     {
         label: 'Edge Communication',
@@ -303,11 +308,83 @@ const OPTIONS = [
     }
 ];
 
+const OPTIONS_WITH_AVATARS = [
+    {
+        label: 'Burlington Textiles Corp of America',
+        value: 'burlington',
+        avatarFallbackIconName: 'standard:account',
+        secondaryText: 'Account - Burlington, NC'
+    },
+    {
+        label: 'Dickenson plc',
+        value: 'dickenson',
+        avatarSrc:
+            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+        avatarFallbackIconName: 'standard:account',
+        secondaryText: 'Account - Lawrence, KS'
+    },
+    {
+        label: 'Edge Communication',
+        value: 'edge',
+        avatarFallbackIconName: 'standard:account',
+        secondaryText: 'Account - Singapore'
+    },
+    {
+        label: 'United Oil SLA',
+        value: 'oil-sla',
+        avatarFallbackIconName: 'standard:opportunity',
+        secondaryText: 'Opportunity - Closed Won'
+    },
+    {
+        label: 'United Oil Standby Generators',
+        value: 'united-oil',
+        avatarFallbackIconName: 'standard:opportunity',
+        secondaryText: 'Opportunity - Closed Won'
+    }
+];
+
+const ACTIONS = [
+    {
+        label: 'New Account',
+        name: 'new-account',
+        iconName: 'utility:add',
+        position: 'bottom'
+    },
+    {
+        label: 'New Opportunity',
+        name: 'new-opportunity',
+        iconName: 'utility:add',
+        position: 'bottom'
+    },
+    {
+        label: 'United',
+        name: 'search-united',
+        iconName: 'utility:search'
+    }
+];
+
 const Template = (args) => Combobox(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    label: 'Combobox label',
+    label: 'Simple combobox',
+    options: OPTIONS
+};
+
+export const MultiSelect = Template.bind({});
+MultiSelect.args = {
+    label: 'Multi-select combobox',
     options: OPTIONS,
-    value: ['burlington', 'edge']
+    isMultiSelect: true
+};
+
+export const Lookup = Template.bind({});
+Lookup.args = {
+    label: 'Multi-select lookup',
+    options: OPTIONS_WITH_AVATARS,
+    value: ['burlington', 'edge'],
+    isMultiSelect: true,
+    removeSelectedOptions: true,
+    actions: ACTIONS,
+    allowSearch: true
 };

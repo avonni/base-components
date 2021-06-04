@@ -61,6 +61,8 @@ export default class Combobox extends LightningElement {
     helpMessage;
     inputValue = '';
     selectedOptions = [];
+    topActions = [];
+    bottomActions = [];
 
     connectedCallback() {
         this.initValue();
@@ -72,6 +74,8 @@ export default class Combobox extends LightningElement {
     }
     set actions(value) {
         this._actions = normalizeArray(value);
+
+        this.initActions();
     }
 
     @api
@@ -372,6 +376,18 @@ export default class Combobox extends LightningElement {
         this.reportValidity();
     }
 
+    initActions() {
+        this.topActions = [];
+        this.bottomActions = [];
+        this.actions.forEach((action) => {
+            if (action.position === 'bottom') {
+                this.bottomActions.push(action);
+            } else {
+                this.topActions.push(action);
+            }
+        });
+    }
+
     initValue() {
         if (this.isMultiSelect) {
             this.value.forEach((value) => {
@@ -440,12 +456,32 @@ export default class Combobox extends LightningElement {
         this.focus();
     }
 
-    handleOptionClick(event) {
-        // Find the selected option
+    handleClick(event) {
+        // Find the selected option or action
         const target = event.target.dataset.value
             ? event.target
-            : event.target.closest('.slds-listbox__option');
-        const value = target.dataset.value;
+            : event.target.closest('li');
+        const optionValue = target.dataset.value;
+        const actionName = target.dataset.name;
+
+        if (optionValue) this.handleOptionClick(optionValue);
+        if (actionName) this.handleActionClick(actionName);
+    }
+
+    handleActionClick(name) {
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                detail: {
+                    name: name
+                }
+            })
+        );
+
+        this.close();
+        this.focus();
+    }
+
+    handleOptionClick(value) {
         const selectedOption = this.options.find((option) => {
             return option.value === value;
         });
