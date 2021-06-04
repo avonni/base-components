@@ -241,6 +241,16 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
+        scopesTitle: {
+            name: 'scopes-title',
+            control: {
+                type: 'text'
+            },
+            description: 'Title of the scopes drop-down menu.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         search: {
             description:
                 'Custom search function to execute instead of the default search. It has to: 1- Take an object with two keys as an argument: options and searchTerm. 2- Return the new options.',
@@ -285,7 +295,7 @@ export default {
     }
 };
 
-const OPTIONS = [
+const options = [
     {
         label: 'Burlington Textiles Corp of America',
         value: 'burlington'
@@ -308,7 +318,7 @@ const OPTIONS = [
     }
 ];
 
-const OPTIONS_WITH_AVATARS = [
+const optionsWithAvatars = [
     {
         label: 'Burlington Textiles Corp of America',
         value: 'burlington',
@@ -343,7 +353,7 @@ const OPTIONS_WITH_AVATARS = [
     }
 ];
 
-const ACTIONS = [
+const actions = [
     {
         label: 'New Account',
         name: 'new-account',
@@ -363,28 +373,83 @@ const ACTIONS = [
     }
 ];
 
+const scopes = [
+    {
+        label: 'All',
+        name: 'all'
+    },
+    {
+        label: 'Accounts',
+        name: 'accounts'
+    },
+    {
+        label: 'Analytics',
+        name: 'analytics'
+    }
+];
+
+const scopesWithIcons = [
+    {
+        label: 'Apex',
+        name: 'apex',
+        iconName: 'utility:apex'
+    },
+    {
+        label: 'Decisions',
+        name: 'decisions',
+        iconName: 'utility:signpost'
+    },
+    {
+        label: 'Rules',
+        name: 'rules',
+        iconName: 'utility:rules'
+    },
+    {
+        label: 'Snippets',
+        name: 'snippets',
+        iconName: 'utility:snippet'
+    }
+];
+
 const Template = (args) => Combobox(args);
 
 export const Base = Template.bind({});
 Base.args = {
     label: 'Simple combobox',
-    options: OPTIONS
+    options: options,
+    scopes: scopes
 };
 
 export const MultiSelect = Template.bind({});
 MultiSelect.args = {
     label: 'Multi-select combobox',
-    options: OPTIONS,
+    options: options,
     isMultiSelect: true
 };
 
 export const Lookup = Template.bind({});
 Lookup.args = {
     label: 'Multi-select lookup',
-    options: OPTIONS_WITH_AVATARS,
+    options: optionsWithAvatars,
     value: ['burlington', 'edge'],
     isMultiSelect: true,
     removeSelectedOptions: true,
-    actions: ACTIONS,
+    actions: actions,
     allowSearch: true
+};
+
+export const Scopes = Template.bind({});
+Scopes.args = {
+    label: 'Combobox with scopes',
+    options: options,
+    scopes: scopes,
+    scopesTitle: 'Suggested for you'
+};
+
+export const ScopesWithIcons = Template.bind({});
+ScopesWithIcons.args = {
+    label: 'Combobox with scopes',
+    allowSearch: true,
+    options: optionsWithAvatars,
+    scopes: scopesWithIcons
 };

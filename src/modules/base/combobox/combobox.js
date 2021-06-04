@@ -1,5 +1,6 @@
 import { LightningElement, api } from 'lwc';
 import ComboboxOption from './comboboxOption';
+import ComboboxScope from './comboboxScope';
 import {
     normalizeArray,
     normalizeBoolean,
@@ -35,6 +36,7 @@ export default class Combobox extends LightningElement {
     @api label;
     @api messageWhenValueMissing;
     @api name;
+    @api scopesTitle;
 
     _actions = [];
     _allowSearch = false;
@@ -58,8 +60,10 @@ export default class Combobox extends LightningElement {
 
     _cancelBlur = false;
     dropdownVisible = false;
+    scopesDropdownVisible = false;
     helpMessage;
     inputValue = '';
+    scopesInputValue = '';
     selectedOptions = [];
     topActions = [];
     bottomActions = [];
@@ -219,7 +223,18 @@ export default class Combobox extends LightningElement {
         return this._scopes;
     }
     set scopes(value) {
-        this._scopes = normalizeArray(value);
+        let scopes = normalizeArray(value);
+        if (scopes.length > 0) {
+            scopes = scopes.map((scope) => {
+                return new ComboboxScope(scope);
+            });
+
+            // By default, the first scope will be selected
+            scopes[0].selected = true;
+            this.scopesInputValue = scopes[0].label;
+            this.selectedScopeIconName = scopes[0].iconName;
+        }
+        this._scopes = scopes;
     }
 
     @api
@@ -267,7 +282,7 @@ export default class Combobox extends LightningElement {
     }
 
     get input() {
-        return this.template.querySelector('input');
+        return this.template.querySelector('.combobox__input');
     }
 
     get inputIconName() {
@@ -286,8 +301,16 @@ export default class Combobox extends LightningElement {
         return this.dropdownVisible ? 'true' : 'false';
     }
 
+    get computedScopesAriaExpanded() {
+        return this.scopesDropdownVisible ? 'true' : 'false';
+    }
+
     get computedAriaAutocomplete() {
         return this.readOnly || this.disabled ? 'none' : 'list';
+    }
+
+    get showScopes() {
+        return this.scopes.length > 0;
     }
 
     get showSelectedOptions() {
@@ -304,32 +327,68 @@ export default class Combobox extends LightningElement {
             .toString();
     }
 
+    get computedComboboxGroupClass() {
+        return this.showScopes ? 'slds-combobox-group' : undefined;
+    }
+
+    get computedScopesContainerClass() {
+        return classSet('slds-combobox_container combobox__scopes-container')
+            .add({
+                'slds-has-icon-only': this.selectedScopeIconName
+            })
+            .toString();
+    }
+
     get computedDropdownTriggerClass() {
         return classSet(
             'slds-is-relative slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click'
         )
-            .add({ 'slds-is-open': this.dropdownVisible })
+            .add({
+                'slds-is-open': this.dropdownVisible,
+                'slds-combobox-addon_end': this.showScopes
+            })
+            .toString();
+    }
+
+    get computedDropdownScopesTriggerClass() {
+        return classSet(
+            'slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click'
+        )
+            .add({ 'slds-is-open': this.scopesDropdownVisible })
             .toString();
     }
 
     get computedDropdownClass() {
-        const alignment = this.dropdownAlignment;
-
         return classSet(
             'slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid'
         )
-            .add({
-                'slds-dropdown_left':
-                    alignment === 'left' || alignment === 'auto',
-                'slds-dropdown_center': alignment === 'center',
-                'slds-dropdown_right': alignment === 'right',
-                'slds-dropdown_bottom': alignment === 'bottom-center',
-                'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right':
-                    alignment === 'bottom-right',
-                'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left':
-                    alignment === 'bottom-left'
-            })
+            .add(this.alignmentClasses)
             .toString();
+    }
+
+    get computedScopesDropdownClass() {
+        return classSet('slds-combobox__form-element slds-input-has-icon')
+            .add({
+                'slds-input-has-icon_left-right': this.selectedScopeIconName,
+                'slds-input-has-icon_right': !this.selectedScopeIconName
+            })
+            .add(this.alignmentClasses)
+            .toString();
+    }
+
+    get alignmentClasses() {
+        return {
+            'slds-dropdown_left':
+                this.dropdownAlignment === 'left' ||
+                this.dropdownAlignment === 'auto',
+            'slds-dropdown_center': this.dropdownAlignment === 'center',
+            'slds-dropdown_right': this.dropdownAlignment === 'right',
+            'slds-dropdown_bottom': this.dropdownAlignment === 'bottom-center',
+            'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right':
+                this.dropdownAlignment === 'bottom-right',
+            'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left':
+                this.dropdownAlignment === 'bottom-left'
+        };
     }
 
     @api
@@ -427,6 +486,13 @@ export default class Combobox extends LightningElement {
         this.dispatchEvent(new CustomEvent('blur'));
     }
 
+    handleScopeBlur() {
+        if (this._cancelBlur) {
+            return;
+        }
+        this.scopesDropdownVisible = false;
+    }
+
     handleFocus() {
         this.dispatchEvent(new CustomEvent('focus'));
     }
@@ -450,10 +516,41 @@ export default class Combobox extends LightningElement {
             this.dispatchEvent(new CustomEvent('open'));
         }
     }
+
     handleClearInput(event) {
         event.stopPropagation();
         this.inputValue = '';
         this.focus();
+    }
+
+    handleScopeClick(event) {
+        // Find the selected scope
+        const target = event.target.dataset.value
+            ? event.target
+            : event.target.closest('li');
+        const name = target.dataset.name;
+
+        // Clear any previously selected scope
+        const previouslySelectedScope = this.scopes.find(
+            (scope) => scope.selected
+        );
+        previouslySelectedScope.selected = false;
+
+        // Select new scope
+        const selectedScope = this.scopes.find((scope) => scope.name === name);
+        selectedScope.selected = true;
+        this.scopesInputValue = selectedScope.label;
+        this.selectedScopeIconName = selectedScope.iconName;
+
+        this.dispatchEvent(
+            new CustomEvent('scopeselect', {
+                detail: {
+                    name: name
+                }
+            })
+        );
+
+        this.scopesDropdownVisible = false;
     }
 
     handleClick(event) {
@@ -536,6 +633,15 @@ export default class Combobox extends LightningElement {
 
         this.updateSelectedOptions();
         if (this.removeSelectedOptions) this.updateComputedOptions();
+
+        this.dispatchEvent(
+            new CustomEvent('remove', {
+                detail: {
+                    value: value
+                },
+                bubbles: true
+            })
+        );
     }
 
     handleTriggerClick() {
@@ -543,5 +649,9 @@ export default class Combobox extends LightningElement {
             this.open();
             this.dispatchEvent(new CustomEvent('open'));
         }
+    }
+
+    handleScopeTriggerClick() {
+        this.scopesDropdownVisible = !this.scopesDropdownVisible;
     }
 }

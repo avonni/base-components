@@ -1,5 +1,5 @@
 <template>
-    <label class={computedLabelClass} for="input">
+    <label class={computedLabelClass} for="combobox-input">
         <template if:true={required}>
             <abbr class="slds-required" title="Required">*</abbr>
         </template>
@@ -11,172 +11,300 @@
     ></lightning-helptext>
 
     <div class="slds-form-element__control">
-        <div class={computedDropdownTriggerClass}>
+        <div class={computedComboboxGroupClass}>
+            <!-- Scopes -->
             <div
-                class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right"
-                onclick={handleTriggerClick}
+                if:true={showScopes}
+                class="slds-combobox_object-switcher slds-combobox-addon_start"
             >
-                <lightning-icon
-                    if:false={showClearInputIcon}
-                    class="slds-icon_container slds-input__icon slds-input__icon_right"
-                    icon-name={inputIconName}
-                    aria-hidden="true"
-                    size="x-small"
-                ></lightning-icon>
-                <button
-                    if:true={showClearInputIcon}
-                    class="slds-button slds-button_icon slds-input__icon slds-input__icon_right"
-                    onclick={handleClearInput}
-                >
-                    <lightning-icon
-                        icon-name="utility:close"
-                        alternative-text="Remove selected option"
-                        size="x-small"
-                    ></lightning-icon>
-                </button>
-                <input
-                    id="input"
-                    class="slds-input slds-combobox__input"
-                    type="text"
-                    role="combobox"
-                    aria-expanded={computedAriaExpanded}
-                    aria-haspopup="listbox"
-                    autocomplete="off"
-                    name={name}
-                    placeholder={placeholder}
-                    disabled={inputIsDisabled}
-                    readonly={hasNoSearch}
-                    aria-readonly={readOnly}
-                    aria-autocomplete={computedAriaAutocomplete}
-                    aria-owns="dropdown-element"
-                    value={inputValue}
-                    onfocus={handleFocus}
-                    onblur={handleBlur}
-                    onkeydown={handleInputKeyDown}
-                />
-            </div>
-            <div
-                id="dropdown-element"
-                class={computedDropdownClass}
-                onclick={handleClick}
-                onmousedown={handleDropdownMouseDown}
-                onmouseup={handleDropdownMouseUp}
-            >
-                <!-- Loading spinner -->
-                <div if:true={isLoading} class="slds-p-around_large">
-                    <lightning-spinner
-                        size="small"
-                        alternative-text={loadingStateAlternativeText}
-                    ></lightning-spinner>
-                </div>
-
-                <ul if:false={isLoading} role="listbox">
-                    <!-- Top actions -->
-                    <template for:each={topActions} for:item="action">
-                        <li
-                            key={action.name}
-                            class="slds-listbox__item slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_term"
-                            role="button"
-                            data-name={action.name}
-                        >
+                <div class="slds-form-element">
+                    <label
+                        class="slds-form-element__label slds-assistive-text"
+                        for="scopes"
+                        >Filter Search by:</label
+                    >
+                    <div class="slds-form-element__control">
+                        <div class={computedScopesContainerClass}>
                             <div
-                                if:true={action.iconName}
-                                class="slds-media__figure slds-listbox__option-icon"
+                                class={computedDropdownScopesTriggerClass}
+                                aria-expanded={computedScopesAriaExpanded}
+                                aria-haspopup="listbox"
+                                role="combobox"
                             >
-                                <lightning-icon
-                                    icon-name={action.iconName}
-                                    size="x-small"
-                                    aria-hidden="true"
-                                ></lightning-icon>
-                            </div>
-                            <div class="slds-media__body">
-                                <span
-                                    class="slds-listbox__option-text slds-listbox__option-text_entity"
-                                    >{action.label}</span
+                                <div
+                                    class={computedScopesDropdownClass}
+                                    role="none"
+                                    onclick={handleScopeTriggerClick}
                                 >
-                            </div>
-                        </li>
-                    </template>
+                                    <!-- If selected scope has an icon, it will be displayed as input value -->
+                                    <lightning-icon
+                                        if:true={selectedScopeIconName}
+                                        class="slds-input__icon slds-input__icon_left"
+                                        icon-name={selectedScopeIconName}
+                                        size="x-small"
+                                        aria-hidden="true"
+                                    ></lightning-icon>
 
-                    <!-- Options -->
-                    <template for:each={computedOptions} for:item="option">
-                        <li
-                            key={option.value}
-                            class={option.computedClass}
-                            role="option"
-                            aria-selected={option.selected}
-                            data-value={option.value}
-                        >
-                            <!-- Checkmark -->
-                            <div
-                                if:false={removeSelectedOptions}
-                                class="slds-media__figure slds-listbox__option-icon"
-                            >
-                                <lightning-icon
-                                    if:true={option.selected}
-                                    class="slds-current-color"
-                                    icon-name="utility:check"
-                                    size="x-small"
-                                    aria-hidden="true"
-                                ></lightning-icon>
-                            </div>
+                                    <!-- Scopes input -->
+                                    <input
+                                        type="text"
+                                        class="slds-input slds-combobox__input slds-combobox__input-value"
+                                        id="scopes"
+                                        autocomplete="off"
+                                        role="textbox"
+                                        value={scopesInputValue}
+                                        disabled={inputIsDisabled}
+                                        readonly
+                                        onblur={handleScopeBlur}
+                                    />
 
-                            <!-- Option data -->
-                            <div class="slds-media__body">
-                                <div class="slds-media slds-media_center">
-                                    <div
-                                        if:true={option.hasAvatar}
-                                        class="slds-media__figure slds-listbox__option-icon"
+                                    <!-- Scopes right icon -->
+                                    <lightning-icon
+                                        class="slds-input__icon slds-input__icon_right"
+                                        icon-name="utility:down"
+                                        size="x-small"
+                                        aria-hidden="true"
+                                    ></lightning-icon>
+                                </div>
+
+                                <!-- Scopes dropdown -->
+                                <div
+                                    class="slds-dropdown slds-dropdown_x-small slds-dropdown_left"
+                                    role="listbox"
+                                    onclick={handleScopeClick}
+                                    onmousedown={handleDropdownMouseDown}
+                                    onmouseup={handleDropdownMouseUp}
+                                >
+                                    <ul
+                                        class="slds-listbox slds-listbox_vertical"
+                                        role="group"
                                     >
-                                        <c-avatar
-                                            size="small"
-                                            src={option.avatarSrc}
-                                            fallback-icon-name={option.avatarFallbackIconName}
-                                            hide-avatar-details="true"
-                                        ></c-avatar>
-                                    </div>
-                                    <div class="slds-media__body">
-                                        <span
-                                            class="slds-listbox__option-text slds-listbox__option-text_entity"
-                                            >{option.label}</span
+                                        <!-- Scopes dropdown title -->
+                                        <li
+                                            if:true={scopesTitle}
+                                            role="presentation"
+                                            class="slds-listbox__item slds-listbox__option slds-listbox__option_plain"
                                         >
-                                        <span
-                                            class="slds-listbox__option-meta slds-listbox__option-meta_entity"
-                                            >{option.secondaryText}</span
+                                            <h3
+                                                class="slds-listbox__option-header"
+                                                role="presentation"
+                                            >
+                                                {scopesTitle}
+                                            </h3>
+                                        </li>
+                                        <template
+                                            for:each={scopes}
+                                            for:item="scope"
                                         >
-                                    </div>
+                                            <li
+                                                key={scope.name}
+                                                role="presentation"
+                                                class="slds-listbox__item"
+                                                data-name={scope.name}
+                                            >
+                                                <div
+                                                    aria-selected={scope.selected}
+                                                    class={scope.computedClass}
+                                                    role="option"
+                                                >
+                                                    <div
+                                                        class="slds-media__figure slds-listbox__option-icon"
+                                                    >
+                                                        <lightning-icon
+                                                            if:true={scope.showIcon}
+                                                            class={scope.computedIconClass}
+                                                            icon-name={scope.computedIconName}
+                                                            size="x-small"
+                                                        ></lightning-icon>
+                                                    </div>
+                                                    <div
+                                                        class="slds-media__body"
+                                                    >
+                                                        <span
+                                                            class="slds-truncate"
+                                                            >{scope.label}</span
+                                                        >
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </template>
+                                    </ul>
                                 </div>
                             </div>
-                        </li>
-                    </template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class={computedDropdownTriggerClass}>
+                <div
+                    class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right"
+                    onclick={handleTriggerClick}
+                >
+                    <!-- Right icon: down arrow or magnifying glass -->
+                    <lightning-icon
+                        if:false={showClearInputIcon}
+                        class="slds-icon_container slds-input__icon slds-input__icon_right"
+                        icon-name={inputIconName}
+                        aria-hidden="true"
+                        size="x-small"
+                    ></lightning-icon>
 
-                    <!-- Bottom actions -->
-                    <template for:each={bottomActions} for:item="action">
-                        <li
-                            key={action.name}
-                            class="slds-listbox__item slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_term"
-                            role="button"
-                            data-name={action.name}
-                        >
-                            <div
-                                if:true={action.iconName}
-                                class="slds-media__figure slds-listbox__option-icon"
+                    <!-- Clear input icon -->
+                    <button
+                        if:true={showClearInputIcon}
+                        class="slds-button slds-button_icon slds-input__icon slds-input__icon_right"
+                        onclick={handleClearInput}
+                    >
+                        <lightning-icon
+                            icon-name="utility:close"
+                            alternative-text="Remove selected option"
+                            size="x-small"
+                        ></lightning-icon>
+                    </button>
+
+                    <!-- Main input -->
+                    <input
+                        id="combobox-input"
+                        class="slds-input slds-combobox__input combobox__input"
+                        type="text"
+                        role="combobox"
+                        aria-expanded={computedAriaExpanded}
+                        aria-haspopup="listbox"
+                        autocomplete="off"
+                        name={name}
+                        placeholder={placeholder}
+                        disabled={inputIsDisabled}
+                        readonly={hasNoSearch}
+                        aria-readonly={readOnly}
+                        aria-autocomplete={computedAriaAutocomplete}
+                        aria-owns="dropdown-element"
+                        value={inputValue}
+                        onfocus={handleFocus}
+                        onblur={handleBlur}
+                        onkeydown={handleInputKeyDown}
+                    />
+                </div>
+
+                <!-- Main dropdown -->
+                <div
+                    id="dropdown-element"
+                    class={computedDropdownClass}
+                    onclick={handleClick}
+                    onmousedown={handleDropdownMouseDown}
+                    onmouseup={handleDropdownMouseUp}
+                >
+                    <!-- Loading spinner -->
+                    <div if:true={isLoading} class="slds-p-around_large">
+                        <lightning-spinner
+                            size="small"
+                            alternative-text={loadingStateAlternativeText}
+                        ></lightning-spinner>
+                    </div>
+                    <ul if:false={isLoading} role="listbox">
+                        <!-- Top actions -->
+                        <template for:each={topActions} for:item="action">
+                            <li
+                                key={action.name}
+                                class="slds-listbox__item slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_term"
+                                role="button"
+                                data-name={action.name}
                             >
-                                <lightning-icon
-                                    icon-name={action.iconName}
-                                    size="x-small"
-                                    aria-hidden="true"
-                                ></lightning-icon>
-                            </div>
-                            <div class="slds-media__body">
-                                <span
-                                    class="slds-listbox__option-text slds-listbox__option-text_entity"
-                                    >{action.label}</span
+                                <div
+                                    if:true={action.iconName}
+                                    class="slds-media__figure slds-listbox__option-icon"
                                 >
-                            </div>
-                        </li>
-                    </template>
-                </ul>
+                                    <lightning-icon
+                                        icon-name={action.iconName}
+                                        size="x-small"
+                                        aria-hidden="true"
+                                    ></lightning-icon>
+                                </div>
+                                <div class="slds-media__body">
+                                    <span
+                                        class="slds-listbox__option-text slds-listbox__option-text_entity"
+                                        >{action.label}</span
+                                    >
+                                </div>
+                            </li>
+                        </template>
+                        <!-- Options -->
+                        <template for:each={computedOptions} for:item="option">
+                            <li
+                                key={option.value}
+                                class={option.computedClass}
+                                role="option"
+                                aria-selected={option.selected}
+                                data-value={option.value}
+                            >
+                                <!-- Checkmark -->
+                                <div
+                                    if:false={removeSelectedOptions}
+                                    class="slds-media__figure slds-listbox__option-icon"
+                                >
+                                    <lightning-icon
+                                        if:true={option.selected}
+                                        class="slds-current-color"
+                                        icon-name="utility:check"
+                                        size="x-small"
+                                        aria-hidden="true"
+                                    ></lightning-icon>
+                                </div>
+                                <!-- Option data -->
+                                <div class="slds-media__body">
+                                    <div class="slds-media slds-media_center">
+                                        <div
+                                            if:true={option.hasAvatar}
+                                            class="slds-media__figure slds-listbox__option-icon"
+                                        >
+                                            <c-avatar
+                                                size="small"
+                                                src={option.avatarSrc}
+                                                fallback-icon-name={option.avatarFallbackIconName}
+                                                hide-avatar-details="true"
+                                            ></c-avatar>
+                                        </div>
+                                        <div class="slds-media__body">
+                                            <span
+                                                class="slds-listbox__option-text slds-listbox__option-text_entity"
+                                                >{option.label}</span
+                                            >
+                                            <span
+                                                class="slds-listbox__option-meta slds-listbox__option-meta_entity"
+                                                >{option.secondaryText}</span
+                                            >
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </template>
+                        <!-- Bottom actions -->
+                        <template for:each={bottomActions} for:item="action">
+                            <li
+                                key={action.name}
+                                class="slds-listbox__item slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_term"
+                                role="button"
+                                data-name={action.name}
+                            >
+                                <div
+                                    if:true={action.iconName}
+                                    class="slds-media__figure slds-listbox__option-icon"
+                                >
+                                    <lightning-icon
+                                        icon-name={action.iconName}
+                                        size="x-small"
+                                        aria-hidden="true"
+                                    ></lightning-icon>
+                                </div>
+                                <div class="slds-media__body">
+                                    <span
+                                        class="slds-listbox__option-text slds-listbox__option-text_entity"
+                                        >{action.label}</span
+                                    >
+                                </div>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
             </div>
         </div>
 

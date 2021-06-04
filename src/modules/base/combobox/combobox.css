@@ -1,0 +1,5 @@
+/* Needed because the dropdown alignment breaks the scopes focus styling */
+/* Could be removed if we weren't applying the dropdown alignment to the scopes */
+.combobox__scopes-container {
+    z-index: 1;
+}
