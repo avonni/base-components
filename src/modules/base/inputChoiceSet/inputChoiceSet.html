@@ -30,15 +30,13 @@
                         <label class={computedLabelClass} for={option.id}>
                             <span>
                                 <template if:true={checkboxVariant}>
-                                    <div> 
+                                    <div class="slds-p-vertical_xx-small"> 
                                         <avonni-media-object vertical-align="center" size="small">
-                                            <span slot="figure" class={checkboxShapeClass}></span>
+                                            <div slot="figure" class={checkboxShapeClass}></div>
                                             <div>
-                                                <lightning-icon if:true={option.isIconTop} class="slds-align_absolute-center slds-m-right_x-small block" icon-name={option.iconName} size="x-small"></lightning-icon>
-                                                <lightning-icon if:true={option.isIconLeft} class="slds-m-right_x-small" icon-name={option.iconName} size="x-small"></lightning-icon>
-                                                <div class="slds-form-element__label">{option.label}</div>
-                                                <lightning-icon if:true={option.isIconRight} icon-name={option.iconName} size="x-small"></lightning-icon>
-                                                <lightning-icon if:true={option.isIconBottom} class="slds-align_absolute-center slds-m-right_x-small block" icon-name={option.iconName} size="x-small"></lightning-icon>
+                                                <div if:true={option.isBottomRight} class="slds-form-element__label">{option.label}</div>
+                                                <lightning-icon class={option.labelCheckboxClass} icon-name={option.iconName} size="x-small"></lightning-icon>
+                                                <div if:true={option.isTopLeft} class="slds-form-element__label">{option.label}</div>
                                             </div>
                                           </avonni-media-object>
                                     </div>
@@ -46,11 +44,9 @@
     
                                 <template if:false={checkboxVariant} >
                                     <div class="slds-p-horizontal_small">
-                                        <lightning-icon if:true={option.isIconTop} class="slds-align_absolute-center slds-m-top_x-small" icon-name={option.iconName} size="x-small"></lightning-icon>
-                                        <lightning-icon if:true={option.isIconLeft} class="slds-m-right_x-small" icon-name={option.iconName} size="x-small"></lightning-icon>
-                                        <span class={option.labelButtonClass}>{option.label}</span>
-                                        <lightning-icon if:true={option.isIconRight} class="slds-m-left_x-small" icon-name={option.iconName} size="x-small"></lightning-icon>
-                                        <lightning-icon if:true={option.isIconBottom} class="slds-align_absolute-center slds-m-bottom_x-small" icon-name={option.iconName} size="x-small"></lightning-icon>
+                                        <span if:true={option.isBottomRight} class={option.labelButtonClass}>{option.label}</span>
+                                        <lightning-icon class={option.iconButtonClass} icon-name={option.iconName} size="x-small"></lightning-icon>
+                                        <span if:true={option.isTopLeft} class={option.labelButtonClass}>{option.label}</span>
                                     </div>
                                 </template>
     

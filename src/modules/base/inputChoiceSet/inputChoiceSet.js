@@ -162,21 +162,39 @@ export default class InputChoiceSet extends LightningElement {
                 id: `checkbox-${this.itemIndex++}`,
                 isChecked: value.indexOf(option.value) !== -1,
                 iconName: option.iconName,
-                isIconTop: (option.iconPosition === "top"),
-                isIconBottom: (option.iconPosition === "bottom"),
-                isIconLeft : (option.iconPosition === "left" || (!option.iconPosition && option.iconName)),
-                isIconRight : (option.iconPosition === "right"),
+                isTopLeft: (option.iconPosition === "top") || (option.iconPosition === "left") || (!option.iconPosition || !option.iconName) ,
+                isBottomRight:(option.iconPosition === "bottom") || (option.iconPosition === "right"),
                 labelButtonClass: this.computeLabelButtonClass(option.iconPosition),
+                iconButtonClass: this.computeIconButtonClass(option.iconPosition),
+                labelCheckboxClass : this.computeLabelCheckboxClass(option.iconPosition),
+
             }));
         }
         return [];
     }
 
-
+    computeIconButtonClass(iconPosition){
+        switch(iconPosition){
+            case "top":
+                return "slds-align_absolute-center slds-m-top_x-small";
+            case "bottom":
+                return "slds-align_absolute-center slds-m-bottom_x-small";
+            case "left":
+                return "slds-m-right_x-small";
+            case "right":
+                return "slds-m-left_x-small";
+        }
+    }
 
     computeLabelButtonClass(iconPosition){
         let labelClass = "slds-checkbox_faux";
         if(iconPosition === "top" || iconPosition === "bottom") labelClass += " slds-align_absolute-center";
+        return labelClass
+    }
+
+    computeLabelCheckboxClass(iconPosition){
+        let labelClass = "slds-m-right_x-small";
+        if(iconPosition === "top" || iconPosition === "bottom") labelClass += " block";
         return labelClass
     }
 
