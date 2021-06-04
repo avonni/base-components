@@ -78,24 +78,6 @@ export default class List extends LightningElement {
         this._hasActions = true;
     }
 
-    onMenuClick(event) {
-        event.preventDefault();
-        const currentMenu = event.currentTarget;
-        const menuButtons = Array.from(
-            this.template.querySelectorAll('lightning-button-menu')
-        );
-
-        for (const menu of menuButtons) {
-            if (menu !== currentMenu) {
-                menu.classList.remove('slds-is-open');
-            } else if (menu.classList.contains('slds-is-open')) {
-                menu.classList.add(['slds-is-open']);
-            } else {
-                menu.classList.remove(['slds-is-open']);
-            }
-        }
-    }
-
     get showIconRight() {
         return (
             this.sortable &&
