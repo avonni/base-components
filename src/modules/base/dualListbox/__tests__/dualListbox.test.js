@@ -416,6 +416,26 @@ describe('DualListbox', () => {
         });
     });
 
+    it('Dual Listbox draggable with disabled', () => {
+        const element = createElement('base-dual-listbox', {
+            is: DualListbox
+        });
+        document.body.appendChild(element);
+
+        element.options = options;
+        element.draggable = true;
+        element.disabled = true;
+
+        return Promise.resolve().then(() => {
+            const optionsDraggable = element.shadowRoot.querySelectorAll(
+                '.slds-listbox__option'
+            );
+            optionsDraggable.forEach((option) => {
+                expect(option.draggable).toBeFalsy();
+            });
+        });
+    });
+
     // field-level-help
     it('Dual Listbox field level help', () => {
         const element = createElement('base-dual-listbox', {
