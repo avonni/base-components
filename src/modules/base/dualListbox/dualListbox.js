@@ -1200,18 +1200,27 @@ export default class DualListbox extends LightningElement {
 
     dragStartSource(event) {
         event.currentTarget.classList.add('dragging');
+        this.updateSelectedOptions(event.currentTarget, true, false);
     }
 
     dragEndSource(event) {
         event.preventDefault();
         event.currentTarget.classList.remove('dragging');
         if (this._dropItSelected) {
-            this.handleDragRight();
+            if (
+                this.highlightedOptions.includes(
+                    event.currentTarget.getAttribute('data-value')
+                )
+            ) {
+                this.handleDragRight();
+            }
         }
+        event.target.focus();
     }
 
     dragStartSelected(event) {
         event.currentTarget.classList.add('dragging');
+        this.updateSelectedOptions(event.currentTarget, true, false);
     }
 
     dragEndSelected(event) {
@@ -1221,7 +1230,6 @@ export default class DualListbox extends LightningElement {
             this.handleDragLeft();
         } else if (!this._dropItSource) {
             if (!this._disableReordering) {
-                this._dropItSelected = true;
                 const values = this.computedSelectedList.map(
                     (option) => option.value
                 );
@@ -1258,23 +1266,6 @@ export default class DualListbox extends LightningElement {
 
     dragLeaveSelected() {
         this._dropItSelected = false;
-    }
-
-    getDragAfterElement(container, y) {
-        const draggableElement = [
-            ...container.querySelectorAll('li:not(.dragging)')
-        ];
-        draggableElement.reduce(
-            (closest, child) => {
-                const box = child.getBoundingClientRect();
-                const offset = y - box.top - box.height / 2;
-                if (offset < 0 && offset > closest.offset) {
-                    return { offset: offset, element: child };
-                }
-                return closest;
-            },
-            { offset: Number.NEGATIVE_INFINITY }
-        );
     }
 
     handleDragOver(event) {
