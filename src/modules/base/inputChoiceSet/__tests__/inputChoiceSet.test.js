@@ -88,6 +88,7 @@ describe('Input choice set', () => {
 
         element.options = options;
         element.orientation = "vertical";
+        element.isMultiSelect = true;
 
         return Promise.resolve().then(() => {
             const inputs = element.shadowRoot.querySelectorAll('div > span');
