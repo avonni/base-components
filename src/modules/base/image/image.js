@@ -269,6 +269,7 @@ export default class Image extends LightningElement {
                 'avonni-img_cropped-centered':
                     (this.center && this._cropSize) ||
                     (this.center &&
+                        !this._blank &&
                         this.width &&
                         this.height &&
                         !this._cropSize &&
@@ -287,6 +288,13 @@ export default class Image extends LightningElement {
                         this.height &&
                         !this._cropSize &&
                         !this.staticImages),
+                'avonni-img_blank_no-crop_centered':
+                    this.center &&
+                    this.width &&
+                    this.height &&
+                    this._blank &&
+                    !this._cropSize &&
+                    !this.staticImages,
                 'avonni-img_cropped_no-width_height':
                     !this.width &&
                     this.height &&
@@ -340,207 +348,183 @@ export default class Image extends LightningElement {
     }
 
     get computedImgContainerStyle() {
-        if (this._cropSize && !this.staticImages) {
+        if (!this._cropSize) {
+            return this.imgContainerNoCrop();
+        } else if (this._cropSize) {
+            return this.imgContainerCropped();
+        }
+        return '';
+    }
+
+    imgContainerNoCrop() {
+        if (!this.staticImages) {
+            if (this.width && this.height && !this._blank) {
+                return `
+                padding-top: ${(this.height / this.width) * 100}%;
+                `;
+            } else if (!this.width && this.height) {
+                return `
+                padding-top: ${(this.height / this._imgWidth) * 100}%;
+                `;
+            }
+        } else if (this.staticImages) {
+            if (!this.width && this.height) {
+                return `
+                padding-top: ${(this.height / this._imgWidth) * 100}%;
+                max-width: ${this._imgWidth}px;
+                max-height: ${this.height}px;
+                min-width: ${this._imgWidth}px;
+                min-height: ${this.height}px;
+                `;
+            } else if (this.width && this.height) {
+                return `
+                padding-top: ${(this.height / this.width) * 100}%;
+                max-width: ${this.width}px;
+                max-height: ${this.height}px;
+                min-width: ${this.width}px;
+                min-height: ${this.height}px;
+                `;
+            }
+        }
+        return '';
+    }
+
+    imgContainerCropped() {
+        if (!this.staticImages) {
             return `padding-top: ${this._cropSize}%;`;
-        } else if (
-            this._cropSize &&
-            this.staticImages &&
-            !this.width &&
-            !this.height
-        ) {
-            return `
-            padding-top: ${this._cropSize}%;
-            max-width: ${this._imgWidth}px;
-            max-height: ${this._imgHeight}px;
-            min-width: ${this._imgWidth}px;
-            min-height: ${this._imgHeight}px;
-            `;
-        } else if (this._cropSize && this.staticImages && this.width) {
-            return `
-            padding-top: ${this._cropSize}%;
-            max-width: ${this.width}px;
-            max-height: ${this.width * (this._cropSize / 100)}px;
-            min-width: ${this.width}px;
-            min-height: ${this.width * (this._cropSize / 100)}px;
-            `;
-        } else if (
-            this.width &&
-            this.height &&
-            !this._cropSize &&
-            !this.staticImages &&
-            !this._blank
-        ) {
-            return `
-            padding-top: ${(this.height / this.width) * 100}%;
-            `;
-        } else if (
-            !this.width &&
-            this.height &&
-            !this._cropSize &&
-            !this.staticImages
-        ) {
-            return `
-            padding-top: ${(this.height / this._imgWidth) * 100}%;
-            `;
-        } else if (
-            !this._cropSize &&
-            this.staticImages &&
-            !this.width &&
-            this.height
-        ) {
-            return `
-            padding-top: ${(this.height / this._imgWidth) * 100}%;
-            max-width: ${this._imgWidth}px;
-            max-height: ${this.height}px;
-            min-width: ${this._imgWidth}px;
-            min-height: ${this.height}px;
-            `;
-        } else if (
-            !this._cropSize &&
-            this.staticImages &&
-            this.width &&
-            this.height
-        ) {
-            return `
-            padding-top: ${(this.height / this.width) * 100}%;
-            max-width: ${this.width}px;
-            max-height: ${this.height}px;
-            min-width: ${this.width}px;
-            min-height: ${this.height}px;
-            `;
-        } else if (
-            this._cropSize &&
-            this.staticImages &&
-            this.height &&
-            !this.width
-        ) {
-            return `
-            padding-top: ${this._cropSize}%;
-            max-height: ${this.height}px;
-            max-width: ${this.height / (this._cropSize / 100)}px;
-            min-height: ${this.height}px;
-            min-width: ${this.height / (this._cropSize / 100)}px;
-            `;
+        } else if (this.staticImages) {
+            if (!this.width && !this.height) {
+                return `
+                padding-top: ${this._cropSize}%;
+                max-width: ${this._imgWidth}px;
+                max-height: ${this._imgHeight}px;
+                min-width: ${this._imgWidth}px;
+                min-height: ${this._imgHeight}px;
+                `;
+            } else if (this.width) {
+                return `
+                padding-top: ${this._cropSize}%;
+                max-width: ${this.width}px;
+                max-height: ${this.width * (this._cropSize / 100)}px;
+                min-width: ${this.width}px;
+                min-height: ${this.width * (this._cropSize / 100)}px;
+                `;
+            } else if (!this.width && this.height) {
+                return `
+                padding-top: ${this._cropSize}%;
+                max-height: ${this.height}px;
+                max-width: ${this.height / (this._cropSize / 100)}px;
+                min-height: ${this.height}px;
+                min-width: ${this.height / (this._cropSize / 100)}px;
+                `;
+            }
         }
         return '';
     }
 
     get computedImgStyle() {
-        if (
-            !this.width &&
-            !this.height &&
-            this._cropSize &&
-            !this.staticImages
-        ) {
-            return `
-            object-fit: ${this.cropFit};
-            object-position: ${this.cropPositionX}% ${this.cropPositionY}%; 
-            `;
-        } else if (this.width && this._cropSize && !this.staticImages) {
-            return `
-            width: ${this.width}px;
-            height: ${this.width * (this._cropSize / 100)}px;
-            object-fit: ${this.cropFit};
-            object-position: ${this.cropPositionX}% ${this.cropPositionY}%; 
-            `;
-        } else if (
-            !this.width &&
-            this.height &&
-            this._cropSize &&
-            !this.staticImages
-        ) {
-            return `
-            height: ${this.height}px;
-            width: ${this.height / (this._cropSize / 100)}px;
-            object-fit: ${this.cropFit};
-            object-position: ${this.cropPositionX}% ${this.cropPositionY}%; 
-            `;
+        if (!this._cropSize) {
+            return this.imgHandlerNoCrop();
+        } else if (this._cropSize) {
+            return this.imgHandlerCropped();
         } else if (this.width && this._blank && !this.staticImages) {
+            console.log('%c ?????? ', 'background: #222; color: #bada');
             return `
             width: ${this.width}px;
             `;
-        } else if (
-            this.staticImages &&
-            !this._cropSize &&
-            this.width &&
-            this.height
-        ) {
-            return `
-            min-width: ${this.width}px;
-            min-height: ${this.height}px;
-            max-width: ${this.width}px;
-            max-height: ${this.height}px;
-            `;
-        } else if (
-            this.staticImages &&
-            !this._cropSize &&
-            !this.width &&
-            this.height
-        ) {
-            return `
-            min-height: ${this.height}px;
-            height: ${this.height}px;
-            max-width: ${this._imgWidth}px;
-            min-width: ${this._imgWidth}px;
-            `;
-        } else if (
-            this.staticImages &&
-            !this._cropSize &&
-            this.width &&
-            !this.height
-        ) {
-            return `
-            max-width: ${this.width}px;
-            `;
-        } else if (
-            this.staticImages &&
-            !this._cropSize &&
-            !this.width &&
-            !this.height
-        ) {
-            return `
-            max-width: ${this._imgWidth}px;
-            max-height: ${this._imgHeight}px;
-            min-width: ${this._imgWidth}px;
-            min-height: ${this._imgHeight}px;
-            `;
-        } else if (
-            this.staticImages &&
-            this._cropSize &&
-            !this.width &&
-            !this.height
-        ) {
-            return `
-            max-width: ${this._imgWidth}px;
-            max-height: ${this._imgHeight}px;
-            min-width: ${this._imgWidth}px;
-            min-height: ${this._imgHeight}px;
-            object-fit: ${this.cropFit};
-            object-position: ${this.cropPositionX}% ${this.cropPositionY}%; 
-            `;
-        } else if (this.staticImages && this._cropSize && this.width) {
-            return `
-            max-width: ${this.width}px;
-            max-height: ${this.width * (this._cropSize / 100)}px;
-            min-width: ${this.width}px;
-            min-height: ${this.width * (this._cropSize / 100)}px;
-            object-fit: ${this.cropFit};
-            object-position: ${this.cropPositionX}% ${this.cropPositionY}%; 
-            `;
-        } else if (
-            !this.width &&
-            this.height &&
-            this._cropSize &&
-            this.staticImages
-        ) {
-            return `
-            max-height: ${this.height}px;
-            max-width: ${this.height / (this._cropSize / 100)}px;
-            min-height: ${this.height}px;
-            min-width: ${this.height / (this._cropSize / 100)}px;
-            object-fit: ${this.cropFit};
-            object-position: ${this.cropPositionX}% ${this.cropPositionY}%; 
-            `;
+        }
+        return `
+        width: ${this.width}px;
+        height: ${this.height}px;        
+        `;
+    }
+
+    imgHandlerNoCrop() {
+        if (this.staticImages) {
+            if (this.width && this.height) {
+                return `
+                min-width: ${this.width}px;
+                min-height: ${this.height}px;
+                max-width: ${this.width}px;
+                max-height: ${this.height}px;
+                `;
+            } else if (!this.width && this.height) {
+                return `
+                min-height: ${this.height}px;
+                height: ${this.height}px;
+                max-width: ${this._imgWidth}px;
+                min-width: ${this._imgWidth}px;
+                `;
+            } else if (this.width && !this.height) {
+                return `
+                max-width: ${this.width}px;
+                `;
+            } else if (!this.width && !this.height) {
+                return `
+                max-width: ${this._imgWidth}px;
+                max-height: ${this._imgHeight}px;
+                min-width: ${this._imgWidth}px;
+                min-height: ${this._imgHeight}px;
+                `;
+            }
+        }
+        return `
+        width: ${this.width}px;
+        height: ${this.height}px;        
+        `;
+    }
+
+    imgHandlerCropped() {
+        if (!this.staticImages) {
+            if (!this.width && !this.height) {
+                return `
+                object-fit: ${this.cropFit};
+                object-position: ${this.cropPositionX}% ${this.cropPositionY}%; 
+                `;
+            } else if (this.width) {
+                return `
+                width: ${this.width}px;
+                height: ${this.width * (this._cropSize / 100)}px;
+                object-fit: ${this.cropFit};
+                object-position: ${this.cropPositionX}% ${this.cropPositionY}%; 
+                `;
+            } else if (!this.width && this.height) {
+                return `
+                height: ${this.height}px;
+                width: ${this.height / (this._cropSize / 100)}px;
+                object-fit: ${this.cropFit};
+                object-position: ${this.cropPositionX}% ${this.cropPositionY}%; 
+                `;
+            }
+        } else if (this.staticImages) {
+            if (!this.width && !this.height) {
+                return `
+                max-width: ${this._imgWidth}px;
+                max-height: ${this._imgHeight}px;
+                min-width: ${this._imgWidth}px;
+                min-height: ${this._imgHeight}px;
+                object-fit: ${this.cropFit};
+                object-position: ${this.cropPositionX}% ${this.cropPositionY}%; 
+                `;
+            } else if (this.width) {
+                return `
+                max-width: ${this.width}px;
+                max-height: ${this.width * (this._cropSize / 100)}px;
+                min-width: ${this.width}px;
+                min-height: ${this.width * (this._cropSize / 100)}px;
+                object-fit: ${this.cropFit};
+                object-position: ${this.cropPositionX}% ${this.cropPositionY}%; 
+                `;
+            } else if (!this.width && this.height) {
+                return `
+                max-height: ${this.height}px;
+                max-width: ${this.height / (this._cropSize / 100)}px;
+                min-height: ${this.height}px;
+                min-width: ${this.height / (this._cropSize / 100)}px;
+                object-fit: ${this.cropFit};
+                object-position: ${this.cropPositionX}% ${this.cropPositionY}%; 
+                `;
+            }
         }
         return `
         width: ${this.width}px;

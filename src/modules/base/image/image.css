@@ -87,6 +87,11 @@
     margin-right: 0;
 }
 
+.avonni-img_blank_no-crop_centered {
+    right: 50%;
+    margin-left: auto;
+}
+
 .avonni-img_cropped-right {
     right: 0%;
     margin-left: auto;
