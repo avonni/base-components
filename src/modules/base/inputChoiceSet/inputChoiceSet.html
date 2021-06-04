@@ -15,7 +15,7 @@
                         key={option.value}
                     >
                         <input
-                            type="checkbox"
+                            type={computedInputType}
                             name={name}
                             id={option.id}
                             checked={option.isChecked}
@@ -31,25 +31,16 @@
                             <span>
                                 <template if:true={checkboxVariant}>
                                     <div> 
-                                        <lightning-layout class="slds-media slds-media_center">
-                            
-                                            <lightning-layout-item>
-                                                <span class={checkboxShapeClass}></span>
-                                            </lightning-layout-item>
-
-                                            <lightning-layout-item class="slds-p-right_small">
-                                                <div class="slds-align_absolute-center">
-                                                    <lightning-icon if:true={option.isIconTop} class="slds-m-right_x-small block" icon-name={option.iconName} size="x-small"></lightning-icon>
-                                                </div>
+                                        <avonni-media-object vertical-align="center" size="small">
+                                            <span slot="figure" class={checkboxShapeClass}></span>
+                                            <div>
+                                                <lightning-icon if:true={option.isIconTop} class="slds-align_absolute-center slds-m-right_x-small block" icon-name={option.iconName} size="x-small"></lightning-icon>
                                                 <lightning-icon if:true={option.isIconLeft} class="slds-m-right_x-small" icon-name={option.iconName} size="x-small"></lightning-icon>
-                                                <div class="slds-form-element__label block">{option.label}</div>
-                                                <lightning-icon if:true={option.isIconRight} class="slds-m-left_x-small" icon-name={option.iconName} size="x-small"></lightning-icon>
-                                                <div class="slds-align_absolute-center">
-                                                    <lightning-icon if:true={option.isIconBottom} class="slds-m-right_x-small block" icon-name={option.iconName} size="x-small"></lightning-icon>
-                                                </div>    
-                                            </lightning-layout-item>
-                                            
-                                        </lightning-layout>
+                                                <div class="slds-form-element__label">{option.label}</div>
+                                                <lightning-icon if:true={option.isIconRight} icon-name={option.iconName} size="x-small"></lightning-icon>
+                                                <lightning-icon if:true={option.isIconBottom} class="slds-align_absolute-center slds-m-right_x-small block" icon-name={option.iconName} size="x-small"></lightning-icon>
+                                            </div>
+                                          </avonni-media-object>
                                     </div>
                                 </template>
     

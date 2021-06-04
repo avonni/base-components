@@ -295,8 +295,8 @@ export default class InputChoiceSet extends LightningElement {
 
     get computedCheckboxContainerClass() {
         let checkboxClass = "slds-checkbox "+ this.orientation;
-        if(!this.isMultiSelect) checkboxClass += " radio";
-        let buttonClass = "slds-button slds-checkbox_button "+this.orientation
+        if(!this.isMultiSelect) checkboxClass = "slds-radio "+ this.orientation;
+        let buttonClass = "slds-button slds-checkbox_button "+this.orientation;
         return this.checkboxVariant
             ? checkboxClass
             : buttonClass;
@@ -304,14 +304,24 @@ export default class InputChoiceSet extends LightningElement {
 
     get computedLabelClass() {
         let buttonLabelClass = "slds-checkbox_button__label slds-media slds-media_center slds-align_absolute-center "+ this.orientation;
+        let checkboxLabelClass = this.isMultiSelect && this.checkboxVariant ? "slds-checkbox__label" : "slds-radio__label";
         return this.checkboxVariant
-            ? 'slds-checkbox__label'
+            ? checkboxLabelClass
             : buttonLabelClass;
+    }
+
+    get computedInputType(){
+
+        return this.isMultiSelect || !this.checkboxVariant
+        ? "checkbox"
+        : "radio";
     }
 
     get checkboxShapeClass(){
         return this.isMultiSelect
             ? "slds-checkbox_faux"
-            : "slds-checkbox_faux radio";
+            : "slds-radio_faux";
+
     }
+
 }
