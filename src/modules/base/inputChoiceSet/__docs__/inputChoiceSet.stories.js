@@ -140,11 +140,11 @@ const optionsWithIcon = [
     { label: 'Right', value: 'right', iconName: 'utility:right_align_text', iconPosition: 'right' },
 ];
 const optionsWithoutIcon = [
-    { label: 'Mon', value: 'mon', iconName: 'utility:left_align_text', iconPosition: 'right' },
-    { label: 'Tue', value: 'tue', iconName: 'utility:left_align_text', iconPosition: 'left' },
-    { label: 'Wed', value: 'wed', iconName: 'utility:left_align_text', iconPosition: 'top' },
-    { label: 'Thu', value: 'thu', iconName: 'utility:left_align_text', iconPosition: 'bottom' },
-    { label: 'Fri', value: 'fri', iconName: 'utility:left_align_text', iconPosition: 'right' }
+    { label: 'Mon', value: 'mon',},
+    { label: 'Tue', value: 'tue',},
+    { label: 'Wed', value: 'wed',},
+    { label: 'Thu', value: 'thu',},
+    { label: 'Fri', value: 'fri',}
 ];
 const dayValue = ['fri'];
 const alignmentValue = ['center'];

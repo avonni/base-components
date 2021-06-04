@@ -23,6 +23,13 @@ const DEBOUNCE_PERIOD = 200;
 const validOrientations = {valid: ['vertical', 'horizontal'], default:'vertical'};
 const validTypes = { valid: ['default', 'button'], default: 'default' };
 
+const POSITION_ICON = {
+    TOP: 'top',
+    BOTTOM: 'bottom',
+    RIGHT: 'right',
+    LEFT: 'left'
+};
+
 export default class InputChoiceSet extends LightningElement {
     static delegatesFocus = true;
 
@@ -162,8 +169,8 @@ export default class InputChoiceSet extends LightningElement {
                 id: `checkbox-${this.itemIndex++}`,
                 isChecked: value.indexOf(option.value) !== -1,
                 iconName: option.iconName,
-                isTopLeft: (option.iconPosition === "top") || (option.iconPosition === "left") || (!option.iconPosition || !option.iconName) ,
-                isBottomRight:(option.iconPosition === "bottom") || (option.iconPosition === "right"),
+                isTopLeft: (option.iconPosition === POSITION_ICON.TOP) || (option.iconPosition === POSITION_ICON.LEFT) || (!option.iconPosition || !option.iconName) ,
+                isBottomRight:(option.iconPosition === POSITION_ICON.BOTTOM) || (option.iconPosition === POSITION_ICON.RIGHT),
                 labelButtonClass: this.computeLabelButtonClass(option.iconPosition),
                 iconButtonClass: this.computeIconButtonClass(option.iconPosition),
                 labelCheckboxClass : this.computeLabelCheckboxClass(option.iconPosition),
@@ -174,28 +181,25 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     computeIconButtonClass(iconPosition){
-        switch(iconPosition){
-            case "top":
-                return "slds-align_absolute-center slds-m-top_x-small";
-            case "bottom":
-                return "slds-align_absolute-center slds-m-bottom_x-small";
-            case "left":
-                return "slds-m-right_x-small";
-            case "right":
-                return "slds-m-left_x-small";
-        }
+        return classSet('').add({
+            'slds-align_absolute-center slds-m-top_x-small': (iconPosition === POSITION_ICON.TOP),
+            'slds-align_absolute-center slds-m-bottom_x-small': (iconPosition === POSITION_ICON.BOTTOM),
+            'slds-m-left_x-small': (iconPosition === POSITION_ICON.RIGHT),
+            'slds-m-right_x-small': (iconPosition === POSITION_ICON.LEFT) || (!iconPosition),
+        }).toString();
     }
 
     computeLabelButtonClass(iconPosition){
-        let labelClass = "slds-checkbox_faux";
-        if(iconPosition === "top" || iconPosition === "bottom") labelClass += " slds-align_absolute-center";
-        return labelClass
+        return classSet('slds-checkbox_faux').add({
+            'slds-align_absolute-center': (iconPosition === POSITION_ICON.TOP || iconPosition === POSITION_ICON.BOTTOM),
+        }).toString();
+    
     }
 
     computeLabelCheckboxClass(iconPosition){
-        let labelClass = "slds-m-right_x-small";
-        if(iconPosition === "top" || iconPosition === "bottom") labelClass += " block";
-        return labelClass
+        return classSet('slds-m-right_x-small').add({
+            'block': (iconPosition === POSITION_ICON.TOP || iconPosition === POSITION_ICON.BOTTOM),
+        }).toString();
     }
 
     @api
@@ -307,38 +311,41 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     get computedButtonClass() {
-        let buttonGroupClass = 'slds-checkbox_button-group '+ this.orientation;
-        return this.checkboxVariant ? '' : buttonGroupClass;
+        return this.checkboxVariant ? '' : `slds-checkbox_button-group ${this.orientation}`;
     }
 
     get computedCheckboxContainerClass() {
-        let checkboxClass = "slds-checkbox "+ this.orientation;
-        if(!this.isMultiSelect) checkboxClass = "slds-radio "+ this.orientation;
-        let buttonClass = "slds-button slds-checkbox_button "+this.orientation;
+        const checkboxClass = this.isMultiSelect 
+            ? `slds-checkbox ${this.orientation}`  
+            : `slds-radio ${this.orientation}`;
+        const buttonClass = `slds-button slds-checkbox_button ${this.orientation}`;
+        
         return this.checkboxVariant
             ? checkboxClass
             : buttonClass;
     }
 
     get computedLabelClass() {
-        let buttonLabelClass = "slds-checkbox_button__label slds-media slds-media_center slds-align_absolute-center "+ this.orientation;
-        let checkboxLabelClass = this.isMultiSelect && this.checkboxVariant ? "slds-checkbox__label" : "slds-radio__label";
-        return this.checkboxVariant
+        const buttonLabelClass = `slds-checkbox_button__label slds-align_absolute-center ${this.orientation}`;
+        const checkboxLabelClass = this.isMultiSelect && this.checkboxVariant 
+            ? 'slds-checkbox__label' 
+            : 'slds-radio__label';
+        
+            return this.checkboxVariant
             ? checkboxLabelClass
             : buttonLabelClass;
     }
 
     get computedInputType(){
-
         return this.isMultiSelect || !this.checkboxVariant
-        ? "checkbox"
-        : "radio";
+        ? 'checkbox'
+        : 'radio';
     }
 
-    get checkboxShapeClass(){
+    get computedCheckboxShapeClass(){
         return this.isMultiSelect
-            ? "slds-checkbox_faux"
-            : "slds-radio_faux";
+            ? 'slds-checkbox_faux'
+            : 'slds-radio_faux';
 
     }
 

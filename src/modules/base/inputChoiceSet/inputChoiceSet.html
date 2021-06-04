@@ -30,12 +30,12 @@
                         <label class={computedLabelClass} for={option.id}>
                             <span>
                                 <template if:true={checkboxVariant}>
-                                    <div class="slds-p-vertical_xx-small"> 
+                                    <div> 
                                         <avonni-media-object vertical-align="center" size="small">
-                                            <div slot="figure" class={checkboxShapeClass}></div>
+                                            <div slot="figure" class={computedCheckboxShapeClass}></div>
                                             <div>
                                                 <div if:true={option.isBottomRight} class="slds-form-element__label">{option.label}</div>
-                                                <lightning-icon class={option.labelCheckboxClass} icon-name={option.iconName} size="x-small"></lightning-icon>
+                                                <lightning-icon if:true={option.iconName} class={option.labelCheckboxClass} icon-name={option.iconName} size="x-small"></lightning-icon>
                                                 <div if:true={option.isTopLeft} class="slds-form-element__label">{option.label}</div>
                                             </div>
                                           </avonni-media-object>
@@ -45,7 +45,7 @@
                                 <template if:false={checkboxVariant} >
                                     <div class="slds-p-horizontal_small">
                                         <span if:true={option.isBottomRight} class={option.labelButtonClass}>{option.label}</span>
-                                        <lightning-icon class={option.iconButtonClass} icon-name={option.iconName} size="x-small"></lightning-icon>
+                                        <lightning-icon if:true={option.iconName} class={option.iconButtonClass} icon-name={option.iconName} size="x-small"></lightning-icon>
                                         <span if:true={option.isTopLeft} class={option.labelButtonClass}>{option.label}</span>
                                     </div>
                                 </template>
