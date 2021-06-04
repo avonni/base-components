@@ -101,6 +101,7 @@ export default class DualListbox extends LightningElement {
 
     _dropItSelected = false;
     _dropItSource = false;
+    _newIndex;
 
     connectedCallback() {
         this.classList.add('slds-form-element');
@@ -1218,6 +1219,26 @@ export default class DualListbox extends LightningElement {
         event.currentTarget.classList.remove('dragging');
         if (this._dropItSource) {
             this.handleDragLeft();
+        } else if (!this._dropItSource) {
+            if (!this._disableReordering) {
+                this._dropItSelected = true;
+                const values = this.computedSelectedList.map(
+                    (option) => option.value
+                );
+                const elementList = Array.from(
+                    this.getElementsOfList(this.selectedList)
+                );
+                const swappingIndex = Number(
+                    event.target.getAttribute('data-index')
+                );
+                this.swapOptions(
+                    swappingIndex,
+                    this._newIndex,
+                    values,
+                    elementList
+                );
+                this._selectedValues = values;
+            }
         }
     }
 
@@ -1237,5 +1258,27 @@ export default class DualListbox extends LightningElement {
 
     dragLeaveSelected() {
         this._dropItSelected = false;
+    }
+
+    getDragAfterElement(container, y) {
+        const draggableElement = [
+            ...container.querySelectorAll('li:not(.dragging)')
+        ];
+        draggableElement.reduce(
+            (closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - box.height / 2;
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child };
+                }
+                return closest;
+            },
+            { offset: Number.NEGATIVE_INFINITY }
+        );
+    }
+
+    handleDragOver(event) {
+        event.preventDefault();
+        this._newIndex = Number(event.target.getAttribute('data-index'));
     }
 }
