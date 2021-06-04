@@ -13,6 +13,7 @@ import {
     VARIANT
 } from 'c/inputUtils';
 import { classSet } from 'c/utils';
+import InputChoiceOption from './inputChoiceOption'
 
 const i18n = {
     required: 'required'
@@ -22,13 +23,6 @@ const DEBOUNCE_PERIOD = 200;
 
 const validOrientations = {valid: ['vertical', 'horizontal'], default:'vertical'};
 const validTypes = { valid: ['default', 'button'], default: 'default' };
-
-const POSITION_ICON = {
-    TOP: 'top',
-    BOTTOM: 'bottom',
-    RIGHT: 'right',
-    LEFT: 'left'
-};
 
 export default class InputChoiceSet extends LightningElement {
     static delegatesFocus = true;
@@ -163,43 +157,11 @@ export default class InputChoiceSet extends LightningElement {
     get transformedOptions() {
         const { options, value } = this;
         if (Array.isArray(options)) {
-            return options.map((option) => ({
-                label: option.label,
-                value: option.value,
-                id: `checkbox-${this.itemIndex++}`,
-                isChecked: value.indexOf(option.value) !== -1,
-                iconName: option.iconName,
-                isTopLeft: (option.iconPosition === POSITION_ICON.TOP) || (option.iconPosition === POSITION_ICON.LEFT) || (!option.iconPosition || !option.iconName) ,
-                isBottomRight:(option.iconPosition === POSITION_ICON.BOTTOM) || (option.iconPosition === POSITION_ICON.RIGHT),
-                labelButtonClass: this.computeLabelButtonClass(option.iconPosition),
-                iconButtonClass: this.computeIconButtonClass(option.iconPosition),
-                labelCheckboxClass : this.computeLabelCheckboxClass(option.iconPosition),
-
-            }));
+            return options.map((option) => {
+                return new InputChoiceOption(option, value, this.itemIndex++); 
+            });
         }
         return [];
-    }
-
-    computeIconButtonClass(iconPosition){
-        return classSet('').add({
-            'slds-align_absolute-center slds-m-top_x-small': (iconPosition === POSITION_ICON.TOP),
-            'slds-align_absolute-center slds-m-bottom_x-small': (iconPosition === POSITION_ICON.BOTTOM),
-            'slds-m-left_x-small': (iconPosition === POSITION_ICON.RIGHT),
-            'slds-m-right_x-small': (iconPosition === POSITION_ICON.LEFT) || (!iconPosition),
-        }).toString();
-    }
-
-    computeLabelButtonClass(iconPosition){
-        return classSet('slds-checkbox_faux').add({
-            'slds-align_absolute-center': (iconPosition === POSITION_ICON.TOP || iconPosition === POSITION_ICON.BOTTOM),
-        }).toString();
-    
-    }
-
-    computeLabelCheckboxClass(iconPosition){
-        return classSet('slds-m-right_x-small').add({
-            'block': (iconPosition === POSITION_ICON.TOP || iconPosition === POSITION_ICON.BOTTOM),
-        }).toString();
     }
 
     @api
