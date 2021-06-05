@@ -415,8 +415,13 @@ LargeBlankGrayCircle.args = {
     blankColor: 'gray'
 };
 
-export const CropImageCircleThumbnail = Template.bind({});
-CropImageCircleThumbnail.args = {
+export const CropImageStaticCircleThumbnailMobile = Template.bind({});
+CropImageStaticCircleThumbnailMobile.parameters = {
+    viewport: {
+        defaultViewport: 'mobile1'
+    }
+};
+CropImageStaticCircleThumbnailMobile.args = {
     src:
         'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
     alt: 'Alt text',
@@ -427,5 +432,5 @@ CropImageCircleThumbnail.args = {
     cropPositionX: '23',
     cropPositionY: '80',
     thumbnail: true,
-    center: true
+    staticImages: true
 };

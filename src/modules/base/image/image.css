@@ -132,7 +132,7 @@
     height: 100%;
 }
 
-.avonni-img_no-crop_width_blank {
+.avonni-img_no-crop_blank_width_height {
     max-width: 100%;
     height: auto;
 }
@@ -148,4 +148,10 @@
 .avonni-img_static_height_no-crop_no-width {
     max-width: none;
     width: auto;
+}
+
+.avonni-img_static_no-crop_blank_height_width {
+    top: 0;
+    left: 0;
+    position: absolute;
 }
