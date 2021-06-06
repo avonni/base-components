@@ -156,6 +156,19 @@ export default {
                 defaultValue: { summary: 'fill' },
                 type: { summary: 'string' }
             }
+        },
+        itemImagePosition: {
+            name: 'item-image-position',
+            control: {
+                type: 'select'
+            },
+            options: ['top', 'bottom'],
+            defaultValue: 'top',
+            description: 'carousel image position inside the carousel card',
+            table: {
+                defaultValue: { summary: 'top' },
+                type: { summary: 'string' }
+            }
         }
     },
     args: {
@@ -259,7 +272,8 @@ const Template = (args) => Carousel(args);
 export const Base = Template.bind({});
 Base.args = {
     items: items,
-    itemImageCropFit: 'contain'
+    itemImageCropFit: 'contain',
+    itemImagePosition: 'top'
 };
 
 export const BaseWithNoProgressIndicator = Template.bind({});
@@ -267,21 +281,24 @@ BaseWithNoProgressIndicator.args = {
     items: items,
     hideIndicator: true,
     assistiveText: assistiveText,
-    itemImageCropFit: 'contain'
+    itemImageCropFit: 'contain',
+    itemImagePosition: 'top'
 };
 
 export const BaseWithTwoItemsPerPanel = Template.bind({});
 BaseWithTwoItemsPerPanel.args = {
     items: items,
     itemsPerPanel: 2,
-    itemImageCropFit: 'contain'
+    itemImageCropFit: 'contain',
+    itemImagePosition: 'top'
 };
 
 export const BaseWithThreeItemsPerPanelAndVariantShaded = Template.bind({});
 BaseWithThreeItemsPerPanelAndVariantShaded.args = {
     items: items,
     itemsPerPanel: 3,
-    indicatorVariant: 'shaded'
+    indicatorVariant: 'shaded',
+    itemImagePosition: 'top'
 };
 
 export const BaseWithFiveItemsPerPanel = Template.bind({});
@@ -289,14 +306,16 @@ BaseWithFiveItemsPerPanel.args = {
     items: items,
     itemsPerPanel: 5,
     assistiveText: assistiveText,
-    itemImageCropFit: 'contain'
+    itemImageCropFit: 'contain',
+    itemImagePosition: 'top'
 };
 
 export const WithoutPanelNavigation = Template.bind({});
 WithoutPanelNavigation.args = {
     items: items,
     hidePreviousNextPanelNavigation: true,
-    itemImageCropFit: 'contain'
+    itemImageCropFit: 'contain',
+    itemImagePosition: 'top'
 };
 
 export const WithoutPanelNavigationWithTwoItemsPerPanel = Template.bind({});
@@ -304,7 +323,8 @@ WithoutPanelNavigationWithTwoItemsPerPanel.args = {
     items: items,
     itemsPerPanel: 2,
     hidePreviousNextPanelNavigation: true,
-    itemImageCropFit: 'contain'
+    itemImageCropFit: 'contain',
+    itemImagePosition: 'top'
 };
 
 export const WithoutPanelNavigationWithThreeItemsPerPanel = Template.bind({});
@@ -312,7 +332,8 @@ WithoutPanelNavigationWithThreeItemsPerPanel.args = {
     items: items,
     itemsPerPanel: 3,
     hidePreviousNextPanelNavigation: true,
-    itemImageCropFit: 'contain'
+    itemImageCropFit: 'contain',
+    itemImagePosition: 'top'
 };
 
 export const WithoutPanelNavigationWithFiveItemsPerPanel = Template.bind({});
@@ -320,5 +341,6 @@ WithoutPanelNavigationWithFiveItemsPerPanel.args = {
     items: items,
     itemsPerPanel: 5,
     hidePreviousNextPanelNavigation: true,
-    itemImageCropFit: 'contain'
+    itemImageCropFit: 'contain',
+    itemImagePosition: 'top'
 };

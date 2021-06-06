@@ -50,6 +50,7 @@
                                             onclick={handleItemClicked}
                                         >
                                             <div
+                                                if:true={isImageTop}
                                                 class="slds-carousel__image"
                                                 style={imageContainerStyle}
                                             >
@@ -73,26 +74,36 @@
                                                 >
                                                     {item.description}
                                                 </p>
-
-                                                <lightning-button
-                                                    if:true={item.buttonLabel}
-                                                    label={item.buttonLabel}
-                                                    icon-name={item.buttonIconName}
-                                                    class="slds-m-top_small slds-align_absolute-center"
-                                                    icon-position={item.buttonIconPosition}
-                                                    variant={item.buttonVariant}
-                                                    disabled={item.buttonDisabled}
-                                                ></lightning-button>
-                                                <lightning-button
-                                                    if:true={item.secondaryButtonLabel}
-                                                    label={item.secondaryButtonLabel}
-                                                    icon-name={item.secondaryButtonIconName}
-                                                    class="slds-m-top_small slds-align_absolute-center"
-                                                    icon-position={item.secondaryButtonIconPosition}
-                                                    variant={item.secondaryButtonVariant}
-                                                    disabled={item.secondaryButtonDisabled}
-                                                ></lightning-button>
                                             </div>
+                                            <div
+                                                if:false={isImageTop}
+                                                class="slds-carousel__image"
+                                                style={imageContainerStyle}
+                                            >
+                                                <img
+                                                    src={item.src}
+                                                    alt={item.imageAssistiveText}
+                                                    style={imageStyle}
+                                                />
+                                            </div>
+                                            <lightning-button
+                                                if:true={item.buttonLabel}
+                                                label={item.buttonLabel}
+                                                icon-name={item.buttonIconName}
+                                                class="slds-m-top_x-small slds-align_absolute-center"
+                                                icon-position={item.buttonIconPosition}
+                                                variant={item.buttonVariant}
+                                                disabled={item.buttonDisabled}
+                                            ></lightning-button>
+                                            <lightning-button
+                                                if:true={item.secondaryButtonLabel}
+                                                label={item.secondaryButtonLabel}
+                                                icon-name={item.secondaryButtonIconName}
+                                                class="slds-m-vertical_x-small slds-align_absolute-center"
+                                                icon-position={item.secondaryButtonIconPosition}
+                                                variant={item.secondaryButtonVariant}
+                                                disabled={item.secondaryButtonDisabled}
+                                            ></lightning-button>
                                         </a>
                                     </div>
                                 </template>

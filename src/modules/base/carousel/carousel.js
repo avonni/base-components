@@ -203,6 +203,10 @@ export default class Carousel extends LightningElement {
             : 'avonni-carousel__autoscroll-button-with-indicator';
     }
 
+    get isImageTop() {
+        return this._itemImagePosition === 'top';
+    }
+
     initializePaginationItems(numberOfPanels) {
         for (let i = 0; i < numberOfPanels; i++) {
             const isItemActive = i === this.activeIndexPanel;
@@ -232,7 +236,7 @@ export default class Carousel extends LightningElement {
         }
     }
     get imageContainerStyle() {
-        return `min-width: 100%; min-height:100%; width:200px; height:300px`;
+        return `min-width: 100%; min-height:100%; width:200px; height: ${this._carouselContentHeight}rem`;
     }
     get imageStyle() {
         return `
@@ -462,6 +466,6 @@ export default class Carousel extends LightningElement {
     }
 
     get computedCarouselContentSize() {
-        return `height: ${this._carouselContentHeight}rem`;
+        return `height: fit-content;`;
     }
 }
