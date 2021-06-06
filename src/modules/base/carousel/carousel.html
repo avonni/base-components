@@ -49,10 +49,14 @@
                                             href={item.href}
                                             onclick={handleItemClicked}
                                         >
-                                            <div class="slds-carousel__image">
+                                            <div
+                                                class="slds-carousel__image"
+                                                style={imageContainerStyle}
+                                            >
                                                 <img
                                                     src={item.src}
                                                     alt={item.imageAssistiveText}
+                                                    style={imageStyle}
                                                 />
                                             </div>
                                             <div
@@ -69,6 +73,7 @@
                                                 >
                                                     {item.description}
                                                 </p>
+
                                                 <lightning-button
                                                     if:true={item.buttonLabel}
                                                     label={item.buttonLabel}

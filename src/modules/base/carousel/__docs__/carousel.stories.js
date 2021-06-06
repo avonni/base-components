@@ -143,6 +143,19 @@ export default {
                 },
                 type: { summary: 'object' }
             }
+        },
+        itemImageCropFit: {
+            name: 'item-image-cropfit',
+            control: {
+                type: 'select'
+            },
+            options: ['fill', 'contain'],
+            defaultValue: 'fill',
+            description: 'the crop fit of the image',
+            table: {
+                defaultValue: { summary: 'fill' },
+                type: { summary: 'string' }
+            }
         }
     },
     args: {
@@ -245,20 +258,23 @@ const Template = (args) => Carousel(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    items: items
+    items: items,
+    itemImageCropFit: 'contain'
 };
 
 export const BaseWithNoProgressIndicator = Template.bind({});
 BaseWithNoProgressIndicator.args = {
     items: items,
     hideIndicator: true,
-    assistiveText: assistiveText
+    assistiveText: assistiveText,
+    itemImageCropFit: 'contain'
 };
 
 export const BaseWithTwoItemsPerPanel = Template.bind({});
 BaseWithTwoItemsPerPanel.args = {
     items: items,
-    itemsPerPanel: 2
+    itemsPerPanel: 2,
+    itemImageCropFit: 'contain'
 };
 
 export const BaseWithThreeItemsPerPanelAndVariantShaded = Template.bind({});
@@ -272,32 +288,37 @@ export const BaseWithFiveItemsPerPanel = Template.bind({});
 BaseWithFiveItemsPerPanel.args = {
     items: items,
     itemsPerPanel: 5,
-    assistiveText: assistiveText
+    assistiveText: assistiveText,
+    itemImageCropFit: 'contain'
 };
 
 export const WithoutPanelNavigation = Template.bind({});
 WithoutPanelNavigation.args = {
     items: items,
-    hidePreviousNextPanelNavigation: true
+    hidePreviousNextPanelNavigation: true,
+    itemImageCropFit: 'contain'
 };
 
 export const WithoutPanelNavigationWithTwoItemsPerPanel = Template.bind({});
 WithoutPanelNavigationWithTwoItemsPerPanel.args = {
     items: items,
     itemsPerPanel: 2,
-    hidePreviousNextPanelNavigation: true
+    hidePreviousNextPanelNavigation: true,
+    itemImageCropFit: 'contain'
 };
 
 export const WithoutPanelNavigationWithThreeItemsPerPanel = Template.bind({});
 WithoutPanelNavigationWithThreeItemsPerPanel.args = {
     items: items,
     itemsPerPanel: 3,
-    hidePreviousNextPanelNavigation: true
+    hidePreviousNextPanelNavigation: true,
+    itemImageCropFit: 'contain'
 };
 
 export const WithoutPanelNavigationWithFiveItemsPerPanel = Template.bind({});
 WithoutPanelNavigationWithFiveItemsPerPanel.args = {
     items: items,
     itemsPerPanel: 5,
-    hidePreviousNextPanelNavigation: true
+    hidePreviousNextPanelNavigation: true,
+    itemImageCropFit: 'contain'
 };

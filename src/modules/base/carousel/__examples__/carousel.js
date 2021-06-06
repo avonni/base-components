@@ -13,7 +13,9 @@ export const Carousel = ({
     currentPanel,
     hideIndicator,
     hidePreviousNextPanelNavigation,
-    itemsPerPanel
+    itemsPerPanel,
+    itemImageCropFit,
+    itemImagePosition
 }) => {
     const element = document.createElement('ac-base-carousel');
     element.assistiveText = assistiveText;
@@ -27,5 +29,7 @@ export const Carousel = ({
     element.hideIndicator = hideIndicator;
     element.hidePreviousNextPanelNavigation = hidePreviousNextPanelNavigation;
     element.itemsPerPanel = itemsPerPanel;
+    element.itemImageCropFit = itemImageCropFit;
+    element.itemImagePosition = itemImagePosition;
     return element;
 };

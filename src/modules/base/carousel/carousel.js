@@ -31,6 +31,8 @@ const i18n = {
     autoplayButton: DEFAULT_ASSISTIVE_TEXT_AUTOPLAY_BUTTON
 };
 
+const IMAGE_POSITIONS = { valid: ['top', 'bottom'], default: 'top' };
+const IMAGE_CROP_FITS = { valid: ['fill', 'contains'], default: 'fill' };
 export default class Carousel extends LightningElement {
     @api currentPanel;
     @api disableAutoRefresh;
@@ -51,6 +53,9 @@ export default class Carousel extends LightningElement {
     _hideIndicator = false;
     _carouselContentHeight = 6.625;
 
+    _itemImageCropFit = IMAGE_CROP_FITS.default;
+    _itemImagePosition = IMAGE_POSITIONS.default;
+
     activeIndexPanel;
     autoScrollIcon = DEFAULT_AUTOCROLL_PLAY_ICON;
     autoScrollTimeOut;
@@ -58,7 +63,6 @@ export default class Carousel extends LightningElement {
     panelItems = [];
     paginationItems = [];
     panelStyle;
-
     _connected = false;
 
     connectedCallback() {
@@ -97,7 +101,6 @@ export default class Carousel extends LightningElement {
     get items() {
         return this._carouselItems;
     }
-
     set items(value) {
         const allItems = normalizeArray(value);
         allItems.forEach((item) => {
@@ -160,6 +163,23 @@ export default class Carousel extends LightningElement {
         this._hideIndicator = normalizeBoolean(value);
     }
 
+    @api
+    get itemImageCropFit() {
+        return this._itemImageCropFit;
+    }
+
+    set itemImageCropFit(cropFit) {
+        this._itemImageCropFit = normalizeString(cropFit);
+    }
+
+    @api
+    get itemImagePosition() {
+        return this._itemImagePosition;
+    }
+    set itemImagePosition(position) {
+        this._itemImagePosition = normalizeString(position);
+    }
+
     // Sets the width of each item, depending on the number of items per panel
     get carouselItemStyle() {
         const flexBasis = 100 / this.itemsPerPanel;
@@ -210,6 +230,16 @@ export default class Carousel extends LightningElement {
                 });
             }
         }
+    }
+    get imageContainerStyle() {
+        return `min-width: 100%; min-height:100%; width:200px; height:300px`;
+    }
+    get imageStyle() {
+        return `
+                width:100%;
+                height: 100%;
+                object-fit: ${this._itemImageCropFit};
+            `;
     }
 
     initializeCurrentPanel(numberOfPanels) {
