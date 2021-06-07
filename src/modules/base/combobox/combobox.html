@@ -166,6 +166,7 @@
                         disabled={inputIsDisabled}
                         readonly={hasNoSearch}
                         aria-readonly={readOnly}
+                        aria-required={required}
                         aria-autocomplete={computedAriaAutocomplete}
                         aria-owns="dropdown-element"
                         value={inputValue}
@@ -214,13 +215,18 @@
                             alternative-text={loadingStateAlternativeText}
                         ></lightning-spinner>
                     </div>
-                    <ul if:false={isLoading} role="listbox">
+                    <ul
+                        if:false={isLoading}
+                        role="listbox"
+                        aria-multiselectable={isMultiSelect}
+                    >
                         <!-- Top actions -->
                         <template for:each={topActions} for:item="action">
                             <li
                                 key={action.name}
                                 class="slds-listbox__item slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_term"
-                                role="button"
+                                role="option"
+                                aria-label="Action button"
                                 data-name={action.name}
                             >
                                 <div
@@ -246,61 +252,106 @@
                         <li
                             if:true={showNoSearchResultMessage}
                             class="slds-listbox__option_plain"
+                            role="presentation"
                         >
                             No matches found
                         </li>
 
-                        <!-- Options -->
-                        <template for:each={visibleOptions} for:item="option">
-                            <li
-                                key={option.value}
-                                class={option.computedClass}
-                                role="option"
-                                aria-selected={option.selected}
-                                data-value={option.value}
+                        <!-- Groups -->
+                        <li>
+                            <template
+                                for:each={computedGroups}
+                                for:item="group"
                             >
-                                <!-- Checkmark -->
-                                <div
-                                    if:false={removeSelectedOptions}
-                                    class="slds-media__figure slds-listbox__option-icon"
+                                <ul
+                                    key={group.name}
+                                    role="group"
+                                    aria-label={group.label}
                                 >
-                                    <lightning-icon
-                                        if:true={option.selected}
-                                        class="slds-current-color"
-                                        icon-name="utility:check"
-                                        size="x-small"
-                                        aria-hidden="true"
-                                    ></lightning-icon>
-                                </div>
-                                <!-- Option data -->
-                                <div class="slds-media__body">
-                                    <div class="slds-media slds-media_center">
+                                    <li
+                                        if:true={group.label}
+                                        role="presentation"
+                                        class="slds-listbox__item"
+                                    >
                                         <div
-                                            if:true={option.hasAvatar}
-                                            class="slds-media__figure slds-listbox__option-icon"
+                                            class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small"
+                                            role="presentation"
                                         >
-                                            <c-avatar
-                                                aria-hidden="true"
-                                                size="small"
-                                                src={option.avatarSrc}
-                                                fallback-icon-name={option.avatarFallbackIconName}
-                                                hide-avatar-details="true"
-                                            ></c-avatar>
-                                        </div>
-                                        <div class="slds-media__body">
-                                            <span
-                                                class="slds-listbox__option-text slds-listbox__option-text_entity"
-                                                >{option.label}</span
+                                            <h3
+                                                class="slds-listbox__option-header"
+                                                role="presentation"
                                             >
-                                            <span
-                                                class="slds-listbox__option-meta slds-listbox__option-meta_entity"
-                                                >{option.secondaryText}</span
-                                            >
+                                                {group.label}
+                                            </h3>
                                         </div>
-                                    </div>
-                                </div>
-                            </li>
-                        </template>
+                                    </li>
+                                    <!-- Options -->
+                                    <template
+                                        for:each={group.options}
+                                        for:item="option"
+                                    >
+                                        <li
+                                            key={option.value}
+                                            class={option.computedClass}
+                                            role="option"
+                                            aria-selected={option.selected}
+                                            data-value={option.value}
+                                        >
+                                            <!-- Checkmark -->
+                                            <div
+                                                if:false={removeSelectedOptions}
+                                                class="slds-media__figure slds-listbox__option-icon"
+                                            >
+                                                <lightning-icon
+                                                    if:true={option.selected}
+                                                    class="slds-current-color"
+                                                    icon-name="utility:check"
+                                                    size="x-small"
+                                                    aria-hidden="true"
+                                                ></lightning-icon>
+                                            </div>
+                                            <!-- Option data -->
+                                            <div class="slds-media__body">
+                                                <div
+                                                    class="slds-media slds-media_center"
+                                                >
+                                                    <div
+                                                        if:true={option.hasAvatar}
+                                                        class="slds-media__figure slds-listbox__option-icon"
+                                                    >
+                                                        <c-avatar
+                                                            aria-hidden="true"
+                                                            size="small"
+                                                            src={option.avatarSrc}
+                                                            fallback-icon-name={option.avatarFallbackIconName}
+                                                            hide-avatar-details="true"
+                                                        ></c-avatar>
+                                                    </div>
+                                                    <div
+                                                        class="slds-media__body"
+                                                    >
+                                                        <span
+                                                            class="slds-listbox__option-text slds-listbox__option-text_entity"
+                                                            >{option.label}</span
+                                                        >
+                                                        <span
+                                                            class="slds-listbox__option-meta slds-listbox__option-meta_entity"
+                                                            >{option.secondaryText}</span
+                                                        >
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </template>
+                        </li>
+
+                        <!-- Options -->
+                        <!-- <template for:each={visibleOptions} for:item="option">
+                            
+                        </template> -->
+
                         <!-- Bottom actions -->
                         <template for:each={bottomActions} for:item="action">
                             <li

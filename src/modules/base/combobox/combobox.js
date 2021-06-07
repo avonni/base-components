@@ -59,6 +59,8 @@ export default class Combobox extends LightningElement {
     _variant = VARIANTS.default;
 
     _cancelBlur = false;
+    _visibleOptions = [];
+    computedGroups = [];
     dropdownVisible = false;
     scopesDropdownVisible = false;
     helpMessage;
@@ -68,10 +70,10 @@ export default class Combobox extends LightningElement {
     selectedOptions = [];
     topActions = [];
     bottomActions = [];
-    visibleOptions = [];
 
     connectedCallback() {
         this.initValue();
+        this.computeGroups();
     }
 
     @api
@@ -268,6 +270,14 @@ export default class Combobox extends LightningElement {
         });
     }
 
+    get visibleOptions() {
+        return this._visibleOptions;
+    }
+    set visibleOptions(value) {
+        this._visibleOptions = value;
+        this.computeGroups();
+    }
+
     get _constraint() {
         if (!this._constraintApi) {
             this._constraintApi = new FieldConstraintApi(() => this, {
@@ -392,7 +402,8 @@ export default class Combobox extends LightningElement {
     get computedInputContainerClass() {
         return classSet('slds-combobox__form-element slds-input-has-icon')
             .add({
-                'slds-input-has-icon_left-right': this.showInputValueAvatar,
+                'slds-input-has-icon_left-right combobox__input-has-icon_left-right': this
+                    .showInputValueAvatar,
                 'slds-input-has-icon_right': !this.showInputValueAvatar
             })
             .toString();
@@ -489,6 +500,70 @@ export default class Combobox extends LightningElement {
         }
 
         this.computeSelection();
+    }
+
+    // {
+    //     label: 'Boubou',
+    //     name: 'boubou',
+    //     options: [{ ... }, { ... }],
+    //     groups: [
+    //         {
+    //             label: 'Baba',
+    //             options: [{ ... }, { ... }]
+    //         }
+    //     ]
+    // }
+
+    computeGroups() {
+        const computedGroups = [
+            {
+                name: 'ungrouped',
+                options: []
+            }
+        ];
+
+        // For each visible option
+        this.visibleOptions.forEach((option) => {
+            const optionGroups = normalizeArray(option.groups);
+
+            if (optionGroups.length > 0) {
+                // For each group of the option
+                optionGroups.forEach((name) => {
+                    const computedGroup = computedGroups.find(
+                        (grp) => grp.name === name
+                    );
+
+                    if (computedGroup) {
+                        // If the group already exists, push the new option in the list
+                        computedGroup.options.push(option);
+                    } else {
+                        const group = this.groups.find((grp) => {
+                            return grp.name === name;
+                        });
+
+                        if (group) {
+                            // If the group does not exist yet but is in the global groups list,
+                            // create a new group
+                            computedGroups.push({
+                                label: group.label,
+                                name: name,
+                                options: [option]
+                            });
+                        } else {
+                            // If the group is not in the global groups list,
+                            // push the option in the 'ungrouped' group
+                            computedGroups[0].options.push(option);
+                        }
+                    }
+                });
+            } else {
+                // If the option does not have groups,
+                // push the option in the 'ungrouped' group
+                computedGroups[0].options.push(option);
+            }
+        });
+
+        this.computedGroups = computedGroups;
     }
 
     computeSelection() {

@@ -323,7 +323,8 @@ const optionsWithAvatars = [
         label: 'Burlington Textiles Corp of America',
         value: 'burlington',
         avatarFallbackIconName: 'standard:account',
-        secondaryText: 'Account - Burlington, NC'
+        secondaryText: 'Account - Burlington, NC',
+        groups: ['accounts']
     },
     {
         label: 'Dickenson plc',
@@ -331,25 +332,35 @@ const optionsWithAvatars = [
         avatarSrc:
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
         avatarFallbackIconName: 'standard:account',
-        secondaryText: 'Account - Lawrence, KS'
+        secondaryText: 'Account - Lawrence, KS',
+        groups: ['accounts']
     },
     {
         label: 'Edge Communication',
         value: 'edge',
         avatarFallbackIconName: 'standard:account',
-        secondaryText: 'Account - Singapore'
+        secondaryText: 'Account - Singapore',
+        groups: ['accounts']
+    },
+    {
+        label: 'Ungrouped option',
+        value: 'ungrouped-option',
+        avatarFallbackIconName: 'standard:opportunity',
+        secondaryText: 'Opportunity'
     },
     {
         label: 'United Oil SLA',
         value: 'oil-sla',
         avatarFallbackIconName: 'standard:opportunity',
-        secondaryText: 'Opportunity - Closed Won'
+        secondaryText: 'Opportunity - Closed Won',
+        groups: ['opportunities', 'closed']
     },
     {
         label: 'United Oil Standby Generators',
         value: 'united-oil',
         avatarFallbackIconName: 'standard:opportunity',
-        secondaryText: 'Opportunity - Closed Won'
+        secondaryText: 'Opportunity',
+        groups: ['opportunities']
     }
 ];
 
@@ -411,6 +422,21 @@ const scopesWithIcons = [
     }
 ];
 
+const groups = [
+    {
+        label: 'Accounts',
+        name: 'accounts'
+    },
+    {
+        label: 'Opportunities',
+        name: 'opportunities'
+    },
+    {
+        label: 'Closed',
+        name: 'closed'
+    }
+];
+
 const search = (props) => {
     const optionsArray = props.options;
     const searchTerm = props.searchTerm;
@@ -450,6 +476,13 @@ MultiSelect.args = {
     options: options,
     isMultiSelect: true,
     required: true
+};
+
+export const Grouped = Template.bind({});
+Grouped.args = {
+    label: 'Combobox with grouped options',
+    options: optionsWithAvatars,
+    groups: groups
 };
 
 export const Lookup = Template.bind({});
