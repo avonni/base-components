@@ -9,6 +9,17 @@ const validVariants = {valid: [
     'label-stacked'
 ], default: 'standard'};
 
+const validTypes = {
+    valid: [
+        'number',
+        'curreny',
+        'percent'
+    ],
+    default : 'number'
+};
+
+const DEFAULT_VALUE = 0;
+
 const DEFAULT_STEP = 1
 
 export default class InputCounter extends LightningElement {
@@ -26,10 +37,9 @@ export default class InputCounter extends LightningElement {
     @api ariaDescribedBy;
     @api max;
     @api min;
-    @api value;
+    @api value = DEFAULT_VALUE;
     @api fieldLevelHelp;
     @api accessKey;
-    @api type;
     @api typeAttributes;
 
     _variant = validVariants.default;
@@ -40,6 +50,8 @@ export default class InputCounter extends LightningElement {
     labelVariant;
     labelFieldLevelHelp;
     init = false;
+    _type = validTypes.default;
+    _value = DEFAULT_VALUE;
 
     renderedCallback() {
         if (!this.init) {
@@ -50,13 +62,23 @@ export default class InputCounter extends LightningElement {
             if (srcElement) {
                 const style = document.createElement('style');
                 style.innerText =
-                    '.avonni-input-counter .slds-input {text-align: center;padding: 0 var(--lwc-spacingXxLarge,3rem);}';
+                    '.avonni-input-counter .slds-input {font-size: 0;z-index: 0;text-align: center;padding: 0 var(--lwc-spacingXxLarge,3rem);}';
                 srcElement.appendChild(style);
             }
 
             this.init = true;
         }
+
+        // console.log(this.Locale)
     }
+
+    // @api get value() {
+    //     return this._value;
+    // }
+
+    // set value(value) {
+    //     this._value = +value.toFixed(this.maximumFractionDigits);
+    // }
 
     @api get variant() {
         return this._variant;
@@ -76,6 +98,67 @@ export default class InputCounter extends LightningElement {
             this.labelFieldLevelHelp =
                 this._variant !== 'label-hidden' ? this.fieldLevelHelp : null;
         }
+    }
+
+    @api get type() {
+        return this._type;
+    }
+
+    set type(value) {
+        this._type = normalizeString(value, {
+            fallbackValue: validTypes.default,
+            validTypes: validTypes.valid
+        });
+
+        if (this._type === 'number') {
+            this._type = 'decimal';
+        }
+    }
+
+    get currencyCode() {
+        return this.type === 'currency' ? this.typeAttributes.currency.currencyCode : "USD";
+    }
+
+    get currencyDisplayAs() {
+        return this.type === 'currency' ? this.typeAttributes.currency.currencyDisplayAs : "symbol";
+    }
+
+    get minimumIntegerDigits() {
+        let keyType = this._type;
+        if (this._type === 'decimal') { 
+            keyType = 'number'; 
+        }
+        return this.typeAttributes[keyType].minimumIntegerDigits;
+    }
+    get minimumFractionDigits() {
+        let keyType = this._type;
+        if (this._type === 'decimal') { 
+            keyType = 'number'; 
+        }
+        return this.typeAttributes[keyType].minimumFractionDigits;
+    }
+    get maximumFractionDigits() {
+        let keyType = this._type;
+        if (this._type === 'decimal') { 
+            keyType = 'number'; 
+        }
+        
+        return this.typeAttributes[keyType].maximumFractionDigits;
+    }
+    get minimumSignificantDigits() {
+        let keyType = this._type;
+        if (this._type === 'decimal') { 
+            keyType = 'number'; 
+        }
+        
+        return this.typeAttributes[keyType].minimumSignificantDigits;
+    }
+    get maximumSignificantDigits() {
+        let keyType = this._type;
+        if (this._type === 'decimal') { 
+            keyType = 'number'; 
+        }
+        return this.typeAttributes[keyType].maximumSignificantDigits;
     }
 
     @api
@@ -193,7 +276,9 @@ export default class InputCounter extends LightningElement {
 
     decrementValue() {
         if (this.value !== undefined && !isNaN(this.value)) {
-            this.value = Number(this.value) - Number(this.step);
+            let currentValue = Number(this.value);
+            let stepValue = Number(this.step);
+            this.value = +((currentValue - stepValue).toFixed(this.maximumFractionDigits));
             this.updateValue(this.value);
         } else {
             this.value = -1;
@@ -203,7 +288,9 @@ export default class InputCounter extends LightningElement {
 
     incrementValue() {
         if (this.value !== undefined && !isNaN(this.value)) {
-            this.value = Number(this.value) + Number(this.step);
+            let currentValue = Number(this.value);
+            let stepValue = Number(this.step);
+            this.value = +((currentValue + stepValue).toFixed(this.maximumFractionDigits));
             this.updateValue(this.value);
         } else {
             this.value = 1;

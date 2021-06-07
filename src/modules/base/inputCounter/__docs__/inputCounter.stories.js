@@ -239,33 +239,33 @@ export default {
     }
 };
 
-const typeAttributes = [{
+const typeAttributes = {
     number : {
         minimumIntegerDigits: 1, 
-        minimumFractionDigits: 1, 
-        maximumFractionDigits: 2, 
+        minimumFractionDigits: 2, 
+        maximumFractionDigits: 4, 
         minimumSignificantDigits: 1, 
-        maximumSignificantDigits: 99
+        maximumSignificantDigits: 21
     },
     currency : {
         currencyCode: 'USD', 
-        currencyDisplayAs: '$', 
+        currencyDisplayAs: 'code', 
         minimumIntegerDigits: 1, 
-        minimumFractionDigits: 1, 
-        maximumFractionDigits: 2, 
+        minimumFractionDigits: 2, 
+        maximumFractionDigits: 4, 
         minimumSignificantDigits: 1, 
-        maximumSignificantDigits: 99, 
+        maximumSignificantDigits: 21, 
         step: 1
     },
     percent : {
         minimumIntegerDigits: 1, 
-        minimumFractionDigits: 1, 
-        maximumFractionDigits: 2, 
+        minimumFractionDigits: 2, 
+        maximumFractionDigits: 4, 
         minimumSignificantDigits: 1, 
-        maximumSignificantDigits: 99, 
+        maximumSignificantDigits: 21, 
         step: 1
     }
-}]
+}
 
 const Template = (args) => InputCounter(args);
 

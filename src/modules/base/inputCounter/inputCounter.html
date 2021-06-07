@@ -37,10 +37,10 @@
                 aria-controls={computedAriaControls}
                 aria-labelledby={computedAriaLabelledBy}
                 aria-describedby={computedAriaDescribedBy}
+                value={value} 
                 max={max}
                 min={min}
                 step={step}
-                value={value}
                 field-level-help={labelFieldLevelHelp}
                 accesskey={accessKey}
                 variant={labelVariant}
@@ -48,12 +48,26 @@
                 readonly={readOnly}
                 required={required}
                 type="number"
-                placeholder="0"
+                formatter={type}
                 class={inputClass}
                 onchange={handlerChange}
                 onfocus={handlerFocus}
                 onblur={handlerBlur}
             ></lightning-input>
+            <div class="avonni-formatted-number">
+            <lightning-formatted-number
+                value={value}
+                format-style={type}
+                currency-code={currencyCode}
+                currency-display-as={currencyDisplayAs}
+                maximum-fraction-digits={maximumFractionDigits}
+                minimum-fraction-digits={mininumFractionDigits}
+                maximum-significant-digits={maximumSignficantDigits}
+                minimum-significant-digits={minimumSignficantDigits}
+                minimum-integer-digits={mininumIntegerDigits}
+                ></lightning-formatted-number>
+            </div>
+            
             <lightning-button-icon
                 if:false={readOnly}
                 icon-name="utility:new"

@@ -72,3 +72,13 @@
 .avonni-hidden-top {
     top: 14px;
 }
+
+.avonni-formatted-number {
+    position: absolute;
+    top: 55%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    bottom: auto;
+    z-index: 1;
+}
