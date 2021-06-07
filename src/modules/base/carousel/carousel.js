@@ -16,6 +16,20 @@ const FALSE_STRING = 'false';
 const TRUE_STRING = 'true';
 
 const VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
+const ACTIONS_POSITIONS = {
+    valid: [
+        'top-left',
+        'top-right',
+        'bottom-left',
+        'bottom-right',
+        'bottom-center'
+    ],
+    default: 'bottom-center'
+};
+const ACTIONS_VARIANTS = {
+    valid: ['bare', 'border', 'menu'],
+    default: 'border'
+};
 
 const DEFAULT_ITEMS_PER_PANEL = 1;
 const DEFAULT_SCROLL_DURATION = 5;
@@ -50,6 +64,8 @@ export default class Carousel extends LightningElement {
     _indicatorVariant = VARIANTS.default;
     _hideIndicator = false;
     _carouselContentHeight = 6.625;
+    _actionsPosition = ACTIONS_POSITIONS.default;
+    _actionsVariant = ACTIONS_VARIANTS.default;
 
     activeIndexPanel;
     autoScrollIcon = DEFAULT_AUTOCROLL_PLAY_ICON;
@@ -158,6 +174,30 @@ export default class Carousel extends LightningElement {
 
     set hideIndicator(value) {
         this._hideIndicator = normalizeBoolean(value);
+    }
+
+    @api
+    get actionsVariant() {
+        return this._actionsVariant;
+    }
+
+    set actionsVariant(variant) {
+        this._actionsVariant = normalizeString(variant, {
+            fallbackValue: ACTIONS_VARIANTS.default,
+            validValues: ACTIONS_VARIANTS.valid
+        });
+    }
+
+    @api
+    get actionsPosition() {
+        return this._actionsPosition;
+    }
+
+    set actionsPosition(position) {
+        this._actionsPosition = normalizeString(position, {
+            fallbackValue: ACTIONS_POSITIONS.default,
+            validValues: ACTIONS_POSITIONS.valid
+        });
     }
 
     // Sets the width of each item, depending on the number of items per panel

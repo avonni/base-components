@@ -143,8 +143,42 @@ export default {
                 },
                 type: { summary: 'object' }
             }
+        },
+        actionsPosition: {
+            name: 'actions-position',
+            control: {
+                type: 'select'
+            },
+            description:
+                'Valid values include top-left, top-right, bottom-left, bottom-right and bottom-center.',
+            options: [
+                'top-left',
+                'top-right',
+                'bottom-left',
+                'bottom-right',
+                'bottom-center'
+            ],
+            defaultValue: 'bottom-center',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'bottom-center' }
+            }
+        },
+        actionsVariant: {
+            name: 'actions-variant',
+            control: {
+                type: 'select'
+            },
+            description: 'Valid values include bare, border and menu.',
+            options: ['bare', 'border', 'menu'],
+            defaultValue: 'border',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'border' }
+            }
         }
     },
+
     args: {
         disableAutoRefresh: false,
         disableAutoScroll: false,
