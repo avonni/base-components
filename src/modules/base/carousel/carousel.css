@@ -48,3 +48,20 @@
     background-color: #dddbda;
     border: #dddbda;
 }
+
+.avonni-carousel__actions {
+    display: flex;
+    width: 100%;
+}
+
+.avonni-carousel__actions-bottom-center {
+    justify-content: center;
+}
+
+.avonni-carousel__actions-right {
+    justify-content: flex-end;
+}
+
+.avonni-carousel__actions-left {
+    justify-content: flex-start;
+}

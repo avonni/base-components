@@ -59,34 +59,89 @@
                                                 class="slds-carousel__content avonni-carousel__content"
                                                 style={computedCarouselContentSize}
                                             >
-                                                <h2
-                                                    class="slds-carousel__content-title avonni-carousel__content-title"
+                                                <div if:true={isBottomPosition}>
+                                                    <h2
+                                                        class="slds-carousel__content-title avonni-carousel__content-title"
+                                                    >
+                                                        {item.title}
+                                                    </h2>
+                                                    <p
+                                                        class="avonni-carousel__content-description slds-line-clamp_x-small"
+                                                    >
+                                                        {item.description}
+                                                    </p>
+                                                </div>
+                                                <div
+                                                    class={computedActionsBottomClass}
                                                 >
-                                                    {item.title}
-                                                </h2>
-                                                <p
-                                                    class="avonni-carousel__content-description slds-line-clamp_x-small"
+                                                    <template
+                                                        if:false={menuVariant}
+                                                    >
+                                                        <template
+                                                            for:each={item.actions}
+                                                            for:item="action"
+                                                        >
+                                                            <lightning-button
+                                                                if:true={action.label}
+                                                                class="slds-m-horizontal_xx-small"
+                                                                key={action.name}
+                                                                icon-name={action.iconName}
+                                                                label={action.label}
+                                                                name={action.name}
+                                                                disabled={action.disabled}
+                                                                onclick={handleActionClick}
+                                                            ></lightning-button>
+                                                            <lightning-button-icon
+                                                                if:false={action.label}
+                                                                class="slds-m-horizontal_xx-small"
+                                                                key={action.name}
+                                                                icon-name={action.iconName}
+                                                                name={action.name}
+                                                                disabled={action.disabled}
+                                                                onclick={handleActionClick}
+                                                            ></lightning-button-icon>
+                                                        </template>
+                                                    </template>
+                                                    <template
+                                                        if:true={menuVariant}
+                                                    >
+                                                        <lightning-button-menu
+                                                            alternative-text="Show menu"
+                                                            icon-size="x-small"
+                                                            menu-alignment="right"
+                                                            variant={buttonMenuVariant}
+                                                        >
+                                                            <template
+                                                                for:each={item.actions}
+                                                                for:item="action"
+                                                            >
+                                                                <lightning-menu-item
+                                                                    key={action.name}
+                                                                    value={action.name}
+                                                                    label={action.label}
+                                                                    onclick={handleActionClick}
+                                                                    disabled={action.disabled}
+                                                                    prefix-icon-name={action.iconName}
+                                                                    class="slds-text-color_default"
+                                                                ></lightning-menu-item>
+                                                            </template>
+                                                        </lightning-button-menu>
+                                                    </template>
+                                                </div>
+                                                <div
+                                                    if:false={isBottomPosition}
                                                 >
-                                                    {item.description}
-                                                </p>
-                                                <lightning-button
-                                                    if:true={item.buttonLabel}
-                                                    label={item.buttonLabel}
-                                                    icon-name={item.buttonIconName}
-                                                    class="slds-m-top_small slds-align_absolute-center"
-                                                    icon-position={item.buttonIconPosition}
-                                                    variant={item.buttonVariant}
-                                                    disabled={item.buttonDisabled}
-                                                ></lightning-button>
-                                                <lightning-button
-                                                    if:true={item.secondaryButtonLabel}
-                                                    label={item.secondaryButtonLabel}
-                                                    icon-name={item.secondaryButtonIconName}
-                                                    class="slds-m-top_small slds-align_absolute-center"
-                                                    icon-position={item.secondaryButtonIconPosition}
-                                                    variant={item.secondaryButtonVariant}
-                                                    disabled={item.secondaryButtonDisabled}
-                                                ></lightning-button>
+                                                    <h2
+                                                        class="slds-carousel__content-title avonni-carousel__content-title"
+                                                    >
+                                                        {item.title}
+                                                    </h2>
+                                                    <p
+                                                        class="avonni-carousel__content-description slds-line-clamp_x-small"
+                                                    >
+                                                        {item.description}
+                                                    </p>
+                                                </div>
                                             </div>
                                         </a>
                                     </div>

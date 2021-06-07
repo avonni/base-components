@@ -188,21 +188,31 @@ export default {
     }
 };
 
+const actions = [
+    {
+        name: 'action-add',
+        iconName: 'utility:add'
+    },
+    {
+        name: 'action-remove',
+        label: 'Remove',
+        iconName: 'utility:delete',
+        disabled: true
+    }
+];
+
 const items = [
     {
-        buttonLabel: 'Get Started',
-        secondaryButtonLabel: 'Subscribe',
         id: 1,
         title: 'Visit App Exchange',
         description: 'Extend Salesforce with the #1 business marketplace.',
         imageAssistiveText: 'Appy',
         src:
             'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
-        href: 'https://www.salesforce.com'
+        href: 'https://www.salesforce.com',
+        actions: actions
     },
     {
-        buttonLabel: 'Get Started',
-        secondaryButtonLabel: 'Subscribe',
         id: 2,
         title: 'Click to Customize',
         description:
@@ -210,62 +220,58 @@ const items = [
         imageAssistiveText: 'Apps',
         src:
             'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
-        href: 'https://www.salesforce.com'
+        href: 'https://www.salesforce.com',
+        actions: actions
     },
     {
-        buttonLabel: 'Get Started',
-        secondaryButtonLabel: 'Subscribe',
         id: 3,
         title: 'Download Salesforce Apps',
         description: "Get the mobile app that's just for Salesforce admins.",
         imageAssistiveText: 'Salesforce Apps',
         src:
             'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
-        href: 'https://www.salesforce.com'
+        href: 'https://www.salesforce.com',
+        actions: actions
     },
     {
-        buttonLabel: 'Get Started',
-        secondaryButtonLabel: 'Subscribe',
         id: 4,
         title: 'Carousel Item 4',
         description: 'Description for carousel item #4',
         imageAssistiveText: 'Apps',
         src:
             'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
-        href: 'https://www.salesforce.com'
+        href: 'https://www.salesforce.com',
+        actions: actions
     },
     {
-        buttonLabel: 'Learn More',
-        secondaryButtonLabel: 'Not interested',
         id: 5,
         title: 'Carousel Item 5',
         description: 'Description for carousel item #5',
         imageAssistiveText: 'Appy',
         src:
             'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
-        href: 'https://www.salesforce.com'
+        href: 'https://www.salesforce.com',
+        actions: actions
     },
     {
-        buttonLabel: 'Learn More',
-        secondaryButtonLabel: 'Not interested',
         id: 6,
         title: 'Carousel Item 6',
         description: 'Description for carousel item #6',
         imageAssistiveText: 'Salesforce Apps',
         src:
             'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
-        href: 'https://www.salesforce.com'
+        href: 'https://www.salesforce.com',
+        actions: actions
     },
     {
-        buttonLabel: 'Learn More',
-        secondaryButtonLabel: 'Not interested',
         id: 7,
         title: 'Carousel Item 7',
         description: 'Description for carousel item #7',
         imageAssistiveText: 'Apps',
         src:
             'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
-        href: 'https://www.salesforce.com'
+        href: 'https://www.salesforce.com',
+        actions: actions
     }
 ];
 

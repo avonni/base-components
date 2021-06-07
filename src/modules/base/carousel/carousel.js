@@ -5,6 +5,7 @@ import {
     normalizeString,
     normalizeArray
 } from 'c/utilsPrivate';
+import { classSet } from 'c/utils';
 
 const INDICATOR_ACTION = 'slds-carousel__indicator-action';
 const INDICATOR_ACTION_SHADED =
@@ -121,19 +122,10 @@ export default class Carousel extends LightningElement {
                 key: item.id,
                 title: item.title,
                 description: item.description,
-                buttonLabel: item.buttonLabel || null,
-                buttonIconName: item.buttonIconName,
-                buttonIconPosition: item.buttonIconPosition,
-                buttonVariant: item.buttonVariant,
-                buttonDisabled: item.buttonDisabled,
-                secondaryButtonLabel: item.secondaryButtonLabel || null,
-                secondaryButtonIconName: item.secondaryButtonIconName,
-                secondaryButtonIconPosition: item.secondaryButtonIconPosition,
-                secondaryButtonVariant: item.secondaryButtonVariant,
-                secondaryButtonDisabled: item.secondaryButtonDisabled,
                 imageAssistiveText: item.imageAssistiveText || item.title,
                 href: item.href,
-                src: item.src
+                src: item.src,
+                actions: item.actions
             });
         });
         if (this._connected) {
@@ -200,6 +192,18 @@ export default class Carousel extends LightningElement {
         });
     }
 
+    get hasActions() {
+        return this.items.actions && this.items.actions.length > 0;
+    }
+
+    get menuVariant() {
+        return this._actionsVariant === 'menu';
+    }
+
+    get isBottomPosition() {
+        return this._actionsPosition.indexOf('bottom') > -1;
+    }
+
     // Sets the width of each item, depending on the number of items per panel
     get carouselItemStyle() {
         const flexBasis = 100 / this.itemsPerPanel;
@@ -221,6 +225,21 @@ export default class Carousel extends LightningElement {
         return this._hideIndicator
             ? 'avonni-carousel__autoscroll-button-without-indicator'
             : 'avonni-carousel__autoscroll-button-with-indicator';
+    }
+
+    get computedActionsBottomClass() {
+        return classSet('avonni-carousel__actions')
+            .add({
+                'avonni-carousel__actions-bottom-center':
+                    this._actionsPosition === 'bottom-center',
+                'avonni-carousel__actions-right':
+                    this._actionsPosition === 'bottom-right' ||
+                    this._actionsPosition === 'top-right',
+                'avonni-carousel__actions-left':
+                    this._actionsPosition === 'bottom-left' ||
+                    this._actionsPosition === 'top-left'
+            })
+            .toString();
     }
 
     initializePaginationItems(numberOfPanels) {
