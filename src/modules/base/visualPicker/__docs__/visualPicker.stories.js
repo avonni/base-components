@@ -179,7 +179,8 @@ const items = [
         figure: {
             title: '$150',
             description: 'USD/user/month *',
-            iconName: 'standard:groups'
+            iconName: 'standard:groups',
+            imgSrc: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
         }
     },
     {

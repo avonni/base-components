@@ -302,7 +302,7 @@ export default class VisualPicker extends LightningElement {
     }
 
     get notSelectedClass() {
-        return classSet()
+        return classSet('labelContainer slds-p-bottom_medium')
             .add({
                 'slds-is-not-selected':
                     this._variant === 'coverable' && !this._hideCheckMark,
