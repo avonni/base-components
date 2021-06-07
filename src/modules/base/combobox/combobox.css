@@ -3,3 +3,7 @@
 .combobox__scopes-container {
     z-index: 1;
 }
+
+.combobox__input-has-icon_left-right input {
+    padding-left: var(--lwc-spacingXLarge, 2rem);
+}
