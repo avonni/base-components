@@ -188,21 +188,18 @@ export default {
     }
 };
 
-const actions = [
+const bareActions = [
     {
         name: 'action-add',
         iconName: 'utility:add'
     },
     {
-        name: 'action-remove',
-        label: 'Remove',
-        iconName: 'utility:delete',
-        disabled: true
+        name: 'action-pin',
+        iconName: 'utility:pin'
     },
     {
-        name: 'action-close',
-        label: 'Close',
-        iconName: 'utility:close'
+        name: 'action-priority',
+        iconName: 'utility:priority'
     }
 ];
 
@@ -215,7 +212,7 @@ const items = [
         src:
             'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
         href: 'https://www.salesforce.com',
-        actions: actions
+        actions: bareActions
     },
     {
         id: 2,
@@ -226,7 +223,7 @@ const items = [
         src:
             'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
         href: 'https://www.salesforce.com',
-        actions: actions
+        actions: bareActions
     },
     {
         id: 3,
@@ -236,7 +233,7 @@ const items = [
         src:
             'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
         href: 'https://www.salesforce.com',
-        actions: actions
+        actions: bareActions
     },
     {
         id: 4,
@@ -246,7 +243,7 @@ const items = [
         src:
             'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
         href: 'https://www.salesforce.com',
-        actions: actions
+        actions: bareActions
     },
     {
         id: 5,
@@ -256,7 +253,7 @@ const items = [
         src:
             'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
         href: 'https://www.salesforce.com',
-        actions: actions
+        actions: bareActions
     },
     {
         id: 6,
@@ -266,7 +263,7 @@ const items = [
         src:
             'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
         href: 'https://www.salesforce.com',
-        actions: actions
+        actions: bareActions
     },
     {
         id: 7,
@@ -275,7 +272,8 @@ const items = [
         imageAssistiveText: 'Apps',
         src:
             'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
-        href: 'https://www.salesforce.com'
+        href: 'https://www.salesforce.com',
+        actions: bareActions
     }
 ];
 
@@ -296,27 +294,33 @@ export const BaseWithNoProgressIndicator = Template.bind({});
 BaseWithNoProgressIndicator.args = {
     items: items,
     hideIndicator: true,
-    assistiveText: assistiveText
+    assistiveText: assistiveText,
+    actionsPosition: 'top-right'
 };
 
 export const BaseWithTwoItemsPerPanel = Template.bind({});
 BaseWithTwoItemsPerPanel.args = {
     items: items,
-    itemsPerPanel: 2
+    itemsPerPanel: 2,
+    actionsPosition: 'top-left',
+    actionsVariant: 'bare'
 };
 
 export const BaseWithThreeItemsPerPanelAndVariantShaded = Template.bind({});
 BaseWithThreeItemsPerPanelAndVariantShaded.args = {
     items: items,
     itemsPerPanel: 3,
-    indicatorVariant: 'shaded'
+    indicatorVariant: 'shaded',
+    actionsPosition: 'bottom-left'
 };
 
 export const BaseWithFiveItemsPerPanel = Template.bind({});
 BaseWithFiveItemsPerPanel.args = {
     items: items,
     itemsPerPanel: 5,
-    assistiveText: assistiveText
+    assistiveText: assistiveText,
+    actionsVariant: 'bare',
+    actionsPosition: 'bottom-left'
 };
 
 export const WithoutPanelNavigation = Template.bind({});

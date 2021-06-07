@@ -255,6 +255,10 @@ export default class Carousel extends LightningElement {
                     this._actionsPosition === 'bottom-left' ||
                     this._actionsPosition === 'top-left'
             })
+            .add({
+                'slds-m-top_x-small': this.isBottomPosition,
+                'slds-m-bottom_x-small': !this.isBottomPosition
+            })
             .toString();
     }
 
@@ -405,16 +409,12 @@ export default class Carousel extends LightningElement {
         indicatorActionsElements[this.activeIndexPanel].focus();
     }
 
-    // initializeCarouselHeight() {
-    //     let carouselContentHeights = this.items.map((item) => {
-    //         return item.buttonLabel && item.secondaryButtonLabel
-    //             ? 12
-    //             : item.buttonLabel || item.secondaryButtonLabel
-    //             ? 8.5
-    //             : 6.625;
-    //     });
-    //     this._carouselContentHeight = Math.max(...carouselContentHeights);
-    // }
+    initializeCarouselHeight() {
+        let carouselContentHeights = this.hasActions.map((item) => {
+            return item ? 8.5 : 6.625;
+        });
+        this._carouselContentHeight = Math.max(...carouselContentHeights);
+    }
 
     initCarousel() {
         const numberOfPanels = Math.ceil(
@@ -424,7 +424,7 @@ export default class Carousel extends LightningElement {
         this.initializeCurrentPanel(numberOfPanels);
         this.initializePaginationItems(numberOfPanels);
         this.initializePanels();
-        // this.initializeCarouselHeight();
+        this.initializeCarouselHeight();
     }
 
     onPanelSelect(event) {
@@ -506,7 +506,7 @@ export default class Carousel extends LightningElement {
             : this.setAutoScroll();
     }
 
-    // get computedCarouselContentSize() {
-    //     return `height: ${this._carouselContentHeight}rem`;
-    // }
+    get computedCarouselContentSize() {
+        return `height: ${this._carouselContentHeight}rem`;
+    }
 }
