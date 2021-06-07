@@ -72,7 +72,8 @@
                                                     </p>
                                                 </div>
                                                 <div
-                                                    class={computedActionsBottomClass}
+                                                    class={computedActionsClass}
+                                                    if:true={hasActions}
                                                 >
                                                     <template
                                                         if:false={menuVariant}
@@ -90,6 +91,7 @@
                                                                 name={action.name}
                                                                 disabled={action.disabled}
                                                                 onclick={handleActionClick}
+                                                                variant={computedActionsVariantButton}
                                                             ></lightning-button>
                                                             <lightning-button-icon
                                                                 if:false={action.label}
@@ -99,6 +101,7 @@
                                                                 name={action.name}
                                                                 disabled={action.disabled}
                                                                 onclick={handleActionClick}
+                                                                variant={computedActionsVariantButtonIcon}
                                                             ></lightning-button-icon>
                                                         </template>
                                                     </template>

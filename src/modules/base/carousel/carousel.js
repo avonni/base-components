@@ -125,7 +125,7 @@ export default class Carousel extends LightningElement {
                 imageAssistiveText: item.imageAssistiveText || item.title,
                 href: item.href,
                 src: item.src,
-                actions: item.actions
+                actions: item.actions || []
             });
         });
         if (this._connected) {
@@ -193,7 +193,9 @@ export default class Carousel extends LightningElement {
     }
 
     get hasActions() {
-        return this.items.actions && this.items.actions.length > 0;
+        return this.items.map((item) => {
+            return item.actions && item.actions.length > 0;
+        });
     }
 
     get menuVariant() {
@@ -220,6 +222,20 @@ export default class Carousel extends LightningElement {
             : null;
     }
 
+    get computedActionsVariantButton() {
+        if (this._actionsVariant === 'bare') {
+            return 'base';
+        }
+        return 'neutral';
+    }
+
+    get computedActionsVariantButtonIcon() {
+        if (this._actionsVariant === 'bare') {
+            return 'bare';
+        }
+        return 'border';
+    }
+
     // Change the button position depending if hideIndicator is true or false
     get computedAutoScrollAutoplayButton() {
         return this._hideIndicator
@@ -227,7 +243,7 @@ export default class Carousel extends LightningElement {
             : 'avonni-carousel__autoscroll-button-with-indicator';
     }
 
-    get computedActionsBottomClass() {
+    get computedActionsClass() {
         return classSet('avonni-carousel__actions')
             .add({
                 'avonni-carousel__actions-bottom-center':
@@ -389,16 +405,16 @@ export default class Carousel extends LightningElement {
         indicatorActionsElements[this.activeIndexPanel].focus();
     }
 
-    initializeCarouselHeight() {
-        let carouselContentHeights = this.items.map((item) => {
-            return item.buttonLabel && item.secondaryButtonLabel
-                ? 12
-                : item.buttonLabel || item.secondaryButtonLabel
-                ? 8.5
-                : 6.625;
-        });
-        this._carouselContentHeight = Math.max(...carouselContentHeights);
-    }
+    // initializeCarouselHeight() {
+    //     let carouselContentHeights = this.items.map((item) => {
+    //         return item.buttonLabel && item.secondaryButtonLabel
+    //             ? 12
+    //             : item.buttonLabel || item.secondaryButtonLabel
+    //             ? 8.5
+    //             : 6.625;
+    //     });
+    //     this._carouselContentHeight = Math.max(...carouselContentHeights);
+    // }
 
     initCarousel() {
         const numberOfPanels = Math.ceil(
@@ -408,7 +424,7 @@ export default class Carousel extends LightningElement {
         this.initializeCurrentPanel(numberOfPanels);
         this.initializePaginationItems(numberOfPanels);
         this.initializePanels();
-        this.initializeCarouselHeight();
+        // this.initializeCarouselHeight();
     }
 
     onPanelSelect(event) {
@@ -490,7 +506,7 @@ export default class Carousel extends LightningElement {
             : this.setAutoScroll();
     }
 
-    get computedCarouselContentSize() {
-        return `height: ${this._carouselContentHeight}rem`;
-    }
+    // get computedCarouselContentSize() {
+    //     return `height: ${this._carouselContentHeight}rem`;
+    // }
 }

@@ -198,6 +198,11 @@ const actions = [
         label: 'Remove',
         iconName: 'utility:delete',
         disabled: true
+    },
+    {
+        name: 'action-close',
+        label: 'Close',
+        iconName: 'utility:close'
     }
 ];
 
@@ -270,8 +275,7 @@ const items = [
         imageAssistiveText: 'Apps',
         src:
             'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
-        href: 'https://www.salesforce.com',
-        actions: actions
+        href: 'https://www.salesforce.com'
     }
 ];
 
