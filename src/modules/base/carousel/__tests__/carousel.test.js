@@ -123,6 +123,8 @@ describe('Carousel', () => {
         expect(element.hideIndicator).toBeFalsy();
         expect(element.hidePreviousNextPanelNavigation).toBeFalsy();
         expect(element.itemsPerPanel).toBe(1);
+        expect(element.actionsVariant).toBe('border');
+        expect(element.actionsPosition).toBe('bottom-center');
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -460,6 +462,354 @@ describe('Carousel', () => {
         });
     });
 
+    // actions variant
+    it('Carousel actions variant bare without label', () => {
+        const element = createElement('base-carousel', {
+            is: Carousel
+        });
+        document.body.appendChild(element);
+
+        const example = [
+            {
+                actions: [{ name: 'action-add', iconName: 'utility:add' }],
+                id: 1,
+                title: 'Visit App Exchange',
+                description:
+                    'Extend Salesforce with the #1 business marketplace.',
+                imageAssistiveText: 'Appy',
+                src:
+                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+                href: 'https://www.salesforce.com/'
+            }
+        ];
+
+        element.items = example;
+        element.actionsVariant = 'bare';
+
+        return Promise.resolve().then(() => {
+            const action = element.shadowRoot.querySelector(
+                '.avonni-carousel__actions > lightning-button-icon'
+            );
+            expect(action.variant).toBe('bare');
+        });
+    });
+
+    it('Carousel actions variant border without label', () => {
+        const element = createElement('base-carousel', {
+            is: Carousel
+        });
+        document.body.appendChild(element);
+
+        const example = [
+            {
+                actions: [{ name: 'action-add', iconName: 'utility:add' }],
+                id: 1,
+                title: 'Visit App Exchange',
+                description:
+                    'Extend Salesforce with the #1 business marketplace.',
+                imageAssistiveText: 'Appy',
+                src:
+                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+                href: 'https://www.salesforce.com/'
+            }
+        ];
+
+        element.items = example;
+        element.actionsVariant = 'border';
+
+        return Promise.resolve().then(() => {
+            const action = element.shadowRoot.querySelector(
+                '.avonni-carousel__actions > lightning-button-icon'
+            );
+            expect(action.variant).toBe('border');
+        });
+    });
+
+    it('Carousel actions variant bare with label', () => {
+        const element = createElement('base-carousel', {
+            is: Carousel
+        });
+        document.body.appendChild(element);
+
+        const example = [
+            {
+                actions: [
+                    {
+                        name: 'action-add',
+                        iconName: 'utility:add',
+                        label: 'add'
+                    }
+                ],
+                id: 1,
+                title: 'Visit App Exchange',
+                description:
+                    'Extend Salesforce with the #1 business marketplace.',
+                imageAssistiveText: 'Appy',
+                src:
+                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+                href: 'https://www.salesforce.com/'
+            }
+        ];
+
+        element.items = example;
+        element.actionsVariant = 'bare';
+
+        return Promise.resolve().then(() => {
+            const action = element.shadowRoot.querySelector(
+                '.avonni-carousel__actions > lightning-button'
+            );
+            expect(action.variant).toBe('base');
+        });
+    });
+
+    it('Carousel actions variant border with label', () => {
+        const element = createElement('base-carousel', {
+            is: Carousel
+        });
+        document.body.appendChild(element);
+
+        const example = [
+            {
+                actions: [
+                    {
+                        name: 'action-add',
+                        iconName: 'utility:add',
+                        label: 'add'
+                    }
+                ],
+                id: 1,
+                title: 'Visit App Exchange',
+                description:
+                    'Extend Salesforce with the #1 business marketplace.',
+                imageAssistiveText: 'Appy',
+                src:
+                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+                href: 'https://www.salesforce.com/'
+            }
+        ];
+
+        element.items = example;
+        element.actionsVariant = 'border';
+
+        return Promise.resolve().then(() => {
+            const action = element.shadowRoot.querySelector(
+                '.avonni-carousel__actions > lightning-button'
+            );
+            expect(action.variant).toBe('neutral');
+        });
+    });
+
+    it('Carousel actions variant menu', () => {
+        const element = createElement('base-carousel', {
+            is: Carousel
+        });
+        document.body.appendChild(element);
+
+        const example = [
+            {
+                actions: [
+                    {
+                        name: 'action-add',
+                        iconName: 'utility:add',
+                        label: 'add'
+                    }
+                ],
+                id: 1,
+                title: 'Visit App Exchange',
+                description:
+                    'Extend Salesforce with the #1 business marketplace.',
+                imageAssistiveText: 'Appy',
+                src:
+                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+                href: 'https://www.salesforce.com/'
+            }
+        ];
+
+        element.items = example;
+        element.actionsVariant = 'menu';
+
+        return Promise.resolve().then(() => {
+            const action = element.shadowRoot.querySelector(
+                '.avonni-carousel__actions > lightning-button-menu'
+            );
+            expect(action).toBeTruthy();
+        });
+    });
+
+    // actions position
+    it('Carousel actions position bottom-center', () => {
+        const element = createElement('base-carousel', {
+            is: Carousel
+        });
+        document.body.appendChild(element);
+
+        const example = [
+            {
+                actions: [{ name: 'action-add', iconName: 'utility:add' }],
+                id: 1,
+                title: 'Visit App Exchange',
+                description:
+                    'Extend Salesforce with the #1 business marketplace.',
+                imageAssistiveText: 'Appy',
+                src:
+                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+                href: 'https://www.salesforce.com/'
+            }
+        ];
+
+        element.items = example;
+        element.actionsPosition = 'bottom-center';
+
+        return Promise.resolve().then(() => {
+            const actionContainter = element.shadowRoot.querySelector(
+                '.avonni-carousel__actions'
+            );
+            expect(actionContainter.className).toContain(
+                'avonni-carousel__actions-bottom-center'
+            );
+            expect(actionContainter.className).toContain('slds-m-top_x-small');
+        });
+    });
+
+    it('Carousel actions position bottom-right', () => {
+        const element = createElement('base-carousel', {
+            is: Carousel
+        });
+        document.body.appendChild(element);
+
+        const example = [
+            {
+                actions: [{ name: 'action-add', iconName: 'utility:add' }],
+                id: 1,
+                title: 'Visit App Exchange',
+                description:
+                    'Extend Salesforce with the #1 business marketplace.',
+                imageAssistiveText: 'Appy',
+                src:
+                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+                href: 'https://www.salesforce.com/'
+            }
+        ];
+
+        element.items = example;
+        element.actionsPosition = 'bottom-right';
+
+        return Promise.resolve().then(() => {
+            const actionContainter = element.shadowRoot.querySelector(
+                '.avonni-carousel__actions'
+            );
+            expect(actionContainter.className).toContain(
+                'avonni-carousel__actions-right'
+            );
+            expect(actionContainter.className).toContain('slds-m-top_x-small');
+        });
+    });
+
+    it('Carousel actions position bottom-left', () => {
+        const element = createElement('base-carousel', {
+            is: Carousel
+        });
+        document.body.appendChild(element);
+
+        const example = [
+            {
+                actions: [{ name: 'action-add', iconName: 'utility:add' }],
+                id: 1,
+                title: 'Visit App Exchange',
+                description:
+                    'Extend Salesforce with the #1 business marketplace.',
+                imageAssistiveText: 'Appy',
+                src:
+                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+                href: 'https://www.salesforce.com/'
+            }
+        ];
+
+        element.items = example;
+        element.actionsPosition = 'bottom-left';
+
+        return Promise.resolve().then(() => {
+            const actionContainter = element.shadowRoot.querySelector(
+                '.avonni-carousel__actions'
+            );
+            expect(actionContainter.className).toContain(
+                'avonni-carousel__actions-left'
+            );
+            expect(actionContainter.className).toContain('slds-m-top_x-small');
+        });
+    });
+
+    it('Carousel actions position top-left', () => {
+        const element = createElement('base-carousel', {
+            is: Carousel
+        });
+        document.body.appendChild(element);
+
+        const example = [
+            {
+                actions: [{ name: 'action-add', iconName: 'utility:add' }],
+                id: 1,
+                title: 'Visit App Exchange',
+                description:
+                    'Extend Salesforce with the #1 business marketplace.',
+                imageAssistiveText: 'Appy',
+                src:
+                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+                href: 'https://www.salesforce.com/'
+            }
+        ];
+
+        element.items = example;
+        element.actionsPosition = 'top-left';
+
+        return Promise.resolve().then(() => {
+            const actionContainter = element.shadowRoot.querySelector(
+                '.avonni-carousel__actions'
+            );
+            expect(actionContainter.className).toContain(
+                'avonni-carousel__actions-left'
+            );
+            expect(actionContainter.className).toContain(
+                'slds-m-bottom_x-small'
+            );
+        });
+    });
+
+    it('Carousel actions position top-right', () => {
+        const element = createElement('base-carousel', {
+            is: Carousel
+        });
+        document.body.appendChild(element);
+
+        const example = [
+            {
+                actions: [{ name: 'action-add', iconName: 'utility:add' }],
+                id: 1,
+                title: 'Visit App Exchange',
+                description:
+                    'Extend Salesforce with the #1 business marketplace.',
+                imageAssistiveText: 'Appy',
+                src:
+                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+                href: 'https://www.salesforce.com/'
+            }
+        ];
+
+        element.items = example;
+        element.actionsPosition = 'top-right';
+
+        return Promise.resolve().then(() => {
+            const actionContainter = element.shadowRoot.querySelector(
+                '.avonni-carousel__actions'
+            );
+            expect(actionContainter.className).toContain(
+                'avonni-carousel__actions-right'
+            );
+            expect(actionContainter.className).toContain(
+                'slds-m-bottom_x-small'
+            );
+        });
+    });
     /* ----- JS ----- */
 
     // handle indicator click
