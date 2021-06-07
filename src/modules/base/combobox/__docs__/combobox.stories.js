@@ -411,6 +411,16 @@ const scopesWithIcons = [
     }
 ];
 
+const search = (props) => {
+    const optionsArray = props.options;
+    const searchTerm = props.searchTerm;
+    return optionsArray.filter((option) => {
+        return option.secondaryText
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase());
+    });
+};
+
 const Template = (args) => Combobox(args);
 
 export const Base = Template.bind({});
@@ -420,11 +430,26 @@ Base.args = {
     scopes: scopes
 };
 
+export const Disabled = Template.bind({});
+Disabled.args = {
+    label: 'Disabled combobox',
+    options: options,
+    disabled: true
+};
+
+export const Loading = Template.bind({});
+Loading.args = {
+    label: 'Loading combobox',
+    options: options,
+    isLoading: true
+};
+
 export const MultiSelect = Template.bind({});
 MultiSelect.args = {
     label: 'Multi-select combobox',
     options: options,
-    isMultiSelect: true
+    isMultiSelect: true,
+    required: true
 };
 
 export const Lookup = Template.bind({});
@@ -452,4 +477,12 @@ ScopesWithIcons.args = {
     allowSearch: true,
     options: optionsWithAvatars,
     scopes: scopesWithIcons
+};
+
+export const CustomSearch = Template.bind({});
+CustomSearch.args = {
+    label: 'Custom search in secondary text',
+    allowSearch: true,
+    options: optionsWithAvatars,
+    search: search
 };

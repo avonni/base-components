@@ -135,6 +135,7 @@
                     </div>
                 </div>
             </div>
+
             <div class={computedDropdownTriggerClass}>
                 <div
                     class={computedInputContainerClass}
@@ -171,6 +172,8 @@
                         onfocus={handleFocus}
                         onblur={handleBlur}
                         onkeydown={handleInputKeyDown}
+                        oninput={handleInput}
+                        onclick={handleInputClick}
                     />
 
                     <!-- Clear input icon -->
@@ -238,6 +241,14 @@
                                 </div>
                             </li>
                         </template>
+
+                        <!-- No search results -->
+                        <li
+                            if:true={showNoSearchResultMessage}
+                            class="slds-listbox__option_plain"
+                        >
+                            No matches found
+                        </li>
 
                         <!-- Options -->
                         <template for:each={visibleOptions} for:item="option">
