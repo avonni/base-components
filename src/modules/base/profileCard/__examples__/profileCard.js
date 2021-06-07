@@ -16,6 +16,7 @@ export const ProfileCard = ({
     avatarFallbackIconName,
     size,
     avatarPosition,
+    avatarMobilePosition,
     avatarVariant
 }) => {
     const element = document.createElement('ac-base-profile-card');
@@ -29,6 +30,7 @@ export const ProfileCard = ({
     element.avatarFallbackIconName = avatarFallbackIconName;
     element.size = size;
     element.avatarPosition = avatarPosition;
+    element.avatarMobilePosition = avatarMobilePosition;
     element.avatarVariant = avatarVariant;
     return element;
 };

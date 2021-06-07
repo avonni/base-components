@@ -231,6 +231,10 @@
             "path": "src/modules/base/panel/panel.js"
         },
         {
+            "name": "c/path",
+            "path": "src/modules/base/path/path.js"
+        },
+        {
             "name": "c/positionLibrary",
             "path": "src/modules/base/positionLibrary/positionLibrary.js"
         },
@@ -289,10 +293,6 @@
         {
             "name": "c/primitiveIframe",
             "path": "src/modules/base/primitiveIframe/primitiveIframe.js"
-        },
-        {
-            "name": "c/primitiveField",
-            "path": "src/modules/base/primitiveField/primitiveField.js"
         },
         {
             "name": "c/primitiveProgressBarReferenceLine",
@@ -603,6 +603,10 @@
             "path": "src/modules/base/panel/panel.js"
         },
         {
+            "name": "avonni/path",
+            "path": "src/modules/base/path/path.js"
+        },
+        {
             "name": "avonni/primitiveIcon",
             "path": "src/modules/base/primitiveIcon/primitiveIcon.js"
         },
@@ -757,9 +761,11 @@
         "avonni/map",
         "avonni/mediaObject",
         "avonni/menuItemDialog",
+        "avonni/outputData",
         "avonni/pageHeader",
         "avonni/pagination",
         "avonni/panel",
+        "avonni/path",
         "avonni/primitiveIcon",
         "avonni/profileCard",
         "avonni/progressBar",

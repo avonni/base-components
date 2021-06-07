@@ -1,5 +1,5 @@
 import { createElement } from 'lwc';
-import Confetti from 'c/confetti';
+import Confetti from '../confetti';
 
 describe('Confetti', () => {
     afterEach(() => {
