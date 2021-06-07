@@ -24,57 +24,60 @@
                                     <span
                                         if:true={isCoverable}
                                         class={selectedClass}
-                                    >
+                                        >
                                         <lightning-icon
                                             icon-name="utility:check"
                                             size="medium"
                                             variant="inverse"
-                                        ></lightning-icon>
-                                    </span>
-                                </template>
-                                <span class={notSelectedClass}>
-                                    <template if:true={item.isTop}>
-                                        <lightning-icon
+                                            ></lightning-icon>
+                                        </span>
+                                    </template>
+                                    <span class={notSelectedClass}>
+                                        <template if:true={item.figure.imgSrc}>
+                                            <avonni-image class="slds-m-bottom_medium" src={item.figure.imgSrc}></avonni-image>
+                                        </template>
+                                        <template if:true={item.isTop}>
+                                            <lightning-icon
                                             icon-name={item.figure.iconName}
                                             size={item.iconSize}
                                             alternative-text={item.figure.iconAlternativeText}
                                             class={item.iconClass}
                                             src={item.figure.iconSrc}
-                                        ></lightning-icon>
-                                    </template>
-                                    <span class={item.bodyClass}>
-                                        <template if:true={isVertical}>
-                                            <span class={textHeadingClass}
+                                            ></lightning-icon>
+                                        </template>
+                                        <span class={item.bodyClass}>
+                                            <template if:true={isVertical}>
+                                                <span class={textHeadingClass}
                                                 >{item.title}</span
-                                            >
-                                            <span class="slds-text-title"
+                                                >
+                                                <span class="slds-text-title"
                                                 >{item.description}</span
-                                            >
-                                        </template>
-                                        <template if:false={isVertical}>
-                                            <span class={textHeadingClass}
+                                                >
+                                            </template>
+                                            <template if:false={isVertical}>
+                                                <span class={textHeadingClass}
                                                 >{item.figure.title}</span
-                                            >
-                                            <span class="slds-text-title"
+                                                >
+                                                <span class="slds-text-title"
                                                 >{item.figure.description}</span
-                                            >
-                                        </template>
-                                    </span>
-                                    <template if:true={item.isBottom}>
-                                        <lightning-icon
+                                                >
+                                            </template>
+                                        </span>
+                                        <template if:true={item.isBottom}>
+                                            <lightning-icon
                                             icon-name={item.figure.iconName}
                                             size={item.iconSize}
                                             alternative-text={item.figure.iconAlternativeText}
                                             class={item.iconClass}
                                             src={item.figure.iconSrc}
-                                        ></lightning-icon>
-                                    </template>
+                                            ></lightning-icon>
+                                        </template>
+                                    </span>
                                 </span>
-                            </span>
-                            <span
+                                <span
                                 if:false={isVertical}
                                 class="slds-visual-picker__body"
-                            >
+                                >
                                 <span class="slds-text-heading_small"
                                     >{item.title}</span
                                 >

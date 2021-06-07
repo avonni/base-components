@@ -168,7 +168,8 @@ const items = [
         figure: {
             title: '$30',
             description: 'USD/user/month *',
-            iconName: 'standard:user'
+            iconName: 'standard:user',
+            imgSrc: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
         }
     },
     {
@@ -189,7 +190,9 @@ const items = [
         figure: {
             title: '$220',
             description: 'USD/user/month *',
-            iconName: 'standard:account'
+            iconName: 'standard:account',
+            imgSrc: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
+
         }
     },
     {
