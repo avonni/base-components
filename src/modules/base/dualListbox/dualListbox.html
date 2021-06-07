@@ -38,8 +38,8 @@
                     <div
                         class={computedListboxSourceContainerClass}
                         style={sourceHeight}
-                        ondragover={dragOverSource}
-                        ondragleave={dragLeaveSource}
+                        ondragover={handleDragOverSource}
+                        ondragleave={handleDragLeaveSource}
                     >
                         <ul
                             data-source-list
@@ -72,8 +72,8 @@
                                         onclick={handleOptionClick}
                                         onkeydown={handleOptionKeyDown}
                                         draggable={draggable}
-                                        ondragstart={dragStartSource}
-                                        ondragend={dragEndSource}
+                                        ondragstart={handleDragStartSource}
+                                        ondragend={handleDragEndSource}
                                     >
                                         <div class="slds-media__figure">
                                             <c-avatar
@@ -143,8 +143,8 @@
                     <div
                         class={computedListboxSelectedContainerClass}
                         style={selectedHeight}
-                        ondragover={dragOverSelected}
-                        ondragleave={dragLeaveSelected}
+                        ondragover={handleDragOverSelected}
+                        ondragleave={handleDragLeaveSelected}
                     >
                         <ul
                             data-selected-list
@@ -177,8 +177,8 @@
                                         onclick={handleOptionClick}
                                         onkeydown={handleOptionKeyDown}
                                         draggable={draggable}
-                                        ondragstart={dragStartSelected}
-                                        ondragend={dragEndSelected}
+                                        ondragstart={handleDragStartSelected}
+                                        ondragend={handleDragEndSelected}
                                         ondragover={handleDragOver}
                                     >
                                         <div class="slds-media__figure">

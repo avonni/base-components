@@ -1198,14 +1198,14 @@ export default class DualListbox extends LightningElement {
         }
     }
 
-    dragStartSource(event) {
-        event.currentTarget.classList.add('dragging');
+    handleDragStartSource(event) {
+        event.currentTarget.classList.add('avonni-dual-listbox-dragging');
         this.updateSelectedOptions(event.currentTarget, true, false);
     }
 
-    dragEndSource(event) {
+    handleDragEndSource(event) {
         event.preventDefault();
-        event.currentTarget.classList.remove('dragging');
+        event.currentTarget.classList.remove('avonni-dual-listbox-dragging');
         if (this._dropItSelected) {
             if (
                 this.highlightedOptions.includes(
@@ -1218,14 +1218,14 @@ export default class DualListbox extends LightningElement {
         event.target.focus();
     }
 
-    dragStartSelected(event) {
-        event.currentTarget.classList.add('dragging');
+    handleDragStartSelected(event) {
+        event.currentTarget.classList.add('avonni-dual-listbox-dragging');
         this.updateSelectedOptions(event.currentTarget, true, false);
     }
 
-    dragEndSelected(event) {
+    handleDragEndSelected(event) {
         event.preventDefault();
-        event.currentTarget.classList.remove('dragging');
+        event.currentTarget.classList.remove('avonni-dual-listbox-dragging');
         if (this._dropItSource) {
             this.handleDragLeft();
         } else if (!this._dropItSource) {
@@ -1250,21 +1250,21 @@ export default class DualListbox extends LightningElement {
         }
     }
 
-    dragOverSource(event) {
+    handleDragOverSource(event) {
         event.preventDefault();
         this._dropItSource = true;
     }
 
-    dragLeaveSource() {
+    handleDragLeaveSource() {
         this._dropItSource = false;
     }
 
-    dragOverSelected(event) {
+    handleDragOverSelected(event) {
         event.preventDefault();
         this._dropItSelected = true;
     }
 
-    dragLeaveSelected() {
+    handleDragLeaveSelected() {
         this._dropItSelected = false;
     }
 
