@@ -225,19 +225,30 @@ export default class InputChoiceSet extends LightningElement {
     handleChange(event) {
         event.stopPropagation();
 
+        
         let value = event.target.value;
         const checkboxes = this.template.querySelectorAll('input');
-
+        
         if(this.isMultiSelect){
             value = Array.from(checkboxes)
-                .filter((checkbox) => checkbox.checked)
-                .map((checkbox) => checkbox.value);
+            .filter((checkbox) => checkbox.checked)
+            .map((checkbox) => checkbox.value);
         }
         else{
             const checkboxesToUncheck = Array.from(checkboxes)
-                .filter((checkbox) => checkbox.value !== value);
-                checkboxesToUncheck.forEach((checkbox)=>{checkbox.checked = false;});
+            .filter((checkbox) => checkbox.value !== value);
+            checkboxesToUncheck.forEach((checkbox)=>{checkbox.checked = false;});
         }
+
+        if (this.type === "button") {
+            const labels = this.template.querySelectorAll('label');
+            labels.forEach((label) => {
+                let icon = label.querySelector('lightning-icon');
+                if(value.includes(label.control.value)) icon.variant = 'inverse';
+                else icon.variant = '';
+            });
+        }
+
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
