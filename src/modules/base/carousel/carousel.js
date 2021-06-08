@@ -236,19 +236,18 @@ export default class Carousel extends LightningElement {
         }
     }
     get imageContainerStyle() {
-        if (this._itemImageCropFit === 'contain') {
-            const windowHeight = window.innerHeight;
-            const height = windowHeight / this._itemsPerPanel;
-            return `min-width: 100%; min-height: 100%; width: 200px; height:${height}px`;
-        }
-        return '';
+        const height = window.innerHeight / this._itemsPerPanel;
+        return `min-width: 100%; min-height: 100%; height:${height}px`;
     }
     get imageStyle() {
-        return `
-                width:100%;
-                height: 100%;
-                object-fit: ${this._itemImageCropFit};
-            `;
+        let imageStyle = `
+            width:100%;
+            height: 100%;
+        `;
+        if (this._itemImageCropFit === 'contain') {
+            imageStyle += 'object-fit: contain';
+        }
+        return imageStyle;
     }
 
     initializeCurrentPanel(numberOfPanels) {
