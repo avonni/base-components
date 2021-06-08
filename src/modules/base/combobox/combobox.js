@@ -8,6 +8,7 @@ import {
 } from 'c/utilsPrivate';
 import { FieldConstraintApi } from 'c/inputUtils';
 import { classSet, generateUniqueId } from 'c/utils';
+import { AutoPosition, Direction } from 'c/positionLibrary';
 
 const DROPDOWN_ALIGNMENTS = {
     valid: [
@@ -59,6 +60,7 @@ export default class Combobox extends LightningElement {
     _value = [];
     _variant = VARIANTS.default;
 
+    _autoPosition;
     _cancelBlur = false;
     _currentLevelOptions = [];
     _visibleOptions = [];
@@ -443,9 +445,12 @@ export default class Combobox extends LightningElement {
 
     @api
     close() {
-        this.dropdownVisible = false;
-        this._currentLevelOptions = this.options;
-        this.visibleOptions = this.options;
+        if (this.dropdownVisible) {
+            this.dropdownVisible = false;
+            this._currentLevelOptions = this.options;
+            this.visibleOptions = this.options;
+            this.stopDropdownPositioning();
+        }
     }
 
     @api
@@ -455,8 +460,9 @@ export default class Combobox extends LightningElement {
 
     @api
     open() {
-        if (!this.inputIsDisabled) {
+        if (!this.inputIsDisabled && !this.dropdownVisible) {
             this.dropdownVisible = true;
+            this.startDropdownAutoPositioning();
         }
     }
 
@@ -525,6 +531,42 @@ export default class Combobox extends LightningElement {
             optionObjects.push(optionObject);
         });
         return optionObjects;
+    }
+
+    startDropdownAutoPositioning() {
+        if (this.dropdownAlignment !== 'auto') {
+            return;
+        }
+
+        if (!this._autoPosition) {
+            this._autoPosition = new AutoPosition(this);
+        }
+
+        this._autoPosition.start({
+            target: () => this.template.querySelector('input'),
+            element: () => this.template.querySelector('div.slds-dropdown'),
+            align: {
+                horizontal: Direction.Left,
+                vertical: Direction.Top
+            },
+            targetAlign: {
+                horizontal: Direction.Left,
+                vertical: Direction.Bottom
+            },
+            autoFlip: true,
+            alignWidth: true,
+            autoShrinkHeight: true,
+            minHeight:
+                // Same configuration as lightning-combobox
+                this.visibleOptions.length < 3 ? '2.25rem' : '6.75rem'
+        });
+    }
+
+    // remove-next-line-for-c-namespace
+    stopDropdownPositioning() {
+        if (this._autoPosition) {
+            this._autoPosition.stop();
+        }
     }
 
     computeGroups() {
