@@ -445,6 +445,7 @@ export default class Combobox extends LightningElement {
     close() {
         this.dropdownVisible = false;
         this._currentLevelOptions = this.options;
+        this.visibleOptions = this.options;
     }
 
     @api
