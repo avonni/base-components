@@ -75,10 +75,9 @@
 
 .avonni-formatted-number {
     position: absolute;
-    top: 55%;
+    top: 2rem;
     width: 100%;
     display: flex;
     justify-content: center;
-    bottom: auto;
     z-index: 1;
 }
