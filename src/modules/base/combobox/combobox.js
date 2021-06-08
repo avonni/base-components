@@ -460,7 +460,12 @@ export default class Combobox extends LightningElement {
 
     @api
     open() {
-        if (!this.inputIsDisabled && !this.dropdownVisible) {
+        const hasItems = this.options.length || this.actions.length;
+        if (
+            !this.inputIsDisabled &&
+            !this.dropdownVisible &&
+            (hasItems || this.isLoading)
+        ) {
             this.dropdownVisible = true;
             this.startDropdownAutoPositioning();
         }
