@@ -236,7 +236,10 @@ export default class Carousel extends LightningElement {
         }
     }
     get imageContainerStyle() {
-        return `min-width: 100%; min-height:100%; width:200px; height: ${this._carouselContentHeight}rem`;
+        if (this._itemImageCropFit === 'contain') {
+            return `min-width: 100%; min-height: 100% ; width: 200px; height:200px`;
+        }
+        return '';
     }
     get imageStyle() {
         return `
