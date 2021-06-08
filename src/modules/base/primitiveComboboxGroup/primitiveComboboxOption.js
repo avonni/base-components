@@ -1,11 +1,11 @@
 import { normalizeArray } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-export default class ComboboxOption {
+export default class PrimitiveComboboxOption {
     constructor(option) {
         this.avatarFallbackIconName = option.avatarFallbackIconName;
         this.avatarSrc = option.avatarSrc;
-        this.groups = normalizeArray(option.groups);
+        this.groups = option.groups;
         this.label = option.label;
         this.options = normalizeArray(option.options);
         this.secondaryText = option.secondaryText;

@@ -1,13 +1,13 @@
 import { LightningElement, api } from 'lwc';
-import ComboboxOption from './comboboxOption';
 import ComboboxScope from './comboboxScope';
+import ComboboxOption from './comboboxOption';
 import {
     normalizeArray,
     normalizeBoolean,
     normalizeString
 } from 'c/utilsPrivate';
 import { FieldConstraintApi } from 'c/inputUtils';
-import { classSet } from 'c/utils';
+import { classSet, generateUniqueId } from 'c/utils';
 
 const DROPDOWN_ALIGNMENTS = {
     valid: [
@@ -30,6 +30,7 @@ const VARIANTS = {
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
 const DEFAULT_PLACEHOLDER = 'Select an Option';
 const DEFAULT_PLACEHOLDER_WHEN_SEARCH_ALLOWED = 'Search...';
+const DEFAULT_GROUP_NAME = 'ungrouped';
 
 export default class Combobox extends LightningElement {
     @api fieldLevelHelp;
@@ -118,7 +119,10 @@ export default class Combobox extends LightningElement {
         return this._groups;
     }
     set groups(value) {
-        this._groups = normalizeArray(value);
+        this._groups = [...normalizeArray(value)];
+
+        // Add a default group for options without groups
+        this._groups.unshift({ name: DEFAULT_GROUP_NAME });
     }
 
     @api
@@ -286,6 +290,10 @@ export default class Combobox extends LightningElement {
             });
         }
         return this._constraintApi;
+    }
+
+    get generateKey() {
+        return generateUniqueId();
     }
 
     get input() {
@@ -502,68 +510,112 @@ export default class Combobox extends LightningElement {
         this.computeSelection();
     }
 
-    // {
-    //     label: 'Boubou',
-    //     name: 'boubou',
-    //     options: [{ ... }, { ... }],
-    //     groups: [
-    //         {
-    //             label: 'Baba',
-    //             options: [{ ... }, { ... }]
-    //         }
-    //     ]
-    // }
-
     computeGroups() {
-        const computedGroups = [
-            {
-                name: 'ungrouped',
-                options: []
-            }
-        ];
+        const computedGroups = [];
 
         // For each visible option
         this.visibleOptions.forEach((option) => {
-            const optionGroups = normalizeArray(option.groups);
+            const optionGroups = option.groups;
+            let currentLevelGroups = computedGroups;
 
             if (optionGroups.length > 0) {
                 // For each group of the option
-                optionGroups.forEach((name) => {
-                    const computedGroup = computedGroups.find(
-                        (grp) => grp.name === name
-                    );
-
-                    if (computedGroup) {
-                        // If the group already exists, push the new option in the list
-                        computedGroup.options.push(option);
+                optionGroups.forEach((name, index) => {
+                    // If groups are nested
+                    if (this.multiLevelGroups) {
+                        // We push the option only if we have reached the deepest group
+                        currentLevelGroups = normalizeArray(
+                            this.groupOption({
+                                groups: currentLevelGroups,
+                                name,
+                                option:
+                                    index === optionGroups.length - 1
+                                        ? option
+                                        : undefined
+                            })
+                        );
                     } else {
-                        const group = this.groups.find((grp) => {
-                            return grp.name === name;
+                        this.groupOption({
+                            groups: computedGroups,
+                            name,
+                            option
                         });
-
-                        if (group) {
-                            // If the group does not exist yet but is in the global groups list,
-                            // create a new group
-                            computedGroups.push({
-                                label: group.label,
-                                name: name,
-                                options: [option]
-                            });
-                        } else {
-                            // If the group is not in the global groups list,
-                            // push the option in the 'ungrouped' group
-                            computedGroups[0].options.push(option);
-                        }
                     }
                 });
             } else {
                 // If the option does not have groups,
-                // push the option in the 'ungrouped' group
-                computedGroups[0].options.push(option);
+                // push the option in the default group
+                this.groupOption({
+                    groups: computedGroups,
+                    option,
+                    name: DEFAULT_GROUP_NAME
+                });
             }
         });
 
+        this.sortGroups(computedGroups);
         this.computedGroups = computedGroups;
+    }
+
+    /**
+     * Find a group based on its name, and adds an option to its list.
+     * Takes an object with three keys as an argument.
+     *
+     * @param {array} groups Array of the groups.
+     * @param {object} option (optional) The option we want to push in the group. If provided, when the group is found, the option will be added to its options.
+     * @param {string} name The name of the group the option belongs to.
+     *
+     * @returns {array} The children groups of the group that was selected.
+     */
+
+    // The rule is disabled, because the default "return" is to call the function again
+    // eslint-disable-next-line consistent-return
+    groupOption(params) {
+        const { groups, option, name } = params;
+        const computedGroup = groups.find((grp) => grp.name === name);
+
+        if (computedGroup) {
+            // If the group already exists, push the new option in the list
+            if (option) computedGroup.options.push(option);
+            return computedGroup.groups;
+        }
+
+        // If the group does not exist yet but is in the global groups list,
+        // create a new group
+        const group = this.groups.find((grp) => {
+            return grp.name === name;
+        });
+        if (group) {
+            const newGroup = {
+                label: group.label,
+                name: name,
+                options: option ? [option] : [],
+                groups: []
+            };
+            groups.push(newGroup);
+
+            // If we just added the default group, move it up to the first entry
+            if (name === DEFAULT_GROUP_NAME) this.sortGroups(groups);
+
+            return newGroup.groups;
+        }
+        // If the group is not in the global groups list,
+        // push the option in the default group
+        this.groupOption({
+            groups,
+            option,
+            name: DEFAULT_GROUP_NAME
+        });
+    }
+
+    sortGroups(groups) {
+        const defaultGroupIndex = groups.findIndex(
+            (group) => group.name === DEFAULT_GROUP_NAME
+        );
+        if (defaultGroupIndex > -1) {
+            const defaultGroup = groups.splice(defaultGroupIndex, 1)[0];
+            groups.unshift(defaultGroup);
+        }
     }
 
     computeSelection() {
@@ -589,8 +641,8 @@ export default class Combobox extends LightningElement {
         this._value = this.selectedOptions.map((option) => option.value);
     }
 
-    computeSearch(props) {
-        const { options, searchTerm } = props;
+    computeSearch(params) {
+        const { options, searchTerm } = params;
         return options.filter((option) => {
             return option.label
                 .toLowerCase()
@@ -731,19 +783,8 @@ export default class Combobox extends LightningElement {
         this.scopesDropdownVisible = false;
     }
 
-    handleClick(event) {
-        // Find the selected option or action
-        const target = event.target.dataset.value
-            ? event.target
-            : event.target.closest('li');
-        const optionValue = target.dataset.value;
-        const actionName = target.dataset.name;
-
-        if (optionValue) this.handleOptionClick(optionValue);
-        if (actionName) this.handleActionClick(actionName);
-    }
-
-    handleActionClick(name) {
+    handleActionClick(event) {
+        const name = event.currentTarget.dataset.name;
         this.dispatchEvent(
             new CustomEvent('actionclick', {
                 detail: {
@@ -756,7 +797,10 @@ export default class Combobox extends LightningElement {
         this.focus();
     }
 
-    handleOptionClick(value) {
+    handleOptionClick(event) {
+        event.stopPropagation();
+
+        const value = event.detail.value;
         const selectedOption = this.options.find((option) => {
             return option.value === value;
         });

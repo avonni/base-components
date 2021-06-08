@@ -259,6 +259,10 @@
             "path": "src/modules/base/primitiveCoordinateItem/primitiveCoordinateItem.js"
         },
         {
+            "name": "c/primitiveComboboxGroup",
+            "path": "src/modules/base/primitiveComboboxGroup/primitiveComboboxGroup.js"
+        },
+        {
             "name": "c/primitiveCellAvatarGroup",
             "path": "src/modules/base/primitiveCellAvatarGroup/primitiveCellAvatarGroup.js"
         },
@@ -617,6 +621,10 @@
         {
             "name": "avonni/primitiveIcon",
             "path": "src/modules/base/primitiveIcon/primitiveIcon.js"
+        },
+        {
+            "name": "avonni/primitiveComboboxGroup",
+            "path": "src/modules/base/primitiveComboboxGroup/primitiveComboboxGroup.js"
         },
         {
             "name": "avonni/profileCard",

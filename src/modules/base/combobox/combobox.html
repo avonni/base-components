@@ -204,7 +204,6 @@
                 <div
                     id="dropdown-element"
                     class={computedDropdownClass}
-                    onclick={handleClick}
                     onmousedown={handleDropdownMouseDown}
                     onmouseup={handleDropdownMouseUp}
                 >
@@ -228,6 +227,7 @@
                                 role="option"
                                 aria-label="Action button"
                                 data-name={action.name}
+                                onclick={handleActionClick}
                             >
                                 <div
                                     if:true={action.iconName}
@@ -263,94 +263,16 @@
                                 for:each={computedGroups}
                                 for:item="group"
                             >
-                                <ul
-                                    key={group.name}
-                                    role="group"
-                                    aria-label={group.label}
-                                >
-                                    <li
-                                        if:true={group.label}
-                                        role="presentation"
-                                        class="slds-listbox__item"
-                                    >
-                                        <div
-                                            class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small"
-                                            role="presentation"
-                                        >
-                                            <h3
-                                                class="slds-listbox__option-header"
-                                                role="presentation"
-                                            >
-                                                {group.label}
-                                            </h3>
-                                        </div>
-                                    </li>
-                                    <!-- Options -->
-                                    <template
-                                        for:each={group.options}
-                                        for:item="option"
-                                    >
-                                        <li
-                                            key={option.value}
-                                            class={option.computedClass}
-                                            role="option"
-                                            aria-selected={option.selected}
-                                            data-value={option.value}
-                                        >
-                                            <!-- Checkmark -->
-                                            <div
-                                                if:false={removeSelectedOptions}
-                                                class="slds-media__figure slds-listbox__option-icon"
-                                            >
-                                                <lightning-icon
-                                                    if:true={option.selected}
-                                                    class="slds-current-color"
-                                                    icon-name="utility:check"
-                                                    size="x-small"
-                                                    aria-hidden="true"
-                                                ></lightning-icon>
-                                            </div>
-                                            <!-- Option data -->
-                                            <div class="slds-media__body">
-                                                <div
-                                                    class="slds-media slds-media_center"
-                                                >
-                                                    <div
-                                                        if:true={option.hasAvatar}
-                                                        class="slds-media__figure slds-listbox__option-icon"
-                                                    >
-                                                        <c-avatar
-                                                            aria-hidden="true"
-                                                            size="small"
-                                                            src={option.avatarSrc}
-                                                            fallback-icon-name={option.avatarFallbackIconName}
-                                                            hide-avatar-details="true"
-                                                        ></c-avatar>
-                                                    </div>
-                                                    <div
-                                                        class="slds-media__body"
-                                                    >
-                                                        <span
-                                                            class="slds-listbox__option-text slds-listbox__option-text_entity"
-                                                            >{option.label}</span
-                                                        >
-                                                        <span
-                                                            class="slds-listbox__option-meta slds-listbox__option-meta_entity"
-                                                            >{option.secondaryText}</span
-                                                        >
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </template>
-                                </ul>
+                                <c-primitive-combobox-group
+                                    key={generateKey}
+                                    name={group.name}
+                                    label={group.label}
+                                    options={group.options}
+                                    groups={group.groups}
+                                    onprivateoptionclick={handleOptionClick}
+                                ></c-primitive-combobox-group>
                             </template>
                         </li>
-
-                        <!-- Options -->
-                        <!-- <template for:each={visibleOptions} for:item="option">
-                            
-                        </template> -->
 
                         <!-- Bottom actions -->
                         <template for:each={bottomActions} for:item="action">
@@ -359,6 +281,7 @@
                                 class="slds-listbox__item slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_term"
                                 role="button"
                                 data-name={action.name}
+                                onclick={handleActionClick}
                             >
                                 <div
                                     if:true={action.iconName}

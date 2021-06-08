@@ -343,24 +343,25 @@ const optionsWithAvatars = [
         groups: ['accounts']
     },
     {
-        label: 'Ungrouped option',
-        value: 'ungrouped-option',
+        label: 'Tyrell Corp',
+        value: 'tyrell',
         avatarFallbackIconName: 'standard:opportunity',
-        secondaryText: 'Opportunity'
+        secondaryText: 'Opportunity',
+        groups: ['opportunities']
     },
     {
         label: 'United Oil SLA',
         value: 'oil-sla',
         avatarFallbackIconName: 'standard:opportunity',
-        secondaryText: 'Opportunity - Closed Won',
+        secondaryText: 'Opportunity - Closed',
         groups: ['opportunities', 'closed']
     },
     {
         label: 'United Oil Standby Generators',
         value: 'united-oil',
         avatarFallbackIconName: 'standard:opportunity',
-        secondaryText: 'Opportunity',
-        groups: ['opportunities']
+        secondaryText: 'Opportunity - Closed Won',
+        groups: ['opportunities', 'closed', 'won']
     }
 ];
 
@@ -434,6 +435,10 @@ const groups = [
     {
         label: 'Closed',
         name: 'closed'
+    },
+    {
+        label: 'Won',
+        name: 'won'
     }
 ];
 
@@ -483,6 +488,16 @@ Grouped.args = {
     label: 'Combobox with grouped options',
     options: optionsWithAvatars,
     groups: groups
+};
+
+export const MultiLevelGroups = Template.bind({});
+MultiLevelGroups.args = {
+    label: 'Combobox with multi-level groups',
+    options: optionsWithAvatars,
+    groups: groups,
+    multiLevelGroups: true,
+    allowSearch: true,
+    fieldLevelHelp: 'This combobox is also searchable'
 };
 
 export const Lookup = Template.bind({});
