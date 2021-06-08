@@ -237,7 +237,9 @@ export default class Carousel extends LightningElement {
     }
     get imageContainerStyle() {
         if (this._itemImageCropFit === 'contain') {
-            return `min-width: 100%; min-height: 100% ; width: 200px; height:200px`;
+            const windowHeight = window.innerHeight;
+            const height = windowHeight / this._itemsPerPanel;
+            return `min-width: 100%; min-height: 100%; width: 200px; height:${height}px`;
         }
         return '';
     }
@@ -469,6 +471,6 @@ export default class Carousel extends LightningElement {
     }
 
     get computedCarouselContentSize() {
-        return `height: fit-content;`;
+        return `height: fit-content`;
     }
 }
