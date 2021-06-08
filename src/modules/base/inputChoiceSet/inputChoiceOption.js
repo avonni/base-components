@@ -46,4 +46,8 @@ export default class InputChoiceOption {
             'block': (this.iconPosition === POSITION_ICON.TOP || this.iconPosition === POSITION_ICON.BOTTOM),
         }).toString();
     }
+
+    get computedVariantButton(){
+        return this.isChecked ? "inverse" : "base";
+    }
 }

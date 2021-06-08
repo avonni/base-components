@@ -45,7 +45,7 @@
                                 <template if:false={checkboxVariant} >
                                     <div class="slds-p-horizontal_small">
                                         <span if:true={option.isIconBottomRight} class={option.computedLabelButtonClass}>{option.label}</span>
-                                        <lightning-icon if:true={option.iconName} class={option.computedIconButtonClass} icon-name={option.iconName} size="x-small"></lightning-icon>
+                                        <lightning-icon variant={option.computedVariantButton} if:true={option.iconName} class={option.computedIconButtonClass} icon-name={option.iconName} size="x-small"></lightning-icon>
                                         <span if:true={option.isIconTopLeft} class={option.computedLabelButtonClass}>{option.label}</span>
                                     </div>
                                 </template>
