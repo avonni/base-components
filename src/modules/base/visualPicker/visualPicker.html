@@ -34,11 +34,11 @@
                                     </span>
                                 </template>
                                 <span class={notSelectedClass}>
-                                    <template if:true={item.figure.imgSrc}>
-                                        <div class="slds-m-bottom_medium imgContainer">
+                                    <div if:true={hasImage} class="slds-m-bottom_small imgContainer slds-border_bottom">
+                                        <template if:true={item.figure.imgSrc}>
                                             <img src={item.figure.imgSrc}>
-                                        </div>
-                                    </template>
+                                        </template>
+                                    </div>
                                     <template if:true={item.isTop}>
                                         <lightning-icon
                                         icon-name={item.figure.iconName}

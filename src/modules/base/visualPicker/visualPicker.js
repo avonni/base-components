@@ -31,6 +31,7 @@ export default class VisualPicker extends LightningElement {
     _hideBorder = DEFAULT_HIDE_BORDER;
     _hideCheckMark = DEFAULT_HIDE_CHECK_MARK;
     _ratio = DEFAULT_RATIO;
+    _hasImage = false;
 
     renderedCallback() {
         const inputs = this.template.querySelectorAll('input');
@@ -63,7 +64,8 @@ export default class VisualPicker extends LightningElement {
         }
     }
 
-    @api get variant() {
+    @api 
+    get variant() {
         return this._variant;
     }
 
@@ -74,7 +76,8 @@ export default class VisualPicker extends LightningElement {
         });
     }
 
-    @api get type() {
+    @api 
+    get type() {
         return this._type;
     }
 
@@ -85,7 +88,8 @@ export default class VisualPicker extends LightningElement {
         });
     }
 
-    @api get size() {
+   @api
+   get size() {
         return this._size;
     }
 
@@ -96,7 +100,8 @@ export default class VisualPicker extends LightningElement {
         });
     }
 
-    @api get ratio() {
+    @api
+    get ratio() {
         return this._ratio;
     }
 
@@ -107,7 +112,8 @@ export default class VisualPicker extends LightningElement {
         });
     }
 
-    @api get required() {
+    @api
+    get required() {
         return this._required;
     }
 
@@ -115,7 +121,8 @@ export default class VisualPicker extends LightningElement {
         this._required = normalizeBoolean(value);
     }
 
-    @api get disabled() {
+    @api
+    get disabled() {
         return this._disabled;
     }
 
@@ -123,7 +130,8 @@ export default class VisualPicker extends LightningElement {
         this._disabled = normalizeBoolean(value);
     }
 
-    @api get hideBorder() {
+    @api
+    get hideBorder() {
         return this._hideBorder;
     }
 
@@ -131,7 +139,8 @@ export default class VisualPicker extends LightningElement {
         this._hideBorder = normalizeBoolean(value);
     }
 
-    @api get hideCheckMark() {
+    @api 
+    get hideCheckMark() {
         return this._hideCheckMark;
     }
 
@@ -145,6 +154,8 @@ export default class VisualPicker extends LightningElement {
         this.items.forEach((item, index) => {
             let cloneItem = Object.assign({}, item);
             let iconPosition = cloneItem.figure.iconPosition;
+
+            if(cloneItem.figure.imgSrc) this.hasImage = true;
 
             cloneItem.key = `visual-picker-key-${index}`;
 
@@ -227,6 +238,13 @@ export default class VisualPicker extends LightningElement {
         });
 
         return result;
+    }
+
+    get hasImage(){
+        return this._hasImage;
+    }
+    set hasImage(boolean){
+        this._hasImage = boolean;
     }
 
     get isCoverable() {
