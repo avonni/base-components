@@ -55,6 +55,23 @@
                         icon-name={sortableIconName}
                         size="x-small"
                     ></lightning-icon>
+                    <lightning-button-menu
+                        if:true={actions.length}
+                        class="slds-m-right_x-small"
+                        menu-alignment="right"
+                        icon-size="x-small"
+                        ontouchstart={handleButtonMenuTouchStart}
+                    >
+                        <template for:each={computedActions} for:item="action">
+                            <lightning-menu-item
+                                key={action.name}
+                                value={action.name}
+                                label={action.label}
+                                disabled={action.disabled}
+                                icon-name={action.iconName}
+                            ></lightning-menu-item>
+                        </template>
+                    </lightning-button-menu>
                 </div>
             </li>
         </template>

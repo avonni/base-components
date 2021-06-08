@@ -32,6 +32,15 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
+        action: {
+            control: {
+                type: 'object'
+            },
+            description: 'Array of actions',
+            table: {
+                type: { summary: 'object[]' }
+            }
+        },
         sortable: {
             control: {
                 type: 'boolean'
@@ -119,6 +128,27 @@ const itemsWithAvatars = [
     }
 ];
 
+const actions = [
+    {
+        label: 'Completed',
+        name: 'completed-action',
+        iconName: 'utility:check',
+        disabled: false
+    },
+    {
+        label: 'Pending',
+        name: 'prending-action',
+        iconName: 'utility:spinner',
+        disabled: false
+    },
+    {
+        label: 'Delete',
+        name: 'delete-action',
+        iconName: 'utility:delete',
+        disabled: true
+    }
+];
+
 export const Base = Template.bind({});
 Base.args = {
     items: items
@@ -134,14 +164,23 @@ export const SortableList = Template.bind({});
 SortableList.args = {
     label: 'Sortable list',
     sortable: true,
-    items: items
+    items: items,
+    actions: actions
 };
 
 export const SortableListWithAvatars = Template.bind({});
 SortableListWithAvatars.args = {
     label: 'Sortable list with Icons',
     items: itemsWithAvatars,
+    actions: actions,
     sortableIconName: 'utility:drag_and_drop',
     sortableIconPosition: 'left',
     sortable: true
+};
+
+export const ListWithActions = Template.bind({});
+ListWithActions.args = {
+    label: 'List with actions menu',
+    items: items,
+    actions: actions
 };
