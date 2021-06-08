@@ -194,14 +194,14 @@ export default class VisualPicker extends LightningElement {
                 (this._size !== 'medium' || this._size !== 'large') &&
                 this._variant !== 'vertical'
             ) {
-                if (iconPosition === 'top') {
+               if (iconPosition === 'top') {
                     cloneItem.iconClass
-                        .add(`slds-m-bottom_${this._size}`)
+                        .add(`slds-m-bottom_xx-small`)
                         .toString();
                 }
                 if (iconPosition === 'bottom') {
                     cloneItem.iconClass
-                        .add(`slds-m-top_${this._size}`)
+                        .add(`slds-m-top_xx-small`)
                         .toString();
                 }
                 if (iconPosition === 'right') {
@@ -217,8 +217,8 @@ export default class VisualPicker extends LightningElement {
             } else {
                 cloneItem.iconClass
                     .add({
-                        'slds-m-bottom_small': iconPosition === 'top',
-                        'slds-m-top_small': iconPosition === 'bottom',
+                        'slds-m-bottom_xx-small': iconPosition === 'top',
+                        'slds-m-top_xx-small': iconPosition === 'bottom',
                         'slds-m-left_small': iconPosition === 'right',
                         'slds-m-right_small': iconPosition === 'left'
                     })
@@ -282,14 +282,14 @@ export default class VisualPicker extends LightningElement {
     }
 
     get visualPickerTypeClass() {
-        return classSet('slds-visual-picker__figure')
+        return classSet('slds-visual-picker__figure hideOverflow')
             .add({
                 'slds-visual-picker__text':
                     this._variant === 'non-coverable' ||
                     this._variant === 'vertical',
                 'slds-visual-picker__icon': this._variant === 'coverable',
                 'slds-align_absolute-left': this._variant === 'vertical',
-                'slds-align_absolute-center': this._variant !== 'vertical',
+                'slds-align_absolute-center': this._variant !== 'vertical' && !this.hasImage,
                 'noPadding' : this.hasImage,
                 'avonni-hide-border': this._hideBorder,
                 'avonni-hide-check-mark': this._hideCheckMark

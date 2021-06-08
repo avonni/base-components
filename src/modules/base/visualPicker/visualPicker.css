@@ -8,11 +8,53 @@
     flex: 1;
 }
 
+.hideOverflow{
+    overflow: hidden;
+}
 .noPadding {
     padding : 0 !important;
 }
 
 .slds-visual-picker_vertical .imgContainer{
+    width: 100%;
+    height: 30px;
+}
+
+.avonni-visual-picker_xx-small.ratio-1-by-1 .imgContainer{
+    width: 100%;
+    height: 23px;
+}
+.avonni-visual-picker_xx-small.ratio-4-by-3 .imgContainer{
+    width: 100%;
+    height: 24px;
+}
+.avonni-visual-picker_xx-small.ratio-16-by-9 .imgContainer{
+    width: 100%;
+    height: 20px;
+}
+
+.avonni-visual-picker_x-small.ratio-1-by-1 .imgContainer{
+    width: 100%;
+    height: 32px;
+}
+.avonni-visual-picker_x-small.ratio-4-by-3 .imgContainer{
+    width: 100%;
+    height: 24px;
+}
+.avonni-visual-picker_x-small.ratio-16-by-9 .imgContainer{
+    width: 100%;
+    height: 30px;
+}
+
+.avonni-visual-picker_small.ratio-1-by-1 .imgContainer{
+    width: 100%;
+    height: 44px;
+}
+.avonni-visual-picker_small.ratio-4-by-3 .imgContainer{
+    width: 100%;
+    height: 23px;
+}
+.avonni-visual-picker_small.ratio-16-by-9 .imgContainer{
     width: 100%;
     height: 30px;
 }
@@ -30,50 +72,10 @@
     height: 40px;
 }
 
-.avonni-visual-picker_small.ratio-1-by-1 .imgContainer{
-    width: 100%;
-    height: 44px;
-}
-.avonni-visual-picker_small.ratio-4-by-3 .imgContainer{
-    width: 100%;
-    height: 22px;
-}
-.avonni-visual-picker_small.ratio-16-by-9 .imgContainer{
-    width: 100%;
-    height: 22px;
-}
-
-.avonni-visual-picker_x-small.ratio-1-by-1 .imgContainer{
-    width: 100%;
-    height: 32px;
-}
-.avonni-visual-picker_x-small.ratio-4-by-3 .imgContainer{
-    width: 100%;
-    height: 16px;
-}
-.avonni-visual-picker_x-small.ratio-16-by-9 .imgContainer{
-    width: 100%;
-    height: 16px;
-}
-
-.avonni-visual-picker_xx-small.ratio-1-by-1 .imgContainer{
-    width: 100%;
-    height: 20px;
-}
-.avonni-visual-picker_xx-small.ratio-4-by-3 .imgContainer{
-    width: 100%;
-    height: 10px;
-}
-.avonni-visual-picker_xx-small.ratio-4-by-3 .imgContainer{
-    width: 100%;
-    height: 10px;
-}
-
 .slds-visual-picker_large.ratio-1-by-1 .imgContainer{
     width: 100%;
     height: 104px;
 }
-
 .slds-visual-picker_large.ratio-4-by-3 .imgContainer{
     width: 100%;
     height: 50px;
@@ -265,7 +267,7 @@ input:checked ~ label .avonni-is-not-selected span {
 }
 
 .avonni-visual-picker_xx-small.ratio-4-by-3 .slds-visual-picker__figure {
-    height: 3rem;
+    height: 4rem;
     overflow: hidden;
 }
 
@@ -275,42 +277,42 @@ input:checked ~ label .avonni-is-not-selected span {
 }
 
 .avonni-visual-picker_small.ratio-4-by-3 .slds-visual-picker__figure {
-    height: 6rem;
+    height: 6.5rem;
     overflow: hidden;
 }
 
 .slds-visual-picker_medium.ratio-4-by-3 .slds-visual-picker__figure {
-    height: 7.5rem;
-    overflow: hidden;
-}
-
-.slds-visual-picker_large.ratio-4-by-3 .slds-visual-picker__figure {
     height: 9rem;
     overflow: hidden;
 }
 
+.slds-visual-picker_large.ratio-4-by-3 .slds-visual-picker__figure {
+    height: 10.5rem;
+    overflow: hidden;
+}
+
 .avonni-visual-picker_xx-small.ratio-16-by-9 .slds-visual-picker__figure {
-    height: 2.25rem;
+    height: 2.75rem;
     overflow: hidden;
 }
 
 .avonni-visual-picker_x-small.ratio-16-by-9 .slds-visual-picker__figure {
-    height: 3.375rem;
+    height: 3.75rem;
     overflow: hidden;
 }
 
 .avonni-visual-picker_small.ratio-16-by-9 .slds-visual-picker__figure {
-    height: 4.5rem;
+    height: 4.75rem;
     overflow: hidden;
 }
 
 .slds-visual-picker_medium.ratio-16-by-9 .slds-visual-picker__figure {
-    height: 5.625rem;
+    height: 5.75rem;
     overflow: hidden;
 }
 
 .slds-visual-picker_large.ratio-16-by-9 .slds-visual-picker__figure {
-    height: 6.75rem;
+    height: 7.5rem;
     overflow: hidden;
 }
 
