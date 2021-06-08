@@ -1036,4 +1036,41 @@ describe('Carousel', () => {
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
     });
+
+    // carousel actionclick
+    it('Carousel actionclick', () => {
+        const element = createElement('base-carousel', {
+            is: Carousel
+        });
+        document.body.appendChild(element);
+
+        const example = {
+            key: 1,
+            title: 'Visit App Exchange',
+            description: 'Extend Salesforce with the #1 business marketplace.',
+            imageAssistiveText: 'Appy',
+            src:
+                'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+            href: 'https://www.salesforce.com',
+            actions: bareActions
+        };
+
+        element.items = items;
+
+        const handler = jest.fn();
+        element.addEventListener('actionclick', handler);
+
+        return Promise.resolve().then(() => {
+            const action = element.shadowRoot.querySelector(
+                '.avonni-carousel__actions > lightning-button-icon'
+            );
+            action.click();
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.name).toBe('action-add');
+            expect(handler.mock.calls[0][0].detail.item).toMatchObject(example);
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
 });

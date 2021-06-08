@@ -506,6 +506,21 @@ export default class Carousel extends LightningElement {
             : this.setAutoScroll();
     }
 
+    handleActionClick(event) {
+        const name = event.currentTarget.name;
+
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                detail: {
+                    name: name,
+                    item: this.panelItems[this.activeIndexPanel].items[
+                        this.activeIndexPanel
+                    ]
+                }
+            })
+        );
+    }
+
     get computedCarouselContentSize() {
         return `height: ${this._carouselContentHeight}rem`;
     }
