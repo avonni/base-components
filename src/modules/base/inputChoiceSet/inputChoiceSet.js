@@ -14,6 +14,7 @@ import {
 } from 'c/inputUtils';
 import { classSet } from 'c/utils';
 import InputChoiceOption from './inputChoiceOption'
+import { check } from 'prettier';
 
 const i18n = {
     required: 'required'
@@ -21,7 +22,7 @@ const i18n = {
 
 const DEBOUNCE_PERIOD = 200;
 
-const validOrientations = {valid: ['vertical', 'horizontal'], default:'vertical'};
+const validOrientations = { valid: ['vertical', 'horizontal'], default:'vertical' };
 const validTypes = { valid: ['default', 'button'], default: 'default' };
 
 export default class InputChoiceSet extends LightningElement {
@@ -32,7 +33,6 @@ export default class InputChoiceSet extends LightningElement {
     @api messageWhenValueMissing;
     @api name;
     
-    
     _orientation = validOrientations.default;
     _type = validTypes.default;
     _helpMessage;
@@ -40,7 +40,6 @@ export default class InputChoiceSet extends LightningElement {
     _required = false;
     _value = [];
     _isMultiSelect = false; 
-
 
     constructor() {
         super();
@@ -228,7 +227,6 @@ export default class InputChoiceSet extends LightningElement {
         
         let value = event.target.value;
         const checkboxes = this.template.querySelectorAll('input');
-        
         if(this.isMultiSelect){
             value = Array.from(checkboxes)
             .filter((checkbox) => checkbox.checked)
@@ -239,13 +237,16 @@ export default class InputChoiceSet extends LightningElement {
             .filter((checkbox) => checkbox.value !== value);
             checkboxesToUncheck.forEach((checkbox)=>{checkbox.checked = false;});
         }
-
         if (this.type === "button") {
-            const labels = this.template.querySelectorAll('label');
-            labels.forEach((label) => {
+            checkboxes.forEach((checkbox) => {
+                const label = checkbox.labels[0];
                 let icon = label.querySelector('lightning-icon');
                 if(value.includes(label.control.value)) icon.variant = 'inverse';
                 else icon.variant = '';
+
+                if(!checkbox.checked && icon.variant === "inverse"){
+                    icon.variant =''
+                } 
             });
         }
 
