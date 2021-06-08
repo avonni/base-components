@@ -169,7 +169,8 @@ const items = [
             title: '$30',
             description: 'USD/user/month *',
             iconName: 'standard:user',
-            imgSrc: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
+            imgSrc: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+            
         }
     },
     {

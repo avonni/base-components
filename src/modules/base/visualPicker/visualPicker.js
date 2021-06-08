@@ -180,13 +180,13 @@ export default class VisualPicker extends LightningElement {
                 (iconPosition === 'bottom' || iconPosition === 'right') &&
                 (cloneItem.figure.iconName || cloneItem.figure.iconSrc);
 
-            if (cloneItem.isTop && this._variant === 'vertical') {
+            /*if (cloneItem.isTop && this._variant === 'vertical') {
                 cloneItem.bodyClass = 'slds-border_left slds-p-around_small';
             }
 
             if (cloneItem.isBottom && this._variant === 'vertical') {
                 cloneItem.bodyClass = 'slds-border_right slds-p-around_small';
-            }
+            }*/
 
             cloneItem.iconClass = classSet('');
 
@@ -240,7 +240,10 @@ export default class VisualPicker extends LightningElement {
         return result;
     }
 
-    get showImage(){
+    get showImageVerticalVisualPicker(){
+        return this.hasImage && this.isVertical;
+    }
+    get showImageHorizontalVisualPicker(){
         return this.hasImage && !this.isVertical;
     }
 
@@ -287,6 +290,7 @@ export default class VisualPicker extends LightningElement {
                 'slds-visual-picker__icon': this._variant === 'coverable',
                 'slds-align_absolute-left': this._variant === 'vertical',
                 'slds-align_absolute-center': this._variant !== 'vertical',
+                'noPadding' : this.hasImage,
                 'avonni-hide-border': this._hideBorder,
                 'avonni-hide-check-mark': this._hideCheckMark
             })
@@ -330,7 +334,8 @@ export default class VisualPicker extends LightningElement {
                     this._variant === 'coverable' && !this._hideCheckMark,
                 'avonni-is-not-selected':
                     this._variant === 'coverable' && this._hideCheckMark,
-                verticalContainer: this._variant === 'vertical'
+                verticalContainer: this._variant === 'vertical',
+                'slds-p-left_small' : this.hasImage && this._variant === 'vertical',
             })
             .toString();
     }
@@ -339,9 +344,9 @@ export default class VisualPicker extends LightningElement {
         return classSet('imgContainer')
         .add({
             'slds-m-bottom_small':
-                this._size === 'large' || this._size === 'medium' || this._size === 'small',
+                (this._size === 'large' || this._size === 'medium' || this._size === 'small') && this.variant !== 'vertical',
             'slds-m-bottom_xx-small':
-                this._size === 'x-small' || this._size === 'xx-small',
+                this._size === 'x-small' || this._size === 'xx-small' || this.variant === 'vertical',
             'slds-border_bottom': 
                 !this._hideBorder
         })

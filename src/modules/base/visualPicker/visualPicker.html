@@ -33,8 +33,13 @@
                                         </lightning-icon>
                                     </span>
                                 </template>
+                                <div if:true={showImageVerticalVisualPicker} class={computedImageClass}>
+                                    <template if:true={item.figure.imgSrc}>
+                                        <img src={item.figure.imgSrc}>
+                                    </template>
+                                </div>
                                 <span class={notSelectedClass}>
-                                    <div if:true={showImage} class={computedImageClass}>
+                                    <div if:true={showImageHorizontalVisualPicker} class={computedImageClass}>
                                         <template if:true={item.figure.imgSrc}>
                                             <img src={item.figure.imgSrc}>
                                         </template>
