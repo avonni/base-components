@@ -22,10 +22,14 @@
     width: 100% !important;
 }
 
+
+
 .slds-visual-picker {
     margin-right: var(--lwc-spacingMedium, 1rem);
     margin-left: 0;
 }
+
+
 
 .avonni-visual-picker_xx-small {
     width: 4rem;
