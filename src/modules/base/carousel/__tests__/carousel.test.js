@@ -3,7 +3,6 @@ import Carousel from 'c/carousel';
 
 // not tested
 // scroll duration
-// isInfinite
 
 const items = [
     {
@@ -741,6 +740,67 @@ describe('Carousel', () => {
                 expect(content.style.height).toBe('6.625rem');
             });
         });
+    });
+
+    // carousel infinite last goes back to first
+    it('Carousel infinite last goes back to first', () => {
+        const element = createElement('base-carousel', {
+            is: Carousel
+        });
+        document.body.appendChild(element);
+
+        element.items = items;
+        element.hideIndicator = false;
+        element.isIfinite = true;
+        const lastItem = items.length - 1;
+
+        return Promise.resolve()
+            .then(() => {
+                element.last();
+            })
+            .then(() => {
+                const indicators = element.shadowRoot.querySelectorAll(
+                    'li > a'
+                );
+                expect(indicators[lastItem].className).toContain(
+                    'slds-is-active'
+                );
+                element.next();
+                expect(indicators[0].className).toContain('slds-is-active');
+            });
+    });
+
+    // carousel infinite first goes back to last
+    it('Carousel infinite first goes back to last', () => {
+        const element = createElement('base-carousel', {
+            is: Carousel
+        });
+        document.body.appendChild(element);
+
+        element.items = items;
+        element.hideIndicator = false;
+        element.isIfinite = true;
+        const lastItem = items.length - 1;
+
+        return Promise.resolve()
+            .then(() => {
+                element.first();
+            })
+            .then(() => {
+                const indicators = element.shadowRoot.querySelectorAll(
+                    'li > a'
+                );
+                expect(indicators[0].className).toContain('slds-is-active');
+                element.previous();
+            })
+            .then(() => {
+                const indicators = element.shadowRoot.querySelectorAll(
+                    'li > a'
+                );
+                expect(indicators[lastItem].className).toContain(
+                    'slds-is-active'
+                );
+            });
     });
 
     /* ----- METHODS ----- */
