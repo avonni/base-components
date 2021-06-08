@@ -240,6 +240,10 @@ export default class VisualPicker extends LightningElement {
         return result;
     }
 
+    get showImage(){
+        return this.hasImage && !this.isVertical;
+    }
+
     get hasImage(){
         return this._hasImage;
     }

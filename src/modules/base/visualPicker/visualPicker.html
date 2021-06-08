@@ -34,7 +34,7 @@
                                     </span>
                                 </template>
                                 <span class={notSelectedClass}>
-                                    <div if:true={hasImage} class={computedImageClass}>
+                                    <div if:true={showImage} class={computedImageClass}>
                                         <template if:true={item.figure.imgSrc}>
                                             <img src={item.figure.imgSrc}>
                                         </template>
