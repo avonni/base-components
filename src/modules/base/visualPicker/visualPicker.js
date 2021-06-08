@@ -331,6 +331,19 @@ export default class VisualPicker extends LightningElement {
             .toString();
     }
 
+    get computedImageClass(){
+        return classSet('imgContainer')
+        .add({
+            'slds-m-bottom_small':
+                this._size === 'large' || this._size === 'medium' || this._size === 'small',
+            'slds-m-bottom_xx-small':
+                this._size === 'x-small' || this._size === 'xx-small',
+            'slds-border_bottom': 
+                !this._hideBorder
+        })
+        .toString();
+    }
+
     handleChange(event) {
         event.stopPropagation();
 
