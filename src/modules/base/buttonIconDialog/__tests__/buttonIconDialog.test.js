@@ -372,4 +372,38 @@ describe('Button Icon Dialog', () => {
             expect(focusEvent).toBeTruthy();
         });
     });
+
+    it('method: show', () => {
+        const element = createElement('base-button-icon-dialog', {
+            is: ButtonIconDialog
+        });
+        document.body.appendChild(element);
+
+        let showEvent = false;
+        element.addEventListener('show', () => {
+            showEvent = true;
+        });
+
+        element.show();
+        return Promise.resolve().then(() => {
+            expect(showEvent).toBeTruthy();
+        });
+    });
+
+    it('method: hide', () => {
+        const element = createElement('base-button-icon-dialog', {
+            is: ButtonIconDialog
+        });
+        document.body.appendChild(element);
+
+        let hideEvent = false;
+        element.addEventListener('hide', () => {
+            hideEvent = true;
+        });
+
+        element.hide();
+        return Promise.resolve().then(() => {
+            expect(hideEvent).toBeTruthy();
+        });
+    });
 });

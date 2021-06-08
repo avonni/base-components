@@ -69,6 +69,7 @@ export default class ButtonDialog extends LightningElement {
         if (this._dialogSlot.assignedElements().length !== 0) {
             this._dialogSlot.assignedElements()[0].show();
         }
+        this.dispatchEvent(new CustomEvent('show'));
     }
 
     @api
@@ -76,6 +77,7 @@ export default class ButtonDialog extends LightningElement {
         if (this._dialogSlot.assignedElements().length !== 0) {
             this._dialogSlot.assignedElements()[0].hide();
         }
+        this.dispatchEvent(new CustomEvent('hide'));
     }
 
     @api
