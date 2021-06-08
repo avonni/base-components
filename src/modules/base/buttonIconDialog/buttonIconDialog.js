@@ -32,6 +32,11 @@ export default class ButtonIconDialog extends LightningElement {
     _disabled = false;
     _size = 'medium';
     _variant = validVariants.default;
+    _dialogSlot;
+
+    renderedCallback() {
+        this._dialogSlot = this.template.querySelector('slot');
+    }
 
     @api
     get size() {
@@ -74,11 +79,23 @@ export default class ButtonIconDialog extends LightningElement {
     }
 
     @api
-    click() {
-        let dialogSlot = this.template.querySelector('slot');
+    show() {
+        if (this._dialogSlot.assignedElements().length !== 0) {
+            this._dialogSlot.assignedElements()[0].show();
+        }
+    }
 
-        if (dialogSlot.assignedElements().length !== 0) {
-            dialogSlot.assignedElements()[0].show();
+    @api
+    hide() {
+        if (this._dialogSlot.assignedElements().length !== 0) {
+            this._dialogSlot.assignedElements()[0].hide();
+        }
+    }
+
+    @api
+    click() {
+        if (this._dialogSlot.assignedElements().length !== 0) {
+            this._dialogSlot.assignedElements()[0].show();
         }
         this.dispatchEvent(new CustomEvent('click'));
     }
