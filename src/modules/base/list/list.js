@@ -211,10 +211,9 @@ export default class List extends LightningElement {
     }
 
     dragStart(event) {
-        if (!this.sortable) return;
-
-        // Make sure touch events don't trigger mouse events
-        event.preventDefault();
+        // Stop dragging if the click was on a button menu
+        if (!this.sortable || event.target.tagName === 'LIGHTNING-BUTTON-MENU')
+            return;
 
         this._itemElements = Array.from(
             this.template.querySelectorAll('.sortable-item')
@@ -229,6 +228,13 @@ export default class List extends LightningElement {
         }
 
         this.updateAssistiveText();
+
+        if (event.type === 'touchstart') {
+            // Make sure touch events don't trigger mouse events
+            event.preventDefault();
+            // Close any open button menu
+            this._draggedElement.focus();
+        }
     }
 
     drag(event) {
@@ -333,5 +339,10 @@ export default class List extends LightningElement {
                 this._draggedElement.dataset.position = position;
             }
         }
+    }
+
+    handleButtonMenuTouchStart(event) {
+        // Stop the dragging process when touching the button menu
+        event.stopPropagation();
     }
 }
