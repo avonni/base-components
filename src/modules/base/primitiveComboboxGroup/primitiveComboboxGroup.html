@@ -54,7 +54,8 @@
                                 >{option.label}</span
                             >
                             <span
-                                class="slds-listbox__option-meta slds-listbox__option-meta_entity"
+                                if:true={option.secondaryText}
+                                class="slds-listbox__option-meta slds-listbox__option-meta_entity slds-truncate"
                                 >{option.secondaryText}</span
                             >
                         </div>

@@ -7,6 +7,7 @@ export const Combobox = ({
     allowSearch,
     disabled,
     dropdownAlignment,
+    dropdownLength,
     fieldLevelHelp,
     groups,
     hideSelectedOptions,
@@ -33,6 +34,7 @@ export const Combobox = ({
     element.allowSearch = allowSearch;
     element.disabled = disabled;
     element.dropdownAlignment = dropdownAlignment;
+    element.dropdownLength = dropdownLength;
     element.fieldLevelHelp = fieldLevelHelp;
     element.groups = groups;
     element.hideSelectedOptions = hideSelectedOptions;

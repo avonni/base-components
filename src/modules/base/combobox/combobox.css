@@ -7,3 +7,7 @@
 .combobox__input-has-icon_left-right input {
     padding-left: var(--lwc-spacingXLarge, 2rem);
 }
+
+.combobox__dropdown {
+    overflow-y: auto;
+}

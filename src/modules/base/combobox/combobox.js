@@ -28,10 +28,16 @@ const VARIANTS = {
     default: 'standard'
 };
 
+const DROPDOWN_LENGTHS = {
+    valid: ['5-items', '7-items', '10-items'],
+    default: '7-items'
+};
+
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
 const DEFAULT_PLACEHOLDER = 'Select an Option';
 const DEFAULT_PLACEHOLDER_WHEN_SEARCH_ALLOWED = 'Search...';
 const DEFAULT_GROUP_NAME = 'ungrouped';
+const DEFAULT_DROPDOWN_MAX_HEIGHT = '15.4rem';
 
 export default class Combobox extends LightningElement {
     @api fieldLevelHelp;
@@ -63,6 +69,7 @@ export default class Combobox extends LightningElement {
     _autoPosition;
     _cancelBlur = false;
     _currentLevelOptions = [];
+    _dropdownMaxHeight = DEFAULT_DROPDOWN_MAX_HEIGHT;
     _visibleOptions = [];
     computedGroups = [];
     dropdownVisible = false;
@@ -77,7 +84,13 @@ export default class Combobox extends LightningElement {
 
     connectedCallback() {
         this.initValue();
-        this.computeGroups();
+    }
+
+    renderedCallback() {
+        const dropdown = this.template.querySelector(
+            '.combobox__dropdown-trigger .slds-dropdown'
+        );
+        dropdown.style.maxHeight = this._dropdownMaxHeight;
     }
 
     @api
@@ -114,6 +127,17 @@ export default class Combobox extends LightningElement {
         this._dropdownAlignment = normalizeString(value, {
             validValues: DROPDOWN_ALIGNMENTS.valid,
             fallbackValue: DROPDOWN_ALIGNMENTS.default
+        });
+    }
+
+    @api
+    get dropdownLength() {
+        return this._dropdownLength;
+    }
+    set dropdownLength(value) {
+        this._dropdownLength = normalizeString(value, {
+            fallbackValue: DROPDOWN_LENGTHS.default,
+            validValues: DROPDOWN_LENGTHS.valid
         });
     }
 
@@ -183,7 +207,9 @@ export default class Combobox extends LightningElement {
         this.visibleOptions = optionObjects;
         this._currentLevelOptions = optionObjects;
 
-        if (this.isConnected) this.initValue();
+        if (this.isConnected) {
+            this.initValue();
+        }
     }
 
     @api
@@ -281,6 +307,7 @@ export default class Combobox extends LightningElement {
     set visibleOptions(value) {
         this._visibleOptions = value;
         this.computeGroups();
+        this.computeOptionHeight();
     }
 
     get _constraint() {
@@ -374,7 +401,7 @@ export default class Combobox extends LightningElement {
 
     get computedDropdownTriggerClass() {
         return classSet(
-            'slds-is-relative slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click'
+            'slds-is-relative slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click combobox__dropdown-trigger'
         )
             .add({
                 'slds-is-open': this.dropdownVisible,
@@ -393,7 +420,7 @@ export default class Combobox extends LightningElement {
 
     get computedDropdownClass() {
         return classSet(
-            'slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid'
+            'slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid combobox__dropdown'
         )
             .add(this.alignmentClasses)
             .toString();
@@ -572,6 +599,16 @@ export default class Combobox extends LightningElement {
         if (this._autoPosition) {
             this._autoPosition.stop();
         }
+    }
+
+    computeOptionHeight() {
+        const optionsHaveAvatars = this.visibleOptions.some((option) => {
+            return option.avatarFallbackIconName || option.avatarSrc;
+        });
+
+        const optionHeight = optionsHaveAvatars ? 3.4 : 2.2;
+        const numberOfOptions = this.dropdownLength.match(/[0-9]+/)[0];
+        this._dropdownMaxHeight = `${numberOfOptions * optionHeight}rem`;
     }
 
     computeGroups() {

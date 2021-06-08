@@ -59,6 +59,20 @@ export default {
                 defaultValue: { summary: 'left' }
             }
         },
+        dropdownLength: {
+            name: 'dropdown-length',
+            control: {
+                type: 'select'
+            },
+            options: ['5-items', '7-items', '10-items'],
+            defaultValue: '7-items',
+            description:
+                'Maximum length of the dropdown menu. Valid values include 5-items, 7-items and 10-items.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: '7-items' }
+            }
+        },
         fieldLevelHelp: {
             name: 'field-level-help',
             control: {
@@ -466,8 +480,7 @@ const Template = (args) => Combobox(args);
 export const Base = Template.bind({});
 Base.args = {
     label: 'Simple combobox',
-    options: options,
-    scopes: scopes
+    options: options
 };
 
 export const Disabled = Template.bind({});
