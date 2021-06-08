@@ -30,6 +30,7 @@ export default class List extends LightningElement {
     _itemElements;
     _savedComputedItems;
 
+    _currentItemDraggedHeight;
     computedItems = [];
     menuRole;
     itemRole;
@@ -146,17 +147,14 @@ export default class List extends LightningElement {
 
         // If the target has already been moved, move it back to its original position
         // Else, move it up or down
-        if (target.className.match(/.*sortable-item_moved-.*/)) {
-            target.classList.remove(
-                'sortable-item_moved-up',
-                'sortable-item_moved-down'
-            );
+        if (target.style.transform !== '') {
+            target.style.transform = '';
         } else {
-            const moveClass =
+            const translationValue =
                 targetIndex > index
-                    ? 'sortable-item_moved-up'
-                    : 'sortable-item_moved-down';
-            target.classList.add(moveClass);
+                    ? -this._currentItemDraggedHeight
+                    : this._currentItemDraggedHeight;
+            target.style.transform = `translateY(${translationValue + 'px'})`;
         }
 
         // Make the switch in computed items
@@ -211,11 +209,11 @@ export default class List extends LightningElement {
 
         // Make sure touch events don't trigger mouse events
         event.preventDefault();
-
         this._itemElements = Array.from(
             this.template.querySelectorAll('.sortable-item')
         );
         this._draggedElement = event.currentTarget;
+        this._currentItemDraggedHeight = this._draggedElement.offsetHeight;
         this._draggedIndex = Number(this._draggedElement.dataset.index);
         this._draggedElement.classList.add('sortable-item_dragged');
 

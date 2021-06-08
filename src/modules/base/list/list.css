@@ -1,9 +1,5 @@
-:host {
-    --item-height: 70px;
-}
-
 .list-item {
-    height: var(--item-height);
+    height: fit-content;
 }
 
 .sortable-item {
@@ -32,12 +28,6 @@
     background-color: rgba(255, 255, 255, 0.6);
 }
 
-.sortable-item_moved-up {
-    transform: translateY(calc(0px - var(--item-height)));
-}
-.sortable-item_moved-down {
-    transform: translateY(var(--item-height));
-}
 .description-text {
     white-space: nowrap;
     overflow: hidden;
