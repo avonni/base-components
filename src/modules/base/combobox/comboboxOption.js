@@ -18,8 +18,24 @@ export default class ComboboxOption {
             'slds-media slds-media_small slds-media_center slds-listbox__item slds-listbox__option slds-listbox__option_plain slds-listbox__option_entity'
         )
             .add({
-                'slds-is-selected': this.selected
+                'slds-is-selected': this.selected || this.hasSelectedChildren()
             })
             .toString();
+    }
+
+    get showCheckmark() {
+        return (
+            this.selected || (this.options.length && this.hasSelectedChildren())
+        );
+    }
+
+    hasSelectedChildren(options = this.options) {
+        return options.some((option) => {
+            return (
+                option.selected ||
+                (option.options.length &&
+                    this.hasSelectedChildren(option.options))
+            );
+        });
     }
 }

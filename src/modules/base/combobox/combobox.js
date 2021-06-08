@@ -60,6 +60,7 @@ export default class Combobox extends LightningElement {
     _variant = VARIANTS.default;
 
     _cancelBlur = false;
+    _currentLevelOptions = [];
     _visibleOptions = [];
     computedGroups = [];
     dropdownVisible = false;
@@ -175,12 +176,10 @@ export default class Combobox extends LightningElement {
     }
     set options(value) {
         const options = normalizeArray(value);
-        const optionObjects = [];
-        options.forEach((option) => {
-            optionObjects.push(new ComboboxOption(option));
-        });
+        const optionObjects = this.initOptionObjects(options);
         this._options = optionObjects;
         this.visibleOptions = optionObjects;
+        this._currentLevelOptions = optionObjects;
 
         if (this.isConnected) this.initValue();
     }
@@ -445,6 +444,7 @@ export default class Combobox extends LightningElement {
     @api
     close() {
         this.dropdownVisible = false;
+        this._currentLevelOptions = this.options;
     }
 
     @api
@@ -508,6 +508,22 @@ export default class Combobox extends LightningElement {
         }
 
         this.computeSelection();
+    }
+
+    initOptionObjects(options) {
+        const optionObjects = [];
+        options.forEach((option) => {
+            const optionObject = new ComboboxOption(option);
+
+            // If the option has children, generate objects for them too
+            const childrenOptions = normalizeArray(option.options);
+            if (childrenOptions.length) {
+                optionObject.options = this.initOptionObjects(childrenOptions);
+            }
+
+            optionObjects.push(optionObject);
+        });
+        return optionObjects;
     }
 
     computeGroups() {
@@ -620,9 +636,7 @@ export default class Combobox extends LightningElement {
 
     computeSelection() {
         // Update selected options
-        this.selectedOptions = this.options.filter((option) => {
-            return option.selected;
-        });
+        this.selectedOptions = this.getSelectedOptions();
 
         // Update the visible options
         let visibleOptions = this.options;
@@ -651,7 +665,69 @@ export default class Combobox extends LightningElement {
     }
 
     removeSelectedOptionsFrom(options) {
-        return options.filter((option) => !option.selected);
+        const unselectedOptions = [];
+        options.forEach((option) => {
+            if (option.options.length) {
+                const computedOption = new ComboboxOption(option);
+                computedOption.options = this.removeSelectedOptionsFrom(
+                    computedOption.options
+                );
+
+                // We want to show the option only if some children options are unselected
+                if (computedOption.options.length) {
+                    unselectedOptions.push(computedOption);
+                }
+            } else {
+                if (!option.selected) unselectedOptions.push(option);
+            }
+        });
+        return unselectedOptions;
+    }
+
+    unselectOption(options = this.options) {
+        let selectedOption = options.find((option) => option.selected);
+        if (selectedOption) {
+            selectedOption.selected = false;
+            return;
+        }
+
+        // Search deeper levels
+        let i = 0;
+        while (!selectedOption && i < options.length) {
+            const childrenOptions = options[i].options;
+            if (childrenOptions.length) {
+                selectedOption = this.unselectOption(childrenOptions);
+            }
+            i += 1;
+        }
+    }
+
+    getSelectedOptions(options = this.options) {
+        const selectedOptions = [];
+        options.forEach((option) => {
+            if (option.selected) selectedOptions.push(option);
+            if (option.options.length) {
+                selectedOptions.push(this.getSelectedOptions(option.options));
+            }
+        });
+
+        return selectedOptions.flat();
+    }
+
+    getOption(value, options = this.options) {
+        let option = options.find((opt) => opt.value === value);
+
+        // Search deeper levels
+        let i = 0;
+        while (!option && i < options.length) {
+            const childrenOptions = options[i].options;
+            if (childrenOptions.length) {
+                option = this.getOption(value, childrenOptions);
+            }
+            i += 1;
+        }
+
+        return option;
     }
 
     handleBlur() {
@@ -680,9 +756,12 @@ export default class Combobox extends LightningElement {
     handleInput(event) {
         const searchTerm = event.currentTarget.value;
         this.inputValue = searchTerm;
-        const options = this.options;
 
-        const result = this.search({ searchTerm, options });
+        const result = this.search({
+            searchTerm,
+            options: this._currentLevelOptions
+        });
+
         this.visibleOptions = this.removeSelectedOptions
             ? this.removeSelectedOptionsFrom(result)
             : result;
@@ -801,21 +880,21 @@ export default class Combobox extends LightningElement {
         event.stopPropagation();
 
         const value = event.detail.value;
-        const selectedOption = this.options.find((option) => {
+        const selectedOption = this.visibleOptions.find((option) => {
             return option.value === value;
         });
 
+        // If the option has children options, change the visible options
+        if (selectedOption.options && selectedOption.options.length) {
+            this.visibleOptions = selectedOption.options;
+            this._currentLevelOptions = selectedOption.options;
+            this.focus();
+            return;
+        }
+
         // Toggle selection
-        if (!this.isMultiSelect) {
-            const previouslySelectedOption = this.options.find(
-                (option) => option.selected
-            );
-            if (
-                previouslySelectedOption &&
-                previouslySelectedOption !== selectedOption
-            ) {
-                previouslySelectedOption.selected = false;
-            }
+        if (!this.isMultiSelect && !selectedOption.selected) {
+            this.unselectOption();
         }
         selectedOption.selected = !selectedOption.selected;
         this.computeSelection();
@@ -844,9 +923,7 @@ export default class Combobox extends LightningElement {
 
     handleRemoveSelectedOption(event) {
         const value = event.detail.name;
-        const selectedOption = this.options.find(
-            (option) => option.value === value
-        );
+        const selectedOption = this.getOption(value);
         selectedOption.selected = false;
 
         this.computeSelection();

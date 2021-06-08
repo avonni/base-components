@@ -298,23 +298,31 @@ export default {
 const options = [
     {
         label: 'Burlington Textiles Corp of America',
-        value: 'burlington'
+        value: 'no-avatar-burlington',
+        options: [
+            {
+                label: 'Nakatomi Investments',
+                value: 'nakatomi',
+                avatarFallbackIconName: 'standard:account',
+                secondaryText: 'Account - Chicago, IL'
+            }
+        ]
     },
     {
         label: 'Dickenson plc',
-        value: 'dickenson'
+        value: 'no-avatar-dickenson'
     },
     {
         label: 'United Oil SLA',
-        value: 'oil-sla'
+        value: 'no-avatar-oil-sla'
     },
     {
         label: 'United Oil Standby Generators',
-        value: 'united-oil'
+        value: 'no-avatar-united-oil'
     },
     {
         label: 'Edge Communication',
-        value: 'edge'
+        value: 'no-avatar-edge'
     }
 ];
 
@@ -347,7 +355,8 @@ const optionsWithAvatars = [
         value: 'tyrell',
         avatarFallbackIconName: 'standard:opportunity',
         secondaryText: 'Opportunity',
-        groups: ['opportunities']
+        groups: ['opportunities'],
+        options: options
     },
     {
         label: 'United Oil SLA',
