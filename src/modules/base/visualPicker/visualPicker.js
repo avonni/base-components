@@ -180,14 +180,6 @@ export default class VisualPicker extends LightningElement {
                 (iconPosition === 'bottom' || iconPosition === 'right') &&
                 (cloneItem.figure.iconName || cloneItem.figure.iconSrc);
 
-            /*if (cloneItem.isTop && this._variant === 'vertical') {
-                cloneItem.bodyClass = 'slds-border_left slds-p-around_small';
-            }
-
-            if (cloneItem.isBottom && this._variant === 'vertical') {
-                cloneItem.bodyClass = 'slds-border_right slds-p-around_small';
-            }*/
-
             cloneItem.iconClass = classSet('');
 
             if (

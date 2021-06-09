@@ -263,8 +263,8 @@ Base.args = {
     items: items
 };
 
-export const BaseWithImage = Template.bind({});
-BaseWithImage.args = {
+export const BaseWithImages = Template.bind({});
+BaseWithImages.args = {
     name: 'base',
     value: ['lightning-enterprise'],
     items: itemsWithImage
@@ -280,10 +280,10 @@ NoMarkDoubleExtraSmall.args = {
     hideCheckMark: true
 };
 
-export const NoMarkDoubleExtraSmallWithImage = Template.bind({});
-NoMarkDoubleExtraSmallWithImage.args = {
+export const NoMarkDoubleExtraSmallWithImages = Template.bind({});
+NoMarkDoubleExtraSmallWithImages.args = {
     name: 'xx-small',
-    label: 'Double extra small input with no check mark',
+    label: 'Double extra small input with no check mark with images',
     value: ['lightning-enterprise'],
     items: itemsWithImage,
     size: 'xx-small',
@@ -300,10 +300,10 @@ NoBorderExtraSmall.args = {
     hideBorder: true
 };
 
-export const NoBorderExtraSmallWithImage = Template.bind({});
-NoBorderExtraSmallWithImage.args = {
+export const NoBorderExtraSmallWithImages = Template.bind({});
+NoBorderExtraSmallWithImages.args = {
     name: 'x-small',
-    label: 'Extra small input with no borders',
+    label: 'Extra small input with no borders with images',
     value: ['lightning-enterprise'],
     items: itemsWithImage,
     size: 'x-small',
@@ -320,10 +320,10 @@ CoverableSmall.args = {
     variant: 'coverable'
 };
 
-export const CoverableSmallWithImage = Template.bind({});
-CoverableSmallWithImage.args = {
+export const CoverableSmallWithImages = Template.bind({});
+CoverableSmallWithImages.args = {
     name: 'small',
-    label: 'Coverable small input',
+    label: 'Coverable small input with images',
     value: ['lightning-enterprise'],
     items: itemsWithImage,
     size: 'small',
@@ -340,10 +340,10 @@ Large4By3.args = {
     ratio: '4-by-3'
 };
 
-export const Large4By3WithImage = Template.bind({});
-Large4By3WithImage.args = {
+export const Large4By3WithImages = Template.bind({});
+Large4By3WithImages.args = {
     name: 'large',
-    label: '4 by 3 large input',
+    label: '4 by 3 large input with images',
     value: ['lightning-enterprise'],
     items: itemsWithImage,
     size: 'large',
@@ -360,11 +360,11 @@ VerticalCheckbox.args = {
     variant: 'vertical'
 };
 
-export const VerticalCheckboxWithImage = Template.bind({});
-VerticalCheckboxWithImage.args = {
+export const VerticalCheckboxWithImages = Template.bind({});
+VerticalCheckboxWithImages.args = {
     name: 'checkbox',
     type: 'checkbox',
-    label: 'Vertical checkbox input',
+    label: 'Vertical checkbox input with images',
     value: ['lightning-enterprise', 'lightning-unlimited'],
     items: itemsWithImage,
     variant: 'vertical'
