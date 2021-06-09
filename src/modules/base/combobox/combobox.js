@@ -667,7 +667,7 @@ export default class Combobox extends LightningElement {
             const optionGroups = option.groups;
             let currentLevelGroups = computedGroups;
 
-            if (optionGroups.length > 0) {
+            if (optionGroups.length && this.groups.length > 1) {
                 // For each group of the option
                 optionGroups.forEach((name, index) => {
                     // If groups are nested
