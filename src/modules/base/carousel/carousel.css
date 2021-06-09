@@ -61,3 +61,9 @@
 .avonni-carousel__actions-left {
     justify-content: flex-start;
 }
+
+.avonni-carousel__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}

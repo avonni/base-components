@@ -262,6 +262,14 @@ export default class Carousel extends LightningElement {
             .toString();
     }
 
+    get computedCarouselContentClass() {
+        return classSet('slds-carousel__content')
+            .add({
+                'avonni-carousel__content': this.isBottomPosition
+            })
+            .toString();
+    }
+
     initializePaginationItems(numberOfPanels) {
         for (let i = 0; i < numberOfPanels; i++) {
             const isItemActive = i === this.activeIndexPanel;
