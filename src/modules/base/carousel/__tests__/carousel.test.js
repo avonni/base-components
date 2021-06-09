@@ -657,13 +657,19 @@ describe('Carousel', () => {
         element.actionsPosition = 'bottom-center';
 
         return Promise.resolve().then(() => {
-            const actionContainter = element.shadowRoot.querySelector(
+            const contentContainer = element.shadowRoot.querySelector(
+                '.slds-carousel__content'
+            );
+            expect(contentContainer.className).toContain(
+                'avonni-carousel__content-bottom'
+            );
+            const actionContainer = element.shadowRoot.querySelector(
                 '.avonni-carousel__actions'
             );
-            expect(actionContainter.className).toContain(
+            expect(actionContainer.className).toContain(
                 'avonni-carousel__actions-bottom-center'
             );
-            expect(actionContainter.className).toContain('slds-m-top_x-small');
+            expect(actionContainer.className).toContain('slds-m-top_x-small');
         });
     });
 
@@ -691,13 +697,19 @@ describe('Carousel', () => {
         element.actionsPosition = 'bottom-right';
 
         return Promise.resolve().then(() => {
-            const actionContainter = element.shadowRoot.querySelector(
+            const contentContainer = element.shadowRoot.querySelector(
+                '.slds-carousel__content'
+            );
+            expect(contentContainer.className).toContain(
+                'avonni-carousel__content-bottom'
+            );
+            const actionContainer = element.shadowRoot.querySelector(
                 '.avonni-carousel__actions'
             );
-            expect(actionContainter.className).toContain(
+            expect(actionContainer.className).toContain(
                 'avonni-carousel__actions-right'
             );
-            expect(actionContainter.className).toContain('slds-m-top_x-small');
+            expect(actionContainer.className).toContain('slds-m-top_x-small');
         });
     });
 
@@ -725,13 +737,19 @@ describe('Carousel', () => {
         element.actionsPosition = 'bottom-left';
 
         return Promise.resolve().then(() => {
-            const actionContainter = element.shadowRoot.querySelector(
+            const contentContainer = element.shadowRoot.querySelector(
+                '.slds-carousel__content'
+            );
+            expect(contentContainer.className).toContain(
+                'avonni-carousel__content-bottom'
+            );
+            const actionContainer = element.shadowRoot.querySelector(
                 '.avonni-carousel__actions'
             );
-            expect(actionContainter.className).toContain(
+            expect(actionContainer.className).toContain(
                 'avonni-carousel__actions-left'
             );
-            expect(actionContainter.className).toContain('slds-m-top_x-small');
+            expect(actionContainer.className).toContain('slds-m-top_x-small');
         });
     });
 
@@ -759,13 +777,13 @@ describe('Carousel', () => {
         element.actionsPosition = 'top-left';
 
         return Promise.resolve().then(() => {
-            const actionContainter = element.shadowRoot.querySelector(
+            const actionContainer = element.shadowRoot.querySelector(
                 '.avonni-carousel__actions'
             );
-            expect(actionContainter.className).toContain(
+            expect(actionContainer.className).toContain(
                 'avonni-carousel__actions-left'
             );
-            expect(actionContainter.className).toContain(
+            expect(actionContainer.className).toContain(
                 'slds-m-bottom_x-small'
             );
         });
@@ -795,13 +813,13 @@ describe('Carousel', () => {
         element.actionsPosition = 'top-right';
 
         return Promise.resolve().then(() => {
-            const actionContainter = element.shadowRoot.querySelector(
+            const actionContainer = element.shadowRoot.querySelector(
                 '.avonni-carousel__actions'
             );
-            expect(actionContainter.className).toContain(
+            expect(actionContainer.className).toContain(
                 'avonni-carousel__actions-right'
             );
-            expect(actionContainter.className).toContain(
+            expect(actionContainer.className).toContain(
                 'slds-m-bottom_x-small'
             );
         });
@@ -960,7 +978,7 @@ describe('Carousel', () => {
 
         return Promise.resolve().then(() => {
             const carouselContent = element.shadowRoot.querySelector(
-                '.avonni-carousel__content'
+                '.slds-carousel__content'
             );
             expect(carouselContent.style.height).toBe('8.5rem');
         });
@@ -990,7 +1008,7 @@ describe('Carousel', () => {
 
         return Promise.resolve().then(() => {
             const carouselContent = element.shadowRoot.querySelector(
-                '.avonni-carousel__content'
+                '.slds-carousel__content'
             );
             expect(carouselContent.style.height).toBe('6.625rem');
         });

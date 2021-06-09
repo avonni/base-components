@@ -62,7 +62,7 @@
     justify-content: flex-start;
 }
 
-.avonni-carousel__content {
+.avonni-carousel__content-bottom {
     display: flex;
     flex-direction: column;
     justify-content: space-between;

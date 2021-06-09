@@ -265,7 +265,7 @@ export default class Carousel extends LightningElement {
     get computedCarouselContentClass() {
         return classSet('slds-carousel__content')
             .add({
-                'avonni-carousel__content': this.isBottomPosition
+                'avonni-carousel__content-bottom': this.isBottomPosition
             })
             .toString();
     }
