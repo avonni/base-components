@@ -10,4 +10,5 @@
 
 .combobox__dropdown {
     overflow-y: auto;
+    box-sizing: content-box;
 }

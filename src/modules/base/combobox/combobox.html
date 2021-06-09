@@ -223,7 +223,7 @@
                         <template for:each={topActions} for:item="action">
                             <li
                                 key={action.name}
-                                class="slds-listbox__item slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_term"
+                                class="slds-listbox__item slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_term combobox__action_top"
                                 role="option"
                                 aria-label="Action button"
                                 data-name={action.name}
@@ -279,7 +279,7 @@
                         <template for:each={bottomActions} for:item="action">
                             <li
                                 key={action.name}
-                                class="slds-listbox__item slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_term"
+                                class="slds-listbox__item slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_term combobox__action_bottom"
                                 role="button"
                                 data-name={action.name}
                                 onclick={handleActionClick}

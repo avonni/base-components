@@ -29,6 +29,11 @@ export default class PrimitiveComboboxGroup extends LightningElement {
         return generateUniqueId();
     }
 
+    @api
+    get optionsElements() {
+        return Array.from(this.template.querySelectorAll('.combobox__option'));
+    }
+
     handleClick(event) {
         this.dispatchEvent(
             new CustomEvent('privateoptionclick', {

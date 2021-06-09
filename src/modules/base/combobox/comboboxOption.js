@@ -15,7 +15,7 @@ export default class ComboboxOption {
 
     get computedClass() {
         return classSet(
-            'slds-media slds-media_small slds-media_center slds-listbox__item slds-listbox__option slds-listbox__option_plain slds-listbox__option_entity'
+            'slds-media slds-media_small slds-media_center slds-listbox__item slds-listbox__option slds-listbox__option_plain slds-listbox__option_entity combobox__option'
         )
             .add({
                 'slds-is-selected': this.selected || this.hasSelectedChildren()

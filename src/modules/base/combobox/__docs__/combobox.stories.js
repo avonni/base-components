@@ -344,7 +344,7 @@ const optionsWithAvatars = [
     {
         label: 'Burlington Textiles Corp of America',
         value: 'burlington',
-        avatarFallbackIconName: 'standard:account',
+        // avatarFallbackIconName: 'standard:account',
         secondaryText: 'Account - Burlington, NC',
         groups: ['accounts']
     },
@@ -360,8 +360,8 @@ const optionsWithAvatars = [
     {
         label: 'Edge Communication',
         value: 'edge',
-        avatarFallbackIconName: 'standard:account',
-        secondaryText: 'Account - Singapore',
+        // avatarFallbackIconName: 'standard:account',
+        // secondaryText: 'Account - Singapore',
         groups: ['accounts']
     },
     {

@@ -4,7 +4,8 @@ import ComboboxOption from './comboboxOption';
 import {
     normalizeArray,
     normalizeBoolean,
-    normalizeString
+    normalizeString,
+    getListHeight
 } from 'c/utilsPrivate';
 import { FieldConstraintApi } from 'c/inputUtils';
 import { classSet, generateUniqueId } from 'c/utils';
@@ -37,7 +38,6 @@ const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
 const DEFAULT_PLACEHOLDER = 'Select an Option';
 const DEFAULT_PLACEHOLDER_WHEN_SEARCH_ALLOWED = 'Search...';
 const DEFAULT_GROUP_NAME = 'ungrouped';
-const DEFAULT_DROPDOWN_MAX_HEIGHT = '15.4rem';
 
 export default class Combobox extends LightningElement {
     @api fieldLevelHelp;
@@ -50,6 +50,7 @@ export default class Combobox extends LightningElement {
     _allowSearch = false;
     _disabled = false;
     _dropdownAlignment = DROPDOWN_ALIGNMENTS.default;
+    _dropdownLength = DROPDOWN_LENGTHS.default;
     _groups = [];
     _hideSelectedOptions = false;
     _isLoading = false;
@@ -69,7 +70,7 @@ export default class Combobox extends LightningElement {
     _autoPosition;
     _cancelBlur = false;
     _currentLevelOptions = [];
-    _dropdownMaxHeight = DEFAULT_DROPDOWN_MAX_HEIGHT;
+    _maxVisibleOptions = Number(DROPDOWN_LENGTHS.default.match(/[0-9]+/)[0]);
     _visibleOptions = [];
     computedGroups = [];
     dropdownVisible = false;
@@ -84,13 +85,18 @@ export default class Combobox extends LightningElement {
 
     connectedCallback() {
         this.initValue();
+
+        if (this.removeSelectedOptions) {
+            this.visibleOptions = this.removeSelectedOptionsFrom(
+                this.visibleOptions
+            );
+        }
     }
 
     renderedCallback() {
-        const dropdown = this.template.querySelector(
-            '.combobox__dropdown-trigger .slds-dropdown'
-        );
-        dropdown.style.maxHeight = this._dropdownMaxHeight;
+        if (this.dropdownVisible) {
+            this.updateDropdownHeight();
+        }
     }
 
     @api
@@ -139,6 +145,10 @@ export default class Combobox extends LightningElement {
             fallbackValue: DROPDOWN_LENGTHS.default,
             validValues: DROPDOWN_LENGTHS.valid
         });
+
+        this._maxVisibleOptions = Number(
+            this._dropdownLength.match(/[0-9]+/)[0]
+        );
     }
 
     @api
@@ -305,9 +315,12 @@ export default class Combobox extends LightningElement {
         return this._visibleOptions;
     }
     set visibleOptions(value) {
-        this._visibleOptions = value;
+        this._visibleOptions =
+            this.isConnected && this.removeSelectedOptions
+                ? this.removeSelectedOptionsFrom(value)
+                : value;
+
         this.computeGroups();
-        this.computeOptionHeight();
     }
 
     get _constraint() {
@@ -601,14 +614,49 @@ export default class Combobox extends LightningElement {
         }
     }
 
-    computeOptionHeight() {
-        const optionsHaveAvatars = this.visibleOptions.some((option) => {
-            return option.avatarFallbackIconName || option.avatarSrc;
-        });
+    updateDropdownHeight() {
+        const groups = this.template.querySelectorAll(
+            'c-primitive-combobox-group'
+        );
+        const visibleItems = [];
 
-        const optionHeight = optionsHaveAvatars ? 3.4 : 2.2;
-        const numberOfOptions = this.dropdownLength.match(/[0-9]+/)[0];
-        this._dropdownMaxHeight = `${numberOfOptions * optionHeight}rem`;
+        let i = 0;
+        while (
+            visibleItems.flat().length < this._maxVisibleOptions &&
+            i < groups.length
+        ) {
+            const options = groups[i].optionsElements;
+            visibleItems.push(options);
+            i += 1;
+        }
+
+        // Height of the visible options, according to the dropdown length
+        const optionsHeight = getListHeight(
+            visibleItems.flat(),
+            this._maxVisibleOptions
+        );
+
+        // Height of the top actions
+        const topActions = this.template.querySelectorAll(
+            '.combobox__action_top'
+        );
+        const topActionsHeight = getListHeight(topActions);
+
+        // If we can see all options, add the height of the bottom actions
+        let bottomActionsHeight = 0;
+        if (this.visibleOptions.length <= this._maxVisibleOptions) {
+            const bottomActions = this.template.querySelectorAll(
+                '.combobox__action_bottom'
+            );
+            bottomActionsHeight = getListHeight(bottomActions);
+        }
+
+        const dropdown = this.template.querySelector(
+            '.combobox__dropdown-trigger .slds-dropdown'
+        );
+        dropdown.style.maxHeight = `${
+            optionsHeight + topActionsHeight + bottomActionsHeight
+        }px`;
     }
 
     computeGroups() {
@@ -731,9 +779,6 @@ export default class Combobox extends LightningElement {
                 searchTerm: this.inputValue
             });
         }
-        if (this.removeSelectedOptions) {
-            visibleOptions = this.removeSelectedOptionsFrom(visibleOptions);
-        }
         this.visibleOptions = visibleOptions;
 
         // Update value
@@ -847,9 +892,7 @@ export default class Combobox extends LightningElement {
             options: this._currentLevelOptions
         });
 
-        this.visibleOptions = this.removeSelectedOptions
-            ? this.removeSelectedOptionsFrom(result)
-            : result;
+        this.visibleOptions = result;
 
         this.dispatchEvent(
             new CustomEvent('search', {
@@ -863,9 +906,7 @@ export default class Combobox extends LightningElement {
     handleInputClick() {
         if (this.lastSelectedOption) {
             this.inputValue = '';
-            this.visibleOptions = this.removeSelectedOptions
-                ? this.removeSelectedOptionsFrom(this.options)
-                : this.options;
+            this.visibleOptions = this.options;
         }
     }
 
@@ -910,9 +951,7 @@ export default class Combobox extends LightningElement {
         }
 
         // Reset the visible options
-        this.visibleOptions = this.removeSelectedOptions
-            ? this.removeSelectedOptionsFrom(this.options)
-            : this.options;
+        this.visibleOptions = this.options;
 
         this.focus();
     }
