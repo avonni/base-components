@@ -191,7 +191,8 @@ export default {
 const bareActions = [
     {
         name: 'action-add',
-        iconName: 'utility:add'
+        iconName: 'utility:add',
+        label: 'Add'
     },
     {
         name: 'action-pin',
@@ -211,7 +212,7 @@ const items = [
         imageAssistiveText: 'Appy',
         src:
             'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
-        href: 'https://www.salesforce.com',
+        // href: 'https://www.salesforce.com',
         actions: bareActions
     },
     {

@@ -223,17 +223,15 @@ export default class Carousel extends LightningElement {
     }
 
     get computedActionsVariantButton() {
-        if (this._actionsVariant === 'bare') {
-            return 'base';
-        }
-        return 'neutral';
+        return this._actionsVariant === 'bare' ? 'base' : 'neutral';
     }
 
     get computedActionsVariantButtonIcon() {
-        if (this._actionsVariant === 'bare') {
-            return 'bare';
-        }
-        return 'border';
+        return this._actionsVariant === 'bare' ? 'bare' : 'border-filled';
+    }
+
+    get computedButtonMenuAlignement() {
+        return this.actionsPosition === 'top-right' ? 'right' : 'auto';
     }
 
     // Change the button position depending if hideIndicator is true or false
@@ -241,6 +239,14 @@ export default class Carousel extends LightningElement {
         return this._hideIndicator
             ? 'avonni-carousel__autoscroll-button-without-indicator'
             : 'avonni-carousel__autoscroll-button-with-indicator';
+    }
+
+    get computedCarouselImageClass() {
+        return classSet('slds-carousel__image')
+            .add({
+                'slds-is-relative': !this.isBottomPosition
+            })
+            .toString();
     }
 
     get computedActionsClass() {
@@ -256,8 +262,8 @@ export default class Carousel extends LightningElement {
                     this._actionsPosition === 'top-left'
             })
             .add({
-                'slds-m-top_x-small': this.isBottomPosition,
-                'slds-m-bottom_x-small': !this.isBottomPosition
+                'slds-p-around_small': !this.isBottomPosition,
+                'slds-is-absolute': !this.isBottomPosition
             })
             .toString();
     }
@@ -266,6 +272,16 @@ export default class Carousel extends LightningElement {
         return classSet('slds-carousel__content')
             .add({
                 'avonni-carousel__content-bottom': this.isBottomPosition
+            })
+            .toString();
+    }
+
+    get computedLightningButtonIconActionClass() {
+        return classSet('')
+            .add({
+                'slds-m-horizontal_xx-small': this._actionsVariant === 'border',
+                'slds-m-right_x-small slds-m-top_xx-small':
+                    this._actionsVariant === 'bare'
             })
             .toString();
     }
@@ -421,7 +437,7 @@ export default class Carousel extends LightningElement {
 
     initializeCarouselHeight() {
         let carouselContentHeights = this.hasActions.map((item) => {
-            return item ? 8.5 : 6.625;
+            return item && this.isBottomPosition ? 7.5 : 6.625;
         });
         this._carouselContentHeight = Math.max(...carouselContentHeights);
     }
