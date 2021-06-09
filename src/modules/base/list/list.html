@@ -76,7 +76,7 @@
                             {item.description}
                         </p>
                         <ul
-                            if:true={item.infos.length}
+                            if:true={item.infos}
                             class="slds-list_horizontal slds-has-dividers_left slds-has-block-links"
                         >
                             <template for:each={item.infos} for:item="info">

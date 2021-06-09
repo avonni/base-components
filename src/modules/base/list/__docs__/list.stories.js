@@ -88,67 +88,19 @@ const items = [
         label: 'Item 1',
         href: '',
         description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        infos: [
-            { label: 'info 1', href: '' },
-            { label: 'info 2', href: '' }
-        ],
-        icons: [
-            {
-                iconName: 'utility:share',
-                alternativeText: 'share button',
-                title: 'Share'
-            },
-            {
-                iconName: 'utility:refresh',
-                alternativeText: 'refresh button',
-                title: 'Refresh'
-            }
-        ]
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
     },
     {
         label: 'Item 2',
         href: '/path/to_somewhere',
         description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        infos: [
-            { label: 'info 1', href: '' },
-            { label: 'info 2', href: '' }
-        ],
-        icons: [
-            {
-                iconName: 'utility:share',
-                alternativeText: 'share button',
-                title: 'Share'
-            },
-            {
-                iconName: 'utility:refresh',
-                alternativeText: 'refresh button',
-                title: 'Refresh'
-            }
-        ]
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
     },
     {
         label: 'Item 3',
         href: '',
         description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        infos: [
-            { label: 'info 1', href: '' },
-            { label: 'info 2', href: '' }
-        ],
-        icons: [
-            {
-                iconName: 'utility:share',
-                alternativeText: 'share button',
-                title: 'Share'
-            },
-            {
-                iconName: 'utility:refresh',
-                alternativeText: 'refresh button',
-                title: 'Refresh'
-            }
-        ]
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
     },
     {
         label: 'Item 4',
