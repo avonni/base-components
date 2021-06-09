@@ -1,4 +1,5 @@
 import { Carousel } from '../__examples__/carousel';
+import { items, menuItems } from './data';
 
 export default {
     title: 'Example/Carousel',
@@ -188,96 +189,6 @@ export default {
     }
 };
 
-const bareActions = [
-    {
-        name: 'action-add',
-        iconName: 'utility:add',
-        label: 'Add'
-    },
-    {
-        name: 'action-pin',
-        iconName: 'utility:pin'
-    },
-    {
-        name: 'action-priority',
-        iconName: 'utility:priority'
-    }
-];
-
-const items = [
-    {
-        id: 1,
-        title: 'Visit App Exchange',
-        description: 'Extend Salesforce with the #1 business marketplace.',
-        imageAssistiveText: 'Appy',
-        src:
-            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
-        // href: 'https://www.salesforce.com',
-        actions: bareActions
-    },
-    {
-        id: 2,
-        title: 'Click to Customize',
-        description:
-            'Use the Object Manager to add fields, build layouts, and more.',
-        imageAssistiveText: 'Apps',
-        src:
-            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
-        href: 'https://www.salesforce.com',
-        actions: bareActions
-    },
-    {
-        id: 3,
-        title: 'Download Salesforce Apps',
-        description: "Get the mobile app that's just for Salesforce admins.",
-        imageAssistiveText: 'Salesforce Apps',
-        src:
-            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
-        href: 'https://www.salesforce.com',
-        actions: bareActions
-    },
-    {
-        id: 4,
-        title: 'Carousel Item 4',
-        description: 'Description for carousel item #4',
-        imageAssistiveText: 'Apps',
-        src:
-            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
-        href: 'https://www.salesforce.com',
-        actions: bareActions
-    },
-    {
-        id: 5,
-        title: 'Carousel Item 5',
-        description: 'Description for carousel item #5',
-        imageAssistiveText: 'Appy',
-        src:
-            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
-        href: 'https://www.salesforce.com',
-        actions: bareActions
-    },
-    {
-        id: 6,
-        title: 'Carousel Item 6',
-        description: 'Description for carousel item #6',
-        imageAssistiveText: 'Salesforce Apps',
-        src:
-            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
-        href: 'https://www.salesforce.com',
-        actions: bareActions
-    },
-    {
-        id: 7,
-        title: 'Carousel Item 7',
-        description: 'Description for carousel item #7',
-        imageAssistiveText: 'Apps',
-        src:
-            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
-        href: 'https://www.salesforce.com',
-        actions: bareActions
-    }
-];
-
 const assistiveText = {
     nextPanel: 'Next',
     previousPanel: 'Previous',
@@ -326,27 +237,32 @@ BaseWithFiveItemsPerPanel.args = {
 
 export const WithoutPanelNavigation = Template.bind({});
 WithoutPanelNavigation.args = {
-    items: items,
+    items: menuItems,
     hidePreviousNextPanelNavigation: true
 };
 
 export const WithoutPanelNavigationWithTwoItemsPerPanel = Template.bind({});
 WithoutPanelNavigationWithTwoItemsPerPanel.args = {
-    items: items,
+    items: menuItems,
     itemsPerPanel: 2,
-    hidePreviousNextPanelNavigation: true
+    hidePreviousNextPanelNavigation: true,
+    actionsVariant: 'bare',
+    actionsPosition: 'bottom-left'
 };
 
 export const WithoutPanelNavigationWithThreeItemsPerPanel = Template.bind({});
 WithoutPanelNavigationWithThreeItemsPerPanel.args = {
-    items: items,
+    items: menuItems,
     itemsPerPanel: 3,
-    hidePreviousNextPanelNavigation: true
+    hidePreviousNextPanelNavigation: true,
+    actionsPosition: 'bottom-right'
 };
 
 export const WithoutPanelNavigationWithFiveItemsPerPanel = Template.bind({});
 WithoutPanelNavigationWithFiveItemsPerPanel.args = {
-    items: items,
+    items: menuItems,
     itemsPerPanel: 5,
-    hidePreviousNextPanelNavigation: true
+    hidePreviousNextPanelNavigation: true,
+    actionsVariant: 'menu',
+    actionsPosition: 'top-right'
 };

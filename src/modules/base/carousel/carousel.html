@@ -56,11 +56,11 @@
                                                     if:false={isBottomPosition}
                                                 >
                                                     <div
-                                                        class={computedActionsClass}
+                                                        class={computedActionsContainerClass}
                                                         if:true={hasActions}
                                                     >
                                                         <template
-                                                            if:false={menuVariant}
+                                                            if:false={isMenuVariant}
                                                         >
                                                             <template
                                                                 for:each={item.actions}
@@ -90,12 +90,12 @@
                                                             </template>
                                                         </template>
                                                         <template
-                                                            if:true={menuVariant}
+                                                            if:true={isMenuVariant}
                                                         >
                                                             <lightning-button-menu
                                                                 alternative-text="Show menu"
                                                                 icon-size="x-small"
-                                                                menu-alignment={computedButtonMenuAlignement}
+                                                                menu-alignment="auto"
                                                                 variant="border-filled"
                                                             >
                                                                 <template
@@ -141,11 +141,11 @@
                                                     if:true={isBottomPosition}
                                                 >
                                                     <div
-                                                        class={computedActionsClass}
+                                                        class={computedActionsContainerClass}
                                                         if:true={hasActions}
                                                     >
                                                         <template
-                                                            if:false={menuVariant}
+                                                            if:false={isMenuVariant}
                                                         >
                                                             <template
                                                                 for:each={item.actions}
@@ -175,7 +175,7 @@
                                                             </template>
                                                         </template>
                                                         <template
-                                                            if:true={menuVariant}
+                                                            if:true={isMenuVariant}
                                                         >
                                                             <lightning-button-menu
                                                                 alternative-text="Show menu"

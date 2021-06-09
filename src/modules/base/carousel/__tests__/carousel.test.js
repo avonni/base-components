@@ -632,45 +632,6 @@ describe('Carousel', () => {
         });
     });
 
-    it('Carousel actions variant menu top-right', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
-
-        const example = [
-            {
-                actions: [
-                    {
-                        name: 'action-add',
-                        iconName: 'utility:add',
-                        label: 'add'
-                    }
-                ],
-                id: 1,
-                title: 'Visit App Exchange',
-                description:
-                    'Extend Salesforce with the #1 business marketplace.',
-                imageAssistiveText: 'Appy',
-                src:
-                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
-                href: 'https://www.salesforce.com/'
-            }
-        ];
-
-        element.items = example;
-        element.actionsVariant = 'menu';
-        element.actionsPosition = 'top-right';
-
-        return Promise.resolve().then(() => {
-            const action = element.shadowRoot.querySelector(
-                'lightning-button-menu'
-            );
-            expect(action).toBeTruthy();
-            expect(action.menuAlignment).toBe('right');
-        });
-    });
-
     // actions position
     it('Carousel actions position bottom-center', () => {
         const element = createElement('base-carousel', {

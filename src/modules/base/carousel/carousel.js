@@ -198,7 +198,7 @@ export default class Carousel extends LightningElement {
         });
     }
 
-    get menuVariant() {
+    get isMenuVariant() {
         return this._actionsVariant === 'menu';
     }
 
@@ -230,10 +230,6 @@ export default class Carousel extends LightningElement {
         return this._actionsVariant === 'bare' ? 'bare' : 'border-filled';
     }
 
-    get computedButtonMenuAlignement() {
-        return this.actionsPosition === 'top-right' ? 'right' : 'auto';
-    }
-
     // Change the button position depending if hideIndicator is true or false
     get computedAutoScrollAutoplayButton() {
         return this._hideIndicator
@@ -249,7 +245,7 @@ export default class Carousel extends LightningElement {
             .toString();
     }
 
-    get computedActionsClass() {
+    get computedActionsContainerClass() {
         return classSet('avonni-carousel__actions')
             .add({
                 'avonni-carousel__actions-bottom-center':
