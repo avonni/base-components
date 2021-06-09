@@ -169,6 +169,51 @@ const items = [
             title: '$30',
             description: 'USD/user/month *',
             iconName: 'standard:user',
+            
+        }
+    },
+    {
+        title: 'Lightning Enterprise',
+        description: 'Everything you need to take support to the next level',
+        value: 'lightning-enterprise',
+        figure: {
+            title: '$150',
+            description: 'USD/user/month *',
+            iconName: 'standard:groups',
+        }
+    },
+    {
+        title: 'Lightning Enterprise Plus',
+        description: 'Example of a disabled tile',
+        value: 'lightning-enterprise-plus',
+        disabled: true,
+        figure: {
+            title: '$220',
+            description: 'USD/user/month *',
+            iconName: 'standard:account',
+        }
+    },
+    {
+        title: 'Lightning Unlimited',
+        description: 'Complete support with enterprise-grade customization',
+        value: 'lightning-unlimited',
+        figure: {
+            title: '$300',
+            description: 'USD/user/month *',
+            iconName: 'custom:custom68'
+        }
+    }
+];
+
+const itemsWithImage = [
+    {
+        title: 'Lightning Professional',
+        description: 'Complete service CRM for teams of any size',
+        value: 'lightning-professional',
+        figure: {
+            title: '$30',
+            description: 'USD/user/month *',
+            iconName: 'standard:user',
             imgSrc: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
             
         }
@@ -218,12 +263,29 @@ Base.args = {
     items: items
 };
 
+export const BaseWithImage = Template.bind({});
+BaseWithImage.args = {
+    name: 'base',
+    value: ['lightning-enterprise'],
+    items: itemsWithImage
+};
+
 export const NoMarkDoubleExtraSmall = Template.bind({});
 NoMarkDoubleExtraSmall.args = {
     name: 'xx-small',
     label: 'Double extra small input with no check mark',
     value: ['lightning-enterprise'],
     items: items,
+    size: 'xx-small',
+    hideCheckMark: true
+};
+
+export const NoMarkDoubleExtraSmallWithImage = Template.bind({});
+NoMarkDoubleExtraSmallWithImage.args = {
+    name: 'xx-small',
+    label: 'Double extra small input with no check mark',
+    value: ['lightning-enterprise'],
+    items: itemsWithImage,
     size: 'xx-small',
     hideCheckMark: true
 };
@@ -238,12 +300,32 @@ NoBorderExtraSmall.args = {
     hideBorder: true
 };
 
+export const NoBorderExtraSmallWithImage = Template.bind({});
+NoBorderExtraSmallWithImage.args = {
+    name: 'x-small',
+    label: 'Extra small input with no borders',
+    value: ['lightning-enterprise'],
+    items: itemsWithImage,
+    size: 'x-small',
+    hideBorder: true
+};
+
 export const CoverableSmall = Template.bind({});
 CoverableSmall.args = {
     name: 'small',
     label: 'Coverable small input',
     value: ['lightning-enterprise'],
     items: items,
+    size: 'small',
+    variant: 'coverable'
+};
+
+export const CoverableSmallWithImage = Template.bind({});
+CoverableSmallWithImage.args = {
+    name: 'small',
+    label: 'Coverable small input',
+    value: ['lightning-enterprise'],
+    items: itemsWithImage,
     size: 'small',
     variant: 'coverable'
 };
@@ -258,6 +340,16 @@ Large4By3.args = {
     ratio: '4-by-3'
 };
 
+export const Large4By3WithImage = Template.bind({});
+Large4By3WithImage.args = {
+    name: 'large',
+    label: '4 by 3 large input',
+    value: ['lightning-enterprise'],
+    items: itemsWithImage,
+    size: 'large',
+    ratio: '4-by-3'
+};
+
 export const VerticalCheckbox = Template.bind({});
 VerticalCheckbox.args = {
     name: 'checkbox',
@@ -265,5 +357,15 @@ VerticalCheckbox.args = {
     label: 'Vertical checkbox input',
     value: ['lightning-enterprise', 'lightning-unlimited'],
     items: items,
+    variant: 'vertical'
+};
+
+export const VerticalCheckboxWithImage = Template.bind({});
+VerticalCheckboxWithImage.args = {
+    name: 'checkbox',
+    type: 'checkbox',
+    label: 'Vertical checkbox input',
+    value: ['lightning-enterprise', 'lightning-unlimited'],
+    items: itemsWithImage,
     variant: 'vertical'
 };
