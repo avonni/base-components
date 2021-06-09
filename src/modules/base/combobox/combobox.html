@@ -219,6 +219,30 @@
                         role="listbox"
                         aria-multiselectable={isMultiSelect}
                     >
+                        <!-- Back to parent link -->
+                        <li
+                            if:true={currentParent}
+                            class="slds-listbox__item slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_term combobox__action_top slds-border_bottom"
+                            role="option"
+                            onclick={handleBackLinkClick}
+                        >
+                            <div
+                                class="slds-media__figure slds-listbox__option-icon"
+                            >
+                                <lightning-icon
+                                    icon-name="utility:chevronleft"
+                                    size="x-small"
+                                    alternative-text="Back"
+                                ></lightning-icon>
+                            </div>
+                            <div class="slds-media__body">
+                                <span
+                                    class="slds-listbox__option-text slds-listbox__option-text_entity"
+                                    >{currentParent.label}</span
+                                >
+                            </div>
+                        </li>
+
                         <!-- Top actions -->
                         <template for:each={topActions} for:item="action">
                             <li
@@ -269,6 +293,7 @@
                                     label={group.label}
                                     options={group.options}
                                     groups={group.groups}
+                                    remove-selected-options={removeSelectedOptions}
                                     onprivateoptionclick={handleOptionClick}
                                     onclick={focus}
                                 ></c-primitive-combobox-group>

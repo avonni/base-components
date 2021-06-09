@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeArray } from 'c/utilsPrivate';
+import { normalizeArray, normalizeBoolean } from 'c/utilsPrivate';
 import { generateUniqueId } from 'c/utils';
 
 export default class PrimitiveComboboxGroup extends LightningElement {
@@ -25,13 +25,21 @@ export default class PrimitiveComboboxGroup extends LightningElement {
         this._groups = normalizeArray(value);
     }
 
-    get generateKey() {
-        return generateUniqueId();
+    @api
+    get removeSelectedOptions() {
+        return this._removeSelectedOptions;
+    }
+    set removeSelectedOptions(value) {
+        this._removeSelectedOptions = normalizeBoolean(value);
     }
 
     @api
     get optionsElements() {
         return Array.from(this.template.querySelectorAll('.combobox__option'));
+    }
+
+    get generateKey() {
+        return generateUniqueId();
     }
 
     handleClick(event) {

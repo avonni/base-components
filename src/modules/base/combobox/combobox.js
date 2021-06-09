@@ -69,7 +69,6 @@ export default class Combobox extends LightningElement {
 
     _autoPosition;
     _cancelBlur = false;
-    _currentLevelOptions = [];
     _maxVisibleOptions = Number(DROPDOWN_LENGTHS.default.match(/[0-9]+/)[0]);
     _visibleOptions = [];
     computedGroups = [];
@@ -78,6 +77,7 @@ export default class Combobox extends LightningElement {
     helpMessage;
     inputValue = '';
     lastSelectedOption;
+    parentOptionsValues = [];
     scopesInputValue = '';
     selectedOptions = [];
     topActions = [];
@@ -215,7 +215,6 @@ export default class Combobox extends LightningElement {
         const optionObjects = this.initOptionObjects(options);
         this._options = optionObjects;
         this.visibleOptions = optionObjects;
-        this._currentLevelOptions = optionObjects;
 
         if (this.isConnected) {
             this.initValue();
@@ -374,6 +373,15 @@ export default class Combobox extends LightningElement {
         return this.readOnly || this.disabled ? 'none' : 'list';
     }
 
+    get currentParent() {
+        return (
+            this.parentOptionsValues.length &&
+            this.getOption(
+                this.parentOptionsValues[this.parentOptionsValues.length - 1]
+            )
+        );
+    }
+
     get showScopes() {
         return this.scopes.length > 0;
     }
@@ -391,7 +399,7 @@ export default class Combobox extends LightningElement {
     }
 
     get showNoSearchResultMessage() {
-        return this.inputValue && this.visibleOptions.length === 0;
+        return this.inputValue && !this.visibleOptions.length;
     }
 
     get computedLabelClass() {
@@ -487,9 +495,17 @@ export default class Combobox extends LightningElement {
     close() {
         if (this.dropdownVisible) {
             this.dropdownVisible = false;
-            this._currentLevelOptions = this.options;
-            this.visibleOptions = this.options;
             this.stopDropdownPositioning();
+
+            if (this.isMultiSelect) {
+                const searchTerm = this.inputValue;
+                const options = this.options;
+                this.visibleOptions = searchTerm
+                    ? this.search({ options, searchTerm })
+                    : options;
+
+                this.parentOptionsValues = [];
+            }
         }
     }
 
@@ -654,9 +670,13 @@ export default class Combobox extends LightningElement {
         const dropdown = this.template.querySelector(
             '.combobox__dropdown-trigger .slds-dropdown'
         );
-        dropdown.style.maxHeight = `${
-            optionsHeight + topActionsHeight + bottomActionsHeight
-        }px`;
+        const height = optionsHeight + topActionsHeight + bottomActionsHeight;
+
+        // Do not set the height when there is no actions or options
+        // (for example 0 search results or is loading)
+        if (height) {
+            dropdown.style.maxHeight = `${height}px`;
+        }
     }
 
     computeGroups() {
@@ -768,20 +788,7 @@ export default class Combobox extends LightningElement {
     }
 
     computeSelection() {
-        // Update selected options
         this.selectedOptions = this.getSelectedOptions();
-
-        // Update the visible options
-        let visibleOptions = this.options;
-        if (this.isMultiSelect && this.inputValue) {
-            visibleOptions = this.search({
-                options: visibleOptions,
-                searchTerm: this.inputValue
-            });
-        }
-        this.visibleOptions = visibleOptions;
-
-        // Update value
         this._value = this.selectedOptions.map((option) => option.value);
     }
 
@@ -887,9 +894,13 @@ export default class Combobox extends LightningElement {
         const searchTerm = event.currentTarget.value;
         this.inputValue = searchTerm;
 
+        // Search in the current level of options
+        const options =
+            (this.currentParent && this.currentParent.options) || this.options;
+
         const result = this.search({
             searchTerm,
-            options: this._currentLevelOptions
+            options: options
         });
 
         this.visibleOptions = result;
@@ -906,7 +917,6 @@ export default class Combobox extends LightningElement {
     handleInputClick() {
         if (this.lastSelectedOption) {
             this.inputValue = '';
-            this.visibleOptions = this.options;
         }
     }
 
@@ -928,6 +938,20 @@ export default class Combobox extends LightningElement {
             this.open();
             this.dispatchEvent(new CustomEvent('open'));
         }
+    }
+
+    handleBackLinkClick() {
+        const parents = this.parentOptionsValues;
+        parents.pop();
+
+        if (parents.length) {
+            const parent = this.getOption(parents[parents.length - 1]);
+            this.visibleOptions = parent.options;
+        } else {
+            this.visibleOptions = this.options;
+        }
+
+        this.focus();
     }
 
     handleClearInput(event) {
@@ -952,6 +976,7 @@ export default class Combobox extends LightningElement {
 
         // Reset the visible options
         this.visibleOptions = this.options;
+        this.parentOptionsValues = [];
 
         this.focus();
     }
@@ -1011,7 +1036,7 @@ export default class Combobox extends LightningElement {
         // If the option has children options, change the visible options
         if (selectedOption.options && selectedOption.options.length) {
             this.visibleOptions = selectedOption.options;
-            this._currentLevelOptions = selectedOption.options;
+            this.parentOptionsValues.push(selectedOption.value);
             this.focus();
             return;
         }
