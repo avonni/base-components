@@ -18,7 +18,12 @@ export const Image = ({
     right,
     center,
     blank,
-    blankColor
+    blankColor,
+    cropSize,
+    cropFit,
+    cropPositionX,
+    cropPositionY,
+    staticImages
 }) => {
     const element = document.createElement('ac-base-image');
     element.src = src;
@@ -37,5 +42,10 @@ export const Image = ({
     element.center = center;
     element.blank = blank;
     element.blankColor = blankColor;
+    element.cropSize = cropSize;
+    element.cropFit = cropFit;
+    element.cropPositionX = cropPositionX;
+    element.cropPositionY = cropPositionY;
+    element.staticImages = staticImages;
     return element;
 };
