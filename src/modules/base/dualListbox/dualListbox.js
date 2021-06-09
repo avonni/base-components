@@ -148,6 +148,7 @@ export default class DualListbox extends LightningElement {
             }
         }
         this.disabledButtons();
+        console.log(this.highlightedOptions);
     }
 
     @api
@@ -1200,7 +1201,6 @@ export default class DualListbox extends LightningElement {
 
     handleDragStartSource(event) {
         event.currentTarget.classList.add('avonni-dual-listbox-dragging');
-        this.updateSelectedOptions(event.currentTarget, true, false);
     }
 
     handleDragEndSource(event) {
