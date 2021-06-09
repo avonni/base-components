@@ -30,7 +30,9 @@
                 aria-label={item.label}
                 aria-describedby="instructions"
             >
-                <div class="slds-grid slds-grid_vertical-align-center">
+                <div
+                    class="slds-grid slds-grid_vertical-align-center slds-p-vertical_x-small"
+                >
                     <lightning-icon
                         if:true={showIconLeft}
                         class="slds-m-left_x-small icon-left"
@@ -38,16 +40,51 @@
                         size="x-small"
                     ></lightning-icon>
                     <c-avatar
-                        class="slds-m-left_x-small"
+                        class="slds-m-horizontal_x-small"
                         fallback-icon-name={item.avatarFallbackIconName}
                         src={item.avatarSrc}
                         size="small"
                         hide-avatar-details="true"
                     ></c-avatar>
-                    <div
-                        class="slds-col slds-truncate slds-m-horizontal_x-small"
-                    >
-                        {item.label}
+                    <div class="slds-col slds-truncate">
+                        <div
+                            class="slds-grid slds-grid-align-center slds-truncate slds-no-space slds-margin-bottom_xx-small"
+                        >
+                            <template if:true={item.href}>
+                                <a href={item.href}>{item.label}</a>
+                            </template>
+                            <template if:false={item.href}>
+                                <h3>{item.label}</h3>
+                            </template>
+                            <div if:true={item.icons} class="slds-no-flex">
+                                <template for:each={item.icons} for:item="icon">
+                                    <lightning-icon
+                                        key={icon.title}
+                                        icon-name={icon.iconName}
+                                        alternative-text={icon.alternativeText}
+                                        title={icon.title}
+                                        size="x-small"
+                                        class="slds-p-left_x-small"
+                                    ></lightning-icon>
+                                </template>
+                            </div>
+                        </div>
+                        <p
+                            if:true={item.description}
+                            class="slds-text-body_regular description-text"
+                        >
+                            {item.description}
+                        </p>
+                        <ul
+                            if:true={item.infos.length}
+                            class="slds-list_horizontal slds-has-dividers_left slds-has-block-links"
+                        >
+                            <template for:each={item.infos} for:item="info">
+                                <li key={info.label} class="slds-item">
+                                    <a href={info.href}>{info.label}</a>
+                                </li>
+                            </template>
+                        </ul>
                     </div>
                     <lightning-icon
                         if:true={showIconRight}
