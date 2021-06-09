@@ -7,6 +7,7 @@ export const List = ({
     alternativeText,
     sortable,
     items,
+    actions,
     sortableIconName,
     sortableIconPosition
 }) => {
@@ -15,6 +16,7 @@ export const List = ({
     element.alternativeText = alternativeText;
     element.sortable = sortable;
     element.items = items;
+    element.actions = actions;
     element.sortableIconName = sortableIconName;
     element.sortableIconPosition = sortableIconPosition;
     return element;

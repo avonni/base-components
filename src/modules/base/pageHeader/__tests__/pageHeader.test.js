@@ -310,14 +310,16 @@ describe('PageHeader', () => {
                 'slot[name="details"]'
             );
             const primitiveFields = element.shadowRoot.querySelectorAll(
-                'c-primitive-page-header-field'
+                'c-output-data'
             );
 
             expect(detailsSlot).toBeFalsy();
             primitiveFields.forEach((field, index) => {
                 const correspondingField = fields[index];
                 expect(correspondingField).toBeTruthy();
-                expect(field.field).toEqual(correspondingField);
+                expect(field.typeAttributes).toMatchObject(
+                    correspondingField.typeAttributes
+                );
                 expect(field.label).toBe(correspondingField.label);
                 expect(field.value).toBe(correspondingField.value);
                 expect(field.type).toBe(correspondingField.type);
@@ -359,14 +361,16 @@ describe('PageHeader', () => {
                 'slot[name="details"]'
             );
             const primitiveFields = element.shadowRoot.querySelectorAll(
-                'c-primitive-page-header-field'
+                'c-output-data'
             );
 
             expect(detailsSlot).toBeFalsy();
             primitiveFields.forEach((field, index) => {
                 const correspondingField = fields[index];
                 expect(correspondingField).toBeTruthy();
-                expect(field.field).toEqual(correspondingField);
+                expect(field.typeAttributes).toMatchObject(
+                    correspondingField.typeAttributes
+                );
                 expect(field.label).toBe(correspondingField.label);
                 expect(field.value).toBe(correspondingField.value);
                 expect(field.type).toBe(correspondingField.type);

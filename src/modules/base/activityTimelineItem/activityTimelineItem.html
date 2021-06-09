@@ -141,23 +141,12 @@
                                             class="slds-truncate slds-m-around_small"
                                             key={field.value}
                                         >
-                                            <div
-                                                class="slds-text-title slds-truncate"
-                                                title={field.label}
-                                            >
-                                                {field.label}
-                                            </div>
-                                            <div
-                                                class="slds-truncate"
-                                                title={field.value}
-                                            >
-                                                <c-primitive-field
-                                                    field={field}
-                                                    label={field.label}
-                                                    value={field.value}
-                                                    type={field.type}
-                                                ></c-primitive-field>
-                                            </div>
+                                            <c-output-data
+                                                label={field.label}
+                                                value={field.value}
+                                                type={field.type}
+                                                type-attributes={field.typeAttributes}
+                                            ></c-output-data>
                                         </lightning-layout-item>
                                     </template>
                                 </lightning-layout>

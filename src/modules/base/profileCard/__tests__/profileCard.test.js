@@ -16,6 +16,7 @@ describe('ProfileCard', () => {
         expect(element.avatarAlternativeText).toBeUndefined();
         expect(element.avatarFallbackIconName).toBeUndefined();
         expect(element.avatarPosition).toBe('top-left');
+        expect(element.avatarMobilePosition).toBe('top-left');
         expect(element.avatarSrc).toBeUndefined();
         expect(element.avatarVariant).toBe('circle');
         expect(element.backgroundAlternativeText).toBeUndefined();
@@ -104,13 +105,16 @@ describe('ProfileCard', () => {
         document.body.appendChild(element);
 
         element.avatarPosition = 'top-left';
+        element.showActions = true;
 
         return Promise.resolve().then(() => {
             const container = element.shadowRoot.querySelector(
                 '.avonni-flex-container'
             );
-            const mainContainer = element.shadowRoot.querySelector('.top-left');
-            expect(container.classList).toContain('avonni-flex-align-start');
+            const mainContainer = element.shadowRoot.querySelector(
+                '.top-left-desktop'
+            );
+            expect(container.className).toBe('avonni-flex-container');
             expect(mainContainer).toBeTruthy();
         });
     });
@@ -129,7 +133,7 @@ describe('ProfileCard', () => {
                 '.avonni-flex-container'
             );
             const mainContainer = element.shadowRoot.querySelector(
-                '.top-center'
+                '.top-center-desktop'
             );
             expect(container.classList).toContain('avonni-flex-align-center');
             expect(mainContainer).toBeTruthy();
@@ -150,7 +154,7 @@ describe('ProfileCard', () => {
                 '.avonni-flex-container'
             );
             const mainContainer = element.shadowRoot.querySelector(
-                '.top-right'
+                '.top-right-desktop'
             );
             expect(container.classList).toContain('avonni-flex-align-end');
             expect(mainContainer).toBeTruthy();
@@ -171,9 +175,9 @@ describe('ProfileCard', () => {
                 '.avonni-flex-container'
             );
             const mainContainer = element.shadowRoot.querySelector(
-                '.bottom-left'
+                '.bottom-left-desktop'
             );
-            expect(container.classList).toContain('avonni-flex-align-start');
+            expect(container.className).toBe('avonni-flex-container');
             expect(mainContainer).toBeTruthy();
         });
     });
@@ -192,7 +196,7 @@ describe('ProfileCard', () => {
                 '.avonni-flex-container'
             );
             const mainContainer = element.shadowRoot.querySelector(
-                '.bottom-center'
+                '.bottom-center-desktop'
             );
             expect(container.classList).toContain('avonni-flex-align-center');
             expect(mainContainer).toBeTruthy();
@@ -213,9 +217,150 @@ describe('ProfileCard', () => {
                 '.avonni-flex-container'
             );
             const mainContainer = element.shadowRoot.querySelector(
-                '.bottom-right'
+                '.bottom-right-desktop'
             );
             expect(container.classList).toContain('avonni-flex-align-end');
+            expect(mainContainer).toBeTruthy();
+        });
+    });
+
+    // avatar-mobile-position
+    it('avatarMobilePosition = top-left', () => {
+        const element = createElement('base-profile-card', {
+            is: ProfileCard
+        });
+
+        window.innerWidth = 200;
+        document.body.appendChild(element);
+
+        element.avatarMobilePosition = 'top-left';
+
+        return Promise.resolve().then(() => {
+            const container = element.shadowRoot.querySelector(
+                '.avonni-flex-container'
+            );
+            const mainContainer = element.shadowRoot.querySelector(
+                '.mobile-top-left'
+            );
+            expect(container.className).toBe('avonni-flex-container');
+            expect(mainContainer).toBeTruthy();
+        });
+    });
+
+    it('avatarMobilePosition = top-center', () => {
+        const element = createElement('base-profile-card', {
+            is: ProfileCard
+        });
+
+        window.innerWidth = 200;
+        document.body.appendChild(element);
+
+        element.avatarMobilePosition = 'top-center';
+
+        return Promise.resolve().then(() => {
+            const container = element.shadowRoot.querySelector(
+                '.avonni-flex-container'
+            );
+            const mainContainer = element.shadowRoot.querySelector(
+                '.mobile-top-center'
+            );
+            expect(container.classList).toContain(
+                'avonni-flex-mobile-align-center'
+            );
+            expect(mainContainer).toBeTruthy();
+        });
+    });
+
+    it('avatarMobilePosition = top-right', () => {
+        const element = createElement('base-profile-card', {
+            is: ProfileCard
+        });
+
+        window.innerWidth = 200;
+        document.body.appendChild(element);
+
+        element.avatarMobilePosition = 'top-right';
+
+        return Promise.resolve().then(() => {
+            const container = element.shadowRoot.querySelector(
+                '.avonni-flex-container'
+            );
+            const mainContainer = element.shadowRoot.querySelector(
+                '.mobile-top-right'
+            );
+            expect(container.classList).toContain(
+                'avonni-flex-mobile-align-end'
+            );
+            expect(mainContainer).toBeTruthy();
+        });
+    });
+
+    it('avatarMobilePosition = bottom-left', () => {
+        const element = createElement('base-profile-card', {
+            is: ProfileCard
+        });
+
+        window.innerWidth = 200;
+        document.body.appendChild(element);
+
+        element.avatarMobilePosition = 'bottom-left';
+
+        return Promise.resolve().then(() => {
+            const container = element.shadowRoot.querySelector(
+                '.avonni-flex-container'
+            );
+            const mainContainer = element.shadowRoot.querySelector(
+                '.mobile-bottom-left'
+            );
+            expect(container.className).toBe('avonni-flex-container');
+            expect(mainContainer).toBeTruthy();
+        });
+    });
+
+    it('avatarMobilePosition = bottom-center', () => {
+        const element = createElement('base-profile-card', {
+            is: ProfileCard
+        });
+
+        window.innerWidth = 200;
+        document.body.appendChild(element);
+
+        element.avatarMobilePosition = 'bottom-center';
+
+        return Promise.resolve().then(() => {
+            const container = element.shadowRoot.querySelector(
+                '.avonni-flex-container'
+            );
+            const mainContainer = element.shadowRoot.querySelector(
+                '.mobile-bottom-center'
+            );
+            expect(container.classList).toContain(
+                'avonni-flex-mobile-align-center'
+            );
+            expect(mainContainer).toBeTruthy();
+        });
+    });
+
+    it('avatarMobilePosition = bottom-right', () => {
+        const element = createElement('base-profile-card', {
+            is: ProfileCard
+        });
+
+        window.innerWidth = 200;
+        document.body.appendChild(element);
+
+        element.avatarMobilePosition = 'bottom-right';
+
+        return Promise.resolve().then(() => {
+            const container = element.shadowRoot.querySelector(
+                '.avonni-flex-container'
+            );
+            const mainContainer = element.shadowRoot.querySelector(
+                '.mobile-bottom-right'
+            );
+            expect(container.classList).toContain(
+                'avonni-flex-mobile-align-end'
+            );
             expect(mainContainer).toBeTruthy();
         });
     });
