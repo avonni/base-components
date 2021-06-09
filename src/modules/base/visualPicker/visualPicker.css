@@ -30,12 +30,12 @@
 }
 .avonni-visual-picker_xx-small.ratio-16-by-9 .imgContainer{
     width: 100%;
-    height: 20px;
+    height: 50px;
 }
 
 .avonni-visual-picker_x-small.ratio-1-by-1 .imgContainer{
     width: 100%;
-    height: 32px;
+    height: 34px;
 }
 .avonni-visual-picker_x-small.ratio-4-by-3 .imgContainer{
     width: 100%;
@@ -48,11 +48,11 @@
 
 .avonni-visual-picker_small.ratio-1-by-1 .imgContainer{
     width: 100%;
-    height: 44px;
+    height: 52px;
 }
 .avonni-visual-picker_small.ratio-4-by-3 .imgContainer{
     width: 100%;
-    height: 23px;
+    height: 30px;
 }
 .avonni-visual-picker_small.ratio-16-by-9 .imgContainer{
     width: 100%;
@@ -61,11 +61,11 @@
 
 .slds-visual-picker_medium.ratio-1-by-1 .imgContainer{
     width: 100%;
-    height: 80px;
+    height: 92px;
 }
 .slds-visual-picker_medium.ratio-4-by-3 .imgContainer{
     width: 100%;
-    height: 40px;
+    height: 46px;
 }
 .slds-visual-picker_medium.ratio-16-by-9 .imgContainer{
     width: 100%;
@@ -74,11 +74,11 @@
 
 .slds-visual-picker_large.ratio-1-by-1 .imgContainer{
     width: 100%;
-    height: 104px;
+    height: 124px;
 }
 .slds-visual-picker_large.ratio-4-by-3 .imgContainer{
     width: 100%;
-    height: 50px;
+    height: 52px;
 }
 .slds-visual-picker_large.ratio-16-by-9 .imgContainer{
     width: 100%;
@@ -86,7 +86,7 @@
 }
 
 .imgContainer img{
-    object-fit: cover;
+    object-fit: cover; 
     height: 100%;
     width: 100%;
 }

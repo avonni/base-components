@@ -281,7 +281,7 @@ export default class VisualPicker extends LightningElement {
                     this._variant === 'vertical',
                 'slds-visual-picker__icon': this._variant === 'coverable',
                 'slds-align_absolute-left': this._variant === 'vertical',
-                'slds-align_absolute-center': this._variant !== 'vertical' && !this.hasImage,
+                'slds-align_absolute-center': this._variant !== 'vertical',
                 'noPadding' : this.hasImage,
                 'avonni-hide-border': this._hideBorder,
                 'avonni-hide-check-mark': this._hideCheckMark
