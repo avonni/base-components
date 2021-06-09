@@ -210,8 +210,6 @@ export default class InputChoiceSet extends LightningElement {
 
     handleBlur() {
         this.containsFocus = false;
-        this.debouncedShowIfBlurred();
-
         this.dispatchEvent(new CustomEvent('blur'));
     }
 
@@ -223,7 +221,6 @@ export default class InputChoiceSet extends LightningElement {
 
     handleChange(event) {
         event.stopPropagation();
-
         
         let value = event.target.value;
         const checkboxes = this.template.querySelectorAll('input');
@@ -241,12 +238,14 @@ export default class InputChoiceSet extends LightningElement {
             checkboxes.forEach((checkbox) => {
                 const label = checkbox.labels[0];
                 let icon = label.querySelector('lightning-icon');
-                if(value.includes(label.control.value)) icon.variant = 'inverse';
-                else icon.variant = '';
-
-                if(!checkbox.checked && icon.variant === "inverse"){
-                    icon.variant =''
-                } 
+                if(icon){
+                    if(value.includes(label.control.value)) icon.variant = 'inverse';
+                    else icon.variant = '';
+    
+                    if(!checkbox.checked && icon.variant === "inverse"){
+                        icon.variant =''
+                    } 
+                }
             });
         }
 
