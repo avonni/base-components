@@ -3,7 +3,6 @@ import Carousel from 'c/carousel';
 
 // not tested
 // scroll duration
-// isInfinite
 
 const bareActions = [
     {
@@ -824,6 +823,154 @@ describe('Carousel', () => {
             );
         });
     });
+
+    // carousel infinite last goes back to first
+    it('Carousel infinite last goes back to first', () => {
+        const element = createElement('base-carousel', {
+            is: Carousel
+        });
+        document.body.appendChild(element);
+
+        element.items = items;
+        element.hideIndicator = false;
+        element.isIfinite = true;
+        const lastItem = items.length - 1;
+
+        return Promise.resolve()
+            .then(() => {
+                element.last();
+            })
+            .then(() => {
+                const indicators = element.shadowRoot.querySelectorAll(
+                    'li > a'
+                );
+                expect(indicators[lastItem].className).toContain(
+                    'slds-is-active'
+                );
+                element.next();
+                expect(indicators[0].className).toContain('slds-is-active');
+            });
+    });
+
+    // carousel infinite first goes back to last
+    it('Carousel infinite first goes back to last', () => {
+        const element = createElement('base-carousel', {
+            is: Carousel
+        });
+        document.body.appendChild(element);
+
+        element.items = items;
+        element.hideIndicator = false;
+        element.isIfinite = true;
+        const lastItem = items.length - 1;
+
+        return Promise.resolve()
+            .then(() => {
+                element.first();
+            })
+            .then(() => {
+                const indicators = element.shadowRoot.querySelectorAll(
+                    'li > a'
+                );
+                expect(indicators[0].className).toContain('slds-is-active');
+                element.previous();
+            })
+            .then(() => {
+                const indicators = element.shadowRoot.querySelectorAll(
+                    'li > a'
+                );
+                expect(indicators[lastItem].className).toContain(
+                    'slds-is-active'
+                );
+            });
+    });
+
+    /* ----- METHODS ----- */
+
+    // carousel next & previous
+    it('Carousel next & previous methods', () => {
+        const element = createElement('base-carousel', {
+            is: Carousel
+        });
+        document.body.appendChild(element);
+        element.items = items;
+        element.hideIndicator = false;
+        return Promise.resolve()
+            .then(() => {
+                const indicators = element.shadowRoot.querySelectorAll(
+                    'li > a'
+                );
+                expect(indicators[0].className).toContain('slds-is-active');
+                expect(indicators[1].className).not.toContain('slds-is-active');
+                element.next();
+            })
+            .then(() => {
+                const indicators = element.shadowRoot.querySelectorAll(
+                    'li > a'
+                );
+                expect(indicators[0].className).not.toContain('slds-is-active');
+                expect(indicators[1].className).toContain('slds-is-active');
+                element.previous();
+            })
+            .then(() => {
+                const indicators = element.shadowRoot.querySelectorAll(
+                    'li > a'
+                );
+                expect(indicators[0].className).toContain('slds-is-active');
+                expect(indicators[1].className).not.toContain('slds-is-active');
+            });
+    });
+
+    // carousel first & last
+    it('Carousel first & last methods', () => {
+        const element = createElement('base-carousel', {
+            is: Carousel
+        });
+        document.body.appendChild(element);
+        element.items = items;
+        element.hideIndicator = false;
+        const lastItem = items.length - 1;
+        return Promise.resolve()
+            .then(() => {
+                element.last();
+            })
+            .then(() => {
+                const indicators = element.shadowRoot.querySelectorAll(
+                    'li > a'
+                );
+                expect(indicators[lastItem].className).toContain(
+                    'slds-is-active'
+                );
+                element.first();
+                expect(indicators[0].className).toContain('slds-is-active');
+            });
+    });
+
+    // carousel start & pause
+    it('Carousel start & pause methods', () => {
+        const element = createElement('base-carousel', {
+            is: Carousel
+        });
+        document.body.appendChild(element);
+        element.items = items;
+        element.hideIndicator = false;
+        element.pause();
+        return Promise.resolve()
+            .then(() => {
+                const autoPlayButton = element.shadowRoot.querySelector(
+                    '.avonni-carousel__autoscroll-button-with-indicator'
+                );
+                expect(autoPlayButton.iconName).toBe('utility:play');
+                element.start();
+            })
+            .then(() => {
+                const autoPlayButton = element.shadowRoot.querySelector(
+                    '.avonni-carousel__autoscroll-button-with-indicator'
+                );
+                expect(autoPlayButton.iconName).toBe('utility:pause');
+            });
+    });
+
     /* ----- JS ----- */
 
     // handle indicator click

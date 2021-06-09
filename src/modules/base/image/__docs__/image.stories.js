@@ -41,6 +41,66 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        cropSize: {
+            name: 'crop-size',
+            control: {
+                type: 'select'
+            },
+            options: ['1x1', '4x3', '16x9', 'none'],
+            defaultValue: 'none',
+            description:
+                'Specifies the cropping ratio for the image, which is constrained to the parents width. Options : 1:1, 4:3, 16:9, none',
+            table: {
+                defaultValue: { summary: 'none' },
+                type: { summary: 'string' },
+                category: 'Crop'
+            }
+        },
+        cropFit: {
+            name: 'crop-fit',
+            control: {
+                type: 'select'
+            },
+            options: ['cover', 'contain', 'fill', 'none'],
+            defaultValue: 'cover',
+            description:
+                'Specifies the "fit" behaviour for the cropped image. Options: "cover"(default), "contain", "fill", "none"',
+            table: {
+                defaultValue: { summary: 'cover' },
+                type: { summary: 'string' },
+                category: 'Crop'
+            }
+        },
+        cropPositionX: {
+            name: 'crop-position-X(%)',
+            control: {
+                type: 'range'
+            },
+            defaultValue: '50',
+            description:
+                'Specifies the cropping point of interest on the X axis of the image, in percentage',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: '50' },
+                category: 'Crop',
+                detail: 'Percent'
+            }
+        },
+        cropPositionY: {
+            name: 'crop-position-Y(%)',
+            control: {
+                type: 'range'
+            },
+            defaultValue: '50',
+            description:
+                'Specifies the cropping point of interest on the Y axis of the image, in percentage',
+            table: {
+                defaultValue: { summary: '50' },
+                type: { summary: 'string' },
+                category: 'Crop',
+                detail: 'Percent'
+            }
+        },
         width: {
             control: {
                 type: 'text'
@@ -175,6 +235,19 @@ export default {
                 defaultValue: { summary: false },
                 type: { summary: 'boolean' }
             }
+        },
+        staticImages: {
+            name: 'static-images',
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description:
+                'Set Images as Static - images will be fixed dimensions and will not be responsive on resize',
+            table: {
+                default: { summary: false },
+                type: { summary: 'boolean' }
+            }
         }
     },
     args: {
@@ -185,7 +258,8 @@ export default {
         left: false,
         right: false,
         center: false,
-        blank: false
+        blank: false,
+        staticImages: false
     }
 };
 
@@ -197,8 +271,7 @@ BaseSmall.args = {
         'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
     alt: 'Alt text',
     blankColor: 'transparent',
-    width: '150',
-    height: '75'
+    width: '150'
 };
 
 export const Base = Template.bind({});
@@ -215,8 +288,7 @@ BaseLarge.args = {
         'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
     alt: 'Alt text',
     blankColor: 'transparent',
-    width: '600',
-    height: '300'
+    width: '600'
 };
 
 export const BaseBlankGrayLarge = Template.bind({});
@@ -227,7 +299,7 @@ BaseBlankGrayLarge.args = {
     blankColor: 'gray',
     width: '600',
     height: '300',
-    blank: 'true'
+    blank: true
 };
 
 export const Thumbnail = Template.bind({});
@@ -236,7 +308,7 @@ Thumbnail.args = {
         'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
     alt: 'Alt text',
     blankColor: 'transparent',
-    thumbnail: 'true'
+    thumbnail: true
 };
 
 export const CenterCornerRounded = Template.bind({});
@@ -246,7 +318,7 @@ CenterCornerRounded.args = {
     alt: 'Alt text',
     rounded: 'true',
     blankColor: 'transparent',
-    center: 'true'
+    center: true
 };
 
 export const RightCornerTop = Template.bind({});
@@ -256,7 +328,7 @@ RightCornerTop.args = {
     alt: 'Alt text',
     rounded: 'top',
     blankColor: 'transparent',
-    right: 'true'
+    right: true
 };
 
 export const CornerBottom = Template.bind({});
@@ -317,7 +389,7 @@ ThumbnailMediumCircle.args = {
     width: '150',
     rounded: 'circle',
     blankColor: 'transparent',
-    thumbnail: 'true'
+    thumbnail: true
 };
 
 export const LargeCircle = Template.bind({});
@@ -339,6 +411,26 @@ LargeBlankGrayCircle.args = {
     height: '300',
     width: '300',
     rounded: 'circle',
-    blank: 'true',
+    blank: true,
     blankColor: 'gray'
+};
+
+export const CropImageStaticCircleThumbnailMobile = Template.bind({});
+CropImageStaticCircleThumbnailMobile.parameters = {
+    viewport: {
+        defaultViewport: 'mobile1'
+    }
+};
+CropImageStaticCircleThumbnailMobile.args = {
+    src:
+        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+    alt: 'Alt text',
+    width: '300',
+    cropSize: '1x1',
+    rounded: 'circle',
+    cropFit: 'none',
+    cropPositionX: '23',
+    cropPositionY: '80',
+    thumbnail: true,
+    staticImages: true
 };
