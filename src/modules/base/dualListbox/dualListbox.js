@@ -74,6 +74,7 @@ export default class DualListbox extends LightningElement {
     _variant = VALID_VARIANTS.default;
     _disabled;
     _disableReordering = false;
+    _draggable = false;
     _required = false;
     _maxVisibleOptions = DEFAULT_MAX_VISIBLE_OPTIONS;
     _min = DEFAULT_MIN;
@@ -98,6 +99,10 @@ export default class DualListbox extends LightningElement {
     _selectedNoDescription = 0;
     _selectedHasDescription = 0;
 
+    _dropItSelected = false;
+    _dropItSource = false;
+    _newIndex;
+
     connectedCallback() {
         this.classList.add('slds-form-element');
         this.keyboardInterface = this.selectKeyboardInterface();
@@ -119,8 +124,7 @@ export default class DualListbox extends LightningElement {
             // reset the optionToFocus otherwise dualListbox will steal the focus any time it's rerendered.
             this.optionToFocus = null;
         });
-        this.computedColumnSourceHeight();
-        this.computedColumnSelectedHeight();
+        this.computedBothHeight();
     }
 
     renderedCallback() {
@@ -332,6 +336,18 @@ export default class DualListbox extends LightningElement {
     }
 
     @api
+    get draggable() {
+        if (this.disabled) {
+            return false;
+        }
+        return this._draggable;
+    }
+
+    set draggable(value) {
+        this._draggable = normalizeBoolean(value);
+    }
+
+    @api
     get size() {
         return this._size;
     }
@@ -396,6 +412,14 @@ export default class DualListbox extends LightningElement {
         );
     }
 
+    get computedSourceListbox() {
+        return this.template.querySelector('[data-source-list]');
+    }
+
+    get computedSelectedListbox() {
+        return this.template.querySelector('[data-selected-list]');
+    }
+
     get ariaDisabled() {
         return String(this.disabled);
     }
@@ -444,7 +468,7 @@ export default class DualListbox extends LightningElement {
                 }
             });
 
-            // add selected items in the given order
+            // add selected options in the given order
             this.value.forEach((optionValue) => {
                 const option = optionsMap[optionValue];
                 if (option) {
@@ -489,9 +513,9 @@ export default class DualListbox extends LightningElement {
         return {
             ...option,
             tabIndex: option.value === focusableValue ? '0' : '-1',
-            selected: isSelected ? 'true' : 'false',
-            primaryText: hasDescription ? option.label : '',
-            secondaryText: hasDescription ? hasDescription : '',
+            selected: isSelected ? true : false,
+            primaryText: option.description ? option.label : '',
+            secondaryText: option.description ? option.description : '',
             iconSize: option.iconSize
                 ? option.iconSize
                 : hasDescription
@@ -627,6 +651,11 @@ export default class DualListbox extends LightningElement {
             }
         }
         return this._selectedBoxHeight;
+    }
+
+    computedBothHeight() {
+        this.computedColumnSourceHeight();
+        this.computedColumnSelectedHeight();
     }
 
     get sourceHeight() {
@@ -802,9 +831,21 @@ export default class DualListbox extends LightningElement {
         this.moveOptionsBetweenLists(true, true);
     }
 
+    handleDragRight() {
+        this.interactingState.interacting();
+        this.moveOptionsBetweenLists(true, false);
+        this._dropItSelected = false;
+    }
+
     handleLeftButtonClick() {
         this.interactingState.interacting();
         this.moveOptionsBetweenLists(false, true);
+    }
+
+    handleDragLeft() {
+        this.interactingState.interacting();
+        this.moveOptionsBetweenLists(false, false);
+        this._dropItSource = false;
     }
 
     handleUpButtonClick() {
@@ -894,18 +935,19 @@ export default class DualListbox extends LightningElement {
         this.highlightedOptions.find((option) => {
             return this._selectedValues.indexOf(option);
         });
-        this.computedColumnSourceHeight();
-        this.computedColumnSelectedHeight();
+        this.computedBothHeight();
     }
 
     oldIndexValue(option) {
         const options = this.template.querySelector(
             `div[data-value='${option}']`
         );
-        const index = options.getAttribute('data-index');
-        if (index === '0') {
-            this._oldIndex = 0;
-        } else this._oldIndex = index - 1;
+        if (options) {
+            const index = options.getAttribute('data-index');
+            if (index === '0') {
+                this._oldIndex = 0;
+            } else this._oldIndex = index - 1;
+        }
     }
 
     changeOrderOfOptionsInList(moveUp) {
@@ -946,8 +988,7 @@ export default class DualListbox extends LightningElement {
         this.updateFocusableOption(this.selectedList, toMove[0]);
         this.optionToFocus = null;
         this.dispatchChangeEvent(values);
-        this.computedColumnSourceHeight();
-        this.computedColumnSelectedHeight();
+        this.computedBothHeight();
     }
 
     disabledButtons() {
@@ -1157,5 +1198,83 @@ export default class DualListbox extends LightningElement {
         if (!isSame) {
             this.highlightedOptions = [];
         }
+    }
+
+    handleDragStartSource(event) {
+        event.currentTarget.classList.add('avonni-dual-listbox-dragging');
+    }
+
+    handleDragEndSource(event) {
+        event.preventDefault();
+        event.currentTarget.classList.remove('avonni-dual-listbox-dragging');
+        if (this._dropItSelected) {
+            if (
+                this.highlightedOptions.includes(
+                    event.currentTarget.getAttribute('data-value')
+                )
+            ) {
+                this.handleDragRight();
+            }
+        }
+    }
+
+    handleDragStartSelected(event) {
+        event.currentTarget.classList.add('avonni-dual-listbox-dragging');
+    }
+
+    handleDragEndSelected(event) {
+        event.preventDefault();
+        event.currentTarget.classList.remove('avonni-dual-listbox-dragging');
+        if (this._dropItSource) {
+            if (
+                this.highlightedOptions.includes(
+                    event.currentTarget.getAttribute('data-value')
+                )
+            ) {
+                this.handleDragLeft();
+            }
+        } else if (!this._dropItSource) {
+            if (!this._disableReordering) {
+                const values = this.computedSelectedList.map(
+                    (option) => option.value
+                );
+                const elementList = Array.from(
+                    this.getElementsOfList(this.selectedList)
+                );
+                const swappingIndex = Number(
+                    event.target.getAttribute('data-index')
+                );
+                this.swapOptions(
+                    swappingIndex,
+                    this._newIndex,
+                    values,
+                    elementList
+                );
+                this._selectedValues = values;
+            }
+        }
+    }
+
+    handleDragOverSource(event) {
+        event.preventDefault();
+        this._dropItSource = true;
+    }
+
+    handleDragLeaveSource() {
+        this._dropItSource = false;
+    }
+
+    handleDragOverSelected(event) {
+        event.preventDefault();
+        this._dropItSelected = true;
+    }
+
+    handleDragLeaveSelected() {
+        this._dropItSelected = false;
+    }
+
+    handleDragOver(event) {
+        event.preventDefault();
+        this._newIndex = Number(event.target.getAttribute('data-index'));
     }
 }

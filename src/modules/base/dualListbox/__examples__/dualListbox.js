@@ -15,6 +15,7 @@ export const DualListbox = ({
     disabled,
     downButtonIconName,
     downButtonLabel,
+    draggable,
     fieldLevelHelp,
     isLoading,
     label,
@@ -51,6 +52,7 @@ export const DualListbox = ({
     element.disabled = disabled;
     element.downButtonIconName = downButtonIconName;
     element.downButtonLabel = downButtonLabel;
+    element.draggable = draggable;
     element.fieldLevelHelp = fieldLevelHelp;
     element.isLoading = isLoading;
     element.label = label;

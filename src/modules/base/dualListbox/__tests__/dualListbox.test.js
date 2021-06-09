@@ -44,6 +44,7 @@ describe('DualListbox', () => {
         expect(element.disabled).toBeFalsy();
         expect(element.downButtonIconName).toBe('utility:down');
         expect(element.downButtonLabel).toBeUndefined();
+        expect(element.draggable).toBeFalsy();
         expect(element.fieldLevelHelp).toBeUndefined();
         expect(element.isLoading).toBeFalsy();
         expect(element.label).toBeUndefined();
@@ -392,6 +393,46 @@ describe('DualListbox', () => {
             );
             expect(lightningButtonIcon.iconName).toBe('utility:apex');
             expect(lightningButtonIcon.title).toBe('down');
+        });
+    });
+
+    // draggagble
+    it('Dual Listbox draggable without disabled', () => {
+        const element = createElement('base-dual-listbox', {
+            is: DualListbox
+        });
+        document.body.appendChild(element);
+
+        element.options = options;
+        element.draggable = true;
+
+        return Promise.resolve().then(() => {
+            const optionsDraggable = element.shadowRoot.querySelectorAll(
+                '.slds-listbox__option'
+            );
+            optionsDraggable.forEach((option) => {
+                expect(option.draggable).toBeTruthy();
+            });
+        });
+    });
+
+    it('Dual Listbox draggable with disabled', () => {
+        const element = createElement('base-dual-listbox', {
+            is: DualListbox
+        });
+        document.body.appendChild(element);
+
+        element.options = options;
+        element.draggable = true;
+        element.disabled = true;
+
+        return Promise.resolve().then(() => {
+            const optionsDraggable = element.shadowRoot.querySelectorAll(
+                '.slds-listbox__option'
+            );
+            optionsDraggable.forEach((option) => {
+                expect(option.draggable).toBeFalsy();
+            });
         });
     });
 

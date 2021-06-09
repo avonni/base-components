@@ -38,6 +38,8 @@
                     <div
                         class={computedListboxSourceContainerClass}
                         style={sourceHeight}
+                        ondragover={handleDragOverSource}
+                        ondragleave={handleDragLeaveSource}
                     >
                         <ul
                             data-source-list
@@ -45,7 +47,7 @@
                             aria-describedby="keyboard-interacton"
                             aria-labelledby="source-list-label"
                             aria-multiselectable="true"
-                            class="slds-listbox slds-listbox_vertical"
+                            class="slds-listbox slds-listbox_vertical source-list"
                             role="listbox"
                             aria-disabled={ariaDisabled}
                         >
@@ -69,6 +71,9 @@
                                         data-type={computedSourceListId}
                                         onclick={handleOptionClick}
                                         onkeydown={handleOptionKeyDown}
+                                        draggable={draggable}
+                                        ondragstart={handleDragStartSource}
+                                        ondragend={handleDragEndSource}
                                     >
                                         <div class="slds-media__figure">
                                             <c-avatar
@@ -138,6 +143,8 @@
                     <div
                         class={computedListboxSelectedContainerClass}
                         style={selectedHeight}
+                        ondragover={handleDragOverSelected}
+                        ondragleave={handleDragLeaveSelected}
                     >
                         <ul
                             data-selected-list
@@ -169,6 +176,10 @@
                                         data-type={computedSelectedListId}
                                         onclick={handleOptionClick}
                                         onkeydown={handleOptionKeyDown}
+                                        draggable={draggable}
+                                        ondragstart={handleDragStartSelected}
+                                        ondragend={handleDragEndSelected}
+                                        ondragover={handleDragOver}
                                     >
                                         <div class="slds-media__figure">
                                             <c-avatar
