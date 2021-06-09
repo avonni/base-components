@@ -9,7 +9,9 @@ const validVariants = {valid: [
     'label-stacked'
 ], default: 'standard'};
 
-const DEFAULT_STEP = 1
+const DEFAULT_STEP = 1;
+
+const DEFAULT_VALUE = 0;
 
 export default class InputCounter extends LightningElement {
     @api name;
@@ -26,7 +28,7 @@ export default class InputCounter extends LightningElement {
     @api ariaDescribedBy;
     @api max;
     @api min;
-    @api value;
+    // @api value;
     @api fieldLevelHelp;
     @api accessKey;
     @api type;
@@ -35,6 +37,7 @@ export default class InputCounter extends LightningElement {
     _variant = validVariants.default;
     _disabled;
     _step = DEFAULT_STEP;
+    _value = DEFAULT_VALUE;
     _readOnly;
     _required;
     labelVariant;
@@ -76,6 +79,15 @@ export default class InputCounter extends LightningElement {
             this.labelFieldLevelHelp =
                 this._variant !== 'label-hidden' ? this.fieldLevelHelp : null;
         }
+    }
+
+    @api
+    get value() {
+        return this._value;
+    }
+
+    set value(value) {
+        this._value = typeof value === 'number' ? value : DEFAULT_VALUE;
     }
 
     @api
@@ -194,6 +206,10 @@ export default class InputCounter extends LightningElement {
     decrementValue() {
         if (this.value !== undefined && !isNaN(this.value)) {
             this.value = Number(this.value) - Number(this.step);
+            let inputStepLength = this.inputStep.toString().length;
+            if ( this.value.toString().length > inputStepLength ) {
+                this.value = +(this.value.toFixed(inputStepLength - 2));
+            }
             this.updateValue(this.value);
         } else {
             this.value = -1;
@@ -204,6 +220,10 @@ export default class InputCounter extends LightningElement {
     incrementValue() {
         if (this.value !== undefined && !isNaN(this.value)) {
             this.value = Number(this.value) + Number(this.step);
+            let inputStepLength = this.inputStep.toString().length;
+            if ( this.value.toString().length > inputStepLength ) {
+                this.value = +(this.value.toFixed(inputStepLength - 2));
+            }
             this.updateValue(this.value);
         } else {
             this.value = 1;

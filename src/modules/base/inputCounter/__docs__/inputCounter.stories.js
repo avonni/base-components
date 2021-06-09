@@ -63,7 +63,7 @@ export default {
                 type: 'number'
             },
             defaultValue: '0.01',
-            description : 'Granularity of the value - precision of significant numbers ( specified as positive floating point number )',
+            description : 'Granularity of the value - precision of significant numbers ( specified as a positive floating point number. ex: 0.01 formats the value to 2 digits after the decimal  )',
             table: {
                 defaultValue: { summary: '0.01' },
                 type: { summary: 'number' },
