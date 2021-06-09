@@ -516,7 +516,7 @@ describe('Carousel', () => {
             const action = element.shadowRoot.querySelector(
                 '.avonni-carousel__actions > lightning-button-icon'
             );
-            expect(action.variant).toBe('border');
+            expect(action.variant).toBe('border-filled');
         });
     });
 
@@ -668,7 +668,6 @@ describe('Carousel', () => {
             expect(actionContainer.className).toContain(
                 'avonni-carousel__actions-bottom-center'
             );
-            expect(actionContainer.className).toContain('slds-m-top_x-small');
         });
     });
 
@@ -708,7 +707,6 @@ describe('Carousel', () => {
             expect(actionContainer.className).toContain(
                 'avonni-carousel__actions-right'
             );
-            expect(actionContainer.className).toContain('slds-m-top_x-small');
         });
     });
 
@@ -748,7 +746,6 @@ describe('Carousel', () => {
             expect(actionContainer.className).toContain(
                 'avonni-carousel__actions-left'
             );
-            expect(actionContainer.className).toContain('slds-m-top_x-small');
         });
     });
 
@@ -782,9 +779,6 @@ describe('Carousel', () => {
             expect(actionContainer.className).toContain(
                 'avonni-carousel__actions-left'
             );
-            expect(actionContainer.className).toContain(
-                'slds-m-bottom_x-small'
-            );
         });
     });
 
@@ -817,9 +811,6 @@ describe('Carousel', () => {
             );
             expect(actionContainer.className).toContain(
                 'avonni-carousel__actions-right'
-            );
-            expect(actionContainer.className).toContain(
-                'slds-m-bottom_x-small'
             );
         });
     });
@@ -1127,7 +1118,7 @@ describe('Carousel', () => {
             const carouselContent = element.shadowRoot.querySelector(
                 '.slds-carousel__content'
             );
-            expect(carouselContent.style.height).toBe('8.5rem');
+            expect(carouselContent.style.height).toBe('7.5rem');
         });
     });
 
