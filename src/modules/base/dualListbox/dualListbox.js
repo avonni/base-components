@@ -1216,7 +1216,6 @@ export default class DualListbox extends LightningElement {
                 this.handleDragRight();
             }
         }
-        // event.target.focus();
     }
 
     handleDragStartSelected(event) {
