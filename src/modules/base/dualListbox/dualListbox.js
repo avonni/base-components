@@ -124,8 +124,7 @@ export default class DualListbox extends LightningElement {
             // reset the optionToFocus otherwise dualListbox will steal the focus any time it's rerendered.
             this.optionToFocus = null;
         });
-        this.computedColumnSourceHeight();
-        this.computedColumnSelectedHeight();
+        this.computedBothHeight();
     }
 
     renderedCallback() {
@@ -148,7 +147,6 @@ export default class DualListbox extends LightningElement {
             }
         }
         this.disabledButtons();
-        console.log(this.highlightedOptions);
     }
 
     @api
@@ -655,6 +653,11 @@ export default class DualListbox extends LightningElement {
         return this._selectedBoxHeight;
     }
 
+    computedBothHeight() {
+        this.computedColumnSourceHeight();
+        this.computedColumnSelectedHeight();
+    }
+
     get sourceHeight() {
         let sourceHeight = 0;
         if (this.searchEngine) {
@@ -932,8 +935,7 @@ export default class DualListbox extends LightningElement {
         this.highlightedOptions.find((option) => {
             return this._selectedValues.indexOf(option);
         });
-        this.computedColumnSourceHeight();
-        this.computedColumnSelectedHeight();
+        this.computedBothHeight();
     }
 
     oldIndexValue(option) {
@@ -986,8 +988,7 @@ export default class DualListbox extends LightningElement {
         this.updateFocusableOption(this.selectedList, toMove[0]);
         this.optionToFocus = null;
         this.dispatchChangeEvent(values);
-        this.computedColumnSourceHeight();
-        this.computedColumnSelectedHeight();
+        this.computedBothHeight();
     }
 
     disabledButtons() {
@@ -1215,19 +1216,24 @@ export default class DualListbox extends LightningElement {
                 this.handleDragRight();
             }
         }
-        event.target.focus();
+        // event.target.focus();
     }
 
     handleDragStartSelected(event) {
         event.currentTarget.classList.add('avonni-dual-listbox-dragging');
-        this.updateSelectedOptions(event.currentTarget, true, false);
     }
 
     handleDragEndSelected(event) {
         event.preventDefault();
         event.currentTarget.classList.remove('avonni-dual-listbox-dragging');
         if (this._dropItSource) {
-            this.handleDragLeft();
+            if (
+                this.highlightedOptions.includes(
+                    event.currentTarget.getAttribute('data-value')
+                )
+            ) {
+                this.handleDragLeft();
+            }
         } else if (!this._dropItSource) {
             if (!this._disableReordering) {
                 const values = this.computedSelectedList.map(
