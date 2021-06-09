@@ -135,7 +135,7 @@ export default class ActivityTimelineItem extends LightningElement {
     }
 
     get hasActions() {
-        return this.actions.length > 0;
+        return this.actions && this.actions.length > 0;
     }
 
     get backgroundColor() {

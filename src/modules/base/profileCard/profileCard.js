@@ -2,16 +2,22 @@ import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-const validSizes = ['x-small', 'small', 'medium', 'large', 'x-large'];
-const validAvatarPositions = [
-    'top-left',
-    'top-center',
-    'top-right',
-    'bottom-left',
-    'bottom-center',
-    'bottom-right'
-];
-const validAvatarVariants = ['circle', 'square'];
+const validSizes = {
+    valid: ['x-small', 'small', 'medium', 'large', 'x-large'],
+    default: 'medium'
+};
+const validAvatarPositions = {
+    valid: [
+        'top-left',
+        'top-center',
+        'top-right',
+        'bottom-left',
+        'bottom-center',
+        'bottom-right'
+    ],
+    default: 'top-left'
+};
+const validAvatarVariants = { valid: ['circle', 'square'], default: 'circle' };
 
 export default class ProfileCard extends LightningElement {
     @api title;
@@ -23,9 +29,10 @@ export default class ProfileCard extends LightningElement {
     @api avatarAlternativeText;
     @api avatarFallbackIconName;
 
-    _size = 'medium';
-    _avatarPosition = 'top-left';
-    _avatarVariant = 'circle';
+    _size = validSizes.default;
+    _avatarPosition = validAvatarPositions.default;
+    _avatarMobilePosition = validAvatarPositions.default;
+    _avatarVariant = validAvatarVariants.default;
     isError = false;
     showActions = true;
     showFooter = true;
@@ -64,6 +71,20 @@ export default class ProfileCard extends LightningElement {
                 );
                 actionsContainer.classList.add('avonni-actions-right');
             }
+            if (
+                this.showActions &&
+                this._avatarMobilePosition.indexOf('right') > -1
+            ) {
+                let actionsContainer = this.template.querySelector(
+                    '.avonni-actions'
+                );
+                actionsContainer.classList.add('avonni-mobile-actions-left');
+            } else {
+                let actionsContainer = this.template.querySelector(
+                    '.avonni-actions'
+                );
+                actionsContainer.classList.add('avonni-mobile-actions-right');
+            }
         }
 
         if (this.footerSlot) {
@@ -83,45 +104,57 @@ export default class ProfileCard extends LightningElement {
         return this.template.querySelector('slot[name=footer]');
     }
 
-    @api get size() {
+    @api
+    get size() {
         return this._size;
     }
 
     set size(size) {
         this._size = normalizeString(size, {
-            fallbackValue: 'medium',
-            validValues: validSizes
+            fallbackValue: validSizes.default,
+            validValues: validSizes.valid
         });
     }
 
-    @api get avatarPosition() {
+    @api
+    get avatarPosition() {
         return this._avatarPosition;
     }
 
     set avatarPosition(avatarPosition) {
         this._avatarPosition = normalizeString(avatarPosition, {
-            fallbackValue: 'top-left',
-            validValues: validAvatarPositions
+            fallbackValue: validAvatarPositions.default,
+            validValues: validAvatarPositions.valid
         });
     }
 
-    @api get avatarVariant() {
+    @api
+    get avatarMobilePosition() {
+        return this._avatarMobilePosition;
+    }
+
+    set avatarMobilePosition(avatarMobilePosition) {
+        this._avatarMobilePosition = normalizeString(avatarMobilePosition, {
+            fallbackValue: validAvatarPositions.default,
+            validValues: validAvatarPositions.valid
+        });
+    }
+
+    @api
+    get avatarVariant() {
         return this._avatarVariant;
     }
 
     set avatarVariant(avatarVariant) {
         this._avatarVariant = normalizeString(avatarVariant, {
-            fallbackValue: 'circle',
-            validValues: validAvatarVariants
+            fallbackValue: validAvatarVariants.default,
+            validValues: validAvatarVariants.valid
         });
     }
 
     get computedContainerClass() {
         return classSet('avonni-flex-container')
             .add({
-                'avonni-flex-align-start':
-                    this._avatarPosition === 'top-left' ||
-                    this._avatarPosition === 'bottom-left',
                 'avonni-flex-align-center':
                     this._avatarPosition === 'top-center' ||
                     this._avatarPosition === 'bottom-center',
@@ -129,11 +162,40 @@ export default class ProfileCard extends LightningElement {
                     this._avatarPosition === 'top-right' ||
                     this._avatarPosition === 'bottom-right'
             })
+            .add({
+                'avonni-flex-mobile-align-center':
+                    this._avatarMobilePosition === 'top-center' ||
+                    this._avatarMobilePosition === 'bottom-center',
+                'avonni-flex-mobile-align-end':
+                    this._avatarMobilePosition === 'top-right' ||
+                    this._avatarMobilePosition === 'bottom-right'
+            })
             .toString();
     }
 
     get computedMainContainerClass() {
-        return classSet(this.avatarPosition)
+        return classSet('')
+            .add({
+                'top-left-desktop': this._avatarPosition === 'top-left',
+                'bottom-left-desktop': this._avatarPosition === 'bottom-left',
+                'bottom-right-desktop': this._avatarPosition === 'bottom-right',
+                'top-right-desktop': this._avatarPosition === 'top-right',
+                'top-center-desktop': this._avatarPosition === 'top-center',
+                'bottom-center-desktop':
+                    this._avatarPosition === 'bottom-center'
+            })
+            .add({
+                'mobile-top-left': this._avatarMobilePosition === 'top-left',
+                'mobile-bottom-left':
+                    this._avatarMobilePosition === 'bottom-left',
+                'mobile-bottom-right':
+                    this._avatarMobilePosition === 'bottom-right',
+                'mobile-top-right': this._avatarMobilePosition === 'top-right',
+                'mobile-top-center':
+                    this._avatarMobilePosition === 'top-center',
+                'mobile-bottom-center':
+                    this._avatarMobilePosition === 'bottom-center'
+            })
             .add(`card-${this._size}`)
             .toString();
     }

@@ -71,7 +71,7 @@ export default class Carousel extends LightningElement {
     renderedCallback() {
         if (!this._initialRender) {
             if (!this.disableAutoScroll) {
-                this.setAutoScroll();
+                this.start();
             }
         }
         this._initialRender = true;
@@ -241,7 +241,8 @@ export default class Carousel extends LightningElement {
         }%);`;
     }
 
-    setAutoScroll() {
+    @api
+    start() {
         const scrollDuration = parseInt(this.scrollDuration, 10) * 1000;
         const carouselPanelsLength = this.panelItems.length;
 
@@ -249,11 +250,11 @@ export default class Carousel extends LightningElement {
             this.activeIndexPanel === carouselPanelsLength - 1 &&
             (this.disableAutoRefresh || !this.isInfinite)
         ) {
-            this.cancelAutoScrollTimeOut();
+            this.pause();
             return;
         }
 
-        this.cancelAutoScrollTimeOut();
+        this.pause();
         this.autoScrollTimeOut = setTimeout(
             this.startAutoScroll.bind(this),
             scrollDuration
@@ -264,11 +265,12 @@ export default class Carousel extends LightningElement {
     }
 
     startAutoScroll() {
-        this.selectNextSibling();
-        this.setAutoScroll();
+        this.next();
+        this.start();
     }
 
-    cancelAutoScrollTimeOut() {
+    @api
+    pause() {
         clearTimeout(this.autoScrollTimeOut);
         this.autoScrollOn = false;
         this.autoScrollIcon = DEFAULT_AUTOCROLL_PLAY_ICON;
@@ -298,12 +300,12 @@ export default class Carousel extends LightningElement {
             event.preventDefault();
             event.stopPropagation();
 
-            this.cancelAutoScrollTimeOut();
+            this.pause();
             if (
                 this.activeIndexPanel < this.panelItems.length - 1 ||
                 this.isInfinite
             ) {
-                this.selectNextSibling();
+                this.next();
             }
         }
 
@@ -311,9 +313,9 @@ export default class Carousel extends LightningElement {
             event.preventDefault();
             event.stopPropagation();
 
-            this.cancelAutoScrollTimeOut();
+            this.pause();
             if (this.activeIndexPanel > 0 || this.isInfinite) {
-                this.selectPreviousSibling();
+                this.previous();
             }
         }
 
@@ -355,7 +357,7 @@ export default class Carousel extends LightningElement {
     onPanelSelect(event) {
         const currentTarget = event.currentTarget;
         const itemIndex = parseInt(currentTarget.dataset.index, 10);
-        this.cancelAutoScrollTimeOut();
+        this.pause();
 
         if (this.activeIndexPanel !== itemIndex) {
             this.unselectCurrentPanel();
@@ -402,8 +404,19 @@ export default class Carousel extends LightningElement {
         }
     }
 
-    selectPreviousSibling() {
-        this.cancelAutoScrollTimeOut();
+    @api
+    first() {
+        this.selectNewPanel(0);
+    }
+
+    @api
+    last() {
+        this.selectNewPanel(this.paginationItems.length - 1);
+    }
+
+    @api
+    previous() {
+        this.pause();
         this.unselectCurrentPanel();
         if (this.activeIndexPanel > 0) {
             this.activeIndexPanel -= 1;
@@ -413,8 +426,9 @@ export default class Carousel extends LightningElement {
         this.selectNewPanel(this.activeIndexPanel);
     }
 
-    selectNextSibling() {
-        this.cancelAutoScrollTimeOut();
+    @api
+    next() {
+        this.pause();
         this.unselectCurrentPanel();
         if (this.activeIndexPanel < this.paginationItems.length - 1) {
             this.activeIndexPanel += 1;
@@ -426,9 +440,7 @@ export default class Carousel extends LightningElement {
 
     toggleAutoScroll() {
         /*eslint no-unused-expressions: ["error", { "allowTernary": true }]*/
-        this.autoScrollOn
-            ? this.cancelAutoScrollTimeOut()
-            : this.setAutoScroll();
+        this.autoScrollOn ? this.pause() : this.start();
     }
 
     get computedCarouselContentSize() {

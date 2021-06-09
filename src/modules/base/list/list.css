@@ -6,11 +6,18 @@
     cursor: grab;
 }
 
-.sortable-item:hover {
-    background-color: var(--lwc-colorBackground, #f3f2f2);
+/* Disable the hover on touch */
+@media (hover: hover) {
+    .sortable-item:hover {
+        background-color: var(--lwc-colorBackground, #f3f2f2);
+    }
 }
 
 .sortable-item > div {
+    width: 100%;
+}
+
+.expanded-item > div {
     width: 100%;
 }
 

@@ -113,6 +113,28 @@ export default {
                 category: 'Avatar'
             }
         },
+        avatarMobilePosition: {
+            name: 'avatar-mobile-position',
+            control: {
+                type: 'select'
+            },
+            options: [
+                'top-left',
+                'top-center',
+                'top-right',
+                'bottom-left',
+                'bottom-center',
+                'bottom-right'
+            ],
+            description:
+                'Values include top-left, top-center, top-right, bottom-left, bottom-center, bottom-right.',
+            defaultValue: 'top-left',
+            table: {
+                defaultValue: { summary: 'top-left' },
+                type: { summary: 'string' },
+                category: 'Avatar'
+            }
+        },
         avatarVariant: {
             name: 'avatar-variant',
             control: {
@@ -223,4 +245,53 @@ NoImage.args = {
     backgroundColor: '#E0E0E0',
     avatarFallbackIconName: 'standard:user',
     avatarSrc: 'wrong path'
+};
+
+export const BaseMobile = Template.bind({});
+BaseMobile.parameters = {
+    viewport: {
+        defaultViewport: 'mobile1'
+    }
+};
+BaseMobile.args = {
+    title: 'Title',
+    subtitle: 'Subtitle',
+    avatarSrc:
+        'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+    backgroundSrc:
+        'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg',
+    avatarMobilePosition: 'top-left'
+};
+
+export const TopCenterMobile = Template.bind({});
+TopCenterMobile.parameters = {
+    viewport: {
+        defaultViewport: 'mobile1'
+    }
+};
+TopCenterMobile.args = {
+    title: 'Title',
+    subtitle: 'Subtitle',
+    avatarSrc:
+        'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+    backgroundSrc:
+        'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg',
+    avatarMobilePosition: 'top-center'
+};
+
+export const SmallBottomCenterMobile = Template.bind({});
+SmallBottomCenterMobile.parameters = {
+    viewport: {
+        defaultViewport: 'mobile1'
+    }
+};
+SmallBottomCenterMobile.args = {
+    title: 'Title',
+    subtitle: 'Subtitle',
+    size: 'small',
+    avatarSrc:
+        'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+    backgroundSrc:
+        'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg',
+    avatarMobilePosition: 'bottom-center'
 };

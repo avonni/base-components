@@ -29,8 +29,10 @@ export default class List extends LightningElement {
     _menuBottom;
     _itemElements;
     _savedComputedItems;
-
     _currentItemDraggedHeight;
+    _actions = [];
+    _hasActions = false;
+    computedActions = [];
     computedItems = [];
     menuRole;
     itemRole;
@@ -75,6 +77,15 @@ export default class List extends LightningElement {
             validValues: ICON_POSITIONS.valid
         });
     }
+    @api
+    get actions() {
+        return this._actions;
+    }
+    set actions(proxy) {
+        this._actions = normalizeArray(proxy);
+        this.computedActions = JSON.parse(JSON.stringify(this._actions));
+        this._hasActions = true;
+    }
 
     get showIconRight() {
         return (
@@ -95,7 +106,8 @@ export default class List extends LightningElement {
     get itemClass() {
         return classSet('slds-border_bottom slds-grid list-item')
             .add({
-                'sortable-item': this.sortable
+                'sortable-item': this.sortable,
+                'expanded-item': this._hasActions
             })
             .toString();
     }
@@ -205,10 +217,10 @@ export default class List extends LightningElement {
     }
 
     dragStart(event) {
-        if (!this.sortable) return;
+        // Stop dragging if the click was on a button menu
+        if (!this.sortable || event.target.tagName === 'LIGHTNING-BUTTON-MENU')
+            return;
 
-        // Make sure touch events don't trigger mouse events
-        event.preventDefault();
         this._itemElements = Array.from(
             this.template.querySelectorAll('.sortable-item')
         );
@@ -216,7 +228,6 @@ export default class List extends LightningElement {
         this._currentItemDraggedHeight = this._draggedElement.offsetHeight;
         this._draggedIndex = Number(this._draggedElement.dataset.index);
         this._draggedElement.classList.add('sortable-item_dragged');
-
         if (event.type !== 'keydown') {
             this.initPositions(event);
         } else {
@@ -224,6 +235,13 @@ export default class List extends LightningElement {
         }
 
         this.updateAssistiveText();
+
+        if (event.type === 'touchstart') {
+            // Make sure touch events don't trigger mouse events
+            event.preventDefault();
+            // Close any open button menu
+            this._draggedElement.focus();
+        }
     }
 
     drag(event) {
@@ -257,6 +275,9 @@ export default class List extends LightningElement {
 
         const hoveredItem = this.getHoveredItem(center);
         if (hoveredItem) this.switchWithItem(hoveredItem);
+        event.currentTarget
+            .querySelector('lightning-button-menu')
+            .classList.remove('slds-is-open');
     }
 
     dragEnd() {
@@ -325,5 +346,10 @@ export default class List extends LightningElement {
                 this._draggedElement.dataset.position = position;
             }
         }
+    }
+
+    handleButtonMenuTouchStart(event) {
+        // Stop the dragging process when touching the button menu
+        event.stopPropagation();
     }
 }
