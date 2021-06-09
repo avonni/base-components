@@ -9,6 +9,12 @@ const validVariants = {valid: [
     'label-stacked'
 ], default: 'standard'};
 
+const validTypes = {valid: [
+    'number',
+    'currency',
+    'percent'
+], default: 'number'};
+
 const DEFAULT_STEP = 1;
 
 const DEFAULT_VALUE = 0;
@@ -28,16 +34,15 @@ export default class InputCounter extends LightningElement {
     @api ariaDescribedBy;
     @api max;
     @api min;
-    // @api value;
     @api fieldLevelHelp;
     @api accessKey;
-    @api type;
     @api inputStep;
 
     _variant = validVariants.default;
     _disabled;
     _step = DEFAULT_STEP;
     _value = DEFAULT_VALUE;
+    _type = validTypes.default;
     _readOnly;
     _required;
     labelVariant;
@@ -88,6 +93,17 @@ export default class InputCounter extends LightningElement {
 
     set value(value) {
         this._value = typeof value === 'number' ? value : DEFAULT_VALUE;
+    }
+
+    @api get type() {
+        return this._type;
+    }
+
+    set type(type) {
+        this._type = normalizeString(type, {
+            fallbackValue: validTypes.default,
+            validValues: validTypes.valid
+        });
     }
 
     @api
