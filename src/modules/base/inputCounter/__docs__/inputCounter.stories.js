@@ -50,20 +50,33 @@ export default {
             },
             defaultValue: 1,
             description:
-                'Granularity of the value, specified as a positive floating point number.',
+                'Increment to add or substract from the value',
             table: {
                 type: { summary: 'number' },
                 defaultValue: 1,
                 category: 'Validation'
             }
         },
+        inputStep: {
+            name: 'input-step',
+            control: {
+                type: 'number'
+            },
+            defaultValue: '0.01',
+            description : 'Granularity of the value - precision of significant numbers ( specified as positive floating point number )',
+            table: {
+                defaultValue: { summary: '0.01' },
+                type: { summary: 'number' },
+                category: 'Validation'
+            }
+        },
         value: {
             control: {
-                type: 'text'
+                type: 'number'
             },
             description: 'Specifies the value of an input element.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'number' }
             }
         },
         variant: {
@@ -219,18 +232,7 @@ export default {
                 default: { summary: 'number' },
                 type: { summary: 'string' }
             }
-        },
-        typeAttributes: {
-            name: 'type-attributes',
-            control: {
-                type: 'object'
-            },
-            description:
-                'Type attributes object',
-            table: {
-                type: { summary: 'object[]' }
-            }
-        },
+        }
     },
     args: {
         disabled: false,
@@ -239,53 +241,23 @@ export default {
     }
 };
 
-const typeAttributes = {
-    number : {
-        minimumIntegerDigits: 1, 
-        minimumFractionDigits: 2, 
-        maximumFractionDigits: 4, 
-        minimumSignificantDigits: 1, 
-        maximumSignificantDigits: 21
-    },
-    currency : {
-        currencyCode: 'USD', 
-        currencyDisplayAs: 'code', 
-        minimumIntegerDigits: 1, 
-        minimumFractionDigits: 2, 
-        maximumFractionDigits: 4, 
-        minimumSignificantDigits: 1, 
-        maximumSignificantDigits: 21, 
-        step: 1
-    },
-    percent : {
-        minimumIntegerDigits: 1, 
-        minimumFractionDigits: 2, 
-        maximumFractionDigits: 4, 
-        minimumSignificantDigits: 1, 
-        maximumSignificantDigits: 21, 
-        step: 1
-    }
-}
 
 const Template = (args) => InputCounter(args);
 
 export const Base = Template.bind({});
 Base.args = {
     label: 'Text label',
-    typeAttributes: typeAttributes
 };
 export const InlineLabel = Template.bind({});
 InlineLabel.args = {
     label: 'Input with inline label',
     fieldLevelHelp: 'Help text',
     variant: 'label-inline',
-    typeAttributes: typeAttributes
 };
 export const HiddenLabel = Template.bind({});
 HiddenLabel.args = {
     label: 'Input with hidden label',
     variant: 'label-hidden',
-    typeAttributes: typeAttributes
 };
 
 export const ReadOnly = Template.bind({});
@@ -294,7 +266,6 @@ ReadOnly.args = {
     fieldLevelHelp: 'The value has been set to 3',
     value: 3,
     readOnly: true,
-    typeAttributes: typeAttributes
 };
 
 export const Disabled = Template.bind({});
@@ -303,7 +274,6 @@ Disabled.args = {
     fieldLevelHelp: 'The value has been set to 16',
     value: 16,
     disabled: true,
-    typeAttributes: typeAttributes
 };
 
 export const Validations = Template.bind({});
@@ -314,5 +284,4 @@ Validations.args = {
     max: 6,
     messageWhenRangeOverflow: 'The value needs to be equal or lesser than 6',
     messageWhenRangeUnderflow: 'The value needs to be equal or greater than 3',
-    typeAttributes: typeAttributes
 };

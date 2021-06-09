@@ -9,17 +9,6 @@ const validVariants = {valid: [
     'label-stacked'
 ], default: 'standard'};
 
-const validTypes = {
-    valid: [
-        'number',
-        'curreny',
-        'percent'
-    ],
-    default : 'number'
-};
-
-const DEFAULT_VALUE = 0;
-
 const DEFAULT_STEP = 1
 
 export default class InputCounter extends LightningElement {
@@ -37,10 +26,11 @@ export default class InputCounter extends LightningElement {
     @api ariaDescribedBy;
     @api max;
     @api min;
-    // @api value = DEFAULT_VALUE;
+    @api value;
     @api fieldLevelHelp;
     @api accessKey;
-    @api typeAttributes;
+    @api type;
+    @api inputStep;
 
     _variant = validVariants.default;
     _disabled;
@@ -50,8 +40,6 @@ export default class InputCounter extends LightningElement {
     labelVariant;
     labelFieldLevelHelp;
     init = false;
-    _type = validTypes.default;
-    _value = DEFAULT_VALUE;
 
     renderedCallback() {
         if (!this.init) {
@@ -62,25 +50,12 @@ export default class InputCounter extends LightningElement {
             if (srcElement) {
                 const style = document.createElement('style');
                 style.innerText =
-                    '.avonni-input-counter .slds-input {font-size: 0;text-align: left;padding: 0 var(--lwc-spacingXxLarge,3rem);}';
+                    '.avonni-input-counter .slds-input {text-align: center;padding: 0 var(--lwc-spacingXxLarge,3rem);}';
                 srcElement.appendChild(style);
             }
 
             this.init = true;
         }
-
-        console.log("%c RENDERED value:", 'background: green; color: white;', this.value)
-        console.log("%c RENDERED modulo remainder val-min % step:", 'background: green; color: white;', (((this.value - this.min) + this.step) % this.step)) // ((a % n ) + n ) % n.
-        console.log('%c RENDERED modulo val/step:', 'background: green; color: white;', (this.value % this.step))
-            
-    }
-
-    @api get value() {
-        return this._value;
-    }
-
-    set value(value) {
-        this._value = parseFloat(value);
     }
 
     @api get variant() {
@@ -101,91 +76,6 @@ export default class InputCounter extends LightningElement {
             this.labelFieldLevelHelp =
                 this._variant !== 'label-hidden' ? this.fieldLevelHelp : null;
         }
-    }
-
-    @api get type() {
-        return this._type;
-    }
-
-    set type(value) {
-        this._type = normalizeString(value, {
-            fallbackValue: validTypes.default,
-            validTypes: validTypes.valid
-        });
-
-        if (this._type === 'number') {
-            this._type = 'decimal';
-        } else if ( this._type === 'percent' ) {
-            this._type = 'percent';
-        } else if ( this._type === 'currency') {
-            this._type = 'currency'
-        }
-    }
-
-    get currencyCode() {
-        return this.type === 'currency' ? this.typeAttributes.currency.currencyCode : "USD"; //locale
-    }
-
-    get currencyDisplayAs() {
-        return this.type === 'currency' ? this.typeAttributes.currency.currencyDisplayAs : "symbol";
-    }
-
-    get minimumIntegerDigits() {
-        let keyType = this._type;
-        if (this._type === 'decimal') { 
-            keyType = 'number'; 
-        } else if ( this._type === 'percent' ) {
-            keyType = 'percent';
-        } else if ( this._type === 'currency') {
-            keyType = 'currency'
-        }
-        return this.typeAttributes[keyType].minimumIntegerDigits;
-    }
-    get minimumFractionDigits() {
-        let keyType = this._type;
-        if (this._type === 'decimal') { 
-            keyType = 'number'; 
-        } else if ( this._type === 'percent' ) {
-            keyType = 'percent';
-        } else if ( this._type === 'currency') {
-            keyType = 'currency'
-        }
-        return this.typeAttributes[keyType].minimumFractionDigits;
-    }
-    get maximumFractionDigits() {
-        let keyType = this._type;
-        if (this._type === 'decimal') { 
-            keyType = 'number'; 
-        } else if ( this._type === 'percent' ) {
-            keyType = 'percent';
-        } else if ( this._type === 'currency') {
-            keyType = 'currency'
-        }
-        
-        return this.typeAttributes[keyType].maximumFractionDigits;
-    }
-    get minimumSignificantDigits() {
-        let keyType = this._type;
-        if (this._type === 'decimal') { 
-            keyType = 'number'; 
-        } else if ( this._type === 'percent' ) {
-            keyType = 'percent';
-        } else if ( this._type === 'currency') {
-            keyType = 'currency'
-        }
-        
-        return this.typeAttributes[keyType].minimumSignificantDigits;
-    }
-    get maximumSignificantDigits() {
-        let keyType = this._type;
-        if (this._type === 'decimal') { 
-            keyType = 'number'; 
-        } else if ( this._type === 'percent' ) {
-            keyType = 'percent';
-        } else if ( this._type === 'currency') {
-            keyType = 'currency'
-        }
-        return this.typeAttributes[keyType].maximumSignificantDigits;
     }
 
     @api
@@ -212,7 +102,7 @@ export default class InputCounter extends LightningElement {
     }
 
     set step(value) {
-        this._step = typeof value === 'number' ? parseFloat(value) : DEFAULT_STEP;
+        this._step = typeof value === 'number' ? value : DEFAULT_STEP;
     }
 
     @api
@@ -303,41 +193,8 @@ export default class InputCounter extends LightningElement {
 
     decrementValue() {
         if (this.value !== undefined && !isNaN(this.value)) {
-            let currentValue = Number(this.value);
-            let stepValue = Number(this.step);
-            this.value = Number.parseFloat((currentValue - stepValue).toFixed(this.maximumFractionDigits));
-            console.log("%c dec. value:", 'background: orange; color: white;', this.value);
-            console.log("%c dec. previous value:", 'background: orange; color: white;', currentValue)
-            console.log("%c dec. val - previous % step:", 'background: orange; color: white;', ((this.value - currentValue) + this.step ) % this._step);  // CHECK FOR BREAK
-            console.log("%c dec. this step:", 'background: orange; color: white;', this._step);
-            console.log("%c dec. prev value - step:", 'background: orange; color: white;', currentValue - this._step);
-            console.log("%c dec. value + step:", 'background: orange; color: white;', this.value + this._step);
-            this.step = parseFloat(parseFloat(stepValue).toFixed(this.maximumFractionDigits));
-            
-            let remainder = false;
-            let stepBefore;           
-
-            let validationStep = stepValue;
-            console.log("%c dec. validationStep:", 'background: orange; color: white;', validationStep);
-            remainder = this.value % validationStep;
-            console.log("%c dec. Remainder:", 'background: orange; color: white;',remainder);
-            this.value = Math.floor(this.value / validationStep ) * validationStep;
-            console.log("%c dec. Floor value:", 'background: orange; color: white;',this.value)
-            stepBefore = this.step;
-            console.log("%c dec. StepBefore:", 'background: orange; color: white;',stepBefore)
-            this.step = validationStep;
-            console.log("%c dec. This.step = validationStep:", 'background: orange; color: white;',this.step)
-            
+            this.value = Number(this.value) - Number(this.step);
             this.updateValue(this.value);
-
-            if ( remainder ) {
-                this.value = +((+(this.value) + remainder).toFixed(this.maximumFractionDigits));
-                console.log("%c dec. Value + Remainder:", 'background: orange; color: white;',this.value);
-                this.step = +(stepBefore.toFixed(this.maximumFractionDigits));
-                console.log("%c dec. This.step = StepBefore:", 'background: orange; color: white;',this.step);
-                remainder = false;
-            }
-
         } else {
             this.value = -1;
             this.updateValue(this.value);
@@ -346,38 +203,8 @@ export default class InputCounter extends LightningElement {
 
     incrementValue() {
         if (this.value !== undefined && !isNaN(this.value)) {
-            let currentValue = Number(this.value);
-            let stepValue = Number(this.step);
-            this.value = Number.parseFloat((currentValue + stepValue).toFixed(this.maximumFractionDigits));
-            console.log("%c inc. value:", 'background: blue; color: white;', this.value);
-            console.log("%c inc. previous value:", 'background: blue; color: white;', currentValue)
-            console.log("%c inc. val - previous % step:", 'background: blue; color: white;', (this.value - currentValue) % this._step);
-            this.step = parseFloat(parseFloat(stepValue).toFixed(this.maximumFractionDigits));
-
-            let remainder = false;
-            let stepBefore;           
-
-            let validationStep = stepValue;
-            console.log("%c inc. validationStep:", 'background: blue; color: white;', validationStep);
-            remainder = this.value % validationStep;
-            console.log("%c inc. Remainder:", 'background: blue; color: white;',remainder);
-            this.value = Math.floor(this.value / validationStep ) * validationStep;
-            console.log("%c inc. Floor value:", 'background: blue; color: white;',this.value)
-            stepBefore = this.step;
-            console.log("%c inc. StepBefore:", 'background: blue; color: white;',stepBefore)
-            this.step = validationStep;
-            console.log("%c inc. This.step = validationStep:", 'background: blue; color: white;',this.step)
-
+            this.value = Number(this.value) + Number(this.step);
             this.updateValue(this.value);
-
-            if ( remainder ) {
-                this.value = +((+(this.value) + remainder).toFixed(this.maximumFractionDigits));
-                console.log("%c inc. Value + Remainder:", 'background: blue; color: white;',this.value);
-                this.step = +(stepBefore.toFixed(this.maximumFractionDigits));
-                console.log("%c inc. This.step = StepBefore:", 'background: blue; color: white;',this.step);
-                remainder = false;
-            }
-
         } else {
             this.value = 1;
             this.updateValue(this.value);
@@ -405,10 +232,6 @@ export default class InputCounter extends LightningElement {
     validateValue() {
         [...this.template.querySelectorAll('lightning-input')].reduce(
             (validSoFar, inputCmp) => {
-                console.log('%c ValidsoFar:' + validSoFar, 'background: red; color: white;');
-                console.log('%c inputcmp:', 'background: red; color: white;', inputCmp);
-                console.log('%c inputcmp.reportValidity:' + inputCmp.reportValidity(), 'background: red; color: white;');
-                console.log('%c inputcmp.checkValidity:' + inputCmp.checkValidity(), 'background: red; color: white;');
                 inputCmp.reportValidity();
                 return validSoFar && inputCmp.checkValidity();
             },
@@ -417,7 +240,7 @@ export default class InputCounter extends LightningElement {
     }
 
     handlerChange(event) {
-        this.value = parseFloat(event.target.value);
+        this.value = event.target.value;
         this.validateValue();
     }
 

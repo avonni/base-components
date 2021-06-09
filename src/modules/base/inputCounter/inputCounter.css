@@ -73,11 +73,3 @@
     top: 14px;
 }
 
-.avonni-formatted-number {
-    position: absolute;
-    top: 2rem;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    z-index: 1;
-}

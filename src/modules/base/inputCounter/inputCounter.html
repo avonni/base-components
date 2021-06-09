@@ -27,6 +27,7 @@
             <lightning-input
                 name={name}
                 label={label}
+                placeholder="0"
                 message-when-bad-input={messageWhenBadInput}
                 message-when-pattern-mismatch={messageWhenPatternMismatch}
                 message-when-range-overflow={messageWhenRangeOverflow}
@@ -40,7 +41,7 @@
                 value={value}
                 max={max}
                 min={min}
-                step={step}
+                step={inputStep}
                 field-level-help={labelFieldLevelHelp}
                 accesskey={accessKey}
                 variant={labelVariant}
@@ -53,21 +54,7 @@
                 onchange={handlerChange}
                 onfocus={handlerFocus}
                 onblur={handlerBlur}
-            ></lightning-input>
-            <div class="avonni-formatted-number">
-            <lightning-formatted-number
-                value={value}
-                format-style={type}
-                currency-code={currencyCode}
-                currency-display-as={currencyDisplayAs}
-                maximum-fraction-digits={maximumFractionDigits}
-                minimum-fraction-digits={mininumFractionDigits}
-                maximum-significant-digits={maximumSignficantDigits}
-                minimum-significant-digits={minimumSignficantDigits}
-                minimum-integer-digits={mininumIntegerDigits}
-                ></lightning-formatted-number>
-            </div>
-            
+            ></lightning-input>            
             <lightning-button-icon
                 if:false={readOnly}
                 icon-name="utility:new"

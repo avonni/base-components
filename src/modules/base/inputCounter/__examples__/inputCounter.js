@@ -23,7 +23,7 @@ export const InputCounter = ({
     messageWhenStepMismatch,
     messageWhenValueMissing,
     type,
-    typeAttributes
+    inputStep
 }) => {
     const element = document.createElement('ac-base-input-counter');
     element.label = label;
@@ -43,6 +43,6 @@ export const InputCounter = ({
     element.messageWhenStepMismatch = messageWhenStepMismatch;
     element.messageWhenValueMissing = messageWhenValueMissing;
     element.type = type;
-    element.typeAttributes = typeAttributes;
+    element.inputStep = inputStep;
     return element;
 };
