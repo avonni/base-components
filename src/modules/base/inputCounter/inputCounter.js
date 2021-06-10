@@ -215,7 +215,7 @@ export default class InputCounter extends LightningElement {
             this.handlePrecision();
             this.updateValue(this.value);
         } else {
-            !this.step ? this.value = 1 : this.value = 0 + this.step;
+            !this.step ? this.value = -1 : this.value = 0 - this.step;
             this.updateValue(this.value);
         }
     }
