@@ -29,7 +29,10 @@ export default class List extends LightningElement {
     _menuBottom;
     _itemElements;
     _savedComputedItems;
-
+    _currentItemDraggedHeight;
+    _actions = [];
+    _hasActions = false;
+    computedActions = [];
     computedItems = [];
     menuRole;
     itemRole;
@@ -41,6 +44,10 @@ export default class List extends LightningElement {
     set items(proxy) {
         this._items = normalizeArray(proxy);
         this.computedItems = JSON.parse(JSON.stringify(this._items));
+        this.computedItems.forEach((item) => {
+            item.infos = normalizeArray(item.infos);
+            item.icons = normalizeArray(item.icons);
+        });
     }
 
     @api
@@ -66,6 +73,15 @@ export default class List extends LightningElement {
             validValues: ICON_POSITIONS.valid
         });
     }
+    @api
+    get actions() {
+        return this._actions;
+    }
+    set actions(proxy) {
+        this._actions = normalizeArray(proxy);
+        this.computedActions = JSON.parse(JSON.stringify(this._actions));
+        this._hasActions = true;
+    }
 
     get showIconRight() {
         return (
@@ -86,7 +102,8 @@ export default class List extends LightningElement {
     get itemClass() {
         return classSet('slds-border_bottom slds-grid list-item')
             .add({
-                'sortable-item': this.sortable
+                'sortable-item': this.sortable,
+                'expanded-item': this._hasActions
             })
             .toString();
     }
@@ -138,17 +155,14 @@ export default class List extends LightningElement {
 
         // If the target has already been moved, move it back to its original position
         // Else, move it up or down
-        if (target.className.match(/.*sortable-item_moved-.*/)) {
-            target.classList.remove(
-                'sortable-item_moved-up',
-                'sortable-item_moved-down'
-            );
+        if (target.style.transform !== '') {
+            target.style.transform = '';
         } else {
-            const moveClass =
+            const translationValue =
                 targetIndex > index
-                    ? 'sortable-item_moved-up'
-                    : 'sortable-item_moved-down';
-            target.classList.add(moveClass);
+                    ? -this._currentItemDraggedHeight
+                    : this._currentItemDraggedHeight;
+            target.style.transform = `translateY(${translationValue + 'px'})`;
         }
 
         // Make the switch in computed items
@@ -199,18 +213,17 @@ export default class List extends LightningElement {
     }
 
     dragStart(event) {
-        if (!this.sortable) return;
-
-        // Make sure touch events don't trigger mouse events
-        event.preventDefault();
+        // Stop dragging if the click was on a button menu
+        if (!this.sortable || event.target.tagName === 'LIGHTNING-BUTTON-MENU')
+            return;
 
         this._itemElements = Array.from(
             this.template.querySelectorAll('.sortable-item')
         );
         this._draggedElement = event.currentTarget;
+        this._currentItemDraggedHeight = this._draggedElement.offsetHeight;
         this._draggedIndex = Number(this._draggedElement.dataset.index);
         this._draggedElement.classList.add('sortable-item_dragged');
-
         if (event.type !== 'keydown') {
             this.initPositions(event);
         } else {
@@ -218,6 +231,13 @@ export default class List extends LightningElement {
         }
 
         this.updateAssistiveText();
+
+        if (event.type === 'touchstart') {
+            // Make sure touch events don't trigger mouse events
+            event.preventDefault();
+            // Close any open button menu
+            this._draggedElement.focus();
+        }
     }
 
     drag(event) {
@@ -251,6 +271,9 @@ export default class List extends LightningElement {
 
         const hoveredItem = this.getHoveredItem(center);
         if (hoveredItem) this.switchWithItem(hoveredItem);
+        event.currentTarget
+            .querySelector('lightning-button-menu')
+            .classList.remove('slds-is-open');
     }
 
     dragEnd() {
@@ -319,5 +342,10 @@ export default class List extends LightningElement {
                 this._draggedElement.dataset.position = position;
             }
         }
+    }
+
+    handleButtonMenuTouchStart(event) {
+        // Stop the dragging process when touching the button menu
+        event.stopPropagation();
     }
 }

@@ -122,6 +122,17 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        draggable: {
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description: 'If present, the options are draggable.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: false }
+            }
+        },
         fieldLevelHelp: {
             name: 'field-level-help',
             control: {
@@ -613,7 +624,9 @@ Base.args = {
     downButtonLabel: 'Down Button Label',
     upButtonLabel: 'Up Button Label',
     options: Options,
-    value: ['2', '3', '4', '5', '6']
+    value: ['3', '2', '4', '5', '6'],
+    draggable: true,
+    hideBottomDivider: true
 };
 
 export const BaseSmall = Template.bind({});
