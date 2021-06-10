@@ -51,6 +51,7 @@ export default class AvatarGroup extends LightningElement {
         if (!this.maxCount) {
             this._maxCount = this.layout === 'stack' ? 5 : 11;
         }
+        this._determineImageWidth();
     }
 
     renderedCallback() {
@@ -99,7 +100,7 @@ export default class AvatarGroup extends LightningElement {
     }
     get badgeListPosition() {
         return `position: relative;
-                left: ${this._imageWidth}
+                left: ${this._imageWidth}px
         `;
     }
     set layout(value) {
@@ -390,5 +391,27 @@ export default class AvatarGroup extends LightningElement {
                 }
             })
         );
+    }
+
+    _determineImageWidth() {
+        switch (this.size) {
+            case 'xx-large':
+                this._imageWidth = 72;
+                break;
+            case 'x-large':
+                this._imageWidth = 56;
+                break;
+            case 'large':
+                this._imageWidth = 48;
+                break;
+            case 'medium':
+                this._imageWidth = 32;
+                break;
+            case 'small':
+                this._imageWidth = 24;
+                break;
+            default:
+                this._imageWidth = 20;
+        }
     }
 }

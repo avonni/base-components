@@ -92,10 +92,12 @@
                             tabindex="0"
                         >
                         </c-avatar>
-                        <div style={badgeListPosition}>
+                        <div
+                            style={badgeListPosition}
+                            class="slds-m-left_x-small slds-m-top_xx-small"
+                        >
                             <template for:each={item.tags} for:item="tag">
                                 <lightning-badge
-                                    class="slds-m-top_xx-small"
                                     key={tag.label}
                                     label={tag.label}
                                 ></lightning-badge>
