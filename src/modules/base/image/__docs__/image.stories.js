@@ -248,6 +248,19 @@ export default {
                 default: { summary: false },
                 type: { summary: 'boolean' }
             }
+        },
+        lazyLoading: {
+            name: 'lazy-loading',
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description:
+                'Enables lazy loading for images that are offscreen. If set to true, the property ensures that offscreen images are loaded early enough so that they have finished loading once the user scrolls near them. Note: Keep in mind that the property uses the loading attribute of HTML <img> element which is not supported for Internet Explorer.',
+            table: {
+                default: { summary: false },
+                type: { summary: 'boolean' }
+            }
         }
     },
     args: {
@@ -259,7 +272,8 @@ export default {
         right: false,
         center: false,
         blank: false,
-        staticImages: false
+        staticImages: false,
+        lazyLoading : false,
     }
 };
 
@@ -279,6 +293,15 @@ Base.args = {
     src:
         'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
     alt: 'Alt text',
+    blankColor: 'transparent'
+};
+
+export const BaseWithLazyLoading = Template.bind({});
+BaseWithLazyLoading.args = {
+    src:
+        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+    alt: 'Alt text',
+    lazyLoading : true,
     blankColor: 'transparent'
 };
 

@@ -23,7 +23,8 @@ export const Image = ({
     cropFit,
     cropPositionX,
     cropPositionY,
-    staticImages
+    staticImages,
+    lazyLoading
 }) => {
     const element = document.createElement('ac-base-image');
     element.src = src;
@@ -47,5 +48,6 @@ export const Image = ({
     element.cropPositionX = cropPositionX;
     element.cropPositionY = cropPositionY;
     element.staticImages = staticImages;
+    element.lazyLoading = lazyLoading;
     return element;
 };

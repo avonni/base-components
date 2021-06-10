@@ -40,6 +40,7 @@ export default class Image extends LightningElement {
     _imgWidth;
     _imgHeight;
     _staticImages = false;
+    _lazyLoading = false;
 
     renderedCallback() {
         this.getImageDimensions();
@@ -52,6 +53,15 @@ export default class Image extends LightningElement {
 
     set staticImages(value) {
         this._staticImages = normalizeBoolean(value);
+    }
+
+    @api
+    get lazyLoading() {
+        return this._lazyLoading ? "lazy" : "auto";
+    }
+
+    set lazyLoading(value) {
+        this._lazyLoading = normalizeBoolean(value);
     }
 
     @api get cropSize() {
