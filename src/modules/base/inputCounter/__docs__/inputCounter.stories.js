@@ -45,6 +45,7 @@ export default {
             }
         },
         step: {
+            name: 'step',
             control: {
                 type: 'number'
             },

@@ -216,15 +216,90 @@ describe('Input Counter', () => {
             });
     });
 
+    it('Input Counter step no decimal // input-step 0.01', () => {
+        const element = createElement('base-input-counter', {
+            is: InputCounter
+        });
+        document.body.appendChild(element);
+
+        element.step = 5;
+        element.value = 0;
+        element.inputStep = 0.01;
+        const input = element.shadowRoot.querySelector('lightning-input');
+
+        return Promise.resolve()
+            .then(() => {
+                expect(input.step).toBe(0.01);
+                expect(element.value).toBe(0);
+            })
+            .then(() => {
+                const addButton = element.shadowRoot.querySelector(
+                    "lightning-button-icon[title='Increment counter']"
+                );
+                addButton.click();
+                expect(element.value).toBe(5);
+            });
+    });
+
+    it('Input Counter step decimal // input-step 0.01', () => {
+        const element = createElement('base-input-counter', {
+            is: InputCounter
+        });
+        document.body.appendChild(element);
+
+        element.step = 5.55;
+        element.value = 0;
+        element.inputStep = 0.01;
+        const input = element.shadowRoot.querySelector('lightning-input');
+
+        return Promise.resolve()
+            .then(() => {
+                expect(input.step).toBe(0.01);
+                expect(element.value).toBe(0);
+            })
+            .then(() => {
+                const addButton = element.shadowRoot.querySelector(
+                    "lightning-button-icon[title='Increment counter']"
+                );
+                addButton.click();
+                expect(element.value).toBe(5.55);
+            });
+    });
+
+    // Precision Handler
+    it('Input Counter Precision step decimal // input-step', () => {
+        const element = createElement('base-input-counter', {
+            is: InputCounter
+        });
+        document.body.appendChild(element);
+
+        element.step = 55.3658;
+        element.value = 1256.789;
+        element.inputStep = 0.001;
+        const input = element.shadowRoot.querySelector('lightning-input');
+
+        return Promise.resolve()
+            .then(() => {
+                expect(input.step).toBe(0.001);
+                expect(element.value).toBe(1256.789);
+            })
+            .then(() => {
+                const addButton = element.shadowRoot.querySelector(
+                    "lightning-button-icon[title='Increment counter']"
+                );
+                addButton.click();
+                expect(element.value).toBe(1312.155);
+            });
+    });
+
     // value
-    it('Input Counter value // no input-step', () => {
+    it('Input Counter value', () => {
         const element = createElement('base-input-counter', {
             is: InputCounter
         });
         document.body.appendChild(element);
 
         element.value = 5;
-        element.inputStep = null;
 
         return Promise.resolve()
             .then(() => {
@@ -240,6 +315,49 @@ describe('Input Counter', () => {
                 minus.click();
                 expect(element.value).toBe(4);
             });
+    });
+
+    // type
+    it('Input Counter number', () => {
+        const element = createElement('base-input-counter', {
+            is: InputCounter
+        });
+        document.body.appendChild(element);
+
+        element.type = 'number';
+
+        return Promise.resolve().then(() => {
+            const input = element.shadowRoot.querySelector('lightning-input');
+            expect(input.formatter).toBe('number');
+        });
+    });
+
+    it('Input Counter percent', () => {
+        const element = createElement('base-input-counter', {
+            is: InputCounter
+        });
+        document.body.appendChild(element);
+
+        element.type = 'percent';
+
+        return Promise.resolve().then(() => {
+            const input = element.shadowRoot.querySelector('lightning-input');
+            expect(input.formatter).toBe('percent');
+        });
+    });
+
+    it('Input Counter currency', () => {
+        const element = createElement('base-input-counter', {
+            is: InputCounter
+        });
+        document.body.appendChild(element);
+
+        element.type = 'currency';
+
+        return Promise.resolve().then(() => {
+            const input = element.shadowRoot.querySelector('lightning-input');
+            expect(input.formatter).toBe('currency');
+        });
     });
 
     // disabled
@@ -332,14 +450,11 @@ describe('Input Counter', () => {
     /* ----- EVENTS ----- */
 
     // Input counter change
-    it('Input counter change event', () => {
+    it('Input counter change event // decrement', () => {
         const element = createElement('base-input-counter', {
             is: InputCounter
         });
         document.body.appendChild(element);
-
-        element.inputStep = null;
-        element.value = 0;
 
         const handler = jest.fn();
         element.addEventListener('change', handler);
@@ -351,6 +466,28 @@ describe('Input Counter', () => {
             button.click();
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.value).toBe(-1);
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    it('Input counter change event // increment', () => {
+        const element = createElement('base-input-counter', {
+            is: InputCounter
+        });
+        document.body.appendChild(element);
+
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelectorAll(
+                'lightning-button-icon'
+            );
+            button[1].click();
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.value).toBe(1);
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();

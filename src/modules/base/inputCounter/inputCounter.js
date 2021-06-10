@@ -64,6 +64,7 @@ export default class InputCounter extends LightningElement {
             this.init = true;
         }
     }
+    
 
     @api get variant() {
         return this._variant;
@@ -215,7 +216,7 @@ export default class InputCounter extends LightningElement {
             this.handlePrecision();
             this.updateValue(this.value);
         } else {
-            !this.step ? this.value = -1 : this.value = 0 - this.step;
+            this.value = !this.step ? -1 : -this.step;
             this.updateValue(this.value);
         }
     }
@@ -226,16 +227,16 @@ export default class InputCounter extends LightningElement {
             this.handlePrecision();
             this.updateValue(this.value);
         } else {
-            !this.step ? this.value = 1 : this.value = 0 + this.step;
+            this.value = !this.step ? 1 : +this.step;
             this.updateValue(this.value);
         }
     }
 
-    handlePrecision() {
-        this.inputStep !== null ? this._inputStepLength = this.inputStep.toString().length : this._inputStepLength = null;
-         
-        if ( this.inputStep !== null && this.value.toString().length > this._inputStepLength ) {
-            this._inputStepLength > 2 ? this.value = +(this.value.toFixed(this._inputStepLength - 2)) : this.value = +(this.value.toFixed(this._inputStepLength - 1));
+    handlePrecision() {   
+        this._inputStepLength = this.inputStep && this.inputStep.toString().length;
+        if (this.inputStep && this.value.toString().length > this._inputStepLength) {
+            const uniformOutputCorrection = this._inputStepLength > 2 ? 2 : 1;
+            this.value = +(this.value.toFixed(this._inputStepLength - uniformOutputCorrection));
         }
     }
 
