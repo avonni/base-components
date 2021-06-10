@@ -43,7 +43,7 @@ export default class AvatarGroup extends LightningElement {
     _listButtonVariant = validButtonVariants.default;
     _listButtonIconPosition = validButtonIconPositions.default;
     _variant = validVariants.default;
-    showPopover = false;
+    expandList = false;
     hiddenItems = [];
 
     connectedCallback() {
@@ -334,7 +334,7 @@ export default class AvatarGroup extends LightningElement {
             return;
         }
 
-        this.showPopover = false;
+        this.expandList = false;
     }
 
     handleAvatarClick(event) {
@@ -351,8 +351,6 @@ export default class AvatarGroup extends LightningElement {
         }
 
         if (item.showMore) {
-            this.showPopover = true;
-            this.template.querySelector('.slds-dropdown-trigger').focus();
             this.allowBlur();
         } else {
             this.dispatchEvent(
@@ -365,7 +363,6 @@ export default class AvatarGroup extends LightningElement {
                 })
             );
 
-            this.showPopover = false;
             this.cancelBlur();
         }
     }
@@ -383,5 +380,8 @@ export default class AvatarGroup extends LightningElement {
                 }
             })
         );
+    }
+    onButtonClick() {
+        this.expandList = !this.expandList;
     }
 }
