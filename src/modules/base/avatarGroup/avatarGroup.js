@@ -43,6 +43,7 @@ export default class AvatarGroup extends LightningElement {
     _listButtonVariant = validButtonVariants.default;
     _listButtonIconPosition = validButtonIconPositions.default;
     _variant = validVariants.default;
+    _imageWidth;
     showPopover = false;
     hiddenItems = [];
 
@@ -96,7 +97,11 @@ export default class AvatarGroup extends LightningElement {
     @api get layout() {
         return this._layout;
     }
-
+    get badgeListPosition() {
+        return `position: relative;
+                left: ${this._imageWidth}
+        `;
+    }
     set layout(value) {
         this._layout = normalizeString(value, {
             fallbackValue: validLayouts.default,
@@ -157,7 +162,9 @@ export default class AvatarGroup extends LightningElement {
         let length = this.items.length;
         let maxCount = this.maxCount;
         let items = JSON.parse(JSON.stringify(this.items));
-
+        items.forEach((item) => {
+            item.tags = normalizeArray(item.tags);
+        });
         if (isNaN(maxCount)) {
             maxCount = this.layout === 'stack' ? 5 : 11;
         }

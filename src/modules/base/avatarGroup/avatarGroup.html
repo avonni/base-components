@@ -59,7 +59,7 @@
         <template for:each={listItems} for:item="item" for:index="index">
             <template if:false={item.showMore}>
                 <template if:true={item.key}>
-                    <span key={item.key} class={avatarWrapperClass}>
+                    <div key={item.key} class={avatarWrapperClass}>
                         <c-avatar
                             alternative-text={item.alternativeText}
                             fallback-icon-name={item.fallbackIconName}
@@ -90,8 +90,18 @@
                             role="button"
                             onkeyup={handleAvatarClick}
                             tabindex="0"
-                        ></c-avatar>
-                    </span>
+                        >
+                        </c-avatar>
+                        <div style={badgeListPosition}>
+                            <template for:each={item.tags} for:item="tag">
+                                <lightning-badge
+                                    class="slds-m-top_xx-small"
+                                    key={tag.label}
+                                    label={tag.label}
+                                ></lightning-badge>
+                            </template>
+                        </div>
+                    </div>
                 </template>
             </template>
             <template if:true={item.showMore}>
