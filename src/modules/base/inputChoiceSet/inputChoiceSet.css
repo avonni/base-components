@@ -3,20 +3,20 @@
 }
 
 .slds-checkbox.horizontal{
-    display: inline-flex !important;
+    display: inline-flex;
 }
 
 .slds-radio.horizontal{
-    display: inline-flex !important;
+    display: inline-flex;
 }
 
 .slds-checkbox_button-group.vertical{
-    flex-direction: column !important;
+    flex-direction: column;
 }
 
 .slds-checkbox_button__label.vertical{
     width: 100%;
-    border-radius: 0 !important;
+    border-radius: 0;
 }
 
 .slds-checkbox_button__label.horizontal{
@@ -24,7 +24,7 @@
 }
 
 .slds-checkbox_faux{
-    padding: 0 !important;
+    padding: 0;
 }
 
 .slds-checkbox_button{

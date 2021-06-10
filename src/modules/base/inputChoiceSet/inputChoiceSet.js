@@ -14,7 +14,6 @@ import {
 } from 'c/inputUtils';
 import { classSet } from 'c/utils';
 import InputChoiceOption from './inputChoiceOption'
-import { check } from 'prettier';
 
 const i18n = {
     required: 'required'
