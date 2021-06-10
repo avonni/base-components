@@ -228,6 +228,7 @@ export default class AvatarGroup extends LightningElement {
         return classSet('avonni-avatar-group__avatar avonni-avatar-group__plus')
             .add({
                 'avonni-avatar-group_in-line': this.layout === 'stack'
+                
             })
             .add(`avonni-avatar-${this.size}`)
             .toString();
@@ -236,7 +237,8 @@ export default class AvatarGroup extends LightningElement {
     get avatarWrapperClass() {
         return classSet('avonni-avatar-group__avatar-container').add({
             'slds-show': this.layout === 'list',
-            'avonni-avatar-group_circle': this.variant === 'circle'
+            'avonni-avatar-group_circle': this.variant === 'circle',
+            'slds-p-right_small' : this.layout === 'grid'
         });
     }
 
