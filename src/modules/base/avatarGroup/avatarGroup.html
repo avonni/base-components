@@ -95,6 +95,55 @@
                 </template>
             </template>
             <template if:true={item.showMore}>
+                <template if:true={showPopover}>
+                    <template
+                        for:each={listHiddenItems}
+                        for:item="item"
+                        for:index="index"
+                    >
+                        <div
+                            key={item.key}
+                            class="avonni-avatar-group__hidden-avatar-container"
+                            onclick={handleAvatarClick}
+                            data-item-id={index}
+                            data-type="hidden"
+                        >
+                            <c-primitive-avatar
+                                alternative-text={item.alternativeText}
+                                fallback-icon-name={item.fallbackIconName}
+                                initials={item.initials}
+                                src={item.src}
+                                variant={variant}
+                                size={size}
+                                status={item.status}
+                                status-title={item.statusTitle}
+                                status-position={item.statusPosition}
+                                presence={item.presence}
+                                presence-title={item.presenceTitle}
+                                presence-position={item.presencePosition}
+                                entity-icon-name={item.entityIconName}
+                                entity-initials={item.entityInitials}
+                                entity-variant={item.entityVariant}
+                                entity-src={item.entitySrc}
+                                entity-position={item.entityPosition}
+                                data-item-id={index}
+                                data-type="hidden"
+                                class={avatarInlineClass}
+                                onclick={handleAvatarClick}
+                                role="button"
+                                onkeyup={handleAvatarClick}
+                                tabindex="0"
+                            ></c-primitive-avatar>
+                            <p
+                                onclick={handleAvatarClick}
+                                data-item-id={index}
+                                data-type="hidden"
+                            >
+                                {item.alternativeText}
+                            </p>
+                        </div>
+                    </template>
+                </template>
                 <div
                     class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open"
                     key={item.key}
@@ -131,64 +180,10 @@
                             class="slds-m-top_small slds-m-bottom_small slds-m-left_small slds-show avonni-avatar-group__list-button"
                         ></lightning-button>
                     </template>
-                    <template if:true={showPopover}>
-                        <div
-                            class="slds-dropdown slds-dropdown_left"
-                            onmouseenter={cancelBlur}
-                            onmouseleave={allowBlur}
-                        >
-                            <template
-                                for:each={listHiddenItems}
-                                for:item="item"
-                                for:index="index"
-                            >
-                                <div
-                                    key={item.key}
-                                    class="avonni-avatar-group__hidden-avatar-container"
-                                    onclick={handleAvatarClick}
-                                    data-item-id={index}
-                                    data-type="hidden"
-                                >
-                                    <c-primitive-avatar
-                                        alternative-text={item.alternativeText}
-                                        fallback-icon-name={item.fallbackIconName}
-                                        initials={item.initials}
-                                        src={item.src}
-                                        variant={variant}
-                                        size={size}
-                                        status={item.status}
-                                        status-title={item.statusTitle}
-                                        status-position={item.statusPosition}
-                                        presence={item.presence}
-                                        presence-title={item.presenceTitle}
-                                        presence-position={item.presencePosition}
-                                        entity-icon-name={item.entityIconName}
-                                        entity-initials={item.entityInitials}
-                                        entity-variant={item.entityVariant}
-                                        entity-src={item.entitySrc}
-                                        entity-position={item.entityPosition}
-                                        data-item-id={index}
-                                        data-type="hidden"
-                                        class={avatarInlineClass}
-                                        onclick={handleAvatarClick}
-                                        role="button"
-                                        onkeyup={handleAvatarClick}
-                                        tabindex="0"
-                                    ></c-primitive-avatar>
-                                    <p
-                                        onclick={handleAvatarClick}
-                                        data-item-id={index}
-                                        data-type="hidden"
-                                    >
-                                        {item.alternativeText}
-                                    </p>
-                                </div>
-                            </template>
-                        </div>
-                    </template>
                 </div>
             </template>
         </template>
+
         <template if:true={actionIconName}>
             <div class={actionButtonLayoutClass}>
                 <button
