@@ -1155,11 +1155,16 @@ export default class Combobox extends LightningElement {
     }
 
     handleScopeClick() {
+        if (!this._focusedScope) {
+            this.template.querySelector('input.combobox__scopes-input').focus();
+            return;
+        }
+
         // Clear any previously selected scope
         const previouslySelectedScope = this.scopes.find(
             (scope) => scope.selected
         );
-        previouslySelectedScope.selected = false;
+        if (previouslySelectedScope) previouslySelectedScope.selected = false;
 
         // Select new scope
         this._focusedScope.selected = true;
@@ -1174,6 +1179,7 @@ export default class Combobox extends LightningElement {
             })
         );
 
+        this._focusedScope.focused = false;
         this._focusedScopeIndex = undefined;
         this.scopesDropdownVisible = false;
     }
