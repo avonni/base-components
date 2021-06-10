@@ -13,7 +13,7 @@ import {
     VARIANT
 } from 'c/inputUtils';
 import { classSet } from 'c/utils';
-import InputChoiceOption from './inputChoiceOption'
+import InputChoiceOption from './inputChoiceOption';
 
 const i18n = {
     required: 'required'
@@ -21,7 +21,10 @@ const i18n = {
 
 const DEBOUNCE_PERIOD = 200;
 
-const validOrientations = { valid: ['vertical', 'horizontal'], default:'vertical' };
+const validOrientations = {
+    valid: ['vertical', 'horizontal'],
+    default: 'vertical'
+};
 const validTypes = { valid: ['default', 'button'], default: 'default' };
 
 export default class InputChoiceSet extends LightningElement {
@@ -31,14 +34,14 @@ export default class InputChoiceSet extends LightningElement {
     @api options;
     @api messageWhenValueMissing;
     @api name;
-    
+
     _orientation = validOrientations.default;
     _type = validTypes.default;
     _helpMessage;
     _disabled = false;
     _required = false;
     _value = [];
-    _isMultiSelect = false; 
+    _isMultiSelect = false;
 
     constructor() {
         super();
@@ -81,7 +84,7 @@ export default class InputChoiceSet extends LightningElement {
     get value() {
         return this._value;
     }
-    
+
     set value(value) {
         this._value = value;
     }
@@ -156,7 +159,7 @@ export default class InputChoiceSet extends LightningElement {
         const { options, value } = this;
         if (Array.isArray(options)) {
             return options.map((option) => {
-                return new InputChoiceOption(option, value, this.itemIndex++); 
+                return new InputChoiceOption(option, value, this.itemIndex++);
             });
         }
         return [];
@@ -219,33 +222,34 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     handleChange(event) {
-        const labels = this.template.querySelectorAll('label');
-        console.log(labels[0])
         event.stopPropagation();
-        
+
         let value = event.target.value;
         const checkboxes = this.template.querySelectorAll('input');
-        if(this.isMultiSelect){
+        if (this.isMultiSelect) {
             value = Array.from(checkboxes)
-            .filter((checkbox) => checkbox.checked)
-            .map((checkbox) => checkbox.value);
+                .filter((checkbox) => checkbox.checked)
+                .map((checkbox) => checkbox.value);
+        } else {
+            const checkboxesToUncheck = Array.from(checkboxes).filter(
+                (checkbox) => checkbox.value !== value
+            );
+            checkboxesToUncheck.forEach((checkbox) => {
+                checkbox.checked = false;
+            });
         }
-        else{
-            const checkboxesToUncheck = Array.from(checkboxes)
-            .filter((checkbox) => checkbox.value !== value);
-            checkboxesToUncheck.forEach((checkbox)=>{checkbox.checked = false;});
-        }
-        if (this.type === "button") {
+        if (this.type === 'button') {
             checkboxes.forEach((checkbox) => {
                 const label = checkbox.labels[0];
                 let icon = label.querySelector('lightning-icon');
-                if(icon){
-                    if(value.includes(label.control.value)) icon.variant = 'inverse';
+                if (icon) {
+                    if (value.includes(label.control.value))
+                        icon.variant = 'inverse';
                     else icon.variant = '';
-    
-                    if(!checkbox.checked && icon.variant === "inverse"){
-                        icon.variant =''
-                    } 
+
+                    if (!checkbox.checked && icon.variant === 'inverse') {
+                        icon.variant = '';
+                    }
                 }
             });
         }
@@ -285,42 +289,37 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     get computedButtonClass() {
-        return this.checkboxVariant ? '' : `slds-checkbox_button-group ${this.orientation}`;
+        return this.checkboxVariant
+            ? ''
+            : `slds-checkbox_button-group ${this.orientation}`;
     }
 
     get computedCheckboxContainerClass() {
-        const checkboxClass = this.isMultiSelect 
-            ? `slds-checkbox ${this.orientation}`  
+        const checkboxClass = this.isMultiSelect
+            ? `slds-checkbox ${this.orientation}`
             : `slds-radio ${this.orientation}`;
         const buttonClass = `slds-button slds-checkbox_button ${this.orientation}`;
-        
-        return this.checkboxVariant
-            ? checkboxClass
-            : buttonClass;
+
+        return this.checkboxVariant ? checkboxClass : buttonClass;
     }
 
     get computedLabelClass() {
         const buttonLabelClass = `slds-checkbox_button__label slds-align_absolute-center ${this.orientation}`;
-        const checkboxLabelClass = this.isMultiSelect && this.checkboxVariant 
-            ? 'slds-checkbox__label' 
-            : 'slds-radio__label';
-        
-            return this.checkboxVariant
-            ? checkboxLabelClass
-            : buttonLabelClass;
+        const checkboxLabelClass =
+            this.isMultiSelect && this.checkboxVariant
+                ? 'slds-checkbox__label'
+                : 'slds-radio__label';
+
+        return this.checkboxVariant ? checkboxLabelClass : buttonLabelClass;
     }
 
-    get computedInputType(){
+    get computedInputType() {
         return this.isMultiSelect || !this.checkboxVariant
-        ? 'checkbox'
-        : 'radio';
+            ? 'checkbox'
+            : 'radio';
     }
 
-    get computedCheckboxShapeClass(){
-        return this.isMultiSelect
-            ? 'slds-checkbox_faux'
-            : 'slds-radio_faux';
-
+    get computedCheckboxShapeClass() {
+        return this.isMultiSelect ? 'slds-checkbox_faux' : 'slds-radio_faux';
     }
-
 }
