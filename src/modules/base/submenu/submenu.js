@@ -1,6 +1,8 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean } from 'c/utilsPrivate';
 
+const DEFAULT_TAB_INDEX = '0';
+
 export default class Submenu extends LightningElement {
     @api accessKey;
     @api draftAlternativeText;
@@ -8,7 +10,7 @@ export default class Submenu extends LightningElement {
     @api label;
     @api prefixIconName;
 
-    _tabIndex = '0';
+    _tabIndex = DEFAULT_TAB_INDEX;
     _disabled = false;
     _isDraft = false;
     isOpen = false;
