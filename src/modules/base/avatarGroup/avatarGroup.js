@@ -286,7 +286,11 @@ export default class AvatarGroup extends LightningElement {
             .add(`avonni-action-button-${this.size}`)
             .toString();
     }
-
+    get hiddenListStyle() {
+        return classSet().add({
+            'slds-dropdown slds-dropdown_left': this.layout !== 'list'
+        });
+    }
     get actionButtonLayoutClass() {
         if (this.layout === 'list') {
             return this.actionButtonListClass;
@@ -383,5 +387,9 @@ export default class AvatarGroup extends LightningElement {
                 }
             })
         );
+    }
+
+    toggleShowHiddenList() {
+        this.showPopover = !this.showPopover;
     }
 }
