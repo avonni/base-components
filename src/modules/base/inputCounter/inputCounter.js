@@ -17,8 +17,6 @@ const validTypes = {valid: [
 
 const DEFAULT_STEP = 1;
 
-const DEFAULT_VALUE = 0;
-
 export default class InputCounter extends LightningElement {
     @api name;
     @api label;
@@ -37,14 +35,15 @@ export default class InputCounter extends LightningElement {
     @api fieldLevelHelp;
     @api accessKey;
     @api inputStep;
+    @api value;
 
     _variant = validVariants.default;
     _disabled;
     _step = DEFAULT_STEP;
-    _value = DEFAULT_VALUE;
     _type = validTypes.default;
     _readOnly;
     _required;
+    _inputStepLength;
     labelVariant;
     labelFieldLevelHelp;
     init = false;
@@ -84,15 +83,6 @@ export default class InputCounter extends LightningElement {
             this.labelFieldLevelHelp =
                 this._variant !== 'label-hidden' ? this.fieldLevelHelp : null;
         }
-    }
-
-    @api
-    get value() {
-        return this._value;
-    }
-
-    set value(value) {
-        this._value = typeof value === 'number' ? value : DEFAULT_VALUE;
     }
 
     @api get type() {
@@ -221,29 +211,31 @@ export default class InputCounter extends LightningElement {
 
     decrementValue() {
         if (this.value !== undefined && !isNaN(this.value)) {
-            this.value = Number(this.value) - Number(this.step);
-            let inputStepLength = this.inputStep.toString().length;
-            if ( this.value.toString().length > inputStepLength ) {
-                this.value = +(this.value.toFixed(inputStepLength - 2));
-            }
+            this.value = Number(this.value) - Number(this.step);            
+            this.handlePrecision();
             this.updateValue(this.value);
         } else {
-            this.value = -1;
+            !this.step ? this.value = 1 : this.value = 0 + this.step;
             this.updateValue(this.value);
         }
     }
 
     incrementValue() {
         if (this.value !== undefined && !isNaN(this.value)) {
-            this.value = Number(this.value) + Number(this.step);
-            let inputStepLength = this.inputStep.toString().length;
-            if ( this.value.toString().length > inputStepLength ) {
-                this.value = +(this.value.toFixed(inputStepLength - 2));
-            }
+            this.value = Number(this.value) + Number(this.step);            
+            this.handlePrecision();
             this.updateValue(this.value);
         } else {
-            this.value = 1;
+            !this.step ? this.value = 1 : this.value = 0 + this.step;
             this.updateValue(this.value);
+        }
+    }
+
+    handlePrecision() {
+        this.inputStep !== null ? this._inputStepLength = this.inputStep.toString().length : this._inputStepLength = null;
+         
+        if ( this.inputStep !== null && this.value.toString().length > this._inputStepLength ) {
+            this._inputStepLength > 2 ? this.value = +(this.value.toFixed(this._inputStepLength - 2)) : this.value = +(this.value.toFixed(this._inputStepLength - 1));
         }
     }
 

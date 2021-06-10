@@ -50,7 +50,7 @@ export default {
             },
             defaultValue: 1,
             description:
-                'Increment to add or substract from the value',
+                'Amount to add or substract from the value',
             table: {
                 type: { summary: 'number' },
                 defaultValue: 1,

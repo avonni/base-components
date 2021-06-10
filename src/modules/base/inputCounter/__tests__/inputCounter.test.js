@@ -45,6 +45,8 @@ describe('Input Counter', () => {
         expect(element.required).toBeFalsy();
         expect(element.fieldLevelHelp).toBeUndefined();
         expect(element.accessKey).toBeUndefined();
+        expect(element.type).toBe('number');
+        expect(element.inputStep).toBeUndefined();
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -189,7 +191,7 @@ describe('Input Counter', () => {
     });
 
     // step
-    it('Input Counter step', () => {
+    it('Input Counter step // no input-step', () => {
         const element = createElement('base-input-counter', {
             is: InputCounter
         });
@@ -197,11 +199,12 @@ describe('Input Counter', () => {
 
         element.step = 5;
         element.value = 0;
+        element.inputStep = null;
         const input = element.shadowRoot.querySelector('lightning-input');
 
         return Promise.resolve()
             .then(() => {
-                expect(input.step).toBe(5);
+                expect(input.step).toBe(null);
                 expect(element.value).toBe(0);
             })
             .then(() => {
@@ -214,13 +217,14 @@ describe('Input Counter', () => {
     });
 
     // value
-    it('Input Counter value', () => {
+    it('Input Counter value // no input-step', () => {
         const element = createElement('base-input-counter', {
             is: InputCounter
         });
         document.body.appendChild(element);
 
         element.value = 5;
+        element.inputStep = null;
 
         return Promise.resolve()
             .then(() => {
@@ -333,6 +337,9 @@ describe('Input Counter', () => {
             is: InputCounter
         });
         document.body.appendChild(element);
+
+        element.inputStep = null;
+        element.value = 0;
 
         const handler = jest.fn();
         element.addEventListener('change', handler);
