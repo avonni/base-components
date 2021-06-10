@@ -5,11 +5,15 @@ import * as iconUtils from 'c/iconUtils';
 import standardTemplate from './primitiveIcon.html';
 import { getIconSvgTemplates } from 'c/configProvider';
 
+const ICON_SIZES = {valid:['xx-small', 'x-small', 'small', 'medium', 'large'] , default: 'medium'}
+
+const ICON_VARIANTS = {valid: ['bare', 'error', 'inverse', 'warning', 'success'], default: ''}
+
 export default class PrimitiveIcon extends LightningElement {
     @api iconName;
     @api src;
     @api svgClass;
-    @api size = 'medium';
+    @api size = ICON_SIZES.default;
     @api variant;
 
     privateIconSvgTemplates = getIconSvgTemplates();
@@ -36,15 +40,15 @@ export default class PrimitiveIcon extends LightningElement {
 
     get normalizedSize() {
         return normalize(this.size, {
-            fallbackValue: 'medium',
-            validValues: ['xx-small', 'x-small', 'small', 'medium', 'large']
+            fallbackValue: ICON_SIZES.default,
+            validValues: ICON_SIZES.valid
         });
     }
 
     get normalizedVariant() {
         return normalize(this.variant, {
-            fallbackValue: '',
-            validValues: ['bare', 'error', 'inverse', 'warning', 'success']
+            fallbackValue: ICON_VARIANTS.default,
+            validValues: ICON_VARIANTS.valid
         });
     }
 

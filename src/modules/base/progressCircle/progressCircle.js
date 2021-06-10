@@ -2,25 +2,35 @@ import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-const VARIANTS = { valid: ['standard', 'value-hidden'], default: 'standard' };
-const DIRECTIONS = { valid: ['fill', 'drain'], default: 'fill' };
-const SIZES = {
+const VALUE_VARIANTS = { valid: ['standard', 'value-hidden'], default: 'standard' };
+
+const PROGRESS_CIRCLE_DIRECTIONS = { valid: ['fill', 'drain'], default: 'fill' };
+
+const PROGRESS_CIRCLE_SIZES = {
     valid: ['x-small', 'small', 'medium', 'large', 'x-large'],
     default: 'medium'
 };
+
+const PROGRESS_CIRCLE_THICKNESSES = {
+    valid: ['x-small', 'small', 'medium', 'large', 'x-large'],
+    default: 'medium'
+};
+
 const TITLE_POSITIONS = { valid: ['top', 'bottom'], default: 'bottom' };
+
 const DEFAULT_COLOR = '#1589ee';
+const DEFAULT_VALUE = 0;
 
 export default class ProgressCircle extends LightningElement {
     @api title;
     @api label;
 
-    _titlePosition = 'bottom';
-    _value = 0;
-    _variant = 'standard';
-    _direction = 'fill';
-    _size = 'medium';
-    _thickness = 'medium';
+    _titlePosition = TITLE_POSITIONS.default;
+    _value = DEFAULT_VALUE;
+    _variant = VALUE_VARIANTS.default;
+    _direction = PROGRESS_CIRCLE_DIRECTIONS.default;
+    _size = PROGRESS_CIRCLE_SIZES.default;
+    _thickness = PROGRESS_CIRCLE_THICKNESSES.default;
     _color = DEFAULT_COLOR;
 
     @api
@@ -57,8 +67,8 @@ export default class ProgressCircle extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: VARIANTS.default,
-            validValues: VARIANTS.valid
+            fallbackValue: VALUE_VARIANTS.default,
+            validValues: VALUE_VARIANTS.valid
         });
     }
 
@@ -69,8 +79,8 @@ export default class ProgressCircle extends LightningElement {
 
     set direction(direction) {
         this._direction = normalizeString(direction, {
-            fallbackValue: DIRECTIONS.default,
-            validValues: DIRECTIONS.valid
+            fallbackValue: PROGRESS_CIRCLE_DIRECTIONS.default,
+            validValues: PROGRESS_CIRCLE_DIRECTIONS.valid
         });
     }
 
@@ -81,8 +91,8 @@ export default class ProgressCircle extends LightningElement {
 
     set size(size) {
         this._size = normalizeString(size, {
-            fallbackValue: SIZES.default,
-            validValues: SIZES.valid
+            fallbackValue: PROGRESS_CIRCLE_SIZES.default,
+            validValues: PROGRESS_CIRCLE_SIZES.valid
         });
     }
 
@@ -93,8 +103,8 @@ export default class ProgressCircle extends LightningElement {
 
     set thickness(thickness) {
         this._thickness = normalizeString(thickness, {
-            fallbackValue: SIZES.default,
-            validValues: SIZES.valid
+            fallbackValue: PROGRESS_CIRCLE_THICKNESSES.default,
+            validValues: PROGRESS_CIRCLE_THICKNESSES.valid
         });
     }
 

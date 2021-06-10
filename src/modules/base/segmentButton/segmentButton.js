@@ -1,7 +1,7 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
-const validTypes = ['button', 'reset', 'submit'];
+const SEGMENT_BUTTON_TYPES = {valid: ['button', 'reset', 'submit'], default: 'button'};
 
 export default class SegmentButton extends LightningElement {
     @api label;
@@ -9,7 +9,7 @@ export default class SegmentButton extends LightningElement {
     @api prefixIconName;
 
     _value;
-    _type = 'button';
+    _type = SEGMENT_BUTTON_TYPES.default;
     _disabled = false;
 
     @api
@@ -28,8 +28,8 @@ export default class SegmentButton extends LightningElement {
 
     set type(value) {
         this._type = normalizeString(value, {
-            fallbackValue: 'button',
-            validValues: validTypes
+            fallbackValue: SEGMENT_BUTTON_TYPES.default,
+            validValues: SEGMENT_BUTTON_TYPES.valid
         });
     }
 

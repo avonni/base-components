@@ -6,16 +6,17 @@ import {
 } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-const THEMES = {
+const ITEM_THEMES = {
     valid: ['default', 'shade', 'inverse'],
     default: 'default'
 };
 
-const VARIANTS = {
+const RELATIONSHIP_GRAPH_GROUP_VARIANTS = {
     valid: ['horizontal', 'vertical'],
     default: 'horizontal'
 };
-const POSITIONS = {
+
+const ACTIONS_POSITIONS = {
     valid: ['top', 'bottom'],
     default: 'top'
 };
@@ -35,16 +36,16 @@ export default class RelationshipGraph extends LightningElement {
     selectedItemPosition;
     inlineHeader;
 
-    _variant = VARIANTS.default;
+    _variant = RELATIONSHIP_GRAPH_GROUP_VARIANTS.default;
     _actions = [];
     _selectedItemName;
     _selectedItem;
     _groups = [];
     _groupActions = [];
-    _groupActionsPosition = POSITIONS.default;
-    _groupTheme = THEMES.default;
+    _groupActionsPosition = ACTIONS_POSITIONS.default;
+    _groupTheme = ITEM_THEMES.default;
     _itemActions = [];
-    _itemTheme = THEMES.default;
+    _itemTheme = ITEM_THEMES.default;
     _hideItemsCount = false;
 
     connectedCallback() {
@@ -65,8 +66,8 @@ export default class RelationshipGraph extends LightningElement {
     }
     set variant(value) {
         this._variant = normalizeString(value, {
-            fallbackValue: VARIANTS.default,
-            validValues: VARIANTS.valid
+            fallbackValue: RELATIONSHIP_GRAPH_GROUP_VARIANTS.default,
+            validValues: RELATIONSHIP_GRAPH_GROUP_VARIANTS.valid
         });
     }
 
@@ -115,8 +116,8 @@ export default class RelationshipGraph extends LightningElement {
     }
     set groupActionsPosition(value) {
         this._groupActionsPosition = normalizeString(value, {
-            fallbackValue: POSITIONS.default,
-            validValues: POSITIONS.valid
+            fallbackValue: ACTIONS_POSITIONS.default,
+            validValues: ACTIONS_POSITIONS.valid
         });
     }
 
@@ -126,8 +127,8 @@ export default class RelationshipGraph extends LightningElement {
     }
     set groupTheme(value) {
         this._groupTheme = normalizeString(value, {
-            fallbackValue: THEMES.default,
-            validValues: THEMES.valid
+            fallbackValue: ITEM_THEMES.default,
+            validValues: ITEM_THEMES.valid
         });
     }
 
@@ -145,8 +146,8 @@ export default class RelationshipGraph extends LightningElement {
     }
     set itemTheme(value) {
         this._itemTheme = normalizeString(value, {
-            fallbackValue: THEMES.default,
-            validValues: THEMES.valid
+            fallbackValue: ITEM_THEMES.default,
+            validValues: ITEM_THEMES.valid
         });
     }
 

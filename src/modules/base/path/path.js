@@ -7,7 +7,7 @@ import {
 import { classSet } from 'c/utils';
 import { Tooltip } from 'c/tooltipLibrary';
 
-const FORMATS = {
+const PATH_FORMATS = {
     valid: ['linear', 'non-linear'],
     default: 'linear'
 };
@@ -55,7 +55,7 @@ export default class Path extends LightningElement {
 
     _currentStep;
     _disabled = false;
-    _format = FORMATS.default;
+    _format = PATH_FORMATS.default;
     _keyFieldsLabel = DEFAULT_KEYFIELDS_LABEL;
     _guidanceLabel = DEFAULT_GUIDANCE_LABEL;
     _hideCoaching = false;
@@ -111,8 +111,8 @@ export default class Path extends LightningElement {
     }
     set format(value) {
         this._format = normalizeString(value, {
-            fallbackValue: FORMATS.default,
-            validValues: FORMATS.valid
+            fallbackValue: PATH_FORMATS.default,
+            validValues: PATH_FORMATS.valid
         });
     }
 

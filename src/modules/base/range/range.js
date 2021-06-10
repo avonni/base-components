@@ -3,14 +3,14 @@ import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
 
-const defaultMin = 0;
-const defaultMax = 100;
-const defaultStep = 1;
+const DEFAULT_MIN = 0;
+const DEFAULT_MAX = 100;
+const DEFAULT_STEP = 1;
 
-const validSizes = ['x-small', 'small', 'medium', 'large'];
-const validTypes = ['horizontal', 'vertical'];
-const validVariants = ['standard', 'label-hidden'];
-const validUnit = ['decimal', 'currency', 'percent'];
+const ICON_SIZES = {valid: ['x-small', 'small', 'medium', 'large'], default: ''};
+const RATING_TYPES = {valid: ['horizontal', 'vertical'], default: 'horizontal'};
+const LABEL_VARIANTS = {valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked'], default: 'standard'};
+const RATING_UNITS = {valid: ['decimal', 'currency', 'percent'], default: 'decimal'};
 
 export default class Range extends LightningElement {
     @api label;
@@ -24,15 +24,15 @@ export default class Range extends LightningElement {
     @api messageWhenTypeMismatch;
     @api unitAttributes = {};
 
-    _min = defaultMin;
-    _max = defaultMax;
-    _step = defaultStep;
+    _min = DEFAULT_MIN;
+    _max = DEFAULT_MAX;
+    _step = DEFAULT_STEP;
     _valueLower;
     _valueUpper;
-    _size = '';
-    _type = 'horizontal';
-    _variant = 'standard';
-    _unit = 'decimal';
+    _size = ICON_SIZES.default;
+    _type = RATING_TYPES.default;
+    _variant = LABEL_VARIANTS.default;
+    _unit = RATING_UNITS.default;
     _pin = false;
     _disabled = false;
     _helpMessage;
@@ -123,8 +123,8 @@ export default class Range extends LightningElement {
 
     set size(size) {
         this._size = normalizeString(size, {
-            fallbackValue: '',
-            validValues: validSizes
+            fallbackValue: ICON_SIZES.default,
+            validValues: ICON_SIZES.valid
         });
 
         if (this.init) {
@@ -138,8 +138,8 @@ export default class Range extends LightningElement {
 
     set type(type) {
         this._type = normalizeString(type, {
-            fallbackValue: 'horizontal',
-            validValues: validTypes
+            fallbackValue: RATING_TYPES.default,
+            validValues: RATING_TYPES.valid
         });
 
         if (this.init) {
@@ -153,8 +153,8 @@ export default class Range extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: 'standard',
-            validValues: validVariants
+            fallbackValue: LABEL_VARIANTS.default,
+            validValues: LABEL_VARIANTS.valid
         });
 
         if (this.init) {
@@ -168,8 +168,8 @@ export default class Range extends LightningElement {
 
     set unit(unit) {
         this._unit = normalizeString(unit, {
-            fallbackValue: 'number',
-            validValues: validUnit
+            fallbackValue: RATING_UNITS.default,
+            validValues: RATING_UNITS.valid
         });
 
         if (this.init) {

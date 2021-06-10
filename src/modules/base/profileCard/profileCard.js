@@ -2,11 +2,11 @@ import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-const validSizes = {
+const AVATAR_SIZES = {
     valid: ['x-small', 'small', 'medium', 'large', 'x-large'],
     default: 'medium'
 };
-const validAvatarPositions = {
+const AVATAR_POSITIONS = {
     valid: [
         'top-left',
         'top-center',
@@ -17,7 +17,7 @@ const validAvatarPositions = {
     ],
     default: 'top-left'
 };
-const validAvatarVariants = { valid: ['circle', 'square'], default: 'circle' };
+const AVATAR_VARIANTS = { valid: ['circle', 'square'], default: 'circle' };
 
 export default class ProfileCard extends LightningElement {
     @api title;
@@ -29,10 +29,10 @@ export default class ProfileCard extends LightningElement {
     @api avatarAlternativeText;
     @api avatarFallbackIconName;
 
-    _size = validSizes.default;
-    _avatarPosition = validAvatarPositions.default;
-    _avatarMobilePosition = validAvatarPositions.default;
-    _avatarVariant = validAvatarVariants.default;
+    _size = AVATAR_SIZES.default;
+    _avatarPosition = AVATAR_POSITIONS.default;
+    _avatarMobilePosition = AVATAR_POSITIONS.default;
+    _avatarVariant = AVATAR_VARIANTS.default;
     isError = false;
     showActions = true;
     showFooter = true;
@@ -111,8 +111,8 @@ export default class ProfileCard extends LightningElement {
 
     set size(size) {
         this._size = normalizeString(size, {
-            fallbackValue: validSizes.default,
-            validValues: validSizes.valid
+            fallbackValue: AVATAR_SIZES.default,
+            validValues: AVATAR_SIZES.valid
         });
     }
 
@@ -123,8 +123,8 @@ export default class ProfileCard extends LightningElement {
 
     set avatarPosition(avatarPosition) {
         this._avatarPosition = normalizeString(avatarPosition, {
-            fallbackValue: validAvatarPositions.default,
-            validValues: validAvatarPositions.valid
+            fallbackValue: AVATAR_POSITIONS.default,
+            validValues: AVATAR_POSITIONS.valid
         });
     }
 
@@ -135,8 +135,8 @@ export default class ProfileCard extends LightningElement {
 
     set avatarMobilePosition(avatarMobilePosition) {
         this._avatarMobilePosition = normalizeString(avatarMobilePosition, {
-            fallbackValue: validAvatarPositions.default,
-            validValues: validAvatarPositions.valid
+            fallbackValue: AVATAR_POSITIONS.default,
+            validValues: AVATAR_POSITIONS.valid
         });
     }
 
@@ -147,8 +147,8 @@ export default class ProfileCard extends LightningElement {
 
     set avatarVariant(avatarVariant) {
         this._avatarVariant = normalizeString(avatarVariant, {
-            fallbackValue: validAvatarVariants.default,
-            validValues: validAvatarVariants.valid
+            fallbackValue: AVATAR_VARIANTS.default,
+            validValues: AVATAR_VARIANTS.valid
         });
     }
 

@@ -3,12 +3,18 @@ import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import { generateUniqueId } from 'c/inputUtils';
 
-const validAligns = ['left', 'center', 'right', 'fill'];
+const PAGINATION_ALIGNS = {valid: ['left', 'center', 'right', 'fill'], default: 'left'};
+
+const DEFAULT_PER_PAGE = 20
+const DEFAULT_TOTAL_ROWS = 0
+const DEFAULT_ELLIPSIS_TEXT = '...';
+const DEFAULT_VALUE = 1
+const DEFAULT_LIMIT = 5
 
 export default class Pagination extends LightningElement {
-    @api perPage = 20;
-    @api totalRows = 0;
-    @api ellipsisText = '...';
+    @api perPage = DEFAULT_PER_PAGE;
+    @api totalRows = DEFAULT_TOTAL_ROWS;
+    @api ellipsisText = DEFAULT_ELLIPSIS_TEXT;
     @api firstButtonLabel;
     @api firstButtonIconName;
     @api previousButtonLabel;
@@ -16,11 +22,11 @@ export default class Pagination extends LightningElement {
     @api lastButtonLabel;
     @api lastButtonIconName;
 
-    _value = 1;
-    _limit = 5;
+    _value = DEFAULT_VALUE;
+    _limit = DEFAULT_LIMIT;
     _nextButtonIconName;
     _previousButtonIconName;
-    _align = 'left';
+    _align = PAGINATION_ALIGNS.default;
     _disabled = false;
     init = false;
 
@@ -118,8 +124,8 @@ export default class Pagination extends LightningElement {
 
     set align(align) {
         this._align = normalizeString(align, {
-            fallbackValue: 'left',
-            validValues: validAligns
+            fallbackValue: PAGINATION_ALIGNS.default,
+            validValues: PAGINATION_ALIGNS.valid
         });
     }
 

@@ -2,12 +2,12 @@ import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { normalizeArray, normalizeString } from 'c/utilsPrivate';
 
-const THEMES = {
+const ITEM_THEMES = {
     valid: ['default', 'shade', 'inverse'],
     default: 'default'
 };
 
-const VARIANTS = {
+const RELATIONSHIP_GRAPH_GROUP_VARIANTS = {
     valid: ['horizontal', 'vertical'],
     default: 'horizontal'
 };
@@ -42,8 +42,8 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     _expanded = true;
     _hasSelectedChildren;
     _items = [];
-    _theme = THEMES.default;
-    _variant = VARIANTS.default;
+    _theme = ITEM_THEMES.default;
+    _variant = RELATIONSHIP_GRAPH_GROUP_VARIANTS.default;
 
     connectedCallback() {
         this._closed = this.expanded === false;
@@ -130,8 +130,8 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     }
     set theme(value) {
         this._theme = normalizeString(value, {
-            validValues: THEMES.valid,
-            fallbackValue: THEMES.defaultActions
+            validValues: ITEM_THEMES.valid,
+            fallbackValue: ITEM_THEMES.defaultActions
         });
     }
 
@@ -141,8 +141,8 @@ export default class PrimitiveRelationshipGraphGroup extends LightningElement {
     }
     set variant(value) {
         this._variant = normalizeString(value, {
-            validValues: VARIANTS.valid,
-            fallbackValue: VARIANTS.defaultActions
+            validValues: RELATIONSHIP_GRAPH_GROUP_VARIANTS.valid,
+            fallbackValue: RELATIONSHIP_GRAPH_GROUP_VARIANTS.defaultActions
         });
     }
 

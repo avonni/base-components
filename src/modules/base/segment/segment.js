@@ -1,12 +1,12 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
-const validVariants = ['shade', 'success', 'warning', 'error'];
+const SEGMENT_VARIANTS = {valid: ['shade', 'success', 'warning', 'error'], default: 'shade'};
 
 export default class Segment extends LightningElement {
     @api value;
 
-    _variant = 'shade';
+    _variant = SEGMENT_VARIANTS.default;
     _disabled = false;
 
     renderedCallback() {
@@ -29,8 +29,8 @@ export default class Segment extends LightningElement {
 
     set variant(value) {
         this._variant = normalizeString(value, {
-            fallbackValue: 'shade',
-            validValues: validVariants
+            fallbackValue: SEGMENT_VARIANTS.default,
+            validValues: SEGMENT_VARIANTS.valid
         });
     }
 

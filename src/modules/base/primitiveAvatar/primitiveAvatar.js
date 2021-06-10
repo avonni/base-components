@@ -3,7 +3,7 @@ import { classSet } from 'c/utils';
 import { normalizeString } from 'c/utilsPrivate';
 import { computeSldsClass } from 'c/iconUtils';
 
-const SIZE = {
+const AVATAR_SIZES = {
     valid: [
         'xx-small',
         'x-small',
@@ -15,7 +15,7 @@ const SIZE = {
     ],
     default: 'medium'
 };
-const VARIANT = {
+const AVATAR_VARIANTS = {
     valid: ['circle', 'square'],
     default: 'square'
 };
@@ -23,7 +23,7 @@ const STATUS = {
     valid: ['approved', 'locked', 'declined', 'unknown'],
     default: null
 };
-const POSITION = {
+const POSITIONS = {
     valid: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
     presenceDefault: 'bottom-right',
     statusDefault: 'top-right',
@@ -53,19 +53,19 @@ export default class PrimitiveAvatar extends LightningElement {
     fallbackIconClass;
 
     _alternativeText = DEFAULT_ALTERNATIVE_TEXT;
-    _entityPosition = POSITION.entityDefault;
+    _entityPosition = POSITIONS.entityDefault;
     _entitySrc;
     _entityTitle = DEFAULT_ENTITY_TITLE;
-    _entityVariant = VARIANT.default;
+    _entityVariant = AVATAR_VARIANTS.default;
     _presence = PRESENCE.default;
-    _presencePosition = POSITION.presenceDefault;
+    _presencePosition = POSITIONS.presenceDefault;
     _presenceTitle = DEFAULT_PRESENCE_TITLE;
-    _size = SIZE.default;
+    _size = AVATAR_SIZES.default;
     _src = '';
     _status = STATUS.default;
-    _statusPosition = POSITION.statusDefault;
+    _statusPosition = POSITIONS.statusDefault;
     _statusTitle = DEFAULT_STATUS_TITLE;
-    _variant = VARIANT.default;
+    _variant = AVATAR_VARIANTS.default;
 
     /**
      * Main avatar logic
@@ -96,8 +96,8 @@ export default class PrimitiveAvatar extends LightningElement {
 
     set size(value) {
         this._size = normalizeString(value, {
-            fallbackValue: SIZE.default,
-            validValues: SIZE.valid
+            fallbackValue: AVATAR_SIZES.default,
+            validValues: AVATAR_SIZES.valid
         });
         this._updateClassList();
     }
@@ -118,8 +118,8 @@ export default class PrimitiveAvatar extends LightningElement {
 
     set variant(value) {
         this._variant = normalizeString(value, {
-            fallbackValue: VARIANT.default,
-            validValues: VARIANT.valid
+            fallbackValue: AVATAR_VARIANTS.default,
+            validValues: AVATAR_VARIANTS.valid
         });
         this._updateClassList();
     }
@@ -159,8 +159,8 @@ export default class PrimitiveAvatar extends LightningElement {
 
     set statusPosition(value) {
         this._statusPosition = normalizeString(value, {
-            fallbackValue: POSITION.statusDefault,
-            validValues: POSITION.valid
+            fallbackValue: POSITIONS.statusDefault,
+            validValues: POSITIONS.valid
         });
         this._computeStatus();
     }
@@ -189,8 +189,8 @@ export default class PrimitiveAvatar extends LightningElement {
 
     set presencePosition(value) {
         this._presencePosition = normalizeString(value, {
-            fallbackValue: POSITION.presenceDefault,
-            validValues: POSITION.valid
+            fallbackValue: POSITIONS.presenceDefault,
+            validValues: POSITIONS.valid
         });
         this._computePresenceClasses();
     }
@@ -216,8 +216,8 @@ export default class PrimitiveAvatar extends LightningElement {
 
     set entityPosition(value) {
         this._entityPosition = normalizeString(value, {
-            fallbackValue: POSITION.entityDefault,
-            validValues: POSITION.valid
+            fallbackValue: POSITIONS.entityDefault,
+            validValues: POSITIONS.valid
         });
         this._computeEntityClasses();
     }
@@ -248,8 +248,8 @@ export default class PrimitiveAvatar extends LightningElement {
 
     set entityVariant(value) {
         this._entityVariant = normalizeString(value, {
-            fallbackValue: VARIANT.default,
-            validValues: VARIANT.valid
+            fallbackValue: AVATAR_VARIANTS.default,
+            validValues: AVATAR_VARIANTS.valid
         });
         this._computeEntityClasses();
     }
