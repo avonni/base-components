@@ -1,7 +1,7 @@
 import { normalizeArray } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-export default class ComboboxOption {
+export default class Option {
     constructor(option) {
         this.avatarFallbackIconName = option.avatarFallbackIconName;
         this.avatarSrc = option.avatarSrc;
@@ -11,6 +11,7 @@ export default class ComboboxOption {
         this.secondaryText = option.secondaryText;
         this.value = option.value;
         this.hasAvatar = this.avatarFallbackIconName || this.avatarSrc;
+        this.focused = false;
     }
 
     get computedClass() {
@@ -18,7 +19,8 @@ export default class ComboboxOption {
             'slds-media slds-media_small slds-media_center slds-listbox__item slds-listbox__option slds-listbox__option_plain slds-listbox__option_entity combobox__option'
         )
             .add({
-                'slds-is-selected': this.selected || this.hasSelectedChildren()
+                'slds-is-selected': this.selected || this.hasSelectedChildren(),
+                'slds-has-focus': this.focused
             })
             .toString();
     }

@@ -1,10 +1,11 @@
 import { classSet } from 'c/utils';
 
-export default class ComboboxScope {
+export default class Scope {
     constructor(scope) {
         this.label = scope.label;
         this.name = scope.name;
         this.iconName = scope.iconName;
+        this.focused = false;
     }
 
     get showIcon() {
@@ -20,7 +21,8 @@ export default class ComboboxScope {
             'slds-media slds-listbox__option slds-listbox__option_plain slds-media_small'
         )
             .add({
-                'slds-is-selected': this.selected
+                'slds-is-selected': this.selected,
+                'slds-has-focus': this.focused
             })
             .toString();
     }

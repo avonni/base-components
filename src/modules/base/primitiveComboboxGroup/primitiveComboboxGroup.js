@@ -42,9 +42,9 @@ export default class PrimitiveComboboxGroup extends LightningElement {
         return generateUniqueId();
     }
 
-    handleClick(event) {
+    handleAction(event) {
         this.dispatchEvent(
-            new CustomEvent('privateoptionclick', {
+            new CustomEvent(`privateoption${event.type}`, {
                 detail: {
                     value: event.currentTarget.dataset.value
                 },

@@ -54,8 +54,10 @@
                                         role="textbox"
                                         value={scopesInputValue}
                                         disabled={inputIsDisabled}
+                                        aria-owns="scopes-dropdown"
                                         readonly
                                         onblur={handleScopeBlur}
+                                        onkeydown={handleScopesInputKeyDown}
                                     />
 
                                     <!-- Scopes right icon -->
@@ -69,8 +71,10 @@
 
                                 <!-- Scopes dropdown -->
                                 <div
+                                    id="scopes-dropdown"
                                     class={computedDropdownClass}
                                     role="listbox"
+                                    aria-activedescendant={computedScopesAriaActiveDescendant}
                                     onclick={handleScopeClick}
                                     onmousedown={handleDropdownMouseDown}
                                     onmouseup={handleDropdownMouseUp}
@@ -100,6 +104,9 @@
                                                 key={scope.name}
                                                 role="presentation"
                                                 class="slds-listbox__item"
+                                                onmouseenter={handleMouseEnter}
+                                                onmouseleave={handleMouseLeave}
+                                                data-type="scope"
                                                 data-name={scope.name}
                                             >
                                                 <div
@@ -145,8 +152,8 @@
                     <c-avatar
                         if:true={showInputValueAvatar}
                         class="slds-combobox__input-entity-icon"
-                        fallback-icon-name={lastSelectedOption.avatarFallbackIconName}
-                        src={lastSelectedOption.avatarSrc}
+                        fallback-icon-name={selectedOption.avatarFallbackIconName}
+                        src={selectedOption.avatarSrc}
                         aria-hidden="true"
                         hide-avatar-details="true"
                         size="x-small"
@@ -218,19 +225,22 @@
                         if:false={isLoading}
                         role="listbox"
                         aria-multiselectable={isMultiSelect}
+                        aria-activedescendant={computedAriaActiveDescendant}
                     >
                         <!-- Back to parent link -->
                         <li
-                            if:true={currentParent}
-                            class="slds-listbox__item slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_term combobox__action_top slds-border_bottom"
+                            if:true={backLink}
+                            class={backLink.computedClass}
                             role="option"
                             onclick={handleBackLinkClick}
+                            onmouseenter={handleMouseEnter}
+                            onmouseleave={handleMouseLeave}
                         >
                             <div
                                 class="slds-media__figure slds-listbox__option-icon"
                             >
                                 <lightning-icon
-                                    icon-name="utility:chevronleft"
+                                    icon-name={backLink.iconName}
                                     size="x-small"
                                     alternative-text="Back"
                                 ></lightning-icon>
@@ -238,7 +248,7 @@
                             <div class="slds-media__body">
                                 <span
                                     class="slds-listbox__option-text slds-listbox__option-text_entity"
-                                    >{currentParent.label}</span
+                                    >{backLink.label}</span
                                 >
                             </div>
                         </li>
@@ -247,11 +257,13 @@
                         <template for:each={topActions} for:item="action">
                             <li
                                 key={action.name}
-                                class="slds-listbox__item slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_term combobox__action_top"
+                                class={action.computedClass}
                                 role="option"
                                 aria-label="Action button"
                                 data-name={action.name}
                                 onclick={handleActionClick}
+                                onmouseenter={handleMouseEnter}
+                                onmouseleave={handleMouseLeave}
                             >
                                 <div
                                     if:true={action.iconName}
@@ -295,6 +307,8 @@
                                     groups={group.groups}
                                     remove-selected-options={removeSelectedOptions}
                                     onprivateoptionclick={handleOptionClick}
+                                    onprivateoptionmouseenter={handleMouseEnter}
+                                    onprivateoptionmouseleave={handleMouseLeave}
                                     onclick={focus}
                                 ></c-primitive-combobox-group>
                             </template>
@@ -304,10 +318,12 @@
                         <template for:each={bottomActions} for:item="action">
                             <li
                                 key={action.name}
-                                class="slds-listbox__item slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_term combobox__action_bottom"
-                                role="button"
+                                class={action.computedClass}
+                                role="option"
                                 data-name={action.name}
                                 onclick={handleActionClick}
+                                onmouseenter={handleMouseEnter}
+                                onmouseleave={handleMouseLeave}
                             >
                                 <div
                                     if:true={action.iconName}
