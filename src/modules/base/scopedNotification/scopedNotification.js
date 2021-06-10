@@ -3,14 +3,14 @@ import { classSet } from 'c/utils';
 import { normalizeString } from 'c/utilsPrivate';
 
 const SCOPED_NOTIFICATION_VARIANTS = {valid: ['base', 'light', 'dark', 'warning', 'error', 'success'], default: 'base'};
-const SCOPED_NOTIFICATION_SIZES = {valid: ['xx-small', 'x-small', 'small', 'medium', 'large'], default: 'medium'};
+const ICON_SIZES = {valid: ['xx-small', 'x-small', 'small', 'medium', 'large'], default: 'medium'};
 
 export default class ScopedNotification extends LightningElement {
     @api title;
     @api iconName;
 
     _variant = SCOPED_NOTIFICATION_VARIANTS.default;
-    _iconSize = SCOPED_NOTIFICATION_SIZES.default;
+    _iconSize = ICON_SIZES.default;
     showTitle = true;
 
     renderedCallback() {
@@ -40,8 +40,8 @@ export default class ScopedNotification extends LightningElement {
 
     set iconSize(iconSize) {
         this._iconSize = normalizeString(iconSize, {
-            fallbackValue: SCOPED_NOTIFICATION_SIZES.default,
-            validValues: SCOPED_NOTIFICATION_SIZES.valid
+            fallbackValue: ICON_SIZES.default,
+            validValues: ICON_SIZES.valid
         });
     }
 

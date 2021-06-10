@@ -61,6 +61,8 @@ const DEFAULT_BUTTON_NEXT_ICON_NAME = 'utility:right';
 
 const DEFAULT_FRACTION_LABEL = '/';
 
+const DEFAULT_INITIAL_SLIDE = 0
+
 export default class Slides extends LightningElement {
     @api slidesPerView = DEFAULT_SLIDES_PER_VIEW;
     @api spaceBetween = DEFAULT_SPACE_BETWEEN;
@@ -86,7 +88,7 @@ export default class Slides extends LightningElement {
     _buttonPosition = BUTTON_POSITIONS.default;
     _indicatorType = INDICATOR_TYPES.default;
     _indicatorPosition = INDICATOR_POSITIONS.default;
-    _initialSlide = 0;
+    _initialSlide = DEFAULT_INITIAL_SLIDE;
 
     _navigation = false;
     _buttonInner = false;

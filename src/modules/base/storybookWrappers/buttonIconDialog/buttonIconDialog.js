@@ -1,5 +1,8 @@
 import { LightningElement, api } from 'lwc';
 
+const DEFAULT_BUTTON_SIZE = 'medium'
+const DEFAULT_BUTTON_VARIANT = 'border'
+
 export default class ButtonIconDialog extends LightningElement {
     @api accessKey;
     @api alternativeText;
@@ -7,6 +10,6 @@ export default class ButtonIconDialog extends LightningElement {
     @api iconClass;
     @api iconName;
     @api disabled;
-    @api size = 'medium';
-    @api variant = 'border';
+    @api size = DEFAULT_BUTTON_SIZE;
+    @api variant = DEFAULT_BUTTON_VARIANT;
 }

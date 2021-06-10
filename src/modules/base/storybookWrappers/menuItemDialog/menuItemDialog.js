@@ -1,5 +1,7 @@
 import { LightningElement, api } from 'lwc';
 
+const DEFAULT_TAB_INDEX = '0'
+
 export default class MenuItemDialog extends LightningElement {
     @api value;
     @api accessKey;
@@ -7,7 +9,7 @@ export default class MenuItemDialog extends LightningElement {
     @api iconName;
     @api label;
     @api prefixIconName;
-    @api tabIndex = '0';
+    @api tabIndex = DEFAULT_TAB_INDEX;
     @api disabled = false;
     @api isDraft = false;
 }
