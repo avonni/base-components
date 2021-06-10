@@ -41,12 +41,6 @@ export default class InputChoiceOption {
     
     }
 
-    get computedLabelCheckboxClass(){
-        return classSet('slds-m-right_x-small').add({
-            'block': (this.iconPosition === POSITION_ICON.TOP || this.iconPosition === POSITION_ICON.BOTTOM),
-        }).toString();
-    }
-
     get computedVariantButton(){
         return this.isChecked ? "inverse" : "base";
     }
