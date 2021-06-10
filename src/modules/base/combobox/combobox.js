@@ -7,7 +7,8 @@ import {
     normalizeBoolean,
     normalizeString,
     getListHeight,
-    normalizeAriaAttribute
+    normalizeAriaAttribute,
+    classListMutation
 } from 'c/utilsPrivate';
 import { FieldConstraintApi } from 'c/inputUtils';
 import { classSet, generateUniqueId } from 'c/utils';
@@ -40,13 +41,15 @@ const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
 const DEFAULT_PLACEHOLDER = 'Select an Option';
 const DEFAULT_PLACEHOLDER_WHEN_SEARCH_ALLOWED = 'Search...';
 const DEFAULT_GROUP_NAME = 'ungrouped';
+const DEFAULT_SCOPES_TITLE = 'Suggested for you';
+
+// Default LWC message
+const DEFAULT_MESSAGE_WHEN_VALUE_MISSING = 'Complete this field.';
 
 export default class Combobox extends LightningElement {
     @api fieldLevelHelp;
     @api label;
-    @api messageWhenValueMissing;
     @api name;
-    @api scopesTitle;
 
     _actions = [];
     _allowSearch = false;
@@ -58,6 +61,7 @@ export default class Combobox extends LightningElement {
     _isLoading = false;
     _isMultiSelect = false;
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
+    _messageWhenValueMissing = DEFAULT_MESSAGE_WHEN_VALUE_MISSING;
     _multiLevelGroups = false;
     _options = [];
     _placeholder;
@@ -65,7 +69,8 @@ export default class Combobox extends LightningElement {
     _removeSelectedOptions = false;
     _required = false;
     _scopes = [];
-    _search;
+    _scopesTitle = DEFAULT_SCOPES_TITLE;
+    _search = this.computeSearch;
     _value = [];
     _variant = VARIANTS.default;
 
@@ -216,6 +221,17 @@ export default class Combobox extends LightningElement {
     }
 
     @api
+    get messageWhenValueMissing() {
+        return this._messageWhenValueMissing;
+    }
+    set messageWhenValueMissing(value) {
+        this._messageWhenValueMissing =
+            typeof value === 'string'
+                ? value.trim()
+                : DEFAULT_MESSAGE_WHEN_VALUE_MISSING;
+    }
+
+    @api
     get multiLevelGroups() {
         return this._multiLevelGroups;
     }
@@ -295,6 +311,15 @@ export default class Combobox extends LightningElement {
     }
 
     @api
+    get scopesTitle() {
+        return this._scopesTitle;
+    }
+    set scopesTitle(value) {
+        this._scopesTitle =
+            typeof value === 'string' ? value.trim() : DEFAULT_SCOPES_TITLE;
+    }
+
+    @api
     get search() {
         return this._search;
     }
@@ -325,6 +350,11 @@ export default class Combobox extends LightningElement {
         this._variant = normalizeString(value, {
             validValues: VARIANTS.valid,
             fallbackValue: VARIANTS.default
+        });
+
+        classListMutation(this.classList, {
+            'slds-form-element_stacked': this._variant === 'label-stacked',
+            'slds-form-element_horizontal': this._variant === 'label-inline'
         });
     }
 
