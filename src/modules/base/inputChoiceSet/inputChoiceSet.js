@@ -219,6 +219,8 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     handleChange(event) {
+        const labels = this.template.querySelectorAll('label');
+        console.log(labels[0])
         event.stopPropagation();
         
         let value = event.target.value;

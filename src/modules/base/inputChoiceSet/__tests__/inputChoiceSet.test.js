@@ -175,11 +175,10 @@ describe('Input choice set', () => {
         element.options = options;
 
         return Promise.resolve().then(() => {
-            options.forEach((option, index) => {
-                const correspondingOption = options[index];
-                expect(correspondingOption).toBeTruthy();
-                expect(option.label).toBe(correspondingOption.label);
-                expect(option.value).toBe(correspondingOption.value);
+            const labels = element.shadowRoot.querySelectorAll('label');
+            let index = 0;
+            labels.forEach((label) => {
+                expect(label.control.value).toBe(element.options[index++].value);
             });
         });
     });
@@ -194,13 +193,16 @@ describe('Input choice set', () => {
         element.options = optionsWithIcon;
 
         return Promise.resolve().then(() => {
-            options.forEach((option, index) => {
-                const correspondingOption = options[index];
-                expect(correspondingOption).toBeTruthy();
-                expect(option.label).toBe(correspondingOption.label);
-                expect(option.value).toBe(correspondingOption.value);
-                expect(option.iconName).toBe(correspondingOption.iconName);
-                expect(option.iconPosition).toBe(correspondingOption.iconPosition);
+            const icons = element.shadowRoot.querySelectorAll('lightning-icon');
+            let index = 0;
+            icons.forEach((icon) => {
+                expect(icon.iconName).toBe(element.options[index++].iconName);
+            });
+
+            const labels = element.shadowRoot.querySelectorAll('label');
+            index = 0;
+            labels.forEach((label) => {
+                expect(label.control.value).toBe(element.options[index++].value);
             });
         });
     });
