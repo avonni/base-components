@@ -383,5 +383,6 @@ export default class AvatarGroup extends LightningElement {
     }
     onButtonClick() {
         this.expandList = !this.expandList;
+        // this.listButtonLabel = this.expandList ? 'Show less' : 'Show more';
     }
 }
