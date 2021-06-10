@@ -2,7 +2,7 @@ import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
 
-const SIZE = {
+const AVATAR_SIZES = {
     valid: [
         'xx-small',
         'x-small',
@@ -14,7 +14,7 @@ const SIZE = {
     ],
     default: 'medium'
 };
-const VARIANT = {
+const AVATAR_VARIANTS = {
     valid: ['circle', 'square'],
     default: 'square'
 };
@@ -22,7 +22,7 @@ const STATUS = {
     valid: ['approved', 'locked', 'declined', 'unknown'],
     default: null
 };
-const POSITION = {
+const POSITIONS = {
     valid: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
     presenceDefault: 'bottom-right',
     statusDefault: 'top-right',
@@ -33,7 +33,7 @@ const PRESENCE = {
     default: null
 };
 
-const TEXT_POSITION = {
+const TEXT_POSITIONS = {
     valid: ['left', 'right', 'center'],
     default: 'right'
 };
@@ -55,21 +55,21 @@ export default class Avatar extends LightningElement {
     mediaObjectClass;
 
     _alternativeText = DEFAULT_ALTERNATIVE_TEXT;
-    _entityPosition = POSITION.entityDefault;
+    _entityPosition = POSITIONS.entityDefault;
     _entitySrc;
     _entityTitle = DEFAULT_ENTITY_TITLE;
-    _entityVariant = VARIANT.default;
+    _entityVariant = AVATAR_VARIANTS.default;
     _hideAvatarDetails = false;
     _presence = PRESENCE.default;
-    _presencePosition = POSITION.presenceDefault;
+    _presencePosition = POSITIONS.presenceDefault;
     _presenceTitle = DEFAULT_PRESENCE_TITLE;
-    _size = SIZE.default;
+    _size = AVATAR_SIZES.default;
     _src;
     _status = STATUS.default;
-    _statusPosition = POSITION.statusDefault;
+    _statusPosition = POSITIONS.statusDefault;
     _statusTitle = DEFAULT_STATUS_TITLE;
-    _variant = VARIANT.default;
-    _textPosition = TEXT_POSITION.default;
+    _variant = AVATAR_VARIANTS.default;
+    _textPosition = TEXT_POSITIONS.default;
 
     /**
      * Main avatar logic
@@ -105,8 +105,8 @@ export default class Avatar extends LightningElement {
 
     set size(value) {
         this._size = normalizeString(value, {
-            fallbackValue: SIZE.default,
-            validValues: SIZE.valid
+            fallbackValue: AVATAR_SIZES.default,
+            validValues: AVATAR_SIZES.valid
         });
     }
 
@@ -126,8 +126,8 @@ export default class Avatar extends LightningElement {
 
     set variant(value) {
         this._variant = normalizeString(value, {
-            fallbackValue: VARIANT.default,
-            validValues: VARIANT.valid
+            fallbackValue: AVATAR_VARIANTS.default,
+            validValues: AVATAR_VARIANTS.valid
         });
     }
 
@@ -138,8 +138,8 @@ export default class Avatar extends LightningElement {
 
     set textPosition(position) {
         this._textPosition = normalizeString(position, {
-            fallbackValue: TEXT_POSITION.default,
-            validValues: TEXT_POSITION.valid
+            fallbackValue: TEXT_POSITIONS.default,
+            validValues: TEXT_POSITIONS.valid
         });
         this._updateClassList();
     }
@@ -177,8 +177,8 @@ export default class Avatar extends LightningElement {
 
     set statusPosition(value) {
         this._statusPosition = normalizeString(value, {
-            fallbackValue: POSITION.statusDefault,
-            validValues: POSITION.valid
+            fallbackValue: POSITIONS.statusDefault,
+            validValues: POSITIONS.valid
         });
     }
 
@@ -205,8 +205,8 @@ export default class Avatar extends LightningElement {
 
     set presencePosition(value) {
         this._presencePosition = normalizeString(value, {
-            fallbackValue: POSITION.presenceDefault,
-            validValues: POSITION.valid
+            fallbackValue: POSITIONS.presenceDefault,
+            validValues: POSITIONS.valid
         });
     }
 
@@ -231,8 +231,8 @@ export default class Avatar extends LightningElement {
 
     set entityPosition(value) {
         this._entityPosition = normalizeString(value, {
-            fallbackValue: POSITION.entityDefault,
-            validValues: POSITION.valid
+            fallbackValue: POSITIONS.entityDefault,
+            validValues: POSITIONS.valid
         });
     }
 
@@ -262,8 +262,8 @@ export default class Avatar extends LightningElement {
 
     set entityVariant(value) {
         this._entityVariant = normalizeString(value, {
-            fallbackValue: VARIANT.default,
-            validValues: VARIANT.valid
+            fallbackValue: AVATAR_VARIANTS.default,
+            validValues: AVATAR_VARIANTS.valid
         });
     }
 

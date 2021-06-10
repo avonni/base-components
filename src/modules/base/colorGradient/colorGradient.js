@@ -6,11 +6,14 @@ import {
     normalizeBoolean
 } from 'c/utilsPrivate';
 
-const indicatorSize = 12;
+const INDICATOR_SIZE = 12;
+
 const DEFAULT_VALUE = '#ffffff';
 
+const DEFAULT_MESSAGE_WHEN_BAD_INPUT = 'Please ensure value is correct'
+
 export default class ColorGradient extends LightningElement {
-    @api messageWhenBadInput = 'Please ensure value is correct';
+    @api messageWhenBadInput = DEFAULT_MESSAGE_WHEN_BAD_INPUT;
 
     _disabled = false;
     _readOnly = false;
@@ -298,10 +301,10 @@ export default class ColorGradient extends LightningElement {
                 '.slds-color-picker__range-indicator'
             );
 
-            indicator.style.top = `${event.offsetY - indicatorSize}px`;
+            indicator.style.top = `${event.offsetY - INDICATOR_SIZE}px`;
             indicator.style.left = `${event.offsetX}px`;
 
-            this.setColor(event.offsetX, event.offsetY - indicatorSize);
+            this.setColor(event.offsetX, event.offsetY - INDICATOR_SIZE);
         }
     }
 
@@ -313,7 +316,7 @@ export default class ColorGradient extends LightningElement {
             top: event.target.offsetTop,
             left: event.target.offsetLeft,
             width: this.paletteWidth,
-            height: this.paletteHeight - indicatorSize
+            height: this.paletteHeight - INDICATOR_SIZE
         };
     }
 
@@ -345,9 +348,9 @@ export default class ColorGradient extends LightningElement {
             }
 
             if (delta.y < this.data.height) {
-                if (delta.y < -indicatorSize) {
-                    indicator.style.top = `-${indicatorSize}px`;
-                    delta.y = -indicatorSize;
+                if (delta.y < -INDICATOR_SIZE) {
+                    indicator.style.top = `-${INDICATOR_SIZE}px`;
+                    delta.y = -INDICATOR_SIZE;
                 } else {
                     indicator.style.top = `${delta.y}px`;
                 }

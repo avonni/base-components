@@ -2,7 +2,7 @@ import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-const validVariants = {
+const CHIP_VARIANTS = {
     valid: [
         'base',
         'brand',
@@ -20,7 +20,7 @@ const validVariants = {
 export default class Chip extends LightningElement {
     @api label;
 
-    _variant = validVariants.default;
+    _variant = CHIP_VARIANTS.default;
     _outline = false;
     renderLeft = true;
     renderRight = true;
@@ -41,8 +41,8 @@ export default class Chip extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: validVariants.default,
-            validValues: validVariants.valid
+            fallbackValue: CHIP_VARIANTS.default,
+            validValues: CHIP_VARIANTS.valid
         });
     }
 

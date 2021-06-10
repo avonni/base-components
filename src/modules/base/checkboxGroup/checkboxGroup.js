@@ -20,7 +20,7 @@ const i18n = {
 
 const DEBOUNCE_PERIOD = 200;
 
-const validTypes = { valid: ['checkbox', 'button'], default: 'checkbox' };
+const CHECKBOX_GROUP_TYPES = { valid: ['checkbox', 'button'], default: 'checkbox' };
 
 export default class CheckboxGroup extends LightningElement {
     static delegatesFocus = true;
@@ -30,7 +30,7 @@ export default class CheckboxGroup extends LightningElement {
     @api messageWhenValueMissing;
     @api name;
 
-    _type = validTypes.default;
+    _type = CHECKBOX_GROUP_TYPES.default;
     _helpMessage;
     _disabled = false;
     _required = false;
@@ -115,8 +115,8 @@ export default class CheckboxGroup extends LightningElement {
 
     set type(type) {
         this._type = normalizeString(type, {
-            fallbackValue: validTypes.default,
-            validValues: validTypes.valid
+            fallbackValue: CHECKBOX_GROUP_TYPES.default,
+            validValues: CHECKBOX_GROUP_TYPES.valid
         });
     }
 

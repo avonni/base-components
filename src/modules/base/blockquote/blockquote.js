@@ -2,12 +2,12 @@ import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-const validVariants = {
+const BLOCKQUOTE_VARIANTS = {
     valid: ['default', 'brand', 'warning', 'error', 'success'],
     default: 'default'
 };
-const validIconPositions = { valid: ['left', 'right'], default: 'left' };
-const validIconSizes = {
+const ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
+const ICON_SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
     default: 'small'
 };
@@ -16,9 +16,9 @@ export default class Blockquote extends LightningElement {
     @api title;
     @api iconName;
 
-    _variant = validVariants.default;
-    _iconPosition = validIconPositions.default;
-    _iconSize = validIconSizes.default;
+    _variant = BLOCKQUOTE_VARIANTS.default;
+    _iconPosition = ICON_POSITIONS.default;
+    _iconSize = ICON_SIZES.default;
 
     @api
     get variant() {
@@ -27,8 +27,8 @@ export default class Blockquote extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: validVariants.default,
-            validValues: validVariants.valid
+            fallbackValue: BLOCKQUOTE_VARIANTS.default,
+            validValues: BLOCKQUOTE_VARIANTS.valid
         });
     }
 
@@ -39,8 +39,8 @@ export default class Blockquote extends LightningElement {
 
     set iconPosition(position) {
         this._iconPosition = normalizeString(position, {
-            fallbackValue: validIconPositions.default,
-            validValues: validIconPositions.valid
+            fallbackValue: ICON_POSITIONS.default,
+            validValues: ICON_POSITIONS.valid
         });
     }
 
@@ -51,8 +51,8 @@ export default class Blockquote extends LightningElement {
 
     set iconSize(size) {
         this._iconSize = normalizeString(size, {
-            fallbackValue: validIconSizes.default,
-            validValues: validIconSizes.valid
+            fallbackValue: ICON_SIZES.default,
+            validValues: ICON_SIZES.valid
         });
     }
 

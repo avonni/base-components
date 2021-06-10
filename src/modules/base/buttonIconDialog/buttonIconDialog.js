@@ -1,15 +1,13 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
-const validSizesBare = {
-    valid: ['x-small', 'small', 'medium', 'large'],
+const BUTTON_SIZES = {
+    validBare: ['x-small', 'small', 'medium', 'large'],
+    validNonBare: ['xx-small', 'x-small', 'small', 'medium'],
     default: 'medium'
 };
-const validSizesNonBare = {
-    valid: ['xx-small', 'x-small', 'small', 'medium'],
-    default: 'medium'
-};
-const validVariants = {
+
+const BUTTON_VARIANTS = {
     valid: [
         'bare',
         'container',
@@ -30,8 +28,8 @@ export default class ButtonIconDialog extends LightningElement {
     @api iconName;
 
     _disabled = false;
-    _size = 'medium';
-    _variant = validVariants.default;
+    _size = BUTTON_SIZES.default;
+    _variant = BUTTON_VARIANTS.default;
     _dialogSlot;
 
     renderedCallback() {
@@ -46,13 +44,13 @@ export default class ButtonIconDialog extends LightningElement {
     set size(size) {
         if (this._variant === 'bare' || this._variant === 'bare-inverse') {
             this._size = normalizeString(size, {
-                fallbackValue: validSizesBare.default,
-                validValues: validSizesBare.valid
+                fallbackValue: BUTTON_SIZES.default,
+                validValues: BUTTON_SIZES.validBare
             });
         } else {
             this._size = normalizeString(size, {
-                fallbackValue: validSizesNonBare.default,
-                validValues: validSizesNonBare.valid
+                fallbackValue: BUTTON_SIZES.default,
+                validValues: BUTTON_SIZES.validNonBare
             });
         }
     }
@@ -64,8 +62,8 @@ export default class ButtonIconDialog extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: validVariants.default,
-            validValues: validVariants.valid
+            fallbackValue: BUTTON_VARIANTS.default,
+            validValues: BUTTON_VARIANTS.valid
         });
     }
 
