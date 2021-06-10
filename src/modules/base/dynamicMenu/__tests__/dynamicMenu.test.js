@@ -127,7 +127,6 @@ describe('Dynamic Menu', () => {
             const button = element.shadowRoot.querySelector(
                 'lightning-button-icon'
             );
-            console.log(button);
             expect(button.iconName).toBe('utility:add');
             expect(button.size).toBe('medium');
         });

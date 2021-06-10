@@ -2,9 +2,9 @@ import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-const validSizes = { valid: ['small', 'large'], default: 'small' };
+const ILLUSTRATION_SIZES = { valid: ['small', 'large'], default: 'small' };
 
-const validVariants = {
+const ILLUSTRATION_VARIANTS = {
     valid: [
         'text-only',
         'going-camping',
@@ -36,8 +36,8 @@ const validVariants = {
 
 export default class Illustration extends LightningElement {
     @api title;
-    _size = validSizes.default;
-    _variant = validVariants.default;
+    _size = ILLUSTRATION_SIZES.default;
+    _variant = ILLUSTRATION_VARIANTS.default;
 
     @api
     get variant() {
@@ -46,8 +46,8 @@ export default class Illustration extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: validVariants.default,
-            validValues: validVariants.valid
+            fallbackValue: ILLUSTRATION_VARIANTS.default,
+            validValues: ILLUSTRATION_VARIANTS.valid
         });
     }
 
@@ -58,8 +58,8 @@ export default class Illustration extends LightningElement {
 
     set size(size) {
         this._size = normalizeString(size, {
-            fallbackValue: validSizes.default,
-            validValues: validSizes.valid
+            fallbackValue: ILLUSTRATION_SIZES.default,
+            validValues: ILLUSTRATION_SIZES.valid
         });
     }
 

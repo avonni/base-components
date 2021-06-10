@@ -122,13 +122,15 @@ function PARSE_INT_STYLE(element, value) {
     return parseInt(element.style[value], 10);
 }
 
+const DEFAULT_VARIANT = 'top-toolbar';
+
 export default class InputRichText extends LightningElement {
     @api label;
     @api labelVisible = false;
     @api placeholder;
     @api disabledCategories = '';
     @api formats = '';
-    @api variant = 'top-toolbar';
+    @api variant = DEFAULT_VARIANT;
     @api messageWhenBadInput;
     @api customButtons;
     @api shareWithEntityId;

@@ -2,7 +2,7 @@ import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-const validVariants = {valid: [
+const LABEL_VARIANTS = {valid: [
     'standard',
     'label-inline',
     'label-hidden',
@@ -30,7 +30,7 @@ export default class InputCounter extends LightningElement {
     @api fieldLevelHelp;
     @api accessKey;
 
-    _variant = validVariants.default;
+    _variant = LABEL_VARIANTS.default;
     _disabled;
     _step = DEFAULT_STEP;
     _readOnly;
@@ -62,8 +62,8 @@ export default class InputCounter extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: validVariants.default,
-            validValues: validVariants.valid
+            fallbackValue: LABEL_VARIANTS.default,
+            validValues: LABEL_VARIANTS.valid
         });
 
         if (this._variant === 'label-inline') {
