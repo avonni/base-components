@@ -47,7 +47,7 @@
     <div class="slds-form-element__control">
         <div class={computedComboboxGroupClass}>
             <!-- Scopes -->
-            <c-primitive-base-combobox
+            <c-primitive-combobox
                 if:true={showScopes}
                 class="slds-combobox_object-switcher slds-combobox-addon_start"
                 disabled={disabled}
@@ -60,10 +60,10 @@
                 read-only={readOnly}
                 value={scopesValue}
                 onchange={handleScopeChange}
-            ></c-primitive-base-combobox>
+            ></c-primitive-combobox>
 
             <!-- Main dropdown -->
-            <c-primitive-base-combobox
+            <c-primitive-combobox
                 class={computedMainComboboxClass}
                 actions={actions}
                 allow-search={allowSearch}
@@ -94,7 +94,7 @@
                 onactionclick={handleActionClick}
                 onchange={handleChange}
                 onprivateselect={handlePrivateSelect}
-            ></c-primitive-base-combobox>
+            ></c-primitive-combobox>
         </div>
         <!-- Selected options -->
         <ul
