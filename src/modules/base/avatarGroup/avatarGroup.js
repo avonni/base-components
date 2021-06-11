@@ -182,7 +182,13 @@ export default class AvatarGroup extends LightningElement {
         items.forEach((item, index) => {
             item.key = 'avatar-key-' + index;
         });
-
+        items.forEach((item) => {
+            if (item.tags) {
+                item.tags.forEach((tag) => {
+                    tag.class = this._determineBadgeStyle(tag);
+                });
+            }
+        });
         return items;
     }
 
@@ -329,6 +335,9 @@ export default class AvatarGroup extends LightningElement {
         return !(this.layout === 'list');
     }
 
+    get badgeClass() {
+        return 'slds-badge_inverse';
+    }
     allowBlur() {
         this._allowBlur = true;
     }
@@ -412,6 +421,22 @@ export default class AvatarGroup extends LightningElement {
                 break;
             default:
                 this._imageWidth = 20;
+        }
+    }
+    _determineBadgeStyle(tag) {
+        switch (tag.variant) {
+            case 'inverse':
+                return 'slds-badge_inverse';
+            case 'lightest':
+                return 'slds-badge_lightest';
+            case 'success':
+                return 'slds-theme_success';
+            case 'warning':
+                return 'slds-theme_warning';
+            case 'error':
+                return 'slds-theme_error';
+            default:
+                return 'slds-badge';
         }
     }
 }

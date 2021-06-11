@@ -93,11 +93,13 @@
                         >
                         </c-avatar>
                         <div
+                            if:true={item.tags}
                             style={badgeListPosition}
                             class="slds-m-left_x-small slds-m-top_xx-small"
                         >
                             <template for:each={item.tags} for:item="tag">
                                 <lightning-badge
+                                    class={tag.class}
                                     key={tag.label}
                                     label={tag.label}
                                 ></lightning-badge>
@@ -193,6 +195,18 @@
                                         data-type="hidden"
                                     >
                                         {item.alternativeText}
+                                        <br />
+                                        <template
+                                            if:true={item.tags}
+                                            for:each={item.tags}
+                                            for:item="tag"
+                                        >
+                                            <lightning-badge
+                                                key={tag.label}
+                                                label={tag.label}
+                                                class={tag.class}
+                                            ></lightning-badge>
+                                        </template>
                                     </p>
                                 </div>
                             </template>
