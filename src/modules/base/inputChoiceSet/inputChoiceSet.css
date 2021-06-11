@@ -1,0 +1,38 @@
+:host {
+    display: block;
+}
+
+.slds-checkbox.horizontal {
+    display: inline-flex;
+}
+
+.slds-radio.horizontal {
+    display: inline-flex;
+}
+
+.slds-checkbox_button-group.vertical {
+    flex-direction: column;
+}
+
+.slds-checkbox_button__label.vertical {
+    width: 100%;
+    border-radius: 0;
+}
+
+.slds-checkbox_button__label.horizontal {
+    height: 100%;
+}
+
+.slds-checkbox_faux {
+    padding: 0;
+}
+
+.slds-checkbox_button {
+    border-left: none;
+    border-bottom: 1px solid #dddbda;
+}
+
+.slds-checkbox_button.horizontal {
+    border-right: 1px solid #dddbda;
+    border-bottom: none;
+}

@@ -1,0 +1,99 @@
+<template>
+    <fieldset aria-required={required}>
+        <legend class={computedLegendClass}>
+            <template if:true={required}>
+                <abbr class="slds-required" title={i18n.required}>*</abbr>
+            </template>
+            {label}
+        </legend>
+
+        <div class="slds-form-element__control">
+            <div class={computedButtonClass}>
+                <template for:each={transformedOptions} for:item="option">
+                    <span
+                        class={computedCheckboxContainerClass}
+                        key={option.value}
+                    >
+                        <input
+                            type={computedInputType}
+                            name={name}
+                            id={option.id}
+                            checked={option.isChecked}
+                            value={option.value}
+                            disabled={disabled}
+                            onclick={handleClick}
+                            onchange={handleChange}
+                            onfocus={handleFocus}
+                            onblur={handleBlur}
+                        />
+
+                        <label class={computedLabelClass} for={option.id}>
+                            <span>
+                                <template if:true={checkboxVariant}>
+                                    <div>
+                                        <avonni-media-object
+                                            vertical-align="center"
+                                            size="small"
+                                        >
+                                            <div
+                                                slot="figure"
+                                                class={computedCheckboxShapeClass}
+                                            ></div>
+                                            <div>
+                                                <div
+                                                    if:true={option.isIconBottomRight}
+                                                    class="slds-form-element__label"
+                                                >
+                                                    {option.label}
+                                                </div>
+                                                <lightning-icon
+                                                    if:true={option.iconName}
+                                                    class="slds-m-right_x-small"
+                                                    icon-name={option.iconName}
+                                                    size="x-small"
+                                                ></lightning-icon>
+                                                <div
+                                                    if:true={option.isIconTopLeft}
+                                                    class="slds-form-element__label"
+                                                >
+                                                    {option.label}
+                                                </div>
+                                            </div>
+                                        </avonni-media-object>
+                                    </div>
+                                </template>
+
+                                <template if:false={checkboxVariant}>
+                                    <div class="slds-p-horizontal_small">
+                                        <span
+                                            if:true={option.isIconBottomRight}
+                                            class={option.computedLabelButtonClass}
+                                            >{option.label}</span
+                                        >
+                                        <lightning-icon
+                                            variant={option.computedVariantButton}
+                                            if:true={option.iconName}
+                                            class={option.computedIconButtonClass}
+                                            icon-name={option.iconName}
+                                            size="x-small"
+                                        ></lightning-icon>
+                                        <span
+                                            if:true={option.isIconTopLeft}
+                                            class={option.computedLabelButtonClass}
+                                            >{option.label}</span
+                                        >
+                                    </div>
+                                </template>
+                            </span>
+                        </label>
+                    </span>
+                </template>
+            </div>
+        </div>
+        <template if:true={_helpMessage}>
+            <div id="helptext" data-helptext class="slds-form-element__help">
+                {_helpMessage}
+            </div>
+        </template>
+    </fieldset>
+</template>
