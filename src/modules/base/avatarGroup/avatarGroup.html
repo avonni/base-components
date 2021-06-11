@@ -59,7 +59,7 @@
         <template for:each={listItems} for:item="item" for:index="index">
             <template if:false={item.showMore}>
                 <template if:true={item.key}>
-                    <div key={item.key} class={avatarWrapperClass}>
+                    <span key={item.key} class={avatarWrapperClass}>
                         <c-avatar
                             alternative-text={item.alternativeText}
                             fallback-icon-name={item.fallbackIconName}
@@ -92,20 +92,22 @@
                             tabindex="0"
                         >
                         </c-avatar>
-                        <div
-                            if:true={item.tags}
-                            style={badgeListPosition}
-                            class="slds-m-left_x-small slds-m-top_xx-small"
-                        >
-                            <template for:each={item.tags} for:item="tag">
-                                <lightning-badge
-                                    class={tag.class}
-                                    key={tag.label}
-                                    label={tag.label}
-                                ></lightning-badge>
-                            </template>
-                        </div>
-                    </div>
+                        <template if:false={isNotList}>
+                            <div
+                                if:true={item.tags}
+                                style={badgeListPosition}
+                                class="slds-m-left_x-small slds-m-top_xx-small"
+                            >
+                                <template for:each={item.tags} for:item="tag">
+                                    <lightning-badge
+                                        class={tag.class}
+                                        key={tag.label}
+                                        label={tag.label}
+                                    ></lightning-badge>
+                                </template>
+                            </div>
+                        </template>
+                    </span>
                 </template>
             </template>
             <template if:true={item.showMore}>
@@ -195,18 +197,6 @@
                                         data-type="hidden"
                                     >
                                         {item.alternativeText}
-                                        <br />
-                                        <template
-                                            if:true={item.tags}
-                                            for:each={item.tags}
-                                            for:item="tag"
-                                        >
-                                            <lightning-badge
-                                                key={tag.label}
-                                                label={tag.label}
-                                                class={tag.class}
-                                            ></lightning-badge>
-                                        </template>
                                     </p>
                                 </div>
                             </template>

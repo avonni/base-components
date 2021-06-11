@@ -182,13 +182,7 @@ export default class AvatarGroup extends LightningElement {
         items.forEach((item, index) => {
             item.key = 'avatar-key-' + index;
         });
-        items.forEach((item) => {
-            if (item.tags) {
-                item.tags.forEach((tag) => {
-                    tag.class = this._determineBadgeStyle(tag);
-                });
-            }
-        });
+        this._styleBadges(items);
         return items;
     }
 
@@ -206,7 +200,7 @@ export default class AvatarGroup extends LightningElement {
             items.forEach((item, index) => {
                 item.key = 'avatar-key-hidden-' + index;
             });
-
+            this._styleBadges(items);
             return items;
         }
 
@@ -422,6 +416,15 @@ export default class AvatarGroup extends LightningElement {
             default:
                 this._imageWidth = 20;
         }
+    }
+    _styleBadges(items) {
+        items.forEach((item) => {
+            if (item.tags) {
+                item.tags.forEach((tag) => {
+                    tag.class = this._determineBadgeStyle(tag);
+                });
+            }
+        });
     }
     _determineBadgeStyle(tag) {
         switch (tag.variant) {
