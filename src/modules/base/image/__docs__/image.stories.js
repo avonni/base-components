@@ -303,85 +303,10 @@ Base.args = {
 
 export const BaseWithLazyLoading = ListTemplate.bind({});
 BaseWithLazyLoading.args = {
-    items:[{
-        src:
-        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-        alt: 'Alt text',
-        lazyLoading : true,
-        blankColor: 'transparent'
-    },{
-        src:
-        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-        alt: 'Alt text',
-        lazyLoading : true,
-        blankColor: 'transparent'
-    },{
-        src:
-        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-        alt: 'Alt text',
-        lazyLoading : true,
-        blankColor: 'transparent'
-    },{
-        src:
-        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-        alt: 'Alt text',
-        lazyLoading : true,
-        blankColor: 'transparent'
-    },{
-        src:
-        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-        alt: 'Alt text',
-        lazyLoading : true,
-        blankColor: 'transparent'
-    },{
-        src:
-        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-        alt: 'Alt text',
-        lazyLoading : true,
-        blankColor: 'transparent'
-    },{
-        src:
-        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-        alt: 'Alt text',
-        lazyLoading : true,
-        blankColor: 'transparent'
-    },{
-        src:
-        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-        alt: 'Alt text',
-        lazyLoading : true,
-        blankColor: 'transparent'
-    },{
-        src:
-        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-        alt: 'Alt text',
-        lazyLoading : true,
-        blankColor: 'transparent'
-    },{
-        src:
-        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-        alt: 'Alt text',
-        lazyLoading : true,
-        blankColor: 'transparent'
-    },{
-        src:
-        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-        alt: 'Alt text',
-        lazyLoading : true,
-        blankColor: 'transparent'
-    },{
-        src:
-        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-        alt: 'Alt text',
-        lazyLoading : true,
-        blankColor: 'transparent'
-    },{
-        src:
-        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-        alt: 'Alt text',
-        lazyLoading : true,
-        blankColor: 'transparent'
-    },]   
+    src:'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+    alt: 'Alt text',
+    lazyLoading : true,
+    blankColor: 'transparent'
 };
 
 export const BaseLarge = Template.bind({});
