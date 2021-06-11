@@ -22,12 +22,21 @@ export default class Image extends LightningElement {
     @api cropFit;
     @api cropPositionX;
     @api cropPositionY;
+    
+    _itemsLength  = 1;
+        
+    @api
+    get itemsLength(){
+        return this._itemsLength;
+    }
 
-    _itemsNumber = 12;
+    set itemsLength(number){
+        if(this.itemsLength > 0) this._itemsLength = number;
+    }
 
     get itemList() {
         let result = [];
-        for (let i = 0; i < this._itemsNumber; i++) {
+        for (let i = 0; i < this.itemsLength; i++) {
             let item = {
                 key: i,
                 src : this.src,

@@ -306,7 +306,8 @@ BaseWithLazyLoading.args = {
     src:'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
     alt: 'Alt text',
     lazyLoading : true,
-    blankColor: 'transparent'
+    blankColor: 'transparent',
+    itemsLength: 12,
 };
 
 export const BaseLarge = Template.bind({});
