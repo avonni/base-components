@@ -13,6 +13,7 @@ import {
     VARIANT
 } from 'c/inputUtils';
 import { classSet } from 'c/utils';
+import InputChoiceOption from './inputChoiceOption';
 
 const i18n = {
     required: 'required'
@@ -20,9 +21,13 @@ const i18n = {
 
 const DEBOUNCE_PERIOD = 200;
 
-const CHECKBOX_GROUP_TYPES = { valid: ['checkbox', 'button'], default: 'checkbox' };
+const INPUT_CHOICE_ORIENTATIONS = {
+    valid: ['vertical', 'horizontal'],
+    default: 'vertical'
+};
+const INPUT_CHOICE_TYPES = { valid: ['default', 'button'], default: 'default' };
 
-export default class CheckboxGroup extends LightningElement {
+export default class InputChoiceSet extends LightningElement {
     static delegatesFocus = true;
 
     @api label;
@@ -30,11 +35,13 @@ export default class CheckboxGroup extends LightningElement {
     @api messageWhenValueMissing;
     @api name;
 
-    _type = CHECKBOX_GROUP_TYPES.default;
+    _orientation = INPUT_CHOICE_ORIENTATIONS.default;
+    _type = INPUT_CHOICE_TYPES.default;
     _helpMessage;
     _disabled = false;
     _required = false;
     _value = [];
+    _isMultiSelect = false;
 
     constructor() {
         super();
@@ -91,6 +98,26 @@ export default class CheckboxGroup extends LightningElement {
     }
 
     @api
+    get orientation() {
+        return this._orientation;
+    }
+
+    set orientation(orientation) {
+        this._orientation = normalizeString(orientation, {
+            fallbackValue: INPUT_CHOICE_ORIENTATIONS.default,
+            validValues: INPUT_CHOICE_ORIENTATIONS.valid
+        });
+    }
+
+    @api
+    get isMultiSelect() {
+        return this._isMultiSelect || false;
+    }
+    set isMultiSelect(value) {
+        this._isMultiSelect = normalizeBoolean(value);
+    }
+
+    @api
     get required() {
         return this._required || false;
     }
@@ -115,13 +142,13 @@ export default class CheckboxGroup extends LightningElement {
 
     set type(type) {
         this._type = normalizeString(type, {
-            fallbackValue: CHECKBOX_GROUP_TYPES.default,
-            validValues: CHECKBOX_GROUP_TYPES.valid
+            fallbackValue: INPUT_CHOICE_TYPES.default,
+            validValues: INPUT_CHOICE_TYPES.valid
         });
     }
 
     get checkboxVariant() {
-        return this.type === 'checkbox';
+        return this.type === 'default';
     }
 
     get i18n() {
@@ -131,12 +158,9 @@ export default class CheckboxGroup extends LightningElement {
     get transformedOptions() {
         const { options, value } = this;
         if (Array.isArray(options)) {
-            return options.map((option) => ({
-                label: option.label,
-                value: option.value,
-                id: `checkbox-${this.itemIndex++}`,
-                isChecked: value.indexOf(option.value) !== -1
-            }));
+            return options.map((option) => {
+                return new InputChoiceOption(option, value, this.itemIndex++);
+            });
         }
         return [];
     }
@@ -183,14 +207,11 @@ export default class CheckboxGroup extends LightningElement {
 
     handleFocus() {
         this.containsFocus = true;
-
         this.dispatchEvent(new CustomEvent('focus'));
     }
 
     handleBlur() {
         this.containsFocus = false;
-        this.debouncedShowIfBlurred();
-
         this.dispatchEvent(new CustomEvent('blur'));
     }
 
@@ -203,19 +224,41 @@ export default class CheckboxGroup extends LightningElement {
     handleChange(event) {
         event.stopPropagation();
 
+        let value = event.target.value;
         const checkboxes = this.template.querySelectorAll('input');
-        const value = Array.from(checkboxes)
-            .filter((checkbox) => checkbox.checked)
-            .map((checkbox) => checkbox.value);
+        if (this.isMultiSelect) {
+            value = Array.from(checkboxes)
+                .filter((checkbox) => checkbox.checked)
+                .map((checkbox) => checkbox.value);
+        } else {
+            const checkboxesToUncheck = Array.from(checkboxes).filter(
+                (checkbox) => checkbox.value !== value
+            );
+            checkboxesToUncheck.forEach((checkbox) => {
+                checkbox.checked = false;
+            });
+        }
+        if (this.type === 'button') {
+            checkboxes.forEach((checkbox) => {
+                const label = checkbox.labels[0];
+                let icon = label.querySelector('lightning-icon');
+                if (icon) {
+                    if (value.includes(label.control.value))
+                        icon.variant = 'inverse';
+                    else icon.variant = '';
 
-        this._value = value;
+                    if (!checkbox.checked && icon.variant === 'inverse') {
+                        icon.variant = '';
+                    }
+                }
+            });
+        }
 
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
                     value
                 },
-
                 composed: true,
                 bubbles: true,
                 cancelable: true
@@ -246,18 +289,37 @@ export default class CheckboxGroup extends LightningElement {
     }
 
     get computedButtonClass() {
-        return this.checkboxVariant ? '' : 'slds-checkbox_button-group';
+        return this.checkboxVariant
+            ? ''
+            : `slds-checkbox_button-group ${this.orientation}`;
     }
 
     get computedCheckboxContainerClass() {
-        return this.checkboxVariant
-            ? 'slds-checkbox'
-            : 'slds-button slds-checkbox_button';
+        const checkboxClass = this.isMultiSelect
+            ? `slds-checkbox ${this.orientation}`
+            : `slds-radio ${this.orientation}`;
+        const buttonClass = `slds-button slds-checkbox_button ${this.orientation}`;
+
+        return this.checkboxVariant ? checkboxClass : buttonClass;
     }
 
     get computedLabelClass() {
-        return this.checkboxVariant
-            ? 'slds-checkbox__label'
-            : 'slds-checkbox_button__label';
+        const buttonLabelClass = `slds-checkbox_button__label slds-align_absolute-center ${this.orientation}`;
+        const checkboxLabelClass =
+            this.isMultiSelect && this.checkboxVariant
+                ? 'slds-checkbox__label'
+                : 'slds-radio__label';
+
+        return this.checkboxVariant ? checkboxLabelClass : buttonLabelClass;
+    }
+
+    get computedInputType() {
+        return this.isMultiSelect || !this.checkboxVariant
+            ? 'checkbox'
+            : 'radio';
+    }
+
+    get computedCheckboxShapeClass() {
+        return this.isMultiSelect ? 'slds-checkbox_faux' : 'slds-radio_faux';
     }
 }
