@@ -37,6 +37,7 @@ export default class Option {
     constructor(option) {
         this.avatarFallbackIconName = option.avatarFallbackIconName;
         this.avatarSrc = option.avatarSrc;
+        this.iconName = option.iconName;
         this.groups = normalizeArray(option.groups);
         this.label = option.label;
         this.options = normalizeArray(option.options);
@@ -57,9 +58,19 @@ export default class Option {
             .toString();
     }
 
+    get computedIconClass() {
+        return this.selected ? 'slds-current-color' : undefined;
+    }
+
+    get computedCheckmarkIconName() {
+        return this.iconName || 'utility:check';
+    }
+
     get showCheckmark() {
         return (
-            this.selected || (this.options.length && this.hasSelectedChildren())
+            this.selected ||
+            (this.options.length && this.hasSelectedChildren()) ||
+            this.iconName
         );
     }
 

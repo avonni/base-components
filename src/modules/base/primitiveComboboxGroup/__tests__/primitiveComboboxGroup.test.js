@@ -325,8 +325,8 @@ describe('PrimitiveComboboxGroup', () => {
 
     /* ----- METHODS ----- */
 
-    // optionsElements
-    it('get optionsElements method', () => {
+    // optionElements
+    it('get optionElements method', () => {
         const element = createElement('base-primitive-combobox-group', {
             is: PrimitiveComboboxGroup
         });
@@ -335,8 +335,8 @@ describe('PrimitiveComboboxGroup', () => {
         element.options = options;
 
         return Promise.resolve().then(() => {
-            const optionsElements = element.optionsElements;
-            expect(optionsElements).toHaveLength(3);
+            const optionElements = element.optionElements;
+            expect(optionElements).toHaveLength(3);
         });
     });
 

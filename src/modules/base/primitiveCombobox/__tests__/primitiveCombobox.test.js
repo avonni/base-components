@@ -31,9 +31,9 @@
  */
 
 import { createElement } from 'lwc';
-import Combobox from 'c/combobox';
+import PrimitiveCombobox from 'c/primitiveCombobox';
 
-describe('Combobox', () => {
+describe('PrimitiveCombobox', () => {
     afterEach(() => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
@@ -41,8 +41,8 @@ describe('Combobox', () => {
     });
 
     it('Default attributes', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
+        const element = createElement('base-primitive-combobox', {
+            is: PrimitiveCombobox
         });
 
         expect(element.actions).toMatchObject([]);
@@ -65,7 +65,7 @@ describe('Combobox', () => {
         expect(element.removeSelectedOptions).toBeFalsy();
         expect(element.required).toBeFalsy();
         expect(element.scopes).toMatchObject([]);
-        expect(element.scopesGroups).toMatchObject([]);
+        expect(element.scopesTitle).toBe('Suggested for you');
         expect(element.search).toBeInstanceOf(Function);
         expect(element.validity).toMatchObject({});
         expect(element.value).toMatchObject([]);
@@ -76,8 +76,8 @@ describe('Combobox', () => {
 
     // // actions
     // it('actions', () => {
-    //     const element = createElement('base-combobox', {
-    //         is: Combobox
+    //     const element = createElement('base-primitive-combobox', {
+    //         is: PrimitiveCombobox
     //     });
     //     document.body.appendChild(element);
 

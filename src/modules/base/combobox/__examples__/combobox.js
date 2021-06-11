@@ -56,7 +56,7 @@ export const Combobox = ({
     removeSelectedOptions,
     required,
     scopes,
-    scopesTitle,
+    scopesGroups,
     search,
     value,
     variant
@@ -83,7 +83,7 @@ export const Combobox = ({
     element.removeSelectedOptions = removeSelectedOptions;
     element.required = required;
     element.scopes = scopes;
-    element.scopesTitle = scopesTitle;
+    element.scopesGroups = scopesGroups;
     element.search = search;
     element.value = value;
     element.variant = variant;

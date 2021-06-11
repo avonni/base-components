@@ -67,7 +67,12 @@ export default class PrimitiveComboboxGroup extends LightningElement {
     }
 
     @api
-    get optionsElements() {
+    get titleElement() {
+        return this.template.querySelector('.combobox__group-title');
+    }
+
+    @api
+    get optionElements() {
         return Array.from(this.template.querySelectorAll('.combobox__option'));
     }
 

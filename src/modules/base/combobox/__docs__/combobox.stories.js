@@ -287,14 +287,15 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
-        scopesTitle: {
-            name: 'scopes-title',
+        scopesGroups: {
+            name: 'scopes-groups',
             control: {
-                type: 'text'
+                type: 'object'
             },
-            description: 'Title of the scopes drop-down menu.',
+            description:
+                'Array of group objects. The groups are used to separate the scopes inside the drop-down.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'object[]' }
             }
         },
         search: {
@@ -443,38 +444,48 @@ const actions = [
 const scopes = [
     {
         label: 'All',
-        name: 'all'
+        value: 'all',
+        groups: ['suggested']
     },
     {
         label: 'Accounts',
-        name: 'accounts'
+        value: 'accounts',
+        groups: ['suggested']
     },
     {
         label: 'Analytics',
-        name: 'analytics'
+        value: 'analytics',
+        groups: ['suggested']
     }
 ];
 
 const scopesWithIcons = [
     {
         label: 'Apex',
-        name: 'apex',
+        value: 'apex',
         iconName: 'utility:apex'
     },
     {
         label: 'Decisions',
-        name: 'decisions',
+        value: 'decisions',
         iconName: 'utility:signpost'
     },
     {
         label: 'Rules',
-        name: 'rules',
+        value: 'rules',
         iconName: 'utility:rules'
     },
     {
         label: 'Snippets',
-        name: 'snippets',
+        value: 'snippets',
         iconName: 'utility:snippet'
+    }
+];
+
+const scopesGroups = [
+    {
+        label: 'Suggested for you',
+        name: 'suggested'
     }
 ];
 
@@ -570,7 +581,7 @@ Scopes.args = {
     label: 'Combobox with scopes',
     options: options,
     scopes: scopes,
-    scopesTitle: 'Suggested for you'
+    scopesGroups: scopesGroups
 };
 
 export const ScopesWithIcons = Template.bind({});

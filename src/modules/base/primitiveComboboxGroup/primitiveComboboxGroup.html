@@ -34,7 +34,11 @@
 
 <template>
     <ul role="group" aria-label={label}>
-        <li if:true={label} role="presentation" class="slds-listbox__item">
+        <li
+            if:true={label}
+            role="presentation"
+            class="slds-listbox__item combobox__group-title"
+        >
             <div
                 class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small"
                 role="presentation"
@@ -64,8 +68,8 @@
                 >
                     <lightning-icon
                         if:true={option.showCheckmark}
-                        class="slds-current-color"
-                        icon-name="utility:check"
+                        class={option.computedIconClass}
+                        icon-name={option.computedCheckmarkIconName}
                         size="x-small"
                         aria-hidden="true"
                     ></lightning-icon>

@@ -247,6 +247,10 @@
             "path": "src/modules/base/primitiveAvatar/primitiveAvatar.js"
         },
         {
+            "name": "c/primitiveCombobox",
+            "path": "src/modules/base/primitiveCombobox/primitiveCombobox.js"
+        },
+        {
             "name": "c/primitiveBubble",
             "path": "src/modules/base/primitiveBubble/primitiveBubble.js"
         },
@@ -621,10 +625,6 @@
         {
             "name": "avonni/primitiveIcon",
             "path": "src/modules/base/primitiveIcon/primitiveIcon.js"
-        },
-        {
-            "name": "avonni/primitiveComboboxGroup",
-            "path": "src/modules/base/primitiveComboboxGroup/primitiveComboboxGroup.js"
         },
         {
             "name": "avonni/profileCard",
