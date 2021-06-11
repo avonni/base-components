@@ -128,13 +128,15 @@ export default class List extends LightningElement {
             })
             .toString();
     }
-
     
     get itemClass() {
         return classSet('slds-grid list-item slds-item')
             .add({
                 'sortable-item': this.sortable,
-                'expanded-item': this._hasActions
+                'expanded-item': this._hasActions,
+                'avonni-padding-small' : this.padding === 'small',
+                'avonni-padding-medium' : this.padding === 'medium',
+                'avonni-padding-large' : this.padding === 'large',
             })
             .toString();
     }
