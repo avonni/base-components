@@ -7,6 +7,7 @@ export default {
             control: {
                 type: 'text'
             },
+            description: 'Text label to title the visual picker.',
             table: {
                 type: { summary: 'string' }
             }
@@ -42,7 +43,7 @@ export default {
             },
             options: ['radio', 'checkbox'],
             defaultValue: 'radio',
-            description: 'Allowed values are radio and checkbox.',
+            description: 'Valid values include radio and checkbox.',
             table: {
                 defaultValue: { summary: 'radio' },
                 type: { summary: 'string' }
@@ -55,7 +56,7 @@ export default {
             options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
             defaultValue: 'medium',
             description:
-                'Allowed values are xx-small (4rem x 4 rem), x-small (6rem x 6 rem), small (8rem x 8rem), medium and large.',
+                'The size of the items. Valid values include xx-small (4rem x 4 rem), x-small (6rem x 6 rem), small (8rem x 8rem), medium and large.',
             table: {
                 defaultValue: { summary: 'medium' },
                 type: { summary: 'string' }
@@ -67,7 +68,8 @@ export default {
             },
             options: ['1-by-1', '4-by-3', '16-by-9'],
             defaultValue: '1-by-1',
-            description: 'Values include 1-by-1, 4-by-3 and 16-by-9.',
+            description:
+                'The ratio of the items. Valid values include 1-by-1, 4-by-3 and 16-by-9.',
             table: {
                 defaultValue: { summary: '1-by-1' },
                 type: { summary: 'string' }
@@ -79,7 +81,7 @@ export default {
                 type: 'boolean'
             },
             defaultValue: 0,
-            description: 'If true, hide the check mark.',
+            description: 'If present, hide the check mark.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
@@ -92,7 +94,7 @@ export default {
             },
             defaultValue: 0,
             description:
-                'If true, hide the border and box-shadow on item picker. Still displayed border on hover.',
+                'If present, hide the border and box-shadow on item picker. Still displayed border on hover.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }

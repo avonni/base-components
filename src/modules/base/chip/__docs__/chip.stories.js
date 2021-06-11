@@ -29,7 +29,7 @@ export default {
             ],
             defaultValue: 'base',
             description:
-                'Accepted variants include base, brand, inverse, alt-inverse, success, info, warning, error, offline.',
+                'The variant changes the appearance of the chip. Accepted variants include base, brand, inverse, alt-inverse, success, info, warning, error, offline.',
             table: {
                 defaultValue: { summary: 'base' },
                 type: { summary: 'string' }

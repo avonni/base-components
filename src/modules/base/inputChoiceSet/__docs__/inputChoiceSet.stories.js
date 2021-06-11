@@ -29,7 +29,7 @@ export default {
                 type: 'radio'
             },
             description:
-                'Type of the input. Valid value include default and button.',
+                'Type of the input. Valid values include default and button.',
             options: ['default', 'button'],
             defaultValue: 'default',
             table: {
@@ -73,8 +73,7 @@ export default {
             control: {
                 type: 'boolean'
             },
-            description:
-                "If present, the input is disabled.",
+            description: 'If present, the input is disabled.',
             defaultValue: 0,
             table: {
                 defaultValue: { summary: false },
@@ -93,7 +92,7 @@ export default {
             }
         },
         isMultiSelect: {
-            name: "is-multi-select",
+            name: 'is-multi-select',
             control: {
                 type: 'boolean'
             },
@@ -113,7 +112,7 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
-        
+
         value: {
             control: {
                 type: 'object'
@@ -135,16 +134,31 @@ export default {
 const Template = (args) => InputChoiceSet(args);
 
 const optionsWithIcon = [
-    { label: 'Left', value: 'left', iconName: 'utility:left_align_text', iconPosition: 'right' },
-    { label: 'Center', value: 'center', iconName: 'utility:center_align_text', iconPosition: 'right' },
-    { label: 'Right', value: 'right', iconName: 'utility:right_align_text', iconPosition: 'right' },
+    {
+        label: 'Left',
+        value: 'left',
+        iconName: 'utility:left_align_text',
+        iconPosition: 'right'
+    },
+    {
+        label: 'Center',
+        value: 'center',
+        iconName: 'utility:center_align_text',
+        iconPosition: 'right'
+    },
+    {
+        label: 'Right',
+        value: 'right',
+        iconName: 'utility:right_align_text',
+        iconPosition: 'right'
+    }
 ];
 const optionsWithoutIcon = [
-    { label: 'Mon', value: 'mon',},
-    { label: 'Tue', value: 'tue',},
-    { label: 'Wed', value: 'wed',},
-    { label: 'Thu', value: 'thu',},
-    { label: 'Fri', value: 'fri',}
+    { label: 'Mon', value: 'mon' },
+    { label: 'Tue', value: 'tue' },
+    { label: 'Wed', value: 'wed' },
+    { label: 'Thu', value: 'thu' },
+    { label: 'Fri', value: 'fri' }
 ];
 const dayValue = ['fri'];
 const alignmentValue = ['center'];
@@ -155,7 +169,7 @@ RadioButtons.args = {
     messageWhenValueMissing: 'Value missing',
     options: optionsWithoutIcon,
     value: dayValue,
-    isMultiSelect: false,
+    isMultiSelect: false
 };
 
 export const Checkboxes = Template.bind({});
@@ -175,7 +189,7 @@ HorizontalCheckboxes.args = {
     options: optionsWithoutIcon,
     orientation: 'horizontal',
     value: dayValue,
-    isMultiSelect: true,
+    isMultiSelect: true
 };
 
 export const CheckboxesDisabled = Template.bind({});
@@ -185,7 +199,7 @@ CheckboxesDisabled.args = {
     options: optionsWithoutIcon,
     value: dayValue,
     disabled: true,
-    isMultiSelect: true,
+    isMultiSelect: true
 };
 
 export const CheckboxesWithNoLabel = Template.bind({});
@@ -195,7 +209,7 @@ CheckboxesWithNoLabel.args = {
     messageWhenValueMissing: 'Value missing',
     options: optionsWithoutIcon,
     value: dayValue,
-    isMultiSelect: true,
+    isMultiSelect: true
 };
 
 export const CheckboxesWithLabelStacked = Template.bind({});
@@ -205,7 +219,7 @@ CheckboxesWithLabelStacked.args = {
     messageWhenValueMissing: 'Value missing',
     options: optionsWithoutIcon,
     value: dayValue,
-    isMultiSelect: true,
+    isMultiSelect: true
 };
 
 export const CheckboxesRequired = Template.bind({});
@@ -215,9 +229,8 @@ CheckboxesRequired.args = {
     required: true,
     options: optionsWithoutIcon,
     value: dayValue,
-    isMultiSelect: true,
+    isMultiSelect: true
 };
-
 
 export const CheckboxesWithRightIcons = Template.bind({});
 CheckboxesWithRightIcons.args = {
@@ -273,7 +286,7 @@ ButtonsWithMultiSelect.args = {
     label: 'Please select a value',
     type: 'button',
     disabled: false,
-    isMultiSelect : true,
+    isMultiSelect: true,
     messageWhenValueMissing: 'Value missing',
     options: optionsWithoutIcon,
     value: dayValue

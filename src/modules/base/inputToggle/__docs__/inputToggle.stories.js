@@ -85,7 +85,7 @@ export default {
             options: ['x-small', 'small', 'medium', 'large'],
             defaultValue: 'medium',
             description:
-                'Valid values include x-small, small, medium and large.',
+                'The size of the input toggle. Valid values include x-small, small, medium and large.',
             table: {
                 defaultValue: { summary: 'medium' },
                 type: { summary: 'string' }

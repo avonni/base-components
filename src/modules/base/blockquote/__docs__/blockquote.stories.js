@@ -31,7 +31,7 @@ export default {
             options: ['default', 'brand', 'warning', 'error', 'success'],
             defaultValue: 'default',
             description:
-                'Valid values include default, brand, warning, error, success.',
+                'The variant changes the appearance of the blockquote. Valid values include default, brand, warning, error, success.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'default' }
@@ -60,7 +60,7 @@ export default {
             options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
             defaultValue: 'small',
             description:
-                'Valid values include xx-small, x-small, small, medium, large.',
+                'The size of the icon. Valid values include xx-small, x-small, small, medium, large.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'small' },

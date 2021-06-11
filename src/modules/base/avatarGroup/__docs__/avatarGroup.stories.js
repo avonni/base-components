@@ -26,8 +26,10 @@ export default {
                 'xx-large'
             ],
             defaultValue: 'medium',
-            description: 'x-small, small, medium and large.',
+            description:
+                'The size of the avatars. Valid values include x-small, small, medium, large, x-large and xx-large.',
             table: {
+                type: { summary: 'string' },
                 defaultValue: { summary: 'medium' }
             }
         },
@@ -50,7 +52,8 @@ export default {
             },
             options: ['stack', 'grid', 'list'],
             defaultValue: 'stack',
-            description: 'Valid values include stack, grid, list',
+            description:
+                'Defines the layout of the avatar group. Valid values include stack, grid, list',
             table: {
                 defaultValue: { summary: 'stack' },
                 type: { summary: 'string' }

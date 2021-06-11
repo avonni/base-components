@@ -105,7 +105,7 @@ export default {
                 'bottom-right'
             ],
             description:
-                'Values include top-left, top-center, top-right, bottom-left, bottom-center, bottom-right.',
+                'Position of the avatar. Valid values include top-left, top-center, top-right, bottom-left, bottom-center, bottom-right.',
             defaultValue: 'top-left',
             table: {
                 defaultValue: { summary: 'top-left' },
@@ -127,7 +127,7 @@ export default {
                 'bottom-right'
             ],
             description:
-                'Values include top-left, top-center, top-right, bottom-left, bottom-center, bottom-right.',
+                'Position of the avatar when screen width is under 480px. Valid values include top-left, top-center, top-right, bottom-left, bottom-center, bottom-right.',
             defaultValue: 'top-left',
             table: {
                 defaultValue: { summary: 'top-left' },
@@ -156,7 +156,7 @@ export default {
             },
             options: ['x-small', 'small', 'medium', 'large', 'x-large'],
             description:
-                'Values include x-small, small, medium, large, x-large.',
+                'The size of the avatar. Valid values include x-small, small, medium, large, x-large.',
             defaultValue: 'medium',
             table: {
                 defaultValue: { summary: 'medium' },

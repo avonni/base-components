@@ -148,7 +148,7 @@ export default {
             },
             defaultValue: 0,
             description:
-                'If true, a pin with integer value is shown when the knob is pressed.',
+                'If present, a pin with integer value is shown when the knob is pressed.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' },

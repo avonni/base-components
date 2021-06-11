@@ -20,7 +20,8 @@ export default {
             },
             options: ['bottom', 'top'],
             defaultValue: 'bottom',
-            description: 'Valid values include top and bottom.',
+            description:
+                'Position of the title. Valid values include top and bottom.',
             table: {
                 defaultValue: { summary: 'bottom' },
                 type: { summary: 'string' }

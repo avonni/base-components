@@ -47,7 +47,8 @@ export default {
                 type: 'select'
             },
             options: ['medium', 'small', 'large'],
-            description: 'Valid values include small, medium and large.',
+            description:
+                'The size of the media object. Valid values include small, medium and large.',
             defaultValue: 'medium',
             table: {
                 type: { summary: 'string' },

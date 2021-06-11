@@ -48,7 +48,7 @@ export default {
             },
             defaultValue: 0,
             description:
-                'If true, add the class slds-progress__item_content to all vertical-progress-step items. Example: https://www.lightningdesignsystem.com/components/setup-assistant/#Hub-with-Expandable-Steps',
+                'If present, add the class slds-progress__item_content to all vertical-progress-step items. Example: https://www.lightningdesignsystem.com/components/setup-assistant/#Hub-with-Expandable-Steps',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
