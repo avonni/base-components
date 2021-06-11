@@ -8,6 +8,7 @@ export default class PrimitiveComboboxGroup extends LightningElement {
 
     _groups = [];
     _options = [];
+    _removeSelectedOptions = false;
 
     @api
     get options() {
