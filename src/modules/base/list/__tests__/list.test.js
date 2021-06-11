@@ -111,13 +111,16 @@ describe('List', () => {
                 expect(item.textContent).toBe(originalItem.label);
 
                 const avatar = item.querySelector('c-avatar');
-                if (originalItem.avatarFallbackIconName) {
-                    expect(avatar.fallbackIconName).toBe(
-                        originalItem.avatarFallbackIconName
-                    );
-                }
-                if (originalItem.avatarSrc) {
-                    expect(avatar.src).toBe(originalItem.avatarSrc);
+                if(avatar){
+
+                    if (originalItem.avatarFallbackIconName) {
+                        expect(avatar.fallbackIconName).toBe(
+                            originalItem.avatarFallbackIconName
+                        );
+                    }
+                    if (originalItem.avatarSrc) {
+                        expect(avatar.src).toBe(originalItem.avatarSrc);
+                    }
                 }
             });
         });
@@ -138,6 +141,22 @@ describe('List', () => {
                 '.slds-text-heading_small'
             );
             expect(label.textContent).toBe('A string label');
+        });
+    });
+
+    // divider
+    it('divider', () => {
+        const element = createElement('base-list', {
+            is: List
+        });
+
+        document.body.appendChild(element);
+
+        element.divider = 'around';
+
+        return Promise.resolve().then(() => {
+            const menu = element.shadowRoot.querySelector('.menu');
+            expect(menu.classList).toContain('slds-has-dividers_around-space');
         });
     });
 
@@ -282,7 +301,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const iconsRight = element.shadowRoot.querySelectorAll(
-                '.icon-ight'
+                '.icon-right'
             );
             const iconsLeft = element.shadowRoot.querySelectorAll('.icon-left');
             expect(iconsRight).toHaveLength(0);
