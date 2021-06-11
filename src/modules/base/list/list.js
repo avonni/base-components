@@ -11,6 +11,14 @@ const ICON_POSITIONS = {
     default: 'right'
 };
 
+const PADDING = {
+    valid: ['small', 'medium', 'large'],
+};
+
+const DIVIDER = {
+    valid: ['top', 'bottom', 'around'],
+};
+
 const DEFAULT_ITEM_HEIGHT = 44;
 
 export default class List extends LightningElement {
@@ -45,7 +53,9 @@ export default class List extends LightningElement {
         return this._padding;
     }
     set padding(value) {
-        this._padding = value; //FAIRE LE TRUC DE VALEUR
+        this._padding = normalizeString(value, {
+            validValues: PADDING.valid
+        });
     }
 
     @api
@@ -53,7 +63,9 @@ export default class List extends LightningElement {
         return this._divider;
     }
     set divider(value) {
-        this._divider = value; //FAIRE LE TRUC DE VALEUR
+        this._divider = normalizeString(value, {
+            validValues: DIVIDER.valid
+        });
     }
 
 
