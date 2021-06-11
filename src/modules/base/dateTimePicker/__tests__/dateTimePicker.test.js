@@ -17,7 +17,7 @@ describe('DateTimePicker', () => {
         }
     });
 
-    fit('Default attributes', () => {
+    it('Default attributes', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
