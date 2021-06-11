@@ -29,6 +29,7 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 import isIframeInEdge from './isIframeInEdge';
 
 const newerIEUA = /\bTrident\/[567]\b|\bMSIE (?:9|10)\.0\b/;

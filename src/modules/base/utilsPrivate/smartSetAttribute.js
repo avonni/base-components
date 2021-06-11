@@ -29,6 +29,7 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 export function smartSetAttribute(element, attribute, value) {
     if (element.tagName.match(/^C/i)) {
         attribute = attribute.replace(/-\w/g, (m) => m[1].toUpperCase());

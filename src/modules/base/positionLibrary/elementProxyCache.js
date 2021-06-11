@@ -29,6 +29,7 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 import { ElementProxy } from './elementProxy';
 import { timeout, WindowManager, POSITION_ATTR_NAME } from './util';
 import { assert } from 'c/utilsPrivate';

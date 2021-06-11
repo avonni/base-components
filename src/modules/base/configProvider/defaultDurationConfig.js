@@ -29,6 +29,7 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 // inspired by the duration logic in moment.js (extremely simplified) https://github.com/moment/moment
 // Only using this in defaultConfig when we're outside of an aura context.
 // Reasons for this are because the Intl api currently doesn't match the existing text formats:

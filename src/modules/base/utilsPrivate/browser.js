@@ -29,6 +29,7 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 export const isIE11 = isIE11Test(navigator);
 export const isChrome = isChromeTest(navigator);
 export const isSafari = isSafariTest(window.safari);

@@ -29,6 +29,7 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 import { createElement } from 'lwc';
 import FilterMenuGroup from 'c/filterMenuGroup';
 import { MENUS, NO_VALUE_MENU } from '../__docs__/data';
