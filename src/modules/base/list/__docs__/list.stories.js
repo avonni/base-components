@@ -77,7 +77,32 @@ export default {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'right' }
             }
-        }
+        },
+        padding: {
+            name: 'padding',
+            control: {
+                type: 'select'
+            },
+            options: ['small', 'medium', 'large'],
+            description:
+                'Position of the sortable icon. Valid values include left and right.',
+            table: {
+                type: { summary: 'string' },
+            }
+        },
+        divider: {
+            name: 'divider',
+            control: {
+                type: 'select'
+            },
+            options: ['top', 'bottom', 'around'],
+            description:
+                'Position of the sortable icon. Valid values include left and right.',
+            table: {
+                type: { summary: 'string' },
+            }
+        },
+
     }
 };
 

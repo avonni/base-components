@@ -17,6 +17,7 @@ export default class List extends LightningElement {
     @api label;
     @api sortableIconName;
     @api alternativeText;
+    
 
     _items = [];
     _sortable = false;
@@ -32,10 +33,29 @@ export default class List extends LightningElement {
     _currentItemDraggedHeight;
     _actions = [];
     _hasActions = false;
+    _padding;
+    _divider;
     computedActions = [];
     computedItems = [];
     menuRole;
     itemRole;
+
+    @api
+    get padding() {
+        return this._padding;
+    }
+    set padding(value) {
+        this._padding = value; //FAIRE LE TRUC DE VALEUR
+    }
+
+    @api
+    get divider() {
+        return this._divider;
+    }
+    set divider(value) {
+        this._divider = value; //FAIRE LE TRUC DE VALEUR
+    }
+
 
     @api
     get items() {
@@ -98,9 +118,20 @@ export default class List extends LightningElement {
             this.sortableIconPosition === 'left'
         );
     }
+    
+    get listClass(){
+        return classSet('menu')
+            .add({
+                'slds-has-dividers_top-space' : this.divider === 'top',
+                'slds-has-dividers_bottom-space' : this.divider === 'bottom',
+                'slds-has-dividers_around-space' : this.divider === 'around',
+            })
+            .toString();
+    }
 
+    
     get itemClass() {
-        return classSet('slds-border_bottom slds-grid list-item')
+        return classSet('slds-grid list-item slds-item')
             .add({
                 'sortable-item': this.sortable,
                 'expanded-item': this._hasActions

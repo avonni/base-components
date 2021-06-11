@@ -11,7 +11,7 @@
         >{alternativeText}</span
     >
 
-    <ul class="menu" role={menuRole}>
+    <ul class={listClass} role={menuRole}>
         <template for:each={computedItems} for:item="item" for:index="index">
             <li
                 key={item.label}
