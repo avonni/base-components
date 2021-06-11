@@ -222,7 +222,7 @@ export default class AvatarGroup extends LightningElement {
     }
 
     get avatarInlineClass() {
-        return classSet('avonni-avatar-group__avatar')
+        return classSet()
             .add({
                 'avonni-avatar-group_in-line': this.layout === 'stack'
             })

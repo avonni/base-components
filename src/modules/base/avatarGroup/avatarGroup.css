@@ -103,7 +103,6 @@
 
 /* Outline --- */
 .slds-avatar:focus,
-.avonni-avatar-group__avatar:focus,
 .slds-avatar-grouped:focus,
 .avonni-avatar-group__action-button:focus {
     outline: none;
@@ -172,4 +171,11 @@
 .avonni-avatar-group__action-button_x-small {
     width: 1.25rem;
     height: 1.25rem;
+}
+span.avonni-avatar-group__avatar-container:hover {
+    cursor: pointer;
+}
+span.avonni-avatar-group__avatar-container:focus {
+    outline: none;
+    box-shadow: rgb(53, 125, 219) 0 0 0 2px !important;
 }

@@ -59,7 +59,11 @@
         <template for:each={listItems} for:item="item" for:index="index">
             <template if:false={item.showMore}>
                 <template if:true={item.key}>
-                    <span key={item.key} class={avatarWrapperClass}>
+                    <span
+                        key={item.key}
+                        class={avatarWrapperClass}
+                        tabindex="0"
+                    >
                         <c-avatar
                             alternative-text={item.alternativeText}
                             fallback-icon-name={item.fallbackIconName}
@@ -85,11 +89,8 @@
                             data-item-id={index}
                             data-type="show"
                             class={avatarInlineClass}
-                            onclick={handleAvatarClick}
-                            onblur={handleBlur}
                             role="button"
                             onkeyup={handleAvatarClick}
-                            tabindex="0"
                         >
                         </c-avatar>
                         <template if:false={isNotList}>
@@ -197,6 +198,24 @@
                                         data-type="hidden"
                                     >
                                         {item.alternativeText}
+                                        <br />
+                                        <template if:false={isNotList}>
+                                            <div
+                                                if:true={item.tags}
+                                                class="slds-m-left_x-small slds-m-top_xx-small"
+                                            >
+                                                <template
+                                                    for:each={item.tags}
+                                                    for:item="tag"
+                                                >
+                                                    <lightning-badge
+                                                        class={tag.class}
+                                                        key={tag.label}
+                                                        label={tag.label}
+                                                    ></lightning-badge>
+                                                </template>
+                                            </div>
+                                        </template>
                                     </p>
                                 </div>
                             </template>
