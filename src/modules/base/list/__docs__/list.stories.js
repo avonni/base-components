@@ -78,18 +78,6 @@ export default {
                 defaultValue: { summary: 'right' }
             }
         },
-        padding: {
-            name: 'padding',
-            control: {
-                type: 'select'
-            },
-            options: ['small', 'medium', 'large'],
-            description:
-                'Position of the sortable icon. Valid values include left and right.',
-            table: {
-                type: { summary: 'string' },
-            }
-        },
         divider: {
             name: 'divider',
             control: {

@@ -11,10 +11,6 @@ const ICON_POSITIONS = {
     default: 'right'
 };
 
-const PADDING = {
-    valid: ['small', 'medium', 'large'],
-};
-
 const DIVIDER = {
     valid: ['top', 'bottom', 'around'],
 };
@@ -41,22 +37,11 @@ export default class List extends LightningElement {
     _currentItemDraggedHeight;
     _actions = [];
     _hasActions = false;
-    _padding;
     _divider;
     computedActions = [];
     computedItems = [];
     menuRole;
     itemRole;
-
-    @api
-    get padding() {
-        return this._padding;
-    }
-    set padding(value) {
-        this._padding = normalizeString(value, {
-            validValues: PADDING.valid
-        });
-    }
 
     @api
     get divider() {
@@ -146,9 +131,6 @@ export default class List extends LightningElement {
             .add({
                 'sortable-item': this.sortable,
                 'expanded-item': this._hasActions,
-                'avonni-padding-small' : this.padding === 'small',
-                'avonni-padding-medium' : this.padding === 'medium',
-                'avonni-padding-large' : this.padding === 'large',
             })
             .toString();
     }
