@@ -172,10 +172,19 @@
     width: 1.25rem;
     height: 1.25rem;
 }
+
 span.avonni-avatar-group__avatar-container:hover {
     cursor: pointer;
 }
 span.avonni-avatar-group__avatar-container:focus {
     outline: none;
     box-shadow: rgb(53, 125, 219) 0 0 0 2px !important;
+
+.circleBorder{
+    border: 3px white solid;
+}
+
+.squareBorder{
+    border: 3px white solid;
+    border-radius: 5px;
 }
