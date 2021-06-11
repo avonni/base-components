@@ -12,7 +12,7 @@ const ICON_POSITIONS = {
 };
 
 const DIVIDER = {
-    valid: ['top', 'bottom', 'around'],
+    valid: ['top', 'bottom', 'around']
 };
 
 const DEFAULT_ITEM_HEIGHT = 44;
@@ -21,7 +21,6 @@ export default class List extends LightningElement {
     @api label;
     @api sortableIconName;
     @api alternativeText;
-    
 
     _items = [];
     _sortable = false;
@@ -52,7 +51,6 @@ export default class List extends LightningElement {
             validValues: DIVIDER.valid
         });
     }
-
 
     @api
     get items() {
@@ -115,22 +113,23 @@ export default class List extends LightningElement {
             this.sortableIconPosition === 'left'
         );
     }
-    
-    get listClass(){
+
+    get listClass() {
         return classSet('menu')
             .add({
-                'slds-has-dividers_top-space' : this.divider === 'top',
-                'slds-has-dividers_bottom-space' : this.divider === 'bottom',
-                'slds-has-dividers_around-space' : this.divider === 'around',
+                'slds-has-dividers_top-space': this.divider === 'top',
+                'slds-has-dividers_bottom-space': this.divider === 'bottom',
+                'slds-has-dividers_around-space': this.divider === 'around'
             })
             .toString();
     }
-    
+
     get itemClass() {
         return classSet('slds-grid list-item slds-item')
             .add({
                 'sortable-item': this.sortable,
                 'expanded-item': this._hasActions,
+                'slds-p-vertical_x-small': !this.divider
             })
             .toString();
     }

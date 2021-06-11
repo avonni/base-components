@@ -30,16 +30,14 @@
                 aria-label={item.label}
                 aria-describedby="instructions"
             >
-                <div
-                    class="slds-grid slds-grid_vertical-align-center slds-p-vertical_x-small"
-                >
+                <div class="slds-grid slds-grid_vertical-align-center">
                     <lightning-icon
                         if:true={showIconLeft}
-                        class="slds-m-left_x-small icon-left"
                         icon-name={sortableIconName}
                         size="x-small"
                     ></lightning-icon>
                     <c-avatar
+                        if:true={item.avatarSrc}
                         class="slds-m-horizontal_x-small"
                         fallback-icon-name={item.avatarFallbackIconName}
                         src={item.avatarSrc}
