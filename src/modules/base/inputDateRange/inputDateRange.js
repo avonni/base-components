@@ -35,7 +35,7 @@ import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { parseDateTime } from 'c/internationalizationLibrary';
 import { classSet } from 'c/utils';
 
-const TYPES = {
+const DATE_TYPES = {
     valid: ['date', 'datetime'],
     default: 'date'
 };
@@ -44,7 +44,7 @@ const DATE_STYLES = {
     defaultDate: 'medium',
     defaultTime:'short'
 };
-const VARIANTS = {
+const LABEL_VARIANTS = {
     valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked'],
     default: 'standard'
 };
@@ -61,11 +61,11 @@ export default class InputDateRange extends LightningElement {
 
     _dateStyle = DATE_STYLES.defaultDate;
     _timeStyle = DATE_STYLES.defaultTime;
-    _type = TYPES.default;
+    _type = DATE_TYPES.default;
     _disabled = false;
     _required = false;
     _readOnly = false;
-    _variant = VARIANTS.default;
+    _variant = LABEL_VARIANTS.default;
 
     startTime;
     endTime;
@@ -138,8 +138,8 @@ export default class InputDateRange extends LightningElement {
 
     set type(type) {
         this._type = normalizeString(type, {
-            fallbackValue: TYPES.default,
-            validValues: TYPES.valid
+            fallbackValue: DATE_TYPES.default,
+            validValues: DATE_TYPES.valid
         });
         this.initStartDate();
         this.initEndtDate();
@@ -179,8 +179,8 @@ export default class InputDateRange extends LightningElement {
 
     set variant(value) {
         this._variant = normalizeString(value, {
-            fallbackValue: VARIANTS.default,
-            validValues: VARIANTS.valid
+            fallbackValue: LABEL_VARIANTS.default,
+            validValues: LABEL_VARIANTS.valid
         });
     }
 

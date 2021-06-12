@@ -34,17 +34,17 @@ import { LightningElement, api } from 'lwc';
 import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
 import { generateUniqueId, classSet } from 'c/utils';
 
-const VALID_SELECTIONS = {
+const RATING_SELECTIONS = {
     valid: ['continuous', 'single'],
     default: 'continuous'
 };
 
-const VALID_SIZES = {
+const RATING_SIZES = {
     valid: ['x-small', 'small', 'medium', 'large'],
     default: 'large'
 };
 
-const VALID_LABEL_VARIANTS = {
+const LABEL_VARIANTS = {
     valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'],
     default: 'standard'
 };
@@ -61,9 +61,9 @@ export default class Rating extends LightningElement {
     _min = DEFAULT_MIN;
     _max = DEFAULT_MAX;
     _value;
-    _variant = VALID_LABEL_VARIANTS.default;
-    _iconSize = VALID_SIZES.default;
-    _selection = VALID_SELECTIONS.default;
+    _variant = LABEL_VARIANTS.default;
+    _iconSize = RATING_SIZES.default;
+    _selection = RATING_SELECTIONS.default;
     _disabled;
     _readOnly;
     _valueHidden;
@@ -162,8 +162,8 @@ export default class Rating extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: VALID_LABEL_VARIANTS.default,
-            validValues: VALID_LABEL_VARIANTS.valid
+            fallbackValue: LABEL_VARIANTS.default,
+            validValues: LABEL_VARIANTS.valid
         });
     }
 
@@ -174,8 +174,8 @@ export default class Rating extends LightningElement {
 
     set iconSize(size) {
         this._iconSize = normalizeString(size, {
-            fallbackValue: VALID_SIZES.default,
-            validValues: VALID_SIZES.valid
+            fallbackValue: RATING_SIZES.default,
+            validValues: RATING_SIZES.valid
         });
     }
 
@@ -186,8 +186,8 @@ export default class Rating extends LightningElement {
 
     set selection(selection) {
         this._selection = normalizeString(selection, {
-            fallbackValue: VALID_SELECTIONS.default,
-            validValues: VALID_SELECTIONS.valid
+            fallbackValue: RATING_SELECTIONS.default,
+            validValues: RATING_SELECTIONS.valid
         });
 
         if (this.init) {

@@ -34,12 +34,15 @@ import { LightningElement, api } from 'lwc';
 import { normalizeBoolean } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
+const DEFAULT_SHRINK_ICON_NAME = 'utility:chevrondown';
+const DEFAULT_EXPAND_ICON_NAME = 'utility:chevronright';
+
 export default class SummaryDetail extends LightningElement {
     @api title;
 
     _removeBodyIndentation;
-    _shrinkIconName = 'utility:chevrondown';
-    _expandIconName = 'utility:chevronright';
+    _shrinkIconName = DEFAULT_SHRINK_ICON_NAME;
+    _expandIconName = DEFAULT_EXPAND_ICON_NAME;
     _fullWidth;
     _closed;
     _hideIcon;

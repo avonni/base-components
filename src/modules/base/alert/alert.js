@@ -34,14 +34,14 @@ import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
-const validVariants = ['base', 'error', 'offline', 'warning'];
+const ALERT_VARIANTS = {valid:['base', 'error', 'offline', 'warning'], default: 'base'};
 
 export default class Alert extends LightningElement {
     @api iconName;
     @api closeAction;
 
     hideAlert;
-    _variant = 'base';
+    _variant = ALERT_VARIANTS.default;
     _isDismissible = false;
 
     @api
@@ -51,8 +51,8 @@ export default class Alert extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: 'base',
-            validValues: validVariants
+            fallbackValue: ALERT_VARIANTS.default,
+            validValues: ALERT_VARIANTS.valid
         });
     }
 

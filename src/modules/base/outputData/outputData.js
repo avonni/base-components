@@ -33,7 +33,7 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 
-const TYPES = {
+const DATA_TYPES = {
     valid: [
         'boolean',
         'currency',
@@ -53,7 +53,7 @@ export default class OutputData extends LightningElement {
     @api label;
 
     _typeAttributes = {};
-    _type = TYPES.default;
+    _type = DATA_TYPES.default;
     _value;
 
     @api
@@ -70,8 +70,8 @@ export default class OutputData extends LightningElement {
     }
     set type(value) {
         this._type = normalizeString(value, {
-            fallbackValue: TYPES.default,
-            validValues: TYPES.valid
+            fallbackValue: DATA_TYPES.default,
+            validValues: DATA_TYPES.valid
         });
     }
 

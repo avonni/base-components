@@ -53,11 +53,11 @@ const i18n = {
 
 const DEBOUNCE_PERIOD = 200;
 
-const validOrientations = {
+const INPUT_CHOICE_ORIENTATIONS = {
     valid: ['vertical', 'horizontal'],
     default: 'vertical'
 };
-const validTypes = { valid: ['default', 'button'], default: 'default' };
+const INPUT_CHOICE_TYPES = { valid: ['default', 'button'], default: 'default' };
 
 export default class InputChoiceSet extends LightningElement {
     static delegatesFocus = true;
@@ -67,8 +67,8 @@ export default class InputChoiceSet extends LightningElement {
     @api messageWhenValueMissing;
     @api name;
 
-    _orientation = validOrientations.default;
-    _type = validTypes.default;
+    _orientation = INPUT_CHOICE_ORIENTATIONS.default;
+    _type = INPUT_CHOICE_TYPES.default;
     _helpMessage;
     _disabled = false;
     _required = false;
@@ -136,8 +136,8 @@ export default class InputChoiceSet extends LightningElement {
 
     set orientation(orientation) {
         this._orientation = normalizeString(orientation, {
-            fallbackValue: validOrientations.default,
-            validValues: validOrientations.valid
+            fallbackValue: INPUT_CHOICE_ORIENTATIONS.default,
+            validValues: INPUT_CHOICE_ORIENTATIONS.valid
         });
     }
 
@@ -174,8 +174,8 @@ export default class InputChoiceSet extends LightningElement {
 
     set type(type) {
         this._type = normalizeString(type, {
-            fallbackValue: validTypes.default,
-            validValues: validTypes.valid
+            fallbackValue: INPUT_CHOICE_TYPES.default,
+            validValues: INPUT_CHOICE_TYPES.valid
         });
     }
 

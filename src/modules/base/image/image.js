@@ -34,7 +34,7 @@ import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-const validRounded = ['top', 'right', 'bottom', 'left', 'circle', '0'];
+const IMAGE_ROUNDED = ['top', 'right', 'bottom', 'left', 'circle', '0'];
 const CROP_FIT = {
     valid: ['cover', 'contain', 'fill', 'none'],
     default: 'cover'
@@ -223,7 +223,7 @@ export default class Image extends LightningElement {
     set rounded(value) {
         let roundedValue = normalizeString(value, {
             fallbackValue: null,
-            validValues: validRounded
+            validValues: IMAGE_ROUNDED
         });
 
         if (roundedValue !== null) {

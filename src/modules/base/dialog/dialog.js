@@ -34,14 +34,14 @@ import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-const validSizes = { valid: ['small', 'medium', 'large'], default: 'medium' };
+const DIALOG_SIZES = { valid: ['small', 'medium', 'large'], default: 'medium' };
 
 export default class Dialog extends LightningElement {
     @api dialogName;
     @api title;
     @api loadingStateAlternativeText;
 
-    _size = validSizes.default;
+    _size = DIALOG_SIZES.default;
     _isLoading;
     _showDialog = false;
     showFooter = true;
@@ -77,8 +77,8 @@ export default class Dialog extends LightningElement {
 
     set size(size) {
         this._size = normalizeString(size, {
-            fallbackValue: validSizes.default,
-            validValues: validSizes.valid
+            fallbackValue: DIALOG_SIZES.default,
+            validValues: DIALOG_SIZES.valid
         });
     }
 

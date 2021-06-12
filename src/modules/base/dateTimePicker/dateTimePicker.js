@@ -38,25 +38,25 @@ import TIME_ZONES from './timeZones.js';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-const VARIANTS = {
+const DATE_TIME_VARIANTS = {
     valid: ['daily', 'weekly', 'inline', 'timeline', 'monthly'],
     default: 'daily'
 };
-const TYPES = {
+const DATE_TIME_TYPES = {
     valid: ['radio', 'checkbox'],
     default: 'radio'
 };
-const DATE_TIME_FORMAT = {
+const DATE_TIME_FORMATS = {
     valid: ['numeric', '2-digit'],
     dayDefault: 'numeric',
     hourDefault: 'numeric',
     minuteDefault: '2-digit'
 };
-const WEEKDAY_FORMAT = {
+const WEEKDAY_FORMATS = {
     valid: ['narrow', 'short', 'long'],
     default: 'short'
 };
-const MONTH_FORMAT = {
+const MONTH_FORMATS = {
     valid: ['2-digit', 'numeric', 'narrow', 'short', 'long'],
     default: 'long'
 };
@@ -66,6 +66,7 @@ const DEFAULT_END_TIME = 82800000;
 const DEFAULT_TIME_SLOT_DURATION = 1800000;
 const DEFAULT_MAX = new Date(new Date(2099, 11, 31).setHours(0, 0, 0, 0));
 const DEFAULT_MIN = new Date(new Date(1900, 0, 1).setHours(0, 0, 0, 0));
+const DEFAULT_DAY_CLASS = 'avonni-date-time-picker__day'
 
 export default class DateTimePicker extends LightningElement {
     @api fieldLevelHelp;
@@ -77,7 +78,7 @@ export default class DateTimePicker extends LightningElement {
     @api disabledDateTimes = [];
 
     _hideLabel;
-    _variant = VARIANTS.default;
+    _variant = DATE_TIME_VARIANTS.default;
     _max = DEFAULT_MAX;
     _min = DEFAULT_MIN;
     _value;
@@ -89,13 +90,13 @@ export default class DateTimePicker extends LightningElement {
     _timeFormatHour12;
     _timeFormatMinute;
     _timeFormatSecond;
-    _dateFormatDay = DATE_TIME_FORMAT.dayDefault;
-    _dateFormatWeekday = WEEKDAY_FORMAT.default;
-    _dateFormatMonth = MONTH_FORMAT.default;
+    _dateFormatDay = DATE_TIME_FORMATS.dayDefault;
+    _dateFormatWeekday = WEEKDAY_FORMATS.default;
+    _dateFormatMonth = MONTH_FORMATS.default;
     _dateFormatYear;
     _showEndTime;
     _showDisabledDates;
-    _type = TYPES.default;
+    _type = DATE_TIME_TYPES.default;
     _showTimeZone = false;
     _hideNavigation = false;
     _hideDatePicker = false;
@@ -110,7 +111,7 @@ export default class DateTimePicker extends LightningElement {
     selectedTimeZone;
     helpMessage = null;
     datePickerValue;
-    dayClass = 'avonni-date-time-picker__day';
+    dayClass = DEFAULT_DAY_CLASS;
     calendarDisabledDates = [];
 
     _connected = false;
@@ -156,8 +157,8 @@ export default class DateTimePicker extends LightningElement {
 
     set variant(value) {
         this._variant = normalizeString(value, {
-            fallbackValue: VARIANTS.default,
-            validValues: VARIANTS.valid
+            fallbackValue: DATE_TIME_VARIANTS.default,
+            validValues: DATE_TIME_VARIANTS.valid
         });
 
         this.dayClass = classSet('slds-text-align_center slds-grid').add({
@@ -294,7 +295,7 @@ export default class DateTimePicker extends LightningElement {
 
     set timeFormatHour(value) {
         this._timeFormatHour = normalizeString(value, {
-            validValues: DATE_TIME_FORMAT.valid
+            validValues: DATE_TIME_FORMATS.valid
         });
     }
 
@@ -316,7 +317,7 @@ export default class DateTimePicker extends LightningElement {
 
     set timeFormatMinute(value) {
         this._timeFormatMinute = normalizeString(value, {
-            validValues: DATE_TIME_FORMAT.valid
+            validValues: DATE_TIME_FORMATS.valid
         });
     }
 
@@ -327,7 +328,7 @@ export default class DateTimePicker extends LightningElement {
 
     set timeFormatSecond(value) {
         this._timeFormatSecond = normalizeString(value, {
-            validValues: DATE_TIME_FORMAT.valid
+            validValues: DATE_TIME_FORMATS.valid
         });
     }
 
@@ -338,8 +339,8 @@ export default class DateTimePicker extends LightningElement {
 
     set dateFormatDay(value) {
         this._dateFormatDay = normalizeString(value, {
-            fallbackValue: DATE_TIME_FORMAT.dayDefault,
-            validValues: DATE_TIME_FORMAT.valid
+            fallbackValue: DATE_TIME_FORMATS.dayDefault,
+            validValues: DATE_TIME_FORMATS.valid
         });
 
         if (this.isConnected && this.variant === 'weekly')
@@ -353,8 +354,8 @@ export default class DateTimePicker extends LightningElement {
 
     set dateFormatMonth(value) {
         this._dateFormatMonth = normalizeString(value, {
-            fallbackValue: MONTH_FORMAT.default,
-            validValues: MONTH_FORMAT.valid
+            fallbackValue: MONTH_FORMATS.default,
+            validValues: MONTH_FORMATS.valid
         });
     }
 
@@ -365,8 +366,8 @@ export default class DateTimePicker extends LightningElement {
 
     set dateFormatWeekday(value) {
         this._dateFormatWeekday = normalizeString(value, {
-            fallbackValue: WEEKDAY_FORMAT.default,
-            validValues: WEEKDAY_FORMAT.valid
+            fallbackValue: WEEKDAY_FORMATS.default,
+            validValues: WEEKDAY_FORMATS.valid
         });
 
         if (this._connected && this.variant === 'weekly') this._generateTable();
@@ -379,7 +380,7 @@ export default class DateTimePicker extends LightningElement {
 
     set dateFormatYear(value) {
         this._dateFormatYear = normalizeString(value, {
-            validValues: DATE_TIME_FORMAT.valid
+            validValues: DATE_TIME_FORMATS.valid
         });
     }
 
@@ -412,8 +413,8 @@ export default class DateTimePicker extends LightningElement {
 
     set type(value) {
         this._type = normalizeString(value, {
-            fallbackValue: TYPES.default,
-            validValues: TYPES.valid
+            fallbackValue: DATE_TIME_TYPES.default,
+            validValues: DATE_TIME_TYPES.valid
         });
         if (this._connected) {
             this._processValue();
@@ -568,8 +569,8 @@ export default class DateTimePicker extends LightningElement {
             !this.timeFormatMinute &&
             !this.timeFormatSecond
         ) {
-            this._timeFormatHour = DATE_TIME_FORMAT.hourDefault;
-            this._timeFormatMinute = DATE_TIME_FORMAT.minuteDefault;
+            this._timeFormatHour = DATE_TIME_FORMATS.hourDefault;
+            this._timeFormatMinute = DATE_TIME_FORMATS.minuteDefault;
         }
     }
 

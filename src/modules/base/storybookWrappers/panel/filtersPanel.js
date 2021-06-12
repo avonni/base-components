@@ -32,10 +32,13 @@
 
 import { LightningElement, api } from 'lwc';
 
+const DEFAULT_PANEL_POSITION = 'right'
+const DEFAULT_PANEL_SIZE = 'medium'
+
 export default class FiltersPanel extends LightningElement {
-    @api position = 'right';
+    @api position = DEFAULT_PANEL_POSITION;
     @api title;
-    @api size = 'medium';
+    @api size = DEFAULT_PANEL_SIZE;
     @api showPanel = false;
 
     open() {

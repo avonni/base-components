@@ -37,7 +37,7 @@ import pageHeader from './pageHeader.html';
 import pageHeaderVertical from './pageHeaderVertical.html';
 import { computeSldsClass } from 'c/iconUtils';
 
-const VARIANTS = {
+const PAGE_HEADER_VARIANTS = {
     valid: ['base', 'object-home', 'record-home', 'record-home-vertical'],
     default: 'base'
 };
@@ -48,7 +48,7 @@ export default class PageHeader extends LightningElement {
     @api title;
     @api info;
 
-    _variant = 'base';
+    _variant = PAGE_HEADER_VARIANTS.default;
     _fields = [];
     showTitle = true;
     showLabel = true;
@@ -117,8 +117,8 @@ export default class PageHeader extends LightningElement {
 
     set variant(value) {
         this._variant = normalizeString(value, {
-            fallbackValue: VARIANTS.default,
-            validValues: VARIANTS.valid
+            fallbackValue: PAGE_HEADER_VARIANTS.default,
+            validValues: PAGE_HEADER_VARIANTS.valid
         });
     }
 

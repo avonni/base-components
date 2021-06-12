@@ -34,21 +34,23 @@ import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-const validVariants = [
+const PROGRESS_RING_VARIANTS = {valid: [
     'base',
     'active-step',
     'warning',
     'expired',
     'base-autocomplete'
-];
-const validDirections = ['fill', 'drain'];
-const validSizes = ['medium', 'large'];
+], default: 'base'};
+const PROGRESS_RING_DIRECTIONS = {valid: ['fill', 'drain'], default: 'fill'};
+const PROGRESS_RING_SIZES = {valid:['medium', 'large'], default: 'medium'};
+
+const DEFAULT_VALUE = 0
 
 export default class ProgressRing extends LightningElement {
-    _direction = 'fill';
-    _size = 'medium';
-    _value = 0;
-    _variant = 'base';
+    _direction = PROGRESS_RING_DIRECTIONS.default;
+    _size = PROGRESS_RING_SIZES.default;
+    _value = DEFAULT_VALUE;
+    _variant = PROGRESS_RING_VARIANTS.default;
     _hideIcon = false;
 
     @api
@@ -58,8 +60,8 @@ export default class ProgressRing extends LightningElement {
 
     set direction(direction) {
         this._direction = normalizeString(direction, {
-            fallbackValue: 'fill',
-            validValues: validDirections
+            fallbackValue: PROGRESS_RING_DIRECTIONS.default,
+            validValues: PROGRESS_RING_DIRECTIONS.valid
         });
     }
 
@@ -70,8 +72,8 @@ export default class ProgressRing extends LightningElement {
 
     set size(size) {
         this._size = normalizeString(size, {
-            fallbackValue: 'medium',
-            validValues: validSizes
+            fallbackValue: PROGRESS_RING_SIZES.default,
+            validValues: PROGRESS_RING_SIZES.valid
         });
     }
 
@@ -97,8 +99,8 @@ export default class ProgressRing extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: 'base',
-            validValues: validVariants
+            fallbackValue: PROGRESS_RING_VARIANTS.default,
+            validValues: PROGRESS_RING_VARIANTS.valid
         });
     }
 

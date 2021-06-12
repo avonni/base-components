@@ -34,16 +34,13 @@ import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 import qrcodeGeneration from './qrcodeGeneration.js';
 
-const validEncodings = ['ISO_8859_1', 'UTF_8'];
-const validErrorCorrections = ['L', 'M', 'Q', 'H'];
-const validRenderAs = ['canvas', 'svg'];
+const QR_ENCODINGS = {valid: ['ISO_8859_1', 'UTF_8'], default: 'ISO_8859_1'};
+const QR_ERROR_CORRECTIONS = {valid: ['L', 'M', 'Q', 'H'], default: 'L'};
+const QR_RENDER_AS = {valid: ['canvas', 'svg'], default: 'svg'};
 
 const DEFAULT_BORDER_WIDTH = 0;
 const DEFAULT_PADDING = 0;
 const DEFAULT_SIZE = 200;
-const DEFAULT_ENCODING = 'ISO_8859_1';
-const DEFAULT_ERROR_CORRECTION = 'L';
-const DEFAULT_RENDER_AS = 'svg';
 const DEFAULT_COLOR = '#000';
 const DEFAULT_BACKGROUND_COLOR = '#fff';
 
@@ -52,9 +49,9 @@ export default class Qrcode extends LightningElement {
     _padding = DEFAULT_PADDING;
     _value;
     _size = DEFAULT_SIZE;
-    _encoding = DEFAULT_ENCODING;
-    _errorCorrection = DEFAULT_ERROR_CORRECTION;
-    _renderAs = DEFAULT_RENDER_AS;
+    _encoding = QR_ENCODINGS.default;
+    _errorCorrection = QR_ERROR_CORRECTIONS.default;
+    _renderAs = QR_RENDER_AS.default;
     _background = DEFAULT_BACKGROUND_COLOR;
     _borderColor;
     _color = DEFAULT_COLOR;
@@ -129,8 +126,8 @@ export default class Qrcode extends LightningElement {
 
     set encoding(encoding) {
         this._encoding = normalizeString(encoding, {
-            fallbackValue: 'ISO_8859_1',
-            validValues: validEncodings,
+            fallbackValue: QR_ENCODINGS.default,
+            validValues: QR_ENCODINGS.valid,
             toLowerCase: false
         });
 
@@ -145,8 +142,8 @@ export default class Qrcode extends LightningElement {
 
     set errorCorrection(value) {
         this._errorCorrection = normalizeString(value, {
-            fallbackValue: 'L',
-            validValues: validErrorCorrections,
+            fallbackValue: QR_ERROR_CORRECTIONS.default,
+            validValues: QR_ERROR_CORRECTIONS.valid,
             toLowerCase: false
         });
 
@@ -161,8 +158,8 @@ export default class Qrcode extends LightningElement {
 
     set renderAs(value) {
         this._renderAs = normalizeString(value, {
-            fallbackValue: 'svg',
-            validValues: validRenderAs
+            fallbackValue: QR_RENDER_AS.default,
+            validValues: QR_RENDER_AS.valid
         });
 
         if (this.rendered) {

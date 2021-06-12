@@ -33,11 +33,11 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
-const validVariants = {
+const TOOLBAR_VARIANTS = {
     valid: ['bottom-toolbar', 'top-toolbar'],
     default: 'bottom-toolbar'
 };
-const validModes = { valid: ['draw', 'erase'], default: 'draw' };
+const PEN_MODES = { valid: ['draw', 'erase'], default: 'draw' };
 
 const DEFAULT_COLOR = '#000';
 const DEFAULT_SIZE = 2;
@@ -50,8 +50,8 @@ export default class InputPen extends LightningElement {
     _value;
     _color = DEFAULT_COLOR;
     _size = DEFAULT_SIZE;
-    _variant = validVariants.default;
-    _mode = validModes.default;
+    _variant = TOOLBAR_VARIANTS.default;
+    _mode = PEN_MODES.default;
     _disabled = false;
     _readOnly = false;
     _required = false;
@@ -163,8 +163,8 @@ export default class InputPen extends LightningElement {
 
     set variant(value) {
         this._variant = normalizeString(value, {
-            fallbackValue: validVariants.default,
-            validValues: validVariants.valid
+            fallbackValue: TOOLBAR_VARIANTS.default,
+            validValues: TOOLBAR_VARIANTS.valid
         });
 
         if (this._variant === 'bottom-toolbar') {
@@ -180,8 +180,8 @@ export default class InputPen extends LightningElement {
 
     set mode(value) {
         this._mode = normalizeString(value, {
-            fallbackValue: validModes.default,
-            validValues: validModes.valid
+            fallbackValue: PEN_MODES.default,
+            validValues: PEN_MODES.valid
         });
         this.initCusrsorStyles();
     }
@@ -295,7 +295,7 @@ export default class InputPen extends LightningElement {
     setMode(modeName) {
         this._mode = normalizeString(modeName, {
             fallbackValue: this._mode,
-            validValues: validModes
+            validValues: PEN_MODES
         });
     }
 

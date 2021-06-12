@@ -37,11 +37,15 @@ import { registerDomain, unregisterDomain } from 'c/messageDispatcher';
  * Class representing primitive iframe.
  * @extends Element
  */
+
+const DEFAULT_WIDTH = '100%'
+const DEFAULT_HEIGHT = '100%'
+
 export default class PrimitiveIframe extends LightningElement {
     @api src;
     @api domain;
-    @api width = '100%';
-    @api height = '100%';
+    @api width = DEFAULT_WIDTH;
+    @api height = DEFAULT_HEIGHT;
     @api frameStyle = '';
     @api title;
 

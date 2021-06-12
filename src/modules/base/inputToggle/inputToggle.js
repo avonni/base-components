@@ -55,15 +55,19 @@ const ARIA_CONTROLS = 'aria-controls';
 const ARIA_DESCRIBEDBY = 'aria-describedby';
 const ARIA_LABELEDBY = 'aria-labelledby';
 
-const validSizes = ['x-small', 'small', 'medium', 'large'];
+const INPUT_SIZES = {valid: ['x-small', 'small', 'medium', 'large'], default: 'medium'};
+
+const DEFAULT_MESSAGE_TOGGLE_ACTIVE = 'Active'
+const DEFAULT_MESSAGE_TOGGLE_INACTIVE = 'Inactive'
+
 
 export default class InputToggle extends LightningElement {
     @api accessKey;
     @api ariaLabel;
     @api fieldLevelHelp;
     @api label;
-    @api messageToggleActive = 'Active';
-    @api messageToggleInactive = 'Inactive';
+    @api messageToggleActive = DEFAULT_MESSAGE_TOGGLE_ACTIVE;
+    @api messageToggleInactive = DEFAULT_MESSAGE_TOGGLE_INACTIVE;
     @api name;
     @api value;
 
@@ -75,7 +79,7 @@ export default class InputToggle extends LightningElement {
     _messageWhenValueMissing;
     _readOnly;
     _required;
-    _size = 'medium';
+    _size = INPUT_SIZES.default;
     _variant;
 
     _rendered;
@@ -217,8 +221,8 @@ export default class InputToggle extends LightningElement {
 
     set size(toggleSize) {
         this._size = normalizeString(toggleSize, {
-            fallbackValue: 'medium',
-            validValues: validSizes
+            fallbackValue: INPUT_SIZES.default,
+            validValues: INPUT_SIZES.valid
         });
     }
 

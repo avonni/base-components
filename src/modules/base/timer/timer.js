@@ -33,27 +33,29 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
-const validVariants = [
-    'base',
-    'neutral',
-    'brand',
-    'brand-outline',
-    'destructive',
-    'destructive-text',
-    'inverse',
-    'success'
-];
+const BUTTON_VARIANTS = {
+    valid: [
+        'base',
+        'neutral',
+        'brand',
+        'brand-outline',
+        'destructive',
+        'destructive-text',
+        'inverse',
+        'success'
+    ],
+    default: 'neutral'
+};
 
-const validTypes = ['count-up', 'count-down'];
-const validIconPositions = ['left', 'right'];
-const validFormats = ['hh:mm:ss', 'mm:ss', 'hh:mm', 'hh', 'mm', 'ss'];
+const COUNT_TYPES = { valid: ['count-up', 'count-down'], default: 'count-up' };
+const ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
+const TIME_FORMATS = {
+    valid: ['hh:mm:ss', 'mm:ss', 'hh:mm', 'hh', 'mm', 'ss'],
+    default: 'hh:mm:ss'
+};
 
 const DEFAULT_VALUE = 0;
 const DEFAULT_DURATION = 1;
-const DEFAULT_VARIANT = 'neutral';
-const DEFAULT_TYPE = 'count-up';
-const DEFAULT_ICON_POSITION = 'left';
-const DEFAULT_FORMAT = 'hh:mm:ss';
 const DEFAULT_AUTO_START = false;
 const DEFAULT_REPEAT = false;
 
@@ -62,10 +64,10 @@ export default class Timer extends LightningElement {
 
     _value = DEFAULT_VALUE;
     _duration = DEFAULT_DURATION;
-    _variant = DEFAULT_VARIANT;
-    _type = DEFAULT_TYPE;
-    _iconPosition = DEFAULT_ICON_POSITION;
-    _format = DEFAULT_FORMAT;
+    _variant = BUTTON_VARIANTS.default;
+    _type = COUNT_TYPES.default;
+    _iconPosition = ICON_POSITIONS.default;
+    _format = TIME_FORMATS.default;
     _autoStart = DEFAULT_AUTO_START;
     _repeat = DEFAULT_REPEAT;
 
@@ -110,8 +112,8 @@ export default class Timer extends LightningElement {
 
     set variant(value) {
         this._variant = normalizeString(value, {
-            fallbackValue: 'neutral',
-            validValues: validVariants
+            fallbackValue: BUTTON_VARIANTS.default,
+            validValues: BUTTON_VARIANTS.valid
         });
     }
 
@@ -121,8 +123,8 @@ export default class Timer extends LightningElement {
 
     set type(value) {
         this._type = normalizeString(value, {
-            fallbackValue: 'count-up',
-            validValues: validTypes
+            fallbackValue: COUNT_TYPES.default,
+            validValues: COUNT_TYPES.valid
         });
     }
 
@@ -132,8 +134,8 @@ export default class Timer extends LightningElement {
 
     set iconPosition(value) {
         this._iconPosition = normalizeString(value, {
-            fallbackValue: 'left',
-            validValues: validIconPositions
+            fallbackValue: ICON_POSITIONS.default,
+            validValues: ICON_POSITIONS.valid
         });
     }
 
@@ -143,8 +145,8 @@ export default class Timer extends LightningElement {
 
     set format(value) {
         this._format = normalizeString(value, {
-            fallbackValue: 'hh:mm:ss',
-            validValues: validFormats
+            fallbackValue: TIME_FORMATS.default,
+            validValues: TIME_FORMATS.valid
         });
     }
 

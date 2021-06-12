@@ -34,9 +34,9 @@ import { LightningElement, api } from 'lwc';
 import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-const VALID_POSITIONS = { valid: ['right', 'left'], default: 'right' };
+const PANEL_POSITIONS = { valid: ['right', 'left'], default: 'right' };
 
-const VALID_SIZES = {
+const PANEL_SIZES = {
     valid: ['small', 'medium', 'large', 'x-large', 'full'],
     default: 'medium'
 };
@@ -44,8 +44,8 @@ const VALID_SIZES = {
 export default class Pagination extends LightningElement {
     @api title;
 
-    _position = VALID_POSITIONS.default;
-    _size = VALID_SIZES.default;
+    _position = PANEL_POSITIONS.default;
+    _size = PANEL_SIZES.default;
     _showPanel = false;
     _isRight = true;
 
@@ -78,8 +78,8 @@ export default class Pagination extends LightningElement {
 
     set position(position) {
         this._position = normalizeString(position, {
-            fallbackValue: VALID_POSITIONS.default,
-            validValues: VALID_POSITIONS.valid
+            fallbackValue: PANEL_POSITIONS.default,
+            validValues: PANEL_POSITIONS.valid
         });
     }
 
@@ -90,8 +90,8 @@ export default class Pagination extends LightningElement {
 
     set size(size) {
         this._size = normalizeString(size, {
-            fallbackValue: VALID_SIZES.default,
-            validValues: VALID_SIZES.valid
+            fallbackValue: PANEL_SIZES.default,
+            validValues: PANEL_SIZES.valid
         });
     }
 

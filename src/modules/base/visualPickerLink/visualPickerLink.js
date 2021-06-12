@@ -36,14 +36,14 @@ import { classSet } from 'c/utils';
 import visualPickerLink from './visualPickerLink.html';
 import visualPickerLinkInfoOnly from './visualPickerLinkInfoOnly.html';
 
-const validIconPositions = ['left', 'right'];
+const ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
 
 export default class VisualPickerLink extends LightningElement {
     @api iconName;
     @api title;
     @api href;
 
-    _iconPosition = 'left';
+    _iconPosition = ICON_POSITIONS.default;
     _completed = false;
     _infoOnly = false;
     showTitle = true;
@@ -68,8 +68,8 @@ export default class VisualPickerLink extends LightningElement {
 
     set iconPosition(iconPosition) {
         this._iconPosition = normalizeString(iconPosition, {
-            fallbackValue: 'left',
-            validValues: validIconPositions
+            fallbackValue: ICON_POSITIONS.default,
+            validValues: ICON_POSITIONS.valid
         });
     }
 

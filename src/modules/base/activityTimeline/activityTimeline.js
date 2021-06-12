@@ -37,11 +37,10 @@ import {
     normalizeArray
 } from 'c/utilsPrivate';
 
-const validGroupByOptions = {
+const GROUP_BY_OPTIONS = {
     valid: ['week', 'month', 'year'],
     default: undefined
 };
-const validVariants = { valid: ['base', 'shaded'], default: 'base' };
 
 export default class ActivityTimeline extends LightningElement {
     @api title;
@@ -49,8 +48,7 @@ export default class ActivityTimeline extends LightningElement {
 
     _collapsible = false;
     _closed = false;
-    _groupBy = validGroupByOptions.default;
-    _variant = validVariants.default;
+    _groupBy = GROUP_BY_OPTIONS.default;
     _items = [];
     _actions = [];
 
@@ -92,8 +90,8 @@ export default class ActivityTimeline extends LightningElement {
 
     set groupBy(value) {
         this._groupBy = normalizeString(value, {
-            fallbackValue: validGroupByOptions.default,
-            validValues: validGroupByOptions.valid
+            fallbackValue: GROUP_BY_OPTIONS.default,
+            validValues: GROUP_BY_OPTIONS.valid
         });
     }
 

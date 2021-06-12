@@ -33,10 +33,10 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 
-const validOrientations = ['horizontal', 'vertical'];
+const SPLITTER_ORIENTATIONS = {valid: ['horizontal', 'vertical'], default: 'horizontal'};
 
 export default class Splitter extends LightningElement {
-    _orientation = 'horizontal';
+    _orientation = SPLITTER_ORIENTATIONS.default;
     down = false;
     data;
     selectedSeparator;
@@ -320,8 +320,8 @@ export default class Splitter extends LightningElement {
 
     set orientation(orientation) {
         this._orientation = normalizeString(orientation, {
-            fallbackValue: 'horizontal',
-            validValues: validOrientations
+            fallbackValue: SPLITTER_ORIENTATIONS.default,
+            validValues: SPLITTER_ORIENTATIONS.valid
         });
     }
 

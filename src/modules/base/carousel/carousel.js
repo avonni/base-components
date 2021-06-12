@@ -47,7 +47,7 @@ const SLDS_ACTIVE_SHADED =
 const FALSE_STRING = 'false';
 const TRUE_STRING = 'true';
 
-const VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
+const INDICATOR_VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
 
 const DEFAULT_ITEMS_PER_PANEL = 1;
 const DEFAULT_SCROLL_DURATION = 5;
@@ -79,7 +79,7 @@ export default class Carousel extends LightningElement {
     _carouselItems = [];
     _itemsPerPanel = DEFAULT_ITEMS_PER_PANEL;
     _initialRender = false;
-    _indicatorVariant = VARIANTS.default;
+    _indicatorVariant = INDICATOR_VARIANTS.default;
     _hideIndicator = false;
     _carouselContentHeight = 6.625;
 
@@ -175,8 +175,8 @@ export default class Carousel extends LightningElement {
 
     set indicatorVariant(variant) {
         this._indicatorVariant = normalizeString(variant, {
-            fallbackValue: VARIANTS.default,
-            validValues: VARIANTS.valid
+            fallbackValue: INDICATOR_VARIANTS.default,
+            validValues: INDICATOR_VARIANTS.valid
         });
         if (this._connected) {
             this.initCarousel();

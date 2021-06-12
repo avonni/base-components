@@ -33,12 +33,12 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
-const validVariants = ['base', 'shaded'];
+const INDICATOR_VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
 
 export default class VerticalProgressIndicator extends LightningElement {
     @api currentStep;
 
-    _variant = 'base';
+    _variant = INDICATOR_VARIANTS.default;
     _hasError = false;
     _contentInLine = false;
 
@@ -83,8 +83,8 @@ export default class VerticalProgressIndicator extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: 'base',
-            validValues: validVariants
+            fallbackValue: INDICATOR_VARIANTS.default,
+            validValues: INDICATOR_VARIANTS.valid
         });
     }
 

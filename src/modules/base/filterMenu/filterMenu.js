@@ -80,7 +80,7 @@ const BUTTON_VARIANTS = {
     default: 'border'
 };
 
-const VARIANTS = {
+const MENU_VARIANTS = {
     valid: ['horizontal', 'vertical'],
     default: 'horizontal'
 };
@@ -121,7 +121,7 @@ export default class FilterMenu extends LightningElement {
     _dropdownAlignment = MENU_ALIGNMENTS.default;
     _dropdownNubbin = false;
     _value = [];
-    _variant = VARIANTS.default;
+    _variant = MENU_VARIANTS.default;
     _buttonVariant = BUTTON_VARIANTS.default;
     _searchInputPlaceholder = DEFAULT_SEARCH_INPUT_PLACEHOLDER;
     _showSearchBox = false;
@@ -295,8 +295,8 @@ export default class FilterMenu extends LightningElement {
     }
     set variant(value) {
         this._variant = normalizeString(value, {
-            fallbackValue: VARIANTS.default,
-            validValues: VARIANTS.valid
+            fallbackValue: MENU_VARIANTS.default,
+            validValues: MENU_VARIANTS.valid
         });
 
         if (this._variant === 'horizontal') {

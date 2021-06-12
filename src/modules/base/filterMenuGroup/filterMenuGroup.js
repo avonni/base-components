@@ -38,7 +38,7 @@ import {
 } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-const VARIANTS = {
+const MENU_VARIANTS = {
     valid: ['horizontal', 'vertical'],
     default: 'horizontal'
 };
@@ -49,7 +49,7 @@ const DEFAULT_RESET_BUTTON_LABEL = 'Reset';
 export default class FilterMenuGroup extends LightningElement {
     _menus = [];
     _hideSelectedItems = false;
-    _variant = VARIANTS.default;
+    _variant = MENU_VARIANTS.default;
     _applyButtonLabel = DEFAULT_APPLY_BUTTON_LABEL;
     _resetButtonLabel = DEFAULT_RESET_BUTTON_LABEL;
 
@@ -80,8 +80,8 @@ export default class FilterMenuGroup extends LightningElement {
     }
     set variant(value) {
         this._variant = normalizeString(value, {
-            fallbackValue: VARIANTS.default,
-            validValues: VARIANTS.valid
+            fallbackValue: MENU_VARIANTS.default,
+            validValues: MENU_VARIANTS.valid
         });
     }
 

@@ -34,17 +34,17 @@ import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { normalizeString } from 'c/utilsPrivate';
 
-const VARIANTS = {
+const REFERENCE_VARIANTS = {
     valid: ['default', 'darker', 'success', 'warning', 'error', 'lightest'],
     default: 'default'
 };
 
-const BORDER_STYLES = {
+const REFERENCE_BORDER_STYLES = {
     valid: ['solid', 'dashed', 'dotted', 'none'],
     default: 'dotted'
 };
 
-const ORIENTATION = {
+const ORIENTATIONS = {
     valid: ['horizontal', 'vertical'],
     default: 'horizontal'
 };
@@ -56,9 +56,9 @@ export default class PrimitiveProgressBarReferenceLine extends LightningElement 
     @api thickness;
 
     _value = DEFAULT_VALUE;
-    _variant = VARIANTS.default;
-    _borderStyle = BORDER_STYLES.default;
-    _orientation = ORIENTATION.default;
+    _variant = REFERENCE_VARIANTS.default;
+    _borderStyle = REFERENCE_BORDER_STYLES.default;
+    _orientation = ORIENTATIONS.default;
 
     @api
     get value() {
@@ -84,8 +84,8 @@ export default class PrimitiveProgressBarReferenceLine extends LightningElement 
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: VARIANTS.default,
-            validValues: VARIANTS.valid
+            fallbackValue: REFERENCE_VARIANTS.default,
+            validValues: REFERENCE_VARIANTS.valid
         });
     }
 
@@ -96,8 +96,8 @@ export default class PrimitiveProgressBarReferenceLine extends LightningElement 
 
     set borderStyle(borderStyle) {
         this._borderStyle = normalizeString(borderStyle, {
-            fallbackValue: BORDER_STYLES.default,
-            validValues: BORDER_STYLES.valid
+            fallbackValue: REFERENCE_BORDER_STYLES.default,
+            validValues: REFERENCE_BORDER_STYLES.valid
         });
     }
 
@@ -108,8 +108,8 @@ export default class PrimitiveProgressBarReferenceLine extends LightningElement 
 
     set orientation(orientation) {
         this._orientation = normalizeString(orientation, {
-            fallbackValue: ORIENTATION.default,
-            validValues: ORIENTATION.valid
+            fallbackValue: ORIENTATIONS.default,
+            validValues: ORIENTATIONS.valid
         });
     }
 

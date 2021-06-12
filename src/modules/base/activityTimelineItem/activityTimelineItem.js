@@ -39,9 +39,9 @@ import {
 
 import { classSet } from 'c/utils';
 
-const validButtonIconPositions = { valid: ['left', 'right'], default: 'left' };
+const BUTTON_ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
 
-const validButtonVariants = {
+const BUTTON_VARIANTS = {
     valid: [
         'neutral',
         'base',
@@ -74,8 +74,8 @@ export default class ActivityTimelineItem extends LightningElement {
     _hasError = false;
     _isLoading = false;
     _closed = false;
-    _buttonIconPosition = validButtonIconPositions.default;
-    _buttonVariant = validButtonVariants.default;
+    _buttonIconPosition = BUTTON_ICON_POSITIONS.default;
+    _buttonVariant = BUTTON_VARIANTS.default;
     _buttonDisabled = false;
     _rendered = false;
     _color;
@@ -127,8 +127,8 @@ export default class ActivityTimelineItem extends LightningElement {
 
     set buttonIconPosition(value) {
         this._buttonIconPosition = normalizeString(value, {
-            fallbackValue: validButtonIconPositions.default,
-            validValues: validButtonIconPositions.valid
+            fallbackValue: BUTTON_ICON_POSITIONS.default,
+            validValues: BUTTON_ICON_POSITIONS.valid
         });
     }
 
@@ -139,8 +139,8 @@ export default class ActivityTimelineItem extends LightningElement {
 
     set buttonVariant(value) {
         this._buttonVariant = normalizeString(value, {
-            fallbackValue: validButtonVariants.default,
-            validValues: validButtonVariants.valid
+            fallbackValue: BUTTON_VARIANTS.default,
+            validValues: BUTTON_VARIANTS.valid
         });
     }
 

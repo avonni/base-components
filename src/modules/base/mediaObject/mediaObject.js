@@ -34,14 +34,14 @@ import { LightningElement, api } from 'lwc';
 import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-const validSizes = ['small', 'medium', 'large'];
-const validVerticalAlignement = ['center', 'start', 'end'];
+const MEDIA_OBJECT_SIZES = {valid: ['small', 'medium', 'large'], default: 'medium'};
+const VERTICAL_ALIGNMENTS = {valid: ['center', 'start', 'end'], default: 'start'};
 
 export default class MediaObject extends LightningElement {
-    _verticalAlign = 'start';
+    _verticalAlign = VERTICAL_ALIGNMENTS.default;
     _responsive = false;
     _inline = false;
-    _size = 'medium';
+    _size = MEDIA_OBJECT_SIZES.default;
     _rendered = false;
 
     showFigureSlot = true;
@@ -78,8 +78,8 @@ export default class MediaObject extends LightningElement {
 
     set verticalAlign(verticalAlign) {
         this._verticalAlign = normalizeString(verticalAlign, {
-            fallbackValue: 'start',
-            validValues: validVerticalAlignement
+            fallbackValue: VERTICAL_ALIGNMENTS.default,
+            validValues: VERTICAL_ALIGNMENTS.value
         });
     }
 
@@ -107,8 +107,8 @@ export default class MediaObject extends LightningElement {
 
     set size(size) {
         this._size = normalizeString(size, {
-            fallbackValue: 'medium',
-            validValues: validSizes
+            fallbackValue: MEDIA_OBJECT_SIZES.default,
+            validValues: MEDIA_OBJECT_SIZES.valid
         });
     }
 

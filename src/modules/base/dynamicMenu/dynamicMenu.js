@@ -38,7 +38,7 @@ import {
     observePosition
 } from 'c/utilsPrivate';
 
-const validMenuAlignments = {
+const MENU_ALIGNMENTS = {
     valid: [
         'left',
         'center',
@@ -50,7 +50,7 @@ const validMenuAlignments = {
     default: 'left'
 };
 
-const validVariants = {
+const BUTTON_VARIANTS = {
     valid: [
         'border',
         'border-inverse',
@@ -63,10 +63,12 @@ const validVariants = {
     default: 'border'
 };
 
-const validIconSizes = {
+const ICON_SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
     default: 'medium'
 };
+
+const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Search…';
 
 export default class DynamicMenu extends LightningElement {
     @api iconName;
@@ -77,13 +79,13 @@ export default class DynamicMenu extends LightningElement {
     @api withSearch;
     @api accessKey;
     @api title;
-    @api searchInputPlaceholder = 'Search…';
+    @api searchInputPlaceholder = DEFAULT_SEARCH_INPUT_PLACEHOLDER;
     @api tooltip;
 
     _items = [];
     _isLoading;
-    _variant = validVariants.default;
-    _menuAlignment = validMenuAlignments.default;
+    _variant = BUTTON_VARIANTS.default;
+    _menuAlignment = MENU_ALIGNMENTS.default;
     _disabled;
     queryTerm;
     _dropdownVisible = false;
@@ -91,7 +93,7 @@ export default class DynamicMenu extends LightningElement {
     showFooter = true;
     filteredItems = [];
     _boundingRect = {};
-    _iconSize = validIconSizes.default;
+    _iconSize = ICON_SIZES.default;
 
     connectedCallback() {
         this._connected = true;
@@ -142,8 +144,8 @@ export default class DynamicMenu extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: validVariants.default,
-            validValues: validVariants.valid
+            fallbackValue: BUTTON_VARIANTS.default,
+            validValues: BUTTON_VARIANTS.valid
         });
     }
 
@@ -153,8 +155,8 @@ export default class DynamicMenu extends LightningElement {
 
     set iconSize(iconSize) {
         this._iconSize = normalizeString(iconSize, {
-            fallbackValue: validIconSizes.default,
-            validValues: validIconSizes.valid
+            fallbackValue: ICON_SIZES.default,
+            validValues: ICON_SIZES.valid
         });
     }
 
@@ -165,8 +167,8 @@ export default class DynamicMenu extends LightningElement {
 
     set menuAlignment(value) {
         this._menuAlignment = normalizeString(value, {
-            fallbackValue: validMenuAlignments.default,
-            validValues: validMenuAlignments.valid
+            fallbackValue: MENU_ALIGNMENTS.default,
+            validValues: MENU_ALIGNMENTS.valid
         });
     }
 

@@ -34,15 +34,15 @@ import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { normalizeString } from 'c/utilsPrivate';
 
-const validVariants = ['base', 'light', 'dark', 'warning', 'error', 'success'];
-const validIconSizes = ['xx-small', 'x-small', 'small', 'medium', 'large'];
+const SCOPED_NOTIFICATION_VARIANTS = {valid: ['base', 'light', 'dark', 'warning', 'error', 'success'], default: 'base'};
+const ICON_SIZES = {valid: ['xx-small', 'x-small', 'small', 'medium', 'large'], default: 'medium'};
 
 export default class ScopedNotification extends LightningElement {
     @api title;
     @api iconName;
 
-    _variant = 'base';
-    _iconSize = 'medium';
+    _variant = SCOPED_NOTIFICATION_VARIANTS.default;
+    _iconSize = ICON_SIZES.default;
     showTitle = true;
 
     renderedCallback() {
@@ -61,8 +61,8 @@ export default class ScopedNotification extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: 'base',
-            validValues: validVariants
+            fallbackValue: SCOPED_NOTIFICATION_VARIANTS.default,
+            validValues: SCOPED_NOTIFICATION_VARIANTS.valid
         });
     }
 
@@ -72,8 +72,8 @@ export default class ScopedNotification extends LightningElement {
 
     set iconSize(iconSize) {
         this._iconSize = normalizeString(iconSize, {
-            fallbackValue: 'medium',
-            validValues: validIconSizes
+            fallbackValue: ICON_SIZES.default,
+            validValues: ICON_SIZES.valid
         });
     }
 

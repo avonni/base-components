@@ -50,19 +50,25 @@ const MONTHS = [
     'December'
 ];
 
+const DEFAULT_MAX = new Date(2099, 11, 31)
+
+const DEFAULT_MIN = new Date(1900, 0, 1)
+
+const DEFAULT_DATE = new Date(new Date().setHours(0, 0, 0, 0))
+
 export default class Calendar extends LightningElement {
     _disabledDates = [];
     _markedDates = [];
     _value;
-    _max = new Date(2099, 11, 31);
-    _min = new Date(1900, 0, 1);
+    _max = DEFAULT_MAX;
+    _min = DEFAULT_MIN;
     _multiValue;
     _disabled = false;
     _weekNumber = false;
     year;
     month;
     day;
-    date = new Date(new Date().setHours(0, 0, 0, 0));
+    date = DEFAULT_DATE;
     calendarData;
 
     months = MONTHS;

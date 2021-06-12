@@ -48,7 +48,7 @@ describe('PrimitiveProgressBarReferenceLine', () => {
             }
         );
 
-        expect(element.borderStyle).toBe('none');
+        expect(element.borderStyle).toBe('dotted');
         expect(element.label).toBeUndefined();
         expect(element.orientation).toBe('horizontal');
         expect(element.thickness).toBeUndefined();

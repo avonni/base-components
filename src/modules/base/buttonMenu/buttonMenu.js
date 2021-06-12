@@ -48,7 +48,7 @@ const i18n = {
 const menuItemCSSClassName = 'slds-dropdown__item';
 const menuItemCSSSelector = `.slds-dropdown__list .${menuItemCSSClassName}`;
 
-const validMenuAlignments = {
+const MENU_ALIGNMENTS = {
     valid: [
         'left',
         'center',
@@ -60,12 +60,12 @@ const validMenuAlignments = {
     default: 'left'
 };
 
-const validIconSizes = {
+const ICON_SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium'],
     default: 'medium'
 };
 
-const validVariants = {
+const BUTTON_VARIANTS = {
     valid: [
         'bare',
         'container',
@@ -82,7 +82,7 @@ const DEFAULT_ICON_NAME = 'utility:down';
 export default class ButtonMenu extends LightningElement {
     static delegatesFocus = true;
 
-    @api iconSize = validIconSizes.default;
+    @api iconSize = ICON_SIZES.default;
     @api iconName = DEFAULT_ICON_NAME;
     @api value = '';
     @api alternativeText = i18n.showMenu;
@@ -103,10 +103,10 @@ export default class ButtonMenu extends LightningElement {
     _tooltip;
 
     _order = null;
-    _variant = validVariants.default;
+    _variant = BUTTON_VARIANTS.default;
 
     _positioning = false;
-    _menuAlignment = validMenuAlignments.default;
+    _menuAlignment = MENU_ALIGNMENTS.default;
     _boundingRect = {};
     _rerenderFocus = true;
 
@@ -166,8 +166,8 @@ export default class ButtonMenu extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: validVariants.default,
-            validValues: validVariants.valid
+            fallbackValue: BUTTON_VARIANTS.default,
+            validValues: BUTTON_VARIANTS.valid
         });
     }
 
@@ -178,8 +178,8 @@ export default class ButtonMenu extends LightningElement {
 
     set menuAlignment(value) {
         this._menuAlignment = normalizeString(value, {
-            fallbackValue: validMenuAlignments.default,
-            validValues: validMenuAlignments.valid
+            fallbackValue: MENU_ALIGNMENTS.default,
+            validValues: MENU_ALIGNMENTS.valid
         });
     }
 
