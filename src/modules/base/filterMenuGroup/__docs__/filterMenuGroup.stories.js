@@ -75,7 +75,7 @@ export default {
                 type: 'boolean'
             },
             defaultValue: false,
-            description: 'If true, the selected items are hidden.',
+            description: 'If present, the selected items are hidden.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }

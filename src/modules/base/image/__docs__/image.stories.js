@@ -68,7 +68,7 @@ export default {
             control: {
                 type: 'text'
             },
-            description: "Value to set for the 'alt' attribute.",
+            description: "The value to set for the 'alt' attribute.",
             table: {
                 type: { summary: 'string' }
             }
@@ -170,7 +170,7 @@ export default {
             options: ['top', 'right', 'bottom', 'left', 'circle', false, true],
             defaultValue: false,
             description:
-                "When set to 'true', makes the image corners slightly rounded. Can also be used to disable rounded corners or make the image a circle/oval. See docs for details.",
+                'If present, makes the image corners slightly rounded. Can also be used to disable rounded corners or make the image a circle/oval. See docs for details.',
             table: {
                 defaultValue: { summary: false },
                 type: { summary: 'boolean' }

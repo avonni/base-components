@@ -63,7 +63,7 @@ export default {
             options: ['base', 'light', 'dark', 'warning', 'error', 'success'],
             defaultValue: 'base',
             description:
-                'Values include base, light, dark, warning, error, success.',
+                'The variant changes the look of the scoped notification. Valid values include base, light, dark, warning, error, success.',
             table: {
                 defaultValue: { summary: 'base' },
                 type: { summary: 'string' }

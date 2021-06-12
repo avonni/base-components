@@ -50,7 +50,7 @@ export default {
                 type: 'boolean'
             },
             defaultValue: 0,
-            description: 'If true, close the section.',
+            description: 'If present, close the section.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }

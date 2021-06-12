@@ -53,7 +53,7 @@ export default {
             ],
             defaultValue: 'base',
             description:
-                'Values include base, random-direction, realistic, fireworks, snow and pride.',
+                'The variant changes the appearance of the confetti. Accepted variants include include base, random-direction, realistic, fireworks, snow and pride.',
             table: {
                 defaultValue: { summary: 'base' },
                 type: { summary: 'string' }

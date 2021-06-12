@@ -124,7 +124,7 @@ export default {
             },
             options: ['draw', 'erase'],
             defaultValue: 'draw',
-            description: 'Values include draw, erase',
+            description: 'Valid modes include draw and erase.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'draw' },
@@ -136,6 +136,7 @@ export default {
                 type: 'color'
             },
             defaultValue: '#000',
+            description: 'Defines the color of the pen.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: '#000' },
@@ -148,6 +149,7 @@ export default {
                 min: 1
             },
             defaultValue: 2,
+            description: 'Defines the size of the pen.',
             table: {
                 type: { summary: 'number' },
                 defaultValue: { summary: '2' },
@@ -160,7 +162,7 @@ export default {
                 type: 'boolean'
             },
             defaultValue: 0,
-            description: 'If true, hide the control bar.',
+            description: 'If present, hide the control bar.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' },

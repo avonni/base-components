@@ -45,7 +45,8 @@ export default {
             },
             options: ['right', 'left'],
             defaultValue: 'right',
-            description: 'Valid values include left and right.',
+            description:
+                'Position of the panel. Valid values include left and right.',
             table: {
                 type: { summary: 'String' },
                 defaultValue: { summary: 'right' }
@@ -68,7 +69,7 @@ export default {
             options: ['small', 'medium', 'large', 'x-large', 'full'],
             defaultValue: 'medium',
             description:
-                'Valid values include small, medium, large, x-large and full.',
+                'It defines the width of the panel. Valid values include small, medium, large, x-large and full.',
             table: {
                 type: { summary: 'String' },
                 defaultValue: { summary: 'medium' }

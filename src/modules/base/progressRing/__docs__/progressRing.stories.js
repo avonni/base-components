@@ -100,7 +100,7 @@ export default {
                 type: 'boolean'
             },
             description:
-                'If true and the variant is equal to warning, base-autocomplete or expired, hide the icon in the progress ring content',
+                'If present and the variant is equal to warning, base-autocomplete or expired, hide the icon in the progress ring content',
             defaultValue: 0,
             table: {
                 type: { summary: 'boolean' },

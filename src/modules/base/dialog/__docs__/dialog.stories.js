@@ -73,7 +73,7 @@ export default {
             options: ['small', 'medium', 'large'],
             defaultValue: 'medium',
             description:
-                'Width of the modal. Accepted values include small, medium, large.',
+                'Width of the modal. Accepted sizes include small, medium, large. ',
             table: {
                 defaultValue: { summary: 'medium' },
                 type: { summary: 'string' }

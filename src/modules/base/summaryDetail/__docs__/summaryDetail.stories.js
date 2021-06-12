@@ -53,7 +53,7 @@ export default {
             },
             defaultValue: false,
             description:
-                'If true, the summary detail will take the full width available.',
+                'If present, the summary detail will take the full width available.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -65,7 +65,8 @@ export default {
                 type: 'boolean'
             },
             defaultValue: false,
-            description: 'If true, the body left indentation will be removed.',
+            description:
+                'If present, the body left indentation will be removed.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -100,7 +101,7 @@ export default {
                 type: 'boolean'
             },
             defaultValue: 0,
-            description: 'If true, hide details.',
+            description: 'If present, hide details.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
@@ -112,7 +113,7 @@ export default {
                 type: 'boolean'
             },
             defaultValue: 0,
-            description: 'If true, the icon to close/expand is hidden.',
+            description: 'If present, the icon to close/expand is hidden.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }

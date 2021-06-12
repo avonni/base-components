@@ -138,7 +138,7 @@ export default {
             control: {
                 type: 'text'
             },
-            description: 'Text of the button.',
+            description: 'Label for the first button.',
             table: {
                 type: { summary: 'string' },
                 category: 'Buttons'
@@ -150,7 +150,7 @@ export default {
                 type: 'text'
             },
             description:
-                'The name of an icon to display after the text of the button.',
+                'The name of an icon to display after the label of the first button.',
             table: {
                 type: { summary: 'string' },
                 category: 'Buttons'
@@ -161,7 +161,7 @@ export default {
             control: {
                 type: 'text'
             },
-            description: 'Text of the button.',
+            description: 'Label for the previous button.',
             table: {
                 type: { summary: 'string' },
                 category: 'Buttons'
@@ -174,7 +174,7 @@ export default {
             },
             defaultValue: 'utility:chevronleft',
             description:
-                'The name of an icon to display after the text of the button.',
+                'The name of an icon to display after the label for the previous button.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'utility:chevronleft' },
@@ -186,7 +186,7 @@ export default {
             control: {
                 type: 'text'
             },
-            description: 'Text of the button.',
+            description: 'Label for the next button.',
             table: {
                 type: { summary: 'string' },
                 category: 'Buttons'
@@ -199,7 +199,7 @@ export default {
             },
             defaultValue: 'utility:chevronright',
             description:
-                'The name of an icon to display after the text of the button.',
+                'The name of an icon to display after the label for the next button.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'utility:chevronright' },
@@ -211,7 +211,7 @@ export default {
             control: {
                 type: 'text'
             },
-            description: 'Text of the button.',
+            description: 'Label for the last button.',
             table: {
                 type: { summary: 'string' },
                 category: 'Buttons'
@@ -223,7 +223,7 @@ export default {
                 type: 'text'
             },
             description:
-                'The name of an icon to display after the text of the button.',
+                'The name of an icon to display after the label for the last button.',
             table: {
                 type: { summary: 'string' },
                 category: 'Buttons'

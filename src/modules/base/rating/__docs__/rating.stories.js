@@ -39,6 +39,7 @@ export default {
             control: {
                 type: 'text'
             },
+            description: 'Label for the rating component.',
             table: {
                 type: { summary: 'string' }
             }
@@ -48,6 +49,8 @@ export default {
             control: {
                 type: 'text'
             },
+            description:
+                'Help text detailing the purpose and function of the rating component.',
             table: {
                 type: { summary: 'string' }
             }
@@ -109,6 +112,8 @@ export default {
                 type: 'number'
             },
             defaultValue: 1,
+            description:
+                'The minimum acceptable value for the rating component.',
             table: {
                 defaultValue: { summary: '1' },
                 type: { summary: 'number' },
@@ -120,6 +125,8 @@ export default {
                 type: 'number'
             },
             defaultValue: 5,
+            description:
+                'The maximum acceptable value for the rating component.',
             table: {
                 defaultValue: { summary: '5' },
                 type: { summary: 'number' },
@@ -132,7 +139,7 @@ export default {
             },
             options: ['continuous', 'single'],
             defaultValue: 'continuous',
-            description: 'Allowed values include continuous and single',
+            description: 'Valid values include continuous and single.',
             table: {
                 defaultValue: { summary: 'continuous' },
                 type: { summary: 'string' }
@@ -143,6 +150,8 @@ export default {
                 type: 'boolean'
             },
             defaultValue: 0,
+            description:
+                'If present, the rating component is disabled and users cannot interact with it.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' },
@@ -155,6 +164,8 @@ export default {
                 type: 'boolean'
             },
             defaultValue: 0,
+            description:
+                'If present, the rating component is read-only and cannot be edited by users.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' },

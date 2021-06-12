@@ -61,7 +61,7 @@ export default {
                 type: 'radio'
             },
             description:
-                'Type of the input. Valid value include default and button.',
+                'Type of the input. Valid values include default and button.',
             options: ['default', 'button'],
             defaultValue: 'default',
             table: {

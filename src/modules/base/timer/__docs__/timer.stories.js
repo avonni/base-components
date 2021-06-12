@@ -100,7 +100,8 @@ export default {
             },
             options: ['count-up', 'count-down'],
             defaultValue: 'count-up',
-            description: 'Values include count-up and count-down',
+            description:
+                'Type of the timer. Valid values include count-up and count-down.',
             table: {
                 defaultValue: { summary: 'count-up' },
                 type: { summary: 'string' }
@@ -127,7 +128,7 @@ export default {
             options: ['hh:mm:ss', 'mm:ss', 'hh:mm', 'hh', 'mm', 'ss'],
             defaultValue: 'hh:mm:ss',
             description:
-                'Values include "hh:mm:ss", "mm:ss", "hh:mm", “hh”, “mm”, “ss”',
+                'Format of the timer. Valid values include "hh:mm:ss", "mm:ss", "hh:mm", “hh”, “mm”, “ss”.',
             table: {
                 defaultValue: { summary: 'hh:mm:ss' },
                 type: { summary: 'string' }

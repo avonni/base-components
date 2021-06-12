@@ -39,6 +39,7 @@ export default {
             control: {
                 type: 'text'
             },
+            description: 'Label for the progress bar.',
             table: {
                 type: { summary: 'string' }
             }
@@ -76,7 +77,7 @@ export default {
                 type: 'boolean'
             },
             defaultValue: false,
-            description: 'If true, display the value.',
+            description: 'If present, display the value.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' },
@@ -98,7 +99,7 @@ export default {
             ],
             defaultValue: 'top-right',
             description:
-                'Valid values include left, right, top-right, top-left, bottom-right and bottom-left',
+                'Position of the value if present. Valid values include left, right, top-right, top-left, bottom-right and bottom-left.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'top-right' },
@@ -156,7 +157,7 @@ export default {
             ],
             defaultValue: 'base',
             description:
-                'Valid values includes base, success, inverse, alt-inverse, warning, info, error and offline.',
+                'Defines the theme of the progress bar. Valid values includes base, success, inverse, alt-inverse, warning, info, error and offline.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'base' }
@@ -167,7 +168,7 @@ export default {
                 type: 'boolean'
             },
             defaultValue: false,
-            description: 'If true display a texture background.',
+            description: 'If present, display a texture background.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }

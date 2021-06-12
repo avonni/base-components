@@ -53,7 +53,7 @@ export default {
             options: ['base', 'error', 'offline', 'warning'],
             defaultValue: 'base',
             description:
-                'Valid values include base, error, offline and warning.',
+                'The variant change the apparence of the alert. Valid values include base, error, offline and warning.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'base' }

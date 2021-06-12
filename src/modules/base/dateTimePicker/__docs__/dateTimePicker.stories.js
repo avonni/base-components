@@ -72,7 +72,7 @@ export default {
             control: {
                 type: 'boolean'
             },
-            description: 'If true, hide the label.',
+            description: 'If present, hide the label.',
             table: {
                 type: { summary: 'boolean' }
             }
@@ -368,6 +368,7 @@ export default {
                 type: 'boolean'
             },
             defaultValue: false,
+            description: 'If present, show the time zone.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' },

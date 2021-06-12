@@ -78,7 +78,7 @@ export default {
                 type: 'boolean'
             },
             defaultValue: false,
-            description: 'If true, the menu cannot be used by users.',
+            description: 'If present, the menu cannot be used by users.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -91,7 +91,7 @@ export default {
             },
             defaultValue: false,
             description:
-                'If true, the menu is in a loading state and shows a spinner.',
+                'If present, the menu is in a loading state and shows a spinner.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' },
@@ -123,7 +123,7 @@ export default {
             control: {
                 type: 'object'
             },
-            description: "Array of selected items' values.",
+            description: "Array of selected item's values.",
             table: {
                 type: { summary: 'string[]' }
             }
@@ -209,7 +209,7 @@ export default {
                 type: 'boolean'
             },
             defaultValue: false,
-            description: 'If true, the selected items are hidden.',
+            description: 'If present, the selected items are hidden.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -235,7 +235,7 @@ export default {
                 type: 'boolean'
             },
             defaultValue: false,
-            description: 'If true, the search box is visible.',
+            description: 'If present, the search box is visible.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' },
@@ -272,7 +272,7 @@ export default {
                 type: 'boolean'
             },
             defaultValue: false,
-            description: 'If true, the apply and reset buttons are hidden.',
+            description: 'If present, the apply and reset buttons are hidden.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -338,7 +338,7 @@ export default {
             },
             defaultValue: false,
             description:
-                'If true, a nubbin is present on the dropdown menu. A nubbin is a stub that protrudes from the menu item towards the button menu. The nubbin position is based on the menu-alignment. This attribute isn’t supported for the vertical variant.',
+                'If present, a nubbin is present on the dropdown menu. A nubbin is a stub that protrudes from the menu item towards the button menu. The nubbin position is based on the menu-alignment. This attribute isn’t supported for the vertical variant.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' },
