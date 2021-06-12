@@ -1,3 +1,35 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { createElement } from 'lwc';
 import InputChoiceSet from '../inputChoiceSet';
 
@@ -10,9 +42,24 @@ const options = [
 ];
 
 const optionsWithIcon = [
-    { label: 'Left', value: 'left', iconName: 'utility:left_align_text', iconPosition: 'right' },
-    { label: 'Center', value: 'center', iconName: 'utility:center_align_text', iconPosition: 'right' },
-    { label: 'Right', value: 'right', iconName: 'utility:right_align_text', iconPosition: 'right' },
+    {
+        label: 'Left',
+        value: 'left',
+        iconName: 'utility:left_align_text',
+        iconPosition: 'right'
+    },
+    {
+        label: 'Center',
+        value: 'center',
+        iconName: 'utility:center_align_text',
+        iconPosition: 'right'
+    },
+    {
+        label: 'Right',
+        value: 'right',
+        iconName: 'utility:right_align_text',
+        iconPosition: 'right'
+    }
 ];
 
 describe('Input choice set', () => {
@@ -87,7 +134,7 @@ describe('Input choice set', () => {
         document.body.appendChild(element);
 
         element.options = options;
-        element.orientation = "vertical";
+        element.orientation = 'vertical';
         element.isMultiSelect = true;
 
         return Promise.resolve().then(() => {
@@ -114,7 +161,10 @@ describe('Input choice set', () => {
         return Promise.resolve().then(() => {
             const inputs = element.shadowRoot.querySelectorAll('div > span');
             inputs.forEach((input) => {
-                const expected = (input.className === 'slds-button slds-checkbox_button vertical' || input.className === "slds-checkbox_faux")
+                const expected =
+                    input.className ===
+                        'slds-button slds-checkbox_button vertical' ||
+                    input.className === 'slds-checkbox_faux';
                 expect(expected).toBe(true);
                 expect(input.className).not.toBe('slds-checkbox');
             });
@@ -178,7 +228,9 @@ describe('Input choice set', () => {
             const labels = element.shadowRoot.querySelectorAll('label');
             let index = 0;
             labels.forEach((label) => {
-                expect(label.control.value).toBe(element.options[index++].value);
+                expect(label.control.value).toBe(
+                    element.options[index++].value
+                );
             });
         });
     });
@@ -202,7 +254,9 @@ describe('Input choice set', () => {
             const labels = element.shadowRoot.querySelectorAll('label');
             index = 0;
             labels.forEach((label) => {
-                expect(label.control.value).toBe(element.options[index++].value);
+                expect(label.control.value).toBe(
+                    element.options[index++].value
+                );
             });
         });
     });
@@ -253,14 +307,12 @@ describe('Input choice set', () => {
         document.body.appendChild(element);
 
         element.options = options;
-        element.orientation = "vertical";
+        element.orientation = 'vertical';
 
         return Promise.resolve().then(() => {
             const inputs = element.shadowRoot.querySelectorAll('div > span');
             inputs.forEach((input) => {
-                expect(input.className).not.toContain(
-                    'horizontal'
-                );
+                expect(input.className).not.toContain('horizontal');
                 expect(input.className).toContain('vertical');
             });
         });
@@ -273,14 +325,12 @@ describe('Input choice set', () => {
         document.body.appendChild(element);
 
         element.options = options;
-        element.orientation = "horizontal";
+        element.orientation = 'horizontal';
 
         return Promise.resolve().then(() => {
             const inputs = element.shadowRoot.querySelectorAll('div > span');
             inputs.forEach((input) => {
-                expect(input.className).not.toContain(
-                    'vertical'
-                );
+                expect(input.className).not.toContain('vertical');
                 expect(input.className).toContain('horizontal');
             });
         });
