@@ -213,10 +213,7 @@ describe('List', () => {
             // Item is clicked on
             items[1].dispatchEvent(new CustomEvent('mousedown'));
             expect(items[1].classList).toContain('sortable-item_dragged');
-
-            // Item is moved (theoretically)
-            items[1].dispatchEvent(new CustomEvent('mousemove'));
-
+            
             // Item is dropped
             items[1].dispatchEvent(new CustomEvent('mouseup'));
             expect(items[1].classList).not.toContain('sortable-item_dragged');
@@ -352,7 +349,6 @@ describe('List', () => {
             const items = element.shadowRoot.querySelectorAll('li');
 
             items[2].dispatchEvent(new CustomEvent('mousedown'));
-            items[2].dispatchEvent(new CustomEvent('mousemove'));
             items[2].dispatchEvent(new CustomEvent('mouseup'));
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.items).toMatchObject(ITEMS);
