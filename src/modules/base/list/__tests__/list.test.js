@@ -145,7 +145,7 @@ describe('List', () => {
     });
 
     // divider
-    it('divider', () => {
+    it('divider = around', () => {
         const element = createElement('base-list', {
             is: List
         });
@@ -157,6 +157,34 @@ describe('List', () => {
         return Promise.resolve().then(() => {
             const menu = element.shadowRoot.querySelector('.menu');
             expect(menu.classList).toContain('slds-has-dividers_around-space');
+        });
+    });
+    it('divider = top', () => {
+        const element = createElement('base-list', {
+            is: List
+        });
+
+        document.body.appendChild(element);
+
+        element.divider = 'top';
+
+        return Promise.resolve().then(() => {
+            const menu = element.shadowRoot.querySelector('.menu');
+            expect(menu.classList).toContain('slds-has-dividers_top-space');
+        });
+    });
+    it('divider = bottom', () => {
+        const element = createElement('base-list', {
+            is: List
+        });
+
+        document.body.appendChild(element);
+
+        element.divider = 'bottom';
+
+        return Promise.resolve().then(() => {
+            const menu = element.shadowRoot.querySelector('.menu');
+            expect(menu.classList).toContain('slds-has-dividers_bottom-space');
         });
     });
 
@@ -213,7 +241,7 @@ describe('List', () => {
             // Item is clicked on
             items[1].dispatchEvent(new CustomEvent('mousedown'));
             expect(items[1].classList).toContain('sortable-item_dragged');
-            
+
             // Item is dropped
             items[1].dispatchEvent(new CustomEvent('mouseup'));
             expect(items[1].classList).not.toContain('sortable-item_dragged');
