@@ -25,7 +25,6 @@ export const ImageList = ({
     cropPositionY,
     staticImages,
     lazyLoading,
-    itemsLength
 }) => {
     const element = document.createElement('ac-image-list');
     element.src = src;
@@ -50,7 +49,6 @@ export const ImageList = ({
     element.cropPositionY = cropPositionY;
     element.staticImages = staticImages;
     element.lazyLoading = lazyLoading;
-    element.itemsLength = itemsLength;
     
     return element;
 };

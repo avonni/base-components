@@ -7,7 +7,7 @@ export default {
     argTypes: {
         src: {
             control: {
-                type: 'text'
+                type: 'object'
             },
             description: "URL to set for the 'src' attribute.",
             table: {
@@ -303,11 +303,28 @@ Base.args = {
 
 export const BaseWithLazyLoading = ListTemplate.bind({});
 BaseWithLazyLoading.args = {
-    src:'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+    src:['https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+     'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg',
+     'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+     'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
+     'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
+     'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+     'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+     'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
+    'https://ik.imagekit.io/demo/img/image1.jpeg?tr=w-400,h-300',
+    'https://ik.imagekit.io/demo/img/image2.jpeg?tr=w-400,h-300',
+    'https://ik.imagekit.io/demo/img/image4.jpeg?tr=w-400,h-300',
+    'https://ik.imagekit.io/demo/img/image5.jpeg?tr=w-400,h-300',
+    'https://ik.imagekit.io/demo/img/image6.jpeg?tr=w-400,h-300',
+    'https://ik.imagekit.io/demo/img/image7.jpeg?tr=w-400,h-300',
+    'https://ik.imagekit.io/demo/img/image8.jpeg?tr=w-400,h-300',
+    'https://ik.imagekit.io/demo/img/image9.jpeg?tr=w-400,h-300',
+    'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300',
+    ],
+    width: '400',
     alt: 'Alt text',
     lazyLoading : true,
     blankColor: 'transparent',
-    itemsLength: 12,
 };
 
 export const BaseLarge = Template.bind({});

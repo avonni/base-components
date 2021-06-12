@@ -1,7 +1,7 @@
 import { LightningElement, api } from 'lwc';
 
 export default class Image extends LightningElement {
-    @api src;
+    @api src = [];
     @api srcset;
     @api alt;
     @api width;
@@ -22,24 +22,13 @@ export default class Image extends LightningElement {
     @api cropFit;
     @api cropPositionX;
     @api cropPositionY;
-    
-    _itemsLength  = 1;
-        
-    @api
-    get itemsLength(){
-        return this._itemsLength;
-    }
-
-    set itemsLength(number){
-        if(this.itemsLength > 0) this._itemsLength = number;
-    }
 
     get itemList() {
         let result = [];
-        for (let i = 0; i < this.itemsLength; i++) {
+        for (let i = 0; i < this.src.length; i++) {
             let item = {
                 key: i,
-                src : this.src,
+                src : this.src[i],
                 srcset : this.srcset,
                 alt : this.alt,
                 width : this.width,
