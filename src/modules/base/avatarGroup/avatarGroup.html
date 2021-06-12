@@ -59,11 +59,7 @@
         <template for:each={listItems} for:item="item" for:index="index">
             <template if:false={item.showMore}>
                 <template if:true={item.key}>
-                    <span
-                        key={item.key}
-                        class={avatarWrapperClass}
-                        tabindex="0"
-                    >
+                    <span key={item.key} class={avatarWrapperClass}>
                         <c-avatar
                             alternative-text={item.alternativeText}
                             fallback-icon-name={item.fallbackIconName}
@@ -91,6 +87,8 @@
                             class={avatarInlineClass}
                             role="button"
                             onkeyup={handleAvatarClick}
+                            tags={item.tags}
+                            tabindex="0"
                         >
                         </c-avatar>
                     </span>
