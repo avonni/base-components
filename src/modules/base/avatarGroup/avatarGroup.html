@@ -93,21 +93,6 @@
                             onkeyup={handleAvatarClick}
                         >
                         </c-avatar>
-                        <template if:false={isNotList}>
-                            <div
-                                if:true={item.tags}
-                                style={badgeListPosition}
-                                class="slds-m-left_x-small slds-m-top_xx-small"
-                            >
-                                <template for:each={item.tags} for:item="tag">
-                                    <lightning-badge
-                                        class={tag.class}
-                                        key={tag.label}
-                                        label={tag.label}
-                                    ></lightning-badge>
-                                </template>
-                            </div>
-                        </template>
                     </span>
                 </template>
             </template>
@@ -198,24 +183,6 @@
                                         data-type="hidden"
                                     >
                                         {item.alternativeText}
-                                        <br />
-                                        <template if:false={isNotList}>
-                                            <div
-                                                if:true={item.tags}
-                                                class="slds-m-left_x-small slds-m-top_xx-small"
-                                            >
-                                                <template
-                                                    for:each={item.tags}
-                                                    for:item="tag"
-                                                >
-                                                    <lightning-badge
-                                                        class={tag.class}
-                                                        key={tag.label}
-                                                        label={tag.label}
-                                                    ></lightning-badge>
-                                                </template>
-                                            </div>
-                                        </template>
                                     </p>
                                 </div>
                             </template>

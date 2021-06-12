@@ -296,13 +296,30 @@ export default {
                 defaultValue: 'right',
                 category: 'Details'
             }
+        },
+        tags: {
+            name: 'tags',
+            control: {
+                type: 'object'
+            },
+            description: 'tags associated with the avatar',
+            table: {
+                type: { summary: 'object[]' }
+            }
         }
     },
     args: {
         hideAvatarDetails: false
     }
 };
-
+const tags = [
+    { label: 'default', variant: 'default' },
+    { label: 'warning', variant: 'warning' },
+    { label: 'error', variant: 'error' },
+    { label: 'success', variant: 'success' },
+    { label: 'lightest', variant: 'lightest' },
+    { label: 'inverse', variant: 'inverse' }
+];
 const Template = (args) => Avatar(args);
 
 export const Base = Template.bind({});
@@ -526,4 +543,17 @@ DetailsWithoutAvatar.args = {
     primaryText: 'John Smith',
     secondaryText: 'VP, Human Resources',
     tertiaryText: 'Busy'
+};
+export const BaseWithTags = Template.bind({});
+BaseWithTags.args = {
+    alternativeText: 'John Smith',
+    size: 'xx-large',
+    presence: 'busy',
+    primaryText: 'John Smith',
+    secondaryText: 'VP, Human Resources',
+    tertiaryText: 'Busy',
+    src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+    fallbackIconName: 'standard:avatar',
+    initials: 'JS',
+    tags: tags
 };

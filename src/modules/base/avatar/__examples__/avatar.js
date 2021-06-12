@@ -25,7 +25,8 @@ export const Avatar = ({
     statusPosition,
     statusTitle,
     variant,
-    textPosition
+    textPosition,
+    tags
 }) => {
     const element = document.createElement('ac-base-avatar');
     element.alternativeText = alternativeText;
@@ -51,5 +52,6 @@ export const Avatar = ({
     element.statusTitle = statusTitle;
     element.variant = variant;
     element.textPosition = textPosition;
+    element.tags = tags;
     return element;
 };

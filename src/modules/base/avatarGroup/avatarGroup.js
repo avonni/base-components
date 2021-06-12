@@ -51,7 +51,6 @@ export default class AvatarGroup extends LightningElement {
         if (!this.maxCount) {
             this._maxCount = this.layout === 'stack' ? 5 : 11;
         }
-        this._determineImageWidth();
     }
 
     renderedCallback() {
@@ -163,9 +162,7 @@ export default class AvatarGroup extends LightningElement {
         let length = this.items.length;
         let maxCount = this.maxCount;
         let items = JSON.parse(JSON.stringify(this.items));
-        items.forEach((item) => {
-            item.tags = normalizeArray(item.tags);
-        });
+
         if (isNaN(maxCount)) {
             maxCount = this.layout === 'stack' ? 5 : 11;
         }
@@ -182,7 +179,6 @@ export default class AvatarGroup extends LightningElement {
         items.forEach((item, index) => {
             item.key = 'avatar-key-' + index;
         });
-        this._styleBadges(items);
         return items;
     }
 
@@ -200,7 +196,6 @@ export default class AvatarGroup extends LightningElement {
             items.forEach((item, index) => {
                 item.key = 'avatar-key-hidden-' + index;
             });
-            this._styleBadges(items);
             return items;
         }
 
@@ -225,8 +220,10 @@ export default class AvatarGroup extends LightningElement {
         return classSet('avonni-avatar-group__avatar')
             .add({
                 'avonni-avatar-group_in-line': this.layout === 'stack',
-                'circleBorder' : this.layout === 'stack' && this.variant === 'circle',
-                'squareBorder' : this.layout === 'stack' && this.variant === 'square',
+                circleBorder:
+                    this.layout === 'stack' && this.variant === 'circle',
+                squareBorder:
+                    this.layout === 'stack' && this.variant === 'square'
             })
             .add(`avonni-avatar-${this.size}`)
             .toString();
@@ -236,7 +233,6 @@ export default class AvatarGroup extends LightningElement {
         return classSet('avonni-avatar-group__avatar avonni-avatar-group__plus')
             .add({
                 'avonni-avatar-group_in-line': this.layout === 'stack'
-                
             })
             .add(`avonni-avatar-${this.size}`)
             .toString();
@@ -246,7 +242,7 @@ export default class AvatarGroup extends LightningElement {
         return classSet('avonni-avatar-group__avatar-container').add({
             'slds-show': this.layout === 'list',
             'avonni-avatar-group_circle': this.variant === 'circle',
-            'slds-p-right_x-small' : this.layout === 'grid'
+            'slds-p-right_x-small': this.layout === 'grid'
         });
     }
 
@@ -332,10 +328,6 @@ export default class AvatarGroup extends LightningElement {
     get isNotList() {
         return !(this.layout === 'list');
     }
-
-    get badgeClass() {
-        return 'slds-badge_inverse';
-    }
     allowBlur() {
         this._allowBlur = true;
     }
@@ -398,52 +390,5 @@ export default class AvatarGroup extends LightningElement {
                 }
             })
         );
-    }
-
-    _determineImageWidth() {
-        switch (this.size) {
-            case 'xx-large':
-                this._imageWidth = 72;
-                break;
-            case 'x-large':
-                this._imageWidth = 56;
-                break;
-            case 'large':
-                this._imageWidth = 48;
-                break;
-            case 'medium':
-                this._imageWidth = 32;
-                break;
-            case 'small':
-                this._imageWidth = 24;
-                break;
-            default:
-                this._imageWidth = 20;
-        }
-    }
-    _styleBadges(items) {
-        items.forEach((item) => {
-            if (item.tags) {
-                item.tags.forEach((tag) => {
-                    tag.class = this._determineBadgeStyle(tag);
-                });
-            }
-        });
-    }
-    _determineBadgeStyle(tag) {
-        switch (tag.variant) {
-            case 'inverse':
-                return 'slds-badge_inverse';
-            case 'lightest':
-                return 'slds-badge_lightest';
-            case 'success':
-                return 'slds-theme_success';
-            case 'warning':
-                return 'slds-theme_warning';
-            case 'error':
-                return 'slds-theme_error';
-            default:
-                return 'slds-badge';
-        }
     }
 }
