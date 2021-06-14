@@ -347,5 +347,6 @@ ListDoubleExtraLarge.args = {
     ],
     layout: 'list',
     maxCount: 3,
-    size: 'xx-large'
+    size: 'xx-large',
+    listButtonIconName: 'utility:down'
 };

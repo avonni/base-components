@@ -392,4 +392,13 @@ export default class AvatarGroup extends LightningElement {
     toggleShowHiddenList() {
         this.showPopover = !this.showPopover;
     }
+    @api
+    get currentlistButtonLabel() {
+        return this.showPopover ? 'Show less' : 'Show more';
+    }
+
+    @api
+    get currentListButtonIcon() {
+        return this.showPopover ? 'utility:up' : 'utility:down';
+    }
 }
