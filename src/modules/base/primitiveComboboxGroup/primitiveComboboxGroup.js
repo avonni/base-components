@@ -107,7 +107,6 @@ export default class PrimitiveComboboxGroup extends LightningElement {
         this.dispatchEvent(
             new CustomEvent(`privateoption${event.type}`, {
                 detail: {
-                    value: event.currentTarget.dataset.value,
                     id: event.currentTarget.id
                 },
                 bubbles: true,
