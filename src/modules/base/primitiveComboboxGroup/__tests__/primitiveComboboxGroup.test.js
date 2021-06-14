@@ -60,7 +60,18 @@ const options = [
                 computedClass: 'combobox__option'
             }
         ],
-        groups: []
+        groups: [
+            {
+                label: 'Some group',
+                name: 'some-group',
+                options: [
+                    {
+                        label: 'Sub-option',
+                        name: 'suboption'
+                    }
+                ]
+            }
+        ]
     },
     {
         avatarFallbackIconName: 'standard:account',
@@ -323,10 +334,10 @@ describe('PrimitiveComboboxGroup', () => {
         });
     });
 
-    /* ----- METHODS ----- */
+    /* ----- COMPUTED PUBLIC VARIABLES ----- */
 
     // optionElements
-    it('get optionElements method', () => {
+    it('get optionElements', () => {
         const element = createElement('base-primitive-combobox-group', {
             is: PrimitiveComboboxGroup
         });
@@ -337,6 +348,21 @@ describe('PrimitiveComboboxGroup', () => {
         return Promise.resolve().then(() => {
             const optionElements = element.optionElements;
             expect(optionElements).toHaveLength(3);
+        });
+    });
+
+    // titleElement
+    it('get titleElement', () => {
+        const element = createElement('base-primitive-combobox-group', {
+            is: PrimitiveComboboxGroup
+        });
+        document.body.appendChild(element);
+
+        element.label = 'A string title';
+
+        return Promise.resolve().then(() => {
+            const title = element.titleElement;
+            expect(title).toBeTruthy();
         });
     });
 
@@ -387,34 +413,6 @@ describe('PrimitiveComboboxGroup', () => {
                 'li[role="option"]'
             );
             option.dispatchEvent(new CustomEvent('mouseenter'));
-
-            expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.value).toBe(
-                options[0].value
-            );
-            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
-            expect(handler.mock.calls[0][0].composed).toBeTruthy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-        });
-    });
-
-    // privateoptionmouseleave event
-    // Depends on options
-    it('privateoptionmouseleave event', () => {
-        const element = createElement('base-primitive-combobox-group', {
-            is: PrimitiveComboboxGroup
-        });
-        document.body.appendChild(element);
-
-        element.options = options;
-        const handler = jest.fn();
-        element.addEventListener('privateoptionmouseleave', handler);
-
-        return Promise.resolve().then(() => {
-            const option = element.shadowRoot.querySelector(
-                'li[role="option"]'
-            );
-            option.dispatchEvent(new CustomEvent('mouseleave'));
 
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.value).toBe(
