@@ -141,7 +141,13 @@ export default class PageHeader extends LightningElement {
     }
 
     get computedIconClass() {
-        return classSet('slds-icon_container')
+        return classSet('slds-icon_container non-mobile')
+            .add(computeSldsClass(this.iconName))
+            .toString();
+    }
+
+    get computedMobileIconClass() {
+        return classSet('slds-icon_container mobile')
             .add(computeSldsClass(this.iconName))
             .toString();
     }
@@ -172,5 +178,9 @@ export default class PageHeader extends LightningElement {
 
     get fieldsIsEmpty() {
         return this._fields.length === 0;
+    }
+
+    get showActionsOrDetails() {
+        return this.showActions || this.showDetails;
     }
 }

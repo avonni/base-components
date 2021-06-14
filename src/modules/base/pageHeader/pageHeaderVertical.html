@@ -10,6 +10,15 @@
                     >
                     </c-primitive-icon>
                 </div>
+                <div class={computedMobileIconClass}>
+                    <c-primitive-icon
+                        svg-class="slds-icon"
+                        icon-name={iconName}
+                        variant="bare"
+                        size="large"
+                    >
+                    </c-primitive-icon>
+                </div>
             </div>
             <div class="slds-media__body">
                 <div class="slds-page-header__name">
@@ -34,7 +43,7 @@
                 </div>
             </div>
             <template if:true={showControls}>
-                <div class="slds-page-header__col-controls">
+                <div class="slds-page-header__col-controls non-mobile">
                     <slot name="controls"></slot>
                 </div>
             </template>
@@ -45,28 +54,15 @@
                 <slot name="info"></slot>
             </template>
         </p>
-        <template if:true={showActions}>
-            <div class="slds-page-header__controls">
-                <slot name="actions"></slot>
-            </div>
-        </template>
-        <template if:false={fieldsIsEmpty}>
-            <ul class="slds-page-header__detail-list">
-                <template for:each={fields} for:item="field">
-                    <li key={field.label} class="slds-page-header__detail-item">
-                        <c-output-data
-                            label={field.label}
-                            value={field.value}
-                            type={field.type}
-                            type-attributes={field.typeAttributes}
-                        >
-                        </c-output-data>
-                    </li>
+        <template if:true={showActionsOrDetails}>
+            <div class="slds-page-header__controls flex">
+                <template if:true={showActions}>
+                    <slot name="actions"></slot>
                 </template>
-            </ul>
-        </template>
-        <template if:true={fieldsIsEmpty}>
-            <slot name="details"></slot>
+                <template if:true={showDetails}>
+                    <slot name="details"></slot>
+                </template>
+            </div>
         </template>
     </div>
 </template>

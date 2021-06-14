@@ -46,6 +46,15 @@
                             >
                             </c-primitive-icon>
                         </div>
+                        <div class={computedMobileIconClass}>
+                            <c-primitive-icon
+                                svg-class="slds-icon"
+                                icon-name={iconName}
+                                variant="bare"
+                                size="large"
+                            >
+                            </c-primitive-icon>
+                        </div>
                     </div>
                     <div class="slds-media__body">
                         <div class="slds-page-header__name">
@@ -96,7 +105,7 @@
                 </div>
             </div>
             <template if:true={showActions}>
-                <div class="slds-page-header__col-actions">
+                <div class="slds-page-header__col-actions non-mobile">
                     <div class="slds-page-header__controls">
                         <div class="slds-page-header__control">
                             <slot name="actions"></slot>
@@ -117,7 +126,7 @@
                 </template>
             </div>
             <template if:true={showControls}>
-                <div class="slds-page-header__col-controls">
+                <div class="slds-page-header__col-controls non-mobile">
                     <div class="slds-page-header__controls">
                         <slot name="controls"></slot>
                     </div>
@@ -126,7 +135,15 @@
         </div>
         <template if:true={isRecordHomeVariant}>
             <template if:true={showDetails}>
-                <slot name="details"></slot>
+                <div
+                    class="slds-page-header__row slds-page-header__row_gutters"
+                >
+                    <div class="slds-page-header__col-details">
+                        <div class="slds-page-header__detail-row">
+                            <slot name="details"></slot>
+                        </div>
+                    </div>
+                </div>
             </template>
         </template>
     </div>
