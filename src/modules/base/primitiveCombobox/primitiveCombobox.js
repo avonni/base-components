@@ -86,7 +86,7 @@ export default class PrimitiveCombobox extends LightningElement {
     _disabled = false;
     _dropdownAlignment = DROPDOWN_ALIGNMENTS.default;
     _dropdownLength = DROPDOWN_LENGTHS.default;
-    _groups = [];
+    _groups = [{ name: DEFAULT_GROUP_NAME }];
     _hideSelectedOptions = false;
     _isLoading = false;
     _isMultiSelect = false;
@@ -209,6 +209,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
         // Add a default group for options without groups
         this._groups.unshift({ name: DEFAULT_GROUP_NAME });
+        if (this.visibleOptions.length) this.computeGroups();
     }
 
     @api
@@ -264,6 +265,9 @@ export default class PrimitiveCombobox extends LightningElement {
     }
     set multiLevelGroups(value) {
         this._multiLevelGroups = normalizeBoolean(value);
+
+        if (this.groups.length && this.visibleOptions.length)
+            this.computeGroups();
     }
 
     @api
@@ -511,7 +515,19 @@ export default class PrimitiveCombobox extends LightningElement {
         return classSet(
             'slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid combobox__dropdown'
         )
-            .add(this.alignmentClasses)
+            .add({
+                'slds-dropdown_left':
+                    this.dropdownAlignment === 'left' ||
+                    this.dropdownAlignment === 'auto',
+                'slds-dropdown_center': this.dropdownAlignment === 'center',
+                'slds-dropdown_right': this.dropdownAlignment === 'right',
+                'slds-dropdown_bottom':
+                    this.dropdownAlignment === 'bottom-center',
+                'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right':
+                    this.dropdownAlignment === 'bottom-right',
+                'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left':
+                    this.dropdownAlignment === 'bottom-left'
+            })
             .toString();
     }
 
@@ -524,21 +540,6 @@ export default class PrimitiveCombobox extends LightningElement {
                     !this.showInputValueAvatar && !this.showInputValueIcon
             })
             .toString();
-    }
-
-    get alignmentClasses() {
-        return {
-            'slds-dropdown_left':
-                this.dropdownAlignment === 'left' ||
-                this.dropdownAlignment === 'auto',
-            'slds-dropdown_center': this.dropdownAlignment === 'center',
-            'slds-dropdown_right': this.dropdownAlignment === 'right',
-            'slds-dropdown_bottom': this.dropdownAlignment === 'bottom-center',
-            'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right':
-                this.dropdownAlignment === 'bottom-right',
-            'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left':
-                this.dropdownAlignment === 'bottom-left'
-        };
     }
 
     @api
@@ -845,6 +846,9 @@ export default class PrimitiveCombobox extends LightningElement {
         });
     }
 
+    /**
+     * Move the default group at the top
+     */
     sortGroups(groups) {
         const defaultGroupIndex = groups.findIndex(
             (group) => group.name === DEFAULT_GROUP_NAME
@@ -944,7 +948,8 @@ export default class PrimitiveCombobox extends LightningElement {
     highlightOption(index) {
         if (!this._optionElements[index]) return;
 
-        this._highlightedOption.classList.remove('slds-has-focus');
+        if (this._highlightedOption)
+            this._highlightedOption.classList.remove('slds-has-focus');
         this._highlightedOptionIndex = index;
         this._highlightedOption.classList.add('slds-has-focus');
         const listboxElement = this.template.querySelector(
@@ -1110,11 +1115,10 @@ export default class PrimitiveCombobox extends LightningElement {
             this.selectedOption = undefined;
             this.computeSelection();
 
-            const value = event.currentTarget.dataset.value;
             this.dispatchEvent(
-                new CustomEvent('remove', {
+                new CustomEvent('change', {
                     detail: {
-                        value: value
+                        value: this.value
                     }
                 })
             );
@@ -1139,7 +1143,8 @@ export default class PrimitiveCombobox extends LightningElement {
             new CustomEvent('actionclick', {
                 detail: {
                     name: name
-                }
+                },
+                bubbles: true
             })
         );
 
