@@ -126,16 +126,16 @@
                 if:false={isLoading}
                 role="listbox"
                 aria-multiselectable={isMultiSelect}
-                aria-activedescendant={computedAriaActiveDescendant}
             >
                 <!-- Back to parent link -->
                 <li
                     if:true={backLink}
                     class={backLink.computedClass}
+                    id="backlink"
                     role="option"
                     onclick={handleBackLinkClick}
                     onmouseenter={handleMouseEnter}
-                    onmouseleave={handleMouseLeave}
+                    data-name="backlink"
                 >
                     <div class="slds-media__figure slds-listbox__option-icon">
                         <lightning-icon
@@ -156,12 +156,12 @@
                     <li
                         key={action.name}
                         class={action.computedClass}
+                        id={action.name}
                         role="option"
                         aria-label="Action button"
                         data-name={action.name}
                         onclick={handleActionClick}
                         onmouseenter={handleMouseEnter}
-                        onmouseleave={handleMouseLeave}
                     >
                         <div
                             if:true={action.iconName}
@@ -201,7 +201,6 @@
                             remove-selected-options={removeSelectedOptions}
                             onprivateoptionclick={handleOptionClick}
                             onprivateoptionmouseenter={handleMouseEnter}
-                            onprivateoptionmouseleave={handleMouseLeave}
                             onclick={focus}
                         ></c-primitive-combobox-group>
                     </template>
@@ -211,11 +210,11 @@
                     <li
                         key={action.name}
                         class={action.computedClass}
+                        id={action.name}
                         role="option"
                         data-name={action.name}
                         onclick={handleActionClick}
                         onmouseenter={handleMouseEnter}
-                        onmouseleave={handleMouseLeave}
                     >
                         <div
                             if:true={action.iconName}

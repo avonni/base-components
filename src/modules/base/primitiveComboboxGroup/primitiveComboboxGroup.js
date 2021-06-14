@@ -42,6 +42,15 @@ export default class PrimitiveComboboxGroup extends LightningElement {
     _options = [];
     _removeSelectedOptions = false;
 
+    renderedCallback() {
+        // The group is added to the id to be able to make the difference between
+        // the two versions of the same option, when an option is in several groups.
+        const options = this.template.querySelectorAll('.combobox__option');
+        options.forEach((option, index) => {
+            option.id = `${this.name}-${index}`;
+        });
+    }
+
     @api
     get options() {
         return this._options;
@@ -73,7 +82,21 @@ export default class PrimitiveComboboxGroup extends LightningElement {
 
     @api
     get optionElements() {
-        return Array.from(this.template.querySelectorAll('.combobox__option'));
+        if (!this.options) return null;
+
+        const options = Array.from(
+            this.template.querySelectorAll('.combobox__option')
+        );
+
+        if (this.groups) {
+            const groups = Array.from(
+                this.template.querySelectorAll('c-primitive-combobox-group')
+            );
+            groups.forEach((group) => {
+                options.push(group.optionElements);
+            });
+        }
+        return options.flat();
     }
 
     get generateKey() {
@@ -84,7 +107,8 @@ export default class PrimitiveComboboxGroup extends LightningElement {
         this.dispatchEvent(
             new CustomEvent(`privateoption${event.type}`, {
                 detail: {
-                    value: event.currentTarget.dataset.value
+                    value: event.currentTarget.dataset.value,
+                    id: event.currentTarget.id
                 },
                 bubbles: true,
                 composed: true

@@ -102,10 +102,11 @@ export default class PrimitiveCombobox extends LightningElement {
     _showClearInput = false;
     _value = [];
     _variant = VARIANTS.default;
+
     _autoPosition;
     _cancelBlur = false;
     _maxVisibleOptions = Number(DROPDOWN_LENGTHS.default.match(/[0-9]+/)[0]);
-    _focusedOptionIndex = 0;
+    _highlightedOptionIndex = 0;
     _visibleOptions = [];
     backLink;
     computedGroups = [];
@@ -131,6 +132,7 @@ export default class PrimitiveCombobox extends LightningElement {
     renderedCallback() {
         if (this.dropdownVisible) {
             this.updateDropdownHeight();
+            this.highlightOption(0);
         }
     }
 
@@ -273,7 +275,6 @@ export default class PrimitiveCombobox extends LightningElement {
         const optionObjects = this.initOptionObjects(options);
         this._options = optionObjects;
         this.visibleOptions = optionObjects;
-        if (this.visibleOptions.length) this.focusOption(0);
 
         if (this.isConnected) {
             this.initValue();
@@ -427,12 +428,6 @@ export default class PrimitiveCombobox extends LightningElement {
         return this.readOnly || this.disabled ? 'none' : 'list';
     }
 
-    get computedAriaActiveDescendant() {
-        return normalizeAriaAttribute(
-            this._focusedOption && this._focusedOption.value
-        );
-    }
-
     get currentParent() {
         return (
             this.parentOptionsValues.length &&
@@ -442,16 +437,40 @@ export default class PrimitiveCombobox extends LightningElement {
         );
     }
 
-    get _focusableOptions() {
-        const focusable = this.topActions
-            .concat(this.visibleOptions)
-            .concat(this.bottomActions);
-        if (this.backLink) focusable.unshift(this.backLink);
-        return focusable;
+    get _optionElements() {
+        if (this.dropdownVisible) {
+            const elements = [];
+            const topActions = this.template.querySelectorAll(
+                '.combobox__action_top'
+            );
+            topActions.forEach((action) => {
+                elements.push(action);
+            });
+
+            const groups = this.template.querySelectorAll(
+                'c-primitive-combobox-group'
+            );
+            groups.forEach((group) => {
+                elements.push(group.optionElements);
+            });
+
+            const bottomActions = this.template.querySelectorAll(
+                '.combobox__action_bottom'
+            );
+            bottomActions.forEach((action) => {
+                elements.push(action);
+            });
+
+            return elements.flat();
+        }
+        return [];
     }
 
-    get _focusedOption() {
-        return this._focusableOptions[this._focusedOptionIndex];
+    get _highlightedOption() {
+        return (
+            this._optionElements.length &&
+            this._optionElements[this._highlightedOptionIndex]
+        );
     }
 
     get showSelectedOptions() {
@@ -548,7 +567,6 @@ export default class PrimitiveCombobox extends LightningElement {
 
                 this.parentOptionsValues = [];
                 this.backLink = undefined;
-                this.focusOption(0);
             } else {
                 // Reset to current visible level and erase the search
                 this.visibleOptions =
@@ -923,10 +941,19 @@ export default class PrimitiveCombobox extends LightningElement {
         return option;
     }
 
-    focusOption(index) {
-        if (this._focusedOption) this._focusedOption.focused = false;
-        this._focusedOptionIndex = index;
-        this._focusedOption.focused = true;
+    highlightOption(index) {
+        if (!this._optionElements[index]) return;
+
+        this._highlightedOption.classList.remove('slds-has-focus');
+        this._highlightedOptionIndex = index;
+        this._highlightedOption.classList.add('slds-has-focus');
+        const listboxElement = this.template.querySelector(
+            '.slds-listbox [role="listbox"]'
+        );
+        listboxElement.setAttribute(
+            'aria-activedescendant',
+            normalizeAriaAttribute(this._highlightedOption.id)
+        );
     }
 
     updateBackLink(label) {
@@ -968,9 +995,7 @@ export default class PrimitiveCombobox extends LightningElement {
             options: options
         });
 
-        if (this._focusedOption) this._focusedOption.focused = false;
         this.visibleOptions = result;
-        this.focusOption(0);
 
         this.dispatchEvent(
             new CustomEvent('search', {
@@ -994,17 +1019,17 @@ export default class PrimitiveCombobox extends LightningElement {
         this._cancelBlur = false;
     }
 
-    handleFocusableOptionClick(event) {
+    handleHighlightedOptionClick(event) {
         // If the search is allowed, the options have to be selected with enter
         if (this.allowSearch && (event.key === ' ' || event.key === 'Spacebar'))
             return;
 
-        if (this._focusedOption.value) {
+        if (this._highlightedOption.dataset.value) {
             this.handleOptionClick(event);
-        } else if (this._focusedOption.name === 'backlink') {
+        } else if (this._highlightedOption.dataset.name === 'backlink') {
             this.handleBackLinkClick();
         } else {
-            this.handleActionClick(this._focusedOption.name);
+            this.handleActionClick(this._highlightedOption.dataset.name);
         }
     }
 
@@ -1013,20 +1038,20 @@ export default class PrimitiveCombobox extends LightningElement {
             this.open();
             this.dispatchEvent(new CustomEvent('open'));
         } else {
-            const index = this._focusedOptionIndex;
+            const index = this._highlightedOptionIndex;
             switch (event.key) {
                 case 'ArrowUp':
                     if (index > 0) {
-                        this.focusOption(index - 1);
+                        this.highlightOption(index - 1);
                     } else {
-                        this.focusOption(this._focusableOptions.length - 1);
+                        this.highlightOption(this._optionElements.length - 1);
                     }
                     break;
                 case 'ArrowDown':
-                    if (index < this._focusableOptions.length - 1) {
-                        this.focusOption(index + 1);
+                    if (index < this._optionElements.length - 1) {
+                        this.highlightOption(index + 1);
                     } else {
-                        this.focusOption(0);
+                        this.highlightOption(0);
                     }
                     break;
                 case 'ArrowLeft':
@@ -1036,22 +1061,22 @@ export default class PrimitiveCombobox extends LightningElement {
                     this.handleBackLinkClick();
                     break;
                 case ' ':
-                    this.handleFocusableOptionClick(event);
+                    this.handleHighlightedOptionClick(event);
                     break;
                 case 'Spacebar':
-                    this.handleFocusableOptionClick(event);
+                    this.handleHighlightedOptionClick(event);
                     break;
                 case 'Enter':
-                    this.handleFocusableOptionClick(event);
+                    this.handleHighlightedOptionClick(event);
                     break;
                 case 'Escape':
                     this.close();
                     break;
                 case 'Home':
-                    this.focusOption(0);
+                    this.highlightOption(0);
                     break;
                 case 'End':
-                    this.focusOption(this._focusableOptions.length - 1);
+                    this.highlightOption(this._optionElements - 1);
                     break;
                 default:
                 // do nothing
@@ -1072,7 +1097,6 @@ export default class PrimitiveCombobox extends LightningElement {
             this.backLink = undefined;
         }
 
-        this.focusOption(0);
         this.focus();
     }
 
@@ -1099,6 +1123,7 @@ export default class PrimitiveCombobox extends LightningElement {
         // Reset the visible options
         this.visibleOptions = this.options;
         this.parentOptionsValues = [];
+        this.backLink = undefined;
 
         this.focus();
     }
@@ -1125,14 +1150,15 @@ export default class PrimitiveCombobox extends LightningElement {
     handleOptionClick(event) {
         event.stopPropagation();
 
-        const selectedOption = this._focusedOption;
+        const selectedOption = this.visibleOptions.find((option) => {
+            return option.value === this._highlightedOption.dataset.value;
+        });
 
         // If the option has children options, change the visible options
         if (selectedOption.options && selectedOption.options.length) {
             this.visibleOptions = selectedOption.options;
             this.parentOptionsValues.push(selectedOption.value);
             this.updateBackLink(this.currentParent.label);
-            this.focusOption(0);
             this.focus();
             return;
         }
@@ -1168,28 +1194,15 @@ export default class PrimitiveCombobox extends LightningElement {
 
     handleMouseEnter(event) {
         event.stopPropagation();
-        const name = event.currentTarget.dataset.name;
 
-        let index;
-        if (name) {
-            // The mouse hovers an action
-            index = this._focusableOptions.findIndex((option) => {
-                return option.name === name;
-            });
-        } else {
-            // The mouse hovers an option
-            index = this._focusableOptions.findIndex((option) => {
-                return option.value === event.detail.value;
-            });
-        }
-        this.focusOption(index);
-    }
+        // If the mouse enters an option, the id will be sent through an event from the group
+        const id = event.detail.id ? event.detail.id : event.currentTarget.id;
 
-    handleMouseLeave(event) {
-        event.stopPropagation();
+        const index = this._optionElements.findIndex((option) => {
+            return option.id === id;
+        });
 
-        if (this._focusedOption) this._focusedOption.focused = false;
-        this._focusedOptionIndex = undefined;
+        this.highlightOption(index);
     }
 
     @api

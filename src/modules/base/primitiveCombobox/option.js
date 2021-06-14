@@ -44,7 +44,6 @@ export default class Option {
         this.secondaryText = option.secondaryText;
         this.value = option.value;
         this.hasAvatar = this.avatarFallbackIconName || this.avatarSrc;
-        this.focused = false;
     }
 
     get computedClass() {
@@ -52,14 +51,15 @@ export default class Option {
             'slds-media slds-media_small slds-media_center slds-listbox__item slds-listbox__option slds-listbox__option_plain slds-listbox__option_entity combobox__option'
         )
             .add({
-                'slds-is-selected': this.selected || this.hasSelectedChildren(),
-                'slds-has-focus': this.focused
+                'slds-is-selected': this.selected || this.hasSelectedChildren()
             })
             .toString();
     }
 
     get computedIconClass() {
-        return this.selected ? 'slds-current-color' : undefined;
+        return this.selected || this.hasSelectedChildren()
+            ? 'slds-current-color'
+            : undefined;
     }
 
     get computedCheckmarkIconName() {
