@@ -43,6 +43,10 @@ const ICON_POSITIONS = {
     default: 'right'
 };
 
+const DIVIDER = {
+    valid: ['top', 'bottom', 'around']
+};
+
 const DEFAULT_ITEM_HEIGHT = 44;
 
 export default class List extends LightningElement {
@@ -64,10 +68,21 @@ export default class List extends LightningElement {
     _currentItemDraggedHeight;
     _actions = [];
     _hasActions = false;
+    _divider;
     computedActions = [];
     computedItems = [];
     menuRole;
     itemRole;
+
+    @api
+    get divider() {
+        return this._divider;
+    }
+    set divider(value) {
+        this._divider = normalizeString(value, {
+            validValues: DIVIDER.valid
+        });
+    }
 
     @api
     get items() {
@@ -131,11 +146,16 @@ export default class List extends LightningElement {
         );
     }
 
-    get itemClass() {
-        return classSet('slds-border_bottom slds-grid list-item')
+    get computedListClass() {
+        return  `menu slds-has-dividers_${this.divider}-space`;
+    }
+
+    get computedItemClass() {
+        return classSet('slds-grid list-item slds-item')
             .add({
                 'sortable-item': this.sortable,
-                'expanded-item': this._hasActions
+                'expanded-item': this._hasActions,
+                'slds-p-vertical_x-small': !this.divider
             })
             .toString();
     }

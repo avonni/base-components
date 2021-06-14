@@ -143,13 +143,15 @@ describe('List', () => {
                 expect(item.textContent).toBe(originalItem.label);
 
                 const avatar = item.querySelector('c-avatar');
-                if (originalItem.avatarFallbackIconName) {
-                    expect(avatar.fallbackIconName).toBe(
-                        originalItem.avatarFallbackIconName
-                    );
-                }
-                if (originalItem.avatarSrc) {
-                    expect(avatar.src).toBe(originalItem.avatarSrc);
+                if(avatar){
+                    if (originalItem.avatarFallbackIconName) {
+                        expect(avatar.fallbackIconName).toBe(
+                            originalItem.avatarFallbackIconName
+                        );
+                    }
+                    if (originalItem.avatarSrc) {
+                        expect(avatar.src).toBe(originalItem.avatarSrc);
+                    }
                 }
             });
         });
@@ -170,6 +172,50 @@ describe('List', () => {
                 '.slds-text-heading_small'
             );
             expect(label.textContent).toBe('A string label');
+        });
+    });
+
+    // divider
+    it('divider = around', () => {
+        const element = createElement('base-list', {
+            is: List
+        });
+
+        document.body.appendChild(element);
+
+        element.divider = 'around';
+
+        return Promise.resolve().then(() => {
+            const menu = element.shadowRoot.querySelector('.menu');
+            expect(menu.classList).toContain('slds-has-dividers_around-space');
+        });
+    });
+    it('divider = top', () => {
+        const element = createElement('base-list', {
+            is: List
+        });
+
+        document.body.appendChild(element);
+
+        element.divider = 'top';
+
+        return Promise.resolve().then(() => {
+            const menu = element.shadowRoot.querySelector('.menu');
+            expect(menu.classList).toContain('slds-has-dividers_top-space');
+        });
+    });
+    it('divider = bottom', () => {
+        const element = createElement('base-list', {
+            is: List
+        });
+
+        document.body.appendChild(element);
+
+        element.divider = 'bottom';
+
+        return Promise.resolve().then(() => {
+            const menu = element.shadowRoot.querySelector('.menu');
+            expect(menu.classList).toContain('slds-has-dividers_bottom-space');
         });
     });
 
@@ -226,9 +272,6 @@ describe('List', () => {
             // Item is clicked on
             items[1].dispatchEvent(new CustomEvent('mousedown'));
             expect(items[1].classList).toContain('sortable-item_dragged');
-
-            // Item is moved (theoretically)
-            items[1].dispatchEvent(new CustomEvent('mousemove'));
 
             // Item is dropped
             items[1].dispatchEvent(new CustomEvent('mouseup'));
@@ -314,7 +357,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const iconsRight = element.shadowRoot.querySelectorAll(
-                '.icon-ight'
+                '.icon-right'
             );
             const iconsLeft = element.shadowRoot.querySelectorAll('.icon-left');
             expect(iconsRight).toHaveLength(0);
@@ -365,7 +408,6 @@ describe('List', () => {
             const items = element.shadowRoot.querySelectorAll('li');
 
             items[2].dispatchEvent(new CustomEvent('mousedown'));
-            items[2].dispatchEvent(new CustomEvent('mousemove'));
             items[2].dispatchEvent(new CustomEvent('mouseup'));
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.items).toMatchObject(ITEMS);

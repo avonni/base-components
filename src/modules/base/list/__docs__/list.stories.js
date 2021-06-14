@@ -109,7 +109,20 @@ export default {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'right' }
             }
-        }
+        },
+        divider: {
+            name: 'divider',
+            control: {
+                type: 'select'
+            },
+            options: ['top', 'bottom', 'around'],
+            description:
+                'Position of the sortable icon. Valid values include left and right.',
+            table: {
+                type: { summary: 'string' },
+            }
+        },
+
     }
 };
 
@@ -230,13 +243,21 @@ const actions = [
 
 export const Base = Template.bind({});
 Base.args = {
-    items: items
+    items: items,
+    divider: 'around'
+};
+
+export const BaseWithDividerOnTop = Template.bind({});
+BaseWithDividerOnTop.args = {
+    items: items,
+    divider: 'top'
 };
 
 export const ListWithAvatars = Template.bind({});
 ListWithAvatars.args = {
     label: 'List with icons',
-    items: itemsWithAvatars
+    items: itemsWithAvatars,
+    divider: 'around'
 };
 
 export const SortableList = Template.bind({});
@@ -244,7 +265,8 @@ SortableList.args = {
     label: 'Sortable list',
     sortable: true,
     items: items,
-    actions: actions
+    actions: actions,
+    divider: 'around'
 };
 
 export const SortableListWithAvatars = Template.bind({});
@@ -254,12 +276,14 @@ SortableListWithAvatars.args = {
     actions: actions,
     sortableIconName: 'utility:drag_and_drop',
     sortableIconPosition: 'left',
-    sortable: true
+    sortable: true,
+    divider: 'around'
 };
 
 export const ListWithActions = Template.bind({});
 ListWithActions.args = {
     label: 'List with actions menu',
     items: items,
-    actions: actions
+    actions: actions,
+    divider: 'around'
 };
