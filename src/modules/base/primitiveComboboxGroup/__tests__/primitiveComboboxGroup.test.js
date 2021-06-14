@@ -369,7 +369,7 @@ describe('PrimitiveComboboxGroup', () => {
     /* ----- EVENTS ----- */
 
     // privateoptionclick event
-    // Depends on options
+    // Depends on options and name
     it('privateoptionclick event', () => {
         const element = createElement('base-primitive-combobox-group', {
             is: PrimitiveComboboxGroup
@@ -377,6 +377,7 @@ describe('PrimitiveComboboxGroup', () => {
         document.body.appendChild(element);
 
         element.options = options;
+        element.name = 'string-name';
         const handler = jest.fn();
         element.addEventListener('privateoptionclick', handler);
 
@@ -387,9 +388,7 @@ describe('PrimitiveComboboxGroup', () => {
             option.click();
 
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.value).toBe(
-                options[0].value
-            );
+            expect(handler.mock.calls[0][0].detail.id).toBe('string-name-0');
             expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
             expect(handler.mock.calls[0][0].composed).toBeTruthy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
@@ -397,7 +396,7 @@ describe('PrimitiveComboboxGroup', () => {
     });
 
     // privateoptionmouseenter event
-    // Depends on options
+    // Depends on options and name
     it('privateoptionmouseenter event', () => {
         const element = createElement('base-primitive-combobox-group', {
             is: PrimitiveComboboxGroup
@@ -405,6 +404,7 @@ describe('PrimitiveComboboxGroup', () => {
         document.body.appendChild(element);
 
         element.options = options;
+        element.name = 'string-name';
         const handler = jest.fn();
         element.addEventListener('privateoptionmouseenter', handler);
 
@@ -415,9 +415,7 @@ describe('PrimitiveComboboxGroup', () => {
             option.dispatchEvent(new CustomEvent('mouseenter'));
 
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.value).toBe(
-                options[0].value
-            );
+            expect(handler.mock.calls[0][0].detail.id).toBe('string-name-0');
             expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
             expect(handler.mock.calls[0][0].composed).toBeTruthy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
