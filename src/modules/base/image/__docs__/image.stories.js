@@ -32,12 +32,14 @@
 
 import { Image } from '../__examples__/image';
 
+import { ImageList } from '../__examples__/imageList';
+
 export default {
     title: 'Example/Image',
     argTypes: {
         src: {
             control: {
-                type: 'text'
+                type: 'object'
             },
             description: "URL to set for the 'src' attribute.",
             table: {
@@ -280,6 +282,19 @@ export default {
                 default: { summary: false },
                 type: { summary: 'boolean' }
             }
+        },
+        lazyLoading: {
+            name: 'lazy-loading',
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description:
+                'Enables lazy loading for images that are offscreen. If set to true, the property ensures that offscreen images are loaded early enough so that they have finished loading once the user scrolls near them. Note: Keep in mind that the property uses the loading attribute of HTML <img> element which is not supported for Internet Explorer.',
+            table: {
+                default: { summary: false },
+                type: { summary: 'boolean' }
+            }
         }
     },
     args: {
@@ -291,11 +306,14 @@ export default {
         right: false,
         center: false,
         blank: false,
-        staticImages: false
+        staticImages: false,
+        lazyLoading : false,
     }
 };
 
 const Template = (args) => Image(args);
+
+const ListTemplate = (args) => ImageList(args);
 
 export const BaseSmall = Template.bind({});
 BaseSmall.args = {
@@ -312,6 +330,33 @@ Base.args = {
         'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
     alt: 'Alt text',
     blankColor: 'transparent'
+};
+
+
+export const BaseWithLazyLoading = ListTemplate.bind({});
+BaseWithLazyLoading.args = {
+    src:['https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+     'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg',
+     'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+     'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
+     'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
+     'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+     'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+     'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
+    'https://ik.imagekit.io/demo/img/image1.jpeg?tr=w-400,h-300',
+    'https://ik.imagekit.io/demo/img/image2.jpeg?tr=w-400,h-300',
+    'https://ik.imagekit.io/demo/img/image4.jpeg?tr=w-400,h-300',
+    'https://ik.imagekit.io/demo/img/image5.jpeg?tr=w-400,h-300',
+    'https://ik.imagekit.io/demo/img/image6.jpeg?tr=w-400,h-300',
+    'https://ik.imagekit.io/demo/img/image7.jpeg?tr=w-400,h-300',
+    'https://ik.imagekit.io/demo/img/image8.jpeg?tr=w-400,h-300',
+    'https://ik.imagekit.io/demo/img/image9.jpeg?tr=w-400,h-300',
+    'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300',
+    ],
+    width: '400',
+    alt: 'Alt text',
+    lazyLoading : true,
+    blankColor: 'transparent',
 };
 
 export const BaseLarge = Template.bind({});
