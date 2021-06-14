@@ -92,76 +92,9 @@ export default {
                 defaultValue: { summary: 'base' },
                 type: { summary: 'String' }
             }
-        },
-        fields: {
-            control: {
-                type: 'object'
-            },
-            description:
-                'The fields can include an object array, and is displayed in the details section. To include additional markup or another component, use the details slot.',
-            table: {
-                type: { summary: 'Object []' }
-            }
         }
     }
 };
-
-const fields = [
-    {
-        label: 'Currency',
-        value: 70,
-        type: 'currency',
-        typeAttributes: {
-            currencyCode: 'EUR',
-            currencyDisplayAs: 'name',
-            minimumIntegerDigits: 2
-        }
-    },
-    {
-        label: 'Email',
-        value: 'Avonni@Avonni.com',
-        type: 'email',
-        typeAttributes: {
-            hideIcon: 'true'
-        }
-    },
-    {
-        label: 'Date',
-        value: '1991-12-10',
-        type: 'date',
-        typeAttributes: {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: '2-digit'
-        }
-    },
-    {
-        label: 'Text',
-        value: 'This is a text',
-        typeAttributes: {
-            linkify: 'false'
-        }
-    },
-    {
-        label: 'URL',
-        value: 'salesforce.com',
-        type: 'url',
-        typeAttributes: {
-            tooltip: 'Use full domain name',
-            target: '_blank'
-        }
-    },
-    {
-        label: 'Number',
-        value: '11',
-        type: 'number',
-        typeAttributes: {
-            minimumIntegerDigits: 2,
-            minimumFractionDigits: 2
-        }
-    }
-];
 
 const Template = (args) => PageHeader(args);
 
@@ -189,8 +122,7 @@ RecordHome.args = {
     iconName: 'standard:opportunity',
     label: 'Label',
     title: 'Title',
-    info: 'Info',
-    fields: fields
+    info: 'Info'
 };
 
 export const RecordHomeVertical = Template.bind({});
@@ -199,6 +131,5 @@ RecordHomeVertical.args = {
     iconName: 'standard:opportunity',
     label: 'Label',
     title: 'Title',
-    info: 'Info',
-    fields: fields
+    info: 'Info'
 };

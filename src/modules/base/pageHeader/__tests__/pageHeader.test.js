@@ -50,7 +50,6 @@ describe('PageHeader', () => {
         expect(element.title).toBeUndefined();
         expect(element.info).toBeUndefined();
         expect(element.variant).toBe('base');
-        expect(element.fields).toEqual([]);
     });
 
     // icon-name
@@ -303,110 +302,6 @@ describe('PageHeader', () => {
                 'slds-page-header_record-home'
             );
             expect(wrapper.classList).toContain('slds-page-header_vertical');
-        });
-    });
-
-    // fields
-    // Depends on variant
-    it('fields with variant = record-home', () => {
-        const element = createElement('base-page-header', {
-            is: PageHeader
-        });
-        document.body.appendChild(element);
-        const fields = [
-            {
-                label: 'Currency',
-                value: 70,
-                type: 'currency',
-                typeAttributes: {
-                    currencyCode: 'EUR',
-                    currencyDisplayAs: 'name',
-                    minimumIntegerDigits: 2
-                }
-            },
-            {
-                label: 'Email',
-                value: 'Avonni@Avonni.com',
-                type: 'email',
-                typeAttributes: {
-                    hideIcon: 'true'
-                }
-            }
-        ];
-
-        element.fields = fields;
-        element.variant = 'record-home';
-
-        return Promise.resolve().then(() => {
-            const detailsSlot = element.shadowRoot.querySelector(
-                'slot[name="details"]'
-            );
-            const primitiveFields = element.shadowRoot.querySelectorAll(
-                'c-output-data'
-            );
-
-            expect(detailsSlot).toBeFalsy();
-            primitiveFields.forEach((field, index) => {
-                const correspondingField = fields[index];
-                expect(correspondingField).toBeTruthy();
-                expect(field.typeAttributes).toMatchObject(
-                    correspondingField.typeAttributes
-                );
-                expect(field.label).toBe(correspondingField.label);
-                expect(field.value).toBe(correspondingField.value);
-                expect(field.type).toBe(correspondingField.type);
-            });
-        });
-    });
-
-    it('fields with variant = record-home-vertical', () => {
-        const element = createElement('base-page-header', {
-            is: PageHeader
-        });
-        document.body.appendChild(element);
-        const fields = [
-            {
-                label: 'Currency',
-                value: 70,
-                type: 'currency',
-                typeAttributes: {
-                    currencyCode: 'EUR',
-                    currencyDisplayAs: 'name',
-                    minimumIntegerDigits: 2
-                }
-            },
-            {
-                label: 'Email',
-                value: 'Avonni@Avonni.com',
-                type: 'email',
-                typeAttributes: {
-                    hideIcon: 'true'
-                }
-            }
-        ];
-
-        element.fields = fields;
-        element.variant = 'record-home-vertical';
-
-        return Promise.resolve().then(() => {
-            const detailsSlot = element.shadowRoot.querySelector(
-                'slot[name="details"]'
-            );
-            const primitiveFields = element.shadowRoot.querySelectorAll(
-                'c-output-data'
-            );
-
-            expect(detailsSlot).toBeFalsy();
-            primitiveFields.forEach((field, index) => {
-                const correspondingField = fields[index];
-                expect(correspondingField).toBeTruthy();
-                expect(field.typeAttributes).toMatchObject(
-                    correspondingField.typeAttributes
-                );
-                expect(field.label).toBe(correspondingField.label);
-                expect(field.value).toBe(correspondingField.value);
-                expect(field.type).toBe(correspondingField.type);
-            });
         });
     });
 });

@@ -125,30 +125,7 @@
             </template>
         </div>
         <template if:true={isRecordHomeVariant}>
-            <template if:false={fieldsIsEmpty}>
-                <div
-                    class="slds-page-header__row slds-page-header__row_gutters"
-                >
-                    <div class="slds-page-header__col-details">
-                        <ul class="slds-page-header__detail-row">
-                            <template for:each={fields} for:item="field">
-                                <li
-                                    class="slds-page-header__detail-block"
-                                    key={field.label}
-                                >
-                                    <c-output-data
-                                        label={field.label}
-                                        value={field.value}
-                                        type={field.type}
-                                        type-attributes={field.typeAttributes}
-                                    ></c-output-data>
-                                </li>
-                            </template>
-                        </ul>
-                    </div>
-                </div>
-            </template>
-            <template if:true={fieldsIsEmpty}>
+            <template if:true={showDetails}>
                 <slot name="details"></slot>
             </template>
         </template>
