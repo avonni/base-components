@@ -62,11 +62,8 @@ export default class InputCounter extends LightningElement {
     @api ariaControls;
     @api ariaLabelledBy;
     @api ariaDescribedBy;
-    @api max;
-    @api min;
     @api fieldLevelHelp;
     @api accessKey;
-    @api fractionDigits;
     @api value;
 
     _variant = validVariants.default;
@@ -75,6 +72,7 @@ export default class InputCounter extends LightningElement {
     _type = validTypes.default;
     _readOnly;
     _required;
+    _fractionDigits;
     _fractionDigitsLength;
     labelVariant;
     labelFieldLevelHelp;
@@ -96,7 +94,31 @@ export default class InputCounter extends LightningElement {
             this.init = true;
         }
     }
+
+    @api get min() {
+        return this._min;
+    }
+
+    set min(min) {
+        this._min = typeof min === 'number' ? min : '';
+    }
+
+    @api get max() {
+        return this._max;
+    }
+
+    set max(max) {
+        this._max = typeof max === 'number' ? max : '';
+    }
     
+    @api get fractionDigits() {
+        return this._fractionDigits;
+    }
+
+    set fractionDigits(digits) {
+        const baseFractionValue = 1;
+        this._fractionDigits = typeof digits === 'number' ? +('0.' + baseFractionValue.toString().padStart(digits, '0')) : "";
+    }
 
     @api get variant() {
         return this._variant;
@@ -243,12 +265,40 @@ export default class InputCounter extends LightningElement {
     }
 
     decrementValue() {
-        if (this.value !== undefined && !isNaN(this.value)) {
-            this.value = Number(this.value) - Number(this.step);            
+        if ( this.min === 0) {
+            this.value = Number(this.value) - Number(this.step);
             this.handlePrecision();
             this.updateValue(this.value);
+            if (this.min >= this.value - this.step) {
+                this.value = 0;
+                this.handlePrecision();
+                this.updateValue(this.value);
+            }
+        } else if (this.value !== undefined && !isNaN(this.value)) {
+            this.value = Number(this.value) - Number(this.step);            
+            this.handlePrecision();
+            if (this.min) {
+                if (this.value <= this.min) {
+                    this.value = this.min;
+                }
+            }
+            if (this.max) {
+                if (this.value >= this.max) {
+                    this.value = this.max;
+                }
+            this.updateValue(this.value);            
+            }
         } else {
-            this.value = !this.step ? -1 : -this.step;
+            if (!this.step && !this.min) {
+                this.value = -1;                
+            } else if (this.step && this.min === 0) {                
+                this.value = 0;
+            } else if (this.step && !this.min) {                
+                this.value = -this.step;                
+            } else if (this.step && this.min) {
+                this.value = this.min;                
+            }            
+            this.handlePrecision();
             this.updateValue(this.value);
         }
     }
@@ -256,16 +306,33 @@ export default class InputCounter extends LightningElement {
     incrementValue() {
         if (this.value !== undefined && !isNaN(this.value)) {
             this.value = Number(this.value) + Number(this.step);            
+            if (this.min) {
+                if (this.value <= this.min) {
+                    this.value = this.min;
+                }
+            }
+            if (this.max) {
+                if (this.value >= this.max) {
+                    this.value = this.max;
+                }
+            }
             this.handlePrecision();
             this.updateValue(this.value);
-        } else {
-            this.value = !this.step ? 1 : +this.step;
+        } else {            
+            if (!this.step && !this.min) {
+                this.value = +1;                
+            } else if (this.step && !this.min) {
+                this.value = +this.step;                
+            } else if (this.step && this.min) {
+                this.value = this.min;                
+            }
+            this.handlePrecision();
             this.updateValue(this.value);
         }
     }
 
     handlePrecision() {   
-        this._fractionDigitsLength = this.fractionDigits && this.fractionDigits.toString().length;
+        this._fractionDigitsLength = this.fractionDigits && this.fractionDigits.toString().length;        
         if (this.fractionDigits && this.value.toString().length > this._fractionDigitsLength) {
             const uniformOutputCorrection = this._fractionDigitsLength > 2 ? 2 : 1;
             this.value = +(this.value.toFixed(this._fractionDigitsLength - uniformOutputCorrection));
@@ -278,7 +345,6 @@ export default class InputCounter extends LightningElement {
                 element.value = value;
             }
         );
-
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
@@ -302,7 +368,7 @@ export default class InputCounter extends LightningElement {
 
     handlerChange(event) {
         this.value = event.target.value;
-        this.validateValue();
+        this.updateValue();
     }
 
     handlerFocus() {

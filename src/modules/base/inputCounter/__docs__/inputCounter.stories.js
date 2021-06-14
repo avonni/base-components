@@ -60,7 +60,7 @@ export default {
             control: {
                 type: 'number'
             },
-            description: 'The maximum acceptable value for the input.',
+            description: 'The maximum acceptable value for the input. Constrains the incrementer to stop at the specified max. If the entered value is above the max, incrementing or decrementing will then set the value to the specified max',
             table: {
                 type: { summary: 'number' },
                 category: 'Validation'
@@ -70,7 +70,7 @@ export default {
             control: {
                 type: 'number'
             },
-            description: 'The minimum acceptable value for the input.',
+            description: 'The minimum acceptable value for the input. Constrains the decrementer to stop at the specified min. If an entered value is below the min, incrementing or decrementing will then set the value to the specified min',
             table: {
                 type: { summary: 'number' },
                 category: 'Validation'
@@ -95,10 +95,8 @@ export default {
             control: {
                 type: 'number'
             },
-            defaultValue: '0.01',
-            description : 'Granularity of the value - precision of significant decimal digits ( specified as a positive floating point number. ex: 0.01 formats the value to 2 digits after the decimal  )',
+            description : 'Granularity of the value - precision of significant decimal digits ( specified as a positive integer. ex: 2 formats the value to 2 digits after the decimal  )',
             table: {
-                defaultValue: { summary: '0.01' },
                 type: { summary: 'number' },
                 category: 'Validation'
             }
@@ -316,5 +314,18 @@ Validations.args = {
     min: 3,
     max: 6,
     messageWhenRangeOverflow: 'The value needs to be equal or lesser than 6',
-    messageWhenRangeUnderflow: 'The value needs to be equal or greater than 3',
+    messageWhenRangeUnderflow: 'The value needs to be equal or greater than 3'
+};
+
+export const FractionDigitsTypeCurrency = Template.bind({});
+FractionDigitsTypeCurrency.args = {
+    label: 'Input with fraction digits, type currency and min/max',
+    fieldLevelHelp: 'Max is set to $20, Min is set to $3.50, Step is set to $5.50',
+    type: 'currency',
+    step: 5.50,
+    fractionDigits: 2,
+    min: 3.50,
+    max: 20,
+    messageWhenRangeOverflow: 'The value needs to be equal or lesser than 3.50',
+    messageWhenRangeUnderflow: 'The value needs to be equal or greater than 20',
 };
