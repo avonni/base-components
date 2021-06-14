@@ -31,9 +31,9 @@
  */
 
 import { createElement } from 'lwc';
-import PageHeader from 'c/pageHeader';
+import DataPageHeader from 'c/dataPageHeader';
 
-describe('PageHeader', () => {
+describe('DataPageHeader', () => {
     afterEach(() => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
@@ -41,8 +41,8 @@ describe('PageHeader', () => {
     });
 
     it('Default attributes', () => {
-        const element = createElement('base-page-header', {
-            is: PageHeader
+        const element = createElement('data-page-header', {
+            is: DataPageHeader
         });
 
         expect(element.iconName).toBeUndefined();
@@ -55,8 +55,8 @@ describe('PageHeader', () => {
 
     // icon-name
     it('iconName', () => {
-        const element = createElement('base-page-header', {
-            is: PageHeader
+        const element = createElement('data-page-header', {
+            is: DataPageHeader
         });
         document.body.appendChild(element);
 
@@ -71,8 +71,8 @@ describe('PageHeader', () => {
     // label
     // Depends on variant
     it('label', () => {
-        const element = createElement('base-page-header', {
-            is: PageHeader
+        const element = createElement('data-page-header', {
+            is: DataPageHeader
         });
         document.body.appendChild(element);
 
@@ -90,8 +90,8 @@ describe('PageHeader', () => {
 
     // title
     it('title', () => {
-        const element = createElement('base-page-header', {
-            is: PageHeader
+        const element = createElement('data-page-header', {
+            is: DataPageHeader
         });
         document.body.appendChild(element);
 
@@ -109,8 +109,8 @@ describe('PageHeader', () => {
     // info
     // Depends on variant
     it('info with the default (base) variant', () => {
-        const element = createElement('base-page-header', {
-            is: PageHeader
+        const element = createElement('data-page-header', {
+            is: DataPageHeader
         });
         document.body.appendChild(element);
 
@@ -126,8 +126,8 @@ describe('PageHeader', () => {
     });
 
     it('info with the object-home variant', () => {
-        const element = createElement('base-page-header', {
-            is: PageHeader
+        const element = createElement('data-page-header', {
+            is: DataPageHeader
         });
         document.body.appendChild(element);
 
@@ -145,8 +145,8 @@ describe('PageHeader', () => {
 
     // variant
     it('variant = base', () => {
-        const element = createElement('base-page-header', {
-            is: PageHeader
+        const element = createElement('data-page-header', {
+            is: DataPageHeader
         });
         document.body.appendChild(element);
 
@@ -187,8 +187,8 @@ describe('PageHeader', () => {
     });
 
     it('variant = object-home', () => {
-        const element = createElement('base-page-header', {
-            is: PageHeader
+        const element = createElement('data-page-header', {
+            is: DataPageHeader
         });
         document.body.appendChild(element);
 
@@ -227,8 +227,8 @@ describe('PageHeader', () => {
     });
 
     it('variant = record-home', () => {
-        const element = createElement('base-page-header', {
-            is: PageHeader
+        const element = createElement('data-page-header', {
+            is: DataPageHeader
         });
         document.body.appendChild(element);
 
@@ -267,8 +267,8 @@ describe('PageHeader', () => {
     });
 
     it('variant = record-home-vertical', () => {
-        const element = createElement('base-page-header', {
-            is: PageHeader
+        const element = createElement('data-page-header', {
+            is: DataPageHeader
         });
         document.body.appendChild(element);
 
@@ -309,8 +309,8 @@ describe('PageHeader', () => {
     // fields
     // Depends on variant
     it('fields with variant = record-home', () => {
-        const element = createElement('base-page-header', {
-            is: PageHeader
+        const element = createElement('data-page-header', {
+            is: DataPageHeader
         });
         document.body.appendChild(element);
         const fields = [
@@ -360,8 +360,8 @@ describe('PageHeader', () => {
     });
 
     it('fields with variant = record-home-vertical', () => {
-        const element = createElement('base-page-header', {
-            is: PageHeader
+        const element = createElement('data-page-header', {
+            is: DataPageHeader
         });
         document.body.appendChild(element);
         const fields = [

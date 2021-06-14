@@ -32,9 +32,9 @@
 
 import { LightningElement, api } from 'lwc';
 
-const DEFAULT_PAGE_HEADER_VARIANT = 'base'
+const DEFAULT_PAGE_HEADER_VARIANT = 'base';
 
-export default class PageHeader extends LightningElement {
+export default class DataPageHeader extends LightningElement {
     @api iconName;
     @api label;
     @api title;

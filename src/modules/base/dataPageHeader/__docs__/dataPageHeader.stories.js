@@ -30,10 +30,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { PageHeader } from '../__examples__/pageHeader';
+import { DataPageHeader } from '../__examples__/dataPageHeader';
 
 export default {
-    title: 'Example/Page Header',
+    title: 'Example/Data Page Header',
     argTypes: {
         iconName: {
             control: {
@@ -163,7 +163,7 @@ const fields = [
     }
 ];
 
-const Template = (args) => PageHeader(args);
+const Template = (args) => DataPageHeader(args);
 
 export const Base = Template.bind({});
 Base.args = {

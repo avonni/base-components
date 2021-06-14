@@ -119,6 +119,10 @@
             "path": "src/modules/base/confetti/confetti.js"
         },
         {
+            "name": "c/dataPageHeader",
+            "path": "src/modules/base/dataPageHeader/dataPageHeader.js"
+        },
+        {
             "name": "c/datatable",
             "path": "src/modules/base/datatable/datatable.js"
         },
@@ -217,10 +221,6 @@
         {
             "name": "c/outputData",
             "path": "src/modules/base/outputData/outputData.js"
-        },
-        {
-            "name": "c/pageHeader",
-            "path": "src/modules/base/pageHeader/pageHeader.js"
         },
         {
             "name": "c/pagination",
@@ -511,6 +511,10 @@
             "path": "src/modules/base/confetti/confetti.js"
         },
         {
+            "name": "avonni/dataPageHeader",
+            "path": "src/modules/base/dataPageHeader/dataPageHeader.js"
+        },
+        {
             "name": "avonni/datatable",
             "path": "src/modules/base/datatable/datatable.js"
         },
@@ -589,10 +593,6 @@
         {
             "name": "avonni/outputData",
             "path": "src/modules/base/outputData/outputData.js"
-        },
-        {
-            "name": "avonni/pageHeader",
-            "path": "src/modules/base/pageHeader/pageHeader.js"
         },
         {
             "name": "avonni/pagination",
@@ -762,7 +762,7 @@
         "avonni/mediaObject",
         "avonni/menuItemDialog",
         "avonni/outputData",
-        "avonni/pageHeader",
+        "avonni/dataPageHeader",
         "avonni/pagination",
         "avonni/panel",
         "avonni/path",

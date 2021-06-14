@@ -33,8 +33,8 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeString, normalizeArray } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
-import pageHeader from './pageHeader.html';
-import pageHeaderVertical from './pageHeaderVertical.html';
+import dataPageHeader from './dataPageHeader.html';
+import dataPageHeaderVertical from './dataPageHeaderVertical.html';
 import { computeSldsClass } from 'c/iconUtils';
 
 const PAGE_HEADER_VARIANTS = {
@@ -42,7 +42,7 @@ const PAGE_HEADER_VARIANTS = {
     default: 'base'
 };
 
-export default class PageHeader extends LightningElement {
+export default class DataPageHeader extends LightningElement {
     @api iconName;
     @api label;
     @api title;
@@ -59,9 +59,9 @@ export default class PageHeader extends LightningElement {
 
     render() {
         if (this._variant === 'record-home-vertical') {
-            return pageHeaderVertical;
+            return dataPageHeaderVertical;
         }
-        return pageHeader;
+        return dataPageHeader;
     }
 
     renderedCallback() {
