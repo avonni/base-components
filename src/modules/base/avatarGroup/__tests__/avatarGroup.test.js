@@ -1123,7 +1123,6 @@ describe('Avatar Group', () => {
                 expect(avatarHidden).toHaveLength(9);
             });
     });
-
     /* ----- EVENTS ----- */
 
     // avatar click

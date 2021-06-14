@@ -30,7 +30,7 @@ const validButtonVariants = {
 };
 
 export default class AvatarGroup extends LightningElement {
-    @api actionIconName;
+    @api actionIconName = 'utility:add';
     @api listButtonLabel = 'Show more';
     @api listButtonIconName;
     @api name;
@@ -97,11 +97,7 @@ export default class AvatarGroup extends LightningElement {
     @api get layout() {
         return this._layout;
     }
-    get badgeListPosition() {
-        return `position: relative;
-                left: ${this._imageWidth}px
-        `;
-    }
+
     set layout(value) {
         this._layout = normalizeString(value, {
             fallbackValue: validLayouts.default,
