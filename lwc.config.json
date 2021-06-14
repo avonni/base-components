@@ -119,6 +119,10 @@
             "path": "src/modules/base/confetti/confetti.js"
         },
         {
+            "name": "c/dataPageHeader",
+            "path": "src/modules/base/dataPageHeader/dataPageHeader.js"
+        },
+        {
             "name": "c/datatable",
             "path": "src/modules/base/datatable/datatable.js"
         },
@@ -511,6 +515,10 @@
             "path": "src/modules/base/confetti/confetti.js"
         },
         {
+            "name": "avonni/dataPageHeader",
+            "path": "src/modules/base/dataPageHeader/dataPageHeader.js"
+        },
+        {
             "name": "avonni/datatable",
             "path": "src/modules/base/datatable/datatable.js"
         },
@@ -742,6 +750,7 @@
         "avonni/colorPalette",
         "avonni/colorPicker",
         "avonni/confetti",
+        "avonni/dataPageHeader",
         "avonni/datatable",
         "avonni/dateTimePicker",
         "avonni/dialog",
