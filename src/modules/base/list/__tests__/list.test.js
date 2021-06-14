@@ -112,7 +112,6 @@ describe('List', () => {
 
                 const avatar = item.querySelector('c-avatar');
                 if(avatar){
-
                     if (originalItem.avatarFallbackIconName) {
                         expect(avatar.fallbackIconName).toBe(
                             originalItem.avatarFallbackIconName

@@ -114,17 +114,11 @@ export default class List extends LightningElement {
         );
     }
 
-    get listClass() {
-        return classSet('menu')
-            .add({
-                'slds-has-dividers_top-space': this.divider === 'top',
-                'slds-has-dividers_bottom-space': this.divider === 'bottom',
-                'slds-has-dividers_around-space': this.divider === 'around'
-            })
-            .toString();
+    get computedListClass() {
+        return  `menu slds-has-dividers_${this.divider}-space`;
     }
 
-    get itemClass() {
+    get computedItemClass() {
         return classSet('slds-grid list-item slds-item')
             .add({
                 'sortable-item': this.sortable,
@@ -297,7 +291,6 @@ export default class List extends LightningElement {
 
         const hoveredItem = this.getHoveredItem(center);
         if (hoveredItem) this.switchWithItem(hoveredItem);
-        console.log(event.currentTarget.classList);
         event.currentTarget
             .querySelector('lightning-button-menu')
             .classList.remove('slds-is-open');

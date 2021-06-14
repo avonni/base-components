@@ -11,11 +11,11 @@
         >{alternativeText}</span
     >
 
-    <ul class={listClass} role={menuRole}>
+    <ul class={computedListClass} role={menuRole}>
         <template for:each={computedItems} for:item="item" for:index="index">
             <li
                 key={item.label}
-                class={itemClass}
+                class={computedItemClass}
                 onmousedown={dragStart}
                 onmousemove={drag}
                 onmouseup={dragEnd}

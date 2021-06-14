@@ -145,7 +145,7 @@ describe('DateTimePicker', () => {
         });
     });
 
-    fit('Date time picker disabled monthly', () => {
+    it('Date time picker disabled monthly', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
