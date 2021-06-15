@@ -40,29 +40,4 @@ export default class PageHeader extends LightningElement {
     @api title;
     @api info;
     @api variant = DEFAULT_PAGE_HEADER_VARIANT;
-
-    get options() {
-        return [
-            {
-                label: 'Mon',
-                value: 'mon'
-            },
-            {
-                label: 'Tue',
-                value: 'tue'
-            },
-            {
-                label: 'Wed',
-                value: 'wed'
-            },
-            {
-                label: 'Thu',
-                value: 'thu'
-            },
-            {
-                label: 'Fri',
-                value: 'fri'
-            }
-        ];
-    }
 }
