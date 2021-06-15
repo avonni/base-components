@@ -199,6 +199,10 @@
             "path": "src/modules/base/linkToNonSalesforceResource/linkToNonSalesforceResource.js"
         },
         {
+            "name": "c/list",
+            "path": "src/modules/base/list/list.js"
+        },
+        {
             "name": "c/map",
             "path": "src/modules/base/map/map.js"
         },
@@ -363,6 +367,10 @@
             "path": "src/modules/base/relationshipGraph/relationshipGraph.js"
         },
         {
+            "name": "c/scheduler",
+            "path": "src/modules/base/scheduler/scheduler.js"
+        },
+        {
             "name": "c/scopedNotification",
             "path": "src/modules/base/scopedNotification/scopedNotification.js"
         },
@@ -381,10 +389,6 @@
         {
             "name": "c/slides",
             "path": "src/modules/base/slides/slides.js"
-        },
-        {
-            "name": "c/list",
-            "path": "src/modules/base/list/list.js"
         },
         {
             "name": "c/splitter",
@@ -575,6 +579,10 @@
             "path": "src/modules/base/inputToggle/inputToggle.js"
         },
         {
+            "name": "avonni/list",
+            "path": "src/modules/base/list/list.js"
+        },
+        {
             "name": "avonni/map",
             "path": "src/modules/base/map/map.js"
         },
@@ -651,6 +659,10 @@
             "path": "src/modules/base/relationshipGraph/relationshipGraph.js"
         },
         {
+            "name": "avonni/scheduler",
+            "path": "src/modules/base/scheduler/scheduler.js"
+        },
+        {
             "name": "avonni/scopedNotification",
             "path": "src/modules/base/scopedNotification/scopedNotification.js"
         },
@@ -669,10 +681,6 @@
         {
             "name": "avonni/slides",
             "path": "src/modules/base/slides/slides.js"
-        },
-        {
-            "name": "avonni/list",
-            "path": "src/modules/base/list/list.js"
         },
         {
             "name": "avonni/splitter",
@@ -758,6 +766,7 @@
         "avonni/inputPen",
         "avonni/inputRichText",
         "avonni/inputToggle",
+        "avonni/list",
         "avonni/map",
         "avonni/mediaObject",
         "avonni/menuItemDialog",
@@ -778,12 +787,12 @@
         "avonni/range",
         "avonni/rating",
         "avonni/relationshipGraph",
+        "avonni/scheduler",
         "avonni/scopedNotification",
         "avonni/segment",
         "avonni/segmentButton",
         "avonni/slide",
         "avonni/slides",
-        "avonni/list",
         "avonni/splitter",
         "avonni/splitterPane",
         "avonni/submenu",
