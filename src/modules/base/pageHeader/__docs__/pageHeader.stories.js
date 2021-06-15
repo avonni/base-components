@@ -132,3 +132,31 @@ RecordHomeVertical.args = {
     title: 'Title',
     info: 'Info'
 };
+
+export const MobileRecordHome = Template.bind({});
+MobileRecordHome.parameters = {
+    viewport: {
+        defaultViewport: 'mobile1'
+    }
+};
+MobileRecordHome.args = {
+    variant: 'record-home',
+    iconName: 'standard:opportunity',
+    label: 'Label',
+    title: 'Title',
+    info: 'Info'
+};
+
+export const MobileRecordHomeVertical = Template.bind({});
+MobileRecordHomeVertical.parameters = {
+    viewport: {
+        defaultViewport: 'mobile1'
+    }
+};
+MobileRecordHomeVertical.args = {
+    variant: 'record-home-vertical',
+    iconName: 'standard:opportunity',
+    label: 'Label',
+    title: 'Title',
+    info: 'Info'
+};
