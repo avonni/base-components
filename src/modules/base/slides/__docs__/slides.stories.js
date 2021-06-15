@@ -198,8 +198,8 @@ export default {
                 category: 'Buttons'
             }
         },
-        buttonPreviousIconName: {
-            name: 'button-previous-icon-name',
+        previousButtonIconName: {
+            name: 'previous-button-icon-name',
             control: {
                 type: 'text'
             },
@@ -212,8 +212,8 @@ export default {
                 category: 'Buttons'
             }
         },
-        buttonPreviousLabel: {
-            name: 'button-previous-label',
+        previousButtonLabel: {
+            name: 'previous-button-label',
             control: {
                 type: 'text'
             },
@@ -223,8 +223,8 @@ export default {
                 category: 'Buttons'
             }
         },
-        buttonNextIconName: {
-            name: 'button-next-icon-name',
+        nextButtonIconName: {
+            name: 'next-button-icon-name',
             control: {
                 type: 'text'
             },
@@ -236,8 +236,8 @@ export default {
                 category: 'Buttons'
             }
         },
-        buttonNextLabel: {
-            name: 'button-next-label',
+        nextButtonLabel: {
+            name: 'next-button-label',
             control: {
                 type: 'text'
             },
@@ -247,8 +247,8 @@ export default {
                 category: 'Buttons'
             }
         },
-        buttonPreviousIconPosition: {
-            name: 'button-previous-icon-position',
+        previousButtonIconPosition: {
+            name: 'previous-button-icon-position',
             control: {
                 type: 'select'
             },
@@ -262,8 +262,8 @@ export default {
                 category: 'Buttons'
             }
         },
-        buttonPreviousVariant: {
-            name: 'button-previous-variant',
+        previousButtonVariant: {
+            name: 'previous-button-variant',
             control: {
                 type: 'select'
             },
@@ -286,8 +286,8 @@ export default {
                 category: 'Buttons'
             }
         },
-        buttonNextIconPosition: {
-            name: 'button-next-icon-position',
+        nextButtonIconPosition: {
+            name: 'next-button-icon-position',
             control: {
                 type: 'select'
             },
@@ -301,8 +301,8 @@ export default {
                 category: 'Buttons'
             }
         },
-        buttonNextVariant: {
-            name: 'button-next-variant',
+        nextButtonVariant: {
+            name: 'next-button-variant',
             control: {
                 type: 'select'
             },
@@ -521,12 +521,12 @@ InnerFractionsAndNavigation.args = {
 export const CustomNavigationButtons = Template.bind({});
 CustomNavigationButtons.args = {
     navigation: true,
-    buttonNextLabel: 'Next',
-    buttonNextVariant: 'brand',
-    buttonNextIconName: 'utility:forward',
-    buttonPreviousLabel: 'Back',
-    buttonPreviousVariant: 'inverse',
-    buttonPreviousIconName: 'utility:back',
+    nextButtonLabel: 'Next',
+    nextButtonVariant: 'brand',
+    nextButtonIconName: 'utility:forward',
+    previousButtonLabel: 'Back',
+    previousButtonVariant: 'inverse',
+    previousButtonIconName: 'utility:back',
     width: '50%',
     buttonPosition: 'top'
 };
