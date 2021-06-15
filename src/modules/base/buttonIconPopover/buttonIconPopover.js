@@ -356,7 +356,8 @@ export default class ButtonIconPopover extends LightningElement {
             function () {
                 if (
                     !this._cancelBlur &&
-                    this._triggers === 'hover' &&
+                    (this._triggers === 'hover' ||
+                        this._triggers === 'focus') &&
                     this.popoverVisible &&
                     !this._disabled
                 ) {
@@ -365,15 +366,6 @@ export default class ButtonIconPopover extends LightningElement {
                 }
                 if (
                     this._triggers === 'click' &&
-                    this.popoverVisible &&
-                    !this._disabled
-                ) {
-                    this.cancelBlur();
-                    this.toggleMenuVisibility();
-                }
-                if (
-                    !this._cancelBlur &&
-                    this._triggers === 'focus' &&
                     this.popoverVisible &&
                     !this._disabled
                 ) {
