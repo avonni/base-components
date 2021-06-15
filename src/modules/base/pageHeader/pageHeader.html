@@ -105,7 +105,9 @@
                 </div>
             </div>
             <template if:true={showActions}>
-                <div class="slds-page-header__col-actions non-mobile">
+                <div
+                    class="slds-page-header__col-actions avonni-page-header-desktop"
+                >
                     <div class="slds-page-header__controls">
                         <div class="slds-page-header__control">
                             <slot name="actions"></slot>
@@ -126,7 +128,9 @@
                 </template>
             </div>
             <template if:true={showControls}>
-                <div class="slds-page-header__col-controls non-mobile">
+                <div
+                    class="slds-page-header__col-controls avonni-page-header-desktop"
+                >
                     <div class="slds-page-header__controls">
                         <slot name="controls"></slot>
                     </div>

@@ -69,10 +69,28 @@ export default class PageHeader extends LightningElement {
         this._fields = normalizeArray(value);
     }
 
+    get computedUnorderedListClass() {
+        return classSet('slds-page-header__detail-list')
+            .add({
+                'avonni-data-page-header-mobile-column':
+                    this._variant === 'record-home'
+            })
+            .toString();
+    }
+
+    get computedDetailsClass() {
+        return classSet('')
+            .add({
+                'avonni-data-page-header-mobile-styling':
+                    this._variant === 'record-home'
+            })
+            .toString();
+    }
+
     get computedListItemsClass() {
         return classSet('')
             .add({
-                'slds-page-header__detail-block':
+                'slds-page-header__detail-block avonni-data-page-header-mobile':
                     this._variant === 'record-home',
                 'slds-page-header__detail-item':
                     this._variant === 'record-home-vertical'
