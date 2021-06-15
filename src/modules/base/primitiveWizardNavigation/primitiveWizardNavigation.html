@@ -45,10 +45,10 @@
             class={previousButtonColClass}
         >
             <lightning-button
-                icon-name={buttonPreviousIconName}
-                icon-position={buttonPreviousIconPosition}
-                label={buttonPreviousLabel}
-                variant={buttonPreviousVariant}
+                icon-name={previousButtonIconName}
+                icon-position={previousButtonIconPosition}
+                label={previousButtonLabel}
+                variant={previousButtonVariant}
                 data-action="previous"
                 onclick={handleButtonClick}
                 class="slds-m-right_xx-small slds-m-left_small"
@@ -150,21 +150,21 @@
                 >
                     <lightning-button
                         if:false={lastStep}
-                        icon-name={buttonNextIconName}
-                        icon-position={buttonNextIconPosition}
-                        label={buttonNextLabel}
+                        icon-name={nextButtonIconName}
+                        icon-position={nextButtonIconPosition}
+                        label={nextButtonLabel}
                         data-action="next"
-                        variant={buttonNextVariant}
+                        variant={nextButtonVariant}
                         onclick={handleButtonClick}
                         class="slds-m-left_xx-small"
                     ></lightning-button>
                     <lightning-button
                         if:true={lastStep}
-                        icon-name={buttonFinishIconName}
-                        icon-position={buttonFinishIconPosition}
+                        icon-name={finishButtonIconName}
+                        icon-position={finishButtonIconPosition}
                         data-action="finish"
-                        label={buttonFinishLabel}
-                        variant={buttonFinishVariant}
+                        label={finishButtonLabel}
+                        variant={finishButtonVariant}
                         onclick={handleButtonClick}
                         class="slds-m-left_xx-small"
                     ></lightning-button>

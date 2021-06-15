@@ -84,18 +84,18 @@ describe('Wizard', () => {
         });
 
         expect(element.actionPosition).toBe('left');
-        expect(element.buttonFinishIconName).toBeUndefined();
-        expect(element.buttonFinishIconPosition).toBe('left');
-        expect(element.buttonFinishLabel).toBe('Finish');
-        expect(element.buttonFinishVariant).toBe('neutral');
-        expect(element.buttonNextIconName).toBeUndefined();
-        expect(element.buttonNextIconPosition).toBe('left');
-        expect(element.buttonNextLabel).toBe('Next');
-        expect(element.buttonNextVariant).toBe('neutral');
-        expect(element.buttonPreviousIconName).toBeUndefined();
-        expect(element.buttonPreviousIconPosition).toBe('left');
-        expect(element.buttonPreviousLabel).toBe('Previous');
-        expect(element.buttonPreviousVariant).toBe('neutral');
+        expect(element.finishButtonIconName).toBeUndefined();
+        expect(element.finishButtonIconPosition).toBe('left');
+        expect(element.finishButtonLabel).toBe('Finish');
+        expect(element.finishButtonVariant).toBe('neutral');
+        expect(element.nextButtonIconName).toBeUndefined();
+        expect(element.nextButtonIconPosition).toBe('left');
+        expect(element.nextButtonLabel).toBe('Next');
+        expect(element.nextButtonVariant).toBe('neutral');
+        expect(element.previousButtonIconName).toBeUndefined();
+        expect(element.previousButtonIconPosition).toBe('left');
+        expect(element.previousButtonLabel).toBe('Previous');
+        expect(element.previousButtonVariant).toBe('neutral');
         expect(element.buttonAlignmentBump).toBeUndefined();
         expect(element.currentStep).toBeUndefined();
         expect(element.fractionLabel).toBe('of');
@@ -130,224 +130,224 @@ describe('Wizard', () => {
     });
 
     // button-finish-icon-name
-    it('buttonFinishIconName', () => {
+    it('finishButtonIconName', () => {
         const element = createElement('base-wizard', {
             is: Wizard
         });
 
         document.body.appendChild(element);
 
-        element.buttonFinishIconName = 'utility:apps';
+        element.finishButtonIconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
                 'c-primitive-wizard-navigation'
             );
-            expect(primitiveNavigation.buttonFinishIconName).toBe(
+            expect(primitiveNavigation.finishButtonIconName).toBe(
                 'utility:apps'
             );
         });
     });
 
     // button-finish-icon-position
-    it('buttonFinishIconPosition', () => {
+    it('finishButtonIconPosition', () => {
         const element = createElement('base-wizard', {
             is: Wizard
         });
 
         document.body.appendChild(element);
 
-        element.buttonFinishIconPosition = 'right';
+        element.finishButtonIconPosition = 'right';
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
                 'c-primitive-wizard-navigation'
             );
-            expect(primitiveNavigation.buttonFinishIconPosition).toBe('right');
+            expect(primitiveNavigation.finishButtonIconPosition).toBe('right');
         });
     });
 
     // button-finish-label
-    it('buttonFinishLabel', () => {
+    it('finishButtonLabel', () => {
         const element = createElement('base-wizard', {
             is: Wizard
         });
 
         document.body.appendChild(element);
 
-        element.buttonFinishLabel = 'The end';
+        element.finishButtonLabel = 'The end';
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
                 'c-primitive-wizard-navigation'
             );
-            expect(primitiveNavigation.buttonFinishLabel).toBe('The end');
+            expect(primitiveNavigation.finishButtonLabel).toBe('The end');
         });
     });
 
     // button-finish-variant
-    it('buttonFinishVariant', () => {
+    it('finishButtonVariant', () => {
         const element = createElement('base-wizard', {
             is: Wizard
         });
 
         document.body.appendChild(element);
 
-        element.buttonFinishVariant = 'brand';
+        element.finishButtonVariant = 'brand';
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
                 'c-primitive-wizard-navigation'
             );
-            expect(primitiveNavigation.buttonFinishVariant).toBe('brand');
+            expect(primitiveNavigation.finishButtonVariant).toBe('brand');
         });
     });
 
     // button-next-icon-name
-    it('buttonNextIconName', () => {
+    it('nextButtonIconName', () => {
         const element = createElement('base-wizard', {
             is: Wizard
         });
 
         document.body.appendChild(element);
 
-        element.buttonNextIconName = 'utility:apps';
+        element.nextButtonIconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
                 'c-primitive-wizard-navigation'
             );
-            expect(primitiveNavigation.buttonNextIconName).toBe('utility:apps');
+            expect(primitiveNavigation.nextButtonIconName).toBe('utility:apps');
         });
     });
 
     // button-next-icon-position
-    it('buttonNextIconPosition', () => {
+    it('nextButtonIconPosition', () => {
         const element = createElement('base-wizard', {
             is: Wizard
         });
 
         document.body.appendChild(element);
 
-        element.buttonNextIconPosition = 'right';
+        element.nextButtonIconPosition = 'right';
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
                 'c-primitive-wizard-navigation'
             );
-            expect(primitiveNavigation.buttonNextIconPosition).toBe('right');
+            expect(primitiveNavigation.nextButtonIconPosition).toBe('right');
         });
     });
 
     // button-next-label
-    it('buttonNextLabel', () => {
+    it('nextButtonLabel', () => {
         const element = createElement('base-wizard', {
             is: Wizard
         });
 
         document.body.appendChild(element);
 
-        element.buttonNextLabel = 'The end';
+        element.nextButtonLabel = 'The end';
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
                 'c-primitive-wizard-navigation'
             );
-            expect(primitiveNavigation.buttonNextLabel).toBe('The end');
+            expect(primitiveNavigation.nextButtonLabel).toBe('The end');
         });
     });
 
     // button-next-variant
-    it('buttonNextVariant', () => {
+    it('nextButtonVariant', () => {
         const element = createElement('base-wizard', {
             is: Wizard
         });
 
         document.body.appendChild(element);
 
-        element.buttonNextVariant = 'brand';
+        element.nextButtonVariant = 'brand';
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
                 'c-primitive-wizard-navigation'
             );
-            expect(primitiveNavigation.buttonNextVariant).toBe('brand');
+            expect(primitiveNavigation.nextButtonVariant).toBe('brand');
         });
     });
 
     // button-previous-icon-name
-    it('buttonPreviousIconName', () => {
+    it('previousButtonIconName', () => {
         const element = createElement('base-wizard', {
             is: Wizard
         });
 
         document.body.appendChild(element);
 
-        element.buttonPreviousIconName = 'utility:apps';
+        element.previousButtonIconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
                 'c-primitive-wizard-navigation'
             );
-            expect(primitiveNavigation.buttonPreviousIconName).toBe(
+            expect(primitiveNavigation.previousButtonIconName).toBe(
                 'utility:apps'
             );
         });
     });
 
     // button-previous-icon-position
-    it('buttonPreviousIconPosition', () => {
+    it('previousButtonIconPosition', () => {
         const element = createElement('base-wizard', {
             is: Wizard
         });
 
         document.body.appendChild(element);
 
-        element.buttonPreviousIconPosition = 'right';
+        element.previousButtonIconPosition = 'right';
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
                 'c-primitive-wizard-navigation'
             );
-            expect(primitiveNavigation.buttonPreviousIconPosition).toBe(
+            expect(primitiveNavigation.previousButtonIconPosition).toBe(
                 'right'
             );
         });
     });
 
     // button-previous-label
-    it('buttonPreviousLabel', () => {
+    it('previousButtonLabel', () => {
         const element = createElement('base-wizard', {
             is: Wizard
         });
 
         document.body.appendChild(element);
 
-        element.buttonPreviousLabel = 'The end';
+        element.previousButtonLabel = 'The end';
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
                 'c-primitive-wizard-navigation'
             );
-            expect(primitiveNavigation.buttonPreviousLabel).toBe('The end');
+            expect(primitiveNavigation.previousButtonLabel).toBe('The end');
         });
     });
 
     // button-previous-variant
-    it('buttonPreviousVariant', () => {
+    it('previousButtonVariant', () => {
         const element = createElement('base-wizard', {
             is: Wizard
         });
 
         document.body.appendChild(element);
 
-        element.buttonPreviousVariant = 'brand';
+        element.previousButtonVariant = 'brand';
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
                 'c-primitive-wizard-navigation'
             );
-            expect(primitiveNavigation.buttonPreviousVariant).toBe('brand');
+            expect(primitiveNavigation.previousButtonVariant).toBe('brand');
         });
     });
 
