@@ -48,13 +48,6 @@ export default class PageHeader extends LightningElement {
     _variant = PAGE_HEADER_VARIANTS.default;
     _fields = [];
 
-    renderedCallback() {
-        const li = this.template.querySelectorAll('li');
-        li.forEach((item) => {
-            console.log(item);
-        });
-    }
-
     @api
     get variant() {
         return this._variant;
