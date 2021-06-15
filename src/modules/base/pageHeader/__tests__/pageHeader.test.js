@@ -59,10 +59,10 @@ describe('PageHeader', () => {
         });
         document.body.appendChild(element);
 
-        const icon = element.shadowRoot.querySelector('c-primitive-icon');
         element.iconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector('c-primitive-icon');
             expect(icon.iconName).toBe('utility:apps');
         });
     });

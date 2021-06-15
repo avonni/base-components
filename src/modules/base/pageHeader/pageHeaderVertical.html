@@ -1,25 +1,27 @@
 <template>
     <div class="slds-page-header slds-page-header_vertical">
         <div class="slds-media slds-media_center">
-            <div class="slds-media__figure">
-                <div class={computedIconClass}>
-                    <c-primitive-icon
-                        svg-class="slds-icon slds-page-header__icon"
-                        icon-name={iconName}
-                        variant="bare"
-                    >
-                    </c-primitive-icon>
+            <template if:true={iconName}>
+                <div class="slds-media__figure">
+                    <div class={computedIconClass}>
+                        <c-primitive-icon
+                            svg-class="slds-icon slds-page-header__icon"
+                            icon-name={iconName}
+                            variant="bare"
+                        >
+                        </c-primitive-icon>
+                    </div>
+                    <div class={computedMobileIconClass}>
+                        <c-primitive-icon
+                            svg-class="slds-icon"
+                            icon-name={iconName}
+                            variant="bare"
+                            size="large"
+                        >
+                        </c-primitive-icon>
+                    </div>
                 </div>
-                <div class={computedMobileIconClass}>
-                    <c-primitive-icon
-                        svg-class="slds-icon"
-                        icon-name={iconName}
-                        variant="bare"
-                        size="large"
-                    >
-                    </c-primitive-icon>
-                </div>
-            </div>
+            </template>
             <div class="slds-media__body">
                 <div class="slds-page-header__name">
                     <div class="slds-page-header__name-title">
