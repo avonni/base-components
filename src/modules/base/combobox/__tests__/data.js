@@ -1,4 +1,4 @@
-export const options = [
+const suboptions = [
     {
         label: 'Burlington Textiles Corp of America',
         value: 'no-avatar-burlington',
@@ -10,10 +10,6 @@ export const options = [
                 secondaryText: 'Account - Chicago, IL'
             }
         ]
-    },
-    {
-        label: 'Dickenson plc',
-        value: 'no-avatar-dickenson'
     },
     {
         label: 'United Oil SLA',
@@ -29,7 +25,7 @@ export const options = [
     }
 ];
 
-export const optionsWithAvatars = [
+export const options = [
     {
         label: 'Burlington Textiles Corp of America',
         value: 'burlington',
@@ -40,9 +36,6 @@ export const optionsWithAvatars = [
     {
         label: 'Dickenson plc',
         value: 'dickenson',
-        avatarSrc:
-            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
-        avatarFallbackIconName: 'standard:account',
         secondaryText: 'Account - Lawrence, KS',
         groups: ['accounts']
     },
@@ -57,9 +50,8 @@ export const optionsWithAvatars = [
         label: 'Tyrell Corp',
         value: 'tyrell',
         avatarFallbackIconName: 'standard:opportunity',
-        secondaryText: 'Opportunity',
         groups: ['opportunities'],
-        options: options
+        options: suboptions
     },
     {
         label: 'United Oil SLA',
@@ -79,22 +71,26 @@ export const optionsWithAvatars = [
 
 export const actions = [
     {
-        label: 'New Account',
-        name: 'new-account',
-        iconName: 'utility:add',
+        label: 'Action 1',
+        name: 'action-1',
+        iconName: 'utility:apps'
+    },
+    {
+        label: 'Action 2',
+        name: 'action-2',
+        disabled: true,
         position: 'bottom'
     },
     {
-        label: 'New Opportunity',
-        name: 'new-opportunity',
-        iconName: 'utility:add',
-        position: 'bottom',
-        disabled: true
+        label: 'Action 3',
+        name: 'action-3',
+        iconName: 'utility:user',
+        position: 'top'
     },
     {
-        label: 'United',
-        name: 'search-united',
-        iconName: 'utility:search'
+        label: 'Action 4',
+        name: 'action-4',
+        position: 'top'
     }
 ];
 
@@ -113,29 +109,6 @@ export const scopes = [
         label: 'Analytics',
         value: 'analytics',
         groups: ['suggested']
-    }
-];
-
-export const scopesWithIcons = [
-    {
-        label: 'Apex',
-        value: 'apex',
-        iconName: 'utility:apex'
-    },
-    {
-        label: 'Decisions',
-        value: 'decisions',
-        iconName: 'utility:signpost'
-    },
-    {
-        label: 'Rules',
-        value: 'rules',
-        iconName: 'utility:rules'
-    },
-    {
-        label: 'Snippets',
-        value: 'snippets',
-        iconName: 'utility:snippet'
     }
 ];
 
