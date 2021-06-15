@@ -31,6 +31,7 @@
  */
 
 import { classSet } from 'c/utils';
+import { normalizeAriaAttribute, normalizeBoolean } from 'c/utilsPrivate';
 
 export default class Action {
     constructor(action) {
@@ -39,6 +40,7 @@ export default class Action {
         this.iconName = action.iconName;
         this.position = action.position || 'top';
         this.isBackLink = false;
+        this.disabled = normalizeBoolean(action.disabled);
     }
 
     get computedClass() {
@@ -48,8 +50,13 @@ export default class Action {
             .add({
                 'slds-border_bottom': this.isBackLink,
                 combobox__action_top: this.position === 'top',
-                combobox__action_bottom: this.position === 'bottom'
+                combobox__action_bottom: this.position === 'bottom',
+                combobox__action_disabled: this.disabled
             })
             .toString();
+    }
+
+    get computedAriaDisabled() {
+        return normalizeAriaAttribute(this.disabled.toString());
     }
 }

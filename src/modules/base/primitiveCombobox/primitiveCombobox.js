@@ -448,7 +448,7 @@ export default class PrimitiveCombobox extends LightningElement {
                 '.combobox__action_top'
             );
             topActions.forEach((action) => {
-                elements.push(action);
+                if (action.ariaDisabled === 'false') elements.push(action);
             });
 
             const groups = this.template.querySelectorAll(
@@ -462,7 +462,7 @@ export default class PrimitiveCombobox extends LightningElement {
                 '.combobox__action_bottom'
             );
             bottomActions.forEach((action) => {
-                elements.push(action);
+                if (action.ariaDisabled === 'false') elements.push(action);
             });
 
             return elements.flat();
@@ -1134,10 +1134,13 @@ export default class PrimitiveCombobox extends LightningElement {
 
     handleActionClick(eventOrName) {
         // If the action is "clicked" through a keyboard event, the argument will be the name
-        const name =
-            typeof eventOrName === 'string'
-                ? eventOrName
-                : eventOrName.currentTarget.dataset.name;
+        let name;
+        if (typeof eventOrName === 'string') {
+            name = eventOrName;
+        } else {
+            if (eventOrName.currentTarget.ariaDisabled === 'true') return;
+            name = eventOrName.currentTarget.dataset.name;
+        }
 
         this.dispatchEvent(
             new CustomEvent('actionclick', {
@@ -1199,6 +1202,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     handleMouseEnter(event) {
         event.stopPropagation();
+        if (event.currentTarget.ariaDisabled === 'true') return;
 
         // If the mouse enters an option, the id will be sent through an event from the group
         const id = event.detail.id ? event.detail.id : event.currentTarget.id;

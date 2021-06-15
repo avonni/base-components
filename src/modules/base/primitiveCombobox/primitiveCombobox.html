@@ -159,6 +159,7 @@
                         id={action.name}
                         role="option"
                         aria-label="Action button"
+                        aria-disabled={action.computedAriaDisabled}
                         data-name={action.name}
                         onclick={handleActionClick}
                         onmouseenter={handleMouseEnter}
@@ -168,6 +169,7 @@
                             class="slds-media__figure slds-listbox__option-icon"
                         >
                             <lightning-icon
+                                class="slds-current-color"
                                 icon-name={action.iconName}
                                 size="x-small"
                                 aria-hidden="true"
@@ -213,6 +215,7 @@
                         id={action.name}
                         role="option"
                         data-name={action.name}
+                        aria-disabled={action.computedAriaDisabled}
                         onclick={handleActionClick}
                         onmouseenter={handleMouseEnter}
                     >
@@ -221,6 +224,7 @@
                             class="slds-media__figure slds-listbox__option-icon"
                         >
                             <lightning-icon
+                                class="slds-current-color"
                                 icon-name={action.iconName}
                                 size="x-small"
                                 aria-hidden="true"

@@ -38,3 +38,8 @@
     overflow-y: auto;
     box-sizing: content-box;
 }
+
+.combobox__action_disabled,
+.combobox__action_disabled lightning-icon {
+    color: #dddbda;
+}
