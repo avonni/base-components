@@ -31,6 +31,7 @@
  */
 
 import { ButtonPopover } from '../__examples__/buttonPopover';
+import { ButtonPopoverWithToggle } from '../__examples__/buttonPopoverWithToggle';
 
 export default {
     title: 'Example/Button Popover',
@@ -222,6 +223,7 @@ export default {
 };
 
 const Template = (args) => ButtonPopover(args);
+const SecondTemplate = (args) => ButtonPopoverWithToggle(args);
 
 export const BaseWithPopoverVariantWalkthrough = Template.bind({});
 BaseWithPopoverVariantWalkthrough.args = {
@@ -288,4 +290,10 @@ Success.args = {
     label: 'Complete',
     iconName: 'utility:success',
     variant: 'success'
+};
+
+export const NeutralWithCheckbox = SecondTemplate.bind({});
+NeutralWithCheckbox.args = {
+    label: 'Info',
+    iconName: 'utility:favorite'
 };
