@@ -75,7 +75,10 @@ const BUTTON_SIZES = {
     default: 'medium'
 };
 
-const BUTTON_TRIGGERS = { valid: ['click', 'hover', 'focus'], default: 'click' };
+const BUTTON_TRIGGERS = {
+    valid: ['click', 'hover', 'focus'],
+    default: 'click'
+};
 
 const POPOVER_VARIANTS = {
     valid: ['base', 'warning', 'error', 'walkthrough'],
@@ -287,7 +290,7 @@ export default class ButtonIconPopover extends LightningElement {
             return;
         }
 
-        if (this.popoverVisible) {
+        if (this.popoverVisible && this._cancelBlur) {
             this.toggleMenuVisibility();
         }
     }
@@ -354,6 +357,23 @@ export default class ButtonIconPopover extends LightningElement {
                 if (
                     !this._cancelBlur &&
                     this._triggers === 'hover' &&
+                    this.popoverVisible &&
+                    !this._disabled
+                ) {
+                    this.cancelBlur();
+                    this.toggleMenuVisibility();
+                }
+                if (
+                    this._triggers === 'click' &&
+                    this.popoverVisible &&
+                    !this._disabled
+                ) {
+                    this.cancelBlur();
+                    this.toggleMenuVisibility();
+                }
+                if (
+                    !this._cancelBlur &&
+                    this._triggers === 'focus' &&
                     this.popoverVisible &&
                     !this._disabled
                 ) {
