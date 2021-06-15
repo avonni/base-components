@@ -493,6 +493,10 @@ export default class PrimitiveCombobox extends LightningElement {
         return this.inputValue && !this.visibleOptions.length;
     }
 
+    get showHelpMessage() {
+        return this.helpMessage && !this.checkValidity();
+    }
+
     get computedLabelClass() {
         return classSet('slds-form-element__label')
             .add({ 'slds-assistive-text': this.variant === 'label-hidden' })
