@@ -100,7 +100,7 @@ export default class InputCounter extends LightningElement {
     }
 
     set min(min) {
-        this._min = typeof min === 'number' ? min : '';
+        this._min = typeof min === 'number' ? this.handlePrecision(min) : '';
     }
 
     @api get max() {
@@ -108,7 +108,7 @@ export default class InputCounter extends LightningElement {
     }
 
     set max(max) {
-        this._max = typeof max === 'number' ? max : '';
+        this._max = typeof max === 'number' ? this.handlePrecision(max) : '';
     }
     
     @api get fractionDigits() {
@@ -175,7 +175,7 @@ export default class InputCounter extends LightningElement {
     }
 
     set step(value) {
-        this._step = typeof value === 'number' ? value : DEFAULT_STEP;
+        this._step = typeof value === 'number' ? this.handlePrecision(value) : DEFAULT_STEP;
     }
 
     @api
@@ -265,78 +265,90 @@ export default class InputCounter extends LightningElement {
     }
 
     decrementValue() {
-        if ( this.min === 0) {
+        if ( this.min === 0 && this.value !== undefined && !isNaN(this.value)) {
             this.value = Number(this.value) - Number(this.step);
-            this.handlePrecision();
-            this.updateValue(this.value);
-            if (this.min >= this.value - this.step) {
+            if (this.min > this.value - this.step ) {
                 this.value = 0;
-                this.handlePrecision();
-                this.updateValue(this.value);
             }
-        } else if (this.value !== undefined && !isNaN(this.value)) {
-            this.value = Number(this.value) - Number(this.step);            
-            this.handlePrecision();
+            if (this.max) {
+                if (this.value + this.step > this.max) {
+                    this.value = this.max;
+                }
+            }
+        } else if ( this.min !== 0 && this.value !== undefined && !isNaN(this.value)) {
+            this.value = Number(this.value) - Number(this.step);           
             if (this.min) {
-                if (this.value <= this.min) {
+                if (this.value - this.step < this.min) {
                     this.value = this.min;
                 }
             }
             if (this.max) {
-                if (this.value >= this.max) {
+                if (this.value + this.step > this.max) {
                     this.value = this.max;
-                }
-            this.updateValue(this.value);            
+                }     
             }
         } else {
             if (!this.step && !this.min) {
                 this.value = -1;                
-            } else if (this.step && this.min === 0) {                
+            } else if (this.step && this.min === 0 && isNaN(this.value)) {                
                 this.value = 0;
             } else if (this.step && !this.min) {                
                 this.value = -this.step;                
             } else if (this.step && this.min) {
                 this.value = this.min;                
-            }            
-            this.handlePrecision();
-            this.updateValue(this.value);
+            }     
         }
+        this.value = this.handlePrecision(this.value);
+        this.updateValue(this.value);
     }
 
     incrementValue() {
-        if (this.value !== undefined && !isNaN(this.value)) {
+        if ( this.min === 0 && this.value !== undefined && !isNaN(this.value)) {
+            this.value = Number(this.value) + Number(this.step);
+            if ( this.min > this.value - this.step) {
+                this.value = this.min;
+            }
+            if (this.max) {
+                if (this.value + this.step > this.max) {
+                    this.value = this.max;
+                }
+            }
+        } else if ( this.min !== 0 && this.value !== undefined && !isNaN(this.value)) {
             this.value = Number(this.value) + Number(this.step);            
             if (this.min) {
-                if (this.value <= this.min) {
+                if (this.value - this.step < this.min) {
                     this.value = this.min;
                 }
             }
             if (this.max) {
-                if (this.value >= this.max) {
+                if (this.value + this.step > this.max) {
                     this.value = this.max;
                 }
             }
-            this.handlePrecision();
-            this.updateValue(this.value);
         } else {            
             if (!this.step && !this.min) {
                 this.value = +1;                
             } else if (this.step && !this.min) {
                 this.value = +this.step;                
             } else if (this.step && this.min) {
-                this.value = this.min;                
+                this.value = this.min;     
+            } else if (this.step && this.min === 0 && isNaN(this.value)) {                
+                this.value = 0;
             }
-            this.handlePrecision();
-            this.updateValue(this.value);
         }
+        this.value = this.handlePrecision(this.value);
+        this.updateValue(this.value);
     }
 
-    handlePrecision() {   
-        this._fractionDigitsLength = this.fractionDigits && this.fractionDigits.toString().length;        
-        if (this.fractionDigits && this.value.toString().length > this._fractionDigitsLength) {
-            const uniformOutputCorrection = this._fractionDigitsLength > 2 ? 2 : 1;
-            this.value = +(this.value.toFixed(this._fractionDigitsLength - uniformOutputCorrection));
+    handlePrecision(input) {   
+        this._fractionDigitsLength = this.fractionDigits && this.fractionDigits.toString().length;
+        const uniformOutputCorrection = this._fractionDigitsLength > 2 ? 2 : 1;
+
+        if (this.fractionDigits && input.toString().length > this._fractionDigitsLength) {
+            input = +(input.toFixed(this._fractionDigitsLength - uniformOutputCorrection));
         }
+
+        return input;
     }
 
     updateValue(value) {
