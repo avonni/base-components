@@ -1138,7 +1138,10 @@ export default class PrimitiveCombobox extends LightningElement {
         if (typeof eventOrName === 'string') {
             name = eventOrName;
         } else {
-            if (eventOrName.currentTarget.ariaDisabled === 'true') return;
+            if (eventOrName.currentTarget.ariaDisabled === 'true') {
+                this.focus();
+                return;
+            }
             name = eventOrName.currentTarget.dataset.name;
         }
 
