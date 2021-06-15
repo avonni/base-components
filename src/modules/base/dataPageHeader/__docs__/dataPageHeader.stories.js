@@ -169,7 +169,6 @@ export const Base = Template.bind({});
 Base.args = {
     variant: 'base',
     iconName: 'standard:opportunity',
-    label: 'Label',
     title: 'Title',
     info: 'Info'
 };

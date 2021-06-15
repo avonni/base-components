@@ -31,7 +31,7 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { normalizeString, normalizeArray } from 'c/utilsPrivate';
+import { normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import pageHeader from './pageHeader.html';
 import pageHeaderVertical from './pageHeaderVertical.html';
@@ -49,7 +49,6 @@ export default class PageHeader extends LightningElement {
     @api info;
 
     _variant = PAGE_HEADER_VARIANTS.default;
-    _fields = [];
     showTitle = true;
     showLabel = true;
     showActions = true;
@@ -122,15 +121,6 @@ export default class PageHeader extends LightningElement {
         });
     }
 
-    @api
-    get fields() {
-        return this._fields;
-    }
-
-    set fields(value) {
-        this._fields = normalizeArray(value);
-    }
-
     get computedOuterClass() {
         return classSet('slds-page-header')
             .add({
@@ -141,13 +131,13 @@ export default class PageHeader extends LightningElement {
     }
 
     get computedIconClass() {
-        return classSet('slds-icon_container non-mobile')
+        return classSet('slds-icon_container avonni-page-header-desktop')
             .add(computeSldsClass(this.iconName))
             .toString();
     }
 
     get computedMobileIconClass() {
-        return classSet('slds-icon_container mobile')
+        return classSet('slds-icon_container avonni-page-header-mobile')
             .add(computeSldsClass(this.iconName))
             .toString();
     }
@@ -174,10 +164,6 @@ export default class PageHeader extends LightningElement {
 
     get hasStringInfo() {
         return !!this.info;
-    }
-
-    get fieldsIsEmpty() {
-        return this._fields.length === 0;
     }
 
     get showActionsOrDetails() {

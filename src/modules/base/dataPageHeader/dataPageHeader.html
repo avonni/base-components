@@ -44,10 +44,7 @@
             <div slot="details">
                 <ul class="slds-page-header__detail-list">
                     <template for:each={fields} for:item="field">
-                        <li
-                            key={field.label}
-                            class="slds-page-header__detail-item"
-                        >
+                        <li key={field.label} class={computedListItemsClass}>
                             <c-output-data
                                 label={field.label}
                                 value={field.value}

@@ -33,7 +33,6 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeString, normalizeArray } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
-import { computeSldsClass } from 'c/iconUtils';
 
 const PAGE_HEADER_VARIANTS = {
     valid: ['base', 'object-home', 'record-home', 'record-home-vertical'],
@@ -48,6 +47,13 @@ export default class PageHeader extends LightningElement {
 
     _variant = PAGE_HEADER_VARIANTS.default;
     _fields = [];
+
+    renderedCallback() {
+        const li = this.template.querySelectorAll('li');
+        li.forEach((item) => {
+            console.log(item);
+        });
+    }
 
     @api
     get variant() {
@@ -70,31 +76,15 @@ export default class PageHeader extends LightningElement {
         this._fields = normalizeArray(value);
     }
 
-    get computedOuterClass() {
-        return classSet('slds-page-header')
+    get computedListItemsClass() {
+        return classSet('')
             .add({
-                'slds-page-header_object-home': this._variant === 'object-home',
-                'slds-page-header_record-home': this._variant === 'record-home'
+                'slds-page-header__detail-block':
+                    this._variant === 'record-home',
+                'slds-page-header__detail-item':
+                    this._variant === 'record-home-vertical'
             })
             .toString();
-    }
-
-    get computedIconClass() {
-        return classSet('slds-icon_container')
-            .add(computeSldsClass(this.iconName))
-            .toString();
-    }
-
-    get isBaseVariant() {
-        return this._variant === 'base';
-    }
-
-    get isObjectHomeVariant() {
-        return this._variant === 'object-home';
-    }
-
-    get isRecordHomeVariant() {
-        return this._variant === 'record-home';
     }
 
     get fieldsIsEmpty() {

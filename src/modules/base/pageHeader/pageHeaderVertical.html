@@ -55,7 +55,9 @@
             </template>
         </p>
         <template if:true={showActionsOrDetails}>
-            <div class="slds-page-header__controls flex">
+            <div
+                class="slds-page-header__controls avonni-page-header-flex_column"
+            >
                 <template if:true={showActions}>
                     <slot name="actions"></slot>
                 </template>
