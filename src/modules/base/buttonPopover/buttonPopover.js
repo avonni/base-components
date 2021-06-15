@@ -68,7 +68,10 @@ const BUTTON_VARIANTS = {
     default: 'neutral'
 };
 
-const POPOVER_TRIGGERS = { valid: ['click', 'hover', 'focus'], default: 'click' };
+const POPOVER_TRIGGERS = {
+    valid: ['click', 'hover', 'focus'],
+    default: 'click'
+};
 
 const POPOVER_VARIANTS = {
     valid: ['base', 'warning', 'error', 'walkthrough'],
@@ -270,7 +273,7 @@ export default class ButtonPopover extends LightningElement {
             return;
         }
 
-        if (this.popoverVisible) {
+        if (this.popoverVisible && this._cancelBlur) {
             this.toggleMenuVisibility();
         }
     }
@@ -328,6 +331,13 @@ export default class ButtonPopover extends LightningElement {
         ) {
             this.cancelBlur();
         }
+        if (
+            this._triggers === 'click' &&
+            this.popoverVisible &&
+            !this._disabled
+        ) {
+            this.cancelBlur();
+        }
     }
 
     handleMouseLeaveBody() {
@@ -337,6 +347,23 @@ export default class ButtonPopover extends LightningElement {
                 if (
                     !this._cancelBlur &&
                     this._triggers === 'hover' &&
+                    this.popoverVisible &&
+                    !this._disabled
+                ) {
+                    this.cancelBlur();
+                    this.toggleMenuVisibility();
+                }
+                if (
+                    this._triggers === 'click' &&
+                    this.popoverVisible &&
+                    !this._disabled
+                ) {
+                    this.cancelBlur();
+                    this.toggleMenuVisibility();
+                }
+                if (
+                    !this._cancelBlur &&
+                    this._triggers === 'focus' &&
                     this.popoverVisible &&
                     !this._disabled
                 ) {
@@ -361,10 +388,12 @@ export default class ButtonPopover extends LightningElement {
         if (event.button === mainButton) {
             this.cancelBlur();
         }
+        this.popoverVisible = true;
     }
 
     handleDropdownMouseUp() {
         this.allowBlur();
+        this.popoverVisible = true;
     }
 
     allowBlur() {
