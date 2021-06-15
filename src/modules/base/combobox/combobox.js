@@ -273,7 +273,7 @@ export default class Combobox extends LightningElement {
 
     @api
     get validity() {
-        return this.mainCombobox.validity;
+        return (this.mainCombobox && this.mainCombobox.validity) || false;
     }
 
     @api
@@ -425,6 +425,10 @@ export default class Combobox extends LightningElement {
                 bubbles: true
             })
         );
+    }
+
+    handleOpen() {
+        this.dispatchEvent(new CustomEvent('open'));
     }
 
     handlePrivateSelect(event) {
