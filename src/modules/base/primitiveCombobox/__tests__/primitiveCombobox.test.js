@@ -115,6 +115,18 @@ describe('PrimitiveCombobox', () => {
                 );
                 expect(label.textContent).toBe(topActions[index].label);
 
+                if (topActions[index].disabled) {
+                    expect(actionElement.classList).toContain(
+                        'combobox__action_disabled'
+                    );
+                    expect(actionElement.ariaDisabled).toBe('true');
+                } else {
+                    expect(actionElement.classList).not.toContain(
+                        'combobox__action_disabled'
+                    );
+                    expect(actionElement.ariaDisabled).toBe('false');
+                }
+
                 if (topActions[index].iconName) {
                     const icon = actionElement.querySelector('lightning-icon');
                     expect(icon).toBeTruthy();
@@ -135,6 +147,18 @@ describe('PrimitiveCombobox', () => {
                     '.slds-listbox__option-text'
                 );
                 expect(label.textContent).toBe(bottomActions[index].label);
+
+                if (bottomActions[index].disabled) {
+                    expect(actionElement.classList).toContain(
+                        'combobox__action_disabled'
+                    );
+                    expect(actionElement.ariaDisabled).toBe('true');
+                } else {
+                    expect(actionElement.classList).not.toContain(
+                        'combobox__action_disabled'
+                    );
+                    expect(actionElement.ariaDisabled).toBe('false');
+                }
 
                 if (bottomActions[index].iconName) {
                     const icon = actionElement.querySelector('lightning-icon');
