@@ -255,8 +255,8 @@
             "path": "src/modules/base/primitiveCoordinateItem/primitiveCoordinateItem.js"
         },
         {
-            "name": "c/primitiveCellAvatarGroup",
-            "path": "src/modules/base/primitiveCellAvatarGroup/primitiveCellAvatarGroup.js"
+            "name": "c/primitiveCellBadge",
+            "path": "src/modules/base/primitiveCellBadge/primitiveCellBadge.js"
         },
         {
             "name": "c/primitiveCellCheckboxButton",

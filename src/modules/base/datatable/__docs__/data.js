@@ -112,6 +112,14 @@ const columnsAB = [
         }
     },
     {
+        label: 'Badge',
+        fieldName: 'badge',
+        type: 'badge',
+        typeAttributes: {
+            variant: { fieldName: 'badgeVariant' }
+        }
+    },
+    {
         label: 'Boolean',
         fieldName: 'boolean',
         type: 'boolean',
@@ -403,6 +411,8 @@ const dataAB = [
             avatarGroupItems[4],
             avatarGroupItems[3]
         ],
+        badge: 'approved',
+        badgeVariant: 'success',
         boolean: true
     },
     {
@@ -420,6 +430,8 @@ const dataAB = [
             avatarGroupItems[4],
             avatarGroupItems[2]
         ],
+        badge: 'declined',
+        badgeVariant: 'error',
         boolean: false
     },
     {
@@ -435,6 +447,8 @@ const dataAB = [
             avatarGroupItems[1],
             avatarGroupItems[3]
         ],
+        badge: 'unknown',
+        badgeVariant: 'inverse',
         buttonDisabled: true,
         buttonIconDisabled: true
     },
@@ -449,6 +463,8 @@ const dataAB = [
             avatarGroupItems[2],
             avatarGroupItems[0]
         ],
+        badge: 'approved',
+        badgeVariant: 'success',
         boolean: true
     },
     {
@@ -465,7 +481,9 @@ const dataAB = [
             avatarGroupItems[2],
             avatarGroupItems[1],
             avatarGroupItems[3]
-        ]
+        ],
+        badge: 'approved',
+        badgeVariant: 'success'
     }
 ];
 
