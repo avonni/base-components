@@ -32,4 +32,67 @@
  */
 -->
 
-<template> </template>
+<template>
+    <div class="slds-grid">
+        <!-- Datatable -->
+        <div class="slds-border_right">
+            <c-datatable
+                column-widths-mode="auto"
+                columns={columns}
+                data={rows}
+                hide-checkbox-column
+                key-field={rowsKeyField}
+                onprivaterowheightchange={handlePrivateRowHeightChange}
+            ></c-datatable>
+        </div>
+
+        <!-- Schedule -->
+        <div class="slds-col">
+            <table class="slds-table">
+                <!-- Headers -->
+                <thead>
+                    <template for:each={headers} for:item="header">
+                        <tr
+                            key={header.key}
+                            class="slds-grid slds-is-relative slds-border_bottom"
+                            data-key={header.key}
+                        >
+                            <template
+                                for:each={header.columnLabels}
+                                for:item="label"
+                            >
+                                <th
+                                    key={label}
+                                    class="slds-border_right slds-th__action slds-col slds-grid slds-grid_vertical-align-center slds-grid_align-center scheduler__header-cell"
+                                >
+                                    <span class="slds-truncate">{label}</span>
+                                </th>
+                            </template>
+                        </tr>
+                    </template>
+                </thead>
+                <!-- Rows -->
+                <tbody>
+                    <template
+                        for:each={scheduleRows}
+                        for:item="row"
+                        for:index="index"
+                    >
+                        <tr
+                            key={row.key}
+                            class="slds-border_bottom slds-grid"
+                            data-index={index}
+                        >
+                            <template for:each={row.columns} for:item="column">
+                                <td
+                                    key={column}
+                                    class="slds-border_right slds-col"
+                                ></td>
+                            </template>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</template>

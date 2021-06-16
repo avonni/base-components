@@ -31,6 +31,7 @@
  */
 
 import { Scheduler } from '../__examples__/scheduler';
+import { columns, rows, headers } from './data';
 
 export default {
     title: 'Example/Scheduler',
@@ -89,6 +90,16 @@ export default {
                 'Array of datatable data objects. Each object represent a row of the scheduler.',
             table: {
                 type: { summary: 'object' }
+            }
+        },
+        rowsKeyField: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'Name of a key of the row objects. This key needs to be present in all row objects. Its value needs to be unique to a row, as it will be used as the row identifier.',
+            table: {
+                type: { summary: 'string' }
             }
         },
         visibleSpan: {
@@ -246,5 +257,12 @@ const Template = (args) => Scheduler(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    start: new Date()
+    columns: columns,
+    rowsKeyField: 'id',
+    rows: rows,
+    headers: headers,
+    visibleSpan: {
+        unit: 'day',
+        span: 5
+    }
 };

@@ -45,6 +45,8 @@ export const Scheduler = ({
     eventsPalette,
     eventsTheme,
     headers,
+    rows,
+    rowsKeyField,
     start,
     theme,
     visibleSpan
@@ -60,6 +62,8 @@ export const Scheduler = ({
     element.eventsPalette = eventsPalette;
     element.eventsTheme = eventsTheme;
     element.headers = headers;
+    element.rows = rows;
+    element.rowsKeyField = rowsKeyField;
     element.start = start;
     element.theme = theme;
     element.visibleSpan = visibleSpan;
