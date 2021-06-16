@@ -26,13 +26,16 @@ const validButtonVariants = {
         'inverse',
         'success'
     ],
-    default: 'neutral'
+    default: 'base'
 };
 
 export default class AvatarGroup extends LightningElement {
     @api actionIconName;
-    @api listButtonLabel = 'Show more';
-    @api listButtonIconName;
+    @api listButtonShowMoreLabel = 'Show more';
+    @api listButtonShowLessLabel = 'Show less';
+
+    @api listButtonShowMoreIconName;
+    @api listButtonShowLessIconName;
     @api name;
 
     _items = [];
@@ -41,7 +44,9 @@ export default class AvatarGroup extends LightningElement {
     _layout = validLayouts.default;
     _allowBlur = false;
     _listButtonVariant = validButtonVariants.default;
-    _listButtonIconPosition = validButtonIconPositions.default;
+    _listButtonShowMoreIconPosition = validButtonIconPositions.default;
+    _listButtonShowLessIconPosition = validButtonIconPositions.default;
+
     _variant = validVariants.default;
     showPopover = false;
     hiddenItems = [];
@@ -115,12 +120,22 @@ export default class AvatarGroup extends LightningElement {
         });
     }
 
-    @api get listButtonIconPosition() {
-        return this._listButtonIconPosition;
+    @api get listButtonShowMoreIconPosition() {
+        return this._listButtonShowMoreIconPosition;
     }
 
-    set listButtonIconPosition(value) {
-        this._listButtonIconPosition = normalizeString(value, {
+    set listButtonShowMoreIconPosition(value) {
+        this._listButtonShowMoreIconPosition = normalizeString(value, {
+            fallbackValue: validButtonIconPositions.default,
+            validValues: validButtonIconPositions.valid
+        });
+    }
+    @api get listButtonShowLessIconPosition() {
+        return this._listButtonShowLessIconPosition;
+    }
+
+    set listButtonShowLessIconPosition(value) {
+        this._listButtonShowLessIconPosition = normalizeString(value, {
             fallbackValue: validButtonIconPositions.default,
             validValues: validButtonIconPositions.valid
         });
@@ -394,11 +409,15 @@ export default class AvatarGroup extends LightningElement {
     }
     @api
     get currentlistButtonLabel() {
-        return this.showPopover ? 'Show less' : 'Show more';
+        return this.showPopover
+            ? this.listButtonShowLessLabel
+            : this.listButtonShowMoreLabel;
     }
 
     @api
     get currentListButtonIcon() {
-        return this.showPopover ? 'utility:up' : 'utility:down';
+        return this.showPopover
+            ? this.listButtonShowLessIconName
+            : this.listButtonShowMoreIconName;
     }
 }

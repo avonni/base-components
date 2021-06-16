@@ -11,10 +11,13 @@ export const AvatarGroup = ({
     size,
     layout,
     maxCount,
-    listButtonLabel,
+    listButtonShowMoreLabel,
     listButtonVariant,
-    listButtonIconName,
-    listButtonIconPosition,
+    listButtonShowMoreIconName,
+    listButtonShowMoreIconPosition,
+    listButtonShowLessIconPosition,
+    listButtonShowLessIconName,
+    listButtonShowLessLabel,
     actionIconName,
     name
 }) => {
@@ -24,10 +27,13 @@ export const AvatarGroup = ({
     element.layout = layout;
     element.size = size;
     element.maxCount = maxCount;
-    element.listButtonLabel = listButtonLabel;
+    element.listButtonShowMoreLabel = listButtonShowMoreLabel;
     element.listButtonVariant = listButtonVariant;
-    element.listButtonIconName = listButtonIconName;
-    element.listButtonIconPosition = listButtonIconPosition;
+    element.listButtonShowMoreIconName = listButtonShowMoreIconName;
+    element.listButtonShowMoreIconPosition = listButtonShowMoreIconPosition;
+    element.listButtonShowLessIconPosition = listButtonShowLessIconPosition;
+    element.listButtonShowLessIconName = listButtonShowLessIconName;
+    element.listButtonShowLessLabel = listButtonShowLessLabel;
     element.actionIconName = actionIconName;
     element.name = name;
     return element;

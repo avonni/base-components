@@ -69,8 +69,8 @@ export default {
                 type: { summary: 'number' }
             }
         },
-        listButtonLabel: {
-            name: 'list-button-label',
+        listButtonShowMoreLabel: {
+            name: 'list-button-show-more-label',
             control: {
                 type: 'text'
             },
@@ -98,17 +98,17 @@ export default {
                 'inverse',
                 'success'
             ],
-            defaultValue: 'neutral',
+            defaultValue: 'base',
             description:
                 'Variant of the button that appears in the list layout, when the number of avatars exceeds the max-count number.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'neutral' },
+                defaultValue: { summary: 'base' },
                 category: 'List button'
             }
         },
-        listButtonIconName: {
-            name: 'list-button-icon-name',
+        listButtonShowMoreIconName: {
+            name: 'list-button-show-more-icon-name',
             control: {
                 type: 'text'
             },
@@ -119,7 +119,7 @@ export default {
                 category: 'List button'
             }
         },
-        listButtonIconPosition: {
+        listButtonShowMoreIconPosition: {
             name: 'list-button-icon-position',
             control: {
                 type: 'radio'
@@ -134,6 +134,48 @@ export default {
                 category: 'List button'
             }
         },
+        listButtonShowLessLabel: {
+            name: 'list-button-show-less-label',
+            control: {
+                type: 'text'
+            },
+            defaultValue: 'Show less',
+            description:
+                'Label of the button that appears in the list layout, when the list is expanded.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Show less' },
+                category: 'List button'
+            }
+        },
+        listButtonShowLessIconName: {
+            name: 'list-button-show-less-icon-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                "The Lightning Design System name of the list button icon. Specify the name in the format 'utility:up' where 'utility' is the category, and 'up' is the specific icon to be displayed.",
+            table: {
+                type: { summary: 'string' },
+                category: 'List button'
+            }
+        },
+        listButtonShowLessIconPosition: {
+            name: 'list-button-icon-position',
+            control: {
+                type: 'radio'
+            },
+            options: ['left', 'right'],
+            defaultValue: 'left',
+            description:
+                'Position of the list button’s icon. Valid values include left and right.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'left' },
+                category: 'List button'
+            }
+        },
+
         actionIconName: {
             name: 'action-icon-name',
             control: {
@@ -348,5 +390,6 @@ ListDoubleExtraLarge.args = {
     layout: 'list',
     maxCount: 3,
     size: 'xx-large',
-    listButtonIconName: 'utility:down'
+    listButtonShowMoreIconName: 'utility:down',
+    listButtonShowLessIconName: 'utility:up'
 };
