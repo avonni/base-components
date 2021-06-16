@@ -94,9 +94,11 @@ export default class InputCounter extends LightningElement {
                     '.avonni-input-counter .slds-input {text-align: center;padding: 0 var(--lwc-spacingXxLarge,3rem);}';
                 srcElement.appendChild(style);
             }
+            // this.updateValue(this.value);
             this.showHelpMessageIfInvalid();
             this.init = true;
         }
+        this.checkValidity();
     }
 
     @api get min() {
@@ -271,6 +273,9 @@ export default class InputCounter extends LightningElement {
         }
         this.value = this.handlePrecision(this.value);
         this.updateValue(this.value);
+        this.changeValue();
+        this.checkValidity();
+        this.showHelpMessageIfInvalid();
     }
 
     incrementValue() {
@@ -302,6 +307,9 @@ export default class InputCounter extends LightningElement {
         }
         this.value = this.handlePrecision(this.value);
         this.updateValue(this.value);
+        this.changeValue();
+        this.checkValidity();
+        this.showHelpMessageIfInvalid();
     }
 
     handlePrecision(input) {   
@@ -319,23 +327,25 @@ export default class InputCounter extends LightningElement {
         [...this.template.querySelectorAll('lightning-input')].forEach(
             (element) => {
                 element.value = value;
-                element.max = this.max;
-                element.min = this.min;
-                element.formatter = this.type;
+                // element.max = this.max;
+                // element.min = this.min;
+                // element.formatter = this.type;
             }
         );
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
                     value: this.value,
-                    max: this.max,
-                    min: this.min,
-                    formatter: this.type
+                    // max: this.max,
+                    // min: this.min,
+                    // formatter: this.type
                 }
             })
         );
         console.log("UPDATE VALUE")
-        this.showHelpMessageIfInvalid();
+        this.changeValue();
+        // this.checkValidity();
+        // this.showHelpMessageIfInvalid();
     }
 
     // validateValue() {
@@ -370,14 +380,16 @@ export default class InputCounter extends LightningElement {
 
     handlerBlur(event) {
         this.value = event.target.value;
-        const minval = this.template.querySelector('lightning-input');
-        console.log(minval.validity.rangeUnderflow);
-        console.log(event.target.min)
-        event.target.min = "";
-        console.log(minval.validity.rangeUnderflow);
-        console.log(event.target.min)
-        // this.updateValue(this.value);
+        // const minval = this.template.querySelector('lightning-input');
+        // console.log(minval.validity.rangeUnderflow);
+        // console.log(event.target.min)
+        // event.target.min = "";
+        // console.log(minval.validity.rangeUnderflow);
+        // console.log(event.target.min)
+        // // this.updateValue(this.value);
         this.changeValue();
+        this.checkValidity();
+        this.showHelpMessageIfInvalid();
         this.dispatchEvent(new CustomEvent('blur'));
     }
 
@@ -449,9 +461,9 @@ export default class InputCounter extends LightningElement {
             this._constraintApiProxyInputUpdater = this._constraintApi.setInputAttributes(
                 {
                     type: () => 'number',
-                    value: () => this.value,
-                    max: () => this.max,
-                    min: () => this.min,
+                    value: () => this.handlePrecision(this.value),
+                    max: () => this.handlePrecision(this.max),
+                    min: () => this.handlePrecision(this.min),
                     step: () => this.fractionDigits,
                     formatter: () => this.type,
                     disabled: () => this.disabled
