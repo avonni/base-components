@@ -42,23 +42,10 @@ export default {
             },
             description:
                 'Specifies the minimum date the calendar can show. It can be a Date object, timestamp, or an ISO8601 formatted string.',
-            defaultValue: new Date(1900, 0, 1),
+            defaultValue: new Date(),
             table: {
                 type: { summary: 'object' },
-                defaultValue: { summary: 'Date(1900, 0, 1)' },
-                category: 'Available dates'
-            }
-        },
-        end: {
-            control: {
-                type: 'date'
-            },
-            description:
-                'Specifies the maximum date the calendar can show. It can be a Date object, timestamp, or an ISO8601 formatted string.',
-            defaultValue: new Date(2099, 11, 31),
-            table: {
-                type: { summary: 'object' },
-                defaultValue: { summary: 'Date(2099, 11, 31)' },
+                defaultValue: { summary: 'Date()' },
                 category: 'Available dates'
             }
         },

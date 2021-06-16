@@ -1,5 +1,10 @@
 import { generateUniqueId } from 'c/utils';
-import { UNITS_IN_MINUTES, DEFAULT_VISIBLE_SPAN } from './defaults';
+import {
+    UNITS_IN_MS,
+    DEFAULT_VISIBLE_SPAN,
+    DEFAULT_START_DATE
+} from './defaults';
+import { formatTime } from './dateUtils';
 
 export default class Header {
     constructor(props) {
@@ -8,16 +13,25 @@ export default class Header {
         this.span = props.span;
         this.label = props.label;
         this.columnLabels = [];
-        this._minutesVisible =
-            UNITS_IN_MINUTES[DEFAULT_VISIBLE_SPAN.unit] *
-            DEFAULT_VISIBLE_SPAN.span;
+        this._millisecondsPerCol = UNITS_IN_MS[this.unit] * this.span;
+        this._millisecondsVisible =
+            UNITS_IN_MS[DEFAULT_VISIBLE_SPAN.unit] * DEFAULT_VISIBLE_SPAN.span;
+        this._start = DEFAULT_START_DATE;
     }
 
-    get minutesVisible() {
-        return this._minutesVisible;
+    get millisecondsVisible() {
+        return this._millisecondsVisible;
     }
-    set minutesVisible(value) {
-        this._minutesVisible = value;
+    set millisecondsVisible(value) {
+        this._millisecondsVisible = value;
+        this.computeColumnLabels();
+    }
+
+    get start() {
+        return this._start;
+    }
+    set start(value) {
+        this._start = value;
         this.computeColumnLabels();
     }
 
@@ -26,12 +40,11 @@ export default class Header {
     }
 
     get numberOfColumns() {
-        const minutesPerCol = UNITS_IN_MINUTES[this.unit] * this.span;
-        let minutesTotal = minutesPerCol;
+        let millisecondsTotal = this._millisecondsPerCol;
         let numberOfCols = 1;
-        while (minutesTotal < this.minutesVisible) {
+        while (millisecondsTotal < this.millisecondsVisible) {
             numberOfCols += 1;
-            minutesTotal += minutesPerCol;
+            millisecondsTotal += this._millisecondsPerCol;
         }
 
         return numberOfCols;
@@ -39,8 +52,10 @@ export default class Header {
 
     computeColumnLabels() {
         const columnLabels = [];
+        let time = this.start.getTime();
         for (let i = 0; i < this.numberOfColumns; i++) {
-            columnLabels.push(`${i} - ${this.label}`);
+            columnLabels.push(formatTime(time, this.label));
+            time += this._millisecondsPerCol;
         }
         this.columnLabels = columnLabels;
     }

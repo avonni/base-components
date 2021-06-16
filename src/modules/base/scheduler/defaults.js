@@ -31,8 +31,7 @@ const THEMES = {
 const DEFAULT_AVAILABLE_TIME_FRAMES = ['00:00-00:00'];
 const DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK = [0, 1, 2, 3, 4, 5, 6];
 const DEFAULT_AVAILABLE_MONTHS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-const DEFAULT_END_DATE = new Date(2099, 11, 31);
-const DEFAULT_START_DATE = new Date(1900, 0, 1);
+const DEFAULT_START_DATE = new Date();
 const DEFAULT_VISIBLE_SPAN = {
     unit: 'hour',
     span: 12
@@ -83,13 +82,13 @@ const PALETTES = {
     ]
 };
 
-const UNITS_IN_MINUTES = {
-    minute: 1,
-    hour: 60,
-    day: 1440,
-    week: 10080,
-    // month: 43800,
-    year: 525600
+const UNITS_IN_MS = {
+    minute: 60000,
+    hour: 3.6e6,
+    day: 8.64e7,
+    week: 6.048e8,
+    // month: 2.628e+9,
+    year: 3.154e10
 };
 
 export {
@@ -97,10 +96,9 @@ export {
     EVENTS_PALETTES,
     THEMES,
     DEFAULT_START_DATE,
-    DEFAULT_END_DATE,
     DEFAULT_VISIBLE_SPAN,
     PALETTES,
-    UNITS_IN_MINUTES,
+    UNITS_IN_MS,
     DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
     DEFAULT_AVAILABLE_TIME_FRAMES,
     DEFAULT_AVAILABLE_MONTHS

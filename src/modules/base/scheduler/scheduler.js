@@ -32,15 +32,15 @@
 
 import { LightningElement, api } from 'lwc';
 import { normalizeArray, normalizeString } from 'c/utilsPrivate';
+import { dateObjectFrom } from './dateUtils';
 import {
     EVENTS_THEMES,
     EVENTS_PALETTES,
     THEMES,
     DEFAULT_START_DATE,
-    DEFAULT_END_DATE,
     DEFAULT_VISIBLE_SPAN,
     PALETTES,
-    UNITS_IN_MINUTES,
+    UNITS_IN_MS,
     DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
     DEFAULT_AVAILABLE_TIME_FRAMES,
     DEFAULT_AVAILABLE_MONTHS
@@ -55,7 +55,6 @@ export default class Scheduler extends LightningElement {
     _columns = [];
     _customEventsPalette = [];
     _disabledDatesTimes = [];
-    _end = DEFAULT_END_DATE;
     _eventsPalette = EVENTS_PALETTES.default;
     _eventsTheme = EVENTS_THEMES.default;
     _headers = [];
@@ -65,13 +64,14 @@ export default class Scheduler extends LightningElement {
     _theme = THEMES.default;
     _visibleSpan = DEFAULT_VISIBLE_SPAN;
 
-    _minutesVisible =
-        UNITS_IN_MINUTES[DEFAULT_VISIBLE_SPAN.unit] * DEFAULT_VISIBLE_SPAN.span;
+    _millisecondsVisible =
+        UNITS_IN_MS[DEFAULT_VISIBLE_SPAN.unit] * DEFAULT_VISIBLE_SPAN.span;
     scheduleRows = [];
 
     connectedCallback() {
         this.initScheduleRows();
         this.initVisibleSpan();
+        this.updateHeadersStart();
     }
 
     renderedCallback() {
@@ -128,15 +128,6 @@ export default class Scheduler extends LightningElement {
     }
     set disabledDatesTimes(value) {
         this._disabledDatesTimes = normalizeArray(value);
-    }
-
-    @api
-    get end() {
-        return this._end;
-    }
-    set end(value) {
-        const computedDate = this.computeDate(value);
-        this._end = computedDate || DEFAULT_END_DATE;
     }
 
     @api
@@ -209,8 +200,10 @@ export default class Scheduler extends LightningElement {
         return this._start;
     }
     set start(value) {
-        const computedDate = this.computeDate(value);
+        const computedDate = dateObjectFrom(value);
         this._start = computedDate || DEFAULT_START_DATE;
+
+        if (this.isConnected) this.updateHeadersStart();
     }
 
     @api
@@ -254,14 +247,20 @@ export default class Scheduler extends LightningElement {
     initVisibleSpan() {
         const unit = this._visibleSpan.unit;
         const span = this._visibleSpan.span;
-        this._minutesVisible = UNITS_IN_MINUTES[unit] * span;
+        this._millisecondsVisible = UNITS_IN_MS[unit] * span;
 
         // Update the number of columns in the headers
         this.headers.forEach((header) => {
-            header.minutesVisible = this._minutesVisible;
+            header.millisecondsVisible = this._millisecondsVisible;
         });
 
         this.updateRowColumns();
+    }
+
+    updateHeadersStart() {
+        this.headers.forEach((header) => {
+            header.start = this.start;
+        });
     }
 
     updateRowColumns() {
@@ -269,15 +268,6 @@ export default class Scheduler extends LightningElement {
         this.scheduleRows.forEach((row) => {
             row.generateColumns(headerCols);
         });
-    }
-
-    /**
-     * @returns {object} Date object or false
-     */
-    computeDate(date) {
-        if (date instanceof Date) return date;
-        if (!isNaN(new Date(date).getTime())) return new Date(date);
-        return false;
     }
 
     handlePrivateRowHeightChange(event) {
