@@ -1,61 +1,126 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
-const validDirections = ['horizontal', 'vertical'];
-const validEffects = ['slide', 'fade', 'cube', 'coverflow', 'flip', 'none'];
-const validButtonIconPositions = ['left', 'right'];
-const validButtonPositions = ['top', 'middle', 'bottom'];
-const validButtonVariants = [
-    'bare',
-    'neutral',
-    'brand',
-    'brand-outline',
-    'inverse',
-    'destructive',
-    'destructive-text',
-    'success'
-];
-const validIndicatorTypes = [
-    'progress-bar',
-    'bullets',
-    'dynamic-bullets',
-    'fractions'
-];
-const validIndicatorPositions = [
-    'top-left',
-    'bottom-left',
-    'top-right',
-    'bottom-right',
-    'top-center',
-    'bottom-center'
-];
+const SLIDES_DIRECTIONS = {
+    valid: ['horizontal', 'vertical'],
+    default: 'horizontal'
+};
+const SLIDES_EFFECTS = {
+    valid: ['slide', 'fade', 'cube', 'coverflow', 'flip', 'none'],
+    default: 'slide'
+};
+const ICON_POSITIONS = {
+    valid: ['left', 'right'],
+    defaultPrevious: 'left',
+    defaultNext: 'right'
+};
+const BUTTON_POSITIONS = {
+    valid: ['top', 'middle', 'bottom'],
+    default: 'middle'
+};
+const BUTTON_VARIANTS = {
+    valid: [
+        'bare',
+        'neutral',
+        'brand',
+        'brand-outline',
+        'inverse',
+        'destructive',
+        'destructive-text',
+        'success'
+    ],
+    default: 'neutral'
+};
+
+const INDICATOR_TYPES = {
+    valid: ['progress-bar', 'bullets', 'dynamic-bullets', 'fractions'],
+    default: 'bullets'
+};
+
+const INDICATOR_POSITIONS = {
+    valid: [
+        'top-left',
+        'bottom-left',
+        'top-right',
+        'bottom-right',
+        'top-center',
+        'bottom-center'
+    ],
+    default: 'bottom-center'
+};
+
+const DEFAULT_SLIDES_PER_VIEW = 1;
+
+const DEFAULT_SPACE_BETWEEN = 0;
+
+const DEFAULT_SPEED = 300;
+
+const DEFAULT_BUTTON_PREVIOUS_ICON_NAME = 'utility:left';
+
+const DEFAULT_BUTTON_NEXT_ICON_NAME = 'utility:right';
+
+const DEFAULT_FRACTION_LABEL = '/';
+
+const DEFAULT_INITIAL_SLIDE = 0
 
 export default class Slides extends LightningElement {
-    @api slidesPerView = 1;
-    @api spaceBetween = 0;
+    @api slidesPerView = DEFAULT_SLIDES_PER_VIEW;
+    @api spaceBetween = DEFAULT_SPACE_BETWEEN;
     @api autoplayDelay;
-    @api speed = 300;
-    @api buttonPreviousIconName = 'utility:left';
+    @api speed = DEFAULT_SPEED;
+    @api buttonPreviousIconName = DEFAULT_BUTTON_PREVIOUS_ICON_NAME;
     @api buttonPreviousLabel;
-    @api buttonNextIconName = 'utility:right';
+    @api buttonNextIconName = DEFAULT_BUTTON_NEXT_ICON_NAME;
     @api buttonNextLabel;
     @api fractionPrefixLabel;
-    @api fractionLabel = '/';
+    @api fractionLabel = DEFAULT_FRACTION_LABEL;
     @api width;
     @api height;
     @api coverflowSlideWidth;
     @api coverflowSlideHeight;
 
-    _direction = 'horizontal';
-    _effect = 'slide';
-    _buttonPreviousIconPosition = 'left';
-    _buttonPreviousVariant = 'neutral';
-    _buttonNextIconPosition = 'right';
-    _buttonNextVariant = 'neutral';
-    _buttonPosition = 'middle';
-    _indicatorType = 'bullets';
-    _indicatorPosition = 'bottom-center';
-    _initialSlide = 0;
+    _direction = SLIDES_DIRECTIONS.default;
+    _effect = SLIDES_EFFECTS.default;
+    _buttonPreviousIconPosition = ICON_POSITIONS.defaultPrevious;
+    _buttonPreviousVariant = BUTTON_VARIANTS.default;
+    _buttonNextIconPosition = ICON_POSITIONS.defaultNext;
+    _buttonNextVariant = BUTTON_VARIANTS.default;
+    _buttonPosition = BUTTON_POSITIONS.default;
+    _indicatorType = INDICATOR_TYPES.default;
+    _indicatorPosition = INDICATOR_POSITIONS.default;
+    _initialSlide = DEFAULT_INITIAL_SLIDE;
 
     _navigation = false;
     _buttonInner = false;
@@ -297,8 +362,8 @@ export default class Slides extends LightningElement {
 
     set direction(direction) {
         this._direction = normalizeString(direction, {
-            fallbackValue: 'horizontal',
-            validValues: validDirections
+            fallbackValue: SLIDES_DIRECTIONS.default,
+            validValues: SLIDES_DIRECTIONS.valid
         });
     }
 
@@ -308,8 +373,8 @@ export default class Slides extends LightningElement {
 
     set effect(effect) {
         this._effect = normalizeString(effect, {
-            fallbackValue: 'slide',
-            validValues: validEffects
+            fallbackValue: SLIDES_EFFECTS.default,
+            validValues: SLIDES_EFFECTS.valid
         });
     }
 
@@ -319,8 +384,8 @@ export default class Slides extends LightningElement {
 
     set buttonPreviousIconPosition(position) {
         this._buttonPreviousIconPosition = normalizeString(position, {
-            fallbackValue: 'left',
-            validValues: validButtonIconPositions
+            fallbackValue: ICON_POSITIONS.defaultPrevious,
+            validValues: ICON_POSITIONS.valid
         });
     }
 
@@ -330,8 +395,8 @@ export default class Slides extends LightningElement {
 
     set buttonPreviousVariant(variant) {
         this._buttonPreviousVariant = normalizeString(variant, {
-            fallbackValue: 'neutral',
-            validValues: validButtonVariants
+            fallbackValue: BUTTON_VARIANTS.default,
+            validValues: BUTTON_VARIANTS.valid
         });
     }
 
@@ -341,8 +406,8 @@ export default class Slides extends LightningElement {
 
     set buttonNextIconPosition(position) {
         this._buttonNextIconPosition = normalizeString(position, {
-            fallbackValue: 'right',
-            validValues: validButtonIconPositions
+            fallbackValue: ICON_POSITIONS.defaultNext,
+            validValues: ICON_POSITIONS.valid
         });
     }
 
@@ -352,8 +417,8 @@ export default class Slides extends LightningElement {
 
     set buttonNextVariant(variant) {
         this._buttonNextVariant = normalizeString(variant, {
-            fallbackValue: 'neutral',
-            validValues: validButtonVariants
+            fallbackValue: BUTTON_VARIANTS.default,
+            validValues: BUTTON_VARIANTS.valid
         });
     }
 
@@ -363,13 +428,13 @@ export default class Slides extends LightningElement {
 
     set buttonPosition(position) {
         this._buttonPosition = normalizeString(position, {
-            fallbackValue: 'middle',
-            validValues: validButtonPositions
+            fallbackValue: BUTTON_POSITIONS.default,
+            validValues: BUTTON_POSITIONS.valid
         });
 
         const wrapperClasses = Array.from(this.classList);
-        const currentClass = wrapperClasses.find(wrapperClass => {
-            return wrapperClass.match(/avonni-flex-(middle|top|bottom)/)
+        const currentClass = wrapperClasses.find((wrapperClass) => {
+            return wrapperClass.match(/avonni-flex-(middle|top|bottom)/);
         });
         this.classList.remove(currentClass);
         this.classList.add(`avonni-flex-${this._buttonPosition}`);
@@ -381,8 +446,8 @@ export default class Slides extends LightningElement {
 
     set indicatorType(type) {
         this._indicatorType = normalizeString(type, {
-            fallbackValue: 'bullets',
-            validValues: validIndicatorTypes
+            fallbackValue: INDICATOR_TYPES.default,
+            validValues: INDICATOR_TYPES.valid
         });
     }
 
@@ -392,8 +457,8 @@ export default class Slides extends LightningElement {
 
     set indicatorPosition(position) {
         this._indicatorPosition = normalizeString(position, {
-            fallbackValue: 'bottom-center',
-            validValues: validIndicatorPositions
+            fallbackValue: INDICATOR_POSITIONS.default,
+            validValues: INDICATOR_POSITIONS.valid
         });
     }
 

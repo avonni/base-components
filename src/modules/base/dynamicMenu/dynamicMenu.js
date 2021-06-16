@@ -1,3 +1,35 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import {
@@ -6,7 +38,7 @@ import {
     observePosition
 } from 'c/utilsPrivate';
 
-const validMenuAlignments = {
+const MENU_ALIGNMENTS = {
     valid: [
         'left',
         'center',
@@ -18,7 +50,7 @@ const validMenuAlignments = {
     default: 'left'
 };
 
-const validVariants = {
+const BUTTON_VARIANTS = {
     valid: [
         'border',
         'border-inverse',
@@ -31,10 +63,12 @@ const validVariants = {
     default: 'border'
 };
 
-const validIconSizes = {
+const ICON_SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
     default: 'medium'
 };
+
+const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Search…';
 
 export default class DynamicMenu extends LightningElement {
     @api iconName;
@@ -45,13 +79,13 @@ export default class DynamicMenu extends LightningElement {
     @api withSearch;
     @api accessKey;
     @api title;
-    @api searchInputPlaceholder = 'Search…';
+    @api searchInputPlaceholder = DEFAULT_SEARCH_INPUT_PLACEHOLDER;
     @api tooltip;
 
     _items = [];
     _isLoading;
-    _variant = validVariants.default;
-    _menuAlignment = validMenuAlignments.default;
+    _variant = BUTTON_VARIANTS.default;
+    _menuAlignment = MENU_ALIGNMENTS.default;
     _disabled;
     queryTerm;
     _dropdownVisible = false;
@@ -59,7 +93,7 @@ export default class DynamicMenu extends LightningElement {
     showFooter = true;
     filteredItems = [];
     _boundingRect = {};
-    _iconSize = validIconSizes.default;
+    _iconSize = ICON_SIZES.default;
 
     connectedCallback() {
         this._connected = true;
@@ -110,8 +144,8 @@ export default class DynamicMenu extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: validVariants.default,
-            validValues: validVariants.valid
+            fallbackValue: BUTTON_VARIANTS.default,
+            validValues: BUTTON_VARIANTS.valid
         });
     }
 
@@ -121,8 +155,8 @@ export default class DynamicMenu extends LightningElement {
 
     set iconSize(iconSize) {
         this._iconSize = normalizeString(iconSize, {
-            fallbackValue: validIconSizes.default,
-            validValues: validIconSizes.valid
+            fallbackValue: ICON_SIZES.default,
+            validValues: ICON_SIZES.valid
         });
     }
 
@@ -133,8 +167,8 @@ export default class DynamicMenu extends LightningElement {
 
     set menuAlignment(value) {
         this._menuAlignment = normalizeString(value, {
-            fallbackValue: validMenuAlignments.default,
-            validValues: validMenuAlignments.valid
+            fallbackValue: MENU_ALIGNMENTS.default,
+            validValues: MENU_ALIGNMENTS.valid
         });
     }
 

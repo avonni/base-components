@@ -1,3 +1,35 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { Wizard } from '../__examples__/wizard';
 import { ModalWizard } from '../__examples__/modal';
 import { BeforeChangeWizard } from '../__examples__/beforeChange';
@@ -111,6 +143,8 @@ export default {
             control: {
                 type: 'text'
             },
+            description:
+                'The name of an icon to display for the previous button.',
             table: {
                 type: { summary: 'string' },
                 category: 'Navigation',
@@ -123,7 +157,8 @@ export default {
             },
             options: ['left', 'right'],
             defaultValue: 'left',
-            description: 'Valid values include left and right.',
+            description:
+                'Describes the position of the icon with respect to body. Options include left and right.',
             table: {
                 defaultValue: { summary: 'left' },
                 type: { summary: 'string' },
@@ -136,6 +171,7 @@ export default {
                 type: 'text'
             },
             defaultValue: 'Previous',
+            description: 'Label for the previous button.',
             table: {
                 defaultValue: { summary: 'Previous' },
                 type: { summary: 'string' },
@@ -158,6 +194,8 @@ export default {
                 'success'
             ],
             defaultValue: 'neutral',
+            description:
+                'Change the appearance of the previous button. Valid values include bare, neutral, brand, brand-outline, inverse, destructive, destructive-text, success.',
             table: {
                 defaultValue: { summary: 'neutral' },
                 type: { summary: 'string' },
@@ -169,6 +207,7 @@ export default {
             control: {
                 type: 'text'
             },
+            description: 'The name of an icon to display for the next button.',
             table: {
                 type: { summary: 'string' },
                 category: 'Navigation',
@@ -181,7 +220,8 @@ export default {
             },
             options: ['left', 'right'],
             defaultValue: 'left',
-            description: 'Valid values include left and right.',
+            description:
+                'Describes the position of the icon with respect to body. Options include left and right.',
             table: {
                 defaultValue: { summary: 'left' },
                 type: { summary: 'string' },
@@ -194,6 +234,7 @@ export default {
                 type: 'text'
             },
             defaultValue: 'Next',
+            description: 'Label for the next button.',
             table: {
                 defaultValue: { summary: 'Next' },
                 type: { summary: 'string' },
@@ -216,6 +257,8 @@ export default {
                 'success'
             ],
             defaultValue: 'neutral',
+            description:
+                'Change the appearance of the next button. Valid values include bare, neutral, brand, brand-outline, inverse, destructive, destructive-text, success.',
             table: {
                 defaultValue: { summary: 'neutral' },
                 type: { summary: 'string' },
@@ -227,6 +270,8 @@ export default {
             control: {
                 type: 'text'
             },
+            description:
+                'The name of an icon to display for the finish button.',
             table: {
                 type: { summary: 'string' },
                 category: 'Navigation',
@@ -239,7 +284,8 @@ export default {
             },
             options: ['left', 'right'],
             defaultValue: 'left',
-            description: 'Valid values include left and right.',
+            description:
+                'Describes the position of the icon with respect to body. Options include left and right.',
             table: {
                 defaultValue: { summary: 'left' },
                 type: { summary: 'string' },
@@ -252,6 +298,7 @@ export default {
                 type: 'text'
             },
             defaultValue: 'Finish',
+            description: 'Label for the finish button.',
             table: {
                 defaultValue: { summary: 'Finish' },
                 type: { summary: 'string' },
@@ -275,7 +322,7 @@ export default {
             ],
             defaultValue: 'neutral',
             description:
-                'Valid values include bare, neutral, brand, brand-outline, inverse, destructive, destructive-text, success.',
+                'Change the appearance of the finish button. Valid values include bare, neutral, brand, brand-outline, inverse, destructive, destructive-text, success.',
             table: {
                 defaultValue: { summary: 'neutral' },
                 type: { summary: 'string' },
