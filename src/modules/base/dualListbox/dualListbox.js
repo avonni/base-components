@@ -35,7 +35,8 @@ import {
     normalizeBoolean,
     normalizeString,
     assert,
-    getRealDOMId
+    getRealDOMId,
+    getListHeight
 } from 'c/utilsPrivate';
 import { classSet, formatLabel } from 'c/utils';
 import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
@@ -156,11 +157,11 @@ export default class DualListbox extends LightningElement {
             // reset the optionToFocus otherwise dualListbox will steal the focus any time it's rerendered.
             this.optionToFocus = null;
         });
-        this.computedBothHeight();
     }
 
     renderedCallback() {
         this.assertRequiredAttributes();
+        this._rendered = true;
 
         if (this.disabled) {
             this._upButtonDisabled = true;
@@ -179,6 +180,7 @@ export default class DualListbox extends LightningElement {
             }
         }
         this.disabledButtons();
+        this.updateBoxesHeight();
     }
 
     @api
@@ -191,10 +193,10 @@ export default class DualListbox extends LightningElement {
             ? JSON.parse(JSON.stringify(value))
             : [];
         if (this._connected) {
-            this.computedColumnSourceHeight();
-            this.computedColumnSelectedHeight();
+            this.updateBoxesHeight();
         }
     }
+
     @api messageWhenValueMissing = i18n.requiredError;
 
     @api
@@ -268,7 +270,7 @@ export default class DualListbox extends LightningElement {
     set value(newValue) {
         this.updateHighlightedOptions(newValue);
         this._selectedValues = newValue || [];
-        if (this._connected) {
+        if (this._rendered) {
             this.addRequiredOptionsToValue();
         }
     }
@@ -282,7 +284,7 @@ export default class DualListbox extends LightningElement {
         this._requiredOptions = Array.isArray(newValue)
             ? JSON.parse(JSON.stringify(newValue))
             : [];
-        if (this._connected) {
+        if (this._rendered) {
             this.addRequiredOptionsToValue();
         }
     }
@@ -333,8 +335,7 @@ export default class DualListbox extends LightningElement {
             typeof value === 'number' ? value : DEFAULT_MAX_VISIBLE_OPTIONS;
         this._maxVisibleOptions = parseInt(number, 10);
         if (this._connected) {
-            this.computedColumnSourceHeight();
-            this.computedColumnSelectedHeight();
+            this.updateBoxesHeight();
         }
     }
 
@@ -557,137 +558,23 @@ export default class DualListbox extends LightningElement {
         };
     }
 
-    computeSourceIncrement(array) {
-        array.forEach((option) => {
-            if (option.description) {
-                this._sourceHasDescription++;
-            } else if (!option.description) {
-                this._sourceNoDescription++;
-            }
-        });
-    }
+    updateBoxesHeight() {
+        const sourceOptions = Array.from(
+            this.template.querySelectorAll('li[role="source"]')
+        );
+        const selectedOptions = Array.from(
+            this.template.querySelectorAll('li[role="selected"]')
+        );
 
-    computeSelectedIncrement(array) {
-        array.forEach((option) => {
-            if (option.description) {
-                this._selectedHasDescription++;
-            } else if (!option.description) {
-                this._selectedNoDescription++;
-            }
-        });
-    }
+        this._sourceBoxHeight = getListHeight(
+            sourceOptions,
+            this._maxVisibleOptions
+        );
 
-    computeHeight(noDescription, hasDescription) {
-        return 42.3 * noDescription + 57 * hasDescription;
-    }
-
-    computedColumnSourceHeight() {
-        this._sourceNoDescription = 0;
-        this._sourceHasDescription = 0;
-        if (this.computedSourceList.length > this._maxVisibleOptions) {
-            const newArray = this.computedSourceList.slice(
-                0,
-                this._maxVisibleOptions
-            );
-            this.computeSourceIncrement(newArray);
-            this._sourceBoxHeight = this.computeHeight(
-                this._sourceNoDescription,
-                this._sourceHasDescription
-            );
-        } else if (this.computedSourceList.length === this._maxVisibleOptions) {
-            this.computeSourceIncrement(this.computedSourceList);
-            this._sourceBoxHeight = this.computeHeight(
-                this._sourceNoDescription,
-                this._sourceHasDescription
-            );
-        } else if (this.computedSourceList.length < this._maxVisibleOptions) {
-            if (
-                this.computedSourceList.length >=
-                this.computedSelectedList.length
-            ) {
-                if (this._sourceHasDescription >= 1) {
-                    this.computeSourceIncrement(this.computedSourceList);
-                    this._sourceBoxHeight =
-                        this.computeHeight(
-                            this._sourceNoDescription,
-                            this._sourceHasDescription
-                        ) +
-                        57 *
-                            (this._maxVisibleOptions -
-                                this.computedSourceList.length);
-                } else if (this._sourceHasDescription === 0) {
-                    this._sourceBoxHeight =
-                        this.computeHeight(
-                            this._sourceNoDescription,
-                            this._sourceHasDescription
-                        ) +
-                        42.3 *
-                            (this._maxVisibleOptions -
-                                this.computedSourceList.length);
-                }
-            } else if (
-                this.computedSourceList.length <
-                this.computedSelectedList.length
-            ) {
-                this.computeSourceIncrement(this.computedSourceList);
-                this._sourceBoxHeight = this.computeHeight(
-                    this._sourceNoDescription,
-                    this._sourceHasDescription
-                );
-            }
-        }
-        return this._sourceBoxHeight;
-    }
-
-    computedColumnSelectedHeight() {
-        this._selectedNoDescription = 0;
-        this._selectedHasDescription = 0;
-        if (this.computedSelectedList.length > this._maxVisibleOptions) {
-            const newArray = this.computedSelectedList.slice(
-                0,
-                this._maxVisibleOptions
-            );
-            this.computeSelectedIncrement(newArray);
-            this._selectedBoxHeight = this.computeHeight(
-                this._selectedNoDescription,
-                this._selectedHasDescription
-            );
-        } else if (
-            this.computedSelectedList.length === this._maxVisibleOptions
-        ) {
-            this.computeSelectedIncrement(this.computedSelectedList);
-            this._selectedBoxHeight = this.computeHeight(
-                this._selectedNoDescription,
-                this._selectedHasDescription
-            );
-        } else if (this.computedSelectedList.length < this._maxVisibleOptions) {
-            this.computeSelectedIncrement(this.computedSelectedList);
-            if (this._selectedHasDescription > 1) {
-                this._selectedBoxHeight =
-                    this.computeHeight(
-                        this._selectedNoDescription,
-                        this._selectedHasDescription
-                    ) +
-                    57 *
-                        (this._maxVisibleOptions -
-                            this.computedSelectedList.length);
-            } else if (this._selectedHasDescription === 0) {
-                this._selectedBoxHeight =
-                    this.computeHeight(
-                        this._selectedNoDescription,
-                        this._selectedHasDescription
-                    ) +
-                    42.3 *
-                        (this._maxVisibleOptions -
-                            this.computedSelectedList.length);
-            }
-        }
-        return this._selectedBoxHeight;
-    }
-
-    computedBothHeight() {
-        this.computedColumnSourceHeight();
-        this.computedColumnSelectedHeight();
+        this._selectedBoxHeight = getListHeight(
+            selectedOptions,
+            this._maxVisibleOptions
+        );
     }
 
     get sourceHeight() {
@@ -967,7 +854,7 @@ export default class DualListbox extends LightningElement {
         this.highlightedOptions.find((option) => {
             return this._selectedValues.indexOf(option);
         });
-        this.computedBothHeight();
+        this.updateBoxesHeight();
     }
 
     oldIndexValue(option) {
@@ -1020,7 +907,7 @@ export default class DualListbox extends LightningElement {
         this.updateFocusableOption(this.selectedList, toMove[0]);
         this.optionToFocus = null;
         this.dispatchChangeEvent(values);
-        this.computedBothHeight();
+        this.updateBoxesHeight();
     }
 
     disabledButtons() {
