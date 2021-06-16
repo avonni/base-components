@@ -326,6 +326,6 @@ FractionDigitsTypeCurrency.args = {
     fractionDigits: 2,
     min: 3.50,
     max: 20,
-    messageWhenRangeOverflow: 'The value needs to be equal or lesser than 3.50',
-    messageWhenRangeUnderflow: 'The value needs to be equal or greater than 20',
+    messageWhenRangeOverflow: 'The value needs to be equal or lesser than 20',
+    messageWhenRangeUnderflow: 'The value needs to be equal or greater than 3.50',
 };

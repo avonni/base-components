@@ -33,6 +33,7 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
+import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
 
 const validVariants = {valid: [
     'standard',
@@ -74,6 +75,9 @@ export default class InputCounter extends LightningElement {
     _required;
     _fractionDigits;
     _fractionDigitsLength;
+    _constraintApi;
+    _constraintApiProxyInputUpdater;
+    _helpMessage;
     labelVariant;
     labelFieldLevelHelp;
     init = false;
@@ -90,7 +94,7 @@ export default class InputCounter extends LightningElement {
                     '.avonni-input-counter .slds-input {text-align: center;padding: 0 var(--lwc-spacingXxLarge,3rem);}';
                 srcElement.appendChild(style);
             }
-
+            this.showHelpMessageIfInvalid();
             this.init = true;
         }
     }
@@ -117,7 +121,7 @@ export default class InputCounter extends LightningElement {
 
     set fractionDigits(digits) {
         const baseFractionValue = 1;
-        this._fractionDigits = typeof digits === 'number' ? +('0.' + baseFractionValue.toString().padStart(digits, '0')) : "";
+        this._fractionDigits = typeof digits === 'number' ? +('0.' + baseFractionValue.toString().padStart(digits, '0')) : '';
     }
 
     @api get variant() {
@@ -175,7 +179,7 @@ export default class InputCounter extends LightningElement {
     }
 
     set step(value) {
-        this._step = typeof value === 'number' ? this.handlePrecision(value) : DEFAULT_STEP;
+        this._step = typeof value === 'number' ? value : DEFAULT_STEP;
     }
 
     @api
@@ -237,50 +241,17 @@ export default class InputCounter extends LightningElement {
         return this.ariaDescribedBy || null;
     }
 
-    @api
-    setCustomValidity() {
-        this.template.querySelector('lightning-input').setCustomValidity();
-    }
-
-    @api
-    reportValidity() {
-        this.template.querySelector('lightning-input').reportValidity();
-    }
-
-    @api
-    focus() {
-        this.template.querySelector('lightning-input').focus();
-    }
-
-    @api
-    blur() {
-        this.template.querySelector('lightning-input').blur();
-    }
-
-    @api
-    showHelpMessageIfInvalid() {
-        this.template
-            .querySelector('lightning-input')
-            .showHelpMessageIfInvalid();
-    }
-
-    decrementValue() {
-        if ( this.min === 0 && this.value !== undefined && !isNaN(this.value)) {
-            this.value = Number(this.value) - Number(this.step);
-            if (this.min > this.value - this.step ) {
-                this.value = 0;
-            }
-            if (this.max) {
-                if (this.value + this.step > this.max) {
-                    this.value = this.max;
-                }
-            }
-        } else if ( this.min !== 0 && this.value !== undefined && !isNaN(this.value)) {
+            
+        decrementValue() {
+            this.max = this.handlePrecision(this.max);
+            this.min = this.handlePrecision(this.min);
+            this.step = this.handlePrecision(this.step);
+        if (this.value !== undefined && !isNaN(this.value)) {
             this.value = Number(this.value) - Number(this.step);           
-            if (this.min) {
-                if (this.value - this.step < this.min) {
-                    this.value = this.min;
-                }
+            if (this.min || this.min === 0) {                
+                    if (this.min > this.value - this.step ) {
+                        this.value = this.min;
+                    }
             }
             if (this.max) {
                 if (this.value + this.step > this.max) {
@@ -303,27 +274,20 @@ export default class InputCounter extends LightningElement {
     }
 
     incrementValue() {
-        if ( this.min === 0 && this.value !== undefined && !isNaN(this.value)) {
-            this.value = Number(this.value) + Number(this.step);
-            if ( this.min > this.value - this.step) {
-                this.value = this.min;
-            }
-            if (this.max) {
-                if (this.value + this.step > this.max) {
-                    this.value = this.max;
-                }
-            }
-        } else if ( this.min !== 0 && this.value !== undefined && !isNaN(this.value)) {
+        this.max = this.handlePrecision(this.max);
+        this.min = this.handlePrecision(this.min);
+        this.step = this.handlePrecision(this.step);        
+        if (this.value !== undefined && !isNaN(this.value)) {
             this.value = Number(this.value) + Number(this.step);            
-            if (this.min) {
-                if (this.value - this.step < this.min) {
-                    this.value = this.min;
-                }
+            if (this.min || this.min === 0) {                
+                    if (this.min > this.value - this.step ) {
+                        this.value = this.min;
+                    }    
             }
             if (this.max) {
                 if (this.value + this.step > this.max) {
                     this.value = this.max;
-                }
+                }     
             }
         } else {            
             if (!this.step && !this.min) {
@@ -355,39 +319,146 @@ export default class InputCounter extends LightningElement {
         [...this.template.querySelectorAll('lightning-input')].forEach(
             (element) => {
                 element.value = value;
+                element.max = this.max;
+                element.min = this.min;
+                element.formatter = this.type;
             }
         );
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
-                    value: this.value
+                    value: this.value,
+                    max: this.max,
+                    min: this.min,
+                    formatter: this.type
                 }
             })
         );
-
-        this.validateValue();
+        console.log("UPDATE VALUE")
+        this.showHelpMessageIfInvalid();
     }
 
-    validateValue() {
-        [...this.template.querySelectorAll('lightning-input')].reduce(
-            (validSoFar, inputCmp) => {
-                inputCmp.reportValidity();
-                return validSoFar && inputCmp.checkValidity();
-            },
-            true
-        );
-    }
+    // validateValue() {
+    //     [...this.template.querySelectorAll('lightning-input')].reduce(
+    //         (validSoFar, inputCmp) => {
+    //             inputCmp.reportValidity();
+    //             return validSoFar && inputCmp.checkValidity();
+    //         },
+    //         true
+    //     );
+    // }
 
     handlerChange(event) {
+        console.log("HANDLER CHANGE")
         this.value = event.target.value;
-        this.updateValue();
+        this.changeValue();
+    }
+    
+    @api
+    focus() {
+        this.template.querySelector('lightning-input').focus();
+    }
+
+    @api
+    blur() {
+        this.template.querySelector('lightning-input').blur();
     }
 
     handlerFocus() {
         this.dispatchEvent(new CustomEvent('focus'));
     }
 
-    handlerBlur() {
+    handlerBlur(event) {
+        this.value = event.target.value;
+        const minval = this.template.querySelector('lightning-input');
+        console.log(minval.validity.rangeUnderflow);
+        console.log(event.target.min)
+        event.target.min = "";
+        console.log(minval.validity.rangeUnderflow);
+        console.log(event.target.min)
+        // this.updateValue(this.value);
+        this.changeValue();
         this.dispatchEvent(new CustomEvent('blur'));
+    }
+
+    handleInput(event) {
+        this.value = event.target.value;
+        this.changeValue();
+    }
+
+    changeValue() {
+        this._updateProxyInputAttributes('value');
+        console.log("CHANGE VALUE")
+        const selectedEvent = new CustomEvent('change', {
+            detail: {
+                value: Number(this.value)
+            }
+        });
+
+        this.dispatchEvent(selectedEvent);
+    }
+
+    @api get validity() {
+        return this._constraint.validity;
+    }
+
+    @api
+    checkValidity() {
+        return this._constraint.checkValidity();
+    }
+
+    @api
+    reportValidity() {
+        console.log("CHANGE REPORT")
+        let helpMessage = '';
+
+        let valMsg = this._constraint.reportValidity((message) => {
+            helpMessage = helpMessage + message;
+        });
+
+        this._helpMessage = helpMessage;
+        console.log(valMsg);
+        console.log(helpMessage);
+        return valMsg;
+    }
+
+    @api
+    setCustomValidity(message) {
+        this._constraint.setCustomValidity(message);
+    }
+
+    @api
+    showHelpMessageIfInvalid() {
+        this.reportValidity();
+    }
+
+    _updateProxyInputAttributes(attributes) {
+        if (this._constraintApiProxyInputUpdater) {
+            this._constraintApiProxyInputUpdater(attributes);
+        }
+    }
+
+    get _constraint() {
+        if (!this._constraintApi) {
+            this._constraintApi = new FieldConstraintApiWithProxyInput(
+                () => this
+            );
+
+            console.log("CONSTRAINT")
+
+            this._constraintApiProxyInputUpdater = this._constraintApi.setInputAttributes(
+                {
+                    type: () => 'number',
+                    value: () => this.value,
+                    max: () => this.max,
+                    min: () => this.min,
+                    step: () => this.fractionDigits,
+                    formatter: () => this.type,
+                    disabled: () => this.disabled
+                }
+            );
+        }
+        console.log(this._constraintApi)
+        return this._constraintApi;
     }
 }

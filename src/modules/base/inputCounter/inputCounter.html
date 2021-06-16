@@ -60,19 +60,11 @@
                 name={name}
                 label={label}
                 placeholder="0"
-                message-when-bad-input={messageWhenBadInput}
-                message-when-pattern-mismatch={messageWhenPatternMismatch}
-                message-when-range-overflow={messageWhenRangeOverflow}
-                message-when-range-underflow={messageWhenRangeUnderflow}
-                message-when-step-mismatch={messageWhenStepMismatch}
-                message-when-value-missing={messageWhenValueMissing}
                 aria-label={ariaLabel}
                 aria-controls={computedAriaControls}
                 aria-labelledby={computedAriaLabelledBy}
                 aria-describedby={computedAriaDescribedBy}
                 value={value}
-                max={max}
-                min={min}
                 step={fractionDigits}
                 field-level-help={labelFieldLevelHelp}
                 accesskey={accessKey}
@@ -83,6 +75,7 @@
                 type="number"
                 formatter={type}
                 class={inputClass}
+                oninput={handleInput}
                 onchange={handlerChange}
                 onfocus={handlerFocus}
                 onblur={handlerBlur}
@@ -101,4 +94,13 @@
             ></lightning-button-icon>
         </div>
     </div>
+    <template if:true={_helpMessage}>
+        <div
+            id="message-id"
+            class="slds-form-element__help"
+            aria-live="assertive"
+        >
+            {_helpMessage}
+        </div>
+    </template>
 </template>
