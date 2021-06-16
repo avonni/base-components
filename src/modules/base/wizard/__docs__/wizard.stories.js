@@ -139,7 +139,7 @@ export default {
                 subcategory: 'Indicator'
             }
         },
-        buttonPreviousIconName: {
+        previousButtonIconName: {
             control: {
                 type: 'text'
             },
@@ -151,7 +151,7 @@ export default {
                 subcategory: 'Previous button'
             }
         },
-        buttonPreviousIconPosition: {
+        previousButtonIconPosition: {
             control: {
                 type: 'select'
             },
@@ -166,7 +166,7 @@ export default {
                 subcategory: 'Previous button'
             }
         },
-        buttonPreviousLabel: {
+        previousButtonLabel: {
             control: {
                 type: 'text'
             },
@@ -179,7 +179,7 @@ export default {
                 subcategory: 'Previous button'
             }
         },
-        buttonPreviousVariant: {
+        previousButtonVariant: {
             control: {
                 type: 'select'
             },
@@ -203,7 +203,7 @@ export default {
                 subcategory: 'Previous button'
             }
         },
-        buttonNextIconName: {
+        nextButtonIconName: {
             control: {
                 type: 'text'
             },
@@ -214,7 +214,7 @@ export default {
                 subcategory: 'Next button'
             }
         },
-        buttonNextIconPosition: {
+        nextButtonIconPosition: {
             control: {
                 type: 'select'
             },
@@ -229,7 +229,7 @@ export default {
                 subcategory: 'Next button'
             }
         },
-        buttonNextLabel: {
+        nextButtonLabel: {
             control: {
                 type: 'text'
             },
@@ -242,7 +242,7 @@ export default {
                 subcategory: 'Next button'
             }
         },
-        buttonNextVariant: {
+        nextButtonVariant: {
             control: {
                 type: 'select'
             },
@@ -266,7 +266,7 @@ export default {
                 subcategory: 'Next button'
             }
         },
-        buttonFinishIconName: {
+        finishButtonIconName: {
             control: {
                 type: 'text'
             },
@@ -278,7 +278,7 @@ export default {
                 subcategory: 'Finish button'
             }
         },
-        buttonFinishIconPosition: {
+        finishButtonIconPosition: {
             control: {
                 type: 'select'
             },
@@ -293,7 +293,7 @@ export default {
                 subcategory: 'Finish button'
             }
         },
-        buttonFinishLabel: {
+        finishButtonLabel: {
             control: {
                 type: 'text'
             },
@@ -306,7 +306,7 @@ export default {
                 subcategory: 'Finish button'
             }
         },
-        buttonFinishVariant: {
+        finishButtonVariant: {
             control: {
                 type: 'select'
             },
@@ -416,15 +416,15 @@ ModalLeft.args = {
     title: 'Modal Wizard Example',
     variant: 'modal',
     indicatorType: 'path',
-    buttonPreviousLabel: 'Back',
-    buttonPreviousIconName: 'utility:back',
-    buttonNextIconName: 'utility:forward',
-    buttonNextIconPosition: 'right',
-    buttonNextLabel: 'Continue',
-    buttonNextVariant: 'brand',
-    buttonFinishIconName: 'utility:check',
-    buttonFinishLabel: 'Done',
-    buttonFinishVariant: 'success'
+    previousButtonLabel: 'Back',
+    previousButtonIconName: 'utility:back',
+    nextButtonIconName: 'utility:forward',
+    nextButtonIconPosition: 'right',
+    nextButtonLabel: 'Continue',
+    nextButtonVariant: 'brand',
+    finishButtonIconName: 'utility:check',
+    finishButtonLabel: 'Done',
+    finishButtonVariant: 'success'
 };
 
 Modal.args = {
@@ -432,15 +432,15 @@ Modal.args = {
     variant: 'modal',
     indicatorPosition: 'top',
     indicatorType: 'path',
-    buttonPreviousLabel: 'Back',
-    buttonPreviousIconName: 'utility:back',
-    buttonNextIconName: 'utility:forward',
-    buttonNextIconPosition: 'right',
-    buttonNextLabel: 'Continue',
-    buttonNextVariant: 'brand',
-    buttonFinishIconName: 'utility:check',
-    buttonFinishLabel: 'Done',
-    buttonFinishVariant: 'success'
+    previousButtonLabel: 'Back',
+    previousButtonIconName: 'utility:back',
+    nextButtonIconName: 'utility:forward',
+    nextButtonIconPosition: 'right',
+    nextButtonLabel: 'Continue',
+    nextButtonVariant: 'brand',
+    finishButtonIconName: 'utility:check',
+    finishButtonLabel: 'Done',
+    finishButtonVariant: 'success'
 };
 
 Card.args = {
@@ -450,8 +450,8 @@ Card.args = {
     buttonAlignmentBump: 'right',
     actionPosition: 'right',
     indicatorType: 'fractions',
-    buttonNextVariant: 'brand',
-    buttonFinishVariant: 'destructive'
+    nextButtonVariant: 'brand',
+    finishButtonVariant: 'destructive'
 };
 
 CardRight.args = {
@@ -462,8 +462,8 @@ CardRight.args = {
     buttonAlignmentBump: 'right',
     actionPosition: 'right',
     indicatorType: 'fractions',
-    buttonNextVariant: 'brand',
-    buttonFinishVariant: 'destructive'
+    nextButtonVariant: 'brand',
+    finishButtonVariant: 'destructive'
 };
 
 BeforeChangeOnSteps.args = {
