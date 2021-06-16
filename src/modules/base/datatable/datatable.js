@@ -240,6 +240,8 @@ export default class Datatable extends LightningDatatable {
         }
     };
 
+    _headerHeight;
+
     connectedCallback() {
         super.connectedCallback();
 
@@ -265,6 +267,28 @@ export default class Datatable extends LightningDatatable {
         editCells.forEach((cell) => {
             cell.classList.add('slds-cell-edit');
         });
+
+        this.dispatchRowHeightEvent();
+
+        // The header height has been set by the parent
+        if (this._headerHeight) {
+            // Grow the grey area of the header
+            const tableWrapper = this.template.querySelector(
+                '.slds-table_header-fixed_container'
+            );
+            tableWrapper.style.paddingTop = this._headerHeight;
+
+            // Add a border to the bottom of the header row
+            const primitiveHeaders = this.template.querySelectorAll(
+                'lightning-primitive-header-factory'
+            );
+            primitiveHeaders.forEach((header) => {
+                header.classList.add('slds-border_bottom');
+                header.style.minHeight = '33px';
+                header.style.position = 'absolute';
+                header.style.top = '0';
+            });
+        }
     }
 
     disconnectedCallback() {
@@ -299,6 +323,11 @@ export default class Datatable extends LightningDatatable {
         this.computeEditableOption();
 
         super.data = this._data;
+    }
+
+    @api
+    setHeaderHeight(value) {
+        this._headerHeight = value;
     }
 
     removeWrapOption() {
@@ -348,4 +377,20 @@ export default class Datatable extends LightningDatatable {
         // Show yellow background and save/cancel button
         super.updateRowsState(this.state);
     };
+
+    dispatchRowHeightEvent() {
+        const rows = this.template.querySelectorAll(
+            'tr:not(.slds-line-height_reset)'
+        );
+        rows.forEach((row, index) => {
+            this.dispatchEvent(
+                new CustomEvent('privaterowheightchange', {
+                    detail: {
+                        index: index,
+                        height: row.offsetHeight
+                    }
+                })
+            );
+        });
+    }
 }
