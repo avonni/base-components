@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
- .avonni-progress-bar-reference-line {
+.avonni-progress-bar-reference-line {
     border-radius: 0.35rem;
     font-size: 0.55rem;
     padding: 0.1rem 0.4rem;
@@ -49,7 +49,7 @@
     transform: translateX(100%);
 }
 
-.avonni-progress-bar-reference-line_darker {
+.avonni-progress-bar-reference-line_inverse {
     background-color: #706e6b;
     color: #fff;
 }
@@ -99,7 +99,7 @@
     border-right: 2px dotted #ecebea;
 }
 
-.avonni-progress-bar-reference-line-border-color_darker {
+.avonni-progress-bar-reference-line-border-color_inverse {
     border-right-color: #706e6b;
 }
 
@@ -168,7 +168,7 @@
     border-bottom: 2px dotted #ecebea;
 }
 
-.avonni-progress-bar-reference-line-border-vertical-color_darker {
+.avonni-progress-bar-reference-line-border-vertical-color_inverse {
     border-bottom-color: #706e6b;
 }
 

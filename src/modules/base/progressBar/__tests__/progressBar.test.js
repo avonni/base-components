@@ -43,7 +43,7 @@ const REFERENCE_LINES = [
     {
         label: 'Reference 2',
         value: 78,
-        variant: 'darker'
+        variant: 'inverse'
     },
     {
         label: 'Reference 3',
