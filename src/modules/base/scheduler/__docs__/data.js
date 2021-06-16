@@ -66,11 +66,11 @@ const headers = [
     {
         unit: 'day',
         span: 1,
-        label: '<ddd> <DD>/<MM>'
+        label: '<ddd>, <MMM> <DD> <YYYY>'
     },
     {
         unit: 'hour',
-        span: 2,
+        span: 6,
         label: '<H>'
     }
 ];

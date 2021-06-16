@@ -50,6 +50,10 @@ export default class Header {
         return numberOfCols;
     }
 
+    get columnMaxWidth() {
+        return `${100 / this.numberOfColumns}%`;
+    }
+
     computeColumnLabels() {
         const columnLabels = [];
         let time = this.start.getTime();

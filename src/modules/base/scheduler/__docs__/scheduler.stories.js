@@ -251,5 +251,6 @@ Base.args = {
     visibleSpan: {
         unit: 'day',
         span: 5
-    }
+    },
+    start: new Date(2021, 8, 4, 8)
 };

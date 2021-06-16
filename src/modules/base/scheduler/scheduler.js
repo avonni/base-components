@@ -32,6 +32,7 @@
 
 import { LightningElement, api } from 'lwc';
 import { normalizeArray, normalizeString } from 'c/utilsPrivate';
+import { generateUniqueId } from 'c/utils';
 import { dateObjectFrom } from './dateUtils';
 import {
     EVENTS_THEMES,
@@ -80,6 +81,18 @@ export default class Scheduler extends LightningElement {
         const datatable = this.template.querySelector('c-datatable');
         // We take one off because of the border
         datatable.setHeaderHeight(`${thead.offsetHeight - 1}px`);
+
+        // Set the header columns width
+        const headerRows = this.template.querySelectorAll('thead tr');
+        headerRows.forEach((row) => {
+            const header = this.headers.find((headerObj) => {
+                return headerObj.key === row.dataset.key;
+            });
+            const cells = row.querySelectorAll('th');
+            cells.forEach((cell) => {
+                cell.style.maxWidth = header.columnMaxWidth;
+            });
+        });
     }
 
     @api
@@ -226,6 +239,10 @@ export default class Scheduler extends LightningElement {
             typeof value === 'object' ? value : DEFAULT_VISIBLE_SPAN;
 
         if (this.isConnected) this.initVisibleSpan();
+    }
+
+    get generateKey() {
+        return generateUniqueId();
     }
 
     get palette() {
