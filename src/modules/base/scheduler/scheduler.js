@@ -72,7 +72,13 @@ export default class Scheduler extends LightningElement {
     connectedCallback() {
         this.initScheduleRows();
         this.initVisibleSpan();
-        this.updateHeadersStart();
+
+        if (this.start !== DEFAULT_START_DATE) {
+            this.updateHeadersStart();
+        }
+        if (this.availableTimeFrames !== DEFAULT_AVAILABLE_TIME_FRAMES) {
+            this.updateHeadersTimeFrames();
+        }
     }
 
     renderedCallback() {
@@ -117,6 +123,8 @@ export default class Scheduler extends LightningElement {
     }
     set availableTimeFrames(value) {
         this._availableTimeFrames = normalizeArray(value);
+
+        if (this.isConnected) this.updateHeadersTimeFrames();
     }
 
     @api
@@ -278,6 +286,16 @@ export default class Scheduler extends LightningElement {
         this.headers.forEach((header) => {
             header.start = this.start;
         });
+
+        this.updateRowColumns();
+    }
+
+    updateHeadersTimeFrames() {
+        this.headers.forEach((header) => {
+            header.timeFrames = this.availableTimeFrames;
+        });
+
+        this.updateRowColumns();
     }
 
     updateRowColumns() {

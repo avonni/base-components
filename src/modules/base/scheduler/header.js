@@ -2,9 +2,10 @@ import { generateUniqueId } from 'c/utils';
 import {
     UNITS_IN_MS,
     DEFAULT_VISIBLE_SPAN,
-    DEFAULT_START_DATE
+    DEFAULT_START_DATE,
+    DEFAULT_AVAILABLE_TIME_FRAMES
 } from './defaults';
-import { formatTime } from './dateUtils';
+import { formatTime, isInTimeFrame } from './dateUtils';
 
 export default class Header {
     constructor(props) {
@@ -17,6 +18,7 @@ export default class Header {
         this._millisecondsVisible =
             UNITS_IN_MS[DEFAULT_VISIBLE_SPAN.unit] * DEFAULT_VISIBLE_SPAN.span;
         this._start = DEFAULT_START_DATE;
+        this._timeFrames = DEFAULT_AVAILABLE_TIME_FRAMES;
     }
 
     get millisecondsVisible() {
@@ -32,6 +34,14 @@ export default class Header {
     }
     set start(value) {
         this._start = value;
+        this.computeColumnLabels();
+    }
+
+    get timeFrames() {
+        return this._timeFrames;
+    }
+    set timeFrames(value) {
+        this._timeFrames = value;
         this.computeColumnLabels();
     }
 
@@ -51,14 +61,27 @@ export default class Header {
     }
 
     get columnMaxWidth() {
-        return `${100 / this.numberOfColumns}%`;
+        return `${100 / this.columnLabels.length}%`;
     }
 
     computeColumnLabels() {
         const columnLabels = [];
         let time = this.start.getTime();
+
+        // For each column
         for (let i = 0; i < this.numberOfColumns; i++) {
-            columnLabels.push(formatTime(time, this.label));
+            // Check if time is in allowed time frames
+            let j = 0;
+            let isInTimeFrames = false;
+            while (!isInTimeFrames && j < this.timeFrames.length) {
+                isInTimeFrames = isInTimeFrame(time, this.timeFrames[j]);
+                j += 1;
+            }
+
+            if (isInTimeFrames) {
+                // Create a column with the formatted label
+                columnLabels.push(formatTime(time, this.label));
+            }
             time += this._millisecondsPerCol;
         }
         this.columnLabels = columnLabels;

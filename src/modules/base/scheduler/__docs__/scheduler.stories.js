@@ -122,7 +122,7 @@ export default {
                 'Array of available time frames. If present, the scheduler will only show the available time frames. Defaults to the full day being available. \nEach time frame string must follow the pattern ‘start-end’, with start and end being ISO8601 formatted time strings.',
             table: {
                 type: { summary: 'object' },
-                defaultValue: { summary: "['00:00-00:00']" },
+                defaultValue: { summary: "['00:00-23:59']" },
                 category: 'Available dates'
             }
         },
@@ -252,5 +252,6 @@ Base.args = {
         unit: 'day',
         span: 5
     },
-    start: new Date(2021, 8, 4, 8)
+    start: new Date(2021, 8, 4, 8),
+    availableTimeFrames: ['04:50:00-10:30', '13:00-16:00']
 };

@@ -28,7 +28,7 @@ const THEMES = {
     default: 'default'
 };
 
-const DEFAULT_AVAILABLE_TIME_FRAMES = ['00:00-00:00'];
+const DEFAULT_AVAILABLE_TIME_FRAMES = ['00:00-23:59'];
 const DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK = [0, 1, 2, 3, 4, 5, 6];
 const DEFAULT_AVAILABLE_MONTHS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 const DEFAULT_START_DATE = new Date();

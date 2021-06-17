@@ -80,7 +80,8 @@ const dateObjectFrom = (date) => {
 };
 
 /**
- * Takes a timestamp and a string containing formatting rules.
+ * @param time - Timestamp used as a reference by the formatter
+ * @param {string} stringToFormat - String containing the formatting pattern
  * @returns {string} Formatted string
  */
 const formatTime = (time, stringToFormat) => {
@@ -95,4 +96,21 @@ const formatTime = (time, stringToFormat) => {
     return result;
 };
 
-export { formatTime, dateObjectFrom };
+/**
+ * Checks if a time is included in a time frame.
+ * @param timestamp - Timestamp
+ * @param {string} timeFrame - The time frame of reference, in the format '00:00-00:00'
+ * @returns {boolean} true or false
+ */
+const isInTimeFrame = (timestamp, timeFrame) => {
+    // Returns the times in the format 00:00
+    const time = new Date(timestamp).toLocaleTimeString('en-GB').slice(0, 5);
+    const startTime = timeFrame.match(/^([0-9]{2}:[0-9]{2})/);
+    const endTime = timeFrame.match(/-([0-9]{2}:[0-9]{2})/);
+
+    if (!startTime || !endTime) return false;
+    if (time >= startTime[1] && time <= endTime[1]) return true;
+    return false;
+};
+
+export { formatTime, dateObjectFrom, isInTimeFrame };
