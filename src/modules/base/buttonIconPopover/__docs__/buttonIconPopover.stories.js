@@ -31,6 +31,7 @@
  */
 
 import { ButtonIconPopover } from '../__examples__/buttonIconPopover';
+import { ButtonIconPopoverWithToggle } from '../__examples__/buttonIconPopoverWithToggle';
 
 export default {
     title: 'Example/Button Icon Popover',
@@ -241,6 +242,7 @@ export default {
 };
 
 const Template = (args) => ButtonIconPopover(args);
+const TemplateWithToggle = (args) => ButtonIconPopoverWithToggle(args);
 
 export const BorderWithPopoverBase = Template.bind({});
 BorderWithPopoverBase.args = {
@@ -305,4 +307,9 @@ ContainerWithSmallPopoverError.args = {
     variant: 'Container',
     popoverVariant: 'error',
     popoverSize: 'small'
+};
+
+export const BaseWithToggle = TemplateWithToggle.bind({});
+BaseWithToggle.args = {
+    iconName: 'utility:favorite'
 };
