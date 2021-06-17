@@ -35,7 +35,7 @@ import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
 
-const validVariants = {valid: [
+const LABEL_VARIANTS = {valid: [
     'standard',
     'label-inline',
     'label-hidden',
@@ -67,7 +67,7 @@ export default class InputCounter extends LightningElement {
     @api accessKey;
     @api value;
 
-    _variant = validVariants.default;
+    _variant = LABEL_VARIANTS.default;
     _disabled;
     _step = DEFAULT_STEP;
     _type = validTypes.default;
@@ -133,8 +133,8 @@ export default class InputCounter extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: validVariants.default,
-            validValues: validVariants.valid
+            fallbackValue: LABEL_VARIANTS.default,
+            validValues: LABEL_VARIANTS.valid
         });
 
         if (this._variant === 'label-inline') {

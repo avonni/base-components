@@ -1,3 +1,35 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { Slides } from '../__examples__/slides';
 
 export default {
@@ -10,6 +42,7 @@ export default {
                 min: 1
             },
             defaultValue: 1,
+            description: 'Number of slides to be displayed per view.',
             table: {
                 defaultValue: { summary: '1' },
                 type: { summary: 'number' }
@@ -145,7 +178,7 @@ export default {
                 type: 'boolean'
             },
             defaultValue: 0,
-            description: 'If true, display previous and next buttons.',
+            description: 'If present, display previous and next buttons.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' },
@@ -158,73 +191,79 @@ export default {
                 type: 'boolean'
             },
             defaultValue: 0,
-            description: 'If true, display button inside slides.',
+            description: 'If present, display button inside slides.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' },
                 category: 'Buttons'
             }
         },
-        buttonPreviousIconName: {
-            name: 'button-previous-icon-name',
+        previousButtonIconName: {
+            name: 'previous-button-icon-name',
             control: {
                 type: 'text'
             },
             defaultValue: 'utility:left',
+            description:
+                'The name of an icon to display for the previous button.',
             table: {
                 defaultValue: { summary: 'utility:left' },
                 type: { summary: 'string' },
                 category: 'Buttons'
             }
         },
-        buttonPreviousLabel: {
-            name: 'button-previous-label',
+        previousButtonLabel: {
+            name: 'previous-button-label',
             control: {
                 type: 'text'
             },
+            description: 'Label for the previous button.',
             table: {
                 type: { summary: 'string' },
                 category: 'Buttons'
             }
         },
-        buttonNextIconName: {
-            name: 'button-next-icon-name',
+        nextButtonIconName: {
+            name: 'next-button-icon-name',
             control: {
                 type: 'text'
             },
             defaultValue: 'utility:right',
+            description: 'The name of an icon to display for the next button.',
             table: {
                 defaultValue: { summary: 'utility:right' },
                 type: { summary: 'string' },
                 category: 'Buttons'
             }
         },
-        buttonNextLabel: {
-            name: 'button-next-label',
+        nextButtonLabel: {
+            name: 'next-button-label',
             control: {
                 type: 'text'
             },
+            description: 'Label for the next button.',
             table: {
                 type: { summary: 'string' },
                 category: 'Buttons'
             }
         },
-        buttonPreviousIconPosition: {
-            name: 'button-previous-icon-position',
+        previousButtonIconPosition: {
+            name: 'previous-button-icon-position',
             control: {
                 type: 'select'
             },
             options: ['left', 'right'],
             defaultValue: 'left',
-            description: 'Values include left and right.',
+            description:
+                'Describes the position of the icon with respect to body. Options include left and right.',
             table: {
                 defaultValue: { summary: 'left' },
                 type: { summary: 'string' },
                 category: 'Buttons'
             }
         },
-        buttonPreviousVariant: {
-            name: 'button-previous-variant',
+        previousButtonVariant: {
+            name: 'previous-button-variant',
             control: {
                 type: 'select'
             },
@@ -240,29 +279,30 @@ export default {
             ],
             defaultValue: 'neutral',
             description:
-                'Values include bare, neutral, brand, brand-outline, inverse, destructive, destructive-text, success.',
+                'Change the appearance of the previous button. Valid values include bare, neutral, brand, brand-outline, inverse, destructive, destructive-text, success.',
             table: {
                 defaultValue: { summary: 'neutral' },
                 type: { summary: 'string' },
                 category: 'Buttons'
             }
         },
-        buttonNextIconPosition: {
-            name: 'button-next-icon-position',
+        nextButtonIconPosition: {
+            name: 'next-button-icon-position',
             control: {
                 type: 'select'
             },
             options: ['left', 'right'],
             defaultValue: 'right',
-            description: 'Values include left and right.',
+            description:
+                'Describes the position of the icon with respect to body. Options include left and right.',
             table: {
                 defaultValue: { summary: 'right' },
                 type: { summary: 'string' },
                 category: 'Buttons'
             }
         },
-        buttonNextVariant: {
-            name: 'button-next-variant',
+        nextButtonVariant: {
+            name: 'next-button-variant',
             control: {
                 type: 'select'
             },
@@ -278,7 +318,7 @@ export default {
             ],
             defaultValue: 'neutral',
             description:
-                'Values include bare, neutral, brand, brand-outline, inverse, destructive, destructive-text, success.',
+                'Change the appearance of the next button. Valid values include bare, neutral, brand, brand-outline, inverse, destructive, destructive-text, success.',
             table: {
                 defaultValue: { summary: 'neutral' },
                 type: { summary: 'string' },
@@ -292,7 +332,8 @@ export default {
             },
             options: ['top', 'middle', 'bottom'],
             defaultValue: 'middle',
-            description: 'Values include top, middle, bottom.',
+            description:
+                'Set the position of the button. Valid values include top, middle, bottom.',
             table: {
                 defaultValue: { summary: 'middle' },
                 type: { summary: 'string' },
@@ -305,7 +346,7 @@ export default {
             },
             defaultValue: 0,
             description:
-                'If true, display the indicator. The indicator can be a progress bar, bullet, dynamic bullet or fraction.',
+                'If present, display the indicator. The indicator can be a progress bar, bullet, dynamic bullet or fraction.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' },
@@ -318,7 +359,7 @@ export default {
                 type: 'boolean'
             },
             defaultValue: 0,
-            description: 'If true, display the indicator inside the slider.',
+            description: 'If present, display the indicator inside the slider.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' },
@@ -338,7 +379,7 @@ export default {
             ],
             defaultValue: 'bullets',
             description:
-                'Values include progress-bar, bullets, dynamic-bullets, fractions.',
+                'Set the indicator’s type. Valid values include progress-bar, bullets, dynamic-bullets, fractions.',
             table: {
                 defaultValue: { summary: 'bullets' },
                 type: { summary: 'string' },
@@ -360,7 +401,7 @@ export default {
             ],
             defaultValue: 'bottom-center',
             description:
-                'Values include top-left, bottom-left, top-right, bottom-right, top-center, bottom-center.',
+                'Position of the indicators. Valid values include top-left, bottom-left, top-right, bottom-right, top-center, bottom-center.',
             table: {
                 defaultValue: { summary: 'bottom-center' },
                 type: { summary: 'string' },
@@ -480,12 +521,12 @@ InnerFractionsAndNavigation.args = {
 export const CustomNavigationButtons = Template.bind({});
 CustomNavigationButtons.args = {
     navigation: true,
-    buttonNextLabel: 'Next',
-    buttonNextVariant: 'brand',
-    buttonNextIconName: 'utility:forward',
-    buttonPreviousLabel: 'Back',
-    buttonPreviousVariant: 'inverse',
-    buttonPreviousIconName: 'utility:back',
+    nextButtonLabel: 'Next',
+    nextButtonVariant: 'brand',
+    nextButtonIconName: 'utility:forward',
+    previousButtonLabel: 'Back',
+    previousButtonVariant: 'inverse',
+    previousButtonIconName: 'utility:back',
     width: '50%',
     buttonPosition: 'top'
 };

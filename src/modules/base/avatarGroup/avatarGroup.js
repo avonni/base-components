@@ -1,21 +1,53 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { normalizeString, normalizeArray } from 'c/utilsPrivate';
 
-const validSizes = {
+const AVATAR_GROUP_SIZES = {
     valid: ['x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'],
     default: 'medium'
 };
-const validLayouts = { valid: ['stack', 'grid', 'list'], default: 'stack' };
+const AVATAR_GROUP_LAYOUTS = { valid: ['stack', 'grid', 'list'], default: 'stack' };
 
-const validVariants = {
+const AVATAR_GROUP_VARIANTS = {
     valid: ['empty', 'square', 'circle'],
     default: 'square'
 };
 
-const validButtonIconPositions = { valid: ['left', 'right'], default: 'left' };
+const BUTTON_ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
 
-const validButtonVariants = {
+const BUTTON_VARIANTS = {
     valid: [
         'neutral',
         'base',
@@ -29,20 +61,26 @@ const validButtonVariants = {
     default: 'neutral'
 };
 
+const DEFAULT_ACTION_ICON_NAME = 'utility:add'
+const DEFAULT_LIST_BUTTON_LABEL = 'Show more'
+
 export default class AvatarGroup extends LightningElement {
-    @api actionIconName;
-    @api listButtonLabel = 'Show more';
+
+    @api actionIconName = DEFAULT_ACTION_ICON_NAME
+    @api listButtonLabel = DEFAULT_LIST_BUTTON_LABEL;
     @api listButtonIconName;
     @api name;
 
     _items = [];
     _maxCount;
-    _size = validSizes.default;
-    _layout = validLayouts.default;
+    _size = AVATAR_GROUP_SIZES.default;
+    _layout = AVATAR_GROUP_LAYOUTS.default;
     _allowBlur = false;
-    _listButtonVariant = validButtonVariants.default;
-    _listButtonIconPosition = validButtonIconPositions.default;
-    _variant = validVariants.default;
+    _listButtonVariant = BUTTON_VARIANTS.default;
+    _listButtonIconPosition = BUTTON_ICON_POSITIONS.default;
+    _variant = AVATAR_GROUP_VARIANTS.default;
+    _imageWidth;
+
     showPopover = false;
     hiddenItems = [];
 
@@ -88,8 +126,8 @@ export default class AvatarGroup extends LightningElement {
 
     set size(size) {
         this._size = normalizeString(size, {
-            fallbackValue: validSizes.default,
-            validValues: validSizes.valid
+            fallbackValue: AVATAR_GROUP_SIZES.default,
+            validValues: AVATAR_GROUP_SIZES.valid
         });
     }
 
@@ -99,8 +137,8 @@ export default class AvatarGroup extends LightningElement {
 
     set layout(value) {
         this._layout = normalizeString(value, {
-            fallbackValue: validLayouts.default,
-            validValues: validLayouts.valid
+            fallbackValue: AVATAR_GROUP_LAYOUTS.default,
+            validValues: AVATAR_GROUP_LAYOUTS.valid
         });
     }
 
@@ -110,8 +148,8 @@ export default class AvatarGroup extends LightningElement {
 
     set listButtonVariant(value) {
         this._listButtonVariant = normalizeString(value, {
-            fallbackValue: validButtonVariants.default,
-            validValues: validButtonVariants.valid
+            fallbackValue: BUTTON_VARIANTS.default,
+            validValues: BUTTON_VARIANTS.valid
         });
     }
 
@@ -121,8 +159,8 @@ export default class AvatarGroup extends LightningElement {
 
     set listButtonIconPosition(value) {
         this._listButtonIconPosition = normalizeString(value, {
-            fallbackValue: validButtonIconPositions.default,
-            validValues: validButtonIconPositions.valid
+            fallbackValue: BUTTON_ICON_POSITIONS.default,
+            validValues: BUTTON_ICON_POSITIONS.valid
         });
     }
 
@@ -132,8 +170,8 @@ export default class AvatarGroup extends LightningElement {
 
     set variant(value) {
         this._variant = normalizeString(value, {
-            fallbackValue: validVariants.default,
-            validValues: validVariants.valid
+            fallbackValue: AVATAR_GROUP_VARIANTS.default,
+            validValues: AVATAR_GROUP_VARIANTS.valid
         });
     }
 
@@ -174,7 +212,6 @@ export default class AvatarGroup extends LightningElement {
         items.forEach((item, index) => {
             item.key = 'avatar-key-' + index;
         });
-
         return items;
     }
 
@@ -192,7 +229,6 @@ export default class AvatarGroup extends LightningElement {
             items.forEach((item, index) => {
                 item.key = 'avatar-key-hidden-' + index;
             });
-
             return items;
         }
 
@@ -216,7 +252,11 @@ export default class AvatarGroup extends LightningElement {
     get avatarInlineClass() {
         return classSet('avonni-avatar-group__avatar')
             .add({
-                'avonni-avatar-group_in-line': this.layout === 'stack'
+                'avonni-avatar-group_in-line': this.layout === 'stack',
+                circleBorder:
+                    this.layout === 'stack' && this.variant === 'circle',
+                squareBorder:
+                    this.layout === 'stack' && this.variant === 'square'
             })
             .add(`avonni-avatar-${this.size}`)
             .toString();
@@ -234,7 +274,8 @@ export default class AvatarGroup extends LightningElement {
     get avatarWrapperClass() {
         return classSet('avonni-avatar-group__avatar-container').add({
             'slds-show': this.layout === 'list',
-            'avonni-avatar-group_circle': this.variant === 'circle'
+            'avonni-avatar-group_circle': this.variant === 'circle',
+            'slds-p-right_x-small': this.layout === 'grid'
         });
     }
 
@@ -320,7 +361,6 @@ export default class AvatarGroup extends LightningElement {
     get isNotList() {
         return !(this.layout === 'list');
     }
-
     allowBlur() {
         this._allowBlur = true;
     }

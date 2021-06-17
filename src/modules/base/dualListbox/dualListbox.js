@@ -1,3 +1,35 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { LightningElement, api } from 'lwc';
 import {
     normalizeBoolean,
@@ -16,12 +48,12 @@ const DEFAULT_REMOVE_BUTTON_ICON_NAME = 'utility:left';
 const DEFAULT_UP_BUTTON_ICON_NAME = 'utility:up';
 const DEFAULT_MAX_VISIBLE_OPTIONS = 5;
 
-const VALID_VARIANTS = {
+const LABEL_VARIANTS = {
     valid: ['standard', 'label-hidden', 'label-stacked'],
     default: 'standard'
 };
 
-const VALID_BUTTON_VARIANTS = {
+const BUTTON_VARIANTS = {
     valid: [
         'bare',
         'container',
@@ -34,12 +66,12 @@ const VALID_BUTTON_VARIANTS = {
     default: 'border'
 };
 
-const VALID_BUTTON_SIZES = {
+const BUTTON_SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
     default: 'medium'
 };
 
-const VALID_SIZES = { valid: ['small', 'medium', 'large'], default: 'medium' };
+const BOXES_SIZES = { valid: ['small', 'medium', 'large'], default: 'medium' };
 
 const i18n = {
     optionLockAssistiveText: 'Option Lock AssistiveText',
@@ -67,11 +99,11 @@ export default class DualListbox extends LightningElement {
     _requiredOptions = [];
     _options = [];
     _hideBottomDivider = false;
-    _buttonSize = VALID_BUTTON_SIZES.default;
-    _buttonVariant = VALID_BUTTON_VARIANTS.default;
+    _buttonSize = BUTTON_SIZES.default;
+    _buttonVariant = BUTTON_VARIANTS.default;
     _isLoading = false;
     _searchEngine = false;
-    _variant = VALID_VARIANTS.default;
+    _variant = LABEL_VARIANTS.default;
     _disabled;
     _disableReordering = false;
     _draggable = false;
@@ -79,7 +111,7 @@ export default class DualListbox extends LightningElement {
     _maxVisibleOptions = DEFAULT_MAX_VISIBLE_OPTIONS;
     _min = DEFAULT_MIN;
     _max;
-    _size = VALID_SIZES.default;
+    _size = BOXES_SIZES.default;
 
     _selectedValues = [];
     highlightedOptions = [];
@@ -262,8 +294,8 @@ export default class DualListbox extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: VALID_VARIANTS.default,
-            validValues: VALID_VARIANTS.valid
+            fallbackValue: LABEL_VARIANTS.default,
+            validValues: LABEL_VARIANTS.valid
         });
     }
 
@@ -274,8 +306,8 @@ export default class DualListbox extends LightningElement {
 
     set buttonSize(size) {
         this._buttonSize = normalizeString(size, {
-            fallbackValue: VALID_BUTTON_SIZES.default,
-            validValues: VALID_BUTTON_SIZES.valid
+            fallbackValue: BUTTON_SIZES.default,
+            validValues: BUTTON_SIZES.valid
         });
     }
 
@@ -286,8 +318,8 @@ export default class DualListbox extends LightningElement {
 
     set buttonVariant(variant) {
         this._buttonVariant = normalizeString(variant, {
-            fallbackValue: VALID_BUTTON_VARIANTS.default,
-            validValues: VALID_BUTTON_VARIANTS.valid
+            fallbackValue: BUTTON_VARIANTS.default,
+            validValues: BUTTON_VARIANTS.valid
         });
     }
 
@@ -354,8 +386,8 @@ export default class DualListbox extends LightningElement {
 
     set size(size) {
         this._size = normalizeString(size, {
-            fallbackValue: VALID_SIZES.default,
-            validValues: VALID_SIZES.valid
+            fallbackValue: BOXES_SIZES.default,
+            validValues: BOXES_SIZES.valid
         });
     }
 
