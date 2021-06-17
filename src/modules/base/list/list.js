@@ -74,6 +74,36 @@ export default class List extends LightningElement {
     menuRole;
     itemRole;
 
+    renderedCallback() {
+        // console.log(this.computedActions);
+        // console.log(Object.keys(this.computedActions[0]).includes('label'));
+        // console.log(Object.values(this.computedActions));
+        // console.log(Object.entries(this.computedActions));
+        // console.log(Object.keys([...this.computedActions]));
+        // console.log('label' in [...this.computedActions]);
+        console.log(this.computedActions.length);
+
+        //if computedActions length > 1 -> button menu
+        //if computed Action length = 1
+        // const Keys = Object.values(this.computedActions).forEach((key) => {
+        //     console.log(key.label? "BUTTON" : "BUTTON-ICON");
+        //     // console.log(key.label && key.length())
+        //     // console.log(typeof key)
+        //     // console.log(key.length)
+        // });
+
+        // Keys();
+
+        // If only one action without label => Use a button-icon
+
+        // If only one action with a label => Use a button
+
+        // If multiple actions => Use a button-menu (Current implementation)
+
+        // computedActions length > 1 ? multiActions = true : multiActions = false
+        // html if:true={multiActions} <button-menu> if:false={multiActions} <button-icon action.label?> <button action.label?>
+    }
+
     @api
     get divider() {
         return this._divider;
@@ -130,6 +160,10 @@ export default class List extends LightningElement {
         this._hasActions = true;
     }
 
+    get multiActions() {
+        return this.computedActions.length > 1 ? true : false;
+    }
+
     get showIconRight() {
         return (
             this.sortable &&
@@ -147,7 +181,7 @@ export default class List extends LightningElement {
     }
 
     get computedListClass() {
-        return  `menu slds-has-dividers_${this.divider}-space`;
+        return `menu slds-has-dividers_${this.divider}-space`;
     }
 
     get computedItemClass() {
