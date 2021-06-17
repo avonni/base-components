@@ -126,11 +126,6 @@ export default class DualListbox extends LightningElement {
     _oldIndex;
     _sourceBoxHeight;
     _selectedBoxHeight;
-    _rendered = false;
-    _sourceNoDescription = 0;
-    _sourceHasDescription = 0;
-    _selectedNoDescription = 0;
-    _selectedHasDescription = 0;
 
     _dropItSelected = false;
     _dropItSource = false;
@@ -140,7 +135,6 @@ export default class DualListbox extends LightningElement {
         this.classList.add('slds-form-element');
         this.keyboardInterface = this.selectKeyboardInterface();
 
-        this._connected = true;
         this.addRequiredOptionsToValue();
 
         // debounceInteraction since DualListbox has multiple focusable elements
@@ -161,7 +155,6 @@ export default class DualListbox extends LightningElement {
 
     renderedCallback() {
         this.assertRequiredAttributes();
-        this._rendered = true;
 
         if (this.disabled) {
             this._upButtonDisabled = true;
@@ -192,12 +185,10 @@ export default class DualListbox extends LightningElement {
         this._options = Array.isArray(value)
             ? JSON.parse(JSON.stringify(value))
             : [];
-        if (this._connected) {
-            this.updateBoxesHeight();
-        }
     }
 
-    @api messageWhenValueMissing = i18n.requiredError;
+    @api
+    messageWhenValueMissing = i18n.requiredError;
 
     @api
     get messageWhenRangeOverflow() {
@@ -270,7 +261,7 @@ export default class DualListbox extends LightningElement {
     set value(newValue) {
         this.updateHighlightedOptions(newValue);
         this._selectedValues = newValue || [];
-        if (this._rendered) {
+        if (this.isConnected) {
             this.addRequiredOptionsToValue();
         }
     }
@@ -284,7 +275,7 @@ export default class DualListbox extends LightningElement {
         this._requiredOptions = Array.isArray(newValue)
             ? JSON.parse(JSON.stringify(newValue))
             : [];
-        if (this._rendered) {
+        if (this.isConnected) {
             this.addRequiredOptionsToValue();
         }
     }
@@ -334,9 +325,6 @@ export default class DualListbox extends LightningElement {
         const number =
             typeof value === 'number' ? value : DEFAULT_MAX_VISIBLE_OPTIONS;
         this._maxVisibleOptions = parseInt(number, 10);
-        if (this._connected) {
-            this.updateBoxesHeight();
-        }
     }
 
     @api
