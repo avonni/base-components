@@ -80,11 +80,10 @@
                 onchange={handlerChange}
                 onfocus={handlerFocus}
                 onblur={handlerBlur}
-                autocomplete="off"
-            ></lightning-input>            
+            ></lightning-input>
             <lightning-button-icon
                 if:false={readOnly}
-                icono-name="utility:new"
+                icon-name="utility:new"
                 size="medium"
                 title="Increment counter"
                 onclick={incrementValue}
@@ -96,7 +95,7 @@
             <template if:true={helpMessage}>
                 <div
                     id="message-id"
-                    class="slds-form-element__help"
+                    class="slds-form-element__help slds-p-top_xx-small"
                     aria-live="assertive"
                 >
                     {helpMessage}

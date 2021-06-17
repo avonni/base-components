@@ -602,7 +602,7 @@ describe('Input Counter', () => {
         });
     });
 
-    it('Input counter test Min floor on increment', () => {
+    it('Input counter test under Min floor on increment', () => {
         const element = createElement('base-input-counter', {
             is: InputCounter
         });
@@ -626,5 +626,57 @@ describe('Input Counter', () => {
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
+    });
+
+    it('Input counter test Max and value unchanged on increment', () => {
+        const element = createElement('base-input-counter', {
+            is: InputCounter
+        });
+        document.body.appendChild(element);
+
+        element.max = 5;
+        element.value = 5;
+        element.step = 6;
+        element.messageWhenRangeOverflow = 'Maximum';
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelectorAll(
+                    'lightning-button-icon'
+                );
+                button[1].click();
+            })
+            .then(() => {
+                const input = element.shadowRoot.querySelector(
+                    'lightning-input'
+                );
+                expect(input.value).toBe(5);
+            });
+    });
+
+    it('Input counter test Min and value unchanged on decrement', () => {
+        const element = createElement('base-input-counter', {
+            is: InputCounter
+        });
+        document.body.appendChild(element);
+
+        element.min = 5;
+        element.value = 5;
+        element.step = 6;
+        element.messageWhenRangeOverflow = 'Maximum';
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelectorAll(
+                    'lightning-button-icon'
+                );
+                button[0].click();
+            })
+            .then(() => {
+                const input = element.shadowRoot.querySelector(
+                    'lightning-input'
+                );
+                expect(input.value).toBe(5);
+            });
     });
 });

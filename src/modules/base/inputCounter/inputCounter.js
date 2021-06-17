@@ -35,18 +35,15 @@ import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
 
-const LABEL_VARIANTS = {valid: [
-    'standard',
-    'label-inline',
-    'label-hidden',
-    'label-stacked'
-], default: 'standard'};
+const validVariants = {
+    valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'],
+    default: 'standard'
+};
 
-const validTypes = {valid: [
-    'number',
-    'currency',
-    'percent'
-], default: 'number'};
+const validTypes = {
+    valid: ['number', 'currency', 'percent'],
+    default: 'number'
+};
 
 const DEFAULT_STEP = 1;
 
@@ -65,9 +62,8 @@ export default class InputCounter extends LightningElement {
     @api ariaDescribedBy;
     @api fieldLevelHelp;
     @api accessKey;
-    @api value;
 
-    _variant = LABEL_VARIANTS.default;
+    _variant = validVariants.default;
     _disabled;
     _step = DEFAULT_STEP;
     _type = validTypes.default;
@@ -77,6 +73,7 @@ export default class InputCounter extends LightningElement {
     _fractionDigitsLength;
     _constraintApi;
     _constraintApiProxyInputUpdater;
+    _value;
     helpMessage;
     labelVariant;
     labelFieldLevelHelp;
@@ -99,12 +96,20 @@ export default class InputCounter extends LightningElement {
         }
     }
 
+    @api get value() {
+        return this._value;
+    }
+
+    set value(value) {
+        this._value = typeof value === 'number' ? value : null;
+    }
+
     @api get min() {
         return this._min;
     }
 
     set min(min) {
-        this._min = typeof min === 'number' ? min : '';
+        this._min = typeof min === 'number' ? min : null;
     }
 
     @api get max() {
@@ -112,20 +117,20 @@ export default class InputCounter extends LightningElement {
     }
 
     set max(max) {
-        this._max = typeof max === 'number' ? max : '';
+        this._max = typeof max === 'number' ? max : null;
     }
-    
+
     @api get fractionDigits() {
         return this._fractionDigits;
     }
 
     set fractionDigits(digits) {
         const baseFractionValue = 1;
-        this._fractionDigits = typeof digits === 'number' ? +('0.' + baseFractionValue.toString().padStart(digits, '0')) 
-        : this.step.toString().includes('.' || ',') ? 0.1
-        : 1 ;
+        this._fractionDigits =
+            typeof digits === 'number'
+                ? +('0.' + baseFractionValue.toString().padStart(digits, '0'))
+                : 1;
     }
-
 
     @api get variant() {
         return this._variant;
@@ -133,8 +138,8 @@ export default class InputCounter extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: LABEL_VARIANTS.default,
-            validValues: LABEL_VARIANTS.valid
+            fallbackValue: validVariants.default,
+            validValues: validVariants.valid
         });
 
         if (this._variant === 'label-inline') {
@@ -175,7 +180,7 @@ export default class InputCounter extends LightningElement {
     set readOnly(value) {
         this._readOnly = normalizeBoolean(value);
     }
-    
+
     @api
     get step() {
         return this._step;
@@ -244,126 +249,125 @@ export default class InputCounter extends LightningElement {
         return this.ariaDescribedBy || null;
     }
 
-            
-        decrementValue() {
-            this.max? this.handlePrecision(this.max) : null;
-            this.min? this.handlePrecision(this.min) : null;
-            this.step = this.handlePrecision(this.step);
-            
-            const previousValue = this.value? +(this.value) : null;
-            
-            if (this.value !== undefined && !isNaN(this.value)) {
-                this.value = Number(this.value) - Number(this.step);           
-                if (this.min || this.min === 0) { 
-                    if (this.value > this.min) {
-                        this.value = this.value;
-                    } else if (this.value - this.step < this.min ) {
-                        this.value = this.min;
-                    } 
-                }
-                if (this.max) {
-                    if (previousValue > this.max) {
-                        this.value = this.max;
-                    } else if (this.value + this.step > this.max) {
-                        this.value = this.max;                        
-                    } else if (this.value < this.max) {
-                        this.value = this.value;                        
-                    }
-                }                    
-            } else {
-                if (!this.step && !this.min) {
-                    this.value = -1;              
-                } else if (this.step && this.min === 0 && isNaN(this.value)) {                
-                    this.value = 0;
-                } else if (this.step && !this.min) {                
-                    this.value = -this.step;               
-                } else if (this.step && this.min) {
-                    this.value = this.min;                
-                }     
-            }
-            this.value = this.handlePrecision(this.value);
-            this.updateValue(this.value);
-            this.showHelpMessageIfInvalid();
-        }
-    
+    decrementValue() {
+        if (this._max) this.handlePrecision(this._max);
+        if (this._min) this.handlePrecision(this._min);
+        if (this._step) this.handlePrecision(this._step);
 
-    incrementValue() {
-        this.max ? this.handlePrecision(this.max) : null;
-        this.min ? this.handlePrecision(this.min) : null;
-        this.step = this.handlePrecision(this.step);
-        
-        const previousValue = this.value;
+        const previousValue = this.value ? +this.value : null;
 
-        if (this.value !== undefined && !isNaN(this.value)) {
-            this.value = Number(this.value) + Number(this.step);            
-            if (this.min || this.min === 0) {
-                if (previousValue < this.min) {
-                    this.value = this.min;
-                } else if (this.value - this.step < this.min) {
-                    this.value = this.min;
-                } 
+        if (!isNaN(this.value)) {
+            this._value = Number(this.value) - Number(this.step);
+            if (
+                (this.min || this.min === 0) &&
+                this.value - this.step < this.min
+            ) {
+                this._value = this.min;
             }
             if (this.max) {
-                if (this.value < this.max) {
-                    this.value = this.value;
-                } else if (this.value + this.step > this.max) {
-                    this.value = this.max;
+                if (
+                    previousValue > this.max ||
+                    this.value + this.step > this.max
+                ) {
+                    this._value = this.max;
                 }
             }
-        } else {            
+        } else {
             if (!this.step && !this.min) {
-                this.value = +1;               
-            } else if (this.step && !this.min) {
-                this.value = +this.step;               
-            } else if (this.step && this.min) {
-                this.value = this.min;     
-            } else if (this.step && this.min === 0 && isNaN(this.value)) {                
-                this.value = 0;
+                this._value = -1;
+            } else if (this.step) {
+                this._value =
+                    this.min === 0 && isNaN(this.value)
+                        ? 0
+                        : this.min
+                        ? this.min
+                        : -this.step;
             }
         }
-        this.value = this.handlePrecision(this.value);
-        this.updateValue(this.value);
+        this._value = this.handlePrecision(this._value);
+        this.updateValue();
+        this.showHelpMessageIfInvalid();
+    }
+
+    incrementValue() {
+        if (this._max) this.handlePrecision(this._max);
+        if (this._min) this.handlePrecision(this._min);
+        if (this._step) this.handlePrecision(this._step);
+
+        const previousValue = this.value ? +this.value : null;
+
+        if (!isNaN(this.value)) {
+            this._value = Number(this.value) + Number(this.step);
+            if (this.min || this.min === 0) {
+                if (
+                    previousValue < this.min ||
+                    this.value - this.step < this.min
+                ) {
+                    this._value = this.min;
+                }
+            }
+            if (this.max && this.value > this.max) {
+                this._value = this.max;
+            }
+        } else {
+            if (!this.step && !this.min) {
+                this._value = +1;
+            } else if (this.step) {
+                this._value =
+                    this.min === 0 && isNaN(this.value)
+                        ? 0
+                        : this.min
+                        ? this.min
+                        : +this.step;
+            }
+        }
+        this._value = this.handlePrecision(this._value);
+        this.updateValue();
         this.showHelpMessageIfInvalid();
     }
 
     handlePrecision(input) {
-        if (this.fractionDigits === 1 && this.value !== null && this.value !== undefined) {
-            this.value = this.value.toString().includes('.' || ',') ? Math.round(this.value) : +(this.value);
-        }
-       
-        if ( input !== null && input !== undefined) {
-            this._fractionDigitsLength = this.fractionDigits && this.fractionDigits.toString().length;
-            const uniformOutputCorrection = this._fractionDigitsLength > 2 ? 2 : 1;
+        if (!isNaN(input)) {
+            this._fractionDigitsLength =
+                this.fractionDigits && this.fractionDigits.toString().length;
+            const uniformOutputCorrection =
+                this._fractionDigitsLength > 2 ? 2 : 1;
 
-            if (this.fractionDigits && input.toString().length > this._fractionDigitsLength) {
-                input = +(input.toFixed(this._fractionDigitsLength - uniformOutputCorrection));
+            if (
+                this.fractionDigits &&
+                input.toString().length > this._fractionDigitsLength
+            ) {
+                input = +input.toFixed(
+                    this._fractionDigitsLength - uniformOutputCorrection
+                );
             }
         }
-
-        return +(input);
+        return +input;
     }
 
-    updateValue(value) {
+    updateValue() {
         [...this.template.querySelectorAll('lightning-input')].forEach(
             (element) => {
-                element.value = value;
+                element.value = this._value;
             }
         );
+
+        this._updateProxyInputAttributes('value');
+
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
-                    value: this.value,
+                    value: this._value
                 }
             })
         );
-        this.changeValue();
     }
 
     handlerChange(event) {
-        this.value = event.target.value;
-        this.changeValue();
+        this._value = +event.target.value;
+        this.updateValue();
     }
-    
+
     @api
     focus() {
         this.template.querySelector('lightning-input').focus();
@@ -379,22 +383,11 @@ export default class InputCounter extends LightningElement {
     }
 
     handlerBlur(event) {
-        this.value = +(event.target.value);
-        this.handlePrecision(this.value);
-        this.changeValue();
+        this._value = +event.target.value;
+        this.handlePrecision(this._value);
+        this.updateValue();
         this.showHelpMessageIfInvalid();
         this.dispatchEvent(new CustomEvent('blur'));
-    }
-
-    changeValue() {
-        this._updateProxyInputAttributes('value');
-        const selectedEvent = new CustomEvent('change', {
-            detail: {
-                value: Number(this.value)
-            }
-        });
-
-        this.dispatchEvent(selectedEvent);
     }
 
     @api get validity() {
@@ -408,14 +401,9 @@ export default class InputCounter extends LightningElement {
 
     @api
     reportValidity() {
-        let helpMsg = '';
-
-        let validationMsg = this._constraint.reportValidity((message) => {
-            helpMsg = helpMsg + message;
+        return this._constraint.reportValidity((message) => {
+            this.helpMessage = message;
         });
-
-        this.helpMessage = helpMsg;
-        return validationMsg;
     }
 
     @api
