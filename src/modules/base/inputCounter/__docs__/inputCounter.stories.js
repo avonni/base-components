@@ -320,7 +320,7 @@ Validations.args = {
 export const FractionDigitsTypeCurrency = Template.bind({});
 FractionDigitsTypeCurrency.args = {
     label: 'Input with fraction digits, type currency and min/max',
-    fieldLevelHelp: 'Max is set to $20, Min is set to $3.50, Step is set to $5.50',
+    fieldLevelHelp: 'Max is set to $20, Min is set to $3.50, Step is set to $5.50, Fraction-Digits is 2 decimal spots',
     type: 'currency',
     step: 5.50,
     fractionDigits: 2,

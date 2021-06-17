@@ -75,7 +75,6 @@
                 type="number"
                 formatter={type}
                 class={inputClass}
-                oninput={handleInput}
                 onchange={handlerChange}
                 onfocus={handlerFocus}
                 onblur={handlerBlur}
@@ -92,15 +91,15 @@
                 class={buttonIncrementClass}
                 disabled={disabled}
             ></lightning-button-icon>
+            <template if:true={helpMessage}>
+                <div
+                    id="message-id"
+                    class="slds-form-element__help"
+                    aria-live="assertive"
+                >
+                    {helpMessage}
+                </div>
+            </template>
         </div>
     </div>
-    <template if:true={_helpMessage}>
-        <div
-            id="message-id"
-            class="slds-form-element__help"
-            aria-live="assertive"
-        >
-            {_helpMessage}
-        </div>
-    </template>
 </template>

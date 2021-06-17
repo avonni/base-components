@@ -77,7 +77,7 @@ export default class InputCounter extends LightningElement {
     _fractionDigitsLength;
     _constraintApi;
     _constraintApiProxyInputUpdater;
-    _helpMessage;
+    helpMessage;
     labelVariant;
     labelFieldLevelHelp;
     init = false;
@@ -94,11 +94,9 @@ export default class InputCounter extends LightningElement {
                     '.avonni-input-counter .slds-input {text-align: center;padding: 0 var(--lwc-spacingXxLarge,3rem);}';
                 srcElement.appendChild(style);
             }
-            // this.updateValue(this.value);
             this.showHelpMessageIfInvalid();
             this.init = true;
         }
-        this.checkValidity();
     }
 
     @api get min() {
@@ -106,7 +104,7 @@ export default class InputCounter extends LightningElement {
     }
 
     set min(min) {
-        this._min = typeof min === 'number' ? this.handlePrecision(min) : '';
+        this._min = typeof min === 'number' ? min : '';
     }
 
     @api get max() {
@@ -114,7 +112,7 @@ export default class InputCounter extends LightningElement {
     }
 
     set max(max) {
-        this._max = typeof max === 'number' ? this.handlePrecision(max) : '';
+        this._max = typeof max === 'number' ? max : '';
     }
     
     @api get fractionDigits() {
@@ -123,8 +121,11 @@ export default class InputCounter extends LightningElement {
 
     set fractionDigits(digits) {
         const baseFractionValue = 1;
-        this._fractionDigits = typeof digits === 'number' ? +('0.' + baseFractionValue.toString().padStart(digits, '0')) : '';
+        this._fractionDigits = typeof digits === 'number' ? +('0.' + baseFractionValue.toString().padStart(digits, '0')) 
+        : this.step.toString().includes('.' || ',') ? 0.1
+        : 1 ;
     }
+
 
     @api get variant() {
         return this._variant;
@@ -245,60 +246,75 @@ export default class InputCounter extends LightningElement {
 
             
         decrementValue() {
-            this.max = this.handlePrecision(this.max);
-            this.min = this.handlePrecision(this.min);
+            this.max? this.handlePrecision(this.max) : null;
+            this.min? this.handlePrecision(this.min) : null;
             this.step = this.handlePrecision(this.step);
-        if (this.value !== undefined && !isNaN(this.value)) {
-            this.value = Number(this.value) - Number(this.step);           
-            if (this.min || this.min === 0) {                
-                    if (this.min > this.value - this.step ) {
+            
+            const previousValue = this.value? +(this.value) : null;
+            
+            if (this.value !== undefined && !isNaN(this.value)) {
+                this.value = Number(this.value) - Number(this.step);           
+                if (this.min || this.min === 0) { 
+                    if (this.value > this.min) {
+                        this.value = this.value;
+                    } else if (this.value - this.step < this.min ) {
                         this.value = this.min;
+                    } 
+                }
+                if (this.max) {
+                    if (previousValue > this.max) {
+                        this.value = this.max;
+                    } else if (this.value + this.step > this.max) {
+                        this.value = this.max;                        
+                    } else if (this.value < this.max) {
+                        this.value = this.value;                        
                     }
-            }
-            if (this.max) {
-                if (this.value + this.step > this.max) {
-                    this.value = this.max;
+                }                    
+            } else {
+                if (!this.step && !this.min) {
+                    this.value = -1;              
+                } else if (this.step && this.min === 0 && isNaN(this.value)) {                
+                    this.value = 0;
+                } else if (this.step && !this.min) {                
+                    this.value = -this.step;               
+                } else if (this.step && this.min) {
+                    this.value = this.min;                
                 }     
             }
-        } else {
-            if (!this.step && !this.min) {
-                this.value = -1;                
-            } else if (this.step && this.min === 0 && isNaN(this.value)) {                
-                this.value = 0;
-            } else if (this.step && !this.min) {                
-                this.value = -this.step;                
-            } else if (this.step && this.min) {
-                this.value = this.min;                
-            }     
+            this.value = this.handlePrecision(this.value);
+            this.updateValue(this.value);
+            this.showHelpMessageIfInvalid();
         }
-        this.value = this.handlePrecision(this.value);
-        this.updateValue(this.value);
-        this.changeValue();
-        this.checkValidity();
-        this.showHelpMessageIfInvalid();
-    }
+    
 
     incrementValue() {
-        this.max = this.handlePrecision(this.max);
-        this.min = this.handlePrecision(this.min);
-        this.step = this.handlePrecision(this.step);        
+        this.max ? this.handlePrecision(this.max) : null;
+        this.min ? this.handlePrecision(this.min) : null;
+        this.step = this.handlePrecision(this.step);
+        
+        const previousValue = this.value;
+
         if (this.value !== undefined && !isNaN(this.value)) {
             this.value = Number(this.value) + Number(this.step);            
-            if (this.min || this.min === 0) {                
-                    if (this.min > this.value - this.step ) {
-                        this.value = this.min;
-                    }    
+            if (this.min || this.min === 0) {
+                if (previousValue < this.min) {
+                    this.value = this.min;
+                } else if (this.value - this.step < this.min) {
+                    this.value = this.min;
+                } 
             }
             if (this.max) {
-                if (this.value + this.step > this.max) {
+                if (this.value < this.max) {
+                    this.value = this.value;
+                } else if (this.value + this.step > this.max) {
                     this.value = this.max;
-                }     
+                }
             }
         } else {            
             if (!this.step && !this.min) {
-                this.value = +1;                
+                this.value = +1;               
             } else if (this.step && !this.min) {
-                this.value = +this.step;                
+                this.value = +this.step;               
             } else if (this.step && this.min) {
                 this.value = this.min;     
             } else if (this.step && this.min === 0 && isNaN(this.value)) {                
@@ -307,59 +323,43 @@ export default class InputCounter extends LightningElement {
         }
         this.value = this.handlePrecision(this.value);
         this.updateValue(this.value);
-        this.changeValue();
-        this.checkValidity();
         this.showHelpMessageIfInvalid();
     }
 
-    handlePrecision(input) {   
-        this._fractionDigitsLength = this.fractionDigits && this.fractionDigits.toString().length;
-        const uniformOutputCorrection = this._fractionDigitsLength > 2 ? 2 : 1;
+    handlePrecision(input) {
+        if (this.fractionDigits === 1 && this.value !== null && this.value !== undefined) {
+            this.value = this.value.toString().includes('.' || ',') ? Math.round(this.value) : +(this.value);
+        }
+       
+        if ( input !== null && input !== undefined) {
+            this._fractionDigitsLength = this.fractionDigits && this.fractionDigits.toString().length;
+            const uniformOutputCorrection = this._fractionDigitsLength > 2 ? 2 : 1;
 
-        if (this.fractionDigits && input.toString().length > this._fractionDigitsLength) {
-            input = +(input.toFixed(this._fractionDigitsLength - uniformOutputCorrection));
+            if (this.fractionDigits && input.toString().length > this._fractionDigitsLength) {
+                input = +(input.toFixed(this._fractionDigitsLength - uniformOutputCorrection));
+            }
         }
 
-        return input;
+        return +(input);
     }
 
     updateValue(value) {
         [...this.template.querySelectorAll('lightning-input')].forEach(
             (element) => {
                 element.value = value;
-                // element.max = this.max;
-                // element.min = this.min;
-                // element.formatter = this.type;
             }
         );
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
                     value: this.value,
-                    // max: this.max,
-                    // min: this.min,
-                    // formatter: this.type
                 }
             })
         );
-        console.log("UPDATE VALUE")
         this.changeValue();
-        // this.checkValidity();
-        // this.showHelpMessageIfInvalid();
     }
 
-    // validateValue() {
-    //     [...this.template.querySelectorAll('lightning-input')].reduce(
-    //         (validSoFar, inputCmp) => {
-    //             inputCmp.reportValidity();
-    //             return validSoFar && inputCmp.checkValidity();
-    //         },
-    //         true
-    //     );
-    // }
-
     handlerChange(event) {
-        console.log("HANDLER CHANGE")
         this.value = event.target.value;
         this.changeValue();
     }
@@ -379,28 +379,15 @@ export default class InputCounter extends LightningElement {
     }
 
     handlerBlur(event) {
-        this.value = event.target.value;
-        // const minval = this.template.querySelector('lightning-input');
-        // console.log(minval.validity.rangeUnderflow);
-        // console.log(event.target.min)
-        // event.target.min = "";
-        // console.log(minval.validity.rangeUnderflow);
-        // console.log(event.target.min)
-        // // this.updateValue(this.value);
+        this.value = +(event.target.value);
+        this.handlePrecision(this.value);
         this.changeValue();
-        this.checkValidity();
         this.showHelpMessageIfInvalid();
         this.dispatchEvent(new CustomEvent('blur'));
     }
 
-    handleInput(event) {
-        this.value = event.target.value;
-        this.changeValue();
-    }
-
     changeValue() {
         this._updateProxyInputAttributes('value');
-        console.log("CHANGE VALUE")
         const selectedEvent = new CustomEvent('change', {
             detail: {
                 value: Number(this.value)
@@ -421,17 +408,14 @@ export default class InputCounter extends LightningElement {
 
     @api
     reportValidity() {
-        console.log("CHANGE REPORT")
-        let helpMessage = '';
+        let helpMsg = '';
 
-        let valMsg = this._constraint.reportValidity((message) => {
-            helpMessage = helpMessage + message;
+        let validationMsg = this._constraint.reportValidity((message) => {
+            helpMsg = helpMsg + message;
         });
 
-        this._helpMessage = helpMessage;
-        console.log(valMsg);
-        console.log(helpMessage);
-        return valMsg;
+        this.helpMessage = helpMsg;
+        return validationMsg;
     }
 
     @api
@@ -456,21 +440,18 @@ export default class InputCounter extends LightningElement {
                 () => this
             );
 
-            console.log("CONSTRAINT")
-
             this._constraintApiProxyInputUpdater = this._constraintApi.setInputAttributes(
                 {
                     type: () => 'number',
-                    value: () => this.handlePrecision(this.value),
-                    max: () => this.handlePrecision(this.max),
-                    min: () => this.handlePrecision(this.min),
+                    value: () => this.value,
+                    max: () => this.max,
+                    min: () => this.min,
                     step: () => this.fractionDigits,
                     formatter: () => this.type,
                     disabled: () => this.disabled
                 }
             );
         }
-        console.log(this._constraintApi)
         return this._constraintApi;
     }
 }

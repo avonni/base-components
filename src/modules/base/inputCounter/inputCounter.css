@@ -75,6 +75,10 @@
     padding-top: 5px;
 }
 
+:host(.avonni-flex-container) > .slds-form-element__help {
+    padding-top: 5px;
+}
+
 .slds-form-element {
     flex: 1;
 }
