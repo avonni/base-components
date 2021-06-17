@@ -289,10 +289,24 @@ export default class ButtonIconPopover extends LightningElement {
         if (this._cancelBlur) {
             return;
         }
+        if (this.triggers === 'hover') {
+            if (this.popoverVisible && this._cancelBlur) {
+                this.toggleMenuVisibility();
+            }
+        }
+        if (this.popoverVisible) {
+            this.toggleMenuVisibility();
+        }
+    }
 
+    handleBlurPopover() {
+        if (this._cancelBlur) {
+            return;
+        }
         if (this.popoverVisible && this._cancelBlur) {
             this.toggleMenuVisibility();
         }
+        this.template.querySelector('lightning-button-icon').focus();
     }
 
     handleMouseEnter() {
@@ -356,16 +370,7 @@ export default class ButtonIconPopover extends LightningElement {
             function () {
                 if (
                     !this._cancelBlur &&
-                    (this._triggers === 'hover' ||
-                        this._triggers === 'focus') &&
-                    this.popoverVisible &&
-                    !this._disabled
-                ) {
-                    this.cancelBlur();
-                    this.toggleMenuVisibility();
-                }
-                if (
-                    this._triggers === 'click' &&
+                    this._triggers === 'hover' &&
                     this.popoverVisible &&
                     !this._disabled
                 ) {
