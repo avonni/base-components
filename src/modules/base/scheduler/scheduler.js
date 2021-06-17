@@ -70,15 +70,8 @@ export default class Scheduler extends LightningElement {
     scheduleRows = [];
 
     connectedCallback() {
+        this.initHeaders();
         this.initScheduleRows();
-        this.initVisibleSpan();
-
-        if (this.start !== DEFAULT_START_DATE) {
-            this.updateHeadersStart();
-        }
-        if (this.availableTimeFrames !== DEFAULT_AVAILABLE_TIME_FRAMES) {
-            this.updateHeadersTimeFrames();
-        }
     }
 
     renderedCallback() {
@@ -106,7 +99,17 @@ export default class Scheduler extends LightningElement {
         return this._availableDaysOfTheWeek;
     }
     set availableDaysOfTheWeek(value) {
-        this._availableDaysOfTheWeek = normalizeArray(value);
+        const days = normalizeArray(value);
+        this._availableDaysOfTheWeek =
+            days.length > 0 ? days : DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
+
+        if (this.isConnected) {
+            this.headers.forEach((header) => {
+                header.daysOfTheWeek = this._availableDaysOfTheWeek;
+            });
+
+            this.updateRowColumns();
+        }
     }
 
     @api
@@ -114,7 +117,17 @@ export default class Scheduler extends LightningElement {
         return this._availableMonths;
     }
     set availableMonths(value) {
-        this._availableMonths = normalizeArray(value);
+        const months = normalizeArray(value);
+        this._availableMonths =
+            months.length > 0 ? months : DEFAULT_AVAILABLE_MONTHS;
+
+        if (this.isConnected) {
+            this.headers.forEach((header) => {
+                header.months = this._availableMonths;
+            });
+
+            this.updateRowColumns();
+        }
     }
 
     @api
@@ -122,9 +135,17 @@ export default class Scheduler extends LightningElement {
         return this._availableTimeFrames;
     }
     set availableTimeFrames(value) {
-        this._availableTimeFrames = normalizeArray(value);
+        const timeFrames = normalizeArray(value);
+        this._availableTimeFrames =
+            timeFrames.length > 0 ? timeFrames : DEFAULT_AVAILABLE_TIME_FRAMES;
 
-        if (this.isConnected) this.updateHeadersTimeFrames();
+        if (this.isConnected) {
+            this.headers.forEach((header) => {
+                header.timeFrames = this._availableTimeFrames;
+            });
+
+            this.updateRowColumns();
+        }
     }
 
     @api
@@ -186,11 +207,9 @@ export default class Scheduler extends LightningElement {
         return this._headers;
     }
     set headers(value) {
-        const headers = normalizeArray(value);
-        const headerObjects = headers.map((header) => {
-            return new Header(header);
-        });
-        this._headers = headerObjects;
+        this._headers = normalizeArray(value);
+
+        if (this.isConnected) this.initHeaders();
     }
 
     @api
@@ -200,10 +219,7 @@ export default class Scheduler extends LightningElement {
     set rows(value) {
         this._rows = normalizeArray(value);
 
-        if (this.isConnected) {
-            this.initScheduleRows();
-            this.updateRowColumns();
-        }
+        if (this.isConnected) this.initScheduleRows();
     }
 
     @api
@@ -224,7 +240,13 @@ export default class Scheduler extends LightningElement {
         const computedDate = dateObjectFrom(value);
         this._start = computedDate || DEFAULT_START_DATE;
 
-        if (this.isConnected) this.updateHeadersStart();
+        if (this.isConnected) {
+            this.headers.forEach((header) => {
+                header.start = this._start;
+            });
+
+            this.updateRowColumns();
+        }
     }
 
     @api
@@ -246,7 +268,16 @@ export default class Scheduler extends LightningElement {
         this._visibleSpan =
             typeof value === 'object' ? value : DEFAULT_VISIBLE_SPAN;
 
-        if (this.isConnected) this.initVisibleSpan();
+        const unit = this._visibleSpan.unit;
+        const span = this._visibleSpan.span;
+        this._millisecondsVisible = UNITS_IN_MS[unit] * span;
+
+        if (this.isConnected) {
+            this.headers.forEach((header) => {
+                header.millisecondsVisible = this._millisecondsVisible;
+            });
+            this.updateRowColumns();
+        }
     }
 
     get generateKey() {
@@ -259,40 +290,29 @@ export default class Scheduler extends LightningElement {
             : PALETTES[this.eventsPalette];
     }
 
+    initHeaders() {
+        const headerObjects = this.headers.map((header) => {
+            return new Header({
+                unit: header.unit,
+                span: header.span,
+                label: header.label,
+                millisecondsPerCol: UNITS_IN_MS[header.unit] * header.span,
+                millisecondsVisible: this._millisecondsVisible,
+                start: this.start,
+                timeFrames: this.availableTimeFrames,
+                daysOfTheWeek: this.availableDaysOfTheWeek,
+                months: this.availableMonths
+            });
+        });
+
+        this._headers = headerObjects;
+    }
+
     initScheduleRows() {
         this.scheduleRows = this.rows.map((row) => {
             return new Row({
                 key: row[this.rowsKeyField]
             });
-        });
-
-        if (this.isConnected) this.updateRowColumns();
-    }
-
-    initVisibleSpan() {
-        const unit = this._visibleSpan.unit;
-        const span = this._visibleSpan.span;
-        this._millisecondsVisible = UNITS_IN_MS[unit] * span;
-
-        // Update the number of columns in the headers
-        this.headers.forEach((header) => {
-            header.millisecondsVisible = this._millisecondsVisible;
-        });
-
-        this.updateRowColumns();
-    }
-
-    updateHeadersStart() {
-        this.headers.forEach((header) => {
-            header.start = this.start;
-        });
-
-        this.updateRowColumns();
-    }
-
-    updateHeadersTimeFrames() {
-        this.headers.forEach((header) => {
-            header.timeFrames = this.availableTimeFrames;
         });
 
         this.updateRowColumns();

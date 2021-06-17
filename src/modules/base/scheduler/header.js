@@ -31,12 +31,6 @@
  */
 
 import { generateUniqueId } from 'c/utils';
-import {
-    UNITS_IN_MS,
-    DEFAULT_VISIBLE_SPAN,
-    DEFAULT_START_DATE,
-    DEFAULT_AVAILABLE_TIME_FRAMES
-} from './defaults';
 import { formatTime, isInTimeFrame } from './dateUtils';
 
 export default class Header {
@@ -46,11 +40,14 @@ export default class Header {
         this.span = props.span;
         this.label = props.label;
         this.columnLabels = [];
-        this._millisecondsPerCol = UNITS_IN_MS[this.unit] * this.span;
-        this._millisecondsVisible =
-            UNITS_IN_MS[DEFAULT_VISIBLE_SPAN.unit] * DEFAULT_VISIBLE_SPAN.span;
-        this._start = DEFAULT_START_DATE;
-        this._timeFrames = DEFAULT_AVAILABLE_TIME_FRAMES;
+        this._millisecondsPerCol = props.millisecondsPerCol;
+        this._millisecondsVisible = props.millisecondsVisible;
+        this._start = props.start;
+        this._timeFrames = props.timeFrames;
+        this._daysOfTheWeek = props.daysOfTheWeek;
+        this._months = props.months;
+
+        this.computeColumnLabels();
     }
 
     get millisecondsVisible() {
@@ -66,6 +63,22 @@ export default class Header {
     }
     set start(value) {
         this._start = value;
+        this.computeColumnLabels();
+    }
+
+    get daysOfTheWeek() {
+        return this._daysOfTheWeek;
+    }
+    set daysOfTheWeek(value) {
+        this._daysOfTheWeek = value;
+        this.computeColumnLabels();
+    }
+
+    get months() {
+        return this._months;
+    }
+    set months(value) {
+        this._months = value;
         this.computeColumnLabels();
     }
 
@@ -102,20 +115,37 @@ export default class Header {
 
         // For each column
         for (let i = 0; i < this.numberOfColumns; i++) {
-            // Check if time is in allowed time frames
-            let j = 0;
-            let isInTimeFrames = false;
-            while (!isInTimeFrames && j < this.timeFrames.length) {
-                isInTimeFrames = isInTimeFrame(time, this.timeFrames[j]);
-                j += 1;
-            }
+            // Check if time is in allowed dates/times
+            const isAllowedTime = this.isAllowedTime(time);
+            const isAllowedDayOfTheWeek = this.isAllowedDayOfTheWeek(time);
+            const isAllowedMonth = this.isAllowedMonth(time);
 
-            if (isInTimeFrames) {
+            if (isAllowedTime && isAllowedDayOfTheWeek && isAllowedMonth) {
                 // Create a column with the formatted label
                 columnLabels.push(formatTime(time, this.label));
             }
             time += this._millisecondsPerCol;
         }
         this.columnLabels = columnLabels;
+    }
+
+    isAllowedTime(time) {
+        let i = 0;
+        let isAllowed = false;
+        while (!isAllowed && i < this.timeFrames.length) {
+            isAllowed = isInTimeFrame(time, this.timeFrames[i]);
+            i += 1;
+        }
+        return isAllowed;
+    }
+
+    isAllowedDayOfTheWeek(time) {
+        const day = new Date(time).getDay();
+        return this.daysOfTheWeek.includes(day);
+    }
+
+    isAllowedMonth(time) {
+        const month = new Date(time).getMonth();
+        return this.months.includes(month);
     }
 }
