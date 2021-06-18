@@ -31,23 +31,19 @@
  */ -->
 
 <template>
-    <div
-        class="slds-grid slds-grid_vertical-align-center slds-grid_align-spread slds-gutters_xx-small"
-    >
-        <div class="slds-col slds-size_3-of-7 slds-border_bottom"></div>
-        <div
-            class="avonni-seperator-content slds-col slds-grow_none slds-col_bump-bottom"
-        >
+    <div class={avonniComputedContainerClass}>
+        <div class={avonniComputedLineOneClass}></div>
+        <div class={avonniComputedContentClass}>
             <div
-                class="slds-grid slds-grid_vertical-align-center slds-grid_align-spread"
+                class="slds-grid slds-grid_vertical-align-center slds-grid_align-center"
             >
                 <lightning-icon
                     icon-name={iconName}
                     size={iconSize}
                 ></lightning-icon>
-                <p>{label}</p>
+                <h1>{label}</h1>
             </div>
         </div>
-        <div class="slds-col slds-size_3-of-7 slds-border_bottom"></div>
+        <div class={avonniComputedLineTwoClass}></div>
     </div>
 </template>

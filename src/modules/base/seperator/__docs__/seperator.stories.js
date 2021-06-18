@@ -48,7 +48,7 @@ export default {
         alignContent: {
             name: 'align-content',
             control: {
-                type: 'text'
+                type: 'select'
             },
             options: ['start', 'center', 'end'],
             defaultValue: 'center',
@@ -73,7 +73,7 @@ export default {
         iconPosition: {
             name: 'icon-position',
             control: {
-                type: 'text'
+                type: 'select'
             },
             options: ['left', 'right'],
             defaultValue: 'left',
@@ -87,9 +87,9 @@ export default {
         iconSize: {
             name: 'icon-size',
             control: {
-                type: 'text'
+                type: 'select'
             },
-            options: ['xx-smal', 'x-small', 'small', 'medium', 'large'],
+            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
             defaultValue: 'medium',
             description:
                 'The size of the icon. Options include xx-small, x-small, small, medium and large.',
@@ -101,7 +101,7 @@ export default {
         orientation: {
             name: 'orientation',
             control: {
-                type: 'text'
+                type: 'select'
             },
             options: ['horizontal', 'vertical'],
             defaultValue: 'horizontal',
@@ -118,7 +118,7 @@ const Template = (args) => Seperator(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    iconName: 'utility:user',
+    iconName: 'utility:reminder',
     label: 'Today',
     orientation: 'horizontal'
 };

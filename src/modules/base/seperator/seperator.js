@@ -31,12 +31,103 @@
  */
 
 import { LightningElement, api } from 'lwc';
+import { classSet } from 'c/utils';
+import { normalizeString } from 'c/utilsPrivate';
+
+const VALID_ALIGN_CONTENT_VARIANTS = {
+    valid: ['start', 'center', 'end'],
+    default: 'center'
+};
+const VALID_ICON_SIZES = {
+    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+    default: 'medium'
+};
+const VALID_ORIENTATIONS = {
+    valid: ['horizontal', 'vertical'],
+    default: 'horizontal'
+};
+const VALID_ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
 
 export default class Seperator extends LightningElement {
     @api label;
-    @api alignContent;
     @api iconName;
-    @api iconPosition;
-    @api iconSize;
-    @api orientation;
+
+    _alignContent = VALID_ALIGN_CONTENT_VARIANTS;
+    _iconSize = VALID_ICON_SIZES;
+    _orientation = VALID_ORIENTATIONS;
+    _iconPosition = VALID_ICON_POSITIONS;
+
+    renderedCallback() {
+        console.log(this.alignContent);
+    }
+
+    @api get alignContent() {
+        return this._alignContent;
+    }
+
+    set alignContent(value) {
+        this._alignContent = normalizeString(value, {
+            fallbackValue: VALID_ALIGN_CONTENT_VARIANTS.default,
+            validValues: VALID_ALIGN_CONTENT_VARIANTS.valid
+        });
+    }
+
+    @api get iconSize() {
+        return this._iconSize;
+    }
+
+    set iconSize(value) {
+        this._iconSize = normalizeString(value, {
+            fallbackValue: VALID_ICON_SIZES.default,
+            validValues: VALID_ICON_SIZES.valid
+        });
+    }
+
+    @api get orientation() {
+        return this._orientation;
+    }
+
+    set orientation(value) {
+        this._orientation = normalizeString(value, {
+            fallbackValue: VALID_ORIENTATIONS.default,
+            validValues: VALID_ORIENTATIONS.valid
+        });
+    }
+
+    @api get iconPosition() {
+        return this._iconPosition;
+    }
+
+    set iconPosition(value) {
+        this._iconPosition = normalizeString(value, {
+            fallbackValue: VALID_ICON_POSITIONS.default,
+            validValues: VALID_ICON_POSITIONS.valid
+        });
+    }
+
+    get avonniComputedContainerClass() {
+        return classSet(
+            'slds-grid slds-grid_vertical-align-center slds-gutters'
+        ).toString();
+    }
+
+    get avonniComputedLineOneClass() {
+        return classSet('avonni-seperator_line-one slds-col slds-border_bottom')
+            .add({
+                'slds-hide': this.alignContent === 'start'
+            })
+            .toString();
+    }
+    get avonniComputedLineTwoClass() {
+        return classSet('avonni-seperator_line-two slds-col slds-border_bottom')
+            .add({
+                'slds-hide': this.alignContent === 'end'
+            })
+            .toString();
+    }
+    get avonniComputedContentClass() {
+        return classSet(
+            'slds-grid slds-grid_vertical-align-center slds-grid_align-center slds-p-around_x-small'
+        ).toString();
+    }
 }
