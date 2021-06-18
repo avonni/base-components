@@ -40,21 +40,13 @@ export default class Header {
         this.span = props.span;
         this.label = props.label;
         this.columnLabels = [];
-        this._millisecondsPerCol = props.millisecondsPerCol;
-        this._millisecondsVisible = props.millisecondsVisible;
+        this.millisecondsPerCol = props.millisecondsPerCol;
+        this.numberOfColumns = props.numberOfColumns;
         this._start = props.start;
         this._timeFrames = props.timeFrames;
         this._daysOfTheWeek = props.daysOfTheWeek;
         this._months = props.months;
 
-        this.computeColumnLabels();
-    }
-
-    get millisecondsVisible() {
-        return this._millisecondsVisible;
-    }
-    set millisecondsVisible(value) {
-        this._millisecondsVisible = value;
         this.computeColumnLabels();
     }
 
@@ -94,39 +86,35 @@ export default class Header {
         return generateUniqueId();
     }
 
-    get numberOfColumns() {
-        let millisecondsTotal = this._millisecondsPerCol;
-        let numberOfCols = 1;
-        while (millisecondsTotal < this.millisecondsVisible) {
-            numberOfCols += 1;
-            millisecondsTotal += this._millisecondsPerCol;
-        }
-
-        return numberOfCols;
-    }
-
     get columnMaxWidth() {
         return `${100 / this.columnLabels.length}%`;
     }
 
     computeColumnLabels() {
-        const columnLabels = [];
+        this.columnLabels = [];
         let time = this.start.getTime();
 
         // For each column
         for (let i = 0; i < this.numberOfColumns; i++) {
-            // Check if time is in allowed dates/times
-            const isAllowedTime = this.isAllowedTime(time);
-            const isAllowedDayOfTheWeek = this.isAllowedDayOfTheWeek(time);
-            const isAllowedMonth = this.isAllowedMonth(time);
+            time = this.nextAllowedMonth(time);
 
-            if (isAllowedTime && isAllowedDayOfTheWeek && isAllowedMonth) {
-                // Create a column with the formatted label
-                columnLabels.push(formatTime(time, this.label));
+            // We don't want to take the day or time of the date into account
+            // if the header does not use them
+            if (
+                this.unit !== 'month' &&
+                this.unit !== 'year' &&
+                this.unit !== 'week'
+            ) {
+                time = this.nextAllowedDay(time);
+
+                if (this.unit !== 'day') {
+                    time = this.nextAllowedTime(time);
+                }
             }
-            time += this._millisecondsPerCol;
+
+            this.columnLabels.push(formatTime(time, this.label));
+            time += this.millisecondsPerCol;
         }
-        this.columnLabels = columnLabels;
     }
 
     isAllowedTime(time) {
@@ -139,7 +127,7 @@ export default class Header {
         return isAllowed;
     }
 
-    isAllowedDayOfTheWeek(time) {
+    isAllowedDay(time) {
         const day = new Date(time).getDay();
         return this.daysOfTheWeek.includes(day);
     }
@@ -147,5 +135,38 @@ export default class Header {
     isAllowedMonth(time) {
         const month = new Date(time).getMonth();
         return this.months.includes(month);
+    }
+
+    nextAllowedMonth(startTime) {
+        let time = startTime;
+        if (!this.isAllowedMonth(time)) {
+            // Add a month
+            const date = new Date(time);
+            time = date.setMonth(date.getMonth() + 1);
+            time = this.nextAllowedMonth(time);
+        }
+        return time;
+    }
+
+    nextAllowedDay(startTime) {
+        let time = startTime;
+        if (!this.isAllowedDay(time)) {
+            // Add a day
+            const date = new Date(time);
+            time = date.setDate(date.getDate() + 1);
+            time = this.nextAllowedDay(time);
+        }
+        return time;
+    }
+
+    nextAllowedTime(startTime) {
+        let time = startTime;
+        if (!this.isAllowedTime(time)) {
+            // Go to next time slot
+            time += this.millisecondsPerCol;
+            time = this.nextAllowedTime(time);
+        }
+
+        return time;
     }
 }

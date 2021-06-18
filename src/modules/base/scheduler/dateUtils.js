@@ -112,7 +112,7 @@ const dateObjectFrom = (date) => {
 };
 
 /**
- * @param time - Timestamp used as a reference by the formatter
+ * @param {number} time - Timestamp used as a reference by the formatter
  * @param {string} stringToFormat - String containing the formatting pattern
  * @returns {string} Formatted string
  */
@@ -130,12 +130,29 @@ const formatTime = (time, stringToFormat) => {
 
 /**
  * Checks if a time is included in a time frame.
- * @param timestamp - Timestamp
+ * @param {number} timestamp - Timestamp
  * @param {string} timeFrame - The time frame of reference, in the format '00:00-00:00'
  * @returns {boolean} true or false
  */
 const isInTimeFrame = (timestamp, timeFrame) => {
+    // const startMatch = timeFrame.match(/^([0-9]{2}):([0-9]{2})/);
+    // const endMatch = timeFrame.match(/-([0-9]{2}):([0-9]{2})/);
+    // if (!startMatch || !endMatch) return false;
+
+    // const startHour = onlyMinutes ? 0 : Number(startMatch[1]);
+    // const startMinute = Number(startMatch[2]);
+    // const start = new Date(2021, 0, 0, startHour, startMinute, 0, 0);
+
+    // const endHour = onlyMinutes ? 0 : Number(endMatch[1]);
+    // const endMinute = Number(endMatch[2]);
+    // const end = new Date(2021, 0, 0, endHour, endMinute, 0, 0);
+
+    // const date = new Date(timestamp);
+    // const time = new Date(2021, 0, 0, date.getHours(), date.getMinutes(), 0, 0);
+
+    // if (time >= start && time <= end) return true;
     // Returns the times in the format 00:00
+
     const time = new Date(timestamp).toLocaleTimeString('en-GB').slice(0, 5);
     const startTime = timeFrame.match(/^([0-9]{2}:[0-9]{2})/);
     const endTime = timeFrame.match(/-([0-9]{2}:[0-9]{2})/);
@@ -145,4 +162,113 @@ const isInTimeFrame = (timestamp, timeFrame) => {
     return false;
 };
 
-export { formatTime, dateObjectFrom, isInTimeFrame };
+/**
+ * Checks the number of minutes in one specific unit
+ * @param {string} timeFrame - The time frame of reference, in the format '00:00-00:00'
+ * @param {string} unit - The unit (hour, day, week, month or year)
+ * @returns {number} Number of minutes in one unit
+ */
+const allowedMinutesInUnit = (timeFrame, unit) => {
+    const startMatch = timeFrame.match(/^([0-9]{2}):([0-9]{2})/);
+    const endMatch = timeFrame.match(/-([0-9]{2}):([0-9]{2})/);
+    if (!startMatch || !endMatch) return false;
+
+    const startHour = Number(startMatch[1]);
+    const startMinute = Number(startMatch[2]);
+    const start = new Date(2021, 0, 0, startHour, startMinute, 0, 0);
+
+    const endHour = Number(endMatch[1]);
+    const endMinute = Number(endMatch[2]);
+    const end = new Date(2021, 0, 0, endHour, endMinute, 0, 0);
+
+    const minutesInADay = (end - start) / 60000;
+
+    let minutesInUnit;
+    switch (unit) {
+        case 'hour':
+            minutesInUnit = minutesInADay / 24;
+            break;
+        case 'week':
+            minutesInUnit = 7 * minutesInADay;
+            break;
+        case 'month':
+            minutesInUnit = Math.floor(30.4167 * minutesInADay);
+            break;
+        case 'year':
+            minutesInUnit = 365 * minutesInADay;
+            break;
+        default:
+            minutesInUnit = minutesInADay;
+            break;
+    }
+    return minutesInUnit;
+};
+
+/**
+ * Checks the number of hours in one specific unit
+ * @param {string} timeFrame - The time frame of reference, in the format '00:00-00:00'
+ * @param {string} unit - The unit (day, week, month or year)
+ * @returns {number} Number of hours in one unit
+ */
+const allowedHoursInUnit = (timeFrame, unit) => {
+    let hoursInADay = 0;
+
+    for (let i = 0; i < 24; i++) {
+        const time = new Date().setHours(i, 0, 0, 0);
+
+        if (isInTimeFrame(time, timeFrame)) {
+            hoursInADay += 1;
+        }
+    }
+
+    let hoursInUnit;
+    switch (unit) {
+        case 'week':
+            hoursInUnit = 7 * hoursInADay;
+            break;
+        case 'month':
+            hoursInUnit = Math.floor(30.4167 * hoursInADay);
+            break;
+        case 'year':
+            hoursInUnit = 365 * hoursInADay;
+            break;
+        default:
+            hoursInUnit = hoursInADay;
+            break;
+    }
+    return hoursInUnit;
+};
+
+/**
+ * Checks the number of days in one specific unit
+ * @param {string} timeFrame - The time frame of reference, in the format '00:00-00:00'
+ * @param {string} unit - The unit (week, month or year)
+ * @returns {number} Number of days in one unit
+ */
+const allowedDaysInUnit = (allowedDaysInAWeek, unit) => {
+    const daysInAWeek = allowedDaysInAWeek.length;
+
+    let daysInUnit;
+    switch (unit) {
+        case 'month':
+            daysInUnit = Math.floor(4.34524 * daysInAWeek);
+            break;
+        case 'year':
+            daysInUnit = 52 * daysInAWeek;
+            break;
+        default:
+            daysInUnit = daysInAWeek;
+            break;
+    }
+
+    return daysInUnit;
+};
+
+export {
+    formatTime,
+    dateObjectFrom,
+    isInTimeFrame,
+    allowedHoursInUnit,
+    allowedDaysInUnit,
+    allowedMinutesInUnit
+};

@@ -249,9 +249,11 @@ Base.args = {
     rows: rows,
     headers: headers,
     visibleSpan: {
-        unit: 'day',
-        span: 5
+        unit: 'month',
+        span: 2
     },
-    start: new Date(2021, 8, 4, 8),
-    availableTimeFrames: ['04:50:00-10:30', '13:00-16:00']
+    start: new Date(2021, 6, 4, 8),
+    availableTimeFrames: ['04:50:00-10:30', '13:00-16:00'],
+    availableDaysOfTheWeek: [1]
+    // availableMonths: [7]
 };

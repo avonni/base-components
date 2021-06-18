@@ -33,7 +33,12 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeArray, normalizeString } from 'c/utilsPrivate';
 import { generateUniqueId } from 'c/utils';
-import { dateObjectFrom } from './dateUtils';
+import {
+    dateObjectFrom,
+    allowedHoursInUnit,
+    allowedDaysInUnit,
+    allowedMinutesInUnit
+} from './dateUtils';
 import {
     EVENTS_THEMES,
     EVENTS_PALETTES,
@@ -41,6 +46,7 @@ import {
     DEFAULT_START_DATE,
     DEFAULT_VISIBLE_SPAN,
     PALETTES,
+    UNITS,
     UNITS_IN_MS,
     DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
     DEFAULT_AVAILABLE_TIME_FRAMES,
@@ -65,8 +71,6 @@ export default class Scheduler extends LightningElement {
     _theme = THEMES.default;
     _visibleSpan = DEFAULT_VISIBLE_SPAN;
 
-    _millisecondsVisible =
-        UNITS_IN_MS[DEFAULT_VISIBLE_SPAN.unit] * DEFAULT_VISIBLE_SPAN.span;
     scheduleRows = [];
 
     connectedCallback() {
@@ -268,14 +272,8 @@ export default class Scheduler extends LightningElement {
         this._visibleSpan =
             typeof value === 'object' ? value : DEFAULT_VISIBLE_SPAN;
 
-        const unit = this._visibleSpan.unit;
-        const span = this._visibleSpan.span;
-        this._millisecondsVisible = UNITS_IN_MS[unit] * span;
-
         if (this.isConnected) {
-            this.headers.forEach((header) => {
-                header.millisecondsVisible = this._millisecondsVisible;
-            });
+            this.initHeaders();
             this.updateRowColumns();
         }
     }
@@ -291,21 +289,115 @@ export default class Scheduler extends LightningElement {
     }
 
     initHeaders() {
-        const headerObjects = this.headers.map((header) => {
-            return new Header({
+        // Sort the headers from the biggest unit to the smallest
+        const sortedHeaders = [...this.headers].sort(
+            (firstHeader, secondHeader) => {
+                const firstIndex = UNITS.findIndex(
+                    (unit) => unit === firstHeader.unit
+                );
+                const secondIndex = UNITS.findIndex(
+                    (unit) => unit === secondHeader.unit
+                );
+                return secondIndex - firstIndex;
+            }
+        );
+
+        let parentHeader;
+        const headerObjects = sortedHeaders.map((header) => {
+            const unit = header.unit;
+            const millisecondsPerCol = UNITS_IN_MS[unit] * header.span;
+            const columnsInVisibleSpan = this.maxVisibleColumns(header);
+            const columnsInParent = parentHeader
+                ? this.maxColumnsInParent(header, parentHeader)
+                : 0;
+            const columns =
+                columnsInParent && columnsInParent < columnsInVisibleSpan
+                    ? columnsInParent
+                    : columnsInVisibleSpan;
+
+            const headerObject = new Header({
                 unit: header.unit,
                 span: header.span,
                 label: header.label,
-                millisecondsPerCol: UNITS_IN_MS[header.unit] * header.span,
-                millisecondsVisible: this._millisecondsVisible,
                 start: this.start,
                 timeFrames: this.availableTimeFrames,
                 daysOfTheWeek: this.availableDaysOfTheWeek,
-                months: this.availableMonths
+                months: this.availableMonths,
+                millisecondsPerCol: millisecondsPerCol,
+                numberOfColumns: columns
             });
+
+            parentHeader = headerObject;
+            return headerObject;
         });
 
         this._headers = headerObjects;
+    }
+
+    maxVisibleColumns(header) {
+        const allowedUnits = this.maxAllowedUnitsInParent(
+            header.unit,
+            this.visibleSpan.unit
+        );
+        return Math.floor(allowedUnits / header.span) * this.visibleSpan.span;
+    }
+
+    maxColumnsInParent(header, parentHeader) {
+        const allowedUnits = this.maxAllowedUnitsInParent(
+            header.unit,
+            parentHeader.unit
+        );
+        const numberOfColumns = Math.floor(allowedUnits / header.span);
+        return (
+            numberOfColumns * parentHeader.span * parentHeader.numberOfColumns
+        );
+    }
+
+    maxAllowedUnitsInParent(unit, parentUnit) {
+        if (unit === parentUnit) return 1;
+
+        let allowedUnits;
+        switch (unit) {
+            case 'minute':
+                allowedUnits = this.availableTimeFrames.reduce(
+                    (accumulator, timeFrame) => {
+                        return (
+                            accumulator +
+                            allowedMinutesInUnit(
+                                timeFrame,
+                                parentUnit,
+                                this.start
+                            )
+                        );
+                    },
+                    0
+                );
+                break;
+            case 'hour':
+                allowedUnits = this.availableTimeFrames.reduce(
+                    (accumulator, timeFrame) => {
+                        return (
+                            accumulator +
+                            allowedHoursInUnit(timeFrame, parentUnit)
+                        );
+                    },
+                    0
+                );
+                break;
+            case 'day':
+                allowedUnits = allowedDaysInUnit(
+                    this.availableDaysOfTheWeek,
+                    parentUnit
+                );
+                break;
+            case 'month':
+                allowedUnits = this.availableMonths.length;
+                break;
+            default:
+                allowedUnits = 0;
+                break;
+        }
+        return allowedUnits;
     }
 
     initScheduleRows() {

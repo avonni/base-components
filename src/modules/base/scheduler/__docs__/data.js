@@ -96,15 +96,30 @@ const rows = [
 
 const headers = [
     {
+        unit: 'month',
+        span: 1,
+        label: '<MMMM> <YYYY>'
+    },
+    {
+        unit: 'week',
+        span: 1,
+        label: 'Week'
+    },
+    {
         unit: 'day',
         span: 1,
-        label: '<ddd>, <MMM> <DD> <YYYY>'
+        label: '<ddd>, <DD>'
     },
     {
         unit: 'hour',
-        span: 6,
+        span: 2,
         label: '<H>'
     }
+    // {
+    //     unit: 'minute',
+    //     span: 30,
+    //     label: '<mm>'
+    // }
 ];
 
 export { columns, rows, headers };
