@@ -289,7 +289,9 @@ export default class ButtonPopover extends LightningElement {
         if (this.popoverVisible && this._cancelBlur) {
             this.toggleMenuVisibility();
         }
-        this.template.querySelector('lightning-button').focus();
+        if (this.triggers !== 'hover') {
+            this.template.querySelector('lightning-button').focus();
+        }
     }
 
     handleMouseEnter() {
@@ -340,13 +342,6 @@ export default class ButtonPopover extends LightningElement {
     handleMouseEnterBody() {
         if (
             this._triggers === 'hover' &&
-            this.popoverVisible &&
-            !this._disabled
-        ) {
-            this.cancelBlur();
-        }
-        if (
-            this._triggers === 'click' &&
             this.popoverVisible &&
             !this._disabled
         ) {
