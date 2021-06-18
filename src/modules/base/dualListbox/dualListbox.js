@@ -127,6 +127,8 @@ export default class DualListbox extends LightningElement {
     _sourceBoxHeight;
     _selectedBoxHeight;
     _listBoxesHeight;
+    _overSourceHeight;
+    _overSelectedHeight;
 
     _dropItSelected = false;
     _dropItSource = false;
@@ -173,22 +175,6 @@ export default class DualListbox extends LightningElement {
                 option.focus();
             }
         }
-        if (this.searchEngine) {
-            console.log(
-                getListHeight(
-                    this.template.querySelector(
-                        '.avonni-dual-listbox-search-engine'
-                    )
-                )
-            );
-            console.log(
-                this.template.querySelector(
-                    '.avonni-dual-listbox-search-engine'
-                ).offsetHeight
-            );
-        }
-        console.log(this._sourceBoxHeight);
-        console.log(this._selectedBoxHeight);
         this.disabledButtons();
         this.updateBoxesHeight();
     }
@@ -564,28 +550,48 @@ export default class DualListbox extends LightningElement {
     }
 
     updateBoxesHeight() {
-        const searchEngine = this.template.querySelector(
-            '.avonni-dual-listbox-search-engine'
-        );
         const sourceOptionsHeight = getListHeight(
-            Array.from(
-                this.template.querySelectorAll('li[data-role="source"]')
-            ),
+            this.template.querySelectorAll('li[data-role="source"]'),
             this._maxVisibleOptions
         );
 
-        this._selectedBoxHeight = getListHeight(
-            Array.from(
-                this.template.querySelectorAll('li[data-role="selected"]')
-            ),
-            this._maxVisibleOptions
-        );
+        if (
+            this.computedSourceList.length < this._maxVisibleOptions &&
+            this.computedSourceList.length !== 0
+        ) {
+            this._overSourceHeight =
+                this.template.querySelector('li[data-role="source"]')
+                    .offsetHeight *
+                (this._maxVisibleOptions - this.computedSourceList.length);
+        } else this._overSourceHeight = 0;
+
+        if (
+            this.computedSelectedList.length < this._maxVisibleOptions &&
+            this.computedSelectedList.length !== 0
+        ) {
+            this._overSelectedHeight =
+                this.template.querySelector('li[data-role="selected"]')
+                    .offsetHeight *
+                (this._maxVisibleOptions - this.computedSelectedList.length);
+        } else this._overSelectedHeight = 0;
+
+        this._selectedBoxHeight =
+            getListHeight(
+                this.template.querySelectorAll('li[data-role="selected"]'),
+                this._maxVisibleOptions
+            ) + this._overSelectedHeight;
 
         if (this.searchEngine) {
             this._sourceBoxHeight =
-                sourceOptionsHeight + getListHeight(searchEngine);
+                sourceOptionsHeight +
+                getListHeight(
+                    this.template.querySelector(
+                        '.avonni-dual-listbox-search-engine'
+                    )
+                ) +
+                this._overSourceHeight;
         }
-        this._sourceBoxHeight = sourceOptionsHeight;
+        this._sourceBoxHeight = sourceOptionsHeight + this._overSourceHeight;
 
         if (this._sourceBoxHeight >= this._selectedBoxHeight) {
             this._listBoxesHeight = this._sourceBoxHeight;
@@ -595,23 +601,17 @@ export default class DualListbox extends LightningElement {
     }
 
     get sourceHeight() {
-        if (
-            this.searchEngine &&
+        return this.searchEngine &&
             this._selectedBoxHeight > this._sourceBoxHeight
-        ) {
-            return `height: ${this._listBoxesHeight - 48}px`;
-        }
-        return `height: ${this._listBoxesHeight}px`;
+            ? `height: ${this._listBoxesHeight - 48}px`
+            : `height: ${this._listBoxesHeight}px`;
     }
 
     get selectedHeight() {
-        if (
-            this.searchEngine &&
+        return this.searchEngine &&
             this._selectedBoxHeight <= this._sourceBoxHeight
-        ) {
-            return `height: ${this._listBoxesHeight + 48}px`;
-        }
-        return `height: ${this._listBoxesHeight}px`;
+            ? `height: ${this._listBoxesHeight + 48}px`
+            : `height: ${this._listBoxesHeight}px`;
     }
 
     get isLabelHidden() {
