@@ -126,6 +126,7 @@ export default class DualListbox extends LightningElement {
     _oldIndex;
     _sourceBoxHeight;
     _selectedBoxHeight;
+    _listBoxesHeight;
 
     _dropItSelected = false;
     _dropItSource = false;
@@ -172,6 +173,22 @@ export default class DualListbox extends LightningElement {
                 option.focus();
             }
         }
+        if (this.searchEngine) {
+            console.log(
+                getListHeight(
+                    this.template.querySelector(
+                        '.avonni-dual-listbox-search-engine'
+                    )
+                )
+            );
+            console.log(
+                this.template.querySelector(
+                    '.avonni-dual-listbox-search-engine'
+                ).offsetHeight
+            );
+        }
+        console.log(this._sourceBoxHeight);
+        console.log(this._selectedBoxHeight);
         this.disabledButtons();
         this.updateBoxesHeight();
     }
@@ -547,58 +564,54 @@ export default class DualListbox extends LightningElement {
     }
 
     updateBoxesHeight() {
-        const sourceOptions = Array.from(
-            this.template.querySelectorAll('li[role="source"]')
+        const searchEngine = this.template.querySelector(
+            '.avonni-dual-listbox-search-engine'
         );
-        const selectedOptions = Array.from(
-            this.template.querySelectorAll('li[role="selected"]')
-        );
-
-        this._sourceBoxHeight = getListHeight(
-            sourceOptions,
+        const sourceOptionsHeight = getListHeight(
+            Array.from(
+                this.template.querySelectorAll('li[data-role="source"]')
+            ),
             this._maxVisibleOptions
         );
 
         this._selectedBoxHeight = getListHeight(
-            selectedOptions,
+            Array.from(
+                this.template.querySelectorAll('li[data-role="selected"]')
+            ),
             this._maxVisibleOptions
         );
+
+        if (this.searchEngine) {
+            this._sourceBoxHeight =
+                sourceOptionsHeight + getListHeight(searchEngine);
+        }
+        this._sourceBoxHeight = sourceOptionsHeight;
+
+        if (this._sourceBoxHeight >= this._selectedBoxHeight) {
+            this._listBoxesHeight = this._sourceBoxHeight;
+        } else if (this._sourceBoxHeight < this._selectedBoxHeight) {
+            this._listBoxesHeight = this._selectedBoxHeight;
+        }
     }
 
     get sourceHeight() {
-        let sourceHeight = 0;
-        if (this.searchEngine) {
-            if (this._sourceBoxHeight < this._selectedBoxHeight) {
-                sourceHeight = `height: ${this._selectedBoxHeight - 48}px`;
-            } else if (this._sourceBoxHeight >= this._selectedBoxHeight) {
-                sourceHeight = `height: ${this._sourceBoxHeight}px`;
-            }
-        } else if (!this._searchEngine) {
-            if (this._sourceBoxHeight >= this._selectedBoxHeight) {
-                sourceHeight = `height: ${this._sourceBoxHeight}px`;
-            } else if (this._sourceBoxHeight < this._selectedBoxHeight) {
-                sourceHeight = `height: ${this._selectedBoxHeight}px`;
-            }
+        if (
+            this.searchEngine &&
+            this._selectedBoxHeight > this._sourceBoxHeight
+        ) {
+            return `height: ${this._listBoxesHeight - 48}px`;
         }
-        return sourceHeight;
+        return `height: ${this._listBoxesHeight}px`;
     }
 
     get selectedHeight() {
-        let selectedHeight = 0;
-        if (this.searchEngine) {
-            if (this._sourceBoxHeight < this._selectedBoxHeight) {
-                selectedHeight = `height: ${this._selectedBoxHeight}px`;
-            } else if (this._sourceBoxHeight >= this._selectedBoxHeight) {
-                selectedHeight = `height: ${this._sourceBoxHeight + 48}px`;
-            }
-        } else if (!this._searchEngine) {
-            if (this._sourceBoxHeight >= this._selectedBoxHeight) {
-                selectedHeight = `height: ${this._sourceBoxHeight}px`;
-            } else if (this._sourceBoxHeight < this._selectedBoxHeight) {
-                selectedHeight = `height: ${this._selectedBoxHeight}px`;
-            }
+        if (
+            this.searchEngine &&
+            this._selectedBoxHeight <= this._sourceBoxHeight
+        ) {
+            return `height: ${this._listBoxesHeight + 48}px`;
         }
-        return selectedHeight;
+        return `height: ${this._listBoxesHeight}px`;
     }
 
     get isLabelHidden() {
