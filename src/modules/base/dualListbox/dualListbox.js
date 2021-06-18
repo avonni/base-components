@@ -139,7 +139,6 @@ export default class DualListbox extends LightningElement {
         this.classList.add('slds-form-element');
         this.keyboardInterface = this.selectKeyboardInterface();
 
-        this._connected = true;
         this.addRequiredOptionsToValue();
 
         // debounceInteraction since DualListbox has multiple focusable elements
@@ -190,7 +189,7 @@ export default class DualListbox extends LightningElement {
         this._options = Array.isArray(value)
             ? JSON.parse(JSON.stringify(value))
             : [];
-        if (this._connected) {
+        if (this.isConnected) {
             this.computedColumnSourceHeight();
             this.computedColumnSelectedHeight();
         }
@@ -268,7 +267,7 @@ export default class DualListbox extends LightningElement {
     set value(newValue) {
         this.updateHighlightedOptions(newValue);
         this._selectedValues = newValue || [];
-        if (this._connected) {
+        if (this.isConnected) {
             this.addRequiredOptionsToValue();
         }
     }
@@ -282,7 +281,7 @@ export default class DualListbox extends LightningElement {
         this._requiredOptions = Array.isArray(newValue)
             ? JSON.parse(JSON.stringify(newValue))
             : [];
-        if (this._connected) {
+        if (this.isConnected) {
             this.addRequiredOptionsToValue();
         }
     }
@@ -332,7 +331,7 @@ export default class DualListbox extends LightningElement {
         const number =
             typeof value === 'number' ? value : DEFAULT_MAX_VISIBLE_OPTIONS;
         this._maxVisibleOptions = parseInt(number, 10);
-        if (this._connected) {
+        if (this.isConnected) {
             this.computedColumnSourceHeight();
             this.computedColumnSelectedHeight();
         }
