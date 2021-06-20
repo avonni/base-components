@@ -31,19 +31,30 @@
  */ -->
 
 <template>
-    <div class={avonniComputedContainerClass}>
-        <div class={avonniComputedLineOneClass}></div>
-        <div class={avonniComputedContentClass}>
+    <div class="prop-container">
+        <div
+            class={avonniComputedContainerClass}
+            style="width: 100%; height: 100%"
+        >
             <div
-                class="slds-grid slds-grid_vertical-align-center slds-grid_align-center"
-            >
-                <lightning-icon
-                    icon-name={iconName}
-                    size={iconSize}
-                ></lightning-icon>
-                <h1>{label}</h1>
-            </div>
+                class={avonniComputedLineOneClass}
+                style={computedLineStyle}
+            ></div>
+            <template if:false={separatorContent}>
+                <div class={avonniComputedContentClass}>
+                    <lightning-icon
+                        if:true={iconName}
+                        icon-name={iconName}
+                        size={iconSize}
+                    ></lightning-icon>
+                    <h1 if:true={label}>{label}</h1>
+                </div>
+            </template>
+
+            <div
+                class={avonniComputedLineTwoClass}
+                style={computedLineStyle}
+            ></div>
         </div>
-        <div class={avonniComputedLineTwoClass}></div>
     </div>
 </template>

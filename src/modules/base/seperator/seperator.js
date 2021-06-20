@@ -58,7 +58,7 @@ export default class Seperator extends LightningElement {
     _iconPosition = VALID_ICON_POSITIONS;
 
     renderedCallback() {
-        console.log(this.alignContent);
+        // console.log(this.seperatorContent);
     }
 
     @api get alignContent() {
@@ -105,29 +105,49 @@ export default class Seperator extends LightningElement {
         });
     }
 
+    get seperatorContent() {
+        return this.label || this.iconName ? false : true;
+    }
+
     get avonniComputedContainerClass() {
-        return classSet(
-            'slds-grid slds-grid_vertical-align-center slds-gutters'
-        ).toString();
+        return classSet('slds-grid slds-grid_vertical-align-center slds-nowrap')
+            .add({
+                'slds-grid_vertical slds-grid_align-center':
+                    this.orientation === 'vertical'
+            })
+            .toString();
     }
 
     get avonniComputedLineOneClass() {
-        return classSet('avonni-seperator_line-one slds-col slds-border_bottom')
+        return classSet('avonni-seperator_line-one')
             .add({
+                'slds-border_bottom slds-col':
+                    this.orientation === 'horizontal',
+                'slds-border_left slds-col slds-grow':
+                    this.orientation === 'vertical',
                 'slds-hide': this.alignContent === 'start'
             })
             .toString();
     }
     get avonniComputedLineTwoClass() {
-        return classSet('avonni-seperator_line-two slds-col slds-border_bottom')
+        return classSet('avonni-seperator_line-two')
             .add({
+                'slds-border_bottom slds-col':
+                    this.orientation === 'horizontal',
+                'slds-border_left slds-col slds-grow':
+                    this.orientation === 'vertical',
                 'slds-hide': this.alignContent === 'end'
             })
             .toString();
     }
     get avonniComputedContentClass() {
         return classSet(
-            'slds-grid slds-grid_vertical-align-center slds-grid_align-center slds-p-around_x-small'
-        ).toString();
+            'slds-grid slds-vertical slds-grid_vertical-align-center slds-grid_align-center'
+        )
+            .add({
+                'slds-p-around_x-small': this.seperatorContent === false,
+                'slds-grid_reverse': this.iconPosition === 'right'
+            })
+            .toString();
     }
 }

@@ -29,3 +29,18 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+body {
+    margin: 0;
+}
+
+.prop-container {
+    height: 400px;
+}
+
+.avonni-seperator_line-one.slds-border_left,
+.avonni-seperator_line-two.slds-border_left {
+    /*  */
+    height: 100%;
+    /* min-height: 100%; */
+}
