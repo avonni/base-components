@@ -126,9 +126,6 @@ export default class DualListbox extends LightningElement {
     _oldIndex;
     _sourceBoxHeight;
     _selectedBoxHeight;
-    _listBoxesHeight;
-    _overSourceHeight;
-    _overSelectedHeight;
 
     _dropItSelected = false;
     _dropItSource = false;
@@ -550,6 +547,9 @@ export default class DualListbox extends LightningElement {
     }
 
     updateBoxesHeight() {
+        let overSelectedHeight = 0;
+        let overSourceHeight = 0;
+
         const sourceOptionsHeight = getListHeight(
             this.template.querySelectorAll('li[data-role="source"]'),
             this._maxVisibleOptions
@@ -559,27 +559,27 @@ export default class DualListbox extends LightningElement {
             this.computedSourceList.length < this._maxVisibleOptions &&
             this.computedSourceList.length !== 0
         ) {
-            this._overSourceHeight =
+            overSourceHeight =
                 this.template.querySelector('li[data-role="source"]')
                     .offsetHeight *
                 (this._maxVisibleOptions - this.computedSourceList.length);
-        } else this._overSourceHeight = 0;
+        } else overSourceHeight = 0;
 
         if (
             this.computedSelectedList.length < this._maxVisibleOptions &&
             this.computedSelectedList.length !== 0
         ) {
-            this._overSelectedHeight =
+            overSelectedHeight =
                 this.template.querySelector('li[data-role="selected"]')
                     .offsetHeight *
                 (this._maxVisibleOptions - this.computedSelectedList.length);
-        } else this._overSelectedHeight = 0;
+        } else overSelectedHeight = 0;
 
         this._selectedBoxHeight =
             getListHeight(
                 this.template.querySelectorAll('li[data-role="selected"]'),
                 this._maxVisibleOptions
-            ) + this._overSelectedHeight;
+            ) + overSelectedHeight;
 
         if (this.searchEngine) {
             this._sourceBoxHeight =
@@ -589,29 +589,23 @@ export default class DualListbox extends LightningElement {
                         '.avonni-dual-listbox-search-engine'
                     )
                 ) +
-                this._overSourceHeight;
+                overSourceHeight;
         }
-        this._sourceBoxHeight = sourceOptionsHeight + this._overSourceHeight;
-
-        if (this._sourceBoxHeight >= this._selectedBoxHeight) {
-            this._listBoxesHeight = this._sourceBoxHeight;
-        } else if (this._sourceBoxHeight < this._selectedBoxHeight) {
-            this._listBoxesHeight = this._selectedBoxHeight;
-        }
+        this._sourceBoxHeight = sourceOptionsHeight + overSourceHeight;
     }
 
     get sourceHeight() {
         return this.searchEngine &&
             this._selectedBoxHeight > this._sourceBoxHeight
-            ? `height: ${this._listBoxesHeight - 48}px`
-            : `height: ${this._listBoxesHeight}px`;
+            ? `height: ${this._selectedBoxHeight - 48}px`
+            : `height: ${this._sourceBoxHeight}px`;
     }
 
     get selectedHeight() {
         return this.searchEngine &&
             this._selectedBoxHeight <= this._sourceBoxHeight
-            ? `height: ${this._listBoxesHeight + 48}px`
-            : `height: ${this._listBoxesHeight}px`;
+            ? `height: ${this._selectedBoxHeight + 48}px`
+            : `height: ${this._sourceBoxHeight}px`;
     }
 
     get isLabelHidden() {
