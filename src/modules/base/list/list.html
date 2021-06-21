@@ -146,30 +146,26 @@
                                 ></lightning-menu-item>
                             </template>
                         </lightning-button-menu>
-                        <template
-                            if:false={multiActions}
-                            for:each={computedActions}
-                            for:item="action"
-                        >
+                        <template if:false={multiActions}>
                             <lightning-button
-                                if:true={action.label}
+                                if:true={computedActions.label}
                                 class="slds-m-right_none"
                                 ontouchstart={handleButtonMenuTouchStart}
-                                key={action.name}
-                                value={action.name}
-                                label={action.label}
-                                disabled={action.disabled}
-                                icon-name={action.iconName}
+                                key={computedActions.name}
+                                value={computedActions.name}
+                                label={computedActions.label}
+                                disabled={computedActions.disabled}
+                                icon-name={computedActions.iconName}
                             ></lightning-button>
                             <lightning-button-icon
-                                if:false={action.label}
+                                if:false={computedActions.label}
                                 class="slds-m-right_none"
                                 size="x-small"
                                 ontouchstart={handleButtonMenuTouchStart}
-                                key={action.name}
-                                value={action.name}
-                                disabled={action.disabled}
-                                icon-name={action.iconName}
+                                key={computedActions.name}
+                                value={computedActions.name}
+                                disabled={computedActions.disabled}
+                                icon-name={computedActions.iconName}
                             ></lightning-button-icon>
                         </template>
                     </div>

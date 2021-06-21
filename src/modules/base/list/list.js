@@ -126,12 +126,14 @@ export default class List extends LightningElement {
     }
     set actions(proxy) {
         this._actions = normalizeArray(proxy);
-        this.computedActions = JSON.parse(JSON.stringify(this._actions));
+        const parsedActions = JSON.parse(JSON.stringify(this._actions));
+        this.computedActions =
+            parsedActions.length > 1 ? parsedActions : parsedActions[0];
         this._hasActions = true;
     }
 
     get multiActions() {
-        return this.computedActions.length > 1 ? true : false;
+        return this._actions.length > 1 ? true : false;
     }
 
     get showIconRight() {
