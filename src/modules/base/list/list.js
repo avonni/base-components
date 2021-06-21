@@ -120,20 +120,23 @@ export default class List extends LightningElement {
             validValues: ICON_POSITIONS.valid
         });
     }
+
     @api
     get actions() {
         return this._actions;
     }
     set actions(proxy) {
         this._actions = normalizeArray(proxy);
-        const parsedActions = JSON.parse(JSON.stringify(this._actions));
-        this.computedActions =
-            parsedActions.length > 1 ? parsedActions : parsedActions[0];
+        this.computedActions = JSON.parse(JSON.stringify(this._actions));
         this._hasActions = true;
     }
 
+    get singleAction() {
+        return this.computedActions[0];
+    }
+
     get multiActions() {
-        return this._actions.length > 1 ? true : false;
+        return this._actions.length > 1;
     }
 
     get showIconRight() {
