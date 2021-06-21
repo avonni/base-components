@@ -240,8 +240,6 @@ export default class Datatable extends LightningDatatable {
         }
     };
 
-    _headerHeight;
-
     connectedCallback() {
         super.connectedCallback();
 
@@ -269,26 +267,6 @@ export default class Datatable extends LightningDatatable {
         });
 
         this.dispatchRowHeightEvent();
-
-        // The header height has been set by the parent
-        if (this._headerHeight) {
-            // Grow the grey area of the header
-            const tableWrapper = this.template.querySelector(
-                '.slds-table_header-fixed_container'
-            );
-            tableWrapper.style.paddingTop = this._headerHeight;
-
-            // Add a border to the bottom of the header row
-            const primitiveHeaders = this.template.querySelectorAll(
-                'lightning-primitive-header-factory'
-            );
-            primitiveHeaders.forEach((header) => {
-                header.classList.add('slds-border_bottom');
-                header.style.minHeight = '33px';
-                header.style.position = 'absolute';
-                header.style.top = '0';
-            });
-        }
     }
 
     disconnectedCallback() {
@@ -323,11 +301,6 @@ export default class Datatable extends LightningDatatable {
         this.computeEditableOption();
 
         super.data = this._data;
-    }
-
-    @api
-    setHeaderHeight(value) {
-        this._headerHeight = value;
     }
 
     removeWrapOption() {
