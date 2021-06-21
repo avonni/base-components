@@ -100,11 +100,11 @@ const headers = [
         span: 1,
         label: '<MMMM> <YYYY>'
     },
-    {
-        unit: 'week',
-        span: 1,
-        label: 'Week'
-    },
+    // {
+    //     unit: 'week',
+    //     span: 1,
+    //     label: 'Week'
+    // },
     {
         unit: 'day',
         span: 1,

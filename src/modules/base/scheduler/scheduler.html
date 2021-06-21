@@ -35,8 +35,9 @@
 <template>
     <div class="slds-grid">
         <!-- Datatable -->
-        <div class="slds-border_right">
+        <div class="slds-border_right scheduler__datatable-col">
             <c-datatable
+                class="slds-show slds-border_top"
                 column-widths-mode="auto"
                 columns={columns}
                 data={rows}

@@ -80,10 +80,11 @@ export default class Scheduler extends LightningElement {
 
     renderedCallback() {
         // Set the datatable header height
+        const datatableCol = this.template.querySelector(
+            '.scheduler__datatable-col'
+        );
         const thead = this.template.querySelector('thead');
-        const datatable = this.template.querySelector('c-datatable');
-        // We take one off because of the border
-        datatable.setHeaderHeight(`${thead.offsetHeight - 1}px`);
+        datatableCol.style.paddingTop = `${thead.offsetHeight - 34}px`;
 
         // Set the header columns width
         const headerRows = this.template.querySelectorAll('thead tr');
