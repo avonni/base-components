@@ -245,9 +245,9 @@
     <!-- Selected options -->
     <ul
         if:true={showSelectedOptions}
-        class="slds-grid slds-wrap slds-p-vertical_xx-small"
+        class="slds-grid slds-wrap slds-p-vertical_xx-small primitive-combobox__selected-options"
         role="listbox"
-        aria-label="Selected Options:"
+        aria-label={selectedOptionsAriaLabel}
         aria-orientation="horizontal"
     >
         <template for:each={selectedOptions} for:item="option">

@@ -66,6 +66,7 @@ describe('Combobox', () => {
         expect(element.readOnly).toBeFalsy();
         expect(element.removeSelectedOptions).toBeFalsy();
         expect(element.required).toBeFalsy();
+        expect(element.selectedOptionsAriaLabel).toBe('Selected Options');
         expect(element.scopes).toMatchObject([]);
         expect(element.scopesGroups).toMatchObject([]);
         expect(element.search).toBeUndefined();
@@ -559,6 +560,43 @@ describe('Combobox', () => {
             );
             expect(combobox.search).toBe(search);
         });
+    });
+
+    // selected-options-aria-label
+    // Depends on isMultiSelect and options
+    it('selectedOptionsAriaLabel', () => {
+        const element = createElement('base-combobox', {
+            is: Combobox
+        });
+        document.body.appendChild(element);
+
+        element.options = options;
+        element.isMultiSelect = true;
+        element.selectedOptionsAriaLabel = 'A string label';
+
+        return Promise.resolve()
+            .then(() => {
+                const combobox = element.shadowRoot.querySelector(
+                    '.combobox__main-combobox'
+                );
+                expect(combobox.selectedOptionsAriaLabel).toBe(
+                    'A string label'
+                );
+
+                combobox.dispatchEvent(
+                    new CustomEvent('privateselect', {
+                        detail: {
+                            selectedOptions: options
+                        }
+                    })
+                );
+            })
+            .then(() => {
+                const selectedOptions = element.shadowRoot.querySelector(
+                    '.combobox__selected-options'
+                );
+                expect(selectedOptions.ariaLabel).toBe('A string label');
+            });
     });
 
     // validity

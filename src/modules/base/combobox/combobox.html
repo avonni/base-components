@@ -85,6 +85,7 @@
                 remove-selected-options={removeSelectedOptions}
                 required={required}
                 search={search}
+                selected-options-aria-label={selectedOptionsAriaLabel}
                 show-clear-input
                 value={value}
                 variant="label-hidden"
@@ -100,9 +101,9 @@
         <!-- Selected options -->
         <ul
             if:true={showSelectedOptions}
-            class="slds-grid slds-wrap slds-p-vertical_xx-small"
+            class="slds-grid slds-wrap slds-p-vertical_xx-small combobox__selected-options"
             role="listbox"
-            aria-label="Selected Options:"
+            aria-label={selectedOptionsAriaLabel}
             aria-orientation="horizontal"
         >
             <template for:each={selectedOptions} for:item="option">

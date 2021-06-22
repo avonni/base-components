@@ -314,6 +314,19 @@ export default {
                 type: { summary: 'function' }
             }
         },
+        selectedOptionsAriaLabel: {
+            name: 'selected-options-aria-label',
+            control: {
+                type: 'text'
+            },
+            defaultValue: 'Selected Options',
+            description:
+                'Describes the selected options section to assistive technologies.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Selected Options' }
+            }
+        },
         validity: {
             description:
                 'Represents the validity states that an element can be in, with respect to constraint validation.',

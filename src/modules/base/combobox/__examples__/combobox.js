@@ -58,6 +58,7 @@ export const Combobox = ({
     scopes,
     scopesGroups,
     search,
+    selectedOptionsAriaLabel,
     value,
     variant
 }) => {
@@ -85,6 +86,7 @@ export const Combobox = ({
     element.scopes = scopes;
     element.scopesGroups = scopesGroups;
     element.search = search;
+    element.selectedOptionsAriaLabel = selectedOptionsAriaLabel;
     element.value = value;
     element.variant = variant;
     return element;

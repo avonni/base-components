@@ -65,6 +65,7 @@ const DROPDOWN_LENGTHS = {
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
 const DEFAULT_PLACEHOLDER = 'Select an Option';
 const DEFAULT_PLACEHOLDER_WHEN_SEARCH_ALLOWED = 'Search...';
+const DEFAULT_SELECTED_OPTIONS_ARIA_LABEL = 'Selected Options';
 
 // Default LWC message
 const DEFAULT_MESSAGE_WHEN_VALUE_MISSING = 'Complete this field.';
@@ -92,6 +93,7 @@ export default class Combobox extends LightningElement {
     _readOnly = false;
     _removeSelectedOptions = false;
     _required = false;
+    _selectedOptionsAriaLabel = DEFAULT_SELECTED_OPTIONS_ARIA_LABEL;
     _scopes = [];
     _scopesGroups = [];
     _search = this.computeSearch;
@@ -252,6 +254,17 @@ export default class Combobox extends LightningElement {
     }
     set required(value) {
         this._required = normalizeBoolean(value);
+    }
+
+    @api
+    get selectedOptionsAriaLabel() {
+        return this._selectedOptionsAriaLabel;
+    }
+    set selectedOptionsAriaLabel(value) {
+        this._selectedOptionsAriaLabel =
+            typeof value === 'string'
+                ? value.trim()
+                : DEFAULT_SELECTED_OPTIONS_ARIA_LABEL;
     }
 
     @api

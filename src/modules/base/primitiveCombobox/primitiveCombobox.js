@@ -71,6 +71,7 @@ const DROPDOWN_LENGTHS = {
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
 const DEFAULT_PLACEHOLDER = 'Select an Option';
 const DEFAULT_PLACEHOLDER_WHEN_SEARCH_ALLOWED = 'Search...';
+const DEFAULT_SELECTED_OPTIONS_ARIA_LABEL = 'Selected Options';
 const DEFAULT_GROUP_NAME = 'ungrouped';
 
 // Default LWC message
@@ -99,6 +100,7 @@ export default class PrimitiveCombobox extends LightningElement {
     _removeSelectedOptions = false;
     _required = false;
     _search = this.computeSearch;
+    _selectedOptionsAriaLabel = DEFAULT_SELECTED_OPTIONS_ARIA_LABEL;
     _showClearInput = false;
     _value = [];
     _variant = VARIANTS.default;
@@ -327,6 +329,17 @@ export default class PrimitiveCombobox extends LightningElement {
     }
     set search(value) {
         this._search = typeof value === 'function' ? value : this.computeSearch;
+    }
+
+    @api
+    get selectedOptionsAriaLabel() {
+        return this._selectedOptionsAriaLabel;
+    }
+    set selectedOptionsAriaLabel(value) {
+        this._selectedOptionsAriaLabel =
+            typeof value === 'string'
+                ? value.trim()
+                : DEFAULT_SELECTED_OPTIONS_ARIA_LABEL;
     }
 
     @api

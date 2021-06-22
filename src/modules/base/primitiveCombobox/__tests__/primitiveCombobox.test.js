@@ -81,6 +81,7 @@ describe('PrimitiveCombobox', () => {
         expect(element.removeSelectedOptions).toBeFalsy();
         expect(element.required).toBeFalsy();
         expect(element.search).toBeInstanceOf(Function);
+        expect(element.selectedOptionsAriaLabel).toBe('Selected Options');
         expect(element.showClearInput).toBeFalsy();
         expect(element.validity).toMatchObject({});
         expect(element.value).toMatchObject([]);
@@ -811,6 +812,27 @@ describe('PrimitiveCombobox', () => {
             input.value = 'Some search term';
             input.dispatchEvent(new CustomEvent('input'));
             expect(mockSearch).toHaveBeenCalled();
+        });
+    });
+
+    // selected-options-aria-label
+    // Depends on isMultiSelect, value and options
+    it('selectedOptionsAriaLabel', () => {
+        const element = createElement('base-primitive-combobox', {
+            is: PrimitiveCombobox
+        });
+        document.body.appendChild(element);
+
+        element.options = options;
+        element.value = [options[1].value, options[0].value];
+        element.isMultiSelect = true;
+        element.selectedOptionsAriaLabel = 'A string label';
+
+        return Promise.resolve().then(() => {
+            const selectedOptions = element.shadowRoot.querySelector(
+                '.primitive-combobox__selected-options'
+            );
+            expect(selectedOptions.ariaLabel).toBe('A string label');
         });
     });
 
