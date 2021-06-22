@@ -149,11 +149,11 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['fill', 'contain'],
-            defaultValue: 'fill',
+            options: ['cover', 'contain'],
+            defaultValue: 'cover',
             description: 'the crop fit of the image',
             table: {
-                defaultValue: { summary: 'fill' },
+                defaultValue: { summary: 'cover' },
                 type: { summary: 'string' }
             }
         },

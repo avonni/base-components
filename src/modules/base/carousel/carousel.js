@@ -32,7 +32,7 @@ const i18n = {
 };
 
 const IMAGE_POSITIONS = { valid: ['top', 'bottom'], default: 'top' };
-const IMAGE_CROP_FITS = { valid: ['fill', 'contains'], default: 'fill' };
+const IMAGE_CROP_FITS = { valid: ['cover', 'contains'], default: 'cover' };
 export default class Carousel extends LightningElement {
     @api currentPanel;
     @api disableAutoRefresh;
@@ -64,7 +64,7 @@ export default class Carousel extends LightningElement {
     paginationItems = [];
     panelStyle;
     _connected = false;
-
+    _imageContainerHeight;
     connectedCallback() {
         if (!this._connected) {
             this.initCarousel();
@@ -236,18 +236,12 @@ export default class Carousel extends LightningElement {
         }
     }
     get imageContainerStyle() {
-        const height = window.innerHeight / this._itemsPerPanel;
-        return `min-width: 100%; min-height: 100%; height:${height}px`;
+        return `height: ${this._imageContainerHeight}px`;
     }
     get imageStyle() {
-        let imageStyle = `
-            width:100%;
-            height: 100%;
-        `;
-        if (this._itemImageCropFit === 'contain') {
-            imageStyle += 'object-fit: contain';
-        }
-        return imageStyle;
+        return `width:100%;
+                height: 100%;
+                object-fit: ${this._itemImageCropFit}`;
     }
 
     initializeCurrentPanel(numberOfPanels) {
@@ -388,8 +382,23 @@ export default class Carousel extends LightningElement {
         this.initializePaginationItems(numberOfPanels);
         this.initializePanels();
         this.initializeCarouselHeight();
+        this.initializeCarouselImageHeight();
     }
-
+    initializeCarouselImageHeight() {
+        switch (this.itemsPerPanel) {
+            case 5:
+                this._imageContainerHeight = 152;
+                break;
+            case 2:
+                this._imageContainerHeight = 370;
+                break;
+            case 3:
+                this._imageContainerHeight = 246;
+                break;
+            default:
+                this._imageContainerHeight = 747;
+        }
+    }
     onPanelSelect(event) {
         const currentTarget = event.currentTarget;
         const itemIndex = parseInt(currentTarget.dataset.index, 10);
