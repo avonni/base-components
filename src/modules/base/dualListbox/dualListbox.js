@@ -35,7 +35,8 @@ import {
     normalizeBoolean,
     normalizeString,
     assert,
-    getRealDOMId
+    getRealDOMId,
+    getListHeight
 } from 'c/utilsPrivate';
 import { classSet, formatLabel } from 'c/utils';
 import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
@@ -125,11 +126,6 @@ export default class DualListbox extends LightningElement {
     _oldIndex;
     _sourceBoxHeight;
     _selectedBoxHeight;
-    _rendered = false;
-    _sourceNoDescription = 0;
-    _sourceHasDescription = 0;
-    _selectedNoDescription = 0;
-    _selectedHasDescription = 0;
 
     _dropItSelected = false;
     _dropItSource = false;
@@ -139,7 +135,6 @@ export default class DualListbox extends LightningElement {
         this.classList.add('slds-form-element');
         this.keyboardInterface = this.selectKeyboardInterface();
 
-        this._connected = true;
         this.addRequiredOptionsToValue();
 
         // debounceInteraction since DualListbox has multiple focusable elements
@@ -156,7 +151,6 @@ export default class DualListbox extends LightningElement {
             // reset the optionToFocus otherwise dualListbox will steal the focus any time it's rerendered.
             this.optionToFocus = null;
         });
-        this.computedBothHeight();
     }
 
     renderedCallback() {
@@ -179,6 +173,7 @@ export default class DualListbox extends LightningElement {
             }
         }
         this.disabledButtons();
+        this.updateBoxesHeight();
     }
 
     @api
@@ -190,12 +185,10 @@ export default class DualListbox extends LightningElement {
         this._options = Array.isArray(value)
             ? JSON.parse(JSON.stringify(value))
             : [];
-        if (this._connected) {
-            this.computedColumnSourceHeight();
-            this.computedColumnSelectedHeight();
-        }
     }
-    @api messageWhenValueMissing = i18n.requiredError;
+
+    @api
+    messageWhenValueMissing = i18n.requiredError;
 
     @api
     get messageWhenRangeOverflow() {
@@ -268,7 +261,7 @@ export default class DualListbox extends LightningElement {
     set value(newValue) {
         this.updateHighlightedOptions(newValue);
         this._selectedValues = newValue || [];
-        if (this._connected) {
+        if (this.isConnected) {
             this.addRequiredOptionsToValue();
         }
     }
@@ -282,7 +275,7 @@ export default class DualListbox extends LightningElement {
         this._requiredOptions = Array.isArray(newValue)
             ? JSON.parse(JSON.stringify(newValue))
             : [];
-        if (this._connected) {
+        if (this.isConnected) {
             this.addRequiredOptionsToValue();
         }
     }
@@ -332,10 +325,6 @@ export default class DualListbox extends LightningElement {
         const number =
             typeof value === 'number' ? value : DEFAULT_MAX_VISIBLE_OPTIONS;
         this._maxVisibleOptions = parseInt(number, 10);
-        if (this._connected) {
-            this.computedColumnSourceHeight();
-            this.computedColumnSelectedHeight();
-        }
     }
 
     @api
@@ -557,173 +546,66 @@ export default class DualListbox extends LightningElement {
         };
     }
 
-    computeSourceIncrement(array) {
-        array.forEach((option) => {
-            if (option.description) {
-                this._sourceHasDescription++;
-            } else if (!option.description) {
-                this._sourceNoDescription++;
-            }
-        });
-    }
+    updateBoxesHeight() {
+        let overSelectedHeight = 0;
+        let overSourceHeight = 0;
 
-    computeSelectedIncrement(array) {
-        array.forEach((option) => {
-            if (option.description) {
-                this._selectedHasDescription++;
-            } else if (!option.description) {
-                this._selectedNoDescription++;
-            }
-        });
-    }
+        const sourceOptionsHeight = getListHeight(
+            this.template.querySelectorAll('li[data-role="source"]'),
+            this._maxVisibleOptions
+        );
 
-    computeHeight(noDescription, hasDescription) {
-        return 42.3 * noDescription + 57 * hasDescription;
-    }
-
-    computedColumnSourceHeight() {
-        this._sourceNoDescription = 0;
-        this._sourceHasDescription = 0;
-        if (this.computedSourceList.length > this._maxVisibleOptions) {
-            const newArray = this.computedSourceList.slice(
-                0,
-                this._maxVisibleOptions
-            );
-            this.computeSourceIncrement(newArray);
-            this._sourceBoxHeight = this.computeHeight(
-                this._sourceNoDescription,
-                this._sourceHasDescription
-            );
-        } else if (this.computedSourceList.length === this._maxVisibleOptions) {
-            this.computeSourceIncrement(this.computedSourceList);
-            this._sourceBoxHeight = this.computeHeight(
-                this._sourceNoDescription,
-                this._sourceHasDescription
-            );
-        } else if (this.computedSourceList.length < this._maxVisibleOptions) {
-            if (
-                this.computedSourceList.length >=
-                this.computedSelectedList.length
-            ) {
-                if (this._sourceHasDescription >= 1) {
-                    this.computeSourceIncrement(this.computedSourceList);
-                    this._sourceBoxHeight =
-                        this.computeHeight(
-                            this._sourceNoDescription,
-                            this._sourceHasDescription
-                        ) +
-                        57 *
-                            (this._maxVisibleOptions -
-                                this.computedSourceList.length);
-                } else if (this._sourceHasDescription === 0) {
-                    this._sourceBoxHeight =
-                        this.computeHeight(
-                            this._sourceNoDescription,
-                            this._sourceHasDescription
-                        ) +
-                        42.3 *
-                            (this._maxVisibleOptions -
-                                this.computedSourceList.length);
-                }
-            } else if (
-                this.computedSourceList.length <
-                this.computedSelectedList.length
-            ) {
-                this.computeSourceIncrement(this.computedSourceList);
-                this._sourceBoxHeight = this.computeHeight(
-                    this._sourceNoDescription,
-                    this._sourceHasDescription
-                );
-            }
-        }
-        return this._sourceBoxHeight;
-    }
-
-    computedColumnSelectedHeight() {
-        this._selectedNoDescription = 0;
-        this._selectedHasDescription = 0;
-        if (this.computedSelectedList.length > this._maxVisibleOptions) {
-            const newArray = this.computedSelectedList.slice(
-                0,
-                this._maxVisibleOptions
-            );
-            this.computeSelectedIncrement(newArray);
-            this._selectedBoxHeight = this.computeHeight(
-                this._selectedNoDescription,
-                this._selectedHasDescription
-            );
-        } else if (
-            this.computedSelectedList.length === this._maxVisibleOptions
+        if (
+            this.computedSourceList.length < this._maxVisibleOptions &&
+            this.computedSourceList.length !== 0
         ) {
-            this.computeSelectedIncrement(this.computedSelectedList);
-            this._selectedBoxHeight = this.computeHeight(
-                this._selectedNoDescription,
-                this._selectedHasDescription
-            );
-        } else if (this.computedSelectedList.length < this._maxVisibleOptions) {
-            this.computeSelectedIncrement(this.computedSelectedList);
-            if (this._selectedHasDescription > 1) {
-                this._selectedBoxHeight =
-                    this.computeHeight(
-                        this._selectedNoDescription,
-                        this._selectedHasDescription
-                    ) +
-                    57 *
-                        (this._maxVisibleOptions -
-                            this.computedSelectedList.length);
-            } else if (this._selectedHasDescription === 0) {
-                this._selectedBoxHeight =
-                    this.computeHeight(
-                        this._selectedNoDescription,
-                        this._selectedHasDescription
-                    ) +
-                    42.3 *
-                        (this._maxVisibleOptions -
-                            this.computedSelectedList.length);
-            }
-        }
-        return this._selectedBoxHeight;
-    }
+            overSourceHeight =
+                this.template.querySelector('li[data-role="source"]')
+                    .offsetHeight *
+                (this._maxVisibleOptions - this.computedSourceList.length);
+        } else overSourceHeight = 0;
 
-    computedBothHeight() {
-        this.computedColumnSourceHeight();
-        this.computedColumnSelectedHeight();
+        if (
+            this.computedSelectedList.length < this._maxVisibleOptions &&
+            this.computedSelectedList.length !== 0
+        ) {
+            overSelectedHeight =
+                this.template.querySelector('li[data-role="selected"]')
+                    .offsetHeight *
+                (this._maxVisibleOptions - this.computedSelectedList.length);
+        } else overSelectedHeight = 0;
+
+        this._selectedBoxHeight =
+            getListHeight(
+                this.template.querySelectorAll('li[data-role="selected"]'),
+                this._maxVisibleOptions
+            ) + overSelectedHeight;
+
+        if (this.searchEngine) {
+            this._sourceBoxHeight =
+                sourceOptionsHeight +
+                getListHeight(
+                    this.template.querySelector(
+                        '.avonni-dual-listbox-search-engine'
+                    )
+                ) +
+                overSourceHeight;
+        }
+        this._sourceBoxHeight = sourceOptionsHeight + overSourceHeight;
     }
 
     get sourceHeight() {
-        let sourceHeight = 0;
-        if (this.searchEngine) {
-            if (this._sourceBoxHeight < this._selectedBoxHeight) {
-                sourceHeight = `height: ${this._selectedBoxHeight - 48}px`;
-            } else if (this._sourceBoxHeight >= this._selectedBoxHeight) {
-                sourceHeight = `height: ${this._sourceBoxHeight}px`;
-            }
-        } else if (!this._searchEngine) {
-            if (this._sourceBoxHeight >= this._selectedBoxHeight) {
-                sourceHeight = `height: ${this._sourceBoxHeight}px`;
-            } else if (this._sourceBoxHeight < this._selectedBoxHeight) {
-                sourceHeight = `height: ${this._selectedBoxHeight}px`;
-            }
-        }
-        return sourceHeight;
+        return this.searchEngine &&
+            this._selectedBoxHeight > this._sourceBoxHeight
+            ? `height: ${this._selectedBoxHeight - 48}px`
+            : `height: ${this._sourceBoxHeight}px`;
     }
 
     get selectedHeight() {
-        let selectedHeight = 0;
-        if (this.searchEngine) {
-            if (this._sourceBoxHeight < this._selectedBoxHeight) {
-                selectedHeight = `height: ${this._selectedBoxHeight}px`;
-            } else if (this._sourceBoxHeight >= this._selectedBoxHeight) {
-                selectedHeight = `height: ${this._sourceBoxHeight + 48}px`;
-            }
-        } else if (!this._searchEngine) {
-            if (this._sourceBoxHeight >= this._selectedBoxHeight) {
-                selectedHeight = `height: ${this._sourceBoxHeight}px`;
-            } else if (this._sourceBoxHeight < this._selectedBoxHeight) {
-                selectedHeight = `height: ${this._selectedBoxHeight}px`;
-            }
-        }
-        return selectedHeight;
+        return this.searchEngine &&
+            this._selectedBoxHeight <= this._sourceBoxHeight
+            ? `height: ${this._selectedBoxHeight + 48}px`
+            : `height: ${this._sourceBoxHeight}px`;
     }
 
     get isLabelHidden() {
@@ -967,7 +849,7 @@ export default class DualListbox extends LightningElement {
         this.highlightedOptions.find((option) => {
             return this._selectedValues.indexOf(option);
         });
-        this.computedBothHeight();
+        this.updateBoxesHeight();
     }
 
     oldIndexValue(option) {
@@ -1020,7 +902,7 @@ export default class DualListbox extends LightningElement {
         this.updateFocusableOption(this.selectedList, toMove[0]);
         this.optionToFocus = null;
         this.dispatchChangeEvent(values);
-        this.computedBothHeight();
+        this.updateBoxesHeight();
     }
 
     disabledButtons() {
