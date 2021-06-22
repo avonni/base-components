@@ -112,7 +112,7 @@ const headers = [
     }
     // {
     //     unit: 'hour',
-    //     span: 4,
+    //     span: 6,
     //     label: '<H>'
     // }
     // {

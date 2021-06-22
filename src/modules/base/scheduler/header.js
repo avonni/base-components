@@ -45,6 +45,7 @@ export default class Header {
         this.millisecondsPerCol = props.millisecondsPerCol;
         this.numberOfColumns = props.numberOfColumns;
         this.childKey = null;
+        this.end = props.end;
         this._start = props.start;
         this._timeFrames = props.timeFrames;
         this._daysOfTheWeek = props.daysOfTheWeek;
@@ -116,6 +117,11 @@ export default class Header {
                 time: time
             });
             time += this.millisecondsPerCol;
+
+            if (this.end && time > this.end.getTime()) {
+                this.numberOfColumns = this.columns.length;
+                break;
+            }
         }
     }
 

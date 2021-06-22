@@ -316,8 +316,12 @@ export default class Scheduler extends LightningElement {
 
             const maxVisibleTime =
                 UNITS_IN_MS[this.visibleSpan.unit] * this.visibleSpan.span;
-            const columns =
-                Math.floor(maxVisibleTime / millisecondsPerCol) || 1;
+            const end = this.start.getTime() + maxVisibleTime;
+            const columns = this.computedNumberOfColumns(
+                unit,
+                millisecondsPerCol,
+                end
+            );
 
             this._referenceHeader = new Header({
                 unit: unit,
@@ -341,7 +345,7 @@ export default class Scheduler extends LightningElement {
             const millisecondsPerCol = UNITS_IN_MS[unit] * header.span;
             let headerObject;
 
-            // If the current header is the reference (it uses the visibleSpan unit)
+            // If the current header is the reference
             if (
                 reference &&
                 reference.unit === unit &&
@@ -351,31 +355,29 @@ export default class Scheduler extends LightningElement {
 
                 // If the current header is not the reference, but there is a reference header
             } else if (reference) {
-                let columns = 0;
-
-                // If the reference has a longer unit than the header
                 const referenceIsLonger =
                     UNITS_IN_MS[reference.unit] - UNITS_IN_MS[unit] > 0;
-                if (referenceIsLonger) {
-                    columns = this.maxColumnsInParent(header, parentHeader);
-                } else {
-                    // If the header has a longer unit than the reference
-                    const referenceEnd =
-                        reference.columns[reference.columns.length - 1].time +
-                        reference.millisecondsPerCol;
-                    let end = this.start.getTime();
+                const referenceEnd =
+                    reference.columns[reference.columns.length - 1].time +
+                    reference.millisecondsPerCol;
 
-                    while (end < referenceEnd) {
-                        columns += 1;
-                        end += millisecondsPerCol;
-                    }
-                }
+                const columns = referenceIsLonger
+                    ? this.maxColumnsInParent(header, parentHeader)
+                    : this.computedNumberOfColumns(
+                          unit,
+                          millisecondsPerCol,
+                          referenceEnd
+                      );
 
+                const end =
+                    referenceIsLonger &&
+                    new Date(referenceEnd - reference.millisecondsPerCol);
                 headerObject = new Header({
                     unit: unit,
                     span: header.span,
                     label: header.label,
                     start: this.start,
+                    end: end,
                     timeFrames: this.availableTimeFrames,
                     daysOfTheWeek: this.availableDaysOfTheWeek,
                     months: this.availableMonths,
@@ -411,6 +413,28 @@ export default class Scheduler extends LightningElement {
 
         this._headers = headerObjects;
         this.initHeaderColumnWidths();
+    }
+
+    computedNumberOfColumns(unit, timePerCol, end) {
+        let columns = 0;
+        let time = this.start.getTime();
+        let previousUnit;
+        const startUnit = getUnitFromTime(unit, time);
+
+        while (time < end) {
+            previousUnit = getUnitFromTime(unit, time);
+            columns += 1;
+            time += timePerCol;
+        }
+
+        // Add an extra column if the start date is not at the beginning of a unit.
+        // For example, the visible span is one month (one column allowed for unit "month"),
+        // but the start date is the 12th (two columns in the end).
+        const endUnit = getUnitFromTime(unit, time);
+        if (columns === 1 && (endUnit > startUnit || endUnit < previousUnit))
+            columns += 1;
+
+        return columns;
     }
 
     // maxVisibleColumns(header) {
@@ -502,10 +526,9 @@ export default class Scheduler extends LightningElement {
                     (headerObj) => headerObj.key === header.childKey
                 );
                 const childWidth = 100 / child.columns.length;
-                // const childSpan = child.millisecondsPerCol;
                 let time = this.start.getTime();
                 let childColumnIndex = 0;
-                console.log(header.columns);
+
                 header.columns.forEach(() => {
                     let width = 0;
                     let start = getUnitFromTime(header.unit, time);
@@ -517,7 +540,6 @@ export default class Scheduler extends LightningElement {
                         time = childColumn.time;
                         const previousStart = start;
                         start = getUnitFromTime(header.unit, time);
-                        // debugger
 
                         // Stop if the next child column belongs to the next header unit.
                         // previousStart is used to check if start went from a higher number to 0,
