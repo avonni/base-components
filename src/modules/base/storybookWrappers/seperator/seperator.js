@@ -1,4 +1,4 @@
-<!-- /**
+/**
  * BSD 3-Clause License
  *
  * Copyright (c) 2021, Avonni Labs, Inc.
@@ -28,21 +28,32 @@
  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */ -->
+ */
 
-<template>
-    <div class={computedContainerClass}>
-        <div class={computedLineOneClass}></div>
-        <template if:false={separatorContent}>
-            <div class={computedContentClass}>
-                <lightning-icon
-                    if:true={iconName}
-                    icon-name={iconName}
-                    size={iconSize}
-                ></lightning-icon>
-                <h1 if:true={label}>{label}</h1>
-            </div>
-        </template>
-        <div class={computedLineTwoClass}></div>
-    </div>
-</template>
+import { LightningElement, api } from 'lwc';
+import { classSet } from '../../utils/classSet';
+
+const DEFAULT_ALIGN_CONTENT = 'center';
+
+const DEFAULT_ICON_SIZE = 'medium';
+
+const DEFAULT_ORIENTATION = 'horizontal';
+
+const DEFAULT_ICON_POSITION = 'left';
+
+export default class Seperator extends LightningElement {
+    @api label;
+    @api iconName;
+    @api alignContent = DEFAULT_ALIGN_CONTENT;
+    @api iconSize = DEFAULT_ICON_SIZE;
+    @api orientation = DEFAULT_ORIENTATION;
+    @api iconPosition = DEFAULT_ICON_POSITION;
+
+    get computedPropContainerClass() {
+        return classSet('avonni-prop-container')
+            .add({
+                'prop-vertical': this.orientation === 'vertical'
+            })
+            .toString();
+    }
+}

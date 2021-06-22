@@ -31,18 +31,15 @@
  */ -->
 
 <template>
-    <div class={computedContainerClass}>
-        <div class={computedLineOneClass}></div>
-        <template if:false={separatorContent}>
-            <div class={computedContentClass}>
-                <lightning-icon
-                    if:true={iconName}
-                    icon-name={iconName}
-                    size={iconSize}
-                ></lightning-icon>
-                <h1 if:true={label}>{label}</h1>
-            </div>
-        </template>
-        <div class={computedLineTwoClass}></div>
+    <div class={computedPropContainerClass}>
+        <c-seperator
+            icon-name={iconName}
+            label={label}
+            icon-size={iconSize}
+            align-content={alignContent}
+            orientation={orientation}
+            icon-position={iconPosition}
+        >
+        </c-seperator>
     </div>
 </template>

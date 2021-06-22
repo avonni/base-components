@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from 'avonni/seperator';
+import Component from '../../storybookWrappers/seperator/seperator';
 
 customElements.define('ac-base-seperator', Component.CustomElementConstructor);
 

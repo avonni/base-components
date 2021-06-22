@@ -57,10 +57,6 @@ export default class Seperator extends LightningElement {
     _orientation = VALID_ORIENTATIONS;
     _iconPosition = VALID_ICON_POSITIONS;
 
-    renderedCallback() {
-        // console.log(this.seperatorContent);
-    }
-
     @api get alignContent() {
         return this._alignContent;
     }
@@ -106,11 +102,13 @@ export default class Seperator extends LightningElement {
     }
 
     get seperatorContent() {
-        return this.label || this.iconName ? false : true;
+        return this.label || this.iconName;
     }
 
-    get avonniComputedContainerClass() {
-        return classSet('slds-grid slds-grid_vertical-align-center slds-nowrap')
+    get computedContainerClass() {
+        return classSet(
+            'avonni-seperator_container slds-grid slds-grid_vertical-align-center slds-nowrap'
+        )
             .add({
                 'slds-grid_vertical slds-grid_align-center':
                     this.orientation === 'vertical'
@@ -118,7 +116,7 @@ export default class Seperator extends LightningElement {
             .toString();
     }
 
-    get avonniComputedLineOneClass() {
+    get computedLineOneClass() {
         return classSet('avonni-seperator_line-one')
             .add({
                 'slds-border_bottom slds-col':
@@ -129,7 +127,8 @@ export default class Seperator extends LightningElement {
             })
             .toString();
     }
-    get avonniComputedLineTwoClass() {
+
+    get computedLineTwoClass() {
         return classSet('avonni-seperator_line-two')
             .add({
                 'slds-border_bottom slds-col':
@@ -140,7 +139,7 @@ export default class Seperator extends LightningElement {
             })
             .toString();
     }
-    get avonniComputedContentClass() {
+    get computedContentClass() {
         return classSet(
             'slds-grid slds-vertical slds-grid_vertical-align-center slds-grid_align-center'
         )

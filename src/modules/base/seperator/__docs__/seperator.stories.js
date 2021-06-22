@@ -118,7 +118,7 @@ const Template = (args) => Seperator(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    iconName: 'utility:products',
-    label: 'Seperator',
+    iconName: 'utility:event',
+    label: 'Today',
     orientation: 'horizontal'
 };
