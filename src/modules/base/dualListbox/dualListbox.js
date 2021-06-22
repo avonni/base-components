@@ -1,9 +1,42 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { LightningElement, api } from 'lwc';
 import {
     normalizeBoolean,
     normalizeString,
     assert,
-    getRealDOMId
+    getRealDOMId,
+    getListHeight
 } from 'c/utilsPrivate';
 import { classSet, formatLabel } from 'c/utils';
 import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
@@ -16,12 +49,12 @@ const DEFAULT_REMOVE_BUTTON_ICON_NAME = 'utility:left';
 const DEFAULT_UP_BUTTON_ICON_NAME = 'utility:up';
 const DEFAULT_MAX_VISIBLE_OPTIONS = 5;
 
-const VALID_VARIANTS = {
+const LABEL_VARIANTS = {
     valid: ['standard', 'label-hidden', 'label-stacked'],
     default: 'standard'
 };
 
-const VALID_BUTTON_VARIANTS = {
+const BUTTON_VARIANTS = {
     valid: [
         'bare',
         'container',
@@ -34,12 +67,12 @@ const VALID_BUTTON_VARIANTS = {
     default: 'border'
 };
 
-const VALID_BUTTON_SIZES = {
+const BUTTON_SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
     default: 'medium'
 };
 
-const VALID_SIZES = { valid: ['small', 'medium', 'large'], default: 'medium' };
+const BOXES_SIZES = { valid: ['small', 'medium', 'large'], default: 'medium' };
 
 const i18n = {
     optionLockAssistiveText: 'Option Lock AssistiveText',
@@ -67,18 +100,19 @@ export default class DualListbox extends LightningElement {
     _requiredOptions = [];
     _options = [];
     _hideBottomDivider = false;
-    _buttonSize = VALID_BUTTON_SIZES.default;
-    _buttonVariant = VALID_BUTTON_VARIANTS.default;
+    _buttonSize = BUTTON_SIZES.default;
+    _buttonVariant = BUTTON_VARIANTS.default;
     _isLoading = false;
     _searchEngine = false;
-    _variant = VALID_VARIANTS.default;
+    _variant = LABEL_VARIANTS.default;
     _disabled;
     _disableReordering = false;
+    _draggable = false;
     _required = false;
     _maxVisibleOptions = DEFAULT_MAX_VISIBLE_OPTIONS;
     _min = DEFAULT_MIN;
     _max;
-    _size = VALID_SIZES.default;
+    _size = BOXES_SIZES.default;
 
     _selectedValues = [];
     highlightedOptions = [];
@@ -92,17 +126,15 @@ export default class DualListbox extends LightningElement {
     _oldIndex;
     _sourceBoxHeight;
     _selectedBoxHeight;
-    _rendered = false;
-    _sourceNoDescription = 0;
-    _sourceHasDescription = 0;
-    _selectedNoDescription = 0;
-    _selectedHasDescription = 0;
+
+    _dropItSelected = false;
+    _dropItSource = false;
+    _newIndex;
 
     connectedCallback() {
         this.classList.add('slds-form-element');
         this.keyboardInterface = this.selectKeyboardInterface();
 
-        this._connected = true;
         this.addRequiredOptionsToValue();
 
         // debounceInteraction since DualListbox has multiple focusable elements
@@ -119,8 +151,6 @@ export default class DualListbox extends LightningElement {
             // reset the optionToFocus otherwise dualListbox will steal the focus any time it's rerendered.
             this.optionToFocus = null;
         });
-        this.computedColumnSourceHeight();
-        this.computedColumnSelectedHeight();
     }
 
     renderedCallback() {
@@ -143,6 +173,7 @@ export default class DualListbox extends LightningElement {
             }
         }
         this.disabledButtons();
+        this.updateBoxesHeight();
     }
 
     @api
@@ -154,12 +185,10 @@ export default class DualListbox extends LightningElement {
         this._options = Array.isArray(value)
             ? JSON.parse(JSON.stringify(value))
             : [];
-        if (this._connected) {
-            this.computedColumnSourceHeight();
-            this.computedColumnSelectedHeight();
-        }
     }
-    @api messageWhenValueMissing = i18n.requiredError;
+
+    @api
+    messageWhenValueMissing = i18n.requiredError;
 
     @api
     get messageWhenRangeOverflow() {
@@ -232,7 +261,7 @@ export default class DualListbox extends LightningElement {
     set value(newValue) {
         this.updateHighlightedOptions(newValue);
         this._selectedValues = newValue || [];
-        if (this._connected) {
+        if (this.isConnected) {
             this.addRequiredOptionsToValue();
         }
     }
@@ -246,7 +275,7 @@ export default class DualListbox extends LightningElement {
         this._requiredOptions = Array.isArray(newValue)
             ? JSON.parse(JSON.stringify(newValue))
             : [];
-        if (this._connected) {
+        if (this.isConnected) {
             this.addRequiredOptionsToValue();
         }
     }
@@ -258,8 +287,8 @@ export default class DualListbox extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: VALID_VARIANTS.default,
-            validValues: VALID_VARIANTS.valid
+            fallbackValue: LABEL_VARIANTS.default,
+            validValues: LABEL_VARIANTS.valid
         });
     }
 
@@ -270,8 +299,8 @@ export default class DualListbox extends LightningElement {
 
     set buttonSize(size) {
         this._buttonSize = normalizeString(size, {
-            fallbackValue: VALID_BUTTON_SIZES.default,
-            validValues: VALID_BUTTON_SIZES.valid
+            fallbackValue: BUTTON_SIZES.default,
+            validValues: BUTTON_SIZES.valid
         });
     }
 
@@ -282,8 +311,8 @@ export default class DualListbox extends LightningElement {
 
     set buttonVariant(variant) {
         this._buttonVariant = normalizeString(variant, {
-            fallbackValue: VALID_BUTTON_VARIANTS.default,
-            validValues: VALID_BUTTON_VARIANTS.valid
+            fallbackValue: BUTTON_VARIANTS.default,
+            validValues: BUTTON_VARIANTS.valid
         });
     }
 
@@ -296,10 +325,6 @@ export default class DualListbox extends LightningElement {
         const number =
             typeof value === 'number' ? value : DEFAULT_MAX_VISIBLE_OPTIONS;
         this._maxVisibleOptions = parseInt(number, 10);
-        if (this._connected) {
-            this.computedColumnSourceHeight();
-            this.computedColumnSelectedHeight();
-        }
     }
 
     @api
@@ -332,14 +357,26 @@ export default class DualListbox extends LightningElement {
     }
 
     @api
+    get draggable() {
+        if (this.disabled) {
+            return false;
+        }
+        return this._draggable;
+    }
+
+    set draggable(value) {
+        this._draggable = normalizeBoolean(value);
+    }
+
+    @api
     get size() {
         return this._size;
     }
 
     set size(size) {
         this._size = normalizeString(size, {
-            fallbackValue: VALID_SIZES.default,
-            validValues: VALID_SIZES.valid
+            fallbackValue: BOXES_SIZES.default,
+            validValues: BOXES_SIZES.valid
         });
     }
 
@@ -396,6 +433,14 @@ export default class DualListbox extends LightningElement {
         );
     }
 
+    get computedSourceListbox() {
+        return this.template.querySelector('[data-source-list]');
+    }
+
+    get computedSelectedListbox() {
+        return this.template.querySelector('[data-selected-list]');
+    }
+
     get ariaDisabled() {
         return String(this.disabled);
     }
@@ -444,7 +489,7 @@ export default class DualListbox extends LightningElement {
                 }
             });
 
-            // add selected items in the given order
+            // add selected options in the given order
             this.value.forEach((optionValue) => {
                 const option = optionsMap[optionValue];
                 if (option) {
@@ -489,9 +534,9 @@ export default class DualListbox extends LightningElement {
         return {
             ...option,
             tabIndex: option.value === focusableValue ? '0' : '-1',
-            selected: isSelected ? 'true' : 'false',
-            primaryText: hasDescription ? option.label : '',
-            secondaryText: hasDescription ? hasDescription : '',
+            selected: isSelected ? true : false,
+            primaryText: option.description ? option.label : '',
+            secondaryText: option.description ? option.description : '',
             iconSize: option.iconSize
                 ? option.iconSize
                 : hasDescription
@@ -501,168 +546,66 @@ export default class DualListbox extends LightningElement {
         };
     }
 
-    computeSourceIncrement(array) {
-        array.forEach((option) => {
-            if (option.description) {
-                this._sourceHasDescription++;
-            } else if (!option.description) {
-                this._sourceNoDescription++;
-            }
-        });
-    }
+    updateBoxesHeight() {
+        let overSelectedHeight = 0;
+        let overSourceHeight = 0;
 
-    computeSelectedIncrement(array) {
-        array.forEach((option) => {
-            if (option.description) {
-                this._selectedHasDescription++;
-            } else if (!option.description) {
-                this._selectedNoDescription++;
-            }
-        });
-    }
+        const sourceOptionsHeight = getListHeight(
+            this.template.querySelectorAll('li[data-role="source"]'),
+            this._maxVisibleOptions
+        );
 
-    computeHeight(noDescription, hasDescription) {
-        return 42.3 * noDescription + 57 * hasDescription;
-    }
-
-    computedColumnSourceHeight() {
-        this._sourceNoDescription = 0;
-        this._sourceHasDescription = 0;
-        if (this.computedSourceList.length > this._maxVisibleOptions) {
-            const newArray = this.computedSourceList.slice(
-                0,
-                this._maxVisibleOptions
-            );
-            this.computeSourceIncrement(newArray);
-            this._sourceBoxHeight = this.computeHeight(
-                this._sourceNoDescription,
-                this._sourceHasDescription
-            );
-        } else if (this.computedSourceList.length === this._maxVisibleOptions) {
-            this.computeSourceIncrement(this.computedSourceList);
-            this._sourceBoxHeight = this.computeHeight(
-                this._sourceNoDescription,
-                this._sourceHasDescription
-            );
-        } else if (this.computedSourceList.length < this._maxVisibleOptions) {
-            if (
-                this.computedSourceList.length >=
-                this.computedSelectedList.length
-            ) {
-                if (this._sourceHasDescription >= 1) {
-                    this.computeSourceIncrement(this.computedSourceList);
-                    this._sourceBoxHeight =
-                        this.computeHeight(
-                            this._sourceNoDescription,
-                            this._sourceHasDescription
-                        ) +
-                        57 *
-                            (this._maxVisibleOptions -
-                                this.computedSourceList.length);
-                } else if (this._sourceHasDescription === 0) {
-                    this._sourceBoxHeight =
-                        this.computeHeight(
-                            this._sourceNoDescription,
-                            this._sourceHasDescription
-                        ) +
-                        42.3 *
-                            (this._maxVisibleOptions -
-                                this.computedSourceList.length);
-                }
-            } else if (
-                this.computedSourceList.length <
-                this.computedSelectedList.length
-            ) {
-                this.computeSourceIncrement(this.computedSourceList);
-                this._sourceBoxHeight = this.computeHeight(
-                    this._sourceNoDescription,
-                    this._sourceHasDescription
-                );
-            }
-        }
-        return this._sourceBoxHeight;
-    }
-
-    computedColumnSelectedHeight() {
-        this._selectedNoDescription = 0;
-        this._selectedHasDescription = 0;
-        if (this.computedSelectedList.length > this._maxVisibleOptions) {
-            const newArray = this.computedSelectedList.slice(
-                0,
-                this._maxVisibleOptions
-            );
-            this.computeSelectedIncrement(newArray);
-            this._selectedBoxHeight = this.computeHeight(
-                this._selectedNoDescription,
-                this._selectedHasDescription
-            );
-        } else if (
-            this.computedSelectedList.length === this._maxVisibleOptions
+        if (
+            this.computedSourceList.length < this._maxVisibleOptions &&
+            this.computedSourceList.length !== 0
         ) {
-            this.computeSelectedIncrement(this.computedSelectedList);
-            this._selectedBoxHeight = this.computeHeight(
-                this._selectedNoDescription,
-                this._selectedHasDescription
-            );
-        } else if (this.computedSelectedList.length < this._maxVisibleOptions) {
-            this.computeSelectedIncrement(this.computedSelectedList);
-            if (this._selectedHasDescription > 1) {
-                this._selectedBoxHeight =
-                    this.computeHeight(
-                        this._selectedNoDescription,
-                        this._selectedHasDescription
-                    ) +
-                    57 *
-                        (this._maxVisibleOptions -
-                            this.computedSelectedList.length);
-            } else if (this._selectedHasDescription === 0) {
-                this._selectedBoxHeight =
-                    this.computeHeight(
-                        this._selectedNoDescription,
-                        this._selectedHasDescription
-                    ) +
-                    42.3 *
-                        (this._maxVisibleOptions -
-                            this.computedSelectedList.length);
-            }
+            overSourceHeight =
+                this.template.querySelector('li[data-role="source"]')
+                    .offsetHeight *
+                (this._maxVisibleOptions - this.computedSourceList.length);
+        } else overSourceHeight = 0;
+
+        if (
+            this.computedSelectedList.length < this._maxVisibleOptions &&
+            this.computedSelectedList.length !== 0
+        ) {
+            overSelectedHeight =
+                this.template.querySelector('li[data-role="selected"]')
+                    .offsetHeight *
+                (this._maxVisibleOptions - this.computedSelectedList.length);
+        } else overSelectedHeight = 0;
+
+        this._selectedBoxHeight =
+            getListHeight(
+                this.template.querySelectorAll('li[data-role="selected"]'),
+                this._maxVisibleOptions
+            ) + overSelectedHeight;
+
+        if (this.searchEngine) {
+            this._sourceBoxHeight =
+                sourceOptionsHeight +
+                getListHeight(
+                    this.template.querySelector(
+                        '.avonni-dual-listbox-search-engine'
+                    )
+                ) +
+                overSourceHeight;
         }
-        return this._selectedBoxHeight;
+        this._sourceBoxHeight = sourceOptionsHeight + overSourceHeight;
     }
 
     get sourceHeight() {
-        let sourceHeight = 0;
-        if (this.searchEngine) {
-            if (this._sourceBoxHeight < this._selectedBoxHeight) {
-                sourceHeight = `height: ${this._selectedBoxHeight - 48}px`;
-            } else if (this._sourceBoxHeight >= this._selectedBoxHeight) {
-                sourceHeight = `height: ${this._sourceBoxHeight}px`;
-            }
-        } else if (!this._searchEngine) {
-            if (this._sourceBoxHeight >= this._selectedBoxHeight) {
-                sourceHeight = `height: ${this._sourceBoxHeight}px`;
-            } else if (this._sourceBoxHeight < this._selectedBoxHeight) {
-                sourceHeight = `height: ${this._selectedBoxHeight}px`;
-            }
-        }
-        return sourceHeight;
+        return this.searchEngine &&
+            this._selectedBoxHeight > this._sourceBoxHeight
+            ? `height: ${this._selectedBoxHeight - 48}px`
+            : `height: ${this._sourceBoxHeight}px`;
     }
 
     get selectedHeight() {
-        let selectedHeight = 0;
-        if (this.searchEngine) {
-            if (this._sourceBoxHeight < this._selectedBoxHeight) {
-                selectedHeight = `height: ${this._selectedBoxHeight}px`;
-            } else if (this._sourceBoxHeight >= this._selectedBoxHeight) {
-                selectedHeight = `height: ${this._sourceBoxHeight + 48}px`;
-            }
-        } else if (!this._searchEngine) {
-            if (this._sourceBoxHeight >= this._selectedBoxHeight) {
-                selectedHeight = `height: ${this._sourceBoxHeight}px`;
-            } else if (this._sourceBoxHeight < this._selectedBoxHeight) {
-                selectedHeight = `height: ${this._selectedBoxHeight}px`;
-            }
-        }
-        return selectedHeight;
+        return this.searchEngine &&
+            this._selectedBoxHeight <= this._sourceBoxHeight
+            ? `height: ${this._selectedBoxHeight + 48}px`
+            : `height: ${this._sourceBoxHeight}px`;
     }
 
     get isLabelHidden() {
@@ -802,9 +745,21 @@ export default class DualListbox extends LightningElement {
         this.moveOptionsBetweenLists(true, true);
     }
 
+    handleDragRight() {
+        this.interactingState.interacting();
+        this.moveOptionsBetweenLists(true, false);
+        this._dropItSelected = false;
+    }
+
     handleLeftButtonClick() {
         this.interactingState.interacting();
         this.moveOptionsBetweenLists(false, true);
+    }
+
+    handleDragLeft() {
+        this.interactingState.interacting();
+        this.moveOptionsBetweenLists(false, false);
+        this._dropItSource = false;
     }
 
     handleUpButtonClick() {
@@ -894,18 +849,19 @@ export default class DualListbox extends LightningElement {
         this.highlightedOptions.find((option) => {
             return this._selectedValues.indexOf(option);
         });
-        this.computedColumnSourceHeight();
-        this.computedColumnSelectedHeight();
+        this.updateBoxesHeight();
     }
 
     oldIndexValue(option) {
         const options = this.template.querySelector(
             `div[data-value='${option}']`
         );
-        const index = options.getAttribute('data-index');
-        if (index === '0') {
-            this._oldIndex = 0;
-        } else this._oldIndex = index - 1;
+        if (options) {
+            const index = options.getAttribute('data-index');
+            if (index === '0') {
+                this._oldIndex = 0;
+            } else this._oldIndex = index - 1;
+        }
     }
 
     changeOrderOfOptionsInList(moveUp) {
@@ -946,8 +902,7 @@ export default class DualListbox extends LightningElement {
         this.updateFocusableOption(this.selectedList, toMove[0]);
         this.optionToFocus = null;
         this.dispatchChangeEvent(values);
-        this.computedColumnSourceHeight();
-        this.computedColumnSelectedHeight();
+        this.updateBoxesHeight();
     }
 
     disabledButtons() {
@@ -1157,5 +1112,83 @@ export default class DualListbox extends LightningElement {
         if (!isSame) {
             this.highlightedOptions = [];
         }
+    }
+
+    handleDragStartSource(event) {
+        event.currentTarget.classList.add('avonni-dual-listbox-dragging');
+    }
+
+    handleDragEndSource(event) {
+        event.preventDefault();
+        event.currentTarget.classList.remove('avonni-dual-listbox-dragging');
+        if (this._dropItSelected) {
+            if (
+                this.highlightedOptions.includes(
+                    event.currentTarget.getAttribute('data-value')
+                )
+            ) {
+                this.handleDragRight();
+            }
+        }
+    }
+
+    handleDragStartSelected(event) {
+        event.currentTarget.classList.add('avonni-dual-listbox-dragging');
+    }
+
+    handleDragEndSelected(event) {
+        event.preventDefault();
+        event.currentTarget.classList.remove('avonni-dual-listbox-dragging');
+        if (this._dropItSource) {
+            if (
+                this.highlightedOptions.includes(
+                    event.currentTarget.getAttribute('data-value')
+                )
+            ) {
+                this.handleDragLeft();
+            }
+        } else if (!this._dropItSource) {
+            if (!this._disableReordering) {
+                const values = this.computedSelectedList.map(
+                    (option) => option.value
+                );
+                const elementList = Array.from(
+                    this.getElementsOfList(this.selectedList)
+                );
+                const swappingIndex = Number(
+                    event.target.getAttribute('data-index')
+                );
+                this.swapOptions(
+                    swappingIndex,
+                    this._newIndex,
+                    values,
+                    elementList
+                );
+                this._selectedValues = values;
+            }
+        }
+    }
+
+    handleDragOverSource(event) {
+        event.preventDefault();
+        this._dropItSource = true;
+    }
+
+    handleDragLeaveSource() {
+        this._dropItSource = false;
+    }
+
+    handleDragOverSelected(event) {
+        event.preventDefault();
+        this._dropItSelected = true;
+    }
+
+    handleDragLeaveSelected() {
+        this._dropItSelected = false;
+    }
+
+    handleDragOver(event) {
+        event.preventDefault();
+        this._newIndex = Number(event.target.getAttribute('data-index'));
     }
 }

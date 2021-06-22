@@ -1,3 +1,35 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { LightningElement, api } from 'lwc';
 import {
     normalizeString,
@@ -6,16 +38,17 @@ import {
 } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-const THEMES = {
+const ITEM_THEMES = {
     valid: ['default', 'shade', 'inverse'],
     default: 'default'
 };
 
-const VARIANTS = {
+const RELATIONSHIP_GRAPH_GROUP_VARIANTS = {
     valid: ['horizontal', 'vertical'],
     default: 'horizontal'
 };
-const POSITIONS = {
+
+const ACTIONS_POSITIONS = {
     valid: ['top', 'bottom'],
     default: 'top'
 };
@@ -35,16 +68,16 @@ export default class RelationshipGraph extends LightningElement {
     selectedItemPosition;
     inlineHeader;
 
-    _variant = VARIANTS.default;
+    _variant = RELATIONSHIP_GRAPH_GROUP_VARIANTS.default;
     _actions = [];
     _selectedItemName;
     _selectedItem;
     _groups = [];
     _groupActions = [];
-    _groupActionsPosition = POSITIONS.default;
-    _groupTheme = THEMES.default;
+    _groupActionsPosition = ACTIONS_POSITIONS.default;
+    _groupTheme = ITEM_THEMES.default;
     _itemActions = [];
-    _itemTheme = THEMES.default;
+    _itemTheme = ITEM_THEMES.default;
     _hideItemsCount = false;
 
     connectedCallback() {
@@ -65,8 +98,8 @@ export default class RelationshipGraph extends LightningElement {
     }
     set variant(value) {
         this._variant = normalizeString(value, {
-            fallbackValue: VARIANTS.default,
-            validValues: VARIANTS.valid
+            fallbackValue: RELATIONSHIP_GRAPH_GROUP_VARIANTS.default,
+            validValues: RELATIONSHIP_GRAPH_GROUP_VARIANTS.valid
         });
     }
 
@@ -115,8 +148,8 @@ export default class RelationshipGraph extends LightningElement {
     }
     set groupActionsPosition(value) {
         this._groupActionsPosition = normalizeString(value, {
-            fallbackValue: POSITIONS.default,
-            validValues: POSITIONS.valid
+            fallbackValue: ACTIONS_POSITIONS.default,
+            validValues: ACTIONS_POSITIONS.valid
         });
     }
 
@@ -126,8 +159,8 @@ export default class RelationshipGraph extends LightningElement {
     }
     set groupTheme(value) {
         this._groupTheme = normalizeString(value, {
-            fallbackValue: THEMES.default,
-            validValues: THEMES.valid
+            fallbackValue: ITEM_THEMES.default,
+            validValues: ITEM_THEMES.valid
         });
     }
 
@@ -145,8 +178,8 @@ export default class RelationshipGraph extends LightningElement {
     }
     set itemTheme(value) {
         this._itemTheme = normalizeString(value, {
-            fallbackValue: THEMES.default,
-            validValues: THEMES.valid
+            fallbackValue: ITEM_THEMES.default,
+            validValues: ITEM_THEMES.valid
         });
     }
 

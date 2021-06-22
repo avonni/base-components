@@ -1,3 +1,35 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { createElement } from 'lwc';
 import Avatar from 'c/avatar';
 
@@ -1016,6 +1048,94 @@ describe('Avatar', () => {
                 'c-media-object'
             );
             expect(mediaObject.className).toBe('slds-text-align_right');
+        });
+    });
+    // tags
+    it('Avatar with default tags', () => {
+        const tags = [{ label: 'default', variant: 'default' }];
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+        document.body.appendChild(element);
+        element.tags = tags;
+        return Promise.resolve().then(() => {
+            const badge = element.shadowRoot.querySelector('lightning-badge');
+            expect(badge.className).toBe('slds-badge');
+            expect(badge.label).toBe('default');
+        });
+    });
+
+    it('Avatar with inverse tags', () => {
+        const tags = [{ label: 'inverse', variant: 'inverse' }];
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+        document.body.appendChild(element);
+        element.tags = tags;
+        return Promise.resolve().then(() => {
+            const badge = element.shadowRoot.querySelector('lightning-badge');
+            expect(badge.className).toBe('slds-badge_inverse');
+            expect(badge.label).toBe('inverse');
+        });
+    });
+
+    it('Avatar with lightest tags', () => {
+        const tags = [{ label: 'lightest', variant: 'lightest' }];
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+
+        document.body.appendChild(element);
+        element.tags = tags;
+        return Promise.resolve().then(() => {
+            const badge = element.shadowRoot.querySelector('lightning-badge');
+            expect(badge.className).toBe('slds-badge_lightest');
+            expect(badge.label).toBe('lightest');
+        });
+    });
+
+    it('Avatar with success tags', () => {
+        const tags = [{ label: 'success', variant: 'success' }];
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+
+        document.body.appendChild(element);
+        element.tags = tags;
+        return Promise.resolve().then(() => {
+            const badge = element.shadowRoot.querySelector('lightning-badge');
+            expect(badge.className).toBe('slds-theme_success');
+            expect(badge.label).toBe('success');
+        });
+    });
+
+    it('Avatar with warning tags', () => {
+        const tags = [{ label: 'warning', variant: 'warning' }];
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+
+        document.body.appendChild(element);
+        element.tags = tags;
+        return Promise.resolve().then(() => {
+            const badge = element.shadowRoot.querySelector('lightning-badge');
+            expect(badge.className).toBe('slds-theme_warning');
+            expect(badge.label).toBe('warning');
+        });
+    });
+
+    it('Avatar with error tags', () => {
+        const tags = [{ label: 'error', variant: 'error' }];
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+
+        document.body.appendChild(element);
+        element.tags = tags;
+        return Promise.resolve().then(() => {
+            const badge = element.shadowRoot.querySelector('lightning-badge');
+            expect(badge.className).toBe('slds-theme_error');
+            expect(badge.label).toBe('error');
         });
     });
 });

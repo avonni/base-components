@@ -1,3 +1,35 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { LightningElement, api } from 'lwc';
 import {
     colorType,
@@ -18,9 +50,9 @@ const validVariants = {valid: [
     'label-stacked'
 ], default: 'standard'};
 
-const validTypes = {valid: ['base', 'custom', 'predefined'], default: 'base'};
+const LABEL_TYPES = {valid: ['base', 'custom', 'predefined'], default: 'base'};
 
-const validMenuVariants = {valid: [
+const MENU_VARIANTS = {valid: [
     'bare',
     'container',
     'border',
@@ -29,9 +61,9 @@ const validMenuVariants = {valid: [
     'border-inverse'
 ], default: 'border'};
 
-const validMenuIconSizes = {valid: ['xx-small', 'x-small', 'small', 'medium', 'large'], default: 'x-small'};
+const MENU_ICON_SIZES = {valid: ['xx-small', 'x-small', 'small', 'medium', 'large'], default: 'x-small'};
 
-const validMenuAlignments = {valid: [
+const MENU_ALIGNMENTS = {valid: [
     'left',
     'center',
     'right',
@@ -83,10 +115,10 @@ export default class ColorPicker extends LightningElement {
 
     _value;
     _variant = validVariants.default;
-    _type = validTypes.default;
-    _menuVariant = validMenuVariants.default;
-    _menuIconSize = validMenuIconSizes.default;
-    _menuAlignment = validMenuAlignments.default;
+    _type = LABEL_TYPES.default;
+    _menuVariant = MENU_VARIANTS.default;
+    _menuIconSize = MENU_ICON_SIZES.default;
+    _menuAlignment = MENU_ALIGNMENTS.default;
     _disabled = false;
     _isLoading = false;
     _readOnly = false;
@@ -148,8 +180,8 @@ export default class ColorPicker extends LightningElement {
 
     set type(type) {
         this._type = normalizeString(type, {
-            fallbackValue: validTypes.default,
-            validValues: validTypes.valid
+            fallbackValue: LABEL_TYPES.default,
+            validValues: LABEL_TYPES.valid
         });
     }
 
@@ -160,8 +192,8 @@ export default class ColorPicker extends LightningElement {
 
     set menuVariant(variant) {
         this._menuVariant = normalizeString(variant, {
-            fallbackValue: validMenuVariants.default,
-            validValues: validMenuVariants.valid
+            fallbackValue: MENU_VARIANTS.default,
+            validValues: MENU_VARIANTS.valid
         });
     }
 
@@ -172,8 +204,8 @@ export default class ColorPicker extends LightningElement {
 
     set menuIconSize(size) {
         this._menuIconSize = normalizeString(size, {
-            fallbackValue: validMenuIconSizes.default,
-            validValues: validMenuIconSizes.valid
+            fallbackValue: MENU_ICON_SIZES.default,
+            validValues: MENU_ICON_SIZES.valid
         });
     }
 
@@ -184,8 +216,8 @@ export default class ColorPicker extends LightningElement {
 
     set menuAlignment(value) {
         this._menuAlignment = normalizeString(value, {
-            fallbackValue: validMenuAlignments.default,
-            validValues: validMenuAlignments.valid
+            fallbackValue: MENU_ALIGNMENTS.default,
+            validValues: MENU_ALIGNMENTS.valid
         });
     }
 
