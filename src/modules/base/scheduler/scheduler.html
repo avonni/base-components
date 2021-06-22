@@ -59,14 +59,17 @@
                             data-key={header.key}
                         >
                             <template
-                                for:each={header.columnLabels}
-                                for:item="label"
+                                for:each={header.columns}
+                                for:item="column"
+                                for:index="index"
                             >
                                 <th
-                                    key={generateKey}
+                                    key={column.time}
                                     class="slds-border_right slds-th__action slds-col slds-grid slds-grid_vertical-align-center slds-grid_align-center"
                                 >
-                                    <span class="slds-truncate">{label}</span>
+                                    <span class="slds-truncate"
+                                        >{column.label}</span
+                                    >
                                 </th>
                             </template>
                         </tr>

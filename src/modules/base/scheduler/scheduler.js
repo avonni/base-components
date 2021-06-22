@@ -32,12 +32,12 @@
 
 import { LightningElement, api } from 'lwc';
 import { normalizeArray, normalizeString } from 'c/utilsPrivate';
-import { generateUniqueId } from 'c/utils';
 import {
     dateObjectFrom,
     allowedHoursInUnit,
     allowedDaysInUnit,
-    allowedMinutesInUnit
+    allowedMinutesInUnit,
+    getUnitFromTime
 } from './dateUtils';
 import {
     EVENTS_THEMES,
@@ -71,6 +71,7 @@ export default class Scheduler extends LightningElement {
     _theme = THEMES.default;
     _visibleSpan = DEFAULT_VISIBLE_SPAN;
 
+    _referenceHeader;
     scheduleRows = [];
 
     connectedCallback() {
@@ -86,15 +87,18 @@ export default class Scheduler extends LightningElement {
         const thead = this.template.querySelector('thead');
         datatableCol.style.paddingTop = `${thead.offsetHeight - 34}px`;
 
-        // Set the header columns width
-        const headerRows = this.template.querySelectorAll('thead tr');
+        // Get the rows and sort them from the shortest unit to the longest
+        const headerRows = Array.from(
+            this.template.querySelectorAll('thead tr')
+        ).reverse();
         headerRows.forEach((row) => {
             const header = this.headers.find((headerObj) => {
                 return headerObj.key === row.dataset.key;
             });
+
             const cells = row.querySelectorAll('th');
-            cells.forEach((cell) => {
-                cell.style.maxWidth = header.columnMaxWidth;
+            cells.forEach((cell, index) => {
+                cell.style.width = `${header.columnWidths[index]}%`;
             });
         });
     }
@@ -279,10 +283,6 @@ export default class Scheduler extends LightningElement {
         }
     }
 
-    get generateKey() {
-        return generateUniqueId();
-    }
-
     get palette() {
         return this.customEventsPalette.length
             ? this.customEventsPalette
@@ -290,7 +290,7 @@ export default class Scheduler extends LightningElement {
     }
 
     initHeaders() {
-        // Sort the headers from the biggest unit to the smallest
+        // Sort the headers from the longest unit to the shortest
         const sortedHeaders = [...this.headers].sort(
             (firstHeader, secondHeader) => {
                 const firstIndex = UNITS.findIndex(
@@ -303,45 +303,120 @@ export default class Scheduler extends LightningElement {
             }
         );
 
-        let parentHeader;
-        const headerObjects = sortedHeaders.map((header) => {
-            const unit = header.unit;
-            const millisecondsPerCol = UNITS_IN_MS[unit] * header.span;
-            const columnsInVisibleSpan = this.maxVisibleColumns(header);
-            const columnsInParent = parentHeader
-                ? this.maxColumnsInParent(header, parentHeader)
-                : 0;
-            const columns =
-                columnsInParent && columnsInParent < columnsInVisibleSpan
-                    ? columnsInParent
-                    : columnsInVisibleSpan;
+        // The reference header is the header using the visibleSpan unit
+        const referenceHeaderIndex = sortedHeaders.findIndex(
+            (header) => header.unit === this.visibleSpan.unit
+        );
 
-            const headerObject = new Header({
-                unit: header.unit,
-                span: header.span,
+        if (!isNaN(referenceHeaderIndex)) {
+            const header = sortedHeaders[referenceHeaderIndex];
+            const unit = header.unit;
+            const span = header.span;
+            const millisecondsPerCol = UNITS_IN_MS[unit] * span;
+
+            const maxVisibleTime =
+                UNITS_IN_MS[this.visibleSpan.unit] * this.visibleSpan.span;
+            const columns =
+                Math.floor(maxVisibleTime / millisecondsPerCol) || 1;
+
+            this._referenceHeader = new Header({
+                unit: unit,
+                span: span,
                 label: header.label,
                 start: this.start,
                 timeFrames: this.availableTimeFrames,
                 daysOfTheWeek: this.availableDaysOfTheWeek,
                 months: this.availableMonths,
                 millisecondsPerCol: millisecondsPerCol,
-                numberOfColumns: columns
+                numberOfColumns: columns,
+                isReference: true
             });
+        }
 
+        const headerObjects = [];
+        const reference = this._referenceHeader;
+        let parentHeader;
+        sortedHeaders.forEach((header) => {
+            const unit = header.unit;
+            const millisecondsPerCol = UNITS_IN_MS[unit] * header.span;
+            let headerObject;
+
+            // If the current header is the reference (it uses the visibleSpan unit)
+            if (
+                reference &&
+                reference.unit === unit &&
+                reference.label === header.label
+            ) {
+                headerObject = reference;
+
+                // If the current header is not the reference, but there is a reference header
+            } else if (reference) {
+                let columns = 0;
+
+                // If the reference has a longer unit than the header
+                const referenceIsLonger =
+                    UNITS_IN_MS[reference.unit] - UNITS_IN_MS[unit] > 0;
+                if (referenceIsLonger) {
+                    columns = this.maxColumnsInParent(header, parentHeader);
+                } else {
+                    // If the header has a longer unit than the reference
+                    const referenceEnd =
+                        reference.columns[reference.columns.length - 1].time +
+                        reference.millisecondsPerCol;
+                    let end = this.start.getTime();
+
+                    while (end < referenceEnd) {
+                        columns += 1;
+                        end += millisecondsPerCol;
+                    }
+                }
+
+                headerObject = new Header({
+                    unit: unit,
+                    span: header.span,
+                    label: header.label,
+                    start: this.start,
+                    timeFrames: this.availableTimeFrames,
+                    daysOfTheWeek: this.availableDaysOfTheWeek,
+                    months: this.availableMonths,
+                    millisecondsPerCol: millisecondsPerCol,
+                    numberOfColumns: columns
+                });
+
+                // If there is no reference header (no header uses the visibleSpan unit)
+            } else {
+                // const columnsInVisibleSpan = this.maxVisibleColumns(header);
+                // const columnsInParent = parentHeader
+                //     ? this.maxColumnsInParent(header, parentHeader)
+                //     : 0;
+                // const columns =
+                //     columnsInParent && columnsInParent < columnsInVisibleSpan
+                //         ? columnsInParent
+                //         : columnsInVisibleSpan;
+                // if (parentHeader) {
+                //     const allowedUnits = this.maxAllowedUnitsInParent(
+                //         header.unit,
+                //         parentHeader.unit
+                //     );
+                //     parentHeader.numberOfChildColumnsInOneSpan = Math.floor(allowedUnits / header.span);
+                // }
+            }
+
+            if (parentHeader) {
+                parentHeader.childKey = headerObject.key;
+            }
             parentHeader = headerObject;
-            return headerObject;
+            headerObjects.push(headerObject);
         });
 
         this._headers = headerObjects;
+        this.initHeaderColumnWidths();
     }
 
-    maxVisibleColumns(header) {
-        const allowedUnits = this.maxAllowedUnitsInParent(
-            header.unit,
-            this.visibleSpan.unit
-        );
-        return Math.floor(allowedUnits / header.span) * this.visibleSpan.span;
-    }
+    // maxVisibleColumns(header) {
+    //     const maxVisibleTime = UNITS_IN_MS[this.visibleSpan.unit] * this.visibleSpan.span;
+    //     return Math.floor(maxVisibleTime / UNITS_IN_MS[header.unit] / header.span) || 1;
+    // }
 
     maxColumnsInParent(header, parentHeader) {
         const allowedUnits = this.maxAllowedUnitsInParent(
@@ -412,9 +487,58 @@ export default class Scheduler extends LightningElement {
     }
 
     updateRowColumns() {
-        const headerCols = this.headers[this.headers.length - 1].columnLabels;
+        const headerCols = this.headers[this.headers.length - 1].columns;
         this.scheduleRows.forEach((row) => {
             row.generateColumns(headerCols);
+        });
+    }
+
+    initHeaderColumnWidths() {
+        this.headers.forEach((header) => {
+            // If the header has a child header,
+            // columns may be smaller than their full possible time span
+            if (header.childKey) {
+                const child = this.headers.find(
+                    (headerObj) => headerObj.key === header.childKey
+                );
+                const childWidth = 100 / child.columns.length;
+                // const childSpan = child.millisecondsPerCol;
+                let time = this.start.getTime();
+                let childColumnIndex = 0;
+                console.log(header.columns);
+                header.columns.forEach(() => {
+                    let width = 0;
+                    let start = getUnitFromTime(header.unit, time);
+                    const end = header.unit === 'week' ? start + 7 : start + 1;
+
+                    // Stop if there are no child columns left
+                    while (childColumnIndex < child.columns.length) {
+                        const childColumn = child.columns[childColumnIndex];
+                        time = childColumn.time;
+                        const previousStart = start;
+                        start = getUnitFromTime(header.unit, time);
+                        // debugger
+
+                        // Stop if the next child column belongs to the next header unit.
+                        // previousStart is used to check if start went from a higher number to 0,
+                        // for example between December and January
+                        if (start >= end || start < previousStart) break;
+                        childColumnIndex += 1;
+                        width += childWidth;
+                    }
+
+                    header.columnWidths.push(width);
+                });
+
+                // If the header has a shorter time unit than the reference header,
+                // columns will always take their full possible span.
+                // All columns have the same width.
+            } else {
+                const columnWidth = 100 / header.columns.length;
+                header.columns.forEach(() => {
+                    header.columnWidths.push(columnWidth);
+                });
+            }
         });
     }
 

@@ -264,9 +264,37 @@ const allowedDaysInUnit = (allowedDaysInAWeek, unit) => {
     return daysInUnit;
 };
 
+/**
+ * Uses the right Date get method, depending on the unit
+ * @param {string} unit - The unit (minute, hour, day, week, month or year)
+ * @param {number} time - The timestamp or the date
+ * @returns {number} Number of units in the date. If the unit is 'week', returns the number of days
+ */
+const getUnitFromTime = (unit, time) => {
+    const date = dateObjectFrom(time);
+    if (!date) return 0;
+
+    switch (unit) {
+        case 'minute':
+            return date.getMinutes();
+        case 'hour':
+            return date.getHours();
+        case 'day':
+            return date.getDate();
+        case 'week':
+            // This case needs to be handled in the scheduler
+            return date.getDate();
+        case 'month':
+            return date.getMonth();
+        default:
+            return date.getFullYear();
+    }
+};
+
 export {
     formatTime,
     dateObjectFrom,
+    getUnitFromTime,
     isInTimeFrame,
     allowedHoursInUnit,
     allowedDaysInUnit,

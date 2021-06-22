@@ -39,15 +39,18 @@ export default class Header {
         this.unit = props.unit;
         this.span = props.span;
         this.label = props.label;
-        this.columnLabels = [];
+        this.columns = [];
+        this.columnWidths = [];
+        this.isReference = props.isReference;
         this.millisecondsPerCol = props.millisecondsPerCol;
         this.numberOfColumns = props.numberOfColumns;
+        this.childKey = null;
         this._start = props.start;
         this._timeFrames = props.timeFrames;
         this._daysOfTheWeek = props.daysOfTheWeek;
         this._months = props.months;
 
-        this.computeColumnLabels();
+        this.computeColumns();
     }
 
     get start() {
@@ -55,7 +58,7 @@ export default class Header {
     }
     set start(value) {
         this._start = value;
-        this.computeColumnLabels();
+        this.computeColumns();
     }
 
     get daysOfTheWeek() {
@@ -63,7 +66,7 @@ export default class Header {
     }
     set daysOfTheWeek(value) {
         this._daysOfTheWeek = value;
-        this.computeColumnLabels();
+        this.computeColumns();
     }
 
     get months() {
@@ -71,7 +74,7 @@ export default class Header {
     }
     set months(value) {
         this._months = value;
-        this.computeColumnLabels();
+        this.computeColumns();
     }
 
     get timeFrames() {
@@ -79,19 +82,15 @@ export default class Header {
     }
     set timeFrames(value) {
         this._timeFrames = value;
-        this.computeColumnLabels();
+        this.computeColumns();
     }
 
     get generateKey() {
         return generateUniqueId();
     }
 
-    get columnMaxWidth() {
-        return `${100 / this.columnLabels.length}%`;
-    }
-
-    computeColumnLabels() {
-        this.columnLabels = [];
+    computeColumns() {
+        this.columns = [];
         let time = this.start.getTime();
 
         // For each column
@@ -112,7 +111,10 @@ export default class Header {
                 }
             }
 
-            this.columnLabels.push(formatTime(time, this.label));
+            this.columns.push({
+                label: formatTime(time, this.label),
+                time: time
+            });
             time += this.millisecondsPerCol;
         }
     }
