@@ -464,6 +464,11 @@ export default class PrimitiveCombobox extends LightningElement {
                 if (action.ariaDisabled === 'false') elements.push(action);
             });
 
+            const backLink = this.template.querySelector(
+                '[data-name="backlink"]'
+            );
+            if (backLink) elements.push(backLink);
+
             const groups = this.template.querySelectorAll(
                 'c-primitive-combobox-group'
             );
