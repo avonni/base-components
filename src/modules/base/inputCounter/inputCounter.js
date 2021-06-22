@@ -78,6 +78,7 @@ export default class InputCounter extends LightningElement {
     labelVariant;
     labelFieldLevelHelp;
     init = false;
+    _normalizedDigits;
 
     renderedCallback() {
         if (!this.init) {
@@ -126,10 +127,14 @@ export default class InputCounter extends LightningElement {
 
     set fractionDigits(digits) {
         const baseFractionValue = 1;
-        this._fractionDigits =
-            typeof digits === 'number'
-                ? +('0.' + baseFractionValue.toString().padStart(digits, '0'))
-                : 1;
+        if (typeof digits === 'number') {
+            this._fractionDigits = +(
+                '0.' + baseFractionValue.toString().padStart(digits, '0')
+            );
+            this._normalizedDigits = digits;
+        } else {
+            this._fractionDigits = 1;
+        }
     }
 
     @api get variant() {
@@ -328,19 +333,7 @@ export default class InputCounter extends LightningElement {
 
     handlePrecision(input) {
         if (!isNaN(input)) {
-            this._fractionDigitsLength =
-                this.fractionDigits && this.fractionDigits.toString().length;
-            const uniformOutputCorrection =
-                this._fractionDigitsLength > 2 ? 2 : 1;
-
-            if (
-                this.fractionDigits &&
-                input.toString().length > this._fractionDigitsLength
-            ) {
-                input = +input.toFixed(
-                    this._fractionDigitsLength - uniformOutputCorrection
-                );
-            }
+            input = +input.toFixed(this._normalizedDigits);
         }
         return +input;
     }
