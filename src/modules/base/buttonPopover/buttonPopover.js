@@ -99,6 +99,8 @@ export default class ButtonPopover extends LightningElement {
     showFooter = true;
     _boundingRect = {};
 
+    _popoverFocused = false;
+
     connectedCallback() {
         this.classList.add(
             'slds-dropdown-trigger',
@@ -295,7 +297,6 @@ export default class ButtonPopover extends LightningElement {
         }
         if (this.triggers === 'click') {
             if (this.popoverVisible) {
-                this.allowBlur();
                 this.toggleMenuVisibility();
             }
         }
@@ -394,11 +395,11 @@ export default class ButtonPopover extends LightningElement {
     }
 
     handlePopoverClick() {
-        this.popoverVisible = true;
         if (this.triggers === 'focus') {
             this.focusOnButton();
         }
         if (this.triggers === 'click') {
+            this.popoverVisible = true;
             this.focusOnPopover();
         }
     }
@@ -477,5 +478,17 @@ export default class ButtonPopover extends LightningElement {
 
     isAutoAlignment() {
         return this._placement.startsWith('auto');
+    }
+
+    handlePopoverKeyDown() {
+        if (!this._cancelBlur) {
+            this.cancelBlur();
+        }
+    }
+
+    handlePopoverKeyPress() {
+        if (this._cancelBlur) {
+            this.allowBlur();
+        }
     }
 }

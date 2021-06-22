@@ -57,6 +57,9 @@
         onmouseenter={handleMouseEnterBody}
         onmouseleave={handleMouseLeaveBody}
         onblur={handlePopoverBlur}
+        onclick={handlePopoverClick}
+        onkeypress={handlePopoverKeyPress}
+        onkeydown={handlePopoverKeyDown}
         tabindex="0"
     >
         <template if:true={isLoading}>
