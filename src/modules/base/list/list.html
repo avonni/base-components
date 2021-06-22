@@ -125,7 +125,10 @@
                         icon-name={sortableIconName}
                         size="x-small"
                     ></lightning-icon>
-                    <div class="slds-media slds-media_small">
+                    <div
+                        if:true={actions.length}
+                        class="slds-media slds-media_small"
+                    >
                         <lightning-button-menu
                             if:true={multiActions}
                             class="slds-m-right_none"
@@ -147,28 +150,26 @@
                             </template>
                         </lightning-button-menu>
                         <template if:false={multiActions}>
-                            <template if:true={singleAction}>
-                                <lightning-button
-                                    if:true={singleAction.label}
-                                    class="slds-m-right_none"
-                                    ontouchstart={handleButtonMenuTouchStart}
-                                    key={singleAction.name}
-                                    value={singleAction.name}
-                                    label={singleAction.label}
-                                    disabled={singleAction.disabled}
-                                    icon-name={singleAction.iconName}
-                                ></lightning-button>
-                                <lightning-button-icon
-                                    if:false={singleAction.label}
-                                    class="slds-m-right_none"
-                                    size="x-small"
-                                    ontouchstart={handleButtonMenuTouchStart}
-                                    key={singleAction.name}
-                                    value={singleAction.name}
-                                    disabled={singleAction.disabled}
-                                    icon-name={singleAction.iconName}
-                                ></lightning-button-icon>
-                            </template>
+                            <lightning-button
+                                if:true={singleAction.label}
+                                class="slds-m-right_none"
+                                ontouchstart={handleButtonMenuTouchStart}
+                                key={singleAction.name}
+                                value={singleAction.name}
+                                label={singleAction.label}
+                                disabled={singleAction.disabled}
+                                icon-name={singleAction.iconName}
+                            ></lightning-button>
+                            <lightning-button-icon
+                                if:false={singleAction.label}
+                                class="slds-m-right_none"
+                                size="x-small"
+                                ontouchstart={handleButtonMenuTouchStart}
+                                key={singleAction.name}
+                                value={singleAction.name}
+                                disabled={singleAction.disabled}
+                                icon-name={singleAction.iconName}
+                            ></lightning-button-icon>
                         </template>
                     </div>
                 </div>
