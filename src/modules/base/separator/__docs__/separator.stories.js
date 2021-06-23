@@ -30,17 +30,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { Seperator } from '../__examples__/seperator';
+import { Separator } from '../__examples__/separator';
 
 export default {
-    title: 'Example/Seperator',
+    title: 'Example/Separator',
     argTypes: {
         label: {
             name: 'label',
             control: {
                 type: 'text'
             },
-            description: 'Text to display in the seperator',
+            description: 'Text to display in the separator',
             table: {
                 type: { summary: 'string' }
             }
@@ -114,7 +114,7 @@ export default {
     }
 };
 
-const Template = (args) => Seperator(args);
+const Template = (args) => Separator(args);
 
 export const Base = Template.bind({});
 Base.args = {

@@ -1,4 +1,4 @@
-/**
+<!-- /**
  * BSD 3-Clause License
  *
  * Copyright (c) 2021, Avonni Labs, Inc.
@@ -28,26 +28,20 @@
  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+ */ -->
 
-import Component from '../../storybookWrappers/seperator/seperator';
-
-customElements.define('ac-base-seperator', Component.CustomElementConstructor);
-
-export const Seperator = ({
-    label,
-    alignContent,
-    iconName,
-    iconPosition,
-    iconSize,
-    orientation
-}) => {
-    const element = document.createElement('ac-base-seperator');
-    element.label = label;
-    element.alignContent = alignContent;
-    element.iconName = iconName;
-    element.iconPosition = iconPosition;
-    element.iconSize = iconSize;
-    element.orientation = orientation;
-    return element;
-};
+<template>
+    <div class={computedContainerClass}>
+        <div class={computedLineOneClass}></div>
+        <div if:true={hasContent} class={computedContentClass}>
+            <lightning-icon
+                if:true={iconName}
+                icon-name={iconName}
+                size={iconSize}
+                class={computedIconMargin}
+            ></lightning-icon>
+            <h1 if:true={label}>{label}</h1>
+        </div>
+        <div class={computedLineTwoClass}></div>
+    </div>
+</template>

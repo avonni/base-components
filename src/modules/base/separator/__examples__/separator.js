@@ -1,4 +1,4 @@
-<!-- /**
+/**
  * BSD 3-Clause License
  *
  * Copyright (c) 2021, Avonni Labs, Inc.
@@ -28,21 +28,26 @@
  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */ -->
+ */
 
-<template>
-    <div class={computedContainerClass}>
-        <div class={computedLineOneClass}></div>
-        <template if:false={separatorContent}>
-            <div class={computedContentClass}>
-                <lightning-icon
-                    if:true={iconName}
-                    icon-name={iconName}
-                    size={iconSize}
-                ></lightning-icon>
-                <h1 if:true={label}>{label}</h1>
-            </div>
-        </template>
-        <div class={computedLineTwoClass}></div>
-    </div>
-</template>
+import Component from '../../storybookWrappers/separator/separator';
+
+customElements.define('ac-base-separator', Component.CustomElementConstructor);
+
+export const Separator = ({
+    label,
+    alignContent,
+    iconName,
+    iconPosition,
+    iconSize,
+    orientation
+}) => {
+    const element = document.createElement('ac-base-separator');
+    element.label = label;
+    element.alignContent = alignContent;
+    element.iconName = iconName;
+    element.iconPosition = iconPosition;
+    element.iconSize = iconSize;
+    element.orientation = orientation;
+    return element;
+};

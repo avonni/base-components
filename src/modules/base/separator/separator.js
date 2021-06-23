@@ -48,7 +48,7 @@ const VALID_ORIENTATIONS = {
 };
 const VALID_ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
 
-export default class Seperator extends LightningElement {
+export default class Separator extends LightningElement {
     @api label;
     @api iconName;
 
@@ -101,13 +101,13 @@ export default class Seperator extends LightningElement {
         });
     }
 
-    get seperatorContent() {
+    get hasContent() {
         return this.label || this.iconName;
     }
 
     get computedContainerClass() {
         return classSet(
-            'avonni-seperator_container slds-grid slds-grid_vertical-align-center slds-nowrap'
+            'avonni-separator_container slds-grid slds-grid_vertical-align-center slds-nowrap'
         )
             .add({
                 'slds-grid_vertical slds-grid_align-center':
@@ -117,7 +117,7 @@ export default class Seperator extends LightningElement {
     }
 
     get computedLineOneClass() {
-        return classSet('avonni-seperator_line-one')
+        return classSet('avonni-separator_line-one')
             .add({
                 'slds-border_bottom slds-col':
                     this.orientation === 'horizontal',
@@ -129,7 +129,7 @@ export default class Seperator extends LightningElement {
     }
 
     get computedLineTwoClass() {
-        return classSet('avonni-seperator_line-two')
+        return classSet('avonni-separator_line-two')
             .add({
                 'slds-border_bottom slds-col':
                     this.orientation === 'horizontal',
@@ -141,11 +141,21 @@ export default class Seperator extends LightningElement {
     }
     get computedContentClass() {
         return classSet(
-            'slds-grid slds-vertical slds-grid_vertical-align-center slds-grid_align-center'
+            'avonni-separator_content slds-grid slds-vertical slds-grid_vertical-align-center slds-grid_align-center slds-m-around_small'
         )
             .add({
-                'slds-p-around_x-small': this.seperatorContent === false,
                 'slds-grid_reverse': this.iconPosition === 'right'
+            })
+            .toString();
+    }
+
+    get computedIconMargin() {
+        return classSet('avonni-separator_icon-margin')
+            .add({
+                'slds-m-right_x-small':
+                    this.label && this.iconPosition === 'left',
+                'slds-m-left_x-small':
+                    this.label && this.iconPosition === 'right'
             })
             .toString();
     }

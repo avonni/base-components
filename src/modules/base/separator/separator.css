@@ -30,30 +30,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { LightningElement, api } from 'lwc';
-import { classSet } from '../../utils/classSet';
+.avonni-separator_container {
+    width: 100%;
+    height: 100%;
+}
 
-const DEFAULT_ALIGN_CONTENT = 'center';
-
-const DEFAULT_ICON_SIZE = 'medium';
-
-const DEFAULT_ORIENTATION = 'horizontal';
-
-const DEFAULT_ICON_POSITION = 'left';
-
-export default class Seperator extends LightningElement {
-    @api label;
-    @api iconName;
-    @api alignContent = DEFAULT_ALIGN_CONTENT;
-    @api iconSize = DEFAULT_ICON_SIZE;
-    @api orientation = DEFAULT_ORIENTATION;
-    @api iconPosition = DEFAULT_ICON_POSITION;
-
-    get computedPropContainerClass() {
-        return classSet('avonni-prop-container')
-            .add({
-                'prop-vertical': this.orientation === 'vertical'
-            })
-            .toString();
-    }
+.avonni-separator_line-one.slds-border_left,
+.avonni-separator_line-two.slds-border_left {
+    height: 100%;
 }
