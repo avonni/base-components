@@ -66,6 +66,20 @@ export default {
                 category: 'Popover'
             }
         },
+        hideCloseButton: {
+            name: 'hide-close-button',
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description:
+                'If present, the close button of the popover is hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Popover'
+            }
+        },
         iconName: {
             name: 'icon-name',
             control: {
@@ -194,7 +208,7 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
+            defaultValue: false,
             description: 'If present, the popover can be opened by users.',
             table: {
                 type: { summary: 'boolean' },
@@ -206,7 +220,7 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
+            defaultValue: false,
             description:
                 'If present, the popover is in a loading state and shows a spinner.',
             table: {
@@ -218,6 +232,7 @@ export default {
     },
     args: {
         disabled: false,
+        hideCloseButton: false,
         isLoading: false
     }
 };

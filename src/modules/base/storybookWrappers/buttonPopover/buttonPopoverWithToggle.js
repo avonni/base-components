@@ -46,6 +46,7 @@ export default class ButtonPopoverWithToggle extends LightningElement {
     @api iconName;
     @api loadingStateAlternativeText;
     @api disabled = false;
+    @api hideCloseButton = false;
     @api isLoading = false;
     @api popoverSize = DEFAULT_POPOVER_SIZE;
     @api placement = DEFAULT_POPOVER_PLACEMENT;

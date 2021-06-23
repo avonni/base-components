@@ -88,6 +88,7 @@ export default class ButtonPopover extends LightningElement {
 
     _disabled = false;
     _isLoading = false;
+    _hideCloseButton = false;
     _iconPosition = ICON_POSITIONS.default;
     _popoverSize = POPOVER_SIZES.default;
     _placement = POPOVER_PLACEMENTS.default;
@@ -115,7 +116,7 @@ export default class ButtonPopover extends LightningElement {
         if (this.footerSlot) {
             this.showFooter = this.footerSlot.assignedElements().length !== 0;
         }
-
+        console.log(this.popoverVisible);
         if (this.triggers === 'click') {
             if (this.popoverVisible) {
                 this.focusOnPopover();
@@ -213,6 +214,15 @@ export default class ButtonPopover extends LightningElement {
     }
 
     @api
+    get hideCloseButton() {
+        return this._hideCloseButton;
+    }
+
+    set hideCloseButton(value) {
+        this._hideCloseButton = normalizeBoolean(value);
+    }
+
+    @api
     get isLoading() {
         return this._isLoading;
     }
@@ -223,6 +233,14 @@ export default class ButtonPopover extends LightningElement {
 
     get hasStringTitle() {
         return !!this.title;
+    }
+
+    get computedPopoverHeaderClass() {
+        return classSet('slds-popover__header')
+            .add({
+                'avonni-button-popover-space-between': !this.hideCloseButton
+            })
+            .toString();
     }
 
     @api
@@ -399,7 +417,7 @@ export default class ButtonPopover extends LightningElement {
         this.allowBlur();
     }
 
-    handlePopoverClick() {
+    handleSlotClick() {
         if (this.triggers === 'focus') {
             this.focusOnButton();
         }
