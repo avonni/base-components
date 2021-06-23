@@ -275,7 +275,10 @@ export default class List extends LightningElement {
 
     dragStart(event) {
         // Stop dragging if the click was on a button menu
-        if (!this.sortable || event.target.tagName === 'LIGHTNING-BUTTON-MENU')
+        if (
+            !this.sortable ||
+            event.target.tagName.startsWith('LIGHTNING-BUTTON')
+        )
             return;
 
         this._itemElements = Array.from(
@@ -332,9 +335,10 @@ export default class List extends LightningElement {
 
         const hoveredItem = this.getHoveredItem(center);
         if (hoveredItem) this.switchWithItem(hoveredItem);
-        event.currentTarget
-            .querySelector('lightning-button-menu')
-            .classList.remove('slds-is-open');
+        const buttonMenu = event.currentTarget.querySelector(
+            'lightning-button-menu'
+        );
+        if (buttonMenu) buttonMenu.classList.remove('slds-is-open');
     }
 
     dragEnd() {
