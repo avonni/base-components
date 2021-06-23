@@ -50,7 +50,9 @@
                 </div>
             </template>
         </div>
-        <p class="slds-page-header__meta-text slds-truncate">
+        <p
+            class="slds-page-header__meta-text slds-truncate slds-m-top_xx-small"
+        >
             <template if:true={hasStringInfo}> {info} </template>
             <template if:false={hasStringInfo}>
                 <slot name="info"></slot>
