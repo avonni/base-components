@@ -36,6 +36,7 @@ import { normalizeArray } from 'c/utilsPrivate';
 
 import avatar from './avatar.html';
 import avatarGroup from './avatarGroup.html';
+import badge from './badge.html';
 import checkboxButton from './checkboxButton.html';
 import colorPicker from './colorPicker.html';
 import dynamicIcon from './dynamicIcon.html';
@@ -52,6 +53,7 @@ import rating from './rating.html';
 
 const CUSTOM_TYPES_ALWAYS_WRAPPED = [
     'avatar',
+    'badge',
     'avatar-group',
     'checkbox-button',
     'color-picker',
@@ -100,6 +102,11 @@ export default class Datatable extends LightningDatatable {
         'avatar-group': {
             template: avatarGroup,
             typeAttributes: ['layout', 'maxCount', 'size', 'variant'],
+            standardCellLayout: true
+        },
+        badge: {
+            template: badge,
+            typeAttributes: ['variant'],
             standardCellLayout: true
         },
         'checkbox-button': {

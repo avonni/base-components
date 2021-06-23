@@ -834,7 +834,7 @@ describe('PrimitiveProgressBarReferenceLine', () => {
 
         document.body.appendChild(element);
 
-        const variants = ['darker', 'success', 'warning', 'error', 'lightest'];
+        const variants = ['inverse', 'success', 'warning', 'error', 'lightest'];
 
         const div = element.shadowRoot.querySelector('div');
         const badge = element.shadowRoot.querySelector('lightning-badge');
@@ -856,7 +856,7 @@ describe('PrimitiveProgressBarReferenceLine', () => {
         });
     });
 
-    it('variant = darker', () => {
+    it('variant = inverse', () => {
         const element = createElement(
             'base-primitive-progress-bar-reference-line',
             {
@@ -866,16 +866,16 @@ describe('PrimitiveProgressBarReferenceLine', () => {
 
         document.body.appendChild(element);
 
-        const variants = ['darker', 'success', 'warning', 'error', 'lightest'];
+        const variants = ['inverse', 'success', 'warning', 'error', 'lightest'];
 
         const div = element.shadowRoot.querySelector('div');
         const badge = element.shadowRoot.querySelector('lightning-badge');
 
-        element.variant = 'darker';
+        element.variant = 'inverse';
 
         return Promise.resolve().then(() => {
             variants.forEach((variant) => {
-                if (variant === 'darker') {
+                if (variant === 'inverse') {
                     expect(div.classList).toContain(
                         `avonni-progress-bar-reference-line-border-color_${variant}`
                     );
@@ -910,7 +910,7 @@ describe('PrimitiveProgressBarReferenceLine', () => {
 
         document.body.appendChild(element);
 
-        const variants = ['darker', 'success', 'warning', 'error', 'lightest'];
+        const variants = ['inverse', 'success', 'warning', 'error', 'lightest'];
 
         const div = element.shadowRoot.querySelector('div');
         const badge = element.shadowRoot.querySelector('lightning-badge');
@@ -954,7 +954,7 @@ describe('PrimitiveProgressBarReferenceLine', () => {
 
         document.body.appendChild(element);
 
-        const variants = ['darker', 'success', 'warning', 'error', 'lightest'];
+        const variants = ['inverse', 'success', 'warning', 'error', 'lightest'];
 
         const div = element.shadowRoot.querySelector('div');
         const badge = element.shadowRoot.querySelector('lightning-badge');
@@ -998,7 +998,7 @@ describe('PrimitiveProgressBarReferenceLine', () => {
 
         document.body.appendChild(element);
 
-        const variants = ['darker', 'success', 'warning', 'error', 'lightest'];
+        const variants = ['inverse', 'success', 'warning', 'error', 'lightest'];
 
         const div = element.shadowRoot.querySelector('div');
         const badge = element.shadowRoot.querySelector('lightning-badge');
@@ -1042,7 +1042,7 @@ describe('PrimitiveProgressBarReferenceLine', () => {
 
         document.body.appendChild(element);
 
-        const variants = ['darker', 'success', 'warning', 'error', 'lightest'];
+        const variants = ['inverse', 'success', 'warning', 'error', 'lightest'];
 
         const div = element.shadowRoot.querySelector('div');
         const badge = element.shadowRoot.querySelector('lightning-badge');

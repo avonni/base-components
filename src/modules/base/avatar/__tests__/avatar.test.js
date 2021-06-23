@@ -1050,4 +1050,92 @@ describe('Avatar', () => {
             expect(mediaObject.className).toBe('slds-text-align_right');
         });
     });
+    // tags
+    it('Avatar with default tags', () => {
+        const tags = [{ label: 'default', variant: 'default' }];
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+        document.body.appendChild(element);
+        element.tags = tags;
+        return Promise.resolve().then(() => {
+            const badge = element.shadowRoot.querySelector('lightning-badge');
+            expect(badge.className).toBe('slds-badge');
+            expect(badge.label).toBe('default');
+        });
+    });
+
+    it('Avatar with inverse tags', () => {
+        const tags = [{ label: 'inverse', variant: 'inverse' }];
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+        document.body.appendChild(element);
+        element.tags = tags;
+        return Promise.resolve().then(() => {
+            const badge = element.shadowRoot.querySelector('lightning-badge');
+            expect(badge.className).toBe('slds-badge_inverse');
+            expect(badge.label).toBe('inverse');
+        });
+    });
+
+    it('Avatar with lightest tags', () => {
+        const tags = [{ label: 'lightest', variant: 'lightest' }];
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+
+        document.body.appendChild(element);
+        element.tags = tags;
+        return Promise.resolve().then(() => {
+            const badge = element.shadowRoot.querySelector('lightning-badge');
+            expect(badge.className).toBe('slds-badge_lightest');
+            expect(badge.label).toBe('lightest');
+        });
+    });
+
+    it('Avatar with success tags', () => {
+        const tags = [{ label: 'success', variant: 'success' }];
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+
+        document.body.appendChild(element);
+        element.tags = tags;
+        return Promise.resolve().then(() => {
+            const badge = element.shadowRoot.querySelector('lightning-badge');
+            expect(badge.className).toBe('slds-theme_success');
+            expect(badge.label).toBe('success');
+        });
+    });
+
+    it('Avatar with warning tags', () => {
+        const tags = [{ label: 'warning', variant: 'warning' }];
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+
+        document.body.appendChild(element);
+        element.tags = tags;
+        return Promise.resolve().then(() => {
+            const badge = element.shadowRoot.querySelector('lightning-badge');
+            expect(badge.className).toBe('slds-theme_warning');
+            expect(badge.label).toBe('warning');
+        });
+    });
+
+    it('Avatar with error tags', () => {
+        const tags = [{ label: 'error', variant: 'error' }];
+        const element = createElement('base-avatar', {
+            is: Avatar
+        });
+
+        document.body.appendChild(element);
+        element.tags = tags;
+        return Promise.resolve().then(() => {
+            const badge = element.shadowRoot.querySelector('lightning-badge');
+            expect(badge.className).toBe('slds-theme_error');
+            expect(badge.label).toBe('error');
+        });
+    });
 });

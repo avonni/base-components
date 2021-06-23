@@ -65,6 +65,7 @@ const DEFAULT_ACTION_ICON_NAME = 'utility:add'
 const DEFAULT_LIST_BUTTON_LABEL = 'Show more'
 
 export default class AvatarGroup extends LightningElement {
+
     @api actionIconName = DEFAULT_ACTION_ICON_NAME
     @api listButtonLabel = DEFAULT_LIST_BUTTON_LABEL;
     @api listButtonIconName;
@@ -78,6 +79,8 @@ export default class AvatarGroup extends LightningElement {
     _listButtonVariant = BUTTON_VARIANTS.default;
     _listButtonIconPosition = BUTTON_ICON_POSITIONS.default;
     _variant = AVATAR_GROUP_VARIANTS.default;
+    _imageWidth;
+
     showPopover = false;
     hiddenItems = [];
 
@@ -209,7 +212,6 @@ export default class AvatarGroup extends LightningElement {
         items.forEach((item, index) => {
             item.key = 'avatar-key-' + index;
         });
-
         return items;
     }
 
@@ -227,7 +229,6 @@ export default class AvatarGroup extends LightningElement {
             items.forEach((item, index) => {
                 item.key = 'avatar-key-hidden-' + index;
             });
-
             return items;
         }
 
@@ -360,7 +361,6 @@ export default class AvatarGroup extends LightningElement {
     get isNotList() {
         return !(this.layout === 'list');
     }
-
     allowBlur() {
         this._allowBlur = true;
     }

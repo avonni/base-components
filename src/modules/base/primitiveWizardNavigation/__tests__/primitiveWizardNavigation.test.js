@@ -35,10 +35,10 @@ import PrimitiveWizardNavigation from 'c/primitiveWizardNavigation';
 
 // Note:
 // Use of duplicate then() to make sure rendering is done before testing these attributes:
-// buttonFinishIconName
-// buttonFinishIconPosition
-// buttonFinishLabel
-// buttonFinishVariant
+// finishButtonIconName
+// finishButtonIconPosition
+// finishButtonLabel
+// finishButtonVariant
 // currentStep
 
 const STEPS = [
@@ -74,18 +74,18 @@ describe('PrimitiveWizardNavigation', () => {
 
         expect(element.actionPosition).toBe('left');
         expect(element.buttonAlignmentBump).toBeUndefined();
-        expect(element.buttonFinishIconName).toBeUndefined();
-        expect(element.buttonFinishIconPosition).toBe('left');
-        expect(element.buttonFinishLabel).toBe('Finish');
-        expect(element.buttonFinishVariant).toBe('neutral');
-        expect(element.buttonNextIconName).toBeUndefined();
-        expect(element.buttonNextIconPosition).toBe('left');
-        expect(element.buttonNextLabel).toBe('Next');
-        expect(element.buttonNextVariant).toBe('neutral');
-        expect(element.buttonPreviousIconName).toBeUndefined();
-        expect(element.buttonPreviousIconPosition).toBe('left');
-        expect(element.buttonPreviousLabel).toBe('Previous');
-        expect(element.buttonPreviousVariant).toBe('neutral');
+        expect(element.finishButtonIconName).toBeUndefined();
+        expect(element.finishButtonIconPosition).toBe('left');
+        expect(element.finishButtonLabel).toBe('Finish');
+        expect(element.finishButtonVariant).toBe('neutral');
+        expect(element.nextButtonIconName).toBeUndefined();
+        expect(element.nextButtonIconPosition).toBe('left');
+        expect(element.nextButtonLabel).toBe('Next');
+        expect(element.nextButtonVariant).toBe('neutral');
+        expect(element.previousButtonIconName).toBeUndefined();
+        expect(element.previousButtonIconPosition).toBe('left');
+        expect(element.previousButtonLabel).toBe('Previous');
+        expect(element.previousButtonVariant).toBe('neutral');
         expect(element.currentStep).toBeUndefined();
         expect(element.fractionLabel).toBe('of');
         expect(element.fractionPrefixLabel).toBe('Step');
@@ -230,12 +230,12 @@ describe('PrimitiveWizardNavigation', () => {
 
     // button-finish-icon-name
     // Depends on steps and currentStep
-    it('buttonFinishIconName', () => {
+    it('finishButtonIconName', () => {
         const element = createElement('base-primitive-wizard-navigation', {
             is: PrimitiveWizardNavigation
         });
 
-        element.buttonFinishIconName = 'utility:apps';
+        element.finishButtonIconName = 'utility:apps';
         element.currentStep = 'step-4';
         element.steps = STEPS;
 
@@ -252,12 +252,12 @@ describe('PrimitiveWizardNavigation', () => {
 
     // button-finish-icon-position
     // Depends on steps and currentStep
-    it('buttonFinishIconPosition', () => {
+    it('finishButtonIconPosition', () => {
         const element = createElement('base-primitive-wizard-navigation', {
             is: PrimitiveWizardNavigation
         });
 
-        element.buttonFinishIconPosition = 'right';
+        element.finishButtonIconPosition = 'right';
         element.currentStep = 'step-4';
         element.steps = STEPS;
 
@@ -275,12 +275,12 @@ describe('PrimitiveWizardNavigation', () => {
 
     // button-finish-label
     // Depends on steps and currentStep
-    it('buttonFinishLabel', () => {
+    it('finishButtonLabel', () => {
         const element = createElement('base-primitive-wizard-navigation', {
             is: PrimitiveWizardNavigation
         });
 
-        element.buttonFinishLabel = 'A string label';
+        element.finishButtonLabel = 'A string label';
         element.currentStep = 'step-4';
         element.steps = STEPS;
 
@@ -298,12 +298,12 @@ describe('PrimitiveWizardNavigation', () => {
 
     // button-finish-variant
     // Depends on steps and currentStep
-    it('buttonFinishVariant', () => {
+    it('finishButtonVariant', () => {
         const element = createElement('base-primitive-wizard-navigation', {
             is: PrimitiveWizardNavigation
         });
 
-        element.buttonFinishVariant = 'inverse';
+        element.finishButtonVariant = 'inverse';
         element.currentStep = 'step-4';
         element.steps = STEPS;
 
@@ -321,14 +321,14 @@ describe('PrimitiveWizardNavigation', () => {
 
     // button-next-icon-name
     // Depends on steps
-    it('buttonNextIconName', () => {
+    it('nextButtonIconName', () => {
         const element = createElement('base-primitive-wizard-navigation', {
             is: PrimitiveWizardNavigation
         });
 
         document.body.appendChild(element);
 
-        element.buttonNextIconName = 'utility:apps';
+        element.nextButtonIconName = 'utility:apps';
         element.steps = STEPS;
 
         return Promise.resolve().then(() => {
@@ -343,14 +343,14 @@ describe('PrimitiveWizardNavigation', () => {
 
     // button-next-icon-position
     // Depends on steps
-    it('buttonNextIconPosition', () => {
+    it('nextButtonIconPosition', () => {
         const element = createElement('base-primitive-wizard-navigation', {
             is: PrimitiveWizardNavigation
         });
 
         document.body.appendChild(element);
 
-        element.buttonNextIconPosition = 'right';
+        element.nextButtonIconPosition = 'right';
         element.steps = STEPS;
 
         return Promise.resolve().then(() => {
@@ -365,14 +365,14 @@ describe('PrimitiveWizardNavigation', () => {
 
     // button-next-label
     // Depends on steps
-    it('buttonNextLabel', () => {
+    it('nextButtonLabel', () => {
         const element = createElement('base-primitive-wizard-navigation', {
             is: PrimitiveWizardNavigation
         });
 
         document.body.appendChild(element);
 
-        element.buttonNextLabel = 'A string label';
+        element.nextButtonLabel = 'A string label';
         element.steps = STEPS;
 
         return Promise.resolve().then(() => {
@@ -387,14 +387,14 @@ describe('PrimitiveWizardNavigation', () => {
 
     // button-next-variant
     // Depends on steps
-    it('buttonNextVariant', () => {
+    it('nextButtonVariant', () => {
         const element = createElement('base-primitive-wizard-navigation', {
             is: PrimitiveWizardNavigation
         });
 
         document.body.appendChild(element);
 
-        element.buttonNextVariant = 'brand';
+        element.nextButtonVariant = 'brand';
         element.steps = STEPS;
 
         return Promise.resolve().then(() => {
@@ -409,14 +409,14 @@ describe('PrimitiveWizardNavigation', () => {
 
     // button-previous-icon-name
     // Depends on steps
-    it('buttonPreviousIconName', () => {
+    it('previousButtonIconName', () => {
         const element = createElement('base-primitive-wizard-navigation', {
             is: PrimitiveWizardNavigation
         });
 
         document.body.appendChild(element);
 
-        element.buttonPreviousIconName = 'utility:user';
+        element.previousButtonIconName = 'utility:user';
         element.steps = STEPS;
 
         return Promise.resolve().then(() => {
@@ -431,14 +431,14 @@ describe('PrimitiveWizardNavigation', () => {
 
     // button-previous-icon-position
     // Depends on steps
-    it('buttonPreviousIconPosition', () => {
+    it('previousButtonIconPosition', () => {
         const element = createElement('base-primitive-wizard-navigation', {
             is: PrimitiveWizardNavigation
         });
 
         document.body.appendChild(element);
 
-        element.buttonPreviousIconPosition = 'right';
+        element.previousButtonIconPosition = 'right';
         element.steps = STEPS;
 
         return Promise.resolve().then(() => {
@@ -453,14 +453,14 @@ describe('PrimitiveWizardNavigation', () => {
 
     // button-previous-label
     // Depends on steps
-    it('buttonPreviousLabel', () => {
+    it('previousButtonLabel', () => {
         const element = createElement('base-primitive-wizard-navigation', {
             is: PrimitiveWizardNavigation
         });
 
         document.body.appendChild(element);
 
-        element.buttonPreviousLabel = 'A string label';
+        element.previousButtonLabel = 'A string label';
         element.steps = STEPS;
 
         return Promise.resolve().then(() => {
@@ -475,14 +475,14 @@ describe('PrimitiveWizardNavigation', () => {
 
     // button-previous-variant
     // Depends on steps
-    it('buttonPreviousVariant', () => {
+    it('previousButtonVariant', () => {
         const element = createElement('base-primitive-wizard-navigation', {
             is: PrimitiveWizardNavigation
         });
 
         document.body.appendChild(element);
 
-        element.buttonPreviousVariant = 'destructive';
+        element.previousButtonVariant = 'destructive';
         element.steps = STEPS;
 
         return Promise.resolve().then(() => {

@@ -110,5 +110,14 @@
         <p if:true={showTertiaryText} class="avonni-avatar__light-text">
             {tertiaryText}
         </p>
+        <div if:true={tags} class="slds-m-top_xx-small">
+            <template for:each={computedTags} for:item="tag">
+                <lightning-badge
+                    class={tag.class}
+                    key={tag.label}
+                    label={tag.label}
+                ></lightning-badge>
+            </template>
+        </div>
     </c-media-object>
 </template>

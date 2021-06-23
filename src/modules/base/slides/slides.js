@@ -87,9 +87,9 @@ const DEFAULT_SPACE_BETWEEN = 0;
 
 const DEFAULT_SPEED = 300;
 
-const DEFAULT_BUTTON_PREVIOUS_ICON_NAME = 'utility:left';
+const DEFAULT_PREVIOUS_BUTTON_ICON_NAME = 'utility:left';
 
-const DEFAULT_BUTTON_NEXT_ICON_NAME = 'utility:right';
+const DEFAULT_NEXT_BUTTON_ICON_NAME = 'utility:right';
 
 const DEFAULT_FRACTION_LABEL = '/';
 
@@ -100,10 +100,10 @@ export default class Slides extends LightningElement {
     @api spaceBetween = DEFAULT_SPACE_BETWEEN;
     @api autoplayDelay;
     @api speed = DEFAULT_SPEED;
-    @api buttonPreviousIconName = DEFAULT_BUTTON_PREVIOUS_ICON_NAME;
-    @api buttonPreviousLabel;
-    @api buttonNextIconName = DEFAULT_BUTTON_NEXT_ICON_NAME;
-    @api buttonNextLabel;
+    @api previousButtonIconName = DEFAULT_PREVIOUS_BUTTON_ICON_NAME;
+    @api previousButtonLabel;
+    @api nextButtonIconName = DEFAULT_NEXT_BUTTON_ICON_NAME;
+    @api nextButtonLabel;
     @api fractionPrefixLabel;
     @api fractionLabel = DEFAULT_FRACTION_LABEL;
     @api width;
@@ -113,10 +113,10 @@ export default class Slides extends LightningElement {
 
     _direction = SLIDES_DIRECTIONS.default;
     _effect = SLIDES_EFFECTS.default;
-    _buttonPreviousIconPosition = ICON_POSITIONS.defaultPrevious;
-    _buttonPreviousVariant = BUTTON_VARIANTS.default;
-    _buttonNextIconPosition = ICON_POSITIONS.defaultNext;
-    _buttonNextVariant = BUTTON_VARIANTS.default;
+    _previousButtonIconPosition = ICON_POSITIONS.defaultPrevious;
+    _previousButtonVariant = BUTTON_VARIANTS.default;
+    _nextButtonIconPosition = ICON_POSITIONS.defaultNext;
+    _nextButtonVariant = BUTTON_VARIANTS.default;
     _buttonPosition = BUTTON_POSITIONS.default;
     _indicatorType = INDICATOR_TYPES.default;
     _indicatorPosition = INDICATOR_POSITIONS.default;
@@ -378,45 +378,45 @@ export default class Slides extends LightningElement {
         });
     }
 
-    @api get buttonPreviousIconPosition() {
-        return this._buttonPreviousIconPosition;
+    @api get previousButtonIconPosition() {
+        return this._previousButtonIconPosition;
     }
 
-    set buttonPreviousIconPosition(position) {
-        this._buttonPreviousIconPosition = normalizeString(position, {
+    set previousButtonIconPosition(position) {
+        this._previousButtonIconPosition = normalizeString(position, {
             fallbackValue: ICON_POSITIONS.defaultPrevious,
             validValues: ICON_POSITIONS.valid
         });
     }
 
-    @api get buttonPreviousVariant() {
-        return this._buttonPreviousVariant;
+    @api get previousButtonVariant() {
+        return this._previousButtonVariant;
     }
 
-    set buttonPreviousVariant(variant) {
-        this._buttonPreviousVariant = normalizeString(variant, {
+    set previousButtonVariant(variant) {
+        this._previousButtonVariant = normalizeString(variant, {
             fallbackValue: BUTTON_VARIANTS.default,
             validValues: BUTTON_VARIANTS.valid
         });
     }
 
-    @api get buttonNextIconPosition() {
-        return this._buttonNextIconPosition;
+    @api get nextButtonIconPosition() {
+        return this._nextButtonIconPosition;
     }
 
-    set buttonNextIconPosition(position) {
-        this._buttonNextIconPosition = normalizeString(position, {
+    set nextButtonIconPosition(position) {
+        this._nextButtonIconPosition = normalizeString(position, {
             fallbackValue: ICON_POSITIONS.defaultNext,
             validValues: ICON_POSITIONS.valid
         });
     }
 
-    @api get buttonNextVariant() {
-        return this._buttonNextVariant;
+    @api get nextButtonVariant() {
+        return this._nextButtonVariant;
     }
 
-    set buttonNextVariant(variant) {
-        this._buttonNextVariant = normalizeString(variant, {
+    set nextButtonVariant(variant) {
+        this._nextButtonVariant = normalizeString(variant, {
             fallbackValue: BUTTON_VARIANTS.default,
             validValues: BUTTON_VARIANTS.valid
         });

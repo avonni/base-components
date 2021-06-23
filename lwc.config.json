@@ -111,6 +111,10 @@
             "path": "src/modules/base/colorPickerPanel/colorPickerPanel.js"
         },
         {
+            "name": "c/combobox",
+            "path": "src/modules/base/combobox/combobox.js"
+        },
+        {
             "name": "c/confetti",
             "path": "src/modules/base/confetti/confetti.js"
         },
@@ -247,16 +251,8 @@
             "path": "src/modules/base/primitiveBubble/primitiveBubble.js"
         },
         {
-            "name": "c/primitiveColorpickerButton",
-            "path": "src/modules/base/primitiveColorpickerButton/primitiveColorpickerButton.js"
-        },
-        {
-            "name": "c/primitiveCoordinateItem",
-            "path": "src/modules/base/primitiveCoordinateItem/primitiveCoordinateItem.js"
-        },
-        {
-            "name": "c/primitiveCellAvatarGroup",
-            "path": "src/modules/base/primitiveCellAvatarGroup/primitiveCellAvatarGroup.js"
+            "name": "c/primitiveCellBadge",
+            "path": "src/modules/base/primitiveCellBadge/primitiveCellBadge.js"
         },
         {
             "name": "c/primitiveCellCheckboxButton",
@@ -285,6 +281,22 @@
         {
             "name": "c/primitiveCellSlider",
             "path": "src/modules/base/primitiveCellSlider/primitiveCellSlider.js"
+        },
+        {
+            "name": "c/primitiveColorpickerButton",
+            "path": "src/modules/base/primitiveColorpickerButton/primitiveColorpickerButton.js"
+        },
+        {
+            "name": "c/primitiveCombobox",
+            "path": "src/modules/base/primitiveCombobox/primitiveCombobox.js"
+        },
+        {
+            "name": "c/primitiveComboboxGroup",
+            "path": "src/modules/base/primitiveComboboxGroup/primitiveComboboxGroup.js"
+        },
+        {
+            "name": "c/primitiveCoordinateItem",
+            "path": "src/modules/base/primitiveCoordinateItem/primitiveCoordinateItem.js"
         },
         {
             "name": "c/primitiveIcon",
@@ -497,6 +509,10 @@
         {
             "name": "avonni/colorPalette",
             "path": "src/modules/base/colorPalette/colorPalette.js"
+        },
+        {
+            "name": "avonni/combobox",
+            "path": "src/modules/base/combobox/combobox.js"
         },
         {
             "name": "avonni/colorPicker",
@@ -740,6 +756,7 @@
         "avonni/colorGradient",
         "avonni/colorPalette",
         "avonni/colorPicker",
+        "avonni/combobox",
         "avonni/confetti",
         "avonni/datatable",
         "avonni/dateTimePicker",
