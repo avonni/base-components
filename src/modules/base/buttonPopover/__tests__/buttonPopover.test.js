@@ -52,6 +52,7 @@ describe('Button Popover', () => {
         expect(element.disabled).toBeFalsy();
         expect(element.label).toBeUndefined();
         expect(element.variant).toBe('neutral');
+        expect(element.hideCloseButton).toBeFalsy();
         expect(element.iconName).toBeUndefined();
         expect(element.iconPosition).toBe('left');
         expect(element.title).toBeUndefined();
@@ -220,6 +221,22 @@ describe('Button Popover', () => {
 
         return Promise.resolve().then(() => {
             expect(button.variant).toBe('success');
+        });
+    });
+
+    // hide close button
+    it('Button Popover hide close button', () => {
+        const element = createElement('base-button-popover', {
+            is: ButtonPopover
+        });
+        document.body.appendChild(element);
+
+        const closeButton = element.shadowRoot.querySelector(
+            'lightning-button-icon'
+        );
+
+        return Promise.resolve().then(() => {
+            expect(closeButton.iconName).toBe('utility:close');
         });
     });
 
@@ -610,8 +627,10 @@ describe('Button Popover', () => {
                     '.slds-popover'
                 );
                 expect(popover.className).toContain('slds-nubbin_bottom-left');
+                expect(popover.className).toContain('slds-dropdown_bottom');
+                expect(popover.className).toContain('slds-dropdown_left');
                 expect(popover.className).toContain(
-                    'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left'
+                    'slds-dropdown_bottom-left'
                 );
             });
     });
@@ -807,6 +826,25 @@ describe('Button Popover', () => {
             });
     });
 
+    it('Button Popover method: open', () => {
+        const element = createElement('base-button-popover', {
+            is: ButtonPopover
+        });
+        document.body.appendChild(element);
+
+        return Promise.resolve()
+            .then(() => {
+                element.focus();
+                element.open();
+            })
+            .then(() => {
+                const popover = element.shadowRoot.querySelector(
+                    '.slds-popover'
+                );
+                expect(popover.className).toContain('slds-show');
+            });
+    });
+
     it('Button Popover method: close', () => {
         const element = createElement('base-button-popover', {
             is: ButtonPopover
@@ -822,7 +860,7 @@ describe('Button Popover', () => {
                 const popover = element.shadowRoot.querySelector(
                     '.slds-popover'
                 );
-                expect(popover).toBeFalsy();
+                expect(popover.className).toContain('slds-hide');
             });
     });
 
@@ -844,5 +882,21 @@ describe('Button Popover', () => {
         expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         expect(handler.mock.calls[0][0].composed).toBeFalsy();
         element.click();
+    });
+
+    // button popover close
+    it('Button Popover event close', () => {
+        const element = createElement('base-button-popover', {
+            is: ButtonPopover
+        });
+        document.body.appendChild(element);
+        const handler = jest.fn();
+        element.addEventListener('close', handler);
+        element.close();
+
+        expect(handler).toHaveBeenCalled();
+        expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+        expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        expect(handler.mock.calls[0][0].composed).toBeFalsy();
     });
 });
