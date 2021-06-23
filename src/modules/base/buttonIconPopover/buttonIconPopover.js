@@ -95,6 +95,7 @@ export default class ButtonIconPopover extends LightningElement {
     @api tooltip;
 
     _disabled = false;
+    _handleCloseButton = false;
     _isLoading = false;
     _size = BUTTON_SIZES.default;
     _placement = POPOVER_PLACEMENTS.default;
@@ -217,6 +218,15 @@ export default class ButtonIconPopover extends LightningElement {
     }
 
     @api
+    get hideCloseButton() {
+        return this._hideCloseButton;
+    }
+
+    set hideCloseButton(value) {
+        this._hideCloseButton = normalizeBoolean(value);
+    }
+
+    @api
     get disabled() {
         return this._disabled;
     }
@@ -236,6 +246,15 @@ export default class ButtonIconPopover extends LightningElement {
 
     get hasStringTitle() {
         return !!this.title;
+    }
+
+    get computedPopoverHeaderClass() {
+        return classSet('slds-popover__header')
+            .add({
+                'avonni-button-icon-popover-space-between': !this
+                    .hideCloseButton
+            })
+            .toString();
     }
 
     @api
@@ -413,7 +432,7 @@ export default class ButtonIconPopover extends LightningElement {
         this.allowBlur();
     }
 
-    handlePopoverClick() {
+    handleSlotClick() {
         if (this.triggers === 'focus') {
             this.focusOnButton();
         }

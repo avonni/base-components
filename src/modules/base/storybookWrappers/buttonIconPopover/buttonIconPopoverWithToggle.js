@@ -43,6 +43,7 @@ export default class ButtonIconPopoverWithToggle extends LightningElement {
     @api accessKey;
     @api alternativeText;
     @api title;
+    @api hideCloseButton = false;
     @api iconName;
     @api iconClass;
     @api loadingStateAlternativeText;

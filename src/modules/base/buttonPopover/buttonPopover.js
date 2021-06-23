@@ -100,8 +100,6 @@ export default class ButtonPopover extends LightningElement {
     showFooter = true;
     _boundingRect = {};
 
-    _popoverFocused = false;
-
     connectedCallback() {
         this.classList.add(
             'slds-dropdown-trigger',
@@ -116,7 +114,7 @@ export default class ButtonPopover extends LightningElement {
         if (this.footerSlot) {
             this.showFooter = this.footerSlot.assignedElements().length !== 0;
         }
-        console.log(this.popoverVisible);
+
         if (this.triggers === 'click') {
             if (this.popoverVisible) {
                 this.focusOnPopover();
