@@ -231,12 +231,27 @@ describe('Button Popover', () => {
         });
         document.body.appendChild(element);
 
-        const closeButton = element.shadowRoot.querySelector(
-            'lightning-button-icon'
-        );
+        return Promise.resolve().then(() => {
+            const closeButton = element.shadowRoot.querySelector(
+                'lightning-button-icon'
+            );
+            expect(closeButton.iconName).toBe('utility:close');
+        });
+    });
+
+    it('Button Popover hide close button true', () => {
+        const element = createElement('base-button-popover', {
+            is: ButtonPopover
+        });
+        document.body.appendChild(element);
+
+        element.hideCloseButton = true;
 
         return Promise.resolve().then(() => {
-            expect(closeButton.iconName).toBe('utility:close');
+            const closeButton = element.shadowRoot.querySelector(
+                'lightning-button-icon'
+            );
+            expect(closeButton).toBeFalsy();
         });
     });
 

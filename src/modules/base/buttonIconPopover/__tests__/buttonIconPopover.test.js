@@ -54,6 +54,7 @@ describe('Button Icon Popover', () => {
         expect(element.variant).toBe('border');
         expect(element.size).toBe('medium');
         expect(element.tooltip).toBeUndefined();
+        expect(element.hideCloseButton).toBeFalsy();
         expect(element.iconClass).toBeUndefined();
         expect(element.iconName).toBeUndefined();
         expect(element.title).toBeUndefined();
@@ -343,6 +344,38 @@ describe('Button Icon Popover', () => {
 
         return Promise.resolve().then(() => {
             expect(button.tooltip).toBe('This is a tooltip');
+        });
+    });
+
+    // hide close button
+    it('Button Icon Popover hide close button', () => {
+        const element = createElement('base-button-popover', {
+            is: ButtonIconPopover
+        });
+        document.body.appendChild(element);
+
+        const closeButton = element.shadowRoot.querySelector(
+            'lightning-button-icon[title="Close popover"]'
+        );
+
+        return Promise.resolve().then(() => {
+            expect(closeButton.iconName).toBe('utility:close');
+        });
+    });
+
+    it('Button Icon Popover hide close button true', () => {
+        const element = createElement('base-button-popover', {
+            is: ButtonIconPopover
+        });
+        document.body.appendChild(element);
+
+        element.hideCloseButton = true;
+
+        return Promise.resolve().then(() => {
+            const closeButton = element.shadowRoot.querySelector(
+                'lightning-button-icon[title="Close popover"]'
+            );
+            expect(closeButton).toBeFalsy();
         });
     });
 
@@ -722,8 +755,10 @@ describe('Button Icon Popover', () => {
                     '.slds-popover'
                 );
                 expect(popover.className).toContain('slds-nubbin_bottom-left');
+                expect(popover.className).toContain('slds-dropdown_bottom');
+                expect(popover.className).toContain('slds-dropdown_left');
                 expect(popover.className).toContain(
-                    'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left'
+                    'slds-dropdown_bottom-left'
                 );
             });
     });
@@ -956,5 +991,21 @@ describe('Button Icon Popover', () => {
         expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         expect(handler.mock.calls[0][0].composed).toBeFalsy();
         element.click();
+    });
+
+    // button icon popover close
+    it('Button icon Popover event close', () => {
+        const element = createElement('base-button-popover', {
+            is: ButtonIconPopover
+        });
+        document.body.appendChild(element);
+        const handler = jest.fn();
+        element.addEventListener('close', handler);
+        element.close();
+
+        expect(handler).toHaveBeenCalled();
+        expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+        expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        expect(handler.mock.calls[0][0].composed).toBeFalsy();
     });
 });
