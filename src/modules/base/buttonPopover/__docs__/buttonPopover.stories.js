@@ -292,8 +292,8 @@ Success.args = {
     variant: 'success'
 };
 
-export const NeutralWithCheckbox = SecondTemplate.bind({});
-NeutralWithCheckbox.args = {
+export const NeutralWithToggle = SecondTemplate.bind({});
+NeutralWithToggle.args = {
     label: 'Info',
     iconName: 'utility:favorite'
 };

@@ -108,16 +108,10 @@ export default class ButtonIconPopover extends LightningElement {
     _boundingRect = {};
 
     connectedCallback() {
-        this._connected = true;
-
         this.classList.add(
             'slds-dropdown-trigger',
             'slds-dropdown-trigger_click'
         );
-    }
-
-    disconnectedCallback() {
-        this._connected = false;
     }
 
     renderedCallback() {
@@ -126,6 +120,12 @@ export default class ButtonIconPopover extends LightningElement {
         }
         if (this.footerSlot) {
             this.showFooter = this.footerSlot.assignedElements().length !== 0;
+        }
+
+        if (this.triggers === 'click') {
+            if (this.popoverVisible) {
+                this.focusOnPopover();
+            }
         }
     }
 
@@ -240,17 +240,25 @@ export default class ButtonIconPopover extends LightningElement {
 
     @api
     click() {
-        if (this._connected) {
+        if (this.isConnected) {
             this.clickOnButton();
         }
     }
 
     @api
     focus() {
-        if (this._connected) {
+        if (this.isConnected) {
             this.focusOnButton();
         }
         this.dispatchEvent(new CustomEvent('focus'));
+    }
+
+    @api
+    open() {
+        if (!this.popoverVisible) {
+            this.toggleMenuVisibility();
+        }
+        this.dispatchEvent(new CustomEvent('open'));
     }
 
     @api
@@ -263,11 +271,13 @@ export default class ButtonIconPopover extends LightningElement {
 
     clickOnButton() {
         if (!this._disabled) {
-            this.allowBlur();
+            this.cancelBlur();
             this.focusOnButton();
 
             if (this._triggers === 'click') {
+                this.allowBlur();
                 this.toggleMenuVisibility();
+                this.template.querySelector('lightning-button-icon').blur();
             }
 
             this.dispatchEvent(new CustomEvent('click'));
@@ -285,28 +295,30 @@ export default class ButtonIconPopover extends LightningElement {
         }
     }
 
+    focusOnPopover() {
+        this.template.querySelector('.slds-popover').focus();
+    }
+
     handleBlur() {
         if (this._cancelBlur) {
             return;
         }
-        if (this.triggers === 'hover') {
-            if (this.popoverVisible && this._cancelBlur) {
+        if (this.triggers !== 'click') {
+            if (this.popoverVisible) {
                 this.toggleMenuVisibility();
             }
         }
-        if (this.popoverVisible) {
-            this.toggleMenuVisibility();
-        }
     }
 
-    handleBlurPopover() {
+    handlePopoverBlur() {
         if (this._cancelBlur) {
             return;
         }
-        if (this.popoverVisible && this._cancelBlur) {
-            this.toggleMenuVisibility();
+        if (this.triggers === 'click') {
+            if (this.popoverVisible) {
+                this.toggleMenuVisibility();
+            }
         }
-        this.template.querySelector('lightning-button-icon').focus();
     }
 
     handleMouseEnter() {
@@ -401,6 +413,16 @@ export default class ButtonIconPopover extends LightningElement {
         this.allowBlur();
     }
 
+    handlePopoverClick() {
+        if (this.triggers === 'focus') {
+            this.focusOnButton();
+        }
+        if (this.triggers === 'click') {
+            this.popoverVisible = true;
+            this.focusOnPopover();
+        }
+    }
+
     allowBlur() {
         this._cancelBlur = false;
     }
@@ -426,7 +448,7 @@ export default class ButtonIconPopover extends LightningElement {
         if (this.isAutoAlignment() && this.popoverVisible) {
             // eslint-disable-next-line @lwc/lwc/no-async-operation
             setTimeout(() => {
-                if (this._connected) {
+                if (this.isConnected) {
                     observePosition(this, 300, this._boundingRect, () => {
                         this.close();
                     });
@@ -466,12 +488,26 @@ export default class ButtonIconPopover extends LightningElement {
                     this._popoverVariant === 'walkthrough',
                 'slds-popover_small': this._popoverSize === 'small',
                 'slds-popover_medium': this._popoverSize === 'medium',
-                'slds-popover_large': this._popoverSize === 'large'
+                'slds-popover_large': this._popoverSize === 'large',
+                'slds-show': this.popoverVisible,
+                'slds-hide': !this.popoverVisible
             })
             .toString();
     }
 
     isAutoAlignment() {
         return this._placement.startsWith('auto');
+    }
+
+    handlePopoverKeyDown() {
+        if (!this._cancelBlur) {
+            this.cancelBlur();
+        }
+    }
+
+    handlePopoverKeyPress() {
+        if (this._cancelBlur) {
+            this.allowBlur();
+        }
     }
 }

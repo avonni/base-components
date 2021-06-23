@@ -227,20 +227,24 @@ export default class ButtonPopover extends LightningElement {
 
     @api
     click() {
-        if (this.triggers === 'click') {
-            if (this.isConnected) {
-                this.clickOnButton();
-            }
+        if (this.isConnected) {
+            this.clickOnButton();
         }
     }
 
     @api
     focus() {
-        if (this.triggers === 'focus') {
-            if (this.isConnected) {
-                this.focusOnButton();
-            }
+        if (this.isConnected) {
+            this.focusOnButton();
         }
+    }
+
+    @api
+    open() {
+        if (!this.popoverVisible) {
+            this.toggleMenuVisibility();
+        }
+        this.dispatchEvent(new CustomEvent('open'));
     }
 
     @api
@@ -248,6 +252,7 @@ export default class ButtonPopover extends LightningElement {
         if (this.popoverVisible) {
             this.toggleMenuVisibility();
         }
+        this.dispatchEvent(new CustomEvent('close'));
     }
 
     clickOnButton() {
