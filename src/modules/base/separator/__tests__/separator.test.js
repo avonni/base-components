@@ -165,10 +165,10 @@ describe('Separator', () => {
         element.alignContent = 'end';
 
         return Promise.resolve().then(() => {
-            const lineOne = element.shadowRoot.querySelector(
+            const lineTwo = element.shadowRoot.querySelector(
                 '.avonni-separator_line-two'
             );
-            expect(lineOne.classList).toContain('slds-hide');
+            expect(lineTwo.classList).toContain('slds-hide');
         });
     });
 
