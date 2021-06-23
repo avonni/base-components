@@ -203,6 +203,10 @@
             "path": "src/modules/base/list/list.js"
         },
         {
+            "name": "c/luxon",
+            "path": "src/modules/base/luxon/luxon.js"
+        },
+        {
             "name": "c/map",
             "path": "src/modules/base/map/map.js"
         },
