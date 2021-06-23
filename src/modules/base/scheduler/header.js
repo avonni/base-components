@@ -92,7 +92,7 @@ export default class Header {
 
     computeColumns() {
         this.columns = [];
-        let time = this.start.getTime();
+        let time = this.start.ts;
 
         // For each column
         for (let i = 0; i < this.numberOfColumns; i++) {
@@ -101,13 +101,13 @@ export default class Header {
             // We don't want to take the day or time of the date into account
             // if the header does not use them
             if (
-                this.unit !== 'month' &&
-                this.unit !== 'year' &&
-                this.unit !== 'week'
+                this.unit !== 'months' &&
+                this.unit !== 'years' &&
+                this.unit !== 'weeks'
             ) {
                 time = this.nextAllowedDay(time);
 
-                if (this.unit !== 'day') {
+                if (this.unit !== 'days') {
                     time = this.nextAllowedTime(time);
                 }
             }

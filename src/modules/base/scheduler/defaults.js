@@ -119,7 +119,8 @@ const UNITS_IN_MS = {
     hour: 3.6e6,
     day: 8.64e7,
     week: 6.048e8,
-    month: 2.628e9,
+    // month: 2.628e9,
+    month: 8.64e7 * 30,
     year: 3.154e10
 };
 

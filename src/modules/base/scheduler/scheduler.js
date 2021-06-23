@@ -31,13 +31,13 @@
  */
 
 import { LightningElement, api } from 'lwc';
+import { DateTime } from 'c/luxon';
 import { normalizeArray, normalizeString } from 'c/utilsPrivate';
 import {
-    dateObjectFrom,
+    dateTimeObjectFrom,
     allowedHoursInUnit,
     allowedDaysInUnit,
-    allowedMinutesInUnit,
-    getUnitFromTime
+    allowedMinutesInUnit
 } from './dateUtils';
 import {
     EVENTS_THEMES,
@@ -246,7 +246,7 @@ export default class Scheduler extends LightningElement {
         return this._start;
     }
     set start(value) {
-        const computedDate = dateObjectFrom(value);
+        const computedDate = dateTimeObjectFrom(value);
         this._start = computedDate || DEFAULT_START_DATE;
 
         if (this.isConnected) {
@@ -316,12 +316,8 @@ export default class Scheduler extends LightningElement {
 
             const maxVisibleTime =
                 UNITS_IN_MS[this.visibleSpan.unit] * this.visibleSpan.span;
-            const end = this.start.getTime() + maxVisibleTime;
-            const columns = this.computedNumberOfColumns(
-                unit,
-                millisecondsPerCol,
-                end
-            );
+            const end = this.start.ts + maxVisibleTime;
+            const columns = this.computedNumberOfColumns(unit, end);
 
             this._referenceHeader = new Header({
                 unit: unit,
@@ -363,11 +359,7 @@ export default class Scheduler extends LightningElement {
 
                 const columns = referenceIsLonger
                     ? this.maxColumnsInParent(header, parentHeader)
-                    : this.computedNumberOfColumns(
-                          unit,
-                          millisecondsPerCol,
-                          referenceEnd
-                      );
+                    : this.computedNumberOfColumns(unit, referenceEnd);
 
                 const end =
                     referenceIsLonger &&
@@ -415,25 +407,19 @@ export default class Scheduler extends LightningElement {
         this.initHeaderColumnWidths();
     }
 
-    computedNumberOfColumns(unit, timePerCol, end) {
+    computedNumberOfColumns(unit, end) {
         let columns = 0;
-        let time = this.start.getTime();
-        let previousUnit;
-        const startUnit = getUnitFromTime(unit, time);
+        let start = this.start.ts;
 
-        while (time < end) {
-            previousUnit = getUnitFromTime(unit, time);
+        while (start < end) {
+            const startDate = DateTime.fromMillis(start);
+            const endOfUnit = startDate.endOf(unit);
+            const timeToEndOfUnit = endOfUnit.diff(startDate, 'milliseconds');
+            start += timeToEndOfUnit.values.milliseconds + 1;
             columns += 1;
-            time += timePerCol;
         }
 
-        // Add an extra column if the start date is not at the beginning of a unit.
-        // For example, the visible span is one month (one column allowed for unit "month"),
-        // but the start date is the 12th (two columns in the end).
-        const endUnit = getUnitFromTime(unit, time);
-        if (columns === 1 && (endUnit > startUnit || endUnit < previousUnit))
-            columns += 1;
-
+        console.log(unit, columns);
         return columns;
     }
 
@@ -519,6 +505,8 @@ export default class Scheduler extends LightningElement {
 
     initHeaderColumnWidths() {
         this.headers.forEach((header) => {
+            const unit = header.unit;
+
             // If the header has a child header,
             // columns may be smaller than their full possible time span
             if (header.childKey) {
@@ -526,25 +514,25 @@ export default class Scheduler extends LightningElement {
                     (headerObj) => headerObj.key === header.childKey
                 );
                 const childWidth = 100 / child.columns.length;
-                let time = this.start.getTime();
+                let time = this.start.ts;
                 let childColumnIndex = 0;
 
                 header.columns.forEach(() => {
                     let width = 0;
-                    let start = getUnitFromTime(header.unit, time);
-                    const end = header.unit === 'week' ? start + 7 : start + 1;
+                    let start = DateTime.fromMillis(time);
+                    const options = {};
+                    options[unit] = 1;
+                    const end = start.plus(options);
 
-                    // Stop if there are no child columns left
                     while (childColumnIndex < child.columns.length) {
                         const childColumn = child.columns[childColumnIndex];
                         time = childColumn.time;
-                        const previousStart = start;
-                        start = getUnitFromTime(header.unit, time);
+                        start = DateTime.fromMillis(time);
 
-                        // Stop if the next child column belongs to the next header unit.
-                        // previousStart is used to check if start went from a higher number to 0,
-                        // for example between December and January
-                        if (start >= end || start < previousStart) break;
+                        // debugger
+
+                        // Stop if the next child column belongs to the next header unit
+                        if (start[unit] >= end[unit]) break;
                         childColumnIndex += 1;
                         width += childWidth;
                     }
@@ -553,8 +541,7 @@ export default class Scheduler extends LightningElement {
                 });
 
                 // If the header has a shorter time unit than the reference header,
-                // columns will always take their full possible span.
-                // All columns have the same width.
+                // all columns have the same width.
             } else {
                 const columnWidth = 100 / header.columns.length;
                 header.columns.forEach(() => {

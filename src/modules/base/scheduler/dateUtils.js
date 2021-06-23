@@ -30,6 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import { DateTime } from 'c/luxon';
+
 const FORMATS = [
     {
         pattern: /<ss>/g,
@@ -102,13 +104,27 @@ const FORMATS = [
 ];
 
 /**
- * Converts the argument into a Date object.
- * @returns {object} Date object or false
+ * Converts a timestamp or a date object into a Luxon DateTime object.
+ * @param {number} - Timestamp to convert
+ * @returns {object} DateTime object or false
  */
-const dateObjectFrom = (date) => {
-    if (date instanceof Date) return date;
-    if (!isNaN(new Date(date).getTime())) return new Date(date);
-    return false;
+const dateTimeObjectFrom = (date) => {
+    let dateObject;
+    if (date instanceof Date) {
+        dateObject = date;
+    } else if (!isNaN(new Date(date).getTime())) {
+        dateObject = new Date(date);
+    }
+
+    return DateTime.local(
+        dateObject.getFullYear(),
+        dateObject.getMonth(),
+        dateObject.getDate(),
+        dateObject.getHours(),
+        dateObject.getMinutes(),
+        dateObject.getSeconds(),
+        dateObject.getMilliseconds()
+    );
 };
 
 /**
@@ -264,37 +280,9 @@ const allowedDaysInUnit = (allowedDaysInAWeek, unit) => {
     return daysInUnit;
 };
 
-/**
- * Uses the right Date get method, depending on the unit
- * @param {string} unit - The unit (minute, hour, day, week, month or year)
- * @param {number} time - The timestamp or the date
- * @returns {number} Number of units in the date. If the unit is 'week', returns the number of days
- */
-const getUnitFromTime = (unit, time) => {
-    const date = dateObjectFrom(time);
-    if (!date) return 0;
-
-    switch (unit) {
-        case 'minute':
-            return date.getMinutes();
-        case 'hour':
-            return date.getHours();
-        case 'day':
-            return date.getDate();
-        case 'week':
-            // This case needs to be handled in the scheduler
-            return date.getDate();
-        case 'month':
-            return date.getMonth();
-        default:
-            return date.getFullYear();
-    }
-};
-
 export {
     formatTime,
-    dateObjectFrom,
-    getUnitFromTime,
+    dateTimeObjectFrom,
     isInTimeFrame,
     allowedHoursInUnit,
     allowedDaysInUnit,

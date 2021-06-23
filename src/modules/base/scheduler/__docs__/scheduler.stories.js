@@ -252,7 +252,7 @@ Base.args = {
         unit: 'day',
         span: 30
     },
-    start: new Date(2021, 6, 12, 8)
+    start: new Date(2021, 6, 12)
     // availableTimeFrames: ['04:50:00-10:30', '13:00-16:00'],
     // availableDaysOfTheWeek: [1],
     // availableMonths: [7]
