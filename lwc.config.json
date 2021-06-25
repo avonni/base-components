@@ -387,6 +387,10 @@
             "path": "src/modules/base/segmentButton/segmentButton.js"
         },
         {
+            "name": "c/separator",
+            "path": "src/modules/base/separator/separator.js"
+        },
+        {
             "name": "c/slide",
             "path": "src/modules/base/slide/slide.js"
         },
@@ -679,6 +683,10 @@
             "path": "src/modules/base/segmentButton/segmentButton.js"
         },
         {
+            "name": "avonni/separator",
+            "path": "src/modules/base/separator/separator.js"
+        },
+        {
             "name": "avonni/slide",
             "path": "src/modules/base/slide/slide.js"
         },
@@ -798,6 +806,7 @@
         "avonni/scopedNotification",
         "avonni/segment",
         "avonni/segmentButton",
+        "avonni/separator",
         "avonni/slide",
         "avonni/slides",
         "avonni/list",
