@@ -90,12 +90,12 @@ export default {
                 type: 'select'
             },
             options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
-            defaultValue: 'medium',
+            defaultValue: 'small',
             description:
                 'The size of the icon. Options include xx-small, x-small, small, medium and large.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'medium' }
+                defaultValue: { summary: 'small' }
             }
         },
         orientation: {

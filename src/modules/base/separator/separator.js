@@ -34,13 +34,13 @@ import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { normalizeString } from 'c/utilsPrivate';
 
-const VALID_ALIGN_CONTENT_VARIANTS = {
+const VALID_ALIGN_CONTENTS = {
     valid: ['start', 'center', 'end'],
     default: 'center'
 };
 const VALID_ICON_SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
-    default: 'medium'
+    default: 'small'
 };
 const VALID_ORIENTATIONS = {
     valid: ['horizontal', 'vertical'],
@@ -52,7 +52,7 @@ export default class Separator extends LightningElement {
     @api label;
     @api iconName;
 
-    _alignContent = VALID_ALIGN_CONTENT_VARIANTS;
+    _alignContent = VALID_ALIGN_CONTENTS;
     _iconSize = VALID_ICON_SIZES;
     _orientation = VALID_ORIENTATIONS;
     _iconPosition = VALID_ICON_POSITIONS;
@@ -63,8 +63,8 @@ export default class Separator extends LightningElement {
 
     set alignContent(value) {
         this._alignContent = normalizeString(value, {
-            fallbackValue: VALID_ALIGN_CONTENT_VARIANTS.default,
-            validValues: VALID_ALIGN_CONTENT_VARIANTS.valid
+            fallbackValue: VALID_ALIGN_CONTENTS.default,
+            validValues: VALID_ALIGN_CONTENTS.valid
         });
     }
 
