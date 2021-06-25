@@ -10,81 +10,22 @@ const vertical_alignement_options = {
     valid: ['top', 'center', 'bottom'],
     default: 'center'
 };
-const font_size_options = {
-    valid: [
-        'small',
-        'medium',
-        'large',
-        'x-large',
-        'xx-large',
-        'xxx-large',
-        'xxxx-large'
-    ],
-    titleDefault: 'large',
-    captionDefault: 'small',
-    subtitleDefault: 'medium'
-};
 
-const font_weight_options = {
-    valid: ['light', 'normal', 'bold'],
-    titleDefault: 'bold',
-    captionDefault: 'light',
-    subtitleDefault: 'normal'
-};
-
-const DEFAULT_TEXT_COLOR = '#ffffff';
-const DEFAULT_BACKGROUND_COLOR = '#ffffff';
-const DEFAULT_BUTTON_BACKGROUND_COLOR = '#0070d2';
-const DEFAULT_BUTTON_BACKGROUND_HOVER_COLOR = '#005fb2';
 const DEFAULT_HEIGHT = 400;
 const DEFAULT_MAX_WIDTH = 960;
 const DEFAULT_CONTENT_WIDTH = 100;
-const DEFAULT_LINEAR_GRADIENT = 'rgba(0,0,0,0.4), rgba(0,0,0,0.4)';
-const DEFAULT_FONT_FAMILY = '"Salesforce Sans", Arial, sans-serif';
-const DEFAULT_SHADOW_COLOR = '1px 1px 0 rgb(0 0 0 / 50%)';
-const DEFAULT_BUTTON_BORDER_RADIUS = 4;
 
 export default class HeroBanner extends LightningElement {
     @api title;
-    @api titleColor = DEFAULT_TEXT_COLOR;
-    @api titleFontFamily = DEFAULT_FONT_FAMILY;
-    @api titleShadowColor = DEFAULT_SHADOW_COLOR;
     @api caption;
-    @api captionColor = DEFAULT_TEXT_COLOR;
-    @api captionFontFamily = DEFAULT_FONT_FAMILY;
-    @api captionShadowColor = DEFAULT_SHADOW_COLOR;
     @api subtitle;
-    @api subtitleColor = DEFAULT_TEXT_COLOR;
-    @api subtitleFontFamily = DEFAULT_FONT_FAMILY;
-    @api subtitleShadowColor = DEFAULT_SHADOW_COLOR;
     @api src;
-    @api backgroundColor = DEFAULT_BACKGROUND_COLOR;
-    @api linearGradient = DEFAULT_LINEAR_GRADIENT;
     @api primaryButtonLabel;
-    @api primaryButtonTextColor = DEFAULT_TEXT_COLOR;
-    @api primaryButtonTextHoverColor = DEFAULT_TEXT_COLOR;
-    @api primaryButtonBackgroundColor = DEFAULT_BUTTON_BACKGROUND_COLOR;
-    @api
-    primaryButtonBackgroundHoverColor = DEFAULT_BUTTON_BACKGROUND_HOVER_COLOR;
-    @api primaryButtonBorderColor;
-    @api primaryButtonBorderRadius = DEFAULT_BUTTON_BORDER_RADIUS;
     @api secondaryButtonLabel;
-    @api secondaryButtonTextColor = DEFAULT_TEXT_COLOR;
-    @api secondaryButtonTextHoverColor = DEFAULT_TEXT_COLOR;
-    @api secondaryButtonBackgroundColor = DEFAULT_BUTTON_BACKGROUND_COLOR;
-    @api
-    secondaryButtonBackgroundHoverColor = DEFAULT_BUTTON_BACKGROUND_HOVER_COLOR;
     @api secondaryButtonBorderColor;
-    @api secondaryButtonBorderRadius = DEFAULT_BUTTON_BORDER_RADIUS;
 
     _contentHorizontalAlignment = horizontal_alignement_options.default;
     _contentVerticalAlignment = vertical_alignement_options.default;
-    _titleFontSize = font_size_options.titleDefault;
-    _titleFontWeight = font_weight_options.titleDefault;
-    _captionFontSize = font_size_options.captionDefault;
-    _captionFontWeight = font_weight_options.captionDefault;
-    _subtitleFontSize = font_size_options.subtitleDefault;
-    _subtitleFontWeight = font_weight_options.subtitleDefault;
     _height = DEFAULT_HEIGHT;
     _maxWidth = DEFAULT_MAX_WIDTH;
     _contentWidth = DEFAULT_CONTENT_WIDTH;
@@ -136,78 +77,6 @@ export default class HeroBanner extends LightningElement {
         this._contentVerticalAlignment = normalizeString(alignement, {
             fallbackValue: vertical_alignement_options.default,
             validValues: vertical_alignement_options.valid
-        });
-    }
-
-    @api
-    get titleFontSize() {
-        return this._titleFontSize;
-    }
-
-    set titleFontSize(size) {
-        this._titleFontSize = normalizeString(size, {
-            fallbackValue: font_size_options.titleDefault,
-            validValues: font_size_options.valid
-        });
-    }
-
-    @api
-    get titleFontWeight() {
-        return this._titleFontWeight;
-    }
-
-    set titleFontWeight(weight) {
-        this._titleFontWeight = normalizeString(weight, {
-            fallbackValue: font_weight_options.titleDefault,
-            validValues: font_weight_options.valid
-        });
-    }
-
-    @api
-    get captionFontSize() {
-        return this._captionFontSize;
-    }
-
-    set captionFontSize(size) {
-        this._captionFontSize = normalizeString(size, {
-            fallbackValue: font_size_options.captionDefault,
-            validValues: font_size_options.valid
-        });
-    }
-
-    @api
-    get captionFontWeight() {
-        return this._captionFontWeight;
-    }
-
-    set captionFontWeight(weight) {
-        this._captionFontWeight = normalizeString(weight, {
-            fallbackValue: font_weight_options.captionDefault,
-            validValues: font_weight_options.valid
-        });
-    }
-
-    @api
-    get subtitleFontSize() {
-        return this._subtitleFontSize;
-    }
-
-    set subtitleFontSize(size) {
-        this._subtitleFontSize = normalizeString(size, {
-            fallbackValue: font_size_options.subtitleDefault,
-            validValues: font_size_options.valid
-        });
-    }
-
-    @api
-    get subtitleFontWeight() {
-        return this._subtitleFontWeight;
-    }
-
-    set subtitleFontWeight(weight) {
-        this._subtitleFontWeight = normalizeString(weight, {
-            fallbackValue: font_weight_options.subtitleDefault,
-            validValues: font_weight_options.valid
         });
     }
 
