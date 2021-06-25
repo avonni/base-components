@@ -161,10 +161,8 @@ Base.args = {
     height: 300
 };
 
-export const BaseAbsoluteCenterWithCursiveTitleAndContentWidth = Template.bind(
-    {}
-);
-BaseAbsoluteCenterWithCursiveTitleAndContentWidth.args = {
+export const BaseAbsoluteCenterWithContentWidth = Template.bind({});
+BaseAbsoluteCenterWithContentWidth.args = {
     caption: 'This is a caption',
     title: 'This is a title',
     subtitle: 'This is a subtitle',
@@ -175,8 +173,8 @@ BaseAbsoluteCenterWithCursiveTitleAndContentWidth.args = {
     contentWidth: 15
 };
 
-export const BaseCenteredRightWithLinearGradient = Template.bind({});
-BaseCenteredRightWithLinearGradient.args = {
+export const BaseCenteredRight = Template.bind({});
+BaseCenteredRight.args = {
     caption: 'This is a caption',
     title: 'This is a title',
     subtitle: 'This is a subtitle',
@@ -210,8 +208,8 @@ BaseTopCenterWithButtons.args = {
     secondaryButtonLabel: 'Secondary Button'
 };
 
-export const BaseTopRightWithGreenButton = Template.bind({});
-BaseTopRightWithGreenButton.args = {
+export const BaseTopRight = Template.bind({});
+BaseTopRight.args = {
     caption: 'This is a caption',
     title: 'This is a title',
     subtitle: 'This is a subtitle',
@@ -233,8 +231,8 @@ BaseBottomLeft.args = {
     contentVerticalAlignment: 'bottom'
 };
 
-export const BaseBottomCenterWithGreenCaption = Template.bind({});
-BaseBottomCenterWithGreenCaption.args = {
+export const BaseBottomCenter = Template.bind({});
+BaseBottomCenter.args = {
     caption: 'This is a caption',
     title: 'This is a title',
     subtitle: 'This is a subtitle',
