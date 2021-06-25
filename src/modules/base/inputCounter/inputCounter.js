@@ -74,6 +74,7 @@ export default class InputCounter extends LightningElement {
     _constraintApi;
     _constraintApiProxyInputUpdater;
     _value;
+    _digits;
     helpMessage;
     labelVariant;
     labelFieldLevelHelp;
@@ -126,13 +127,12 @@ export default class InputCounter extends LightningElement {
     }
 
     set fractionDigits(digits) {
-        const baseFractionValue = 1;
         if (typeof digits === 'number') {
-            this._fractionDigits = +(
-                '0.' + baseFractionValue.toString().padStart(digits, '0')
-            );
-            this._normalizedDigits = digits;
+            this._digits = Math.round(Math.abs(digits));
+            this._fractionDigits = 1 / Math.pow(10, this._digits);
+            this._normalizedDigits = this._digits;
         } else {
+            this._digits = null;
             this._fractionDigits = 1;
         }
     }
