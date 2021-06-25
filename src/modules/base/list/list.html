@@ -130,7 +130,7 @@
                         class="slds-media slds-media_small"
                     >
                         <lightning-button-menu
-                            if:true={multiActions}
+                            if:true={hasMultipleActions}
                             class="slds-m-right_none"
                             menu-alignment="right"
                             icon-size="x-small"
@@ -149,26 +149,26 @@
                                 ></lightning-menu-item>
                             </template>
                         </lightning-button-menu>
-                        <template if:false={multiActions}>
+                        <template if:false={hasMultipleActions}>
                             <lightning-button
-                                if:true={singleAction.label}
+                                if:true={firstAction.label}
                                 class="slds-m-right_none"
                                 ontouchstart={handleButtonMenuTouchStart}
-                                key={singleAction.name}
-                                value={singleAction.name}
-                                label={singleAction.label}
-                                disabled={singleAction.disabled}
-                                icon-name={singleAction.iconName}
+                                key={firstAction.name}
+                                value={firstAction.name}
+                                label={firstAction.label}
+                                disabled={firstAction.disabled}
+                                icon-name={firstAction.iconName}
                             ></lightning-button>
                             <lightning-button-icon
-                                if:false={singleAction.label}
+                                if:false={firstAction.label}
                                 class="slds-m-right_none"
                                 size="x-small"
                                 ontouchstart={handleButtonMenuTouchStart}
-                                key={singleAction.name}
-                                value={singleAction.name}
-                                disabled={singleAction.disabled}
-                                icon-name={singleAction.iconName}
+                                key={firstAction.name}
+                                value={firstAction.name}
+                                disabled={firstAction.disabled}
+                                icon-name={firstAction.iconName}
                                 variant="bare"
                             ></lightning-button-icon>
                         </template>

@@ -131,11 +131,11 @@ export default class List extends LightningElement {
         this._hasActions = true;
     }
 
-    get singleAction() {
+    get firstAction() {
         return this.computedActions[0];
     }
 
-    get multiActions() {
+    get hasMultipleActions() {
         return this._actions.length > 1;
     }
 
