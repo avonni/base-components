@@ -97,16 +97,10 @@ export default class ButtonPopover extends LightningElement {
     _boundingRect = {};
 
     connectedCallback() {
-        this._connected = true;
-
         this.classList.add(
             'slds-dropdown-trigger',
             'slds-dropdown-trigger_click'
         );
-    }
-
-    disconnectedCallback() {
-        this._connected = false;
     }
 
     renderedCallback() {
@@ -222,14 +216,14 @@ export default class ButtonPopover extends LightningElement {
 
     @api
     click() {
-        if (this._connected) {
+        if (this.isConnected) {
             this.clickOnButton();
         }
     }
 
     @api
     focus() {
-        if (this._connected) {
+        if (this.isConnected) {
             this.focusOnButton();
         }
     }
@@ -392,7 +386,7 @@ export default class ButtonPopover extends LightningElement {
         if (this.isAutoAlignment() && this.popoverVisible) {
             // eslint-disable-next-line @lwc/lwc/no-async-operation
             setTimeout(() => {
-                if (this._connected) {
+                if (this.isConnected) {
                     observePosition(this, 300, this._boundingRect, () => {
                         this.close();
                     });

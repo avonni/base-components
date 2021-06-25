@@ -185,6 +185,11 @@ export default class DualListbox extends LightningElement {
         this._options = Array.isArray(value)
             ? JSON.parse(JSON.stringify(value))
             : [];
+
+        if (this.isConnected) {
+            this.computedColumnSourceHeight();
+            this.computedColumnSelectedHeight();
+        }
     }
 
     @api
@@ -325,6 +330,11 @@ export default class DualListbox extends LightningElement {
         const number =
             typeof value === 'number' ? value : DEFAULT_MAX_VISIBLE_OPTIONS;
         this._maxVisibleOptions = parseInt(number, 10);
+
+        if (this.isConnected) {
+            this.computedColumnSourceHeight();
+            this.computedColumnSelectedHeight();
+        }
     }
 
     @api
