@@ -48,7 +48,7 @@ describe('Separator', () => {
         expect(element.label).toBeUndefined();
         expect(element.iconName).toBeUndefined();
         expect(element.iconPosition.default).toBe('left');
-        expect(element.iconSize.default).toBe('medium');
+        expect(element.iconSize.default).toBe('small');
         expect(element.orientation.default).toBe('horizontal');
         expect(element.alignContent.default).toBe('center');
     });
@@ -181,7 +181,7 @@ describe('Separator', () => {
 
         element.label = 'Tester';
         element.iconName = 'utility:check';
-        element.iconSize = 'medium';
+        element.iconSize = 'small';
         element.iconPosition = 'left';
 
         return Promise.resolve().then(() => {
@@ -199,7 +199,7 @@ describe('Separator', () => {
 
         element.label = 'Tester';
         element.iconName = 'utility:check';
-        element.iconSize = 'medium';
+        element.iconSize = 'small';
         element.iconPosition = 'right';
 
         return Promise.resolve().then(() => {
