@@ -1,3 +1,35 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { LightningElement, api } from 'lwc';
 import {
     normalizeArray,
@@ -9,6 +41,10 @@ import { classSet } from 'c/utils';
 const ICON_POSITIONS = {
     valid: ['left', 'right'],
     default: 'right'
+};
+
+const DIVIDER = {
+    valid: ['top', 'bottom', 'around']
 };
 
 const DEFAULT_ITEM_HEIGHT = 44;
@@ -29,10 +65,24 @@ export default class List extends LightningElement {
     _menuBottom;
     _itemElements;
     _savedComputedItems;
-
+    _currentItemDraggedHeight;
+    _actions = [];
+    _hasActions = false;
+    _divider;
+    computedActions = [];
     computedItems = [];
     menuRole;
     itemRole;
+
+    @api
+    get divider() {
+        return this._divider;
+    }
+    set divider(value) {
+        this._divider = normalizeString(value, {
+            validValues: DIVIDER.valid
+        });
+    }
 
     @api
     get items() {
@@ -41,6 +91,10 @@ export default class List extends LightningElement {
     set items(proxy) {
         this._items = normalizeArray(proxy);
         this.computedItems = JSON.parse(JSON.stringify(this._items));
+        this.computedItems.forEach((item) => {
+            item.infos = normalizeArray(item.infos);
+            item.icons = normalizeArray(item.icons);
+        });
     }
 
     @api
@@ -66,6 +120,15 @@ export default class List extends LightningElement {
             validValues: ICON_POSITIONS.valid
         });
     }
+    @api
+    get actions() {
+        return this._actions;
+    }
+    set actions(proxy) {
+        this._actions = normalizeArray(proxy);
+        this.computedActions = JSON.parse(JSON.stringify(this._actions));
+        this._hasActions = true;
+    }
 
     get showIconRight() {
         return (
@@ -83,10 +146,16 @@ export default class List extends LightningElement {
         );
     }
 
-    get itemClass() {
-        return classSet('slds-border_bottom slds-grid list-item')
+    get computedListClass() {
+        return  `menu slds-has-dividers_${this.divider}-space`;
+    }
+
+    get computedItemClass() {
+        return classSet('slds-grid list-item slds-item')
             .add({
-                'sortable-item': this.sortable
+                'sortable-item': this.sortable,
+                'expanded-item': this._hasActions,
+                'slds-p-vertical_x-small': !this.divider
             })
             .toString();
     }
@@ -138,17 +207,14 @@ export default class List extends LightningElement {
 
         // If the target has already been moved, move it back to its original position
         // Else, move it up or down
-        if (target.className.match(/.*sortable-item_moved-.*/)) {
-            target.classList.remove(
-                'sortable-item_moved-up',
-                'sortable-item_moved-down'
-            );
+        if (target.style.transform !== '') {
+            target.style.transform = '';
         } else {
-            const moveClass =
+            const translationValue =
                 targetIndex > index
-                    ? 'sortable-item_moved-up'
-                    : 'sortable-item_moved-down';
-            target.classList.add(moveClass);
+                    ? -this._currentItemDraggedHeight
+                    : this._currentItemDraggedHeight;
+            target.style.transform = `translateY(${translationValue + 'px'})`;
         }
 
         // Make the switch in computed items
@@ -199,18 +265,17 @@ export default class List extends LightningElement {
     }
 
     dragStart(event) {
-        if (!this.sortable) return;
-
-        // Make sure touch events don't trigger mouse events
-        event.preventDefault();
+        // Stop dragging if the click was on a button menu
+        if (!this.sortable || event.target.tagName === 'LIGHTNING-BUTTON-MENU')
+            return;
 
         this._itemElements = Array.from(
             this.template.querySelectorAll('.sortable-item')
         );
         this._draggedElement = event.currentTarget;
+        this._currentItemDraggedHeight = this._draggedElement.offsetHeight;
         this._draggedIndex = Number(this._draggedElement.dataset.index);
         this._draggedElement.classList.add('sortable-item_dragged');
-
         if (event.type !== 'keydown') {
             this.initPositions(event);
         } else {
@@ -218,6 +283,13 @@ export default class List extends LightningElement {
         }
 
         this.updateAssistiveText();
+
+        if (event.type === 'touchstart') {
+            // Make sure touch events don't trigger mouse events
+            event.preventDefault();
+            // Close any open button menu
+            this._draggedElement.focus();
+        }
     }
 
     drag(event) {
@@ -251,6 +323,9 @@ export default class List extends LightningElement {
 
         const hoveredItem = this.getHoveredItem(center);
         if (hoveredItem) this.switchWithItem(hoveredItem);
+        event.currentTarget
+            .querySelector('lightning-button-menu')
+            .classList.remove('slds-is-open');
     }
 
     dragEnd() {
@@ -319,5 +394,10 @@ export default class List extends LightningElement {
                 this._draggedElement.dataset.position = position;
             }
         }
+    }
+
+    handleButtonMenuTouchStart(event) {
+        // Stop the dragging process when touching the button menu
+        event.stopPropagation();
     }
 }

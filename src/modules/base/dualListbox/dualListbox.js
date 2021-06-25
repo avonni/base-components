@@ -1,9 +1,42 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { LightningElement, api } from 'lwc';
 import {
     normalizeBoolean,
     normalizeString,
     assert,
-    getRealDOMId
+    getRealDOMId,
+    getListHeight
 } from 'c/utilsPrivate';
 import { classSet, formatLabel } from 'c/utils';
 import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
@@ -14,13 +47,14 @@ const DEFAULT_ADD_BUTTON_ICON_NAME = 'utility:right';
 const DEFAULT_DOWN_BUTTON_ICON_NAME = 'utility:down';
 const DEFAULT_REMOVE_BUTTON_ICON_NAME = 'utility:left';
 const DEFAULT_UP_BUTTON_ICON_NAME = 'utility:up';
+const DEFAULT_MAX_VISIBLE_OPTIONS = 5;
 
-const VALID_VARIANTS = {
+const LABEL_VARIANTS = {
     valid: ['standard', 'label-hidden', 'label-stacked'],
     default: 'standard'
 };
 
-const VALID_BUTTON_VARIANTS = {
+const BUTTON_VARIANTS = {
     valid: [
         'bare',
         'container',
@@ -33,10 +67,12 @@ const VALID_BUTTON_VARIANTS = {
     default: 'border'
 };
 
-const VALID_BUTTON_SIZES = {
+const BUTTON_SIZES = {
     valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
     default: 'medium'
 };
+
+const BOXES_SIZES = { valid: ['small', 'medium', 'large'], default: 'medium' };
 
 const i18n = {
     optionLockAssistiveText: 'Option Lock AssistiveText',
@@ -50,8 +86,6 @@ export default class DualListbox extends LightningElement {
     @api selectedLabel;
     @api selectedPlaceholder;
     @api label;
-    @api min = DEFAULT_MIN;
-    @api max;
     @api name;
     @api addButtonIconName = DEFAULT_ADD_BUTTON_ICON_NAME;
     @api downButtonIconName = DEFAULT_DOWN_BUTTON_ICON_NAME;
@@ -66,15 +100,19 @@ export default class DualListbox extends LightningElement {
     _requiredOptions = [];
     _options = [];
     _hideBottomDivider = false;
-    _buttonSize = VALID_BUTTON_SIZES.default;
-    _buttonVariant = VALID_BUTTON_VARIANTS.default;
+    _buttonSize = BUTTON_SIZES.default;
+    _buttonVariant = BUTTON_VARIANTS.default;
     _isLoading = false;
     _searchEngine = false;
-    _variant = VALID_VARIANTS.default;
+    _variant = LABEL_VARIANTS.default;
     _disabled;
     _disableReordering = false;
+    _draggable = false;
     _required = false;
-    _size;
+    _maxVisibleOptions = DEFAULT_MAX_VISIBLE_OPTIONS;
+    _min = DEFAULT_MIN;
+    _max;
+    _size = BOXES_SIZES.default;
 
     _selectedValues = [];
     highlightedOptions = [];
@@ -86,12 +124,17 @@ export default class DualListbox extends LightningElement {
     _upButtonDisabled = false;
     _downButtonDisabled = false;
     _oldIndex;
+    _sourceBoxHeight;
+    _selectedBoxHeight;
+
+    _dropItSelected = false;
+    _dropItSource = false;
+    _newIndex;
 
     connectedCallback() {
         this.classList.add('slds-form-element');
         this.keyboardInterface = this.selectKeyboardInterface();
 
-        this._connected = true;
         this.addRequiredOptionsToValue();
 
         // debounceInteraction since DualListbox has multiple focusable elements
@@ -112,6 +155,7 @@ export default class DualListbox extends LightningElement {
 
     renderedCallback() {
         this.assertRequiredAttributes();
+
         if (this.disabled) {
             this._upButtonDisabled = true;
             this._downButtonDisabled = true;
@@ -129,6 +173,7 @@ export default class DualListbox extends LightningElement {
             }
         }
         this.disabledButtons();
+        this.updateBoxesHeight();
     }
 
     @api
@@ -140,8 +185,15 @@ export default class DualListbox extends LightningElement {
         this._options = Array.isArray(value)
             ? JSON.parse(JSON.stringify(value))
             : [];
+
+        if (this.isConnected) {
+            this.computedColumnSourceHeight();
+            this.computedColumnSelectedHeight();
+        }
     }
-    @api messageWhenValueMissing = i18n.requiredError;
+
+    @api
+    messageWhenValueMissing = i18n.requiredError;
 
     @api
     get messageWhenRangeOverflow() {
@@ -214,7 +266,7 @@ export default class DualListbox extends LightningElement {
     set value(newValue) {
         this.updateHighlightedOptions(newValue);
         this._selectedValues = newValue || [];
-        if (this._connected) {
+        if (this.isConnected) {
             this.addRequiredOptionsToValue();
         }
     }
@@ -228,7 +280,7 @@ export default class DualListbox extends LightningElement {
         this._requiredOptions = Array.isArray(newValue)
             ? JSON.parse(JSON.stringify(newValue))
             : [];
-        if (this._connected) {
+        if (this.isConnected) {
             this.addRequiredOptionsToValue();
         }
     }
@@ -240,8 +292,8 @@ export default class DualListbox extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: VALID_VARIANTS.default,
-            validValues: VALID_VARIANTS.valid
+            fallbackValue: LABEL_VARIANTS.default,
+            validValues: LABEL_VARIANTS.valid
         });
     }
 
@@ -252,8 +304,8 @@ export default class DualListbox extends LightningElement {
 
     set buttonSize(size) {
         this._buttonSize = normalizeString(size, {
-            fallbackValue: VALID_BUTTON_SIZES.default,
-            validValues: VALID_BUTTON_SIZES.valid
+            fallbackValue: BUTTON_SIZES.default,
+            validValues: BUTTON_SIZES.valid
         });
     }
 
@@ -264,20 +316,45 @@ export default class DualListbox extends LightningElement {
 
     set buttonVariant(variant) {
         this._buttonVariant = normalizeString(variant, {
-            fallbackValue: VALID_BUTTON_VARIANTS.default,
-            validValues: VALID_BUTTON_VARIANTS.valid
+            fallbackValue: BUTTON_VARIANTS.default,
+            validValues: BUTTON_VARIANTS.valid
         });
     }
 
     @api
-    get size() {
-        return this._size;
+    get maxVisibleOptions() {
+        return this._maxVisibleOptions;
     }
 
-    set size(value) {
-        if (typeof value === 'number') {
-            this._size = value;
-        } else this._size = 5;
+    set maxVisibleOptions(value) {
+        const number =
+            typeof value === 'number' ? value : DEFAULT_MAX_VISIBLE_OPTIONS;
+        this._maxVisibleOptions = parseInt(number, 10);
+
+        if (this.isConnected) {
+            this.computedColumnSourceHeight();
+            this.computedColumnSelectedHeight();
+        }
+    }
+
+    @api
+    get max() {
+        return this._max;
+    }
+
+    set max(value) {
+        const number = typeof value === 'number' ? value : '';
+        this._max = parseInt(number, 10);
+    }
+
+    @api
+    get min() {
+        return this._min;
+    }
+
+    set min(value) {
+        const number = typeof value === 'number' ? value : DEFAULT_MIN;
+        this._min = parseInt(number, 10);
     }
 
     @api
@@ -287,6 +364,30 @@ export default class DualListbox extends LightningElement {
 
     set disableReordering(value) {
         this._disableReordering = normalizeBoolean(value);
+    }
+
+    @api
+    get draggable() {
+        if (this.disabled) {
+            return false;
+        }
+        return this._draggable;
+    }
+
+    set draggable(value) {
+        this._draggable = normalizeBoolean(value);
+    }
+
+    @api
+    get size() {
+        return this._size;
+    }
+
+    set size(size) {
+        this._size = normalizeString(size, {
+            fallbackValue: BOXES_SIZES.default,
+            validValues: BOXES_SIZES.valid
+        });
     }
 
     @api
@@ -342,6 +443,14 @@ export default class DualListbox extends LightningElement {
         );
     }
 
+    get computedSourceListbox() {
+        return this.template.querySelector('[data-source-list]');
+    }
+
+    get computedSelectedListbox() {
+        return this.template.querySelector('[data-selected-list]');
+    }
+
     get ariaDisabled() {
         return String(this.disabled);
     }
@@ -390,7 +499,7 @@ export default class DualListbox extends LightningElement {
                 }
             });
 
-            // add selected items in the given order
+            // add selected options in the given order
             this.value.forEach((optionValue) => {
                 const option = optionsMap[optionValue];
                 if (option) {
@@ -424,9 +533,9 @@ export default class DualListbox extends LightningElement {
 
     computeOptionProperties(option, focusableValue) {
         const isSelected = this.highlightedOptions.indexOf(option.value) > -1;
-        const hasDescription = option.hasDescription;
+        const hasDescription = option.description;
         const classList = classSet(
-            'slds-listbox__option slds-listbox__option_plain slds-media slds-media_center slds-media_inline'
+            'slds-listbox__option slds-listbox__option_plain slds-media slds-media_center slds-media_inline avonni-dual-listbox-list-item-min_height '
         )
             .add({ 'slds-media_small': !hasDescription })
             .add({ 'slds-is-selected': isSelected })
@@ -435,38 +544,78 @@ export default class DualListbox extends LightningElement {
         return {
             ...option,
             tabIndex: option.value === focusableValue ? '0' : '-1',
-            selected: isSelected ? 'true' : 'false',
+            selected: isSelected ? true : false,
             primaryText: option.description ? option.label : '',
             secondaryText: option.description ? option.description : '',
             iconSize: option.iconSize
                 ? option.iconSize
-                : option.description
+                : hasDescription
                 ? 'medium'
                 : 'small',
             classList
         };
     }
 
-    get computedColumnStyleSource() {
-        if (this.size) {
-            if (this.searchEngine && this.size > 1) {
-                const newHeight = parseInt(this.size, 10) * 2.5 - 2.75;
-                return `height:${newHeight}rem`;
-            }
-            const newHeight = parseInt(this.size, 10) * 2.5 + 0.15;
-            return `height:${newHeight}rem`;
-        } else if (this.searchEngine) {
-            return `height:11.75rem`;
+    updateBoxesHeight() {
+        let overSelectedHeight = 0;
+        let overSourceHeight = 0;
+
+        const sourceOptionsHeight = getListHeight(
+            this.template.querySelectorAll('li[data-role="source"]'),
+            this._maxVisibleOptions
+        );
+
+        if (
+            this.computedSourceList.length < this._maxVisibleOptions &&
+            this.computedSourceList.length !== 0
+        ) {
+            overSourceHeight =
+                this.template.querySelector('li[data-role="source"]')
+                    .offsetHeight *
+                (this._maxVisibleOptions - this.computedSourceList.length);
+        } else overSourceHeight = 0;
+
+        if (
+            this.computedSelectedList.length < this._maxVisibleOptions &&
+            this.computedSelectedList.length !== 0
+        ) {
+            overSelectedHeight =
+                this.template.querySelector('li[data-role="selected"]')
+                    .offsetHeight *
+                (this._maxVisibleOptions - this.computedSelectedList.length);
+        } else overSelectedHeight = 0;
+
+        this._selectedBoxHeight =
+            getListHeight(
+                this.template.querySelectorAll('li[data-role="selected"]'),
+                this._maxVisibleOptions
+            ) + overSelectedHeight;
+
+        if (this.searchEngine) {
+            this._sourceBoxHeight =
+                sourceOptionsHeight +
+                getListHeight(
+                    this.template.querySelector(
+                        '.avonni-dual-listbox-search-engine'
+                    )
+                ) +
+                overSourceHeight;
         }
-        return 'height:14.75rem';
+        this._sourceBoxHeight = sourceOptionsHeight + overSourceHeight;
     }
 
-    get computedColumnStyle() {
-        if (this.size) {
-            const newHeight = parseInt(this.size, 10) * 2.5 + 0.15;
-            return `height:${newHeight}rem`;
-        }
-        return 'height:14.75rem';
+    get sourceHeight() {
+        return this.searchEngine &&
+            this._selectedBoxHeight > this._sourceBoxHeight
+            ? `height: ${this._selectedBoxHeight - 48}px`
+            : `height: ${this._sourceBoxHeight}px`;
+    }
+
+    get selectedHeight() {
+        return this.searchEngine &&
+            this._selectedBoxHeight <= this._sourceBoxHeight
+            ? `height: ${this._selectedBoxHeight + 48}px`
+            : `height: ${this._sourceBoxHeight}px`;
     }
 
     get isLabelHidden() {
@@ -495,7 +644,7 @@ export default class DualListbox extends LightningElement {
     get computedOuterClass() {
         return classSet('')
             .add({
-                'slds-form-element_stacked': this.variant === 'label-stacked'
+                'slds-form-element_stacked': this._variant === 'label-stacked'
             })
             .toString();
     }
@@ -506,13 +655,29 @@ export default class DualListbox extends LightningElement {
             .toString();
     }
 
-    get computedListboxContainerClass() {
+    get computedListboxColumnsClass() {
+        return classSet('avonni-dual-listbox-list__column')
+            .add({
+                'avonni-dual-listbox-list__column_responsive_small ':
+                    this._size === 'small',
+                'avonni-dual-listbox-list__column_responsive_medium ':
+                    this._size === 'medium',
+                'avonni-dual-listbox-list__column_responsive_large ':
+                    this._size === 'large'
+            })
+            .toString();
+    }
+
+    get computedListboxSourceContainerClass() {
         return classSet(
             'slds-dueling-list__options avonni-dual-listbox-option-is-selected'
         )
-            .add({ 'slds-is-disabled': this.disabled })
+            .add({ 'slds-is-disabled': this._disabled })
+            .add({ 'slds-is-relative': this._isLoading })
             .add({
-                'slds-is-relative': this.isLoading
+                'avonni-dual-listbox-size_small': this._size === 'small',
+                'avonni-dual-listbox-size_medium': this._size === 'medium',
+                'avonni-dual-listbox-size_large': this._size === 'large'
             })
             .toString();
     }
@@ -521,21 +686,24 @@ export default class DualListbox extends LightningElement {
         return classSet(
             'slds-dueling-list__options avonni-dual-listbox-option-is-selected'
         )
-            .add({ 'slds-is-disabled': this.disabled })
+            .add({ 'slds-is-disabled': this._disabled })
             .add({
                 'avonni-dual-listbox-selected-list-with-search': this
-                    .searchEngine
+                    ._searchEngine
             })
             .add({
                 'avonni-dual-listbox-empty-column': this.isSelectedBoxEmpty
+            })
+            .add({
+                'avonni-dual-listbox-size_small': this._size === 'small',
+                'avonni-dual-listbox-size_medium': this._size === 'medium',
+                'avonni-dual-listbox-size_large': this._size === 'large'
             })
             .toString();
     }
 
     get computedListItemClass() {
-        return classSet(
-            'slds-listbox__item avonni-dual-listbox-list-item-min_height'
-        )
+        return classSet('slds-listbox__item')
             .add({
                 'avonni-dual-listbox-option-border_bottom': !this
                     .hideBottomDivider
@@ -587,9 +755,21 @@ export default class DualListbox extends LightningElement {
         this.moveOptionsBetweenLists(true, true);
     }
 
+    handleDragRight() {
+        this.interactingState.interacting();
+        this.moveOptionsBetweenLists(true, false);
+        this._dropItSelected = false;
+    }
+
     handleLeftButtonClick() {
         this.interactingState.interacting();
         this.moveOptionsBetweenLists(false, true);
+    }
+
+    handleDragLeft() {
+        this.interactingState.interacting();
+        this.moveOptionsBetweenLists(false, false);
+        this._dropItSource = false;
     }
 
     handleUpButtonClick() {
@@ -679,16 +859,19 @@ export default class DualListbox extends LightningElement {
         this.highlightedOptions.find((option) => {
             return this._selectedValues.indexOf(option);
         });
+        this.updateBoxesHeight();
     }
 
     oldIndexValue(option) {
         const options = this.template.querySelector(
             `div[data-value='${option}']`
         );
-        const index = options.getAttribute('data-index');
-        if (index === '0') {
-            this._oldIndex = 0;
-        } else this._oldIndex = index - 1;
+        if (options) {
+            const index = options.getAttribute('data-index');
+            if (index === '0') {
+                this._oldIndex = 0;
+            } else this._oldIndex = index - 1;
+        }
     }
 
     changeOrderOfOptionsInList(moveUp) {
@@ -729,6 +912,7 @@ export default class DualListbox extends LightningElement {
         this.updateFocusableOption(this.selectedList, toMove[0]);
         this.optionToFocus = null;
         this.dispatchChangeEvent(values);
+        this.updateBoxesHeight();
     }
 
     disabledButtons() {
@@ -938,5 +1122,83 @@ export default class DualListbox extends LightningElement {
         if (!isSame) {
             this.highlightedOptions = [];
         }
+    }
+
+    handleDragStartSource(event) {
+        event.currentTarget.classList.add('avonni-dual-listbox-dragging');
+    }
+
+    handleDragEndSource(event) {
+        event.preventDefault();
+        event.currentTarget.classList.remove('avonni-dual-listbox-dragging');
+        if (this._dropItSelected) {
+            if (
+                this.highlightedOptions.includes(
+                    event.currentTarget.getAttribute('data-value')
+                )
+            ) {
+                this.handleDragRight();
+            }
+        }
+    }
+
+    handleDragStartSelected(event) {
+        event.currentTarget.classList.add('avonni-dual-listbox-dragging');
+    }
+
+    handleDragEndSelected(event) {
+        event.preventDefault();
+        event.currentTarget.classList.remove('avonni-dual-listbox-dragging');
+        if (this._dropItSource) {
+            if (
+                this.highlightedOptions.includes(
+                    event.currentTarget.getAttribute('data-value')
+                )
+            ) {
+                this.handleDragLeft();
+            }
+        } else if (!this._dropItSource) {
+            if (!this._disableReordering) {
+                const values = this.computedSelectedList.map(
+                    (option) => option.value
+                );
+                const elementList = Array.from(
+                    this.getElementsOfList(this.selectedList)
+                );
+                const swappingIndex = Number(
+                    event.target.getAttribute('data-index')
+                );
+                this.swapOptions(
+                    swappingIndex,
+                    this._newIndex,
+                    values,
+                    elementList
+                );
+                this._selectedValues = values;
+            }
+        }
+    }
+
+    handleDragOverSource(event) {
+        event.preventDefault();
+        this._dropItSource = true;
+    }
+
+    handleDragLeaveSource() {
+        this._dropItSource = false;
+    }
+
+    handleDragOverSelected(event) {
+        event.preventDefault();
+        this._dropItSelected = true;
+    }
+
+    handleDragLeaveSelected() {
+        this._dropItSelected = false;
+    }
+
+    handleDragOver(event) {
+        event.preventDefault();
+        this._newIndex = Number(event.target.getAttribute('data-index'));
     }
 }

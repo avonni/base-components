@@ -1,11 +1,45 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { Image } from '../__examples__/image';
+
+import { ImageList } from '../__examples__/imageList';
 
 export default {
     title: 'Example/Image',
     argTypes: {
         src: {
             control: {
-                type: 'text'
+                type: 'object'
             },
             description: "URL to set for the 'src' attribute.",
             table: {
@@ -36,9 +70,69 @@ export default {
             control: {
                 type: 'text'
             },
-            description: "Value to set for the 'alt' attribute.",
+            description: "The value to set for the 'alt' attribute.",
             table: {
                 type: { summary: 'string' }
+            }
+        },
+        cropSize: {
+            name: 'crop-size',
+            control: {
+                type: 'select'
+            },
+            options: ['1x1', '4x3', '16x9', 'none'],
+            defaultValue: 'none',
+            description:
+                'Specifies the cropping ratio for the image, which is constrained to the parents width. Options : 1:1, 4:3, 16:9, none',
+            table: {
+                defaultValue: { summary: 'none' },
+                type: { summary: 'string' },
+                category: 'Crop'
+            }
+        },
+        cropFit: {
+            name: 'crop-fit',
+            control: {
+                type: 'select'
+            },
+            options: ['cover', 'contain', 'fill', 'none'],
+            defaultValue: 'cover',
+            description:
+                'Specifies the "fit" behaviour for the cropped image. Options: "cover"(default), "contain", "fill", "none"',
+            table: {
+                defaultValue: { summary: 'cover' },
+                type: { summary: 'string' },
+                category: 'Crop'
+            }
+        },
+        cropPositionX: {
+            name: 'crop-position-X(%)',
+            control: {
+                type: 'range'
+            },
+            defaultValue: '50',
+            description:
+                'Specifies the cropping point of interest on the X axis of the image, in percentage',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: '50' },
+                category: 'Crop',
+                detail: 'Percent'
+            }
+        },
+        cropPositionY: {
+            name: 'crop-position-Y(%)',
+            control: {
+                type: 'range'
+            },
+            defaultValue: '50',
+            description:
+                'Specifies the cropping point of interest on the Y axis of the image, in percentage',
+            table: {
+                defaultValue: { summary: '50' },
+                type: { summary: 'string' },
+                category: 'Crop',
+                detail: 'Percent'
             }
         },
         width: {
@@ -78,7 +172,7 @@ export default {
             options: ['top', 'right', 'bottom', 'left', 'circle', false, true],
             defaultValue: false,
             description:
-                "When set to 'true', makes the image corners slightly rounded. Can also be used to disable rounded corners or make the image a circle/oval. See docs for details.",
+                'If present, makes the image corners slightly rounded. Can also be used to disable rounded corners or make the image a circle/oval. See docs for details.',
             table: {
                 defaultValue: { summary: false },
                 type: { summary: 'boolean' }
@@ -175,6 +269,32 @@ export default {
                 defaultValue: { summary: false },
                 type: { summary: 'boolean' }
             }
+        },
+        staticImages: {
+            name: 'static-images',
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description:
+                'Set Images as Static - images will be fixed dimensions and will not be responsive on resize',
+            table: {
+                default: { summary: false },
+                type: { summary: 'boolean' }
+            }
+        },
+        lazyLoading: {
+            name: 'lazy-loading',
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description:
+                'Enables lazy loading for images that are offscreen. If set to true, the property ensures that offscreen images are loaded early enough so that they have finished loading once the user scrolls near them. Note: Keep in mind that the property uses the loading attribute of HTML <img> element which is not supported for Internet Explorer.',
+            table: {
+                default: { summary: false },
+                type: { summary: 'boolean' }
+            }
         }
     },
     args: {
@@ -185,11 +305,15 @@ export default {
         left: false,
         right: false,
         center: false,
-        blank: false
+        blank: false,
+        staticImages: false,
+        lazyLoading : false,
     }
 };
 
 const Template = (args) => Image(args);
+
+const ListTemplate = (args) => ImageList(args);
 
 export const BaseSmall = Template.bind({});
 BaseSmall.args = {
@@ -197,8 +321,7 @@ BaseSmall.args = {
         'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
     alt: 'Alt text',
     blankColor: 'transparent',
-    width: '150',
-    height: '75'
+    width: '150'
 };
 
 export const Base = Template.bind({});
@@ -209,14 +332,40 @@ Base.args = {
     blankColor: 'transparent'
 };
 
+
+export const BaseWithLazyLoading = ListTemplate.bind({});
+BaseWithLazyLoading.args = {
+    src:['https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+     'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg',
+     'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+     'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
+     'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
+     'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+     'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+     'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
+    'https://ik.imagekit.io/demo/img/image1.jpeg?tr=w-400,h-300',
+    'https://ik.imagekit.io/demo/img/image2.jpeg?tr=w-400,h-300',
+    'https://ik.imagekit.io/demo/img/image4.jpeg?tr=w-400,h-300',
+    'https://ik.imagekit.io/demo/img/image5.jpeg?tr=w-400,h-300',
+    'https://ik.imagekit.io/demo/img/image6.jpeg?tr=w-400,h-300',
+    'https://ik.imagekit.io/demo/img/image7.jpeg?tr=w-400,h-300',
+    'https://ik.imagekit.io/demo/img/image8.jpeg?tr=w-400,h-300',
+    'https://ik.imagekit.io/demo/img/image9.jpeg?tr=w-400,h-300',
+    'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300',
+    ],
+    width: '400',
+    alt: 'Alt text',
+    lazyLoading : true,
+    blankColor: 'transparent',
+};
+
 export const BaseLarge = Template.bind({});
 BaseLarge.args = {
     src:
         'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
     alt: 'Alt text',
     blankColor: 'transparent',
-    width: '600',
-    height: '300'
+    width: '600'
 };
 
 export const BaseBlankGrayLarge = Template.bind({});
@@ -227,7 +376,7 @@ BaseBlankGrayLarge.args = {
     blankColor: 'gray',
     width: '600',
     height: '300',
-    blank: 'true'
+    blank: true
 };
 
 export const Thumbnail = Template.bind({});
@@ -236,7 +385,7 @@ Thumbnail.args = {
         'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
     alt: 'Alt text',
     blankColor: 'transparent',
-    thumbnail: 'true'
+    thumbnail: true
 };
 
 export const CenterCornerRounded = Template.bind({});
@@ -246,7 +395,7 @@ CenterCornerRounded.args = {
     alt: 'Alt text',
     rounded: 'true',
     blankColor: 'transparent',
-    center: 'true'
+    center: true
 };
 
 export const RightCornerTop = Template.bind({});
@@ -256,7 +405,7 @@ RightCornerTop.args = {
     alt: 'Alt text',
     rounded: 'top',
     blankColor: 'transparent',
-    right: 'true'
+    right: true
 };
 
 export const CornerBottom = Template.bind({});
@@ -317,7 +466,7 @@ ThumbnailMediumCircle.args = {
     width: '150',
     rounded: 'circle',
     blankColor: 'transparent',
-    thumbnail: 'true'
+    thumbnail: true
 };
 
 export const LargeCircle = Template.bind({});
@@ -339,6 +488,26 @@ LargeBlankGrayCircle.args = {
     height: '300',
     width: '300',
     rounded: 'circle',
-    blank: 'true',
+    blank: true,
     blankColor: 'gray'
+};
+
+export const CropImageStaticCircleThumbnailMobile = Template.bind({});
+CropImageStaticCircleThumbnailMobile.parameters = {
+    viewport: {
+        defaultViewport: 'mobile1'
+    }
+};
+CropImageStaticCircleThumbnailMobile.args = {
+    src:
+        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+    alt: 'Alt text',
+    width: '300',
+    cropSize: '1x1',
+    rounded: 'circle',
+    cropFit: 'none',
+    cropPositionX: '23',
+    cropPositionY: '80',
+    thumbnail: true,
+    staticImages: true
 };

@@ -1,3 +1,35 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { LightningElement, api } from 'lwc';
 import { keyCodes } from 'c/utilsPrivate';
 import {
@@ -15,7 +47,7 @@ const SLDS_ACTIVE_SHADED =
 const FALSE_STRING = 'false';
 const TRUE_STRING = 'true';
 
-const VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
+const INDICATOR_VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
 
 const DEFAULT_ITEMS_PER_PANEL = 1;
 const DEFAULT_SCROLL_DURATION = 5;
@@ -47,7 +79,7 @@ export default class Carousel extends LightningElement {
     _carouselItems = [];
     _itemsPerPanel = DEFAULT_ITEMS_PER_PANEL;
     _initialRender = false;
-    _indicatorVariant = VARIANTS.default;
+    _indicatorVariant = INDICATOR_VARIANTS.default;
     _hideIndicator = false;
     _carouselContentHeight = 6.625;
 
@@ -59,19 +91,14 @@ export default class Carousel extends LightningElement {
     paginationItems = [];
     panelStyle;
 
-    _connected = false;
-
     connectedCallback() {
-        if (!this._connected) {
-            this.initCarousel();
-        }
-        this._connected = true;
+        this.initCarousel();
     }
 
     renderedCallback() {
         if (!this._initialRender) {
             if (!this.disableAutoScroll) {
-                this.setAutoScroll();
+                this.start();
             }
         }
         this._initialRender = true;
@@ -120,7 +147,7 @@ export default class Carousel extends LightningElement {
                 src: item.src
             });
         });
-        if (this._connected) {
+        if (this.isConnected) {
             this.initCarousel();
         }
     }
@@ -143,10 +170,10 @@ export default class Carousel extends LightningElement {
 
     set indicatorVariant(variant) {
         this._indicatorVariant = normalizeString(variant, {
-            fallbackValue: VARIANTS.default,
-            validValues: VARIANTS.valid
+            fallbackValue: INDICATOR_VARIANTS.default,
+            validValues: INDICATOR_VARIANTS.valid
         });
-        if (this._connected) {
+        if (this.isConnected) {
             this.initCarousel();
         }
     }
@@ -241,7 +268,8 @@ export default class Carousel extends LightningElement {
         }%);`;
     }
 
-    setAutoScroll() {
+    @api
+    start() {
         const scrollDuration = parseInt(this.scrollDuration, 10) * 1000;
         const carouselPanelsLength = this.panelItems.length;
 
@@ -249,11 +277,11 @@ export default class Carousel extends LightningElement {
             this.activeIndexPanel === carouselPanelsLength - 1 &&
             (this.disableAutoRefresh || !this.isInfinite)
         ) {
-            this.cancelAutoScrollTimeOut();
+            this.pause();
             return;
         }
 
-        this.cancelAutoScrollTimeOut();
+        this.pause();
         this.autoScrollTimeOut = setTimeout(
             this.startAutoScroll.bind(this),
             scrollDuration
@@ -264,11 +292,12 @@ export default class Carousel extends LightningElement {
     }
 
     startAutoScroll() {
-        this.selectNextSibling();
-        this.setAutoScroll();
+        this.next();
+        this.start();
     }
 
-    cancelAutoScrollTimeOut() {
+    @api
+    pause() {
         clearTimeout(this.autoScrollTimeOut);
         this.autoScrollOn = false;
         this.autoScrollIcon = DEFAULT_AUTOCROLL_PLAY_ICON;
@@ -298,12 +327,12 @@ export default class Carousel extends LightningElement {
             event.preventDefault();
             event.stopPropagation();
 
-            this.cancelAutoScrollTimeOut();
+            this.pause();
             if (
                 this.activeIndexPanel < this.panelItems.length - 1 ||
                 this.isInfinite
             ) {
-                this.selectNextSibling();
+                this.next();
             }
         }
 
@@ -311,9 +340,9 @@ export default class Carousel extends LightningElement {
             event.preventDefault();
             event.stopPropagation();
 
-            this.cancelAutoScrollTimeOut();
+            this.pause();
             if (this.activeIndexPanel > 0 || this.isInfinite) {
-                this.selectPreviousSibling();
+                this.previous();
             }
         }
 
@@ -355,7 +384,7 @@ export default class Carousel extends LightningElement {
     onPanelSelect(event) {
         const currentTarget = event.currentTarget;
         const itemIndex = parseInt(currentTarget.dataset.index, 10);
-        this.cancelAutoScrollTimeOut();
+        this.pause();
 
         if (this.activeIndexPanel !== itemIndex) {
             this.unselectCurrentPanel();
@@ -402,8 +431,19 @@ export default class Carousel extends LightningElement {
         }
     }
 
-    selectPreviousSibling() {
-        this.cancelAutoScrollTimeOut();
+    @api
+    first() {
+        this.selectNewPanel(0);
+    }
+
+    @api
+    last() {
+        this.selectNewPanel(this.paginationItems.length - 1);
+    }
+
+    @api
+    previous() {
+        this.pause();
         this.unselectCurrentPanel();
         if (this.activeIndexPanel > 0) {
             this.activeIndexPanel -= 1;
@@ -413,8 +453,9 @@ export default class Carousel extends LightningElement {
         this.selectNewPanel(this.activeIndexPanel);
     }
 
-    selectNextSibling() {
-        this.cancelAutoScrollTimeOut();
+    @api
+    next() {
+        this.pause();
         this.unselectCurrentPanel();
         if (this.activeIndexPanel < this.paginationItems.length - 1) {
             this.activeIndexPanel += 1;
@@ -426,9 +467,7 @@ export default class Carousel extends LightningElement {
 
     toggleAutoScroll() {
         /*eslint no-unused-expressions: ["error", { "allowTernary": true }]*/
-        this.autoScrollOn
-            ? this.cancelAutoScrollTimeOut()
-            : this.setAutoScroll();
+        this.autoScrollOn ? this.pause() : this.start();
     }
 
     get computedCarouselContentSize() {

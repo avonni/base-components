@@ -1,9 +1,41 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { parseDateTime } from 'c/internationalizationLibrary';
 import { classSet } from 'c/utils';
 
-const TYPES = {
+const DATE_TYPES = {
     valid: ['date', 'datetime'],
     default: 'date'
 };
@@ -12,7 +44,7 @@ const DATE_STYLES = {
     defaultDate: 'medium',
     defaultTime:'short'
 };
-const VARIANTS = {
+const LABEL_VARIANTS = {
     valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked'],
     default: 'standard'
 };
@@ -29,11 +61,11 @@ export default class InputDateRange extends LightningElement {
 
     _dateStyle = DATE_STYLES.defaultDate;
     _timeStyle = DATE_STYLES.defaultTime;
-    _type = TYPES.default;
+    _type = DATE_TYPES.default;
     _disabled = false;
     _required = false;
     _readOnly = false;
-    _variant = VARIANTS.default;
+    _variant = LABEL_VARIANTS.default;
 
     startTime;
     endTime;
@@ -106,8 +138,8 @@ export default class InputDateRange extends LightningElement {
 
     set type(type) {
         this._type = normalizeString(type, {
-            fallbackValue: TYPES.default,
-            validValues: TYPES.valid
+            fallbackValue: DATE_TYPES.default,
+            validValues: DATE_TYPES.valid
         });
         this.initStartDate();
         this.initEndtDate();
@@ -147,8 +179,8 @@ export default class InputDateRange extends LightningElement {
 
     set variant(value) {
         this._variant = normalizeString(value, {
-            fallbackValue: VARIANTS.default,
-            validValues: VARIANTS.valid
+            fallbackValue: LABEL_VARIANTS.default,
+            validValues: LABEL_VARIANTS.valid
         });
     }
 
@@ -255,7 +287,13 @@ export default class InputDateRange extends LightningElement {
     }
 
     handleChangeStartDate(event) {
-        this.startDate = new Date(event.detail.value);
+        // Date format received is: YYYY-MM-DD
+        const date = event.detail.value.split('-');
+        const year = Number(date[0]);
+        const month = Number(date[1]) - 1;
+        const day = Number(date[2]);
+
+        this.startDate = new Date(year, month, day);
         event.stopPropagation();
         this._cancelBlurStartDate = false;
         this.handleBlurStartDate();
@@ -334,7 +372,13 @@ export default class InputDateRange extends LightningElement {
     }
 
     handleChangeEndDate(event) {
-        this.endDate = new Date(event.detail.value);
+        // Date format received is: YYYY-MM-DD
+        const date = event.detail.value.split('-');
+        const year = Number(date[0]);
+        const month = Number(date[1]) - 1;
+        const day = Number(date[2]);
+        
+        this.endDate = new Date(year, month, day);
         event.stopPropagation();
         this._cancelBlurEndDate = false;
         this.handleBlurEndDate();

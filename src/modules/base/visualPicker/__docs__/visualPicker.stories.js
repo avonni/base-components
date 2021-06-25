@@ -1,3 +1,35 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { VisualPicker } from '../__examples__/visualPicker';
 
 export default {
@@ -7,6 +39,7 @@ export default {
             control: {
                 type: 'text'
             },
+            description: 'Text label to title the visual picker.',
             table: {
                 type: { summary: 'string' }
             }
@@ -42,7 +75,7 @@ export default {
             },
             options: ['radio', 'checkbox'],
             defaultValue: 'radio',
-            description: 'Allowed values are radio and checkbox.',
+            description: 'Valid values include radio and checkbox.',
             table: {
                 defaultValue: { summary: 'radio' },
                 type: { summary: 'string' }
@@ -55,7 +88,7 @@ export default {
             options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
             defaultValue: 'medium',
             description:
-                'Allowed values are xx-small (4rem x 4 rem), x-small (6rem x 6 rem), small (8rem x 8rem), medium and large.',
+                'The size of the items. Valid values include xx-small (4rem x 4 rem), x-small (6rem x 6 rem), small (8rem x 8rem), medium and large.',
             table: {
                 defaultValue: { summary: 'medium' },
                 type: { summary: 'string' }
@@ -67,7 +100,8 @@ export default {
             },
             options: ['1-by-1', '4-by-3', '16-by-9'],
             defaultValue: '1-by-1',
-            description: 'Values include 1-by-1, 4-by-3 and 16-by-9.',
+            description:
+                'The ratio of the items. Valid values include 1-by-1, 4-by-3 and 16-by-9.',
             table: {
                 defaultValue: { summary: '1-by-1' },
                 type: { summary: 'string' }
@@ -79,7 +113,7 @@ export default {
                 type: 'boolean'
             },
             defaultValue: 0,
-            description: 'If true, hide the check mark.',
+            description: 'If present, hide the check mark.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
@@ -92,7 +126,7 @@ export default {
             },
             defaultValue: 0,
             description:
-                'If true, hide the border and box-shadow on item picker. Still displayed border on hover.',
+                'If present, hide the border and box-shadow on item picker. Still displayed border on hover.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }

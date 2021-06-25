@@ -1,9 +1,40 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { createElement } from 'lwc';
 import Carousel from 'c/carousel';
 
 // not tested
 // scroll duration
-// isInfinite
 
 const items = [
     {
@@ -741,6 +772,159 @@ describe('Carousel', () => {
                 expect(content.style.height).toBe('6.625rem');
             });
         });
+    });
+
+    // carousel infinite last goes back to first
+    it('Carousel infinite last goes back to first', () => {
+        const element = createElement('base-carousel', {
+            is: Carousel
+        });
+        document.body.appendChild(element);
+
+        element.items = items;
+        element.hideIndicator = false;
+        element.isIfinite = true;
+        const lastItem = items.length - 1;
+
+        return Promise.resolve()
+            .then(() => {
+                element.last();
+            })
+            .then(() => {
+                const indicators = element.shadowRoot.querySelectorAll(
+                    'li > a'
+                );
+                expect(indicators[lastItem].className).toContain(
+                    'slds-is-active'
+                );
+                element.next();
+                expect(indicators[0].className).toContain('slds-is-active');
+            });
+    });
+
+    // carousel infinite first goes back to last
+    it('Carousel infinite first goes back to last', () => {
+        const element = createElement('base-carousel', {
+            is: Carousel
+        });
+        document.body.appendChild(element);
+
+        element.items = items;
+        element.hideIndicator = false;
+        element.isIfinite = true;
+        const lastItem = items.length - 1;
+
+        return Promise.resolve()
+            .then(() => {
+                element.first();
+            })
+            .then(() => {
+                const indicators = element.shadowRoot.querySelectorAll(
+                    'li > a'
+                );
+                expect(indicators[0].className).toContain('slds-is-active');
+                element.previous();
+            })
+            .then(() => {
+                const indicators = element.shadowRoot.querySelectorAll(
+                    'li > a'
+                );
+                expect(indicators[lastItem].className).toContain(
+                    'slds-is-active'
+                );
+            });
+    });
+
+    /* ----- METHODS ----- */
+
+    // carousel next & previous
+    it('Carousel next & previous methods', () => {
+        const element = createElement('base-carousel', {
+            is: Carousel
+        });
+        document.body.appendChild(element);
+
+        element.items = items;
+        element.hideIndicator = false;
+
+        return Promise.resolve()
+            .then(() => {
+                const indicators = element.shadowRoot.querySelectorAll(
+                    'li > a'
+                );
+                expect(indicators[0].className).toContain('slds-is-active');
+                expect(indicators[1].className).not.toContain('slds-is-active');
+                element.next();
+            })
+            .then(() => {
+                const indicators = element.shadowRoot.querySelectorAll(
+                    'li > a'
+                );
+                expect(indicators[0].className).not.toContain('slds-is-active');
+                expect(indicators[1].className).toContain('slds-is-active');
+                element.previous();
+            })
+            .then(() => {
+                const indicators = element.shadowRoot.querySelectorAll(
+                    'li > a'
+                );
+                expect(indicators[0].className).toContain('slds-is-active');
+                expect(indicators[1].className).not.toContain('slds-is-active');
+            });
+    });
+
+    // carousel first & last
+    it('Carousel first & last methods', () => {
+        const element = createElement('base-carousel', {
+            is: Carousel
+        });
+        document.body.appendChild(element);
+
+        element.items = items;
+        element.hideIndicator = false;
+        const lastItem = items.length - 1;
+
+        return Promise.resolve()
+            .then(() => {
+                element.last();
+            })
+            .then(() => {
+                const indicators = element.shadowRoot.querySelectorAll(
+                    'li > a'
+                );
+                expect(indicators[lastItem].className).toContain(
+                    'slds-is-active'
+                );
+                element.first();
+                expect(indicators[0].className).toContain('slds-is-active');
+            });
+    });
+
+    // carousel start & pause
+    it('Carousel start & pause methods', () => {
+        const element = createElement('base-carousel', {
+            is: Carousel
+        });
+        document.body.appendChild(element);
+
+        element.items = items;
+        element.hideIndicator = false;
+        element.pause();
+
+        return Promise.resolve()
+            .then(() => {
+                const autoPlayButton = element.shadowRoot.querySelector(
+                    '.avonni-carousel__autoscroll-button-with-indicator'
+                );
+                expect(autoPlayButton.iconName).toBe('utility:play');
+                element.start();
+            })
+            .then(() => {
+                const autoPlayButton = element.shadowRoot.querySelector(
+                    '.avonni-carousel__autoscroll-button-with-indicator'
+                );
+                expect(autoPlayButton.iconName).toBe('utility:pause');
+            });
     });
 
     /* ----- EVENTS ----- */
