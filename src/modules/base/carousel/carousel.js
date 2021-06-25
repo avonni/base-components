@@ -90,11 +90,9 @@ export default class Carousel extends LightningElement {
     panelItems = [];
     paginationItems = [];
     panelStyle;
-    
+
     connectedCallback() {
-        if (this.isConnected) {
-            this.initCarousel();
-        }
+        this.initCarousel();
     }
 
     renderedCallback() {
