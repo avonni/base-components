@@ -308,7 +308,7 @@ export default class Scheduler extends LightningElement {
             (header) => header.unit === this.visibleSpan.unit
         );
 
-        if (!isNaN(referenceHeaderIndex)) {
+        if (referenceHeaderIndex > -1) {
             const header = sortedHeaders[referenceHeaderIndex];
             const unit = header.unit;
             const span = header.span;
@@ -353,23 +353,24 @@ export default class Scheduler extends LightningElement {
             } else if (reference) {
                 const referenceIsLonger =
                     UNITS_IN_MS[reference.unit] - UNITS_IN_MS[unit] > 0;
-                const referenceEnd =
-                    reference.columns[reference.columns.length - 1].time +
-                    reference.millisecondsPerCol;
+
+                const pluralizedReferenceUnit = `${reference.unit}s`;
+                const options = {};
+                options[pluralizedReferenceUnit] = reference.span;
+                const referenceEnd = DateTime.fromMillis(
+                    reference.columns[reference.columns.length - 1].time
+                ).plus(options);
 
                 const columns = referenceIsLonger
                     ? this.maxColumnsInParent(header, parentHeader)
-                    : this.computedNumberOfColumns(unit, referenceEnd);
+                    : this.computedNumberOfColumns(unit, referenceEnd.ts);
 
-                const end =
-                    referenceIsLonger &&
-                    new Date(referenceEnd - reference.millisecondsPerCol);
                 headerObject = new Header({
                     unit: unit,
                     span: header.span,
                     label: header.label,
                     start: this.start,
-                    end: end,
+                    end: referenceEnd,
                     timeFrames: this.availableTimeFrames,
                     daysOfTheWeek: this.availableDaysOfTheWeek,
                     months: this.availableMonths,
@@ -418,8 +419,6 @@ export default class Scheduler extends LightningElement {
             start += timeToEndOfUnit.values.milliseconds + 1;
             columns += 1;
         }
-
-        console.log(unit, columns);
         return columns;
     }
 
@@ -505,8 +504,6 @@ export default class Scheduler extends LightningElement {
 
     initHeaderColumnWidths() {
         this.headers.forEach((header) => {
-            const unit = header.unit;
-
             // If the header has a child header,
             // columns may be smaller than their full possible time span
             if (header.childKey) {
@@ -517,24 +514,27 @@ export default class Scheduler extends LightningElement {
                 let time = this.start.ts;
                 let childColumnIndex = 0;
 
-                header.columns.forEach(() => {
+                header.columns.forEach((column) => {
                     let width = 0;
                     let start = DateTime.fromMillis(time);
                     const options = {};
-                    options[unit] = 1;
-                    const end = start.plus(options);
+                    options[header.unit] = header.span;
+                    const end = DateTime.fromMillis(column.time).plus(options);
 
                     while (childColumnIndex < child.columns.length) {
                         const childColumn = child.columns[childColumnIndex];
                         time = childColumn.time;
                         start = DateTime.fromMillis(time);
 
-                        // debugger
-
                         // Stop if the next child column belongs to the next header unit
-                        if (start[unit] >= end[unit]) break;
-                        childColumnIndex += 1;
+                        if (
+                            start.startOf(header.unit) >=
+                            end.startOf(header.unit)
+                        ) {
+                            break;
+                        }
                         width += childWidth;
+                        childColumnIndex += 1;
                     }
 
                     header.columnWidths.push(width);

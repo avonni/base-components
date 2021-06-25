@@ -31,6 +31,7 @@
  */
 
 import { generateUniqueId } from 'c/utils';
+import { DateTime } from 'c/luxon';
 import { formatTime, isInTimeFrame } from './dateUtils';
 
 export default class Header {
@@ -91,35 +92,33 @@ export default class Header {
     }
 
     computeColumns() {
+        const { unit, label, end, span, columns, numberOfColumns } = this;
         this.columns = [];
-        let time = this.start.ts;
+        let date = DateTime.fromMillis(this.start.ts);
 
         // For each column
-        for (let i = 0; i < this.numberOfColumns; i++) {
-            time = this.nextAllowedMonth(time);
+        for (let i = 0; i < numberOfColumns; i++) {
+            date = this.nextAllowedMonth(date);
 
             // We don't want to take the day or time of the date into account
             // if the header does not use them
-            if (
-                this.unit !== 'months' &&
-                this.unit !== 'years' &&
-                this.unit !== 'weeks'
-            ) {
-                time = this.nextAllowedDay(time);
-
-                if (this.unit !== 'days') {
-                    time = this.nextAllowedTime(time);
+            if (unit !== 'month' && unit !== 'year' && unit !== 'week') {
+                date = this.nextAllowedDay(date);
+                if (unit !== 'day') {
+                    date = DateTime.fromMillis(this.nextAllowedTime(date));
                 }
             }
 
             this.columns.push({
-                label: formatTime(time, this.label),
-                time: time
+                label: formatTime(date, label),
+                time: date.ts
             });
-            time += this.millisecondsPerCol;
+            const options = {};
+            options[unit] = span;
+            date = date.plus(options);
 
-            if (this.end && time > this.end.getTime()) {
-                this.numberOfColumns = this.columns.length;
+            if (end && end.startOf(unit) < date.startOf(unit)) {
+                this.numberOfColumns = columns.length;
                 break;
             }
         }
@@ -135,44 +134,57 @@ export default class Header {
         return isAllowed;
     }
 
-    isAllowedDay(time) {
-        const day = new Date(time).getDay();
-        return this.daysOfTheWeek.includes(day);
+    isAllowedDay(date) {
+        // Luxon week days start at 1
+        return this.daysOfTheWeek.includes(date.weekday - 1);
     }
 
-    isAllowedMonth(time) {
-        const month = new Date(time).getMonth();
-        return this.months.includes(month);
+    isAllowedMonth(date) {
+        // Luxon months start at 1
+        return this.months.includes(date.month - 1);
     }
 
-    nextAllowedMonth(startTime) {
-        let time = startTime;
-        if (!this.isAllowedMonth(time)) {
+    nextAllowedMonth(startDate) {
+        let date = DateTime.fromMillis(startDate.ts);
+        if (!this.isAllowedMonth(date)) {
             // Add a month
-            const date = new Date(time);
-            time = date.setMonth(date.getMonth() + 1);
-            time = this.nextAllowedMonth(time);
+            date = date.plus({ months: 1 }).set({ day: 1 });
+            date = this.nextAllowedMonth(date);
         }
-        return time;
+        return date;
     }
 
-    nextAllowedDay(startTime) {
-        let time = startTime;
-        if (!this.isAllowedDay(time)) {
+    nextAllowedDay(startDate) {
+        let date = DateTime.fromMillis(startDate.ts);
+        if (!this.isAllowedDay(date)) {
             // Add a day
-            const date = new Date(time);
-            time = date.setDate(date.getDate() + 1);
-            time = this.nextAllowedDay(time);
+            date = date
+                .plus({ days: 1 })
+                .set({ hour: 0, minute: 0, second: 0, millisecond: 0 });
+            date = this.nextAllowedDay(date);
+
+            // If the next day available is another month, make sure the month is allowed
+            if (date.diff(startDate, 'months') > 0) {
+                date = this.nextAllowedMonth(date);
+                date = this.nextAllowedDay(date);
+            }
         }
-        return time;
+        return date;
     }
 
-    nextAllowedTime(startTime) {
-        let time = startTime;
+    nextAllowedTime(startDate) {
+        let time = startDate.ts;
         if (!this.isAllowedTime(time)) {
             // Go to next time slot
             time += this.millisecondsPerCol;
             time = this.nextAllowedTime(time);
+
+            // If the next time available is in another day, make sure the day is allowed
+            let date = DateTime.fromMillis(time);
+            if (date.diff(startDate, 'day') > 0) {
+                date = this.nextAllowedDay(date);
+                time = this.nextAllowedTime(date);
+            }
         }
 
         return time;

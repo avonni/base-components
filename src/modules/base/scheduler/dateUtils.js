@@ -109,22 +109,14 @@ const FORMATS = [
  * @returns {object} DateTime object or false
  */
 const dateTimeObjectFrom = (date) => {
-    let dateObject;
+    let time;
     if (date instanceof Date) {
-        dateObject = date;
+        time = date.getTime();
     } else if (!isNaN(new Date(date).getTime())) {
-        dateObject = new Date(date);
+        time = new Date(date).getTime();
     }
 
-    return DateTime.local(
-        dateObject.getFullYear(),
-        dateObject.getMonth(),
-        dateObject.getDate(),
-        dateObject.getHours(),
-        dateObject.getMinutes(),
-        dateObject.getSeconds(),
-        dateObject.getMilliseconds()
-    );
+    return DateTime.fromMillis(time);
 };
 
 /**
