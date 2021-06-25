@@ -74,12 +74,12 @@ export default class InputCounter extends LightningElement {
     _constraintApi;
     _constraintApiProxyInputUpdater;
     _value;
-    _digits;
+    _normalizedDigits;
+    _previousValue;
     helpMessage;
     labelVariant;
     labelFieldLevelHelp;
     init = false;
-    _normalizedDigits;
 
     renderedCallback() {
         if (!this.init) {
@@ -103,7 +103,16 @@ export default class InputCounter extends LightningElement {
     }
 
     set value(value) {
-        this._value = typeof value === 'number' ? value : null;
+        this._value =
+            typeof value === 'number'
+                ? value
+                : this.step && this.min === 0
+                ? 0
+                : this.step !== 1 && !this.min
+                ? this.step
+                : this.min
+                ? this.min
+                : 0;
     }
 
     @api get min() {
@@ -128,11 +137,10 @@ export default class InputCounter extends LightningElement {
 
     set fractionDigits(digits) {
         if (typeof digits === 'number') {
-            this._digits = Math.round(Math.abs(digits));
-            this._fractionDigits = 1 / Math.pow(10, this._digits);
-            this._normalizedDigits = this._digits;
+            this._normalizedDigits = Math.round(Math.abs(digits));
+            this._fractionDigits = 1 / Math.pow(10, this._normalizedDigits);
         } else {
-            this._digits = null;
+            this._normalizedDigits = null;
             this._fractionDigits = 1;
         }
     }
@@ -255,80 +263,51 @@ export default class InputCounter extends LightningElement {
     }
 
     decrementValue() {
-        if (this._max) this.handlePrecision(this._max);
-        if (this._min) this.handlePrecision(this._min);
-        if (this._step) this.handlePrecision(this._step);
-
-        const previousValue = this.value ? +this.value : null;
+        this.normalizeInputParameters();
 
         if (!isNaN(this.value)) {
             this._value = Number(this.value) - Number(this.step);
-            if (
-                (this.min || this.min === 0) &&
-                this.value - this.step < this.min
-            ) {
-                this._value = this.min;
-            }
-            if (this.max) {
-                if (
-                    previousValue > this.max ||
-                    this.value + this.step > this.max
-                ) {
-                    this._value = this.max;
-                }
-            }
-        } else {
-            if (!this.step && !this.min) {
-                this._value = -1;
-            } else if (this.step) {
-                this._value =
-                    this.min === 0 && isNaN(this.value)
-                        ? 0
-                        : this.min
-                        ? this.min
-                        : -this.step;
-            }
+            this.minMaxConditionsHandler();
         }
-        this._value = this.handlePrecision(this._value);
-        this.updateValue();
-        this.showHelpMessageIfInvalid();
+        this.handleNumberOutput();
     }
 
     incrementValue() {
+        this.normalizeInputParameters();
+
+        if (!isNaN(this.value)) {
+            this._value = Number(this.value) + Number(this.step);
+            this.minMaxConditionsHandler();
+        }
+        this.handleNumberOutput();
+    }
+
+    normalizeInputParameters() {
         if (this._max) this.handlePrecision(this._max);
         if (this._min) this.handlePrecision(this._min);
         if (this._step) this.handlePrecision(this._step);
 
-        const previousValue = this.value ? +this.value : null;
+        this._previousValue = this.value;
+    }
 
-        if (!isNaN(this.value)) {
-            this._value = Number(this.value) + Number(this.step);
-            if (this.min || this.min === 0) {
-                if (
-                    previousValue < this.min ||
-                    this.value - this.step < this.min
-                ) {
-                    this._value = this.min;
-                }
-            }
-            if (this.max && this.value > this.max) {
-                this._value = this.max;
-            }
-        } else {
-            if (!this.step && !this.min) {
-                this._value = +1;
-            } else if (this.step) {
-                this._value =
-                    this.min === 0 && isNaN(this.value)
-                        ? 0
-                        : this.min
-                        ? this.min
-                        : +this.step;
-            }
-        }
+    handleNumberOutput() {
         this._value = this.handlePrecision(this._value);
         this.updateValue();
-        this.showHelpMessageIfInvalid();
+    }
+
+    minMaxConditionsHandler() {
+        if (
+            (this.min || this.min === 0) &&
+            (this.value < this.min || this._previousValue < this.min)
+        ) {
+            this._value = this.min;
+        }
+        if (
+            this.max &&
+            (this.value > this.max || this._previousValue > this.max)
+        ) {
+            this._value = this.max;
+        }
     }
 
     handlePrecision(input) {
@@ -354,10 +333,12 @@ export default class InputCounter extends LightningElement {
                 }
             })
         );
+        this.showHelpMessageIfInvalid();
     }
 
-    handlerChange(event) {
+    handlerCommit(event) {
         this._value = +event.target.value;
+        this.handlePrecision(this._value);
         this.updateValue();
     }
 
@@ -375,11 +356,7 @@ export default class InputCounter extends LightningElement {
         this.dispatchEvent(new CustomEvent('focus'));
     }
 
-    handlerBlur(event) {
-        this._value = +event.target.value;
-        this.handlePrecision(this._value);
-        this.updateValue();
-        this.showHelpMessageIfInvalid();
+    handlerBlur() {
         this.dispatchEvent(new CustomEvent('blur'));
     }
 
