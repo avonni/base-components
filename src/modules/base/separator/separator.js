@@ -149,7 +149,7 @@ export default class Separator extends LightningElement {
             .toString();
     }
 
-    get computedIconMargin() {
+    get computedIconClass() {
         return classSet('avonni-separator_icon-margin')
             .add({
                 'slds-m-right_x-small':
