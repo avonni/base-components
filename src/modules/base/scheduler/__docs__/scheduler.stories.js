@@ -250,10 +250,10 @@ Base.args = {
     headers: headers,
     visibleSpan: {
         unit: 'day',
-        span: 10
+        span: 3
     },
-    start: new Date(2021, 6, 13),
-    // availableTimeFrames: ['04:50:00-10:30', '13:00-16:00'],
-    availableDaysOfTheWeek: [1],
-    availableMonths: [5, 7]
+    start: new Date(2021, 11, 13),
+    availableTimeFrames: ['04:50:00-10:30', '13:00-16:00'],
+    availableDaysOfTheWeek: [1]
+    // availableMonths: [5, 7]
 };

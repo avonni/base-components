@@ -114,16 +114,6 @@ const PALETTES = {
     ]
 };
 
-const UNITS_IN_MS = {
-    minute: 60000,
-    hour: 3.6e6,
-    day: 8.64e7,
-    week: 6.048e8,
-    // month: 2.628e9,
-    month: 8.64e7 * 30,
-    year: 3.154e10
-};
-
 const UNITS = ['minute', 'hour', 'day', 'week', 'month', 'year'];
 
 export {
@@ -134,7 +124,6 @@ export {
     DEFAULT_VISIBLE_SPAN,
     PALETTES,
     UNITS,
-    UNITS_IN_MS,
     DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
     DEFAULT_AVAILABLE_TIME_FRAMES,
     DEFAULT_AVAILABLE_MONTHS

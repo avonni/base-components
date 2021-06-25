@@ -47,7 +47,6 @@ import {
     DEFAULT_VISIBLE_SPAN,
     PALETTES,
     UNITS,
-    UNITS_IN_MS,
     DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
     DEFAULT_AVAILABLE_TIME_FRAMES,
     DEFAULT_AVAILABLE_MONTHS
@@ -312,11 +311,10 @@ export default class Scheduler extends LightningElement {
             const header = sortedHeaders[referenceHeaderIndex];
             const unit = header.unit;
             const span = header.span;
-            const millisecondsPerCol = UNITS_IN_MS[unit] * span;
 
-            const maxVisibleTime =
-                UNITS_IN_MS[this.visibleSpan.unit] * this.visibleSpan.span;
-            const end = this.start.ts + maxVisibleTime;
+            const options = {};
+            options[unit] = this.visibleSpan.span;
+            const end = this.start.plus(options);
             const columns = this.computedNumberOfColumns(unit, end);
 
             this._referenceHeader = new Header({
@@ -327,7 +325,6 @@ export default class Scheduler extends LightningElement {
                 timeFrames: this.availableTimeFrames,
                 daysOfTheWeek: this.availableDaysOfTheWeek,
                 months: this.availableMonths,
-                millisecondsPerCol: millisecondsPerCol,
                 numberOfColumns: columns,
                 isReference: true
             });
@@ -338,7 +335,6 @@ export default class Scheduler extends LightningElement {
         let parentHeader;
         sortedHeaders.forEach((header) => {
             const unit = header.unit;
-            const millisecondsPerCol = UNITS_IN_MS[unit] * header.span;
             let headerObject;
 
             // If the current header is the reference
@@ -351,12 +347,14 @@ export default class Scheduler extends LightningElement {
 
                 // If the current header is not the reference, but there is a reference header
             } else if (reference) {
-                const referenceIsLonger =
-                    UNITS_IN_MS[reference.unit] - UNITS_IN_MS[unit] > 0;
+                const referenceUnitIndex = UNITS.findIndex(
+                    (unt) => unt === reference.unit
+                );
+                const unitIndex = UNITS.findIndex((unt) => unt === unit);
+                const referenceIsLonger = referenceUnitIndex > unitIndex;
 
-                const pluralizedReferenceUnit = `${reference.unit}s`;
                 const options = {};
-                options[pluralizedReferenceUnit] = reference.span;
+                options[reference.unit] = reference.span;
                 const referenceEnd = DateTime.fromMillis(
                     reference.columns[reference.columns.length - 1].time
                 ).plus(options);
@@ -374,7 +372,6 @@ export default class Scheduler extends LightningElement {
                     timeFrames: this.availableTimeFrames,
                     daysOfTheWeek: this.availableDaysOfTheWeek,
                     months: this.availableMonths,
-                    millisecondsPerCol: millisecondsPerCol,
                     numberOfColumns: columns
                 });
 
@@ -416,6 +413,7 @@ export default class Scheduler extends LightningElement {
             const startDate = DateTime.fromMillis(start);
             const endOfUnit = startDate.endOf(unit);
             const timeToEndOfUnit = endOfUnit.diff(startDate, 'milliseconds');
+            // if (unit === 'month') debugger
             start += timeToEndOfUnit.values.milliseconds + 1;
             columns += 1;
         }

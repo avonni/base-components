@@ -43,7 +43,6 @@ export default class Header {
         this.columns = [];
         this.columnWidths = [];
         this.isReference = props.isReference;
-        this.millisecondsPerCol = props.millisecondsPerCol;
         this.numberOfColumns = props.numberOfColumns;
         this.childKey = null;
         this.end = props.end;
@@ -105,7 +104,7 @@ export default class Header {
             if (unit !== 'month' && unit !== 'year' && unit !== 'week') {
                 date = this.nextAllowedDay(date);
                 if (unit !== 'day') {
-                    date = DateTime.fromMillis(this.nextAllowedTime(date));
+                    date = this.nextAllowedTime(date);
                 }
             }
 
@@ -124,11 +123,11 @@ export default class Header {
         }
     }
 
-    isAllowedTime(time) {
+    isAllowedTime(date) {
         let i = 0;
         let isAllowed = false;
         while (!isAllowed && i < this.timeFrames.length) {
-            isAllowed = isInTimeFrame(time, this.timeFrames[i]);
+            isAllowed = isInTimeFrame(date, this.timeFrames[i]);
             i += 1;
         }
         return isAllowed;
@@ -173,20 +172,22 @@ export default class Header {
     }
 
     nextAllowedTime(startDate) {
-        let time = startDate.ts;
-        if (!this.isAllowedTime(time)) {
+        let date = DateTime.fromMillis(startDate.ts);
+
+        if (!this.isAllowedTime(date)) {
             // Go to next time slot
-            time += this.millisecondsPerCol;
-            time = this.nextAllowedTime(time);
+            const options = {};
+            options[this.unit] = this.span;
+            date = date.plus(options);
+            date = this.nextAllowedTime(date);
 
             // If the next time available is in another day, make sure the day is allowed
-            let date = DateTime.fromMillis(time);
             if (date.diff(startDate, 'day') > 0) {
                 date = this.nextAllowedDay(date);
-                time = this.nextAllowedTime(date);
+                date = this.nextAllowedTime(date);
             }
         }
 
-        return time;
+        return date;
     }
 }

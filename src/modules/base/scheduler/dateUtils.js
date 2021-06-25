@@ -138,36 +138,36 @@ const formatTime = (time, stringToFormat) => {
 
 /**
  * Checks if a time is included in a time frame.
- * @param {number} timestamp - Timestamp
+ * @param {DateTime} date - DateTime object
  * @param {string} timeFrame - The time frame of reference, in the format '00:00-00:00'
  * @returns {boolean} true or false
  */
-const isInTimeFrame = (timestamp, timeFrame) => {
-    // const startMatch = timeFrame.match(/^([0-9]{2}):([0-9]{2})/);
-    // const endMatch = timeFrame.match(/-([0-9]{2}):([0-9]{2})/);
-    // if (!startMatch || !endMatch) return false;
+const isInTimeFrame = (date, timeFrame) => {
+    const startMatch = timeFrame.match(/^([0-9:]+)-/);
+    const endMatch = timeFrame.match(/-([0-9:]+)$/);
+    if (!startMatch || !endMatch) {
+        console.error(
+            `Wrong time frame format for ${timeFrame}. The time frame needs to follow the pattern ‘start-end’, with start and end being ISO8601 formatted time strings.`
+        );
+        return true;
+    }
 
-    // const startHour = onlyMinutes ? 0 : Number(startMatch[1]);
-    // const startMinute = Number(startMatch[2]);
-    // const start = new Date(2021, 0, 0, startHour, startMinute, 0, 0);
+    const start = DateTime.fromISO(startMatch[1]);
+    const end = DateTime.fromISO(endMatch[1]);
+    if (end < start) {
+        console.error(
+            `Wrong time frame format for ${timeFrame}. The end time is smaller than the start time.`
+        );
+        return true;
+    }
 
-    // const endHour = onlyMinutes ? 0 : Number(endMatch[1]);
-    // const endMinute = Number(endMatch[2]);
-    // const end = new Date(2021, 0, 0, endHour, endMinute, 0, 0);
+    const time = date.set({
+        year: start.year,
+        month: start.month,
+        day: start.day
+    });
 
-    // const date = new Date(timestamp);
-    // const time = new Date(2021, 0, 0, date.getHours(), date.getMinutes(), 0, 0);
-
-    // if (time >= start && time <= end) return true;
-    // Returns the times in the format 00:00
-
-    const time = new Date(timestamp).toLocaleTimeString('en-GB').slice(0, 5);
-    const startTime = timeFrame.match(/^([0-9]{2}:[0-9]{2})/);
-    const endTime = timeFrame.match(/-([0-9]{2}:[0-9]{2})/);
-
-    if (!startTime || !endTime) return false;
-    if (time >= startTime[1] && time <= endTime[1]) return true;
-    return false;
+    return time < end && time >= start;
 };
 
 /**
@@ -224,7 +224,7 @@ const allowedHoursInUnit = (timeFrame, unit) => {
     for (let i = 0; i < 24; i++) {
         const time = new Date().setHours(i, 0, 0, 0);
 
-        if (isInTimeFrame(time, timeFrame)) {
+        if (isInTimeFrame(DateTime.fromMillis(time), timeFrame)) {
             hoursInADay += 1;
         }
     }
