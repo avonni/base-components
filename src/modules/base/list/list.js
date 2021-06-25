@@ -120,6 +120,7 @@ export default class List extends LightningElement {
             validValues: ICON_POSITIONS.valid
         });
     }
+
     @api
     get actions() {
         return this._actions;
@@ -128,6 +129,14 @@ export default class List extends LightningElement {
         this._actions = normalizeArray(proxy);
         this.computedActions = JSON.parse(JSON.stringify(this._actions));
         this._hasActions = true;
+    }
+
+    get firstAction() {
+        return this.computedActions[0];
+    }
+
+    get hasMultipleActions() {
+        return this._actions.length > 1;
     }
 
     get showIconRight() {
@@ -147,7 +156,7 @@ export default class List extends LightningElement {
     }
 
     get computedListClass() {
-        return  `menu slds-has-dividers_${this.divider}-space`;
+        return `menu slds-has-dividers_${this.divider}-space`;
     }
 
     get computedItemClass() {
@@ -266,7 +275,10 @@ export default class List extends LightningElement {
 
     dragStart(event) {
         // Stop dragging if the click was on a button menu
-        if (!this.sortable || event.target.tagName === 'LIGHTNING-BUTTON-MENU')
+        if (
+            !this.sortable ||
+            event.target.tagName.startsWith('LIGHTNING-BUTTON')
+        )
             return;
 
         this._itemElements = Array.from(
@@ -323,9 +335,10 @@ export default class List extends LightningElement {
 
         const hoveredItem = this.getHoveredItem(center);
         if (hoveredItem) this.switchWithItem(hoveredItem);
-        event.currentTarget
-            .querySelector('lightning-button-menu')
-            .classList.remove('slds-is-open');
+        const buttonMenu = event.currentTarget.querySelector(
+            'lightning-button-menu'
+        );
+        if (buttonMenu) buttonMenu.classList.remove('slds-is-open');
     }
 
     dragEnd() {

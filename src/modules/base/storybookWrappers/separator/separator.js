@@ -30,19 +30,30 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from '../../storybookWrappers/pageHeader/pageHeader';
+import { LightningElement, api } from 'lwc';
+import { classSet } from '../../utils/classSet';
 
-customElements.define(
-    'ac-base-page-header',
-    Component.CustomElementConstructor
-);
+const DEFAULT_ALIGN_CONTENT = 'center';
 
-export const PageHeader = ({ iconName, label, title, info, variant }) => {
-    const element = document.createElement('ac-base-page-header');
-    element.iconName = iconName;
-    element.label = label;
-    element.title = title;
-    element.info = info;
-    element.variant = variant;
-    return element;
-};
+const DEFAULT_ICON_SIZE = 'medium';
+
+const DEFAULT_ORIENTATION = 'horizontal';
+
+const DEFAULT_ICON_POSITION = 'left';
+
+export default class Separator extends LightningElement {
+    @api label;
+    @api iconName;
+    @api alignContent = DEFAULT_ALIGN_CONTENT;
+    @api iconSize = DEFAULT_ICON_SIZE;
+    @api orientation = DEFAULT_ORIENTATION;
+    @api iconPosition = DEFAULT_ICON_POSITION;
+
+    get computedPropContainerClass() {
+        return classSet('avonni-prop-container')
+            .add({
+                'prop-vertical': this.orientation === 'vertical'
+            })
+            .toString();
+    }
+}

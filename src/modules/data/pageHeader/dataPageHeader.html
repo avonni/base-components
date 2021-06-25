@@ -1,3 +1,4 @@
+<!--
 /**
  * BSD 3-Clause License
  *
@@ -29,20 +30,32 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+-->
 
-import Component from '../../storybookWrappers/pageHeader/pageHeader';
-
-customElements.define(
-    'ac-base-page-header',
-    Component.CustomElementConstructor
-);
-
-export const PageHeader = ({ iconName, label, title, info, variant }) => {
-    const element = document.createElement('ac-base-page-header');
-    element.iconName = iconName;
-    element.label = label;
-    element.title = title;
-    element.info = info;
-    element.variant = variant;
-    return element;
-};
+<template>
+    <c-page-header
+        icon-name={iconName}
+        label={label}
+        title={title}
+        info={info}
+        variant={variant}
+    >
+        <template if:false={fieldsIsEmpty}>
+            <div slot="details" class={computedDetailsClass}>
+                <ul class={computedUnorderedListClass}>
+                    <template for:each={fields} for:item="field">
+                        <li key={field.label} class={computedListItemsClass}>
+                            <c-output-data
+                                label={field.label}
+                                value={field.value}
+                                type={field.type}
+                                type-attributes={field.typeAttributes}
+                            >
+                            </c-output-data>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+        </template>
+    </c-page-header>
+</template>

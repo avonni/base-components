@@ -30,19 +30,27 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from '../../storybookWrappers/pageHeader/pageHeader';
+import Component from 'avonni/dataPageHeader';
 
 customElements.define(
-    'ac-base-page-header',
+    'ac-data-page-header',
     Component.CustomElementConstructor
 );
 
-export const PageHeader = ({ iconName, label, title, info, variant }) => {
-    const element = document.createElement('ac-base-page-header');
+export const DataPageHeader = ({
+    iconName,
+    label,
+    title,
+    info,
+    variant,
+    fields
+}) => {
+    const element = document.createElement('ac-data-page-header');
     element.iconName = iconName;
     element.label = label;
     element.title = title;
     element.info = info;
     element.variant = variant;
+    element.fields = fields;
     return element;
 };
