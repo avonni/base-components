@@ -70,6 +70,7 @@ export {
     normalizeKeyValue,
     isShiftMetaOrControlKey
 } from './keyboard';
+export { getListHeight } from './listHeight';
 export { raf } from './scroll';
 export { isChrome, isIE11, isSafari } from './browser';
 export { ContentMutation } from './contentMutation';
