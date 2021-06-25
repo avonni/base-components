@@ -112,10 +112,7 @@ export default class HeroBanner extends LightningElement {
     }
 
     get imgSrc() {
-        if (this.linearGradient) {
-            return `background-color: ${this.backgroundColor}; background-image: linear-gradient(${this.linearGradient}), url(${this.src}); height: ${this._height}px;`;
-        }
-        return `background-color: ${this.backgroundColor}; background-image: url(${this.src}); height: ${this.height}px;`;
+        return `background-image: linear-gradient(var(--avonni-hero-banner-linear-gradient, rgba(0,0,0,0.4), rgba(0,0,0,0.4))), url(${this.src}); height: ${this.height}px;`;
     }
 
     get computedMaxWidth() {
@@ -124,26 +121,6 @@ export default class HeroBanner extends LightningElement {
 
     get computedContentStyling() {
         return `width: ${this.contentWidth}%`;
-    }
-
-    get computedTitleStyling() {
-        return `font-family: ${this.titleFontFamily}; color: ${this.titleColor}; text-shadow: ${this.titleShadowColor};`;
-    }
-
-    get computedCaptionStyling() {
-        return `font-family: ${this.captionFontFamily}; color: ${this.captionColor}; text-shadow: ${this.captionShadowColor};`;
-    }
-
-    get computedSubtitleStyling() {
-        return `font-family: ${this.subtitleFontFamily}; color: ${this.subtitleColor}; text-shadow: ${this.subtitleShadowColor};`;
-    }
-
-    get computedPrimaryButtonStyling() {
-        return `--background-primary: ${this.primaryButtonBackgroundColor}; --color-primary: ${this.primaryButtonTextColor}; border-radius: ${this.primaryButtonBorderRadius}px; --border-primary_color: ${this.primaryButtonBorderColor}; --background-primary_hover: ${this.primaryButtonBackgroundHoverColor}; --color-primary_hover: ${this.primaryButtonTextHoverColor};`;
-    }
-
-    get computedSecondaryButtonStyling() {
-        return `--background-secondary: ${this.secondaryButtonBackgroundColor}; --color-secondary: ${this.secondaryButtonTextColor}; border-radius: ${this.secondaryButtonBorderRadius}px; --border-secondary_color: ${this.secondaryButtonBorderColor}; --background-secondary_hover: ${this.secondaryButtonBackgroundHoverColor}; --color-secondary_hover: ${this.secondaryButtonTextHoverColor};`;
     }
 
     get computedContentContainer() {
@@ -172,84 +149,6 @@ export default class HeroBanner extends LightningElement {
                     this.contentHorizontalAlignment === 'center',
                 'avonni-hero-banner-horizontal-alignment_right':
                     this.contentHorizontalAlignment === 'right'
-            })
-            .toString();
-    }
-
-    get computedTitleClass() {
-        return classSet('')
-            .add({
-                'slds-text-heading_small': this.titleFontSize === 'small',
-                'slds-text-heading_medium': this.titleFontSize === 'medium',
-                'slds-text-heading_large': this.titleFontSize === 'large',
-                'avonni-hero-banner-text-x_large':
-                    this.titleFontSize === 'x-large',
-                'avonni-hero-banner-text-xx_large':
-                    this.titleFontSize === 'xx-large',
-                'avonni-hero-banner-text-xxx_large':
-                    this.titleFontSize === 'xxx-large',
-                'avonni-hero-banner-text-xxxx_large':
-                    this.titleFontSize === 'xxxx-large'
-            })
-            .add({
-                'avonni-hero-banner-font-weight_light':
-                    this.titleFontWeight === 'light',
-                'avonni-hero-banner-font-weight_normal':
-                    this.titleFontWeight === 'normal',
-                'avonni-hero-banner-font-weight_bold':
-                    this.titleFontWeight === 'bold'
-            })
-            .toString();
-    }
-
-    get computedCaptionClass() {
-        return classSet('')
-            .add({
-                'slds-text-heading_small': this.captionFontSize === 'small',
-                'slds-text-heading_medium': this.captionFontSize === 'medium',
-                'slds-text-heading_large': this.captionFontSize === 'large',
-                'avonni-hero-banner-text-x_large':
-                    this.captionFontSize === 'x-large',
-                'avonni-hero-banner-text-xx_large':
-                    this.captionFontSize === 'xx-large',
-                'avonni-hero-banner-text-xxx_large':
-                    this.captionFontSize === 'xxx-large',
-                'avonni-hero-banner-text-xxxx_large':
-                    this.captionFontSize === 'xxxx-large'
-            })
-            .add({
-                'avonni-hero-banner-font-weight_light':
-                    this.captionFontWeight === 'light',
-                'avonni-hero-banner-font-weight_normal':
-                    this.captionFontWeight === 'normal',
-                'avonni-hero-banner-font-weight_bold':
-                    this.captionFontWeight === 'bold'
-            })
-            .toString();
-    }
-
-    get computedSubtitleClass() {
-        return classSet('')
-            .add({
-                'slds-text-heading_small': this.subtitleFontSize === 'small',
-                'slds-text-heading_medium': this.subtitleFontSize === 'medium',
-                'slds-text-heading_large': this.subtitleFontSize === 'large',
-                'avonni-hero-banner-text-x_large':
-                    this.subtitleFontSize === 'x-large',
-                'avonni-hero-banner-text-xx_large':
-                    this.subtitleFontSize === 'xx-large',
-                'avonni-hero-banner-text-xxx_large':
-                    this.subtitleFontSize === 'xxx-large',
-                'avonni-hero-banner-text-xxxx_large':
-                    this.subtitleFontSize === 'xxxx-large'
-            })
-            .add({
-                'avonni-hero-banner-font-weight_light':
-                    this.subtitleFontWeight === 'light',
-                'avonni-hero-banner-font-weight_normal':
-                    this.subtitleFontWeight === 'normal',
-                'avonni-hero-banner-font-weight_bold':
-                    this.subtitleFontWeight === 'bold'
             })
             .toString();
     }

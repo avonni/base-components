@@ -8,26 +8,17 @@
                         style={computedContentStyling}
                     >
                         <template if:true={caption}>
-                            <h1
-                                class={computedCaptionClass}
-                                style={computedCaptionStyling}
-                            >
+                            <h1 class="avonni-hero-banner-caption-class">
                                 {caption}
                             </h1>
                         </template>
                         <template if:true={title}>
-                            <h2
-                                class={computedTitleClass}
-                                style={computedTitleStyling}
-                            >
+                            <h2 class="avonni-hero-banner-title-class">
                                 {title}
                             </h2>
                         </template>
                         <template if:true={subtitle}>
-                            <p
-                                class={computedSubtitleClass}
-                                style={computedSubtitleStyling}
-                            >
+                            <p class="avonni-hero-banner-subtitle-class">
                                 {subtitle}
                             </p>
                         </template>
@@ -37,14 +28,12 @@
                                     <template if:true={primaryButtonLabel}>
                                         <a
                                             class="slds-button slds-truncate avonni-hero-banner-primary-button"
-                                            style={computedPrimaryButtonStyling}
                                             >{primaryButtonLabel}</a
                                         >
                                     </template>
                                     <template if:true={hasButtons}>
                                         <a
                                             class="slds-button slds-truncate avonni-hero-banner-secondary-button"
-                                            style={computedSecondaryButtonStyling}
                                             >{secondaryButtonLabel}</a
                                         >
                                     </template>

@@ -2,6 +2,7 @@
     background-size: cover;
     background-position: center;
     padding: 20px;
+    background-color: var(--avonni-hero-banner-color-background, #ffffff);
 }
 
 .avonni-hero-banner-text-container-without-slot {
@@ -10,26 +11,6 @@
 
 .avonni-hero-banner-text-container-with-slot {
     height: 75%;
-}
-
-.avonni-hero-banner-text-x_large {
-    font-size: 2rem;
-    line-height: 1.25;
-}
-
-.avonni-hero-banner-text-xx_large {
-    font-size: 2.625rem;
-    line-height: 1.25;
-}
-
-.avonni-hero-banner-text-xxx_large {
-    font-size: 3rem;
-    line-height: 1.25;
-}
-
-.avonni-hero-banner-text-xxxx_large {
-    font-size: 3.5rem;
-    line-height: 1.25;
 }
 
 .avonni-hero-banner-horizontal-alignment_right {
@@ -59,46 +40,101 @@
     flex-direction: column;
 }
 
-.avonni-hero-banner-font-weight_light {
-    font-weight: 100;
-}
-
-.avonni-hero-banner-font-weight_normal {
-    font-weight: 500;
-}
-
-.avonni-hero-banner-font-weight_bold {
-    font-weight: 700;
-}
-
 .avonni-hero-banner-primary-button {
     display: inline-block;
-    border: solid 2px var(--border-primary_color);
+    border: solid 2px
+        var(--avonni-hero-banner-primary-button-color-border, transparent);
+    border-radius: var(--avonni-hero-banner-primary-button-radius-border, 4px);
     min-width: 135px;
     transition: all 0.2s;
-    background: var(--background-primary);
-    color: var(--color-primary);
+    background: var(
+        --avonni-hero-banner-primary-button-color-background,
+        #0070d2
+    );
+    color: var(--avonni-hero-banner-primary-button-color, #ffffff);
 }
 
 .avonni-hero-banner-primary-button:hover {
-    background-color: var(--background-primary_hover);
-    color: var(--color-primary_hover);
+    background: var(
+        --avonni-hero-banner-primary-button-color-background-hover,
+        #005fb2
+    );
+    color: var(--avonni-hero-banner-primary-button-color-hover, #ffffff);
 }
 
 .avonni-hero-banner-secondary-button {
     display: inline-block;
-    border: solid 2px var(--border-secondary_color);
+    border: solid 2px
+        var(--avonni-hero-banner-secondary-button-color-border, transparent);
+    border-radius: var(
+        --avonni-hero-banner-secondary-button-radius-border,
+        4px
+    );
     min-width: 135px;
     transition: all 0.2s;
-    background: var(--background-secondary);
-    color: var(--color-secondary);
+    background: var(
+        --avonni-hero-banner-secondary-button-color-background,
+        #0070d2
+    );
+    color: var(--avonni-hero-banner-secondary-button-color, #ffffff);
 }
 
 .avonni-hero-banner-secondary-button:hover {
-    background-color: var(--background-secondary_hover);
-    color: var(--color-secondary_hover);
+    background: var(
+        --avonni-hero-banner-secondary-button-color-background-hover,
+        #005fb2
+    );
+    color: var(--avonni-hero-banner-secondary-button-color-hover, #ffffff);
 }
 
 .avonni-hero-banner-justify_center {
     justify-content: center;
+}
+
+.avonni-hero-banner-title-class {
+    color: var(--avonni-hero-banner-title-color, #ffffff);
+    font-family: var(
+        --avonni-hero-banner-title-font-family,
+        'Salesforce Sans',
+        Arial,
+        sans-serif
+    );
+    font-size: var(--avonni-hero-banner-title-font-size, 1.75rem);
+    font-weight: var(--avonni-hero-banner-title-font-weight, 700);
+    text-shadow: var(
+        --avonni-hero-banner-title-shadow-color,
+        1px 1px 0 rgb(0 0 0 / 50%)
+    );
+}
+
+.avonni-hero-banner-caption-class {
+    color: var(--avonni-hero-banner-caption-color, #ffffff);
+    font-family: var(
+        --avonni-hero-banner-caption-font-family,
+        'Salesforce Sans',
+        Arial,
+        sans-serif
+    );
+    font-size: var(--avonni-hero-banner-caption-font-size, 1rem);
+    font-weight: var(--avonni-hero-banner-caption-font-weight, 100);
+    text-shadow: var(
+        --avonni-hero-banner-caption-shadow-color,
+        1px 1px 0 rgb(0 0 0 / 50%)
+    );
+}
+
+.avonni-hero-banner-subtitle-class {
+    color: var(--avonni-hero-banner-subtitle-color, #ffffff);
+    font-family: var(
+        --avonni-hero-banner-subtitle-font-family,
+        'Salesforce Sans',
+        Arial,
+        sans-serif
+    );
+    font-size: var(--avonni-hero-banner-subtitle-font-size, 1.25rem);
+    font-weight: var(--avonni-hero-banner-subtitle-font-weight, 500);
+    text-shadow: var(
+        --avonni-hero-banner-subtitle-shadow-color,
+        1px 1px 0 rgb(0 0 0 / 50%)
+    );
 }
