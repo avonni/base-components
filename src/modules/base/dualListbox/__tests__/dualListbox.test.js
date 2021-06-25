@@ -658,14 +658,18 @@ describe('DualListbox', () => {
         });
         document.body.appendChild(element);
 
-        const optionWithAvatar = [
+        const optionWithoutAvatar = [
             {
                 value: '1',
                 label: 'Option 1'
+            },
+            {
+                value: '2',
+                label: 'Option 2'
             }
         ];
 
-        element.options = optionWithAvatar;
+        element.options = optionWithoutAvatar;
 
         return Promise.resolve()
             .then(() => {
