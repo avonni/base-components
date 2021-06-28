@@ -30,19 +30,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from '../../storybookWrappers/pageHeader/pageHeader';
+.avonni-separator_container {
+    width: 100%;
+    height: 100%;
+}
 
-customElements.define(
-    'ac-base-page-header',
-    Component.CustomElementConstructor
-);
-
-export const PageHeader = ({ iconName, label, title, info, variant }) => {
-    const element = document.createElement('ac-base-page-header');
-    element.iconName = iconName;
-    element.label = label;
-    element.title = title;
-    element.info = info;
-    element.variant = variant;
-    return element;
-};
+.avonni-separator_line-one.slds-border_left,
+.avonni-separator_line-two.slds-border_left {
+    height: 100%;
+}

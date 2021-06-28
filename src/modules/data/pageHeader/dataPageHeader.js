@@ -31,13 +31,74 @@
  */
 
 import { LightningElement, api } from 'lwc';
+import { normalizeString, normalizeArray } from 'c/utilsPrivate';
+import { classSet } from 'c/utils';
 
-const DEFAULT_PAGE_HEADER_VARIANT = 'base';
+const PAGE_HEADER_VARIANTS = {
+    valid: ['base', 'object-home', 'record-home', 'record-home-vertical'],
+    default: 'base'
+};
 
 export default class PageHeader extends LightningElement {
     @api iconName;
     @api label;
     @api title;
     @api info;
-    @api variant = DEFAULT_PAGE_HEADER_VARIANT;
+
+    _variant = PAGE_HEADER_VARIANTS.default;
+    _fields = [];
+
+    @api
+    get variant() {
+        return this._variant;
+    }
+
+    set variant(value) {
+        this._variant = normalizeString(value, {
+            fallbackValue: PAGE_HEADER_VARIANTS.default,
+            validValues: PAGE_HEADER_VARIANTS.valid
+        });
+    }
+
+    @api
+    get fields() {
+        return this._fields;
+    }
+
+    set fields(value) {
+        this._fields = normalizeArray(value);
+    }
+
+    get computedUnorderedListClass() {
+        return classSet('slds-page-header__detail-list')
+            .add({
+                'avonni-data-page-header-mobile-column':
+                    this._variant === 'record-home'
+            })
+            .toString();
+    }
+
+    get computedDetailsClass() {
+        return classSet('')
+            .add({
+                'avonni-data-page-header-mobile-styling':
+                    this._variant === 'record-home'
+            })
+            .toString();
+    }
+
+    get computedListItemsClass() {
+        return classSet('')
+            .add({
+                'slds-page-header__detail-block avonni-data-page-header-mobile':
+                    this._variant === 'record-home',
+                'slds-page-header__detail-item':
+                    this._variant === 'record-home-vertical'
+            })
+            .toString();
+    }
+
+    get fieldsIsEmpty() {
+        return this._fields.length === 0;
+    }
 }

@@ -101,7 +101,7 @@ export const Large = Template.bind({});
 Large.args = {
     title: 'Large Panel Header',
     showPanel: true,
-    size: 'Large'
+    size: 'large'
 };
 
 export const X_Large = Template.bind({});
@@ -122,10 +122,14 @@ export const PanelButtons = PanelWithButtonsTemplate.bind({});
 PanelButtons.args = {};
 
 export const PanelDatatable = PanelWithDatatableTemplate.bind({});
-PanelDatatable.args = {};
+PanelDatatable.args = {
+    showPanel: true
+};
 
 export const PanelFilter = FiltersPanelTemplate.bind({});
-PanelFilter.args = {};
+PanelFilter.args = {
+    showPanel: true
+};
 
 export const PanelWithContent = PanelWithContentInsideTemplate.bind({});
 PanelWithContent.args = {
