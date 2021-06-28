@@ -52,7 +52,7 @@
                 icon-name="utility:ban"
                 size="medium"
                 title="Decrement counter"
-                onclick={incrementOrDecrementValue}
+                onclick={decrementValue}
                 variant="bare"
                 alternative-text="Decrement counter"
                 class={buttonDecrementClass}
@@ -67,7 +67,7 @@
                 aria-labelledby={computedAriaLabelledBy}
                 aria-describedby={computedAriaDescribedBy}
                 value={value}
-                step={fractionDigits}
+                step={inputStep}
                 field-level-help={labelFieldLevelHelp}
                 accesskey={accessKey}
                 variant={labelVariant}
@@ -80,13 +80,15 @@
                 oncommit={handlerCommit}
                 onfocus={handlerFocus}
                 onblur={handlerBlur}
+                onkeydown={handlerKeyDown}
+                autocomplete="off"
             ></lightning-input>
             <lightning-button-icon
                 if:false={readOnly}
                 icon-name="utility:new"
                 size="medium"
                 title="Increment counter"
-                onclick={incrementOrDecrementValue}
+                onclick={incrementValue}
                 variant="bare"
                 alternative-text="Increment counter"
                 class={buttonIncrementClass}

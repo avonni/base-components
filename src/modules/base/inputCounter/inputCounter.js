@@ -70,12 +70,11 @@ export default class InputCounter extends LightningElement {
     _readOnly;
     _required;
     _fractionDigits;
-    _fractionDigitsLength;
     _constraintApi;
     _constraintApiProxyInputUpdater;
     _value;
-    _normalizedDigits;
     _previousValue;
+    _inputStep;
     helpMessage;
     labelVariant;
     labelFieldLevelHelp;
@@ -103,16 +102,7 @@ export default class InputCounter extends LightningElement {
     }
 
     set value(value) {
-        this._value =
-            typeof value === 'number'
-                ? value
-                : this.step && this.min === 0
-                ? 0
-                : this.step !== 1 && !this.min
-                ? this.step
-                : this.min
-                ? this.min
-                : 0;
+        this._value = typeof value === 'number' ? value : null;
     }
 
     @api get min() {
@@ -137,12 +127,16 @@ export default class InputCounter extends LightningElement {
 
     set fractionDigits(digits) {
         if (typeof digits === 'number') {
-            this._normalizedDigits = Math.round(Math.abs(digits));
-            this._fractionDigits = 1 / Math.pow(10, this._normalizedDigits);
+            this._fractionDigits = Math.round(Math.abs(digits));
+            this._inputStep = 1 / Math.pow(10, this._fractionDigits);
         } else {
-            this._normalizedDigits = null;
-            this._fractionDigits = 1;
+            this._fractionDigits = null;
+            this._inputStep = 1;
         }
+    }
+
+    get inputStep() {
+        return this._inputStep;
     }
 
     @api get variant() {
@@ -262,16 +256,26 @@ export default class InputCounter extends LightningElement {
         return this.ariaDescribedBy || null;
     }
 
-    incrementOrDecrementValue(event) {
+    decrementValue() {
         this.normalizeInputParameters();
 
-        if (
-            event.target.classList.contains('slds-input__button_decrement') &&
-            !isNaN(this.value)
-        ) {
+        if (!isNaN(this.value)) {
             this._value = Number(this.value) - Number(this.step);
-        } else if (!isNaN(this.value)) {
+        } else {
+            this.emptyInputField();
+        }
+        this.minMaxConditionsHandler();
+
+        this.handleNumberOutput();
+    }
+
+    incrementValue() {
+        this.normalizeInputParameters();
+
+        if (!isNaN(this.value)) {
             this._value = Number(this.value) + Number(this.step);
+        } else {
+            this.emptyInputField();
         }
         this.minMaxConditionsHandler();
 
@@ -286,9 +290,15 @@ export default class InputCounter extends LightningElement {
         this._previousValue = this.value;
     }
 
-    handleNumberOutput() {
-        this._value = this.handlePrecision(this._value);
-        this.updateValue();
+    emptyInputField() {
+        this._value =
+            this.step && this.min === 0
+                ? 0
+                : this.step !== 1 && !this.min
+                ? this.step
+                : this.min
+                ? this.min
+                : null;
     }
 
     minMaxConditionsHandler() {
@@ -306,9 +316,14 @@ export default class InputCounter extends LightningElement {
         }
     }
 
+    handleNumberOutput() {
+        this._value = this.handlePrecision(this._value);
+        this.updateValue();
+    }
+
     handlePrecision(input) {
         if (!isNaN(input)) {
-            input = +input.toFixed(this._normalizedDigits);
+            input = +input.toFixed(this._fractionDigits);
         }
         return +input;
     }
@@ -356,6 +371,23 @@ export default class InputCounter extends LightningElement {
         this.dispatchEvent(new CustomEvent('blur'));
     }
 
+    handlerKeyDown(event) {
+        let key = event.key;
+        switch (key) {
+            case 'ArrowUp':
+                this._value = this.value - this._inputStep;
+                this.incrementValue();
+                break;
+            case 'ArrowDown':
+                this._value = this.value + this._inputStep;
+                this.decrementValue();
+                break;
+            default:
+                key = undefined;
+                break;
+        }
+    }
+
     @api get validity() {
         return this._constraint.validity;
     }
@@ -400,7 +432,7 @@ export default class InputCounter extends LightningElement {
                     value: () => this.value,
                     max: () => this.max,
                     min: () => this.min,
-                    step: () => this.fractionDigits,
+                    step: () => this.inputStep,
                     formatter: () => this.type,
                     disabled: () => this.disabled
                 }
