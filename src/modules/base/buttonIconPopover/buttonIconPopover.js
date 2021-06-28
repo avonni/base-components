@@ -248,6 +248,10 @@ export default class ButtonIconPopover extends LightningElement {
         return !!this.title;
     }
 
+    get computedAriaExpanded() {
+        return String(this.popoverVisible);
+    }
+
     get computedPopoverHeaderClass() {
         return classSet('slds-popover__header')
             .add({
@@ -257,6 +261,41 @@ export default class ButtonIconPopover extends LightningElement {
             .toString();
     }
 
+    get computedPopoverClass() {
+        return classSet('slds-popover')
+            .add({
+                'slds-dropdown_left':
+                    this._placement === 'left' || this.isAutoAlignment(),
+                'slds-dropdown_center': this._placement === 'center',
+                'slds-dropdown_right': this._placement === 'right',
+                'slds-dropdown_bottom': this._placement === 'bottom-center',
+                'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right':
+                    this._placement === 'bottom-right',
+                'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left':
+                    this._placement === 'bottom-left',
+                'slds-nubbin_top-left': this._placement === 'left',
+                'slds-nubbin_top-right': this._placement === 'right',
+                'slds-nubbin_top': this._placement === 'center',
+                'slds-nubbin_bottom-left': this._placement === 'bottom-left',
+                'slds-nubbin_bottom-right': this._placement === 'bottom-right',
+                'slds-nubbin_bottom': this._placement === 'bottom-center',
+                'slds-p-vertical_large': this._isLoading,
+                'slds-popover_warning': this._popoverVariant === 'warning',
+                'slds-popover_error': this._popoverVariant === 'error',
+                'slds-popover_walkthrough':
+                    this._popoverVariant === 'walkthrough',
+                'slds-popover_small': this._popoverSize === 'small',
+                'slds-popover_medium': this._popoverSize === 'medium',
+                'slds-popover_large': this._popoverSize === 'large',
+                'slds-show': this.popoverVisible,
+                'slds-hide': !this.popoverVisible
+            })
+            .toString();
+    }
+
+    /**
+     * Simulates a mouse click on the button.
+     */
     @api
     click() {
         if (this.isConnected) {
@@ -264,6 +303,9 @@ export default class ButtonIconPopover extends LightningElement {
         }
     }
 
+    /**
+     * Sets focus on the button.
+     */
     @api
     focus() {
         if (this.isConnected) {
@@ -272,6 +314,9 @@ export default class ButtonIconPopover extends LightningElement {
         this.dispatchEvent(new CustomEvent('focus'));
     }
 
+    /**
+     * {Function} close - Opens the popover if it's closed
+     */
     @api
     open() {
         if (!this.popoverVisible) {
@@ -280,6 +325,9 @@ export default class ButtonIconPopover extends LightningElement {
         this.dispatchEvent(new CustomEvent('open'));
     }
 
+    /**
+     * {Function} close - Closes the popover if it's open
+     */
     @api
     close() {
         if (this.popoverVisible) {
@@ -421,15 +469,27 @@ export default class ButtonIconPopover extends LightningElement {
         );
     }
 
-    handleDropdownMouseDown(event) {
+    handlePopoverMouseDown(event) {
         const mainButton = 0;
         if (event.button === mainButton) {
             this.cancelBlur();
         }
     }
 
-    handleDropdownMouseUp() {
+    handlePopoverMouseUp() {
         this.allowBlur();
+    }
+
+    handlePopoverKeyDown() {
+        if (!this._cancelBlur) {
+            this.cancelBlur();
+        }
+    }
+
+    handlePopoverKeyPress() {
+        if (this._cancelBlur) {
+            this.allowBlur();
+        }
     }
 
     handleSlotClick() {
@@ -478,55 +538,7 @@ export default class ButtonIconPopover extends LightningElement {
         }
     }
 
-    get computedAriaExpanded() {
-        return String(this.popoverVisible);
-    }
-
-    get computedPopoverClass() {
-        return classSet('slds-popover')
-            .add({
-                'slds-dropdown_left':
-                    this._placement === 'left' || this.isAutoAlignment(),
-                'slds-dropdown_center': this._placement === 'center',
-                'slds-dropdown_right': this._placement === 'right',
-                'slds-dropdown_bottom': this._placement === 'bottom-center',
-                'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right':
-                    this._placement === 'bottom-right',
-                'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left':
-                    this._placement === 'bottom-left',
-                'slds-nubbin_top-left': this._placement === 'left',
-                'slds-nubbin_top-right': this._placement === 'right',
-                'slds-nubbin_top': this._placement === 'center',
-                'slds-nubbin_bottom-left': this._placement === 'bottom-left',
-                'slds-nubbin_bottom-right': this._placement === 'bottom-right',
-                'slds-nubbin_bottom': this._placement === 'bottom-center',
-                'slds-p-vertical_large': this._isLoading,
-                'slds-popover_warning': this._popoverVariant === 'warning',
-                'slds-popover_error': this._popoverVariant === 'error',
-                'slds-popover_walkthrough':
-                    this._popoverVariant === 'walkthrough',
-                'slds-popover_small': this._popoverSize === 'small',
-                'slds-popover_medium': this._popoverSize === 'medium',
-                'slds-popover_large': this._popoverSize === 'large',
-                'slds-show': this.popoverVisible,
-                'slds-hide': !this.popoverVisible
-            })
-            .toString();
-    }
-
     isAutoAlignment() {
         return this._placement.startsWith('auto');
-    }
-
-    handlePopoverKeyDown() {
-        if (!this._cancelBlur) {
-            this.cancelBlur();
-        }
-    }
-
-    handlePopoverKeyPress() {
-        if (this._cancelBlur) {
-            this.allowBlur();
-        }
     }
 }
