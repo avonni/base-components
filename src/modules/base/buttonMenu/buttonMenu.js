@@ -118,13 +118,10 @@ export default class ButtonMenu extends LightningElement {
             'slds-dropdown-trigger_click'
         );
 
-        if (!this._connected) {
-            if (this.isDraft) {
-                this.classList.add('slds-is-unsaved');
-            }
+        if (this.isDraft) {
+            this.classList.add('slds-is-unsaved');
         }
 
-        this._connected = true;
         const privatebuttonregister = new CustomEvent('privatebuttonregister', {
             bubbles: true,
             detail: {
@@ -141,7 +138,6 @@ export default class ButtonMenu extends LightningElement {
     }
 
     disconnectedCallback() {
-        this._connected = false;
         if (this._deRegistrationCallback) {
             this._deRegistrationCallback();
         }
@@ -264,14 +260,14 @@ export default class ButtonMenu extends LightningElement {
 
     @api
     focus() {
-        if (this._connected) {
+        if (this.isConnected) {
             this.focusOnButton();
         }
     }
 
     @api
     click() {
-        if (this._connected) {
+        if (this.isConnected) {
             this.template.querySelector('button').click();
         }
     }
@@ -643,7 +639,7 @@ export default class ButtonMenu extends LightningElement {
         if (this.isAutoAlignment() && this._dropdownVisible) {
             // eslint-disable-next-line @lwc/lwc/no-async-operation
             setTimeout(() => {
-                if (this._connected) {
+                if (this.isConnected) {
                     observePosition(this, 300, this._boundingRect, () => {
                         this.close();
                     });

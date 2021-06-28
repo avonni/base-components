@@ -81,6 +81,44 @@ const ITEMS_WITHOUT_ICONS = [
     }
 ];
 
+const ACTIONS = [
+    {
+        label: 'Completed',
+        name: 'completed-action',
+        iconName: 'utility:check',
+        disabled: false
+    },
+    {
+        label: 'Pending',
+        name: 'pending-action',
+        iconName: 'utility:spinner',
+        disabled: false
+    },
+    {
+        label: 'Delete',
+        name: 'delete-action',
+        iconName: 'utility:delete',
+        disabled: true
+    }
+];
+
+const ACTION = [
+    {
+        label: 'Completed',
+        name: 'completed-action',
+        iconName: 'utility:check',
+        disabled: false
+    }
+];
+
+const ACTION_NO_LABEL = [
+    {
+        name: 'event-action',
+        iconName: 'utility:event',
+        disabled: false
+    }
+];
+
 describe('List', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -99,6 +137,7 @@ describe('List', () => {
         expect(element.sortable).toBeFalsy();
         expect(element.sortableIconName).toBeUndefined();
         expect(element.sortableIconPosition).toBe('right');
+        expect(element.actions).toMatchObject([]);
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -143,7 +182,7 @@ describe('List', () => {
                 expect(item.textContent).toBe(originalItem.label);
 
                 const avatar = item.querySelector('c-avatar');
-                if(avatar){
+                if (avatar) {
                     if (originalItem.avatarFallbackIconName) {
                         expect(avatar.fallbackIconName).toBe(
                             originalItem.avatarFallbackIconName
@@ -174,7 +213,6 @@ describe('List', () => {
             expect(label.textContent).toBe('A string label');
         });
     });
-
     // divider
     it('divider = around', () => {
         const element = createElement('base-list', {
@@ -216,6 +254,84 @@ describe('List', () => {
         return Promise.resolve().then(() => {
             const menu = element.shadowRoot.querySelector('.menu');
             expect(menu.classList).toContain('slds-has-dividers_bottom-space');
+        });
+    });
+
+    // ACTIONS with BUTTON-MENU / BUTTON / BUTTON-ICON
+    it('actions button-menu', () => {
+        const element = createElement('base-list', {
+            is: List
+        });
+
+        document.body.appendChild(element);
+
+        element.items = ITEMS;
+        element.actions = ACTIONS;
+
+        return Promise.resolve()
+            .then(() => {
+                const actions = element.shadowRoot.querySelector(
+                    'lightning-button-menu'
+                );
+                actions.click();
+            })
+            .then(() => {
+                const menuItem = element.shadowRoot.querySelectorAll(
+                    'lightning-menu-item'
+                );
+                expect(menuItem[0].label).toBe('Completed');
+                expect(menuItem[0].value).toBe('completed-action');
+                expect(menuItem[0].iconName).toBe('utility:check');
+                expect(menuItem[0].disabled).toBeFalsy();
+                expect(menuItem[1].label).toBe('Pending');
+                expect(menuItem[1].value).toBe('pending-action');
+                expect(menuItem[1].iconName).toBe('utility:spinner');
+                expect(menuItem[1].disabled).toBeFalsy();
+                expect(menuItem[2].label).toBe('Delete');
+                expect(menuItem[2].value).toBe('delete-action');
+                expect(menuItem[2].iconName).toBe('utility:delete');
+                expect(menuItem[2].disabled).toBeTruthy();
+            });
+    });
+
+    it('action lightning-button', () => {
+        const element = createElement('base-list', {
+            is: List
+        });
+
+        document.body.appendChild(element);
+
+        element.items = ITEMS;
+        element.actions = ACTION;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('lightning-button');
+
+            expect(button.label).toBe('Completed');
+            expect(button.iconName).toBe('utility:check');
+            expect(button.disabled).toBeFalsy();
+            expect(button.value).toBe('completed-action');
+        });
+    });
+
+    it('action lightning-button-icon', () => {
+        const element = createElement('base-list', {
+            is: List
+        });
+
+        document.body.appendChild(element);
+
+        element.items = ITEMS;
+        element.actions = ACTION_NO_LABEL;
+
+        return Promise.resolve().then(() => {
+            const buttonIcon = element.shadowRoot.querySelector(
+                'lightning-button-icon'
+            );
+
+            expect(buttonIcon.iconName).toBe('utility:event');
+            expect(buttonIcon.disabled).toBeFalsy();
+            expect(buttonIcon.value).toBe('event-action');
         });
     });
 

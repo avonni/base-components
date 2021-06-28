@@ -37,20 +37,12 @@ customElements.define(
     Component.CustomElementConstructor
 );
 
-export const PageHeader = ({
-    iconName,
-    label,
-    title,
-    info,
-    variant,
-    fields
-}) => {
+export const PageHeader = ({ iconName, label, title, info, variant }) => {
     const element = document.createElement('ac-base-page-header');
     element.iconName = iconName;
     element.label = label;
     element.title = title;
     element.info = info;
     element.variant = variant;
-    element.fields = fields;
     return element;
 };
