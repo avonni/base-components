@@ -137,8 +137,6 @@ export default class ColorPicker extends LightningElement {
     newValue;
 
     connectedCallback() {
-        this._connected = true;
-
         if (!this.name) {
             this.name = generateUniqueId();
         }
@@ -329,7 +327,7 @@ export default class ColorPicker extends LightningElement {
 
     @api
     focus() {
-        if (this._connected) {
+        if (this.isConnected) {
             this.focusOnButton();
         }
     }
@@ -673,7 +671,7 @@ export default class ColorPicker extends LightningElement {
         if (this.isAutoAlignment() && this._dropdownVisible) {
             // eslint-disable-next-line @lwc/lwc/no-async-operation
             setTimeout(() => {
-                if (this._connected) {
+                if (this.isConnected) {
                     observePosition(this, 300, this._boundingRect, () => {
                         this.close();
                     });

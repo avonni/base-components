@@ -7,6 +7,9 @@
             "dir": "src/modules/base"
         },
         {
+            "dir": "src/modules/data"
+        },
+        {
             "name": "c/configProvider",
             "path": "src/modules/base/configProvider/configProvider.js"
         },
@@ -117,6 +120,10 @@
         {
             "name": "c/confetti",
             "path": "src/modules/base/confetti/confetti.js"
+        },
+        {
+            "name": "c/dataPageHeader",
+            "path": "src/modules/data/pageHeader/dataPageHeader.js"
         },
         {
             "name": "c/datatable",
@@ -387,6 +394,10 @@
             "path": "src/modules/base/segmentButton/segmentButton.js"
         },
         {
+            "name": "c/separator",
+            "path": "src/modules/base/separator/separator.js"
+        },
+        {
             "name": "c/slide",
             "path": "src/modules/base/slide/slide.js"
         },
@@ -521,6 +532,10 @@
         {
             "name": "avonni/confetti",
             "path": "src/modules/base/confetti/confetti.js"
+        },
+        {
+            "name": "avonni/dataPageHeader",
+            "path": "src/modules/data/pageHeader/dataPageHeader.js"
         },
         {
             "name": "avonni/datatable",
@@ -679,6 +694,10 @@
             "path": "src/modules/base/segmentButton/segmentButton.js"
         },
         {
+            "name": "avonni/separator",
+            "path": "src/modules/base/separator/separator.js"
+        },
+        {
             "name": "avonni/slide",
             "path": "src/modules/base/slide/slide.js"
         },
@@ -758,6 +777,7 @@
         "avonni/colorPicker",
         "avonni/combobox",
         "avonni/confetti",
+        "avonni/dataPageHeader",
         "avonni/datatable",
         "avonni/dateTimePicker",
         "avonni/dialog",
@@ -798,6 +818,7 @@
         "avonni/scopedNotification",
         "avonni/segment",
         "avonni/segmentButton",
+        "avonni/separator",
         "avonni/slide",
         "avonni/slides",
         "avonni/list",

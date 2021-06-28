@@ -66,7 +66,7 @@ const DEFAULT_END_TIME = 82800000;
 const DEFAULT_TIME_SLOT_DURATION = 1800000;
 const DEFAULT_MAX = new Date(new Date(2099, 11, 31).setHours(0, 0, 0, 0));
 const DEFAULT_MIN = new Date(new Date(1900, 0, 1).setHours(0, 0, 0, 0));
-const DEFAULT_DAY_CLASS = 'avonni-date-time-picker__day'
+const DEFAULT_DAY_CLASS = 'avonni-date-time-picker__day';
 
 export default class DateTimePicker extends LightningElement {
     @api fieldLevelHelp;
@@ -114,31 +114,26 @@ export default class DateTimePicker extends LightningElement {
     dayClass = DEFAULT_DAY_CLASS;
     calendarDisabledDates = [];
 
-    _connected = false;
-
     connectedCallback() {
-        if (!this._connected) {
-            this._processValue();
-            this.selectedTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-            this._initTimeSlots();
-            const now = new Date();
-            this.today = now;
-            this.datePickerValue = now.toISOString();
+        this._processValue();
+        this.selectedTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        this._initTimeSlots();
+        const now = new Date();
+        this.today = now;
+        this.datePickerValue = now.toISOString();
 
-            const firstDay = this.today < this.min ? this.min : this.today;
-            this._setFirstWeekDay(firstDay);
+        const firstDay = this.today < this.min ? this.min : this.today;
+        this._setFirstWeekDay(firstDay);
 
-            // If no time format is provided, defaults to hour:minutes (0:00)
-            // The default is set here so it is possible to have only the hour, minutes:seconds, etc.
-            this._initTimeFormat();
+        // If no time format is provided, defaults to hour:minutes (0:00)
+        // The default is set here so it is possible to have only the hour, minutes:seconds, etc.
+        this._initTimeFormat();
 
-            if (this.isMonthly) {
-                this._disableMonthlyCalendarDates();
-            }
-
-            this._generateTable();
+        if (this.isMonthly) {
+            this._disableMonthlyCalendarDates();
         }
-        this._connected = true;
+
+        this._generateTable();
     }
 
     @api
@@ -166,7 +161,7 @@ export default class DateTimePicker extends LightningElement {
             'avonni-date-time-picker__day': this._variant !== 'inline'
         });
 
-        if (this._connected) {
+        if (this.isConnected) {
             if (this._variant === 'monthly') {
                 this._disableMonthlyCalendarDates();
             }
@@ -188,7 +183,7 @@ export default class DateTimePicker extends LightningElement {
             this._max = new Date(date.setHours(0, 0, 0, 0));
         }
 
-        if (this._connected) {
+        if (this.isConnected) {
             this._generateTable();
         }
     }
@@ -204,7 +199,7 @@ export default class DateTimePicker extends LightningElement {
             this._min = new Date(date.setHours(0, 0, 0, 0));
         }
 
-        if (this._connected) {
+        if (this.isConnected) {
             const firstDay = this.today < this.min ? this.min : this.today;
             this._setFirstWeekDay(firstDay);
             this._generateTable();
@@ -235,7 +230,7 @@ export default class DateTimePicker extends LightningElement {
         this._startTime = isNaN(start.getTime())
             ? DEFAULT_START_TIME
             : start.getTime();
-        if (this._connected) {
+        if (this.isConnected) {
             this._initTimeSlots();
             this._generateTable();
         }
@@ -250,7 +245,7 @@ export default class DateTimePicker extends LightningElement {
         const end = new Date(`1970-01-01T${value}`);
         // Return end time in ms. Default value is 18:00.
         this._endTime = isNaN(end.getTime()) ? DEFAULT_END_TIME : end.getTime();
-        if (this._connected) {
+        if (this.isConnected) {
             this._initTimeSlots();
             this._generateTable();
         }
@@ -282,7 +277,7 @@ export default class DateTimePicker extends LightningElement {
                 ? durationMilliseconds
                 : DEFAULT_TIME_SLOT_DURATION;
 
-        if (this._connected) {
+        if (this.isConnected) {
             this._initTimeSlots();
             this._generateTable();
         }
@@ -370,7 +365,8 @@ export default class DateTimePicker extends LightningElement {
             validValues: WEEKDAY_FORMATS.valid
         });
 
-        if (this._connected && this.variant === 'weekly') this._generateTable();
+        if (this.isConnected && this.variant === 'weekly')
+            this._generateTable();
     }
 
     @api
@@ -401,7 +397,7 @@ export default class DateTimePicker extends LightningElement {
     set showDisabledDates(boolean) {
         this._showDisabledDates = normalizeBoolean(boolean);
 
-        if (this._connected) {
+        if (this.isConnected) {
             this._generateTable();
         }
     }
@@ -416,7 +412,7 @@ export default class DateTimePicker extends LightningElement {
             fallbackValue: DATE_TIME_TYPES.default,
             validValues: DATE_TIME_TYPES.valid
         });
-        if (this._connected) {
+        if (this.isConnected) {
             this._processValue();
             this._generateTable();
         }
@@ -466,7 +462,7 @@ export default class DateTimePicker extends LightningElement {
 
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
-        if (this._connected) {
+        if (this.isConnected) {
             this._initTimeFormat();
             this._generateTable();
         }

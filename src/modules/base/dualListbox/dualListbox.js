@@ -185,6 +185,10 @@ export default class DualListbox extends LightningElement {
         this._options = Array.isArray(value)
             ? JSON.parse(JSON.stringify(value))
             : [];
+
+        if (this.isConnected) {
+            this.updateBoxesHeight();
+        }
     }
 
     @api
@@ -325,6 +329,10 @@ export default class DualListbox extends LightningElement {
         const number =
             typeof value === 'number' ? value : DEFAULT_MAX_VISIBLE_OPTIONS;
         this._maxVisibleOptions = parseInt(number, 10);
+
+        if (this.isConnected) {
+            this.updateBoxesHeight();
+        }
     }
 
     @api
@@ -549,15 +557,21 @@ export default class DualListbox extends LightningElement {
     updateBoxesHeight() {
         let overSelectedHeight = 0;
         let overSourceHeight = 0;
+        const sourceOptions = this.template.querySelectorAll(
+            'li[data-role="source"]'
+        );
+        const selectedOptions = this.template.querySelectorAll(
+            'li[data-role="selected"]'
+        );
 
         const sourceOptionsHeight = getListHeight(
-            this.template.querySelectorAll('li[data-role="source"]'),
+            sourceOptions,
             this._maxVisibleOptions
         );
 
         if (
             this.computedSourceList.length < this._maxVisibleOptions &&
-            this.computedSourceList.length !== 0
+            sourceOptions.length > 0
         ) {
             overSourceHeight =
                 this.template.querySelector('li[data-role="source"]')
@@ -567,7 +581,7 @@ export default class DualListbox extends LightningElement {
 
         if (
             this.computedSelectedList.length < this._maxVisibleOptions &&
-            this.computedSelectedList.length !== 0
+            selectedOptions.length > 0
         ) {
             overSelectedHeight =
                 this.template.querySelector('li[data-role="selected"]')
@@ -576,10 +590,8 @@ export default class DualListbox extends LightningElement {
         } else overSelectedHeight = 0;
 
         this._selectedBoxHeight =
-            getListHeight(
-                this.template.querySelectorAll('li[data-role="selected"]'),
-                this._maxVisibleOptions
-            ) + overSelectedHeight;
+            getListHeight(selectedOptions, this._maxVisibleOptions) +
+            overSelectedHeight;
 
         if (this.searchEngine) {
             this._sourceBoxHeight =

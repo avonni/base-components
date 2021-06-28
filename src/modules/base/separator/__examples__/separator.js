@@ -30,19 +30,24 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from '../../storybookWrappers/pageHeader/pageHeader';
+import Component from '../../storybookWrappers/separator/separator';
 
-customElements.define(
-    'ac-base-page-header',
-    Component.CustomElementConstructor
-);
+customElements.define('ac-base-separator', Component.CustomElementConstructor);
 
-export const PageHeader = ({ iconName, label, title, info, variant }) => {
-    const element = document.createElement('ac-base-page-header');
-    element.iconName = iconName;
+export const Separator = ({
+    label,
+    alignContent,
+    iconName,
+    iconPosition,
+    iconSize,
+    orientation
+}) => {
+    const element = document.createElement('ac-base-separator');
     element.label = label;
-    element.title = title;
-    element.info = info;
-    element.variant = variant;
+    element.alignContent = alignContent;
+    element.iconName = iconName;
+    element.iconPosition = iconPosition;
+    element.iconSize = iconSize;
+    element.orientation = orientation;
     return element;
 };

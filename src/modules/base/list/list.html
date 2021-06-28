@@ -104,7 +104,7 @@
                         </div>
                         <p
                             if:true={item.description}
-                            class="slds-text-body_regular description-text"
+                            class="slds-text-body_regular slds-line-clamp_x-small description-text"
                         >
                             {item.description}
                         </p>
@@ -125,23 +125,54 @@
                         icon-name={sortableIconName}
                         size="x-small"
                     ></lightning-icon>
-                    <lightning-button-menu
+                    <div
                         if:true={actions.length}
-                        class="slds-m-right_x-small"
-                        menu-alignment="right"
-                        icon-size="x-small"
-                        ontouchstart={handleButtonMenuTouchStart}
+                        class="slds-media slds-media_small"
                     >
-                        <template for:each={computedActions} for:item="action">
-                            <lightning-menu-item
-                                key={action.name}
-                                value={action.name}
-                                label={action.label}
-                                disabled={action.disabled}
-                                icon-name={action.iconName}
-                            ></lightning-menu-item>
+                        <lightning-button-menu
+                            if:true={hasMultipleActions}
+                            class="slds-m-right_none"
+                            menu-alignment="right"
+                            icon-size="x-small"
+                            ontouchstart={handleButtonMenuTouchStart}
+                        >
+                            <template
+                                for:each={computedActions}
+                                for:item="action"
+                            >
+                                <lightning-menu-item
+                                    key={action.name}
+                                    value={action.name}
+                                    label={action.label}
+                                    disabled={action.disabled}
+                                    icon-name={action.iconName}
+                                ></lightning-menu-item>
+                            </template>
+                        </lightning-button-menu>
+                        <template if:false={hasMultipleActions}>
+                            <lightning-button
+                                if:true={firstAction.label}
+                                class="slds-m-right_none"
+                                ontouchstart={handleButtonMenuTouchStart}
+                                key={firstAction.name}
+                                value={firstAction.name}
+                                label={firstAction.label}
+                                disabled={firstAction.disabled}
+                                icon-name={firstAction.iconName}
+                            ></lightning-button>
+                            <lightning-button-icon
+                                if:false={firstAction.label}
+                                class="slds-m-right_none"
+                                size="x-small"
+                                ontouchstart={handleButtonMenuTouchStart}
+                                key={firstAction.name}
+                                value={firstAction.name}
+                                disabled={firstAction.disabled}
+                                icon-name={firstAction.iconName}
+                                variant="bare"
+                            ></lightning-button-icon>
                         </template>
-                    </lightning-button-menu>
+                    </div>
                 </div>
             </li>
         </template>

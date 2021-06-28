@@ -1,4 +1,4 @@
-/**
+<!-- /**
  * BSD 3-Clause License
  *
  * Copyright (c) 2021, Avonni Labs, Inc.
@@ -28,21 +28,18 @@
  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+ */ -->
 
-import Component from '../../storybookWrappers/pageHeader/pageHeader';
-
-customElements.define(
-    'ac-base-page-header',
-    Component.CustomElementConstructor
-);
-
-export const PageHeader = ({ iconName, label, title, info, variant }) => {
-    const element = document.createElement('ac-base-page-header');
-    element.iconName = iconName;
-    element.label = label;
-    element.title = title;
-    element.info = info;
-    element.variant = variant;
-    return element;
-};
+<template>
+    <div class={computedPropContainerClass}>
+        <c-separator
+            icon-name={iconName}
+            label={label}
+            icon-size={iconSize}
+            align-content={alignContent}
+            orientation={orientation}
+            icon-position={iconPosition}
+        >
+        </c-separator>
+    </div>
+</template>
