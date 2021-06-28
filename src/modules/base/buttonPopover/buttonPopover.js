@@ -80,10 +80,43 @@ const POPOVER_VARIANTS = {
 const ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
 
 export default class ButtonPopover extends LightningElement {
+    /**
+     * The keyboard shortcut for the button.
+     *
+     * @type {string}
+     */
     @api accessKey;
+
+    /**
+     * The tile can include text, and is displayed in the header.
+     * To include additional markup or another component, use the title slot.
+     *
+     * @type {string}
+     */
     @api label;
+
+    /**
+     * Optional text to be shown on the button.
+     *
+     * @type {string}
+     */
     @api title;
+
+    /**
+     * The Lightning Design System name of the icon.
+     * Names are written in the format 'utility:down' where 'utility' is the category,
+     * and 'down' is the specific icon to be displayed.
+     * Only utility icons can be used in this component.
+     *
+     * @type {string}
+     */
     @api iconName;
+
+    /**
+     * Message displayed while the popover is in the loading state.
+     *
+     * @type {string}
+     */
     @api loadingStateAlternativeText;
 
     _disabled = false;
@@ -95,6 +128,7 @@ export default class ButtonPopover extends LightningElement {
     _variant = BUTTON_VARIANTS.default;
     _triggers = POPOVER_TRIGGERS.default;
     _popoverVariant = POPOVER_VARIANTS.default;
+
     popoverVisible = false;
     showTitle = true;
     showFooter = true;
@@ -130,6 +164,12 @@ export default class ButtonPopover extends LightningElement {
         return this.template.querySelector('slot[name=footer]');
     }
 
+    /**
+     * Width of the popover. Accepted values include small, medium and large.
+     *
+     * @type {string}
+     * @default medium
+     */
     @api
     get popoverSize() {
         return this._popoverSize;
@@ -142,6 +182,12 @@ export default class ButtonPopover extends LightningElement {
         });
     }
 
+    /**
+     * Describes the position of the icon with respect to body. Options include left and right.
+     *
+     * @type {string}
+     * @default left
+     */
     @api
     get iconPosition() {
         return this._iconPosition;
@@ -154,6 +200,14 @@ export default class ButtonPopover extends LightningElement {
         });
     }
 
+    /**
+     * Determines the alignment of the popover relative to the button.
+     * Available options are: auto, left, center, right, bottom-left, bottom-center, bottom-right.
+     * The auto option aligns the popover based on available space.
+     *
+     * @type {string}
+     * @default left
+     */
     @api
     get placement() {
         return this._placement;
@@ -166,6 +220,14 @@ export default class ButtonPopover extends LightningElement {
         });
     }
 
+    /**
+     * The variant changes the appearance of the button.
+     * Accepted variants include base, neutral, brand, brand-outline,
+     * destructive, destructive-text, inverse, and success.
+     *
+     * @type {string}
+     * @default neutral
+     */
     @api
     get variant() {
         return this._variant;
@@ -178,6 +240,12 @@ export default class ButtonPopover extends LightningElement {
         });
     }
 
+    /**
+     * Specify which triggers will show the popover. Supported values are 'click', 'hover', 'focus'.
+     *
+     * @type {string}
+     * @default click
+     */
     @api
     get triggers() {
         return this._triggers;
@@ -190,6 +258,13 @@ export default class ButtonPopover extends LightningElement {
         });
     }
 
+    /**
+     * The variant changes the appearance of the popover.
+     * Accepted variants include base, warning, error, walkthrough.
+     *
+     * @type {string}
+     * @default base
+     */
     @api
     get popoverVariant() {
         return this._popoverVariant;
@@ -202,6 +277,12 @@ export default class ButtonPopover extends LightningElement {
         });
     }
 
+    /**
+     * If present, the popover can be opened by users.
+     *
+     * @type {boolean}
+     * @default false
+     */
     @api
     get disabled() {
         return this._disabled;
@@ -211,6 +292,12 @@ export default class ButtonPopover extends LightningElement {
         this._disabled = normalizeBoolean(value);
     }
 
+    /**
+     * If present, the close button inside of the popover is hidden.
+     *
+     * @type {boolean}
+     * @default false
+     */
     @api
     get hideCloseButton() {
         return this._hideCloseButton;
@@ -220,6 +307,12 @@ export default class ButtonPopover extends LightningElement {
         this._hideCloseButton = normalizeBoolean(value);
     }
 
+    /**
+     * If present, the popover is in a loading state and shows a spinner.
+     *
+     * @type {boolean}
+     * @default false
+     */
     @api
     get isLoading() {
         return this._isLoading;
@@ -319,6 +412,11 @@ export default class ButtonPopover extends LightningElement {
         this.dispatchEvent(new CustomEvent('close'));
     }
 
+    /**
+     * Sets the focus on the button-icon.
+     * If the trigger is click, toggles the menu visibility and blurs the button-icon.
+     * @ignore
+     */
     clickOnButton() {
         if (!this._disabled) {
             this.cancelBlur();
@@ -334,6 +432,11 @@ export default class ButtonPopover extends LightningElement {
         }
     }
 
+    /**
+     * Sets the focus on the button-icon.
+     * If the trigger is focus, toggle the menu visibility.
+     * @ignore
+     */
     focusOnButton() {
         this.template.querySelector('lightning-button').focus();
         if (
@@ -345,10 +448,19 @@ export default class ButtonPopover extends LightningElement {
         }
     }
 
+    /**
+     * Sets the focus on the popover.
+     * @ignore
+     */
     focusOnPopover() {
         this.template.querySelector('.slds-popover').focus();
     }
 
+    /**
+     * Blurs the button-icon.
+     * If the trigger is not click and the popover is visible, it toggles the menu visibility.
+     * @ignore
+     */
     handleBlur() {
         if (this._cancelBlur) {
             return;
@@ -360,6 +472,11 @@ export default class ButtonPopover extends LightningElement {
         }
     }
 
+    /**
+     * Blurs the popover.
+     * If the trigger is click and the popover is visible, it toggles the menu visibility.
+     * @ignore
+     */
     handlePopoverBlur() {
         if (this._cancelBlur) {
             return;
@@ -371,6 +488,11 @@ export default class ButtonPopover extends LightningElement {
         }
     }
 
+    /**
+     * If the trigger is hover and the popover is not visible, it toggles the menu visibility.
+     * If the trigger is hover and the popover is visible, it sets the variable cancelBlur to true.
+     * @ignore
+     */
     handleMouseEnter() {
         if (
             this._triggers === 'hover' &&
@@ -390,6 +512,10 @@ export default class ButtonPopover extends LightningElement {
         }
     }
 
+    /**
+     * If the trigger is hover and the popover is visible, it toggles the menu visibility.
+     * @ignore
+     */
     handleMouseLeave() {
         // eslint-disable-next-line @lwc/lwc/no-async-operation
         setTimeout(
@@ -416,6 +542,11 @@ export default class ButtonPopover extends LightningElement {
         );
     }
 
+    /**
+     * If the trigger is hover and the popover is visible and the mouse enters the popover,
+     * it sets the variable cancelBlur to true.
+     * @ignore
+     */
     handleMouseEnterBody() {
         if (
             this._triggers === 'hover' &&
@@ -426,6 +557,11 @@ export default class ButtonPopover extends LightningElement {
         }
     }
 
+    /**
+     * If the trigger is hover and the popover is visible and the mouse leaves the popover,
+     * it sets the variable cancelBlur to true.
+     * @ignore
+     */
     handleMouseLeaveBody() {
         // eslint-disable-next-line @lwc/lwc/no-async-operation
         setTimeout(
@@ -459,22 +595,40 @@ export default class ButtonPopover extends LightningElement {
         }
     }
 
+    /**
+     * It sets the variable cancelBlur to false.
+     * @ignore
+     */
     handlePopoverMouseUp() {
         this.allowBlur();
     }
 
+    /**
+     * If variable cancelBlur is false, it sets the variable cancelBlur to true.
+     * @ignore
+     */
     handlePopoverKeyDown() {
         if (!this._cancelBlur) {
             this.cancelBlur();
         }
     }
 
+    /**
+     * If variable cancelBlur is true, it sets the variable cancelBlur to false.
+     * @ignore
+     */
     handlePopoverKeyPress() {
         if (this._cancelBlur) {
             this.allowBlur();
         }
     }
 
+    /**
+     * If trigger is focus, sets the focus on the button with click on a slot.
+     * If trigger is click, keeps the popover visible and set focus on the popover
+     * when click on a slot.
+     * @ignore
+     */
     handleSlotClick() {
         if (this.triggers === 'focus') {
             this.focusOnButton();
@@ -485,14 +639,26 @@ export default class ButtonPopover extends LightningElement {
         }
     }
 
+    /**
+     * Sets the variable cancelBlur to false.
+     * @ignore
+     */
     allowBlur() {
         this._cancelBlur = false;
     }
 
+    /**
+     * Sets the variable cancelBlur to false.
+     * @ignore
+     */
     cancelBlur() {
         this._cancelBlur = true;
     }
 
+    /**
+     * Toggles the popover visibility depending on if it's visible or not.
+     * @ignore
+     */
     toggleMenuVisibility() {
         if (!this.disabled) {
             this.popoverVisible = !this.popoverVisible;
@@ -506,6 +672,12 @@ export default class ButtonPopover extends LightningElement {
         }
     }
 
+    /**
+     * Poll for change in bounding rectangle
+     * only if it is placement=auto since that is
+     * position:fixed and is opened
+     * @ignore
+     */
     pollBoundingRect() {
         if (this.isAutoAlignment() && this.popoverVisible) {
             // eslint-disable-next-line @lwc/lwc/no-async-operation
@@ -521,6 +693,10 @@ export default class ButtonPopover extends LightningElement {
         }
     }
 
+    /**
+     * Returns true if the placement is auto.
+     * @ignore
+     */
     isAutoAlignment() {
         return this._placement.startsWith('auto');
     }
