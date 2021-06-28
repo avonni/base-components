@@ -262,23 +262,19 @@ export default class InputCounter extends LightningElement {
         return this.ariaDescribedBy || null;
     }
 
-    decrementValue() {
+    incrementOrDecrementValue(event) {
         this.normalizeInputParameters();
 
-        if (!isNaN(this.value)) {
+        if (
+            event.target.classList.contains('slds-input__button_decrement') &&
+            !isNaN(this.value)
+        ) {
             this._value = Number(this.value) - Number(this.step);
-            this.minMaxConditionsHandler();
-        }
-        this.handleNumberOutput();
-    }
-
-    incrementValue() {
-        this.normalizeInputParameters();
-
-        if (!isNaN(this.value)) {
+        } else if (!isNaN(this.value)) {
             this._value = Number(this.value) + Number(this.step);
-            this.minMaxConditionsHandler();
         }
+        this.minMaxConditionsHandler();
+
         this.handleNumberOutput();
     }
 
