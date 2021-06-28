@@ -315,7 +315,7 @@ export default class ButtonIconPopover extends LightningElement {
     }
 
     /**
-     * {Function} close - Opens the popover if it's closed
+     * Opens the popover if it's closed
      */
     @api
     open() {
@@ -326,7 +326,7 @@ export default class ButtonIconPopover extends LightningElement {
     }
 
     /**
-     * {Function} close - Closes the popover if it's open
+     * Closes the popover if it's open
      */
     @api
     close() {
