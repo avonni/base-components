@@ -166,6 +166,10 @@
             "path": "src/modules/base/externalLink/externalLink.js"
         },
         {
+            "name": "c/heroBanner",
+            "path": "src/modules/base/heroBanner/heroBanner.js"
+        },
+        {
             "name": "c/iconUtils",
             "path": "src/modules/base/iconUtils/iconUtils.js"
         },
@@ -574,6 +578,10 @@
             "path": "src/modules/base/filterMenuGroup/filterMenuGroup.js"
         },
         {
+            "name": "avonni/heroBanner",
+            "path": "src/modules/base/heroBanner/heroBanner.js"
+        },
+        {
             "name": "avonni/illustration",
             "path": "src/modules/base/illustration/illustration.js"
         },
@@ -787,6 +795,7 @@
         "avonni/expandableSection",
         "avonni/filterMenuGroup",
         "avonni/filterMenu",
+        "avonni/heroBanner",
         "avonni/illustration",
         "avonni/image",
         "avonni/inputChoiceSet",
