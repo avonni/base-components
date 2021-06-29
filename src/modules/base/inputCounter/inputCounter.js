@@ -48,19 +48,75 @@ const validTypes = {
 const DEFAULT_STEP = 1;
 
 export default class InputCounter extends LightningElement {
-    @api name;
+    /**
+     * Text label for the input.
+     * @type {string}
+     */
     @api label;
+    /**
+     * 'Error message to be displayed when a bad input is detected.'
+     * @type {string}
+     */
     @api messageWhenBadInput;
+    /**
+     * 'Error message to be displayed when a pattern mismatch is detected.'
+     * @type {string}
+     */
     @api messageWhenPatternMismatch;
+    /**
+     * 'Error message to be displayed when a range overflow is detected.'
+     * @type {string}
+     */
     @api messageWhenRangeOverflow;
+    /**
+     * 'Error message to be displayed when a range underflow is detected.'
+     * @type {string}
+     */
     @api messageWhenRangeUnderflow;
+    /**
+     * 'Error message to be displayed when a step mismatch is detected.'
+     * @type {string}
+     */
     @api messageWhenStepMismatch;
+    /**
+     * 'Error message to be displayed when the value is missing.'
+     * @type {string}
+     */
     @api messageWhenValueMissing;
-    @api ariaLabel;
-    @api ariaControls;
-    @api ariaLabelledBy;
-    @api ariaDescribedBy;
+    /**
+     * Help text detailing the purpose and function of the input.
+     * @type {string}
+     */
     @api fieldLevelHelp;
+    /**
+     * Specifies the name of an input element.
+     * @type {string}
+     */
+    @api name;
+    /**
+     * Describes the input to assistive technologies.
+     * @type {string}
+     */
+    @api ariaLabel;
+    /**
+     * A space-separated list of element IDs whose presence or content is controlled by the input.
+     * @type {string}
+     */
+    @api ariaControls;
+    /**
+     * A space-separated list of element IDs that provide labels for the input.
+     * @type {string}
+     */
+    @api ariaLabelledBy;
+    /**
+     * A space-separated list of element IDs that provide descriptive labels for the input.
+     * @type {string}
+     */
+    @api ariaDescribedBy;
+    /**
+     * Specifies a shortcut key to activate or focus an element.
+     * @type {string}
+     */
     @api accessKey;
 
     _variant = validVariants.default;
@@ -96,7 +152,11 @@ export default class InputCounter extends LightningElement {
             this.init = true;
         }
     }
-
+    /**
+     * Specifies the value of an input element.
+     * @type {number}
+     * @default null
+     */
     @api get value() {
         return this._value;
     }
@@ -105,6 +165,10 @@ export default class InputCounter extends LightningElement {
         this._value = typeof value === 'number' ? value : null;
     }
 
+    /**
+     * The minimum acceptable value for the input. Constrains the decrementer to stop at the specified min. If an entered value is below the min, incrementing or decrementing will then set the value to the specified min.
+     * @type {number}
+     */
     @api get min() {
         return this._min;
     }
@@ -113,6 +177,10 @@ export default class InputCounter extends LightningElement {
         this._min = typeof min === 'number' ? min : null;
     }
 
+    /**
+     * The maximum acceptable value for the input. Constrains the incrementer to stop at the specified max. If the entered value is above the max, incrementing or decrementing will then set the value to the specified max.
+     * @type {number}
+     */
     @api get max() {
         return this._max;
     }
@@ -121,6 +189,11 @@ export default class InputCounter extends LightningElement {
         this._max = typeof max === 'number' ? max : null;
     }
 
+    /**
+     * Granularity of the value - precision of significant decimal digits ( specified as a positive integer. ex: 2 formats the value to 2 digits after the decimal ).
+     * @type {number}
+     * @default null
+     */
     @api get fractionDigits() {
         return this._fractionDigits;
     }
@@ -135,10 +208,19 @@ export default class InputCounter extends LightningElement {
         }
     }
 
+    /**
+     * Value sent to lightning-input step as a floating point number ( ex. 0.01 would result in 2 decimal places on the value ). Calculated from the fractionDigits.
+     * @ignore
+     */
     get inputStep() {
         return this._inputStep;
     }
 
+    /**
+     * The variant changes the appearance of an input field. Accepted variants include standard, label-inline, label-hidden, and label-stacked. This value defaults to standard, which displays the label above the field. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and input field. Use label-stacked to place the label above the input field.
+     * @type {string}
+     * @default "standard"
+     */
     @api get variant() {
         return this._variant;
     }
@@ -159,6 +241,11 @@ export default class InputCounter extends LightningElement {
         }
     }
 
+    /**
+     * Input counter type. Valid values include number (default), currency, percent.
+     * @type {string}
+     * @default "number"
+     */
     @api get type() {
         return this._type;
     }
@@ -170,6 +257,11 @@ export default class InputCounter extends LightningElement {
         });
     }
 
+    /**
+     * If present, the input field is disabled and users cannot interact with it.
+     * @type {boolean}
+     * @default false
+     */
     @api
     get disabled() {
         return this._disabled;
@@ -179,6 +271,11 @@ export default class InputCounter extends LightningElement {
         this._disabled = normalizeBoolean(value);
     }
 
+    /**
+     * If present, the input field is read-only and cannot be edited by users.
+     * @type {boolean}
+     * @default false
+     */
     @api
     get readOnly() {
         return this._readOnly;
@@ -188,6 +285,11 @@ export default class InputCounter extends LightningElement {
         this._readOnly = normalizeBoolean(value);
     }
 
+    /**
+     * Amount to add or substract from the value.
+     * @type {number}
+     * @default 1
+     */
     @api
     get step() {
         return this._step;
@@ -197,6 +299,11 @@ export default class InputCounter extends LightningElement {
         this._step = typeof value === 'number' ? value : DEFAULT_STEP;
     }
 
+    /**
+     * If present, the input field must be filled out before the form is submitted.
+     * @type {boolean}
+     * @default false
+     */
     @api
     get required() {
         return this._required;
@@ -256,6 +363,10 @@ export default class InputCounter extends LightningElement {
         return this.ariaDescribedBy || null;
     }
 
+    /**
+     * Decrements the current value based on the step.
+     * @ignore
+     */
     decrementValue() {
         this.normalizeInputParameters();
 
@@ -269,6 +380,10 @@ export default class InputCounter extends LightningElement {
         this.handleNumberOutput();
     }
 
+    /**
+     * Increments the current value based on the step.
+     * @ignore
+     */
     incrementValue() {
         this.normalizeInputParameters();
 
@@ -282,6 +397,10 @@ export default class InputCounter extends LightningElement {
         this.handleNumberOutput();
     }
 
+    /**
+     * Normalizes the values for min, max and step to the current fractionDigits and stores the current value of this.value for condition handlers.
+     * @ignore
+     */
     normalizeInputParameters() {
         if (this._max) this.handlePrecision(this._max);
         if (this._min) this.handlePrecision(this._min);
@@ -290,6 +409,10 @@ export default class InputCounter extends LightningElement {
         this._previousValue = this.value;
     }
 
+    /**
+     * Sets the value to this.value if the input field is empty and the user fires either increment or decrement methods.
+     * @ignore
+     */
     emptyInputField() {
         this._value =
             this.step && this.min === 0
@@ -301,6 +424,10 @@ export default class InputCounter extends LightningElement {
                 : null;
     }
 
+    /**
+     * Logic handler for min and max constraints to set this.value.
+     * @ignore
+     */
     minMaxConditionsHandler() {
         if (
             (this.min || this.min === 0) &&
@@ -316,11 +443,21 @@ export default class InputCounter extends LightningElement {
         }
     }
 
+    /**
+     * Normalize loss of precision after value change and send the updated value to the input.
+     * @ignore
+     */
     handleNumberOutput() {
         this._value = this.handlePrecision(this._value);
         this.updateValue();
     }
 
+    /**
+     * Sets the input values to a specified decimal length based on fractionDigits.
+     * @param {*} input
+     * @returns number
+     * @ignore
+     */
     handlePrecision(input) {
         if (!isNaN(input)) {
             input = +input.toFixed(this._fractionDigits);
@@ -328,6 +465,10 @@ export default class InputCounter extends LightningElement {
         return +input;
     }
 
+    /**
+     * Updates the value in lightning-input, updates proxy for validation and dispatches change event.
+     * @ignore
+     */
     updateValue() {
         [...this.template.querySelectorAll('lightning-input')].forEach(
             (element) => {
@@ -347,6 +488,11 @@ export default class InputCounter extends LightningElement {
         this.showHelpMessageIfInvalid();
     }
 
+    /**
+     * Once a user finishes the input field entry the handler normalizes the value and sends it to update.
+     * @param {*} event
+     * @ignore
+     */
     handlerCommit(event) {
         this._value = +event.target.value;
         this.handlePrecision(this._value);
@@ -371,6 +517,11 @@ export default class InputCounter extends LightningElement {
         this.dispatchEvent(new CustomEvent('blur'));
     }
 
+    /**
+     * Method for handling user Up and Down arrow inside input field to increment or decrement the value.
+     * @param {*} event
+     * @ignore
+     */
     handlerKeyDown(event) {
         let key = event.key;
         switch (key) {
@@ -397,6 +548,11 @@ export default class InputCounter extends LightningElement {
         return this._constraint.checkValidity();
     }
 
+    /**
+     * On validation failure returns the specified help message
+     * @returns this.HelpMessage
+     * @ignore
+     */
     @api
     reportValidity() {
         return this._constraint.reportValidity((message) => {
