@@ -92,7 +92,7 @@ function graft(parentNode, childNodes, parentLongname) {
                     access: element.access || '',
                     description: element.description || '',
                     default: element.default || '',
-                    required: element.required || 'false',
+                    required: Boolean(element.required),
                     type:
                         element.type && element.type.names
                             ? element.type.names
@@ -108,7 +108,7 @@ function graft(parentNode, childNodes, parentLongname) {
                     access: element.access || '',
                     description: element.description || '',
                     default: element.default || '',
-                    required: element.required || 'false',
+                    required: Boolean(element.required),
                     type:
                         element.type && element.type.names
                             ? element.type.names

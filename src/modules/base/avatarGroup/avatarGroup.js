@@ -71,7 +71,7 @@ const DEFAULT_LIST_BUTTON_SHOW_LESS_LABEL = 'Show less';
  * @class
  * @name Avatar Group
  * @descriptor avonni-avatar-group
- * @example https://storybook.avonnicomponents.com/iframe.html?id=example-avatar-group--base-large-with-more-than-two-avatars&viewMode=story
+ * @example example-avatar-group--base-with-two-avatars
  * @public
  */
 export default class AvatarGroup extends LightningElement {
