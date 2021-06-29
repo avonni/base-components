@@ -1,3 +1,35 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { ProgressBar } from '../__examples__/progressBar';
 
 export default {
@@ -7,6 +39,7 @@ export default {
             control: {
                 type: 'text'
             },
+            description: 'Label for the progress bar.',
             table: {
                 type: { summary: 'string' }
             }
@@ -44,7 +77,7 @@ export default {
                 type: 'boolean'
             },
             defaultValue: false,
-            description: 'If true, display the value.',
+            description: 'If present, display the value.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' },
@@ -66,7 +99,7 @@ export default {
             ],
             defaultValue: 'top-right',
             description:
-                'Valid values include left, right, top-right, top-left, bottom-right and bottom-left',
+                'Position of the value if present. Valid values include left, right, top-right, top-left, bottom-right and bottom-left.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'top-right' },
@@ -90,7 +123,7 @@ export default {
                 type: 'object'
             },
             description:
-                'Field: <ul><li>label: string</li> <li>value: number</li> <li>variant: string (default, darker, lightest, success, warning, error)</li> <li>borderStyle: string (none, solid, dashed, dotted)</li></ul>',
+                'Field: <ul><li>label: string</li> <li>value: number</li> <li>variant: string (default, inverse, lightest, success, warning, error)</li> <li>borderStyle: string (none, solid, dashed, dotted)</li></ul>',
             table: {
                 type: { summary: 'object[]' }
             }
@@ -124,7 +157,7 @@ export default {
             ],
             defaultValue: 'base',
             description:
-                'Valid values includes base, success, inverse, alt-inverse, warning, info, error and offline.',
+                'Defines the theme of the progress bar. Valid values includes base, success, inverse, alt-inverse, warning, info, error and offline.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'base' }
@@ -135,7 +168,7 @@ export default {
                 type: 'boolean'
             },
             defaultValue: false,
-            description: 'If true display a texture background.',
+            description: 'If present, display a texture background.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -178,7 +211,7 @@ const oneReferenceLine = [
     {
         label: 'Avg',
         value: 90,
-        variant: 'darker',
+        variant: 'inverse',
         borderStyle: 'dashed'
     }
 ];
@@ -187,7 +220,7 @@ const multipleReferenceLines = [
     {
         label: '1st',
         value: 10,
-        variant: 'darker',
+        variant: 'inverse',
         borderStyle: 'dashed'
     },
     {

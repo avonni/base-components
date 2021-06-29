@@ -1,3 +1,35 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { Carousel } from '../__examples__/carousel';
 
 export default {
@@ -157,8 +189,9 @@ export default {
 const items = [
     {
         buttonLabel: 'Get Started',
+        secondaryButtonLabel: 'Subscribe',
         id: 1,
-        heading: 'Visit App Exchange',
+        title: 'Visit App Exchange',
         description: 'Extend Salesforce with the #1 business marketplace.',
         imageAssistiveText: 'Appy',
         src:
@@ -167,8 +200,9 @@ const items = [
     },
     {
         buttonLabel: 'Get Started',
+        secondaryButtonLabel: 'Subscribe',
         id: 2,
-        heading: 'Click to Customize',
+        title: 'Click to Customize',
         description:
             'Use the Object Manager to add fields, build layouts, and more.',
         imageAssistiveText: 'Apps',
@@ -178,8 +212,9 @@ const items = [
     },
     {
         buttonLabel: 'Get Started',
+        secondaryButtonLabel: 'Subscribe',
         id: 3,
-        heading: 'Download Salesforce Apps',
+        title: 'Download Salesforce Apps',
         description: "Get the mobile app that's just for Salesforce admins.",
         imageAssistiveText: 'Salesforce Apps',
         src:
@@ -188,8 +223,9 @@ const items = [
     },
     {
         buttonLabel: 'Get Started',
+        secondaryButtonLabel: 'Subscribe',
         id: 4,
-        heading: 'Carousel Item 4',
+        title: 'Carousel Item 4',
         description: 'Description for carousel item #4',
         imageAssistiveText: 'Apps',
         src:
@@ -198,8 +234,9 @@ const items = [
     },
     {
         buttonLabel: 'Learn More',
+        secondaryButtonLabel: 'Not interested',
         id: 5,
-        heading: 'Carousel Item 5',
+        title: 'Carousel Item 5',
         description: 'Description for carousel item #5',
         imageAssistiveText: 'Appy',
         src:
@@ -208,8 +245,9 @@ const items = [
     },
     {
         buttonLabel: 'Learn More',
+        secondaryButtonLabel: 'Not interested',
         id: 6,
-        heading: 'Carousel Item 6',
+        title: 'Carousel Item 6',
         description: 'Description for carousel item #6',
         imageAssistiveText: 'Salesforce Apps',
         src:
@@ -218,8 +256,9 @@ const items = [
     },
     {
         buttonLabel: 'Learn More',
+        secondaryButtonLabel: 'Not interested',
         id: 7,
-        heading: 'Carousel Item 7',
+        title: 'Carousel Item 7',
         description: 'Description for carousel item #7',
         imageAssistiveText: 'Apps',
         src:

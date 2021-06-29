@@ -1,3 +1,35 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { FilterMenu } from '../__examples__/filterMenu';
 
 export default {
@@ -46,7 +78,7 @@ export default {
                 type: 'boolean'
             },
             defaultValue: false,
-            description: 'If true, the menu cannot be used by users.',
+            description: 'If present, the menu cannot be used by users.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -59,7 +91,7 @@ export default {
             },
             defaultValue: false,
             description:
-                'If true, the menu is in a loading state and shows a spinner.',
+                'If present, the menu is in a loading state and shows a spinner.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' },
@@ -91,7 +123,7 @@ export default {
             control: {
                 type: 'object'
             },
-            description: "Array of selected items' values.",
+            description: "Array of selected item's values.",
             table: {
                 type: { summary: 'string[]' }
             }
@@ -177,7 +209,7 @@ export default {
                 type: 'boolean'
             },
             defaultValue: false,
-            description: 'If true, the selected items are hidden.',
+            description: 'If present, the selected items are hidden.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -203,7 +235,7 @@ export default {
                 type: 'boolean'
             },
             defaultValue: false,
-            description: 'If true, the search box is visible.',
+            description: 'If present, the search box is visible.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' },
@@ -240,7 +272,7 @@ export default {
                 type: 'boolean'
             },
             defaultValue: false,
-            description: 'If true, the apply and reset buttons are hidden.',
+            description: 'If present, the apply and reset buttons are hidden.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -306,7 +338,7 @@ export default {
             },
             defaultValue: false,
             description:
-                'If true, a nubbin is present on the dropdown menu. A nubbin is a stub that protrudes from the menu item towards the button menu. The nubbin position is based on the menu-alignment. This attribute isn’t supported for the vertical variant.',
+                'If present, a nubbin is present on the dropdown menu. A nubbin is a stub that protrudes from the menu item towards the button menu. The nubbin position is based on the menu-alignment. This attribute isn’t supported for the vertical variant.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' },

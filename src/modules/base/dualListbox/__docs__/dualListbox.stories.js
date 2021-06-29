@@ -1,3 +1,35 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { DualListbox } from '../__examples__/dualListbox';
 
 export default {
@@ -26,13 +58,13 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        borderedListItem: {
-            name: 'bordered-list-item',
+        hideBottomDivider: {
+            name: 'hide-bottom-divider',
             control: {
                 type: 'boolean'
             },
             defaultValue: false,
-            description: 'If present, the options are bordered.',
+            description: 'If present, hides the bottom divider.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: false }
@@ -122,6 +154,17 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        draggable: {
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description: 'If present, the options are draggable.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: false }
+            }
+        },
         fieldLevelHelp: {
             name: 'field-level-help',
             control: {
@@ -154,6 +197,19 @@ export default {
             description: 'Label for the dual listbox.',
             table: {
                 type: { summary: 'string' }
+            }
+        },
+        maxVisibleOptions: {
+            name: 'max-visible-options',
+            control: {
+                type: 'number'
+            },
+            defaultValue: 5,
+            description:
+                'Number of items that display in the listboxes before vertical scrollbars are displayed. Determines the vertical size of the listbox.',
+            table: {
+                type: { summary: 'number' },
+                defaultValue: { summary: 5 }
             }
         },
         max: {
@@ -312,12 +368,15 @@ export default {
         },
         size: {
             control: {
-                type: 'number'
+                type: 'select'
             },
+            options: ['small', 'medium', 'large'],
+            defaultValue: 'medium',
             description:
-                'Number of items that display in the listboxes before vertical scrollbars are displayed. Determines the vertical size of the listbox.',
+                'It defines the width of the source options listbox and the selected options listbox. Valid values include small, medium and large.',
             table: {
-                type: { summary: 'number' }
+                type: { summary: 'string' },
+                defaultValue: { summary: 'medium' }
             }
         },
         sourceLabel: {
@@ -482,7 +541,6 @@ const OptionsWithAvatarSrc = [
     {
         value: '1',
         label: 'Carl Smith',
-        description: 'CS',
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
     },
     {
@@ -519,7 +577,6 @@ const OptionsWithAvatarSrc = [
     {
         value: '7',
         label: 'John Smith',
-        description: 'JS',
         iconName: 'standard:address',
         initials: 'JS'
     },
@@ -599,11 +656,13 @@ Base.args = {
     downButtonLabel: 'Down Button Label',
     upButtonLabel: 'Up Button Label',
     options: Options,
-    value: ['2', '3', '4', '5', '6']
+    value: ['3', '2', '4', '5', '6'],
+    draggable: true,
+    hideBottomDivider: true
 };
 
-export const BaseBordered = Template.bind({});
-BaseBordered.args = {
+export const BaseSmall = Template.bind({});
+BaseSmall.args = {
     label: 'Select Options',
     fieldLevelHelp: 'This is a Dual Listbox',
     sourceLabel: 'Available Items',
@@ -613,7 +672,37 @@ BaseBordered.args = {
     downButtonLabel: 'Down Button Label',
     upButtonLabel: 'Up Button Label',
     options: Options,
-    borderedListItem: true,
+    value: ['2', '3', '4', '5', '6'],
+    size: 'small'
+};
+
+export const BaseLarge = Template.bind({});
+BaseLarge.args = {
+    label: 'Select Options',
+    fieldLevelHelp: 'This is a Dual Listbox',
+    sourceLabel: 'Available Items',
+    selectedLabel: 'Selected Items',
+    addButtonLabel: 'Add Button Label',
+    removeButtonLabel: 'Remove Button Label',
+    downButtonLabel: 'Down Button Label',
+    upButtonLabel: 'Up Button Label',
+    options: Options,
+    value: ['2', '3', '4', '5', '6'],
+    size: 'large'
+};
+
+export const BaseNoBorder = Template.bind({});
+BaseNoBorder.args = {
+    label: 'Select Options',
+    fieldLevelHelp: 'This is a Dual Listbox',
+    sourceLabel: 'Available Items',
+    selectedLabel: 'Selected Items',
+    addButtonLabel: 'Add Button Label',
+    removeButtonLabel: 'Remove Button Label',
+    downButtonLabel: 'Down Button Label',
+    upButtonLabel: 'Up Button Label',
+    options: Options,
+    hideBottomDivider: true,
     value: ['2', '3', '4', '5', '6']
 };
 
@@ -711,12 +800,12 @@ BaseWithAvatarLabelHidden.args = {
     required: true,
     requiredOptions: ['1'],
     value: ['2', '3'],
-    borderedListItem: true,
+    hideBottomDivider: true,
     variant: 'label-hidden'
 };
 
-export const BaseWithAvatarSize10 = Template.bind({});
-BaseWithAvatarSize10.args = {
+export const BaseWithAvatarVisibleOptions10 = Template.bind({});
+BaseWithAvatarVisibleOptions10.args = {
     label: 'Select Items',
     sourceLabel: 'Available Items',
     selectedLabel: 'Selected Items',
@@ -727,12 +816,12 @@ BaseWithAvatarSize10.args = {
     options: OptionsWithAvatar,
     required: true,
     requiredOptions: ['1'],
-    size: 10,
+    maxVisibleOptions: 10,
     value: ['2', '3']
 };
 
-export const BaseWithAvatarSrcSize6 = Template.bind({});
-BaseWithAvatarSrcSize6.args = {
+export const BaseWithAvatarDescriptionVisibleOptions6 = Template.bind({});
+BaseWithAvatarDescriptionVisibleOptions6.args = {
     label: 'Invitations',
     sourceLabel: 'Available',
     selectedLabel: 'Invited',
@@ -742,7 +831,7 @@ BaseWithAvatarSrcSize6.args = {
     upButtonLabel: 'Up Button Label',
     options: OptionsWithAvatarSrc,
     requiredOptions: ['1'],
-    size: 6,
+    maxVisibleOptions: 6,
     value: ['2', '3']
 };
 

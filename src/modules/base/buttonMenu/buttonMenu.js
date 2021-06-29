@@ -1,3 +1,35 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import {
@@ -16,57 +48,71 @@ const i18n = {
 const menuItemCSSClassName = 'slds-dropdown__item';
 const menuItemCSSSelector = `.slds-dropdown__list .${menuItemCSSClassName}`;
 
-const validMenuAlignments = [
-    'left',
-    'center',
-    'right',
-    'bottom-left',
-    'bottom-center',
-    'bottom-right'
-];
+const MENU_ALIGNMENTS = {
+    valid: [
+        'left',
+        'center',
+        'right',
+        'bottom-left',
+        'bottom-center',
+        'bottom-right'
+    ],
+    default: 'left'
+};
+
+const ICON_SIZES = {
+    valid: ['xx-small', 'x-small', 'small', 'medium'],
+    default: 'medium'
+};
+
+const BUTTON_VARIANTS = {
+    valid: [
+        'bare',
+        'container',
+        'border',
+        'border-filled',
+        'bare-inverse',
+        'border-inverse'
+    ],
+    default: 'border'
+};
+
+const DEFAULT_ICON_NAME = 'utility:down';
 
 export default class ButtonMenu extends LightningElement {
     static delegatesFocus = true;
 
-    @api iconSize = 'medium';
-
-    @api iconName = 'utility:down';
-
+    @api iconSize = ICON_SIZES.default;
+    @api iconName = DEFAULT_ICON_NAME;
     @api value = '';
-
     @api alternativeText = i18n.showMenu;
-
     @api loadingStateAlternativeText = i18n.loading;
-
     @api label;
-
     @api draftAlternativeText;
 
-    _accesskey = null;
+    _accesskey;
     _disabled = false;
     _dropdownVisible = false;
     _dropdownOpened = false;
     _nubbin = false;
-    _title = null;
+    _title;
     _isDraft = false;
     _isLoading = false;
     _focusOnIndexDuringRenderedCallback = null;
     _tabindex = 0;
-    _tooltip = null;
+    _tooltip;
 
     _order = null;
-    _variant = 'border';
+    _variant = BUTTON_VARIANTS.default;
 
     _positioning = false;
-    _menuAlignment = 'left';
+    _menuAlignment = MENU_ALIGNMENTS.default;
     _boundingRect = {};
     _rerenderFocus = true;
 
     _needsFocusAfterRender = false;
 
     connectedCallback() {
-        this._connected = true;
-
         this.classList.add(
             'slds-dropdown-trigger',
             'slds-dropdown-trigger_click'
@@ -92,7 +138,6 @@ export default class ButtonMenu extends LightningElement {
     }
 
     disconnectedCallback() {
-        this._connected = false;
         if (this._deRegistrationCallback) {
             this._deRegistrationCallback();
         }
@@ -110,36 +155,32 @@ export default class ButtonMenu extends LightningElement {
         }
     }
 
-    @api get variant() {
+    @api
+    get variant() {
         return this._variant;
     }
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: 'border',
-            validValues: [
-                'border',
-                'border-inverse',
-                'border-filled',
-                'bare',
-                'bare-inverse',
-                'container'
-            ]
+            fallbackValue: BUTTON_VARIANTS.default,
+            validValues: BUTTON_VARIANTS.valid
         });
     }
 
-    @api get menuAlignment() {
+    @api
+    get menuAlignment() {
         return this._menuAlignment;
     }
 
     set menuAlignment(value) {
         this._menuAlignment = normalizeString(value, {
-            fallbackValue: 'left',
-            validValues: validMenuAlignments
+            fallbackValue: MENU_ALIGNMENTS.default,
+            validValues: MENU_ALIGNMENTS.valid
         });
     }
 
-    @api get disabled() {
+    @api
+    get disabled() {
         return this._disabled;
     }
 
@@ -147,7 +188,8 @@ export default class ButtonMenu extends LightningElement {
         this._disabled = normalizeBoolean(value);
     }
 
-    @api get nubbin() {
+    @api
+    get nubbin() {
         return this._nubbin;
     }
 
@@ -155,7 +197,8 @@ export default class ButtonMenu extends LightningElement {
         this._nubbin = normalizeBoolean(value);
     }
 
-    @api get title() {
+    @api
+    get title() {
         return this._title;
     }
 
@@ -163,7 +206,8 @@ export default class ButtonMenu extends LightningElement {
         this._title = newValue;
     }
 
-    @api get isDraft() {
+    @api
+    get isDraft() {
         return this._isDraft;
     }
 
@@ -171,7 +215,8 @@ export default class ButtonMenu extends LightningElement {
         this._isDraft = normalizeBoolean(value);
     }
 
-    @api get isLoading() {
+    @api
+    get isLoading() {
         return this._isLoading;
     }
 
@@ -184,7 +229,8 @@ export default class ButtonMenu extends LightningElement {
         this._isLoading = normalizedValue;
     }
 
-    @api get accessKey() {
+    @api
+    get accessKey() {
         return this._accesskey;
     }
 
@@ -206,7 +252,7 @@ export default class ButtonMenu extends LightningElement {
             // dom during initial rendering.
             this._tooltip = new Tooltip(value, {
                 root: this,
-                target: () => this.template.querySelector('button'),
+                target: () => this.template.querySelector('button')
             });
             this._tooltip.initialize();
         }
@@ -214,14 +260,14 @@ export default class ButtonMenu extends LightningElement {
 
     @api
     focus() {
-        if (this._connected) {
+        if (this.isConnected) {
             this.focusOnButton();
         }
     }
 
     @api
     click() {
-        if (this._connected) {
+        if (this.isConnected) {
             this.template.querySelector('button').click();
         }
     }
@@ -593,7 +639,7 @@ export default class ButtonMenu extends LightningElement {
         if (this.isAutoAlignment() && this._dropdownVisible) {
             // eslint-disable-next-line @lwc/lwc/no-async-operation
             setTimeout(() => {
-                if (this._connected) {
+                if (this.isConnected) {
                     observePosition(this, 300, this._boundingRect, () => {
                         this.close();
                     });

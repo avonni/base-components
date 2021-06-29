@@ -1,3 +1,35 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { ColorPicker } from '../__examples__/colorPicker';
 
 export default {
@@ -154,8 +186,7 @@ export default {
                 category: 'menu'
             }
         },
-        colorsValue: {
-            name: 'colors-value',
+        colors: {
             control: {
                 type: 'object'
             },
@@ -289,7 +320,7 @@ Standard.args = {
     fieldLevelHelp: 'Help text',
     value: '#419fec',
     messageWhenBadInput: 'Please ensure value is correct',
-    colorsValue: colorsValue
+    colors: colorsValue
 };
 
 export const StandardWithIcon = Template.bind({});
@@ -300,7 +331,7 @@ StandardWithIcon.args = {
     messageWhenBadInput: 'Please ensure value is correct',
     menuIconName: 'utility:down',
     menuLabel: 'Pick a color',
-    colorsValue: colorsValue
+    colors: colorsValue
 };
 
 export const StandardWithIconWithoutColorInput = Template.bind({});
@@ -312,7 +343,7 @@ StandardWithIconWithoutColorInput.args = {
     menuIconName: 'utility:down',
     menuLabel: 'Pick a color',
     hideColorInput: 'true',
-    colorsValue: colorsValue
+    colors: colorsValue
 };
 
 export const LabelInlineWithMenuVariantContainer = Template.bind({});
@@ -323,7 +354,7 @@ LabelInlineWithMenuVariantContainer.args = {
     messageWhenBadInput: 'Please ensure value is correct',
     variant: 'label-inline',
     menuVariant: 'container',
-    colorsValue: colorsValue
+    colors: colorsValue
 };
 
 export const LabelInlineWithoutColorInput = Template.bind({});
@@ -346,7 +377,7 @@ LabelHiddenWithoutHelpMessage.args = {
     variant: 'label-hidden',
     hideColorInput: 'true',
     menuVariant: 'bare-inverse',
-    colorsValue: colorsValue
+    colors: colorsValue
 };
 
 export const LabelHiddenWithoutHelpMessageBorderInverse = Template.bind({});
@@ -357,7 +388,7 @@ LabelHiddenWithoutHelpMessageBorderInverse.args = {
     variant: 'label-hidden',
     hideColorInput: 'true',
     menuVariant: 'border-inverse',
-    colorsValue: colorsValue
+    colors: colorsValue
 };
 
 export const LabelHiddenWithMenuLabel = Template.bind({});
@@ -369,7 +400,7 @@ LabelHiddenWithMenuLabel.args = {
     hideColorInput: 'true',
     menuVariant: 'border-inverse',
     menuLabel: 'Pick a color',
-    colorsValue: colorsValue
+    colors: colorsValue
 };
 
 export const Xx_smallIconWithColorInput = Template.bind({});
@@ -391,7 +422,7 @@ X_smallIconWithColorInput.args = {
     messageWhenBadInput: 'Please ensure value is correct',
     menuIconName: 'utility:down',
     menuIconSize: 'x-small',
-    colorsValue: colorsValue
+    colors: colorsValue
 };
 
 export const SmallIconWithColorInput = Template.bind({});
@@ -402,7 +433,7 @@ SmallIconWithColorInput.args = {
     messageWhenBadInput: 'Please ensure value is correct',
     menuIconName: 'utility:down',
     menuIconSize: 'small',
-    colorsValue: colorsValue
+    colors: colorsValue
 };
 
 export const MediumIconWithColorInput = Template.bind({});
@@ -413,7 +444,7 @@ MediumIconWithColorInput.args = {
     messageWhenBadInput: 'Please ensure value is correct',
     menuIconName: 'utility:down',
     menuIconSize: 'medium',
-    colorsValue: colorsValue
+    colors: colorsValue
 };
 
 export const LargeIconWithColorInput = Template.bind({});
@@ -424,5 +455,5 @@ LargeIconWithColorInput.args = {
     messageWhenBadInput: 'Please ensure value is correct',
     menuIconName: 'utility:down',
     menuIconSize: 'large',
-    colorsValue: colorsValue
+    colors: colorsValue
 };

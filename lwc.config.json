@@ -7,6 +7,9 @@
             "dir": "src/modules/base"
         },
         {
+            "dir": "src/modules/data"
+        },
+        {
             "name": "c/configProvider",
             "path": "src/modules/base/configProvider/configProvider.js"
         },
@@ -33,6 +36,14 @@
         {
             "name": "c/utilsPrivate",
             "path": "src/modules/base/utilsPrivate/utilsPrivate.js"
+        },
+        {
+            "name": "c/activityTimeline",
+            "path": "src/modules/base/activityTimeline/activityTimeline.js"
+        },
+        {
+            "name": "c/activityTimelineItem",
+            "path": "src/modules/base/activityTimelineItem/activityTimelineItem.js"
         },
         {
             "name": "c/alert",
@@ -107,8 +118,20 @@
             "path": "src/modules/base/colorPickerPanel/colorPickerPanel.js"
         },
         {
+            "name": "c/combobox",
+            "path": "src/modules/base/combobox/combobox.js"
+        },
+        {
             "name": "c/confetti",
             "path": "src/modules/base/confetti/confetti.js"
+        },
+        {
+            "name": "c/dataPageHeader",
+            "path": "src/modules/data/pageHeader/dataPageHeader.js"
+        },
+        {
+            "name": "c/datatable",
+            "path": "src/modules/base/datatable/datatable.js"
         },
         {
             "name": "c/dateTimePicker",
@@ -149,6 +172,10 @@
         {
             "name": "c/externalLink",
             "path": "src/modules/base/externalLink/externalLink.js"
+        },
+        {
+            "name": "c/heroBanner",
+            "path": "src/modules/base/heroBanner/heroBanner.js"
         },
         {
             "name": "c/iconUtils",
@@ -223,6 +250,10 @@
             "path": "src/modules/base/panel/panel.js"
         },
         {
+            "name": "c/path",
+            "path": "src/modules/base/path/path.js"
+        },
+        {
             "name": "c/positionLibrary",
             "path": "src/modules/base/positionLibrary/positionLibrary.js"
         },
@@ -235,8 +266,48 @@
             "path": "src/modules/base/primitiveBubble/primitiveBubble.js"
         },
         {
+            "name": "c/primitiveCellBadge",
+            "path": "src/modules/base/primitiveCellBadge/primitiveCellBadge.js"
+        },
+        {
+            "name": "c/primitiveCellCheckboxButton",
+            "path": "src/modules/base/primitiveCellCheckboxButton/primitiveCellCheckboxButton.js"
+        },
+        {
+            "name": "c/primitiveCellColorPicker",
+            "path": "src/modules/base/primitiveCellColorPicker/primitiveCellColorPicker.js"
+        },
+        {
+            "name": "c/primitiveCellInputCounter",
+            "path": "src/modules/base/primitiveCellInputCounter/primitiveCellInputCounter.js"
+        },
+        {
+            "name": "c/primitiveCellInputDateRange",
+            "path": "src/modules/base/primitiveCellInputDateRange/primitiveCellInputDateRange.js"
+        },
+        {
+            "name": "c/primitiveCellInputToggle",
+            "path": "src/modules/base/primitiveCellInputToggle/primitiveCellInputToggle.js"
+        },
+        {
+            "name": "c/primitiveCellRating",
+            "path": "src/modules/base/primitiveCellRating/primitiveCellRating.js"
+        },
+        {
+            "name": "c/primitiveCellSlider",
+            "path": "src/modules/base/primitiveCellSlider/primitiveCellSlider.js"
+        },
+        {
             "name": "c/primitiveColorpickerButton",
             "path": "src/modules/base/primitiveColorpickerButton/primitiveColorpickerButton.js"
+        },
+        {
+            "name": "c/primitiveCombobox",
+            "path": "src/modules/base/primitiveCombobox/primitiveCombobox.js"
+        },
+        {
+            "name": "c/primitiveComboboxGroup",
+            "path": "src/modules/base/primitiveComboboxGroup/primitiveComboboxGroup.js"
         },
         {
             "name": "c/primitiveCoordinateItem",
@@ -249,10 +320,6 @@
         {
             "name": "c/primitiveIframe",
             "path": "src/modules/base/primitiveIframe/primitiveIframe.js"
-        },
-        {
-            "name": "c/primitiveField",
-            "path": "src/modules/base/primitiveField/primitiveField.js"
         },
         {
             "name": "c/primitiveProgressBarReferenceLine",
@@ -335,12 +402,20 @@
             "path": "src/modules/base/segmentButton/segmentButton.js"
         },
         {
+            "name": "c/separator",
+            "path": "src/modules/base/separator/separator.js"
+        },
+        {
             "name": "c/slide",
             "path": "src/modules/base/slide/slide.js"
         },
         {
             "name": "c/slides",
             "path": "src/modules/base/slides/slides.js"
+        },
+        {
+            "name": "c/list",
+            "path": "src/modules/base/list/list.js"
         },
         {
             "name": "c/splitter",
@@ -361,6 +436,10 @@
         {
             "name": "c/timer",
             "path": "src/modules/base/timer/timer.js"
+        },
+        {
+            "name": "c/tooltipLibrary",
+            "path": "src/modules/base/tooltipLibrary/tooltipLibrary.js"
         },
         {
             "name": "c/verticalProgressIndicator",
@@ -389,6 +468,10 @@
         {
             "name": "c/wizardStep",
             "path": "src/modules/base/wizardStep/wizardStep.js"
+        },
+        {
+            "name": "avonni/activityTimeline",
+            "path": "src/modules/base/activityTimeline/activityTimeline.js"
         },
         {
             "name": "avonni/alert",
@@ -451,12 +534,24 @@
             "path": "src/modules/base/colorPalette/colorPalette.js"
         },
         {
+            "name": "avonni/combobox",
+            "path": "src/modules/base/combobox/combobox.js"
+        },
+        {
             "name": "avonni/colorPicker",
             "path": "src/modules/base/colorPicker/colorPicker.js"
         },
         {
             "name": "avonni/confetti",
             "path": "src/modules/base/confetti/confetti.js"
+        },
+        {
+            "name": "avonni/dataPageHeader",
+            "path": "src/modules/data/pageHeader/dataPageHeader.js"
+        },
+        {
+            "name": "avonni/datatable",
+            "path": "src/modules/base/datatable/datatable.js"
         },
         {
             "name": "avonni/dateTimePicker",
@@ -489,6 +584,10 @@
         {
             "name": "avonni/filterMenuGroup",
             "path": "src/modules/base/filterMenuGroup/filterMenuGroup.js"
+        },
+        {
+            "name": "avonni/heroBanner",
+            "path": "src/modules/base/heroBanner/heroBanner.js"
         },
         {
             "name": "avonni/hoverableText",
@@ -551,6 +650,10 @@
             "path": "src/modules/base/panel/panel.js"
         },
         {
+            "name": "avonni/path",
+            "path": "src/modules/base/path/path.js"
+        },
+        {
             "name": "avonni/primitiveIcon",
             "path": "src/modules/base/primitiveIcon/primitiveIcon.js"
         },
@@ -607,12 +710,20 @@
             "path": "src/modules/base/segmentButton/segmentButton.js"
         },
         {
+            "name": "avonni/separator",
+            "path": "src/modules/base/separator/separator.js"
+        },
+        {
             "name": "avonni/slide",
             "path": "src/modules/base/slide/slide.js"
         },
         {
             "name": "avonni/slides",
             "path": "src/modules/base/slides/slides.js"
+        },
+        {
+            "name": "avonni/list",
+            "path": "src/modules/base/list/list.js"
         },
         {
             "name": "avonni/splitter",
@@ -664,6 +775,7 @@
         }
     ],
     "expose": [
+        "avonni/activityTimeline",
         "avonni/alert",
         "avonni/avatar",
         "avonni/avatarGroup",
@@ -680,7 +792,10 @@
         "avonni/colorGradient",
         "avonni/colorPalette",
         "avonni/colorPicker",
+        "avonni/combobox",
         "avonni/confetti",
+        "avonni/dataPageHeader",
+        "avonni/datatable",
         "avonni/dateTimePicker",
         "avonni/dialog",
         "avonni/dualListbox",
@@ -689,6 +804,7 @@
         "avonni/expandableSection",
         "avonni/filterMenu",
         "avonni/filterMenuGroup",
+        "avonni/heroBanner",
         "avonni/hoverableText",
         "avonni/illustration",
         "avonni/image",
@@ -700,9 +816,11 @@
         "avonni/map",
         "avonni/mediaObject",
         "avonni/menuItemDialog",
+        "avonni/outputData",
         "avonni/pageHeader",
         "avonni/pagination",
         "avonni/panel",
+        "avonni/path",
         "avonni/primitiveIcon",
         "avonni/profileCard",
         "avonni/progressBar",
@@ -718,8 +836,10 @@
         "avonni/scopedNotification",
         "avonni/segment",
         "avonni/segmentButton",
+        "avonni/separator",
         "avonni/slide",
         "avonni/slides",
+        "avonni/list",
         "avonni/splitter",
         "avonni/splitterPane",
         "avonni/submenu",
