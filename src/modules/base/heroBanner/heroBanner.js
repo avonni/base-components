@@ -16,13 +16,47 @@ const DEFAULT_MAX_WIDTH = 960;
 const DEFAULT_CONTENT_WIDTH = 100;
 
 export default class HeroBanner extends LightningElement {
+    /**
+     * The title can include text, and is displayed in the banner.
+     *
+     * @type {string}
+     */
     @api title;
+
+    /**
+     * The caption can include text, and is displayed over the title.
+     *
+     * @type {string}
+     */
     @api caption;
+
+    /**
+     * The subtitle can include text, and is displayed under the title.
+     *
+     * @type {string}
+     */
     @api subtitle;
+
+    /**
+     * URL for the background image.
+     *
+     * @type {string}
+     */
     @api src;
+
+    /**
+     * The text to be displayed inside the primary button.
+     *
+     * @type {string}
+     */
     @api primaryButtonLabel;
+
+    /**
+     * The text to be displayed inside the secondary button.
+     *
+     * @type {string}
+     */
     @api secondaryButtonLabel;
-    @api secondaryButtonBorderColor;
 
     _contentHorizontalAlignment = horizontal_alignement_options.default;
     _contentVerticalAlignment = vertical_alignement_options.default;
@@ -56,6 +90,13 @@ export default class HeroBanner extends LightningElement {
         return this.template.querySelector('slot[name=footer]');
     }
 
+    /**
+     * Defines the horizontal alignment of the title, caption and description.
+     * Valid values include left, center and right.
+     *
+     * @type {string}
+     * @default left
+     */
     @api
     get contentHorizontalAlignment() {
         return this._contentHorizontalAlignment;
@@ -68,6 +109,13 @@ export default class HeroBanner extends LightningElement {
         });
     }
 
+    /**
+     * Defines the vertical alignment of the title, caption and description.
+     * Valid values include top, center and bottom.
+     *
+     * @type {string}
+     * @default center
+     */
     @api
     get contentVerticalAlignment() {
         return this._contentVerticalAlignment;
@@ -80,6 +128,12 @@ export default class HeroBanner extends LightningElement {
         });
     }
 
+    /**
+     * Defines the height of the banner in px.
+     *
+     * @type {number}
+     * @default 400
+     */
     @api
     get height() {
         return this._height;
@@ -90,6 +144,12 @@ export default class HeroBanner extends LightningElement {
         this._height = parseInt(number, 10);
     }
 
+    /**
+     * Defines the width inside of the banner in px.
+     *
+     * @type {number}
+     * @default 960
+     */
     @api
     get maxWidth() {
         return this._maxWidth;
@@ -100,6 +160,12 @@ export default class HeroBanner extends LightningElement {
         this._maxWidth = parseInt(number, 10);
     }
 
+    /**
+     * Defines the width of the content inside of the banner in percentage.
+     *
+     * @type {number}
+     * @default 100
+     */
     @api
     get contentWidth() {
         return this._contentWidth;
