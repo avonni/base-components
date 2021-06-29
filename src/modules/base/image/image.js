@@ -73,9 +73,15 @@ export default class Image extends LightningElement {
     _imgHeight;
     _staticImages = false;
     _lazyLoading = false;
+    _widthPercent;
+    _heightPercent;
 
     renderedCallback() {
         this.getImageDimensions();
+        console.log(this.height);
+        if (this._height !== undefined && this._height.includes('%')) {
+            this._heightPercent = this._height;
+        }
     }
 
     @api
@@ -89,7 +95,7 @@ export default class Image extends LightningElement {
 
     @api
     get lazyLoading() {
-        return this._lazyLoading ? "lazy" : "auto";
+        return this._lazyLoading ? 'lazy' : 'auto';
     }
 
     set lazyLoading(value) {
@@ -149,6 +155,14 @@ export default class Image extends LightningElement {
 
     set width(value) {
         this._width = value;
+        if (
+            value !== undefined &&
+            typeof value === 'string' &&
+            value.includes('%')
+        ) {
+            this._widthPercent = value;
+        }
+        console.log('width', this._widthPercent);
         this.initBlank();
     }
 
@@ -159,6 +173,16 @@ export default class Image extends LightningElement {
 
     set height(value) {
         this._height = value;
+        console.log(value);
+        if (
+            value !== undefined &&
+            typeof value === 'string' &&
+            value.includes('%')
+        ) {
+            this._heightPercent = value;
+        }
+        console.log('height', this._heightPercent);
+
         this.initBlank();
     }
 
@@ -373,13 +397,23 @@ export default class Image extends LightningElement {
                     this._blank &&
                     !this._cropSize &&
                     this.width &&
-                    this.height
+                    this.height,
+                'avonni-image_no-crop_width_heightPercent':
+                    this.width &&
+                    this._heightPercent &&
+                    !this._cropSize &&
+                    !this.staticImages
             })
             .toString();
     }
 
     get computedImgContainerClass() {
-        return classSet('avonni-img-container').toString();
+        return classSet('avonni-img-container')
+            .add({
+                'avonni-img-container_percent':
+                    this._heightPercent && this.width
+            })
+            .toString();
     }
 
     initBlank() {
@@ -417,6 +451,8 @@ export default class Image extends LightningElement {
                 return `
                 padding-top: ${(this.height / this._imgWidth) * 100}%;
                 `;
+            } else if (this.width && this._heightPercent) {
+                return `padding-top : none`;
             }
         } else if (this.staticImages) {
             if (!this.width && this.height) {
@@ -517,6 +553,13 @@ export default class Image extends LightningElement {
             if (this._blank && this.width && this.height) {
                 return `
                 width: ${this.width}px;
+                `;
+            } else if (this.width && this._heightPercent) {
+                return `
+                width: ${this.width}px;
+                height: ${this.height};
+                object-fit: ${this.cropFit};
+                object-position: ${this.cropPositionX}% ${this.cropPositionY}%;        
                 `;
             }
         }
