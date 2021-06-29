@@ -126,6 +126,10 @@
             "path": "src/modules/base/confetti/confetti.js"
         },
         {
+            "name": "c/dataHoverableText",
+            "path": "src/modules/data/hoverableText/hoverableText.js"
+        },
+        {
             "name": "c/dataPageHeader",
             "path": "src/modules/data/pageHeader/dataPageHeader.js"
         },
@@ -164,10 +168,6 @@
         {
             "name": "c/filterMenuGroup",
             "path": "src/modules/base/filterMenuGroup/filterMenuGroup.js"
-        },
-        {
-            "name": "c/hoverableText",
-            "path": "src/modules/base/hoverableText/hoverableText.js"
         },
         {
             "name": "c/externalLink",
@@ -546,6 +546,10 @@
             "path": "src/modules/base/confetti/confetti.js"
         },
         {
+            "name": "avonni/dataHoverableText",
+            "path": "src/modules/data/hoverableText/hoverableText.js"
+        },
+        {
             "name": "avonni/dataPageHeader",
             "path": "src/modules/data/pageHeader/dataPageHeader.js"
         },
@@ -588,10 +592,6 @@
         {
             "name": "avonni/heroBanner",
             "path": "src/modules/base/heroBanner/heroBanner.js"
-        },
-        {
-            "name": "avonni/hoverableText",
-            "path": "src/modules/base/hoverableText/hoverableText.js"
         },
         {
             "name": "avonni/illustration",
@@ -794,6 +794,7 @@
         "avonni/colorPicker",
         "avonni/combobox",
         "avonni/confetti",
+        "avonni/dataHoverableText",
         "avonni/dataPageHeader",
         "avonni/datatable",
         "avonni/dateTimePicker",
@@ -805,7 +806,6 @@
         "avonni/filterMenu",
         "avonni/filterMenuGroup",
         "avonni/heroBanner",
-        "avonni/hoverableText",
         "avonni/illustration",
         "avonni/image",
         "avonni/inputCounter",

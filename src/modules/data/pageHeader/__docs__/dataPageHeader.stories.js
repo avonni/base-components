@@ -33,7 +33,7 @@
 import { DataPageHeader } from '../__examples__/dataPageHeader';
 
 export default {
-    title: 'Example/Data Page Header',
+    title: 'Data/Data Page Header',
     argTypes: {
         iconName: {
             control: {

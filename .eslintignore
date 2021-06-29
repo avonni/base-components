@@ -3,3 +3,8 @@
 **/base/**/*.json
 **/base/**/*.svg
 **/base/**/*.xml
+**/data/**/*.css
+**/data/**/*.html
+**/data/**/*.json
+**/data/**/*.svg
+**/data/**/*.xml
