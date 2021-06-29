@@ -31,7 +31,7 @@
  */
 
 import { createElement } from 'lwc';
-import HoverableText from 'c/hoverableText';
+import DataHoverableText from 'c/dataHoverableText';
 
 // NB: most tests depend on open() to work.
 
@@ -61,7 +61,7 @@ const FIELDS = [
     }
 ];
 
-describe('HoverableText', () => {
+describe('DataHoverableText', () => {
     afterEach(() => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
@@ -69,8 +69,8 @@ describe('HoverableText', () => {
     });
 
     it('Default attributes', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         expect(element.avatarFallbackIconName).toBeUndefined();
@@ -92,8 +92,8 @@ describe('HoverableText', () => {
     // avatar-fallback-icon-name
     // Depends on title
     it('avatarFallbackIconName without title', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -116,8 +116,8 @@ describe('HoverableText', () => {
     });
 
     it('avatarFallbackIconName with title', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -142,8 +142,8 @@ describe('HoverableText', () => {
     // avatar-src
     // Depends on title
     it('avatarSrc without title', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -169,8 +169,8 @@ describe('HoverableText', () => {
     });
 
     it('avatarSrc with title', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -195,8 +195,8 @@ describe('HoverableText', () => {
 
     // fields
     it('fields', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -208,24 +208,23 @@ describe('HoverableText', () => {
             const labels = element.shadowRoot.querySelectorAll(
                 '.slds-popover_panel__label'
             );
-            const values = element.shadowRoot.querySelectorAll(
-                'c-primitive-field'
-            );
+            const values = element.shadowRoot.querySelectorAll('c-output-data');
 
             FIELDS.forEach((field, index) => {
                 expect(labels[index].textContent).toBe(field.label);
-                expect(values[index].field).toMatchObject(field);
-                expect(values[index].label).toBe(field.label);
                 expect(values[index].value).toBe(field.value);
                 expect(values[index].type).toBe(field.type);
+                expect(values[index].typeAttributes).toMatchObject(
+                    field.typeAttributes || {}
+                );
             });
         });
     });
 
     // is-loading
     it('isLoading = false', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -247,8 +246,8 @@ describe('HoverableText', () => {
     });
 
     it('isLoading = true', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -272,8 +271,8 @@ describe('HoverableText', () => {
     // label
     // Depends on href
     it('label', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -292,8 +291,8 @@ describe('HoverableText', () => {
     });
 
     it('label with href', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -315,8 +314,8 @@ describe('HoverableText', () => {
     // loading-state-alternative-text
     // Depends on isLoading
     it('loadingStateAlternativeText', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -336,8 +335,8 @@ describe('HoverableText', () => {
     // href
     // Depends on label
     it('href without label', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -352,8 +351,8 @@ describe('HoverableText', () => {
     });
 
     it('href with label', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -370,8 +369,8 @@ describe('HoverableText', () => {
 
     // placement
     it('placement = left', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -409,8 +408,8 @@ describe('HoverableText', () => {
     });
 
     it('placement = auto', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -448,8 +447,8 @@ describe('HoverableText', () => {
     });
 
     it('placement = center', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -487,8 +486,8 @@ describe('HoverableText', () => {
     });
 
     it('placement = right', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -526,8 +525,8 @@ describe('HoverableText', () => {
     });
 
     it('placement = bottom-right', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -563,8 +562,8 @@ describe('HoverableText', () => {
     });
 
     it('placement = bottom-center', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -602,8 +601,8 @@ describe('HoverableText', () => {
     });
 
     it('placement = bottom-left', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -640,8 +639,8 @@ describe('HoverableText', () => {
 
     // popover-size
     it('popoverSize = medium', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -659,8 +658,8 @@ describe('HoverableText', () => {
     });
 
     it('popoverSize = small', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -678,8 +677,8 @@ describe('HoverableText', () => {
     });
 
     it('popoverSize = large', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -699,8 +698,8 @@ describe('HoverableText', () => {
     // theme
     // Depends on title
     it('theme = default', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -722,8 +721,8 @@ describe('HoverableText', () => {
     });
 
     it('theme = default-shade, without title', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -745,8 +744,8 @@ describe('HoverableText', () => {
     });
 
     it('theme = default-shade, with title', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -769,8 +768,8 @@ describe('HoverableText', () => {
     });
 
     it('theme = shade', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -792,8 +791,8 @@ describe('HoverableText', () => {
     });
 
     it('theme = inverse', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -816,8 +815,8 @@ describe('HoverableText', () => {
 
     // title
     it('title', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -841,8 +840,8 @@ describe('HoverableText', () => {
     // titleHref
     // Depends on title
     it('titleHref, without title', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -864,8 +863,8 @@ describe('HoverableText', () => {
     });
 
     it('titleHref, with title', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -891,8 +890,8 @@ describe('HoverableText', () => {
 
     // open
     it('open method', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -914,8 +913,8 @@ describe('HoverableText', () => {
 
     // close
     it('close method', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -942,8 +941,8 @@ describe('HoverableText', () => {
     // focus
     // Depends on href
     it('focus, without href', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -962,8 +961,8 @@ describe('HoverableText', () => {
     });
 
     it('focus, with href', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -983,8 +982,8 @@ describe('HoverableText', () => {
 
     // open
     it('open event', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -1002,8 +1001,8 @@ describe('HoverableText', () => {
 
     // close
     it('close event', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -1023,8 +1022,8 @@ describe('HoverableText', () => {
     // focus
     // Depends on href
     it('focus event, without href', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
@@ -1040,8 +1039,8 @@ describe('HoverableText', () => {
     });
 
     it('focus event, with href', () => {
-        const element = createElement('base-hoverable-text', {
-            is: HoverableText
+        const element = createElement('data-hoverable-text', {
+            is: DataHoverableText
         });
 
         document.body.appendChild(element);
