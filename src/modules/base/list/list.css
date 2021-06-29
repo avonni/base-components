@@ -70,3 +70,8 @@
 li {
     padding-right: 0.5rem;
 }
+
+img {
+    height: 100% !important;
+    object-fit: cover;
+}
