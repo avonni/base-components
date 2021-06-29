@@ -30,6 +30,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/**
+ * @typedef Item
+ * @property {string} alternativeText The alternative text used to describe the avatar.
+ * @property {string} initials If the record name contains two words, like first and last name, use the first capitalized letter of each. For records that only have a single word name, use the first two letters of that word using one capital and one lower case letter.
+ * @property {string} fallbackIconName The Lightning Design System name of the icon used as a fallback when the image fails to load. The initials fallback relies on this for its background color.
+ * Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. Only icons from the standard and custom categories are allowed.
+ * @property {string} src Image URL for the avatar of the group. If present, the avatar is displayed before the label.
+ */
+
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { normalizeString, normalizeArray } from 'c/utilsPrivate';
@@ -67,14 +76,60 @@ const BUTTON_VARIANTS = {
 const DEFAULT_LIST_BUTTON_SHOW_MORE_LABEL = 'Show more';
 const DEFAULT_LIST_BUTTON_SHOW_LESS_LABEL = 'Show less';
 
+/**
+ * @class
+ * @name Avatar Group
+ * @descriptor avonni-avatar-group
+ */
 export default class AvatarGroup extends LightningElement {
+    /**
+     * The Lightning Design System name of the action icon.
+     * Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
+     * @type {string}
+     * @name action-icon-name
+     * @public
+     */
     @api actionIconName;
-    @api listButtonIconName;
+
+    /**
+     * Label of the button that appears in the list layout, when the number of avatars exceeds the max-count number.
+     * @type {string}
+     * @name list-button-show-more-label
+     * @default Show more
+     * @public
+     */
     @api listButtonShowMoreLabel = DEFAULT_LIST_BUTTON_SHOW_MORE_LABEL;
+
+    /**
+     * Label of the button that appears in the list layout, when the number of avatars exceeds the max-count number.
+     * @type {string}
+     * @name list-button-show-less-label
+     * @default Show less
+     * @public
+     */
     @api listButtonShowLessLabel = DEFAULT_LIST_BUTTON_SHOW_LESS_LABEL;
 
+    /**
+     * The Lightning Design System name of the list button icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
+     * @type {string}
+     * @name list-button-show-more-icon-name
+     * @public
+     */
     @api listButtonShowMoreIconName;
+
+    /**
+     * The Lightning Design System name of the list button icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
+     * @type {string}
+     * @name list-button-show-less-icon-name
+     * @public
+     */
     @api listButtonShowLessIconName;
+
+    /**
+     * Name of the avatar group. It will be returned by the actionclick event.
+     * @type {string}
+     * @public
+     */
     @api name;
 
     _items = [];
@@ -109,6 +164,11 @@ export default class AvatarGroup extends LightningElement {
         }
     }
 
+    /**
+     * An array of items to be rendered as avatar in a group.
+     * @type {Item[]}
+     * @public
+     */
     @api
     get items() {
         return this._items;
@@ -127,6 +187,12 @@ export default class AvatarGroup extends LightningElement {
         this._maxCount = value;
     }
 
+    /**
+     * The size of the avatars. Valid values include x-small, small, medium, large, x-large and xx-large.
+     * @type {string}
+     * @default medium
+     * @public
+     */
     @api get size() {
         return this._size;
     }
@@ -450,13 +516,10 @@ export default class AvatarGroup extends LightningElement {
     }
 
     actionClick() {
-        // * action event *
         const name = this.name;
 
         this.dispatchEvent(
             new CustomEvent('actionclick', {
-                bubbles: true,
-                cancelable: true,
                 detail: {
                     name
                 }
