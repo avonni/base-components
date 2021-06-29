@@ -39,6 +39,7 @@ import avatarGroup from './avatarGroup.html';
 import badge from './badge.html';
 import checkboxButton from './checkboxButton.html';
 import colorPicker from './colorPicker.html';
+import combobox from './combobox.html';
 import dynamicIcon from './dynamicIcon.html';
 import image from './image.html';
 import inputCounter from './inputCounter.html';
@@ -57,6 +58,7 @@ const CUSTOM_TYPES_ALWAYS_WRAPPED = [
     'avatar-group',
     'checkbox-button',
     'color-picker',
+    'combobox',
     'dynamic-icon',
     'image',
     'input-counter',
@@ -72,6 +74,7 @@ const CUSTOM_TYPES_ALWAYS_WRAPPED = [
 
 const CUSTOM_TYPES_EDITABLE = [
     'checkbox-button',
+    'combobox',
     'color-picker',
     'input-counter',
     'input-date-range',
@@ -128,6 +131,19 @@ export default class Datatable extends LightningDatatable {
                 'name',
                 'opacity',
                 'type'
+            ],
+            standardCellLayout: true
+        },
+        combobox: {
+            template: combobox,
+            typeAttributes: [
+                'disabled',
+                'dropdownAlignment',
+                'dropdownLenght',
+                'isMultiSelect',
+                'label',
+                'placeholder',
+                'options'
             ],
             standardCellLayout: true
         },
