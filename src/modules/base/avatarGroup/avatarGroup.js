@@ -38,7 +38,10 @@ const AVATAR_GROUP_SIZES = {
     valid: ['x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'],
     default: 'medium'
 };
-const AVATAR_GROUP_LAYOUTS = { valid: ['stack', 'grid', 'list'], default: 'stack' };
+const AVATAR_GROUP_LAYOUTS = {
+    valid: ['stack', 'grid', 'list'],
+    default: 'stack'
+};
 
 const AVATAR_GROUP_VARIANTS = {
     valid: ['empty', 'square', 'circle'],
@@ -61,12 +64,11 @@ const BUTTON_VARIANTS = {
     default: 'base'
 };
 
-const DEFAULT_ACTION_ICON_NAME = 'utility:add'
-const DEFAULT_LIST_BUTTON_LABEL = 'Show more'
+const DEFAULT_ACTION_ICON_NAME = 'utility:add';
+const DEFAULT_LIST_BUTTON_LABEL = 'Show more';
 
 export default class AvatarGroup extends LightningElement {
-
-    @api actionIconName = DEFAULT_ACTION_ICON_NAME
+    @api actionIconName = DEFAULT_ACTION_ICON_NAME;
     @api listButtonLabel = DEFAULT_LIST_BUTTON_LABEL;
     @api listButtonIconName;
     @api listButtonShowMoreLabel = 'Show more';
@@ -163,7 +165,7 @@ export default class AvatarGroup extends LightningElement {
     @api get listButtonShowMoreIconPosition() {
         return this._listButtonShowMoreIconPosition;
     }
-  
+
     set listButtonShowMoreIconPosition(value) {
         this._listButtonShowMoreIconPosition = normalizeString(value, {
             fallbackValue: BUTTON_ICON_POSITIONS.default,
@@ -178,6 +180,8 @@ export default class AvatarGroup extends LightningElement {
         this._listButtonShowLessIconPosition = normalizeString(value, {
             fallbackValue: BUTTON_ICON_POSITIONS.default,
             validValues: BUTTON_ICON_POSITIONS.valid
+        });
+    }
 
     set listButtonIconPosition(value) {
         this._listButtonIconPosition = normalizeString(value, {
