@@ -31,7 +31,7 @@
  */
 
 import { createElement } from 'lwc';
-import DataPageHeader from 'c/dataPageHeader';
+import DataPageHeader from '../pageHeader';
 
 // not tested
 // iconName, label, title, info, variant because already tested in pageHeader

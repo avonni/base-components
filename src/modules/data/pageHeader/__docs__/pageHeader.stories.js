@@ -30,10 +30,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { DataPageHeader } from '../__examples__/dataPageHeader';
+import { DataPageHeader } from '../__examples__/pageHeader';
 
 export default {
-    title: 'Example/Data Page Header',
+    title: 'Data/Page Header',
     argTypes: {
         iconName: {
             control: {

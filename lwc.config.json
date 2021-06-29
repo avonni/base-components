@@ -127,7 +127,7 @@
         },
         {
             "name": "c/dataPageHeader",
-            "path": "src/modules/data/pageHeader/dataPageHeader.js"
+            "path": "src/modules/data/pageHeader/pageHeader.js"
         },
         {
             "name": "c/datatable",
@@ -543,7 +543,7 @@
         },
         {
             "name": "avonni/dataPageHeader",
-            "path": "src/modules/data/pageHeader/dataPageHeader.js"
+            "path": "src/modules/data/pageHeader/pageHeader.js"
         },
         {
             "name": "avonni/datatable",

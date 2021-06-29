@@ -39,7 +39,7 @@ const PAGE_HEADER_VARIANTS = {
     default: 'base'
 };
 
-export default class PageHeader extends LightningElement {
+export default class DataPageHeader extends LightningElement {
     @api iconName;
     @api label;
     @api title;
