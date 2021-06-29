@@ -1,0 +1,6 @@
+{
+    "plugins": ["plugins/markdown", "./customDictionnary.js"],
+    "markdown": {
+        "hardwrap": "true"
+    }
+}
