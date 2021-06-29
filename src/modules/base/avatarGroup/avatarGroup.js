@@ -38,7 +38,10 @@ const AVATAR_GROUP_SIZES = {
     valid: ['x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'],
     default: 'medium'
 };
-const AVATAR_GROUP_LAYOUTS = { valid: ['stack', 'grid', 'list'], default: 'stack' };
+const AVATAR_GROUP_LAYOUTS = {
+    valid: ['stack', 'grid', 'list'],
+    default: 'stack'
+};
 
 const AVATAR_GROUP_VARIANTS = {
     valid: ['empty', 'square', 'circle'],
@@ -58,17 +61,21 @@ const BUTTON_VARIANTS = {
         'inverse',
         'success'
     ],
-    default: 'neutral'
+    default: 'base'
 };
 
-const DEFAULT_ACTION_ICON_NAME = 'utility:add'
-const DEFAULT_LIST_BUTTON_LABEL = 'Show more'
+const DEFAULT_ACTION_ICON_NAME = 'utility:add';
+const DEFAULT_LIST_BUTTON_LABEL = 'Show more';
 
 export default class AvatarGroup extends LightningElement {
-
-    @api actionIconName = DEFAULT_ACTION_ICON_NAME
+    @api actionIconName = DEFAULT_ACTION_ICON_NAME;
     @api listButtonLabel = DEFAULT_LIST_BUTTON_LABEL;
     @api listButtonIconName;
+    @api listButtonShowMoreLabel = 'Show more';
+    @api listButtonShowLessLabel = 'Show less';
+
+    @api listButtonShowMoreIconName;
+    @api listButtonShowLessIconName;
     @api name;
 
     _items = [];
@@ -76,6 +83,8 @@ export default class AvatarGroup extends LightningElement {
     _size = AVATAR_GROUP_SIZES.default;
     _layout = AVATAR_GROUP_LAYOUTS.default;
     _allowBlur = false;
+    _listButtonShowMoreIconPosition = BUTTON_ICON_POSITIONS.default;
+    _listButtonShowLessIconPosition = BUTTON_ICON_POSITIONS.default;
     _listButtonVariant = BUTTON_VARIANTS.default;
     _listButtonIconPosition = BUTTON_ICON_POSITIONS.default;
     _variant = AVATAR_GROUP_VARIANTS.default;
@@ -153,8 +162,25 @@ export default class AvatarGroup extends LightningElement {
         });
     }
 
-    @api get listButtonIconPosition() {
-        return this._listButtonIconPosition;
+    @api get listButtonShowMoreIconPosition() {
+        return this._listButtonShowMoreIconPosition;
+    }
+
+    set listButtonShowMoreIconPosition(value) {
+        this._listButtonShowMoreIconPosition = normalizeString(value, {
+            fallbackValue: BUTTON_ICON_POSITIONS.default,
+            validValues: BUTTON_ICON_POSITIONS.valid
+        });
+    }
+    @api get listButtonShowLessIconPosition() {
+        return this._listButtonShowLessIconPosition;
+    }
+
+    set listButtonShowLessIconPosition(value) {
+        this._listButtonShowLessIconPosition = normalizeString(value, {
+            fallbackValue: BUTTON_ICON_POSITIONS.default,
+            validValues: BUTTON_ICON_POSITIONS.valid
+        });
     }
 
     set listButtonIconPosition(value) {
@@ -327,7 +353,11 @@ export default class AvatarGroup extends LightningElement {
             .add(`avonni-action-button-${this.size}`)
             .toString();
     }
-
+    get hiddenListStyle() {
+        return classSet().add({
+            'slds-dropdown slds-dropdown_left': this.layout !== 'list'
+        });
+    }
     get actionButtonLayoutClass() {
         if (this.layout === 'list') {
             return this.actionButtonListClass;
@@ -423,5 +453,22 @@ export default class AvatarGroup extends LightningElement {
                 }
             })
         );
+    }
+
+    toggleShowHiddenList() {
+        this.showPopover = !this.showPopover;
+    }
+    @api
+    get currentlistButtonLabel() {
+        return this.showPopover
+            ? this.listButtonShowLessLabel
+            : this.listButtonShowMoreLabel;
+    }
+
+    @api
+    get currentListButtonIcon() {
+        return this.showPopover
+            ? this.listButtonShowLessIconName
+            : this.listButtonShowMoreIconName;
     }
 }

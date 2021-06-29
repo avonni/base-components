@@ -131,13 +131,13 @@ export default class PageHeader extends LightningElement {
     }
 
     get computedIconClass() {
-        return classSet('slds-icon_container avonni-page-header-desktop')
+        return classSet('slds-icon_container slds-show_small')
             .add(computeSldsClass(this.iconName))
             .toString();
     }
 
     get computedMobileIconClass() {
-        return classSet('slds-icon_container avonni-page-header-mobile')
+        return classSet('slds-icon_container slds-hide_small')
             .add(computeSldsClass(this.iconName))
             .toString();
     }
