@@ -230,6 +230,7 @@
                                                                 >
                                                                     &nbsp;-&nbsp;
                                                                     <lightning-formatted-date-time
+                                                                        class="date-time-picker__formatted-end-time"
                                                                         value={timelineTime.endTimeISO}
                                                                         time-zone={selectedTimeZone}
                                                                         hour={timeFormatHour}
@@ -273,6 +274,7 @@
                                                 <template if:true={showEndTime}>
                                                     &nbsp;-&nbsp;
                                                     <lightning-formatted-date-time
+                                                        class="date-time-picker__formatted-end-time"
                                                         value={time.endTimeISO}
                                                         time-zone={selectedTimeZone}
                                                         hour={timeFormatHour}
