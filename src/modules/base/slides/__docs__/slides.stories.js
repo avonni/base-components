@@ -33,7 +33,7 @@
 import { Slides } from '../__examples__/slides';
 
 export default {
-    title: 'Example/Slides',
+    title: 'Base/Slides',
     argTypes: {
         slidesPerView: {
             name: 'slides-per-view',

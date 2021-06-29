@@ -33,7 +33,7 @@
 import { ButtonDialog } from '../__examples__/buttonDialog';
 
 export default {
-    title: 'Example/Button Dialog',
+    title: 'Base/Button Dialog',
     argTypes: {
         accessKey: {
             name: 'access-key',

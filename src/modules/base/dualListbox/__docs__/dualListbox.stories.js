@@ -33,7 +33,7 @@
 import { DualListbox } from '../__examples__/dualListbox';
 
 export default {
-    title: 'Example/Dual Listbox',
+    title: 'Base/Dual Listbox',
     argTypes: {
         addButtonIconName: {
             name: 'add-button-icon-name',

@@ -33,7 +33,7 @@
 import { Dialog } from '../__examples__/dialog';
 
 export default {
-    title: 'Example/Dialog',
+    title: 'Base/Dialog',
     argTypes: {
         dialogName: {
             name: 'dialog-name',

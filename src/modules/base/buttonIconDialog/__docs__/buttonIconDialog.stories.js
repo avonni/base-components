@@ -33,7 +33,7 @@
 import { ButtonIconDialog } from '../__examples__/buttonIconDialog';
 
 export default {
-    title: 'Example/Button Icon Dialog',
+    title: 'Base/Button Icon Dialog',
     argTypes: {
         accessKey: {
             name: 'access-key',

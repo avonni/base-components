@@ -5,7 +5,7 @@ import { HeroBannerWithSearchBarInFooter } from '../__examples__/heroBannerWithS
 import { HeroBannerWithTwoSlots } from '../__examples__/heroBannerWithTwoSlots';
 
 export default {
-    title: 'Example/Hero Banner',
+    title: 'Base/Hero Banner',
     argTypes: {
         caption: {
             control: {

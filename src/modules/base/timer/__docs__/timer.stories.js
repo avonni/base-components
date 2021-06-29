@@ -34,7 +34,7 @@ import { Timer } from '../__examples__/timer';
 import { html } from 'lit-html';
 
 export default {
-    title: 'Example/Timer',
+    title: 'Base/Timer',
     argTypes: {
         iconName: {
             name: 'icon-name',

@@ -34,7 +34,7 @@ import { SummaryDetail } from '../__examples__/summaryDetail';
 import { SummaryDetailWithActionButton } from '../__examples__/summaryDetailWithActionButton';
 
 export default {
-    title: 'Example/Summary Detail',
+    title: 'Base/Summary Detail',
     argTypes: {
         title: {
             control: {

@@ -33,7 +33,7 @@
 import { List } from '../__examples__/list';
 
 export default {
-    title: 'Example/List',
+    title: 'Base/List',
     argTypes: {
         label: {
             control: {

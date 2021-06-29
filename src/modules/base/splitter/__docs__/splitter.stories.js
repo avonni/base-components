@@ -34,7 +34,7 @@ import { Splitter } from '../__examples__/splitter';
 import { DoubleOrientationSplitter } from '../__examples__/doubleOrientationSplitter';
 
 export default {
-    title: 'Example/Splitter',
+    title: 'Base/Splitter',
     argTypes: {
         orientation: {
             control: {

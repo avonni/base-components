@@ -33,7 +33,7 @@
 import { InputToggle } from '../__examples__/inputToggle';
 
 export default {
-    title: 'Example/Input Toggle',
+    title: 'Base/Input Toggle',
     argTypes: {
         label: {
             control: {

@@ -33,7 +33,7 @@
 import { Rating } from '../__examples__/rating';
 
 export default {
-    title: 'Example/Rating',
+    title: 'Base/Rating',
     argTypes: {
         label: {
             control: {

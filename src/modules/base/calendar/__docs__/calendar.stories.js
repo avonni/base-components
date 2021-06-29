@@ -33,7 +33,7 @@
 import { Calendar } from '../__examples__/calendar';
 
 export default {
-    title: 'Example/Calendar',
+    title: 'Base/Calendar',
     argTypes: {
         value: {
             control: {

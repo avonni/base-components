@@ -33,7 +33,7 @@
 import { ExpandableSection } from '../__examples__/expandableSection';
 
 export default {
-    title: 'Example/Expandable Section',
+    title: 'Base/Expandable Section',
     argTypes: {
         title: {
             control: {

@@ -37,7 +37,7 @@ import { PanelWithContentInside } from '../__examples__/panelWithContentInside';
 import { FiltersPanel } from '../__examples__/filtersPanel';
 
 export default {
-    title: 'Example/Panel',
+    title: 'Base/Panel',
     argTypes: {
         position: {
             control: {

@@ -33,7 +33,7 @@
 import { Pagination } from '../__examples__/pagination';
 
 export default {
-    title: 'Example/Pagination',
+    title: 'Base/Pagination',
     argTypes: {
         align: {
             control: {

@@ -34,7 +34,7 @@ import { FilterMenuGroup } from '../__examples__/filterMenuGroup';
 import { MENUS, ICONS_MENUS } from './data';
 
 export default {
-    title: 'Example/Filter Menu Group',
+    title: 'Base/Filter Menu Group',
     argTypes: {
         menus: {
             control: {

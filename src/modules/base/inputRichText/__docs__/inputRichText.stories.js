@@ -33,7 +33,7 @@
 import { InputRichText } from '../__examples__/inputRichText';
 
 export default {
-    title: 'Example/Input Rich Text',
+    title: 'Base/Input Rich Text',
     argTypes: {
         label: {
             control: {

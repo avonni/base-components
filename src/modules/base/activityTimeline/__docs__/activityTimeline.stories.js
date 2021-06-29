@@ -33,7 +33,7 @@
 import { ActivityTimeline } from '../__examples__/activityTimeline';
 
 export default {
-    title: 'Example/ActivityTimeline',
+    title: 'Base/ActivityTimeline',
     argTypes: {
         title: {
             control: {

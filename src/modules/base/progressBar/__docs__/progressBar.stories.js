@@ -33,7 +33,7 @@
 import { ProgressBar } from '../__examples__/progressBar';
 
 export default {
-    title: 'Example/Progress Bar',
+    title: 'Base/Progress Bar',
     argTypes: {
         label: {
             control: {

@@ -33,7 +33,7 @@
 import { Range } from '../__examples__/range';
 
 export default {
-    title: 'Example/Range',
+    title: 'Base/Range',
     argTypes: {
         label: {
             control: {

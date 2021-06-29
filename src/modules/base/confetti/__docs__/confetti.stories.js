@@ -37,7 +37,7 @@ import Button from 'lightning/button';
 customElements.define('ac-lightning-button', Button.CustomElementConstructor);
 
 export default {
-    title: 'Example/Confetti',
+    title: 'Base/Confetti',
     argTypes: {
         variant: {
             control: {

@@ -34,7 +34,7 @@ import { Illustration } from '../__examples__/illustration';
 import { IllustrationWithSlot } from '../__examples__/illustrationWithSlot';
 
 export default {
-    title: 'Example/Illustration',
+    title: 'Base/Illustration',
     argTypes: {
         title: {
             control: {

@@ -42,7 +42,7 @@ import {
 } from './data';
 
 export default {
-    title: 'Example/Combobox',
+    title: 'Base/Combobox',
     argTypes: {
         actions: {
             control: {

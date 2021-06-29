@@ -45,7 +45,7 @@ import {
 } from './data';
 
 export default {
-    title: 'Example/Datatable',
+    title: 'Base/Datatable',
     argTypes: {
         columnWidthsMode: {
             name: 'column-widths-mode',

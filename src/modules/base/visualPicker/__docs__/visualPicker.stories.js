@@ -33,7 +33,7 @@
 import { VisualPicker } from '../__examples__/visualPicker';
 
 export default {
-    title: 'Example/VisualPicker',
+    title: 'Base/VisualPicker',
     argTypes: {
         label: {
             control: {

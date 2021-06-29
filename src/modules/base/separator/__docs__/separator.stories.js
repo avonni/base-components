@@ -33,7 +33,7 @@
 import { Separator } from '../__examples__/separator';
 
 export default {
-    title: 'Example/Separator',
+    title: 'Base/Separator',
     argTypes: {
         label: {
             name: 'label',

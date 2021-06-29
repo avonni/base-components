@@ -33,7 +33,7 @@
 import { Qrcode } from '../__examples__/qrcode';
 
 export default {
-    title: 'Example/Qrcode',
+    title: 'Base/Qrcode',
     argTypes: {
         value: {
             control: {

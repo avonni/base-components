@@ -33,7 +33,7 @@
 import { MenuItemDialog } from '../__examples__/menuItemDialog';
 
 export default {
-    title: 'Example/Menu Item Dialog (only with avonni-button-menu)',
+    title: 'Base/Menu Item Dialog (only with avonni-button-menu)',
     argTypes: {
         label: {
             control: {

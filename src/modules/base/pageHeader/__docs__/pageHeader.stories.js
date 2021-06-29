@@ -33,7 +33,7 @@
 import { PageHeader } from '../__examples__/pageHeader';
 
 export default {
-    title: 'Example/Page Header',
+    title: 'Base/Page Header',
     argTypes: {
         iconName: {
             control: {

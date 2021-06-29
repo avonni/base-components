@@ -33,7 +33,7 @@
 import { Submenu } from '../__examples__/submenu';
 
 export default {
-    title: 'Example/Submenu',
+    title: 'Base/Submenu',
     argTypes: {}
 };
 

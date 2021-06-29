@@ -33,7 +33,7 @@
 import { InputCounter } from '../__examples__/inputCounter';
 
 export default {
-    title: 'Example/Input Counter',
+    title: 'Base/Input Counter',
     argTypes: {
         label: {
             control: {

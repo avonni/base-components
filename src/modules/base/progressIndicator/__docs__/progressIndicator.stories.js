@@ -33,7 +33,7 @@
 import { ProgressIndicator } from '../__examples__/progressIndicator';
 
 export default {
-    title: 'Example/Progress Indicator',
+    title: 'Base/Progress Indicator',
     argTypes: {
         completedSteps: {
             control: {

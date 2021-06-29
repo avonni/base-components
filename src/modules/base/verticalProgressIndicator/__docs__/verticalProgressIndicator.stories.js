@@ -33,7 +33,7 @@
 import { VerticalProgressIndicator } from '../__examples__/verticalProgressIndicator';
 
 export default {
-    title: 'Example/Vertical Progress Indicator',
+    title: 'Base/Vertical Progress Indicator',
     argTypes: {
         currentStep: {
             name: 'current-step',

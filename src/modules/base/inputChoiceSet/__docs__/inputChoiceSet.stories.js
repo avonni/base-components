@@ -33,7 +33,7 @@
 import { InputChoiceSet } from '../__examples__/inputChoiceSet';
 
 export default {
-    title: 'Example/Input Choice Set',
+    title: 'Base/Input Choice Set',
     argTypes: {
         label: {
             control: {

@@ -33,7 +33,7 @@
 import { Carousel } from '../__examples__/carousel';
 
 export default {
-    title: 'Example/Carousel',
+    title: 'Base/Carousel',
     argTypes: {
         scrollDuration: {
             name: 'scroll-duration',

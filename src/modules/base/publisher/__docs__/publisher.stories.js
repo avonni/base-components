@@ -35,7 +35,7 @@ import { PublisherWithFigureSlot } from '../__examples__/publisherWithFigureSlot
 import { PublisherWithActionsSlot } from '../__examples__/publisherWithActionsSlot';
 
 export default {
-    title: 'Example/Publisher',
+    title: 'Base/Publisher',
     argTypes: {
         placeholder: {
             control: {

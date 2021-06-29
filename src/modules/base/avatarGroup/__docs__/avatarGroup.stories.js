@@ -33,7 +33,7 @@
 import { AvatarGroup } from '../__examples__/avatarGroup';
 
 export default {
-    title: 'Example/Avatar Group',
+    title: 'Base/Avatar Group',
     argTypes: {
         items: {
             control: {

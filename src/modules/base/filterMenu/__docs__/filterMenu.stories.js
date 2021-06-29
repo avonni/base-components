@@ -33,7 +33,7 @@
 import { FilterMenu } from '../__examples__/filterMenu';
 
 export default {
-    title: 'Example/Filter Menu',
+    title: 'Base/Filter Menu',
     argTypes: {
         label: {
             control: {

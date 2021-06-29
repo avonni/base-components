@@ -33,7 +33,7 @@
 import { InputDateRange } from '../__examples__/inputDateRange';
 
 export default {
-    title: 'Example/Input Date Range',
+    title: 'Base/Input Date Range',
     argTypes: {
         type: {
             control: {

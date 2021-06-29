@@ -33,7 +33,7 @@
 import { ProgressRing } from '../__examples__/progressRing';
 
 export default {
-    title: 'Example/Progress Ring',
+    title: 'Base/Progress Ring',
     argTypes: {
         value: {
             control: {

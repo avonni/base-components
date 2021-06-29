@@ -33,7 +33,7 @@
 import { ButtonIconPopover } from '../__examples__/buttonIconPopover';
 
 export default {
-    title: 'Example/Button Icon Popover',
+    title: 'Base/Button Icon Popover',
     argTypes: {
         accessKey: {
             name: 'access-key',

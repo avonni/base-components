@@ -35,7 +35,7 @@ import { ModalWizard } from '../__examples__/modal';
 import { BeforeChangeWizard } from '../__examples__/beforeChange';
 
 export default {
-    title: 'Example/Wizard',
+    title: 'Base/Wizard',
     argTypes: {
         title: {
             control: {

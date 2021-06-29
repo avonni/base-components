@@ -39,7 +39,7 @@ import {
 } from './data';
 
 export default {
-    title: 'Example/Path',
+    title: 'Base/Path',
     argTypes: {
         steps: {
             control: {

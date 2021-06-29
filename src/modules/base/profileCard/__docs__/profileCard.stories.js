@@ -34,7 +34,7 @@ import { ProfileCard } from '../__examples__/profileCard';
 import { NoActionsProfileCard } from '../__examples__/noActions';
 
 export default {
-    title: 'Example/Profile Card',
+    title: 'Base/Profile Card',
     argTypes: {
         title: {
             control: {

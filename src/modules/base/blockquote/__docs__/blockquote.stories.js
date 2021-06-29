@@ -33,7 +33,7 @@
 import { Blockquote } from '../__examples__/blockquote';
 
 export default {
-    title: 'Example/Blockquote',
+    title: 'Base/Blockquote',
     argTypes: {
         title: {
             control: {

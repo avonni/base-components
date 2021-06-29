@@ -33,7 +33,7 @@
 import { ColorPicker } from '../__examples__/colorPicker';
 
 export default {
-    title: 'Example/Color Picker',
+    title: 'Base/Color Picker',
     argTypes: {
         label: {
             control: {

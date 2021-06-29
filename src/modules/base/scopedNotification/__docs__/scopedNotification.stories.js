@@ -34,7 +34,7 @@ import { ScopedNotification } from '../__examples__/scopedNotification';
 import { NoSlotScopedNotification } from '../__examples__/noSlotScopedNotification';
 
 export default {
-    title: 'Example/Scoped Notification',
+    title: 'Base/Scoped Notification',
     argTypes: {
         title: {
             control: {

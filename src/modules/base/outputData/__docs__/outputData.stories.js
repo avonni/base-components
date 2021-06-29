@@ -33,7 +33,7 @@
 import { OutputData } from '../__examples__/outputData';
 
 export default {
-    title: 'Example/Output Data',
+    title: 'Base/Output Data',
     argTypes: {
         label: {
             control: {

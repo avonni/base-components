@@ -34,7 +34,7 @@ import { VisualPickerLink } from '../__examples__/visualPickerLink';
 import { VisualPickerLinkWithSlot } from '../__examples__/visualPickerLinkWithSlot';
 
 export default {
-    title: 'Example/VisualPickerLink',
+    title: 'Base/VisualPickerLink',
     argTypes: {
         title: {
             control: {

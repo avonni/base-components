@@ -33,7 +33,7 @@
 import { Alert } from '../__examples__/alert';
 
 export default {
-    title: 'Example/Alert',
+    title: 'Base/Alert',
     argTypes: {
         iconName: {
             name: 'icon-name',

@@ -33,7 +33,7 @@
 import { Chip } from '../__examples__/chip';
 
 export default {
-    title: 'Example/Chip',
+    title: 'Base/Chip',
     argTypes: {
         label: {
             control: {

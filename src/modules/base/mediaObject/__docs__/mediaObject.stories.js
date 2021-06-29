@@ -35,7 +35,7 @@ import { InverseMediaObject } from '../__examples__/inverseMediaObject';
 import { DoubleMediaObject } from '../__examples__/doubleMediaObject';
 
 export default {
-    title: 'Example/Media Object',
+    title: 'Base/Media Object',
     argTypes: {
         verticalAlign: {
             name: 'vertical-align',

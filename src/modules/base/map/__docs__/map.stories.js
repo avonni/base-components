@@ -33,7 +33,7 @@
 import { Map } from '../__examples__/map';
 
 export default {
-    title: 'Example/Map',
+    title: 'Base/Map',
     argTypes: {
         markersTitle: {
             name: 'markers-title',

@@ -34,7 +34,7 @@ import { RelationshipGraph } from '../__examples__/relationshipGraph';
 import { groupActions, groups, itemActions, actions } from './data';
 
 export default {
-    title: 'Example/Relationship Graph',
+    title: 'Base/Relationship Graph',
     argTypes: {
         label: {
             control: {

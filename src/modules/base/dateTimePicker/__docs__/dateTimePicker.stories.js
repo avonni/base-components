@@ -33,7 +33,7 @@
 import { DateTimePicker } from '../__examples__/dateTimePicker';
 
 export default {
-    title: 'Example/Date Time Picker',
+    title: 'Base/Date Time Picker',
     argTypes: {
         disabled: {
             control: {

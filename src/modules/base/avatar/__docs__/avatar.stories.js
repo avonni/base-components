@@ -33,7 +33,7 @@
 import { Avatar } from '../__examples__/avatar';
 
 export default {
-    title: 'Example/Avatar',
+    title: 'Base/Avatar',
     argTypes: {
         alternativeText: {
             name: 'alternative-text',

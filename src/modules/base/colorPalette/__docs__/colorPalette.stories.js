@@ -33,7 +33,7 @@
 import { ColorPalette } from '../__examples__/colorPalette';
 
 export default {
-    title: 'Example/Color Palette',
+    title: 'Base/Color Palette',
     argTypes: {
         colors: {
             control: {

@@ -33,7 +33,7 @@
 import { ColorGradient } from '../__examples__/colorGradient';
 
 export default {
-    title: 'Example/Color Gradient',
+    title: 'Base/Color Gradient',
     argTypes: {
         value: {
             control: 'text',

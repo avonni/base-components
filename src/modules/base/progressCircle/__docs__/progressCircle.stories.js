@@ -33,7 +33,7 @@
 import { ProgressCircle } from '../__examples__/progressCircle';
 
 export default {
-    title: 'Example/Progress Circle',
+    title: 'Base/Progress Circle',
     argTypes: {
         title: {
             control: {

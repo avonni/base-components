@@ -33,7 +33,7 @@
 import { Segment } from '../__examples__/segment';
 
 export default {
-    title: 'Example/Segment',
+    title: 'Base/Segment',
     argTypes: {
         value: {
             control: {

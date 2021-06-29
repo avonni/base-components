@@ -33,7 +33,7 @@
 import { DynamicMenu } from '../__examples__/dynamicMenu';
 
 export default {
-    title: 'Example/Dynamic Menu',
+    title: 'Base/Dynamic Menu',
     argTypes: {
         value: {
             control: {

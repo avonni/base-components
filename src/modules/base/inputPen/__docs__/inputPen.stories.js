@@ -33,7 +33,7 @@
 import { InputPen } from '../__examples__/inputPen';
 
 export default {
-    title: 'Example/Input Pen',
+    title: 'Base/Input Pen',
     argTypes: {
         label: {
             control: {
