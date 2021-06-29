@@ -1,7 +1,7 @@
 {
     "name": "@avonni/base-components",
     "description": "Base components",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/avonni/base-components.git"
@@ -34,7 +34,7 @@
         "prettier": "^2.2.1"
     },
     "engines": {
-        "node": ">=10.13.0",
+        "node": ">=12.18.3",
         "npm": ">=6.4.1",
         "yarn": ">=1.9.4"
     },

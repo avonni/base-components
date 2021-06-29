@@ -1,12 +1,44 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-const validSizes = {
+const AVATAR_SIZES = {
     valid: ['x-small', 'small', 'medium', 'large', 'x-large'],
     default: 'medium'
 };
-const validAvatarPositions = {
+const AVATAR_POSITIONS = {
     valid: [
         'top-left',
         'top-center',
@@ -17,7 +49,7 @@ const validAvatarPositions = {
     ],
     default: 'top-left'
 };
-const validAvatarVariants = { valid: ['circle', 'square'], default: 'circle' };
+const AVATAR_VARIANTS = { valid: ['circle', 'square'], default: 'circle' };
 
 export default class ProfileCard extends LightningElement {
     @api title;
@@ -29,10 +61,10 @@ export default class ProfileCard extends LightningElement {
     @api avatarAlternativeText;
     @api avatarFallbackIconName;
 
-    _size = validSizes.default;
-    _avatarPosition = validAvatarPositions.default;
-    _avatarMobilePosition = validAvatarPositions.default;
-    _avatarVariant = validAvatarVariants.default;
+    _size = AVATAR_SIZES.default;
+    _avatarPosition = AVATAR_POSITIONS.default;
+    _avatarMobilePosition = AVATAR_POSITIONS.default;
+    _avatarVariant = AVATAR_VARIANTS.default;
     isError = false;
     showActions = true;
     showFooter = true;
@@ -111,8 +143,8 @@ export default class ProfileCard extends LightningElement {
 
     set size(size) {
         this._size = normalizeString(size, {
-            fallbackValue: validSizes.default,
-            validValues: validSizes.valid
+            fallbackValue: AVATAR_SIZES.default,
+            validValues: AVATAR_SIZES.valid
         });
     }
 
@@ -123,8 +155,8 @@ export default class ProfileCard extends LightningElement {
 
     set avatarPosition(avatarPosition) {
         this._avatarPosition = normalizeString(avatarPosition, {
-            fallbackValue: validAvatarPositions.default,
-            validValues: validAvatarPositions.valid
+            fallbackValue: AVATAR_POSITIONS.default,
+            validValues: AVATAR_POSITIONS.valid
         });
     }
 
@@ -135,8 +167,8 @@ export default class ProfileCard extends LightningElement {
 
     set avatarMobilePosition(avatarMobilePosition) {
         this._avatarMobilePosition = normalizeString(avatarMobilePosition, {
-            fallbackValue: validAvatarPositions.default,
-            validValues: validAvatarPositions.valid
+            fallbackValue: AVATAR_POSITIONS.default,
+            validValues: AVATAR_POSITIONS.valid
         });
     }
 
@@ -147,8 +179,8 @@ export default class ProfileCard extends LightningElement {
 
     set avatarVariant(avatarVariant) {
         this._avatarVariant = normalizeString(avatarVariant, {
-            fallbackValue: validAvatarVariants.default,
-            validValues: validAvatarVariants.valid
+            fallbackValue: AVATAR_VARIANTS.default,
+            validValues: AVATAR_VARIANTS.valid
         });
     }
 
