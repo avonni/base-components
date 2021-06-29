@@ -19,4 +19,24 @@ exports.defineTags = function (dictionnary) {
             doclet.access = 'public';
         }
     });
+    dictionnary.defineTag('bubbles', {
+        onTagged: function (doclet, tag) {
+            doclet.bubbles = tag;
+        }
+    });
+    dictionnary.defineTag('cancelable', {
+        onTagged: function (doclet, tag) {
+            doclet.cancelable = tag;
+        }
+    });
+    dictionnary.defineTag('composed', {
+        onTagged: function (doclet, tag) {
+            doclet.composed = tag;
+        }
+    });
+    dictionnary.defineTag('example', {
+        onTagged: function (doclet, tag) {
+            doclet.example = tag;
+        }
+    });
 };

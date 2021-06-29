@@ -1,0 +1,429 @@
+{
+    "classes": [
+        {
+            "name": "Avatar Group",
+            "description": "",
+            "descriptor": "avonni-avatar-group",
+            "extends": [],
+            "access": "public",
+            "example": "https://storybook.avonnicomponents.com/iframe.html?id=example-avatar-group--base-large-with-more-than-two-avatars&viewMode=story",
+            "parameters": []
+        }
+    ],
+    "properties": [
+        {
+            "name": "action-icon-name",
+            "access": "public",
+            "description": "<p>The Lightning Design System name of the action icon.<br>\nSpecify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.</p>",
+            "default": "",
+            "required": "false",
+            "type": ["string"]
+        },
+        {
+            "name": "list-button-show-more-label",
+            "access": "public",
+            "description": "<p>Label of the button that appears in the list layout, when the number of avatars exceeds the max-count number.</p>",
+            "default": "Show more",
+            "required": "false",
+            "type": ["string"]
+        },
+        {
+            "name": "list-button-show-less-label",
+            "access": "public",
+            "description": "<p>Label of the button that appears in the list layout, when the number of avatars exceeds the max-count number.</p>",
+            "default": "Show less",
+            "required": "false",
+            "type": ["string"]
+        },
+        {
+            "name": "list-button-show-more-icon-name",
+            "access": "public",
+            "description": "<p>The Lightning Design System name of the list button icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.</p>",
+            "default": "",
+            "required": "false",
+            "type": ["string"]
+        },
+        {
+            "name": "list-button-show-less-icon-name",
+            "access": "public",
+            "description": "<p>The Lightning Design System name of the list button icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.</p>",
+            "default": "",
+            "required": "false",
+            "type": ["string"]
+        },
+        {
+            "name": "items",
+            "access": "public",
+            "description": "<p>An array of items to be rendered as avatar in a group.</p>",
+            "default": "",
+            "required": "false",
+            "type": ["Array.<object>"]
+        },
+        {
+            "name": "max-count",
+            "access": "public",
+            "description": "<p>The maximum number of avatars allowed in the visible list.</p>",
+            "default": "5 for stack, 11 for grid and list",
+            "required": "false",
+            "type": ["number"]
+        },
+        {
+            "name": "size",
+            "access": "public",
+            "description": "<p>The size of the avatars. Valid values include x-small, small, medium, large, x-large and xx-large.</p>",
+            "default": "medium",
+            "required": "false",
+            "type": ["string"]
+        },
+        {
+            "name": "layout",
+            "access": "public",
+            "description": "<p>Defines the layout of the avatar group. Valid values include stack, grid and list.</p>",
+            "default": "stack",
+            "required": "false",
+            "type": ["string"]
+        },
+        {
+            "name": "list-button-variant",
+            "access": "public",
+            "description": "<p>Variant of the button that appears in the list layout, when the number of avatars exceeds the max-count number.</p>",
+            "default": "neutral",
+            "required": "false",
+            "type": ["string"]
+        },
+        {
+            "name": "list-button-show-more-icon-position",
+            "access": "public",
+            "description": "<p>Position of the list button’s icon. Valid values include left and right.</p>",
+            "default": "left",
+            "required": "false",
+            "type": ["string"]
+        },
+        {
+            "name": "list-button-show-less-icon-position",
+            "access": "public",
+            "description": "<p>Position of the list button’s icon. Valid values include left and right.</p>",
+            "default": "left",
+            "required": "false",
+            "type": ["string"]
+        },
+        {
+            "name": "variant",
+            "access": "public",
+            "description": "<p>Shape of the avatars. Valid values include empty, circle or square.</p>",
+            "default": "square",
+            "required": "false",
+            "type": ["string"]
+        },
+        {
+            "name": "currentlistButtonLabel",
+            "access": "",
+            "description": "<p>Current label of the list button (show more or show less)</p>",
+            "default": "",
+            "required": "false",
+            "type": ["string"]
+        },
+        {
+            "name": "currentListButtonIcon",
+            "access": "",
+            "description": "<p>Current icon name of the list button (show more or show less)</p>",
+            "default": "",
+            "required": "false",
+            "type": ["string"]
+        },
+        {
+            "name": "currentListButtonPosition",
+            "access": "",
+            "description": "<p>Current icon position of the list button (show more or show less)</p>",
+            "default": "",
+            "required": "false",
+            "type": ["string"]
+        },
+        {
+            "name": "primaryItem",
+            "access": "",
+            "description": "<p>If there are exactly two items, contains the first. Else contains an empty object.</p>",
+            "default": "",
+            "required": "false",
+            "type": ["object"]
+        },
+        {
+            "name": "secondaryItem",
+            "access": "",
+            "description": "<p>If there are exactly two items, contains the second. Else contains an empty object.</p>",
+            "default": "",
+            "required": "false",
+            "type": ["object"]
+        },
+        {
+            "name": "listItems",
+            "access": "",
+            "description": "<p>Computed list items</p>",
+            "default": "",
+            "required": "false",
+            "type": ["Array.<object>"]
+        },
+        {
+            "name": "listHiddenItems",
+            "access": "",
+            "description": "<p>Hidden extra items</p>",
+            "default": "",
+            "required": "false",
+            "type": ["Array.<object>"]
+        },
+        {
+            "name": "avatarGroupClass",
+            "access": "",
+            "description": "<p>Class wrapping the two-avatar group</p>",
+            "default": "",
+            "required": "false",
+            "type": ["string"]
+        },
+        {
+            "name": "avatarInlineClass",
+            "access": "",
+            "description": "<p>Class of avatars when displayed in a line</p>",
+            "default": "",
+            "required": "false",
+            "type": ["string"]
+        },
+        {
+            "name": "avatarInlinePlusClass",
+            "access": "",
+            "description": "<p>Class of the show more button when the avatars are displayed in a line</p>",
+            "default": "",
+            "required": "false",
+            "type": ["string"]
+        },
+        {
+            "name": "avatarWrapperClass",
+            "access": "",
+            "description": "<p>Class of the avatar wrapper, when there are more than two avatars</p>",
+            "default": "",
+            "required": "false",
+            "type": ["string"]
+        },
+        {
+            "name": "actionButtonClass",
+            "access": "",
+            "description": "<p>Class of the action button</p>",
+            "default": "",
+            "required": "false",
+            "type": ["string"]
+        },
+        {
+            "name": "actionButtonWrapperClass",
+            "access": "",
+            "description": "<p>Class of action button wrapper</p>",
+            "default": "",
+            "required": "false",
+            "type": ["string"]
+        },
+        {
+            "name": "hiddenListClass",
+            "access": "",
+            "description": "<p>Class of the hidden extra items dropdown</p>",
+            "default": "",
+            "required": "false",
+            "type": ["string"]
+        },
+        {
+            "name": "actionButtonIconSize",
+            "access": "",
+            "description": "<p>Action button icon size</p>",
+            "default": "",
+            "required": "false",
+            "type": ["string"]
+        },
+        {
+            "name": "isClassic",
+            "access": "",
+            "description": "<p>True if there are only two avatars visible</p>",
+            "default": "",
+            "required": "false",
+            "type": ["boolean"]
+        },
+        {
+            "name": "isNotList",
+            "access": "",
+            "description": "<p>True if the layout is not &quot;list&quot;</p>",
+            "default": "",
+            "required": "false",
+            "type": ["boolean"]
+        }
+    ],
+    "functions": [
+        {
+            "name": "allowBlur",
+            "access": "",
+            "description": "<p>Change the value of _allowBlur to true</p>",
+            "parameters": []
+        },
+        {
+            "name": "cancelBlur",
+            "access": "",
+            "description": "<p>Change the value of _allowBlur to false</p>",
+            "parameters": []
+        },
+        {
+            "name": "handleBlur",
+            "access": "",
+            "description": "<p>Close the hidden extra avatars popover</p>",
+            "parameters": []
+        },
+        {
+            "name": "handleAvatarClick",
+            "access": "",
+            "description": "<p>If the &quot;show more&quot; avatar was clicked, open the popover.<br>\nIf another avatar was clicked, dispatch the avatarclick event.</p>",
+            "parameters": []
+        },
+        {
+            "name": "actionClick",
+            "access": "",
+            "description": "<p>Dispatch the actionclick event</p>",
+            "parameters": []
+        },
+        {
+            "name": "toggleShowHiddenList",
+            "access": "",
+            "description": "<p>Toggle the hidden extra avatars popover</p>",
+            "parameters": []
+        }
+    ],
+    "events": [
+        {
+            "name": "avatarclick\nThe event fired when the user click on an avatar.",
+            "access": "public",
+            "description": "",
+            "parameters": [
+                {
+                    "name": "item",
+                    "type": ["object"],
+                    "description": "<p>The avatar detail</p>",
+                    "default": ""
+                }
+            ],
+            "bubbles": true,
+            "cancelable": true,
+            "composed": false
+        },
+        {
+            "name": "actionclick\nThe event fired when the user clicks on an action.",
+            "access": "public",
+            "description": "",
+            "parameters": [
+                {
+                    "name": "name",
+                    "type": ["string"],
+                    "description": "<p>The avatar group name.</p>",
+                    "default": ""
+                }
+            ],
+            "bubbles": false,
+            "cancelable": false,
+            "composed": false
+        }
+    ],
+    "typedef": [
+        {
+            "name": "Items",
+            "access": "",
+            "description": "",
+            "default": "",
+            "required": "false",
+            "type": [],
+            "properties": [
+                {
+                    "name": "alternativeText",
+                    "type": ["string"],
+                    "description": "<p>The alternative text used to describe the avatar.</p>"
+                },
+                {
+                    "name": "initials",
+                    "type": ["string"],
+                    "description": "<p>If the record name contains two words, like first and last name, use the first capitalized letter of each. For records that only have a single word name, use the first two letters of that word using one capital and one lower case letter.</p>"
+                },
+                {
+                    "name": "fallbackIconName",
+                    "type": ["string"],
+                    "description": "<p>The Lightning Design System name of the icon used as a fallback when the image fails to load. The initials fallback relies on this for its background color.<br>\nNames are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. Only icons from the standard and custom categories are allowed.</p>"
+                },
+                {
+                    "name": "src",
+                    "type": ["string"],
+                    "description": "<p>Image URL for the avatar of the group. If present, the avatar is displayed before the label.</p>"
+                },
+                {
+                    "name": "entityIconName",
+                    "type": ["string"],
+                    "description": "<p>Image URL for the avatar of the group. If present, the avatar is displayed before the label.</p>"
+                },
+                {
+                    "name": "entitySrc",
+                    "type": ["string"],
+                    "description": "<p>Image URL for the entity icon.</p>"
+                },
+                {
+                    "name": "entityPosition",
+                    "type": ["string"],
+                    "description": "<p>Position of the entity icon.</p>"
+                },
+                {
+                    "name": "entityVariant",
+                    "type": ["string"],
+                    "description": "<p>The variant changes the shape of the avatar. Valid values are empty, circle, and square. The value defaults to square.</p>"
+                },
+                {
+                    "name": "status",
+                    "type": ["string"],
+                    "description": "<p>An avatar’s status shows contextual information, such as if someone approves or declines something. Valid values include approved, locked, declined and unknown.</p>"
+                },
+                {
+                    "name": "statusTitle",
+                    "type": ["string"],
+                    "description": "<p>Title of the status icon.</p>"
+                },
+                {
+                    "name": "statusPosition",
+                    "type": ["string"],
+                    "description": "<p>Position of the status icon.</p>"
+                },
+                {
+                    "name": "presence",
+                    "type": ["string"],
+                    "description": "<p>A presence shows an avatar’s availability. Valid values include online, busy, focus, offline, blocked and away.</p>"
+                },
+                {
+                    "name": "presenceTitle",
+                    "type": ["string"],
+                    "description": "<p>Title of the presence icon.</p>"
+                },
+                {
+                    "name": "presencePosition",
+                    "type": ["string"],
+                    "description": "<p>Position of the presence icon.</p>"
+                },
+                {
+                    "name": "primaryText",
+                    "type": ["string"],
+                    "description": "<p>Primary text displayed next to the avatar.</p>"
+                },
+                {
+                    "name": "secondaryText",
+                    "type": ["string"],
+                    "description": "<p>Secondary text displayed next to the avatar.</p>"
+                },
+                {
+                    "name": "tertiaryText",
+                    "type": ["string"],
+                    "description": "<p>Tertiary text displayed next to the avatar.</p>"
+                },
+                {
+                    "name": "tags",
+                    "type": ["Array.<object>"],
+                    "description": "<p>Fields:</p>\n<ul>\n<li>label: string.</li>\n<li>variant: string. Valid values include default, inverse, lightest, success, warning, error. Default to default.</li>\n</ul>"
+                }
+            ]
+        }
+    ]
+}

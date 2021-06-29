@@ -127,14 +127,7 @@ function graft(parentNode, childNodes, parentLongname) {
                                 element.properties[i].type.names
                                     ? element.properties[i].type.names
                                     : [],
-                            description:
-                                element.properties[i].description || '',
-                            default: hasOwnProp.call(
-                                element.properties[i],
-                                'default'
-                            )
-                                ? element.properties[i].default
-                                : ''
+                            description: element.properties[i].description || ''
                         });
                     }
                 }
@@ -185,27 +178,15 @@ function graft(parentNode, childNodes, parentLongname) {
                     descriptor: element.descriptor || '',
                     extends: element.augments || [],
                     access: element.access || '',
-                    constructor: {
-                        name: element.name,
-                        description: element.description || '',
-                        parameters: [],
-                        examples: []
-                    }
+                    example: element.example ? element.example.value : '',
+                    parameters: []
                 };
 
                 parentNode.classes.push(thisClass);
 
-                if (element.examples) {
-                    for (i = 0, len = element.examples.length; i < len; i++) {
-                        thisClass.constructor.examples.push(
-                            element.examples[i]
-                        );
-                    }
-                }
-
                 if (element.params) {
                     for (i = 0, len = element.params.length; i < len; i++) {
-                        thisClass.constructor.parameters.push({
+                        thisClass.parameters.push({
                             name: element.params[i].name,
                             type:
                                 element.params[i].type &&
