@@ -119,10 +119,19 @@ export default {
             description:
                 'Position of the sortable icon. Valid values include left and right.',
             table: {
-                type: { summary: 'string' },
+                type: { summary: 'string' }
             }
         },
-
+        imageSrc: {
+            name: 'image-src',
+            control: {
+                type: 'object'
+            },
+            description: 'Array of image sources',
+            table: {
+                type: { summary: 'object[]' }
+            }
+        }
     }
 };
 
@@ -241,6 +250,13 @@ const actions = [
     }
 ];
 
+const imageSrc = [
+    'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+    'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg',
+    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+    'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300'
+];
+
 export const Base = Template.bind({});
 Base.args = {
     items: items,
@@ -266,7 +282,8 @@ SortableList.args = {
     sortable: true,
     items: items,
     actions: actions,
-    divider: 'around'
+    divider: 'around',
+    imageSrc: imageSrc
 };
 
 export const SortableListWithAvatars = Template.bind({});

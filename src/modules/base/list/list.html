@@ -65,6 +65,26 @@
                 aria-describedby="instructions"
             >
                 <div class="slds-grid slds-grid_vertical-align-center">
+                    <template
+                        if:true={imageSrc}
+                        for:each={imageSrc}
+                        for:item="img"
+                        for:index="index"
+                    >
+                        <div
+                            class="container-image"
+                            key={img}
+                            style="width: 200px"
+                        >
+                            <c-image
+                                src={img}
+                                width="128"
+                                thumbnail="true"
+                                crop-size="4x3"
+                                crop-fit="cover"
+                            ></c-image>
+                        </div>
+                    </template>
                     <lightning-icon
                         if:true={showIconLeft}
                         class="icon-left"

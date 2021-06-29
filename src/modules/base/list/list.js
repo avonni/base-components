@@ -53,6 +53,7 @@ export default class List extends LightningElement {
     @api label;
     @api sortableIconName;
     @api alternativeText;
+    // @api imgSrc;
 
     _items = [];
     _sortable = false;
@@ -69,6 +70,7 @@ export default class List extends LightningElement {
     _actions = [];
     _hasActions = false;
     _divider;
+    _imageSrc = [];
     computedActions = [];
     computedItems = [];
     menuRole;
@@ -82,6 +84,15 @@ export default class List extends LightningElement {
         this._divider = normalizeString(value, {
             validValues: DIVIDER.valid
         });
+    }
+
+    @api
+    get imageSrc() {
+        return this._imageSrc;
+    }
+
+    set imageSrc(image) {
+        this._imageSrc = normalizeArray(image);
     }
 
     @api
