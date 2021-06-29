@@ -78,10 +78,6 @@ export default class Image extends LightningElement {
 
     renderedCallback() {
         this.getImageDimensions();
-        console.log(this.height);
-        if (this._height !== undefined && this._height.includes('%')) {
-            this._heightPercent = this._height;
-        }
     }
 
     @api
@@ -162,7 +158,6 @@ export default class Image extends LightningElement {
         ) {
             this._widthPercent = value;
         }
-        console.log('width', this._widthPercent);
         this.initBlank();
     }
 
@@ -173,7 +168,6 @@ export default class Image extends LightningElement {
 
     set height(value) {
         this._height = value;
-        console.log(value);
         if (
             value !== undefined &&
             typeof value === 'string' &&
@@ -181,8 +175,6 @@ export default class Image extends LightningElement {
         ) {
             this._heightPercent = value;
         }
-        console.log('height', this._heightPercent);
-
         this.initBlank();
     }
 
@@ -398,11 +390,13 @@ export default class Image extends LightningElement {
                     !this._cropSize &&
                     this.width &&
                     this.height,
-                'avonni-image_no-crop_width_heightPercent':
-                    this.width &&
-                    this._heightPercent &&
-                    !this._cropSize &&
-                    !this.staticImages
+                'avonni-image_no-crop_percent':
+                    (this.width && this._heightPercent) ||
+                    (this._widthPercent && this.height) ||
+                    (this._widthPercent &&
+                        this._heightPercent &&
+                        !this._cropSize &&
+                        !this.staticImages)
             })
             .toString();
     }
@@ -411,7 +405,7 @@ export default class Image extends LightningElement {
         return classSet('avonni-img-container')
             .add({
                 'avonni-img-container_percent':
-                    this._heightPercent && this.width
+                    this._heightPercent || this._widthPercent
             })
             .toString();
     }
@@ -451,7 +445,7 @@ export default class Image extends LightningElement {
                 return `
                 padding-top: ${(this.height / this._imgWidth) * 100}%;
                 `;
-            } else if (this.width && this._heightPercent) {
+            } else if (this._heightPercent || this._widthPercent) {
                 return `padding-top : none`;
             }
         } else if (this.staticImages) {
@@ -558,6 +552,20 @@ export default class Image extends LightningElement {
                 return `
                 width: ${this.width}px;
                 height: ${this.height};
+                object-fit: ${this.cropFit};
+                object-position: ${this.cropPositionX}% ${this.cropPositionY}%;        
+                `;
+            } else if (this._widthPercent && this._heightPercent) {
+                return `
+                width: ${this.width};
+                height: ${this.height};
+                object-fit: ${this.cropFit};
+                object-position: ${this.cropPositionX}% ${this.cropPositionY}%;        
+                `;
+            } else if (this._widthPercent && this.height) {
+                return `
+                width: ${this.width};
+                height: ${this.height}px;
                 object-fit: ${this.cropFit};
                 object-position: ${this.cropPositionX}% ${this.cropPositionY}%;        
                 `;
