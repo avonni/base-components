@@ -43,7 +43,7 @@ export const List = ({
     sortableIconName,
     sortableIconPosition,
     divider,
-    imageSrc
+    imageWidth
 }) => {
     const element = document.createElement('ac-base-list');
     element.label = label;
@@ -54,6 +54,6 @@ export const List = ({
     element.sortableIconName = sortableIconName;
     element.sortableIconPosition = sortableIconPosition;
     element.divider = divider;
-    element.imageSrc = imageSrc;
+    element.imageWidth = imageWidth;
     return element;
 };

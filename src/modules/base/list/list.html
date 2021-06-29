@@ -47,6 +47,11 @@
 
     <ul class={computedListClass} role={menuRole}>
         <template for:each={computedItems} for:item="item" for:index="index">
+            <!-- <template
+                for:each={imageSrc}
+                for:item="img"
+                for:index="imageIndex"
+            > -->
             <li
                 key={item.label}
                 class={computedItemClass}
@@ -65,24 +70,23 @@
                 aria-describedby="instructions"
             >
                 <div class="slds-grid slds-grid_vertical-align-center">
-                    <template
-                        if:true={imageSrc}
-                        for:each={imageSrc}
-                        for:item="img"
-                        for:index="index"
-                    >
+                    <template if:true={item.imageSrc}>
                         <div
                             class="container-image"
-                            key={img}
-                            style="width: 200px"
+                            style="
+                                width: 250px;
+                                height: 100%;
+                                margin-right: 1em;
+                            "
                         >
                             <c-image
-                                src={img}
-                                width="128"
+                                key={item.imageSrc}
+                                src={item.imageSrc}
+                                width={imageWidth}
                                 thumbnail="true"
-                                crop-size="4x3"
-                                crop-fit="cover"
                             ></c-image>
+                            <!-- crop-size="4x3"
+                            crop-fit="cover" -->
                         </div>
                     </template>
                     <lightning-icon
@@ -195,6 +199,7 @@
                     </div>
                 </div>
             </li>
+            <!-- </template> -->
         </template>
     </ul>
 </template>

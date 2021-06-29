@@ -49,11 +49,14 @@ const DIVIDER = {
 
 const DEFAULT_ITEM_HEIGHT = 44;
 
+const IMAGE_WIDTH = {
+    valid: ['small', 'medium', 'large']
+};
+
 export default class List extends LightningElement {
     @api label;
     @api sortableIconName;
     @api alternativeText;
-    // @api imgSrc;
 
     _items = [];
     _sortable = false;
@@ -87,12 +90,29 @@ export default class List extends LightningElement {
     }
 
     @api
-    get imageSrc() {
-        return this._imageSrc;
+    get imageWidth() {
+        return this._imageWidth;
     }
 
-    set imageSrc(image) {
-        this._imageSrc = normalizeArray(image);
+    set imageWidth(width) {
+        this._imageWidth = normalizeString(width, {
+            validValues: IMAGE_WIDTH.valid
+        });
+
+        switch (this._imageWidth) {
+            case 'small':
+                this._imageWidth = '48';
+                break;
+            case 'medium':
+                this._imageWidth = '72';
+                break;
+            case 'large':
+                this._imageWidth = '128';
+                break;
+            default:
+                this._imageWidth = '128';
+                break;
+        }
     }
 
     @api
