@@ -187,7 +187,7 @@ export default class List extends LightningElement {
     }
 
     get computedListClass() {
-        return `menu slds-has-dividers_${this.divider}-space`;
+        return `menu slds-has-dividers_${this.divider}`;
     }
 
     get computedItemClass() {

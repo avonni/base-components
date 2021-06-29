@@ -47,11 +47,6 @@
 
     <ul class={computedListClass} role={menuRole}>
         <template for:each={computedItems} for:item="item" for:index="index">
-            <!-- <template
-                for:each={imageSrc}
-                for:item="img"
-                for:index="imageIndex"
-            > -->
             <li
                 key={item.label}
                 class={computedItemClass}
@@ -72,9 +67,9 @@
                 <div class="slds-grid slds-grid_vertical-align-center">
                     <template if:true={item.imageSrc}>
                         <div
-                            class="container-image"
+                            class="container-image slds-grid slds-grid_vertical-align-center"
                             style="
-                                width: 250px;
+                                width: 200px;
                                 height: 100%;
                                 margin-right: 1em;
                             "
@@ -83,10 +78,11 @@
                                 key={item.imageSrc}
                                 src={item.imageSrc}
                                 width={imageWidth}
-                                thumbnail="true"
+                                crop-size="4x3"
+                                crop-fit="cover"
+                                static-images="true"
                             ></c-image>
-                            <!-- crop-size="4x3"
-                            crop-fit="cover" -->
+                            <!-- thumbnail="true" -->
                         </div>
                     </template>
                     <lightning-icon
