@@ -115,7 +115,8 @@ export default {
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'Show more' },
-                category: 'List button'
+                category: 'Buttons',
+                subcategory: 'List'
             }
         },
         listButtonVariant: {
@@ -139,7 +140,8 @@ export default {
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'base' },
-                category: 'List button'
+                category: 'Buttons',
+                subcategory: 'List'
             }
         },
         listButtonShowMoreIconName: {
@@ -151,7 +153,8 @@ export default {
                 "The Lightning Design System name of the list button icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.",
             table: {
                 type: { summary: 'string' },
-                category: 'List button'
+                category: 'Buttons',
+                subcategory: 'List'
             }
         },
         listButtonShowMoreIconPosition: {
@@ -166,7 +169,8 @@ export default {
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'left' },
-                category: 'List button'
+                category: 'Buttons',
+                subcategory: 'List'
             }
         },
         listButtonShowLessLabel: {
@@ -180,7 +184,8 @@ export default {
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'Show less' },
-                category: 'List button'
+                category: 'Buttons',
+                subcategory: 'List'
             }
         },
         listButtonShowLessIconName: {
@@ -192,7 +197,8 @@ export default {
                 "The Lightning Design System name of the list button icon. Specify the name in the format 'utility:up' where 'utility' is the category, and 'up' is the specific icon to be displayed.",
             table: {
                 type: { summary: 'string' },
-                category: 'List button'
+                category: 'Buttons',
+                subcategory: 'List'
             }
         },
         listButtonShowLessIconPosition: {
@@ -207,7 +213,8 @@ export default {
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'left' },
-                category: 'List button'
+                category: 'Buttons',
+                subcategory: 'List'
             }
         },
 
@@ -216,13 +223,12 @@ export default {
             control: {
                 type: 'text'
             },
-            defaultValue: 'utility:add',
             description:
                 "The Lightning Design System name of the action icon name. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.",
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'utility:add' },
-                category: 'Action Button'
+                category: 'Buttons',
+                subcategory: 'Action'
             }
         },
         name: {
@@ -404,7 +410,8 @@ BaseLargeWithMoreThanTwoAvatars.args = {
     items: [...items, ...items, ...items],
     size: 'large',
     maxCount: 6,
-    variant: 'circle'
+    variant: 'circle',
+    actionIconName: 'utility:add'
 };
 
 export const Grid = Template.bind({});
