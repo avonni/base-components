@@ -59,7 +59,7 @@ describe('Button Popover', () => {
         expect(element.popoverSize).toBe('medium');
         expect(element.placement).toBe('left');
         expect(element.isLoading).toBeFalsy();
-        expect(element.loadingStateAlternativeText).toBeUndefined();
+        expect(element.loadingStateAlternativeText).toBe('Loading');
         expect(element.triggers).toBe('click');
         expect(element.popoverVariant).toBe('base');
     });

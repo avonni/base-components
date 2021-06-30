@@ -61,7 +61,7 @@ describe('Button Icon Popover', () => {
         expect(element.popoverSize).toBe('medium');
         expect(element.placement).toBe('left');
         expect(element.isLoading).toBeFalsy();
-        expect(element.loadingStateAlternativeText).toBeUndefined();
+        expect(element.loadingStateAlternativeText).toBe('Loading');
         expect(element.triggers).toBe('click');
         expect(element.popoverVariant).toBe('base');
     });
@@ -943,12 +943,17 @@ describe('Button Icon Popover', () => {
         });
         document.body.appendChild(element);
 
+        const buttonIcon = element.shadowRoot.querySelector(
+            'lightning-button-icon'
+        );
+
         let focusEvent = false;
-        element.addEventListener('focus', () => {
+
+        buttonIcon.addEventListener('focus', () => {
             focusEvent = true;
         });
 
-        element.focus();
+        buttonIcon.focus();
         return Promise.resolve().then(() => {
             expect(focusEvent).toBeTruthy();
         });
@@ -961,14 +966,35 @@ describe('Button Icon Popover', () => {
         document.body.appendChild(element);
 
         let closeEvent = false;
+
         element.addEventListener('close', () => {
             closeEvent = true;
         });
 
         element.close();
+
         return Promise.resolve().then(() => {
             expect(closeEvent).toBeTruthy();
         });
+    });
+
+    it('Button Icon Popover method: open', () => {
+        const element = createElement('base-button-icon-popover', {
+            is: ButtonIconPopover
+        });
+        document.body.appendChild(element);
+
+        return Promise.resolve()
+            .then(() => {
+                element.focus();
+                element.open();
+            })
+            .then(() => {
+                const popover = element.shadowRoot.querySelector(
+                    '.slds-popover'
+                );
+                expect(popover.className).toContain('slds-show');
+            });
     });
 
     /* ----- EVENTS ----- */
