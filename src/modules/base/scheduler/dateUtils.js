@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { DateTime } from 'c/luxon';
+import { DateTime, Interval } from 'c/luxon';
 
 const FORMATS = [
     {
@@ -104,9 +104,9 @@ const FORMATS = [
 ];
 
 /**
- * Converts a timestamp or a date object into a Luxon DateTime object.
- * @param {number} - Timestamp to convert
- * @returns {object} DateTime object or false
+ * Convert a timestamp or a date object into a Luxon DateTime object.
+ * @param {(number | Date)} date Timestamp or date object to convert
+ * @returns {(DateTime | false)} DateTime object or false
  */
 const dateTimeObjectFrom = (date) => {
     let time;
@@ -120,8 +120,8 @@ const dateTimeObjectFrom = (date) => {
 };
 
 /**
- * @param {number} time - Timestamp used as a reference by the formatter
- * @param {string} stringToFormat - String containing the formatting pattern
+ * @param {number} time Timestamp used as a reference by the formatter
+ * @param {string} stringToFormat String containing the formatting pattern
  * @returns {string} Formatted string
  */
 const formatTime = (time, stringToFormat) => {
@@ -137,9 +137,9 @@ const formatTime = (time, stringToFormat) => {
 };
 
 /**
- * Checks if a time is included in a time frame.
- * @param {DateTime} date - DateTime object
- * @param {string} timeFrame - The time frame of reference, in the format '00:00-00:00'
+ * Check if a time is included in a time frame.
+ * @param {DateTime} date DateTime object
+ * @param {string} timeFrame The time frame of reference, in the format '00:00-00:00'
  * @returns {boolean} true or false
  */
 const isInTimeFrame = (date, timeFrame) => {
@@ -171,112 +171,39 @@ const isInTimeFrame = (date, timeFrame) => {
 };
 
 /**
- * Checks the number of minutes in one specific unit
- * @param {string} timeFrame - The time frame of reference, in the format '00:00-00:00'
- * @param {string} unit - The unit (hour, day, week, month or year)
- * @returns {number} Number of minutes in one unit
+ * Add unit * span to the date
+ * @param {DateTime} date The date we want to add time to
+ * @param {string} unit The unit (minute, hour, day, week, month or year)
+ * @returns {DateTime} DateTime object with the added time
  */
-const allowedMinutesInUnit = (timeFrame, unit) => {
-    const startMatch = timeFrame.match(/^([0-9]{2}):([0-9]{2})/);
-    const endMatch = timeFrame.match(/-([0-9]{2}):([0-9]{2})/);
-    if (!startMatch || !endMatch) return false;
-
-    const startHour = Number(startMatch[1]);
-    const startMinute = Number(startMatch[2]);
-    const start = new Date(2021, 0, 0, startHour, startMinute, 0, 0);
-
-    const endHour = Number(endMatch[1]);
-    const endMinute = Number(endMatch[2]);
-    const end = new Date(2021, 0, 0, endHour, endMinute, 0, 0);
-
-    const minutesInADay = (end - start) / 60000;
-
-    let minutesInUnit;
-    switch (unit) {
-        case 'hour':
-            minutesInUnit = minutesInADay / 24;
-            break;
-        case 'week':
-            minutesInUnit = 7 * minutesInADay;
-            break;
-        case 'month':
-            minutesInUnit = Math.floor(30.4167 * minutesInADay);
-            break;
-        case 'year':
-            minutesInUnit = 365 * minutesInADay;
-            break;
-        default:
-            minutesInUnit = minutesInADay;
-            break;
-    }
-    return minutesInUnit;
+const addToDate = (date, unit, span) => {
+    const options = {};
+    options[unit] = span;
+    return date.plus(options);
 };
 
 /**
- * Checks the number of hours in one specific unit
- * @param {string} timeFrame - The time frame of reference, in the format '00:00-00:00'
- * @param {string} unit - The unit (day, week, month or year)
- * @returns {number} Number of hours in one unit
+ * Remove unit * span to the date
+ * @param {DateTime} date The date we want to remove time to
+ * @param {string} unit The unit (minute, hour, day, week, month or year)
+ * @returns {DateTime} DateTime object with the removed time
  */
-const allowedHoursInUnit = (timeFrame, unit) => {
-    let hoursInADay = 0;
-
-    for (let i = 0; i < 24; i++) {
-        const time = new Date().setHours(i, 0, 0, 0);
-
-        if (isInTimeFrame(DateTime.fromMillis(time), timeFrame)) {
-            hoursInADay += 1;
-        }
-    }
-
-    let hoursInUnit;
-    switch (unit) {
-        case 'week':
-            hoursInUnit = 7 * hoursInADay;
-            break;
-        case 'month':
-            hoursInUnit = Math.floor(30.4167 * hoursInADay);
-            break;
-        case 'year':
-            hoursInUnit = 365 * hoursInADay;
-            break;
-        default:
-            hoursInUnit = hoursInADay;
-            break;
-    }
-    return hoursInUnit;
+const removeToDate = (date, unit, span) => {
+    const options = {};
+    options[unit] = span;
+    return date.minus(options);
 };
 
-/**
- * Checks the number of days in one specific unit
- * @param {string} timeFrame - The time frame of reference, in the format '00:00-00:00'
- * @param {string} unit - The unit (week, month or year)
- * @returns {number} Number of days in one unit
- */
-const allowedDaysInUnit = (allowedDaysInAWeek, unit) => {
-    const daysInAWeek = allowedDaysInAWeek.length;
-
-    let daysInUnit;
-    switch (unit) {
-        case 'month':
-            daysInUnit = Math.floor(4.34524 * daysInAWeek);
-            break;
-        case 'year':
-            daysInUnit = 52 * daysInAWeek;
-            break;
-        default:
-            daysInUnit = daysInAWeek;
-            break;
-    }
-
-    return daysInUnit;
+const numberOfUnitsBetweenDates = (unit, start, end) => {
+    const interval = Interval.fromDateTimes(start, end);
+    return interval.count(unit);
 };
 
 export {
+    addToDate,
+    removeToDate,
     formatTime,
     dateTimeObjectFrom,
     isInTimeFrame,
-    allowedHoursInUnit,
-    allowedDaysInUnit,
-    allowedMinutesInUnit
+    numberOfUnitsBetweenDates
 };

@@ -95,26 +95,31 @@ const rows = [
 ];
 
 const headers = [
+    // {
+    //     unit: 'year',
+    //     span: 1,
+    //     label: '<YYYY>'
+    // },
     {
         unit: 'month',
         span: 1,
-        label: '<MMMM> <YYYY>'
+        label: '<MMMM>'
     },
-    // {
-    //     unit: 'week',
-    //     span: 1,
-    //     label: 'Week'
-    // },
+    {
+        unit: 'week',
+        span: 3,
+        label: '<ddd> <DD>'
+    },
     {
         unit: 'day',
         span: 1,
-        label: '<DD>'
-    },
-    {
-        unit: 'hour',
-        span: 1,
-        label: '<H>'
+        label: '<ddd> <DD>'
     }
+    // {
+    //     unit: 'hour',
+    //     span: 4,
+    //     label: '<H>'
+    // },
     // {
     //     unit: 'minute',
     //     span: 30,

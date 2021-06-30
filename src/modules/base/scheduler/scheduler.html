@@ -54,6 +54,7 @@
                 <thead>
                     <template for:each={headers} for:item="header">
                         <tr
+                            if:false={header.isHidden}
                             key={header.key}
                             class="slds-grid slds-is-relative slds-border_bottom"
                             data-key={header.key}
@@ -67,7 +68,9 @@
                                     key={column.time}
                                     class="slds-border_right slds-th__action slds-col slds-grid slds-grid_vertical-align-center slds-grid_align-center"
                                 >
-                                    <span class="slds-truncate"
+                                    <span
+                                        class="slds-truncate"
+                                        title={column.label}
                                         >{column.label}</span
                                     >
                                 </th>

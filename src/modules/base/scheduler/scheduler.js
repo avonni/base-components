@@ -35,9 +35,9 @@ import { DateTime } from 'c/luxon';
 import { normalizeArray, normalizeString } from 'c/utilsPrivate';
 import {
     dateTimeObjectFrom,
-    allowedHoursInUnit,
-    allowedDaysInUnit,
-    allowedMinutesInUnit
+    addToDate,
+    removeToDate,
+    numberOfUnitsBetweenDates
 } from './dateUtils';
 import {
     EVENTS_THEMES,
@@ -70,7 +70,6 @@ export default class Scheduler extends LightningElement {
     _theme = THEMES.default;
     _visibleSpan = DEFAULT_VISIBLE_SPAN;
 
-    _referenceHeader;
     scheduleRows = [];
 
     connectedCallback() {
@@ -251,6 +250,11 @@ export default class Scheduler extends LightningElement {
         if (this.isConnected) {
             this.headers.forEach((header) => {
                 header.start = this._start;
+                header.end = addToDate(
+                    this.start,
+                    this.visibleSpan.unit,
+                    this.visibleSpan.span
+                );
             });
 
             this.updateRowColumns();
@@ -302,96 +306,81 @@ export default class Scheduler extends LightningElement {
             }
         );
 
+        // Create the reference header.
         // The reference header is the header using the visibleSpan unit
-        const referenceHeaderIndex = sortedHeaders.findIndex(
-            (header) => header.unit === this.visibleSpan.unit
+        const referenceUnit = this.visibleSpan.unit;
+        const referenceEnd = addToDate(
+            this.start,
+            referenceUnit,
+            this.visibleSpan.span
+        );
+        const referenceHeader = sortedHeaders.find(
+            (header) => header.unit === referenceUnit
         );
 
-        if (referenceHeaderIndex > -1) {
-            const header = sortedHeaders[referenceHeaderIndex];
-            const unit = header.unit;
-            const span = header.span;
+        // Prevent the column number to include the next unit
+        const lastColumnStart = removeToDate(referenceEnd, referenceUnit, 1);
+        const referenceColumns = numberOfUnitsBetweenDates(
+            referenceUnit,
+            this.start,
+            lastColumnStart
+        );
 
-            const options = {};
-            options[unit] = this.visibleSpan.span;
-            const end = this.start.plus(options);
-            const columns = this.computedNumberOfColumns(unit, end);
+        const reference = new Header({
+            unit: referenceUnit,
+            span: referenceHeader
+                ? referenceHeader.span
+                : this.visibleSpan.span,
+            label: referenceHeader ? referenceHeader.label : '',
+            start: this.start,
+            availableTimeFrames: this.availableTimeFrames,
+            availableDaysOfTheWeek: this.availableDaysOfTheWeek,
+            availableMonths: this.availableMonths,
+            numberOfColumns: referenceColumns,
+            isReference: true,
+            // If there is no header using the visibleSpan unit,
+            // hide the reference header
+            isHidden: !referenceHeader
+        });
 
-            this._referenceHeader = new Header({
-                unit: unit,
-                span: span,
-                label: header.label,
-                start: this.start,
-                timeFrames: this.availableTimeFrames,
-                daysOfTheWeek: this.availableDaysOfTheWeek,
-                months: this.availableMonths,
-                numberOfColumns: columns,
-                isReference: true
-            });
-        }
-
+        // Create all headers
         const headerObjects = [];
-        const reference = this._referenceHeader;
         let parentHeader;
         sortedHeaders.forEach((header) => {
             const unit = header.unit;
             let headerObject;
 
-            // If the current header is the reference
+            // If the current header is the reference, use the already made header object
             if (
                 reference &&
-                reference.unit === unit &&
+                referenceUnit === unit &&
                 reference.label === header.label
             ) {
                 headerObject = reference;
-
-                // If the current header is not the reference, but there is a reference header
-            } else if (reference) {
-                const referenceUnitIndex = UNITS.findIndex(
-                    (unt) => unt === reference.unit
+            } else {
+                const end = addToDate(
+                    reference.end,
+                    referenceUnit,
+                    reference.span
                 );
-                const unitIndex = UNITS.findIndex((unt) => unt === unit);
-                const referenceIsLonger = referenceUnitIndex > unitIndex;
 
-                const options = {};
-                options[reference.unit] = reference.span;
-                const referenceEnd = DateTime.fromMillis(
-                    reference.columns[reference.columns.length - 1].time
-                ).plus(options);
-
-                const columns = referenceIsLonger
-                    ? this.maxColumnsInParent(header, parentHeader)
-                    : this.computedNumberOfColumns(unit, referenceEnd.ts);
+                const columns = numberOfUnitsBetweenDates(
+                    unit,
+                    this.start,
+                    end
+                );
 
                 headerObject = new Header({
                     unit: unit,
                     span: header.span,
                     label: header.label,
-                    start: this.start,
-                    end: referenceEnd,
-                    timeFrames: this.availableTimeFrames,
-                    daysOfTheWeek: this.availableDaysOfTheWeek,
-                    months: this.availableMonths,
+                    start: reference.start,
+                    end: reference.end,
+                    availableTimeFrames: this.availableTimeFrames,
+                    availableDaysOfTheWeek: this.availableDaysOfTheWeek,
+                    availableMonths: this.availableMonths,
                     numberOfColumns: columns
                 });
-
-                // If there is no reference header (no header uses the visibleSpan unit)
-            } else {
-                // const columnsInVisibleSpan = this.maxVisibleColumns(header);
-                // const columnsInParent = parentHeader
-                //     ? this.maxColumnsInParent(header, parentHeader)
-                //     : 0;
-                // const columns =
-                //     columnsInParent && columnsInParent < columnsInVisibleSpan
-                //         ? columnsInParent
-                //         : columnsInVisibleSpan;
-                // if (parentHeader) {
-                //     const allowedUnits = this.maxAllowedUnitsInParent(
-                //         header.unit,
-                //         parentHeader.unit
-                //     );
-                //     parentHeader.numberOfChildColumnsInOneSpan = Math.floor(allowedUnits / header.span);
-                // }
             }
 
             if (parentHeader) {
@@ -403,84 +392,6 @@ export default class Scheduler extends LightningElement {
 
         this._headers = headerObjects;
         this.initHeaderColumnWidths();
-    }
-
-    computedNumberOfColumns(unit, end) {
-        let columns = 0;
-        let start = this.start.ts;
-
-        while (start < end) {
-            const startDate = DateTime.fromMillis(start);
-            const endOfUnit = startDate.endOf(unit);
-            const timeToEndOfUnit = endOfUnit.diff(startDate, 'milliseconds');
-            // if (unit === 'month') debugger
-            start += timeToEndOfUnit.values.milliseconds + 1;
-            columns += 1;
-        }
-        return columns;
-    }
-
-    // maxVisibleColumns(header) {
-    //     const maxVisibleTime = UNITS_IN_MS[this.visibleSpan.unit] * this.visibleSpan.span;
-    //     return Math.floor(maxVisibleTime / UNITS_IN_MS[header.unit] / header.span) || 1;
-    // }
-
-    maxColumnsInParent(header, parentHeader) {
-        const allowedUnits = this.maxAllowedUnitsInParent(
-            header.unit,
-            parentHeader.unit
-        );
-        const numberOfColumns = Math.floor(allowedUnits / header.span);
-        return (
-            numberOfColumns * parentHeader.span * parentHeader.numberOfColumns
-        );
-    }
-
-    maxAllowedUnitsInParent(unit, parentUnit) {
-        if (unit === parentUnit) return 1;
-
-        let allowedUnits;
-        switch (unit) {
-            case 'minute':
-                allowedUnits = this.availableTimeFrames.reduce(
-                    (accumulator, timeFrame) => {
-                        return (
-                            accumulator +
-                            allowedMinutesInUnit(
-                                timeFrame,
-                                parentUnit,
-                                this.start
-                            )
-                        );
-                    },
-                    0
-                );
-                break;
-            case 'hour':
-                allowedUnits = this.availableTimeFrames.reduce(
-                    (accumulator, timeFrame) => {
-                        return (
-                            accumulator +
-                            allowedHoursInUnit(timeFrame, parentUnit)
-                        );
-                    },
-                    0
-                );
-                break;
-            case 'day':
-                allowedUnits = allowedDaysInUnit(
-                    this.availableDaysOfTheWeek,
-                    parentUnit
-                );
-                break;
-            case 'month':
-                allowedUnits = this.availableMonths.length;
-                break;
-            default:
-                allowedUnits = 0;
-                break;
-        }
-        return allowedUnits;
     }
 
     initScheduleRows() {
@@ -526,20 +437,15 @@ export default class Scheduler extends LightningElement {
 
                         // Stop if the next child column belongs to the next header unit
                         if (
-                            start.startOf(header.unit) >=
-                            end.startOf(header.unit)
+                            end.startOf(header.unit) <= start.endOf(header.unit)
                         ) {
                             break;
                         }
                         width += childWidth;
                         childColumnIndex += 1;
                     }
-
                     header.columnWidths.push(width);
                 });
-
-                // If the header has a shorter time unit than the reference header,
-                // all columns have the same width.
             } else {
                 const columnWidth = 100 / header.columns.length;
                 header.columns.forEach(() => {

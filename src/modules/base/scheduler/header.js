@@ -32,7 +32,7 @@
 
 import { generateUniqueId } from 'c/utils';
 import { DateTime } from 'c/luxon';
-import { formatTime, isInTimeFrame } from './dateUtils';
+import { formatTime, isInTimeFrame, addToDate } from './dateUtils';
 
 export default class Header {
     constructor(props) {
@@ -42,14 +42,15 @@ export default class Header {
         this.label = props.label;
         this.columns = [];
         this.columnWidths = [];
+        this.isHidden = props.isHidden;
         this.isReference = props.isReference;
         this.numberOfColumns = props.numberOfColumns;
         this.childKey = null;
         this.end = props.end;
         this._start = props.start;
-        this._timeFrames = props.timeFrames;
-        this._daysOfTheWeek = props.daysOfTheWeek;
-        this._months = props.months;
+        this._availableTimeFrames = props.availableTimeFrames;
+        this._availableDaysOfTheWeek = props.availableDaysOfTheWeek;
+        this._availableMonths = props.availableMonths;
 
         this.computeColumns();
     }
@@ -62,27 +63,27 @@ export default class Header {
         this.computeColumns();
     }
 
-    get daysOfTheWeek() {
-        return this._daysOfTheWeek;
+    get availableDaysOfTheWeek() {
+        return this._availableDaysOfTheWeek;
     }
-    set daysOfTheWeek(value) {
-        this._daysOfTheWeek = value;
+    set availableDaysOfTheWeek(value) {
+        this._availableDaysOfTheWeek = value;
         this.computeColumns();
     }
 
-    get months() {
-        return this._months;
+    get availableMonths() {
+        return this._availableMonths;
     }
-    set months(value) {
-        this._months = value;
+    set availableMonths(value) {
+        this._availableMonths = value;
         this.computeColumns();
     }
 
-    get timeFrames() {
-        return this._timeFrames;
+    get availableTimeFrames() {
+        return this._availableTimeFrames;
     }
-    set timeFrames(value) {
-        this._timeFrames = value;
+    set availableTimeFrames(value) {
+        this._availableTimeFrames = value;
         this.computeColumns();
     }
 
@@ -91,7 +92,7 @@ export default class Header {
     }
 
     computeColumns() {
-        const { unit, label, end, span, columns, numberOfColumns } = this;
+        const { unit, label, end, span, numberOfColumns } = this;
         this.columns = [];
         let date = DateTime.fromMillis(this.start.ts);
 
@@ -109,38 +110,44 @@ export default class Header {
             }
 
             this.columns.push({
-                label: formatTime(date, label),
+                label: formatTime(date.startOf(unit), label),
                 time: date.ts
             });
-            const options = {};
-            options[unit] = span;
-            date = date.plus(options);
 
-            if (end && end.startOf(unit) < date.startOf(unit)) {
-                this.numberOfColumns = columns.length;
+            date = addToDate(date, unit, span);
+
+            // if (unit === 'month') debugger
+            if (!this.isReference && end.endOf(unit) < date.endOf(unit)) {
+                this.numberOfColumns = this.columns.length;
                 break;
             }
         }
+
+        this._start = DateTime.fromMillis(this.columns[0].time);
+        this.end = DateTime.fromMillis(
+            this.columns[this.columns.length - 1].time
+        );
     }
 
     isAllowedTime(date) {
         let i = 0;
         let isAllowed = false;
-        while (!isAllowed && i < this.timeFrames.length) {
-            isAllowed = isInTimeFrame(date, this.timeFrames[i]);
+        while (!isAllowed && i < this.availableTimeFrames.length) {
+            isAllowed = isInTimeFrame(date, this.availableTimeFrames[i]);
             i += 1;
         }
         return isAllowed;
     }
 
     isAllowedDay(date) {
-        // Luxon week days start at 1
-        return this.daysOfTheWeek.includes(date.weekday - 1);
+        // Luxon week days start at Monday = 1
+        const normalizedDate = date.weekday === 7 ? 0 : date.weekday;
+        return this.availableDaysOfTheWeek.includes(normalizedDate);
     }
 
     isAllowedMonth(date) {
         // Luxon months start at 1
-        return this.months.includes(date.month - 1);
+        return this.availableMonths.includes(date.month - 1);
     }
 
     nextAllowedMonth(startDate) {
@@ -176,9 +183,7 @@ export default class Header {
 
         if (!this.isAllowedTime(date)) {
             // Go to next time slot
-            const options = {};
-            options[this.unit] = this.span;
-            date = date.plus(options);
+            date = addToDate(date, this.unit, this.span);
             date = this.nextAllowedTime(date);
 
             // If the next time available is in another day, make sure the day is allowed
