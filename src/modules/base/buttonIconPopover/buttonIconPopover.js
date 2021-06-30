@@ -178,9 +178,6 @@ export default class ButtonIconPopover extends LightningElement {
         if (this.triggers === 'click') {
             this.focusOnPopover();
         }
-
-        console.log(this.popoverVisible);
-        console.log(this._cancelBlur);
     }
 
     get titleSlot() {
