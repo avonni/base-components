@@ -88,7 +88,7 @@ const POPOVER_VARIANTS = {
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
 
 /**
- * The button popover display a lightning button. On click, open the popover.
+ * The button icon popover display a lightning button. On click, open the popover.
  * @class
  * @name ButtonIconPopover
  * @public
@@ -152,6 +152,7 @@ export default class ButtonIconPopover extends LightningElement {
     _disabled = false;
     _handleCloseButton = false;
     _isLoading = false;
+    _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     _size = BUTTON_SIZES.default;
     _placement = POPOVER_PLACEMENTS.default;
     _variant = BUTTON_VARIANTS.default;
@@ -342,7 +343,7 @@ export default class ButtonIconPopover extends LightningElement {
     }
 
     /**
-     * If present, the popover can be opened by users.
+     * If present, the popover can't be opened by users.
      *
      * @type {boolean}
      * @default false
@@ -486,7 +487,7 @@ export default class ButtonIconPopover extends LightningElement {
     }
 
     /**
-     * Opens the popover if it's closed.
+     * Opens the popover.
      * @public
      */
     @api
@@ -497,7 +498,7 @@ export default class ButtonIconPopover extends LightningElement {
     }
 
     /**
-     * Closes the popover if it's open.
+     * Closes the popover.
      * @public
      */
     @api
@@ -516,7 +517,7 @@ export default class ButtonIconPopover extends LightningElement {
 
     /**
      * Sets the focus on the button-icon.
-     * If the trigger is click, toggles the menu visibility and blurs the button-icon.
+     * If the trigger is click, it toggles the menu visibility and blurs the button-icon.
      */
     clickOnButton() {
         if (!this._disabled) {
@@ -531,7 +532,7 @@ export default class ButtonIconPopover extends LightningElement {
 
     /**
      * Sets the focus on the button-icon.
-     * If the trigger is focus, toggle the menu visibility.
+     * If the trigger is focus, it toggles the menu visibility.
      */
     focusOnButton() {
         this.allowBlur();
@@ -676,6 +677,9 @@ export default class ButtonIconPopover extends LightningElement {
         );
     }
 
+    /**
+     * Handles mouse down on popover.
+     */
     handlePopoverMouseDown(event) {
         const mainButton = 0;
         if (event.button === mainButton) {
@@ -684,7 +688,7 @@ export default class ButtonIconPopover extends LightningElement {
     }
 
     /**
-     * It sets the variable cancelBlur to false.
+     * Sets the variable cancelBlur to false.
      */
     handlePopoverMouseUp() {
         this.allowBlur();

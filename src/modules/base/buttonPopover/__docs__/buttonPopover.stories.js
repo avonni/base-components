@@ -209,7 +209,7 @@ export default {
                 type: 'boolean'
             },
             defaultValue: false,
-            description: 'If present, the popover can be opened by users.',
+            description: "If present, the popover can't be opened by users.",
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -240,14 +240,6 @@ export default {
 const Template = (args) => ButtonPopover(args);
 const SecondTemplate = (args) => ButtonPopoverWithToggle(args);
 
-export const BaseWithPopoverVariantWalkthrough = Template.bind({});
-BaseWithPopoverVariantWalkthrough.args = {
-    label: 'Info',
-    iconName: 'utility:favorite',
-    variant: 'base',
-    popoverVariant: 'walkthrough'
-};
-
 export const Neutral = Template.bind({});
 Neutral.args = {
     label: 'Info',
@@ -259,6 +251,20 @@ NeutralLargeWithIconRight.args = {
     label: 'Info',
     iconName: 'utility:favorite',
     iconPosition: 'right'
+};
+
+export const NeutralWithToggleInDefaultSlot = SecondTemplate.bind({});
+NeutralWithToggleInDefaultSlot.args = {
+    label: 'Info',
+    iconName: 'utility:favorite'
+};
+
+export const BaseWithPopoverVariantWalkthrough = Template.bind({});
+BaseWithPopoverVariantWalkthrough.args = {
+    label: 'Info',
+    iconName: 'utility:favorite',
+    variant: 'base',
+    popoverVariant: 'walkthrough'
 };
 
 export const Brand = Template.bind({});
@@ -273,7 +279,7 @@ BrandOutlineWithPopoverWarning.args = {
     label: 'Info',
     iconName: 'utility:question_mark',
     variant: 'brand-outline',
-    popoverVariant: 'error'
+    popoverVariant: 'warning'
 };
 
 export const DestructiveWithPopoverError = Template.bind({});
@@ -305,10 +311,4 @@ Success.args = {
     label: 'Complete',
     iconName: 'utility:success',
     variant: 'success'
-};
-
-export const NeutralWithToggle = SecondTemplate.bind({});
-NeutralWithToggle.args = {
-    label: 'Info',
-    iconName: 'utility:favorite'
 };

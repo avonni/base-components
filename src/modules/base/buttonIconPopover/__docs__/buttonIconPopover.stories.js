@@ -242,7 +242,7 @@ export default {
                 type: 'boolean'
             },
             defaultValue: false,
-            description: 'If present, the popover can be opened by users.',
+            description: "If present, the popover can't be opened by users.",
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -259,26 +259,31 @@ export default {
 const Template = (args) => ButtonIconPopover(args);
 const TemplateWithToggle = (args) => ButtonIconPopoverWithToggle(args);
 
-export const BorderWithPopoverBase = Template.bind({});
-BorderWithPopoverBase.args = {
+export const BaseWithPopoverBase = Template.bind({});
+BaseWithPopoverBase.args = {
     iconName: 'utility:favorite',
     tooltip: 'Tooltip text'
 };
 
-export const BorderWithPopoverLoading = Template.bind({});
-BorderWithPopoverLoading.args = {
+export const BaseWithPopoverLoading = Template.bind({});
+BaseWithPopoverLoading.args = {
     iconName: 'utility:favorite',
     tooltip: 'Tooltip text',
     isLoading: 'true'
 };
 
-export const BorderWithPopoverWarning = Template.bind({});
-BorderWithPopoverWarning.args = {
+export const BaseWithPopoverWarning = Template.bind({});
+BaseWithPopoverWarning.args = {
     iconName: 'utility:warning',
     iconClass: 'slds-icon-text-warning',
     tooltip: 'Tooltip text',
     size: 'small',
     popoverVariant: 'warning'
+};
+
+export const BaseWithToggleInDefaultSlot = TemplateWithToggle.bind({});
+BaseWithToggleInDefaultSlot.args = {
+    iconName: 'utility:favorite'
 };
 
 export const Brand = Template.bind({});
@@ -322,9 +327,4 @@ ContainerWithSmallPopoverError.args = {
     variant: 'Container',
     popoverVariant: 'error',
     popoverSize: 'small'
-};
-
-export const BaseWithToggle = TemplateWithToggle.bind({});
-BaseWithToggle.args = {
-    iconName: 'utility:favorite'
 };
