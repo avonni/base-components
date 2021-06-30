@@ -85,11 +85,22 @@ const POPOVER_VARIANTS = {
     default: 'base'
 };
 
+const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
+
+/**
+ * The button popover display a lightning button. On click, open the popover.
+ * @class
+ * @name ButtonIconPopover
+ * @public
+ * @storyId example-button-icon-popover--border-with-popover-base
+ * @descriptor avonni-button-icon-popover
+ */
 export default class ButtonIconPopover extends LightningElement {
     /**
      * The keyboard shortcut for the button.
      *
      * @type {string}
+     * @public
      */
     @api accessKey;
 
@@ -97,6 +108,7 @@ export default class ButtonIconPopover extends LightningElement {
      * The assistive text for the button.
      *
      * @type {string}
+     * @public
      */
     @api alternativeText;
 
@@ -105,6 +117,7 @@ export default class ButtonIconPopover extends LightningElement {
      * To include additional markup or another component, use the title slot.
      *
      * @type {string}
+     * @public
      */
     @api title;
 
@@ -115,6 +128,7 @@ export default class ButtonIconPopover extends LightningElement {
      * Only utility icons can be used in this component.
      *
      * @type {string}
+     * @public
      */
     @api iconName;
 
@@ -122,21 +136,16 @@ export default class ButtonIconPopover extends LightningElement {
      * The class to be applied to the contained icon element.
      *
      * @type {string}
+     * @public
      */
     @api iconClass;
-
-    /**
-     * Message displayed while the popover is in the loading state.
-     *
-     * @type {string}
-     */
-    @api loadingStateAlternativeText;
 
     /**
      * Text to display when the user mouses over or focuses on the button.
      * The tooltip is auto-positioned relative to the button and screen space.
      *
      * @type {string}
+     * @public
      */
     @api tooltip;
 
@@ -195,6 +204,7 @@ export default class ButtonIconPopover extends LightningElement {
      *
      * @type {string}
      * @default medium
+     * @public
      */
     @api
     get size() {
@@ -222,6 +232,7 @@ export default class ButtonIconPopover extends LightningElement {
      *
      * @type {string}
      * @default left
+     * @public
      */
     @api
     get placement() {
@@ -242,6 +253,7 @@ export default class ButtonIconPopover extends LightningElement {
      *
      * @type {string}
      * @default border
+     * @public
      */
     @api
     get variant() {
@@ -260,6 +272,7 @@ export default class ButtonIconPopover extends LightningElement {
      *
      * @type {string}
      * @default medium
+     * @public
      */
     @api
     get popoverSize() {
@@ -278,6 +291,7 @@ export default class ButtonIconPopover extends LightningElement {
      *
      * @type {string}
      * @default click
+     * @public
      */
     @api
     get triggers() {
@@ -297,6 +311,7 @@ export default class ButtonIconPopover extends LightningElement {
      *
      * @type {string}
      * @default base
+     * @public
      */
     @api
     get popoverVariant() {
@@ -315,6 +330,7 @@ export default class ButtonIconPopover extends LightningElement {
      *
      * @type {boolean}
      * @default false
+     * @public
      */
     @api
     get hideCloseButton() {
@@ -330,6 +346,7 @@ export default class ButtonIconPopover extends LightningElement {
      *
      * @type {boolean}
      * @default false
+     * @public
      */
     @api
     get disabled() {
@@ -345,6 +362,7 @@ export default class ButtonIconPopover extends LightningElement {
      *
      * @type {boolean}
      * @default false
+     * @public
      */
     @api
     get isLoading() {
@@ -355,14 +373,44 @@ export default class ButtonIconPopover extends LightningElement {
         this._isLoading = normalizeBoolean(value);
     }
 
+    /**
+     * Message displayed while the popover is in the loading state.
+     *
+     * @type {string}
+     * @default Loading
+     * @public
+     */
+    @api
+    get loadingStateAlternativeText() {
+        return this._loadingStateAlternativeText;
+    }
+    set loadingStateAlternativeText(value) {
+        this._loadingStateAlternativeText =
+            typeof value === 'string'
+                ? value.trim()
+                : DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
+    }
+
+    /**
+     * True if there is a title.
+     * @type {boolean}
+     */
     get hasStringTitle() {
         return !!this.title;
     }
 
+    /**
+     * Return a true string if the popover is visible and a false string if not.
+     * @type {string}
+     */
     get computedAriaExpanded() {
         return String(this.popoverVisible);
     }
 
+    /**
+     * Class of the popover header.
+     * @type {string}
+     */
     get computedPopoverHeaderClass() {
         return classSet('slds-popover__header')
             .add({
@@ -372,6 +420,10 @@ export default class ButtonIconPopover extends LightningElement {
             .toString();
     }
 
+    /**
+     * Class of the popover.
+     * @type {string}
+     */
     get computedPopoverClass() {
         return classSet('slds-popover')
             .add({
@@ -406,51 +458,65 @@ export default class ButtonIconPopover extends LightningElement {
 
     /**
      * Simulates a mouse click on the button.
+     * @public
      */
     @api
     click() {
         if (this.isConnected) {
             this.clickOnButton();
         }
+        /**
+         * @event
+         * @name click
+         * The event fired when the popover is clicked.
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('click'));
     }
 
     /**
      * Sets focus on the button.
+     * @public
      */
     @api
     focus() {
         if (this.isConnected) {
             this.focusOnButton();
         }
-        this.dispatchEvent(new CustomEvent('focus'));
     }
 
     /**
      * Opens the popover if it's closed.
+     * @public
      */
     @api
     open() {
         if (!this.popoverVisible) {
             this.toggleMenuVisibility();
         }
-        this.dispatchEvent(new CustomEvent('open'));
     }
 
     /**
      * Closes the popover if it's open.
+     * @public
      */
     @api
     close() {
         if (this.popoverVisible) {
             this.toggleMenuVisibility();
         }
+        /**
+         * @event
+         * @name close
+         * The event fired when the popover is closed.
+         * @public
+         */
         this.dispatchEvent(new CustomEvent('close'));
     }
 
     /**
      * Sets the focus on the button-icon.
      * If the trigger is click, toggles the menu visibility and blurs the button-icon.
-     * @ignore
      */
     clickOnButton() {
         if (!this._disabled) {
@@ -460,15 +526,12 @@ export default class ButtonIconPopover extends LightningElement {
             if (this._triggers === 'click') {
                 this.toggleMenuVisibility();
             }
-
-            this.dispatchEvent(new CustomEvent('click'));
         }
     }
 
     /**
      * Sets the focus on the button-icon.
      * If the trigger is focus, toggle the menu visibility.
-     * @ignore
      */
     focusOnButton() {
         this.allowBlur();
@@ -484,16 +547,13 @@ export default class ButtonIconPopover extends LightningElement {
 
     /**
      * Sets the focus on the popover.
-     * @ignore
      */
     focusOnPopover() {
         this.template.querySelector('.slds-popover').focus();
     }
 
     /**
-     * Blurs the button-icon.
-     * If the trigger is not click and the popover is visible, it toggles the menu visibility.
-     * @ignore
+     * If the trigger is hover or focus, it toggles the menu visibility.
      */
     handleBlur() {
         if (this._cancelBlur) {
@@ -505,9 +565,7 @@ export default class ButtonIconPopover extends LightningElement {
     }
 
     /**
-     * Blurs the popover.
-     * If the trigger is click and the popover is visible, it toggles the menu visibility.
-     * @ignore
+     * If the trigger is click, it toggles the menu visibility.
      */
     handlePopoverBlur(event) {
         const isButton =
@@ -525,7 +583,6 @@ export default class ButtonIconPopover extends LightningElement {
     /**
      * If the trigger is hover and the popover is not visible, it toggles the menu visibility.
      * If the trigger is hover and the popover is visible, it sets the variable cancelBlur to true.
-     * @ignore
      */
     handleMouseEnter() {
         if (
@@ -548,7 +605,6 @@ export default class ButtonIconPopover extends LightningElement {
 
     /**
      * If the trigger is hover and the popover is visible, it toggles the menu visibility.
-     * @ignore
      */
     handleMouseLeave() {
         // eslint-disable-next-line @lwc/lwc/no-async-operation
@@ -579,7 +635,6 @@ export default class ButtonIconPopover extends LightningElement {
     /**
      * If the trigger is hover and the popover is visible and the mouse enters the popover,
      * it sets the variable cancelBlur to true.
-     * @ignore
      */
     handleMouseEnterBody() {
         if (
@@ -594,7 +649,6 @@ export default class ButtonIconPopover extends LightningElement {
     /**
      * If the trigger is hover and the popover is visible and the mouse leaves the popover,
      * it sets the variable cancelBlur to true.
-     * @ignore
      */
     handleMouseLeaveBody() {
         // eslint-disable-next-line @lwc/lwc/no-async-operation
@@ -631,7 +685,6 @@ export default class ButtonIconPopover extends LightningElement {
 
     /**
      * It sets the variable cancelBlur to false.
-     * @ignore
      */
     handlePopoverMouseUp() {
         this.allowBlur();
@@ -639,7 +692,6 @@ export default class ButtonIconPopover extends LightningElement {
 
     /**
      * If variable cancelBlur is false, it sets the variable cancelBlur to true.
-     * @ignore
      */
     handlePopoverKeyDown() {
         if (!this._cancelBlur) {
@@ -649,7 +701,6 @@ export default class ButtonIconPopover extends LightningElement {
 
     /**
      * If variable cancelBlur is true, it sets the variable cancelBlur to false.
-     * @ignore
      */
     handlePopoverKeyPress() {
         if (this._cancelBlur) {
@@ -658,10 +709,8 @@ export default class ButtonIconPopover extends LightningElement {
     }
 
     /**
-     * If trigger is focus, sets the focus on the button with click on a slot.
-     * If trigger is click, keeps the popover visible and set focus on the popover
-     * when click on a slot.
-     * @ignore
+     * If trigger is focus, sets the focus on the button when click on a slot.
+     * If trigger is click, keeps the popover visible when click on a slot.
      */
     handleSlotClick() {
         if (this.triggers === 'focus') {
@@ -674,7 +723,6 @@ export default class ButtonIconPopover extends LightningElement {
 
     /**
      * Sets the variable cancelBlur to false.
-     * @ignore
      */
     allowBlur() {
         this._cancelBlur = false;
@@ -682,7 +730,6 @@ export default class ButtonIconPopover extends LightningElement {
 
     /**
      * Sets the variable cancelBlur to false.
-     * @ignore
      */
     cancelBlur() {
         this._cancelBlur = true;
@@ -690,7 +737,7 @@ export default class ButtonIconPopover extends LightningElement {
 
     /**
      * Toggles the popover visibility depending on if it's visible or not.
-     * @ignore
+     * Adds class slds-is-open if popover visible and removes if not
      */
     toggleMenuVisibility() {
         if (!this.disabled) {
@@ -709,7 +756,6 @@ export default class ButtonIconPopover extends LightningElement {
      * Poll for change in bounding rectangle
      * only if it is placement=auto since that is
      * position:fixed and is opened
-     * @ignore
      */
     pollBoundingRect() {
         if (this.isAutoAlignment() && this.popoverVisible) {
@@ -728,7 +774,6 @@ export default class ButtonIconPopover extends LightningElement {
 
     /**
      * Returns true if the placement is auto.
-     * @ignore
      */
     isAutoAlignment() {
         return this._placement.startsWith('auto');
