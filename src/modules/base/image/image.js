@@ -393,6 +393,7 @@ export default class Image extends LightningElement {
                 'avonni-image_no-crop_percent':
                     (this.width && this._heightPercent) ||
                     (this._widthPercent && this.height) ||
+                    (!this.width && this._heightPercent) ||
                     (this._widthPercent &&
                         this._heightPercent &&
                         !this._cropSize &&
@@ -446,7 +447,7 @@ export default class Image extends LightningElement {
                 padding-top: ${(this.height / this._imgWidth) * 100}%;
                 `;
             } else if (this._heightPercent || this._widthPercent) {
-                return `padding-top : none`;
+                return `padding-top : 100%`;
             }
         } else if (this.staticImages) {
             if (!this.width && this.height) {
@@ -569,7 +570,14 @@ export default class Image extends LightningElement {
                 object-fit: ${this.cropFit};
                 object-position: ${this.cropPositionX}% ${this.cropPositionY}%;        
                 `;
-            }
+            } else if (this._heightPercent && !this.width) {
+                return `
+                width: ${this._imgWidth}px;
+                height: ${this.height};
+                object-fit: ${this.cropFit};
+                object-position: ${this.cropPositionX}% ${this.cropPositionY}%;        
+                `;
+            } // ^ add above as class set for 100% width css
         }
         return `
         width: ${this.width}px;
