@@ -142,6 +142,12 @@ export default class ButtonPopover extends LightningElement {
     }
 
     renderedCallback() {
+        if (this.popoverVisible) {
+            this.classList.add('slds-is-open');
+        } else {
+            this.classList.remove('slds-is-open');
+        }
+
         if (this.titleSlot) {
             this.showTitle = this.titleSlot.assignedElements().length !== 0;
         }
@@ -150,9 +156,7 @@ export default class ButtonPopover extends LightningElement {
         }
 
         if (this.triggers === 'click') {
-            if (this.popoverVisible) {
-                this.focusOnPopover();
-            }
+            this.focusOnPopover();
         }
     }
 
@@ -423,9 +427,7 @@ export default class ButtonPopover extends LightningElement {
             this.focusOnButton();
 
             if (this._triggers === 'click') {
-                this.allowBlur();
                 this.toggleMenuVisibility();
-                this.template.querySelector('lightning-button').blur();
             }
 
             this.dispatchEvent(new CustomEvent('click'));
@@ -438,6 +440,7 @@ export default class ButtonPopover extends LightningElement {
      * @ignore
      */
     focusOnButton() {
+        this.allowBlur();
         this.template.querySelector('lightning-button').focus();
         if (
             this._triggers === 'focus' &&
@@ -466,9 +469,7 @@ export default class ButtonPopover extends LightningElement {
             return;
         }
         if (this.triggers !== 'click') {
-            if (this.popoverVisible) {
-                this.toggleMenuVisibility();
-            }
+            this.toggleMenuVisibility();
         }
     }
 
@@ -477,14 +478,16 @@ export default class ButtonPopover extends LightningElement {
      * If the trigger is click and the popover is visible, it toggles the menu visibility.
      * @ignore
      */
-    handlePopoverBlur() {
+    handlePopoverBlur(event) {
+        const isButton =
+            this.template.querySelector(
+                'lightning-button[data-role="button-popover"]'
+            ) === event?.relatedTarget;
         if (this._cancelBlur) {
             return;
         }
-        if (this.triggers === 'click') {
-            if (this.popoverVisible) {
-                this.toggleMenuVisibility();
-            }
+        if (this.triggers === 'click' && !isButton) {
+            this.toggleMenuVisibility();
         }
     }
 
@@ -635,7 +638,6 @@ export default class ButtonPopover extends LightningElement {
         }
         if (this.triggers === 'click') {
             this.popoverVisible = true;
-            this.focusOnPopover();
         }
     }
 
@@ -667,8 +669,6 @@ export default class ButtonPopover extends LightningElement {
                 this._boundingRect = this.getBoundingClientRect();
                 this.pollBoundingRect();
             }
-
-            this.classList.toggle('slds-is-open');
         }
     }
 
