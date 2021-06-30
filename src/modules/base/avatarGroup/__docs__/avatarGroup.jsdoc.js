@@ -23,3 +23,27 @@
  * * label: string.
  * * variant: string. Valid values include default, inverse, lightest, success, warning, error. Default to default.
  */
+
+/**
+ * @namespace examples
+ */
+/**
+ * @memberof examples
+ * @name baseWithTwoAvatars
+ * @storyId example-avatar-group--base-with-two-avatars
+ */
+/**
+ * @memberof examples
+ * @name baseWithMoreThanTwoAvatars
+ * @storyId example-avatar-group--base-with-more-than-two-avatars
+ */
+/**
+ * @memberof examples
+ * @name grid
+ * @storyId example-avatar-group--grid
+ */
+/**
+ * @memberof examples
+ * @name listWithXxLargeAvatars
+ * @storyId example-avatar-group--list-double-extra-large
+ */

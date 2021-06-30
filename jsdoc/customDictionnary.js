@@ -34,9 +34,9 @@ exports.defineTags = function (dictionnary) {
             doclet.composed = tag;
         }
     });
-    dictionnary.defineTag('example', {
+    dictionnary.defineTag('storyId', {
         onTagged: function (doclet, tag) {
-            doclet.example = tag;
+            doclet.storyId = tag;
         }
     });
 };

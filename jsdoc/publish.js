@@ -18,6 +18,7 @@ function graft(parentNode, childNodes, parentLongname) {
             let thisClass;
             let thisEvent;
             let thisFunction;
+            let thisMember;
             let thisNamespace;
             let thisTypeDef;
 
@@ -87,7 +88,8 @@ function graft(parentNode, childNodes, parentLongname) {
                 if (!parentNode.properties) {
                     parentNode.properties = [];
                 }
-                parentNode.properties.push({
+
+                thisMember = {
                     name: element.name,
                     access: element.access || '',
                     description: element.description || '',
@@ -97,7 +99,13 @@ function graft(parentNode, childNodes, parentLongname) {
                         element.type && element.type.names
                             ? element.type.names
                             : []
-                });
+                };
+
+                if (element.storyId) {
+                    thisMember.storyId = element.storyId.value;
+                }
+
+                parentNode.properties.push(thisMember);
             } else if (element.kind === 'typedef') {
                 if (!parentNode.typedef) {
                     parentNode.typedef = [];
@@ -174,11 +182,10 @@ function graft(parentNode, childNodes, parentLongname) {
 
                 thisClass = {
                     name: element.name,
-                    description: element.classdesc || '',
+                    description: element.description || '',
                     descriptor: element.descriptor || '',
                     extends: element.augments || [],
                     access: element.access || '',
-                    example: element.example ? element.example.value : '',
                     parameters: []
                 };
 

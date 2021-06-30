@@ -40,16 +40,17 @@ const ALERT_VARIANTS = {
 };
 
 /**
+ * Alert banners communicate a state that affects the entire system, not just a feature or page. It persists over a session and appears without the user initiating the action.
  * @class
- * @classdesc Alert banners communicate a state that affects the entire system, not just a feature or page. It persists over a session and appears without the user initiating the action.
  * @name Alert
+ * @public
+ * @storyId example-alert--base
  * @descriptor avonni-alert
  */
 export default class Alert extends LightningElement {
     /**
      * The Lightning Design System name of the icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
      * @type {string}
-     * @name icon-name
      * @public
      */
     @api iconName;
@@ -57,7 +58,6 @@ export default class Alert extends LightningElement {
     /**
      * Custom function to execute when the user closes the alert.
      * @type {function}
-     * @name close-action
      * @public
      */
     @api closeAction;
