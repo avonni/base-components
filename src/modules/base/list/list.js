@@ -162,6 +162,14 @@ export default class List extends LightningElement {
         this._hasActions = true;
     }
 
+    get computedImageContainerStyle() {
+        return `
+        height: 100%;
+        width : ${this._imageWidth}px;
+        min-width : ${this._imageWidth}px;
+        `;
+    }
+
     get firstAction() {
         return this.computedActions[0];
     }

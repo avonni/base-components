@@ -69,9 +69,16 @@
 
 li {
     padding-right: 0.5rem;
+    overflow: hidden;
 }
 
 img {
-    height: 100% !important;
+    position: absolute;
+    height: 100%;
     object-fit: cover;
+}
+
+.container-image {
+    position: relative;
+    overflow: hidden;
 }

@@ -68,16 +68,16 @@
                     <template if:true={item.imageSrc}>
                         <div
                             class="container-image slds-grid slds-grid_vertical-align-center"
-                            style="
-                                width: 200px;
-                                height: 100%;
-                                margin-right: 1em;
-                            "
+                            style={computedImageContainerStyle}
                         >
+                            <!-- margin-right: 1em; -->
                             <img
+                                class="slds-p-right_x-small"
                                 key={item.imageSrc}
                                 src={item.imageSrc}
                                 width={imageWidth}
+                                min-width={imageWidth}
+                                height="100%"
                             />
                             <!-- static-images="true"
                                 crop-size="4x3"
@@ -195,7 +195,6 @@
                     </div>
                 </div>
             </li>
-            <!-- </template> -->
         </template>
     </ul>
 </template>
