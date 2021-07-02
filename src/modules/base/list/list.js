@@ -76,8 +76,28 @@ export default class List extends LightningElement {
     _imageSrc = [];
     computedActions = [];
     computedItems = [];
+    _mobile = false;
     menuRole;
     itemRole;
+
+    renderedCallback() {
+        const MediaQueryList = window.matchMedia('(width: 320px)');
+
+        MediaQueryList.addListener(this.handleDeviceChange);
+
+        this.handleDeviceChange(MediaQueryList);
+        console.log(MediaQueryList);
+    }
+
+    handleDeviceChange(e) {
+        if (e.matches) {
+            console.log('mobile');
+            this._mobile = true;
+        } else {
+            console.log('Not mobile');
+            this._mobile = false;
+        }
+    }
 
     @api
     get divider() {
@@ -164,7 +184,6 @@ export default class List extends LightningElement {
 
     get computedImageContainerStyle() {
         return `
-        height: 100%;
         width : ${this._imageWidth}px;
         min-width : ${this._imageWidth}px;
         `;
@@ -195,7 +214,10 @@ export default class List extends LightningElement {
     }
 
     get computedListClass() {
-        return `menu slds-has-dividers_${this.divider}`;
+        if (this.divider === 'around') {
+            return `menu slds-has-dividers_${this.divider}`;
+        }
+        return `menu slds-has-dividers_${this.divider}-space`;
     }
 
     get computedItemClass() {
@@ -203,7 +225,8 @@ export default class List extends LightningElement {
             .add({
                 'sortable-item': this.sortable,
                 'expanded-item': this._hasActions,
-                'slds-p-vertical_x-small': !this.divider
+                'slds-p-vertical_x-small': !this.divider,
+                'slds-p-horizontal_none': this.divider === 'top' || 'bottom'
             })
             .toString();
     }
@@ -316,7 +339,10 @@ export default class List extends LightningElement {
         // Stop dragging if the click was on a button menu
         if (
             !this.sortable ||
-            event.target.tagName.startsWith('LIGHTNING-BUTTON')
+            event.target.tagName.startsWith('LIGHTNING-BUTTON') ||
+            event.target.tagName.startsWith('IMG') ||
+            event.target.tagName.startsWith('C-AVATAR') ||
+            event.target.tagName.startsWith('A')
         )
             return;
 
