@@ -176,42 +176,38 @@
                                     </template>
                                 </lightning-button-menu>
                                 <template if:false={hasMultipleActions}>
-                                    <template if:false={_mobile}>
-                                        <lightning-button
-                                            if:true={firstAction.label}
-                                            class="slds-m-right_none"
-                                            ontouchstart={handleButtonMenuTouchStart}
-                                            key={firstAction.name}
-                                            value={firstAction.name}
-                                            label={firstAction.label}
-                                            disabled={firstAction.disabled}
-                                            icon-name={firstAction.iconName}
-                                        ></lightning-button>
-
-                                        <lightning-button-icon
-                                            if:false={firstAction.label}
-                                            class="slds-m-right_none"
-                                            size="x-small"
-                                            ontouchstart={handleButtonMenuTouchStart}
-                                            key={firstAction.name}
-                                            value={firstAction.name}
-                                            disabled={firstAction.disabled}
-                                            icon-name={firstAction.iconName}
-                                            variant="bare"
-                                        ></lightning-button-icon>
-                                    </template>
-                                    <template if:true={_mobile}>
-                                        <lightning-button-icon
-                                            class="slds-m-right_none"
-                                            size="x-small"
-                                            ontouchstart={handleButtonMenuTouchStart}
-                                            key={firstAction.name}
-                                            value={firstAction.name}
-                                            disabled={firstAction.disabled}
-                                            icon-name={firstAction.iconName}
-                                            variant="bare"
-                                        ></lightning-button-icon>
-                                    </template>
+                                    <lightning-button
+                                        if:true={firstAction.label}
+                                        class="slds-m-right_none slds-show_small"
+                                        ontouchstart={handleButtonMenuTouchStart}
+                                        key={firstAction.name}
+                                        value={firstAction.name}
+                                        label={firstAction.label}
+                                        disabled={firstAction.disabled}
+                                        icon-name={firstAction.iconName}
+                                    ></lightning-button>
+                                    <lightning-button-icon
+                                        if:true={firstAction.label}
+                                        class="slds-m-right_none slds-hide_small"
+                                        size="x-small"
+                                        ontouchstart={handleButtonMenuTouchStart}
+                                        key={firstAction.name}
+                                        value={firstAction.name}
+                                        disabled={firstAction.disabled}
+                                        icon-name={firstAction.iconName}
+                                        variant="bare"
+                                    ></lightning-button-icon>
+                                    <lightning-button-icon
+                                        if:false={firstAction.label}
+                                        class="slds-m-right_none"
+                                        size="x-small"
+                                        ontouchstart={handleButtonMenuTouchStart}
+                                        key={firstAction.name}
+                                        value={firstAction.name}
+                                        disabled={firstAction.disabled}
+                                        icon-name={firstAction.iconName}
+                                        variant="bare"
+                                    ></lightning-button-icon>
                                 </template>
                             </div>
                         </div>
