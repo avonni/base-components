@@ -45,7 +45,7 @@
         >{alternativeText}</span
     >
 
-    <ul class={computedListClass} role={menuRole}>
+    <ul class={computedListClass} role={menuRole} style={computedListStyle}>
         <template for:each={computedItems} for:item="item" for:index="index">
             <li
                 key={item.label}
@@ -80,7 +80,9 @@
                             />
                         </div>
                     </template>
-                    <div class={computedContentContainerClass}>
+                    <div
+                        class="slds-grid slds-grow slds-grid_vertical-align-center slds-p-around_x-small"
+                    >
                         <lightning-icon
                             if:true={showIconLeft}
                             class="icon-left slds-p-right_x-small"

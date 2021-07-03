@@ -349,6 +349,15 @@ const actions = [
     }
 ];
 
+const action = [
+    {
+        label: 'Completed',
+        name: 'completed-action',
+        iconName: 'utility:check',
+        disabled: false
+    }
+];
+
 export const Base = Template.bind({});
 Base.args = {
     items: items,
@@ -400,7 +409,7 @@ export const SortableListWithImagesAndAvatars = Template.bind({});
 SortableListWithImagesAndAvatars.args = {
     label: 'Sortable list Images and Avatars with Icons',
     items: itemsWithImagesAndAvatars,
-    actions: actions,
+    actions: action,
     sortableIconName: 'utility:drag_and_drop',
     sortableIconPosition: 'left',
     sortable: true,

@@ -80,25 +80,6 @@ export default class List extends LightningElement {
     menuRole;
     itemRole;
 
-    renderedCallback() {
-        const MediaQueryList = window.matchMedia('(width: 320px)');
-
-        MediaQueryList.addListener(this.handleDeviceChange);
-
-        this.handleDeviceChange(MediaQueryList);
-        console.log(MediaQueryList);
-    }
-
-    handleDeviceChange(e) {
-        if (e.matches) {
-            console.log('mobile');
-            this._mobile = true;
-        } else {
-            console.log('Not mobile');
-            this._mobile = false;
-        }
-    }
-
     @api
     get divider() {
         return this._divider;
@@ -189,12 +170,6 @@ export default class List extends LightningElement {
         `;
     }
 
-    get computedContentContainerClass() {
-        return classSet(
-            'slds-grid slds-grow slds-grid_vertical-align-center slds-p-around_x-small'
-        ).toString();
-    }
-
     get firstAction() {
         return this.computedActions[0];
     }
@@ -224,6 +199,13 @@ export default class List extends LightningElement {
             return `menu slds-has-dividers_${this.divider}`;
         }
         return `menu slds-has-dividers_${this.divider}-space`;
+    }
+
+    get computedListStyle() {
+        if (Object.keys(...this.computedItems).includes('imageSrc')) {
+            return 'justify-content: center';
+        }
+        return 'justify-content: none';
     }
 
     get computedItemClass() {

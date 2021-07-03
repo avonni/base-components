@@ -71,6 +71,7 @@ img {
     position: absolute;
     height: 100%;
     object-fit: cover;
+    pointer-events: none;
 }
 
 .image-container {
