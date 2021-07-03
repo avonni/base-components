@@ -189,6 +189,12 @@ export default class List extends LightningElement {
         `;
     }
 
+    get computedContentContainerClass() {
+        return classSet(
+            'slds-grid slds-grow slds-grid_vertical-align-center slds-p-around_x-small'
+        ).toString();
+    }
+
     get firstAction() {
         return this.computedActions[0];
     }

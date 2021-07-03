@@ -80,12 +80,10 @@
                             />
                         </div>
                     </template>
-                    <div
-                        class="slds-p-around_x-small slds-grid slds-grow slds-grid_vertical-align-center"
-                    >
+                    <div class={computedContentContainerClass}>
                         <lightning-icon
                             if:true={showIconLeft}
-                            class="icon-left slds-m-right_x-small"
+                            class="icon-left slds-p-right_x-small"
                             icon-name={sortableIconName}
                             size="x-small"
                         ></lightning-icon>
@@ -97,9 +95,11 @@
                             size="small"
                             hide-avatar-details="true"
                         ></c-avatar>
+
                         <div class="slds-col slds-truncate">
                             <div
                                 class="slds-grid slds-grid-align-center slds-truncate slds-no-space slds-margin-bottom_xx-small"
+                                style="min-width: 0"
                             >
                                 <template if:true={item.href}>
                                     <a draggable="false" href={item.href}
@@ -127,7 +127,7 @@
                             </div>
                             <p
                                 if:true={item.description}
-                                class="slds-text-body_regular slds-line-clamp_x-small description-text"
+                                class="slds-text-body_regular slds-line-clamp_x-small slds-no-space description-text"
                             >
                                 {item.description}
                             </p>
@@ -146,7 +146,7 @@
                         </div>
                         <lightning-icon
                             if:true={showIconRight}
-                            class="slds-m-right_x-small icon-right"
+                            class="slds-p-right_x-small icon-right"
                             icon-name={sortableIconName}
                             size="x-small"
                         ></lightning-icon>

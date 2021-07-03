@@ -316,20 +316,12 @@ const itemsWithImagesAndAvatars = [
         href: '',
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-        infos: [
-            { label: 'info 1', href: '' },
-            { label: 'info 2', href: '' }
-        ],
+        infos: [{ label: 'info 1', href: '' }],
         icons: [
             {
                 iconName: 'utility:share',
                 alternativeText: 'share button',
                 title: 'Share'
-            },
-            {
-                iconName: 'utility:refresh',
-                alternativeText: 'refresh button',
-                title: 'Refresh'
             }
         ],
         imageSrc: 'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300'
