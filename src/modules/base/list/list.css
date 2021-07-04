@@ -80,7 +80,17 @@ img {
     height: 100%;
 }
 
+.image-container_rounded-corners {
+    border-top-left-radius: 0.16rem;
+    border-bottom-left-radius: 0.16rem;
+}
+
 .menu {
     display: grid;
-    /* justify-content: center; */
+}
+
+@media (width: 320px) {
+    .list-has-images {
+        justify-content: center;
+    }
 }

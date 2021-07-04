@@ -67,7 +67,7 @@
                 <div class="slds-grid slds-grid_vertical-align-center">
                     <template if:true={item.imageSrc}>
                         <div
-                            class="image-container"
+                            class={computedImageContainerClass}
                             style={computedImageContainerStyle}
                         >
                             <img

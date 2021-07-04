@@ -76,7 +76,7 @@ export default class List extends LightningElement {
     _imageSrc = [];
     computedActions = [];
     computedItems = [];
-    _mobile = false;
+    _hasImages;
     menuRole;
     itemRole;
 
@@ -195,17 +195,25 @@ export default class List extends LightningElement {
     }
 
     get computedListClass() {
-        if (this.divider === 'around') {
-            return `menu slds-has-dividers_${this.divider}`;
+        if (Object.keys(...this.computedItems).includes('imageSrc')) {
+            this._hasImages = true;
         }
-        return `menu slds-has-dividers_${this.divider}-space`;
+        return classSet('menu')
+            .add({
+                'slds-has-dividers_around': this.divider === 'around',
+                'slds-has-dividers_top-space': this.divider === 'top',
+                'slds-has-dividers_bottom-space': this.divider === 'bottom',
+                'list-has-images': this._hasImages
+            })
+            .toString();
     }
 
-    get computedListStyle() {
-        if (Object.keys(...this.computedItems).includes('imageSrc')) {
-            return 'justify-content: center';
-        }
-        return 'justify-content: none';
+    get computedImageContainerClass() {
+        return classSet('image-container')
+            .add({
+                'image-container_rounded-corners': this.divider === 'around'
+            })
+            .toString();
     }
 
     get computedItemClass() {
