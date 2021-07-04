@@ -53,9 +53,31 @@ const IMAGE_WIDTH = {
     valid: ['small', 'medium', 'large']
 };
 
+/**
+ * @class
+ * @example example-list--base
+ * @description The List component allows for a user to enumerate a vertical list with items
+ * @descriptor avonni-list
+ */
 export default class List extends LightningElement {
+    /**
+     * Text label for the list.
+     * @type {string}
+     * @public
+     */
     @api label;
+    /**
+     * The Lightning Design System name of the sortable icon. Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed.
+     * @type {string}
+     * @public
+     */
     @api sortableIconName;
+
+    /**
+     * Alternative text used to describe the list. If the list is sortable, it should describe its behavior, for example: “Sortable menu. Press spacebar to grab or drop an item. Press up and down arrow keys to change position. Press escape to cancel.”
+     * @type {string}
+     * @public
+     */
     @api alternativeText;
 
     _items = [];
@@ -80,6 +102,15 @@ export default class List extends LightningElement {
     menuRole;
     itemRole;
 
+    // renderedCallback() {
+    //     this.hasImages();
+    // }
+
+    /**
+     * Position of the sortable icon. Valid values include left and right.
+     * @type {string}
+     * @public
+     */
     @api
     get divider() {
         return this._divider;
@@ -90,6 +121,12 @@ export default class List extends LightningElement {
         });
     }
 
+    /**
+     * Fixed width of image (3 sizes: (small 48px, medium 72px and large 128px).
+     * @type {string}
+     * @public
+     * @default large
+     */
     @api
     get imageWidth() {
         return this._imageWidth;
@@ -116,6 +153,11 @@ export default class List extends LightningElement {
         }
     }
 
+    /**
+     * Array of item objects.
+     * @type {object}
+     * @public
+     */
     @api
     get items() {
         return this._items;
@@ -129,6 +171,12 @@ export default class List extends LightningElement {
         });
     }
 
+    /**
+     * If true, it will be possible to reorder the list items.
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api
     get sortable() {
         return this._sortable;
@@ -142,6 +190,12 @@ export default class List extends LightningElement {
         }
     }
 
+    /**
+     * Position of the sortable icon. Valid values include left and right.
+     * @type {string}
+     * @public
+     * @default 'right'
+     */
     @api
     get sortableIconPosition() {
         return this._sortableIconPosition;
@@ -153,6 +207,11 @@ export default class List extends LightningElement {
         });
     }
 
+    /**
+     * Array of actions
+     * @type {object}
+     * @public
+     */
     @api
     get actions() {
         return this._actions;
@@ -194,8 +253,19 @@ export default class List extends LightningElement {
         );
     }
 
+    // hasImages() {
+    //     if (this.computedItems !== null && typeof(this.computedItems) === 'object' && Object.keys(...this.computedItems).includes('imageSrc')) {
+    //         this._hasImages = true;
+    //     }
+    //     this._hasImages = false;
+    // }
+
     get computedListClass() {
-        if (Object.keys(...this.computedItems).includes('imageSrc')) {
+        if (
+            this.computedItems !== null &&
+            typeof this.computedItems === 'object' &&
+            Object.keys(...this.computedItems).includes('imageSrc')
+        ) {
             this._hasImages = true;
         }
         return classSet('menu')

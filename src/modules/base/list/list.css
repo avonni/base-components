@@ -89,7 +89,7 @@ img {
     display: grid;
 }
 
-@media (width: 320px) {
+@media (max-width: 320px) {
     .list-has-images {
         justify-content: center;
     }

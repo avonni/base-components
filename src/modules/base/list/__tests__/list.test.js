@@ -45,11 +45,15 @@ const ITEMS = [
         label: 'Item 1',
         avatarSrc:
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
-        avatarFallbackIconName: 'custom:custom5'
+        avatarFallbackIconName: 'custom:custom5',
+        imageSrc:
+            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
     },
     {
         label: 'Item 2',
-        avatarFallbackIconName: 'custom:custom9'
+        avatarFallbackIconName: 'custom:custom9',
+        imageSrc:
+            'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg'
     },
     {
         label: 'Item 3',
@@ -62,7 +66,9 @@ const ITEMS = [
     },
     {
         label: 'Item 5',
-        avatarFallbackIconName: 'custom:custom51'
+        avatarFallbackIconName: 'custom:custom51',
+        imageSrc:
+            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
     }
 ];
 
