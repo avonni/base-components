@@ -259,6 +259,9 @@ export default class Datatable extends LightningDatatable {
     renderedCallback() {
         super.renderedCallback();
 
+        this._data = JSON.parse(JSON.stringify(normalizeArray(super.data)));
+        this.computeEditableOption();
+
         // Make sure custom edited cells stay yellow on hover
         // Make sure error cells appear edited and with a red border
         const edited = Array.from(
@@ -293,19 +296,6 @@ export default class Datatable extends LightningDatatable {
         this._columns = JSON.parse(JSON.stringify(this._columns));
         this.removeWrapOption();
         this.computeEditableOption();
-    }
-
-    @api
-    // eslint-disable-next-line @lwc/lwc/valid-api
-    get data() {
-        return super.data;
-    }
-    set data(proxy) {
-        // Normalize proxy
-        this._data = JSON.parse(JSON.stringify(normalizeArray(proxy)));
-        this.computeEditableOption();
-
-        super.data = this._data;
     }
 
     removeWrapOption() {
