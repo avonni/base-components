@@ -92,7 +92,7 @@ describe('DataPageHeader', () => {
                 'slot[name="details"]'
             );
             const primitiveFields = element.shadowRoot.querySelectorAll(
-                'c-output-data'
+                'c-data-output'
             );
 
             expect(detailsSlot).toBeFalsy();
@@ -143,7 +143,7 @@ describe('DataPageHeader', () => {
                 'slot[name="details"]'
             );
             const primitiveFields = element.shadowRoot.querySelectorAll(
-                'c-output-data'
+                'c-data-output'
             );
 
             expect(detailsSlot).toBeFalsy();

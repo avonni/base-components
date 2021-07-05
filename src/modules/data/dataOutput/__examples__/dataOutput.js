@@ -30,15 +30,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from 'c/outputData';
+import Component from 'c/dataOutput';
 
 customElements.define(
-    'ac-base-output-data',
+    'ac-base-data-output',
     Component.CustomElementConstructor
 );
 
-export const OutputData = ({ label, typeAttributes, type, value }) => {
-    const element = document.createElement('ac-base-output-data');
+export const DataOutput = ({ label, typeAttributes, type, value }) => {
+    const element = document.createElement('ac-base-data-output');
     element.label = label;
     element.typeAttributes = typeAttributes;
     element.type = type;

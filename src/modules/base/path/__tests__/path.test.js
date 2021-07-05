@@ -360,7 +360,7 @@ describe('Path', () => {
             });
 
             const fieldValues = element.shadowRoot.querySelectorAll(
-                'c-output-data'
+                'c-data-output'
             );
             expect(fieldValues).toHaveLength(STEPS[2].keyFields.length);
             fieldValues.forEach((field, index) => {

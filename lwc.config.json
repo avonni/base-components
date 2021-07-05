@@ -126,6 +126,10 @@
             "path": "src/modules/base/confetti/confetti.js"
         },
         {
+            "name": "c/dataOutput",
+            "path": "src/modules/data/dataOutput/dataOutput.js"
+        },
+        {
             "name": "c/dataPageHeader",
             "path": "src/modules/data/pageHeader/dataPageHeader.js"
         },
@@ -228,10 +232,6 @@
         {
             "name": "c/messageDispatcher",
             "path": "src/modules/base/messageDispatcher/messageDispatcher.js"
-        },
-        {
-            "name": "c/outputData",
-            "path": "src/modules/base/outputData/outputData.js"
         },
         {
             "name": "c/pageHeader",
@@ -542,6 +542,10 @@
             "path": "src/modules/base/confetti/confetti.js"
         },
         {
+            "name": "avonni/dataOutput",
+            "path": "src/modules/data/dataOutput/dataOutput.js"
+        },
+        {
             "name": "avonni/dataPageHeader",
             "path": "src/modules/data/pageHeader/dataPageHeader.js"
         },
@@ -624,10 +628,6 @@
         {
             "name": "avonni/menuItemDialog",
             "path": "src/modules/base/menuItemDialog/menuItemDialog.js"
-        },
-        {
-            "name": "avonni/outputData",
-            "path": "src/modules/base/outputData/outputData.js"
         },
         {
             "name": "avonni/pageHeader",
@@ -786,6 +786,7 @@
         "avonni/colorPicker",
         "avonni/combobox",
         "avonni/confetti",
+        "avonni/dataOutput",
         "avonni/dataPageHeader",
         "avonni/datatable",
         "avonni/dateTimePicker",
@@ -807,7 +808,6 @@
         "avonni/map",
         "avonni/mediaObject",
         "avonni/menuItemDialog",
-        "avonni/outputData",
         "avonni/pageHeader",
         "avonni/pagination",
         "avonni/panel",
@@ -819,7 +819,6 @@
         "avonni/progressIndicator",
         "avonni/progressRing",
         "avonni/publisher",
-        "avonni/outputData",
         "avonni/qrcode",
         "avonni/range",
         "avonni/rating",

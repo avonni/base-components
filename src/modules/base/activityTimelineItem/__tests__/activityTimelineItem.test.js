@@ -184,7 +184,7 @@ describe('ActivityTimeline', () => {
         element.fields = FIELDS;
 
         return Promise.resolve().then(() => {
-            const fields = element.shadowRoot.querySelectorAll('c-output-data');
+            const fields = element.shadowRoot.querySelectorAll('c-data-output');
 
             expect(fields).toHaveLength(3);
 

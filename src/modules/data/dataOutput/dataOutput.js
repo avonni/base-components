@@ -49,7 +49,7 @@ const DATA_TYPES = {
     default: 'text'
 };
 
-export default class OutputData extends LightningElement {
+export default class DataOutput extends LightningElement {
     @api label;
 
     _typeAttributes = {};

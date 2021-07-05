@@ -31,9 +31,9 @@
  */
 
 import { createElement } from 'lwc';
-import OutputData from 'c/outputData';
+import DataOutput from 'c/dataOutput';
 
-describe('OutputData', () => {
+describe('DataOutput', () => {
     afterEach(() => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
@@ -41,8 +41,8 @@ describe('OutputData', () => {
     });
 
     it('Default attributes', () => {
-        const element = createElement('base-output-data', {
-            is: OutputData
+        const element = createElement('base-data-output', {
+            is: DataOutput
         });
 
         expect(element.label).toBeUndefined();
@@ -55,8 +55,8 @@ describe('OutputData', () => {
 
     // Boolean
     it('type = boolean, with true value', () => {
-        const element = createElement('base-output-data', {
-            is: OutputData
+        const element = createElement('base-data-output', {
+            is: DataOutput
         });
 
         document.body.appendChild(element);
@@ -96,8 +96,8 @@ describe('OutputData', () => {
     });
 
     it('type = boolean, with false value', () => {
-        const element = createElement('base-output-data', {
-            is: OutputData
+        const element = createElement('base-data-output', {
+            is: DataOutput
         });
 
         document.body.appendChild(element);
@@ -142,8 +142,8 @@ describe('OutputData', () => {
     });
 
     it('type = boolean, with no value', () => {
-        const element = createElement('base-output-data', {
-            is: OutputData
+        const element = createElement('base-data-output', {
+            is: DataOutput
         });
 
         document.body.appendChild(element);
@@ -188,8 +188,8 @@ describe('OutputData', () => {
 
     // Currency
     it('type = currency', () => {
-        const element = createElement('base-output-data', {
-            is: OutputData
+        const element = createElement('base-data-output', {
+            is: DataOutput
         });
 
         document.body.appendChild(element);
@@ -261,8 +261,8 @@ describe('OutputData', () => {
 
     // Date
     it('type = date', () => {
-        const element = createElement('base-output-data', {
-            is: OutputData
+        const element = createElement('base-data-output', {
+            is: DataOutput
         });
 
         document.body.appendChild(element);
@@ -332,8 +332,8 @@ describe('OutputData', () => {
 
     // Email
     it('type = email', () => {
-        const element = createElement('base-output-data', {
-            is: OutputData
+        const element = createElement('base-data-output', {
+            is: DataOutput
         });
 
         document.body.appendChild(element);
@@ -379,8 +379,8 @@ describe('OutputData', () => {
 
     // Location
     it('type = location', () => {
-        const element = createElement('base-output-data', {
-            is: OutputData
+        const element = createElement('base-data-output', {
+            is: DataOutput
         });
 
         document.body.appendChild(element);
@@ -428,8 +428,8 @@ describe('OutputData', () => {
 
     // Number
     it('type = number', () => {
-        const element = createElement('base-output-data', {
-            is: OutputData
+        const element = createElement('base-data-output', {
+            is: DataOutput
         });
 
         document.body.appendChild(element);
@@ -495,8 +495,8 @@ describe('OutputData', () => {
 
     // Percent
     it('type = percent', () => {
-        const element = createElement('base-output-data', {
-            is: OutputData
+        const element = createElement('base-data-output', {
+            is: DataOutput
         });
 
         document.body.appendChild(element);
@@ -563,8 +563,8 @@ describe('OutputData', () => {
 
     // Phone
     it('type = phone', () => {
-        const element = createElement('base-output-data', {
-            is: OutputData
+        const element = createElement('base-data-output', {
+            is: DataOutput
         });
 
         document.body.appendChild(element);
@@ -606,8 +606,8 @@ describe('OutputData', () => {
 
     // Text
     it('type = text', () => {
-        const element = createElement('base-output-data', {
-            is: OutputData
+        const element = createElement('base-data-output', {
+            is: DataOutput
         });
 
         document.body.appendChild(element);
@@ -653,8 +653,8 @@ describe('OutputData', () => {
 
     // URL
     it('type = url', () => {
-        const element = createElement('base-output-data', {
-            is: OutputData
+        const element = createElement('base-data-output', {
+            is: DataOutput
         });
 
         document.body.appendChild(element);

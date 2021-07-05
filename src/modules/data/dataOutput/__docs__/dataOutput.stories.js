@@ -30,10 +30,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { OutputData } from '../__examples__/outputData';
+import { DataOutput } from '../__examples__/dataOutput';
 
 export default {
-    title: 'Example/Output Data',
+    title: 'Example/Data Output',
     argTypes: {
         label: {
             control: {
@@ -88,7 +88,7 @@ export default {
     }
 };
 
-const Template = (args) => OutputData(args);
+const Template = (args) => DataOutput(args);
 
 export const Base = Template.bind({});
 Base.args = {
