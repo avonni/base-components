@@ -393,6 +393,10 @@ export default class List extends LightningElement {
                 : event.clientY;
     }
 
+    handleAvatarDragStart(event) {
+        event.preventDefault();
+    }
+
     dragStart(event) {
         // Stop dragging if the click was on a button menu
         if (

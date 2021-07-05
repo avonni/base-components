@@ -91,6 +91,7 @@
                         ></lightning-icon>
                         <c-avatar
                             if:true={item.avatarSrc}
+                            ondragstart={handleAvatarDragStart}
                             class="slds-p-right_x-small"
                             fallback-icon-name={item.avatarFallbackIconName}
                             src={item.avatarSrc}
