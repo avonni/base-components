@@ -35,8 +35,8 @@
 <template>
     <lightning-input
         if:true={isBaseInput}
-        variant={variant}
-        label={label}
+        variant={inputVariant}
+        label={inputLabel}
         name={name}
         placeholder={placeholder}
         disabled={disabled}
@@ -50,8 +50,8 @@
 
     <lightning-input
         if:true={isPhone}
-        variant={variant}
-        label={label}
+        variant={inputVariant}
+        label={inputLabel}
         name={name}
         placeholder={placeholder}
         disabled={disabled}
@@ -66,8 +66,8 @@
 
     <lightning-input-location
         if:true={isLocation}
-        variant={variant}
-        label={label}
+        variant={inputVariant}
+        label={inputLabel}
         disabled={disabled}
         read-only={readOnly}
         required={required}

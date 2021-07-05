@@ -132,6 +132,10 @@ export default class DataInputBasic extends LightningElement {
         return this.type === 'phone';
     }
 
+    get isBaseInput() {
+        return !this.isLocation && !this.isPhone;
+    }
+
     get inputType() {
         if (this.isNumber) {
             return 'number';
@@ -149,8 +153,12 @@ export default class DataInputBasic extends LightningElement {
         return 'decimal';
     }
 
-    get isBaseInput() {
-        return !this.isLocation && !this.isPhone;
+    get inputLabel() {
+        return this.label ? this.label : 'Data input';
+    }
+
+    get inputVariant() {
+        return this.label ? this.variant : 'label-hidden';
     }
 
     handlePhoneInputMask(event) {

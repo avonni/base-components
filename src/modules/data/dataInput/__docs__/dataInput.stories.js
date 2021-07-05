@@ -39,11 +39,11 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
+            defaultValue: false,
             description:
                 'If present, the input field is disabled and users cannot interact with it.',
             table: {
-                defaultValue: { summary: 'false' },
+                defaultValue: { summary: false },
                 type: { summary: 'boolean' }
             }
         },
@@ -80,11 +80,11 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
+            defaultValue: false,
             description:
                 'If present, the input field is read-only and cannot be edited by users.',
             table: {
-                defaultValue: { summary: 'false' },
+                defaultValue: { summary: false },
                 type: { summary: 'boolean' }
             }
         },
@@ -92,11 +92,11 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
+            defaultValue: false,
             description:
                 'If present, the input field must be filled out before the form is submitted.',
             table: {
-                defaultValue: { summary: 'false' },
+                defaultValue: { summary: false },
                 type: { summary: 'boolean' }
             }
         },
