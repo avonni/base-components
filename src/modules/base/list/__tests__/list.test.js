@@ -144,6 +144,7 @@ describe('List', () => {
         expect(element.sortableIconName).toBeUndefined();
         expect(element.sortableIconPosition).toBe('right');
         expect(element.actions).toMatchObject([]);
+        expect(element.imageWidth).toBeUndefined();
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -231,7 +232,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const menu = element.shadowRoot.querySelector('.menu');
-            expect(menu.classList).toContain('slds-has-dividers_around-space');
+            expect(menu.classList).toContain('slds-has-dividers_around');
         });
     });
     it('divider = top', () => {
@@ -484,6 +485,75 @@ describe('List', () => {
             const iconsLeft = element.shadowRoot.querySelectorAll('.icon-left');
             expect(iconsRight).toHaveLength(0);
             expect(iconsLeft).toHaveLength(4);
+        });
+    });
+    /* images */
+    it('images presence', () => {
+        const element = createElement('base-list', {
+            is: List
+        });
+
+        document.body.appendChild(element);
+
+        element.items = ITEMS;
+
+        return Promise.resolve().then(() => {
+            const images = element.shadowRoot.querySelectorAll('img');
+            expect(images).toHaveLength(3);
+        });
+    });
+
+    it('images width small', () => {
+        const element = createElement('base-list', {
+            is: List
+        });
+
+        document.body.appendChild(element);
+
+        element.items = ITEMS;
+        element.imageWidth = 'small';
+
+        return Promise.resolve().then(() => {
+            const images = element.shadowRoot.querySelectorAll('img');
+            expect(images[0].width).toBe(48);
+            expect(images[1].width).toBe(48);
+            expect(images[2].width).toBe(48);
+        });
+    });
+
+    it('images width medium', () => {
+        const element = createElement('base-list', {
+            is: List
+        });
+
+        document.body.appendChild(element);
+
+        element.items = ITEMS;
+        element.imageWidth = 'medium';
+
+        return Promise.resolve().then(() => {
+            const images = element.shadowRoot.querySelectorAll('img');
+            expect(images[0].width).toBe(72);
+            expect(images[1].width).toBe(72);
+            expect(images[2].width).toBe(72);
+        });
+    });
+
+    it('images width large', () => {
+        const element = createElement('base-list', {
+            is: List
+        });
+
+        document.body.appendChild(element);
+
+        element.items = ITEMS;
+        element.imageWidth = 'large';
+
+        return Promise.resolve().then(() => {
+            const images = element.shadowRoot.querySelectorAll('img');
+            expect(images[0].width).toBe(128);
+            expect(images[1].width).toBe(128);
+            expect(images[2].width).toBe(128);
         });
     });
 

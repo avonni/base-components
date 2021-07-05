@@ -102,10 +102,6 @@ export default class List extends LightningElement {
     menuRole;
     itemRole;
 
-    // renderedCallback() {
-    //     this.hasImages();
-    // }
-
     /**
      * Position of the sortable icon. Valid values include left and right.
      * @type {string}
@@ -253,16 +249,10 @@ export default class List extends LightningElement {
         );
     }
 
-    // hasImages() {
-    //     if (this.computedItems !== null && typeof(this.computedItems) === 'object' && Object.keys(...this.computedItems).includes('imageSrc')) {
-    //         this._hasImages = true;
-    //     }
-    //     this._hasImages = false;
-    // }
-
     get computedListClass() {
         if (
             this.computedItems !== null &&
+            this.computedItems !== undefined &&
             typeof this.computedItems === 'object' &&
             Object.keys(...this.computedItems).includes('imageSrc')
         ) {
@@ -273,7 +263,7 @@ export default class List extends LightningElement {
                 'slds-has-dividers_around': this.divider === 'around',
                 'slds-has-dividers_top-space': this.divider === 'top',
                 'slds-has-dividers_bottom-space': this.divider === 'bottom',
-                'list-has-images': this._hasImages
+                'avonni-list-has-images': this._hasImages
             })
             .toString();
     }
@@ -301,6 +291,10 @@ export default class List extends LightningElement {
         return this.sortable ? '0' : '-1';
     }
 
+    /**
+     * If the items have been sorted by the user, reset the items to their original order.
+     * @public
+     */
     @api
     reset() {
         this.clearSelection();
@@ -479,6 +473,10 @@ export default class List extends LightningElement {
 
         this.clearSelection();
 
+        /**
+         * The event fired when a user reordered the items.
+         * @event reorder
+         */
         this.dispatchEvent(
             new CustomEvent('reorder', {
                 detail: {

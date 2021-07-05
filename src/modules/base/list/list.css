@@ -90,7 +90,7 @@ img {
 }
 
 @media (max-width: 320px) {
-    .list-has-images {
+    .avonni-list-has-images {
         justify-content: center;
     }
 }
