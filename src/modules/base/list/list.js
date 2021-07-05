@@ -251,9 +251,7 @@ export default class List extends LightningElement {
 
     get computedListClass() {
         if (
-            this.computedItems !== null &&
-            this.computedItems !== undefined &&
-            typeof this.computedItems === 'object' &&
+            this.computedItems.length > 0 &&
             Object.keys(...this.computedItems).includes('imageSrc')
         ) {
             this._hasImages = true;
