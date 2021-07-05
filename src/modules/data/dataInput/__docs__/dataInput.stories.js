@@ -71,7 +71,7 @@ export default {
                 type: 'text'
             },
             description:
-                'Text that is displayed when the field is empty, to prompt the user for a valid entry. Use this attribute with date, email, number, password, search, tel, text, time, and url input types only.',
+                'Text that is displayed when the field is empty, to prompt the user for a valid entry.',
             table: {
                 type: { summary: 'string' }
             }
@@ -116,7 +116,8 @@ export default {
                 'url',
                 'text'
             ],
-            description: 'Type of the input.',
+            description:
+                'Type of the input. Accepted types include boolean, currency, date, email, location, number, percent, phone, url and text. This value defaults to text.',
             defaultValue: 'text',
             table: {
                 type: { summary: 'string' },

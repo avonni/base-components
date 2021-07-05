@@ -33,6 +33,12 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
+/**
+ * @constant
+ * @type {object}
+ * @property {string[]} valid   - The valid data types.
+ * @property {string}   default - The default data type.
+ */
 const DATA_TYPES = {
     valid: [
         'boolean',
@@ -49,14 +55,45 @@ const DATA_TYPES = {
     default: 'text'
 };
 
+/**
+ * @constant
+ * @type {object}
+ * @property {string[]} valid   - The valid variants.
+ * @property {string}   default - The default variant.
+ */
 const VARIANTS = {
     valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'],
     default: 'standard'
 };
 
+/**
+ * @class
+ * @classdesc The input data displays data depending on its type.
+ * @name DataInput
+ * @descriptor avonni-data-input
+ * @example example-data-input--base
+ * @public
+ */
 export default class DataInputBasic extends LightningElement {
+    /**
+     * Text label for the input.
+     * @type {string}
+     * @public
+     */
     @api label;
+
+    /**
+     * Specifies the name of an input element.
+     * @type {string}
+     * @public
+     */
     @api name;
+
+    /**
+     * Message to be displayed when input field is empty, to prompt the user for a valid entry.
+     * @type {string}
+     * @public
+     */
     @api placeholder;
 
     _disabled = false;
@@ -65,6 +102,12 @@ export default class DataInputBasic extends LightningElement {
     _type = DATA_TYPES.default;
     _variant = VARIANTS.default;
 
+    /**
+     * If present, the input field is disabled and users cannot interact with it.
+     * @type {boolean}
+     * @default false
+     * @public
+     */
     @api
     get disabled() {
         return this._disabled;
@@ -73,6 +116,12 @@ export default class DataInputBasic extends LightningElement {
         this._disabled = normalizeBoolean(value);
     }
 
+    /**
+     * If present, the input field is read-only and cannot be edited by users.
+     * @type {boolean}
+     * @default false
+     * @public
+     */
     @api
     get readOnly() {
         return this._readOnly;
@@ -81,6 +130,12 @@ export default class DataInputBasic extends LightningElement {
         this._readOnly = normalizeBoolean(value);
     }
 
+    /**
+     * If present, the input field must be filled out before the form is submitted.
+     * @type {boolean}
+     * @default false
+     * @public
+     */
     @api
     get required() {
         return this._required;
@@ -89,6 +144,14 @@ export default class DataInputBasic extends LightningElement {
         this._required = normalizeBoolean(value);
     }
 
+    /**
+     * Type of the input.
+     * Accepted types include boolean, currency, date, email, location, number, percent, phone, url and text.
+     * This value defaults to text.
+     * @type {string}
+     * @default text
+     * @public
+     */
     @api
     get type() {
         return this._type;
@@ -100,6 +163,17 @@ export default class DataInputBasic extends LightningElement {
         });
     }
 
+    /**
+     * The variant changes the appearance of an input field.
+     * Accepted variants include standard, label-inline, label-hidden, and label-stacked.
+     * This value defaults to standard, which displays the label above the field.
+     * Use label-hidden to hide the label but make it available to assistive technology.
+     * Use label-inline to horizontally align the label and input field.
+     * Use label-stacked to place the label above the input field.
+     * @type {string}
+     * @default standard
+     * @public
+     */
     @api
     get variant() {
         return this._variant;
@@ -112,6 +186,11 @@ export default class DataInputBasic extends LightningElement {
         });
     }
 
+    /**
+     * Whether the data input type is a number.
+     * Number, percent and currency types are considered as numbers.
+     * @type {boolean}
+     */
     get isNumber() {
         return (
             this.type === 'number' ||
@@ -120,22 +199,42 @@ export default class DataInputBasic extends LightningElement {
         );
     }
 
+    /**
+     * Whether the data input type is a boolean.
+     * @type {boolean}
+     */
     get isBoolean() {
         return this.type === 'boolean';
     }
 
+    /**
+     * Whether the data input type is a location.
+     * @type {boolean}
+     */
     get isLocation() {
         return this.type === 'location';
     }
 
+    /**
+     * Whether the data input type is a phone number.
+     * @type {boolean}
+     */
     get isPhone() {
         return this.type === 'phone';
     }
 
+    /**
+     * Whether the data input type is different from a location and a phone number.
+     * @type {boolean}
+     */
     get isBaseInput() {
         return !this.isLocation && !this.isPhone;
     }
 
+    /**
+     * The Salesforce lightning-input type attribute equivalent for the data input type.
+     * @type {string}
+     */
     get inputType() {
         if (this.isNumber) {
             return 'number';
@@ -146,6 +245,10 @@ export default class DataInputBasic extends LightningElement {
         return this.type;
     }
 
+    /**
+     * The Salesforce lightning-input formatter attribute depending on the number type.
+     * @type {string}
+     */
     get inputFormat() {
         if (this.type === 'currency' || this.type === 'percent') {
             return this.type;
@@ -153,15 +256,31 @@ export default class DataInputBasic extends LightningElement {
         return 'decimal';
     }
 
+    /**
+     * The label of the input.
+     * The Salesforce lightning-input requires a label.
+     * If there is no label, one will be given by default.
+     * @type {string}
+     */
     get inputLabel() {
         return this.label ? this.label : 'Data input';
     }
 
+    /**
+     * The variant of the input.
+     * If there is no label, the variant will be changed to label-hidden.
+     * @type {string}
+     */
     get inputVariant() {
         return this.label ? this.variant : 'label-hidden';
     }
 
-    handlePhoneInputMask(event) {
+    /**
+     * Handles a change in the input if its type is a phone number.
+     * The phone number will be displayed in the format ###-###-####.
+     * @param {Event} event
+     */
+    handlePhoneInputChange(event) {
         const tel = event.target.value
             .replace(/\D+/g, '')
             .match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
