@@ -451,7 +451,7 @@ describe('List', () => {
 
         document.body.appendChild(element);
 
-        element.sortableIconName = 'utility:apps';
+        element.sortableIconName = 'utility:drag_and_drop';
         element.sortable = true;
         element.sortableIconPosition = 'right';
         element.items = ITEMS_WITHOUT_ICONS;
@@ -554,6 +554,36 @@ describe('List', () => {
             expect(images[0].width).toBe(128);
             expect(images[1].width).toBe(128);
             expect(images[2].width).toBe(128);
+        });
+    });
+
+    it('images rounded on sortable icon right', () => {
+        const element = createElement('base-list', {
+            is: List
+        });
+
+        document.body.appendChild(element);
+
+        element.items = ITEMS;
+        element.imageWidth = 'large';
+        element.divider = 'around';
+        element.sortable = true;
+        element.sortableIconName = 'utility:add';
+        element.sortableIconPosition = 'right';
+
+        return Promise.resolve().then(() => {
+            const images = element.shadowRoot.querySelectorAll(
+                '.image-container'
+            );
+            expect(images[0].classList).toContain(
+                'image-container_rounded-corners'
+            );
+            expect(images[1].classList).toContain(
+                'image-container_rounded-corners'
+            );
+            expect(images[2].classList).toContain(
+                'image-container_rounded-corners'
+            );
         });
     });
 

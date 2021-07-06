@@ -269,7 +269,10 @@ export default class List extends LightningElement {
     get computedImageContainerClass() {
         return classSet('image-container')
             .add({
-                'image-container_rounded-corners': this.divider === 'around'
+                'image-container_rounded-corners':
+                    this.divider === 'around' &&
+                    this.sortableIconName &&
+                    this.sortableIconPosition === 'right'
             })
             .toString();
     }
@@ -299,6 +302,9 @@ export default class List extends LightningElement {
         this.computedItems = JSON.parse(JSON.stringify(this.items));
     }
 
+    /**
+     * Update assistive text based on new item ordering
+     */
     updateAssistiveText() {
         const label = this.computedItems[this._draggedIndex].label;
         const position = this._draggedIndex + 1;
@@ -310,6 +316,11 @@ export default class List extends LightningElement {
         element.textContent = `${label}. ${position} / ${total}`;
     }
 
+    /**
+     * Compute hovered items center coordinates for ordering
+     * @param {*} center
+     * @returns item
+     */
     getHoveredItem(center) {
         return this._itemElements.find((item) => {
             if (item !== this._draggedElement) {
@@ -329,6 +340,10 @@ export default class List extends LightningElement {
         });
     }
 
+    /**
+     * Compute swap between dragged items
+     * @param {*} target
+     */
     switchWithItem(target) {
         const targetIndex = Number(target.dataset.index);
         const index = this._draggedIndex;
@@ -358,6 +373,9 @@ export default class List extends LightningElement {
         this.updateAssistiveText();
     }
 
+    /**
+     * Erase the list styles and dataset - clear tracked variables
+     */
     clearSelection() {
         // Clean the styles and dataset
         this._itemElements.forEach((item, index) => {
@@ -380,6 +398,10 @@ export default class List extends LightningElement {
         this._draggedElement = this._draggedIndex = this._initialY = this._savedComputedItems = undefined;
     }
 
+    /**
+     * Get initial list menu position and initial Y position on user interaction
+     * @param {*} event
+     */
     initPositions(event) {
         const menuPosition = this.template
             .querySelector('.menu')
@@ -393,17 +415,24 @@ export default class List extends LightningElement {
                 : event.clientY;
     }
 
+    /**
+     * Prevent ghost image on avatar drag
+     * @param {*} event
+     */
     handleAvatarDragStart(event) {
         event.preventDefault();
     }
 
+    /**
+     * Compute drag event start element positions and indexes // Prevent certain elements from being dragged
+     * @param {*} event
+     * @returns initPositions || _saved.computedItems
+     */
     dragStart(event) {
-        // Stop dragging if the click was on a button menu
+        // Stop dragging if the click was on a button menu or link
         if (
             !this.sortable ||
             event.target.tagName.startsWith('LIGHTNING-BUTTON') ||
-            event.target.tagName.startsWith('IMG') ||
-            event.target.tagName.startsWith('C-AVATAR') ||
             event.target.tagName.startsWith('A')
         )
             return;
@@ -431,6 +460,10 @@ export default class List extends LightningElement {
         }
     }
 
+    /**
+     * Compute drag logic
+     * @param {*} event
+     */
     drag(event) {
         if (!this._draggedElement) return;
 
@@ -468,6 +501,9 @@ export default class List extends LightningElement {
         if (buttonMenu) buttonMenu.classList.remove('slds-is-open');
     }
 
+    /**
+     * Set new computedItems order and clear style // fire reorder event
+     */
     dragEnd() {
         if (!this._draggedElement) return;
 
@@ -487,7 +523,10 @@ export default class List extends LightningElement {
             })
         );
     }
-
+    /**
+     * Handler for keyboard access controls to sortable list
+     * @param {*} event
+     */
     handleKeyDown(event) {
         if (!this.sortable) return;
 
@@ -540,8 +579,11 @@ export default class List extends LightningElement {
         }
     }
 
+    /**
+     * Stop the dragging process when touching the button menu
+     * @param {*} event
+     */
     handleButtonMenuTouchStart(event) {
-        // Stop the dragging process when touching the button menu
         event.stopPropagation();
     }
 }

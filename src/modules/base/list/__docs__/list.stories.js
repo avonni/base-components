@@ -122,16 +122,6 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        // imageSrc: {
-        //     name: 'image-src',
-        //     control: {
-        //         type: 'object'
-        //     },
-        //     description: 'Array of image sources',
-        //     table: {
-        //         type: { summary: 'object[]' }
-        //     }
-        // },
         imageWidth: {
             name: 'image-width',
             control: {
@@ -397,6 +387,17 @@ SortableListWithAvatars.args = {
     divider: 'around'
 };
 
+export const SortableListWithAvatarsAndSingleAction = Template.bind({});
+SortableListWithAvatarsAndSingleAction.args = {
+    label: 'Sortable list with Icons and Single Action',
+    items: itemsWithAvatars,
+    actions: action,
+    sortableIconName: 'utility:drag_and_drop',
+    sortableIconPosition: 'left',
+    sortable: true,
+    divider: 'top'
+};
+
 export const ListWithActions = Template.bind({});
 ListWithActions.args = {
     label: 'List with actions menu',
@@ -409,7 +410,7 @@ export const SortableListWithImagesAndAvatars = Template.bind({});
 SortableListWithImagesAndAvatars.args = {
     label: 'Sortable list Images and Avatars with Icons',
     items: itemsWithImagesAndAvatars,
-    actions: action,
+    actions: actions,
     sortableIconName: 'utility:drag_and_drop',
     sortableIconPosition: 'left',
     sortable: true,

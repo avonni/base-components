@@ -65,6 +65,12 @@
                 aria-describedby="instructions"
             >
                 <div class="slds-grid slds-grid_vertical-align-center">
+                    <lightning-icon
+                        if:true={showIconLeft}
+                        class="icon-left slds-p-horizontal_xx-small"
+                        icon-name={sortableIconName}
+                        size="x-small"
+                    ></lightning-icon>
                     <template if:true={item.imageSrc}>
                         <div
                             class={computedImageContainerClass}
@@ -83,12 +89,6 @@
                     <div
                         class="slds-grid slds-grow slds-grid_vertical-align-center slds-p-around_x-small"
                     >
-                        <lightning-icon
-                            if:true={showIconLeft}
-                            class="icon-left slds-p-right_x-small"
-                            icon-name={sortableIconName}
-                            size="x-small"
-                        ></lightning-icon>
                         <c-avatar
                             if:true={item.avatarSrc}
                             ondragstart={handleAvatarDragStart}
@@ -146,15 +146,9 @@
                                 </template>
                             </ul>
                         </div>
-                        <lightning-icon
-                            if:true={showIconRight}
-                            class="slds-p-right_x-small icon-right"
-                            icon-name={sortableIconName}
-                            size="x-small"
-                        ></lightning-icon>
                         <div
                             if:true={actions.length}
-                            class="slds-col_bump-left slds-grid slds-grid-align-center slds-grid_vertical-align-center"
+                            class="slds-col slds-grid slds-grid-align-center slds-grid_vertical-align-center"
                         >
                             <div class="slds-col slds-media slds-media_small">
                                 <lightning-button-menu
@@ -180,7 +174,7 @@
                                 <template if:false={hasMultipleActions}>
                                     <lightning-button
                                         if:true={firstAction.label}
-                                        class="slds-m-right_none slds-show_small"
+                                        class="slds-m-right_none"
                                         ontouchstart={handleButtonMenuTouchStart}
                                         key={firstAction.name}
                                         value={firstAction.name}
@@ -188,17 +182,6 @@
                                         disabled={firstAction.disabled}
                                         icon-name={firstAction.iconName}
                                     ></lightning-button>
-                                    <lightning-button-icon
-                                        if:true={firstAction.label}
-                                        class="slds-m-right_none slds-hide_small"
-                                        size="x-small"
-                                        ontouchstart={handleButtonMenuTouchStart}
-                                        key={firstAction.name}
-                                        value={firstAction.name}
-                                        disabled={firstAction.disabled}
-                                        icon-name={firstAction.iconName}
-                                        variant="bare"
-                                    ></lightning-button-icon>
                                     <lightning-button-icon
                                         if:false={firstAction.label}
                                         class="slds-m-right_none"
@@ -213,6 +196,12 @@
                                 </template>
                             </div>
                         </div>
+                        <lightning-icon
+                            if:true={showIconRight}
+                            class="slds-p-left_x-small icon-right"
+                            icon-name={sortableIconName}
+                            size="x-small"
+                        ></lightning-icon>
                     </div>
                 </div>
             </li>
