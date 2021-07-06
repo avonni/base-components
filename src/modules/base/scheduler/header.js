@@ -32,7 +32,7 @@
 
 import { generateUniqueId } from 'c/utils';
 import { DateTime } from 'c/luxon';
-import { formatTime, isInTimeFrame, addToDate } from './dateUtils';
+import { isInTimeFrame, addToDate } from './dateUtils';
 
 /**
  * Scheduler header
@@ -142,7 +142,7 @@ export default class Header {
             }
 
             this.columns.push({
-                label: formatTime(date.startOf(unit), label),
+                label: date.startOf(unit).toFormat(label),
                 start: date.ts
             });
 
