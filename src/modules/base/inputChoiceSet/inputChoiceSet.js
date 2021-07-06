@@ -239,11 +239,14 @@ export default class InputChoiceSet extends LightningElement {
 
     handleFocus() {
         this.containsFocus = true;
+
         this.dispatchEvent(new CustomEvent('focus'));
     }
 
     handleBlur() {
         this.containsFocus = false;
+        this.debouncedShowIfBlurred();
+
         this.dispatchEvent(new CustomEvent('blur'));
     }
 
@@ -253,15 +256,19 @@ export default class InputChoiceSet extends LightningElement {
         }
     }
 
+    handleValueChange(inputs) {
+        return Array.from(inputs)
+            .filter((checkbox) => checkbox.checked)
+            .map((checkbox) => checkbox.value);
+    }
+
     handleChange(event) {
         event.stopPropagation();
 
         let value = event.target.value;
         const checkboxes = this.template.querySelectorAll('input');
         if (this.isMultiSelect) {
-            value = Array.from(checkboxes)
-                .filter((checkbox) => checkbox.checked)
-                .map((checkbox) => checkbox.value);
+            this._value = this.handleValueChange(checkboxes);
         } else {
             const checkboxesToUncheck = Array.from(checkboxes).filter(
                 (checkbox) => checkbox.value !== value
@@ -269,6 +276,7 @@ export default class InputChoiceSet extends LightningElement {
             checkboxesToUncheck.forEach((checkbox) => {
                 checkbox.checked = false;
             });
+            this._value = this.handleValueChange(checkboxes);
         }
         if (this.type === 'button') {
             checkboxes.forEach((checkbox) => {
