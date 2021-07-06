@@ -43,6 +43,7 @@ import {
 import { classSet } from 'c/utils';
 import {
     FieldConstraintApiWithProxyInput,
+    debounce,
     normalizeVariant,
     VARIANT
 } from 'c/inputUtils';
@@ -55,11 +56,15 @@ const ARIA_CONTROLS = 'aria-controls';
 const ARIA_DESCRIBEDBY = 'aria-describedby';
 const ARIA_LABELEDBY = 'aria-labelledby';
 
-const INPUT_SIZES = {valid: ['x-small', 'small', 'medium', 'large'], default: 'medium'};
+const DEBOUNCE_PERIOD = 200;
 
-const DEFAULT_MESSAGE_TOGGLE_ACTIVE = 'Active'
-const DEFAULT_MESSAGE_TOGGLE_INACTIVE = 'Inactive'
+const INPUT_SIZES = {
+    valid: ['x-small', 'small', 'medium', 'large'],
+    default: 'medium'
+};
 
+const DEFAULT_MESSAGE_TOGGLE_ACTIVE = 'Active';
+const DEFAULT_MESSAGE_TOGGLE_INACTIVE = 'Inactive';
 
 export default class InputToggle extends LightningElement {
     @api accessKey;
@@ -89,6 +94,12 @@ export default class InputToggle extends LightningElement {
     constructor() {
         super();
         this.ariaObserver = new ContentMutation(this);
+
+        this.debouncedShowIfBlurred = debounce(() => {
+            if (!this.containsFocus) {
+                this.showHelpMessageIfInvalid();
+            }
+        }, DEBOUNCE_PERIOD);
     }
 
     connectedCallback() {
@@ -389,6 +400,7 @@ export default class InputToggle extends LightningElement {
     handleBlur() {
         this.valid = !(this.required && !this.checked);
         this.updateClassList();
+        this.debouncedShowIfBlurred();
 
         this.dispatchEvent(new CustomEvent('blur'));
     }
