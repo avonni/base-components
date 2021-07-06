@@ -28,6 +28,11 @@
  */
 /**
  * @memberof examples
+ * @name baseAsBoolean
+ * @storyId example-data-input--base-as-boolean
+ */
+/**
+ * @memberof examples
  * @name disabled
  * @storyId example-data-input--disabled
  */

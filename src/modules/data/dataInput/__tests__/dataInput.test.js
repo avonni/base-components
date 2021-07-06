@@ -55,6 +55,9 @@ describe('DataInput', () => {
         expect(element.readOnly).toBeFalsy();
         expect(element.required).toBeFalsy();
         expect(element.type).toBe('text');
+        expect(element.value).toBe('');
+        expect(element.latitude).toBeUndefined();
+        expect(element.longitude).toBeUndefined();
     });
 
     it('Label attribute', () => {
@@ -141,6 +144,77 @@ describe('DataInput', () => {
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector('lightning-input');
             expect(input.variant).toBe('label-inline');
+        });
+    });
+
+    it('Value attribute', () => {
+        const element = createElement('avonni-data-input', {
+            is: DataInput
+        });
+        document.body.appendChild(element);
+
+        element.label = 'Base input';
+        element.value = 'Default text';
+
+        return Promise.resolve().then(() => {
+            const input = element.shadowRoot.querySelector('lightning-input');
+            expect(input.value).toBe('Default text');
+        });
+    });
+
+    it('Checked attribute', () => {
+        const element = createElement('avonni-data-input', {
+            is: DataInput
+        });
+        document.body.appendChild(element);
+
+        element.label = 'Base input';
+        element.type = 'checkbox';
+        element.checked = true;
+
+        return Promise.resolve().then(() => {
+            const input = element.shadowRoot.querySelector('lightning-input');
+            expect(input.checked).toBeTruthy();
+        });
+    });
+
+    it('Valid location attributes', () => {
+        const element = createElement('avonni-data-input', {
+            is: DataInput
+        });
+        document.body.appendChild(element);
+
+        element.label = 'Base input';
+        element.type = 'location';
+        element.latitude = 80;
+        element.longitude = -50;
+
+        return Promise.resolve().then(() => {
+            const locationInput = element.shadowRoot.querySelector(
+                'lightning-input-location'
+            );
+            expect(locationInput.latitude).toBe(80);
+            expect(locationInput.longitude).toBe(-50);
+        });
+    });
+
+    it('Corrected location attributes', () => {
+        const element = createElement('avonni-data-input', {
+            is: DataInput
+        });
+        document.body.appendChild(element);
+
+        element.label = 'Base input';
+        element.type = 'location';
+        element.latitude = 100;
+        element.longitude = -200;
+
+        return Promise.resolve().then(() => {
+            const locationInput = element.shadowRoot.querySelector(
+                'lightning-input-location'
+            );
+            expect(locationInput.latitude).toBe(90);
+            expect(locationInput.longitude).toBe(-180);
         });
     });
 
@@ -275,6 +349,22 @@ describe('DataInput', () => {
         });
     });
 
+    it('Phone input with default value to format', () => {
+        const element = createElement('avonni-data-input', {
+            is: DataInput
+        });
+        element.type = 'phone';
+        element.label = 'Label';
+        element.value = '1234567890';
+
+        document.body.appendChild(element);
+
+        return Promise.resolve().then(() => {
+            const input = element.shadowRoot.querySelector('lightning-input');
+            expect(input.value).toBe('123-456-7890');
+        });
+    });
+
     it('URL input', () => {
         const element = createElement('avonni-data-input', {
             is: DataInput
@@ -305,7 +395,7 @@ describe('DataInput', () => {
         });
     });
 
-    /* ----- PHONE INPUT FORMAT ----- */
+    /* ----- BEHAVIOR ON INPUT CHANGE ----- */
 
     it('Formatted valid phone input', () => {
         const element = createElement('avonni-data-input', {
@@ -404,6 +494,160 @@ describe('DataInput', () => {
                     'lightning-input'
                 );
                 expect(input.value).toBe('4');
+            });
+    });
+
+    it('Location input change for adding values', () => {
+        const element = createElement('avonni-data-input', {
+            is: DataInput
+        });
+        document.body.appendChild(element);
+
+        element.label = 'Label';
+        element.type = 'location';
+
+        return Promise.resolve()
+            .then(() => {
+                const input = element.shadowRoot.querySelector(
+                    'lightning-input-location'
+                );
+                input.latitude = 10;
+                input.longitude = -10;
+                input.dispatchEvent(new CustomEvent('change'));
+            })
+            .then(() => {
+                const input = element.shadowRoot.querySelector(
+                    'lightning-input-location'
+                );
+                expect(input.latitude).toBe(10);
+                expect(input.longitude).toBe(-10);
+            });
+    });
+
+    it('Location input change for removing values', () => {
+        const element = createElement('avonni-data-input', {
+            is: DataInput
+        });
+        document.body.appendChild(element);
+
+        element.label = 'Label';
+        element.type = 'location';
+        element.latitude = 80;
+        element.longitude = -50;
+
+        return Promise.resolve()
+            .then(() => {
+                const input = element.shadowRoot.querySelector(
+                    'lightning-input-location'
+                );
+                input.latitude = undefined;
+                input.longitude = undefined;
+                input.dispatchEvent(new CustomEvent('change'));
+            })
+            .then(() => {
+                const input = element.shadowRoot.querySelector(
+                    'lightning-input-location'
+                );
+                expect(input.latitude).toBeUndefined();
+                expect(input.longitude).toBeUndefined();
+            });
+    });
+
+    it('Text input change for removing value', () => {
+        const element = createElement('avonni-data-input', {
+            is: DataInput
+        });
+        document.body.appendChild(element);
+
+        element.label = 'Label';
+
+        return Promise.resolve()
+            .then(() => {
+                const input = element.shadowRoot.querySelector(
+                    'lightning-input'
+                );
+                input.value = '';
+                input.dispatchEvent(new CustomEvent('change'));
+            })
+            .then(() => {
+                const input = element.shadowRoot.querySelector(
+                    'lightning-input'
+                );
+                expect(input.value).toBe('');
+            });
+    });
+
+    /* ----- HANDLING LIGHTNING-INPUT EVENTS AND THEIR TRANSFER (FOR COVERAGE PURPOSES) ----- */
+
+    it('Transfer commit event', () => {
+        const element = createElement('avonni-data-input', {
+            is: DataInput
+        });
+        document.body.appendChild(element);
+
+        element.label = 'Label';
+
+        return Promise.resolve()
+            .then(() => {
+                const input = element.shadowRoot.querySelector(
+                    'lightning-input'
+                );
+                input.value = 'Simple text';
+                input.dispatchEvent(new CustomEvent('commit'));
+            })
+            .then(() => {
+                const input = element.shadowRoot.querySelector(
+                    'lightning-input'
+                );
+                expect(input.value).toBe('Simple text');
+            });
+    });
+
+    it('Transfer blur event', () => {
+        const element = createElement('avonni-data-input', {
+            is: DataInput
+        });
+        document.body.appendChild(element);
+
+        element.label = 'Label';
+
+        return Promise.resolve()
+            .then(() => {
+                const input = element.shadowRoot.querySelector(
+                    'lightning-input'
+                );
+                input.value = 'Simple text';
+                input.dispatchEvent(new CustomEvent('blur'));
+            })
+            .then(() => {
+                const input = element.shadowRoot.querySelector(
+                    'lightning-input'
+                );
+                expect(input.value).toBe('Simple text');
+            });
+    });
+
+    it('Transfer focus event', () => {
+        const element = createElement('avonni-data-input', {
+            is: DataInput
+        });
+        document.body.appendChild(element);
+
+        element.label = 'Label';
+
+        return Promise.resolve()
+            .then(() => {
+                const input = element.shadowRoot.querySelector(
+                    'lightning-input'
+                );
+                input.value = 'Simple text';
+                input.dispatchEvent(new CustomEvent('focus'));
+            })
+            .then(() => {
+                const input = element.shadowRoot.querySelector(
+                    'lightning-input'
+                );
+                expect(input.value).toBe('Simple text');
             });
     });
 });

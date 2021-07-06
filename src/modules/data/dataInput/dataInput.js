@@ -76,7 +76,7 @@ const VARIANTS = {
  */
 export default class DataInputBasic extends LightningElement {
     /**
-     * Text label for the input.
+     * Label of the input. If present, it will be displayed on top of the data.
      * @type {string}
      * @public
      */
@@ -96,11 +96,39 @@ export default class DataInputBasic extends LightningElement {
      */
     @api placeholder;
 
+    _checked = false;
     _disabled = false;
     _readOnly = false;
     _required = false;
     _type = DATA_TYPES.default;
     _variant = VARIANTS.default;
+    _value = '';
+    _latitude;
+    _longitude;
+
+    /**
+     * Called when the element is inserted in a document.
+     * Initializes the input value.
+     * @callback connectedCallback
+     */
+    connectedCallback() {
+        this.initalizeInputValue();
+    }
+
+    /**
+     * Whether the input is checked.
+     * Only has an effect with type boolean.
+     * @type {boolean}
+     * @public
+     */
+    @api
+    get checked() {
+        return this._checked;
+    }
+
+    set checked(value) {
+        this._checked = normalizeBoolean(value);
+    }
 
     /**
      * If present, the input field is disabled and users cannot interact with it.
@@ -114,6 +142,34 @@ export default class DataInputBasic extends LightningElement {
     }
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
+    }
+
+    /**
+     * Latitude of a location.
+     * Only has an effect with type location.
+     * @type {number}
+     * @public
+     */
+    @api
+    get latitude() {
+        return this._latitude;
+    }
+    set latitude(value) {
+        this._latitude = this.normalizeCoordinate(value, 90);
+    }
+
+    /**
+     * Longitude of a location.
+     * Only has an effect with type location.
+     * @type {number}
+     * @public
+     */
+    @api
+    get longitude() {
+        return this._longitude;
+    }
+    set longitude(value) {
+        this._longitude = this.normalizeCoordinate(value, 180);
     }
 
     /**
@@ -161,6 +217,21 @@ export default class DataInputBasic extends LightningElement {
             fallbackValue: DATA_TYPES.default,
             validValues: DATA_TYPES.valid
         });
+    }
+
+    /**
+     * Value of the input.
+     * Has an effect with all types, except for boolean and location.
+     * @type {string}
+     * @public
+     */
+    @api
+    get value() {
+        return this._value;
+    }
+
+    set value(value) {
+        this._value = value ? value : '';
     }
 
     /**
@@ -276,16 +347,103 @@ export default class DataInputBasic extends LightningElement {
     }
 
     /**
+     * Initializes the value of the input according to its type
+     */
+    initalizeInputValue() {
+        if (this.isPhone && this.value) {
+            this._value = this.formatPhoneNumber(this.value.toString());
+        }
+    }
+
+    /**
+     * Returns the normalized value of the coordinate.
+     * Latitude ranges between -90 and 90.
+     * Longitude ranges between -180 and 180.
+     * @param {number} coordinate
+     * @return {number|undefined}
+     */
+    normalizeCoordinate(coordinate, absoluteMax) {
+        if (coordinate !== 0 && !coordinate) {
+            return undefined;
+        }
+        return Math.min(Math.max(coordinate, -absoluteMax), absoluteMax);
+    }
+
+    /**
      * Handles a change in the input if its type is a phone number.
      * The phone number will be displayed in the format ###-###-####.
      * @param {Event} event
      */
     handlePhoneInputChange(event) {
-        const tel = event.target.value
+        event.target.value = this.formatPhoneNumber(event.target.value);
+        this.handleInputChange(event);
+    }
+
+    /**
+     * Changes a phone number to the format ###-###-####.
+     * @param {string} unformattedTel - The phone number to format.
+     * @return {string}
+     */
+    formatPhoneNumber(unformattedTel) {
+        const tel = unformattedTel
             .replace(/\D+/g, '')
             .match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
-        event.target.value = !tel[2]
+        return !tel[2]
             ? tel[1]
             : `${tel[1]}-${tel[2]}` + (tel[3] ? `-${tel[3]}` : '');
+    }
+
+    /**
+     * Transfers the lightning-input change event to the data input component.
+     * @param {Event} event
+     */
+    handleInputChange(event) {
+        event.stopPropagation();
+
+        let detail;
+        if (this.isLocation) {
+            this._latitude = event.target.latitude;
+            this._longitude = event.target.longitude;
+            detail = {
+                latitude: this.latitude,
+                longitude: this.longitude
+            };
+        } else {
+            this._checked = event.target.checked;
+            this._value = event.target.value;
+            detail = {
+                checked: this.checked,
+                value: this.value
+            };
+        }
+
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                detail: detail,
+                bubbles: true,
+                composed: true
+            })
+        );
+    }
+
+    /**
+     * Transfers the lightning-input commit event to the data input component.
+     */
+    handleInputCommit() {
+        this.dispatchEvent(new CustomEvent('commit'));
+    }
+
+    /**
+     * Transfers the lightning-input blur event to the data input component.
+     */
+    handleBlur() {
+        this.dispatchEvent(new CustomEvent('blur'));
+    }
+
+    /**
+     * Transfers the lightning-input focus event to the data input component.
+     */
+    handleFocus() {
+        this.dispatchEvent(new CustomEvent('focus'));
     }
 }

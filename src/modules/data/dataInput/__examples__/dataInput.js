@@ -35,23 +35,31 @@ import Component from 'c/dataInput';
 customElements.define('avonni-data-input', Component.CustomElementConstructor);
 
 export const DataInput = ({
-    label,
-    name,
+    checked,
     disabled,
+    label,
+    latitude,
+    longitude,
+    name,
     placeholder,
     readOnly,
     required,
     type,
+    value,
     variant
 }) => {
     const element = document.createElement('avonni-data-input');
-    element.label = label;
-    element.name = name;
+    element.checked = checked;
     element.disabled = disabled;
+    element.label = label;
+    element.latitude = latitude;
+    element.longitude = longitude;
+    element.name = name;
     element.placeholder = placeholder;
     element.readOnly = readOnly;
     element.required = required;
     element.type = type;
+    element.value = value;
     element.variant = variant;
     return element;
 };

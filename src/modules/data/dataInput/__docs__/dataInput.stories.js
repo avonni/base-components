@@ -35,6 +35,18 @@ import { DataInput } from '../__examples__/dataInput';
 export default {
     title: 'Example/Data Input',
     argTypes: {
+        checked: {
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description:
+                'Whether the input is checked. Only has an effect with type boolean.',
+            table: {
+                defaultValue: { summary: false },
+                type: { summary: 'boolean' }
+            }
+        },
         disabled: {
             control: {
                 type: 'boolean'
@@ -52,9 +64,29 @@ export default {
                 type: 'text'
             },
             description:
-                'Label of the output. If present, it will be displayed on top of the data.',
+                'Label of the input. If present, it will be displayed on top of the data.',
             table: {
                 type: { summary: 'string' }
+            }
+        },
+        latitude: {
+            control: {
+                type: 'number'
+            },
+            description:
+                'Latitude of a location. Only has an effect with type location.',
+            table: {
+                type: { summary: 'number' }
+            }
+        },
+        longitude: {
+            control: {
+                type: 'number'
+            },
+            description:
+                'Longitude of a location. Only has an effect with type location.',
+            table: {
+                type: { summary: 'number' }
             }
         },
         name: {
@@ -124,6 +156,16 @@ export default {
                 defaultValue: { summary: 'text' }
             }
         },
+        value: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'Value of the input. Has an effect with all types, except for boolean and location.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         variant: {
             control: {
                 type: 'select'
@@ -164,21 +206,32 @@ export const BaseAsPercent = Template.bind({});
 BaseAsPercent.args = {
     label: 'Percent input',
     placeholder: 'Placeholder...',
-    type: 'percent'
+    type: 'percent',
+    value: 0.1
 };
 
 export const BaseAsLocation = Template.bind({});
 BaseAsLocation.args = {
     label: 'Location input',
     placeholder: 'Placeholder...',
-    type: 'location'
+    type: 'location',
+    latitude: 37.793846,
+    longitude: -122.394837
 };
 
 export const BaseAsPhone = Template.bind({});
 BaseAsPhone.args = {
     label: 'Phone input',
     placeholder: 'Placeholder...',
-    type: 'phone'
+    type: 'phone',
+    value: '1234567890'
+};
+
+export const BaseAsBoolean = Template.bind({});
+BaseAsBoolean.args = {
+    label: 'Boolean input',
+    type: 'boolean',
+    checked: true
 };
 
 export const Disabled = Template.bind({});
