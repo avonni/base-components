@@ -100,11 +100,11 @@ const headers = [
     //     span: 1,
     //     label: '<YYYY>'
     // },
-    {
-        unit: 'month',
-        span: 1,
-        label: '<MMMM>'
-    },
+    // {
+    //     unit: 'month',
+    //     span: 1,
+    //     label: '<MMMM>'
+    // },
     {
         unit: 'week',
         span: 1,
@@ -114,12 +114,12 @@ const headers = [
         unit: 'day',
         span: 1,
         label: '<ddd> <DD>'
+    },
+    {
+        unit: 'hour',
+        span: 1,
+        label: '<H>'
     }
-    // {
-    //     unit: 'hour',
-    //     span: 2,
-    //     label: '<H>'
-    // },
     // {
     //     unit: 'minute',
     //     span: 30,

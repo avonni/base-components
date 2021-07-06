@@ -183,19 +183,6 @@ const addToDate = (date, unit, span) => {
     return date.plus(options);
 };
 
-/**
- * Remove unit * span to the date
- * @param {DateTime} date The date we want to remove time to
- * @param {string} unit The unit (minute, hour, day, week, month or year)
- * @param {number} span The number of unit to remove
- * @returns {DateTime} DateTime object with the removed time
- */
-const removeToDate = (date, unit, span) => {
-    const options = {};
-    options[unit] = span;
-    return date.minus(options);
-};
-
 const numberOfUnitsBetweenDates = (unit, start, end) => {
     // Compensate the fact that luxon weeks start on Monday
     const isWeek = unit === 'week';
@@ -208,7 +195,6 @@ const numberOfUnitsBetweenDates = (unit, start, end) => {
 
 export {
     addToDate,
-    removeToDate,
     formatTime,
     dateTimeObjectFrom,
     isInTimeFrame,

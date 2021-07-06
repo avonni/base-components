@@ -36,7 +36,6 @@ import { normalizeArray, normalizeString } from 'c/utilsPrivate';
 import {
     dateTimeObjectFrom,
     addToDate,
-    removeToDate,
     numberOfUnitsBetweenDates
 } from './dateUtils';
 import {
@@ -112,10 +111,7 @@ export default class Scheduler extends LightningElement {
             days.length > 0 ? days : DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
 
         if (this.isConnected) {
-            this.headers.forEach((header) => {
-                header.daysOfTheWeek = this._availableDaysOfTheWeek;
-            });
-
+            this.initHeaders();
             this.updateRowColumns();
         }
     }
@@ -130,10 +126,7 @@ export default class Scheduler extends LightningElement {
             months.length > 0 ? months : DEFAULT_AVAILABLE_MONTHS;
 
         if (this.isConnected) {
-            this.headers.forEach((header) => {
-                header.months = this._availableMonths;
-            });
-
+            this.initHeaders();
             this.updateRowColumns();
         }
     }
@@ -148,10 +141,7 @@ export default class Scheduler extends LightningElement {
             timeFrames.length > 0 ? timeFrames : DEFAULT_AVAILABLE_TIME_FRAMES;
 
         if (this.isConnected) {
-            this.headers.forEach((header) => {
-                header.timeFrames = this._availableTimeFrames;
-            });
-
+            this.initHeaders();
             this.updateRowColumns();
         }
     }
@@ -217,7 +207,10 @@ export default class Scheduler extends LightningElement {
     set headers(value) {
         this._headers = normalizeArray(value);
 
-        if (this.isConnected) this.initHeaders();
+        if (this.isConnected) {
+            this.initHeaders();
+            this.updateRowColumns();
+        }
     }
 
     @api
@@ -249,11 +242,7 @@ export default class Scheduler extends LightningElement {
         this._start = computedDate || DEFAULT_START_DATE;
 
         if (this.isConnected) {
-            this.headers.forEach((header) => {
-                header.start = this._start;
-                header.end = this.end;
-            });
-
+            this.initHeaders();
             this.updateRowColumns();
         }
     }
@@ -375,7 +364,6 @@ export default class Scheduler extends LightningElement {
 
         // Create all headers
         const headerObjects = [];
-        // let parentHeader;
         sortedHeaders.forEach((header) => {
             const unit = header.unit;
             let headerObject;
@@ -407,10 +395,6 @@ export default class Scheduler extends LightningElement {
                 });
             }
 
-            // if (parentHeader) {
-            //     parentHeader.childKey = headerObject.key;
-            // }
-            // parentHeader = headerObject;
             headerObjects.push(headerObject);
         });
 
@@ -436,37 +420,56 @@ export default class Scheduler extends LightningElement {
     }
 
     initHeaderColumnWidths() {
-        this.headers.forEach((header) => {
+        const lastIndex = this.headers.length - 1;
+        const smallestHeader = this.headers[lastIndex];
+        const smallestHeaderWidth = 100 / smallestHeader.columns.length;
+
+        for (let i = 0; i < this.headers.length; i++) {
+            const header = this.headers[i];
             const unit = header.unit;
-            const isWeek = unit === 'week';
-            const totalDuration = this.end - this.start;
 
-            // Compensate the fact that luxon weeks start on Monday
-            let start = isWeek
-                ? addToDate(header.start, 'day', 1)
-                : header.start;
+            // The columns of the header with the shortest unit all have the same width
+            if (i === lastIndex) {
+                header.columns.forEach(() => {
+                    header.columnWidths.push(smallestHeaderWidth);
+                });
 
-            header.columns.forEach(() => {
-                let unitEnd = start.endOf(unit);
+                // The other headers base their column widths on the header with the shortest unit
+            } else {
+                let smallestHeaderIndex = 0;
+                header.columns.forEach((column) => {
+                    let width = 0;
+                    let start = DateTime.fromMillis(column.start);
+                    const end = addToDate(start, header.unit, header.span);
 
-                // Compensate the fact that luxon weeks start on Monday
-                if (isWeek) {
-                    unitEnd = removeToDate(unitEnd, 'day', 1);
-                    start = removeToDate(start, 'day', 1);
-                }
+                    while (
+                        smallestHeaderIndex < smallestHeader.columns.length
+                    ) {
+                        const smallestHeaderColumn =
+                            smallestHeader.columns[smallestHeaderIndex];
+                        start = DateTime.fromMillis(smallestHeaderColumn.start);
 
-                const end = this.end > unitEnd ? unitEnd : this.end;
-                const columnDuration = end - start;
-                const width = (100 * columnDuration) / totalDuration;
-                header.columnWidths.push(width);
+                        // Normalize the beginning of the week, because Luxon's week start on Monday
+                        const normalizedStart =
+                            unit === 'week'
+                                ? addToDate(start, 'day', 1)
+                                : start;
+                        const normalizedEnd =
+                            unit === 'week' ? addToDate(end, 'day', 1) : end;
 
-                start = DateTime.fromMillis(end + 1);
-                // Compensate the fact that luxon weeks start on Monday
-                if (isWeek) {
-                    start = addToDate(start, 'day', 1);
-                }
-            });
-        });
+                        const startUnit = normalizedStart.startOf(unit);
+                        const endUnit = normalizedEnd.startOf(unit);
+
+                        // Stop if the next smallestHeader column belongs to the next header unit
+                        if (endUnit <= startUnit) break;
+
+                        width += smallestHeaderWidth;
+                        smallestHeaderIndex += 1;
+                    }
+                    header.columnWidths.push(width);
+                });
+            }
+        }
     }
 
     handlePrivateRowHeightChange(event) {
