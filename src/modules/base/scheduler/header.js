@@ -34,6 +34,25 @@ import { generateUniqueId } from 'c/utils';
 import { DateTime } from 'c/luxon';
 import { formatTime, isInTimeFrame, addToDate } from './dateUtils';
 
+/**
+ * Scheduler header
+ * @class
+ * @param {string} key Unique identifier for the header
+ * @param {string} unit Unit used by the header (minute, hour, day, week, month or year)
+ * @param {number} span Number of unit in one column of the header
+ * @param {string} label Pattern of the columns labels
+ * @param {object[]} columns Array of column objects. Each object has two keys: time and label.
+ * @param {number[]} columnWidths Array of column widths in percent
+ * @param {boolean} isHidden If true, the header will be hidden
+ * @param {boolean} isReference If true, the header unit is the one used by the visibleSpan of the parent Scheduler
+ * @param {number} numberOfColumns Number of columns in the header
+ * @param {string} childKey Contains the key of the next smaller unit header, if one exists
+ * @param {DateTime} end End date of the header
+ * @param {DateTime} start Start date of the header
+ * @param {string[]} availableTimeFrames Array of available time frames
+ * @param {number[]} availableDaysOfTheWeek Array of available days
+ * @param {number[]} availableMonths Array of available months
+ */
 export default class Header {
     constructor(props) {
         this.key = this.generateKey;
@@ -46,7 +65,7 @@ export default class Header {
         this.isReference = props.isReference;
         this.numberOfColumns = props.numberOfColumns;
         this.childKey = null;
-        this.end = props.end;
+        this._end = props.end;
         this._start = props.start;
         this._availableTimeFrames = props.availableTimeFrames;
         this._availableDaysOfTheWeek = props.availableDaysOfTheWeek;
@@ -61,6 +80,13 @@ export default class Header {
     set start(value) {
         this._start = value;
         this.computeColumns();
+    }
+
+    get end() {
+        return this._end;
+    }
+    set end(value) {
+        this._end = value;
     }
 
     get availableDaysOfTheWeek() {
@@ -91,6 +117,12 @@ export default class Header {
         return generateUniqueId();
     }
 
+    get maxColumnDuration() {
+        // We take one millisecond off to exclude the next unit
+        const columnEnd = addToDate(this.start, this.unit, this.span) - 1;
+        return DateTime.fromMillis(columnEnd).diff(this.start).milliseconds;
+    }
+
     computeColumns() {
         const { unit, label, end, span, numberOfColumns } = this;
         this.columns = [];
@@ -111,22 +143,32 @@ export default class Header {
 
             this.columns.push({
                 label: formatTime(date.startOf(unit), label),
-                time: date.ts
+                start: date.ts
             });
 
             date = addToDate(date, unit, span);
 
-            // if (unit === 'month') debugger
-            if (!this.isReference && end.endOf(unit) < date.endOf(unit)) {
-                this.numberOfColumns = this.columns.length;
-                break;
+            // Make sure the current date is not bigger than the end
+            if (!this.isReference) {
+                let dateUnit;
+                let endUnit;
+
+                if (unit === 'week') {
+                    dateUnit = addToDate(date, 'day', 1).endOf(unit);
+                    endUnit = addToDate(end, 'day', 1).endOf(unit);
+                } else {
+                    dateUnit = date.endOf(unit);
+                    endUnit = end.endOf(unit);
+                }
+
+                if (endUnit < dateUnit) {
+                    this.numberOfColumns = this.columns.length;
+                    break;
+                }
             }
         }
 
-        this._start = DateTime.fromMillis(this.columns[0].time);
-        this.end = DateTime.fromMillis(
-            this.columns[this.columns.length - 1].time
-        );
+        this._start = DateTime.fromMillis(this.columns[0].start);
     }
 
     isAllowedTime(date) {
@@ -141,7 +183,7 @@ export default class Header {
 
     isAllowedDay(date) {
         // Luxon week days start at Monday = 1
-        const normalizedDate = date.weekday === 7 ? 0 : date.weekday;
+        const normalizedDate = date.weekday % 7;
         return this.availableDaysOfTheWeek.includes(normalizedDate);
     }
 

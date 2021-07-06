@@ -174,6 +174,7 @@ const isInTimeFrame = (date, timeFrame) => {
  * Add unit * span to the date
  * @param {DateTime} date The date we want to add time to
  * @param {string} unit The unit (minute, hour, day, week, month or year)
+ * @param {number} span The number of unit to add
  * @returns {DateTime} DateTime object with the added time
  */
 const addToDate = (date, unit, span) => {
@@ -186,6 +187,7 @@ const addToDate = (date, unit, span) => {
  * Remove unit * span to the date
  * @param {DateTime} date The date we want to remove time to
  * @param {string} unit The unit (minute, hour, day, week, month or year)
+ * @param {number} span The number of unit to remove
  * @returns {DateTime} DateTime object with the removed time
  */
 const removeToDate = (date, unit, span) => {
@@ -195,7 +197,12 @@ const removeToDate = (date, unit, span) => {
 };
 
 const numberOfUnitsBetweenDates = (unit, start, end) => {
-    const interval = Interval.fromDateTimes(start, end);
+    // Compensate the fact that luxon weeks start on Monday
+    const isWeek = unit === 'week';
+    let normalizedStart = isWeek ? addToDate(start, 'day', 1) : start;
+    let normalizedEnd = isWeek ? addToDate(end, 'day', 1) : end;
+
+    const interval = Interval.fromDateTimes(normalizedStart, normalizedEnd);
     return interval.count(unit);
 };
 

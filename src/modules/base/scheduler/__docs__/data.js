@@ -107,8 +107,8 @@ const headers = [
     },
     {
         unit: 'week',
-        span: 3,
-        label: '<ddd> <DD>'
+        span: 1,
+        label: 'Week'
     },
     {
         unit: 'day',
@@ -117,7 +117,7 @@ const headers = [
     }
     // {
     //     unit: 'hour',
-    //     span: 4,
+    //     span: 2,
     //     label: '<H>'
     // },
     // {

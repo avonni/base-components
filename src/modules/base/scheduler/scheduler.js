@@ -70,6 +70,7 @@ export default class Scheduler extends LightningElement {
     _theme = THEMES.default;
     _visibleSpan = DEFAULT_VISIBLE_SPAN;
 
+    _referenceHeader;
     scheduleRows = [];
 
     connectedCallback() {
@@ -250,11 +251,7 @@ export default class Scheduler extends LightningElement {
         if (this.isConnected) {
             this.headers.forEach((header) => {
                 header.start = this._start;
-                header.end = addToDate(
-                    this.start,
-                    this.visibleSpan.unit,
-                    this.visibleSpan.span
-                );
+                header.end = this.end;
             });
 
             this.updateRowColumns();
@@ -292,6 +289,19 @@ export default class Scheduler extends LightningElement {
             : PALETTES[this.eventsPalette];
     }
 
+    get end() {
+        if (this._referenceHeader && this._referenceHeader.end) {
+            return this._referenceHeader.end;
+        }
+        const visibleSpanEnd = addToDate(
+            this.start,
+            this.visibleSpan.unit,
+            this.visibleSpan.span
+        );
+        // We take one millisecond off to exclude the next unit
+        return DateTime.fromMillis(visibleSpanEnd - 1);
+    }
+
     initHeaders() {
         // Sort the headers from the longest unit to the shortest
         const sortedHeaders = [...this.headers].sort(
@@ -306,46 +316,66 @@ export default class Scheduler extends LightningElement {
             }
         );
 
-        // Create the reference header.
+        // Create the reference header
         // The reference header is the header using the visibleSpan unit
         const referenceUnit = this.visibleSpan.unit;
-        const referenceEnd = addToDate(
-            this.start,
-            referenceUnit,
-            this.visibleSpan.span
-        );
+
         const referenceHeader = sortedHeaders.find(
             (header) => header.unit === referenceUnit
         );
 
-        // Prevent the column number to include the next unit
-        const lastColumnStart = removeToDate(referenceEnd, referenceUnit, 1);
         const referenceColumns = numberOfUnitsBetweenDates(
             referenceUnit,
             this.start,
-            lastColumnStart
+            this.end
         );
+
+        const referenceSpan = referenceHeader
+            ? referenceHeader.span
+            : this.visibleSpan.span;
 
         const reference = new Header({
             unit: referenceUnit,
-            span: referenceHeader
-                ? referenceHeader.span
-                : this.visibleSpan.span,
+            span: referenceSpan,
             label: referenceHeader ? referenceHeader.label : '',
             start: this.start,
             availableTimeFrames: this.availableTimeFrames,
             availableDaysOfTheWeek: this.availableDaysOfTheWeek,
             availableMonths: this.availableMonths,
-            numberOfColumns: referenceColumns,
+            numberOfColumns: referenceColumns / referenceSpan,
             isReference: true,
             // If there is no header using the visibleSpan unit,
             // hide the reference header
             isHidden: !referenceHeader
         });
 
+        // Compute the end
+        let referenceEnd;
+        const lastColumnStart = DateTime.fromMillis(
+            reference.columns[reference.columns.length - 1].start
+        );
+        // If the number of columns is a float,
+        // the end date will be before the end of the last column span
+        if (!Number.isInteger(reference.numberOfColumns)) {
+            const lastColumnDuration =
+                (reference.numberOfColumns -
+                    Math.floor(reference.numberOfColumns)) *
+                reference.maxColumnDuration;
+            referenceEnd = DateTime.fromMillis(
+                lastColumnStart + lastColumnDuration
+            );
+        } else {
+            referenceEnd = lastColumnStart;
+        }
+        reference.end = referenceEnd.endOf(
+            sortedHeaders[sortedHeaders.length - 1].unit
+        );
+
+        this._referenceHeader = reference;
+
         // Create all headers
         const headerObjects = [];
-        let parentHeader;
+        // let parentHeader;
         sortedHeaders.forEach((header) => {
             const unit = header.unit;
             let headerObject;
@@ -358,16 +388,10 @@ export default class Scheduler extends LightningElement {
             ) {
                 headerObject = reference;
             } else {
-                const end = addToDate(
-                    reference.end,
-                    referenceUnit,
-                    reference.span
-                );
-
                 const columns = numberOfUnitsBetweenDates(
                     unit,
                     this.start,
-                    end
+                    this.end
                 );
 
                 headerObject = new Header({
@@ -375,7 +399,7 @@ export default class Scheduler extends LightningElement {
                     span: header.span,
                     label: header.label,
                     start: reference.start,
-                    end: reference.end,
+                    end: this.end,
                     availableTimeFrames: this.availableTimeFrames,
                     availableDaysOfTheWeek: this.availableDaysOfTheWeek,
                     availableMonths: this.availableMonths,
@@ -383,10 +407,10 @@ export default class Scheduler extends LightningElement {
                 });
             }
 
-            if (parentHeader) {
-                parentHeader.childKey = headerObject.key;
-            }
-            parentHeader = headerObject;
+            // if (parentHeader) {
+            //     parentHeader.childKey = headerObject.key;
+            // }
+            // parentHeader = headerObject;
             headerObjects.push(headerObject);
         });
 
@@ -413,45 +437,35 @@ export default class Scheduler extends LightningElement {
 
     initHeaderColumnWidths() {
         this.headers.forEach((header) => {
-            // If the header has a child header,
-            // columns may be smaller than their full possible time span
-            if (header.childKey) {
-                const child = this.headers.find(
-                    (headerObj) => headerObj.key === header.childKey
-                );
-                const childWidth = 100 / child.columns.length;
-                let time = this.start.ts;
-                let childColumnIndex = 0;
+            const unit = header.unit;
+            const isWeek = unit === 'week';
+            const totalDuration = this.end - this.start;
 
-                header.columns.forEach((column) => {
-                    let width = 0;
-                    let start = DateTime.fromMillis(time);
-                    const options = {};
-                    options[header.unit] = header.span;
-                    const end = DateTime.fromMillis(column.time).plus(options);
+            // Compensate the fact that luxon weeks start on Monday
+            let start = isWeek
+                ? addToDate(header.start, 'day', 1)
+                : header.start;
 
-                    while (childColumnIndex < child.columns.length) {
-                        const childColumn = child.columns[childColumnIndex];
-                        time = childColumn.time;
-                        start = DateTime.fromMillis(time);
+            header.columns.forEach(() => {
+                let unitEnd = start.endOf(unit);
 
-                        // Stop if the next child column belongs to the next header unit
-                        if (
-                            end.startOf(header.unit) <= start.endOf(header.unit)
-                        ) {
-                            break;
-                        }
-                        width += childWidth;
-                        childColumnIndex += 1;
-                    }
-                    header.columnWidths.push(width);
-                });
-            } else {
-                const columnWidth = 100 / header.columns.length;
-                header.columns.forEach(() => {
-                    header.columnWidths.push(columnWidth);
-                });
-            }
+                // Compensate the fact that luxon weeks start on Monday
+                if (isWeek) {
+                    unitEnd = removeToDate(unitEnd, 'day', 1);
+                    start = removeToDate(start, 'day', 1);
+                }
+
+                const end = this.end > unitEnd ? unitEnd : this.end;
+                const columnDuration = end - start;
+                const width = (100 * columnDuration) / totalDuration;
+                header.columnWidths.push(width);
+
+                start = DateTime.fromMillis(end + 1);
+                // Compensate the fact that luxon weeks start on Monday
+                if (isWeek) {
+                    start = addToDate(start, 'day', 1);
+                }
+            });
         });
     }
 
