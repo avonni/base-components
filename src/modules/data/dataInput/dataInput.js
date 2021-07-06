@@ -155,7 +155,7 @@ export default class DataInputBasic extends LightningElement {
         return this._latitude;
     }
     set latitude(value) {
-        this._latitude = this.normalizeCoordinate(value, 90);
+        this._latitude = this.normalizeLocationValue(value, 90);
     }
 
     /**
@@ -169,7 +169,7 @@ export default class DataInputBasic extends LightningElement {
         return this._longitude;
     }
     set longitude(value) {
-        this._longitude = this.normalizeCoordinate(value, 180);
+        this._longitude = this.normalizeLocationValue(value, 180);
     }
 
     /**
@@ -359,14 +359,14 @@ export default class DataInputBasic extends LightningElement {
      * Returns the normalized value of the coordinate.
      * Latitude ranges between -90 and 90.
      * Longitude ranges between -180 and 180.
-     * @param {number} coordinate
+     * @param {number|undefined}    value       - The value to normalize.
+     * @param {number}              absoluteMax - The maximum of the value as an absolute number.
      * @return {number|undefined}
      */
-    normalizeCoordinate(coordinate, absoluteMax) {
-        if (coordinate !== 0 && !coordinate) {
-            return undefined;
-        }
-        return Math.min(Math.max(coordinate, -absoluteMax), absoluteMax);
+    normalizeLocationValue(value, absoluteMax) {
+        return value !== 0 && !value
+            ? undefined
+            : Math.min(Math.max(value, -absoluteMax), absoluteMax);
     }
 
     /**
