@@ -31,7 +31,7 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
+import { classListMutation, normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { parseDateTime } from 'c/internationalizationLibrary';
 import { classSet } from 'c/utils';
 
@@ -54,6 +54,7 @@ export default class InputDateRange extends LightningElement {
     @api label;
     @api labelStartDate;
     @api labelEndDate;
+    @api messageWhenValueMissing
 
     _timezone;
     _startDate;
@@ -73,6 +74,12 @@ export default class InputDateRange extends LightningElement {
     isOpenEndDate = false;
     _cancelBlurStartDate = false;
     _cancelBlurEndDate = false;
+
+    valid = true
+
+    renderedCallback() {
+        this.updateClassList();
+    }
 
     @api
     get startDate() {
@@ -221,6 +228,12 @@ export default class InputDateRange extends LightningElement {
         }).toString();
     }
 
+    updateClassList() {
+        classListMutation(this.classList, {
+            'slds-has-error': !this.valid
+        });
+    }
+
     @api
     focus() {
         this.template.querySelector('.start-date').focus();
@@ -310,6 +323,7 @@ export default class InputDateRange extends LightningElement {
     }
 
     handleBlurStartDate(event) {
+        this.valid = !(this.required && !this.startDate);
         if (this._cancelBlurStartDate) {
             return;
         }

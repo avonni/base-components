@@ -62,6 +62,7 @@ describe('Input Date Range', () => {
         expect(element.labelEndDate).toBeUndefined();
         expect(element.readOnly).toBeFalsy();
         expect(element.required).toBeFalsy();
+        expect(element.messageWhenValueMissing).toBeUndefined();
         expect(element.startDate).toBeUndefined();
         expect(element.endDate).toBeUndefined();
         expect(element.variant).toBe('standard');

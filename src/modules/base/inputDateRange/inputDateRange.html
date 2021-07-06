@@ -65,6 +65,7 @@
                         disabled={disabled}
                         aria-readonly={readOnly}
                         readonly={readOnly}
+                        required={required}
                     />
                     <lightning-icon
                         icon-name="utility:event"
@@ -155,4 +156,14 @@
             ></lightning-input>
         </div>
     </div>
+    <template if:false={valid}>
+        <div
+            id="help-message"
+            class="slds-form-element__help"
+            data-help-message
+            role="alert"
+        >
+            {messageWhenValueMissing}
+        </div>
+    </template>
 </template>

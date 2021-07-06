@@ -51,6 +51,7 @@ export const InputDateRange = ({
     timezone,
     disabled,
     required,
+    messageWhenValueMissing,
     variant
 }) => {
     const element = document.createElement('ac-base-input-date-range');
@@ -67,6 +68,7 @@ export const InputDateRange = ({
     element.timezone = timezone;
     element.disabled = disabled;
     element.required = required;
+    element.messageWhenValueMissing = messageWhenValueMissing;
     element.variant = variant;
     return element;
 };
