@@ -79,51 +79,9 @@ export default class Scheduler extends LightningElement {
     }
 
     renderedCallback() {
-        // Set the datatable header height
-        const datatableCol = this.template.querySelector(
-            '.scheduler__datatable-col'
-        );
-        const thead = this.template.querySelector('thead');
-        datatableCol.style.paddingTop = `${thead.offsetHeight - 34}px`;
-
-        // Set the datatable rows height
-        const datatable = this.template.querySelector('c-datatable');
-        const rows = this.template.querySelectorAll('tbody tr');
-        rows.forEach((row) => {
-            datatable.setRowHeight(row.dataset.key, row.offsetHeight);
-        });
-
-        // Get the header rows and sort them from the shortest unit to the longest
-        const headerRows = Array.from(
-            this.template.querySelectorAll('thead tr')
-        ).reverse();
-        headerRows.forEach((row) => {
-            const header = this.headers.find((headerObj) => {
-                return headerObj.key === row.dataset.key;
-            });
-
-            // Give the header cells their width
-            const cells = row.querySelectorAll('th');
-            cells.forEach((cell, index) => {
-                cell.style.width = `${header.columnWidths[index]}%`;
-            });
-        });
-
-        // Give the body cells their width
-        const cells = this.template.querySelectorAll('tbody td');
-        cells.forEach((cell) => {
-            cell.style.width = `${this.cellWidth}%`;
-        });
-
-        // Give the events their width
-        const events = this.template.querySelectorAll('.scheduler__event');
-        events.forEach((event) => {
-            const percentWidth = event.dataset.width;
-            // Since the cell border is not included in the %,
-            // we add 1px per cell crossed by the event
-            const borderWidth = Math.floor(percentWidth / 100);
-            event.style.width = `calc(${percentWidth}% + ${borderWidth}px`;
-        });
+        this.updateHeadersStyle();
+        this.updateBodyStyle();
+        this.updateEventsStyle();
     }
 
     @api
@@ -522,6 +480,58 @@ export default class Scheduler extends LightningElement {
             event.updateWidth({
                 columns: this.smallestHeader.columns,
                 columnDuration: this.smallestHeader.maxColumnDuration
+            });
+        });
+    }
+
+    updateBodyStyle() {
+        // Set the datatable rows height
+        const datatable = this.template.querySelector('c-datatable');
+        const rows = this.template.querySelectorAll('tbody tr');
+        rows.forEach((row) => {
+            datatable.setRowHeight(row.dataset.key, row.offsetHeight);
+        });
+
+        // Give the body cells their width
+        const cells = this.template.querySelectorAll('tbody td');
+        cells.forEach((cell) => {
+            cell.style.width = `${this.cellWidth}%`;
+        });
+    }
+
+    updateEventsStyle() {
+        // Give the events their width
+        const events = this.template.querySelectorAll('.scheduler__event');
+        events.forEach((event) => {
+            const percentWidth = event.dataset.width;
+            // Since the cell border is not included in the %,
+            // we add 1px per cell crossed by the event
+            const borderWidth = Math.floor(percentWidth / 100);
+            event.style.width = `calc(${percentWidth}% + ${borderWidth}px`;
+        });
+    }
+
+    updateHeadersStyle() {
+        // Set the datatable header height
+        const datatableCol = this.template.querySelector(
+            '.scheduler__datatable-col'
+        );
+        const thead = this.template.querySelector('thead');
+        datatableCol.style.paddingTop = `${thead.offsetHeight - 34}px`;
+
+        // Get the header rows and sort them from the shortest unit to the longest
+        const headerRows = Array.from(
+            this.template.querySelectorAll('thead tr')
+        ).reverse();
+        headerRows.forEach((row) => {
+            const header = this.headers.find((headerObj) => {
+                return headerObj.key === row.dataset.key;
+            });
+
+            // Give the header cells their width
+            const cells = row.querySelectorAll('th');
+            cells.forEach((cell, index) => {
+                cell.style.width = `${header.columnWidths[index]}%`;
             });
         });
     }
