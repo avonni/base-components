@@ -408,7 +408,7 @@ export default class Image extends LightningElement {
                     !this._cropSize &&
                     this.width &&
                     this.height,
-                'avonni-image_percent':
+                'avonni-image_no-crop_percent':
                     (this.width && this._heightPercent) ||
                     (this._widthPercent && this.height) ||
                     (!this.width && this._heightPercent) ||
@@ -444,6 +444,107 @@ export default class Image extends LightningElement {
 
             this._src = canvas.toDataURL('image/png', '');
         }
+    }
+
+    get computedImgContainerStyle() {
+        if (!this._cropSize) {
+            return this.imgContainerNoCrop();
+        } else if (this._cropSize) {
+            return this.imgContainerCropped();
+        }
+        return '';
+    }
+
+    imgContainerNoCrop() {
+        if (!this.staticImages) {
+            if (
+                this.width &&
+                this.height &&
+                !this._blank &&
+                !this._widthPercent &&
+                !this._heightPercent
+            ) {
+                return `
+                padding-top: ${(this.height / this.width) * 100}%;
+                `;
+            } else if (!this.width && this.height) {
+                return `
+                padding-top: ${(this.height / this._imgWidth) * 100}%;
+                `;
+            } else if (this._heightPercent || this._widthPercent) {
+                // add classset for padding
+                return `padding-top : 0%`;
+            }
+        } else if (this.staticImages) {
+            if (!this.width && this.height) {
+                return `
+                padding-top: ${(this.height / this._imgWidth) * 100}%;
+                max-width: ${this._imgWidth}px;
+                max-height: ${this.height}px;
+                min-width: ${this._imgWidth}px;
+                min-height: ${this.height}px;
+                `;
+            } else if (
+                this.width &&
+                this.height &&
+                !this._widthPercent &&
+                !this._heightPercent
+            ) {
+                return `
+                padding-top: ${(this.height / this.width) * 100}%;
+                max-width: ${this.width}px;
+                max-height: ${this.height}px;
+                min-width: ${this.width}px;
+                min-height: ${this.height}px;
+                `;
+            }
+            // temp
+            else if (this._widthPercent && this._heightPercent) {
+                return `
+                padding-top: 0%;
+                max-width: 100%;
+                max-height: 100%;
+                min-width: 100%;
+                min-height: 100%;
+                `;
+            }
+        }
+        return '';
+    }
+
+    // revise
+    imgContainerCropped() {
+        // removing padding top for aspect-ratio
+        if (!this.staticImages) {
+            // return `padding-top: ${this._cropSize}%;`;
+        } else if (this.staticImages) {
+            if (!this.width && !this.height) {
+                // padding-top: ${this._cropSize}%;
+                return `
+                max-width: ${this._imgWidth}px;
+                max-height: ${this._imgHeight}px;
+                min-width: ${this._imgWidth}px;
+                min-height: ${this._imgHeight}px;
+                `;
+            } else if (this.width) {
+                // padding-top: ${this._cropSize}%;
+                return `
+                max-width: ${this.width}px;
+                max-height: ${this.width * (this._cropSize / 100)}px;
+                min-width: ${this.width}px;
+                min-height: ${this.width * (this._cropSize / 100)}px;
+                `;
+            } else if (!this.width && this.height) {
+                // padding-top: ${this._cropSize}%;
+                return `
+                max-height: ${this.height}px;
+                max-width: ${this.height / (this._cropSize / 100)}px;
+                min-height: ${this.height}px;
+                min-width: ${this.height / (this._cropSize / 100)}px;
+                `;
+            }
+        }
+        return '';
     }
 
     /**
