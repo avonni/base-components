@@ -706,7 +706,7 @@ export default class Image extends LightningElement {
                 `;
             }
             // Width px - Height %
-            else if (this.width && this._heightPercent) {
+            else if (this.width && !this._widthPercent && this._heightPercent) {
                 return `
                 width: ${this.width}px;
                 height: ${this.height};
@@ -774,7 +774,11 @@ export default class Image extends LightningElement {
                 `;
             }
             // Width px
-            else if (this.width) {
+            else if (
+                this.width &&
+                !this._widthPercent &&
+                !this._heightPercent
+            ) {
                 return `
                 width: ${this.width}px;
                 height: ${this.width * (this._cropSize / 100)}px;
@@ -783,12 +787,78 @@ export default class Image extends LightningElement {
                 `;
             }
             // No Width - Height px
-            else if (!this.width && this.height) {
+            else if (!this.width && this.height && !this._heightPercent) {
                 return `
                 height: ${this.height}px;
                 width: ${this.height / (this._cropSize / 100)}px;
                 object-fit: ${this.cropFit};
                 object-position: ${this.cropPositionX}% ${this.cropPositionY}%; 
+                `;
+            }
+            // Width % - Height %
+            else if (this._widthPercent && this._heightPercent) {
+                return `
+                height: ${
+                    this._imgWidth *
+                    (this._widthPercentNumberOnly / 100) *
+                    (this._cropSize / 100)
+                }px;
+                width: ${
+                    this._imgWidth * (this._widthPercentNumberOnly / 100)
+                }px;
+                object-fit: ${this.cropFit};
+                object-position: ${this.cropPositionX}% ${this.cropPositionY}%; 
+                `;
+            }
+            // Width px - Height %
+            else if (this.width && !this._widthPercent && this._heightPercent) {
+                return `
+                height: ${this.width * (this._cropSize / 100)}px;
+                width: ${this.width}px;
+                object-fit: ${this.cropFit};
+                object-position: ${this.cropPositionX}% ${this.cropPositionY}%; 
+                `;
+            }
+            // No Width - Height %
+            else if (!this.width && this._heightPercent) {
+                return `
+                height: ${
+                    this._imgHeight * (this._heightPercentNumberOnly / 100)
+                }px;
+                width: ${
+                    (this._imgHeight * (this._heightPercentNumberOnly / 100)) /
+                    (this._cropSize / 100)
+                }px;
+                object-fit: ${this.cropFit};
+                object-position: ${this.cropPositionX}% ${this.cropPositionY}%;
+                `;
+            }
+            // Width % - Height px
+            else if (
+                this._widthPercent &&
+                this.height &&
+                !this._heightPercent
+            ) {
+                return `
+                height: ${this.height}px;
+                width: ${this.height / (this._cropSize / 100)}px;
+                object-fit: ${this.cropFit};
+                object-position: ${this.cropPositionX}% ${this.cropPositionY}%;
+                `;
+            }
+            // Width % - No Height
+            else if (this._widthPercent && !this.height) {
+                return `
+                height: ${
+                    this._imgWidth *
+                    (this._widthPercentNumberOnly / 100) *
+                    (this._cropSize / 100)
+                }px;
+                width: ${
+                    this._imgWidth * (this._widthPercentNumberOnly / 100)
+                }px;
+                object-fit: ${this.cropFit};
+                object-position: ${this.cropPositionX}% ${this.cropPositionY}%;
                 `;
             }
         }
@@ -878,7 +948,7 @@ export default class Image extends LightningElement {
                     break;
             }
         }
-        // No Static  ||  Static  // No Width - Height px - No Crop
+        // No Width - Height px - No Crop // No Static  ||  Static
         if (
             (!this.width &&
                 this.height &&
@@ -943,6 +1013,38 @@ export default class Image extends LightningElement {
             this._imgWidth = img.clientWidth;
             this._heightPercentNumberOnly = +this._heightPercent.slice(0, -1);
             this._imgHeight = container.clientHeight;
+        }
+        // Width % - Height % - Crop - No Static Images
+        if (
+            this._widthPercent &&
+            this._heightPercent &&
+            this._cropSize &&
+            !this.staticImages
+        ) {
+            this._imgWidth = container.clientWidth;
+            this._imgHeight = container.clientHeight;
+            this._heightPercentNumberOnly = +this._heightPercent.slice(0, -1);
+            this._widthPercentNumberOnly = +this._widthPercent.slice(0, -1);
+        }
+        // No Width - Height % - Crop - No Static Images
+        if (
+            !this.width &&
+            this._heightPercent &&
+            this._cropSize &&
+            !this.staticImages
+        ) {
+            this._imgHeight = container.clientHeight;
+            this._heightPercentNumberOnly = +this._heightPercent.slice(0, -1);
+        }
+        // Width % - No Height - Crop - No Static Images
+        if (
+            this._widthPercent &&
+            !this.height &&
+            this._cropSize &&
+            !this.staticImages
+        ) {
+            this._imgWidth = container.clientWidth;
+            this._widthPercentNumberOnly = +this._widthPercent.slice(0, -1);
         }
     }
 }
