@@ -31,7 +31,7 @@
  */
 
 import { Scheduler } from '../__examples__/scheduler';
-import { columns, rows, headers } from './data';
+import { columns, rows, headers, events } from './data';
 
 export default {
     title: 'Example/Scheduler',
@@ -249,11 +249,12 @@ Base.args = {
     rows: rows,
     headers: headers,
     visibleSpan: {
-        unit: 'day',
-        span: 10
+        unit: 'week',
+        span: 2
     },
-    start: new Date(2021, 11, 10),
+    start: new Date(2021, 11, 13),
     availableTimeFrames: ['08:00-11:59', '14:00-16:59'],
-    availableDaysOfTheWeek: [1, 2, 3, 4, 5]
-    // availableMonths: [1, 4]
+    availableDaysOfTheWeek: [1, 2, 3, 4, 5],
+    // availableMonths: [1, 4],
+    events: events
 };

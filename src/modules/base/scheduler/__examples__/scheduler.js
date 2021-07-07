@@ -41,6 +41,7 @@ export const Scheduler = ({
     columns,
     customEventsPalette,
     disabledDatesTimes,
+    events,
     eventsPalette,
     eventsTheme,
     headers,
@@ -57,6 +58,7 @@ export const Scheduler = ({
     element.columns = columns;
     element.customEventsPalette = customEventsPalette;
     element.disabledDatesTimes = disabledDatesTimes;
+    element.events = events;
     element.eventsPalette = eventsPalette;
     element.eventsTheme = eventsTheme;
     element.headers = headers;

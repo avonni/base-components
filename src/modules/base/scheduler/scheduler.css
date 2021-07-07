@@ -33,3 +33,12 @@
 .scheduler__datatable-col {
     background-color: #fafaf9;
 }
+
+.scheduler__schedule-table tbody td {
+    position: static;
+}
+
+.scheduler__event-title {
+    width: 100%;
+    border: 1px solid #dddbda;
+}

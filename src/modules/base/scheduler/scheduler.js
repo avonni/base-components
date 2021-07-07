@@ -52,6 +52,7 @@ import {
 } from './defaults';
 import Header from './header';
 import Row from './row';
+import Event from './event';
 
 export default class Scheduler extends LightningElement {
     _availableDaysOfTheWeek = DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
@@ -85,7 +86,7 @@ export default class Scheduler extends LightningElement {
         const thead = this.template.querySelector('thead');
         datatableCol.style.paddingTop = `${thead.offsetHeight - 34}px`;
 
-        // Get the rows and sort them from the shortest unit to the longest
+        // Get the header rows and sort them from the shortest unit to the longest
         const headerRows = Array.from(
             this.template.querySelectorAll('thead tr')
         ).reverse();
@@ -94,10 +95,25 @@ export default class Scheduler extends LightningElement {
                 return headerObj.key === row.dataset.key;
             });
 
+            // Give the header cells their width
             const cells = row.querySelectorAll('th');
             cells.forEach((cell, index) => {
                 cell.style.width = `${header.columnWidths[index]}%`;
             });
+        });
+
+        // Give the body cells their width
+        const cells = this.template.querySelectorAll('tbody td');
+        cells.forEach((cell) => {
+            cell.style.width = `${this.cellWidth}%`;
+        });
+
+        // Give the events their width
+        const events = this.template.querySelectorAll('.scheduler__event');
+        events.forEach((event) => {
+            const percentWidth = event.dataset.width;
+            const borderWidth = Math.floor(percentWidth / 100);
+            event.style.width = `calc(${percentWidth}% + ${borderWidth}px`;
         });
     }
 
@@ -175,7 +191,13 @@ export default class Scheduler extends LightningElement {
         return this._events;
     }
     set events(value) {
-        this._events = normalizeArray(value);
+        const events = normalizeArray(value);
+        const eventObjects = [];
+        events.forEach((event) => {
+            eventObjects.push(new Event(event));
+        });
+
+        this._events = eventObjects;
     }
 
     @api
@@ -272,6 +294,12 @@ export default class Scheduler extends LightningElement {
         }
     }
 
+    get cellWidth() {
+        if (!this.smallestHeader || !this.smallestHeader.columns.length)
+            return 0;
+        return 100 / this.smallestHeader.columns.length;
+    }
+
     get palette() {
         return this.customEventsPalette.length
             ? this.customEventsPalette
@@ -289,6 +317,13 @@ export default class Scheduler extends LightningElement {
         );
         // We take one millisecond off to exclude the next unit
         return DateTime.fromMillis(visibleSpanEnd - 1);
+    }
+
+    get smallestHeader() {
+        if (!this.headers.length) return null;
+
+        const lastIndex = this.headers.length - 1;
+        return this.headers[lastIndex];
     }
 
     initHeaders() {
@@ -399,54 +434,53 @@ export default class Scheduler extends LightningElement {
         });
 
         this._headers = headerObjects;
-        this.initHeaderColumnWidths();
+        this.initHeaderWidths();
+        this.initEventWidths();
     }
 
     initScheduleRows() {
         this.scheduleRows = this.rows.map((row) => {
+            const rowKey = row[this.rowsKeyField];
+            const events = [];
+            this.events.forEach((event) => {
+                const isInRow = event.keyFields.includes(rowKey);
+                if (isInRow) events.push(event);
+            });
+
             return new Row({
-                key: row[this.rowsKeyField]
+                key: rowKey,
+                events: events
             });
         });
 
         this.updateRowColumns();
     }
 
-    updateRowColumns() {
-        const headerCols = this.headers[this.headers.length - 1].columns;
-        this.scheduleRows.forEach((row) => {
-            row.generateColumns(headerCols);
-        });
-    }
+    initHeaderWidths() {
+        if (!this.cellWidth) return;
 
-    initHeaderColumnWidths() {
-        const lastIndex = this.headers.length - 1;
-        const smallestHeader = this.headers[lastIndex];
-        const smallestHeaderWidth = 100 / smallestHeader.columns.length;
-
+        const smallestHeaderColumns = this.smallestHeader.columns;
         for (let i = 0; i < this.headers.length; i++) {
             const header = this.headers[i];
             const unit = header.unit;
 
             // The columns of the header with the shortest unit all have the same width
-            if (i === lastIndex) {
+            if (i === this.headers.length - 1) {
                 header.columns.forEach(() => {
-                    header.columnWidths.push(smallestHeaderWidth);
+                    header.columnWidths.push(this.cellWidth);
                 });
 
                 // The other headers base their column widths on the header with the shortest unit
             } else {
-                let smallestHeaderIndex = 0;
+                let columnIndex = 0;
                 header.columns.forEach((column) => {
                     let width = 0;
                     let start = DateTime.fromMillis(column.start);
-                    const end = addToDate(start, header.unit, header.span);
+                    const end = addToDate(start, unit, header.span);
 
-                    while (
-                        smallestHeaderIndex < smallestHeader.columns.length
-                    ) {
+                    while (columnIndex < smallestHeaderColumns.length) {
                         const smallestHeaderColumn =
-                            smallestHeader.columns[smallestHeaderIndex];
+                            smallestHeaderColumns[columnIndex];
                         start = DateTime.fromMillis(smallestHeaderColumn.start);
 
                         // Normalize the beginning of the week, because Luxon's week start on Monday
@@ -463,13 +497,30 @@ export default class Scheduler extends LightningElement {
                         // Stop if the next smallestHeader column belongs to the next header unit
                         if (endUnit <= startUnit) break;
 
-                        width += smallestHeaderWidth;
-                        smallestHeaderIndex += 1;
+                        width += this.cellWidth;
+                        columnIndex += 1;
                     }
                     header.columnWidths.push(width);
                 });
             }
         }
+    }
+
+    initEventWidths() {
+        if (!this.cellWidth) return;
+
+        this.events.forEach((event) => {
+            event.updateWidth({
+                columns: this.smallestHeader.columns,
+                columnDuration: this.smallestHeader.maxColumnDuration
+            });
+        });
+    }
+
+    updateRowColumns() {
+        this.scheduleRows.forEach((row) => {
+            row.generateColumns(this.smallestHeader.columns);
+        });
     }
 
     handlePrivateRowHeightChange(event) {

@@ -45,7 +45,8 @@ const dateTimeObjectFrom = (date) => {
         time = new Date(date).getTime();
     }
 
-    return DateTime.fromMillis(time);
+    if (time) return DateTime.fromMillis(time);
+    return false;
 };
 
 /**

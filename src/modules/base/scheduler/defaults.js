@@ -116,15 +116,35 @@ const PALETTES = {
 
 const UNITS = ['minute', 'hour', 'day', 'week', 'month', 'year'];
 
+const RECURRENCES = [
+    {
+        name: 'daily',
+        recurrenceAttributes: ['span']
+    },
+    {
+        name: 'weekly',
+        recurrenceAttributes: ['span', 'weekdays']
+    },
+    {
+        name: 'monthly',
+        recurrenceAttributes: ['span', 'sameDaySameWeek']
+    },
+    {
+        name: 'yearly',
+        recurrenceAttributes: ['span']
+    }
+];
+
 export {
     EVENTS_THEMES,
     EVENTS_PALETTES,
     THEMES,
+    DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
+    DEFAULT_AVAILABLE_TIME_FRAMES,
+    DEFAULT_AVAILABLE_MONTHS,
     DEFAULT_START_DATE,
     DEFAULT_VISIBLE_SPAN,
     PALETTES,
-    UNITS,
-    DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
-    DEFAULT_AVAILABLE_TIME_FRAMES,
-    DEFAULT_AVAILABLE_MONTHS
+    RECURRENCES,
+    UNITS
 };

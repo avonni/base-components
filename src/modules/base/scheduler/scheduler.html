@@ -49,7 +49,7 @@
 
         <!-- Schedule -->
         <div class="slds-col">
-            <table class="slds-table">
+            <table class="slds-table scheduler__schedule-table">
                 <!-- Headers -->
                 <thead>
                     <template for:each={headers} for:item="header">
@@ -87,14 +87,44 @@
                     >
                         <tr
                             key={row.key}
-                            class="slds-border_bottom slds-grid"
+                            class="slds-border_bottom slds-grid slds-is-relative"
                             data-index={index}
                         >
                             <template for:each={row.columns} for:item="column">
                                 <td
-                                    key={column}
-                                    class="slds-border_right slds-col"
-                                ></td>
+                                    key={column.start}
+                                    class="slds-border_right slds-col slds-p-around_none slds-wrap"
+                                >
+                                    <template
+                                        for:each={column.events}
+                                        for:item="eventObject"
+                                    >
+                                        <div
+                                            if:false={eventObject.hidden}
+                                            key={eventObject.event.from.ts}
+                                            class="slds-p-vertical_xx-small slds-grid slds-grid_vertical-align-center scheduler__event slds-is-relative"
+                                            data-width={eventObject.event.width}
+                                        >
+                                            <div
+                                                class="slds-truncate slds-theme_shade slds-p-around_xx-small scheduler__event-title"
+                                            >
+                                                {eventObject.event.title}
+                                            </div>
+                                        </div>
+                                        <div
+                                            if:true={eventObject.hidden}
+                                            key={eventObject.event.from.ts}
+                                            class="slds-hidden slds-p-vertical_xx-small slds-grid slds-grid_vertical-align-center scheduler__event slds-is-relative"
+                                            data-width={eventObject.event.width}
+                                        >
+                                            <div
+                                                class="slds-truncate slds-theme_shade slds-p-around_xx-small scheduler__event-title"
+                                            >
+                                                {eventObject.event.title}
+                                            </div>
+                                        </div>
+                                    </template>
+                                </td>
                             </template>
                         </tr>
                     </template>

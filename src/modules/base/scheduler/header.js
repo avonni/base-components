@@ -55,30 +55,22 @@ import { isInTimeFrame, addToDate } from './dateUtils';
  */
 export default class Header {
     constructor(props) {
-        this.key = this.generateKey;
-        this.unit = props.unit;
-        this.span = props.span;
-        this.label = props.label;
+        this.availableDaysOfTheWeek = props.availableDaysOfTheWeek;
+        this.availableMonths = props.availableMonths;
+        this.availableTimeFrames = props.availableTimeFrames;
+        this.childKey = null;
         this.columns = [];
         this.columnWidths = [];
         this.isHidden = props.isHidden;
         this.isReference = props.isReference;
+        this.key = this.generateKey;
+        this.label = props.label;
         this.numberOfColumns = props.numberOfColumns;
-        this.childKey = null;
+        this.span = props.span;
+        this.start = props.start;
         this._end = props.end;
-        this._start = props.start;
-        this._availableTimeFrames = props.availableTimeFrames;
-        this._availableDaysOfTheWeek = props.availableDaysOfTheWeek;
-        this._availableMonths = props.availableMonths;
+        this.unit = props.unit;
 
-        this.computeColumns();
-    }
-
-    get start() {
-        return this._start;
-    }
-    set start(value) {
-        this._start = value;
         this.computeColumns();
     }
 
@@ -87,30 +79,10 @@ export default class Header {
     }
     set end(value) {
         this._end = value;
-    }
 
-    get availableDaysOfTheWeek() {
-        return this._availableDaysOfTheWeek;
-    }
-    set availableDaysOfTheWeek(value) {
-        this._availableDaysOfTheWeek = value;
-        this.computeColumns();
-    }
-
-    get availableMonths() {
-        return this._availableMonths;
-    }
-    set availableMonths(value) {
-        this._availableMonths = value;
-        this.computeColumns();
-    }
-
-    get availableTimeFrames() {
-        return this._availableTimeFrames;
-    }
-    set availableTimeFrames(value) {
-        this._availableTimeFrames = value;
-        this.computeColumns();
+        if (this.columns.length) {
+            this.columns[this.columns.length - 1].end = value.ts;
+        }
     }
 
     get generateKey() {
@@ -141,9 +113,14 @@ export default class Header {
                 }
             }
 
+            // if (this.columns.length) {
+            //     this.columns[i - 1].end = date.ts - 1;
+            // }
+
             this.columns.push({
                 label: date.startOf(unit).toFormat(label),
-                start: date.ts
+                start: date.ts,
+                end: addToDate(date, 'millisecond', this.maxColumnDuration)
             });
 
             date = addToDate(date, unit, span);
@@ -163,6 +140,7 @@ export default class Header {
 
                 if (endUnit < dateUnit) {
                     this.numberOfColumns = this.columns.length;
+                    this.columns[this.columns.length - 1].end = end.ts;
                     break;
                 }
             }

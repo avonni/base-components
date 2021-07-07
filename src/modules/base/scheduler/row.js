@@ -34,12 +34,35 @@ export default class Row {
     constructor(props) {
         this.key = props.key;
         this.columns = [];
+        this.events = props.events;
     }
 
-    generateColumns(array) {
+    generateColumns(headerColumns) {
         const columns = [];
-        array.forEach((_element, index) => {
-            columns.push(index);
+        headerColumns.forEach((element) => {
+            columns.push({
+                start: element.start,
+                end: element.end,
+                events: []
+            });
+        });
+
+        this.events.forEach((event) => {
+            let i = columns.findIndex((column) => {
+                return column.end > event.from;
+            });
+            if (i > -1) {
+                // The event will be visible in the first column
+                columns[i].events.push({ event });
+
+                i += 1;
+                // The event is pushed in the other columns with hidden:true ,
+                // so it takes some room in case there are several events at the same time
+                while (i < columns.length && event.to > columns[i].end) {
+                    columns[i].events.push({ event, hidden: true });
+                    i += 1;
+                }
+            }
         });
         this.columns = columns;
     }

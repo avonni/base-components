@@ -95,11 +95,11 @@ const rows = [
 ];
 
 const headers = [
-    {
-        unit: 'year',
-        span: 1,
-        label: 'y'
-    },
+    // {
+    //     unit: 'year',
+    //     span: 1,
+    //     label: 'y'
+    // },
     {
         unit: 'month',
         span: 1,
@@ -119,12 +119,57 @@ const headers = [
         unit: 'hour',
         span: 1,
         label: 'h a'
+    }
+    // {
+    //     unit: 'minute',
+    //     span: 30,
+    //     label: 'mm'
+    // }
+];
+
+const events = [
+    {
+        keyFields: [3],
+        title: 'Identify need',
+        iconName: 'utility:search',
+        from: new Date(2021, 11, 13, 10),
+        to: new Date(2021, 11, 13, 15, 30)
     },
     {
-        unit: 'minute',
-        span: 30,
-        label: 'mm'
+        keyFields: [3],
+        title: 'Find examples of solutions',
+        iconName: 'utility:search',
+        from: new Date(2021, 11, 13, 14),
+        to: new Date(2021, 11, 14)
+    },
+    {
+        keyFields: [1, 3],
+        title: 'Write specifications',
+        iconName: 'utility:insert_tag_field',
+        from: new Date(2021, 11, 15),
+        allDay: true
+    },
+    {
+        keyFields: [2],
+        title: 'Create wireframe',
+        iconName: 'utility:description',
+        from: new Date(2021, 11, 16, 9),
+        to: new Date(2021, 11, 20, 14)
+    },
+    {
+        keyFields: [4],
+        title: 'Create mockup',
+        iconName: 'utility:brush',
+        from: new Date(2021, 11, 20, 14),
+        to: new Date(2021, 11, 22, 10, 30)
+    },
+    {
+        keyFields: [1, 5],
+        title: 'Implement feature',
+        iconName: 'utility:apex',
+        from: new Date(2021, 11, 22, 11, 30),
+        to: new Date(2021, 11, 24)
     }
 ];
 
-export { columns, rows, headers };
+export { columns, rows, headers, events };
