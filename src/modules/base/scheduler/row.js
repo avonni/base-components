@@ -37,6 +37,10 @@ export default class Row {
         this.events = props.events;
     }
 
+    get eventClass() {
+        return 'slds-p-vertical_xx-small slds-grid slds-grid_vertical-align-center scheduler__event slds-is-relative';
+    }
+
     generateColumns(headerColumns) {
         const columns = [];
         headerColumns.forEach((element) => {
@@ -53,13 +57,19 @@ export default class Row {
             });
             if (i > -1) {
                 // The event will be visible in the first column
-                columns[i].events.push({ event });
+                columns[i].events.push({
+                    event,
+                    class: this.eventClass
+                });
 
                 i += 1;
-                // The event is pushed in the other columns with hidden:true ,
-                // so it takes some room in case there are several events at the same time
+                // The event will be hidden in the other column it crosses,
+                // so it takes some room in case there are several events in one column
                 while (i < columns.length && event.to > columns[i].end) {
-                    columns[i].events.push({ event, hidden: true });
+                    columns[i].events.push({
+                        event,
+                        class: this.eventClass.concat(' slds-hidden')
+                    });
                     i += 1;
                 }
             }

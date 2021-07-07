@@ -303,6 +303,17 @@ export default class Datatable extends LightningDatatable {
         super.data = this._data;
     }
 
+    @api
+    setRowHeight(rowKeyField, height) {
+        const row = this.template.querySelector(
+            `tr[data-row-key-value="${rowKeyField}"]`
+        );
+
+        if (row) {
+            row.style.height = `${height}px`;
+        }
+    }
+
     removeWrapOption() {
         this.columns.forEach((column) => {
             if (CUSTOM_TYPES_ALWAYS_WRAPPED.includes(column.type)) {
@@ -355,12 +366,17 @@ export default class Datatable extends LightningDatatable {
         const rows = this.template.querySelectorAll(
             'tr:not(.slds-line-height_reset)'
         );
+
         rows.forEach((row, index) => {
+            // The first row has one pixel more because of the border
+            const height =
+                index === 0 ? row.offsetHeight + 1 : row.offsetHeight;
+
             this.dispatchEvent(
                 new CustomEvent('privaterowheightchange', {
                     detail: {
-                        index: index,
-                        height: row.offsetHeight
+                        key: row.dataset.rowKeyValue,
+                        height: height
                     }
                 })
             );

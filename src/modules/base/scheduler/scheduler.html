@@ -89,6 +89,7 @@
                             key={row.key}
                             class="slds-border_bottom slds-grid slds-is-relative"
                             data-index={index}
+                            data-key={row.key}
                         >
                             <template for:each={row.columns} for:item="column">
                                 <td
@@ -97,30 +98,19 @@
                                 >
                                     <template
                                         for:each={column.events}
-                                        for:item="eventObject"
+                                        for:item="cell"
                                     >
                                         <div
-                                            if:false={eventObject.hidden}
-                                            key={eventObject.event.from.ts}
-                                            class="slds-p-vertical_xx-small slds-grid slds-grid_vertical-align-center scheduler__event slds-is-relative"
-                                            data-width={eventObject.event.width}
+                                            if:false={cell.hidden}
+                                            key={cell.event.from.ts}
+                                            class={cell.class}
+                                            data-width={cell.event.width}
                                         >
                                             <div
                                                 class="slds-truncate slds-theme_shade slds-p-around_xx-small scheduler__event-title"
+                                                title={cell.event.title}
                                             >
-                                                {eventObject.event.title}
-                                            </div>
-                                        </div>
-                                        <div
-                                            if:true={eventObject.hidden}
-                                            key={eventObject.event.from.ts}
-                                            class="slds-hidden slds-p-vertical_xx-small slds-grid slds-grid_vertical-align-center scheduler__event slds-is-relative"
-                                            data-width={eventObject.event.width}
-                                        >
-                                            <div
-                                                class="slds-truncate slds-theme_shade slds-p-around_xx-small scheduler__event-title"
-                                            >
-                                                {eventObject.event.title}
+                                                {cell.event.title}
                                             </div>
                                         </div>
                                     </template>

@@ -86,6 +86,13 @@ export default class Scheduler extends LightningElement {
         const thead = this.template.querySelector('thead');
         datatableCol.style.paddingTop = `${thead.offsetHeight - 34}px`;
 
+        // Set the datatable rows height
+        const datatable = this.template.querySelector('c-datatable');
+        const rows = this.template.querySelectorAll('tbody tr');
+        rows.forEach((row) => {
+            datatable.setRowHeight(row.dataset.key, row.offsetHeight);
+        });
+
         // Get the header rows and sort them from the shortest unit to the longest
         const headerRows = Array.from(
             this.template.querySelectorAll('thead tr')
@@ -112,6 +119,8 @@ export default class Scheduler extends LightningElement {
         const events = this.template.querySelectorAll('.scheduler__event');
         events.forEach((event) => {
             const percentWidth = event.dataset.width;
+            // Since the cell border is not included in the %,
+            // we add 1px per cell crossed by the event
             const borderWidth = Math.floor(percentWidth / 100);
             event.style.width = `calc(${percentWidth}% + ${borderWidth}px`;
         });
@@ -524,11 +533,9 @@ export default class Scheduler extends LightningElement {
     }
 
     handlePrivateRowHeightChange(event) {
-        const index = event.detail.index;
-        // The first row has one pixel more because of the border
-        const height =
-            index === 0 ? event.detail.height + 1 : event.detail.height;
-        const row = this.template.querySelector(`[data-index="${index}"]`);
-        if (row) row.style.height = `${height}px`;
+        const key = event.detail.key;
+        const height = event.detail.height;
+        const row = this.template.querySelector(`[data-key="${key}"]`);
+        if (row) row.style.minHeight = `${height}px`;
     }
 }
