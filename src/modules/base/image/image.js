@@ -370,10 +370,14 @@ export default class Image extends LightningElement {
                     this._cropSize &&
                     !this.staticImages,
                 'avonni-img_cropped_width':
-                    this.width &&
-                    !this.height &&
-                    this._cropSize &&
-                    !this.staticImages,
+                    (this.width &&
+                        !this.height &&
+                        this._cropSize &&
+                        !this.staticImages) ||
+                    (this._widthPercent &&
+                        !this.height &&
+                        this._cropSize &&
+                        this.staticImages),
                 'avonni-img_no-crop_no-width_height':
                     !this.width && this.height && !this._cropSize,
                 'avonni-img_no-crop_no-width_no-height':
@@ -389,7 +393,10 @@ export default class Image extends LightningElement {
                 'avonni-img_width_height':
                     this.width && this.height && !this._blank,
                 'avonni-img_static_height_no-crop_no-width':
-                    this.staticImages && !this.width && this.height,
+                    this.staticImages &&
+                    !this.cropSize &&
+                    !this.width &&
+                    this.height,
                 'avonni-img_static_no-crop_blank_height_width':
                     this.staticImages &&
                     this._blank &&
@@ -403,7 +410,8 @@ export default class Image extends LightningElement {
                     (this._widthPercent &&
                         this._heightPercent &&
                         !this._cropSize &&
-                        !this.staticImages)
+                        !this.staticImages) ||
+                    (this._widthPercent && !this.height)
             })
             .toString();
     }
@@ -484,7 +492,9 @@ export default class Image extends LightningElement {
                 min-width: ${this.width}px;
                 min-height: ${this.height}px;
                 `;
-            } else if (this._widthPercent && this._heightPercent) {
+            }
+            // temp
+            else if (this._widthPercent && this._heightPercent) {
                 return `
                 padding-top: 0%;
                 max-width: 100%;
@@ -497,6 +507,7 @@ export default class Image extends LightningElement {
         return '';
     }
 
+    // revise
     imgContainerCropped() {
         if (!this.staticImages) {
             return `padding-top: ${this._cropSize}%;`;
@@ -876,7 +887,7 @@ export default class Image extends LightningElement {
                 `;
             }
             // Width px
-            else if (this.width) {
+            else if (this.width && !this._widthPercent) {
                 return `
                 max-width: ${this.width}px;
                 max-height: ${this.width * (this._cropSize / 100)}px;
@@ -887,12 +898,90 @@ export default class Image extends LightningElement {
                 `;
             }
             // No Width - Height px
-            else if (!this.width && this.height) {
+            else if (!this.width && this.height && !this._heightPercent) {
                 return `
                 max-height: ${this.height}px;
                 max-width: ${this.height / (this._cropSize / 100)}px;
                 min-height: ${this.height}px;
                 min-width: ${this.height / (this._cropSize / 100)}px;
+                object-fit: ${this.cropFit};
+                object-position: ${this.cropPositionX}% ${this.cropPositionY}%; 
+                `;
+            }
+            // Width % - Height %
+            else if (this._widthPercent && this._heightPercent) {
+                return `
+                max-height: ${
+                    this._imgWidth *
+                    (this._widthPercentNumberOnly / 100) *
+                    (this._cropSize / 100)
+                }px;
+                max-width: ${
+                    this._imgWidth * (this._widthPercentNumberOnly / 100)
+                }px;
+                min-height: ${
+                    this._imgWidth *
+                    (this._widthPercentNumberOnly / 100) *
+                    (this._cropSize / 100)
+                }px;
+                min-width: ${
+                    this._imgWidth * (this._widthPercentNumberOnly / 100)
+                }px;
+                object-fit: ${this.cropFit};
+                object-position: ${this.cropPositionX}% ${this.cropPositionY}%; 
+                `;
+            }
+            // Width % - Height px
+            else if (this._widthPercent && this.height) {
+                return `
+                max-height: ${this.height}px;
+                max-width: ${this.height / (this._cropSize / 100)}px;
+                min-height: ${this.height}px;
+                min-width: ${this.height / (this._cropSize / 100)}px;
+                object-fit: ${this.cropFit};
+                object-position: ${this.cropPositionX}% ${this.cropPositionY}%; 
+                `;
+            }
+            // Width % - No Height
+            else if (this._widthPercent && !this.height) {
+                return `
+                max-height: ${
+                    this._imgWidth *
+                    (this._widthPercentNumberOnly / 100) *
+                    (this._cropSize / 100)
+                }px;
+                max-width: ${
+                    this._imgWidth * (this._widthPercentNumberOnly / 100)
+                }px;
+                min-height: ${
+                    this._imgWidth *
+                    (this._widthPercentNumberOnly / 100) *
+                    (this._cropSize / 100)
+                }px;
+                min-width: ${
+                    this._imgWidth * (this._widthPercentNumberOnly / 100)
+                }px;
+                object-fit: ${this.cropFit};
+                object-position: ${this.cropPositionX}% ${this.cropPositionY}%; 
+                `;
+            }
+            // No Width - Height %
+            else if (!this.width && this._heightPercent) {
+                return `
+                max-height: ${
+                    this._imgHeight * (this._heightPercentNumberOnly / 100)
+                }px;
+                max-width: ${
+                    (this._imgHeight * (this._heightPercentNumberOnly / 100)) /
+                    (this._cropSize / 100)
+                }px;
+                min-height: ${
+                    this._imgHeight * (this._heightPercentNumberOnly / 100)
+                }px;
+                min-width: ${
+                    (this._imgHeight * (this._heightPercentNumberOnly / 100)) /
+                    (this._cropSize / 100)
+                }px;
                 object-fit: ${this.cropFit};
                 object-position: ${this.cropPositionX}% ${this.cropPositionY}%; 
                 `;
@@ -1045,6 +1134,36 @@ export default class Image extends LightningElement {
         ) {
             this._imgWidth = container.clientWidth;
             this._widthPercentNumberOnly = +this._widthPercent.slice(0, -1);
+        }
+        // Width % - Height % - Crop - Static Images
+        if (
+            this._widthPercent &&
+            this._heightPercent &&
+            this._cropSize &&
+            this.staticImages
+        ) {
+            this._imgWidth = container.clientWidth;
+            this._widthPercentNumberOnly = +this._widthPercent.slice(0, -1);
+        }
+        // Width % - No Height - Crop - Static Images
+        if (
+            this._widthPercent &&
+            !this.height &&
+            this._cropSize &&
+            this.staticImages
+        ) {
+            this._imgWidth = container.clientWidth;
+            this._widthPercentNumberOnly = +this._widthPercent.slice(0, -1);
+        }
+        // No Width - Height % - Crop - Static Images
+        if (
+            !this.width &&
+            this._heightPercent &&
+            this._cropSize &&
+            this.staticImages
+        ) {
+            this._imgHeight = container.clientHeight;
+            this._heightPercentNumberOnly = +this._heightPercent.slice(0, -1);
         }
     }
 }
