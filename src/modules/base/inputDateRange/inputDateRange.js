@@ -58,14 +58,13 @@ const DEBOUNCE_PERIOD = 200;
 
 /**
  * @class
- * @name input-date-range
  * @public
  * @storyId example-input-date-range--base
  * @descriptor avonni-input-date-range
  */
 export default class InputDateRange extends LightningElement {
     /**
-     * Help text detailing the purpose and function of the input. 
+     * Help text detailing the purpose and function of the input.
      * This attribute isn't supported for file, radio, toggle, and checkbox-button types.
      * @type {string}
      * @public
@@ -141,7 +140,7 @@ export default class InputDateRange extends LightningElement {
      * Specifies the value of the start date input.
      * @type {string}
      * @public
-    */
+     */
     @api
     get startDate() {
         return this._startDate;
@@ -157,7 +156,7 @@ export default class InputDateRange extends LightningElement {
      * Specifies the value of the end date input.
      * @type {string}
      * @public
-    */
+     */
     @api
     get endDate() {
         return this._endDate;
@@ -170,11 +169,11 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * Specifies the time zone used when type='datetime' only. 
+     * Specifies the time zone used when type='datetime' only.
      * This value defaults to the user's Salesforce time zone setting.
      * @type {string}
      * @public
-    */
+     */
     @api
     get timezone() {
         return this._timezone;
@@ -187,13 +186,13 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * The display style of the date when type='date' or type='datetime'. 
-     * Valid values are short, medium and long. The format of each style is specific to the locale. 
+     * The display style of the date when type='date' or type='datetime'.
+     * Valid values are short, medium and long. The format of each style is specific to the locale.
      * On mobile devices this attribute has no effect.
      * @type {string}
      * @default medium
      * @public
-    */
+     */
     @api
     get dateStyle() {
         return this._dateStyle;
@@ -207,13 +206,13 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * The display style of the time when type='time' or type='datetime'. 
-     * Valid values are short, medium and long. Currently, medium and long styles look the same. 
+     * The display style of the time when type='time' or type='datetime'.
+     * Valid values are short, medium and long. Currently, medium and long styles look the same.
      * On mobile devices this attribute has no effect.
      * @type {string}
      * @default short
      * @public
-    */
+     */
     @api
     get timeStyle() {
         return this._timeStyle;
@@ -231,7 +230,7 @@ export default class InputDateRange extends LightningElement {
      * @type {string}
      * @default date
      * @public
-    */
+     */
     @api
     get type() {
         return this._type;
@@ -251,7 +250,7 @@ export default class InputDateRange extends LightningElement {
      * @type {boolean}
      * @default false
      * @public
-    */
+     */
     @api
     get disabled() {
         return this._disabled;
@@ -266,7 +265,7 @@ export default class InputDateRange extends LightningElement {
      * @type {boolean}
      * @default false
      * @public
-    */
+     */
     @api
     get readOnly() {
         return this._readOnly;
@@ -281,7 +280,7 @@ export default class InputDateRange extends LightningElement {
      * @type {boolean}
      * @default false
      * @public
-    */
+     */
     @api
     get required() {
         return this._required;
@@ -292,16 +291,16 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * The variant changes the appearance of an input field. 
-     * Accepted variants include standard, label-inline, label-hidden, and label-stacked. 
-     * This value defaults to standard, which displays the label above the field. 
-     * Use label-hidden to hide the label but make it available to assistive technology. 
-     * Use label-inline to horizontally align the label and input field. 
+     * The variant changes the appearance of an input field.
+     * Accepted variants include standard, label-inline, label-hidden, and label-stacked.
+     * This value defaults to standard, which displays the label above the field.
+     * Use label-hidden to hide the label but make it available to assistive technology.
+     * Use label-inline to horizontally align the label and input field.
      * Use label-stacked to place the label above the input field.
      * @type {string}
      * @default standard
      * @public
-    */
+     */
     @api
     get variant() {
         return this._variant;
@@ -318,7 +317,7 @@ export default class InputDateRange extends LightningElement {
      * Represents the validity states that an element can be in, with respect to constraint validation.
      * @type {string}
      * @public
-    */
+     */
     @api
     get validity() {
         return this._constraint.validity;
@@ -327,7 +326,7 @@ export default class InputDateRange extends LightningElement {
     /**
      * True if type is datetime.
      * @type {boolean}
-    */
+     */
     get showTime() {
         return this.type === 'datetime';
     }
@@ -335,7 +334,7 @@ export default class InputDateRange extends LightningElement {
     /**
      * Formatted start date string.
      * @type {string}
-    */
+     */
     get startDateString() {
         let dateStr = '';
 
@@ -349,7 +348,7 @@ export default class InputDateRange extends LightningElement {
     /**
      * Formatted end date string.
      * @type {string}
-    */
+     */
     get endDateString() {
         let dateStr = '';
 
@@ -363,7 +362,7 @@ export default class InputDateRange extends LightningElement {
     /**
      * Class of the label container.
      * @type {string}
-    */
+     */
     get computedLabelClass() {
         return classSet('avonni-label-container')
             .add({
@@ -374,9 +373,9 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * Class of the wrapper.
+     * Class of the input date range wrapper.
      * @type {string}
-    */
+     */
     get computedWrapperClass() {
         return classSet()
             .add({
@@ -394,7 +393,7 @@ export default class InputDateRange extends LightningElement {
     /**
      * Sets focus on the start date input.
      * @public
-    */
+     */
     @api
     focus() {
         this.template.querySelector('.start-date').focus();
@@ -403,7 +402,7 @@ export default class InputDateRange extends LightningElement {
     /**
      * Removes keyboard focus from the start date input and end date input.
      * @public
-    */
+     */
     @api
     blur() {
         this.template.querySelector('.start-date').blur();
@@ -414,7 +413,7 @@ export default class InputDateRange extends LightningElement {
      * Checks if the input is valid.
      * @returns {boolean} Indicates whether the element meets all constraint validations.
      * @public
-    */
+     */
     @api
     checkValidity() {
         return this._constraint.checkValidity();
@@ -425,7 +424,7 @@ export default class InputDateRange extends LightningElement {
      * If the input is valid, reportValidity() clears displayed error messages and returns true.
      * @returns {boolean} - The validity status of the input fields.
      * @public
-    */
+     */
     @api
     reportValidity() {
         return this._constraint.reportValidity((message) => {
@@ -435,10 +434,10 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Sets a custom error message to be displayed when a form is submitted.
-     * @param {string} message - The string that describes the error. 
+     * @param {string} message - The string that describes the error.
      * If message is an empty string, the error message is reset.
      * @public
-    */
+     */
     @api
     setCustomValidity(message) {
         this._constraint.setCustomValidity(message);
@@ -448,7 +447,7 @@ export default class InputDateRange extends LightningElement {
      * Displays error messages on invalid fields.
      * An invalid field fails at least one constraint validation and returns false when checkValidity() is called.
      * @public
-    */
+     */
     @api
     showHelpMessageIfInvalid() {
         this.reportValidity();
@@ -466,7 +465,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Initialization of start date depending on timezone and type.
-    */
+     */
     initStartDate() {
         if (this.startDate) {
             if (this.timezone) {
@@ -489,7 +488,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Initialization of end date depending on timezone and type.
-    */
+     */
     initEndtDate() {
         if (this.endDate) {
             if (this.timezone) {
@@ -512,7 +511,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Handles the change of start-time.
-    */
+     */
     handleChangeStartTime(event) {
         event.stopPropagation();
         event.preventDefault();
@@ -522,7 +521,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Handles the change of end-time.
-    */
+     */
     handleChangeEndTime(event) {
         event.stopPropagation();
         event.preventDefault();
@@ -532,7 +531,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Handles the change of start-date on c-calendar.
-    */
+     */
     handleChangeStartDate(event) {
         // Date format received is: YYYY-MM-DD
         const date = event.detail.value.split('-');
@@ -548,7 +547,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Handles focus for the start-date input.
-    */
+     */
     handleFocusStartDate() {
         if (this.readOnly) return;
 
@@ -561,7 +560,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Handles blur for the start-date input.
-    */
+     */
     handleBlurStartDate(event) {
         this.valid = !(this.required && !this.startDate);
         if (this._cancelBlurStartDate) {
@@ -599,7 +598,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Handles blur for the c-calendar for start-date.
-    */
+     */
     handlePrivateBlurStartDate(event) {
         event.stopPropagation();
         this.allowBlurStartDate();
@@ -608,7 +607,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Handles focus for the c-calendar for start-date.
-    */
+     */
     handlePrivateFocusStartDate(event) {
         event.stopPropagation();
         this.cancelBlurStartDate();
@@ -643,7 +642,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Handles the change of end-date on c-calendar.
-    */
+     */
     handleChangeEndDate(event) {
         // Date format received is: YYYY-MM-DD
         const date = event.detail.value.split('-');
@@ -659,7 +658,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Handles focus for the end date input.
-    */
+     */
     handleFocusEndDate() {
         if (this.readOnly) return;
 
@@ -672,7 +671,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Handles blur for the end date input.
-    */
+     */
     handleBlurEndDate(event) {
         if (this._cancelBlurEndDate) {
             return;
@@ -710,7 +709,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Handles blur for the c-calendar for end-date.
-    */
+     */
     handlePrivateBlurEndDate(event) {
         event.stopPropagation();
         this.allowBlurEndDate();
@@ -719,7 +718,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Handles focus for the c-calendar for end-date.
-    */
+     */
     handlePrivateFocusEndDate(event) {
         event.stopPropagation();
         this.handleBlurEndDate();
@@ -754,9 +753,9 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Change the date format depending on date style.
-     * @param {date} 
+     * @param {date}
      * @returns {date} formated date depending on the date style.
-    */
+     */
     dateFormat(value) {
         let date = value.getDate();
         let year = value.getFullYear();
@@ -809,7 +808,7 @@ export default class InputDateRange extends LightningElement {
          * @param {string} startDate Start date value.
          * @param {string} endDate End date value
          * @public
-        */
+         */
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
