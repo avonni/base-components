@@ -34,6 +34,10 @@ import { LightningElement, api } from 'lwc';
 import { classListMutation, normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { parseDateTime } from 'c/internationalizationLibrary';
 import { classSet } from 'c/utils';
+import {
+    FieldConstraintApi,
+    debounce,
+} from 'c/inputUtils';
 
 const DATE_TYPES = {
     valid: ['date', 'datetime'],
@@ -48,6 +52,8 @@ const LABEL_VARIANTS = {
     valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked'],
     default: 'standard'
 };
+
+const DEBOUNCE_PERIOD = 200;
 
 export default class InputDateRange extends LightningElement {
     @api fieldLevelHelp;
@@ -75,7 +81,22 @@ export default class InputDateRange extends LightningElement {
     _cancelBlurStartDate = false;
     _cancelBlurEndDate = false;
 
+    helpMessage;
     valid = true
+
+    constructor() {
+        super();
+
+        this.debouncedShowIfBlurred = debounce(() => {
+            if (!this.containsFocus) {
+                this.showHelpMessageIfInvalid();
+            }
+        }, DEBOUNCE_PERIOD);
+    }
+
+    renderedCallback() {
+        this.updateClassList();
+    }
 
     @api
     get startDate() {
@@ -187,6 +208,11 @@ export default class InputDateRange extends LightningElement {
         });
     }
 
+    @api
+    get validity() {
+        return this._constraint.validity;
+    }
+
     get showTime() {
         return this.type === 'datetime';
     }
@@ -239,6 +265,40 @@ export default class InputDateRange extends LightningElement {
     blur() {
         this.template.querySelector('.start-date').blur();
         this.template.querySelector('.end-date').blur();
+    }
+
+    @api
+    checkValidity() {
+        return this._constraint.checkValidity();
+    }
+
+    @api
+    reportValidity() {
+        return this._constraint.reportValidity((message) => {
+            this.helpMessage = this.messageWhenValueMissing || message;
+        });
+    }
+
+    @api
+    setCustomValidity(message) {
+        this._constraint.setCustomValidity(message);
+    }
+
+    @api
+    showHelpMessageIfInvalid() {
+        this.reportValidity();
+    }
+
+    get _constraint() {
+        if (!this._constraintApi) {
+            this._constraintApi = new FieldConstraintApi(() => this, {
+                valueMissing: () =>
+                    !this.disabled &&
+                    this.required &&
+                    !this.startDate
+            });
+        }
+        return this._constraintApi;
     }
 
     initStartDate() {
@@ -349,7 +409,7 @@ export default class InputDateRange extends LightningElement {
             }
 
             this.dispatchChange();
-            this.updateClassList();
+            this.debouncedShowIfBlurred();
         }
     }
 
