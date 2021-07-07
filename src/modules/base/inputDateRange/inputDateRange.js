@@ -77,10 +77,6 @@ export default class InputDateRange extends LightningElement {
 
     valid = true
 
-    renderedCallback() {
-        this.updateClassList();
-    }
-
     @api
     get startDate() {
         return this._startDate;
@@ -353,6 +349,7 @@ export default class InputDateRange extends LightningElement {
             }
 
             this.dispatchChange();
+            this.updateClassList();
         }
     }
 
