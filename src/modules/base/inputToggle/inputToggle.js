@@ -73,7 +73,6 @@ const DEFAULT_MESSAGE_TOGGLE_INACTIVE = 'Inactive';
  * @descriptor avonni-input-toggle
  */
 export default class InputToggle extends LightningElement {
-
     /**
      * Specifies a shortcut key to activate or focus an element.
      * @type {string}
@@ -99,6 +98,7 @@ export default class InputToggle extends LightningElement {
     /**
      * Text label for the input.
      * @type {string}
+     * @required
      * @public
      */
     @api label;
@@ -455,7 +455,7 @@ export default class InputToggle extends LightningElement {
     /**
      * Class of the input toggle wrapper.
      * @type {string}
-    */
+     */
     get computedWrapperClass() {
         return classSet('slds-checkbox_toggle label').add({
             'slds-form-element_stacked': this.variant === VARIANT.LABEL_STACKED,
@@ -466,7 +466,7 @@ export default class InputToggle extends LightningElement {
     /**
      * Class of the faux toggle.
      * @type {string}
-    */
+     */
     get computedFauxToggleClass() {
         return classSet('slds-checkbox_faux').add({
             'faux_x-small': this.size === 'x-small',
@@ -479,7 +479,7 @@ export default class InputToggle extends LightningElement {
     /**
      * Class of the label container.
      * @type {string}
-    */
+     */
     get computedLabelClass() {
         return classSet(
             'slds-form-element slds-form-element__label slds-m-bottom_none'
@@ -592,7 +592,7 @@ export default class InputToggle extends LightningElement {
     handleFocus() {
         /**
          * @event
-         * @name blur
+         * @name focus
          * The event fired when you focus the input toggle.
          * @public
          */
