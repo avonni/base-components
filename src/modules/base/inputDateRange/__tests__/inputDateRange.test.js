@@ -479,6 +479,30 @@ describe('Input Date Range', () => {
         });
     });
 
+    // message-when-value-missing
+    // Depends on required, focus(), blur() and showHelpMessageIfInvalid()
+    it('messageWhenValueMissing', () => {
+        const element = createElement('base-input-date-range', {
+            is: InputDateRange
+        });
+        document.body.appendChild(element);
+        element.required = true;
+        element.messageWhenValueMissing = 'Missing value!';
+
+        return Promise.resolve()
+            .then(() => {
+                element.focus();
+                element.blur();
+                element.showHelpMessageIfInvalid();
+            })
+            .then(() => {
+                const message = element.shadowRoot.querySelector(
+                    '.slds-form-element__help'
+                );
+                expect(message.textContent).toBe('Missing value!');
+            });
+    });
+
     // variant
     it('Input Date Range variant standard', () => {
         const element = createElement('base-input-date-range', {
