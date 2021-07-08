@@ -71,3 +71,12 @@
  * @name buttonsWithRightIcons
  * @storyId example-input-choice-set--buttons-with-right-icons
  */
+
+/**
+ * @typedef Option
+ * @name Options
+ * @param {string} label Label of the option.
+ * @param {string} value Value of the option.
+ * @param {string} iconName The Lightning Design System name of the icon. Names are written in the format standard:opportunity. The icon is appended to the left of the header label.
+ * @param {string} iconPosition The position of the icon with respect to the label. Valid options include left, right, top and bottom. This value defaults to left.
+ */
