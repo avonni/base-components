@@ -41,7 +41,7 @@ import {
     normalizeAriaAttribute,
     classListMutation
 } from 'c/utilsPrivate';
-import { FieldConstraintApi } from 'c/inputUtils';
+import { InteractingState, FieldConstraintApi } from 'c/inputUtils';
 import { classSet, generateUniqueId } from 'c/utils';
 import { AutoPosition, Direction } from 'c/positionLibrary';
 
@@ -121,6 +121,8 @@ export default class PrimitiveCombobox extends LightningElement {
     topActions = [];
     bottomActions = [];
 
+    valid = true;
+
     connectedCallback() {
         this.initValue();
 
@@ -129,6 +131,9 @@ export default class PrimitiveCombobox extends LightningElement {
                 this.visibleOptions
             );
         }
+
+        this.interactingState = new InteractingState();
+        this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
     }
 
     renderedCallback() {
@@ -509,10 +514,6 @@ export default class PrimitiveCombobox extends LightningElement {
 
     get showNoSearchResultMessage() {
         return this.inputValue && !this.visibleOptions.length;
-    }
-
-    get showHelpMessage() {
-        return this.helpMessage && !this.checkValidity();
     }
 
     get computedLabelClass() {
@@ -1002,10 +1003,15 @@ export default class PrimitiveCombobox extends LightningElement {
         }
         this.close();
 
+        this.valid = !(this.required && this.value.length === 0);
+        this.interactingState.leave();
+
         this.dispatchEvent(new CustomEvent('blur'));
     }
 
     handleFocus() {
+        this.interactingState.enter();
+
         this.dispatchEvent(new CustomEvent('focus'));
     }
 
