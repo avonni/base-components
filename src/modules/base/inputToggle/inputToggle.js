@@ -42,8 +42,8 @@ import {
 } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import {
+    InteractingState,
     FieldConstraintApiWithProxyInput,
-    debounce,
     normalizeVariant,
     VARIANT
 } from 'c/inputUtils';
@@ -55,8 +55,6 @@ const i18n = {
 const ARIA_CONTROLS = 'aria-controls';
 const ARIA_DESCRIBEDBY = 'aria-describedby';
 const ARIA_LABELEDBY = 'aria-labelledby';
-
-const DEBOUNCE_PERIOD = 200;
 
 const INPUT_SIZES = {
     valid: ['x-small', 'small', 'medium', 'large'],
@@ -149,17 +147,13 @@ export default class InputToggle extends LightningElement {
     constructor() {
         super();
         this.ariaObserver = new ContentMutation(this);
-
-        this.debouncedShowIfBlurred = debounce(() => {
-            if (!this.containsFocus) {
-                this.showHelpMessageIfInvalid();
-            }
-        }, DEBOUNCE_PERIOD);
     }
 
     connectedCallback() {
         this.classList.add('slds-form-element');
         this.updateClassList();
+        this.interactingState = new InteractingState();
+        this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
     }
 
     renderedCallback() {
@@ -575,7 +569,7 @@ export default class InputToggle extends LightningElement {
     handleBlur() {
         this.valid = !(this.required && !this.checked);
         this.updateClassList();
-        this.debouncedShowIfBlurred();
+        this.interactingState.leave();
 
         /**
          * @event
@@ -590,6 +584,8 @@ export default class InputToggle extends LightningElement {
      * Dispatch the focus event
      */
     handleFocus() {
+        this.interactingState.enter();
+
         /**
          * @event
          * @name focus
