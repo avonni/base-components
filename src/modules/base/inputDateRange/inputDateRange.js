@@ -38,7 +38,7 @@ import {
 } from 'c/utilsPrivate';
 import { parseDateTime } from 'c/internationalizationLibrary';
 import { classSet } from 'c/utils';
-import { FieldConstraintApi, debounce } from 'c/inputUtils';
+import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 
 const DATE_TYPES = {
     valid: ['date', 'datetime'],
@@ -53,8 +53,6 @@ const LABEL_VARIANTS = {
     valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked'],
     default: 'standard'
 };
-
-const DEBOUNCE_PERIOD = 200;
 
 /**
  * @class
@@ -122,17 +120,12 @@ export default class InputDateRange extends LightningElement {
     helpMessage;
     valid = true;
 
-    constructor() {
-        super();
-
-        this.debouncedShowIfBlurred = debounce(() => {
-            if (!this.containsFocus) {
-                this.showHelpMessageIfInvalid();
-            }
-        }, DEBOUNCE_PERIOD);
+    connectedCallback() {
+        this.interactingState = new InteractingState();
+        this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
     }
-
-    renderedCallback() {
+    
+    renderedCallback(){
         this.updateClassList();
     }
 
@@ -556,6 +549,7 @@ export default class InputDateRange extends LightningElement {
         if (!this.isOpenStartDate) {
             this.toggleStartDateVisibility();
         }
+        this.interactingState.enter();
     }
 
     /**
@@ -592,7 +586,7 @@ export default class InputDateRange extends LightningElement {
             }
 
             this.dispatchChange();
-            this.debouncedShowIfBlurred();
+            this.interactingState.leave();
         }
     }
 
