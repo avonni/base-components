@@ -120,7 +120,7 @@ export default class Event {
 
         // If the event ends in the middle of a column,
         // add the remaining width
-        if (columns[i].start < this.to) {
+        if (columns[i] && columns[i].start < this.to) {
             const columnStart = dateTimeObjectFrom(columns[i].start);
             const eventDurationLeft = this.to.diff(columnStart).milliseconds;
             width += (eventDurationLeft * 100) / columnDuration;

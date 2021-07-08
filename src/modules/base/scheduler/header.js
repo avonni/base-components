@@ -70,6 +70,7 @@ export default class Header {
         this.start = props.start;
         this._end = props.end;
         this.unit = props.unit;
+        this.duration = props.duration;
 
         this.computeColumns();
     }
@@ -96,57 +97,76 @@ export default class Header {
     }
 
     computeColumns() {
-        const { unit, label, end, span, numberOfColumns } = this;
+        const { unit, label, span, numberOfColumns } = this;
         this.columns = [];
         let date = DateTime.fromMillis(this.start.ts);
 
-        // For each column
         for (let i = 0; i < numberOfColumns; i++) {
             date = this.nextAllowedMonth(date);
 
-            // We don't want to take the day or time of the date into account
-            // if the header does not use them
-            if (unit !== 'month' && unit !== 'year' && unit !== 'week') {
+            // We don't want to take the day or time of the date into account if the header does not use them.
+            // If the unit is week, we want to start counting the weeks from the first available day
+            if (
+                unit !== 'month' &&
+                unit !== 'year' &&
+                !(unit === 'week' && i > 0)
+            ) {
                 date = this.nextAllowedDay(date);
-                if (unit !== 'day') {
+                if (unit !== 'day' && unit !== 'week') {
                     date = this.nextAllowedTime(date);
                 }
             }
 
-            // if (this.columns.length) {
-            //     this.columns[i - 1].end = date.ts - 1;
-            // }
+            // Compensate the fact that luxon weeks start on Monday
+            const columnEnd =
+                unit === 'week'
+                    ? addToDate(date, 'day', 1).endOf(unit).minus({ day: 1 })
+                    : date.endOf(unit);
+
+            // If the current date is bigger than the reference end, stop adding columns
+            if (!this.isReference && this.dateIsBiggerThanEnd(date)) {
+                this.numberOfColumns = this.columns.length;
+                this.columns[this.columns.length - 1].end = this.end.ts;
+                break;
+            }
 
             this.columns.push({
                 label: date.startOf(unit).toFormat(label),
                 start: date.ts,
-                end: addToDate(date, 'millisecond', this.maxColumnDuration)
+                end: columnEnd.ts
             });
 
-            date = addToDate(date, unit, span);
-
-            // Make sure the current date is not bigger than the end
-            if (!this.isReference) {
-                let dateUnit;
-                let endUnit;
-
-                if (unit === 'week') {
-                    dateUnit = addToDate(date, 'day', 1).endOf(unit);
-                    endUnit = addToDate(end, 'day', 1).endOf(unit);
-                } else {
-                    dateUnit = date.endOf(unit);
-                    endUnit = end.endOf(unit);
-                }
-
-                if (endUnit < dateUnit) {
-                    this.numberOfColumns = this.columns.length;
-                    this.columns[this.columns.length - 1].end = end.ts;
-                    break;
-                }
-            }
+            // Compensate the fact that luxon week start on Monday
+            date =
+                unit === 'week'
+                    ? addToDate(date, unit, span)
+                          .plus({ day: 1 })
+                          .startOf(unit)
+                          .minus({ day: 1 })
+                    : addToDate(date, unit, span).startOf(unit);
         }
 
         this._start = DateTime.fromMillis(this.columns[0].start);
+        this.setHeaderEnd();
+
+        // Make sure the last column contains allowed dates/times.
+        // If not, remove it.
+        const lastColumn = this.columns[this.columns.length - 1];
+        const nextAllowedDay = this.nextAllowedDay(
+            DateTime.fromMillis(lastColumn.start)
+        );
+        const nextAllowedMonth = this.nextAllowedMonth(
+            DateTime.fromMillis(lastColumn.start)
+        );
+
+        if (
+            lastColumn.start > lastColumn.end ||
+            nextAllowedMonth > lastColumn.end ||
+            nextAllowedDay > lastColumn.end
+        ) {
+            this.columns.splice(-1);
+            this.numberOfColumns = this.columns.length;
+        }
     }
 
     isAllowedTime(date) {
@@ -174,7 +194,12 @@ export default class Header {
         let date = DateTime.fromMillis(startDate.ts);
         if (!this.isAllowedMonth(date)) {
             // Add a month
-            date = date.plus({ months: 1 }).set({ day: 1 });
+            date = date.plus({ months: 1 });
+            // If this is not the first column, we start the month on the first day
+            // Else we want to keep the chosen start day
+            if (this.columns.length) {
+                date = date.set({ day: 1 });
+            }
             date = this.nextAllowedMonth(date);
         }
         return date;
@@ -214,5 +239,56 @@ export default class Header {
         }
 
         return date;
+    }
+
+    dateIsBiggerThanEnd(date) {
+        const { end, unit } = this;
+        let dateUnit;
+        let endUnit;
+
+        // Compensate the fact that luxon weeks start on Monday
+        if (unit === 'week') {
+            dateUnit = addToDate(date, 'day', 1).endOf(unit);
+            endUnit = addToDate(end, 'day', 1).endOf(unit);
+        } else {
+            dateUnit = date.endOf(unit);
+            endUnit = end.endOf(unit);
+        }
+
+        if (endUnit < dateUnit) return true;
+        return false;
+    }
+
+    // If the start date is in the middle of the unit,
+    // make sure the end date is too
+    setHeaderEnd() {
+        const unit = this.unit;
+        const lastColumn = this.columns[this.columns.length - 1];
+
+        if (this.isReference) {
+            const start = DateTime.fromMillis(this.columns[0].start);
+            let end = DateTime.fromMillis(lastColumn.end);
+
+            if (unit === 'year') {
+                end = end.set({ months: start.month });
+            }
+            if ((unit === 'month' || unit === 'year') && start.day > 1) {
+                end = end.set({ days: start.day - 1 });
+            }
+            if (unit === 'week') {
+                if (
+                    start.weekday === 1 &&
+                    this.columns.length === this.duration
+                ) {
+                    end = end.set({ weekday: 7 });
+                } else {
+                    end = end.set({ weekday: start.weekday - 1 });
+                }
+            }
+
+            lastColumn.end = end.ts;
+        } else {
+            lastColumn.end = this.end.ts;
+        }
     }
 }

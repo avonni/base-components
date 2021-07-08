@@ -328,36 +328,26 @@ export default class Scheduler extends LightningElement {
         const reference = new Header({
             unit: referenceUnit,
             span: referenceSpan,
+            duration: this.visibleSpan.span,
             label: referenceHeader ? referenceHeader.label : '',
             start: this.start,
             availableTimeFrames: this.availableTimeFrames,
             availableDaysOfTheWeek: this.availableDaysOfTheWeek,
             availableMonths: this.availableMonths,
-            numberOfColumns: referenceColumns / referenceSpan,
+            numberOfColumns:
+                referenceColumns / referenceSpan >= 1
+                    ? referenceColumns / referenceSpan
+                    : 1,
             isReference: true,
             // If there is no header using the visibleSpan unit,
             // hide the reference header
             isHidden: !referenceHeader
         });
 
-        // Compute the end
-        let referenceEnd;
-        const lastColumnStart = DateTime.fromMillis(
-            reference.columns[reference.columns.length - 1].start
+        // Make sure the reference end is at the end of the smallest header unit
+        const referenceEnd = DateTime.fromMillis(
+            reference.columns[reference.columns.length - 1].end
         );
-        // If the number of columns is a float,
-        // the end date will be before the end of the last column span
-        if (!Number.isInteger(reference.numberOfColumns)) {
-            const lastColumnDuration =
-                (reference.numberOfColumns -
-                    Math.floor(reference.numberOfColumns)) *
-                reference.maxColumnDuration;
-            referenceEnd = DateTime.fromMillis(
-                lastColumnStart + lastColumnDuration
-            );
-        } else {
-            referenceEnd = lastColumnStart;
-        }
         reference.end = referenceEnd.endOf(
             sortedHeaders[sortedHeaders.length - 1].unit
         );
@@ -401,6 +391,7 @@ export default class Scheduler extends LightningElement {
         });
 
         this._headers = headerObjects;
+
         this.initHeaderWidths();
         this.initEventWidths();
     }

@@ -34,6 +34,10 @@
     background-color: #fafaf9;
 }
 
+.scheduler__schedule-table {
+    overflow: hidden;
+}
+
 .scheduler__schedule-table tbody td {
     position: static;
 }

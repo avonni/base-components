@@ -114,12 +114,12 @@ const headers = [
         unit: 'day',
         span: 1,
         label: 'ccc dd'
-    },
-    {
-        unit: 'hour',
-        span: 1,
-        label: 'h a'
     }
+    // {
+    //     unit: 'hour',
+    //     span: 1,
+    //     label: 'h a'
+    // },
     // {
     //     unit: 'minute',
     //     span: 30,
