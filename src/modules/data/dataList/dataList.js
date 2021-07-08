@@ -86,7 +86,11 @@ export default class AvonniDataListBasic extends LightningElement {
     _sortable = false;
     _sortableIconPosition = ICON_POSITIONS.default;
 
+    @track popoverFields = [];
     currentPopover;
+    isInsidePopover = false;
+    shiftPressed = false;
+    tabPressed = false;
 
     @api
     get actions() {
@@ -173,31 +177,8 @@ export default class AvonniDataListBasic extends LightningElement {
         return this.listActions.length > 0;
     }
 
-    get popoverData() {
-        let itemCount = 0;
-        let popoverData = [];
-        this.data.forEach((dataElement) => {
-            let popoverFields = [];
-            const isOpened = itemCount === this.currentPopover;
-            if (isOpened) {
-                this.fields.forEach((field) => {
-                    popoverFields.push({
-                        fieldId: generateUniqueId(),
-                        label: field.label,
-                        name: field.name,
-                        type: field.type,
-                        value: dataElement[field.name]
-                    });
-                });
-            }
-            popoverData.push({
-                popoverId: generateUniqueId(),
-                popoverIsOpened: isOpened,
-                popoverFields: popoverFields
-            });
-            itemCount++;
-        });
-        return popoverData;
+    get showPopover() {
+        return this.currentPopover !== undefined;
     }
 
     get computedPopover() {
@@ -248,17 +229,55 @@ export default class AvonniDataListBasic extends LightningElement {
 
     handlePopoverDoneClick() {
         this.currentPopover = undefined;
+        this.tabIndex = false;
+        this.shiftPressed = false;
     }
 
     handleCurrentPopoverChange(event) {
         this.currentPopover = parseInt(event.target.value, 10);
+        this.generatePopoverContent();
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
+        setTimeout(() => {
+            this.template.querySelector('c-data-input')?.focus();
+        }, 0);
+    }
+
+    generatePopoverContent() {
+        for (let i = 0; i < this.data.length; i++) {
+            if (i === this.currentPopover) {
+                this.popoverFields = [];
+                this.fields.forEach((field) => {
+                    this.popoverFields.push({
+                        fieldId: generateUniqueId(),
+                        label: field.label,
+                        name: field.name,
+                        type: field.type,
+                        value: this.data[i][field.name]
+                    });
+                });
+                break;
+            }
+        }
     }
 
     handlePopoverInputBlur(event) {
-        let newData = JSON.parse(JSON.stringify(this.data));
-        newData[this.currentPopover][event.target.name] = event.target.value;
-        this._data = newData;
-        this.dispatchSaveEvent();
+        if (this.currentPopover !== undefined) {
+            let newData = JSON.parse(JSON.stringify(this.data));
+            newData[this.currentPopover][event.target.name] =
+                event.target.value;
+            this._data = newData;
+
+            this.handlePopoverBlur();
+            this.dispatchSaveEvent();
+
+            const trapFocus =
+                event.target === this.template.querySelector('c-data-input') &&
+                this.tabPressed &&
+                this.shiftPressed;
+            if (trapFocus) {
+                this.template.querySelector('.slds-col_bump-left').focus();
+            }
+        }
     }
 
     dispatchSaveEvent() {
@@ -269,5 +288,62 @@ export default class AvonniDataListBasic extends LightningElement {
                 }
             })
         );
+    }
+
+    handlePopoverDoneButtonBlur(event) {
+        this.handlePopoverBlur();
+
+        const trapFocus =
+            event.target ===
+                this.template.querySelector('.slds-col_bump-left') &&
+            this.tabPressed &&
+            !this.shiftPressed;
+        if (trapFocus) {
+            // eslint-disable-next-line @lwc/lwc/no-async-operation
+            setTimeout(() => {
+                this.template.querySelector('c-data-input').focus();
+            }, 0);
+        }
+    }
+
+    handlePopoverMouseEnter() {
+        this.isInsidePopover = true;
+    }
+
+    handlePopoverBlur() {
+        if (!this.isInsidePopover && !this.tabPressed) {
+            this.handlePopoverDoneClick();
+            this.generatePopoverContent();
+        }
+    }
+
+    handlePopoverMouseLeave() {
+        this.isInsidePopover = false;
+    }
+
+    /**
+     * Handles a keydown inside the popover.
+     * @param {Event} event
+     */
+    handlePopoverKeydown(event) {
+        if (event.keyCode === 9) {
+            this.tabPressed = true;
+        } else if (event.keyCode === 16) {
+            this.shiftPressed = true;
+        } else if (event.keyCode === 27) {
+            this.handlePopoverDoneClick();
+        }
+    }
+
+    /**
+     * Handles a keyup inside the popover.
+     * @param {Event} event
+     */
+    handlePopoverKeyup(event) {
+        if (event.keyCode === 9) {
+            this.tabPressed = false;
+        } else if (event.keyCode === 16) {
+            this.shiftPressed = false;
+        }
     }
 }

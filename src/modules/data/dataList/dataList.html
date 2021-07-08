@@ -70,38 +70,41 @@
         type="number"
         onblur={handleCurrentPopoverChange}
     ></lightning-input>
-    <template for:each={popoverData} for:item="data">
-        <section
-            if:true={data.popoverIsOpened}
-            key={data.popoverId}
-            aria-label="Edit fields"
-            class={computedPopover}
-            role="dialog"
-            tabindex="0"
-        >
-            <div class="slds-popover__body">
-                <template for:each={data.popoverFields} for:item="field">
-                    <div key={field.fieldId} class="slds-p-bottom_small">
-                        <c-data-input
-                            label={field.label}
-                            name={field.name}
-                            type={field.type}
-                            value={field.value}
-                            onblur={handlePopoverInputBlur}
-                        ></c-data-input>
-                    </div>
-                </template>
-            </div>
-            <footer class="slds-popover__footer">
-                <div class="slds-grid slds-grid_vertical-align-center">
-                    <lightning-button
-                        label="Done"
-                        title="Done"
-                        class="slds-col_bump-left"
-                        onclick={handlePopoverDoneClick}
-                    ></lightning-button>
+    <section
+        if:true={showPopover}
+        aria-label="Edit fields"
+        class={computedPopover}
+        role="dialog"
+        tabindex="0"
+        onmouseenter={handlePopoverMouseEnter}
+        onmouseleave={handlePopoverMouseLeave}
+        onblur={handlePopoverBlur}
+        onkeydown={handlePopoverKeydown}
+        onkeyup={handlePopoverKeyup}
+    >
+        <div class="slds-popover__body">
+            <template for:each={popoverFields} for:item="field">
+                <div key={field.fieldId} class="slds-p-bottom_small">
+                    <c-data-input
+                        label={field.label}
+                        name={field.name}
+                        type={field.type}
+                        value={field.value}
+                        onblur={handlePopoverInputBlur}
+                    ></c-data-input>
                 </div>
-            </footer>
-        </section>
-    </template>
+            </template>
+        </div>
+        <footer class="slds-popover__footer">
+            <div class="slds-grid slds-grid_vertical-align-center">
+                <lightning-button
+                    label="Done"
+                    title="Done"
+                    class="slds-col_bump-left"
+                    onclick={handlePopoverDoneClick}
+                    onblur={handlePopoverDoneButtonBlur}
+                ></lightning-button>
+            </div>
+        </footer>
+    </section>
 </template>

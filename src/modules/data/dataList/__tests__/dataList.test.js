@@ -48,6 +48,6 @@ describe('DataList', () => {
         });
         document.body.appendChild(element);
 
-        expect(true).toTruthy();
+        expect(true).toBeTruthy();
     });
 });
