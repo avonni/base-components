@@ -347,6 +347,78 @@ export default class DataInputBasic extends LightningElement {
     }
 
     /**
+     * The lightning-input element used as input.
+     * @type {Element}
+     */
+    get input() {
+        return this.template.firstChild;
+    }
+
+    /**
+     * Sets focus on the input element.
+     * @public
+     */
+    @api
+    focus() {
+        this.input.focus();
+    }
+
+    /**
+     * Removes keyboard focus from the input element.
+     * @public
+     */
+    @api
+    blur() {
+        this.input.blur();
+    }
+
+    /**
+     * Displays the error messages and returns false if the input is invalid.
+     * If the input is valid, reportValidity() clears displayed error messages and returns true.
+     * @return {boolean}
+     * @public
+     */
+    @api
+    reportValidity() {
+        return this.input.reportValidity();
+    }
+
+    /**
+     * Sets a custom error message to be displayed when a form is submitted.
+     * @param {string} message - Describes the error. If message is an empty, the error message is reset.
+     * @public
+     */
+    @api
+    setCustomValidity(message) {
+        if (!this.isLocation) {
+            this.input.setCustomValidity(message);
+        }
+    }
+
+    /**
+     * Sets a custom error message to be displayed for the latitude or longitude field when the value is submitted.
+     * @param {string} message      - Describes the error. If message is an empty, the error message is reset.
+     * @param {string} fieldName    - Name of the field, which must be latitude or longitude.
+     * @public
+     */
+    @api
+    setCustomValidityForField(message, fieldName) {
+        if (this.isLocation) {
+            this.input.setCustomValidityForField(message, fieldName);
+        }
+    }
+
+    /**
+     * Displays error messages on invalid fields.
+     * An invalid field fails at least one constraint validation and returns false when checkValidity() is called.
+     * @public
+     */
+    @api
+    showHelpMessageIfInvalid() {
+        this.reportValidity();
+    }
+
+    /**
      * Initializes the value of the input according to its type
      */
     initalizeInputValue() {

@@ -162,6 +162,21 @@ describe('DataInput', () => {
         });
     });
 
+    it('Undefined value attribute', () => {
+        const element = createElement('avonni-data-input', {
+            is: DataInput
+        });
+        document.body.appendChild(element);
+
+        element.label = 'Base input';
+        element.value = undefined;
+
+        return Promise.resolve().then(() => {
+            const input = element.shadowRoot.querySelector('lightning-input');
+            expect(input.value).toBe('');
+        });
+    });
+
     it('Checked attribute', () => {
         const element = createElement('avonni-data-input', {
             is: DataInput
@@ -198,7 +213,7 @@ describe('DataInput', () => {
         });
     });
 
-    it('Corrected location attributes', () => {
+    it('Corrected positive location attributes', () => {
         const element = createElement('avonni-data-input', {
             is: DataInput
         });
@@ -207,14 +222,74 @@ describe('DataInput', () => {
         element.label = 'Base input';
         element.type = 'location';
         element.latitude = 100;
-        element.longitude = -200;
+        element.longitude = 200;
 
         return Promise.resolve().then(() => {
             const locationInput = element.shadowRoot.querySelector(
                 'lightning-input-location'
             );
             expect(locationInput.latitude).toBe(90);
+            expect(locationInput.longitude).toBe(180);
+        });
+    });
+
+    it('Corrected negative location attributes', () => {
+        const element = createElement('avonni-data-input', {
+            is: DataInput
+        });
+        document.body.appendChild(element);
+
+        element.label = 'Base input';
+        element.type = 'location';
+        element.latitude = -100;
+        element.longitude = -200;
+
+        return Promise.resolve().then(() => {
+            const locationInput = element.shadowRoot.querySelector(
+                'lightning-input-location'
+            );
+            expect(locationInput.latitude).toBe(-90);
             expect(locationInput.longitude).toBe(-180);
+        });
+    });
+
+    it('Valid location attributes as (0, 0)', () => {
+        const element = createElement('avonni-data-input', {
+            is: DataInput
+        });
+        document.body.appendChild(element);
+
+        element.label = 'Base input';
+        element.type = 'location';
+        element.latitude = 0;
+        element.longitude = 0;
+
+        return Promise.resolve().then(() => {
+            const locationInput = element.shadowRoot.querySelector(
+                'lightning-input-location'
+            );
+            expect(locationInput.latitude).toBe(0);
+            expect(locationInput.longitude).toBe(0);
+        });
+    });
+
+    it('Undefined location attributes', () => {
+        const element = createElement('avonni-data-input', {
+            is: DataInput
+        });
+        document.body.appendChild(element);
+
+        element.label = 'Base input';
+        element.type = 'location';
+        element.latitude = undefined;
+        element.longitude = undefined;
+
+        return Promise.resolve().then(() => {
+            const locationInput = element.shadowRoot.querySelector(
+                'lightning-input-location'
+            );
+            expect(locationInput.latitude).toBeUndefined();
+            expect(locationInput.longitude).toBeUndefined();
         });
     });
 
@@ -648,6 +723,63 @@ describe('DataInput', () => {
                     'lightning-input'
                 );
                 expect(input.value).toBe('Simple text');
+            });
+    });
+
+    /* ----- PUBLIC METHODS ----- */
+
+    it('Transfer focus and blur', () => {
+        const element = createElement('avonni-data-input', {
+            is: DataInput
+        });
+        document.body.appendChild(element);
+
+        element.label = 'Label';
+
+        return Promise.resolve()
+            .then(() => {
+                element.focus();
+                element.blur();
+            })
+            .then(() => {
+                expect(element.shadowRoot.activeElement).toBeNull();
+            });
+    });
+
+    it('Transfer error messages on basic input', () => {
+        const element = createElement('avonni-data-input', {
+            is: DataInput
+        });
+        document.body.appendChild(element);
+
+        element.label = 'Label';
+
+        return Promise.resolve()
+            .then(() => {
+                element.setCustomValidity('Error');
+                element.setCustomValidityForField('Latitude error', 'latitude'); // Will be ignored
+            })
+            .then(() => {
+                expect(element.showHelpMessageIfInvalid()).toBeFalsy();
+            });
+    });
+
+    it('Transfer error messages on location input', () => {
+        const element = createElement('avonni-data-input', {
+            is: DataInput
+        });
+        document.body.appendChild(element);
+
+        element.label = 'Label';
+        element.type = 'location';
+
+        return Promise.resolve()
+            .then(() => {
+                element.setCustomValidityForField('Latitude error', 'latitude');
+                element.setCustomValidity('Error'); // Will be ignored
+            })
+            .then(() => {
+                expect(element.showHelpMessageIfInvalid()).toBeFalsy();
             });
     });
 });
