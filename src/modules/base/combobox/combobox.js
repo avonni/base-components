@@ -67,9 +67,6 @@ const DEFAULT_PLACEHOLDER = 'Select an Option';
 const DEFAULT_PLACEHOLDER_WHEN_SEARCH_ALLOWED = 'Search...';
 const DEFAULT_SELECTED_OPTIONS_ARIA_LABEL = 'Selected Options';
 
-// Default LWC message
-const DEFAULT_MESSAGE_WHEN_VALUE_MISSING = 'Complete this field.';
-
 /**
  * A widget that provides a user with an input field that is either an autocomplete or readonly, accompanied by a listbox of options.
  * @class
@@ -91,6 +88,13 @@ export default class Combobox extends LightningElement {
      * @public
      */
     @api label;
+
+    /**
+     * Error message to be displayed when the value is missing and input is required.
+     * @type {string}
+     * @public
+     */
+    @api messageWhenValueMissing;
 
     /**
      * Specifies the name of the combobox.
@@ -118,7 +122,6 @@ export default class Combobox extends LightningElement {
     _isLoading = false;
     _isMultiSelect = false;
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
-    _messageWhenValueMissing = DEFAULT_MESSAGE_WHEN_VALUE_MISSING;
     _multiLevelGroups = false;
     _options = [];
     _placeholder;
@@ -132,7 +135,6 @@ export default class Combobox extends LightningElement {
     _value = [];
     _variant = VARIANTS.default;
 
-    helpMessage;
     selectedOptions = [];
     scopesValue;
 
@@ -285,22 +287,6 @@ export default class Combobox extends LightningElement {
             typeof value === 'string'
                 ? value.trim()
                 : DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
-    }
-
-    /**
-     * Error message to be displayed when the value is missing and input is required.
-     * @type {string}
-     * @public
-     */
-    @api
-    get messageWhenValueMissing() {
-        return this._messageWhenValueMissing;
-    }
-    set messageWhenValueMissing(value) {
-        this._messageWhenValueMissing =
-            typeof value === 'string'
-                ? value.trim()
-                : DEFAULT_MESSAGE_WHEN_VALUE_MISSING;
     }
 
     /**
