@@ -74,9 +74,6 @@ const DEFAULT_PLACEHOLDER_WHEN_SEARCH_ALLOWED = 'Search...';
 const DEFAULT_SELECTED_OPTIONS_ARIA_LABEL = 'Selected Options';
 const DEFAULT_GROUP_NAME = 'ungrouped';
 
-// Default LWC message
-const DEFAULT_MESSAGE_WHEN_VALUE_MISSING = 'Complete this field.';
-
 /**
  * Primitive Combobox
  * @class
@@ -97,6 +94,13 @@ export default class PrimitiveCombobox extends LightningElement {
     @api label;
 
     /**
+     * Error message to be displayed when the value is missing and input is required.
+     * @type {string}
+     * @public
+     */
+    @api messageWhenValueMissing;
+
+    /**
      * Specifies the name of the primitive combobox.
      * @type {string}
      * @public
@@ -113,7 +117,6 @@ export default class PrimitiveCombobox extends LightningElement {
     _isLoading = false;
     _isMultiSelect = false;
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
-    _messageWhenValueMissing = DEFAULT_MESSAGE_WHEN_VALUE_MISSING;
     _multiLevelGroups = false;
     _options = [];
     _placeholder;
@@ -336,23 +339,6 @@ export default class PrimitiveCombobox extends LightningElement {
             typeof value === 'string'
                 ? value.trim()
                 : DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
-    }
-
-    /**
-     * Error message to be displayed when the value is missing and input is required.
-     * @type {string}
-     * @default CompleteThisField...
-     * @public
-     */
-    @api
-    get messageWhenValueMissing() {
-        return this._messageWhenValueMissing;
-    }
-    set messageWhenValueMissing(value) {
-        this._messageWhenValueMissing =
-            typeof value === 'string'
-                ? value.trim()
-                : DEFAULT_MESSAGE_WHEN_VALUE_MISSING;
     }
 
     /**
