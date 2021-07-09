@@ -444,4 +444,29 @@ export default class List extends LightningElement {
             })
         );
     }
+
+    handleItemClick(event) {
+        if (
+            (this.sortable && !this.sortableIconDragOnly) ||
+            event.target.tagName.startsWith('LIGHTNING') ||
+            event.target.tagName === 'A'
+        )
+            return;
+
+        let itemElement = event.target;
+        while (itemElement.tagName !== 'LI') {
+            itemElement = itemElement.parentElement;
+        }
+
+        this.dispatchEvent(
+            new CustomEvent('itemclick', {
+                detail: {
+                    item: this.computedItems[
+                        itemElement.getAttribute('data-index')
+                    ],
+                    bounds: itemElement.getBoundingClientRect()
+                }
+            })
+        );
+    }
 }
