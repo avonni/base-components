@@ -331,13 +331,11 @@ export default class Scheduler extends LightningElement {
             duration: this.visibleSpan.span,
             label: referenceHeader ? referenceHeader.label : '',
             start: this.start,
+            end: this.end,
             availableTimeFrames: this.availableTimeFrames,
             availableDaysOfTheWeek: this.availableDaysOfTheWeek,
             availableMonths: this.availableMonths,
-            numberOfColumns:
-                referenceColumns / referenceSpan >= 1
-                    ? referenceColumns / referenceSpan
-                    : 1,
+            numberOfColumns: referenceColumns / referenceSpan,
             isReference: true,
             // If there is no header using the visibleSpan unit,
             // hide the reference header
@@ -383,7 +381,7 @@ export default class Scheduler extends LightningElement {
                     availableTimeFrames: this.availableTimeFrames,
                     availableDaysOfTheWeek: this.availableDaysOfTheWeek,
                     availableMonths: this.availableMonths,
-                    numberOfColumns: columns
+                    numberOfColumns: columns / header.span
                 });
             }
 
@@ -467,10 +465,15 @@ export default class Scheduler extends LightningElement {
     initEventWidths() {
         if (!this.cellWidth) return;
 
+        const header = this.smallestHeader;
+        const columnEnd = addToDate(header.start, header.unit, header.span) - 1;
+        const duration = DateTime.fromMillis(columnEnd).diff(header.start)
+            .milliseconds;
+
         this.events.forEach((event) => {
             event.updateWidth({
-                columns: this.smallestHeader.columns,
-                columnDuration: this.smallestHeader.maxColumnDuration
+                columns: header.columns,
+                columnDuration: duration
             });
         });
     }

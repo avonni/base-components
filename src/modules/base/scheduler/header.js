@@ -32,7 +32,11 @@
 
 import { generateUniqueId } from 'c/utils';
 import { DateTime } from 'c/luxon';
-import { isInTimeFrame, addToDate } from './dateUtils';
+import {
+    isInTimeFrame,
+    addToDate,
+    numberOfUnitsBetweenDates
+} from './dateUtils';
 
 /**
  * Scheduler header
@@ -90,22 +94,17 @@ export default class Header {
         return generateUniqueId();
     }
 
-    get maxColumnDuration() {
-        // We take one millisecond off to exclude the next unit
-        const columnEnd = addToDate(this.start, this.unit, this.span) - 1;
-        return DateTime.fromMillis(columnEnd).diff(this.start).milliseconds;
-    }
-
     computeColumns() {
-        const { unit, label, span, numberOfColumns } = this;
+        const { unit, label, span, isReference } = this;
+        let iterations = this.numberOfColumns > 1 ? this.numberOfColumns : 1;
         this.columns = [];
         let date = DateTime.fromMillis(this.start.ts);
 
-        for (let i = 0; i < numberOfColumns; i++) {
+        for (let i = 0; i < iterations; i++) {
             date = this.nextAllowedMonth(date);
 
             // We don't want to take the day or time of the date into account if the header does not use them.
-            // If the unit is week, we want to start counting the weeks from the first available day
+            // If the unit is "week", we want to start counting the weeks from the first available day, and then ignore the days availability
             if (
                 unit !== 'month' &&
                 unit !== 'year' &&
@@ -117,14 +116,35 @@ export default class Header {
                 }
             }
 
-            // Compensate the fact that luxon weeks start on Monday
-            const columnEnd =
+            // Recalculate the number of week columns if the start date changed
+            // because of the allowed dates/times
+            if (
+                isReference &&
+                i === 0 &&
+                date.ts !== this.start.ts &&
                 unit === 'week'
-                    ? addToDate(date, 'day', 1).endOf(unit).minus({ day: 1 })
-                    : date.endOf(unit);
+            ) {
+                const pushedEnd = addToDate(
+                    this.end,
+                    'day',
+                    date.diff(this.start, 'days').days
+                );
+                this.numberOfColumns =
+                    numberOfUnitsBetweenDates(unit, date, pushedEnd) / span;
+                iterations =
+                    this.numberOfColumns > 1 ? this.numberOfColumns : 1;
+            }
+
+            // Compensate the fact that luxon weeks start on Monday
+            let columnEnd = addToDate(date, unit, span - 1);
+
+            columnEnd =
+                unit === 'week'
+                    ? columnEnd.plus({ day: 1 }).endOf(unit).minus({ day: 1 })
+                    : columnEnd.endOf(unit);
 
             // If the current date is bigger than the reference end, stop adding columns
-            if (!this.isReference && this.dateIsBiggerThanEnd(date)) {
+            if (!isReference && this.dateIsBiggerThanEnd(date)) {
                 this.numberOfColumns = this.columns.length;
                 this.columns[this.columns.length - 1].end = this.end.ts;
                 break;
@@ -137,36 +157,16 @@ export default class Header {
             });
 
             // Compensate the fact that luxon week start on Monday
+            date = addToDate(columnEnd, unit, 1);
             date =
                 unit === 'week'
-                    ? addToDate(date, unit, span)
-                          .plus({ day: 1 })
-                          .startOf(unit)
-                          .minus({ day: 1 })
-                    : addToDate(date, unit, span).startOf(unit);
+                    ? date.plus({ day: 1 }).startOf(unit).minus({ day: 1 })
+                    : date.startOf(unit);
         }
 
         this._start = DateTime.fromMillis(this.columns[0].start);
         this.setHeaderEnd();
-
-        // Make sure the last column contains allowed dates/times.
-        // If not, remove it.
-        const lastColumn = this.columns[this.columns.length - 1];
-        const nextAllowedDay = this.nextAllowedDay(
-            DateTime.fromMillis(lastColumn.start)
-        );
-        const nextAllowedMonth = this.nextAllowedMonth(
-            DateTime.fromMillis(lastColumn.start)
-        );
-
-        if (
-            lastColumn.start > lastColumn.end ||
-            nextAllowedMonth > lastColumn.end ||
-            nextAllowedDay > lastColumn.end
-        ) {
-            this.columns.splice(-1);
-            this.numberOfColumns = this.columns.length;
-        }
+        this.cleanEmptyLastColumn();
     }
 
     isAllowedTime(date) {
@@ -259,16 +259,56 @@ export default class Header {
         return false;
     }
 
+    // Make sure the last column contains allowed dates/times.
+    // If not, remove it.
+    cleanEmptyLastColumn() {
+        const lastColumn = this.columns[this.columns.length - 1];
+        const nextAllowedDay = this.nextAllowedDay(
+            DateTime.fromMillis(lastColumn.start)
+        );
+        const nextAllowedMonth = this.nextAllowedMonth(
+            DateTime.fromMillis(lastColumn.start)
+        );
+
+        if (
+            lastColumn.start > lastColumn.end ||
+            nextAllowedMonth > lastColumn.end ||
+            nextAllowedDay > lastColumn.end
+        ) {
+            this.columns.splice(-1);
+            this.numberOfColumns = this.columns.length;
+        }
+    }
+
     // If the start date is in the middle of the unit,
     // make sure the end date is too
     setHeaderEnd() {
-        const unit = this.unit;
-        const lastColumn = this.columns[this.columns.length - 1];
+        const {
+            unit,
+            duration,
+            span,
+            columns,
+            isReference,
+            numberOfColumns
+        } = this;
+        const lastColumn = columns[columns.length - 1];
+        const start = DateTime.fromMillis(columns[0].start);
+        let end = DateTime.fromMillis(lastColumn.end);
 
-        if (this.isReference) {
-            const start = DateTime.fromMillis(this.columns[0].start);
-            let end = DateTime.fromMillis(lastColumn.end);
+        // If the header has a span bigger than 1, the last column may not be fully visible
+        const partialColumn = numberOfColumns % 1;
+        if (partialColumn > 0) {
+            const lastColumnStart = DateTime.fromMillis(lastColumn.start);
+            const visibleUnits =
+                partialColumn * span > duration
+                    ? duration
+                    : partialColumn * span;
+            end = DateTime.fromMillis(
+                addToDate(lastColumnStart, unit, visibleUnits) - 1
+            );
+        }
 
+        if (isReference) {
             if (unit === 'year') {
                 end = end.set({ months: start.month });
             }
@@ -276,17 +316,14 @@ export default class Header {
                 end = end.set({ days: start.day - 1 });
             }
             if (unit === 'week') {
-                if (
-                    start.weekday === 1 &&
-                    this.columns.length === this.duration
-                ) {
-                    end = end.set({ weekday: 7 });
-                } else {
-                    end = end.set({ weekday: start.weekday - 1 });
+                if (end.weekday === 7 && start.weekday === 1) {
+                    end = addToDate(end, 'day', 1);
                 }
+                end = end.set({ weekday: start.weekday - 1 });
             }
 
             lastColumn.end = end.ts;
+            this._end = end.ts;
         } else {
             lastColumn.end = this.end.ts;
         }
