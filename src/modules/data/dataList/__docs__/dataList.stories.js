@@ -167,31 +167,31 @@ Base.args = {
             type: 'text'
         },
         {
-            label: 'Name',
-            name: 'name',
+            label: 'Title',
+            name: 'title',
             type: 'text'
         },
         {
-            label: 'Title',
-            name: 'description',
+            label: 'Name',
+            name: 'name',
             type: 'text'
         }
     ],
     data: [
         {
             label: 'Accordion Title A',
-            name: 'A',
-            description: 'Lightning Accodion Section'
+            title: 'Lightning Accodion Section',
+            name: 'A'
         },
         {
             label: 'Accordion Title B',
-            name: 'B',
-            description: 'Lightning Accodion Section'
+            title: 'Lightning Accodion Section',
+            name: 'B'
         },
         {
             label: 'Accordion Title C',
-            name: 'C',
-            description: 'Lightning Accodion Section'
+            title: 'Lightning Accodion Section',
+            name: 'C'
         }
     ],
     listActions: [

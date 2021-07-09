@@ -105,6 +105,7 @@ export default class AvonniDataListBasic extends LightningElement {
 
     @track popoverFields = [];
     currentPopover;
+    savePopoverData = false;
     isInsidePopover = false;
     shiftPressed = false;
     tabPressed = false;
@@ -236,23 +237,10 @@ export default class AvonniDataListBasic extends LightningElement {
     }
 
     /**
-     * Additionnal information of an item.
-     * @typedef {Object} ItemInfo
-     * @property {string} label - Label of the info element.
-     * @property {string} href  - Href of the info element.
-     */
-
-    /**
      * An item built for the List component.
      * @typedef {Object} ListItem
-     * @property {string}       label                       - Label of the item.
-     * @property {string}       [href]                      - The URL of the page the link goes to.
-     * @property {string}       [description]               - The description displayed under the label of the item.
-     * @property {ItemInfo[]}   [infos]                     - List of additional information to display.
-     * @property {string[]}     [icons]                     - List of iconName display next to the label.
-     * @property {string}       [avatarSrc]                 - Image URL for the item avatar. If present, the avatar is displayed before the label.
-     * @property {string}       [avatarFallbackIconName]    - The Lightning Design System name of the icon used as a fallback when the avatar image fails to load. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
-     * @property {string}       [imageSrc]                  - Image URL for the list item image. If present, the image is presented to the left of the list item.
+     * @property {string} label         - Label of the item.
+     * @property {string} [description] - The description displayed under the label of the item.
      */
 
     /**
@@ -263,14 +251,12 @@ export default class AvonniDataListBasic extends LightningElement {
         let items = [];
         this.data.forEach((element) => {
             items.push({
-                label: element.label,
-                href: element.href,
-                description: element.description,
-                infos: element.infos,
-                icons: element.icons,
-                avatarSrc: element.avatarSrc,
-                avatarFallbackIconName: element.avatarFallbackIconName,
-                imageSrc: element.imageSrc
+                label:
+                    this.fields.length > 0
+                        ? element[this.fields[0].name]
+                        : 'List item',
+                description:
+                    this.fields.length > 1 ? element[this.fields[1].name] : ''
             });
         });
         return items;
@@ -315,6 +301,10 @@ export default class AvonniDataListBasic extends LightningElement {
         this.template.querySelector('avonni-list').reset();
     }
 
+    /**
+     * Transfers a 'reorder' event from the List component to the Data List component.
+     * @param {Event} event
+     */
     handleReorder(event) {
         this.dispatchEvent(
             new CustomEvent('reorder', {
@@ -325,6 +315,10 @@ export default class AvonniDataListBasic extends LightningElement {
         );
     }
 
+    /**
+     * Transfers an 'actionclick' event from the List component to the Data List component.
+     * @param {Event} event
+     */
     handleActionClick(event) {
         this.dispatchEvent(
             new CustomEvent('actionclick', {
@@ -336,6 +330,11 @@ export default class AvonniDataListBasic extends LightningElement {
         );
     }
 
+    /**
+     * Handles a click on a list action.
+     * The name of the action is dispatched in a 'listactionclick' event.
+     * @param {Event} event
+     */
     handleListActionClick(event) {
         this.dispatchEvent(
             new CustomEvent('listactionclick', {
@@ -346,12 +345,19 @@ export default class AvonniDataListBasic extends LightningElement {
         );
     }
 
+    /**
+     * Handles a click on the 'Done' button of the popover and the closing logic.
+     */
     handlePopoverDoneClick() {
         this.currentPopover = undefined;
         this.tabIndex = false;
         this.shiftPressed = false;
     }
 
+    /**
+     * Handles a change in the popover to display.
+     * @param {Event} event
+     */
     handleCurrentPopoverChange(event) {
         this.currentPopover = parseInt(event.target.value, 10);
         this.generatePopoverContent();
@@ -361,6 +367,9 @@ export default class AvonniDataListBasic extends LightningElement {
         }, 0);
     }
 
+    /**
+     * Generates the content of the popover as an element that can be rendered in the HTML.
+     */
     generatePopoverContent() {
         for (let i = 0; i < this.data.length; i++) {
             if (i === this.currentPopover) {
@@ -407,6 +416,7 @@ export default class AvonniDataListBasic extends LightningElement {
     /**
      * Handles a blur of an input element in the popover.
      * Focus will be given to the 'Done' button if Shift+Tab is pressed when the focus is on the first field.
+     * @param {Event} event
      */
     handlePopoverInputBlur(event) {
         if (this.currentPopover !== undefined) {
@@ -415,8 +425,11 @@ export default class AvonniDataListBasic extends LightningElement {
                 event.target.value;
             this._data = newData;
 
+            if (this.savePopoverData) {
+                this.dispatchSaveEvent(newData[this.currentPopover]);
+                this.savePopoverData = false;
+            }
             this.handlePopoverBlur();
-            this.dispatchSaveEvent();
 
             const trapFocus =
                 event.target === this.template.querySelector('c-data-input') &&
@@ -430,13 +443,22 @@ export default class AvonniDataListBasic extends LightningElement {
     }
 
     /**
-     * Dispatches a save event, where 'draftValues' corresponds to the current value that is provided during popover editing.
+     * Handles a commit event for the popover input fields.
+     * This will force the dispatch of a 'save' event.
      */
-    dispatchSaveEvent() {
+    handlePopoverInputCommit() {
+        this.savePopoverData = true;
+    }
+
+    /**
+     * Dispatches a save event, where 'draftValues' corresponds to the current value that is provided during popover editing.
+     * @param {Data} popoverData - The data from the popover fields.
+     */
+    dispatchSaveEvent(popoverData) {
         this.dispatchEvent(
             new CustomEvent('save', {
                 detail: {
-                    draftValues: this.data
+                    draftValues: popoverData
                 }
             })
         );
@@ -445,6 +467,7 @@ export default class AvonniDataListBasic extends LightningElement {
     /**
      * Handles a blur of the 'Done' button in the popover.
      * Focus will be given to the first input field if Tab is pressed when the focus is on the 'Done' button.
+     * @param {Event} event
      */
     handlePopoverDoneButtonBlur(event) {
         this.handlePopoverBlur();
