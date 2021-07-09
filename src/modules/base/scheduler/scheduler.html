@@ -52,7 +52,7 @@
             <table class="slds-table scheduler__schedule-table">
                 <!-- Headers -->
                 <thead>
-                    <template for:each={headers} for:item="header">
+                    <template for:each={computedHeaders} for:item="header">
                         <tr
                             if:false={header.isHidden}
                             key={header.key}
@@ -81,7 +81,7 @@
                 <!-- Rows -->
                 <tbody>
                     <template
-                        for:each={scheduleRows}
+                        for:each={computedRows}
                         for:item="row"
                         for:index="index"
                     >
@@ -100,6 +100,7 @@
                                         for:each={column.events}
                                         for:item="cell"
                                     >
+                                        <!-- Events -->
                                         <div
                                             if:false={cell.hidden}
                                             key={cell.event.from.ts}
@@ -107,10 +108,18 @@
                                             data-width={cell.event.width}
                                         >
                                             <div
-                                                class="slds-truncate slds-theme_shade slds-p-around_xx-small scheduler__event-title"
+                                                class="slds-theme_shade slds-p-around_xx-small scheduler__event-title slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate"
                                                 title={cell.event.title}
                                             >
-                                                {cell.event.title}
+                                                <lightning-icon
+                                                    if:true={cell.event.iconName}
+                                                    icon-name={cell.event.iconName}
+                                                    size="x-small"
+                                                    class="slds-p-right_xx-small"
+                                                ></lightning-icon>
+                                                <span class="slds-truncate"
+                                                    >{cell.event.title}</span
+                                                >
                                             </div>
                                         </div>
                                     </template>

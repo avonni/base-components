@@ -71,11 +71,12 @@ export default class Scheduler extends LightningElement {
     _visibleSpan = DEFAULT_VISIBLE_SPAN;
 
     _referenceHeader;
-    scheduleRows = [];
+    computedHeaders = [];
+    computedRows = [];
+    computedEvents = [];
 
     connectedCallback() {
-        this.initHeaders();
-        this.initScheduleRows();
+        this.initSchedule();
     }
 
     renderedCallback() {
@@ -93,10 +94,7 @@ export default class Scheduler extends LightningElement {
         this._availableDaysOfTheWeek =
             days.length > 0 ? days : DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
 
-        if (this.isConnected) {
-            this.initHeaders();
-            this.updateRowColumns();
-        }
+        if (this.isConnected) this.initSchedule();
     }
 
     @api
@@ -108,10 +106,7 @@ export default class Scheduler extends LightningElement {
         this._availableMonths =
             months.length > 0 ? months : DEFAULT_AVAILABLE_MONTHS;
 
-        if (this.isConnected) {
-            this.initHeaders();
-            this.updateRowColumns();
-        }
+        if (this.isConnected) this.initSchedule();
     }
 
     @api
@@ -123,10 +118,7 @@ export default class Scheduler extends LightningElement {
         this._availableTimeFrames =
             timeFrames.length > 0 ? timeFrames : DEFAULT_AVAILABLE_TIME_FRAMES;
 
-        if (this.isConnected) {
-            this.initHeaders();
-            this.updateRowColumns();
-        }
+        if (this.isConnected) this.initSchedule();
     }
 
     @api
@@ -158,13 +150,12 @@ export default class Scheduler extends LightningElement {
         return this._events;
     }
     set events(value) {
-        const events = normalizeArray(value);
-        const eventObjects = [];
-        events.forEach((event) => {
-            eventObjects.push(new Event(event));
-        });
+        this._events = normalizeArray(value);
 
-        this._events = eventObjects;
+        if (this.isConnected) {
+            this.initEvents();
+            this.initRows();
+        }
     }
 
     @api
@@ -196,10 +187,7 @@ export default class Scheduler extends LightningElement {
     set headers(value) {
         this._headers = normalizeArray(value);
 
-        if (this.isConnected) {
-            this.initHeaders();
-            this.updateRowColumns();
-        }
+        if (this.isConnected) this.initSchedule();
     }
 
     @api
@@ -209,7 +197,7 @@ export default class Scheduler extends LightningElement {
     set rows(value) {
         this._rows = normalizeArray(value);
 
-        if (this.isConnected) this.initScheduleRows();
+        if (this.isConnected) this.initRows();
     }
 
     @api
@@ -219,7 +207,7 @@ export default class Scheduler extends LightningElement {
     set rowsKeyField(value) {
         this._rowsKeyField = value;
 
-        if (this.isConnected) this.initScheduleRows();
+        if (this.isConnected) this.initRows();
     }
 
     @api
@@ -230,10 +218,7 @@ export default class Scheduler extends LightningElement {
         const computedDate = dateTimeObjectFrom(value);
         this._start = computedDate || DEFAULT_START_DATE;
 
-        if (this.isConnected) {
-            this.initHeaders();
-            this.updateRowColumns();
-        }
+        if (this.isConnected) this.initSchedule();
     }
 
     @api
@@ -255,10 +240,7 @@ export default class Scheduler extends LightningElement {
         this._visibleSpan =
             typeof value === 'object' ? value : DEFAULT_VISIBLE_SPAN;
 
-        if (this.isConnected) {
-            this.initHeaders();
-            this.updateRowColumns();
-        }
+        if (this.isConnected) this.initSchedule();
     }
 
     get cellWidth() {
@@ -287,10 +269,16 @@ export default class Scheduler extends LightningElement {
     }
 
     get smallestHeader() {
-        if (!this.headers.length) return null;
+        if (!this.computedHeaders.length) return null;
 
-        const lastIndex = this.headers.length - 1;
-        return this.headers[lastIndex];
+        const lastIndex = this.computedHeaders.length - 1;
+        return this.computedHeaders[lastIndex];
+    }
+
+    initSchedule() {
+        this.initHeaders();
+        this.initEvents();
+        this.initRows();
     }
 
     initHeaders() {
@@ -388,40 +376,20 @@ export default class Scheduler extends LightningElement {
             headerObjects.push(headerObject);
         });
 
-        this._headers = headerObjects;
-
+        this.computedHeaders = headerObjects;
         this.initHeaderWidths();
-        this.initEventWidths();
-    }
-
-    initScheduleRows() {
-        this.scheduleRows = this.rows.map((row) => {
-            const rowKey = row[this.rowsKeyField];
-            const events = [];
-            this.events.forEach((event) => {
-                const isInRow = event.keyFields.includes(rowKey);
-                if (isInRow) events.push(event);
-            });
-
-            return new Row({
-                key: rowKey,
-                events: events
-            });
-        });
-
-        this.updateRowColumns();
     }
 
     initHeaderWidths() {
         if (!this.cellWidth) return;
 
         const smallestHeaderColumns = this.smallestHeader.columns;
-        for (let i = 0; i < this.headers.length; i++) {
-            const header = this.headers[i];
+        for (let i = 0; i < this.computedHeaders.length; i++) {
+            const header = this.computedHeaders[i];
             const unit = header.unit;
 
             // The columns of the header with the shortest unit all have the same width
-            if (i === this.headers.length - 1) {
+            if (i === this.computedHeaders.length - 1) {
                 header.columns.forEach(() => {
                     header.columnWidths.push(this.cellWidth);
                 });
@@ -462,20 +430,50 @@ export default class Scheduler extends LightningElement {
         }
     }
 
-    initEventWidths() {
-        if (!this.cellWidth) return;
-
+    initEvents() {
+        const events = [];
         const header = this.smallestHeader;
-        const columnEnd = addToDate(header.start, header.unit, header.span) - 1;
-        const duration = DateTime.fromMillis(columnEnd).diff(header.start)
-            .milliseconds;
+        const columnEnd =
+            header && addToDate(header.start, header.unit, header.span) - 1;
+        const duration =
+            header &&
+            DateTime.fromMillis(columnEnd).diff(header.start).milliseconds;
 
         this.events.forEach((event) => {
-            event.updateWidth({
-                columns: header.columns,
-                columnDuration: duration
+            const evt = { ...event };
+            if (evt.to > this.end) evt.to = this.end;
+
+            const computedEvent = new Event(evt);
+
+            if (header) {
+                computedEvent.updateWidth({
+                    columns: header.columns,
+                    columnDuration: duration
+                });
+            }
+
+            events.push(computedEvent);
+        });
+
+        this.computedEvents = events;
+    }
+
+    initRows() {
+        this.computedRows = this.rows.map((row) => {
+            const rowKey = row[this.rowsKeyField];
+            const events = [];
+            this.computedEvents.forEach((event) => {
+                const isInRow = event.keyFields.includes(rowKey);
+                if (isInRow) events.push(event);
+            });
+
+            return new Row({
+                key: rowKey,
+                events: events
             });
         });
+
+        this.updateRowColumns();
     }
 
     updateBodyStyle() {
@@ -518,8 +516,8 @@ export default class Scheduler extends LightningElement {
             this.template.querySelectorAll('thead tr')
         ).reverse();
         headerRows.forEach((row) => {
-            const header = this.headers.find((headerObj) => {
-                return headerObj.key === row.dataset.key;
+            const header = this.computedHeaders.find((computedHeader) => {
+                return computedHeader.key === row.dataset.key;
             });
 
             // Give the header cells their width
@@ -531,7 +529,7 @@ export default class Scheduler extends LightningElement {
     }
 
     updateRowColumns() {
-        this.scheduleRows.forEach((row) => {
+        this.computedRows.forEach((row) => {
             row.generateColumns(this.smallestHeader.columns);
         });
     }
