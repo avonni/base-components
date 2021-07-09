@@ -145,8 +145,6 @@ export default class PrimitiveCombobox extends LightningElement {
     topActions = [];
     bottomActions = [];
 
-    valid = true;
-
     connectedCallback() {
         this.initValue();
 
@@ -1328,7 +1326,6 @@ export default class PrimitiveCombobox extends LightningElement {
         }
         this.close();
 
-        this.valid = !(this.required && this.value.length === 0);
         this.interactingState.leave();
 
         this.dispatchEvent(new CustomEvent('blur'));

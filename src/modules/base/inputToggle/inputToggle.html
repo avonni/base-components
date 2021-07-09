@@ -69,7 +69,7 @@
             <span class="slds-checkbox_off">{messageToggleInactive}</span>
         </span>
     </label>
-    <template if:false={valid}>
+    <template if:true={helpMessage}>
         <div
             id="help-message"
             class="slds-form-element__help"

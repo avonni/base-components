@@ -40,7 +40,7 @@ import {
 } from 'c/utilsPrivate';
 import {
     FieldConstraintApi,
-    debounce,
+    InteractingState,
     normalizeVariant,
     VARIANT
 } from 'c/inputUtils';
@@ -50,8 +50,6 @@ import InputChoiceOption from './inputChoiceOption';
 const i18n = {
     required: 'required'
 };
-
-const DEBOUNCE_PERIOD = 200;
 
 const INPUT_CHOICE_ORIENTATIONS = {
     valid: ['vertical', 'horizontal'],
@@ -110,12 +108,6 @@ export default class InputChoiceSet extends LightningElement {
     constructor() {
         super();
         this.itemIndex = 0;
-
-        this.debouncedShowIfBlurred = debounce(() => {
-            if (!this.containsFocus) {
-                this.showHelpMessageIfInvalid();
-            }
-        }, DEBOUNCE_PERIOD);
     }
 
     synchronizeA11y() {
@@ -130,6 +122,8 @@ export default class InputChoiceSet extends LightningElement {
     connectedCallback() {
         this.classList.add('slds-form-element');
         this.updateClassList();
+        this.interactingState = new InteractingState();
+        this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
     }
 
     updateClassList() {
@@ -356,7 +350,7 @@ export default class InputChoiceSet extends LightningElement {
      * Dispatch the focus event
      */
     handleFocus() {
-        this.containsFocus = true;
+        this.interactingState.enter();
 
         /**
          * @event
@@ -371,8 +365,8 @@ export default class InputChoiceSet extends LightningElement {
      * Dispatch the blur event
      */
     handleBlur() {
-        this.containsFocus = false;
-        this.debouncedShowIfBlurred();
+        this.interactingState.leave();
+
 
         /**
          * @event

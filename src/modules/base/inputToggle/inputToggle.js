@@ -142,7 +142,6 @@ export default class InputToggle extends LightningElement {
 
     _rendered;
     helpMessage;
-    valid = true;
 
     constructor() {
         super();
@@ -151,7 +150,6 @@ export default class InputToggle extends LightningElement {
 
     connectedCallback() {
         this.classList.add('slds-form-element');
-        this.updateClassList();
         this.interactingState = new InteractingState();
         this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
     }
@@ -363,7 +361,6 @@ export default class InputToggle extends LightningElement {
 
     set variant(toggleVariant) {
         this._variant = normalizeVariant(toggleVariant);
-        this.updateClassList();
     }
 
     /**
@@ -557,18 +554,10 @@ export default class InputToggle extends LightningElement {
         }
     }
 
-    updateClassList() {
-        classListMutation(this.classList, {
-            'slds-has-error': !this.valid
-        });
-    }
-
     /**
      * Dispatch the blur event
      */
     handleBlur() {
-        this.valid = !(this.required && !this.checked);
-        this.updateClassList();
         this.interactingState.leave();
 
         /**
