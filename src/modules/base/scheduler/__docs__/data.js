@@ -130,6 +130,7 @@ const headers = [
 const events = [
     {
         keyFields: [3],
+        name: 'identify-need',
         title: 'Identify need',
         iconName: 'utility:search',
         from: new Date(2021, 11, 13, 10),
@@ -137,6 +138,7 @@ const events = [
     },
     {
         keyFields: [3],
+        name: 'find-examples',
         title: 'Find examples of solutions',
         iconName: 'utility:search',
         from: new Date(2021, 11, 13, 14),
@@ -144,6 +146,7 @@ const events = [
     },
     {
         keyFields: [1, 3],
+        name: 'write-spec',
         title: 'Write specifications',
         iconName: 'utility:insert_tag_field',
         from: new Date(2021, 11, 15),
@@ -151,6 +154,7 @@ const events = [
     },
     {
         keyFields: [2],
+        name: 'create-wireframe',
         title: 'Create wireframe',
         iconName: 'utility:description',
         from: new Date(2021, 11, 16, 9),
@@ -158,6 +162,7 @@ const events = [
     },
     {
         keyFields: [4],
+        name: 'create-mockup',
         title: 'Create mockup',
         iconName: 'utility:brush',
         from: new Date(2021, 11, 20, 14),
@@ -165,10 +170,19 @@ const events = [
     },
     {
         keyFields: [1, 5],
+        name: 'implement-feature',
         title: 'Implement feature',
         iconName: 'utility:apex',
         from: new Date(2021, 11, 22, 11, 30),
         to: new Date(2021, 11, 24)
+    },
+    {
+        keyFields: [1, 5],
+        name: 'daily-standup',
+        title: 'Daily standup',
+        from: new Date(2021, 11, 13, 9),
+        to: new Date(2021, 11, 13, 9, 30),
+        recurrence: 'daily'
     }
 ];
 

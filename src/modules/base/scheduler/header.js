@@ -67,7 +67,7 @@ export default class Header {
         this.columnWidths = [];
         this.isHidden = props.isHidden;
         this.isReference = props.isReference;
-        this.key = this.generateKey;
+        this.key = generateUniqueId();
         this.label = props.label;
         this.numberOfColumns = props.numberOfColumns;
         this.span = props.span;
@@ -88,10 +88,6 @@ export default class Header {
         if (this.columns.length) {
             this.columns[this.columns.length - 1].end = value.ts;
         }
-    }
-
-    get generateKey() {
-        return generateUniqueId();
     }
 
     computeColumns() {

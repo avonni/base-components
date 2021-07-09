@@ -102,10 +102,10 @@
                                     >
                                         <!-- Events -->
                                         <div
-                                            if:false={cell.hidden}
-                                            key={cell.event.from.ts}
+                                            key={generateKey}
                                             class={cell.class}
                                             data-width={cell.event.width}
+                                            data-name={cell.event.name}
                                         >
                                             <div
                                                 class="slds-theme_shade slds-p-around_xx-small scheduler__event-title slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate"

@@ -38,8 +38,6 @@ import {
 import { addToDate, dateTimeObjectFrom } from './dateUtils';
 import { RECURRENCES, EVENTS_THEMES } from './defaults';
 
-const RECURRENCES_NAMES = RECURRENCES.map((recurrence) => recurrence.name);
-
 /**
  * Scheduler event
  * @class
@@ -49,10 +47,11 @@ const RECURRENCES_NAMES = RECURRENCES.map((recurrence) => recurrence.name);
  * @param {(object|number|string)} from Required. Start of the event. It can be a Date object, timestamp, or an ISO8601 formatted string.
  * @param {(object|number|string)} to Required if allDay is not true. End of the event. It can be a Date object, timestamp, or an ISO8601 formatted string.
  * @param {boolean} allDay If true, the event will be applied to the whole day(s). Defaults to false.
+ * @param {string} name Required. Unique name for the event. It will be returned by the eventclick event.
  * @param {string} recurrence Recurrence of the event. Valid values include daily, weekly, monthly and yearly.
  * @param {(object|number|string)} recurrenceEndDate End of the recurrence. It can be a Date object, timestamp, or an ISO8601 formatted string.
- * If a recurrenceNumber is also given, the earliest ending date will be used.
- * @param {number} recurrenceNumber Number of times the event will be repeated before the recurrence stops.
+ * If a recurrenceCount is also given, the earliest ending date will be used.
+ * @param {number} recurrenceCount Number of times the event will be repeated before the recurrence stops.
  * If a recurrenceEndDate is also given, the earliest ending date will be used.
  * @param {object} recurrenceAttributes Attributes specific to the recurrence type (see available attributes in the table below).
  * @param {string} color Custom color for the event. If present, it will overwrite the default color.
@@ -64,17 +63,31 @@ export default class Event {
         this.allDay = normalizeBoolean(props.allDay);
         this.color = props.color;
 
+        this.schedulerEnd = props.schedulerEnd;
+
         const from = dateTimeObjectFrom(props.from);
         this.from = this.allDay ? from.startOf('day') : from;
 
+        const to = this.allDay
+            ? addToDate(this.from, 'day', 1)
+            : dateTimeObjectFrom(props.to);
+        this.to = this.schedulerEnd < to ? this.schedulerEnd : to;
+
+        this.dates = [
+            {
+                from: this.from,
+                to: this.to
+            }
+        ];
+
         this.iconName = props.iconName;
         this.keyFields = normalizeArray(props.keyFields);
-        this.recurrence = normalizeString(props.recurrence, {
-            fallbackValue: undefined,
-            validValues: RECURRENCES_NAMES
-        });
+        const recurrence = RECURRENCES.find(
+            (recurrenceObject) => recurrenceObject.name === props.recurrence
+        );
 
-        if (this.recurrence) {
+        if (recurrence) {
+            this.recurrence = recurrence;
             this.recurrenceAttributes =
                 typeof props.recurrenceAttributes === 'object'
                     ? props.recurrenceAttributes
@@ -82,7 +95,9 @@ export default class Event {
             this.recurrenceEndDate = dateTimeObjectFrom(
                 props.recurrenceEndDate
             );
-            this.recurrenceNumber = Number(props.recurrenceNumber);
+            this.recurrenceCount = Number(props.recurrenceCount);
+
+            this.computeRecurrence();
         }
 
         this.theme = normalizeString(props.theme, {
@@ -90,15 +105,59 @@ export default class Event {
             validValues: EVENTS_THEMES.valid
         });
         this.title = props.title;
-
-        const to = dateTimeObjectFrom(props.to);
-        this.to = this.allDay ? addToDate(this.from, 'day', 1) : to;
+        this.name = props.name;
 
         this.width = 0;
     }
 
     get duration() {
         return this.to.diff(this.from).milliseconds;
+    }
+
+    computeRecurrence() {
+        const { recurrence, to, from, schedulerEnd } = this;
+        const endDate = this.recurrenceEndDate;
+        const attributes = this.recurrenceAttributes;
+        const interval =
+            attributes && attributes.interval ? attributes.interval : 1;
+        const count = this.recurrenceCount > 1 ? this.recurrenceCount - 1 : 1;
+        const countEnd =
+            this.recurrenceCount &&
+            addToDate(from, recurrence.unit, count * interval);
+
+        // If there is a recurrence end or a recurrence count, use the shortest as the end
+        // Else, use the scheduler end
+        let end = endDate && endDate < schedulerEnd ? endDate : schedulerEnd;
+        if (countEnd && countEnd < end) {
+            end = countEnd;
+        }
+
+        let date = addToDate(from, 'day', interval);
+
+        switch (this.recurrence.name) {
+            case 'daily':
+                while (date <= end) {
+                    // Make sure the end time is in the future
+                    const endHour = to.hour > from.hour ? to.hour : 23;
+                    const endMinute =
+                        to.minutes > from.minutes ? to.minutes : 59;
+                    const endSecond =
+                        to.seconds > from.seconds ? to.seconds : 59;
+
+                    this.dates.push({
+                        from: date,
+                        to: date.set({
+                            hours: endHour,
+                            minutes: endMinute,
+                            seconds: endSecond
+                        })
+                    });
+                    date = addToDate(date, 'day', interval);
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     updateWidth({ columnDuration, columns }) {

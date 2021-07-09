@@ -32,6 +32,7 @@
 
 import { LightningElement, api } from 'lwc';
 import { DateTime } from 'c/luxon';
+import { generateUniqueId } from 'c/utils';
 import { normalizeArray, normalizeString } from 'c/utilsPrivate';
 import {
     dateTimeObjectFrom,
@@ -249,6 +250,10 @@ export default class Scheduler extends LightningElement {
         return 100 / this.smallestHeader.columns.length;
     }
 
+    get generateKey() {
+        return generateUniqueId();
+    }
+
     get palette() {
         return this.customEventsPalette.length
             ? this.customEventsPalette
@@ -440,8 +445,10 @@ export default class Scheduler extends LightningElement {
             DateTime.fromMillis(columnEnd).diff(header.start).milliseconds;
 
         this.events.forEach((event) => {
-            const evt = { ...event };
-            if (evt.to > this.end) evt.to = this.end;
+            const evt = {
+                ...event,
+                schedulerEnd: this.end
+            };
 
             const computedEvent = new Event(evt);
 

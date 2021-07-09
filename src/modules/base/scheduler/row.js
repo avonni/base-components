@@ -52,27 +52,30 @@ export default class Row {
         });
 
         this.events.forEach((event) => {
-            let i = columns.findIndex((column) => {
-                return column.end > event.from;
-            });
-            if (i > -1) {
-                // The event will be visible in the first column
-                columns[i].events.push({
-                    event,
-                    class: this.eventClass
+            // Create one event for each occurrence
+            event.dates.forEach((date) => {
+                let i = columns.findIndex((column) => {
+                    return column.end > date.from;
                 });
-
-                i += 1;
-                // The event will be hidden in the other column it crosses,
-                // so it takes some room in case there are several events in one column
-                while (i < columns.length && event.to > columns[i].end) {
+                if (i > -1) {
+                    // The event will be visible in the first column
                     columns[i].events.push({
                         event,
-                        class: this.eventClass.concat(' slds-hidden')
+                        class: this.eventClass
                     });
+
                     i += 1;
+                    // The event will be hidden in the other column it crosses,
+                    // so it takes some room in case there are several events in one column
+                    while (i < columns.length && date.to > columns[i].end) {
+                        columns[i].events.push({
+                            event,
+                            class: this.eventClass.concat(' slds-hidden')
+                        });
+                        i += 1;
+                    }
                 }
-            }
+            });
         });
         this.columns = columns;
     }
