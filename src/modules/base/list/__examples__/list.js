@@ -38,6 +38,7 @@ export const List = ({
     label,
     alternativeText,
     sortable,
+    sortableIconDragOnly,
     items,
     actions,
     sortableIconName,
@@ -48,6 +49,7 @@ export const List = ({
     element.label = label;
     element.alternativeText = alternativeText;
     element.sortable = sortable;
+    element.sortableIconDragOnly = sortableIconDragOnly;
     element.items = items;
     element.actions = actions;
     element.sortableIconName = sortableIconName;

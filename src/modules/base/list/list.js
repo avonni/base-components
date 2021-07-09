@@ -56,6 +56,7 @@ export default class List extends LightningElement {
 
     _items = [];
     _sortable = false;
+    _sortableIconDragOnly = false;
     _sortableIconPosition = ICON_POSITIONS.default;
 
     _draggedIndex;
@@ -111,6 +112,14 @@ export default class List extends LightningElement {
     }
 
     @api
+    get sortableIconDragOnly() {
+        return this._sortableIconDragOnly;
+    }
+    set sortableIconDragOnly(bool) {
+        this._sortableIconDragOnly = normalizeBoolean(bool);
+    }
+
+    @api
     get sortableIconPosition() {
         return this._sortableIconPosition;
     }
@@ -163,6 +172,8 @@ export default class List extends LightningElement {
         return classSet('slds-grid list-item slds-item')
             .add({
                 'sortable-item': this.sortable,
+                'draggable-element':
+                    this.sortable && !this._sortableIconDragOnly,
                 'expanded-item': this._hasActions,
                 'slds-p-vertical_x-small': !this.divider
             })
@@ -277,7 +288,9 @@ export default class List extends LightningElement {
         // Stop dragging if the click was on a button menu
         if (
             !this.sortable ||
-            event.target.tagName.startsWith('LIGHTNING-BUTTON')
+            event.target.tagName.startsWith('LIGHTNING-BUTTON') ||
+            (this._sortableIconDragOnly &&
+                !event.target.classList.contains('draggable-element'))
         )
             return;
 

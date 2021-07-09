@@ -34,7 +34,7 @@
     height: fit-content;
 }
 
-.sortable-item {
+.draggable-element {
     cursor: grab;
 }
 
