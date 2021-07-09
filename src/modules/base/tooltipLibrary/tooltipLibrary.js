@@ -30,17 +30,21 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { createElement } from 'lwc';
 import { AutoPosition, Direction } from 'c/positionLibrary';
 import {
     assert,
     guid,
     normalizeAriaAttribute,
-    normalizeString,
+    normalizeString
 } from 'c/utilsPrivate';
-import PrimitiveBubble from 'c/primitiveBubble';
+import { classSet } from 'c/utils';
 
 export { Direction } from 'c/positionLibrary';
+
+const DEFAULT_ALIGN = {
+    horizontal: 'left',
+    vertical: 'bottom',
+};
 
 const BUBBLE_ID = `salesforce-lightning-tooltip-bubble_${guid()}`;
 
@@ -64,30 +68,77 @@ function buildResizeObserver(callback) {
  * TODO: We may want to revisit the minWidth style with the PO and/or UX.
  */
 let CACHED_BUBBLE_ELEMENT;
+let CONTENT;
+let ALIGN;
 
 function getCachedBubbleElement() {
     if (!CACHED_BUBBLE_ELEMENT) {
-        CACHED_BUBBLE_ELEMENT = createElement('lightning-primitive-bubble', {
-            is: PrimitiveBubble,
-        });
-        CACHED_BUBBLE_ELEMENT.contentId = BUBBLE_ID;
+        CACHED_BUBBLE_ELEMENT = document.createElement('avonni-primitive-bubble');
+        CACHED_BUBBLE_ELEMENT.setAttribute('id', BUBBLE_ID)
+        CACHED_BUBBLE_ELEMENT.setAttribute('role', 'tooltip');
         CACHED_BUBBLE_ELEMENT.style.position = 'absolute';
-        CACHED_BUBBLE_ELEMENT.style.minWidth = '75px';
-        // hide bubble element on create
+        CACHED_BUBBLE_ELEMENT.style.minWidth = 'fit-content';
+
         CACHED_BUBBLE_ELEMENT.classList.add('slds-hide');
         CACHED_BUBBLE_ELEMENT.addEventListener('transitionend', () => {
-            // W-7201022 https://gus.lightning.force.com/lightning/r/ADM_Work__c/a07B00000079kNjIAI/view
-            // The tooltip uses absolute positioning and visibility gets set to hidden to
-            // hide it from view which means it's still part of the document layout.
-            // If we don't hide the bubble it could stay on the page and accidentally scroll pages
-            // in the console app after a tab switch, especially when the tab content lengths differ.
             if (!CACHED_BUBBLE_ELEMENT.visible) {
                 CACHED_BUBBLE_ELEMENT.classList.add('slds-hide');
             }
         });
+
+        CONTENT = document.createElement('div');
+        CONTENT.classList.add('slds-popover__body');
+        CONTENT.addEventListener('mouseleave', () => {
+            handleMouseLeave();
+        });
+
+        CACHED_BUBBLE_ELEMENT.appendChild(CONTENT);
     }
 
     return CACHED_BUBBLE_ELEMENT;
+}
+
+function handleMouseLeave() {
+    CACHED_BUBBLE_ELEMENT.visible = false;
+}
+
+function updateClassList(align) {
+    const tooltip = getCachedBubbleElement();
+    const classes = classSet('slds-popover').add('slds-popover_tooltip');
+
+    // show or hide bubble
+    classes.add({
+        'slds-rise-from-ground': CACHED_BUBBLE_ELEMENT.visible,
+        'slds-fall-into-ground': !CACHED_BUBBLE_ELEMENT.visible,
+    });
+
+    // apply the proper nubbin CSS class
+    const { horizontal, vertical } = align;
+    classes.add({
+        'slds-nubbin_top-left': horizontal === 'left' && vertical === 'top',
+        'slds-nubbin_top-right':
+            horizontal === 'right' && vertical === 'top',
+        'slds-nubbin_bottom-left':
+            horizontal === 'left' && vertical === 'bottom',
+        'slds-nubbin_bottom-right':
+            horizontal === 'right' && vertical === 'bottom',
+        'slds-nubbin_bottom':
+            horizontal === 'center' && vertical === 'bottom',
+        'slds-nubbin_top': horizontal === 'center' && vertical === 'top',
+        'slds-nubbin_left': horizontal === 'left' && vertical === 'center',
+        'slds-nubbin_right':
+            horizontal === 'right' && vertical === 'center',
+    });
+
+    Object.keys(classes).forEach((key) => {
+        if (typeof key === 'string' && key.length) {
+            if (classes[key]) {
+                tooltip.classList.add(key);
+            } else {
+                tooltip.classList.remove(key);
+            }
+        }
+    });
 }
 
 const ARIA_DESCRIBEDBY = 'aria-describedby';
@@ -159,6 +210,7 @@ export class Tooltip {
         this._element = config.element;
         if (!this._element) {
             this._element = getCachedBubbleElement;
+            updateClassList(DEFAULT_ALIGN)
             const bubbleElement = getCachedBubbleElement();
             if (bubbleElement.parentNode === null) {
                 document.body.appendChild(bubbleElement);
@@ -199,7 +251,7 @@ export class Tooltip {
             }
             const ariaDescribedBy = normalizeAriaAttribute([
                 target.getAttribute(ARIA_DESCRIBEDBY),
-                this._element().contentId,
+                this._element().id,
             ]);
             target.setAttribute(ARIA_DESCRIBEDBY, ariaDescribedBy);
 
@@ -295,7 +347,7 @@ export class Tooltip {
             CACHED_BUBBLE_ELEMENT.classList.remove('slds-hide');
         }
 
-        tooltip.content = this._value;
+        CONTENT.textContent = this._value;
 
         this.startPositioning();
 
@@ -307,7 +359,8 @@ export class Tooltip {
     hide() {
         this._visible = false;
         const tooltip = this._element();
-        tooltip.visible = this._visible;
+        CACHED_BUBBLE_ELEMENT.visible = this._visible;
+        updateClassList(ALIGN);
 
         this.stopPositioning();
 
@@ -375,9 +428,9 @@ export class Tooltip {
                 // tooltip changes alignment we need to update the nubbin class to have it draw in
                 // the appropriate place.
                 if (autoPositionUpdater) {
-                    const tooltip = this._element();
-                    tooltip.align = autoPositionUpdater.config.align;
-                    tooltip.visible = this._visible;
+                    CACHED_BUBBLE_ELEMENT.visible = this._visible;
+                    ALIGN = autoPositionUpdater.config.align;
+                    updateClassList(ALIGN);
                 }
             });
     }
