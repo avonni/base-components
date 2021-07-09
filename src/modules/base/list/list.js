@@ -413,4 +413,22 @@ export default class List extends LightningElement {
         // Stop the dragging process when touching the button menu
         event.stopPropagation();
     }
+
+    handleActionClick(event) {
+        const actionName = this.hasMultipleActions
+            ? event.detail.value
+            : event.target.value;
+        const itemIndex = event.target.parentElement.parentElement.parentElement.getAttribute(
+            'data-index'
+        );
+
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                detail: {
+                    name: actionName,
+                    item: this.computedItems[itemIndex]
+                }
+            })
+        );
+    }
 }

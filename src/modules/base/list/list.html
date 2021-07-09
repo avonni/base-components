@@ -135,6 +135,7 @@
                             menu-alignment="right"
                             icon-size="x-small"
                             ontouchstart={handleButtonMenuTouchStart}
+                            onselect={handleActionClick}
                         >
                             <template
                                 for:each={computedActions}
@@ -159,17 +160,18 @@
                                 label={firstAction.label}
                                 disabled={firstAction.disabled}
                                 icon-name={firstAction.iconName}
+                                onclick={handleActionClick}
                             ></lightning-button>
                             <lightning-button-icon
                                 if:false={firstAction.label}
                                 class="slds-m-right_none"
-                                size="x-small"
                                 ontouchstart={handleButtonMenuTouchStart}
                                 key={firstAction.name}
                                 value={firstAction.name}
                                 disabled={firstAction.disabled}
                                 icon-name={firstAction.iconName}
                                 variant="bare"
+                                onclick={handleActionClick}
                             ></lightning-button-icon>
                         </template>
                     </div>
