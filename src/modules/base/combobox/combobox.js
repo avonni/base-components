@@ -107,7 +107,7 @@ export default class Combobox extends LightningElement {
      * Custom search function to execute instead of the default search. It has to:
      * * Take an object with two keys as an argument: options and searchTerm
      * * Return the new options.
-     * @type {string}
+     * @type {function}
      * @public
      */
     @api search;
@@ -555,7 +555,7 @@ export default class Combobox extends LightningElement {
     }
 
     /**
-     * Closes the drop-down.
+     * Closes the dropdown.
      * @public
      */
     @api
@@ -573,7 +573,7 @@ export default class Combobox extends LightningElement {
     }
 
     /**
-     * Opens the drop-down.
+     * Opens the dropdown.
      * @public
      */
     @api
