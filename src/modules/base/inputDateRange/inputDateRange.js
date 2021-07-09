@@ -32,6 +32,7 @@
 
 import { LightningElement, api } from 'lwc';
 import {
+    classListMutation,
     normalizeBoolean,
     normalizeString
 } from 'c/utilsPrivate';
@@ -117,10 +118,15 @@ export default class InputDateRange extends LightningElement {
     _cancelBlurEndDate = false;
 
     helpMessage;
+    valid = true;
 
     connectedCallback() {
         this.interactingState = new InteractingState();
         this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
+    }
+    
+    renderedCallback(){
+        this.updateClassList();
     }
 
     /**
@@ -370,6 +376,12 @@ export default class InputDateRange extends LightningElement {
             })
             .toString();
     }
+    
+    updateClassList() {
+        classListMutation(this.classList, {
+            'slds-has-error': !this.valid
+        });
+    }
 
     /**
      * Sets focus on the start date input.
@@ -544,6 +556,7 @@ export default class InputDateRange extends LightningElement {
      * Handles blur for the start-date input.
      */
     handleBlurStartDate(event) {
+        this.valid = !(this.required && !this.startDate);
         if (this._cancelBlurStartDate) {
             return;
         }
