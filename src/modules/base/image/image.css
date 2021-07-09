@@ -91,8 +91,7 @@
 }
 
 .avonni-margin-left-auto,
-.avonni-margin-auto,
-.avonni-img_cropped-left {
+.avonni-margin-auto {
     margin-left: auto;
 }
 
@@ -103,21 +102,4 @@
 
 .avonni-display-block {
     display: block;
-}
-
-.avonni-img_cropped-centered {
-    transform: translate(50%);
-    right: 50%;
-    margin-left: auto;
-    margin-right: 0;
-}
-
-.avonni-img_blank_no-crop_centered {
-    right: 50%;
-    margin-left: auto;
-}
-
-.avonni-img_cropped-right {
-    right: 0%;
-    margin-left: auto;
 }

@@ -1,3 +1,4 @@
+<!--
 /**
  * BSD 3-Clause License
  *
@@ -29,62 +30,33 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+-->
 
-import { LightningElement, api } from 'lwc';
-
-export default class Image extends LightningElement {
-    @api src = [];
-    @api srcset;
-    @api alt;
-    @api width;
-    @api height;
-    @api blankColor;
-    @api rounded;
-    @api block;
-    @api fluid;
-    @api fluidGrow;
-    @api thumbnail;
-    @api left;
-    @api right;
-    @api center;
-    @api blank;
-    @api staticImages;
-    @api lazyLoading;
-    @api cropSize;
-    @api cropFit;
-    @api cropPositionX;
-    @api cropPositionY;
-
-    get itemList() {
-        let result = [];
-        for (let i = 0; i < this.src.length; i++) {
-            let item = {
-                key: i,
-                src: this.src[i],
-                srcset: this.srcset,
-                alt: this.alt,
-                width: this.width,
-                height: this.height,
-                blankColor: this.blankColor,
-                rounded: this.rounded,
-                block: this.block,
-                fluid: this.fluid,
-                fluidGrow: this.fluidGrow,
-                thumbnail: this.thumbnail,
-                left: this.left,
-                right: this.right,
-                center: this.center,
-                blank: this.blank,
-                staticImages: this.staticImages,
-                lazyLoading: this.lazyLoading,
-                cropSize: this.cropSize,
-                cropFit: this.cropFit,
-                cropPositionX: this.cropPositionX,
-                cropPositionY: this.cropPositionY
-            };
-            result.push(item);
-        }
-
-        return result;
-    }
-}
+<template>
+    <div class="storybook-image-container">
+        <c-image
+            src={src}
+            srcset={srcset}
+            alt={alt}
+            width={width}
+            height={height}
+            blank-color={blankColor}
+            rounded={rounded}
+            block={block}
+            fluid={fluid}
+            fluid-grow={fluidGrow}
+            thumbnail={thumbnail}
+            left={left}
+            right={right}
+            center={center}
+            blank={blank}
+            static-images={staticImages}
+            lazy-loading={lazyLoading}
+            crop-size={cropSize}
+            crop-fit={cropFit}
+            crop-position-x={cropPositionX}
+            crop-position-y={cropPositionY}
+        >
+        </c-image>
+    </div>
+</template>

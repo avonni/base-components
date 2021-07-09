@@ -233,9 +233,7 @@ describe('Image', () => {
 
         return Promise.resolve().then(() => {
             const img = element.shadowRoot.querySelector('img');
-            expect(img.className).toBe(
-                'avonni-img_no-crop_no-width_no-height avonni-display-block'
-            );
+            expect(img.className).toBe('avonni-display-block');
         });
     });
 
@@ -251,9 +249,7 @@ describe('Image', () => {
 
         return Promise.resolve().then(() => {
             const img = element.shadowRoot.querySelector('img');
-            expect(img.className).toBe(
-                'avonni-img_no-crop_no-width_no-height avonni-img-fluid'
-            );
+            expect(img.className).toBe('avonni-img-fluid');
         });
     });
 
@@ -270,7 +266,7 @@ describe('Image', () => {
         return Promise.resolve().then(() => {
             const img = element.shadowRoot.querySelector('img');
             expect(img.className).toBe(
-                'avonni-img_no-crop_no-width_no-height avonni-img-fluid avonni-img-fluid-grow'
+                'avonni-img-fluid avonni-img-fluid-grow'
             );
         });
     });
@@ -287,9 +283,7 @@ describe('Image', () => {
 
         return Promise.resolve().then(() => {
             const img = element.shadowRoot.querySelector('img');
-            expect(img.className).toBe(
-                'avonni-img_no-crop_no-width_no-height avonni-rounded'
-            );
+            expect(img.className).toBe('avonni-rounded');
         });
     });
 
@@ -304,9 +298,7 @@ describe('Image', () => {
 
         return Promise.resolve().then(() => {
             const img = element.shadowRoot.querySelector('img');
-            expect(img.className).toBe(
-                'avonni-img_no-crop_no-width_no-height avonni-rounded-top'
-            );
+            expect(img.className).toBe('avonni-rounded-top');
         });
     });
 
@@ -321,9 +313,7 @@ describe('Image', () => {
 
         return Promise.resolve().then(() => {
             const img = element.shadowRoot.querySelector('img');
-            expect(img.className).toBe(
-                'avonni-img_no-crop_no-width_no-height avonni-rounded-right'
-            );
+            expect(img.className).toBe('avonni-rounded-right');
         });
     });
 
@@ -338,9 +328,7 @@ describe('Image', () => {
 
         return Promise.resolve().then(() => {
             const img = element.shadowRoot.querySelector('img');
-            expect(img.className).toBe(
-                'avonni-img_no-crop_no-width_no-height avonni-rounded-left'
-            );
+            expect(img.className).toBe('avonni-rounded-left');
         });
     });
 
@@ -355,9 +343,7 @@ describe('Image', () => {
 
         return Promise.resolve().then(() => {
             const img = element.shadowRoot.querySelector('img');
-            expect(img.className).toBe(
-                'avonni-img_no-crop_no-width_no-height avonni-rounded-bottom'
-            );
+            expect(img.className).toBe('avonni-rounded-bottom');
         });
     });
 
@@ -372,9 +358,7 @@ describe('Image', () => {
 
         return Promise.resolve().then(() => {
             const img = element.shadowRoot.querySelector('img');
-            expect(img.className).toBe(
-                'avonni-img_no-crop_no-width_no-height avonni-rounded-circle'
-            );
+            expect(img.className).toBe('avonni-rounded-circle');
         });
     });
 
@@ -390,9 +374,7 @@ describe('Image', () => {
 
         return Promise.resolve().then(() => {
             const img = element.shadowRoot.querySelector('img');
-            expect(img.className).toBe(
-                'avonni-img_no-crop_no-width_no-height avonni-img-thumbnail'
-            );
+            expect(img.className).toBe('avonni-img-thumbnail');
         });
     });
 
@@ -408,9 +390,7 @@ describe('Image', () => {
 
         return Promise.resolve().then(() => {
             const img = element.shadowRoot.querySelector('img');
-            expect(img.className).toBe(
-                'avonni-img_no-crop_no-width_no-height avonni-float-left'
-            );
+            expect(img.className).toBe('avonni-float-left');
         });
     });
 
@@ -426,9 +406,7 @@ describe('Image', () => {
 
         return Promise.resolve().then(() => {
             const img = element.shadowRoot.querySelector('img');
-            expect(img.className).toBe(
-                'avonni-img_no-crop_no-width_no-height avonni-float-right'
-            );
+            expect(img.className).toBe('avonni-float-right');
         });
     });
 
@@ -445,7 +423,7 @@ describe('Image', () => {
         return Promise.resolve().then(() => {
             const img = element.shadowRoot.querySelector('img');
             expect(img.className).toBe(
-                'avonni-img_no-crop_no-width_no-height avonni-margin-auto avonni-display-block'
+                'avonni-margin-auto avonni-display-block'
             );
         });
     });
@@ -459,16 +437,13 @@ describe('Image', () => {
 
         element.src = src;
         element.cropSize = '1x1';
+        element.width = '200';
+        element.height = '300';
 
         return Promise.resolve().then(() => {
             const img = element.shadowRoot.querySelector('img');
-            const container = element.shadowRoot.querySelector(
-                '.avonni-img-container'
-            );
-            expect(img.className).toBe(
-                'avonni-img_cropped avonni-img_cropped_no-width_no-height'
-            );
-            expect(container.style.paddingTop).toBe('100%');
+            console.table(img.style);
+            expect(img.style.aspectRatio).toBe('1/1');
         });
     });
 
@@ -483,13 +458,8 @@ describe('Image', () => {
 
         return Promise.resolve().then(() => {
             const img = element.shadowRoot.querySelector('img');
-            const container = element.shadowRoot.querySelector(
-                '.avonni-img-container'
-            );
-            expect(img.className).toBe(
-                'avonni-img_cropped avonni-img_cropped_no-width_no-height'
-            );
-            expect(container.style.paddingTop).toBe('75%');
+            expect(img.style.height).toBe('0');
+            expect(img.style.width).toBe('0');
         });
     });
 
@@ -501,16 +471,12 @@ describe('Image', () => {
 
         element.src = src;
         element.cropSize = '16x9';
+        element.width = '160';
 
         return Promise.resolve().then(() => {
             const img = element.shadowRoot.querySelector('img');
-            const container = element.shadowRoot.querySelector(
-                '.avonni-img-container'
-            );
-            expect(img.className).toBe(
-                'avonni-img_cropped avonni-img_cropped_no-width_no-height'
-            );
-            expect(container.style.paddingTop).toBe('56.25%');
+
+            expect(img.style.height).toBe('90');
         });
     });
 
@@ -612,9 +578,7 @@ describe('Image', () => {
 
         return Promise.resolve().then(() => {
             const img = element.shadowRoot.querySelector('img');
-            expect(img.className).toBe(
-                'avonni-img_cropped avonni-img_cropped-left avonni-img_cropped_width'
-            );
+            expect(img.className).toBe('avonni-float-left');
         });
     });
 
@@ -632,7 +596,7 @@ describe('Image', () => {
         return Promise.resolve().then(() => {
             const img = element.shadowRoot.querySelector('img');
             expect(img.className).toBe(
-                'avonni-display-block avonni-img_cropped avonni-img_cropped-centered avonni-img_cropped_width'
+                'avonni-margin-auto avonni-display-block'
             );
         });
     });
@@ -650,9 +614,7 @@ describe('Image', () => {
 
         return Promise.resolve().then(() => {
             const img = element.shadowRoot.querySelector('img');
-            expect(img.className).toBe(
-                'avonni-img_cropped avonni-img_cropped-right avonni-img_cropped_width'
-            );
+            expect(img.className).toBe('avonni-float-right');
         });
     });
 
@@ -669,9 +631,7 @@ describe('Image', () => {
 
         return Promise.resolve().then(() => {
             const img = element.shadowRoot.querySelector('img');
-            expect(img.className).toBe(
-                'avonni-img_cropped avonni-img_cropped_width'
-            );
+            console.table(img.style);
             expect(img.style.width).toBe('400px');
             expect(img.style.height).toBe('400px');
         });
@@ -770,9 +730,7 @@ describe('Image', () => {
 
         return Promise.resolve().then(() => {
             const img = element.shadowRoot.querySelector('img');
-            expect(img.className).toBe(
-                'avonni-img_cropped avonni-img_cropped_no-width_height'
-            );
+            expect(img.style.aspectRatio).toBe('16/9');
             expect(img.style.width).toBe('400px');
             expect(img.style.height).toBe('225px');
         });
@@ -790,7 +748,6 @@ describe('Image', () => {
 
         return Promise.resolve().then(() => {
             const img = element.shadowRoot.querySelector('img');
-            expect(img.className).toBe('avonni-img_no-crop_no-width_height');
             expect(img.style.width).toBeFalsy();
             expect(img.style.height).toBe('225px');
         });
@@ -826,10 +783,8 @@ describe('Image', () => {
 
         return Promise.resolve().then(() => {
             const img = element.shadowRoot.querySelector('img');
-            expect(img.className).toBe(
-                'avonni-img_no-crop_no-width_height avonni-img_static_height_no-crop_no-width'
-            );
-            expect(img.style.maxWidth).toBe('undefinedpx');
+            expect(img.style.maxHeight).toBe('400px');
+            expect(img.style.minHeight).toBe('400px');
             expect(img.style.height).toBe('400px');
         });
     });
@@ -868,19 +823,10 @@ describe('Image', () => {
             .then(() => {})
             .then(() => {
                 const img = element.shadowRoot.querySelector('img');
-                const container = element.shadowRoot.querySelector(
-                    '.avonni-img-container'
-                );
-                expect(img.className).toBe('avonni-img_width_height');
                 expect(img.style.minWidth).toBe('400px');
                 expect(img.style.minHeight).toBe('400px');
                 expect(img.style.maxWidth).toBe('400px');
                 expect(img.style.maxHeight).toBe('400px');
-                expect(container.style.minWidth).toBe('400px');
-                expect(container.style.minHeight).toBe('400px');
-                expect(container.style.maxWidth).toBe('400px');
-                expect(container.style.maxHeight).toBe('400px');
-                expect(container.style.paddingTop).toBe('100%');
             });
     });
 

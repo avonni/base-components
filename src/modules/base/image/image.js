@@ -322,9 +322,9 @@ export default class Image extends LightningElement {
             'avonni-rounded-left': this.rounded === 'left',
             'avonni-rounded-circle': this.rounded === 'circle',
             'avonni-not-rounded': this.rounded === '0',
-            'avonni-float-left': this.left && !this._cropSize,
-            'avonni-float-right': this.right && !this._cropSize,
-            'avonni-margin-auto': this.center && !this._cropSize,
+            'avonni-float-left': this.left,
+            'avonni-float-right': this.right,
+            'avonni-margin-auto': this.center,
             'avonni-display-block': this.center || this.block
         }).toString();
     }
@@ -392,7 +392,7 @@ export default class Image extends LightningElement {
                 return `
                 min-height: ${this.height}px;
                 height: ${this.height}px;
-                max-height: ${this.height};
+                max-height: ${this.height}px;
                 max-width: ${this._imgWidth}px;
                 width: ${this._imgWidth}px;
                 min-width: ${this._imgWidth}px;
