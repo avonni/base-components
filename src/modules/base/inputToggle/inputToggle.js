@@ -32,7 +32,6 @@
 
 import { LightningElement, api } from 'lwc';
 import {
-    classListMutation,
     ContentMutation,
     synchronizeAttrs,
     getRealDOMId,
@@ -114,6 +113,14 @@ export default class InputToggle extends LightningElement {
      * @public
      */
     @api messageToggleInactive = DEFAULT_MESSAGE_TOGGLE_INACTIVE;
+
+    /**
+     * Error message to be displayed when the value is missing.
+     * The valueMissing error can be returned when you specify the required attribute for any input type.
+     * @type {string}
+     * @public
+     */
+    @api messageWhenValueMissing
 
     /**
      * Specifies the name of an input element.
@@ -280,21 +287,6 @@ export default class InputToggle extends LightningElement {
     }
 
     /**
-     * Error message to be displayed when the value is missing.
-     * The valueMissing error can be returned when you specify the required attribute for any input type.
-     * @type {string}
-     * @public
-     */
-    @api
-    get messageWhenValueMissing() {
-        return this._messageWhenValueMissing;
-    }
-
-    set messageWhenValueMissing(value) {
-        this._messageWhenValueMissing = value;
-    }
-
-    /**
      * If present, the input field is read-only and cannot be edited by users.
      * @type {boolean}
      * @default false
@@ -414,7 +406,7 @@ export default class InputToggle extends LightningElement {
     @api
     reportValidity() {
         return this._constraint.reportValidity((message) => {
-            this.helpMessage = this.messageWhenValueMissing || message;
+            this.helpMessage = message;
         });
     }
 

@@ -32,7 +32,7 @@
 
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
-import { FieldConstraintApi } from 'c/inputUtils';
+import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 import { classSet } from 'c/utils';
 import TIME_ZONES from './timeZones.js';
 
@@ -109,10 +109,11 @@ export default class DateTimePicker extends LightningElement {
     selectedDayTime = {};
     timeZones = TIME_ZONES;
     selectedTimeZone;
-    helpMessage = null;
+    helpMessage;
     datePickerValue;
     dayClass = DEFAULT_DAY_CLASS;
     calendarDisabledDates = [];
+
 
     connectedCallback() {
         this._processValue();
@@ -134,6 +135,8 @@ export default class DateTimePicker extends LightningElement {
         }
 
         this._generateTable();
+        this.interactingState = new InteractingState();
+        this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
     }
 
     @api
@@ -476,7 +479,7 @@ export default class DateTimePicker extends LightningElement {
     @api
     reportValidity() {
         return this._constraint.reportValidity((message) => {
-            this.helpMessage = this.messageWhenValueMissing || message;
+            this.helpMessage = message;
         });
     }
 
@@ -878,6 +881,14 @@ export default class DateTimePicker extends LightningElement {
                     name: this.name
                 }
             })
-        );
+        );     
+    }
+
+    handleBlur() {
+        this.interactingState.leave();
+    }
+
+    handleFocus(){
+        this.interactingState.enter();
     }
 }

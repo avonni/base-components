@@ -421,7 +421,7 @@ export default class InputDateRange extends LightningElement {
     @api
     reportValidity() {
         return this._constraint.reportValidity((message) => {
-            this.helpMessage = this.messageWhenValueMissing || message;
+            this.helpMessage = message;
         });
     }
 
@@ -556,6 +556,8 @@ export default class InputDateRange extends LightningElement {
      * Handles blur for the start-date input.
      */
     handleBlurStartDate(event) {
+        this.interactingState.leave();
+
         this.valid = !(this.required && !this.startDate);
         if (this._cancelBlurStartDate) {
             return;
@@ -586,7 +588,6 @@ export default class InputDateRange extends LightningElement {
             }
 
             this.dispatchChange();
-            this.interactingState.leave();
         }
     }
 

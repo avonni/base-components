@@ -458,7 +458,7 @@ export default class InputChoiceSet extends LightningElement {
         if (!this._constraintApi) {
             this._constraintApi = new FieldConstraintApi(() => this, {
                 valueMissing: () =>
-                    !this.disabled && this.required && this.value.length === 0
+                    !this.disabled && this.required && !this.value.length
             });
         }
         return this._constraintApi;
