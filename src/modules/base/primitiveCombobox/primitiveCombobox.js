@@ -384,7 +384,7 @@ export default class PrimitiveCombobox extends LightningElement {
      *
      * The default value varies depending on the value of allow-search.
      * @type {string}
-     * @default SelectAnOption-or-Search…
+     * @default Select an Option -or- Search…
      * @public
      */
     @api
@@ -461,7 +461,7 @@ export default class PrimitiveCombobox extends LightningElement {
     /**
      * Describes the selected options section to assistive technologies.
      * @type {string}
-     * @default SelectedOptions
+     * @default Selected Options
      * @public
      */
     @api
