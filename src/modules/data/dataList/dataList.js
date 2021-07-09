@@ -278,12 +278,16 @@ export default class AvonniDataListBasic extends LightningElement {
         return this.currentPopover !== undefined;
     }
 
+    get popover() {
+        return this.template.querySelector('section');
+    }
+
     /**
      * WComputed CSS classes for the popover
      * @type {string}
      */
     get computedPopover() {
-        return classSet('slds-popover')
+        return classSet('slds-popover slds-is-absolute slds-hide')
             .add({
                 'slds-nubbin_top': true,
                 'slds-nubbin_right-top': false,
@@ -345,26 +349,41 @@ export default class AvonniDataListBasic extends LightningElement {
         );
     }
 
-    /**
-     * Handles a click on the 'Done' button of the popover and the closing logic.
-     */
-    handlePopoverDoneClick() {
-        this.currentPopover = undefined;
-        this.tabIndex = false;
-        this.shiftPressed = false;
+    handleItemClick(event) {
+        for (let i = 0; i < this.data.length; i++) {
+            if (this.data[i][this.fields[0].name] === event.detail.item.label) {
+                this.changeCurrentPopover(i);
+                // eslint-disable-next-line @lwc/lwc/no-async-operation
+                setTimeout(() => {
+                    this.updatePopoverPosition(event.detail.bounds);
+                    this.template.querySelector('c-data-input')?.focus();
+                }, 0);
+                break;
+            }
+        }
     }
 
     /**
-     * Handles a change in the popover to display.
-     * @param {Event} event
+     * Changes the popover to display.
+     * @param {number} index - The index of the popover to open.
      */
-    handleCurrentPopoverChange(event) {
-        this.currentPopover = parseInt(event.target.value, 10);
+    changeCurrentPopover(index) {
+        this.currentPopover = index;
         this.generatePopoverContent();
-        // eslint-disable-next-line @lwc/lwc/no-async-operation
-        setTimeout(() => {
-            this.template.querySelector('c-data-input')?.focus();
-        }, 0);
+    }
+
+    updatePopoverPosition(bounds) {
+        const nubbinOffset = 30;
+        const componentRect = this.template
+            .querySelector('avonni-list')
+            .getBoundingClientRect();
+
+        this.popover.style.top =
+            bounds.bottom - componentRect.top + nubbinOffset + 'px';
+        this.popover.style.left = '10px';
+
+        this.popover.classList.remove('slds-hide');
+        this.popover.classList.add('slds-show');
     }
 
     /**
@@ -386,6 +405,15 @@ export default class AvonniDataListBasic extends LightningElement {
                 break;
             }
         }
+    }
+
+    /**
+     * Handles a click on the 'Done' button of the popover and the closing logic.
+     */
+    handlePopoverDoneClick() {
+        this.currentPopover = undefined;
+        this.tabIndex = false;
+        this.shiftPressed = false;
     }
 
     /**

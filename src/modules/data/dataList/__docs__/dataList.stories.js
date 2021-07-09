@@ -148,13 +148,6 @@ Base.args = {
     label: 'Base Data List',
     actions: [
         {
-            label: 'Edit',
-            name: 'edit-action',
-            iconName: 'utility:edit',
-            disabled: false
-        },
-        {
-            label: 'Remove',
             name: 'delete-action',
             iconName: 'utility:close',
             disabled: false

@@ -453,18 +453,13 @@ export default class List extends LightningElement {
         )
             return;
 
-        let itemElement = event.target;
-        while (itemElement.tagName !== 'LI') {
-            itemElement = itemElement.parentElement;
-        }
-
         this.dispatchEvent(
             new CustomEvent('itemclick', {
                 detail: {
                     item: this.computedItems[
-                        itemElement.getAttribute('data-index')
+                        event.currentTarget.getAttribute('data-index')
                     ],
-                    bounds: itemElement.getBoundingClientRect()
+                    bounds: event.currentTarget.getBoundingClientRect()
                 }
             })
         );

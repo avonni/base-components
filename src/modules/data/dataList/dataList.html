@@ -39,11 +39,13 @@
         items={dataAsItems}
         actions={actions}
         sortable={sortable}
+        sortable-icon-drag-only
         sortable-icon-name={sortableIconName}
         sortable-icon-position={sortableIconPosition}
         divider={divider}
         onreorder={handleReorder}
         onactionclick={handleActionClick}
+        onitemclick={handleItemClick}
     ></avonni-list>
     <ul
         if:true={hasListActions}
@@ -64,12 +66,6 @@
             </template>
         </li>
     </ul>
-    <lightning-input
-        label="Current opened popover"
-        value={currentPopover}
-        type="number"
-        onblur={handleCurrentPopoverChange}
-    ></lightning-input>
     <section
         if:true={showPopover}
         aria-label="Edit fields"
