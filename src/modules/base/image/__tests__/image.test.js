@@ -36,6 +36,7 @@ import Image from 'c/image';
 // not tested
 // blank and blankColor because of canvas
 // cannot test computed images based on layout ( e.g. static Images and certain image states that do not have assigned dimensions ). Jest does not provide a layout system.
+// cannot test aspect-ratio//most crop-size output. Jest/JS-Dom does not recognize its attribute within dom element. The JS function goes through, however since aspect-ratio computes only with 1 dimension ( e.g. width or height ) - we can only test the input dimension to match the same output dimension which is pointless.
 
 const src =
     'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg';
@@ -428,58 +429,6 @@ describe('Image', () => {
         });
     });
 
-    // Image Crop
-    it('Image Crop Size 1x1', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
-        element.src = src;
-        element.cropSize = '1x1';
-        element.width = '200';
-        element.height = '300';
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
-            console.table(img.style);
-            expect(img.style.aspectRatio).toBe('1/1');
-        });
-    });
-
-    it('Image Crop Size 4x3', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
-        element.src = src;
-        element.cropSize = '4x3';
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
-            expect(img.style.height).toBe('0');
-            expect(img.style.width).toBe('0');
-        });
-    });
-
-    it('Image Crop Size 16x9', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
-        element.src = src;
-        element.cropSize = '16x9';
-        element.width = '160';
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
-
-            expect(img.style.height).toBe('90');
-        });
-    });
-
     // Crop Fit
     it('Crop Fit Cover', () => {
         const element = createElement('base-image', {
@@ -618,124 +567,6 @@ describe('Image', () => {
         });
     });
 
-    // Cropped Ratio with Width ONLY
-    it('Cropped Ratio with Width 1x1', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
-        element.src = src;
-        element.cropSize = '1x1';
-        element.width = '400';
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
-            console.table(img.style);
-            expect(img.style.width).toBe('400px');
-            expect(img.style.height).toBe('400px');
-        });
-    });
-
-    it('Cropped Ratio with Width 4x3', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
-        element.src = src;
-        element.cropSize = '4x3';
-        element.width = '400';
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
-            expect(img.className).toBe(
-                'avonni-img_cropped avonni-img_cropped_width'
-            );
-            expect(img.style.width).toBe('400px');
-            expect(img.style.height).toBe('300px');
-        });
-    });
-
-    it('Cropped Ratio with Width 16x9', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
-        element.src = src;
-        element.cropSize = '16x9';
-        element.width = '400';
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
-            expect(img.className).toBe(
-                'avonni-img_cropped avonni-img_cropped_width'
-            );
-            expect(img.style.width).toBe('400px');
-            expect(img.style.height).toBe('225px');
-        });
-    });
-
-    // Cropped Ratio with Height ONLY
-    it('Cropped Ratio with Height 1x1', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
-        element.src = src;
-        element.cropSize = '1x1';
-        element.height = '200';
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
-            expect(img.className).toBe(
-                'avonni-img_cropped avonni-img_cropped_no-width_height'
-            );
-            expect(img.style.width).toBe('200px');
-            expect(img.style.height).toBe('200px');
-        });
-    });
-
-    it('Cropped Ratio with Height 4x3', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
-        element.src = src;
-        element.cropSize = '4x3';
-        element.height = '300';
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
-            expect(img.className).toBe(
-                'avonni-img_cropped avonni-img_cropped_no-width_height'
-            );
-            expect(img.style.width).toBe('400px');
-            expect(img.style.height).toBe('300px');
-        });
-    });
-
-    it('Cropped Ratio with Height 16x9', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
-        element.src = src;
-        element.cropSize = '16x9';
-        element.height = '225';
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
-            expect(img.style.aspectRatio).toBe('16/9');
-            expect(img.style.width).toBe('400px');
-            expect(img.style.height).toBe('225px');
-        });
-    });
-
     // img NO Crop - Height Only
     it('No crop - Height Only', () => {
         const element = createElement('base-image', {
@@ -839,27 +670,43 @@ describe('Image', () => {
         element.src = src;
         element.staticImages = true;
         element.width = '400';
-        element.cropSize = '100';
-
-        const container = element.shadowRoot.querySelector(
-            '.avonni-img-container'
-        );
-        Object.defineProperty(container, 'clientWidth', {
-            writable: true,
-            configurable: true,
-            value: 400
-        });
+        element.cropSize = '1x1';
 
         return Promise.resolve().then(() => {
             const img = element.shadowRoot.querySelector('img');
-            expect(container.style.maxWidth).toBeFalsy();
-            expect(container.style.maxHeight).toBeFalsy();
-            expect(container.style.minWidth).toBeFalsy();
-            expect(container.style.minHeight).toBeFalsy();
-            expect(container.style.maxWidth).toBeFalsy();
-            expect(container.style.paddingTop).toBeFalsy();
             expect(img.style.maxWidth).toBe('400px');
-            expect(img.style.height).toBeFalsy();
+            expect(img.style.maxHeight).toBe('400px');
+            expect(img.style.minWidth).toBe('400px');
+            expect(img.style.minHeight).toBe('400px');
+            expect(img.style.maxWidth).toBe('400px');
+        });
+    });
+
+    it('% on width', () => {
+        const element = createElement('base-image', {
+            is: Image
+        });
+        document.body.appendChild(element);
+        element.src = src;
+        element.width = '50%';
+
+        return Promise.resolve().then(() => {
+            const img = element.shadowRoot.querySelector('img');
+            expect(img.style.width).toBe('50%');
+        });
+    });
+
+    it('% on height', () => {
+        const element = createElement('base-image', {
+            is: Image
+        });
+        document.body.appendChild(element);
+        element.src = src;
+        element.height = '50%';
+
+        return Promise.resolve().then(() => {
+            const img = element.shadowRoot.querySelector('img');
+            expect(img.style.height).toBe('50%');
         });
     });
 });
