@@ -70,13 +70,30 @@ const LIST_ITEM_DIVIDERS = {
  */
 export default class AvonniDataListBasic extends LightningElement {
     /**
+     * Alternative text used to describe the list.
+     * If the list is sortable, it should describe its behavior, for example: 'Sortable menu.
+     * Press spacebar to grab or drop an item.
+     * Press up and down arrow keys to change position.
+     * Press escape to cancel.'
+     * @type {string}
+     * @public
+     */
+    @api alternativeText;
+
+    /**
      * Label of the list.
      * @type {string}
      * @public
      */
     @api label;
+
+    /**
+     * The Lightning Design System name of the sortable icon.
+     * Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed.
+     * @type {string}
+     * @public
+     */
     @api sortableIconName;
-    @api alternativeText;
 
     @track _actions = [];
     @track _data = [];
@@ -92,6 +109,20 @@ export default class AvonniDataListBasic extends LightningElement {
     shiftPressed = false;
     tabPressed = false;
 
+    /**
+     * Action added to the items of the list.
+     * @typedef {Object} Action
+     * @property {string}   label       - The action label.
+     * @property {string}   name        - The name of the action, which identifies the selected action.
+     * @property {string}   [iconName]  - The Lightning Design System name of the icon. Names are written in the format standard:opportunity. The icon is appended to the left of the label.
+     * @property {boolean}  [disabled]  - Specifies whether the action can be selected. If true, the action item is shown as disabled. This value defaults to false.
+     */
+
+    /**
+     * Array of actions.
+     * @type {Action[]}
+     * @public
+     */
     @api
     get actions() {
         return this._actions;
@@ -100,6 +131,17 @@ export default class AvonniDataListBasic extends LightningElement {
         this._actions = normalizeArray(value);
     }
 
+    /**
+     * Data displayed in each field in the popover.
+     * @typedef {Object} Data
+     * @property {...string} fields - The values corresponding to their fields.
+     */
+
+    /**
+     * The array of data to be displayed.
+     * @type {Data[]}
+     * @public
+     */
     /* eslint-disable */
     @api
     get data() {
@@ -110,6 +152,13 @@ export default class AvonniDataListBasic extends LightningElement {
     }
     /* eslint-enable */
 
+    /**
+     * Changes the appearance of the list.
+     * Valid values include top, bottom and around.
+     * @type {string}
+     * @default around
+     * @public
+     */
     @api
     get divider() {
         return this._divider;
@@ -121,6 +170,19 @@ export default class AvonniDataListBasic extends LightningElement {
         });
     }
 
+    /**
+     * Field displayed in the popover.
+     * @typedef {Object} Field
+     * @property {string} label - Label of the field.
+     * @property {string} name  - The name that binds the fields attributes to the associated data. Each fields attribute must correspond to an item in the data array.
+     * @property {string} type  - The data type of the field. Valid values include boolean, currency, date, email, location, number, percent, phone, url, text.
+     */
+
+    /**
+     * Array of fields displayed in the popover.
+     * @type {Field[]}
+     * @public
+     */
     @api
     get fields() {
         return this._fields;
@@ -129,6 +191,11 @@ export default class AvonniDataListBasic extends LightningElement {
         this._fields = normalizeArray(value);
     }
 
+    /**
+     * Array of actions for the list.
+     * @type {Action[]}
+     * @public
+     */
     @api
     get listActions() {
         return this._listActions;
@@ -137,6 +204,11 @@ export default class AvonniDataListBasic extends LightningElement {
         this._listActions = normalizeArray(value);
     }
 
+    /**
+     * If true, it will be possible to reorder the list items.
+     * @type {boolean}
+     * @public
+     */
     @api
     get sortable() {
         return this._sortable;
@@ -145,6 +217,13 @@ export default class AvonniDataListBasic extends LightningElement {
         this._sortable = normalizeBoolean(value);
     }
 
+    /**
+     * Position of the sortable icon.
+     * Valid values include left and right.
+     * @type {string}
+     * @default left
+     * @public
+     */
     @api
     get sortableIconPosition() {
         return this._sortableIconPosition;
@@ -156,6 +235,30 @@ export default class AvonniDataListBasic extends LightningElement {
         });
     }
 
+    /**
+     * Additionnal information of an item.
+     * @typedef {Object} ItemInfo
+     * @property {string} label - Label of the info element.
+     * @property {string} href  - Href of the info element.
+     */
+
+    /**
+     * An item built for the List component.
+     * @typedef {Object} ListItem
+     * @property {string}       label                       - Label of the item.
+     * @property {string}       [href]                      - The URL of the page the link goes to.
+     * @property {string}       [description]               - The description displayed under the label of the item.
+     * @property {ItemInfo[]}   [infos]                     - List of additional information to display.
+     * @property {string[]}     [icons]                     - List of iconName display next to the label.
+     * @property {string}       [avatarSrc]                 - Image URL for the item avatar. If present, the avatar is displayed before the label.
+     * @property {string}       [avatarFallbackIconName]    - The Lightning Design System name of the icon used as a fallback when the avatar image fails to load. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
+     * @property {string}       [imageSrc]                  - Image URL for the list item image. If present, the image is presented to the left of the list item.
+     */
+
+    /**
+     * The data as items for the List component.
+     * @type {ListItem[]}
+     */
     get dataAsItems() {
         let items = [];
         this.data.forEach((element) => {
@@ -173,14 +276,26 @@ export default class AvonniDataListBasic extends LightningElement {
         return items;
     }
 
+    /**
+     * Whether the list actions contains actions to display.
+     * @type {boolean}
+     */
     get hasListActions() {
         return this.listActions.length > 0;
     }
 
+    /**
+     * Whether the popover should be visible.
+     * @type {boolean}
+     */
     get showPopover() {
         return this.currentPopover !== undefined;
     }
 
+    /**
+     * WComputed CSS classes for the popover
+     * @type {string}
+     */
     get computedPopover() {
         return classSet('slds-popover')
             .add({
@@ -191,6 +306,10 @@ export default class AvonniDataListBasic extends LightningElement {
             .toString();
     }
 
+    /**
+     * If the items have been sorted by the user, resets the items to their original order.
+     * @public
+     */
     @api
     reset() {
         this.template.querySelector('avonni-list').reset();
@@ -260,6 +379,35 @@ export default class AvonniDataListBasic extends LightningElement {
         }
     }
 
+    /**
+     * Handles a mouseenter in the popover area.
+     */
+    handlePopoverMouseEnter() {
+        this.isInsidePopover = true;
+    }
+
+    /**
+     * Handles a blur of an element in the popover.
+     * A mouse click outside the popover will close it.
+     */
+    handlePopoverBlur() {
+        if (!this.isInsidePopover && !this.tabPressed) {
+            this.handlePopoverDoneClick();
+            this.generatePopoverContent();
+        }
+    }
+
+    /**
+     * Handles a mouseleave in the popover area.
+     */
+    handlePopoverMouseLeave() {
+        this.isInsidePopover = false;
+    }
+
+    /**
+     * Handles a blur of an input element in the popover.
+     * Focus will be given to the 'Done' button if Shift+Tab is pressed when the focus is on the first field.
+     */
     handlePopoverInputBlur(event) {
         if (this.currentPopover !== undefined) {
             let newData = JSON.parse(JSON.stringify(this.data));
@@ -274,12 +422,16 @@ export default class AvonniDataListBasic extends LightningElement {
                 event.target === this.template.querySelector('c-data-input') &&
                 this.tabPressed &&
                 this.shiftPressed;
+
             if (trapFocus) {
                 this.template.querySelector('.slds-col_bump-left').focus();
             }
         }
     }
 
+    /**
+     * Dispatches a save event, where 'draftValues' corresponds to the current value that is provided during popover editing.
+     */
     dispatchSaveEvent() {
         this.dispatchEvent(
             new CustomEvent('save', {
@@ -290,6 +442,10 @@ export default class AvonniDataListBasic extends LightningElement {
         );
     }
 
+    /**
+     * Handles a blur of the 'Done' button in the popover.
+     * Focus will be given to the first input field if Tab is pressed when the focus is on the 'Done' button.
+     */
     handlePopoverDoneButtonBlur(event) {
         this.handlePopoverBlur();
 
@@ -298,27 +454,13 @@ export default class AvonniDataListBasic extends LightningElement {
                 this.template.querySelector('.slds-col_bump-left') &&
             this.tabPressed &&
             !this.shiftPressed;
+
         if (trapFocus) {
             // eslint-disable-next-line @lwc/lwc/no-async-operation
             setTimeout(() => {
                 this.template.querySelector('c-data-input').focus();
             }, 0);
         }
-    }
-
-    handlePopoverMouseEnter() {
-        this.isInsidePopover = true;
-    }
-
-    handlePopoverBlur() {
-        if (!this.isInsidePopover && !this.tabPressed) {
-            this.handlePopoverDoneClick();
-            this.generatePopoverContent();
-        }
-    }
-
-    handlePopoverMouseLeave() {
-        this.isInsidePopover = false;
     }
 
     /**
