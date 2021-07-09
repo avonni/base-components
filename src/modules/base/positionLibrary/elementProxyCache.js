@@ -31,7 +31,7 @@
  */
 
 import { ElementProxy } from './elementProxy';
-import { timeout, WindowManager, POSITION_ATTR_NAME } from './util';
+import { WindowManager, POSITION_ATTR_NAME } from './util';
 import { assert } from 'c/utilsPrivate';
 
 class ProxyCache {
@@ -39,14 +39,6 @@ class ProxyCache {
 
     get count() {
         return Object.keys(this.proxyCache).length;
-    }
-
-    releaseOrphanProxies() {
-        for (const proxy in this.proxyCache) {
-            if (!this.proxyCache[proxy].el.checkNodeIsInDom()) {
-                this.proxyCache[proxy].el.release();
-            }
-        }
     }
 
     bakeOff() {
@@ -104,19 +96,11 @@ class ProxyCache {
             refCount: 1
         };
 
-        // run GC
-        timeout(0).then(() => {
-            this.releaseOrphanProxies();
-        });
         return this.proxyCache[key].el;
     }
 }
 
 const elementProxyCache = new ProxyCache();
-
-export function releaseOrphanProxies() {
-    return elementProxyCache.releaseOrphanProxies();
-}
 
 export function bakeOff() {
     elementProxyCache.bakeOff();

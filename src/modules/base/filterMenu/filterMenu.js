@@ -165,6 +165,18 @@ export default class FilterMenu extends LightningElement {
     }
 
     renderedCallback() {
+        if (this._variant === 'horizontal') {
+            this.classList.add(
+                'slds-dropdown-trigger',
+                'slds-dropdown-trigger_click'
+            );
+        } else {
+            this.classList.remove(
+                'slds-dropdown-trigger',
+                'slds-dropdown-trigger_click'
+            );
+        }
+        
         this.initTooltip();
     }
 
@@ -298,18 +310,6 @@ export default class FilterMenu extends LightningElement {
             fallbackValue: MENU_VARIANTS.default,
             validValues: MENU_VARIANTS.valid
         });
-
-        if (this._variant === 'horizontal') {
-            this.classList.add(
-                'slds-dropdown-trigger',
-                'slds-dropdown-trigger_click'
-            );
-        } else {
-            this.classList.remove(
-                'slds-dropdown-trigger',
-                'slds-dropdown-trigger_click'
-            );
-        }
     }
 
     @api
