@@ -42,6 +42,7 @@ export const DataList = ({
     fields,
     label,
     listActions,
+    popoverPosition,
     sortable,
     sortableIconName,
     sortableIconPosition
@@ -54,6 +55,7 @@ export const DataList = ({
     element.fields = fields;
     element.label = label;
     element.listActions = listActions;
+    element.popoverPosition = popoverPosition;
     element.sortable = sortable;
     element.sortableIconName = sortableIconName;
     element.sortableIconPosition = sortableIconPosition;

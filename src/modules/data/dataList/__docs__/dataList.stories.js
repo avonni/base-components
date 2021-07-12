@@ -103,6 +103,19 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
+        popoverPosition: {
+            control: {
+                type: 'select'
+            },
+            options: ['bottom', 'left', 'right'],
+            defaultValue: 'bottom',
+            description:
+                'The items of the list can be edited using a popover. Accepted positions for the popover include bottom, left and right. This value defaults to bottom.',
+            table: {
+                defaultValue: { summary: 'bottom' },
+                type: { summary: 'string' }
+            }
+        },
         sortable: {
             control: {
                 type: 'boolean'

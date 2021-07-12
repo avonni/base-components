@@ -61,6 +61,17 @@ const LIST_ITEM_DIVIDERS = {
 };
 
 /**
+ * @constant
+ * @type {object}
+ * @property {string[]} valid   - The valid popover positions.
+ * @property {string}   default - The default popover position.
+ */
+const POPOVER_POSITION = {
+    valid: ['bottom', 'left', 'right'],
+    default: 'bottom'
+};
+
+/**
  * @class
  * @classdesc Editable and sortable data list.
  * @name DataList
@@ -100,6 +111,7 @@ export default class AvonniDataListBasic extends LightningElement {
     _data = [];
     _fields = [];
     _divider = LIST_ITEM_DIVIDERS.default;
+    _popoverPosition = POPOVER_POSITION.default;
     _sortable = false;
     _sortableIconPosition = ICON_POSITIONS.default;
 
@@ -218,6 +230,26 @@ export default class AvonniDataListBasic extends LightningElement {
     }
 
     /**
+     * The items of the list can be edited using a popover.
+     * Accepted positions for the popover include bottom, left and right.
+     * This value defaults to bottom.
+     * @type {string}
+     * @default bottom
+     * @public
+     */
+    @api
+    get popoverPosition() {
+        return this._popoverPosition;
+    }
+
+    set popoverPosition(value) {
+        this._popoverPosition = normalizeString(value, {
+            fallbackValue: POPOVER_POSITION.default,
+            validValues: POPOVER_POSITION.valid
+        });
+    }
+
+    /**
      * If true, it will be possible to reorder the list items.
      * @type {boolean}
      * @public
@@ -301,9 +333,9 @@ export default class AvonniDataListBasic extends LightningElement {
     get computedPopover() {
         return classSet('slds-popover slds-is-absolute slds-hide')
             .add({
-                'slds-nubbin_top': true,
-                'slds-nubbin_right-top': false,
-                'slds-nubbin_left-top': false
+                'slds-nubbin_top': this.popoverPosition === 'bottom',
+                'slds-nubbin_right-top': this.popoverPosition === 'left',
+                'slds-nubbin_left-top': this.popoverPosition === 'right'
             })
             .toString();
     }
@@ -440,9 +472,22 @@ export default class AvonniDataListBasic extends LightningElement {
             .querySelector('avonni-list')
             .getBoundingClientRect();
 
-        this.popover.style.top =
-            bounds.bottom - componentRect.top + nubbinOffset + 'px';
-        this.popover.style.left = '10px';
+        if (this.popoverPosition === 'bottom') {
+            this.popover.style.top =
+                bounds.bottom - componentRect.top + nubbinOffset + 'px';
+            this.popover.style.left = bounds.width / 2 - 144 + 'px';
+        } else {
+            const topOffset = bounds.height > 50 ? 20 : 10;
+            this.popover.style.top =
+                bounds.top - componentRect.top + topOffset + 'px';
+            const sideOffset =
+                bounds.right - componentRect.left + nubbinOffset + 'px';
+            if (this.popoverPosition === 'left') {
+                this.popover.style.right = sideOffset;
+            } else {
+                this.popover.style.left = sideOffset;
+            }
+        }
 
         this.popover.classList.remove('slds-hide');
         this.popover.classList.add('slds-show');
