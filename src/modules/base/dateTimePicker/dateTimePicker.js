@@ -165,6 +165,8 @@ export default class DateTimePicker extends LightningElement {
     dayClass = DEFAULT_DAY_CLASS;
     calendarDisabledDates = [];
 
+    valid = true
+
     connectedCallback() {
         this._processValue();
         this.selectedTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -1182,6 +1184,7 @@ export default class DateTimePicker extends LightningElement {
 
     handleBlur() {
         this.interactingState.leave();
+        this.classList.remove('slds-has-error')
     }
 
     handleFocus() {

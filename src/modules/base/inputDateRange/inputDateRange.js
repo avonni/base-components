@@ -126,7 +126,7 @@ export default class InputDateRange extends LightningElement {
     }
     
     renderedCallback(){
-        this.updateClassList();
+        this.updateClassListWhenError();
     }
 
     /**
@@ -377,10 +377,18 @@ export default class InputDateRange extends LightningElement {
             .toString();
     }
     
-    updateClassList() {
-        classListMutation(this.classList, {
-            'slds-has-error': !this.valid
-        });
+    updateClassListWhenError() {
+        if(!this.valid) {
+            this.classList.remove('slds-has-error')
+            this.startDateInput.classList.toggle('slds-has-error')
+            this.startDateInput.classList.toggle('error-input')
+            this.endDateInput.classList.toggle('slds-has-error')
+            this.endDateInput.classList.toggle('error-input')
+            if(this.showTime){
+                this.startTimeInput.classList.toggle('slds-has-error')
+                this.endTimeInput.classList.toggle('slds-has-error')
+            }
+        }
     }
 
     /**
@@ -812,5 +820,21 @@ export default class InputDateRange extends LightningElement {
                 }
             })
         );
+    }
+
+    get startDateInput() {
+        return this.template.querySelector('.start-date')
+    }
+
+    get endDateInput() {
+        return this.template.querySelector('.end-date')
+    }
+
+    get startTimeInput() {
+        return this.template.querySelector('.start-time')
+    }
+
+    get endTimeInput() {
+        return this.template.querySelector('.end-time')
     }
 }

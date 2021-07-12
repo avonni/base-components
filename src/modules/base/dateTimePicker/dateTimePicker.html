@@ -292,7 +292,7 @@
         </lightning-layout-item>
     </lightning-layout>
     <!-- Error message -->
-    <template if:true={helpMessage}>
+    <div class="slds-has-error" if:true={helpMessage}>
         <div
             id="help-message"
             class="slds-form-element__help"
@@ -301,5 +301,5 @@
         >
             {helpMessage}
         </div>
-    </template>
+    </div>
 </template>

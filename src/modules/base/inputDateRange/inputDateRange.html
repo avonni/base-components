@@ -99,6 +99,7 @@
                 onchange={handleChangeStartTime}
                 disabled={disabled}
                 read-only={readOnly}
+                class="start-time"
             ></lightning-input>
             <div class="slds-form-element">
                 <label
@@ -153,10 +154,11 @@
                 onchange={handleChangeEndTime}
                 disabled={disabled}
                 read-only={readOnly}
+                class="end-time"
             ></lightning-input>
         </div>
     </div>
-    <template if:true={helpMessage}>
+    <div class="slds-has-error" if:true={helpMessage}>
         <div
             id="help-message"
             class="slds-form-element__help"
@@ -165,5 +167,5 @@
         >
             {helpMessage}
         </div>
-    </template>
+    </div>
 </template>
