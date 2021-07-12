@@ -115,6 +115,7 @@ export default class Event {
         this.name = props.name;
 
         this.width = 0;
+        this.offsetLeft = 0;
     }
 
     get duration() {
@@ -326,6 +327,16 @@ export default class Event {
         if (i < 0) return;
 
         let width = 0;
+
+        // If the event starts in the middle of a column,
+        // add only the appropriate width in the first column
+        if (columns[i].start < this.from) {
+            const columnEnd = dateTimeObjectFrom(columns[i].end);
+            const eventDurationLeft = columnEnd.diff(this.from).milliseconds;
+            width += (eventDurationLeft * 100) / columnDuration;
+            this.offsetLeft = 100 - width;
+            i += 1;
+        }
 
         // Add the width of the columns completely filled by the event
         while (i < columns.length) {

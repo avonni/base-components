@@ -133,7 +133,7 @@ const events = [
         name: 'identify-need',
         title: 'Identify need',
         iconName: 'utility:search',
-        from: new Date(2021, 11, 13, 10),
+        from: new Date(2021, 11, 13, 10, 20),
         to: new Date(2021, 11, 13, 15, 30)
     },
     {
@@ -179,13 +179,12 @@ const events = [
     {
         keyFields: [1, 5],
         name: 'standup',
-        title: 'Standup',
-        from: new Date(2021, 11, 13, 9),
-        to: new Date(2021, 11, 13, 9, 30),
-        recurrence: 'yearly',
+        iconName: 'standard:team_member',
+        from: new Date(2021, 11, 13, 9, 30),
+        to: new Date(2021, 11, 13, 10),
+        recurrence: 'weekly',
         recurrenceAttributes: {
-            sameDaySameWeek: true,
-            interval: 2
+            weekdays: [1, 3, 5]
         }
     }
 ];

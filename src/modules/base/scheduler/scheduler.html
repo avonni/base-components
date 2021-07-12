@@ -106,6 +106,7 @@
                                             class={cell.class}
                                             data-width={cell.event.width}
                                             data-name={cell.event.name}
+                                            data-offset-left={cell.event.offsetLeft}
                                         >
                                             <div
                                                 class="slds-theme_shade slds-p-around_xx-small scheduler__event-title slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate"
@@ -115,7 +116,7 @@
                                                     if:true={cell.event.iconName}
                                                     icon-name={cell.event.iconName}
                                                     size="x-small"
-                                                    class="slds-p-right_xx-small"
+                                                    class="slds-m-right_xx-small"
                                                 ></lightning-icon>
                                                 <span class="slds-truncate"
                                                     >{cell.event.title}</span

@@ -504,10 +504,12 @@ export default class Scheduler extends LightningElement {
         const events = this.template.querySelectorAll('.scheduler__event');
         events.forEach((event) => {
             const percentWidth = event.dataset.width;
+            const marginLeft = event.dataset.offsetLeft;
             // Since the cell border is not included in the %,
             // we add 1px per cell crossed by the event
             const borderWidth = Math.floor(percentWidth / 100);
             event.style.width = `calc(${percentWidth}% + ${borderWidth}px`;
+            event.style.marginLeft = `${marginLeft}%`;
         });
     }
 
