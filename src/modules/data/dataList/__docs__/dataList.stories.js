@@ -154,64 +154,110 @@ export default {
     }
 };
 
+const action = [
+    {
+        name: 'delete-action',
+        iconName: 'utility:close'
+    }
+];
+
+const actions = [
+    {
+        label: 'Save',
+        name: 'save-action',
+        iconName: 'utility:save'
+    },
+    {
+        label: 'Delete',
+        name: 'delete-action',
+        iconName: 'utility:delete',
+        disabled: true
+    }
+];
+
+const listActions = [
+    {
+        label: 'Add Lightning Accordion',
+        name: 'addLightningAccordion'
+    },
+    {
+        label: 'Section',
+        name: 'section',
+        iconName: 'utility:list',
+        disabled: true
+    }
+];
+
+const fields = [
+    {
+        label: 'Label',
+        name: 'label',
+        type: 'text'
+    },
+    {
+        label: 'Title',
+        name: 'title',
+        type: 'text'
+    },
+    {
+        label: 'Name',
+        name: 'name',
+        type: 'text'
+    }
+];
+
+const data = [
+    {
+        label: 'Accordion Title A',
+        title: 'Lightning Accodion Section',
+        name: 'A'
+    },
+    {
+        label: 'Accordion Title B',
+        title: 'Lightning Accodion Section',
+        name: 'B'
+    },
+    {
+        label: 'Accordion Title C',
+        title: 'Lightning Accodion Section',
+        name: 'C'
+    }
+];
+
 const Template = (args) => DataList(args);
 
 export const Base = Template.bind({});
 Base.args = {
     label: 'Base Data List',
-    actions: [
-        {
-            name: 'delete-action',
-            iconName: 'utility:close',
-            disabled: false
-        }
-    ],
-    fields: [
-        {
-            label: 'Label',
-            name: 'label',
-            type: 'text'
-        },
-        {
-            label: 'Title',
-            name: 'title',
-            type: 'text'
-        },
-        {
-            label: 'Name',
-            name: 'name',
-            type: 'text'
-        }
-    ],
-    data: [
-        {
-            label: 'Accordion Title A',
-            title: 'Lightning Accodion Section',
-            name: 'A'
-        },
-        {
-            label: 'Accordion Title B',
-            title: 'Lightning Accodion Section',
-            name: 'B'
-        },
-        {
-            label: 'Accordion Title C',
-            title: 'Lightning Accodion Section',
-            name: 'C'
-        }
-    ],
-    listActions: [
-        {
-            label: 'Add Lightning Accordion',
-            name: 'addLightningAccordion'
-        },
-        {
-            label: 'Section',
-            name: 'section',
-            iconName: 'utility:list',
-            disabled: true
-        }
-    ],
+    fields: fields,
+    data: data
+};
+
+export const SortableDataList = Template.bind({});
+SortableDataList.args = {
+    label: 'Sortable Data List',
+    fields: fields,
+    data: data,
+    sortableIconName: 'utility:drag_and_drop',
+    sortable: true
+};
+
+export const DataListWithActionsAndRightSidePopover = Template.bind({});
+DataListWithActionsAndRightSidePopover.args = {
+    label: 'Data List with actions and right side popover',
+    actions: actions,
+    fields: fields,
+    data: data,
+    popoverPosition: 'right'
+};
+
+export const DataListWithListActions = Template.bind({});
+DataListWithListActions.args = {
+    label: 'Data List with list actions',
+    actions: action,
+    fields: fields,
+    data: data,
+    listActions: listActions,
     sortableIconName: 'utility:drag_and_drop',
     sortable: true
 };
