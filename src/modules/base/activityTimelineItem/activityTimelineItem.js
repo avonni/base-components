@@ -57,16 +57,83 @@ const BUTTON_VARIANTS = {
 
 const DEFAULT_LOADING_TEXT = 'Loading';
 
+/**
+ * @class
+ * @name Activity Timeline Item
+ * @descriptor avonni-timeline-item
+ * @public
+ */
 export default class ActivityTimelineItem extends LightningElement {
+    /**
+     * The title can include text, and is displayed in the header
+     * @public
+     * @type {string}
+     * @name title
+     */
     @api title;
+    /**
+     * The description can include text, and is displayed under the title.
+     * @public
+     * @type {string}
+     * @name description
+     */
     @api description;
+    /**
+     * The value to be formatted, which can be a Date object, timestamp, or an ISO8601 formatted string. Use lightning-formatted-date-time
+     * @public
+     * @type {datetime}
+     * @name datetimeValue
+     */
     @api datetimeValue;
+    /**
+     * URL for the title link.
+     * @public
+     * @type {string}
+     * @name href
+     */
     @api href;
+    /**
+     * The Lightning Design System name of the icon. Specify the name in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. The icon is displayed in the header before the title.
+     * @public
+     * @type {string}
+     * @name icon-name
+     */
     @api iconName;
+    /**
+     * Icon or list of icons next to the title.
+     * @public
+     * @type {string[]}
+     * @name icons
+     */
     @api icons;
+    /**
+     * The name for the button element. This value is optional and can be used to identify the button in a callback.
+     * @public
+     * @type {string}
+     * @name button-label
+     */
     @api buttonLabel;
+    /**
+     * The Lightning Design System name of the icon. Names are written in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
+     * @public
+     * @type {string}
+     * @name button-icon-name
+     */
     @api buttonIconName;
+    /**
+     * Message displayed while the detail section is in the loading state.
+     * @public
+     * @type {string}
+     * @name loading-state-alternative-text
+     * @default "Loading"
+     */
     @api loadingStateAlternativeText = DEFAULT_LOADING_TEXT;
+    /**
+     * Actions object sent from Activity Timeline
+     * @public
+     * @type {object[]}
+     * @name actions
+     */
     @api actions = [];
 
     _fields = [];
@@ -84,6 +151,13 @@ export default class ActivityTimelineItem extends LightningElement {
         this.setLineColor();
     }
 
+    /**
+     * If true, a checkbox is present before the label.
+     * @public
+     * @type {boolean}
+     * @name has-checkbox
+     * @default false
+     */
     @api
     get hasCheckbox() {
         return this._hasCheckbox;
@@ -93,6 +167,13 @@ export default class ActivityTimelineItem extends LightningElement {
         this._hasCheckbox = normalizeBoolean(value);
     }
 
+    /**
+     * if true, display an error message in the details section.
+     * @public
+     * @type {boolean}
+     * @name has-error
+     * @default false
+     */
     @api
     get hasError() {
         return this._hasError;
@@ -102,6 +183,13 @@ export default class ActivityTimelineItem extends LightningElement {
         this._hasError = normalizeBoolean(value);
     }
 
+    /**
+     * if true, close the section.
+     * @public
+     * @type {boolean}
+     * @name closed
+     * @default false
+     */
     @api
     get closed() {
         return this._closed;
@@ -111,6 +199,12 @@ export default class ActivityTimelineItem extends LightningElement {
         this._closed = normalizeBoolean(value);
     }
 
+    /**
+     * Array of output data objects (see Output Data for valid keys). It is displayed in the details section.
+     * @public
+     * @type {object[]}
+     * @name fields
+     */
     @api
     get fields() {
         return this._fields;
@@ -120,6 +214,13 @@ export default class ActivityTimelineItem extends LightningElement {
         this._fields = normalizeArray(value);
     }
 
+    /**
+     * Describes the position of the icon with respect to the button label. Options include left and right.
+     * @public
+     * @type {string}
+     * @name button-icon-position
+     * @default "left"
+     */
     @api
     get buttonIconPosition() {
         return this._buttonIconPosition;
@@ -132,6 +233,13 @@ export default class ActivityTimelineItem extends LightningElement {
         });
     }
 
+    /**
+     * The variant changes the appearance of the button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success.
+     * @public
+     * @type {string}
+     * @name button-variant
+     * @default "neutral"
+     */
     @api
     get buttonVariant() {
         return this._buttonVariant;
@@ -144,6 +252,13 @@ export default class ActivityTimelineItem extends LightningElement {
         });
     }
 
+    /**
+     * If true, the button is disabled.
+     * @public
+     * @type {boolean}
+     * @name button-disabled
+     * @default false
+     */
     @api
     get buttonDisabled() {
         return this._buttonDisabled;
@@ -153,6 +268,13 @@ export default class ActivityTimelineItem extends LightningElement {
         this._buttonDisabled = normalizeBoolean(value);
     }
 
+    /**
+     * If present, the detail section is in a loading state and shows a spinner.
+     * @public
+     * @type {boolean}
+     * @name is-loading
+     * @default false
+     */
     @api
     get isLoading() {
         return this._isLoading;
@@ -162,18 +284,33 @@ export default class ActivityTimelineItem extends LightningElement {
         this._isLoading = normalizeBoolean(value);
     }
 
+    /**
+     * Check if fields is populated
+     * @type {boolean}
+     */
     get hasFields() {
         return this._fields.length > 0;
     }
 
+    /**
+     * Check if actions exist
+     * @type {boolean}
+     */
     get hasActions() {
         return this.actions && this.actions.length > 0;
     }
 
+    /**
+     * Return styling for item background color
+     * @type {string}
+     */
     get backgroundColor() {
         return `--line-color: ${this._color}`;
     }
 
+    /**
+     * Toggle for item expansion
+     */
     get activityTimelineItemOuterClass() {
         return classSet('slds-timeline__item_expandable')
             .add({
@@ -182,6 +319,10 @@ export default class ActivityTimelineItem extends LightningElement {
             .toString();
     }
 
+    /**
+     * Computed styling class for item without fields
+     * @type {string}
+     */
     get computedSldsMedia() {
         return classSet('slds-media')
             .add({
@@ -191,13 +332,29 @@ export default class ActivityTimelineItem extends LightningElement {
             .toString();
     }
 
+    /**
+     * Toggle for closed/open section
+     * @type {boolean}
+     */
     handleSectionStatus() {
         this._closed = !this._closed;
     }
 
+    /**
+     * Actionclick handler
+     * @param {*} event
+     */
     handleActionClick(event) {
         const name = event.currentTarget.value;
 
+        /**
+         * The event fired when a user clicks on an action.
+         * @event
+         * @name actionclick
+         * @param {string} name Name of the action clicked
+         * @param {object} fieldData For an item action, data of the fields.
+         * @public
+         */
         this.dispatchEvent(
             new CustomEvent('actionclick', {
                 detail: {
@@ -208,11 +365,33 @@ export default class ActivityTimelineItem extends LightningElement {
         );
     }
 
+    /**
+     * Buttonclick event handler
+     */
     handleButtonClick() {
+        /**
+         * The event fired when the button in the details section is clicked.
+         * @event
+         * @public
+         * @name buttonclick
+         */
         this.dispatchEvent(new CustomEvent('buttonclick'));
     }
 
+    /**
+     * Check event handler
+     * @param {*} event
+     */
     handleCheck(event) {
+        /**
+         * The check event returns the following parameters.
+         * @event
+         * @name check
+         * @public
+         * @param {boolean} checked For input types checkbox and checkbox-button, the value of checked attribute.
+         * @bubbles
+         * @composed
+         */
         this.dispatchEvent(
             new CustomEvent('check', {
                 detail: event.target.checked,
@@ -223,6 +402,11 @@ export default class ActivityTimelineItem extends LightningElement {
         );
     }
 
+    /**
+     * Takes computed style for icon color and sets it to the line color
+     * @type {string}
+     * @returns this._color
+     */
     setLineColor() {
         const icon = this.template.querySelector('lightning-icon');
         if (icon === null) return;
