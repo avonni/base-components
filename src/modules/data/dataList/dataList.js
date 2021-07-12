@@ -96,19 +96,31 @@ export default class AvonniDataListBasic extends LightningElement {
     @api sortableIconName;
 
     @track _actions = [];
-    @track _data = [];
-    @track _fields = [];
     @track _listActions = [];
+    _data = [];
+    _fields = [];
     _divider = LIST_ITEM_DIVIDERS.default;
     _sortable = false;
     _sortableIconPosition = ICON_POSITIONS.default;
 
     @track popoverFields = [];
+    @track computedItems = [];
     currentPopover;
+    previousPopover;
     savePopoverData = false;
     isInsidePopover = false;
     shiftPressed = false;
     tabPressed = false;
+
+    /**
+     * Called when the element is inserted in a document.
+     * Initializes the event listeners and the items for the List component.
+     * @callback connectedCallback
+     */
+    connectedCallback() {
+        this.initEventListeners();
+        this.computedItems = this.dataAsItems;
+    }
 
     /**
      * Action added to the items of the list.
@@ -283,7 +295,7 @@ export default class AvonniDataListBasic extends LightningElement {
     }
 
     /**
-     * WComputed CSS classes for the popover
+     * Computed CSS classes for the popover.
      * @type {string}
      */
     get computedPopover() {
@@ -306,14 +318,52 @@ export default class AvonniDataListBasic extends LightningElement {
     }
 
     /**
+     * Initializes the event listeners.
+     */
+    initEventListeners() {
+        this.template.addEventListener('mousedown', () => {
+            this.previousPopover = this.currentPopover;
+        });
+        this.template.addEventListener('click', () => {
+            this.previousPopover = undefined;
+        });
+    }
+
+    /**
+     * Returns the index of the element from the data array corresponding to an item from the List Component.
+     * @param {ListItem} item - Item from the List component.
+     * @return {number}
+     */
+    getDataIndexFromListItem(item) {
+        for (let i = 0; i < this.data.length; i++) {
+            if (
+                this.data[i][this.fields[0].name] === item.label &&
+                this.data[i][this.fields[1].name] === item.description
+            ) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
      * Transfers a 'reorder' event from the List component to the Data List component.
      * @param {Event} event
      */
     handleReorder(event) {
+        const reorderedItems = event.detail.items;
+        this.computedItems = reorderedItems;
+
+        let newData = [];
+        reorderedItems.forEach((item) => {
+            newData.push(this.data[this.getDataIndexFromListItem(item)]);
+        });
+        this._data = newData;
+
         this.dispatchEvent(
             new CustomEvent('reorder', {
                 detail: {
-                    items: event.detail.items
+                    items: newData
                 }
             })
         );
@@ -328,7 +378,9 @@ export default class AvonniDataListBasic extends LightningElement {
             new CustomEvent('actionclick', {
                 detail: {
                     name: event.detail.name,
-                    item: event.detail.item
+                    item: this.data[
+                        this.getDataIndexFromListItem(event.detail.item)
+                    ]
                 }
             })
         );
@@ -349,15 +401,21 @@ export default class AvonniDataListBasic extends LightningElement {
         );
     }
 
+    /**
+     * Handles a click on an item from the List component.
+     * @param {Event} event
+     */
     handleItemClick(event) {
         for (let i = 0; i < this.data.length; i++) {
             if (this.data[i][this.fields[0].name] === event.detail.item.label) {
-                this.changeCurrentPopover(i);
-                // eslint-disable-next-line @lwc/lwc/no-async-operation
-                setTimeout(() => {
-                    this.updatePopoverPosition(event.detail.bounds);
-                    this.template.querySelector('c-data-input')?.focus();
-                }, 0);
+                if (i !== this.previousPopover) {
+                    this.changeCurrentPopover(i);
+                    // eslint-disable-next-line @lwc/lwc/no-async-operation
+                    setTimeout(() => {
+                        this.updatePopoverPosition(event.detail.bounds);
+                        this.template.querySelector('c-data-input')?.focus();
+                    }, 0);
+                }
                 break;
             }
         }
@@ -372,6 +430,10 @@ export default class AvonniDataListBasic extends LightningElement {
         this.generatePopoverContent();
     }
 
+    /**
+     * Updates the position of the popover according to the bounds of an item from the List component.
+     * @param {DOMRect} bounds - The bounds of an item from the List component.
+     */
     updatePopoverPosition(bounds) {
         const nubbinOffset = 30;
         const componentRect = this.template
@@ -452,6 +514,7 @@ export default class AvonniDataListBasic extends LightningElement {
             newData[this.currentPopover][event.target.name] =
                 event.target.value;
             this._data = newData;
+            this.computedItems = this.dataAsItems;
 
             if (this.savePopoverData) {
                 this.dispatchSaveEvent(newData[this.currentPopover]);
