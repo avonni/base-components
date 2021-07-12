@@ -1,6 +1,6 @@
 /**
  * @typedef Action
- * @name Actions
+ * @name actions
  * @property {string} label Required. The action label.
  * @property {string} name Required. The name of the action, which identifies the selected action.
  * @property {string} iconName The Lightning Design System name of the icon. Names are written in the format standard:opportunity. The icon is appended to the left of the label.

@@ -43,7 +43,6 @@ const GROUP_BY_OPTIONS = {
 };
 /**
  * @class
- * @name Activity Timeline
  * @descriptor avonni-activity-timeline
  * @example example-activitytimeline--base
  * @public
@@ -52,14 +51,12 @@ export default class ActivityTimeline extends LightningElement {
     /**
      * The title can include text, and is displayed in the header.
      * @public
-     * @name title
      * @type {string}
      */
     @api title;
     /**
      * The Lightning Design System name of the icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed. The icon is displayed in the header before the title.
      * @public
-     * @name icon-name
      * @type {string}
      */
     @api iconName;
@@ -86,8 +83,7 @@ export default class ActivityTimeline extends LightningElement {
     /**
      * If true, the section is collapsible, the left icon is present.
      * @public
-     * @type {string}
-     * @name collapsible
+     * @type {boolean}
      * @default false
      */
     @api
@@ -103,7 +99,6 @@ export default class ActivityTimeline extends LightningElement {
      * If true, close the section.
      * @public
      * @type {boolean}
-     * @name closed
      * @default false
      */
     @api
@@ -119,7 +114,6 @@ export default class ActivityTimeline extends LightningElement {
      * If present, the value will define how the items will be grouped. Values can include week, month, year or undefined.
      * @public
      * @type {string}
-     * @name group-by
      */
     @api
     get groupBy() {
@@ -137,7 +131,6 @@ export default class ActivityTimeline extends LightningElement {
      * See Activity Timeline Item
      * @public
      * @type {object[]}
-     * @name items
      */
     @api
     get items() {
@@ -155,7 +148,6 @@ export default class ActivityTimeline extends LightningElement {
      * A list of different actions for dropdown menu.
      * @public
      * @type {object[]}
-     * @name actions
      */
     @api
     get actions() {
@@ -169,7 +161,7 @@ export default class ActivityTimeline extends LightningElement {
     /**
      * Compute Number of the week in the year
      * @param {*} date
-     * @type {datetimeValue|number}
+     * @type {Date|number}
      * @returns number
      */
     getNumberOfWeek(date) {
@@ -181,7 +173,6 @@ export default class ActivityTimeline extends LightningElement {
 
     /**
      * Compute sortedItems list array
-     * @type {object[]}
      */
     sortItems() {
         this._sortedItems = [...this.items];
@@ -190,7 +181,6 @@ export default class ActivityTimeline extends LightningElement {
 
     /**
      * Sort the item dates by year, month, week
-     * @type {object[]}
      */
     sortDates() {
         this._sortedItems.forEach((item) => {
@@ -225,7 +215,6 @@ export default class ActivityTimeline extends LightningElement {
 
     /**
      * Group upcomingDates and beforeDates by year, month, week
-     * @type {object[]}
      */
     groupDates() {
         this._upcomingDates = this._upcomingDates.reduce((prev, cur) => {
@@ -277,7 +266,6 @@ export default class ActivityTimeline extends LightningElement {
 
     /**
      * Sort the orderedDates by hours
-     * @type {object[]}
      */
     sortHours() {
         this.orderedDates.forEach((object) => {
@@ -287,7 +275,6 @@ export default class ActivityTimeline extends LightningElement {
 
     /**
      * UngroupedItems ordered by dates and hours
-     * @type {object[]}
      */
     createUngroupedItems() {
         this.orderedDates.forEach((group) => {
