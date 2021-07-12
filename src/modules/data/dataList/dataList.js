@@ -117,6 +117,7 @@ export default class AvonniDataListBasic extends LightningElement {
 
     @track popoverFields = [];
     @track computedItems = [];
+    initialData = [];
     currentPopover;
     previousPopover;
     savePopoverData = false;
@@ -159,6 +160,7 @@ export default class AvonniDataListBasic extends LightningElement {
     }
     set data(value) {
         this._data = normalizeArray(value);
+        this.initialData = normalizeArray(value);
     }
     /* eslint-enable */
 
@@ -262,17 +264,20 @@ export default class AvonniDataListBasic extends LightningElement {
      * @type {ListItem[]}
      */
     get dataAsItems() {
+        if (this.fields.length === 0) return [];
+
         let items = [];
-        this.data.forEach((element) => {
+        for (let i = 0; i < this.data.length; i++) {
+            if (!this.data[i][this.fields[0].name]) continue;
             items.push({
-                label:
-                    this.fields.length > 0
-                        ? element[this.fields[0].name]
-                        : 'List item',
+                label: this.data[i][this.fields[0].name],
                 description:
-                    this.fields.length > 1 ? element[this.fields[1].name] : ''
+                    this.fields.length > 1
+                        ? this.data[i][this.fields[1].name]
+                        : ''
             });
-        });
+        }
+
         return items;
     }
 
@@ -317,6 +322,7 @@ export default class AvonniDataListBasic extends LightningElement {
     @api
     reset() {
         this.template.querySelector('avonni-list').reset();
+        this._data = this.initialData;
     }
 
     /**
@@ -340,7 +346,8 @@ export default class AvonniDataListBasic extends LightningElement {
         for (let i = 0; i < this.data.length; i++) {
             if (
                 this.data[i][this.fields[0].name] === item.label &&
-                this.data[i][this.fields[1].name] === item.description
+                (this.fields.length < 2 ||
+                    this.data[i][this.fields[1].name] === item.description)
             ) {
                 return i;
             }
