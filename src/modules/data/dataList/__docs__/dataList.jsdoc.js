@@ -35,8 +35,8 @@
  */
 /**
  * @memberof examples
- * @name sortableDataList
- * @storyId example-data-list--sortable-data-list
+ * @name sortableDataListWithDividerOnTop
+ * @storyId example-data-list--sortable-data-list-with-divider-on-top
  */
 /**
  * @memberof examples

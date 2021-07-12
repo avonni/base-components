@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class SortableDataList extends LightningElement {
+export default class SortableDataListWithDividerOnTop extends LightningElement {
     fields = [
         {
             label: 'Label',

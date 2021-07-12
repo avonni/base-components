@@ -229,15 +229,18 @@ const Template = (args) => DataList(args);
 export const Base = Template.bind({});
 Base.args = {
     label: 'Base Data List',
+    alternativeText: 'Data List alternative text',
     fields: fields,
     data: data
 };
 
-export const SortableDataList = Template.bind({});
-SortableDataList.args = {
+export const SortableDataListWithDividerOnTop = Template.bind({});
+SortableDataListWithDividerOnTop.args = {
     label: 'Sortable Data List',
+    alternativeText: 'Data List alternative text',
     fields: fields,
     data: data,
+    divider: 'top',
     sortableIconName: 'utility:drag_and_drop',
     sortable: true
 };
@@ -245,6 +248,7 @@ SortableDataList.args = {
 export const DataListWithActionsAndRightSidePopover = Template.bind({});
 DataListWithActionsAndRightSidePopover.args = {
     label: 'Data List with actions and right side popover',
+    alternativeText: 'Data List alternative text',
     actions: actions,
     fields: fields,
     data: data,
@@ -254,6 +258,7 @@ DataListWithActionsAndRightSidePopover.args = {
 export const DataListWithListActions = Template.bind({});
 DataListWithListActions.args = {
     label: 'Data List with list actions',
+    alternativeText: 'Data List alternative text',
     actions: action,
     fields: fields,
     data: data,
