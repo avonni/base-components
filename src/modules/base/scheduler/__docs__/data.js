@@ -107,19 +107,19 @@ const headers = [
     },
     {
         unit: 'week',
-        span: 2,
+        span: 1,
         label: "'Sprint' W"
     },
     {
         unit: 'day',
         span: 1,
         label: 'ccc dd'
-    },
-    {
-        unit: 'hour',
-        span: 1,
-        label: 'h a'
     }
+    // {
+    //     unit: 'hour',
+    //     span: 1,
+    //     label: 'h a'
+    // }
     // {
     //     unit: 'minute',
     //     span: 30,
@@ -182,9 +182,9 @@ const events = [
         title: 'Standup',
         from: new Date(2021, 11, 13, 9),
         to: new Date(2021, 11, 13, 9, 30),
-        recurrence: 'weekly',
+        recurrence: 'monthly',
         recurrenceAttributes: {
-            weekdays: [1, 3, 5],
+            sameDaySameWeek: true,
             interval: 2
         }
     }

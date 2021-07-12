@@ -447,7 +447,8 @@ export default class Scheduler extends LightningElement {
         this.events.forEach((event) => {
             const evt = {
                 ...event,
-                schedulerEnd: this.end
+                schedulerEnd: this.end,
+                schedulerStart: this.start
             };
 
             const computedEvent = new Event(evt);

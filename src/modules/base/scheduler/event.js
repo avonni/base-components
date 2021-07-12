@@ -65,13 +65,19 @@ export default class Event {
 
         this.schedulerEnd = props.schedulerEnd;
 
-        const from = dateTimeObjectFrom(props.from);
-        this.from = this.allDay ? from.startOf('day') : from;
+        const from = this.allDay
+            ? dateTimeObjectFrom(props.from).startOf('day')
+            : dateTimeObjectFrom(props.from);
+        this.from =
+            from > props.schedulerStart && from < this.schedulerEnd
+                ? from
+                : props.schedulerStart;
 
         const to = this.allDay
             ? addToDate(this.from, 'day', 1)
             : dateTimeObjectFrom(props.to);
-        this.to = this.schedulerEnd < to ? this.schedulerEnd : to;
+        this.to =
+            to < this.schedulerEnd && to > this.from ? to : this.schedulerEnd;
 
         this.iconName = props.iconName;
         this.keyFields = normalizeArray(props.keyFields);
@@ -210,6 +216,76 @@ export default class Event {
                     }
                     weekdayIndex = 0;
                 }
+                break;
+            }
+            case 'monthly': {
+                if (attributes && attributes.sameDaySameWeek) {
+                    // Go to the first day of the month
+                    const startOfMonth = from.set({ day: 1 });
+                    // Set the day to the same week day as "from"
+                    const dayOfWeek = startOfMonth.set({
+                        weekday: from.weekday
+                    });
+                    // If the month started after this week day, add a week
+                    let currentWeek =
+                        dayOfWeek < startOfMonth
+                            ? addToDate(dayOfWeek, 'week', 1)
+                            : dayOfWeek;
+
+                    // Get the number of weeks between the first occurrence of this
+                    // week day in the month, and the start date
+                    let weekCount = 1;
+                    while (currentWeek < from) {
+                        currentWeek = addToDate(currentWeek, 'week', 1);
+                        weekCount += 1;
+                    }
+
+                    while (date < end && occurrences < count) {
+                        this.dates.push({
+                            from: date,
+                            to: date.set({
+                                hours: endHour,
+                                minutes: endMinute,
+                                seconds: endSecond
+                            })
+                        });
+
+                        const startOfNextMonth = addToDate(
+                            date,
+                            'month',
+                            interval
+                        ).set({ day: 1 });
+                        const nextDayOfWeek = startOfNextMonth.set({
+                            weekday: from.weekday
+                        });
+                        date =
+                            nextDayOfWeek < startOfNextMonth
+                                ? addToDate(nextDayOfWeek, 'week', 1)
+                                : nextDayOfWeek;
+
+                        for (let i = 1; i < weekCount; i++) {
+                            date = addToDate(date, 'week', 1);
+                        }
+                        occurrences += 1;
+                    }
+                } else {
+                    while (date < end && occurrences < count) {
+                        this.dates.push({
+                            from: date,
+                            to: date.set({
+                                hours: endHour,
+                                minutes: endMinute,
+                                seconds: endSecond
+                            })
+                        });
+
+                        date = addToDate(date, 'month', interval).set({
+                            day: from.day
+                        });
+                        occurrences += 1;
+                    }
+                }
+
                 break;
             }
             default:
