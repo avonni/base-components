@@ -106,9 +106,106 @@ const numberOfUnitsBetweenDates = (unit, start, end) => {
     return interval.count(unit);
 };
 
+const isAllowedDay = (date, allowedDays) => {
+    // Luxon week days start at Monday = 1
+    const normalizedDate = date.weekday % 7;
+    return allowedDays.includes(normalizedDate);
+};
+
+const isAllowedMonth = (date, allowedMonths) => {
+    // Luxon months start at 1
+    return allowedMonths.includes(date.month - 1);
+};
+
+const isAllowedTime = (date, allowedTimeFrames) => {
+    let i = 0;
+    let isAllowed = false;
+    while (!isAllowed && i < allowedTimeFrames.length) {
+        isAllowed = isInTimeFrame(date, allowedTimeFrames[i]);
+        i += 1;
+    }
+    return isAllowed;
+};
+
+const nextAllowedMonth = (
+    startDate,
+    allowedMonths,
+    startNewMonthOnFirstDay = true
+) => {
+    let date = DateTime.fromMillis(startDate.ts);
+    if (!isAllowedMonth(date, allowedMonths)) {
+        // Add a month
+        date = date.plus({ months: 1 });
+        if (startNewMonthOnFirstDay) {
+            date = date.set({ day: 1 });
+        }
+        date = nextAllowedMonth(date, allowedMonths, startNewMonthOnFirstDay);
+    }
+    return date;
+};
+
+const nextAllowedDay = (startDate, allowedMonths, allowedDays) => {
+    let date = DateTime.fromMillis(startDate.ts);
+    if (!isAllowedDay(date, allowedDays)) {
+        // Add a day
+        date = date
+            .plus({ days: 1 })
+            .set({ hour: 0, minute: 0, second: 0, millisecond: 0 });
+        date = nextAllowedDay(date, allowedMonths, allowedDays);
+
+        // If the next day available is another month, make sure the month is allowed
+        if (date.diff(startDate, 'months') > 0) {
+            date = nextAllowedMonth(date, allowedMonths);
+            date = nextAllowedDay(date, allowedMonths, allowedDays);
+        }
+    }
+    return date;
+};
+
+const nextAllowedTime = (
+    startDate,
+    allowedMonths,
+    allowedDays,
+    allowedTimeFrames,
+    unit,
+    span
+) => {
+    let date = DateTime.fromMillis(startDate.ts);
+
+    if (!isAllowedTime(date, allowedTimeFrames)) {
+        // Go to next time slot
+        date = addToDate(date, unit, span);
+        date = nextAllowedTime(
+            date,
+            allowedMonths,
+            allowedDays,
+            allowedTimeFrames,
+            unit,
+            span
+        );
+
+        // If the next time available is in another day, make sure the day is allowed
+        if (date.diff(startDate, 'day') > 0) {
+            date = nextAllowedDay(date, allowedMonths, allowedDays);
+            date = nextAllowedTime(
+                date,
+                allowedMonths,
+                allowedDays,
+                allowedTimeFrames,
+                unit,
+                span
+            );
+        }
+    }
+
+    return date;
+};
+
 export {
     addToDate,
     dateTimeObjectFrom,
-    isInTimeFrame,
+    nextAllowedDay,
+    nextAllowedMonth,
+    nextAllowedTime,
     numberOfUnitsBetweenDates
 };

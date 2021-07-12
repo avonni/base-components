@@ -33,7 +33,9 @@
 import { generateUniqueId } from 'c/utils';
 import { DateTime } from 'c/luxon';
 import {
-    isInTimeFrame,
+    nextAllowedDay,
+    nextAllowedMonth,
+    nextAllowedTime,
     addToDate,
     numberOfUnitsBetweenDates
 } from './dateUtils';
@@ -97,7 +99,13 @@ export default class Header {
         let date = DateTime.fromMillis(this.start.ts);
 
         for (let i = 0; i < iterations; i++) {
-            date = this.nextAllowedMonth(date);
+            // If this is not the first column, we start the month on the first day
+            // Else we want to keep the chosen start day
+            date = nextAllowedMonth(
+                date,
+                this.availableMonths,
+                this.columns.length > 0
+            );
 
             // We don't want to take the day or time of the date into account if the header does not use them.
             // If the unit is "week", we want to start counting the weeks from the first available day, and then ignore the days availability
@@ -106,9 +114,20 @@ export default class Header {
                 unit !== 'year' &&
                 !(unit === 'week' && i > 0)
             ) {
-                date = this.nextAllowedDay(date);
+                date = nextAllowedDay(
+                    date,
+                    this.availableMonths,
+                    this.availableDaysOfTheWeek
+                );
                 if (unit !== 'day' && unit !== 'week') {
-                    date = this.nextAllowedTime(date);
+                    date = nextAllowedTime(
+                        date,
+                        this.availableMonths,
+                        this.availableDaysOfTheWeek,
+                        this.availableTimeFrames,
+                        unit,
+                        span
+                    );
                 }
             }
 
@@ -165,78 +184,6 @@ export default class Header {
         this.cleanEmptyLastColumn();
     }
 
-    isAllowedTime(date) {
-        let i = 0;
-        let isAllowed = false;
-        while (!isAllowed && i < this.availableTimeFrames.length) {
-            isAllowed = isInTimeFrame(date, this.availableTimeFrames[i]);
-            i += 1;
-        }
-        return isAllowed;
-    }
-
-    isAllowedDay(date) {
-        // Luxon week days start at Monday = 1
-        const normalizedDate = date.weekday % 7;
-        return this.availableDaysOfTheWeek.includes(normalizedDate);
-    }
-
-    isAllowedMonth(date) {
-        // Luxon months start at 1
-        return this.availableMonths.includes(date.month - 1);
-    }
-
-    nextAllowedMonth(startDate) {
-        let date = DateTime.fromMillis(startDate.ts);
-        if (!this.isAllowedMonth(date)) {
-            // Add a month
-            date = date.plus({ months: 1 });
-            // If this is not the first column, we start the month on the first day
-            // Else we want to keep the chosen start day
-            if (this.columns.length) {
-                date = date.set({ day: 1 });
-            }
-            date = this.nextAllowedMonth(date);
-        }
-        return date;
-    }
-
-    nextAllowedDay(startDate) {
-        let date = DateTime.fromMillis(startDate.ts);
-        if (!this.isAllowedDay(date)) {
-            // Add a day
-            date = date
-                .plus({ days: 1 })
-                .set({ hour: 0, minute: 0, second: 0, millisecond: 0 });
-            date = this.nextAllowedDay(date);
-
-            // If the next day available is another month, make sure the month is allowed
-            if (date.diff(startDate, 'months') > 0) {
-                date = this.nextAllowedMonth(date);
-                date = this.nextAllowedDay(date);
-            }
-        }
-        return date;
-    }
-
-    nextAllowedTime(startDate) {
-        let date = DateTime.fromMillis(startDate.ts);
-
-        if (!this.isAllowedTime(date)) {
-            // Go to next time slot
-            date = addToDate(date, this.unit, this.span);
-            date = this.nextAllowedTime(date);
-
-            // If the next time available is in another day, make sure the day is allowed
-            if (date.diff(startDate, 'day') > 0) {
-                date = this.nextAllowedDay(date);
-                date = this.nextAllowedTime(date);
-            }
-        }
-
-        return date;
-    }
-
     dateIsBiggerThanEnd(date) {
         const { end, unit } = this;
         let dateUnit;
@@ -259,17 +206,20 @@ export default class Header {
     // If not, remove it.
     cleanEmptyLastColumn() {
         const lastColumn = this.columns[this.columns.length - 1];
-        const nextAllowedDay = this.nextAllowedDay(
-            DateTime.fromMillis(lastColumn.start)
+        const nextDay = nextAllowedDay(
+            DateTime.fromMillis(lastColumn.start),
+            this.availableMonths,
+            this.availableDaysOfTheWeek
         );
-        const nextAllowedMonth = this.nextAllowedMonth(
-            DateTime.fromMillis(lastColumn.start)
+        const nextMonth = nextAllowedMonth(
+            DateTime.fromMillis(lastColumn.start),
+            this.availableMonths
         );
 
         if (
             lastColumn.start > lastColumn.end ||
-            nextAllowedMonth > lastColumn.end ||
-            nextAllowedDay > lastColumn.end
+            nextMonth > lastColumn.end ||
+            nextDay > lastColumn.end
         ) {
             this.columns.splice(-1);
             this.numberOfColumns = this.columns.length;
