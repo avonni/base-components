@@ -62,23 +62,9 @@ export default class Event {
     constructor(props) {
         this.allDay = normalizeBoolean(props.allDay);
         this.color = props.color;
-
         this.schedulerEnd = props.schedulerEnd;
-
-        const from = this.allDay
-            ? dateTimeObjectFrom(props.from).startOf('day')
-            : dateTimeObjectFrom(props.from);
-        this.from =
-            from > props.schedulerStart && from < this.schedulerEnd
-                ? from
-                : props.schedulerStart;
-
-        const to = this.allDay
-            ? addToDate(this.from, 'day', 1)
-            : dateTimeObjectFrom(props.to);
-        this.to =
-            to < this.schedulerEnd && to > this.from ? to : this.schedulerEnd;
-
+        this.from = props.from;
+        this.to = props.to;
         this.iconName = props.iconName;
         this.keyFields = normalizeArray(props.keyFields);
         const recurrence = RECURRENCES.find(

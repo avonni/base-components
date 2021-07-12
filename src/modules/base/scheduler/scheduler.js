@@ -37,7 +37,10 @@ import { normalizeArray, normalizeString } from 'c/utilsPrivate';
 import {
     dateTimeObjectFrom,
     addToDate,
-    numberOfUnitsBetweenDates
+    numberOfUnitsBetweenDates,
+    nextAllowedMonth,
+    nextAllowedDay,
+    nextAllowedTime
 } from './dateUtils';
 import {
     EVENTS_THEMES,
@@ -443,27 +446,62 @@ export default class Scheduler extends LightningElement {
         const duration =
             header &&
             DateTime.fromMillis(columnEnd).diff(header.start).milliseconds;
+        const start = this._referenceHeader.start;
 
         this.events.forEach((event) => {
-            const evt = {
-                ...event,
-                schedulerEnd: this.end,
-                schedulerStart: this.start
-            };
+            const evt = { ...event };
+            evt.schedulerEnd = this.end;
 
-            const computedEvent = new Event(evt);
+            let from = evt.allDay
+                ? dateTimeObjectFrom(evt.from).startOf('day')
+                : dateTimeObjectFrom(evt.from);
+            let to = evt.allDay
+                ? addToDate(from, 'day', 1)
+                : dateTimeObjectFrom(evt.to);
 
-            if (header) {
-                computedEvent.updateWidth({
-                    columns: header.columns,
-                    columnDuration: duration
-                });
+            if (to > from && to > start && from < this.end) {
+                evt.from = from > start ? from : start;
+                evt.to = to < this.end ? to : this.schedulerEnd;
+
+                if (this.containsAllowedDateTimes(evt.from, evt.to)) {
+                    const computedEvent = new Event(evt);
+
+                    if (header) {
+                        computedEvent.updateWidth({
+                            columns: header.columns,
+                            columnDuration: duration
+                        });
+                    }
+
+                    events.push(computedEvent);
+                }
             }
-
-            events.push(computedEvent);
         });
 
         this.computedEvents = events;
+    }
+
+    containsAllowedDateTimes(start, end) {
+        const firstAllowedMonth = nextAllowedMonth(start, this.availableMonths);
+        if (firstAllowedMonth > end) return false;
+
+        const firstAllowedDay = nextAllowedDay(
+            firstAllowedMonth,
+            this.availableMonths,
+            this.availableDaysOfTheWeek
+        );
+        if (firstAllowedDay > end) return false;
+
+        const unit = this.smallestHeader.unit === 'minute' ? 'minute' : 'hour';
+        const firstAllowedTime = nextAllowedTime(
+            firstAllowedDay,
+            this.availableMonths,
+            this.availableDaysOfTheWeek,
+            this.availableTimeFrames,
+            unit,
+            this.smallestHeader.span
+        );
+        return firstAllowedTime < end;
     }
 
     initRows() {

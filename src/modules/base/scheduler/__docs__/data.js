@@ -179,6 +179,7 @@ const events = [
     {
         keyFields: [1, 5],
         name: 'standup',
+        title: 'Dev team standup meeting',
         iconName: 'standard:team_member',
         from: new Date(2021, 11, 13, 9, 30),
         to: new Date(2021, 11, 13, 10),
