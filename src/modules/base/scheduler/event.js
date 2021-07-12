@@ -73,13 +73,6 @@ export default class Event {
             : dateTimeObjectFrom(props.to);
         this.to = this.schedulerEnd < to ? this.schedulerEnd : to;
 
-        this.dates = [
-            {
-                from: this.from,
-                to: this.to
-            }
-        ];
-
         this.iconName = props.iconName;
         this.keyFields = normalizeArray(props.keyFields);
         const recurrence = RECURRENCES.find(
@@ -96,8 +89,16 @@ export default class Event {
                 props.recurrenceEndDate
             );
             this.recurrenceCount = Number(props.recurrenceCount);
+            this.dates = [];
 
             this.computeRecurrence();
+        } else {
+            this.dates = [
+                {
+                    from: this.from,
+                    to: this.to
+                }
+            ];
         }
 
         this.theme = normalizeString(props.theme, {
@@ -120,30 +121,24 @@ export default class Event {
         const attributes = this.recurrenceAttributes;
         const interval =
             attributes && attributes.interval ? attributes.interval : 1;
-        const count = this.recurrenceCount > 1 ? this.recurrenceCount - 1 : 1;
-        const countEnd =
-            this.recurrenceCount &&
-            addToDate(from, recurrence.unit, count * interval);
+        const count = Number.isInteger(this.recurrenceCount)
+            ? this.recurrenceCount
+            : Infinity;
 
-        // If there is a recurrence end or a recurrence count, use the shortest as the end
-        // Else, use the scheduler end
+        // Use the recurrence end date only if it happens before the scheduler end
         let end = endDate && endDate < schedulerEnd ? endDate : schedulerEnd;
-        if (countEnd && countEnd < end) {
-            end = countEnd;
-        }
 
-        let date = addToDate(from, 'day', interval);
+        // Make sure the end time is in the future
+        const endHour = to.hour > from.hour ? to.hour : 23;
+        const endMinute = to.minutes > from.minutes ? to.minutes : 59;
+        const endSecond = to.seconds > from.seconds ? to.seconds : 59;
 
-        switch (this.recurrence.name) {
+        let date = from;
+        let occurrences = 0;
+
+        switch (recurrence.name) {
             case 'daily':
-                while (date <= end) {
-                    // Make sure the end time is in the future
-                    const endHour = to.hour > from.hour ? to.hour : 23;
-                    const endMinute =
-                        to.minutes > from.minutes ? to.minutes : 59;
-                    const endSecond =
-                        to.seconds > from.seconds ? to.seconds : 59;
-
+                while (date <= end && occurrences < this.recurrenceCount) {
                     this.dates.push({
                         from: date,
                         to: date.set({
@@ -153,8 +148,70 @@ export default class Event {
                         })
                     });
                     date = addToDate(date, 'day', interval);
+                    occurrences += 1;
                 }
                 break;
+            case 'weekly': {
+                const weekdays = attributes
+                    ? JSON.parse(
+                          JSON.stringify(normalizeArray(attributes.weekdays))
+                      )
+                    : [];
+
+                let weekdayIndex = 0;
+                if (weekdays.length) {
+                    // Transform 0 into 7 because Luxon's week start on Monday = 1 instead of Sunday = 0
+                    const sundayIndex = weekdays.findIndex((day) => day === 0);
+                    if (sundayIndex >= 0) {
+                        weekdays[sundayIndex] = 7;
+                    }
+                    weekdays.sort();
+
+                    // Set the starting week day
+                    for (let i = 0; i < weekdays.length; i++) {
+                        date = from.set({ weekday: weekdays[i] });
+                        if (date >= from) {
+                            weekdayIndex = i;
+                            break;
+                        }
+                    }
+                } else {
+                    weekdays.push(from.weekday);
+                }
+
+                while (date <= end && occurrences < count) {
+                    while (
+                        weekdayIndex < weekdays.length &&
+                        date <= end &&
+                        occurrences < count
+                    ) {
+                        this.dates.push({
+                            from: date,
+                            to: date.set({
+                                hours: endHour,
+                                minutes: endMinute,
+                                seconds: endSecond
+                            })
+                        });
+
+                        occurrences += 1;
+                        weekdayIndex += 1;
+                        const nextWeekday = date.set({
+                            weekday: weekdays[weekdayIndex]
+                        });
+
+                        if (nextWeekday <= date) {
+                            date = addToDate(date, 'week', interval).set({
+                                weekday: weekdays[0]
+                            });
+                        } else {
+                            date = nextWeekday;
+                        }
+                    }
+                    weekdayIndex = 0;
+                }
+                break;
+            }
             default:
                 break;
         }

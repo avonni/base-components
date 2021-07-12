@@ -119,23 +119,19 @@ const UNITS = ['minute', 'hour', 'day', 'week', 'month', 'year'];
 const RECURRENCES = [
     {
         name: 'daily',
-        unit: 'day',
-        recurrenceAttributes: ['interval']
+        unit: 'day'
     },
     {
         name: 'weekly',
-        unit: 'week',
-        recurrenceAttributes: ['interval', 'weekdays']
+        unit: 'week'
     },
     {
         name: 'monthly',
-        unit: 'month',
-        recurrenceAttributes: ['interval', 'sameDaySameWeek']
+        unit: 'month'
     },
     {
         name: 'yearly',
-        unit: 'year',
-        recurrenceAttributes: ['interval']
+        unit: 'year'
     }
 ];
 

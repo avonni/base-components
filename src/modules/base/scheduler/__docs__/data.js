@@ -178,11 +178,15 @@ const events = [
     },
     {
         keyFields: [1, 5],
-        name: 'daily-standup',
-        title: 'Daily standup',
+        name: 'standup',
+        title: 'Standup',
         from: new Date(2021, 11, 13, 9),
         to: new Date(2021, 11, 13, 9, 30),
-        recurrence: 'daily'
+        recurrence: 'weekly',
+        recurrenceAttributes: {
+            weekdays: [1, 3, 5],
+            interval: 2
+        }
     }
 ];
 
