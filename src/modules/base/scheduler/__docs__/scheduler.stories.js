@@ -249,10 +249,10 @@ Base.args = {
     rows: rows,
     headers: headers,
     visibleSpan: {
-        unit: 'month',
+        unit: 'week',
         span: 3
     },
-    start: new Date(2021, 11, 1),
+    start: new Date(2021, 11, 13),
     availableTimeFrames: ['08:00-11:59', '14:00-16:59'],
     availableDaysOfTheWeek: [1, 2, 3, 4, 5],
     // availableMonths: [1, 4],

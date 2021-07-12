@@ -100,11 +100,11 @@ const headers = [
     //     span: 1,
     //     label: 'y'
     // },
-    {
-        unit: 'month',
-        span: 1,
-        label: 'LLLL'
-    },
+    // {
+    //     unit: 'month',
+    //     span: 1,
+    //     label: 'LLLL'
+    // },
     {
         unit: 'week',
         span: 1,
@@ -114,12 +114,12 @@ const headers = [
         unit: 'day',
         span: 1,
         label: 'ccc dd'
+    },
+    {
+        unit: 'hour',
+        span: 1,
+        label: 'h a'
     }
-    // {
-    //     unit: 'hour',
-    //     span: 1,
-    //     label: 'h a'
-    // }
     // {
     //     unit: 'minute',
     //     span: 30,
@@ -182,7 +182,7 @@ const events = [
         title: 'Standup',
         from: new Date(2021, 11, 13, 9),
         to: new Date(2021, 11, 13, 9, 30),
-        recurrence: 'monthly',
+        recurrence: 'yearly',
         recurrenceAttributes: {
             sameDaySameWeek: true,
             interval: 2

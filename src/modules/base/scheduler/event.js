@@ -143,7 +143,7 @@ export default class Event {
         let occurrences = 0;
 
         switch (recurrence.name) {
-            case 'daily':
+            case 'daily': {
                 while (date <= end && occurrences < this.recurrenceCount) {
                     this.dates.push({
                         from: date,
@@ -157,6 +157,7 @@ export default class Event {
                     occurrences += 1;
                 }
                 break;
+            }
             case 'weekly': {
                 const weekdays = attributes
                     ? JSON.parse(
@@ -219,14 +220,15 @@ export default class Event {
                 break;
             }
             case 'monthly': {
+                // If sameDaySameWeek is true,
+                // the event will be repeated every month, on the same occurrence of the from week day.
+                // For example, monthly, on the third Sunday
                 if (attributes && attributes.sameDaySameWeek) {
-                    // Go to the first day of the month
+                    // Find the first occurrence of the week day (Sunday, Monday, etc.)
                     const startOfMonth = from.set({ day: 1 });
-                    // Set the day to the same week day as "from"
                     const dayOfWeek = startOfMonth.set({
                         weekday: from.weekday
                     });
-                    // If the month started after this week day, add a week
                     let currentWeek =
                         dayOfWeek < startOfMonth
                             ? addToDate(dayOfWeek, 'week', 1)
@@ -250,6 +252,7 @@ export default class Event {
                             })
                         });
 
+                        // Go to the next month of the recurrence
                         const startOfNextMonth = addToDate(
                             date,
                             'month',
@@ -258,16 +261,22 @@ export default class Event {
                         const nextDayOfWeek = startOfNextMonth.set({
                             weekday: from.weekday
                         });
+                        // Set the date to the first occurrence of the week day in the next month
                         date =
                             nextDayOfWeek < startOfNextMonth
                                 ? addToDate(nextDayOfWeek, 'week', 1)
                                 : nextDayOfWeek;
 
+                        // Add the number of weeks needed to get to the right occurrence of this week day in the month
                         for (let i = 1; i < weekCount; i++) {
                             date = addToDate(date, 'week', 1);
                         }
                         occurrences += 1;
                     }
+
+                    // If sameDaySameWeek is false,
+                    // the event will be repeated every month, on the same day number.
+                    // For example, every month, on the 4th
                 } else {
                     while (date < end && occurrences < count) {
                         this.dates.push({
@@ -285,7 +294,22 @@ export default class Event {
                         occurrences += 1;
                     }
                 }
+                break;
+            }
+            case 'yearly': {
+                while (date < end && occurrences < count) {
+                    this.dates.push({
+                        from: date,
+                        to: date.set({
+                            hours: endHour,
+                            minutes: endMinute,
+                            seconds: endSecond
+                        })
+                    });
 
+                    date = addToDate(date, 'year', interval);
+                    occurrences += 1;
+                }
                 break;
             }
             default:
