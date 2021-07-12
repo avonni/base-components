@@ -68,13 +68,64 @@ const DEFAULT_MAX = new Date(new Date(2099, 11, 31).setHours(0, 0, 0, 0));
 const DEFAULT_MIN = new Date(new Date(1900, 0, 1).setHours(0, 0, 0, 0));
 const DEFAULT_DAY_CLASS = 'avonni-date-time-picker__day';
 
+/**
+ * @class
+ * @public
+ * @storyId example-date-time-picker--daily
+ * @descriptor avonni-date-time-picker
+ */
 export default class DateTimePicker extends LightningElement {
+    /**
+     * Help text detailing the purpose and function of the input.
+     * @type {string}
+     * @public
+     */
     @api fieldLevelHelp;
+
+    /**
+     * Text label for the input.
+     * @type {string}
+     * @required
+     * @public
+     */
     @api label;
+
+    /**
+     * Error message to be displayed when the value is missing.
+     * The valueMissing error can be returned when you specify the required attribute for any input type.
+     * @type {string}
+     * @public
+     */
     @api messageWhenValueMissing;
+
+    /**
+     * Specifies the name of an input element.
+     * @type {string}
+     * @public
+     */
     @api name;
+
+    /**
+     * If present, the input field is read-only and cannot be edited by users.
+     * @type {boolean}
+     * @default false
+     * @public
+     */
     @api readOnly = false;
+
+    /**
+     * If present, the input field must be filled out before the form is submitted.
+     * @type {boolean}
+     * @default false
+     * @public
+     */
     @api required = false;
+
+    /**
+     * An array that will be used to determine which date times to be disabled in the calendar.
+     * @type {object}
+     * @public
+     */
     @api disabledDateTimes = [];
 
     _hideLabel;
@@ -114,7 +165,6 @@ export default class DateTimePicker extends LightningElement {
     dayClass = DEFAULT_DAY_CLASS;
     calendarDisabledDates = [];
 
-
     connectedCallback() {
         this._processValue();
         this.selectedTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -139,6 +189,12 @@ export default class DateTimePicker extends LightningElement {
         this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
     }
 
+    /**
+     * If present, hides the label.
+     * @type {boolean}
+     * @default false
+     * @public
+     */
     @api
     get hideLabel() {
         return this._hideLabel;
@@ -148,6 +204,13 @@ export default class DateTimePicker extends LightningElement {
         this._hideLabel = normalizeBoolean(boolean);
     }
 
+    /**
+     * The variant changes the appearance of the time picker.
+     * Accepted variants include daily, weekly, monthly, inline and timeline.
+     * @type {string}
+     * @default daily
+     * @public
+     */
     @api
     get variant() {
         return this._variant;
@@ -175,6 +238,12 @@ export default class DateTimePicker extends LightningElement {
         }
     }
 
+    /**
+     * Specifies the maximum date, which the calendar can show.
+     * @type {object}
+     * @default Date(2099, 11, 31)
+     * @public
+     */
     @api
     get max() {
         return this._max;
@@ -191,6 +260,12 @@ export default class DateTimePicker extends LightningElement {
         }
     }
 
+    /**
+     * Specifies the minimum date, which the calendar can show.
+     * @type {object}
+     * @default Date(1900, 0, 1)
+     * @public
+     */
     @api
     get min() {
         return this._min;
@@ -209,10 +284,20 @@ export default class DateTimePicker extends LightningElement {
         }
     }
 
+    /**
+     * Represents the validity states that an element can be in, with respect to constraint validation.
+     * @type {string}
+     * @public
+     */
     @api get validity() {
         return this._constraint.validity;
     }
 
+    /**
+     * The value of the date selected, which can be a Date object, timestamp, or an ISO8601 formatted string.
+     * @type {string}
+     * @public
+     */
     @api
     get value() {
         return this._value;
@@ -222,6 +307,12 @@ export default class DateTimePicker extends LightningElement {
         this._value = value;
     }
 
+    /**
+     * Start of the time slots. Must be an ISO8601 formatted time string.
+     * @type {string}
+     * @default 08:00
+     * @public
+     */
     @api
     get startTime() {
         return this._startTime;
@@ -239,6 +330,12 @@ export default class DateTimePicker extends LightningElement {
         }
     }
 
+    /**
+     * End of the time slots. Must be an ISO8601 formatted time string.
+     * @type {string}
+     * @default 18:00
+     * @public
+     */
     @api
     get endTime() {
         return this._endTime;
@@ -254,6 +351,12 @@ export default class DateTimePicker extends LightningElement {
         }
     }
 
+    /**
+     * Duration of each time slot. Must be an ISO8601 formatted time string.
+     * @type {string}
+     * @default 00:30
+     * @public
+     */
     @api
     get timeSlotDuration() {
         return this._timeSlotDuration;
@@ -286,6 +389,12 @@ export default class DateTimePicker extends LightningElement {
         }
     }
 
+    /**
+     * Valid values include numeric and 2-digit.
+     * @type {string}
+     * @default numeric
+     * @public
+     */
     @api
     get timeFormatHour() {
         return this._timeFormatHour || undefined;
@@ -297,6 +406,12 @@ export default class DateTimePicker extends LightningElement {
         });
     }
 
+    /**
+     * Determines whether time is displayed as 12-hour.
+     * If false, time displays as 24-hour. The default setting is determined by the user's locale.
+     * @type {boolean}
+     * @public
+     */
     @api
     get timeFormatHour12() {
         return this._timeFormatHour12;
@@ -308,6 +423,12 @@ export default class DateTimePicker extends LightningElement {
         }
     }
 
+    /**
+     * Valid values include numeric and 2-digit.
+     * @type {string}
+     * @default 2-digit
+     * @public
+     */
     @api
     get timeFormatMinute() {
         return this._timeFormatMinute || undefined;
@@ -319,6 +440,11 @@ export default class DateTimePicker extends LightningElement {
         });
     }
 
+    /**
+     * Valid values include numeric and 2-digit.
+     * @type {string}
+     * @public
+     */
     @api
     get timeFormatSecond() {
         return this._timeFormatSecond || undefined;
@@ -330,6 +456,12 @@ export default class DateTimePicker extends LightningElement {
         });
     }
 
+    /**
+     * Valid values include numeric and 2-digit.
+     * @type {string}
+     * @default numeric
+     * @public
+     */
     @api
     get dateFormatDay() {
         return this._dateFormatDay;
@@ -345,6 +477,12 @@ export default class DateTimePicker extends LightningElement {
             this._generateTable();
     }
 
+    /**
+     * Valid values are numeric, 2-digit, long, short or narrow.
+     * @type {string}
+     * @default long
+     * @public
+     */
     @api
     get dateFormatMonth() {
         return this._dateFormatMonth;
@@ -357,6 +495,12 @@ export default class DateTimePicker extends LightningElement {
         });
     }
 
+    /**
+     * Specifies how to display the day of the week. Valid values are narrow, short, or long.
+     * @type {string}
+     * @default short
+     * @public
+     */
     @api
     get dateFormatWeekday() {
         return this._dateFormatWeekday;
@@ -372,6 +516,11 @@ export default class DateTimePicker extends LightningElement {
             this._generateTable();
     }
 
+    /**
+     * Valid values include numeric and 2-digit.
+     * @type {string}
+     * @public
+     */
     @api
     get dateFormatYear() {
         return this._dateFormatYear;
@@ -383,6 +532,12 @@ export default class DateTimePicker extends LightningElement {
         });
     }
 
+    /**
+     * If present, show the end time in each slots.
+     * Ex: 1:00 PM - 1:30 PM
+     * @type {boolean}
+     * @public
+     */
     @api
     get showEndTime() {
         return this._showEndTime;
@@ -392,6 +547,12 @@ export default class DateTimePicker extends LightningElement {
         this._showEndTime = normalizeBoolean(boolean);
     }
 
+    /**
+     * If present, show the disabled dates in the date time picker.
+     * Ex: 1:00 PM - 1:30 PM
+     * @type {boolean}
+     * @public
+     */
     @api
     get showDisabledDates() {
         return this._showDisabledDates;
@@ -405,6 +566,12 @@ export default class DateTimePicker extends LightningElement {
         }
     }
 
+    /**
+     * Valid values include radio and checkbox.
+     * @type {string}
+     * @default radio
+     * @public
+     */
     @api
     get type() {
         return this._type;
@@ -421,6 +588,12 @@ export default class DateTimePicker extends LightningElement {
         }
     }
 
+    /**
+     * If present, show the time zone.
+     * @type {boolean}
+     * @default false
+     * @public
+     */
     @api
     get showTimeZone() {
         return this._showTimeZone;
@@ -430,6 +603,12 @@ export default class DateTimePicker extends LightningElement {
         this._showTimeZone = normalizeBoolean(value);
     }
 
+    /**
+     * If present, hide next, previous and today buttons.
+     * @type {boolean}
+     * @default false
+     * @public
+     */
     @api
     get hideNavigation() {
         return this._hideNavigation;
@@ -439,6 +618,12 @@ export default class DateTimePicker extends LightningElement {
         this._hideNavigation = normalizeBoolean(value);
     }
 
+    /**
+     * If present, hide the date picker button.
+     * @type {boolean}
+     * @default false
+     * @public
+     */
     @api
     get hideDatePicker() {
         return this._hideDatePicker;
@@ -458,6 +643,12 @@ export default class DateTimePicker extends LightningElement {
         return this._constraintApi;
     }
 
+    /**
+     * If present, the date time picker is disabled and users cannot interact with it.
+     * @type {boolean}
+     * @default false
+     * @public
+     */
     @api
     get disabled() {
         return this._disabled;
@@ -471,11 +662,22 @@ export default class DateTimePicker extends LightningElement {
         }
     }
 
+    /**
+     * Checks if the input is valid.
+     * @returns {boolean} Indicates whether the element meets all constraint validations.
+     * @public
+     */
     @api
     checkValidity() {
         return this._constraint.checkValidity();
     }
 
+    /**
+     * Displays the error messages and returns false if the input is invalid.
+     * If the input is valid, reportValidity() clears displayed error messages and returns true.
+     * @returns {boolean} - The validity status of the input fields.
+     * @public
+     */
     @api
     reportValidity() {
         return this._constraint.reportValidity((message) => {
@@ -483,11 +685,22 @@ export default class DateTimePicker extends LightningElement {
         });
     }
 
+    /**
+     * Sets a custom error message to be displayed when a form is submitted.
+     * @param {string} message - The string that describes the error.
+     * If message is an empty string, the error message is reset.
+     * @public
+     */
     @api
     setCustomValidity(message) {
         this._constraint.setCustomValidity(message);
     }
 
+    /**
+     * Displays error messages on invalid fields.
+     * An invalid field fails at least one constraint validation and returns false when checkValidity() is called.
+     * @public
+     */
     @api
     showHelpMessageIfInvalid() {
         this.reportValidity();
@@ -497,6 +710,9 @@ export default class DateTimePicker extends LightningElement {
         if (datePicker) datePicker.reportValidity();
     }
 
+    /**
+     * Pushes all date included in disabled-date-times to calendar-disabled-dates to be disabled on the calendar.
+     */
     _disableMonthlyCalendarDates() {
         this.disabledDateTimes.forEach((disabledDateTime) => {
             const type = typeof disabledDateTime;
@@ -509,7 +725,11 @@ export default class DateTimePicker extends LightningElement {
         });
     }
 
-    // Returns a date object or null
+    /**
+     * Pushes all date included in disabled-date-times to calendar-disabled-dates to be disabled on the calendar.
+     * @param {string} value The value of the date selected.
+     * @returns Returns a date object or null.
+     */
     _processDate(value) {
         let date = null;
         if (value instanceof Date) date = value;
@@ -544,6 +764,9 @@ export default class DateTimePicker extends LightningElement {
         }
     }
 
+    /**
+     * Time slots initialization.
+     */
     _initTimeSlots() {
         const timeSlots = [];
         let currentTime = this.startTime;
@@ -562,6 +785,9 @@ export default class DateTimePicker extends LightningElement {
         this._timeSlots = timeSlots;
     }
 
+    /**
+     * Time format initialization.
+     */
     _initTimeFormat() {
         if (
             !this.timeFormatHour &&
@@ -573,6 +799,9 @@ export default class DateTimePicker extends LightningElement {
         }
     }
 
+    /**
+     * If variant is weekly, sets the first weekday.
+     */
     _setFirstWeekDay(date) {
         if (this.variant === 'weekly') {
             const dateDay = date.getDate() - date.getDay();
@@ -583,6 +812,9 @@ export default class DateTimePicker extends LightningElement {
         }
     }
 
+    /**
+     * Generates table depending on the variant.
+     */
     _generateTable() {
         const processedTable = [];
         const daysDisplayed = this.variant === 'weekly' ? 7 : 1;
@@ -690,6 +922,11 @@ export default class DateTimePicker extends LightningElement {
         });
     }
 
+    /**
+     * Generates table depending on the variant.
+     * @param {object} time timestamp
+     * @returns {boolean} returns false if selection === time.
+     */
     _isSelected(time) {
         const selection = this._selectedDayTime;
 
@@ -698,6 +935,11 @@ export default class DateTimePicker extends LightningElement {
             : selection === time;
     }
 
+    /**
+     * Generates table depending on the variant.
+     * @param {object} dayObject
+     * @returns {boolean} true if disabled, false if not.
+     */
     _isDisabled(dayObject) {
         // Remove time from the date object
         const day = new Date(new Date(dayObject).setHours(0, 0, 0, 0));
@@ -713,6 +955,10 @@ export default class DateTimePicker extends LightningElement {
         );
     }
 
+    /**
+     * Returns an array of all the disabled date time.
+     * @type {array}
+     */
     get _disabledFullDateTimes() {
         let dateTimes = [];
 
@@ -725,6 +971,10 @@ export default class DateTimePicker extends LightningElement {
         return dateTimes;
     }
 
+    /**
+     * Returns an array of all the disabled weekdays.
+     * @type {array}
+     */
     get _disabledWeekDays() {
         let dates = [];
 
@@ -737,6 +987,10 @@ export default class DateTimePicker extends LightningElement {
         return dates;
     }
 
+    /**
+     * Returns an array of all the disabled monthdays.
+     * @type {array}
+     */
     get _disabledMonthDays() {
         let dates = [];
 
@@ -749,6 +1003,10 @@ export default class DateTimePicker extends LightningElement {
         return dates;
     }
 
+    /**
+     * Returns a string with the date range depending on if variant is weekly or not.
+     * @type {string}
+     */
     get currentDateRangeString() {
         const options = {
             month: this.dateFormatMonth,
@@ -768,34 +1026,66 @@ export default class DateTimePicker extends LightningElement {
             : `${firstWeekDay}, ${firstDay}`;
     }
 
+    /**
+     * Returns first weekday in an ISOString format.
+     * @type {ISOstring}
+     */
     get firstWeekDayToString() {
         return this.firstWeekDay.toISOString();
     }
 
+    /**
+     * Returns min in an ISOString format.
+     * @type {ISOstring}
+     */
     get minToString() {
         return this.min.toISOString();
     }
 
+    /**
+     * Returns max in an ISOString format.
+     * @type {ISOstring}
+     */
     get maxToString() {
         return this.max.toISOString();
     }
 
+    /**
+     * Returns true if the first weekday is smaller than min. It disables the prev button.
+     * @type {boolean}
+     */
     get prevButtonIsDisabled() {
         return this.firstWeekDay <= this.min;
     }
 
+    /**
+     * Returns true if the last weekday is bigger than min. It disables the next button.
+     * @type {boolean}
+     */
     get nextButtonIsDisabled() {
         return this.lastWeekDay >= this.max;
     }
 
+    /**
+     * Returns true if every day is disabled. It disables the entire period.
+     * @type {boolean}
+     */
     get entirePeriodIsDisabled() {
         return this.table.every((day) => day.disabled === true);
     }
 
+    /**
+     * Returns true if variant is timeline.
+     * @type {boolean}
+     */
     get isTimeline() {
         return this.variant === 'timeline';
     }
 
+    /**
+     * Returns true if variant is monthly.
+     * @type {boolean}
+     */
     get isMonthly() {
         return this.variant === 'monthly';
     }
@@ -871,7 +1161,13 @@ export default class DateTimePicker extends LightningElement {
 
         // Refresh table to show selected time slot
         this._generateTable();
-
+        /**
+         * @event
+         * @name change
+         * The event fired when the value changed.
+         * @param {string} value The date time value.
+         * @public
+         */
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
@@ -881,14 +1177,14 @@ export default class DateTimePicker extends LightningElement {
                     name: this.name
                 }
             })
-        );     
+        );
     }
 
     handleBlur() {
         this.interactingState.leave();
     }
 
-    handleFocus(){
+    handleFocus() {
         this.interactingState.enter();
     }
 }
