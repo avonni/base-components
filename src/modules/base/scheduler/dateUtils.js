@@ -201,8 +201,43 @@ const nextAllowedTime = (
     return date;
 };
 
+const containsAllowedDateTimes = (
+    start,
+    end,
+    allowedMonths,
+    allowedDays,
+    allowedTimeFrames,
+    smallestHeader
+) => {
+    const firstAllowedMonth = nextAllowedMonth(start, allowedMonths);
+    if (firstAllowedMonth > end) return false;
+
+    const firstAllowedDay = nextAllowedDay(
+        firstAllowedMonth,
+        allowedMonths,
+        allowedDays
+    );
+    if (firstAllowedDay > end) return false;
+
+    if (smallestHeader.unit === 'minute' || smallestHeader.unit === 'hour') {
+        const unit = smallestHeader.unit === 'minute' ? 'minute' : 'hour';
+        const firstAllowedTime = nextAllowedTime(
+            firstAllowedDay,
+            allowedMonths,
+            allowedDays,
+            allowedTimeFrames,
+            unit,
+            smallestHeader.span
+        );
+        return firstAllowedTime < end;
+    }
+
+    return true;
+};
+
 export {
     addToDate,
+    containsAllowedDateTimes,
     dateTimeObjectFrom,
     nextAllowedDay,
     nextAllowedMonth,

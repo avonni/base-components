@@ -37,10 +37,7 @@ import { normalizeArray, normalizeString } from 'c/utilsPrivate';
 import {
     dateTimeObjectFrom,
     addToDate,
-    numberOfUnitsBetweenDates,
-    nextAllowedMonth,
-    nextAllowedDay,
-    nextAllowedTime
+    numberOfUnitsBetweenDates
 } from './dateUtils';
 import {
     EVENTS_THEMES,
@@ -439,69 +436,37 @@ export default class Scheduler extends LightningElement {
     }
 
     initEvents() {
+        if (!this.computedHeaders.length) return;
+
         const events = [];
         const header = this.smallestHeader;
-        const columnEnd =
-            header && addToDate(header.start, header.unit, header.span) - 1;
-        const duration =
-            header &&
-            DateTime.fromMillis(columnEnd).diff(header.start).milliseconds;
+        const columnEnd = addToDate(header.start, header.unit, header.span) - 1;
+        const duration = DateTime.fromMillis(columnEnd).diff(header.start)
+            .milliseconds;
         const start = this._referenceHeader.start;
 
-        this.events.forEach((event) => {
-            const evt = { ...event };
-            evt.schedulerEnd = this.end;
+        this.events.forEach((evt) => {
+            const event = { ...evt };
+            event.schedulerEnd = this.end;
+            event.schedulerStart = start;
+            event.availableMonths = this.availableMonths;
+            event.availableDaysOfTheWeek = this.availableDaysOfTheWeek;
+            event.availableTimeFrames = this.availableTimeFrames;
+            event.smallestHeader = this.smallestHeader;
 
-            let from = evt.allDay
-                ? dateTimeObjectFrom(evt.from).startOf('day')
-                : dateTimeObjectFrom(evt.from);
-            let to = evt.allDay
-                ? addToDate(from, 'day', 1)
-                : dateTimeObjectFrom(evt.to);
+            const computedEvent = new Event(event);
 
-            if (to > from && to > start && from < this.end) {
-                evt.from = from > start ? from : start;
-                evt.to = to < this.end ? to : this.schedulerEnd;
+            if (computedEvent.dates.length) {
+                computedEvent.updateWidth({
+                    columns: header.columns,
+                    columnDuration: duration
+                });
 
-                if (this.containsAllowedDateTimes(evt.from, evt.to)) {
-                    const computedEvent = new Event(evt);
-
-                    if (header) {
-                        computedEvent.updateWidth({
-                            columns: header.columns,
-                            columnDuration: duration
-                        });
-                    }
-
-                    events.push(computedEvent);
-                }
+                events.push(computedEvent);
             }
         });
 
         this.computedEvents = events;
-    }
-
-    containsAllowedDateTimes(start, end) {
-        const firstAllowedMonth = nextAllowedMonth(start, this.availableMonths);
-        if (firstAllowedMonth > end) return false;
-
-        const firstAllowedDay = nextAllowedDay(
-            firstAllowedMonth,
-            this.availableMonths,
-            this.availableDaysOfTheWeek
-        );
-        if (firstAllowedDay > end) return false;
-
-        const unit = this.smallestHeader.unit === 'minute' ? 'minute' : 'hour';
-        const firstAllowedTime = nextAllowedTime(
-            firstAllowedDay,
-            this.availableMonths,
-            this.availableDaysOfTheWeek,
-            this.availableTimeFrames,
-            unit,
-            this.smallestHeader.span
-        );
-        return firstAllowedTime < end;
     }
 
     initRows() {

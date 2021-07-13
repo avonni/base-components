@@ -35,7 +35,11 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utilsPrivate';
-import { addToDate, dateTimeObjectFrom } from './dateUtils';
+import {
+    addToDate,
+    containsAllowedDateTimes,
+    dateTimeObjectFrom
+} from './dateUtils';
 import { RECURRENCES, EVENTS_THEMES } from './defaults';
 
 /**
@@ -60,17 +64,36 @@ import { RECURRENCES, EVENTS_THEMES } from './defaults';
  */
 export default class Event {
     constructor(props) {
-        this.allDay = normalizeBoolean(props.allDay);
-        this.color = props.color;
-        this.schedulerEnd = props.schedulerEnd;
-        this.from = props.from;
-        this.to = props.to;
-        this.iconName = props.iconName;
-        this.keyFields = normalizeArray(props.keyFields);
         const recurrence = RECURRENCES.find(
             (recurrenceObject) => recurrenceObject.name === props.recurrence
         );
 
+        this.allDay = normalizeBoolean(props.allDay);
+        this.availableMonths = props.availableMonths;
+        this.availableDaysOfTheWeek = props.availableDaysOfTheWeek;
+        this.availableTimeFrames = props.availableTimeFrames;
+        this.color = props.color;
+        this.schedulerEnd = props.schedulerEnd;
+        this.schedulerStart = props.schedulerStart;
+        this.smallestHeader = props.smallestHeader;
+
+        const from = this.allDay
+            ? dateTimeObjectFrom(props.from).startOf('day')
+            : dateTimeObjectFrom(props.from);
+        const to = this.allDay
+            ? addToDate(from, 'day', 1)
+            : dateTimeObjectFrom(props.to);
+
+        this.from =
+            recurrence || from > this.schedulerStart
+                ? from
+                : this.schedulerStart;
+        this.to = recurrence || to < this.schedulerEnd ? to : this.schedulerEnd;
+
+        this.iconName = props.iconName;
+        this.keyFields = normalizeArray(props.keyFields);
+
+        this.dates = [];
         if (recurrence) {
             this.recurrence = recurrence;
             this.recurrenceAttributes =
@@ -81,16 +104,10 @@ export default class Event {
                 props.recurrenceEndDate
             );
             this.recurrenceCount = Number(props.recurrenceCount);
-            this.dates = [];
 
             this.computeRecurrence();
         } else {
-            this.dates = [
-                {
-                    from: this.from,
-                    to: this.to
-                }
-            ];
+            this.addDate(this.from, this.to);
         }
 
         this.theme = normalizeString(props.theme, {
@@ -108,8 +125,79 @@ export default class Event {
         return this.to.diff(this.from).milliseconds;
     }
 
+    addDate(start, end) {
+        const { schedulerEnd, schedulerStart } = this;
+        const computedEnd = end || this.computeOccurenceEnd(start);
+
+        if (
+            (start < schedulerStart && computedEnd < schedulerStart) ||
+            (start > schedulerEnd && computedEnd > schedulerEnd)
+        )
+            return;
+
+        const containsAllowedTimes = containsAllowedDateTimes(
+            start,
+            computedEnd,
+            this.availableMonths,
+            this.availableDaysOfTheWeek,
+            this.availableTimeFrames,
+            this.smallestHeader
+        );
+
+        if (containsAllowedTimes) {
+            this.dates.push({
+                from: start,
+                to: computedEnd
+            });
+        }
+    }
+
+    computeOccurenceEnd(start) {
+        const { from, to, recurrence, recurrenceAttributes } = this;
+        let end;
+
+        switch (recurrence.name) {
+            case 'weekly': {
+                // If weekdays are given, the event will span on one day
+                // Else, the event can span on several days
+                const weekdays =
+                    recurrenceAttributes &&
+                    recurrenceAttributes.weekdays &&
+                    recurrenceAttributes.weekdays.length;
+
+                end = start.set({
+                    weekday: weekdays ? start.weekday : to.weekday,
+                    hours: to.hour,
+                    minutes: to.minute,
+                    seconds: to.second
+                });
+                break;
+            }
+            case 'monthly':
+                end = to.set({
+                    month: start.month,
+                    year: start.year
+                });
+                break;
+            case 'yearly':
+                end = to.set({
+                    year: start.year
+                });
+                break;
+            default:
+                // The event can only span on one day, even if "from" and "to" are on different dates
+                end = start.set({
+                    hours: to.hour > from.hour ? to.hour : 23,
+                    minutes: to.minute > from.minute ? to.minute : 59,
+                    seconds: to.second > from.second ? to.second : 59
+                });
+                break;
+        }
+        return end;
+    }
+
     computeRecurrence() {
-        const { recurrence, to, from, schedulerEnd } = this;
+        const { recurrence, from, schedulerEnd } = this;
         const endDate = this.recurrenceEndDate;
         const attributes = this.recurrenceAttributes;
         const interval =
@@ -121,36 +209,27 @@ export default class Event {
         // Use the recurrence end date only if it happens before the scheduler end
         let end = endDate && endDate < schedulerEnd ? endDate : schedulerEnd;
 
-        // Make sure the end time is in the future
-        const endHour = to.hour > from.hour ? to.hour : 23;
-        const endMinute = to.minutes > from.minutes ? to.minutes : 59;
-        const endSecond = to.seconds > from.seconds ? to.seconds : 59;
-
         let date = from;
         let occurrences = 0;
 
         switch (recurrence.name) {
             case 'daily': {
-                while (date <= end && occurrences < this.recurrenceCount) {
-                    this.dates.push({
-                        from: date,
-                        to: date.set({
-                            hours: endHour,
-                            minutes: endMinute,
-                            seconds: endSecond
-                        })
-                    });
+                while (date <= end && occurrences < count) {
+                    this.addDate(date);
                     date = addToDate(date, 'day', interval);
                     occurrences += 1;
                 }
                 break;
             }
             case 'weekly': {
-                const weekdays = attributes
-                    ? JSON.parse(
-                          JSON.stringify(normalizeArray(attributes.weekdays))
-                      )
-                    : [];
+                const weekdays =
+                    attributes && attributes.weekdays
+                        ? JSON.parse(
+                              JSON.stringify(
+                                  normalizeArray(attributes.weekdays)
+                              )
+                          )
+                        : [];
 
                 let weekdayIndex = 0;
                 if (weekdays.length) {
@@ -179,27 +258,20 @@ export default class Event {
                         date <= end &&
                         occurrences < count
                     ) {
-                        this.dates.push({
-                            from: date,
-                            to: date.set({
-                                hours: endHour,
-                                minutes: endMinute,
-                                seconds: endSecond
-                            })
-                        });
-
+                        this.addDate(date);
                         occurrences += 1;
                         weekdayIndex += 1;
-                        const nextWeekday = date.set({
+
+                        const nextStart = date.set({
                             weekday: weekdays[weekdayIndex]
                         });
 
-                        if (nextWeekday <= date) {
+                        if (nextStart <= date) {
                             date = addToDate(date, 'week', interval).set({
                                 weekday: weekdays[0]
                             });
                         } else {
-                            date = nextWeekday;
+                            date = nextStart;
                         }
                     }
                     weekdayIndex = 0;
@@ -230,14 +302,7 @@ export default class Event {
                     }
 
                     while (date < end && occurrences < count) {
-                        this.dates.push({
-                            from: date,
-                            to: date.set({
-                                hours: endHour,
-                                minutes: endMinute,
-                                seconds: endSecond
-                            })
-                        });
+                        this.addDate(date);
 
                         // Go to the next month of the recurrence
                         const startOfNextMonth = addToDate(
@@ -266,15 +331,7 @@ export default class Event {
                     // For example, every month, on the 4th
                 } else {
                     while (date < end && occurrences < count) {
-                        this.dates.push({
-                            from: date,
-                            to: date.set({
-                                hours: endHour,
-                                minutes: endMinute,
-                                seconds: endSecond
-                            })
-                        });
-
+                        this.addDate(date);
                         date = addToDate(date, 'month', interval).set({
                             day: from.day
                         });
@@ -285,15 +342,7 @@ export default class Event {
             }
             case 'yearly': {
                 while (date < end && occurrences < count) {
-                    this.dates.push({
-                        from: date,
-                        to: date.set({
-                            hours: endHour,
-                            minutes: endMinute,
-                            seconds: endSecond
-                        })
-                    });
-
+                    this.addDate(date);
                     date = addToDate(date, 'year', interval);
                     occurrences += 1;
                 }
@@ -305,9 +354,14 @@ export default class Event {
     }
 
     updateWidth({ columnDuration, columns }) {
+        if (!this.dates.length) return;
+
+        const from = this.dates[0].from;
+        const to = this.dates[0].to;
+
         // Find the column where the event starts
         let i = columns.findIndex((column) => {
-            return column.end > this.from;
+            return column.end > from;
         });
 
         if (i < 0) return;
@@ -316,9 +370,9 @@ export default class Event {
 
         // If the event starts in the middle of a column,
         // add only the appropriate width in the first column
-        if (columns[i].start < this.from) {
+        if (columns[i].start < from) {
             const columnEnd = dateTimeObjectFrom(columns[i].end);
-            const eventDurationLeft = columnEnd.diff(this.from).milliseconds;
+            const eventDurationLeft = columnEnd.diff(from).milliseconds;
             width += (eventDurationLeft * 100) / columnDuration;
             this.offsetLeft = 100 - width;
             i += 1;
@@ -326,16 +380,16 @@ export default class Event {
 
         // Add the width of the columns completely filled by the event
         while (i < columns.length) {
-            if (columns[i].end > this.to) break;
+            if (columns[i].end > to) break;
             width += 100;
             i += 1;
         }
 
         // If the event ends in the middle of a column,
         // add the remaining width
-        if (columns[i] && columns[i].start < this.to) {
+        if (columns[i] && columns[i].start < to) {
             const columnStart = dateTimeObjectFrom(columns[i].start);
-            const eventDurationLeft = this.to.diff(columnStart).milliseconds;
+            const eventDurationLeft = to.diff(columnStart).milliseconds;
             width += (eventDurationLeft * 100) / columnDuration;
         }
 
