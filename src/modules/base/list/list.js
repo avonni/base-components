@@ -74,6 +74,7 @@ export default class List extends LightningElement {
     computedItems = [];
     menuRole;
     itemRole;
+    denyItemClick = false;
 
     @api
     get divider() {
@@ -285,6 +286,9 @@ export default class List extends LightningElement {
     }
 
     dragStart(event) {
+        // Reset denyItemClick attribute on item touch
+        this.denyItemClick = false;
+
         // Stop dragging if the click was on a button menu
         if (
             !this.sortable ||
@@ -293,6 +297,9 @@ export default class List extends LightningElement {
                 !event.target.classList.contains('draggable-element'))
         )
             return;
+
+        // Deny itemclick event dispatch on drag
+        this.denyItemClick = true;
 
         this._itemElements = Array.from(
             this.template.querySelectorAll('.sortable-item')
@@ -448,6 +455,7 @@ export default class List extends LightningElement {
     handleItemClick(event) {
         if (
             (this.sortable && !this.sortableIconDragOnly) ||
+            this.denyItemClick ||
             event.target.tagName.startsWith('LIGHTNING') ||
             event.target.tagName === 'A'
         )
