@@ -120,7 +120,6 @@ export default class ActivityTimelineItem extends LightningElement {
     @api loadingStateAlternativeText = DEFAULT_LOADING_TEXT;
     /**
      * Actions object sent from Activity Timeline
-     * @public
      * @type {object[]}
      * @name actions
      */

@@ -3,14 +3,9 @@
  */
 
 /**
- * Modal title.
+ * Modal dialog
  * @memberof slots
- * @name title
- */
-/**
- * Modal footer.
- * @memberof slots
- * @name footer
+ * @name default
  */
 
 /**
