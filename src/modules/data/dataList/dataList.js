@@ -66,7 +66,7 @@ const LIST_ITEM_DIVIDERS = {
  * @property {string[]} valid   - The valid popover positions.
  * @property {string}   default - The default popover position.
  */
-const POPOVER_POSITION = {
+const POPOVER_POSITIONS = {
     valid: ['bottom', 'left', 'right'],
     default: 'bottom'
 };
@@ -111,7 +111,7 @@ export default class AvonniDataListBasic extends LightningElement {
     _data = [];
     _fields = [];
     _divider = LIST_ITEM_DIVIDERS.default;
-    _popoverPosition = POPOVER_POSITION.default;
+    _popoverPosition = POPOVER_POSITIONS.default;
     _sortable = false;
     _sortableIconPosition = ICON_POSITIONS.default;
 
@@ -223,8 +223,8 @@ export default class AvonniDataListBasic extends LightningElement {
 
     set popoverPosition(value) {
         this._popoverPosition = normalizeString(value, {
-            fallbackValue: POPOVER_POSITION.default,
-            validValues: POPOVER_POSITION.valid
+            fallbackValue: POPOVER_POSITIONS.default,
+            validValues: POPOVER_POSITIONS.valid
         });
     }
 
