@@ -256,5 +256,6 @@ Base.args = {
     availableTimeFrames: ['08:00-11:59', '14:00-16:59'],
     availableDaysOfTheWeek: [1, 2, 3, 4, 5],
     // availableMonths: [1, 4],
-    events: events
+    events: events,
+    eventsTheme: 'transparent'
 };

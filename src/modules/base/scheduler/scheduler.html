@@ -103,14 +103,15 @@
                                         <!-- Events -->
                                         <div
                                             key={generateKey}
-                                            class={cell.class}
-                                            data-width={cell.event.width}
+                                            class={cell.event.wrapperClass}
                                             data-name={cell.event.name}
-                                            data-offset-left={cell.event.offsetLeft}
+                                            aria-hidden={cell.hidden}
+                                            style={cell.event.wrapperStyle}
                                         >
                                             <div
-                                                class="slds-theme_shade slds-p-around_xx-small scheduler__event-title slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate"
+                                                class={cell.event.class}
                                                 title={cell.event.title}
+                                                style={cell.event.style}
                                             >
                                                 <lightning-icon
                                                     if:true={cell.event.iconName}

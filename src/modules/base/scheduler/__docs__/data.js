@@ -165,7 +165,7 @@ const events = [
         name: 'create-mockup',
         title: 'Create mockup',
         iconName: 'utility:brush',
-        from: new Date(2021, 11, 20, 14),
+        from: new Date(2021, 11, 20, 7),
         to: new Date(2021, 11, 22, 10, 30)
     },
     {
@@ -182,12 +182,14 @@ const events = [
         title: 'Dev team standup meeting',
         iconName: 'standard:team_member',
         from: new Date(2021, 11, 13, 9, 30),
-        to: new Date(2021, 11, 14, 10),
+        to: new Date(2021, 11, 14, 10, 30),
         recurrence: 'weekly',
         // recurrenceCount: 3,
         recurrenceAttributes: {
             weekdays: [1, 3, 5]
-        }
+        },
+        color: '#300561',
+        theme: 'line'
     }
 ];
 

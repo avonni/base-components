@@ -42,7 +42,47 @@
     position: static;
 }
 
-.scheduler__event-title {
+.scheduler__event-wrapper[aria-hidden='true'] {
+    visibility: hidden;
+}
+
+.scheduler__event {
     width: 100%;
-    border: 1px solid #dddbda;
+}
+
+.scheduler__event_transparent {
+    border-left-width: 3px;
+    border-left-style: solid;
+}
+
+.scheduler__event_rounded {
+    border-radius: var(--lwc-borderRadiusLarge, 0.5rem);
+}
+
+.scheduler__event_hollow {
+    border-width: 2px;
+    border-style: solid;
+    border-radius: var(--lwc-borderRadiusMedium, 0.25rem);
+}
+
+.scheduler__event_line {
+    border-top-width: 5px;
+    border-top-style: solid;
+}
+.scheduler__event_line::before,
+.scheduler__event_line::after {
+    content: '';
+    border-color: inherit;
+    border-style: solid;
+    border-radius: 2px;
+    border-width: 2px;
+    position: absolute;
+    top: -4px;
+    height: 13px;
+}
+.scheduler__event_line::before {
+    left: 0;
+}
+.scheduler__event_line::after {
+    right: 0;
 }

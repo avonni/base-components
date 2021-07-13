@@ -83,7 +83,6 @@ export default class Scheduler extends LightningElement {
     renderedCallback() {
         this.updateHeadersStyle();
         this.updateBodyStyle();
-        this.updateEventsStyle();
     }
 
     @api
@@ -453,6 +452,7 @@ export default class Scheduler extends LightningElement {
             event.availableDaysOfTheWeek = this.availableDaysOfTheWeek;
             event.availableTimeFrames = this.availableTimeFrames;
             event.smallestHeader = this.smallestHeader;
+            event.theme = event.theme || this.eventsTheme;
 
             const computedEvent = new Event(event);
 
@@ -470,6 +470,7 @@ export default class Scheduler extends LightningElement {
     }
 
     initRows() {
+        let colorIndex = 0;
         this.computedRows = this.rows.map((row) => {
             const rowKey = row[this.rowsKeyField];
             const events = [];
@@ -478,10 +479,18 @@ export default class Scheduler extends LightningElement {
                 if (isInRow) events.push(event);
             });
 
-            return new Row({
+            if (!this.palette[colorIndex]) {
+                colorIndex = 0;
+            }
+
+            const computedRow = new Row({
                 key: rowKey,
+                color: this.palette[colorIndex],
                 events: events
             });
+
+            colorIndex += 1;
+            return computedRow;
         });
 
         this.updateRowColumns();
@@ -499,20 +508,6 @@ export default class Scheduler extends LightningElement {
         const cells = this.template.querySelectorAll('tbody td');
         cells.forEach((cell) => {
             cell.style.width = `${this.cellWidth}%`;
-        });
-    }
-
-    updateEventsStyle() {
-        // Give the events their width
-        const events = this.template.querySelectorAll('.scheduler__event');
-        events.forEach((event) => {
-            const percentWidth = event.dataset.width;
-            const marginLeft = event.dataset.offsetLeft;
-            // Since the cell border is not included in the %,
-            // we add 1px per cell crossed by the event
-            const borderWidth = Math.floor(percentWidth / 100);
-            event.style.width = `calc(${percentWidth}% + ${borderWidth}px`;
-            event.style.marginLeft = `${marginLeft}%`;
         });
     }
 

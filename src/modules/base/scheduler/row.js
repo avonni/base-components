@@ -33,12 +33,9 @@
 export default class Row {
     constructor(props) {
         this.key = props.key;
+        this.color = props.color;
         this.columns = [];
         this.events = props.events;
-    }
-
-    get eventClass() {
-        return 'slds-p-vertical_xx-small slds-grid slds-grid_vertical-align-center scheduler__event slds-is-relative';
     }
 
     generateColumns(headerColumns) {
@@ -52,6 +49,9 @@ export default class Row {
         });
 
         this.events.forEach((event) => {
+            if (!event.color) {
+                event.color = this.color;
+            }
             // Create one event for each occurrence
             event.dates.forEach((date) => {
                 let i = columns.findIndex((column) => {
@@ -60,8 +60,7 @@ export default class Row {
                 if (i > -1) {
                     // The event will be visible in the first column
                     columns[i].events.push({
-                        event,
-                        class: this.eventClass
+                        event
                     });
 
                     i += 1;
@@ -70,7 +69,7 @@ export default class Row {
                     while (i < columns.length && date.to > columns[i].end) {
                         columns[i].events.push({
                             event,
-                            class: this.eventClass.concat(' slds-hidden')
+                            hidden: true
                         });
                         i += 1;
                     }
