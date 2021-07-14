@@ -103,14 +103,14 @@ const DEFAULT_COLORS = [
     '#b85d0d'
 ];
 
+const DEFAULT_MESSAGE_WHEN_BAD_INPUT = 'Please ensure value is correct';
+
 /**
  * @class
  * @descriptor avonni-color-picker
  * @example example-color-picker--standard
  * @public
  */
-const DEFAULT_MESSAGE_WHEN_BAD_INPUT = 'Please ensure value is correct';
-
 export default class ColorPicker extends LightningElement {
     /**
      * Specifies a shortcut key to activate or focus an element.
