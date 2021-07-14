@@ -69,8 +69,25 @@ const DEFAULT_TILE_WIDTH = 20
 const DEFAULT_TILE_HEIGHT = 20
 const DEFAULT_COLUMNS = 7
 
+/**
+ * @class
+ * @descriptor avonni-color-palette
+ * @example example-color-gradient--base
+ * @public
+ */
 export default class ColorPalette extends LightningElement {
+    /**
+     * Specifies the value of an input element.
+     * @public
+     * @type {string}
+     */
     @api value;
+    /**
+     * Color values displayed in the palette.
+     * @public
+     * @type {string[]}
+     * @default [“#e3abec”, “#c2dbf7”, ”#9fd6ff”, ”#9de7da”, ”#9df0bf”, ”#fff099”, ”#fed49a”, ”#d073df”, ”#86b9f3”, ”#5ebbff”, ”#44d8be”, ”#3be281”, ”#ffe654”, ”#ffb758”, ”#bd35bd”, ”#5778c1”, ”#5ebbff”, ”#00aea9”, ”#3bba4c”, ”#f4bc25”, ”#f99120”, ”#580d8c”, ”#001870”, ”#0a2399”, ”#097476”, ”#096a50”, ”#b67d11”, ”#b85d0d”]
+     */
     @api colors = DEFAULT_COLORS;
 
     _columns = DEFAULT_COLUMNS;
@@ -85,6 +102,9 @@ export default class ColorPalette extends LightningElement {
         this.initContainer();
     }
 
+    /**
+     * Initialize Palette container
+     */
     initContainer() {
         let containerWidth = this.columns * (Number(this.tileWidth) + 8);
         let containerMinHeight = Number(this.tileHeight) + 8;
@@ -111,6 +131,11 @@ export default class ColorPalette extends LightningElement {
         );
     }
 
+    /**
+     * Specifies the number of columns that will be displayed. 
+     * @public
+     * @type {number}
+     */
     @api
     get columns() {
         return this._columns;
@@ -121,6 +146,11 @@ export default class ColorPalette extends LightningElement {
         this.initContainer();
     }
 
+    /**
+     * Tile width in px.
+     * @public
+     * @type {number}
+     */
     @api
     get tileWidth() {
         return this._tileWidth;
@@ -131,6 +161,11 @@ export default class ColorPalette extends LightningElement {
         this.initContainer();
     }
 
+    /**
+     * Tile height in px.
+     * @public
+     * @type {number}
+     */
     @api
     get tileHeight() {
         return this._tileHeight;
@@ -141,6 +176,11 @@ export default class ColorPalette extends LightningElement {
         this.initContainer();
     }
 
+    /**
+     * If present, the input field is disabled and users cannot interact with it.
+     * @public
+     * @type {boolean}
+     */
     @api get disabled() {
         return this._disabled;
     }
@@ -150,6 +190,11 @@ export default class ColorPalette extends LightningElement {
         this.initContainer();
     }
 
+    /**
+     * If present, a spinner is displayed to indicate that data is loading. 
+     * @public
+     * @type {boolean}
+     */
     @api get isLoading() {
         return this._isLoading;
     }
@@ -159,6 +204,11 @@ export default class ColorPalette extends LightningElement {
         this.initContainer();
     }
 
+    /**
+     * If present, the palette is read-only and cannot be edited by users.
+     * @public
+     * @type {boolean}
+     */
     @api get readOnly() {
         return this._readOnly;
     }
@@ -168,17 +218,33 @@ export default class ColorPalette extends LightningElement {
         this.initContainer();
     }
 
+    /**
+     * Generate unique Key ID
+     */
     get uniqKey() {
         return generateUniqueId();
     }
 
+    /**
+     * Clears the color value of the ColorPalette.
+     * @public
+     */
     @api
     reset() {
         this.value = '';
         this.dispatchChange();
     }
 
+    /**
+     * Private focus event handler
+     */
     handleFocus() {
+        /**
+         * @event
+         * @name privatefocus
+         * @bubbles
+         * @cancelable
+         */
         this.dispatchEvent(
             new CustomEvent('privatefocus', {
                 bubbles: true,
@@ -187,9 +253,24 @@ export default class ColorPalette extends LightningElement {
         );
     }
 
+    /**
+     * Blur and private blur event handler
+     */
     handleBlur() {
+        /**
+         * @event
+         * @name blur
+         * @public
+         */
         this.dispatchEvent(new CustomEvent('blur'));
 
+        /**
+         * @event
+         * @name privateblur
+         * @composed
+         * @bubbles
+         * @cancelable
+         */
         this.dispatchEvent(
             new CustomEvent('privateblur', {
                 composed: true,
@@ -199,6 +280,11 @@ export default class ColorPalette extends LightningElement {
         );
     }
 
+    /**
+     * Click event handler
+     * @param {object} event 
+     * @returns {string} value 
+     */
     handleClick(event) {
         if (this.disabled || this.readOnly) {
             event.preventDefault();
@@ -210,10 +296,25 @@ export default class ColorPalette extends LightningElement {
         this.dispatchChange();
     }
 
+    /**
+     * Change event handler
+     */
     dispatchChange() {
         let colors = generateColors(this.value);
 
         if (!this.disabled && !this.readOnly) {
+            /**
+             * @event
+             * @public
+             * @name change
+             * @param {string} hex Color in hexadecimal format.
+             * @param {string} hexa Color in hexadecimal format with alpha.
+             * @param {string} rgb Color in rgb format.
+             * @param {string} rgba Color in rgba format.
+             * @param {string} alpha Alpha value of the color.
+             * @bubbles
+             * @cancelable
+             */
             this.dispatchEvent(
                 new CustomEvent('change', {
                     bubbles: true,
