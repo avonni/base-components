@@ -29,6 +29,13 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+const EVENTS_DATES_FORMAT = {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit'
+};
 
 const EVENTS_THEMES = {
     valid: ['default', 'transparent', 'line', 'hollow', 'rounded'],
@@ -136,6 +143,7 @@ const RECURRENCES = [
 ];
 
 export {
+    EVENTS_DATES_FORMAT,
     EVENTS_THEMES,
     EVENTS_PALETTES,
     THEMES,

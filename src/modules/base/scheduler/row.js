@@ -81,7 +81,9 @@ export default class Row {
                     } else {
                         // The event will be visible in the first column
                         columns[i].events.push({
-                            object: event
+                            object: event,
+                            from: date.from.ts,
+                            to: date.to.ts
                         });
                     }
 

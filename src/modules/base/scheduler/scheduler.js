@@ -33,13 +33,25 @@
 import { LightningElement, api } from 'lwc';
 import { DateTime } from 'c/luxon';
 import { generateUniqueId } from 'c/utils';
-import { normalizeArray, normalizeString } from 'c/utilsPrivate';
+import {
+    normalizeArray,
+    normalizeString,
+    observePosition,
+    animationFrame,
+    timeout
+} from 'c/utilsPrivate';
+import {
+    Direction,
+    startPositioning,
+    stopPositioning
+} from 'c/positionLibrary';
 import {
     dateTimeObjectFrom,
     addToDate,
     numberOfUnitsBetweenDates
 } from './dateUtils';
 import {
+    EVENTS_DATES_FORMAT,
     EVENTS_THEMES,
     EVENTS_PALETTES,
     THEMES,
@@ -275,6 +287,10 @@ export default class Scheduler extends LightningElement {
         );
         // We take one millisecond off to exclude the next unit
         return DateTime.fromMillis(visibleSpanEnd - 1);
+    }
+
+    get eventDateFormat() {
+        return EVENTS_DATES_FORMAT;
     }
 
     get smallestHeader() {
@@ -557,10 +573,105 @@ export default class Scheduler extends LightningElement {
         });
     }
 
+    startPositioning(element, popover) {
+        this._positioning = true;
+
+        const align = {
+            horizontal: Direction.Left,
+            vertical: Direction.Top
+        };
+
+        const targetAlign = {
+            horizontal: Direction.Left,
+            vertical: Direction.Bottom
+        };
+
+        let autoFlip = true;
+        let autoFlipVertical;
+
+        return animationFrame()
+            .then(() => {
+                this.stopPositioning();
+                this._autoPosition = startPositioning(
+                    this,
+                    {
+                        target: () => element,
+                        element: () => popover,
+                        align,
+                        targetAlign,
+                        autoFlip,
+                        autoFlipVertical,
+                        scrollableParentBound: true,
+                        keepInViewport: true
+                    },
+                    true
+                );
+                // Edge case: W-7460656
+                if (this._autoPosition) {
+                    return this._autoPosition.reposition();
+                }
+                return Promise.reject();
+            })
+            .then(() => {
+                return timeout(0);
+            })
+            .then(() => {
+                // Use a flag to prevent this async function from executing multiple times in a single lifecycle
+                this._positioning = false;
+            });
+    }
+
+    stopPositioning() {
+        if (this._autoPosition) {
+            stopPositioning(this._autoPosition);
+            this._autoPosition = null;
+        }
+        this._positioning = false;
+    }
+
+    pollBoundingRect(element) {
+        setTimeout(
+            () => {
+                if (this.isConnected) {
+                    observePosition(this, 300, this._boundingRect, () => {
+                        element.classList.add('slds-hide');
+                    });
+
+                    // continue polling
+                    this.pollBoundingRect();
+                }
+            },
+            250 // check every 0.25 second
+        );
+    }
+
     handlePrivateRowHeightChange(event) {
         const key = event.detail.key;
         const height = event.detail.height;
         const row = this.template.querySelector(`[data-key="${key}"]`);
         if (row) row.style.minHeight = `${height}px`;
+    }
+
+    handleEventMouseEnter(event) {
+        const eventElement = event.currentTarget;
+        const eventName = eventElement.dataset.name;
+        const popover = eventElement.querySelector(
+            `.slds-popover[data-event-name="${eventName}"]`
+        );
+        popover.classList.remove('slds-hide');
+
+        this.startPositioning(eventElement, popover);
+        this._boundingRect = this.getBoundingClientRect();
+        this.pollBoundingRect(eventElement);
+    }
+
+    handleEventMouseLeave(event) {
+        const eventElement = event.currentTarget;
+        const eventName = eventElement.dataset.name;
+        const popover = eventElement.querySelector(
+            `.slds-popover[data-event-name="${eventName}"]`
+        );
+        popover.classList.add('slds-hide');
+        this.stopPositioning();
     }
 }

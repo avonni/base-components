@@ -121,6 +121,7 @@ export default class Event {
 
         this.width = 0;
         this.offsetLeft = 0;
+        this.showDetails = false;
     }
 
     get wrapperStyle() {
@@ -142,7 +143,7 @@ export default class Event {
         )
             .add({
                 'slds-m-vertical_x-small': this.theme === 'line',
-                'slds-m-vertical_xx-small': this.theme !== 'line'
+                'slds-p-vertical_xx-small': this.theme !== 'line'
             })
             .toString();
     }

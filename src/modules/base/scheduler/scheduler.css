@@ -61,6 +61,13 @@
 
 .scheduler__event {
     width: 100%;
+    opacity: 0.9;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+}
+.scheduler__event:hover {
+    opacity: 1;
 }
 
 .scheduler__event_transparent {
@@ -90,7 +97,7 @@
     border-radius: 2px;
     border-width: 2px;
     position: absolute;
-    top: -4px;
+    top: -9px;
     height: 13px;
 }
 .scheduler__event_line::before {
@@ -100,3 +107,10 @@
     right: 0;
 }
 /* --------------- */
+
+.scheduler__event-detail-popover {
+    z-index: 2;
+}
+.scheduler__event-detail-icon {
+    color: #706e6b;
+}
