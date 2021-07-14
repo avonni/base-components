@@ -108,7 +108,8 @@ const columnsAB = [
         typeAttributes: {
             variant: 'circle',
             maxCount: 3,
-            size: 'small'
+            size: 'small',
+            actionIconName: 'utility:add'
         }
     },
     {

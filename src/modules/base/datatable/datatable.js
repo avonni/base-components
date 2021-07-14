@@ -101,7 +101,14 @@ export default class Datatable extends LightningDatatable {
         },
         'avatar-group': {
             template: avatarGroup,
-            typeAttributes: ['layout', 'maxCount', 'size', 'variant'],
+            typeAttributes: [
+                'layout',
+                'maxCount',
+                'size',
+                'variant',
+                'actionIconName',
+                'name'
+            ],
             standardCellLayout: true
         },
         badge: {
@@ -254,6 +261,16 @@ export default class Datatable extends LightningDatatable {
             'privateeditcustomcell',
             this.handleEditCell
         );
+
+        this.template.addEventListener(
+            'privateavatarclick',
+            this.handleDispatchEvents
+        );
+
+        this.template.addEventListener(
+            'privateactionclick',
+            this.handleDispatchEvents
+        );
     }
 
     renderedCallback() {
@@ -345,4 +362,17 @@ export default class Datatable extends LightningDatatable {
         // Show yellow background and save/cancel button
         super.updateRowsState(this.state);
     };
+
+    handleDispatchEvents(event) {
+        event.stopPropagation();
+
+        this.dispatchEvent(
+            new CustomEvent(`${event.detail.type}`, {
+                detail: event.detail.detail,
+                bubbles: event.detail.bubbles,
+                composed: event.detail.composed,
+                cancellable: event.detail.cancellable
+            })
+        );
+    }
 }
