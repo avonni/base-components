@@ -1,40 +1,40 @@
-exports.defineTags = function (dictionnary) {
-    dictionnary.defineTag('descriptor', {
+exports.defineTags = function (dictionary) {
+    dictionary.defineTag('descriptor', {
         onTagged: function (doclet, tag) {
             doclet.descriptor = tag.value;
         }
     });
-    dictionnary.defineTag('default', {
+    dictionary.defineTag('default', {
         onTagged: function (doclet, tag) {
             doclet.default = tag.value;
         }
     });
-    dictionnary.defineTag('required', {
+    dictionary.defineTag('required', {
         onTagged: function (doclet, tag) {
             doclet.required = tag.value;
         }
     });
-    dictionnary.defineTag('public', {
+    dictionary.defineTag('public', {
         onTagged: function (doclet) {
             doclet.access = 'public';
         }
     });
-    dictionnary.defineTag('bubbles', {
+    dictionary.defineTag('bubbles', {
         onTagged: function (doclet, tag) {
             doclet.bubbles = tag;
         }
     });
-    dictionnary.defineTag('cancelable', {
+    dictionary.defineTag('cancelable', {
         onTagged: function (doclet, tag) {
             doclet.cancelable = tag;
         }
     });
-    dictionnary.defineTag('composed', {
+    dictionary.defineTag('composed', {
         onTagged: function (doclet, tag) {
             doclet.composed = tag;
         }
     });
-    dictionnary.defineTag('storyId', {
+    dictionary.defineTag('storyId', {
         onTagged: function (doclet, tag) {
             doclet.storyId = tag;
         }

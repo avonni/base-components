@@ -1,5 +1,5 @@
 {
-    "plugins": ["plugins/markdown", "./customDictionnary.js"],
+    "plugins": ["plugins/markdown", "./customDictionary.js"],
     "markdown": {
         "hardwrap": "true"
     }
