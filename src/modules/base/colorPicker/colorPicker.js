@@ -43,34 +43,44 @@ import {
 import { classSet } from 'c/utils';
 import { generateUniqueId } from 'c/utils';
 
-const validVariants = {valid: [
-    'standard',
-    'label-inline',
-    'label-hidden',
-    'label-stacked'
-], default: 'standard'};
+const validVariants = {
+    valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'],
+    default: 'standard'
+};
 
-const LABEL_TYPES = {valid: ['base', 'custom', 'predefined'], default: 'base'};
+const LABEL_TYPES = {
+    valid: ['base', 'custom', 'predefined'],
+    default: 'base'
+};
 
-const MENU_VARIANTS = {valid: [
-    'bare',
-    'container',
-    'border',
-    'border-filled',
-    'bare-inverse',
-    'border-inverse'
-], default: 'border'};
+const MENU_VARIANTS = {
+    valid: [
+        'bare',
+        'container',
+        'border',
+        'border-filled',
+        'bare-inverse',
+        'border-inverse'
+    ],
+    default: 'border'
+};
 
-const MENU_ICON_SIZES = {valid: ['xx-small', 'x-small', 'small', 'medium', 'large'], default: 'x-small'};
+const MENU_ICON_SIZES = {
+    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+    default: 'x-small'
+};
 
-const MENU_ALIGNMENTS = {valid: [
-    'left',
-    'center',
-    'right',
-    'bottom-left',
-    'bottom-center',
-    'bottom-right'
-], default: 'left'};
+const MENU_ALIGNMENTS = {
+    valid: [
+        'left',
+        'center',
+        'right',
+        'bottom-left',
+        'bottom-center',
+        'bottom-right'
+    ],
+    default: 'left'
+};
 
 const DEFAULT_COLORS = [
     '#e3abec',
@@ -238,7 +248,7 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * The variant changes the look of the button. Accepted variants include bare, container, border, border-filled, bare-inverse, and border-inverse. 
+     * The variant changes the look of the button. Accepted variants include bare, container, border, border-filled, bare-inverse, and border-inverse.
      * @public
      * @type {string}
      * @default "border"
@@ -274,7 +284,7 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * Determines the alignment of the menu relative to the button. Available options are: auto, left, center, right, bottom-left, bottom-center, bottom-right. The auto option aligns the dropdown menu based on available space. 
+     * Determines the alignment of the menu relative to the button. Available options are: auto, left, center, right, bottom-left, bottom-center, bottom-right. The auto option aligns the dropdown menu based on available space.
      * @public
      * @type {string}
      * @default left
@@ -366,7 +376,7 @@ export default class ColorPicker extends LightningElement {
         const colors = normalizeArray(value);
         this._colors = colors.length > 0 ? colors : DEFAULT_COLORS;
     }
-    
+
     /**
      * If true, hide the input color value.
      * @public
@@ -424,7 +434,10 @@ export default class ColorPicker extends LightningElement {
     }
 
     set messageWhenBadInput(value) {
-        this._messageWhenBadInput = typeof value === 'string' ? value.trim() : DEFAULT_MESSAGE_WHEN_BAD_INPUT;
+        this._messageWhenBadInput =
+            typeof value === 'string'
+                ? value.trim()
+                : DEFAULT_MESSAGE_WHEN_BAD_INPUT;
     }
 
     /**
@@ -679,7 +692,7 @@ export default class ColorPicker extends LightningElement {
 
     /**
      * Change Handler
-     * @param {object} event 
+     * @param {object} event
      */
     handlerChange(event) {
         if (event.detail) {
@@ -753,7 +766,7 @@ export default class ColorPicker extends LightningElement {
 
     /**
      * Handle mouse down on Button
-     * @param {object} event 
+     * @param {object} event
      */
     handleButtonMouseDown(event) {
         const mainButton = 0;
@@ -764,7 +777,7 @@ export default class ColorPicker extends LightningElement {
 
     /**
      * Dropdown menu mouse down handler
-     * @param {object} event 
+     * @param {object} event
      */
     handleDropdownMouseDown(event) {
         const mainButton = 0;
@@ -791,7 +804,7 @@ export default class ColorPicker extends LightningElement {
 
     /**
      * Tab click event handler
-     * @param {object} event 
+     * @param {object} event
      */
     handlerTabClick(event) {
         event.preventDefault();
@@ -835,7 +848,7 @@ export default class ColorPicker extends LightningElement {
 
     /**
      * Private focus handler
-     * @param {object} event 
+     * @param {object} event
      */
     handlePrivateFocus(event) {
         event.stopPropagation();
@@ -846,7 +859,7 @@ export default class ColorPicker extends LightningElement {
 
     /**
      * Private blur handler
-     * @param {object} event 
+     * @param {object} event
      */
     handlePrivateBlur(event) {
         event.stopPropagation();
@@ -857,7 +870,7 @@ export default class ColorPicker extends LightningElement {
 
     /**
      * Input color event handler
-     * @param {object} event 
+     * @param {object} event
      */
     handleInputColor(event) {
         let color = event.target.value;
