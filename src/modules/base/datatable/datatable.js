@@ -365,13 +365,12 @@ export default class Datatable extends LightningDatatable {
 
     handleDispatchEvents(event) {
         event.stopPropagation();
-
         this.dispatchEvent(
             new CustomEvent(`${event.detail.type}`, {
                 detail: event.detail.detail,
                 bubbles: event.detail.bubbles,
                 composed: event.detail.composed,
-                cancellable: event.detail.cancellable
+                cancelable: event.detail.cancelable
             })
         );
     }

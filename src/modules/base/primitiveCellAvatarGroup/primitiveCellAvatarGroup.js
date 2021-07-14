@@ -42,24 +42,7 @@ export default class PrimitiveCellAvatarGroup extends LightningElement {
     @api variant;
     @api actionIconName;
     @api name;
-
-    _value;
-    readOnly;
-
-    @api
-    get value() {
-        return this._value;
-    }
-    set value(value) {
-        // When data is first set, the value is an object containing the editable state
-        // When the cell is edited, only the value is sent back
-        if (typeof value === 'object') {
-            this.readOnly = !value.editable;
-            this._value = value.value;
-        } else {
-            this._value = value;
-        }
-    }
+    @api value;
 
     handleAvatarClick(event) {
         this.dispatchEvent(
@@ -68,7 +51,7 @@ export default class PrimitiveCellAvatarGroup extends LightningElement {
                     detail: event.detail,
                     bubbles: event.bubbles,
                     composed: event.composed,
-                    cancellable: event.cancellable,
+                    cancelable: event.cancelable,
                     type: event.type
                 },
                 bubbles: true,
@@ -84,7 +67,7 @@ export default class PrimitiveCellAvatarGroup extends LightningElement {
                     detail: event.detail,
                     bubbles: event.bubbles,
                     composed: event.composed,
-                    cancellable: event.cancellable,
+                    cancelable: event.cancelable,
                     type: event.type
                 },
                 bubbles: true,
