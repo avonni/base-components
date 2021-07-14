@@ -193,7 +193,7 @@ export default class ColorGradient extends LightningElement {
 
     /**
      * Render value of color input
-     * @param {*} color
+     * @param {string} color
      */
     @api
     renderValue(color) {
@@ -310,7 +310,7 @@ export default class ColorGradient extends LightningElement {
 
     /**
      * Input event handler
-     * @param {*} event
+     * @param {object} event
      */
     handlerInput(event) {
         if (!this.readOnly) {
@@ -344,7 +344,7 @@ export default class ColorGradient extends LightningElement {
 
     /**
      * Input opacity event handler
-     * @param {*} event
+     * @param {object} event
      */
     handlerInputOpacity(event) {
         if (!this.readOnly) {
@@ -362,7 +362,7 @@ export default class ColorGradient extends LightningElement {
 
     /**
      * Input color event handler
-     * @param {*} event
+     * @param {object} event
      */
     handleInputColor(event) {
         let color = event.target.value;
@@ -389,7 +389,7 @@ export default class ColorGradient extends LightningElement {
 
     /**
      * Handle Red input in RGBA
-     * @param {*} event
+     * @param {object} event
      */
     handleInputRed(event) {
         this.colors.R = event.target.value;
@@ -398,7 +398,7 @@ export default class ColorGradient extends LightningElement {
 
     /**
      * Handle Green input in RGBA
-     * @param {*} event
+     * @param {object} event
      */
     handleInputGreen(event) {
         this.colors.G = event.target.value;
@@ -407,7 +407,7 @@ export default class ColorGradient extends LightningElement {
 
     /**
      * Handle Blue input in RGBA
-     * @param {*} event
+     * @param {object} event
      */
     handleInputBlue(event) {
         this.colors.B = event.target.value;
@@ -416,7 +416,7 @@ export default class ColorGradient extends LightningElement {
 
     /**
      * Handle Alpha input in RGBA
-     * @param {*} event
+     * @param {object} event
      */
     handleInputAlpha(event) {
         this.colors.A = event.target.value;
@@ -425,7 +425,7 @@ export default class ColorGradient extends LightningElement {
 
     /**
      * RGBA computed color method
-     * @param {*} event
+     * @param {object} event
      */
     processingRGBColor(event) {
         let color = `rgba(${this.colors.R},${this.colors.G},${this.colors.B},${this.colors.A})`;
@@ -443,7 +443,7 @@ export default class ColorGradient extends LightningElement {
 
     /**
      * Palette Click event handler
-     * @param {*} event
+     * @param {object} event
      */
     handlerClickPalet(event) {
         if (
@@ -464,7 +464,7 @@ export default class ColorGradient extends LightningElement {
 
     /**
      * Mouse down event handler
-     * @param {*} event
+     * @param {object} event
      */
     handlerMouseDown(event) {
         this.down = true;
@@ -487,7 +487,7 @@ export default class ColorGradient extends LightningElement {
 
     /**
      * Mouse mouse event handler
-     * @param {*} event
+     * @param {object} event
      */
     handlerMouseMove(event) {
         if (this.down && !this.readOnly) {
@@ -530,8 +530,8 @@ export default class ColorGradient extends LightningElement {
 
     /**
      * Set HSL/A colors via palette x/y coordinates
-     * @param {*} x
-     * @param {*} y
+     * @param {number} x
+     * @param {number} y
      */
     setColor(x, y) {
         let s = x / this.paletteWidth;
@@ -583,7 +583,7 @@ export default class ColorGradient extends LightningElement {
 
     /**
      * Update color parameters
-     * @param {*} color
+     * @param {string} color
      */
     updateColors(color) {
         this.colors = generateColors(color);
@@ -625,7 +625,7 @@ export default class ColorGradient extends LightningElement {
 
     /**
      * Set palette color range
-     * @param {*} value
+     * @param {string} value
      */
     setPaletteColor(value) {
         let color = this.disabled ? '#ecebea' : `hsl(${value}, 100%, 50%)`;
@@ -637,7 +637,7 @@ export default class ColorGradient extends LightningElement {
 
     /**
      * Set swatch color
-     * @param {*} value
+     * @param {string} value
      */
     setSwatchColor(value) {
         let color = this.disabled ? '#ecebea' : value;
@@ -646,7 +646,7 @@ export default class ColorGradient extends LightningElement {
 
     /**
      * Set opacity color
-     * @param {*} value
+     * @param {string} value
      */
     setOpacityColor(value) {
         let opacity = this.template.querySelector('.avonni-opacity-input');

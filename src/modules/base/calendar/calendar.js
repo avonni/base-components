@@ -50,11 +50,11 @@ const MONTHS = [
     'December'
 ];
 
-const DEFAULT_MAX = new Date(2099, 11, 31)
+const DEFAULT_MAX = new Date(2099, 11, 31);
 
-const DEFAULT_MIN = new Date(1900, 0, 1)
+const DEFAULT_MIN = new Date(1900, 0, 1);
 
-const DEFAULT_DATE = new Date(new Date().setHours(0, 0, 0, 0))
+const DEFAULT_DATE = new Date(new Date().setHours(0, 0, 0, 0));
 
 /**
  * @class
@@ -265,7 +265,7 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Disabkle interaction on next date layout
+     * Disable interaction on next date layout
      */
     get disabledNext() {
         let disabled = this.disabled;
@@ -292,7 +292,7 @@ export default class Calendar extends LightningElement {
 
     /**
      * Create Dates array
-     * @param {*} array 
+     * @param {object[]} array
      * @returns dates
      */
     fullDatesFromArray(array) {
@@ -309,7 +309,7 @@ export default class Calendar extends LightningElement {
 
     /**
      * Create weekdays from dates array
-     * @param {*} array 
+     * @param {object[]} array
      * @returns dates
      */
     weekDaysFromArray(array) {
@@ -326,7 +326,7 @@ export default class Calendar extends LightningElement {
 
     /**
      * Create days + months from dates array
-     * @param {*} array 
+     * @param {object[]} array
      * @returns dates
      */
     monthDaysFromArray(array) {
@@ -463,8 +463,8 @@ export default class Calendar extends LightningElement {
 
     /**
      * Find if date entry is in the date array
-     * @param {*} date 
-     * @param {*} array 
+     * @param {object | date} date
+     * @param {object[]} array
      * @returns disabled
      */
     isInArray(date, array) {
@@ -486,7 +486,7 @@ export default class Calendar extends LightningElement {
 
     /**
      * Year change handler
-     * @param {*} event 
+     * @param {object} event
      */
     handleYearChange(event) {
         this.date.setFullYear(event.detail.value);
@@ -521,13 +521,13 @@ export default class Calendar extends LightningElement {
 
     /**
      * Date selection handler
-     * @param {*} event 
+     * @param {object} event
      */
     handlerSelectDate(event) {
         let date = event.target.dataset.day;
 
         if (date) {
-            this.value = new Date(Number(date));
+            this._value = new Date(Number(date));
             this.date = new Date(Number(date));
             this.updateDateParameters();
             this.dispatchChange();
