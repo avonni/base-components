@@ -31,7 +31,11 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { normalizeBoolean, generateColors } from 'c/utilsPrivate';
+import {
+    normalizeBoolean,
+    normalizeString,
+    generateColors
+} from 'c/utilsPrivate';
 import { generateUniqueId } from 'c/utils';
 
 const DEFAULT_COLORS = [
@@ -65,14 +69,36 @@ const DEFAULT_COLORS = [
     '#b85d0d'
 ];
 
-const DEFAULT_TILE_WIDTH = 20
-const DEFAULT_TILE_HEIGHT = 20
-const DEFAULT_COLUMNS = 7
+const DEFAULT_TILE_WIDTH = 20;
+const DEFAULT_TILE_HEIGHT = 20;
+const DEFAULT_COLUMNS = 7;
+
+const TYPES = { valid: ['base', 'list'], default: 'base' };
 
 export default class ColorPalette extends LightningElement {
     @api value;
-    @api colors = DEFAULT_COLORS;
 
+    @api
+    get colors() {
+        return this._colors;
+    }
+    set colors(values) {
+        if (!values || values.length === 0) {
+            return;
+        }
+
+        if (typeof values[0] == 'object') {
+            this._pairColorLabels = values;
+            this._type = 'list';
+        } else {
+            this._colors = values;
+            this._type = 'base';
+        }
+    }
+
+    _type = TYPES.default;
+    _colors = DEFAULT_COLORS;
+    _pairColorLabels = [];
     _columns = DEFAULT_COLUMNS;
     _tileWidth = DEFAULT_TILE_WIDTH;
     _tileHeight = DEFAULT_TILE_HEIGHT;
@@ -170,6 +196,18 @@ export default class ColorPalette extends LightningElement {
 
     get uniqKey() {
         return generateUniqueId();
+    }
+
+    get pairColorLabels() {
+        return this._pairColorLabels;
+    }
+
+    get isBase() {
+        return this._type === 'base';
+    }
+
+    get isList() {
+        return this._type === 'list';
     }
 
     @api

@@ -43,34 +43,44 @@ import {
 import { classSet } from 'c/utils';
 import { generateUniqueId } from 'c/utils';
 
-const validVariants = {valid: [
-    'standard',
-    'label-inline',
-    'label-hidden',
-    'label-stacked'
-], default: 'standard'};
+const validVariants = {
+    valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'],
+    default: 'standard'
+};
 
-const LABEL_TYPES = {valid: ['base', 'custom', 'predefined'], default: 'base'};
+const LABEL_TYPES = {
+    valid: ['base', 'custom', 'predefined'],
+    default: 'base'
+};
 
-const MENU_VARIANTS = {valid: [
-    'bare',
-    'container',
-    'border',
-    'border-filled',
-    'bare-inverse',
-    'border-inverse'
-], default: 'border'};
+const MENU_VARIANTS = {
+    valid: [
+        'bare',
+        'container',
+        'border',
+        'border-filled',
+        'bare-inverse',
+        'border-inverse'
+    ],
+    default: 'border'
+};
 
-const MENU_ICON_SIZES = {valid: ['xx-small', 'x-small', 'small', 'medium', 'large'], default: 'x-small'};
+const MENU_ICON_SIZES = {
+    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+    default: 'x-small'
+};
 
-const MENU_ALIGNMENTS = {valid: [
-    'left',
-    'center',
-    'right',
-    'bottom-left',
-    'bottom-center',
-    'bottom-right'
-], default: 'left'};
+const MENU_ALIGNMENTS = {
+    valid: [
+        'left',
+        'center',
+        'right',
+        'bottom-left',
+        'bottom-center',
+        'bottom-right'
+    ],
+    default: 'left'
+};
 
 const DEFAULT_COLORS = [
     '#e3abec',
@@ -264,7 +274,7 @@ export default class ColorPicker extends LightningElement {
         const colors = normalizeArray(value);
         this._colors = colors.length > 0 ? colors : DEFAULT_COLORS;
     }
-    
+
     @api
     get hideColorInput() {
         return this._hideColorInput;
@@ -298,7 +308,14 @@ export default class ColorPicker extends LightningElement {
     }
 
     set messageWhenBadInput(value) {
-        this._messageWhenBadInput = typeof value === 'string' ? value.trim() : DEFAULT_MESSAGE_WHEN_BAD_INPUT;
+        this._messageWhenBadInput =
+            typeof value === 'string'
+                ? value.trim()
+                : DEFAULT_MESSAGE_WHEN_BAD_INPUT;
+    }
+
+    get uniqueKey() {
+        return generateUniqueId();
     }
 
     get isBase() {

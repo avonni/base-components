@@ -140,12 +140,14 @@
                                             if:true={isDefault}
                                             class="slds-tabs_default__content"
                                         >
-                                            <c-color-palette
-                                                colors={colors}
-                                                tile-height="25"
-                                                tile-width="25"
-                                                read-only={readOnly}
-                                            ></c-color-palette>
+                                            <div style="height: 200px;">
+                                                <c-color-palette
+                                                    colors={colors}
+                                                    tile-height="25"
+                                                    tile-width="25"
+                                                    read-only={readOnly}
+                                                ></c-color-palette>
+                                            </div>
                                         </div>
                                         <div
                                             if:false={isDefault}

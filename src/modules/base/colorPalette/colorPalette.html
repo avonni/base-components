@@ -33,37 +33,81 @@
 -->
 
 <template>
-    <div class="avonni-pallet-container">
-        <lightning-spinner if:true={isLoading} size="small"></lightning-spinner>
-        <ul
-            if:false={isLoading}
-            class="slds-color-picker__swatches"
-            role="listbox"
-        >
-            <template for:each={colors} for:item="color">
-                <li
-                    key={uniqKey}
-                    class="slds-color-picker__swatch"
-                    role="presentation"
-                >
-                    <a
-                        class="slds-color-picker__swatch-trigger"
-                        href="javascript:void(0)"
+    <template if:true={isList}>
+        <div class="list-container slds-scrollable">
+            <template for:each={pairColorLabels} for:item="pair">
+                <div key={uniqKey} class="grid" item-color={pair.value}>
+                    <lightning-button
+                        class="slds-m-right_small slds-m-left_xx-small"
                         onclick={handleClick}
-                        onblur={handleBlur}
-                        onfocus={handleFocus}
-                        item-color={color}
-                        is-disabled={disabled}
-                        read-only={readOnly}
-                        role="option"
-                        tabindex="0"
-                    >
-                        <span class="slds-swatch">
-                            <span class="slds-assistive-text">{color}</span>
-                        </span>
-                    </a>
-                </li>
+                        label={pair.label}
+                        variant="base"
+                    ></lightning-button>
+                    <div key={uniqKey} role="presentation">
+                        <div
+                            class="slds-color-picker__swatch-trigger"
+                            href="javascript:void(0)"
+                            onclick={handleClick}
+                            onblur={handleBlur}
+                            onfocus={handleFocus}
+                            item-color={pair.value}
+                            is-disabled={disabled}
+                            read-only={readOnly}
+                            role="option"
+                            tabindex="0"
+                        >
+                            <span class="slds-swatch">
+                                <p class="slds-assistive-text">{pair.value}</p>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <br key={uniqKey} />
             </template>
-        </ul>
-    </div>
+        </div>
+    </template>
+
+    <br />
+
+    <template if:true={isBase}>
+        <div class="avonni-pallet-container">
+            <lightning-spinner
+                if:true={isLoading}
+                size="small"
+            ></lightning-spinner>
+            <ul
+                if:false={isLoading}
+                class="slds-color-picker__swatches"
+                role="listbox"
+            >
+                <template for:each={colors} for:item="color">
+                    <li
+                        key={uniqKey}
+                        class="slds-color-picker__swatch"
+                        role="presentation"
+                    >
+                        <a
+                            class="slds-color-picker__swatch-trigger"
+                            href="javascript:void(0)"
+                            onclick={handleClick}
+                            onblur={handleBlur}
+                            onfocus={handleFocus}
+                            item-color={color}
+                            is-disabled={disabled}
+                            read-only={readOnly}
+                            role="option"
+                            tabindex="0"
+                        >
+                            <span class="slds-swatch">
+                                <span class="slds-assistive-text"
+                                    >{color}
+                                </span>
+                            </span>
+                        </a>
+                    </li>
+                </template>
+            </ul>
+        </div>
+    </template>
 </template>
