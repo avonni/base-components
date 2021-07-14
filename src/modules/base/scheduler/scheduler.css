@@ -42,6 +42,19 @@
     position: static;
 }
 
+.scheduler__disabled-date-title-wrapper {
+    height: 100%;
+    width: 100%;
+}
+
+.scheduler__disabled-date-title {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    max-width: 100%;
+}
+
+/* -------- Events ------- */
 .scheduler__event-wrapper[aria-hidden='true'] {
     visibility: hidden;
 }
@@ -86,3 +99,4 @@
 .scheduler__event_line::after {
     right: 0;
 }
+/* --------------- */

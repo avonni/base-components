@@ -143,6 +143,11 @@ export default class Scheduler extends LightningElement {
     }
     set disabledDatesTimes(value) {
         this._disabledDatesTimes = normalizeArray(value);
+
+        if (this.isConnected) {
+            this.initEvents();
+            this.initRows();
+        }
     }
 
     @api
@@ -437,14 +442,22 @@ export default class Scheduler extends LightningElement {
     initEvents() {
         if (!this.computedHeaders.length) return;
 
-        const events = [];
+        const computedEvents = [];
         const header = this.smallestHeader;
         const columnEnd = addToDate(header.start, header.unit, header.span) - 1;
         const duration = DateTime.fromMillis(columnEnd).diff(header.start)
             .milliseconds;
         const start = this._referenceHeader.start;
 
-        this.events.forEach((evt) => {
+        // The disabled dates/times are special events
+        const disabledEvents = this.disabledDatesTimes.map((evt) => {
+            const event = { ...evt };
+            event.disabled = true;
+            return event;
+        });
+        const events = this.events.concat(disabledEvents);
+
+        events.forEach((evt) => {
             const event = { ...evt };
             event.schedulerEnd = this.end;
             event.schedulerStart = start;
@@ -452,7 +465,9 @@ export default class Scheduler extends LightningElement {
             event.availableDaysOfTheWeek = this.availableDaysOfTheWeek;
             event.availableTimeFrames = this.availableTimeFrames;
             event.smallestHeader = this.smallestHeader;
-            event.theme = event.theme || this.eventsTheme;
+            event.theme = event.disabled
+                ? 'disabled'
+                : event.theme || this.eventsTheme;
 
             const computedEvent = new Event(event);
 
@@ -462,11 +477,11 @@ export default class Scheduler extends LightningElement {
                     columnDuration: duration
                 });
 
-                events.push(computedEvent);
+                computedEvents.push(computedEvent);
             }
         });
 
-        this.computedEvents = events;
+        this.computedEvents = computedEvents;
     }
 
     initRows() {

@@ -94,33 +94,45 @@
                             <template for:each={row.columns} for:item="column">
                                 <td
                                     key={column.start}
-                                    class="slds-border_right slds-col slds-p-around_none slds-wrap"
+                                    class={column.class}
+                                    aria-disabled={column.disabled}
                                 >
+                                    <div
+                                        if:true={column.title}
+                                        class="slds-is-relative scheduler__disabled-date-title-wrapper"
+                                        title={column.title}
+                                    >
+                                        <div
+                                            class="slds-truncate scheduler__disabled-date-title slds-text-body_small slds-p-around_xx-small slds-text-color_inverse-weak"
+                                        >
+                                            {column.title}
+                                        </div>
+                                    </div>
                                     <template
                                         for:each={column.events}
-                                        for:item="cell"
+                                        for:item="event"
                                     >
                                         <!-- Events -->
                                         <div
                                             key={generateKey}
-                                            class={cell.event.wrapperClass}
-                                            data-name={cell.event.name}
-                                            aria-hidden={cell.hidden}
-                                            style={cell.event.wrapperStyle}
+                                            class={event.object.wrapperClass}
+                                            data-name={event.object.name}
+                                            aria-hidden={event.hidden}
+                                            style={event.object.wrapperStyle}
                                         >
                                             <div
-                                                class={cell.event.class}
-                                                title={cell.event.title}
-                                                style={cell.event.style}
+                                                class={event.object.class}
+                                                title={event.object.title}
+                                                style={event.object.style}
                                             >
                                                 <lightning-icon
-                                                    if:true={cell.event.iconName}
-                                                    icon-name={cell.event.iconName}
+                                                    if:true={event.object.iconName}
+                                                    icon-name={event.object.iconName}
                                                     size="x-small"
                                                     class="slds-m-right_xx-small"
                                                 ></lightning-icon>
                                                 <span class="slds-truncate"
-                                                    >{cell.event.title}</span
+                                                    >{event.object.title}</span
                                                 >
                                             </div>
                                         </div>

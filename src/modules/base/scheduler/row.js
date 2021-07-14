@@ -30,6 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import { classSet } from 'c/utils';
+
 export default class Row {
     constructor(props) {
         this.key = props.key;
@@ -38,12 +40,24 @@ export default class Row {
         this.events = props.events;
     }
 
+    updateColumnClass(column) {
+        return classSet(
+            'slds-border_right slds-col slds-p-around_none slds-wrap'
+        )
+            .add({
+                'slds-theme_alert-texture slds-theme_shade':
+                    column && column.disabled
+            })
+            .toString();
+    }
+
     generateColumns(headerColumns) {
         const columns = [];
         headerColumns.forEach((element) => {
             columns.push({
                 start: element.start,
                 end: element.end,
+                class: this.updateColumnClass(),
                 events: []
             });
         });
@@ -58,19 +72,34 @@ export default class Row {
                     return column.end > date.from;
                 });
                 if (i > -1) {
-                    // The event will be visible in the first column
-                    columns[i].events.push({
-                        event
-                    });
+                    if (event.disabled) {
+                        columns[i].disabled = true;
+                        columns[i].class = this.updateColumnClass(columns[i]);
+                        columns[i].title = columns[i].title
+                            ? `${columns[i].title}, ${event.title}`
+                            : event.title;
+                    } else {
+                        // The event will be visible in the first column
+                        columns[i].events.push({
+                            object: event
+                        });
+                    }
 
                     i += 1;
-                    // The event will be hidden in the other column it crosses,
-                    // so it takes some room in case there are several events in one column
                     while (i < columns.length && date.to > columns[i].end) {
-                        columns[i].events.push({
-                            event,
-                            hidden: true
-                        });
+                        if (event.disabled) {
+                            columns[i].disabled = true;
+                            columns[i].class = this.updateColumnClass(
+                                columns[i]
+                            );
+                        } else {
+                            // The event will be hidden in the other column it crosses,
+                            // so it takes some room in case there are several events in one column
+                            columns[i].events.push({
+                                object: event,
+                                hidden: true
+                            });
+                        }
                         i += 1;
                     }
                 }

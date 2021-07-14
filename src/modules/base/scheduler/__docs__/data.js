@@ -193,4 +193,24 @@ const events = [
     }
 ];
 
-export { columns, rows, headers, events };
+const disabledDatesTimes = [
+    {
+        keyFields: [1, 2, 3, 4, 5],
+        title: 'Lunch',
+        iconName: 'custom:custom51',
+        from: new Date(2021, 0, 1, 12),
+        to: new Date(2021, 0, 1, 14),
+        recurrence: 'weekly',
+        recurrenceAttributes: {
+            weekdays: [1, 2, 3, 4, 5]
+        }
+    },
+    {
+        keyFields: [4],
+        title: 'Vacation',
+        from: new Date(2021, 11, 6),
+        to: new Date(2021, 11, 20)
+    }
+];
+
+export { columns, disabledDatesTimes, rows, headers, events };

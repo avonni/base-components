@@ -74,6 +74,7 @@ export default class Event {
         this.availableDaysOfTheWeek = props.availableDaysOfTheWeek;
         this.availableTimeFrames = props.availableTimeFrames;
         this.color = props.color;
+        this.disabled = props.disabled;
         this.schedulerEnd = props.schedulerEnd;
         this.schedulerStart = props.schedulerStart;
         this.smallestHeader = props.smallestHeader;
