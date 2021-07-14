@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class CalendarMarkedDates extends LightningElement {
+export default class ColorPaletteBase extends LightningElement {
     colors = [
         '#e3abec',
         '#c2dbf7',

@@ -1,7 +1,7 @@
 import { LightningElement } from 'lwc';
 
-export default class ColorPaletteBaseSmall extends LightningElement {
-    colors = [
+export default class ColorPickerLabelInlineWithMenuVariantContainer extends LightningElement {
+    colorsValue = [
         '#e3abec',
         '#c2dbf7',
         '#9fd6ff',

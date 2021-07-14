@@ -180,6 +180,7 @@ export default class ColorPalette extends LightningElement {
      * If present, the input field is disabled and users cannot interact with it.
      * @public
      * @type {boolean}
+     * @default false
      */
     @api get disabled() {
         return this._disabled;
@@ -194,6 +195,7 @@ export default class ColorPalette extends LightningElement {
      * If present, a spinner is displayed to indicate that data is loading. 
      * @public
      * @type {boolean}
+     * @default false
      */
     @api get isLoading() {
         return this._isLoading;
@@ -208,6 +210,7 @@ export default class ColorPalette extends LightningElement {
      * If present, the palette is read-only and cannot be edited by users.
      * @public
      * @type {boolean}
+     * @default false
      */
     @api get readOnly() {
         return this._readOnly;

@@ -527,7 +527,7 @@ export default class Calendar extends LightningElement {
         let date = event.target.dataset.day;
 
         if (date) {
-            this._value = new Date(Number(date));
+            this.value = new Date(Number(date));
             this.date = new Date(Number(date));
             this.updateDateParameters();
             this.dispatchChange();
