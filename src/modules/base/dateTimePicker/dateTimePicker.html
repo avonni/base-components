@@ -164,8 +164,8 @@
                                 aria-selected={day.selected}
                                 data-today={day.isToday}
                                 class="avonni-date-time-picker__day-label slds-p-around_medium"
-                                onblur={handleBlur}
-                                onfocus={handleFocus}
+                                onblur={handleValueBlur}
+                                onfocus={handleValueFocus}
                             >
                                 {day.label}
                             </div>
@@ -209,8 +209,8 @@
                                                                 type="button"
                                                                 onclick={handleTimeSlotClick}
                                                                 aria-readonly={readOnly}
-                                                                onblur={handleBlur}
-                                                                onfocus={handleFocus}
+                                                                onblur={handleValueBlur}
+                                                                onfocus={handleValueFocus}
                                                             >
                                                                 <lightning-formatted-date-time
                                                                     value={timelineTime.startTimeISO}
@@ -257,8 +257,8 @@
                                                 type="button"
                                                 onclick={handleTimeSlotClick}
                                                 aria-readonly={readOnly}
-                                                onblur={handleBlur}
-                                                onfocus={handleFocus}
+                                                onblur={handleValueBlur}
+                                                onfocus={handleValueFocus}
                                             >
                                                 <lightning-formatted-date-time
                                                     value={time.startTimeISO}

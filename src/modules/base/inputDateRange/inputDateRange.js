@@ -32,7 +32,6 @@
 
 import { LightningElement, api } from 'lwc';
 import {
-    classListMutation,
     normalizeBoolean,
     normalizeString
 } from 'c/utilsPrivate';
@@ -317,6 +316,38 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
+     * Start date input.
+     * @type {element}
+     */
+    get startDateInput() {
+        return this.template.querySelector('.start-date')
+    }
+
+    /**
+     * End date input.
+     * @type {element}
+     */
+    get endDateInput() {
+        return this.template.querySelector('.end-date')
+    }
+
+    /**
+     * Start time input.
+     * @type {element}
+     */
+    get startTimeInput() {
+        return this.template.querySelector('.start-time')
+    }
+
+    /**
+     * End time input.
+     * @type {element}
+     */
+    get endTimeInput() {
+        return this.template.querySelector('.end-time')
+    }
+
+    /**
      * True if type is datetime.
      * @type {boolean}
      */
@@ -377,16 +408,31 @@ export default class InputDateRange extends LightningElement {
             .toString();
     }
     
+    /**
+     * Removes the slds-has-error class on the whole element if it's not valid.
+     * Aplies it on every input we need it applied.
+     * Removes it from every input when valid.
+     */
     updateClassListWhenError() {
         if(!this.valid) {
             this.classList.remove('slds-has-error')
-            this.startDateInput.classList.toggle('slds-has-error')
-            this.startDateInput.classList.toggle('error-input')
-            this.endDateInput.classList.toggle('slds-has-error')
-            this.endDateInput.classList.toggle('error-input')
+            this.startDateInput.classList.add('slds-has-error')
+            this.startDateInput.classList.add('avonni-input-date-rage-input-error')
+            this.endDateInput.classList.add('slds-has-error')
+            this.endDateInput.classList.add('avonni-input-date-rage-input-error')
             if(this.showTime){
-                this.startTimeInput.classList.toggle('slds-has-error')
-                this.endTimeInput.classList.toggle('slds-has-error')
+                this.startTimeInput.classList.add('slds-has-error')
+                this.endTimeInput.classList.add('slds-has-error')
+            }
+        }
+        if(this.valid) {
+            this.startDateInput.classList.remove('slds-has-error')
+            this.startDateInput.classList.remove('avonni-input-date-rage-input-error')
+            this.endDateInput.classList.remove('slds-has-error')
+            this.endDateInput.classList.remove('avonni-input-date-rage-input-error')
+            if(this.showTime){
+                this.startTimeInput.classList.remove('slds-has-error')
+                this.endTimeInput.classList.remove('slds-has-error')
             }
         }
     }
@@ -397,7 +443,7 @@ export default class InputDateRange extends LightningElement {
      */
     @api
     focus() {
-        this.template.querySelector('.start-date').focus();
+        this.startDateInput.focus();
     }
 
     /**
@@ -406,8 +452,8 @@ export default class InputDateRange extends LightningElement {
      */
     @api
     blur() {
-        this.template.querySelector('.start-date').blur();
-        this.template.querySelector('.end-date').blur();
+        this.startDateInput.blur();
+        this.endDateInput.blur();
     }
 
     /**
@@ -592,7 +638,7 @@ export default class InputDateRange extends LightningElement {
                     this.startDate.getDate() + 1
                 );
                 this.endDate = new Date(new Date(endDate).setHours(0, 0, 0, 0));
-                this.template.querySelector('.end-date').focus();
+                this.endDateInput.focus();
             }
 
             this.dispatchChange();
@@ -639,7 +685,7 @@ export default class InputDateRange extends LightningElement {
     toggleStartDateVisibility() {
         this.isOpenStartDate = !this.isOpenStartDate;
         if (!this.isOpenStartDate) {
-            this.template.querySelector('.start-date').blur();
+            this.startDateInput.blur();
         }
     }
 
@@ -703,7 +749,7 @@ export default class InputDateRange extends LightningElement {
                 this.startDate = new Date(
                     new Date(startDate).setHours(0, 0, 0, 0)
                 );
-                this.template.querySelector('.start-date').focus();
+                this.startDateInput.focus();
             }
 
             this.dispatchChange();
@@ -750,7 +796,7 @@ export default class InputDateRange extends LightningElement {
     toggleEndDateVisibility() {
         this.isOpenEndDate = !this.isOpenEndDate;
         if (!this.isOpenEndDate) {
-            this.template.querySelector('.end-date').blur();
+            this.endDateInput.blur();
         }
     }
 
@@ -820,21 +866,5 @@ export default class InputDateRange extends LightningElement {
                 }
             })
         );
-    }
-
-    get startDateInput() {
-        return this.template.querySelector('.start-date')
-    }
-
-    get endDateInput() {
-        return this.template.querySelector('.end-date')
-    }
-
-    get startTimeInput() {
-        return this.template.querySelector('.start-time')
-    }
-
-    get endTimeInput() {
-        return this.template.querySelector('.end-time')
     }
 }
