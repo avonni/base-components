@@ -76,5 +76,19 @@ export default class PrimitiveCellRating extends LightningElement {
                 composed: true
             })
         );
+
+        this.dispatchEvent(
+            new CustomEvent('privatechange', {
+                detail: {
+                    detail: event.detail,
+                    bubbles: event.bubbles,
+                    composed: event.composed,
+                    cancelable: event.cancelable,
+                    type: event.type
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
     }
 }
