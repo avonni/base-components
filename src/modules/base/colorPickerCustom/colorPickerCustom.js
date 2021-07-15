@@ -649,7 +649,7 @@ export default class ColorPickerCustom extends LightningElement {
 
     /**
      * Keydown handler.
-     * @param {object} event 
+     * @param {Event} event 
      */
     handleKeydown(event) {
         this.getColorFromGradient(event);

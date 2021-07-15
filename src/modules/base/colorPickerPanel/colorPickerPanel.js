@@ -120,7 +120,7 @@ export default class ColorPickerPanel extends LightningElement {
     /**
      * Selected Color update handler.
      * 
-     * @param {object} event 
+     * @param {Event} event 
      */
     handleUpdateSelectedColor(event) {
         this._selectedColor = event.detail.color;

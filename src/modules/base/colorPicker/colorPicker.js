@@ -730,7 +730,7 @@ export default class ColorPicker extends LightningElement {
     /**
      * Change Handler.
      * 
-     * @param {object} event
+     * @param {Event} event
      */
     handlerChange(event) {
         if (event.detail) {
@@ -805,7 +805,7 @@ export default class ColorPicker extends LightningElement {
     /**
      * Handle mouse down on Button.
      * 
-     * @param {object} event
+     * @param {Event} event
      */
     handleButtonMouseDown(event) {
         const mainButton = 0;
@@ -817,7 +817,7 @@ export default class ColorPicker extends LightningElement {
     /**
      * Dropdown menu mouse down handler.
      * 
-     * @param {object} event
+     * @param {Event} event
      */
     handleDropdownMouseDown(event) {
         const mainButton = 0;
@@ -845,7 +845,7 @@ export default class ColorPicker extends LightningElement {
     /**
      * Tab click event handler.
      * 
-     * @param {object} event
+     * @param {Event} event
      */
     handlerTabClick(event) {
         event.preventDefault();
@@ -890,7 +890,7 @@ export default class ColorPicker extends LightningElement {
     /**
      * Private focus handler.
      * 
-     * @param {object} event
+     * @param {Event} event
      */
     handlePrivateFocus(event) {
         event.stopPropagation();
@@ -902,7 +902,7 @@ export default class ColorPicker extends LightningElement {
     /**
      * Private blur handler.
      * 
-     * @param {object} event
+     * @param {Event} event
      */
     handlePrivateBlur(event) {
         event.stopPropagation();
@@ -914,7 +914,7 @@ export default class ColorPicker extends LightningElement {
     /**
      * Input color event handler.
      * 
-     * @param {object} event
+     * @param {Event} event
      */
     handleInputColor(event) {
         let color = event.target.value;
