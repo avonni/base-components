@@ -109,7 +109,7 @@
 /* --------------- */
 
 .scheduler__event-detail-popover {
-    z-index: 2;
+    width: auto;
 }
 .scheduler__event-detail-icon {
     color: #706e6b;

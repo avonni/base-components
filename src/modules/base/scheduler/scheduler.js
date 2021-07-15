@@ -36,7 +36,6 @@ import { generateUniqueId } from 'c/utils';
 import {
     normalizeArray,
     normalizeString,
-    observePosition,
     animationFrame,
     timeout
 } from 'c/utilsPrivate';
@@ -629,22 +628,6 @@ export default class Scheduler extends LightningElement {
         this._positioning = false;
     }
 
-    pollBoundingRect(element) {
-        setTimeout(
-            () => {
-                if (this.isConnected) {
-                    observePosition(this, 300, this._boundingRect, () => {
-                        element.classList.add('slds-hide');
-                    });
-
-                    // continue polling
-                    this.pollBoundingRect();
-                }
-            },
-            250 // check every 0.25 second
-        );
-    }
-
     handlePrivateRowHeightChange(event) {
         const key = event.detail.key;
         const height = event.detail.height;
@@ -654,23 +637,15 @@ export default class Scheduler extends LightningElement {
 
     handleEventMouseEnter(event) {
         const eventElement = event.currentTarget;
-        const eventName = eventElement.dataset.name;
-        const popover = eventElement.querySelector(
-            `.slds-popover[data-event-name="${eventName}"]`
-        );
+        const popover = eventElement.querySelector('.slds-popover');
         popover.classList.remove('slds-hide');
 
         this.startPositioning(eventElement, popover);
-        this._boundingRect = this.getBoundingClientRect();
-        this.pollBoundingRect(eventElement);
     }
 
     handleEventMouseLeave(event) {
         const eventElement = event.currentTarget;
-        const eventName = eventElement.dataset.name;
-        const popover = eventElement.querySelector(
-            `.slds-popover[data-event-name="${eventName}"]`
-        );
+        const popover = eventElement.querySelector('.slds-popover');
         popover.classList.add('slds-hide');
         this.stopPositioning();
     }
