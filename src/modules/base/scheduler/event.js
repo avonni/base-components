@@ -121,7 +121,6 @@ export default class Event {
 
         this.width = 0;
         this.offsetLeft = 0;
-        this.showDetails = false;
     }
 
     get wrapperStyle() {

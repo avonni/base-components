@@ -80,7 +80,7 @@
                 </thead>
 
                 <!-- Rows -->
-                <tbody>
+                <tbody onmousemove={handleEventMouseMove}>
                     <template
                         for:each={computedRows}
                         for:item="row"
@@ -119,12 +119,13 @@
                                             class={event.object.wrapperClass}
                                             aria-hidden={event.hidden}
                                             style={event.object.wrapperStyle}
-                                            data-name={event.object.name}
                                             tabindex="0"
+                                            onmouseup={handleEventMouseUp}
+                                            onmousedown={handleEventMouseDown}
                                             onmouseenter={handleEventMouseEnter}
-                                            onmouseleave={handleEventMouseLeave}
+                                            onmouseleave={hidePopover}
                                             onfocus={handleEventMouseEnter}
-                                            onblur={handleEventMouseLeave}
+                                            onblur={hidePopover}
                                         >
                                             <div
                                                 class={event.object.class}

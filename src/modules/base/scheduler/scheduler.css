@@ -114,3 +114,6 @@
 .scheduler__event-detail-icon {
     color: #706e6b;
 }
+.scheduler__event-dragged {
+    z-index: 2;
+}

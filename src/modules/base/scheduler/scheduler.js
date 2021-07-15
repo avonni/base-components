@@ -82,6 +82,8 @@ export default class Scheduler extends LightningElement {
     _theme = THEMES.default;
     _visibleSpan = DEFAULT_VISIBLE_SPAN;
 
+    _draggedEvent;
+    _dragInitialPosition;
     _referenceHeader;
     computedHeaders = [];
     computedRows = [];
@@ -572,52 +574,55 @@ export default class Scheduler extends LightningElement {
         });
     }
 
-    startPositioning(element, popover) {
-        this._positioning = true;
+    startPositioning(element) {
+        if (this._visiblePopover) {
+            this._positioning = true;
 
-        const align = {
-            horizontal: Direction.Left,
-            vertical: Direction.Top
-        };
+            const align = {
+                horizontal: Direction.Left,
+                vertical: Direction.Top
+            };
 
-        const targetAlign = {
-            horizontal: Direction.Left,
-            vertical: Direction.Bottom
-        };
+            const targetAlign = {
+                horizontal: Direction.Left,
+                vertical: Direction.Bottom
+            };
 
-        let autoFlip = true;
-        let autoFlipVertical;
+            let autoFlip = true;
+            let autoFlipVertical;
 
-        return animationFrame()
-            .then(() => {
-                this.stopPositioning();
-                this._autoPosition = startPositioning(
-                    this,
-                    {
-                        target: () => element,
-                        element: () => popover,
-                        align,
-                        targetAlign,
-                        autoFlip,
-                        autoFlipVertical,
-                        scrollableParentBound: true,
-                        keepInViewport: true
-                    },
-                    true
-                );
-                // Edge case: W-7460656
-                if (this._autoPosition) {
-                    return this._autoPosition.reposition();
-                }
-                return Promise.reject();
-            })
-            .then(() => {
-                return timeout(0);
-            })
-            .then(() => {
-                // Use a flag to prevent this async function from executing multiple times in a single lifecycle
-                this._positioning = false;
-            });
+            return animationFrame()
+                .then(() => {
+                    this.stopPositioning();
+                    this._autoPosition = startPositioning(
+                        this,
+                        {
+                            target: () => element,
+                            element: () => this._visiblePopover,
+                            align,
+                            targetAlign,
+                            autoFlip,
+                            autoFlipVertical,
+                            scrollableParentBound: true,
+                            keepInViewport: true
+                        },
+                        true
+                    );
+                    // Edge case: W-7460656
+                    if (this._autoPosition) {
+                        return this._autoPosition.reposition();
+                    }
+                    return Promise.reject();
+                })
+                .then(() => {
+                    return timeout(0);
+                })
+                .then(() => {
+                    // Use a flag to prevent this async function from executing multiple times in a single lifecycle
+                    this._positioning = false;
+                });
+        }
+        return null;
     }
 
     stopPositioning() {
@@ -636,17 +641,94 @@ export default class Scheduler extends LightningElement {
     }
 
     handleEventMouseEnter(event) {
-        const eventElement = event.currentTarget;
-        const popover = eventElement.querySelector('.slds-popover');
-        popover.classList.remove('slds-hide');
+        if (this._visiblePopover || this._draggedEvent) return;
 
-        this.startPositioning(eventElement, popover);
+        const eventWrapper = event.currentTarget;
+        this._visiblePopover = eventWrapper.querySelector('.slds-popover');
+        this._visiblePopover.classList.remove('slds-hide');
+
+        this.startPositioning(eventWrapper);
     }
 
-    handleEventMouseLeave(event) {
-        const eventElement = event.currentTarget;
-        const popover = eventElement.querySelector('.slds-popover');
-        popover.classList.add('slds-hide');
-        this.stopPositioning();
+    hidePopover() {
+        if (this._visiblePopover) {
+            this._visiblePopover.classList.add('slds-hide');
+            this._visiblePopover = undefined;
+            this.stopPositioning();
+        }
+    }
+
+    handleEventMouseDown(event) {
+        this._draggedEvent = event.currentTarget;
+        this._draggedEvent.classList.add('scheduler__event-dragged');
+        this.hidePopover();
+
+        const schedule = this.template.querySelector('tbody');
+        const schedulePosition = schedule.getBoundingClientRect();
+        const eventPosition = this._draggedEvent.getBoundingClientRect();
+
+        this._dragInitialPosition = {
+            mouseX: event.clientX,
+            mouseY: event.clientY,
+            eventTop: eventPosition.top,
+            eventBottom: eventPosition.bottom,
+            eventLeft: eventPosition.left,
+            eventRight: eventPosition.right,
+            scheduleTop: schedulePosition.top,
+            scheduleBottom: schedulePosition.bottom,
+            scheduleLeft: schedulePosition.left,
+            scheduleRight: schedulePosition.right
+        };
+    }
+
+    handleEventMouseMove(event) {
+        if (!this._draggedEvent) return;
+
+        // Prevent scrolling
+        event.preventDefault();
+
+        const {
+            scheduleTop,
+            scheduleBottom,
+            scheduleLeft,
+            scheduleRight,
+            mouseX,
+            mouseY,
+            eventTop,
+            eventBottom,
+            eventLeft,
+            eventRight
+        } = this._dragInitialPosition;
+
+        let currentY = event.clientY;
+        let currentX = event.clientX;
+
+        // Prevent the events from being dragged out of the schedule grid
+        const top = scheduleTop + (mouseY - eventTop);
+        const bottom = scheduleBottom + (mouseY - eventBottom);
+        const left = scheduleLeft + (mouseX - eventLeft);
+        const right = scheduleRight + (mouseX - eventRight);
+
+        if (currentY < top) {
+            currentY = top;
+        } else if (currentY > bottom) {
+            currentY = bottom;
+        }
+
+        if (currentX < left) {
+            currentX = left;
+        } else if (currentX > right) {
+            currentX = right;
+        }
+
+        currentX = currentX - mouseX;
+        currentY = currentY - mouseY;
+
+        this._draggedEvent.style.transform = `translate(${currentX}px, ${currentY}px)`;
+    }
+
+    handleEventMouseUp() {
+        this._draggedEvent.classList.remove('scheduler__event-dragged');
+        this._draggedEvent = undefined;
     }
 }
