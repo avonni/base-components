@@ -175,14 +175,14 @@ export default class ColorPickerPanel extends LightningElement {
         } else if (
             event.shiftKey &&
             event.keyCode === keyCodes.tab &&
-            event.srcElement.dataset.id === 'color-anchor'  // <- srcElement Deprecated - https://developer.mozilla.org/en-US/docs/Web/API/Event/srcElement
+            event.target.dataset.id === 'color-anchor'  
         ) {
             event.preventDefault();
             this.template.querySelector('button[name="done"]').focus();
         } else if (
             !event.shiftKey &&
             event.keyCode === keyCodes.tab &&
-            event.srcElement.name === 'done' // <- srcElement Deprecated - https://developer.mozilla.org/en-US/docs/Web/API/Event/srcElement
+            event.target.name === 'done'
         ) {
             event.preventDefault();
             this.template.querySelector('c-color-picker-custom').focus();
