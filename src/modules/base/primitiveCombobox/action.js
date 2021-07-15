@@ -35,6 +35,7 @@ import { normalizeAriaAttribute, normalizeBoolean } from 'c/utilsPrivate';
 
 /**
  * Action
+ * 
  * @class
  * @param {string} key Unique identifier for the header
  * @property {string} label Required. The action label.
@@ -56,6 +57,7 @@ export default class Action {
 
     /**
      * Class of the action.
+     * 
      * @type {string}
      */
     get computedClass() {
@@ -72,7 +74,8 @@ export default class Action {
     }
 
     /**
-     * String of true or false
+     * String of true or false.
+     * 
      * @type {string}
      */
     get computedAriaDisabled() {

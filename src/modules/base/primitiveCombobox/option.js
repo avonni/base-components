@@ -35,6 +35,7 @@ import { classSet } from 'c/utils';
 
 /**
  * Option
+ * 
  * @class
  * @property {string} avatarFallbackIconName The Lightning Design System name of the icon used as a fallback when the image fails to load. The initials fallback relies on this for its background color.
  * Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. Only icons from the standard and custom categories are allowed.
@@ -63,6 +64,7 @@ export default class Option {
 
     /**
      * Class of the option.
+     * 
      * @type {string}
      */
     get computedClass() {
@@ -77,6 +79,7 @@ export default class Option {
 
     /**
      * Class of the option's icon.
+     * 
      * @type {string}
      */
     get computedIconClass() {
@@ -87,6 +90,7 @@ export default class Option {
 
     /**
      * Return the icon chosen or utility:check.
+     * 
      * @type {string}
      */
     get computedCheckmarkIconName() {
@@ -94,7 +98,8 @@ export default class Option {
     }
 
     /**
-     * True if selected, options or icon-name
+     * True if selected, options or icon-name.
+     * 
      * @type {boolean}
      */
     get showCheckmark() {
@@ -106,7 +111,8 @@ export default class Option {
     }
 
     /**
-     * Array of option's options
+     * Array of option's options.
+     * 
      * @param {object[]} options Array of option objects.
      * @returns {object[]} Array of option's options
      */

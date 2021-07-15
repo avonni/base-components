@@ -72,6 +72,7 @@ const DEFAULT_MESSAGE_TOGGLE_INACTIVE = 'Inactive';
 export default class InputToggle extends LightningElement {
     /**
      * Specifies a shortcut key to activate or focus an element.
+     * 
      * @type {string}
      * @public
      */
@@ -79,6 +80,7 @@ export default class InputToggle extends LightningElement {
 
     /**
      * Describes the input to assistive technologies.
+     * 
      * @type {string}
      * @public
      */
@@ -87,6 +89,7 @@ export default class InputToggle extends LightningElement {
     /**
      * Help text detailing the purpose and function of the input.
      * This attribute isn't supported for file, radio, toggle, and checkbox-button types.
+     * 
      * @type {string}
      * @public
      */
@@ -94,6 +97,7 @@ export default class InputToggle extends LightningElement {
 
     /**
      * Text label for the input.
+     * 
      * @type {string}
      * @required
      * @public
@@ -102,6 +106,7 @@ export default class InputToggle extends LightningElement {
 
     /**
      * Text shown for the active state of a toggle.
+     * 
      * @type {string}
      * @public
      */
@@ -109,6 +114,7 @@ export default class InputToggle extends LightningElement {
 
     /**
      * Text shown for the inactive state of a toggle.
+     * 
      * @type {string}
      * @public
      */
@@ -117,6 +123,7 @@ export default class InputToggle extends LightningElement {
     /**
      * Error message to be displayed when the value is missing.
      * The valueMissing error can be returned when you specify the required attribute for any input type.
+     * 
      * @type {string}
      * @public
      */
@@ -124,6 +131,7 @@ export default class InputToggle extends LightningElement {
 
     /**
      * Specifies the name of an input element.
+     * 
      * @type {string}
      * @public
      */
@@ -131,6 +139,7 @@ export default class InputToggle extends LightningElement {
 
     /**
      * Specifies the value of an input element.
+     * 
      * @type {string}
      * @public
      */
@@ -180,6 +189,7 @@ export default class InputToggle extends LightningElement {
 
     /**
      * A space-separated list of element IDs whose presence or content is controlled by the input.
+     * 
      * @type {string}
      * @public
      */
@@ -200,6 +210,7 @@ export default class InputToggle extends LightningElement {
 
     /**
      * A space-separated list of element IDs that provide descriptive labels for the input.
+     * 
      * @type {string}
      * @public
      */
@@ -220,6 +231,7 @@ export default class InputToggle extends LightningElement {
 
     /**
      * A space-separated list of element IDs that provide labels for the input.
+     * 
      * @type {string}
      * @public
      */
@@ -240,6 +252,7 @@ export default class InputToggle extends LightningElement {
 
     /**
      * If present, the toggle is selected.
+     * 
      * @type {boolean}
      * @default false
      * @public
@@ -259,6 +272,7 @@ export default class InputToggle extends LightningElement {
 
     /**
      * If present, the input field is disabled and users cannot interact with it.
+     * 
      * @type {boolean}
      * @default false
      * @public
@@ -274,6 +288,7 @@ export default class InputToggle extends LightningElement {
 
     /**
      * If present, hides the mark.
+     * 
      * @type {boolean}
      * @default false
      * @public
@@ -288,6 +303,7 @@ export default class InputToggle extends LightningElement {
 
     /**
      * If present, the input field is read-only and cannot be edited by users.
+     * 
      * @type {boolean}
      * @default false
      * @public
@@ -303,6 +319,7 @@ export default class InputToggle extends LightningElement {
 
     /**
      * If present, the input field must be filled out before the form is submitted.
+     * 
      * @type {boolean}
      * @default false
      * @public
@@ -319,6 +336,7 @@ export default class InputToggle extends LightningElement {
 
     /**
      * The size of the input toggle. Valid values include x-small, small, medium and large.
+     * 
      * @type {string}
      * @default medium
      * @public
@@ -342,6 +360,7 @@ export default class InputToggle extends LightningElement {
      * Use label-hidden to hide the label but make it available to assistive technology.
      * Use label-inline to horizontally align the label and input field.
      * Use label-stacked to place the label above the input field.
+     * 
      * @type {string}
      * @default standard
      * @public
@@ -357,6 +376,7 @@ export default class InputToggle extends LightningElement {
 
     /**
      * Represents the validity states that an element can be in, with respect to constraint validation.
+     * 
      * @type {string}
      * @public
      */
@@ -367,6 +387,7 @@ export default class InputToggle extends LightningElement {
 
     /**
      * Removes keyboard focus from the input element.
+     * 
      * @public
      */
     @api
@@ -378,6 +399,7 @@ export default class InputToggle extends LightningElement {
 
     /**
      * Checks if the input is valid.
+     * 
      * @returns {boolean} Indicates whether the element meets all constraint validations.
      * @public
      */
@@ -388,6 +410,7 @@ export default class InputToggle extends LightningElement {
 
     /**
      * Sets focus on the input element.
+     * 
      * @public
      */
     @api
@@ -400,6 +423,7 @@ export default class InputToggle extends LightningElement {
     /**
      * Displays the error messages and returns false if the input is invalid.
      * If the input is valid, reportValidity() clears displayed error messages and returns true.
+     * 
      * @returns {boolean} - The validity status of the input fields.
      * @public
      */
@@ -412,6 +436,7 @@ export default class InputToggle extends LightningElement {
 
     /**
      * Sets a custom error message to be displayed when a form is submitted.
+     * 
      * @param {string} message - The string that describes the error.
      * If message is an empty string, the error message is reset.
      * @public
@@ -424,6 +449,7 @@ export default class InputToggle extends LightningElement {
     /**
      * Displays error messages on invalid fields.
      * An invalid field fails at least one constraint validation and returns false when checkValidity() is called.
+     * 
      * @public
      */
     @api
@@ -437,6 +463,7 @@ export default class InputToggle extends LightningElement {
 
     /**
      * Class of the input toggle wrapper.
+     * 
      * @type {string}
      */
     get computedWrapperClass() {
@@ -448,6 +475,7 @@ export default class InputToggle extends LightningElement {
 
     /**
      * Class of the faux toggle.
+     * 
      * @type {string}
      */
     get computedFauxToggleClass() {
@@ -461,6 +489,7 @@ export default class InputToggle extends LightningElement {
 
     /**
      * Class of the label container.
+     * 
      * @type {string}
      */
     get computedLabelClass() {
@@ -547,7 +576,7 @@ export default class InputToggle extends LightningElement {
     }
 
     /**
-     * Dispatch the blur event
+     * Dispatches the blur event.
      */
     handleBlur() {
         this.interactingState.leave();
@@ -562,7 +591,7 @@ export default class InputToggle extends LightningElement {
     }
 
     /**
-     * Dispatch the focus event
+     * Dispatches the focus event.
      */
     handleFocus() {
         this.interactingState.enter();
@@ -577,7 +606,7 @@ export default class InputToggle extends LightningElement {
     }
 
     /**
-     * Dispatch the change event
+     * Dispatches the change event.
      */
     handleChange(event) {
         if (this.readOnly) {

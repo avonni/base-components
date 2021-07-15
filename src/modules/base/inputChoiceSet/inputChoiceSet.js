@@ -68,6 +68,7 @@ export default class InputChoiceSet extends LightningElement {
 
     /**
      * Text label for the input.
+     * 
      * @type {string}
      * @required
      * @public
@@ -76,6 +77,7 @@ export default class InputChoiceSet extends LightningElement {
 
     /**
      * Array of option objects.
+     * 
      * @type {object[]}
      * @required
      * @public
@@ -84,6 +86,7 @@ export default class InputChoiceSet extends LightningElement {
 
     /**
      * Optional message to be displayed when no option is selected and the required attribute is set.
+     * 
      * @type {string}
      * @public
      */
@@ -91,6 +94,7 @@ export default class InputChoiceSet extends LightningElement {
 
     /**
      * Specifies the name of an input element.
+     * 
      * @type {string}
      * @required
      * @public
@@ -142,6 +146,7 @@ export default class InputChoiceSet extends LightningElement {
      * The list of selected options.
      * Each array entry contains the value of a selected option.
      * The value of each option is set in the options attribute.
+     * 
      * @type {string[]}
      * @required
      * @public
@@ -157,6 +162,7 @@ export default class InputChoiceSet extends LightningElement {
 
     /**
      * If present, the input field is disabled and users cannot interact with it.
+     * 
      * @type {boolean}
      * @default false
      * @public
@@ -171,6 +177,7 @@ export default class InputChoiceSet extends LightningElement {
 
     /**
      * Orientation of the input options. Valid values include vertical and horizontal.
+     * 
      * @type {string}
      * @default vertical
      * @public
@@ -189,6 +196,7 @@ export default class InputChoiceSet extends LightningElement {
 
     /**
      * If present, multiple choices can be selected.
+     * 
      * @type {boolean}
      * @default false
      * @public
@@ -203,6 +211,7 @@ export default class InputChoiceSet extends LightningElement {
 
     /**
      * If present, at least one option must be selected.
+     * 
      * @type {boolean}
      * @default false
      * @public
@@ -221,6 +230,7 @@ export default class InputChoiceSet extends LightningElement {
      * Use label-hidden to hide the label but make it available to assistive technology.
      * Use label-inline to horizontally align the label and checkbox group.
      * Use label-stacked to place the label above the checkbox group.
+     * 
      * @type {string}
      * @default standard
      * @public
@@ -237,6 +247,7 @@ export default class InputChoiceSet extends LightningElement {
 
     /**
      * Type of the input. Valid values include default and button.
+     * 
      * @type {string}
      * @default default
      * @public
@@ -254,7 +265,8 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * True if type is default
+     * True if type is default.
+     * 
      * @type {boolean}
      */
     get checkboxVariant() {
@@ -277,6 +289,7 @@ export default class InputChoiceSet extends LightningElement {
 
     /**
      * Represents the validity states that an element can be in, with respect to constraint validation.
+     * 
      * @type {string}
      * @public
      */
@@ -287,6 +300,7 @@ export default class InputChoiceSet extends LightningElement {
 
     /**
      * Checks if the input is valid.
+     * 
      * @returns {boolean} Indicates whether the element meets all constraint validations.
      * @public
      */
@@ -298,6 +312,7 @@ export default class InputChoiceSet extends LightningElement {
     /**
      * Displays the error messages and returns false if the input is invalid.
      * If the input is valid, reportValidity() clears displayed error messages and returns true.
+     * 
      * @returns {boolean} - The validity status of the input fields.
      * @public
      */
@@ -310,6 +325,7 @@ export default class InputChoiceSet extends LightningElement {
 
     /**
      * Sets a custom error message to be displayed when a form is submitted.
+     * 
      * @param {string} message - The string that describes the error.
      * If message is an empty string, the error message is reset.
      * @public
@@ -322,6 +338,7 @@ export default class InputChoiceSet extends LightningElement {
     /**
      * Displays error messages on invalid fields.
      * An invalid field fails at least one constraint validation and returns false when checkValidity() is called.
+     * 
      * @public
      */
     @api
@@ -336,6 +353,7 @@ export default class InputChoiceSet extends LightningElement {
 
     /**
      * Sets focus on the first input option.
+     * 
      * @public
      */
     @api
@@ -347,7 +365,7 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * Dispatch the focus event
+     * Dispatch the focus event.
      */
     handleFocus() {
         this.interactingState.enter();
@@ -362,7 +380,7 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * Dispatch the blur event
+     * Dispatch the blur event.
      */
     handleBlur() {
         this.interactingState.leave();
@@ -378,7 +396,7 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * Handle the click event
+     * Handle the click event.
      */
     handleClick(event) {
         if (this.template.activeElement !== event.target) {
@@ -388,8 +406,9 @@ export default class InputChoiceSet extends LightningElement {
 
     /**
      * Computes the area of a circle.
-     * @param {array} inputs All inputs
-     * @returns {array} Checked values
+     * 
+     * @param {array} inputs All inputs.
+     * @returns {array} Checked values.
      */
     handleValueChange(inputs) {
         return Array.from(inputs)
@@ -398,7 +417,7 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * Dispatch the change event
+     * Dispatch the change event.
      */
     handleChange(event) {
         event.stopPropagation();
@@ -466,6 +485,7 @@ export default class InputChoiceSet extends LightningElement {
 
     /**
      * Class of the legend.
+     * 
      * @type {string}
      */
     get computedLegendClass() {
@@ -482,6 +502,7 @@ export default class InputChoiceSet extends LightningElement {
 
     /**
      * Class of the button.
+     * 
      * @type {string}
      */
     get computedButtonClass() {
@@ -492,6 +513,7 @@ export default class InputChoiceSet extends LightningElement {
 
     /**
      * Class of checkbox container.
+     * 
      * @type {string}
      */
     get computedCheckboxContainerClass() {
@@ -505,6 +527,7 @@ export default class InputChoiceSet extends LightningElement {
 
     /**
      * Class of the label container.
+     * 
      * @type {string}
      */
     get computedLabelClass() {
@@ -518,7 +541,8 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * Return checkbox if is-multi-select is true or type is not default and radio if is-multi-select is false
+     * Return checkbox if is-multi-select is true or type is not default and radio if is-multi-select is false.
+     * 
      * @type {string}
      */
     get computedInputType() {
@@ -528,7 +552,8 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * Return slds-checkbox_faux if is-multi-select is true and slds-radio_faux if is-multi-select is false
+     * Return slds-checkbox_faux if is-multi-select is true and slds-radio_faux if is-multi-select is false.
+     * 
      * @type {string}
      */
     get computedCheckboxShapeClass() {
