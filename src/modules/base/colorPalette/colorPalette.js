@@ -78,12 +78,14 @@ const DEFAULT_COLUMNS = 7
 export default class ColorPalette extends LightningElement {
     /**
      * Specifies the value of an input element.
+     * 
      * @public
      * @type {string}
      */
     @api value;
     /**
      * Color values displayed in the palette.
+     * 
      * @public
      * @type {string[]}
      * @default [“#e3abec”, “#c2dbf7”, ”#9fd6ff”, ”#9de7da”, ”#9df0bf”, ”#fff099”, ”#fed49a”, ”#d073df”, ”#86b9f3”, ”#5ebbff”, ”#44d8be”, ”#3be281”, ”#ffe654”, ”#ffb758”, ”#bd35bd”, ”#5778c1”, ”#5ebbff”, ”#00aea9”, ”#3bba4c”, ”#f4bc25”, ”#f99120”, ”#580d8c”, ”#001870”, ”#0a2399”, ”#097476”, ”#096a50”, ”#b67d11”, ”#b85d0d”]
@@ -103,7 +105,7 @@ export default class ColorPalette extends LightningElement {
     }
 
     /**
-     * Initialize Palette container
+     * Initialize Palette container.
      */
     initContainer() {
         let containerWidth = this.columns * (Number(this.tileWidth) + 8);
@@ -133,6 +135,7 @@ export default class ColorPalette extends LightningElement {
 
     /**
      * Specifies the number of columns that will be displayed. 
+     * 
      * @public
      * @type {number}
      */
@@ -148,6 +151,7 @@ export default class ColorPalette extends LightningElement {
 
     /**
      * Tile width in px.
+     * 
      * @public
      * @type {number}
      */
@@ -163,6 +167,7 @@ export default class ColorPalette extends LightningElement {
 
     /**
      * Tile height in px.
+     * 
      * @public
      * @type {number}
      */
@@ -178,6 +183,7 @@ export default class ColorPalette extends LightningElement {
 
     /**
      * If present, the input field is disabled and users cannot interact with it.
+     * 
      * @public
      * @type {boolean}
      * @default false
@@ -193,6 +199,7 @@ export default class ColorPalette extends LightningElement {
 
     /**
      * If present, a spinner is displayed to indicate that data is loading. 
+     * 
      * @public
      * @type {boolean}
      * @default false
@@ -208,6 +215,7 @@ export default class ColorPalette extends LightningElement {
 
     /**
      * If present, the palette is read-only and cannot be edited by users.
+     * 
      * @public
      * @type {boolean}
      * @default false
@@ -222,7 +230,7 @@ export default class ColorPalette extends LightningElement {
     }
 
     /**
-     * Generate unique Key ID
+     * Generate unique Key ID.
      */
     get uniqKey() {
         return generateUniqueId();
@@ -230,6 +238,7 @@ export default class ColorPalette extends LightningElement {
 
     /**
      * Clears the color value of the ColorPalette.
+     * 
      * @public
      */
     @api
@@ -239,7 +248,7 @@ export default class ColorPalette extends LightningElement {
     }
 
     /**
-     * Private focus event handler
+     * Private focus event handler.
      */
     handleFocus() {
         /**
@@ -257,7 +266,7 @@ export default class ColorPalette extends LightningElement {
     }
 
     /**
-     * Blur and private blur event handler
+     * Blur and private blur event handler.
      */
     handleBlur() {
         /**
@@ -284,7 +293,8 @@ export default class ColorPalette extends LightningElement {
     }
 
     /**
-     * Click event handler
+     * Click event handler.
+     * 
      * @param {object} event 
      * @returns {string} value 
      */
@@ -300,7 +310,7 @@ export default class ColorPalette extends LightningElement {
     }
 
     /**
-     * Change event handler
+     * Change event handler.
      */
     dispatchChange() {
         let colors = generateColors(this.value);

@@ -50,12 +50,14 @@ const GROUP_BY_OPTIONS = {
 export default class ActivityTimeline extends LightningElement {
     /**
      * The title can include text, and is displayed in the header.
+     * 
      * @public
      * @type {string}
      */
     @api title;
     /**
      * The Lightning Design System name of the icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed. The icon is displayed in the header before the title.
+     * 
      * @public
      * @type {string}
      */
@@ -82,6 +84,7 @@ export default class ActivityTimeline extends LightningElement {
 
     /**
      * If true, the section is collapsible, the left icon is present.
+     * 
      * @public
      * @type {boolean}
      * @default false
@@ -97,6 +100,7 @@ export default class ActivityTimeline extends LightningElement {
 
     /**
      * If true, close the section.
+     * 
      * @public
      * @type {boolean}
      * @default false
@@ -112,6 +116,7 @@ export default class ActivityTimeline extends LightningElement {
 
     /**
      * If present, the value will define how the items will be grouped. Values can include week, month, year or undefined.
+     * 
      * @public
      * @type {string}
      */
@@ -128,7 +133,8 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * See Activity Timeline Item
+     * See Activity Timeline Item.
+     * 
      * @public
      * @type {object[]}
      */
@@ -146,6 +152,7 @@ export default class ActivityTimeline extends LightningElement {
 
     /**
      * A list of different actions for dropdown menu.
+     * 
      * @public
      * @type {object[]}
      */
@@ -159,8 +166,9 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * Compute Number of the week in the year
-     * @param {*} date
+     * Compute Number of the week in the year.
+     * 
+     * @param {Date} date
      * @type {Date|number}
      * @returns number
      */
@@ -172,7 +180,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * Compute sortedItems list array
+     * Compute sortedItems list array.
      */
     sortItems() {
         this._sortedItems = [...this.items];
@@ -180,7 +188,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * Sort the item dates by year, month, week
+     * Sort the item dates by year, month, week.
      */
     sortDates() {
         this._sortedItems.forEach((item) => {
@@ -214,7 +222,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * Group upcomingDates and beforeDates by year, month, week
+     * Group upcomingDates and beforeDates by year, month, week.
      */
     groupDates() {
         this._upcomingDates = this._upcomingDates.reduce((prev, cur) => {
@@ -265,7 +273,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * Sort the orderedDates by hours
+     * Sort the orderedDates by hours.
      */
     sortHours() {
         this.orderedDates.forEach((object) => {
@@ -274,7 +282,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * UngroupedItems ordered by dates and hours
+     * UngroupedItems ordered by dates and hours.
      */
     createUngroupedItems() {
         this.orderedDates.forEach((group) => {
@@ -287,7 +295,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * Component initialized states
+     * Component initialized states.
      */
     initActivityTimeline() {
         this.sortItems();
@@ -298,7 +306,8 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * Verify if dates exist
+     * Verify if dates exist.
+     * 
      * @type {boolean}
      */
     get hasDates() {
@@ -306,7 +315,8 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * Assign header by title or icon-name
+     * Assign header by title or icon-name.
+     * 
      * @type {boolean}
      */
     get hasHeader() {
@@ -314,7 +324,8 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * Toggle for grouping dates
+     * Toggle for grouping dates.
+     * 
      * @type {boolean}
      */
     get noGroupBy() {

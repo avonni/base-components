@@ -62,30 +62,35 @@ const BUTTON_VARIANTS = {
 export default class ButtonIconDialog extends LightningElement {
     /**
      * The keyboard shortcut for the button.
+     * 
      * @public
      * @type {string}
      */
     @api accessKey;
     /**
      * The assistive text for the button.
+     * 
      * @public
      * @type {string}
      */
     @api alternativeText;
     /**
      * Text to display when the user mouses over or focuses on the button. The tooltip is auto-positioned relative to the button and screen space.
+     * 
      * @public
      * @type {string}
      */
     @api tooltip;
     /**
      * The class to be applied to the contained icon element ( e.g. "slds-icon-text-success").
+     * 
      * @public
      * @type {string}
      */
     @api iconClass;
     /**
      * The name of the icon to be used in the format 'utility:down'.
+     * 
      * @public
      * @type {string}
      */
@@ -102,6 +107,7 @@ export default class ButtonIconDialog extends LightningElement {
 
     /**
      * The size of the buttonIcon. For the bare variant, options include x-small, small, medium, and large. For non-bare variants, options include xx-small, x-small, small, and medium.
+     * 
      * @public
      * @type {string}
      * @default "medium"
@@ -127,6 +133,7 @@ export default class ButtonIconDialog extends LightningElement {
 
     /**
      * The variant changes the appearance of buttonIcon. Accepted variants include bare, container, brand, border, border-filled, bare-inverse, and border-inverse.
+     * 
      * @public
      * @type {string}
      * @default "border"
@@ -145,6 +152,7 @@ export default class ButtonIconDialog extends LightningElement {
 
     /**
      * If present, the popover can be opened by users.
+     * 
      * @public
      * @type {boolean}
      */
@@ -175,6 +183,7 @@ export default class ButtonIconDialog extends LightningElement {
 
     /**
      * Close the modal box.
+     * 
      */
     @api
     hide() {

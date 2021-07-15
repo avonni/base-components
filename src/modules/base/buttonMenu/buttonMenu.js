@@ -89,6 +89,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * The size of the icon. Options include xx-small, x-small, small, or medium.
+     * 
      * @public
      * @type {string}
      * @default "medium"
@@ -96,6 +97,7 @@ export default class ButtonMenu extends LightningElement {
     @api iconSize = ICON_SIZES.default;
     /**
      * The name of the icon to be used in the format 'utility:down'. If an icon other than 'utility:down' or 'utility:chevrondown' is used, a utility:down icon is appended to the right of that icon.
+     * 
      * @public
      * @type {string}
      * @default "utility:down"
@@ -103,12 +105,14 @@ export default class ButtonMenu extends LightningElement {
     @api iconName = DEFAULT_ICON_NAME;
     /**
      * The value for the button element. This value is optional and can be used when submitting a form.
+     * 
      * @public
      * @type {string}
      */
     @api value = '';
     /**
      * The assistive text for the button menu.
+     * 
      * @public
      * @type {string}
      * @default "Show Menu"
@@ -116,6 +120,7 @@ export default class ButtonMenu extends LightningElement {
     @api alternativeText = i18n.showMenu;
     /**
      * Message displayed while the menu is in the loading state.
+     * 
      * @public
      * @type {string}
      * @default "Loading"
@@ -123,12 +128,14 @@ export default class ButtonMenu extends LightningElement {
     @api loadingStateAlternativeText = i18n.loading;
     /**
      * Optional text to be shown on the button.
+     * 
      * @public
      * @type {string}
      */
     @api label;
     /**
      * Describes the reason for showing the draft indicator. This is required when is-draft is true.
+     * 
      * @public
      * @type {string}
      */
@@ -169,7 +176,7 @@ export default class ButtonMenu extends LightningElement {
         /**
          * @event
          * @name privatebuttonregister
-         * @param {object} callbacks - setOrder, setDeregistrationCallback
+         * @param {object{}} callbacks - setOrder, setDeregistrationCallback
          * @private
          * @bubbles
          */
@@ -208,6 +215,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * The variant changes the look of the button. Accepted variants include bare, container, border, border-filled, bare-inverse, and border-inverse.
+     * 
      * @public
      * @type {string}
      * @default "border"
@@ -226,6 +234,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Determines the alignment of the menu relative to the button. Available options are: auto, left, center, right, bottom-left, bottom-center, bottom-right. The auto option aligns the dropdown menu based on available space.
+     * 
      * @public
      * @type {string}
      * @default "left"
@@ -244,6 +253,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * If present, the menu can be opened by users.
+     * 
      * @public
      * @type {boolean}
      * @default false
@@ -259,6 +269,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * If present, a nubbin is present on the menu. A nubbin is a stub that protrudes from the menu item towards the button menu. The nubbin position is based on the menu-alignment.
+     * 
      * @public
      * @type {boolean}
      * @default false
@@ -274,6 +285,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Displays title text when the mouse moves over the button menu.
+     * 
      * @public
      * @type {string}
      */
@@ -288,6 +300,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * If present, the menu trigger shows a draft indicator.
+     * 
      * @public
      * @type {boolean}
      * @default false
@@ -303,6 +316,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * If true, the menu is in a loading state and shows a spinner.
+     * 
      * @public
      * @type {boolean}
      * @default false
@@ -323,6 +337,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * The keyboard shortcut for the button menu.
+     * 
      * @public
      * @type {string}
      */
@@ -337,6 +352,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Text to display when the user mouses over or focuses on the button. The tooltip is auto-positioned relative to the button and screen space.
+     * 
      * @public
      * @type {string}
      */
@@ -385,7 +401,7 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Tooltip initialization
+     * Tooltip initialization.
      */
     initTooltip() {
         if (this._tooltip && !this._tooltip.initialized) {
@@ -394,7 +410,7 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Return focus on menu item after render
+     * Return focus on menu item after render.
      */
     focusOnMenuItemAfterRender() {
         let focusOnIndex = this._focusOnIndexDuringRenderedCallback || 0;
@@ -423,7 +439,8 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Computed access key
+     * Computed access key.
+     * 
      * @type {string}
      */
     get computedAccessKey() {
@@ -431,7 +448,8 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Computed title
+     * Computed title.
+     * 
      * @type {string}
      */
     get computedTitle() {
@@ -439,7 +457,8 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Computed alternative text
+     * Computed alternative text.
+     * 
      * @type {string}
      */
     get computedAlternativeText() {
@@ -447,7 +466,8 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Computed loading state default or loading state alternative text
+     * Computed loading state default or loading state alternative text.
+     * 
      * @type {string}
      */
     get computedLoadingStateAlternativeText() {
@@ -455,7 +475,8 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Computed button class styling
+     * Computed button class styling.
+     * 
      * @type {string}
      */
     get computedButtonClass() {
@@ -509,7 +530,8 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Show downwards icon on button
+     * Show downwards icon on button.
+     * 
      * @type {boolean}
      */
     get computedShowDownIcon() {
@@ -520,7 +542,8 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Computed dropdown class styling
+     * Computed dropdown class styling.
+     * 
      * @type {string}
      */
     get computedDropdownClass() {
@@ -553,7 +576,8 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Menu item selector handler
+     * Menu item selector handler.
+     * 
      * @param {Event} event
      */
     handleMenuItemPrivateSelect(event) {
@@ -590,7 +614,8 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Menu item select dispatch method
+     * Menu item select dispatch method.
+     * 
      * @param {Event} event
      */
     dispatchSelect(event) {
@@ -611,7 +636,7 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Button click handler
+     * Button click handler.
      */
     handleButtonClick() {
         this.allowBlur();
@@ -622,7 +647,7 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Button mouse down handler
+     * Button mouse down handler.
      * @param {Event} event
      */
     handleButtonMouseDown(event) {
@@ -633,7 +658,7 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Dropdown menu mouse down handler
+     * Dropdown menu mouse down handler.
      * @param {Event} event
      */
     handleDropdownMouseDown(event) {
@@ -644,14 +669,14 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Dropdown menu mouse up handler
+     * Dropdown menu mouse up handler.
      */
     handleDropdownMouseUp() {
         this.allowBlur();
     }
 
     /**
-     * Dropdown menu mouse leave handler
+     * Dropdown menu mouse leave handler.
      */
     handleDropdownMouseLeave() {
         if (!this._menuHasFocus) {
@@ -660,7 +685,7 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Dropdown menu scroll event handler
+     * Dropdown menu scroll event handler.
      * @param {Event} event
      */
     handleDropdownScroll(event) {
@@ -668,15 +693,16 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Button focus
+     * Button focus.
      */
     focusOnButton() {
         this.template.querySelector('button').focus();
     }
 
     /**
-     * Set focus on menu item via Item Index
-     * @param {*} itemIndex
+     * Set focus on menu item via Item Index.
+     * 
+     * @param {object} itemIndex
      */
     focusOnMenuItem(itemIndex) {
         if (this._dropdownVisible) {
@@ -686,7 +712,8 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Auto alignement handler
+     * Auto alignement handler.
+     * 
      * @returns {boolean}
      */
     isAutoAlignment() {
@@ -694,7 +721,7 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Menu visibility toggle handler
+     * Menu visibility toggle handler.
      */
     toggleMenuVisibility() {
         if (!this.disabled) {
@@ -727,7 +754,8 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Get item array from menu
+     * Get item array from menu.
+     * 
      * @returns {object[]}
      */
     getMenuItems() {
@@ -735,8 +763,9 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Get item with index in menu item array
-     * @param {*} index
+     * Get item with index in menu item array.
+     * 
+     * @param {object[]} index
      * @returns menu item from array
      */
     getMenuItemByIndex(index) {
@@ -744,8 +773,9 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Find menu item's index
-     * @param {*} menuItemElement
+     * Find menu item's index.
+     * 
+     * @param {object} menuItemElement
      * @returns {number} index of menu item
      */
     findMenuItemIndex(menuItemElement) {
@@ -753,8 +783,9 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Find menu item from event target
-     * @param {HTMLElement} element
+     * Find menu item from event target.
+     * 
+     * @param {Element} element
      * @returns menu item
      */
     findMenuItemFromEventTarget(element) {
@@ -778,7 +809,8 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Menu item mouse over handler
+     * Menu item mouse over handler.
+     * 
      * @param {Event} event
      */
     handleMouseOverOnMenuItem(event) {
@@ -799,7 +831,8 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Blur cancel and set focus on menu item
+     * Blur cancel and set focus on menu item.
+     * 
      * @param {object} menuItem
      */
     cancelBlurAndFocusOnMenuItem(menuItem) {
@@ -810,7 +843,7 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Focus handler
+     * Focus handler.
      */
     handleFocus() {
         /**
@@ -821,7 +854,7 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Private blur handler
+     * Private blur handler.
      * @param {Event} event
      */
     handlePrivateBlur(event) {
@@ -832,7 +865,7 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Private focus handler
+     * Private focus handler.
      * @param {Event} event
      */
     handlePrivateFocus(event) {
@@ -843,7 +876,7 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Blur handler
+     * Blur handler.
      * @returns
      */
     handleBlur() {
@@ -863,21 +896,21 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Allow blur
+     * Allow blur.
      */
     allowBlur() {
         this._cancelBlur = false;
     }
 
     /**
-     * Cancel blur
+     * Cancel blur.
      */
     cancelBlur() {
         this._cancelBlur = true;
     }
 
     /**
-     * Set button order
+     * Set button order.
      * @param {object} order
      */
     setOrder(order) {
@@ -885,7 +918,7 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Close menu
+     * Close menu.
      */
     close() {
         if (this._dropdownVisible) {
@@ -894,7 +927,7 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Poll bounding rect position for button menu
+     * Poll bounding rect position for button menu.
      */
     pollBoundingRect() {
         if (this.isAutoAlignment() && this._dropdownVisible) {

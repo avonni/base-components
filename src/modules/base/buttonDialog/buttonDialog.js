@@ -58,24 +58,28 @@ const ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
 export default class ButtonDialog extends LightningElement {
     /**
      * The keyboard shortcut for the button.
+     * 
      * @public
      * @type {string}
      */
     @api accessKey;
     /**
      * Optional text to be shown on the button.
+     * 
      * @public
      * @type {string}
      */
     @api label;
     /**
      * The name of the icon to be used in the format 'utility:down'.
+     * 
      * @public
      * @type {string}
      */
     @api iconName;
     /**
      * The assistive text for the button.
+     * 
      * @public
      * @type {string}
      */
@@ -92,6 +96,7 @@ export default class ButtonDialog extends LightningElement {
 
     /**
      * The variant changes the appearance of the button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success.
+     * 
      * @public
      * @type {string}
      * @default "neutral"
@@ -110,6 +115,7 @@ export default class ButtonDialog extends LightningElement {
 
     /**
      * Describes the position of the icon with respect to body. Options include left and right.
+     * 
      * @public
      * @type {string}
      * @default "left"
@@ -128,6 +134,7 @@ export default class ButtonDialog extends LightningElement {
 
     /**
      * If present, the popover can be opened by users.
+     * 
      * @public
      * @type {boolean}
      * @default false
@@ -143,6 +150,7 @@ export default class ButtonDialog extends LightningElement {
 
     /**
      * Opens the modal box.
+     * 
      * @public
      */
     @api
@@ -159,7 +167,8 @@ export default class ButtonDialog extends LightningElement {
     }
 
     /**
-     * Close the modal box
+     * Close the modal box.
+     * 
      * @public
      */
     @api
@@ -177,6 +186,7 @@ export default class ButtonDialog extends LightningElement {
 
     /**
      * Clicks the button.
+     * 
      * @public
      */
     @api
@@ -195,6 +205,7 @@ export default class ButtonDialog extends LightningElement {
 
     /**
      * Sets focus on the button.
+     * 
      * @public
      */
     @api

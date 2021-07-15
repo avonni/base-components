@@ -57,6 +57,7 @@ const CHIP_VARIANTS = {
 export default class Chip extends LightningElement {
     /**
      * Label display in the chip.
+     * 
      * @public
      * @type {string}
      */
@@ -78,6 +79,7 @@ export default class Chip extends LightningElement {
 
     /**
      * The variant changes the appearance of the chip. Accepted variants include base, brand, inverse, alt-inverse, success, info, warning, error, offline.
+     * 
      * @public
      * @type {string}
      * @default "base"
@@ -96,6 +98,7 @@ export default class Chip extends LightningElement {
 
     /**
      * If true, display an outline style button.
+     * 
      * @public
      * @type {boolean}
      * @default false
@@ -110,21 +113,21 @@ export default class Chip extends LightningElement {
     }
 
     /**
-     * Get left slot dom element
+     * Get left slot dom element.
      */
     get leftSlot() {
         return this.template.querySelector('slot[name=left]');
     }
 
     /**
-     * Get right slot dom element
+     * Get right slot dom element.
      */
     get rightSlot() {
         return this.template.querySelector('slot[name=right]');
     }
 
     /**
-     * Compute chip class style
+     * Compute chip class style.
      */
     get chipClass() {
         const classes = classSet('slds-badge');

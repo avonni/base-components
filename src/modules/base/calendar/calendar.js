@@ -85,6 +85,7 @@ export default class Calendar extends LightningElement {
 
     /**
      * An array that will be used to determine which dates to be disabled in the calendar.
+     * 
      * @public
      * @type {object[]}
      * @name disabled-dates
@@ -101,6 +102,7 @@ export default class Calendar extends LightningElement {
 
     /**
      * An array that will be used to determine which dates to be marked in the calendar.
+     * 
      * @public
      * @type {object[]}
      * @name marked-dates
@@ -117,6 +119,7 @@ export default class Calendar extends LightningElement {
 
     /**
      * The value of the date selected, which can be a Date object, timestamp, or an ISO8601 formatted string.
+     * 
      * @public
      * @type {string}
      */
@@ -137,6 +140,7 @@ export default class Calendar extends LightningElement {
 
     /**
      * Specifies the maximum date, which the calendar can show.
+     * 
      * @public
      * @type {object}
      * @default Date(2099, 11, 31)
@@ -154,6 +158,7 @@ export default class Calendar extends LightningElement {
 
     /**
      * Specifies the minimum date, which the calendar can show.
+     * 
      * @public
      * @type {object}
      * @default Date(1900, 0, 1)
@@ -171,6 +176,7 @@ export default class Calendar extends LightningElement {
 
     /**
      * The value of the date which will use for the draw multi-select line. Multi-value can be before or after the selected date value.
+     * 
      * @public
      * @type {string}
      */
@@ -189,6 +195,7 @@ export default class Calendar extends LightningElement {
 
     /**
      * If true, the calendar is disabled.
+     * 
      * @public
      * @type {boolean}
      * @default false
@@ -204,7 +211,8 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * If true, display a week number column
+     * If true, display a week number column.
+     * 
      * @public
      * @type {boolean}
      * @default false
@@ -220,7 +228,7 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Compute days from week
+     * Compute days from week.
      */
     get days() {
         let days = [];
@@ -233,7 +241,7 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Compute year list spread from min and max
+     * Compute year list spread from min and max.
      */
     get yearsList() {
         let startYear = this.min.getFullYear();
@@ -246,7 +254,7 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Disable interaction on previous date layout
+     * Disable interaction on previous date layout.
      */
     get disabledPrevious() {
         let disabled = this.disabled;
@@ -265,7 +273,7 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Disable interaction on next date layout
+     * Disable interaction on next date layout.
      */
     get disabledNext() {
         let disabled = this.disabled;
@@ -284,14 +292,15 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Generate unique ID key
+     * Generate unique ID key.
      */
     get generateKey() {
         return generateUniqueId();
     }
 
     /**
-     * Create Dates array
+     * Create Dates array.
+     * 
      * @param {object[]} array
      * @returns dates
      */
@@ -308,7 +317,8 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Create weekdays from dates array
+     * Create weekdays from dates array.
+     * 
      * @param {object[]} array
      * @returns dates
      */
@@ -325,7 +335,8 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Create days + months from dates array
+     * Create days + months from dates array.
+     * 
      * @param {object[]} array
      * @returns dates
      */
@@ -342,7 +353,7 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Update date : year, month, day
+     * Update date : year, month, day.
      */
     updateDateParameters() {
         this.year = this.date.getFullYear();
@@ -352,7 +363,7 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Compute view data for Calendar
+     * Compute view data for Calendar.
      */
     generateViewData() {
         let calendarData = [];
@@ -462,8 +473,9 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Find if date entry is in the date array
-     * @param {object | date} date
+     * Find if date entry is in the date array.
+     * 
+     * @param {object | Date} date
      * @param {object[]} array
      * @returns disabled
      */
@@ -485,7 +497,8 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Year change handler
+     * Year change handler.
+     * 
      * @param {object} event
      */
     handleYearChange(event) {
@@ -504,7 +517,7 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Previous month handler
+     * Previous month handler.
      */
     handlerPreviousMonth() {
         this.date.setMonth(this.date.getMonth() - 1);
@@ -512,7 +525,7 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Next month handler
+     * Next month handler.
      */
     handlerNextMonth() {
         this.date.setMonth(this.date.getMonth() + 1);
@@ -520,7 +533,7 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Date selection handler
+     * Date selection handler.
      * @param {object} event
      */
     handlerSelectDate(event) {
@@ -535,7 +548,7 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Change event dispatcher
+     * Change event dispatcher.
      */
     dispatchChange() {
         const date = this.date.getDate();
@@ -548,6 +561,7 @@ export default class Calendar extends LightningElement {
 
         /**
          * The event fired when the selected date is changed.
+         * 
          * @event
          * @public
          * @name change
@@ -563,7 +577,7 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Private focus handler
+     * Private focus handler.
      */
     handleFocus() {
         /**
@@ -582,7 +596,7 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Private blur handler
+     * Private blur handler.
      */
     handleBlur() {
         /**
@@ -591,6 +605,7 @@ export default class Calendar extends LightningElement {
          * @name privateblur
          * @bubbles
          * @cancelable
+         * @composed
          */
         this.dispatchEvent(
             new CustomEvent('privateblur', {
@@ -603,7 +618,8 @@ export default class Calendar extends LightningElement {
 }
 
 /**
- * Compute week Number from date input
+ * Compute week Number from date input.
+ * 
  * @returns week number
  */
 // eslint-disable-next-line no-extend-native

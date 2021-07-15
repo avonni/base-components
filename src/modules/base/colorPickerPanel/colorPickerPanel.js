@@ -63,14 +63,14 @@ export default class ColorPickerPanel extends LightningElement {
     }
 
     /**
-     * Localization
+     * Localization.
      */
     get i18n() {
         return i18n;
     }
 
     /**
-     * Computed Panel class default styling
+     * Computed Panel class default styling.
      */
     get computedClassDefault() {
         return classSet({
@@ -80,7 +80,7 @@ export default class ColorPickerPanel extends LightningElement {
     }
 
     /**
-     * Computed Panel class custom styling
+     * Computed Panel class custom styling.
      */
     get computedClassCustom() {
         return classSet({
@@ -90,21 +90,22 @@ export default class ColorPickerPanel extends LightningElement {
     }
 
     /**
-     * Aria for Default Panel
+     * Aria for Default Panel.
      */
     get ariaSelectedDefault() {
         return !this._isCustomTabActive.toString();
     }
 
     /**
-     * Aria for Custom Panel
+     * Aria for Custom Panel.
      */
     get ariaSelectedCustom() {
         return this._isCustomTabActive.toString();
     }
 
     /**
-     * Tab change handler
+     * Tab change handler.
+     * 
      * @param {Event} event
      */
     handleTabChange(event) {
@@ -117,7 +118,8 @@ export default class ColorPickerPanel extends LightningElement {
     }
 
     /**
-     * Selected Color update handler
+     * Selected Color update handler.
+     * 
      * @param {object} event 
      */
     handleUpdateSelectedColor(event) {
@@ -125,7 +127,8 @@ export default class ColorPickerPanel extends LightningElement {
     }
 
     /**
-     * Updated color event dispatcher
+     * Updated color event dispatcher.
+     * 
      * @param {string} color 
      */
     dispatchUpdateColorEventWithColor(color) {
@@ -147,22 +150,23 @@ export default class ColorPickerPanel extends LightningElement {
     }
 
     /**
-     * Handle Click on done
+     * Handle Click on done.
      */
     handleDoneClick() {
         this.dispatchUpdateColorEventWithColor(this._selectedColor);
     }
 
     /**
-     * Handle Click on cancel
+     * Handle Click on cancel.
      */
     handleCancelClick() {
         this.dispatchUpdateColorEventWithColor(this.currentColor);
     }
 
     /**
-     * Handle Keydown event
-     * @param {object} event 
+     * Handle Keydown event.
+     * 
+     * @param {Event} event 
      */
     handleKeydown(event) {
         if (event.keyCode === keyCodes.escape) {
@@ -171,14 +175,14 @@ export default class ColorPickerPanel extends LightningElement {
         } else if (
             event.shiftKey &&
             event.keyCode === keyCodes.tab &&
-            event.srcElement.dataset.id === 'color-anchor'
+            event.srcElement.dataset.id === 'color-anchor'  // <- srcElement Deprecated - https://developer.mozilla.org/en-US/docs/Web/API/Event/srcElement
         ) {
             event.preventDefault();
             this.template.querySelector('button[name="done"]').focus();
         } else if (
             !event.shiftKey &&
             event.keyCode === keyCodes.tab &&
-            event.srcElement.name === 'done'
+            event.srcElement.name === 'done' // <- srcElement Deprecated - https://developer.mozilla.org/en-US/docs/Web/API/Event/srcElement
         ) {
             event.preventDefault();
             this.template.querySelector('c-color-picker-custom').focus();

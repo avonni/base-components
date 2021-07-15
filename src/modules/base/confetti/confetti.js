@@ -68,6 +68,7 @@ const DEFAULT_Z_INDEX = 100
 export default class Confetti extends LightningElement {
     /**
      * An array of color strings, in the HEX format.
+     * 
      * @public
      * @type {string[]}
      * @default ['#529EE0','#F0E442','#FFB03B','#E16032','#4FD2D2','#006699','#E287B2']
@@ -75,6 +76,7 @@ export default class Confetti extends LightningElement {
     @api colors = DEFAULT_COLORS;
     /**
      * The x position on the page, with 0 being the left edge and 1 being the right edge.
+     * 
      * @public
      * @type {number}
      * @default 0.5
@@ -82,6 +84,7 @@ export default class Confetti extends LightningElement {
     @api originX = DEFAULT_ORIGIN_X;
     /**
      * The y position on the page, with 0 being the top edge and 1 being the bottom edge.
+     * 
      * @public
      * @type {number}
      * @default 0.5
@@ -89,6 +92,7 @@ export default class Confetti extends LightningElement {
     @api originY = DEFAULT_ORIGIN_Y;
     /**
      * The confetti should be on top, after all. But if you have a crazy high page, you can set it even higher.
+     * 
      * @public
      * @type {number}
      * @default 100
@@ -100,6 +104,7 @@ export default class Confetti extends LightningElement {
 
     /**
      * The variant changes the appearance of the confetti. Accepted variants include include base, random-direction, realistic, fireworks, snow and pride.
+     * 
      * @public
      * @type {string}
      * @default base
@@ -117,7 +122,8 @@ export default class Confetti extends LightningElement {
     }
 
     /**
-     * Name of the confetti
+     * Name of the confetti.
+     * 
      * @public
      * @type {string}
      */
@@ -132,7 +138,8 @@ export default class Confetti extends LightningElement {
     }
 
     /**
-     * Confetti Fire method
+     * Confetti Fire method.
+     * 
      * @public
      */
     @api
@@ -162,7 +169,7 @@ export default class Confetti extends LightningElement {
     }
 
     /**
-     * Base variant
+     * Base variant.
      */
     base() {
         // eslint-disable-next-line no-undef
@@ -179,7 +186,7 @@ export default class Confetti extends LightningElement {
     }
 
     /**
-     * Random Direction variant
+     * Random Direction variant.
      */
     randomDirection() {
         // eslint-disable-next-line no-undef
@@ -197,7 +204,7 @@ export default class Confetti extends LightningElement {
     }
 
     /**
-     * Realistic variant
+     * Realistic variant.
      */
     realistic() {
         let count = 200;
@@ -246,7 +253,7 @@ export default class Confetti extends LightningElement {
     }
 
     /**
-     * Fireworks variant
+     * Fireworks variant.
      */
     fireworks() {
         let animationEnd = Date.now() + 6000;
@@ -278,7 +285,7 @@ export default class Confetti extends LightningElement {
     }
 
     /**
-     * Snow variant
+     * Snow variant.
      */
     snow() {
         let animationEnd = Date.now() + 6000;
@@ -315,7 +322,7 @@ export default class Confetti extends LightningElement {
     }
 
     /**
-     * Pride variant
+     * Pride variant.
      */
     pride() {
         let end = Date.now() + 6000;
@@ -350,7 +357,8 @@ export default class Confetti extends LightningElement {
     }
 
     /**
-     * Random number generator for min max range
+     * Random number generator for min max range.
+     * 
      * @param {number} min 
      * @param {number} max 
      * @returns number
