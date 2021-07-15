@@ -324,7 +324,7 @@ export default class ActivityTimelineItem extends LightningElement {
 
     /**
      * Actionclick handler
-     * @param {*} event
+     * @param {Event} event
      */
     handleActionClick(event) {
         const name = event.currentTarget.value;
@@ -362,7 +362,7 @@ export default class ActivityTimelineItem extends LightningElement {
 
     /**
      * Check event handler
-     * @param {*} event
+     * @param {Event} event
      */
     handleCheck(event) {
         /**

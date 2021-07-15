@@ -1,3 +1,4 @@
+
 /**
  * BSD 3-Clause License
  *
@@ -104,7 +105,7 @@ export default class ColorPickerPanel extends LightningElement {
 
     /**
      * Tab change handler
-     * @param {object} event
+     * @param {Event} event
      */
     handleTabChange(event) {
         event.preventDefault();

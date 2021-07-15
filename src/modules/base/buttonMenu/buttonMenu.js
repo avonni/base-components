@@ -554,7 +554,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Menu item selector handler
-     * @param {*} event
+     * @param {Event} event
      */
     handleMenuItemPrivateSelect(event) {
         if (event.detail.type === 'submenu') {
@@ -591,7 +591,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Menu item select dispatch method
-     * @param {*} event
+     * @param {Event} event
      */
     dispatchSelect(event) {
         /**
@@ -623,7 +623,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Button mouse down handler
-     * @param {*} event
+     * @param {Event} event
      */
     handleButtonMouseDown(event) {
         const mainButton = 0;
@@ -634,7 +634,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Dropdown menu mouse down handler
-     * @param {*} event
+     * @param {Event} event
      */
     handleDropdownMouseDown(event) {
         const mainButton = 0;
@@ -661,7 +661,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Dropdown menu scroll event handler
-     * @param {*} event
+     * @param {Event} event
      */
     handleDropdownScroll(event) {
         event.stopPropagation();
@@ -754,7 +754,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Find menu item from event target
-     * @param {*} element
+     * @param {HTMLElement} element
      * @returns menu item
      */
     findMenuItemFromEventTarget(element) {
@@ -779,7 +779,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Menu item mouse over handler
-     * @param {*} event
+     * @param {Event} event
      */
     handleMouseOverOnMenuItem(event) {
         const menuItem = this.findMenuItemFromEventTarget(event.target);
@@ -800,7 +800,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Blur cancel and set focus on menu item
-     * @param {*} menuItem
+     * @param {object} menuItem
      */
     cancelBlurAndFocusOnMenuItem(menuItem) {
         if (menuItem) {
@@ -822,7 +822,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Private blur handler
-     * @param {*} event
+     * @param {Event} event
      */
     handlePrivateBlur(event) {
         event.stopPropagation();
@@ -833,7 +833,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Private focus handler
-     * @param {*} event
+     * @param {Event} event
      */
     handlePrivateFocus(event) {
         event.stopPropagation();
@@ -878,7 +878,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Set button order
-     * @param {*} order
+     * @param {object} order
      */
     setOrder(order) {
         this._order = order;

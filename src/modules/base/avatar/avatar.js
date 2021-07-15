@@ -496,7 +496,7 @@ export default class Avatar extends LightningElement {
 
     /**
      * Computed badge style based on tag object variant value
-     * @param {*} tag
+     * @param {object[]} tag
      * @returns {string} slds badge style
      */
     _determineBadgeStyle(tag) {
