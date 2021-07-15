@@ -84,6 +84,7 @@ const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
 
 /**
  * The button popover display a lightning button. On click, open the popover.
+ *
  * @class
  * @name ButtonPopover
  * @public
@@ -168,10 +169,20 @@ export default class ButtonPopover extends LightningElement {
         }
     }
 
+    /**
+     * Title slot.
+     *
+     * @type {element}
+     */
     get titleSlot() {
         return this.template.querySelector('slot[name=title]');
     }
 
+    /**
+     * Footer slot.
+     *
+     * @type {element}
+     */
     get footerSlot() {
         return this.template.querySelector('slot[name=footer]');
     }
@@ -371,6 +382,7 @@ export default class ButtonPopover extends LightningElement {
 
     /**
      * Return a true string if the popover is visible and a false string if not.
+     *
      * @type {string}
      */
     get computedAriaExpanded() {
@@ -379,6 +391,7 @@ export default class ButtonPopover extends LightningElement {
 
     /**
      * Class of the popover header.
+     *
      * @type {string}
      */
     get computedPopoverHeaderClass() {
@@ -391,6 +404,7 @@ export default class ButtonPopover extends LightningElement {
 
     /**
      * Class of the popover.
+     *
      * @type {string}
      */
     get computedPopoverClass() {
@@ -427,6 +441,7 @@ export default class ButtonPopover extends LightningElement {
 
     /**
      * Simulates a mouse click on the button.
+     *
      * @public
      */
     @api
@@ -445,6 +460,7 @@ export default class ButtonPopover extends LightningElement {
 
     /**
      * Sets focus on the button.
+     *
      * @public
      */
     @api
@@ -456,6 +472,7 @@ export default class ButtonPopover extends LightningElement {
 
     /**
      * Opens the popover.
+     *
      * @public
      */
     @api
@@ -723,7 +740,7 @@ export default class ButtonPopover extends LightningElement {
     /**
      * Poll for change in bounding rectangle
      * only if it is placement=auto since that is
-     * position:fixed and is opened
+     * position:fixed and is opened.
      */
     pollBoundingRect() {
         if (this.isAutoAlignment() && this.popoverVisible) {

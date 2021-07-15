@@ -89,6 +89,7 @@ const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
 
 /**
  * The button icon popover display a lightning button. On click, open the popover.
+ *
  * @class
  * @name ButtonIconPopover
  * @public
@@ -190,10 +191,20 @@ export default class ButtonIconPopover extends LightningElement {
         }
     }
 
+    /**
+     * Title slot.
+     *
+     * @type {element}
+     */
     get titleSlot() {
         return this.template.querySelector('slot[name=title]');
     }
 
+    /**
+     * Footer slot.
+     *
+     * @type {element}
+     */
     get footerSlot() {
         return this.template.querySelector('slot[name=footer]');
     }
@@ -394,6 +405,7 @@ export default class ButtonIconPopover extends LightningElement {
 
     /**
      * True if there is a title.
+     *
      * @type {boolean}
      */
     get hasStringTitle() {
@@ -402,6 +414,7 @@ export default class ButtonIconPopover extends LightningElement {
 
     /**
      * Return a true string if the popover is visible and a false string if not.
+     *
      * @type {string}
      */
     get computedAriaExpanded() {
@@ -410,6 +423,7 @@ export default class ButtonIconPopover extends LightningElement {
 
     /**
      * Class of the popover header.
+     *
      * @type {string}
      */
     get computedPopoverHeaderClass() {
@@ -423,6 +437,7 @@ export default class ButtonIconPopover extends LightningElement {
 
     /**
      * Class of the popover.
+     *
      * @type {string}
      */
     get computedPopoverClass() {
@@ -459,6 +474,7 @@ export default class ButtonIconPopover extends LightningElement {
 
     /**
      * Simulates a mouse click on the button.
+     *
      * @public
      */
     @api
@@ -477,6 +493,7 @@ export default class ButtonIconPopover extends LightningElement {
 
     /**
      * Sets focus on the button.
+     *
      * @public
      */
     @api
@@ -488,6 +505,7 @@ export default class ButtonIconPopover extends LightningElement {
 
     /**
      * Opens the popover.
+     *
      * @public
      */
     @api
@@ -499,6 +517,7 @@ export default class ButtonIconPopover extends LightningElement {
 
     /**
      * Closes the popover.
+     *
      * @public
      */
     @api
@@ -741,7 +760,7 @@ export default class ButtonIconPopover extends LightningElement {
 
     /**
      * Toggles the popover visibility depending on if it's visible or not.
-     * Adds class slds-is-open if popover visible and removes if not
+     * Adds class slds-is-open if popover visible and removes if not.
      */
     toggleMenuVisibility() {
         if (!this.disabled) {
@@ -759,7 +778,7 @@ export default class ButtonIconPopover extends LightningElement {
     /**
      * Poll for change in bounding rectangle
      * only if it is placement=auto since that is
-     * position:fixed and is opened
+     * position:fixed and is opened.
      */
     pollBoundingRect() {
         if (this.isAutoAlignment() && this.popoverVisible) {
