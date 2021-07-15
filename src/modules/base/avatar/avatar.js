@@ -88,42 +88,49 @@ const DEFAULT_STATUS_TITLE = 'Status';
 export default class Avatar extends LightningElement {
     /**
      * If the record name contains two words, like first and last name, use the first capitalized letter of each. For records that only have a single word name, use the first two letters of that word using one capital and one lower case letter. Placed inside the entity.
+     *
      * @public
      * @type {string}
      */
     @api entityInitials;
     /**
      * Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. Only icons from the standard and custom categories are allowed.
+     *
      * @public
      * @type {string}
      */
     @api entityIconName;
     /**
      * The Lightning Design System name of the icon used as a fallback when the image fails to load. The initials fallback relies on this for its background color. Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. Only icons from the standard and custom categories are allowed.
+     *
      * @public
      * @type {string}
      */
     @api fallbackIconName;
     /**
      * If the record name contains two words, like first and last name, use the first capitalized letter of each. For records that only have a single word name, use the first two letters of that word using one capital and one lower case letter.
+     *
      * @public
      * @type {string}
      */
     @api initials;
     /**
-     * primary-text
+     * primary-text.
+     *
      * @public
      * @type {string}
      */
     @api primaryText;
     /**
      * Secondary text to display, usually the role of the user.
+     *
      * @public
      * @type {string}
      */
     @api secondaryText;
     /**
      * Tertiary text to display, usually the status of the user. The tertiary text will only be shown when using size x-large and xx-large.
+     *
      * @public
      * @type {string}
      */
@@ -156,6 +163,7 @@ export default class Avatar extends LightningElement {
 
     /**
      * Hide primary, secondary and tertiary text.
+     *
      * @public
      * @type {boolean}
      * @default false
@@ -171,6 +179,7 @@ export default class Avatar extends LightningElement {
 
     /**
      * The alternative text used to describe the avatar, which is displayed as hover text on the image.
+     *
      * @public
      * @type {string}
      * @required
@@ -188,6 +197,7 @@ export default class Avatar extends LightningElement {
 
     /**
      * The size of the avatar. Valid values are x-small, small, medium, large, x-large and xx-large.
+     *
      * @public
      * @type {string}
      * @default "medium"
@@ -206,6 +216,7 @@ export default class Avatar extends LightningElement {
 
     /**
      * The URL for the image.
+     *
      * @public
      * @type {string}
      * @required
@@ -221,6 +232,7 @@ export default class Avatar extends LightningElement {
 
     /**
      * The variant changes the shape of the avatar. Valid values are empty, circle, and square.
+     *
      * @public
      * @type {string}
      * @default "square"
@@ -239,6 +251,7 @@ export default class Avatar extends LightningElement {
 
     /**
      * Position of the details text, relatively to the avatar. Valid values include right, left or center.
+     *
      * @public
      * @type {string}
      * @default "right"
@@ -258,6 +271,7 @@ export default class Avatar extends LightningElement {
 
     /**
      * Status of the user to display. Valid values include approved, locked, declined and unknown.
+     *
      * @public
      * @type {string}
      */
@@ -275,6 +289,7 @@ export default class Avatar extends LightningElement {
 
     /**
      * Status title to be shown as a tooltip on hover over the status icon.
+     *
      * @public
      * @type {string}
      * @default "Status"
@@ -291,6 +306,7 @@ export default class Avatar extends LightningElement {
 
     /**
      * Position of the status icon. Valid values include top-left, top-right, bottom-left and bottom-right.
+     *
      * @public
      * @type {string}
      * @default "top-right"
@@ -309,6 +325,7 @@ export default class Avatar extends LightningElement {
 
     /**
      * Presence of the user to display. Valid values include online, busy, focus, offline, blocked and away.
+     *
      * @public
      * @type {string}
      */
@@ -326,6 +343,7 @@ export default class Avatar extends LightningElement {
 
     /**
      * Presence title to be shown as a tooltip on hover over the presence icon.
+     *
      * @public
      * @type {string}
      * @default "bottom-right"
@@ -344,6 +362,7 @@ export default class Avatar extends LightningElement {
 
     /**
      * Position of the presence icon. Valid values include top-left, top-right, bottom-left and bottom-right.
+     *
      * @public
      * @type {string}
      * @default "Presence"
@@ -360,6 +379,7 @@ export default class Avatar extends LightningElement {
 
     /**
      * Position of the entity icon. Valid values include top-left, top-right, bottom-left and bottom-right.
+     *
      * @public
      * @type {string}
      * @default "top-left"
@@ -378,6 +398,7 @@ export default class Avatar extends LightningElement {
 
     /**
      * The URL for the entity image.
+     *
      * @public
      * @type {string}
      */
@@ -392,6 +413,7 @@ export default class Avatar extends LightningElement {
 
     /**
      * Entity title to be shown as a tooltip on hover over the presence icon.
+     *
      * @public
      * @type {string}
      * @default "Entity"
@@ -408,6 +430,7 @@ export default class Avatar extends LightningElement {
 
     /**
      * The variant changes the shape of the entity. Valid values are empty, circle, and square.
+     *
      * @public
      * @type {string}
      * @default "square"
@@ -426,6 +449,7 @@ export default class Avatar extends LightningElement {
 
     /**
      * Properties for the badge tags of the avatar.
+     *
      * @public
      * @type {object[]}
      */
@@ -438,7 +462,8 @@ export default class Avatar extends LightningElement {
     }
 
     /**
-     * Computed JSON string of tags object
+     * Computed JSON string of tags object.
+     *
      * @returns {object[]} computed tags json
      */
     get computedTags() {
@@ -452,7 +477,8 @@ export default class Avatar extends LightningElement {
     }
 
     /**
-     * Check if Avatar exists
+     * Check if Avatar exists.
+     *
      * @type {boolean}
      */
     get showAvatar() {
@@ -460,7 +486,8 @@ export default class Avatar extends LightningElement {
     }
 
     /**
-     * Tertiary text show
+     * Tertiary text show.
+     *
      * @type {boolean}
      */
     get showTertiaryText() {
@@ -468,7 +495,8 @@ export default class Avatar extends LightningElement {
     }
 
     /**
-     * Text position left
+     * Text position left.
+     *
      * @type {boolean}
      */
     get textPositionLeft() {
@@ -476,7 +504,8 @@ export default class Avatar extends LightningElement {
     }
 
     /**
-     * Text position centered
+     * Text position centered.
+     *
      * @type {boolean}
      */
     get computedMediaObjectInline() {
@@ -484,7 +513,8 @@ export default class Avatar extends LightningElement {
     }
 
     /**
-     * Media object layout based on text position
+     * Media object layout based on text position.
+     *
      * @type {string}
      */
     _updateClassList() {
@@ -495,7 +525,8 @@ export default class Avatar extends LightningElement {
     }
 
     /**
-     * Computed badge style based on tag object variant value
+     * Computed badge style based on tag object variant value.
+     *
      * @param {object[]} tag
      * @returns {string} slds badge style
      */

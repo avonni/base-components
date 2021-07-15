@@ -39,7 +39,7 @@ const DIALOG_SIZES = { valid: ['small', 'medium', 'large'], default: 'medium' };
 /**
  * @class
  * @descriptor avonni-dialog
- * @example
+ * @example example-dialog--base
  * @public
  */
 export default class Dialog extends LightningElement {
