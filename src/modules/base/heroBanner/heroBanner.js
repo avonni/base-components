@@ -47,6 +47,12 @@ const DEFAULT_HEIGHT = 400;
 const DEFAULT_MAX_WIDTH = 960;
 const DEFAULT_CONTENT_WIDTH = 100;
 
+/**
+ * @class
+ * @descriptor avonni-hero-banner
+ * @storyId example-hero-banner--base
+ * @public
+ */
 export default class HeroBanner extends LightningElement {
     /**
      * The title can include text, and is displayed in the banner.
@@ -221,7 +227,8 @@ export default class HeroBanner extends LightningElement {
     }
 
     /**
-     * Styling of the image
+     * Styling of the image.
+     *
      * @type {string}
      */
     get imgSrc() {
@@ -229,7 +236,8 @@ export default class HeroBanner extends LightningElement {
     }
 
     /**
-     * Width for the width container based on the maxWidth
+     * Width for the width container based on the maxWidth.
+     *
      * @type {string}
      */
     get computedMaxWidth() {
@@ -237,7 +245,8 @@ export default class HeroBanner extends LightningElement {
     }
 
     /**
-     * Width for the content container based on the contentWidth
+     * Width for the content container based on the contentWidth.
+     *
      * @type {string}
      */
     get computedContentStyling() {
@@ -245,7 +254,8 @@ export default class HeroBanner extends LightningElement {
     }
 
     /**
-     * Class of the content container
+     * Class of the content container.
+     *
      * @type {string}
      */
     get computedContentContainer() {
@@ -266,7 +276,8 @@ export default class HeroBanner extends LightningElement {
     }
 
     /**
-     * Class of the width container
+     * Class of the width container.
+     *
      * @type {string}
      */
     get computedWidthContainer() {
@@ -283,7 +294,8 @@ export default class HeroBanner extends LightningElement {
     }
 
     /**
-     * Class of the button
+     * Class of the button.
+     *
      * @type {string}
      */
     get computedButtonClass() {
@@ -298,7 +310,8 @@ export default class HeroBanner extends LightningElement {
     }
 
     /**
-     * True if there is a label for the primary button or the secondary
+     * True if there is a label for the primary button or the secondary.
+     *
      * @type {boolean}
      */
     get hasButton() {
@@ -306,7 +319,8 @@ export default class HeroBanner extends LightningElement {
     }
 
     /**
-     * True if there are labels for the primary button and the secondary
+     * True if there are labels for the primary button and the secondary.
+     *
      * @type {boolean}
      */
     get hasButtons() {
