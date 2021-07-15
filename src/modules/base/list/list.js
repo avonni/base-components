@@ -56,7 +56,6 @@ export default class List extends LightningElement {
 
     _items = [];
     _sortable = false;
-    _sortableIconDragOnly = false;
     _sortableIconPosition = ICON_POSITIONS.default;
 
     _draggedIndex;
@@ -113,14 +112,6 @@ export default class List extends LightningElement {
     }
 
     @api
-    get sortableIconDragOnly() {
-        return this._sortableIconDragOnly;
-    }
-    set sortableIconDragOnly(bool) {
-        this._sortableIconDragOnly = normalizeBoolean(bool);
-    }
-
-    @api
     get sortableIconPosition() {
         return this._sortableIconPosition;
     }
@@ -173,8 +164,6 @@ export default class List extends LightningElement {
         return classSet('slds-grid list-item slds-item')
             .add({
                 'sortable-item': this.sortable,
-                'draggable-element':
-                    this.sortable && !this._sortableIconDragOnly,
                 'expanded-item': this._hasActions,
                 'slds-p-vertical_x-small': !this.divider
             })
@@ -292,14 +281,9 @@ export default class List extends LightningElement {
         // Stop dragging if the click was on a button menu
         if (
             !this.sortable ||
-            event.target.tagName.startsWith('LIGHTNING-BUTTON') ||
-            (this._sortableIconDragOnly &&
-                !event.target.classList.contains('draggable-element'))
+            event.target.tagName.startsWith('LIGHTNING-BUTTON')
         )
             return;
-
-        // Deny itemclick event dispatch on drag
-        this.denyItemClick = true;
 
         this._itemElements = Array.from(
             this.template.querySelectorAll('.sortable-item')
@@ -307,7 +291,6 @@ export default class List extends LightningElement {
         this._draggedElement = event.currentTarget;
         this._currentItemDraggedHeight = this._draggedElement.offsetHeight;
         this._draggedIndex = Number(this._draggedElement.dataset.index);
-        this._draggedElement.classList.add('sortable-item_dragged');
         if (event.type !== 'keydown') {
             this.initPositions(event);
         } else {
@@ -326,6 +309,10 @@ export default class List extends LightningElement {
 
     drag(event) {
         if (!this._draggedElement) return;
+        this._draggedElement.classList.add('sortable-item_dragged');
+
+        // Deny itemclick event dispatch on drag
+        this.denyItemClick = true;
 
         const mouseY =
             event.type === 'touchmove'
@@ -454,7 +441,6 @@ export default class List extends LightningElement {
 
     handleItemClick(event) {
         if (
-            (this.sortable && !this.sortableIconDragOnly) ||
             this.denyItemClick ||
             event.target.tagName.startsWith('LIGHTNING') ||
             event.target.tagName === 'A'

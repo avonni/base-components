@@ -85,18 +85,6 @@ export default {
                 type: { summary: 'boolean' }
             }
         },
-        sortableIconDragOnly: {
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: false,
-            description:
-                'If true, it will be only possible to reorder the list items using the sortable icon.',
-            table: {
-                defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' }
-            }
-        },
         sortableIconName: {
             name: 'sortable-icon-name',
             control: {
