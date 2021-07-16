@@ -97,6 +97,7 @@
                                     key={column.start}
                                     class={column.class}
                                     aria-disabled={column.disabled}
+                                    data-start={column.start}
                                 >
                                     <div
                                         if:true={column.title}
@@ -119,6 +120,8 @@
                                             class={event.object.wrapperClass}
                                             aria-hidden={event.hidden}
                                             style={event.object.wrapperStyle}
+                                            data-row-key={row.key}
+                                            data-name={event.object.name}
                                             tabindex="0"
                                             onmouseup={handleEventMouseUp}
                                             onmousedown={handleEventMouseDown}

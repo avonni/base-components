@@ -52,7 +52,7 @@ const columns = [
 
 const rows = [
     {
-        id: 1,
+        id: '1',
         avatarSrc:
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
         avatarFallbackIconName: 'standard:person_account',
@@ -61,7 +61,7 @@ const rows = [
         role: 'Lead developer'
     },
     {
-        id: 2,
+        id: '2',
         avatarSrc:
             'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
         avatarFallbackIconName: 'standard:person_account',
@@ -70,21 +70,21 @@ const rows = [
         role: 'UX Specialist'
     },
     {
-        id: 3,
+        id: '3',
         avatarFallbackIconName: 'standard:person_account',
         avatarInitials: 'JP',
         firstName: 'Jung',
         role: 'Product Owner'
     },
     {
-        id: 4,
+        id: '4',
         avatarFallbackIconName: 'standard:person_account',
         avatarInitials: 'LM',
         firstName: 'Lily',
         role: 'Graphic Designer'
     },
     {
-        id: 5,
+        id: '5',
         avatarSrc:
             'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
         avatarFallbackIconName: 'standard:person_account',
@@ -129,7 +129,7 @@ const headers = [
 
 const events = [
     {
-        keyFields: [3],
+        keyFields: ['3'],
         name: 'identify-need',
         title: 'Identify need',
         iconName: 'utility:search',
@@ -137,7 +137,7 @@ const events = [
         to: new Date(2021, 11, 13, 15, 30)
     },
     {
-        keyFields: [3],
+        keyFields: ['3'],
         name: 'find-examples',
         title: 'Find examples of solutions',
         iconName: 'utility:search',
@@ -145,7 +145,7 @@ const events = [
         to: new Date(2021, 11, 14)
     },
     {
-        keyFields: [1, 3],
+        keyFields: ['1', '3'],
         name: 'write-spec',
         title: 'Write specifications',
         iconName: 'utility:insert_tag_field',
@@ -153,7 +153,7 @@ const events = [
         allDay: true
     },
     {
-        keyFields: [2],
+        keyFields: ['2'],
         name: 'create-wireframe',
         title: 'Create wireframe',
         iconName: 'utility:description',
@@ -161,7 +161,7 @@ const events = [
         to: new Date(2021, 11, 20, 14)
     },
     {
-        keyFields: [4],
+        keyFields: ['4'],
         name: 'create-mockup',
         title: 'Create mockup',
         iconName: 'utility:brush',
@@ -169,7 +169,7 @@ const events = [
         to: new Date(2021, 11, 22, 10, 30)
     },
     {
-        keyFields: [1, 5],
+        keyFields: ['1', '5'],
         name: 'implement-feature',
         title: 'Implement feature',
         iconName: 'utility:apex',
@@ -177,7 +177,7 @@ const events = [
         to: new Date(2021, 11, 24)
     },
     {
-        keyFields: [1, 5],
+        keyFields: ['1', '5'],
         name: 'standup',
         title: 'Dev team standup meeting',
         iconName: 'standard:team_member',
@@ -195,7 +195,7 @@ const events = [
 
 const disabledDatesTimes = [
     {
-        keyFields: [1, 2, 3, 4, 5],
+        keyFields: ['1', '2', '3', '4', '5'],
         title: 'Lunch',
         iconName: 'custom:custom51',
         from: new Date(2021, 0, 1, 12),
@@ -206,7 +206,7 @@ const disabledDatesTimes = [
         }
     },
     {
-        keyFields: [4],
+        keyFields: ['4'],
         title: 'Vacation',
         from: new Date(2021, 11, 6),
         to: new Date(2021, 11, 20)

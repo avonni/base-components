@@ -31,16 +31,28 @@
  */
 
 import { classSet } from 'c/utils';
+import { normalizeArray } from 'c/utilsPrivate';
 
 export default class Row {
     constructor(props) {
-        this.key = props.key;
+        this.key = props.key.toString();
         this.color = props.color;
         this.columns = [];
         this.events = props.events;
     }
 
-    updateColumnClass(column) {
+    get events() {
+        return this._events;
+    }
+    set events(value) {
+        this._events = normalizeArray(value);
+
+        if (this.columns.length) {
+            this.generateEvents();
+        }
+    }
+
+    getColumnClass(column) {
         return classSet(
             'slds-border_right slds-col slds-p-around_none slds-wrap'
         )
@@ -52,15 +64,21 @@ export default class Row {
     }
 
     generateColumns(headerColumns) {
-        const columns = [];
+        this.columns = [];
         headerColumns.forEach((element) => {
-            columns.push({
+            this.columns.push({
                 start: element.start,
                 end: element.end,
-                class: this.updateColumnClass(),
+                class: this.getColumnClass(),
                 events: []
             });
         });
+
+        this.generateEvents();
+    }
+
+    generateEvents() {
+        const columns = this.columns;
 
         this.events.forEach((event) => {
             if (!event.color) {
@@ -74,7 +92,7 @@ export default class Row {
                 if (i > -1) {
                     if (event.disabled) {
                         columns[i].disabled = true;
-                        columns[i].class = this.updateColumnClass(columns[i]);
+                        columns[i].class = this.getColumnClass(columns[i]);
                         columns[i].title = columns[i].title
                             ? `${columns[i].title}, ${event.title}`
                             : event.title;
@@ -91,9 +109,7 @@ export default class Row {
                     while (i < columns.length && date.to > columns[i].end) {
                         if (event.disabled) {
                             columns[i].disabled = true;
-                            columns[i].class = this.updateColumnClass(
-                                columns[i]
-                            );
+                            columns[i].class = this.getColumnClass(columns[i]);
                         } else {
                             // The event will be hidden in the other column it crosses,
                             // so it takes some room in case there are several events in one column
@@ -107,6 +123,5 @@ export default class Row {
                 }
             });
         });
-        this.columns = columns;
     }
 }

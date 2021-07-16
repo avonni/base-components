@@ -223,7 +223,7 @@ export default class Scheduler extends LightningElement {
         return this._rowsKeyField;
     }
     set rowsKeyField(value) {
-        this._rowsKeyField = value;
+        this._rowsKeyField = value.toString();
 
         if (this.isConnected) this.initRows();
     }
@@ -456,14 +456,22 @@ export default class Scheduler extends LightningElement {
         }
     }
 
-    initEvents() {
-        if (!this.computedHeaders.length) return;
-
-        const computedEvents = [];
+    updateEventWidth(event) {
         const header = this.smallestHeader;
         const columnEnd = addToDate(header.start, header.unit, header.span) - 1;
         const duration = DateTime.fromMillis(columnEnd).diff(header.start)
             .milliseconds;
+
+        event.updateWidth({
+            columns: header.columns,
+            columnDuration: duration
+        });
+    }
+
+    initEvents() {
+        if (!this.computedHeaders.length) return;
+
+        const computedEvents = [];
         const start = this._referenceHeader.start;
 
         // The disabled dates/times are special events
@@ -489,11 +497,7 @@ export default class Scheduler extends LightningElement {
             const computedEvent = new Event(event);
 
             if (computedEvent.dates.length) {
-                computedEvent.updateWidth({
-                    columns: header.columns,
-                    columnDuration: duration
-                });
-
+                this.updateEventWidth(computedEvent);
                 computedEvents.push(computedEvent);
             }
         });
@@ -574,55 +578,75 @@ export default class Scheduler extends LightningElement {
         });
     }
 
-    startPositioning(element) {
-        if (this._visiblePopover) {
-            this._positioning = true;
+    getRowFromPosition(y) {
+        const rows = Array.from(this.template.querySelectorAll('tbody tr'));
+        return rows.find((tr) => {
+            const top = tr.getBoundingClientRect().top;
+            const bottom = tr.getBoundingClientRect().bottom;
 
-            const align = {
-                horizontal: Direction.Left,
-                vertical: Direction.Top
-            };
+            if (y >= top && y <= bottom) return tr;
+            return undefined;
+        });
+    }
 
-            const targetAlign = {
-                horizontal: Direction.Left,
-                vertical: Direction.Bottom
-            };
+    getCellFromPosition(row, x) {
+        const cells = Array.from(row.querySelectorAll('td'));
+        return cells.find((td) => {
+            const left = td.getBoundingClientRect().left;
+            const right = td.getBoundingClientRect().right;
 
-            let autoFlip = true;
-            let autoFlipVertical;
+            if (x >= left && x <= right) return td;
+            return undefined;
+        });
+    }
 
-            return animationFrame()
-                .then(() => {
-                    this.stopPositioning();
-                    this._autoPosition = startPositioning(
-                        this,
-                        {
-                            target: () => element,
-                            element: () => this._visiblePopover,
-                            align,
-                            targetAlign,
-                            autoFlip,
-                            autoFlipVertical,
-                            scrollableParentBound: true,
-                            keepInViewport: true
-                        },
-                        true
-                    );
-                    // Edge case: W-7460656
-                    if (this._autoPosition) {
-                        return this._autoPosition.reposition();
-                    }
-                    return Promise.reject();
-                })
-                .then(() => {
-                    return timeout(0);
-                })
-                .then(() => {
-                    // Use a flag to prevent this async function from executing multiple times in a single lifecycle
-                    this._positioning = false;
-                });
-        }
-        return null;
+    startPositioning(target) {
+        this._positioning = true;
+        const element = this._visiblePopover;
+
+        const align = {
+            horizontal: Direction.Left,
+            vertical: Direction.Top
+        };
+
+        const targetAlign = {
+            horizontal: Direction.Left,
+            vertical: Direction.Bottom
+        };
+
+        let autoFlip = true;
+        let autoFlipVertical;
+
+        return animationFrame()
+            .then(() => {
+                this.stopPositioning();
+                this._autoPosition = startPositioning(
+                    this,
+                    {
+                        target: () => target,
+                        element: () => element,
+                        align,
+                        targetAlign,
+                        autoFlip,
+                        autoFlipVertical,
+                        scrollableParentBound: true,
+                        keepInViewport: true
+                    },
+                    true
+                );
+                // Edge case: W-7460656
+                if (this._autoPosition) {
+                    return this._autoPosition.reposition();
+                }
+                return Promise.reject();
+            })
+            .then(() => {
+                return timeout(0);
+            })
+            .then(() => {
+                // Use a flag to prevent this async function from executing multiple times in a single lifecycle
+                this._positioning = false;
+            });
     }
 
     stopPositioning() {
@@ -631,6 +655,14 @@ export default class Scheduler extends LightningElement {
             this._autoPosition = null;
         }
         this._positioning = false;
+    }
+
+    hidePopover() {
+        if (this._visiblePopover) {
+            this._visiblePopover.classList.add('slds-hide');
+            this._visiblePopover = undefined;
+            this.stopPositioning();
+        }
     }
 
     handlePrivateRowHeightChange(event) {
@@ -650,26 +682,19 @@ export default class Scheduler extends LightningElement {
         this.startPositioning(eventWrapper);
     }
 
-    hidePopover() {
-        if (this._visiblePopover) {
-            this._visiblePopover.classList.add('slds-hide');
-            this._visiblePopover = undefined;
-            this.stopPositioning();
-        }
-    }
-
     handleEventMouseDown(event) {
         this._draggedEvent = event.currentTarget;
         this._draggedEvent.classList.add('scheduler__event-dragged');
         this.hidePopover();
 
+        // Save the initial position values
         const schedule = this.template.querySelector('tbody');
         const schedulePosition = schedule.getBoundingClientRect();
         const eventPosition = this._draggedEvent.getBoundingClientRect();
 
         this._dragInitialPosition = {
-            mouseX: event.clientX,
-            mouseY: event.clientY,
+            initialX: event.clientX,
+            initialY: event.clientY,
             eventTop: eventPosition.top,
             eventBottom: eventPosition.bottom,
             eventLeft: eventPosition.left,
@@ -692,42 +717,83 @@ export default class Scheduler extends LightningElement {
             scheduleBottom,
             scheduleLeft,
             scheduleRight,
-            mouseX,
-            mouseY,
+            initialX,
+            initialY,
             eventTop,
             eventBottom,
             eventLeft,
             eventRight
         } = this._dragInitialPosition;
 
-        let currentY = event.clientY;
-        let currentX = event.clientX;
+        let y = event.clientY;
+        let x = event.clientX;
 
         // Prevent the events from being dragged out of the schedule grid
-        const top = scheduleTop + (mouseY - eventTop);
-        const bottom = scheduleBottom + (mouseY - eventBottom);
-        const left = scheduleLeft + (mouseX - eventLeft);
-        const right = scheduleRight + (mouseX - eventRight);
+        const top = scheduleTop + (initialY - eventTop);
+        const bottom = scheduleBottom + (initialY - eventBottom);
+        const left = scheduleLeft + (initialX - eventLeft);
+        const right = scheduleRight + (initialX - eventRight);
 
-        if (currentY < top) {
-            currentY = top;
-        } else if (currentY > bottom) {
-            currentY = bottom;
+        if (y < top) {
+            y = top;
+        } else if (y > bottom) {
+            y = bottom;
         }
 
-        if (currentX < left) {
-            currentX = left;
-        } else if (currentX > right) {
-            currentX = right;
+        if (x < left) {
+            x = left;
+        } else if (x > right) {
+            x = right;
         }
 
-        currentX = currentX - mouseX;
-        currentY = currentY - mouseY;
+        x = x - initialX;
+        y = y - initialY;
 
-        this._draggedEvent.style.transform = `translate(${currentX}px, ${currentY}px)`;
+        this._draggedEvent.style.transform = `translate(${x}px, ${y}px)`;
     }
 
-    handleEventMouseUp() {
+    handleEventMouseUp(mouseEvent) {
+        // Get the new event position
+        const initialX = this._dragInitialPosition.initialX;
+        const eventLeft = this._dragInitialPosition.eventLeft;
+        const x = mouseEvent.clientX - (initialX - eventLeft);
+        const y = mouseEvent.clientY;
+
+        // Find the row and cell the event was dropped on
+        const rowElement = this.getRowFromPosition(y);
+        const cellElement = this.getCellFromPosition(rowElement, x);
+
+        // Update the event dates
+        const event = this.computedEvents.find(
+            (computedEvent) =>
+                computedEvent.name === this._draggedEvent.dataset.name
+        );
+        const start = dateTimeObjectFrom(Number(cellElement.dataset.start));
+        const duration = event.to - event.from;
+        const end = addToDate(start, 'millisecond', duration);
+        event.from = start;
+        event.to = end;
+        this.updateEventWidth(event);
+
+        // Update the event rows
+        const rowKey = rowElement.dataset.key;
+        const previousRowKey = this._draggedEvent.dataset.rowKey;
+
+        if (previousRowKey !== rowKey) {
+            // Remove the old row key from the event
+            const keyFieldIndex = event.keyFields.findIndex(
+                (key) => key === previousRowKey
+            );
+            event.keyFields.splice(keyFieldIndex, 1);
+
+            // Add the new row key to the event
+            event.keyFields.push(rowKey);
+        }
+
+        // Update the rows
+        this.initRows();
+
+        // Clean the dragged element
         this._draggedEvent.classList.remove('scheduler__event-dragged');
         this._draggedEvent = undefined;
     }
