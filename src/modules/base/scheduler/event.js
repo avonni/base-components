@@ -69,7 +69,7 @@ export default class Event {
             (recurrenceObject) => recurrenceObject.name === props.recurrence
         );
 
-        this.allDay = normalizeBoolean(props.allDay);
+        this.allDay = props.allDay;
         this.availableMonths = props.availableMonths;
         this.availableDaysOfTheWeek = props.availableDaysOfTheWeek;
         this.availableTimeFrames = props.availableTimeFrames;
@@ -78,24 +78,11 @@ export default class Event {
         this.schedulerEnd = props.schedulerEnd;
         this.schedulerStart = props.schedulerStart;
         this.smallestHeader = props.smallestHeader;
-
-        const from = this.allDay
-            ? dateTimeObjectFrom(props.from).startOf('day')
-            : dateTimeObjectFrom(props.from);
-        const to = this.allDay
-            ? addToDate(from, 'day', 1)
-            : dateTimeObjectFrom(props.to);
-
-        this.from =
-            recurrence || from > this.schedulerStart
-                ? from
-                : this.schedulerStart;
-        this.to = recurrence || to < this.schedulerEnd ? to : this.schedulerEnd;
-
+        this.from = props.from;
+        this.to = props.to;
         this.iconName = props.iconName;
-        this.keyFields = normalizeArray(props.keyFields);
+        this.keyFields = props.keyFields;
 
-        this.dates = [];
         if (recurrence) {
             this.recurrence = recurrence;
             this.recurrenceAttributes =
@@ -106,21 +93,90 @@ export default class Event {
                 props.recurrenceEndDate
             );
             this.recurrenceCount = Number(props.recurrenceCount);
-
-            this.computeRecurrence();
-        } else {
-            this.addDate(this.from, this.to);
         }
 
-        this.theme = normalizeString(props.theme, {
+        this.theme = props.theme;
+        this.title = props.title;
+        this.name = props.name;
+        this.width = 0;
+        this.offsetLeft = 0;
+
+        this.generateDates();
+    }
+
+    get allDay() {
+        return this._allDay;
+    }
+    set allDay(value) {
+        this._allDay = normalizeBoolean(value);
+        this.generateDates();
+    }
+
+    get from() {
+        return this._from;
+    }
+    set from(value) {
+        this._from = dateTimeObjectFrom(value);
+        this.generateDates();
+    }
+
+    get keyFields() {
+        return this._keyFields;
+    }
+    set keyFields(value) {
+        this._keyFields = JSON.parse(JSON.stringify(normalizeArray(value)));
+    }
+
+    get schedulerEnd() {
+        return this._schedulerEnd;
+    }
+    set schedulerEnd(value) {
+        this._schedulerEnd = value;
+        this.generateDates();
+    }
+
+    get schedulerStart() {
+        return this._schedulerStart;
+    }
+    set schedulerStart(value) {
+        this._schedulerStart = value;
+        this.generateDates();
+    }
+
+    get theme() {
+        return this._theme;
+    }
+    set theme(value) {
+        this._theme = normalizeString(value, {
             fallbackValue: EVENTS_THEMES.default,
             validValues: EVENTS_THEMES.valid
         });
-        this.title = props.title;
-        this.name = props.name;
+    }
 
-        this.width = 0;
-        this.offsetLeft = 0;
+    get to() {
+        return this._to;
+    }
+    set to(value) {
+        this._to = dateTimeObjectFrom(value);
+        this.generateDates();
+    }
+
+    get computedFrom() {
+        const from = this.allDay ? this.from.startOf('day') : this.from;
+        return !this.schedulerStart ||
+            this.recurrence ||
+            from > this.schedulerStart
+            ? from
+            : this.schedulerStart;
+    }
+
+    get computedTo() {
+        const to =
+            this.allDay && this.from ? addToDate(this.from, 'day', 1) : this.to;
+
+        return !this.schedulerEnd || this.recurrence || to < this.schedulerEnd
+            ? to
+            : this.schedulerEnd;
     }
 
     get wrapperStyle() {
@@ -198,6 +254,27 @@ export default class Event {
         return this.color;
     }
 
+    generateDates() {
+        this.dates = [];
+
+        // Leave dates empty if we miss one needed property
+        if (
+            !this.from ||
+            !this.to ||
+            !this.smallestHeader ||
+            !this.availableDaysOfTheWeek ||
+            !this.availableMonths ||
+            !this.availableTimeFrames
+        )
+            return;
+
+        if (this.recurrence) {
+            this.computeRecurrence();
+        } else {
+            this.addDate(this.computedFrom, this.computedTo);
+        }
+    }
+
     addDate(start, end) {
         const { schedulerEnd, schedulerStart } = this;
         const computedEnd = end || this.computeOccurenceEnd(start);
@@ -226,7 +303,9 @@ export default class Event {
     }
 
     computeOccurenceEnd(start) {
-        const { from, to, recurrence, recurrenceAttributes } = this;
+        const { recurrence, recurrenceAttributes } = this;
+        const from = this.computedFrom;
+        const to = this.computedTo;
         let end;
 
         switch (recurrence.name) {
@@ -270,7 +349,8 @@ export default class Event {
     }
 
     computeRecurrence() {
-        const { recurrence, from, schedulerEnd } = this;
+        const { recurrence, schedulerEnd } = this;
+        const from = this.computedFrom;
         const endDate = this.recurrenceEndDate;
         const attributes = this.recurrenceAttributes;
         const interval =
@@ -448,7 +528,18 @@ export default class Event {
             const eventDurationLeft = columnEnd.diff(from).milliseconds;
             width += (eventDurationLeft * 100) / columnDuration;
             this.offsetLeft = 100 - width;
+
+            // If the event ends before the end of the first column
+            // remove the appropriate width of the first column
+            if (columnEnd > to) {
+                const columnLeft = columnEnd.diff(to).milliseconds;
+                this.width = width - (columnLeft * 100) / columnDuration;
+                return;
+            }
+
             i += 1;
+        } else {
+            this.offsetLeft = 0;
         }
 
         // Add the width of the columns completely filled by the event
