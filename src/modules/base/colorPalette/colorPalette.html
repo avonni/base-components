@@ -36,39 +36,54 @@
     <template if:true={isList}>
         <div class="list-container slds-scrollable">
             <template for:each={pairColorLabels} for:item="pair">
-                <div key={uniqKey} class="grid" item-color={pair.value}>
-                    <lightning-button
-                        class="slds-m-right_small slds-m-left_xx-small"
-                        onclick={handleClick}
-                        label={pair.label}
-                        variant="base"
-                    ></lightning-button>
-                    <div key={uniqKey} role="presentation">
-                        <div
-                            class="slds-color-picker__swatch-trigger"
+                <div
+                    key={uniqKey}
+                    item-color={pair.value}
+                    onclick={handleClick}
+                    onblur={handleBlur}
+                    onfocus={handleFocus}
+                >
+                    <div class="slds-dropdown__item" role="presentation">
+                        <a
+                            aria-checked="true"
                             href="javascript:void(0)"
-                            onclick={handleClick}
-                            onblur={handleBlur}
-                            onfocus={handleFocus}
-                            item-color={pair.value}
-                            is-disabled={disabled}
-                            read-only={readOnly}
-                            role="option"
+                            role="menuitemcheckbox"
                             tabindex="0"
                         >
-                            <span class="slds-swatch">
-                                <p class="slds-assistive-text">{pair.value}</p>
-                            </span>
-                        </div>
+                            <span class="slds-truncate" title="Table View">
+                                <svg
+                                    class="slds-icon slds-icon_selected slds-icon_x-small slds-icon-text-default slds-m-right_x-small"
+                                    aria-hidden="true"
+                                >
+                                    <use
+                                        xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#check"
+                                    ></use>
+                                </svg>
+                                {pair.label}</span
+                            >
+                            <div role="presentation">
+                                <div
+                                    class="slds-color-picker__swatch-trigger"
+                                    href="javascript:void(0)"
+                                    item-color={pair.value}
+                                    is-disabled={disabled}
+                                    read-only={readOnly}
+                                    role="option"
+                                    tabindex="0"
+                                >
+                                    <span class="slds-swatch">
+                                        <p class="slds-assistive-text">
+                                            {pair.value}
+                                        </p>
+                                    </span>
+                                </div>
+                            </div>
+                        </a>
                     </div>
                 </div>
-
-                <br key={uniqKey} />
             </template>
         </div>
     </template>
-
-    <br />
 
     <template if:true={isBase}>
         <div class="avonni-pallet-container">

@@ -33,7 +33,6 @@
 import { LightningElement, api } from 'lwc';
 import {
     normalizeBoolean,
-    normalizeString,
     generateColors
 } from 'c/utilsPrivate';
 import { generateUniqueId } from 'c/utils';
@@ -106,6 +105,7 @@ export default class ColorPalette extends LightningElement {
     _isLoading = false;
     _readOnly = false;
     init = false;
+	lastTarget;
 
     renderedCallback() {
         this.initContainer();
@@ -237,13 +237,24 @@ export default class ColorPalette extends LightningElement {
         );
     }
 
+	preventD(event){
+		event.preventDefault();
+	}
+
     handleClick(event) {
         if (this.disabled || this.readOnly) {
             event.preventDefault();
             return;
         }
 
-        this.value = event.target.parentElement.getAttribute('item-color');
+		if(this.lastTarget!=undefined){
+			this.lastTarget.children[0].classList.remove('slds-is-selected');
+		}
+
+		let currentTarget = event.currentTarget;
+		currentTarget.children[0].classList.add('slds-is-selected');
+        this.value = currentTarget.getAttribute('item-color');
+		this.lastTarget = currentTarget;
         event.preventDefault();
         this.dispatchChange();
     }
