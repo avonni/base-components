@@ -32,7 +32,6 @@
 
 import { LightningElement, api } from 'lwc';
 import { DateTime } from 'c/luxon';
-import { generateUniqueId } from 'c/utils';
 import {
     normalizeArray,
     normalizeString,
@@ -88,6 +87,8 @@ export default class Scheduler extends LightningElement {
     computedHeaders = [];
     computedRows = [];
     computedEvents = [];
+    selectedEvent;
+    showDetailPopover = false;
 
     connectedCallback() {
         this.initSchedule();
@@ -96,6 +97,13 @@ export default class Scheduler extends LightningElement {
     renderedCallback() {
         this.updateHeadersStyle();
         this.updateBodyStyle();
+
+        if (this.showDetailPopover) {
+            const event = this.template.querySelector(
+                `.scheduler__event-wrapper[data-key="${this.selectedEvent.key}"]`
+            );
+            this.startPositioning(event);
+        }
     }
 
     @api
@@ -267,10 +275,6 @@ export default class Scheduler extends LightningElement {
         return 100 / this.smallestHeader.columns.length;
     }
 
-    get generateKey() {
-        return generateUniqueId();
-    }
-
     get palette() {
         return this.customEventsPalette.length
             ? this.customEventsPalette
@@ -299,6 +303,10 @@ export default class Scheduler extends LightningElement {
 
         const lastIndex = this.computedHeaders.length - 1;
         return this.computedHeaders[lastIndex];
+    }
+
+    get detailPopover() {
+        return this.template.querySelector('.scheduler__event-detail-popover');
     }
 
     initSchedule() {
@@ -602,7 +610,7 @@ export default class Scheduler extends LightningElement {
 
     startPositioning(target) {
         this._positioning = true;
-        const element = this._visiblePopover;
+        const element = this.detailPopover;
 
         const align = {
             horizontal: Direction.Left,
@@ -658,11 +666,14 @@ export default class Scheduler extends LightningElement {
     }
 
     hidePopover() {
-        if (this._visiblePopover) {
-            this._visiblePopover.classList.add('slds-hide');
-            this._visiblePopover = undefined;
-            this.stopPositioning();
-        }
+        // if (this._visiblePopover) {
+        //     this._visiblePopover.classList.add('slds-hide');
+        //     this._visiblePopover = undefined;
+        //     this.stopPositioning();
+        // }
+
+        this.stopPositioning();
+        this.showDetailPopover = false;
     }
 
     handlePrivateRowHeightChange(event) {
@@ -676,10 +687,15 @@ export default class Scheduler extends LightningElement {
         if (this._visiblePopover || this._draggedEvent) return;
 
         const eventWrapper = event.currentTarget;
-        this._visiblePopover = eventWrapper.querySelector('.slds-popover');
-        this._visiblePopover.classList.remove('slds-hide');
-
-        this.startPositioning(eventWrapper);
+        this.selectedEvent = {
+            key: eventWrapper.dataset.key,
+            title: eventWrapper.dataset.title,
+            from: eventWrapper.dataset.from,
+            to: eventWrapper.dataset.to
+        };
+        // this._visiblePopover = eventWrapper.querySelector('.slds-popover');
+        // this._visiblePopover.classList.remove('slds-hide');
+        this.showDetailPopover = true;
     }
 
     handleEventMouseDown(event) {

@@ -116,12 +116,16 @@
                                     >
                                         <!-- Events -->
                                         <div
-                                            key={generateKey}
+                                            key={event.key}
                                             class={event.object.wrapperClass}
                                             aria-hidden={event.hidden}
                                             style={event.object.wrapperStyle}
                                             data-row-key={row.key}
                                             data-name={event.object.name}
+                                            data-key={event.key}
+                                            data-title={event.object.title}
+                                            data-from={event.from}
+                                            data-to={event.to}
                                             tabindex="0"
                                             onmouseup={handleEventMouseUp}
                                             onmousedown={handleEventMouseDown}
@@ -144,45 +148,6 @@
                                                     >{event.object.title}</span
                                                 >
                                             </div>
-                                            <div
-                                                if:false={event.hidden}
-                                                class="scheduler__event-detail-popover slds-hide slds-popover slds-dropdown slds-dropdown_left"
-                                                role="tooltip"
-                                            >
-                                                <div class="slds-popover__body">
-                                                    <div
-                                                        class="slds-m-bottom_x-small"
-                                                    >
-                                                        <strong
-                                                            >{event.object.title}</strong
-                                                        >
-                                                    </div>
-                                                    <div class="slds-grid">
-                                                        <lightning-icon
-                                                            class="scheduler__event-detail-icon slds-m-right_xx-small"
-                                                            icon-name="utility:clock"
-                                                            size="x-small"
-                                                        ></lightning-icon>
-                                                        <c-output-data
-                                                            type="date"
-                                                            value={event.from}
-                                                            type-attributes={eventDateFormat}
-                                                        ></c-output-data>
-                                                    </div>
-                                                    <div class="slds-grid">
-                                                        <lightning-icon
-                                                            class="scheduler__event-detail-icon slds-m-right_xx-small"
-                                                            icon-name="utility:clock"
-                                                            size="x-small"
-                                                        ></lightning-icon>
-                                                        <c-output-data
-                                                            type="date"
-                                                            value={event.to}
-                                                            type-attributes={eventDateFormat}
-                                                        ></c-output-data>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
                                     </template>
                                 </td>
@@ -191,6 +156,43 @@
                     </template>
                 </tbody>
             </table>
+        </div>
+    </div>
+
+    <!-- Event detail popover -->
+    <div
+        if:true={showDetailPopover}
+        class="scheduler__event-detail-popover slds-popover slds-dropdown slds-dropdown_left"
+        role="tooltip"
+    >
+        <div class="slds-popover__body">
+            <div class="slds-m-bottom_x-small">
+                <strong>{selectedEvent.title}</strong>
+            </div>
+            <div class="slds-grid">
+                <lightning-icon
+                    class="scheduler__event-detail-icon slds-m-right_xx-small"
+                    icon-name="utility:clock"
+                    size="x-small"
+                ></lightning-icon>
+                <c-output-data
+                    type="date"
+                    value={selectedEvent.from}
+                    type-attributes={eventDateFormat}
+                ></c-output-data>
+            </div>
+            <div class="slds-grid">
+                <lightning-icon
+                    class="scheduler__event-detail-icon slds-m-right_xx-small"
+                    icon-name="utility:clock"
+                    size="x-small"
+                ></lightning-icon>
+                <c-output-data
+                    type="date"
+                    value={selectedEvent.to}
+                    type-attributes={eventDateFormat}
+                ></c-output-data>
+            </div>
         </div>
     </div>
 </template>

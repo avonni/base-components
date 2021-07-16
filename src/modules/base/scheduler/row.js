@@ -32,6 +32,7 @@
 
 import { classSet } from 'c/utils';
 import { normalizeArray } from 'c/utilsPrivate';
+import { generateUniqueId } from 'c/utils';
 
 export default class Row {
     constructor(props) {
@@ -100,6 +101,7 @@ export default class Row {
                         // The event will be visible in the first column
                         columns[i].events.push({
                             object: event,
+                            key: generateUniqueId(),
                             from: date.from.ts,
                             to: date.to.ts
                         });
@@ -115,6 +117,7 @@ export default class Row {
                             // so it takes some room in case there are several events in one column
                             columns[i].events.push({
                                 object: event,
+                                key: generateUniqueId(),
                                 hidden: true
                             });
                         }
