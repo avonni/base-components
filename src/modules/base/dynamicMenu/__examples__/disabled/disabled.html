@@ -1,0 +1,24 @@
+<avonni-dynamic-menu items={items} icon-name="utility:favorite" disabled="true">
+    <div class="slds-p-vertical_x-small slds-p-horizontal_small">
+        <h3
+            class="slds-dynamic-menu__header slds-m-bottom_x-small"
+            role="presentation"
+        >
+            My Favorites
+        </h3>
+    </div>
+    <div slot="footer" style="display: flex; flex-direction: column">
+        <lightning-button
+            label="Favorite this page"
+            icon-name="utility:add"
+            variant="base"
+            type="reset"
+        ></lightning-button>
+        <lightning-button
+            label="Edit Favorites"
+            icon-name="utility:edit"
+            variant="base"
+            type="reset"
+        ></lightning-button>
+    </div>
+</avonni-dynamic-menu>
