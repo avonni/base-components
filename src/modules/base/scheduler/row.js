@@ -71,7 +71,8 @@ export default class Row {
                 start: element.start,
                 end: element.end,
                 class: this.getColumnClass(),
-                events: []
+                events: [],
+                crossingEvents: []
             });
         });
 
@@ -98,28 +99,61 @@ export default class Row {
                             ? `${columns[i].title}, ${event.title}`
                             : event.title;
                     } else {
-                        // The event will be visible in the first column
+                        // If an event is already crossing this column
+                        // and started before the current event,
+                        // add a placeholder to push the current event down in the column
+                        let placeholders = [];
+                        columns[i].crossingEvents.forEach((crossingEvent) => {
+                            if (crossingEvent.from < date.from) {
+                                placeholders.push(crossingEvent);
+                            }
+                        });
+
+                        // Push the current event in the first column
                         columns[i].events.push({
-                            object: event,
                             key: generateUniqueId(),
+                            wrapperClass: event.wrapperClass,
+                            wrapperStyle: event.wrapperStyle,
+                            name: event.name,
+                            title: event.title,
+                            class: event.class,
+                            style: event.style,
+                            iconName: event.iconName,
                             from: date.from.ts,
-                            to: date.to.ts
+                            to: date.to.ts,
+                            placeholders: placeholders
                         });
                     }
 
+                    // In every other column the event crosses, add the event to crossingEvents
                     i += 1;
                     while (i < columns.length && date.to > columns[i].end) {
                         if (event.disabled) {
                             columns[i].disabled = true;
                             columns[i].class = this.getColumnClass(columns[i]);
                         } else {
-                            // The event will be hidden in the other column it crosses,
-                            // so it takes some room in case there are several events in one column
-                            columns[i].events.push({
-                                object: event,
+                            const crossingEvent = {
+                                from: date.from,
                                 key: generateUniqueId(),
-                                hidden: true
-                            });
+                                wrapperClass: event.wrapperClass,
+                                wrapperStyle: event.wrapperStyle,
+                                class: event.class,
+                                style: event.style,
+                                iconName: event.iconName,
+                                title: event.title
+                            };
+                            columns[i].crossingEvents.push(crossingEvent);
+
+                            // If there were already crossing events, make sure they don't need placeholders
+                            if (columns[i].events.length) {
+                                columns[i].events.forEach((existingEvent) => {
+                                    if (existingEvent.from > date.from) {
+                                        existingEvent.placeholders.push(
+                                            crossingEvent
+                                        );
+                                    }
+                                });
+                            }
                         }
                         i += 1;
                     }

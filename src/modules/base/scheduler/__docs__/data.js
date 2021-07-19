@@ -40,8 +40,7 @@ const columns = [
             fallbackIconName: { fieldName: 'avatarFallbackIconName' },
             initials: { fieldName: 'avatarInitials' },
             primaryText: { fieldName: 'firstName' }
-        },
-        initialWidth: 150
+        }
     },
     {
         label: 'Role',
@@ -140,7 +139,6 @@ const events = [
         keyFields: ['3'],
         name: 'find-examples',
         title: 'Find examples of solutions',
-        iconName: 'utility:search',
         from: new Date(2021, 11, 13, 14),
         to: new Date(2021, 11, 14)
     },

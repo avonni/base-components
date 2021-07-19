@@ -81,6 +81,7 @@ export default class Scheduler extends LightningElement {
     _theme = THEMES.default;
     _visibleSpan = DEFAULT_VISIBLE_SPAN;
 
+    _datatableRowsHeight;
     _draggedEvent;
     _dragInitialPosition;
     _referenceHeader;
@@ -95,6 +96,11 @@ export default class Scheduler extends LightningElement {
     }
 
     renderedCallback() {
+        // On the first render, save the datatable rows height
+        if (!this._datatableRowsHeight) {
+            this.updateDatatableRowsHeight();
+        }
+
         this.updateHeadersStyle();
         this.updateBodyStyle();
 
@@ -541,17 +547,34 @@ export default class Scheduler extends LightningElement {
     }
 
     updateBodyStyle() {
-        // Set the datatable rows height
+        // Set the rows height
         const datatable = this.template.querySelector('c-datatable');
         const rows = this.template.querySelectorAll('tbody tr');
         rows.forEach((row) => {
-            datatable.setRowHeight(row.dataset.key, row.offsetHeight);
+            const key = row.dataset.key;
+            const dataRowHeight = this._datatableRowsHeight.find(
+                (dataRow) => dataRow.rowKey === key
+            ).height;
+            const rowHeight = row.offsetHeight;
+            row.style.minHeight = `${dataRowHeight}px`;
+            datatable.setRowHeight(key, rowHeight);
         });
 
         // Give the body cells their width
         const cells = this.template.querySelectorAll('tbody td');
         cells.forEach((cell) => {
             cell.style.width = `${this.cellWidth}%`;
+        });
+    }
+
+    updateDatatableRowsHeight() {
+        this._datatableRowsHeight = [];
+        const datatable = this.template.querySelector('c-datatable');
+
+        this.rows.forEach((row) => {
+            const rowKey = row[this.rowsKeyField];
+            const height = datatable.getRowHeight(rowKey);
+            this._datatableRowsHeight.push({ rowKey, height });
         });
     }
 
@@ -603,7 +626,7 @@ export default class Scheduler extends LightningElement {
             const left = td.getBoundingClientRect().left;
             const right = td.getBoundingClientRect().right;
 
-            if (x >= left && x <= right) return td;
+            if (x >= left && x < right) return td;
             return undefined;
         });
     }
@@ -666,25 +689,12 @@ export default class Scheduler extends LightningElement {
     }
 
     hidePopover() {
-        // if (this._visiblePopover) {
-        //     this._visiblePopover.classList.add('slds-hide');
-        //     this._visiblePopover = undefined;
-        //     this.stopPositioning();
-        // }
-
         this.stopPositioning();
         this.showDetailPopover = false;
     }
 
-    handlePrivateRowHeightChange(event) {
-        const key = event.detail.key;
-        const height = event.detail.height;
-        const row = this.template.querySelector(`[data-key="${key}"]`);
-        if (row) row.style.minHeight = `${height}px`;
-    }
-
     handleEventMouseEnter(event) {
-        if (this._visiblePopover || this._draggedEvent) return;
+        if (this._draggedEvent) return;
 
         const eventWrapper = event.currentTarget;
         this.selectedEvent = {
@@ -693,8 +703,6 @@ export default class Scheduler extends LightningElement {
             from: eventWrapper.dataset.from,
             to: eventWrapper.dataset.to
         };
-        // this._visiblePopover = eventWrapper.querySelector('.slds-popover');
-        // this._visiblePopover.classList.remove('slds-hide');
         this.showDetailPopover = true;
     }
 
@@ -812,5 +820,10 @@ export default class Scheduler extends LightningElement {
         // Clean the dragged element
         this._draggedEvent.classList.remove('scheduler__event-dragged');
         this._draggedEvent = undefined;
+    }
+
+    handleDatatableResize() {
+        this.updateDatatableRowsHeight();
+        this.updateBodyStyle();
     }
 }

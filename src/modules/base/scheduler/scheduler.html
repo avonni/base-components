@@ -38,12 +38,11 @@
         <div class="slds-border_right scheduler__datatable-col">
             <c-datatable
                 class="slds-show slds-border_top"
-                column-widths-mode="auto"
                 columns={columns}
                 data={rows}
                 hide-checkbox-column
                 key-field={rowsKeyField}
-                onprivaterowheightchange={handlePrivateRowHeightChange}
+                onresize={handleDatatableResize}
             ></c-datatable>
         </div>
 
@@ -101,7 +100,7 @@
                                 >
                                     <div
                                         if:true={column.title}
-                                        class="slds-is-relative scheduler__disabled-date-title-wrapper"
+                                        class="slds-is-absolute scheduler__disabled-date-title-wrapper"
                                         title={column.title}
                                     >
                                         <div
@@ -114,16 +113,42 @@
                                         for:each={column.events}
                                         for:item="event"
                                     >
+                                        <!-- Event placeholders, to prevent events from overlapping -->
+                                        <template
+                                            for:each={event.placeholders}
+                                            for:item="placeholder"
+                                        >
+                                            <div
+                                                key={placeholder.key}
+                                                class={placeholder.wrapperClass}
+                                                style={placeholder.wrapperStyle}
+                                                aria-hidden="true"
+                                            >
+                                                <div
+                                                    class={placeholder.class}
+                                                    style={placeholder.style}
+                                                >
+                                                    <lightning-icon
+                                                        if:true={placeholder.iconName}
+                                                        icon-name={placeholder.iconName}
+                                                        size="x-small"
+                                                        class="slds-m-right_xx-small"
+                                                    ></lightning-icon>
+                                                    <span class="slds-truncate"
+                                                        >{placeholder.title}</span
+                                                    >
+                                                </div>
+                                            </div>
+                                        </template>
                                         <!-- Events -->
                                         <div
                                             key={event.key}
-                                            class={event.object.wrapperClass}
-                                            aria-hidden={event.hidden}
-                                            style={event.object.wrapperStyle}
+                                            class={event.wrapperClass}
+                                            style={event.wrapperStyle}
                                             data-row-key={row.key}
-                                            data-name={event.object.name}
+                                            data-name={event.name}
                                             data-key={event.key}
-                                            data-title={event.object.title}
+                                            data-title={event.title}
                                             data-from={event.from}
                                             data-to={event.to}
                                             tabindex="0"
@@ -135,17 +160,17 @@
                                             onblur={hidePopover}
                                         >
                                             <div
-                                                class={event.object.class}
-                                                style={event.object.style}
+                                                class={event.class}
+                                                style={event.style}
                                             >
                                                 <lightning-icon
-                                                    if:true={event.object.iconName}
-                                                    icon-name={event.object.iconName}
+                                                    if:true={event.iconName}
+                                                    icon-name={event.iconName}
                                                     size="x-small"
                                                     class="slds-m-right_xx-small"
                                                 ></lightning-icon>
                                                 <span class="slds-truncate"
-                                                    >{event.object.title}</span
+                                                    >{event.title}</span
                                                 >
                                             </div>
                                         </div>

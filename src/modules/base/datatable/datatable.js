@@ -265,8 +265,6 @@ export default class Datatable extends LightningDatatable {
         editCells.forEach((cell) => {
             cell.classList.add('slds-cell-edit');
         });
-
-        this.dispatchRowHeightEvent();
     }
 
     disconnectedCallback() {
@@ -303,6 +301,21 @@ export default class Datatable extends LightningDatatable {
         super.data = this._data;
     }
 
+    @api getRowHeight(rowKeyField) {
+        const row = this.template.querySelector(
+            `tr[data-row-key-value="${rowKeyField}"]`
+        );
+
+        if (row) {
+            if (rowKeyField === this.data[0][this.keyField]) {
+                // The first row has one pixel more because of the border
+                return row.offsetHeight + 1;
+            }
+            return row.offsetHeight;
+        }
+        return null;
+    }
+
     @api
     setRowHeight(rowKeyField, height) {
         const row = this.template.querySelector(
@@ -310,7 +323,7 @@ export default class Datatable extends LightningDatatable {
         );
 
         if (row) {
-            row.style.height = `${height}px`;
+            row.style.height = height ? `${height}px` : undefined;
         }
     }
 
@@ -361,25 +374,4 @@ export default class Datatable extends LightningDatatable {
         // Show yellow background and save/cancel button
         super.updateRowsState(this.state);
     };
-
-    dispatchRowHeightEvent() {
-        const rows = this.template.querySelectorAll(
-            'tr:not(.slds-line-height_reset)'
-        );
-
-        rows.forEach((row, index) => {
-            // The first row has one pixel more because of the border
-            const height =
-                index === 0 ? row.offsetHeight + 1 : row.offsetHeight;
-
-            this.dispatchEvent(
-                new CustomEvent('privaterowheightchange', {
-                    detail: {
-                        key: row.dataset.rowKeyValue,
-                        height: height
-                    }
-                })
-            );
-        });
-    }
 }

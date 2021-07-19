@@ -32,14 +32,11 @@
 
 .scheduler__datatable-col {
     background-color: #fafaf9;
+    flex-basis: 25%;
 }
 
 .scheduler__schedule-table {
     overflow: hidden;
-}
-
-.scheduler__schedule-table tbody td {
-    position: static;
 }
 
 .scheduler__disabled-date-title-wrapper {
