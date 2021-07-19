@@ -146,6 +146,8 @@ export default class ColorPicker extends LightningElement {
     isDefault = true;
     newValue;
 
+	currentLabel;
+
     connectedCallback() {
         if (!this.name) {
             this.name = generateUniqueId();
@@ -342,6 +344,10 @@ export default class ColorPicker extends LightningElement {
         return this.disabled || this.readOnly;
     }
 
+	get inputValue(){
+		return this.currentLabel ? this.currentLabel : this.value;
+	}
+
     @api
     focus() {
         if (this.isConnected) {
@@ -496,7 +502,9 @@ export default class ColorPicker extends LightningElement {
                 this.opacity && Number(event.detail.alpha) < 1
                     ? event.detail.hexa
                     : event.detail.hex;
+			this.currentLabel = event.detail.label;
         }
+
     }
 
     handlerDone() {

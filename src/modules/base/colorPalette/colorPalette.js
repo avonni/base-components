@@ -76,6 +76,7 @@ const TYPES = { valid: ['base', 'list'], default: 'base' };
 
 export default class ColorPalette extends LightningElement {
     @api value;
+	currentLabel;
 
     @api
     get colors() {
@@ -254,6 +255,7 @@ export default class ColorPalette extends LightningElement {
 		let currentTarget = event.currentTarget;
 		currentTarget.children[0].classList.add('slds-is-selected');
         this.value = currentTarget.getAttribute('item-color');
+		this.currentLabel = currentTarget.getAttribute('item-label');
 		this.lastTarget = currentTarget;
         event.preventDefault();
         this.dispatchChange();
@@ -272,7 +274,8 @@ export default class ColorPalette extends LightningElement {
                         hexa: colors.hexa,
                         rgb: colors.rgb,
                         rgba: colors.rgba,
-                        alpha: colors.A
+                        alpha: colors.A,
+						label: this.currentLabel
                     }
                 })
             );
