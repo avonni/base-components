@@ -550,14 +550,18 @@ export default class Scheduler extends LightningElement {
         // Set the rows height
         const datatable = this.template.querySelector('c-datatable');
         const rows = this.template.querySelectorAll('tbody tr');
-        rows.forEach((row) => {
+        rows.forEach((row, index) => {
             const key = row.dataset.key;
             const dataRowHeight = this._datatableRowsHeight.find(
                 (dataRow) => dataRow.rowKey === key
             ).height;
             const rowHeight = row.offsetHeight;
             row.style.minHeight = `${dataRowHeight}px`;
-            datatable.setRowHeight(key, rowHeight);
+            if (index === 0) {
+                datatable.setRowHeight(key, rowHeight - 1);
+            } else {
+                datatable.setRowHeight(key, rowHeight);
+            }
         });
 
         // Give the body cells their width

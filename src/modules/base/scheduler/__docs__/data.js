@@ -104,11 +104,11 @@ const headers = [
     //     span: 1,
     //     label: 'LLLL'
     // },
-    {
-        unit: 'week',
-        span: 1,
-        label: "'Sprint' W"
-    },
+    // {
+    //     unit: 'week',
+    //     span: 1,
+    //     label: "'Sprint' W"
+    // },
     {
         unit: 'day',
         span: 1,

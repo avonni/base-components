@@ -72,7 +72,8 @@ export default class Row {
                 end: element.end,
                 class: this.getColumnClass(),
                 events: [],
-                crossingEvents: []
+                crossingEvents: [],
+                disabledDates: []
             });
         });
 
@@ -92,12 +93,14 @@ export default class Row {
                     return column.end > date.from;
                 });
                 if (i > -1) {
+                    // If the event is a disabled date/time
                     if (event.disabled) {
-                        columns[i].disabled = true;
-                        columns[i].class = this.getColumnClass(columns[i]);
-                        columns[i].title = columns[i].title
-                            ? `${columns[i].title}, ${event.title}`
-                            : event.title;
+                        columns[i].disabledDates.push({
+                            title: event.title,
+                            from: date.from.ts,
+                            to: date.to.ts,
+                            style: event.wrapperStyle
+                        });
                     } else {
                         // If an event is already crossing this column
                         // and started before the current event,
@@ -127,11 +130,8 @@ export default class Row {
 
                     // In every other column the event crosses, add the event to crossingEvents
                     i += 1;
-                    while (i < columns.length && date.to > columns[i].end) {
-                        if (event.disabled) {
-                            columns[i].disabled = true;
-                            columns[i].class = this.getColumnClass(columns[i]);
-                        } else {
+                    if (!event.disabled) {
+                        while (i < columns.length && date.to > columns[i].end) {
                             const crossingEvent = {
                                 from: date.from,
                                 key: generateUniqueId(),
@@ -154,8 +154,8 @@ export default class Row {
                                     }
                                 });
                             }
+                            i += 1;
                         }
-                        i += 1;
                     }
                 }
             });

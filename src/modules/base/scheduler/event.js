@@ -188,7 +188,7 @@ export default class Event {
 
         return `
             margin-left: ${offsetLeft}%;
-            width: calc(${width}% + ${borderWidth}px);
+            width: calc(${width}% + ${borderWidth - 1}px);
         `;
     }
 

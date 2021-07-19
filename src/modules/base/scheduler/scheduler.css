@@ -39,9 +39,9 @@
     overflow: hidden;
 }
 
-.scheduler__disabled-date-title-wrapper {
+.scheduler__disabled-date {
     height: 100%;
-    width: 100%;
+    z-index: 1;
 }
 
 .scheduler__disabled-date-title {
@@ -49,6 +49,7 @@
     bottom: 0;
     left: 0;
     max-width: 100%;
+    z-index: 1;
 }
 
 /* -------- Events ------- */
@@ -61,7 +62,7 @@
     opacity: 0.9;
     cursor: pointer;
     position: relative;
-    z-index: 1;
+    z-index: 2;
 }
 .scheduler__event:hover {
     opacity: 1;
@@ -112,5 +113,5 @@
     color: #706e6b;
 }
 .scheduler__event-dragged {
-    z-index: 2;
+    z-index: 3;
 }
