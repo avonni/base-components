@@ -38,6 +38,7 @@ import {
     animationFrame,
     timeout
 } from 'c/utilsPrivate';
+import { classSet } from 'c/utils';
 import {
     Direction,
     startPositioning,
@@ -313,6 +314,19 @@ export default class Scheduler extends LightningElement {
 
     get detailPopover() {
         return this.template.querySelector('.scheduler__event-detail-popover');
+    }
+
+    get tableClass() {
+        const onlyOneHeader = this.computedHeaders.length === 1;
+        const onlyOneVisibleHeader =
+            this.computedHeaders.length === 2 &&
+            this.computedHeaders.find((header) => header.isHidden);
+
+        return classSet('slds-table scheduler__schedule-table')
+            .add({
+                'slds-border_top': onlyOneHeader || onlyOneVisibleHeader
+            })
+            .toString();
     }
 
     initSchedule() {

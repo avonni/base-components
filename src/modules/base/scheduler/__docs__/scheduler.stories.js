@@ -257,6 +257,6 @@ Base.args = {
     availableDaysOfTheWeek: [1, 2, 3, 4, 5],
     // availableMonths: [1, 4],
     events: events,
-    eventsTheme: 'transparent',
+    // eventsTheme: 'transparent',
     disabledDatesTimes: disabledDatesTimes
 };

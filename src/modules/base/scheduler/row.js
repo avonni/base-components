@@ -99,7 +99,9 @@ export default class Row {
                             title: event.title,
                             from: date.from.ts,
                             to: date.to.ts,
-                            style: event.wrapperStyle
+                            style: event.wrapperStyle,
+                            iconName: event.iconName,
+                            showTitle: event.iconName || event.title
                         });
                     } else {
                         // If an event is already crossing this column

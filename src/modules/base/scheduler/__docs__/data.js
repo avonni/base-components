@@ -118,12 +118,12 @@ const headers = [
         unit: 'hour',
         span: 1,
         label: 'h a'
+    },
+    {
+        unit: 'minute',
+        span: 15,
+        label: 'mm'
     }
-    // {
-    //     unit: 'minute',
-    //     span: 30,
-    //     label: 'mm'
-    // }
 ];
 
 const events = [
@@ -186,8 +186,8 @@ const events = [
         recurrenceAttributes: {
             weekdays: [1, 3, 5]
         },
-        color: '#300561',
-        theme: 'line'
+        color: '#300561'
+        // theme: 'line'
     }
 ];
 
@@ -198,6 +198,16 @@ const disabledDatesTimes = [
         iconName: 'custom:custom51',
         from: new Date(2021, 0, 1, 12),
         to: new Date(2021, 0, 1, 14),
+        recurrence: 'weekly',
+        recurrenceAttributes: {
+            weekdays: [1, 2, 3, 4, 5]
+        }
+    },
+    {
+        keyFields: ['1', '2', '3', '4', '5'],
+        iconName: 'utility:food_and_drink',
+        from: new Date(2021, 0, 1, 10),
+        to: new Date(2021, 0, 1, 10, 15),
         recurrence: 'weekly',
         recurrenceAttributes: {
             weekdays: [1, 2, 3, 4, 5]

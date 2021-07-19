@@ -48,7 +48,7 @@
 
         <!-- Schedule -->
         <div class="slds-col">
-            <table class="slds-table scheduler__schedule-table slds-border_top">
+            <table class={tableClass}>
                 <!-- Headers -->
                 <thead>
                     <template for:each={computedHeaders} for:item="header">
@@ -108,12 +108,20 @@
                                             style={disabledDate.style}
                                         >
                                             <div
-                                                if:true={disabledDate.title}
+                                                if:true={disabledDate.showTitle}
                                                 key={disabledDate.from}
-                                                class="slds-truncate scheduler__disabled-date-title slds-text-body_small slds-p-around_xx-small slds-text-color_inverse-weak"
+                                                class="scheduler__disabled-date-title slds-text-body_small slds-p-around_xx-small slds-text-color_inverse-weak slds-grid slds-grid-vertical-align_center"
                                                 title={column.title}
                                             >
-                                                {disabledDate.title}
+                                                <lightning-icon
+                                                    if:true={disabledDate.iconName}
+                                                    icon-name={disabledDate.iconName}
+                                                    size="x-small"
+                                                    class="slds-m-right_xx-small slds-current-color"
+                                                ></lightning-icon>
+                                                <span class="slds-truncate"
+                                                    >{disabledDate.title}</span
+                                                >
                                             </div>
                                         </div>
                                     </template>
