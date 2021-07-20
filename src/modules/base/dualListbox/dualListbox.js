@@ -81,20 +81,114 @@ const i18n = {
     loadingText: 'Loading'
 };
 
+/**
+ * @class
+ * @descriptor avonni-dual-listbox
+ * @example example-dual-listbox--base
+ * @public
+ */
 export default class DualListbox extends LightningElement {
+    /**
+     * Label for the source options listbox.
+     *
+     * @type {string}
+     * @public
+     */
     @api sourceLabel;
+    /**
+     * Label for the selected options listbox.
+     *
+     * @type {string}
+     * @public
+     */
     @api selectedLabel;
+    /**
+     * Text displayed when no options are selected.
+     *
+     * @type {string}
+     * @public
+     */
     @api selectedPlaceholder;
+    /**
+     * Label for the dual listbox.
+     *
+     * @type {string}
+     * @public
+     */
     @api label;
+    /**
+     * Specifies the name of an input element.
+     *
+     * @type {string}
+     * @public
+     */
     @api name;
+    /**
+     * The name of the icon to be used in the format 'utility:right'.
+     *
+     * @type {string}
+     * @public
+     * @default utility:right
+     */
     @api addButtonIconName = DEFAULT_ADD_BUTTON_ICON_NAME;
+    /**
+     * The name of the icon to be used in the format ‘utility:down’.
+     *
+     * @type {string}
+     * @public
+     * @default utility:down
+     */
     @api downButtonIconName = DEFAULT_DOWN_BUTTON_ICON_NAME;
+    /**
+     * The name of the icon to be used in the format ‘utility:left’.
+     *
+     * @type {string}
+     * @public
+     * @default utility:left
+     */
     @api removeButtonIconName = DEFAULT_REMOVE_BUTTON_ICON_NAME;
+    /**
+     * The name of the icon to be used in the format ‘utility:up’.
+     *
+     * @type {string}
+     * @public
+     * @default utility:up
+     */
     @api upButtonIconName = DEFAULT_UP_BUTTON_ICON_NAME;
+    /**
+     * Label for add button.
+     *
+     * @type {string}
+     * @public
+     */
     @api addButtonLabel;
+    /**
+     * Label for remove button.
+     *
+     * @type {string}
+     * @public
+     */
     @api removeButtonLabel;
+    /**
+     * Label for up button.
+     *
+     * @type {string}
+     * @public
+     */
     @api upButtonLabel;
+    /**
+     * Label for down button
+     *
+     * @type {string}
+     * @public
+     */
     @api downButtonLabel;
+    /**
+     * Help text detailing the purpose and function of the dual listbox.
+     *
+     * @type {string}
+     * @public
+     */
     @api fieldLevelHelp;
 
     _requiredOptions = [];
@@ -176,6 +270,20 @@ export default class DualListbox extends LightningElement {
         this.updateBoxesHeight();
     }
 
+    /**
+     * A list of options that are available for selection. Each option has the following attributes: label, description, value, iconName, iconSrc, initials and variant.
+     *
+     * @typedef {[Object<string,string>]} Option
+     * @name options
+     * @property {string} label Label for options.
+     * @property {string} value Text to name the option.
+     * @property {string} initials If the record name contains two words, like first and last name, use the first capitalized letter of each. For records that only have a single word name, use the first two letters of that word using one capital and one lower case letter.
+     * @property {string} description Description for the option.
+     * @property {string} iconName The Lightning Design System name of the icon used as a fallback when the image fails to load. The initials fallback relies on this for its background color. Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. Only icons from the standard and custom categories are allowed.
+     * @property {string} iconSize This property will change the size of the avatar icon for each options. Valid values are x-small, small, medium, large, x-large and xx-large. The value defaults to medium.
+     * @property {string} src Image URL for the avatar of the group. If present, the avatar is displayed before the label.
+     * @property {string} variant The variant changes the shape of the avatar. Valid values are empty, circle, and square. The value defaults to square.
+     */
     @api
     get options() {
         return this._options;
@@ -191,9 +299,21 @@ export default class DualListbox extends LightningElement {
         }
     }
 
+    /**
+     * Error message to be displayed when the value is missing and input is required.
+     *
+     * @type {string}
+     * @public
+     */
     @api
     messageWhenValueMissing = i18n.requiredError;
 
+    /**
+     * Error message to be displayed when a range overflow is detected.
+     *
+     * @type {string}
+     * @public
+     */
     @api
     get messageWhenRangeOverflow() {
         return this._messageWhenRangeOverflow;
@@ -203,6 +323,12 @@ export default class DualListbox extends LightningElement {
         this._messageWhenRangeOverflow = message;
     }
 
+    /**
+     * Error message to be displayed when a range underflow is detected.
+     *
+     * @type {string}
+     * @public
+     */
     @api
     get messageWhenRangeUnderflow() {
         return this._messageWhenRangeUnderflow;
@@ -212,6 +338,13 @@ export default class DualListbox extends LightningElement {
         this._messageWhenRangeUnderflow = message;
     }
 
+    /**
+     * If present, hides the bottom divider.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api
     get hideBottomDivider() {
         return this._hideBottomDivider || false;
@@ -221,6 +354,13 @@ export default class DualListbox extends LightningElement {
         this._hideBottomDivider = normalizeBoolean(value);
     }
 
+    /**
+     * If present, the listbox is disabled and users cannot interact with it.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api
     get disabled() {
         return this._disabled || false;
@@ -230,6 +370,13 @@ export default class DualListbox extends LightningElement {
         this._disabled = normalizeBoolean(value);
     }
 
+    /**
+     * If present, the source options listbox is in a loading state and shows a spinner.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api
     get isLoading() {
         return this._isLoading || false;
@@ -239,6 +386,13 @@ export default class DualListbox extends LightningElement {
         this._isLoading = normalizeBoolean(value);
     }
 
+    /**
+     * If present, the user must add an item to the selected listbox before submitting the form.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api
     get required() {
         return this._required;
@@ -248,6 +402,13 @@ export default class DualListbox extends LightningElement {
         this._required = normalizeBoolean(value);
     }
 
+    /**
+     * If present, a search box is added to the first listbox.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api
     get searchEngine() {
         return this._searchEngine;
@@ -257,6 +418,12 @@ export default class DualListbox extends LightningElement {
         this._searchEngine = normalizeBoolean(value);
     }
 
+    /**
+     * A list of default options that are included in the selected options listbox. This list is populated with values from the options attribute.
+     *
+     * @type {string[]}
+     * @public
+     */
     @api
     get value() {
         return this._selectedValues;
@@ -270,6 +437,12 @@ export default class DualListbox extends LightningElement {
         }
     }
 
+    /**
+     * A list of required options that cannot be removed from selected options listbox. This list is populated with values from the options attribute.
+     *
+     * @type {string[]}
+     * @public
+     */
     @api
     get requiredOptions() {
         return this._requiredOptions;
@@ -284,6 +457,13 @@ export default class DualListbox extends LightningElement {
         }
     }
 
+    /**
+     * The variant changes the appearance of the dual listbox. Valid variants include standard, label-hidden and label-stacked. Use label-hidden to hide the label but make it available to assistive technology. Use label-stacked to place the label above the dual listbox.
+     *
+     * @type {string}
+     * @public
+     * @default standard
+     */
     @api
     get variant() {
         return this._variant;
@@ -296,6 +476,13 @@ export default class DualListbox extends LightningElement {
         });
     }
 
+    /**
+     * For the bare variant, valid values include x-small, small, medium, and large. For non-bare variants, valid values include xx-small, x-small, small, and medium.
+     *
+     * @type {string}
+     * @public
+     * @default medium
+     */
     @api
     get buttonSize() {
         return this._buttonSize;
@@ -308,6 +495,12 @@ export default class DualListbox extends LightningElement {
         });
     }
 
+    /**
+     * Use this variant for all button icons (add, up, down and remove). Valid values include bare, container, brand, border, border-filled, bare-inverse and border-inverse.
+     *
+     * @type {string}
+     * @public
+     */
     @api
     get buttonVariant() {
         return this._buttonVariant;
@@ -320,6 +513,13 @@ export default class DualListbox extends LightningElement {
         });
     }
 
+    /**
+     * Number of options that display in the listboxes before vertical scrollbars are displayed. Determines the vertical size of the listbox.
+     *
+     * @type {number}
+     * @public
+     * @default 5
+     */
     @api
     get maxVisibleOptions() {
         return this._maxVisibleOptions;
@@ -335,6 +535,12 @@ export default class DualListbox extends LightningElement {
         }
     }
 
+    /**
+     * Maximum number of options allowed in the selected options listbox.
+     *
+     * @type {number}
+     * @public
+     */
     @api
     get max() {
         return this._max;
@@ -345,6 +551,12 @@ export default class DualListbox extends LightningElement {
         this._max = parseInt(number, 10);
     }
 
+    /**
+     * Minimum number of options required in the selected options listbox.
+     *
+     * @type {number}
+     * @public
+     */
     @api
     get min() {
         return this._min;
@@ -355,6 +567,13 @@ export default class DualListbox extends LightningElement {
         this._min = parseInt(number, 10);
     }
 
+    /**
+     * If present, the Up and Down buttons used for reordering are hidden.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api
     get disableReordering() {
         return this._disableReordering;
@@ -364,6 +583,13 @@ export default class DualListbox extends LightningElement {
         this._disableReordering = normalizeBoolean(value);
     }
 
+    /**
+     * If present, the options are draggable.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api
     get draggable() {
         if (this.disabled) {
@@ -376,6 +602,13 @@ export default class DualListbox extends LightningElement {
         this._draggable = normalizeBoolean(value);
     }
 
+    /**
+     * It defines the width of the source options listbox and the selected options listbox. Valid values include small, medium and large.
+     *
+     * @type {string}
+     * @public
+     * @default medium
+     */
     @api
     get size() {
         return this._size;
@@ -388,6 +621,11 @@ export default class DualListbox extends LightningElement {
         });
     }
 
+    /**
+     * Sets focus on the first option from either list. If the source list doesn't contain any options, the first option on the selected list is focused on.
+     *
+     * @public
+     */
     @api
     focus() {
         const firstOption = this.template.querySelector(`div[data-index='0']`);
@@ -397,15 +635,30 @@ export default class DualListbox extends LightningElement {
         }
     }
 
+    /**
+     * Get validity from field constraint API.
+     */
     get validity() {
         return this._constraint.validity;
     }
 
+    /**
+     * Returns the valid attribute value (Boolean) on the ValidityState object.
+     *
+     * @public
+     * @returns {boolean}
+     */
     @api
     checkValidity() {
         return this._constraint.checkValidity();
     }
 
+    /**
+     * Displays the error messages and returns false if the input is invalid. If the input is valid, reportValidity() clears displayed error messages and returns true.
+     *
+     * @public
+     * @returns {string} errorMessage
+     */
     @api
     reportValidity() {
         return this._constraint.reportValidity((message) => {
@@ -413,46 +666,86 @@ export default class DualListbox extends LightningElement {
         });
     }
 
+    /**
+     * Sets a custom error message to be displayed when the dual listbox value is submitted.
+     *
+     * @param {string} message
+     * @public
+     */
     @api
     setCustomValidity(message) {
         this._constraint.setCustomValidity(message);
     }
 
+    /**
+     * Displays an error message if the dual listbox value is required.
+     */
     @api
     showHelpMessageIfInvalid() {
         this.reportValidity();
     }
 
+    /**
+     * Get fieldLevelHelp existence.
+     *
+     * @return boolean
+     */
     get hasFieldLevelHelp() {
         return !!this.fieldLevelHelp;
     }
 
-    get computedUniqueId() {
-        return this.uniqueId;
-    }
-
+    /**
+     * Computed real DOM Id for Source List.
+     *
+     * @return {string} DOM Id
+     */
     get computedSourceListId() {
         return getRealDOMId(this.template.querySelector('[data-source-list]'));
     }
 
+    /**
+     * Computed real DOM Id for Selected List.
+     *
+     * @return {string} DOM Id
+     */
     get computedSelectedListId() {
         return getRealDOMId(
             this.template.querySelector('[data-selected-list]')
         );
     }
 
+    /**
+     * Computed Source Listbox.
+     *
+     * @return Element
+     */
     get computedSourceListbox() {
         return this.template.querySelector('[data-source-list]');
     }
 
+    /**
+     * Computed Selected Listbox.
+     *
+     * @return Element
+     */
     get computedSelectedListbox() {
         return this.template.querySelector('[data-selected-list]');
     }
 
+    /**
+     * Get Aria Disabled.
+     *
+     * @return string
+     */
     get ariaDisabled() {
         return String(this.disabled);
     }
 
+    /**
+     * Get Computed Source List.
+     *
+     * @return object
+     */
     get computedSourceList() {
         let sourceListOptions = [];
         if (this.options) {
@@ -477,6 +770,11 @@ export default class DualListbox extends LightningElement {
         );
     }
 
+    /**
+     * Get Computed Selected List.
+     *
+     * @return object
+     */
     get computedSelectedList() {
         const selectedListOptions = [];
         if (this.options) {
@@ -512,6 +810,13 @@ export default class DualListbox extends LightningElement {
         );
     }
 
+    /**
+     * Compute List options from Selected and Source Lists.
+     *
+     * @param {object} options
+     * @param {string} focusableOptionValue
+     * @returns {object} object
+     */
     computeListOptions(options, focusableOptionValue) {
         if (options.length > 0) {
             const focusableOption = options.find((option) => {
@@ -529,6 +834,13 @@ export default class DualListbox extends LightningElement {
         return [];
     }
 
+    /**
+     * Computed Option object properties.
+     *
+     * @param {object} option
+     * @param {number} focusableValue
+     * @returns {object} object
+     */
     computeOptionProperties(option, focusableValue) {
         const isSelected = this.highlightedOptions.indexOf(option.value) > -1;
         const hasDescription = option.description;
@@ -554,6 +866,11 @@ export default class DualListbox extends LightningElement {
         };
     }
 
+    /**
+     * Update box heights based on content.
+     *
+     * @returns {number} Box heights
+     */
     updateBoxesHeight() {
         let overSelectedHeight = 0;
         let overSourceHeight = 0;
@@ -606,6 +923,11 @@ export default class DualListbox extends LightningElement {
         this._sourceBoxHeight = sourceOptionsHeight + overSourceHeight;
     }
 
+    /**
+     * Get Source List Height.
+     *
+     * @return string
+     */
     get sourceHeight() {
         return this.searchEngine &&
             this._selectedBoxHeight > this._sourceBoxHeight
@@ -613,6 +935,11 @@ export default class DualListbox extends LightningElement {
             : `height: ${this._sourceBoxHeight}px`;
     }
 
+    /**
+     * Get Selected Box Height.
+     *
+     * @return string
+     */
     get selectedHeight() {
         return this.searchEngine &&
             this._selectedBoxHeight <= this._sourceBoxHeight
@@ -620,14 +947,29 @@ export default class DualListbox extends LightningElement {
             : `height: ${this._sourceBoxHeight}px`;
     }
 
+    /**
+     * Check if Label Hidden.
+     *
+     * @return {boolean} boolean
+     */
     get isLabelHidden() {
         return this.variant === 'label-hidden';
     }
 
+    /**
+     * Check if Selected Box is Empty.
+     *
+     * @return {boolean} boolean
+     */
     get isSelectedBoxEmpty() {
         return this._selectedValues.length === 0;
     }
 
+    /**
+     * Computed Lock Assistive Text.
+     *
+     * @return formatLabel
+     */
     get computedLockAssistiveText() {
         return formatLabel(
             this.i18n.optionLockAssistiveText,
@@ -635,14 +977,29 @@ export default class DualListbox extends LightningElement {
         );
     }
 
+    /**
+     * Localization.
+     *
+     * @return {i18n} i18n
+     */
     get i18n() {
         return i18n;
     }
 
+    /**
+     * Check if move buttons are disabled.
+     *
+     * @returns {boolean} boolean
+     */
     get moveButtonsDisabled() {
         return this.disabled;
     }
 
+    /**
+     * Computed OUter Class styling.
+     *
+     * @return string
+     */
     get computedOuterClass() {
         return classSet('')
             .add({
@@ -651,12 +1008,22 @@ export default class DualListbox extends LightningElement {
             .toString();
     }
 
+    /**
+     * Computed Group Label CLass styling.
+     *
+     * @return string
+     */
     get computedGroupLabelClass() {
         return classSet('slds-form-element__label slds-form-element__legend')
             .add({ 'slds-assistive-text': this.isLabelHidden })
             .toString();
     }
 
+    /**
+     * Computed Listbox Columns Class styling.
+     *
+     * @return string
+     */
     get computedListboxColumnsClass() {
         return classSet('avonni-dual-listbox-list__column')
             .add({
@@ -670,6 +1037,11 @@ export default class DualListbox extends LightningElement {
             .toString();
     }
 
+    /**
+     * Computed Listbox Source Container Class styling.
+     *
+     * @return string
+     */
     get computedListboxSourceContainerClass() {
         return classSet(
             'slds-dueling-list__options avonni-dual-listbox-option-is-selected'
@@ -684,6 +1056,11 @@ export default class DualListbox extends LightningElement {
             .toString();
     }
 
+    /**
+     * Computed Listbox Selected Container Class styling.
+     *
+     * @return string
+     */
     get computedListboxSelectedContainerClass() {
         return classSet(
             'slds-dueling-list__options avonni-dual-listbox-option-is-selected'
@@ -704,6 +1081,11 @@ export default class DualListbox extends LightningElement {
             .toString();
     }
 
+    /**
+     * Computed List Item Class styling.
+     *
+     * @return string
+     */
     get computedListItemClass() {
         return classSet('slds-listbox__item')
             .add({
@@ -713,6 +1095,11 @@ export default class DualListbox extends LightningElement {
             .toString();
     }
 
+    /**
+     * Option Click event handler.
+     *
+     * @param {Event} event
+     */
     handleOptionClick(event) {
         this.interactingState.interacting();
         if (this.disabled) {
@@ -730,6 +1117,11 @@ export default class DualListbox extends LightningElement {
         this.shiftIndex = -1;
     }
 
+    /**
+     * Focus event handler.
+     *
+     * @param {Event} event
+     */
     handleFocus(event) {
         this.interactingState.enter();
 
@@ -743,6 +1135,11 @@ export default class DualListbox extends LightningElement {
         }
     }
 
+    /**
+     * Blur event handler.
+     *
+     * @param {Event} event
+     */
     handleBlur(event) {
         this.interactingState.leave();
 
@@ -752,38 +1149,61 @@ export default class DualListbox extends LightningElement {
         }
     }
 
+    /**
+     * Right Button Click handler.
+     */
     handleRightButtonClick() {
         this.interactingState.interacting();
         this.moveOptionsBetweenLists(true, true);
     }
 
+    /**
+     * Drag Right handler.
+     */
     handleDragRight() {
         this.interactingState.interacting();
         this.moveOptionsBetweenLists(true, false);
         this._dropItSelected = false;
     }
 
+    /**
+     * Left Button Click handler.
+     */
     handleLeftButtonClick() {
         this.interactingState.interacting();
         this.moveOptionsBetweenLists(false, true);
     }
 
+    /**
+     * Drag Right handler.
+     */
     handleDragLeft() {
         this.interactingState.interacting();
         this.moveOptionsBetweenLists(false, false);
         this._dropItSource = false;
     }
 
+    /**
+     * Up Button Click handler.
+     */
     handleUpButtonClick() {
         this.interactingState.interacting();
         this.changeOrderOfOptionsInList(true);
     }
 
+    /**
+     * Down Button Click handler.
+     */
     handleDownButtonClick() {
         this.interactingState.interacting();
         this.changeOrderOfOptionsInList(false);
     }
 
+    /**
+     * Option Keydown event handler.
+     *
+     * @param {Event} event
+     */
     handleOptionKeyDown(event) {
         this.interactingState.interacting();
         if (this.disabled) {
@@ -792,10 +1212,21 @@ export default class DualListbox extends LightningElement {
         handleKeyDownOnOption(event, this.keyboardInterface);
     }
 
+    /**
+     * Search event handler.
+     *
+     * @param {Event} event
+     */
     handleSearch(event) {
         this._searchTerm = event.detail.value;
     }
 
+    /**
+     * Move Options between Lists.
+     *
+     * @param {boolean} addToSelect
+     * @param {boolean} retainFocus
+     */
     moveOptionsBetweenLists(addToSelect, retainFocus) {
         const isValidList = addToSelect
             ? this.selectedList === this.computedSourceListId
@@ -864,6 +1295,11 @@ export default class DualListbox extends LightningElement {
         this.updateBoxesHeight();
     }
 
+    /**
+     * Reserve old index value.
+     *
+     * @param {object} option
+     */
     oldIndexValue(option) {
         const options = this.template.querySelector(
             `div[data-value='${option}']`
@@ -876,6 +1312,11 @@ export default class DualListbox extends LightningElement {
         }
     }
 
+    /**
+     * Change Order of options in List.
+     *
+     * @param {boolean} moveUp
+     */
     changeOrderOfOptionsInList(moveUp) {
         const elementList = this.getElementsOfList(this.selectedList);
         const values = this.computedSelectedList.map((option) => option.value);
@@ -917,6 +1358,9 @@ export default class DualListbox extends LightningElement {
         this.updateBoxesHeight();
     }
 
+    /**
+     * Disabled buttons method.
+     */
     disabledButtons() {
         const selectedLength = this._selectedValues.length - 1;
 
@@ -929,6 +1373,12 @@ export default class DualListbox extends LightningElement {
         });
     }
 
+    /**
+     * Add All selected Options to highlightedOptions.
+     *
+     * @param {object} option
+     * @param {boolean} all
+     */
     selectAllFromLastSelectedToOption(option, all) {
         const listId = option.getAttribute('data-type');
         this.updateCurrentSelectedList(listId, true);
@@ -947,6 +1397,13 @@ export default class DualListbox extends LightningElement {
         }
     }
 
+    /**
+     * Update Selected Options.
+     *
+     * @param {object} option
+     * @param {boolean} select
+     * @param {boolean} isMultiple
+     */
     updateSelectedOptions(option, select, isMultiple) {
         const value = option.getAttribute('data-value');
         const listId = this.getListId(option);
@@ -969,6 +1426,9 @@ export default class DualListbox extends LightningElement {
         this.oldIndexValue(this.highlightedOptions);
     }
 
+    /**
+     * Add Required Options to value
+     */
     addRequiredOptionsToValue() {
         if (
             !this.options ||
@@ -998,6 +1458,9 @@ export default class DualListbox extends LightningElement {
         }
     }
 
+    /**
+     * Validation with constraint Api
+     */
     get _constraint() {
         if (!this._constraintApi) {
             this._constraintApi = new FieldConstraintApi(() => this, {
@@ -1013,6 +1476,12 @@ export default class DualListbox extends LightningElement {
         return this._constraintApi;
     }
 
+    /**
+     * Update Selected List with current selection
+     *
+     * @param {string} currentList
+     * @param {boolean} isMultiple
+     */
     updateCurrentSelectedList(currentList, isMultiple) {
         if (this.selectedList !== currentList || !isMultiple) {
             if (this.selectedList) {
@@ -1023,10 +1492,25 @@ export default class DualListbox extends LightningElement {
         }
     }
 
+    /**
+     * Change event dispatcher.
+     *
+     * @param {object} values A comma-separated list of selected items.
+     */
     dispatchChangeEvent(values) {
-        // the change event needs to propagate to elements outside of the light-DOM, hence making it composed.
+        /**
+         * The event fired when an item is selected in the combobox.
+         *
+         * @event
+         * @name change
+         * @param {object} value
+         * @public
+         * @bubbles
+         * @composed
+         */
         this.dispatchEvent(
             new CustomEvent('change', {
+                // the change event needs to propagate to elements outside of the light-DOM, hence making it composed.
                 composed: true,
                 bubbles: true,
                 detail: { value: values }
@@ -1034,6 +1518,9 @@ export default class DualListbox extends LightningElement {
         );
     }
 
+    /**
+     * Assert Required Attributes.
+     */
     assertRequiredAttributes() {
         assert(
             !!this.options,
@@ -1041,12 +1528,25 @@ export default class DualListbox extends LightningElement {
         );
     }
 
+    /**
+     * Swap Options.
+     *
+     * @param {number} i
+     * @param {number} j
+     * @param {object[]} array
+     */
     swapOptions(i, j, array) {
         const temp = array[i];
         array[i] = array[j];
         array[j] = temp;
     }
 
+    /**
+     * Get List of Elements by Id.
+     *
+     * @param {string} listId
+     * @return {object[]|NodeListOf<Element>} elements
+     */
     getElementsOfList(listId) {
         const elements = this.template.querySelectorAll(
             `div[data-type='${listId}']`
@@ -1054,6 +1554,11 @@ export default class DualListbox extends LightningElement {
         return elements ? elements : [];
     }
 
+    /**
+     * Keyboard use for selecting items.
+     *
+     * @return keyboard interface
+     */
     selectKeyboardInterface() {
         const that = this;
         that.shiftIndex = -1;
@@ -1086,14 +1591,32 @@ export default class DualListbox extends LightningElement {
         };
     }
 
+    /**
+     * Compute Option Index number.
+     *
+     * @param {Element} optionElement
+     * @returns number Option Index
+     */
     getOptionIndex(optionElement) {
         return parseInt(optionElement.getAttribute('data-index'), 10);
     }
 
+    /**
+     * Get DOM Id for the List element.
+     *
+     * @param {Element} optionElement
+     * @returns string DOM id
+     */
     getListId(optionElement) {
         return getRealDOMId(optionElement.parentElement.parentElement);
     }
 
+    /**
+     * Update value with focused option item.
+     *
+     * @param {string} listId
+     * @param {string} value
+     */
     updateFocusableOption(listId, value) {
         if (listId === this.computedSourceListId) {
             this.focusableInSource = value;
@@ -1103,10 +1626,21 @@ export default class DualListbox extends LightningElement {
         this.optionToFocus = value;
     }
 
+    /**
+     * Check whether value passed is a number.
+     *
+     * @param {string|number} value
+     * @returns boolean
+     */
     isNumber(value) {
         return value !== '' && value !== null && isFinite(value);
     }
 
+    /**
+     * Update Highlighted Options.
+     *
+     * @param {object} newValue
+     */
     updateHighlightedOptions(newValue) {
         let isSame = false;
         if (
@@ -1126,10 +1660,20 @@ export default class DualListbox extends LightningElement {
         }
     }
 
+    /**
+     * Drag Start add "avonni-dual-listbox-dragging" class to current SourceList element.
+     *
+     * @param {Event} event
+     */
     handleDragStartSource(event) {
         event.currentTarget.classList.add('avonni-dual-listbox-dragging');
     }
 
+    /**
+     * Drag end event SourceList element handler ( remove "avonni-dual-listbox-dragging" ).
+     *
+     * @param {Event} event
+     */
     handleDragEndSource(event) {
         event.preventDefault();
         event.currentTarget.classList.remove('avonni-dual-listbox-dragging');
@@ -1144,10 +1688,20 @@ export default class DualListbox extends LightningElement {
         }
     }
 
+    /**
+     * Drag Start add "avonni-dual-listbox-dragging" class to current SelectedList element.
+     *
+     * @param {Event} event
+     */
     handleDragStartSelected(event) {
         event.currentTarget.classList.add('avonni-dual-listbox-dragging');
     }
 
+    /**
+     * Drag end event SourceList element handler ( remove "avonni-dual-listbox-dragging" ) - reorder list and index.
+     *
+     * @param {Event} event
+     */
     handleDragEndSelected(event) {
         event.preventDefault();
         event.currentTarget.classList.remove('avonni-dual-listbox-dragging');
@@ -1181,24 +1735,49 @@ export default class DualListbox extends LightningElement {
         }
     }
 
+    /**
+     * Drag and Drop Element Over SourceList.
+     *
+     * @param {Event} event
+     */
     handleDragOverSource(event) {
         event.preventDefault();
         this._dropItSource = true;
     }
 
+    /**
+     * Drag Element and leave SourceList event.
+     *
+     * @param {Event} event
+     */
     handleDragLeaveSource() {
         this._dropItSource = false;
     }
 
+    /**
+     * Drag and Drop Element Over SelectedList.
+     *
+     * @param {Event} event
+     */
     handleDragOverSelected(event) {
         event.preventDefault();
         this._dropItSelected = true;
     }
 
+    /**
+     * Drag Element and leave SelectedList event.
+     *
+     * @param {Event} event
+     */
     handleDragLeaveSelected() {
         this._dropItSelected = false;
     }
 
+    /**
+     * Drag Over Handler.
+     *
+     * @param {Event} event
+     */
     handleDragOver(event) {
         event.preventDefault();
         this._newIndex = Number(event.target.getAttribute('data-index'));

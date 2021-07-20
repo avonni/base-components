@@ -1,3 +1,4 @@
+
 /**
  * BSD 3-Clause License
  *
@@ -42,7 +43,16 @@ const i18n = {
 };
 
 const DEFAULT_COLOR = '#000000';
+
+/**
+ * @class
+ * @descriptor avonni-color-picker-panel
+ */
 export default class ColorPickerPanel extends LightningElement {
+    /**
+     * Get currentColor
+     * @public
+     */
     @api currentColor;
 
     _isCustomTabActive = false;
@@ -52,10 +62,16 @@ export default class ColorPickerPanel extends LightningElement {
         this._selectedColor = this.currentColor || DEFAULT_COLOR;
     }
 
+    /**
+     * Localization.
+     */
     get i18n() {
         return i18n;
     }
 
+    /**
+     * Computed Panel class default styling.
+     */
     get computedClassDefault() {
         return classSet({
             'slds-tabs_default__item': true,
@@ -63,6 +79,9 @@ export default class ColorPickerPanel extends LightningElement {
         }).toString();
     }
 
+    /**
+     * Computed Panel class custom styling.
+     */
     get computedClassCustom() {
         return classSet({
             'slds-tabs_default__item': true,
@@ -70,14 +89,25 @@ export default class ColorPickerPanel extends LightningElement {
         }).toString();
     }
 
+    /**
+     * Aria for Default Panel.
+     */
     get ariaSelectedDefault() {
         return !this._isCustomTabActive.toString();
     }
 
+    /**
+     * Aria for Custom Panel.
+     */
     get ariaSelectedCustom() {
         return this._isCustomTabActive.toString();
     }
 
+    /**
+     * Tab change handler.
+     * 
+     * @param {Event} event
+     */
     handleTabChange(event) {
         event.preventDefault();
         const tabElement = event.currentTarget;
@@ -87,11 +117,28 @@ export default class ColorPickerPanel extends LightningElement {
         this._isCustomTabActive = tabElement.title !== i18n.defaultTab;
     }
 
+    /**
+     * Selected Color update handler.
+     * 
+     * @param {Event} event 
+     */
     handleUpdateSelectedColor(event) {
         this._selectedColor = event.detail.color;
     }
 
+    /**
+     * Updated color event dispatcher.
+     * 
+     * @param {string} color 
+     */
     dispatchUpdateColorEventWithColor(color) {
+        /**
+         * @event
+         * @name updatecolor
+         * @param {string} color
+         * @composed
+         * @bubbles 
+         */
         this.dispatchEvent(
             // eslint-disable-next-line lightning-global/no-custom-event-bubbling
             new CustomEvent('updatecolor', {
@@ -102,14 +149,25 @@ export default class ColorPickerPanel extends LightningElement {
         );
     }
 
+    /**
+     * Handle Click on done.
+     */
     handleDoneClick() {
         this.dispatchUpdateColorEventWithColor(this._selectedColor);
     }
 
+    /**
+     * Handle Click on cancel.
+     */
     handleCancelClick() {
         this.dispatchUpdateColorEventWithColor(this.currentColor);
     }
 
+    /**
+     * Handle Keydown event.
+     * 
+     * @param {Event} event 
+     */
     handleKeydown(event) {
         if (event.keyCode === keyCodes.escape) {
             event.preventDefault();
@@ -117,14 +175,14 @@ export default class ColorPickerPanel extends LightningElement {
         } else if (
             event.shiftKey &&
             event.keyCode === keyCodes.tab &&
-            event.srcElement.dataset.id === 'color-anchor'
+            event.target.dataset.id === 'color-anchor'  
         ) {
             event.preventDefault();
             this.template.querySelector('button[name="done"]').focus();
         } else if (
             !event.shiftKey &&
             event.keyCode === keyCodes.tab &&
-            event.srcElement.name === 'done'
+            event.target.name === 'done'
         ) {
             event.preventDefault();
             this.template.querySelector('c-color-picker-custom').focus();
