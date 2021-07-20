@@ -177,13 +177,13 @@ const actions = [
 
 const listActions = [
     {
-        label: 'Add Lightning Accordion',
-        name: 'addLightningAccordion'
+        label: 'Add Lightning Accordion Section',
+        name: 'addLightningAccordionSection'
     },
     {
-        label: 'Section',
-        name: 'section',
-        iconName: 'utility:list',
+        label: 'Reset List',
+        name: 'resetList',
+        iconName: 'utility:loop',
         disabled: true
     }
 ];

@@ -46,24 +46,19 @@
         onactionclick={handleActionClick}
         onitemclick={handleItemClick}
     ></avonni-list>
-    <ul
-        if:true={hasListActions}
-        class="slds-has-dividers_around slds-p-top_medium"
-    >
-        <li class="slds-item">
-            <template for:each={listActions} for:item="listAction">
+    <ul if:true={hasListActions} class="slds-p-top_x-small">
+        <template for:each={listActions} for:item="listAction">
+            <li key={listAction.label} class="slds-p-top_x-small">
                 <lightning-button
-                    key={listAction.label}
                     data-name={listAction.name}
                     class="slds-align_absolute-center"
-                    variant="base"
                     label={listAction.label}
                     icon-name={listAction.iconName}
                     disabled={listAction.disabled}
                     onclick={handleListActionClick}
                 ></lightning-button>
-            </template>
-        </li>
+            </li>
+        </template>
     </ul>
     <section
         if:true={showPopover}
