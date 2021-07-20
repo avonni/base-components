@@ -348,8 +348,13 @@ export default class List extends LightningElement {
         if (buttonMenu) buttonMenu.classList.remove('slds-is-open');
     }
 
-    dragEnd() {
+    dragEnd(event) {
         if (!this._draggedElement) return;
+
+        // Allow imperfect item click within a 4px drag margin
+        if (event && Math.abs(event.clientY - this._initialY) < 4) {
+            this.denyItemClick = false;
+        }
 
         this.computedItems = [...this.computedItems];
 
