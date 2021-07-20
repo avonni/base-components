@@ -93,16 +93,20 @@ describe('Avatar Group', () => {
         expect(element.items).toMatchObject([]);
         expect(element.layout).toBe('stack');
         expect(element.maxCount).toBeUndefined();
-        expect(element.listButtonLabel).toBe('Show more');
+        expect(element.listButtonShowLessIconName).toBeUndefined();
+        expect(element.listButtonShowLessIconPosition).toBe('left');
+        expect(element.listButtonShowLessLabel).toBe('Show less');
+        expect(element.listButtonShowMoreIconName).toBeUndefined();
+        expect(element.listButtonShowMoreIconPosition).toBe('left');
+        expect(element.listButtonShowMoreLabel).toBe('Show more');
         expect(element.listButtonVariant).toBe('neutral');
-        expect(element.listButtonIconName).toBeUndefined();
-        expect(element.listButtonIconPosition).toBe('left');
-        expect(element.actionIconName).toBe('utility:add');
+        expect(element.actionIconName).toBeUndefined();
     });
 
     /* ----- ATTRIBUTES ----- */
 
     // size
+    // Depends on actionIconName
     it('Avatar group size x-small', () => {
         const element = createElement('base-avatar-group', {
             is: AvatarGroup
@@ -129,6 +133,7 @@ describe('Avatar Group', () => {
         document.body.appendChild(element);
 
         element.size = 'x-small';
+        element.actionIconName = 'utility:add';
         element.items = items;
 
         return Promise.resolve().then(() => {
@@ -167,6 +172,7 @@ describe('Avatar Group', () => {
         document.body.appendChild(element);
 
         element.size = 'small';
+        element.actionIconName = 'utility:add';
         element.items = items;
 
         return Promise.resolve().then(() => {
@@ -205,6 +211,7 @@ describe('Avatar Group', () => {
         document.body.appendChild(element);
 
         element.size = 'medium';
+        element.actionIconName = 'utility:add';
         element.items = items;
 
         return Promise.resolve().then(() => {
@@ -243,6 +250,7 @@ describe('Avatar Group', () => {
         document.body.appendChild(element);
 
         element.size = 'large';
+        element.actionIconName = 'utility:add';
         element.items = items;
 
         return Promise.resolve().then(() => {
@@ -283,6 +291,7 @@ describe('Avatar Group', () => {
         document.body.appendChild(element);
 
         element.size = 'x-large';
+        element.actionIconName = 'utility:add';
         element.items = items;
 
         return Promise.resolve().then(() => {
@@ -323,6 +332,7 @@ describe('Avatar Group', () => {
         document.body.appendChild(element);
 
         element.size = 'xx-large';
+        element.actionIconName = 'utility:add';
         element.items = items;
 
         return Promise.resolve().then(() => {
@@ -336,6 +346,7 @@ describe('Avatar Group', () => {
     });
 
     // Variant
+    // Depends on actionIconName
     it('Avatar group variant square', () => {
         const element = createElement('base-avatar-group', {
             is: AvatarGroup
@@ -364,6 +375,7 @@ describe('Avatar Group', () => {
         document.body.appendChild(element);
 
         element.variant = 'square';
+        element.actionIconName = 'utility:add';
         element.items = items;
 
         return Promise.resolve().then(() => {
@@ -404,6 +416,7 @@ describe('Avatar Group', () => {
         document.body.appendChild(element);
 
         element.variant = 'circle';
+        element.actionIconName = 'utility:add';
         element.items = items;
 
         return Promise.resolve().then(() => {
@@ -665,8 +678,8 @@ describe('Avatar Group', () => {
         });
     });
 
-    // list button label
-    it('Avatar group list button label', () => {
+    // list button show less icon name
+    it('Avatar group list button show less icon name', () => {
         const element = createElement('base-avatar-group', {
             is: AvatarGroup
         });
@@ -674,7 +687,163 @@ describe('Avatar Group', () => {
 
         element.layout = 'list';
         element.maxCount = 5;
-        element.listButtonLabel = 'This is a list button label';
+        element.listButtonShowLessIconName = 'utility:lock';
+        element.items = [
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items
+        ];
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    'lightning-button'
+                );
+                button.click();
+            })
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    'lightning-button'
+                );
+                expect(button.iconName).toBe('utility:lock');
+            });
+    });
+
+    // list button show less icon position
+    it('Avatar group list button show less position right', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.layout = 'list';
+        element.maxCount = 5;
+        element.listButtonVariant = 'neutral';
+        element.listButtonIconName = 'utility:lock';
+        element.listButtonShowLessIconPosition = 'right';
+        element.items = [
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items
+        ];
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    'lightning-button'
+                );
+                button.click();
+            })
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    'lightning-button'
+                );
+                expect(button.iconPosition).toBe('right');
+            });
+    });
+
+    // list button show less label
+    it('Avatar group list button show less label', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.layout = 'list';
+        element.maxCount = 5;
+        element.listButtonShowLessLabel = 'This is a list button label';
+        element.items = [
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items
+        ];
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    'lightning-button'
+                );
+                button.click();
+            })
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    'lightning-button'
+                );
+                expect(button.label).toBe('This is a list button label');
+            });
+    });
+
+    // list button show more icon name
+    it('Avatar group list button show more icon name', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.layout = 'list';
+        element.maxCount = 5;
+        element.listButtonShowMoreIconName = 'utility:lock';
+        element.items = [
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items
+        ];
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('lightning-button');
+            expect(button.iconName).toBe('utility:lock');
+        });
+    });
+
+    // list button show more icon position
+    it('Avatar group list button show more position right', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.layout = 'list';
+        element.maxCount = 5;
+        element.listButtonVariant = 'neutral';
+        element.listButtonIconName = 'utility:lock';
+        element.listButtonShowMoreIconPosition = 'right';
+        element.items = [
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items,
+            ...items
+        ];
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('lightning-button');
+            expect(button.iconPosition).toBe('right');
+        });
+    });
+
+    // list button show more label
+    it('Avatar group list button show more label', () => {
+        const element = createElement('base-avatar-group', {
+            is: AvatarGroup
+        });
+        document.body.appendChild(element);
+
+        element.layout = 'list';
+        element.maxCount = 5;
+        element.listButtonShowMoreLabel = 'This is a list button label';
         element.items = [
             ...items,
             ...items,
@@ -891,85 +1060,6 @@ describe('Avatar Group', () => {
         });
     });
 
-    // list button icon name
-    it('Avatar group list button icon name', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
-        element.layout = 'list';
-        element.maxCount = 5;
-        element.listButtonVariant = 'neutral';
-        element.listButtonIconName = 'utility:lock';
-        element.items = [
-            ...items,
-            ...items,
-            ...items,
-            ...items,
-            ...items,
-            ...items
-        ];
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
-            expect(button.iconName).toBe('utility:lock');
-        });
-    });
-
-    // list button position
-    it('Avatar group list button position right', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
-        element.layout = 'list';
-        element.maxCount = 5;
-        element.listButtonVariant = 'neutral';
-        element.listButtonIconName = 'utility:lock';
-        element.listButtonIconPosition = 'right';
-        element.items = [
-            ...items,
-            ...items,
-            ...items,
-            ...items,
-            ...items,
-            ...items
-        ];
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
-            expect(button.iconPosition).toBe('right');
-        });
-    });
-
-    it('Avatar group list button position left', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
-        element.layout = 'list';
-        element.maxCount = 5;
-        element.listButtonVariant = 'neutral';
-        element.listButtonIconName = 'utility:lock';
-        element.listButtonIconPosition = 'left';
-        element.items = [
-            ...items,
-            ...items,
-            ...items,
-            ...items,
-            ...items,
-            ...items
-        ];
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
-            expect(button.iconPosition).toBe('left');
-        });
-    });
-
     //Action button: absence of action-icon-name
     it('Action Button absence of action-icon-name makes action button disappear', () => {
         const element = createElement('base-avatar-group', {
@@ -1155,7 +1245,6 @@ describe('Avatar Group', () => {
                 expect(avatarHidden).toHaveLength(9);
             });
     });
-
     /* ----- EVENTS ----- */
 
     // avatar click

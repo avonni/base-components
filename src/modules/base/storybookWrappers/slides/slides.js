@@ -35,8 +35,8 @@ import { LightningElement, api } from 'lwc';
 const DEFAULT_SLIDES_PER_VIEW = 1;
 const DEFAULT_SPACE_BETWEEN = 0;
 const DEFAULT_SPEED = 300;
-const DEFAULT_BUTTON_PREVIOUS_ICON_NAME = 'utility:left';
-const DEFAULT_BUTTON_NEXT_ICON_NAME = 'utility:right';
+const DEFAULT_PREVIOUS_BUTTON_ICON_NAME = 'utility:left';
+const DEFAULT_NEXT_BUTTON_ICON_NAME = 'utility:right';
 const DEFAULT_FRACTION_LABEL = '/';
 const DEFAULT_INITIAL_SLIDE = 0
 const DEFAULT_SLIDES_DIRECTION = 'horizontal'
@@ -55,10 +55,10 @@ export default class Slides extends LightningElement {
     @api autoplayDelay;
     @api speed = DEFAULT_SPEED;
     @api initialSlide = DEFAULT_INITIAL_SLIDE;
-    @api buttonPreviousIconName = DEFAULT_BUTTON_PREVIOUS_ICON_NAME;
-    @api buttonPreviousLabel;
-    @api buttonNextIconName = DEFAULT_BUTTON_NEXT_ICON_NAME;
-    @api buttonNextLabel;
+    @api previousButtonIconName = DEFAULT_PREVIOUS_BUTTON_ICON_NAME;
+    @api previousButtonLabel;
+    @api nextButtonIconName = DEFAULT_NEXT_BUTTON_ICON_NAME;
+    @api nextButtonLabel;
     @api fractionPrefixLabel;
     @api fractionLabel = DEFAULT_FRACTION_LABEL;
     @api width;
@@ -67,10 +67,10 @@ export default class Slides extends LightningElement {
     @api coverflowSlideHeight;
     @api direction = DEFAULT_SLIDES_DIRECTION;
     @api effect = DEFAULT_SLIDES_EFFECT;
-    @api buttonPreviousIconPosition = DEFAULT_PREVIOUS_ICON_POSITION;
-    @api buttonPreviousVariant = DEFAULT_BUTTONS_VARIANT;
-    @api buttonNextIconPosition = DEFAULT_NEXT_ICON_POSITION;
-    @api buttonNextVariant = DEFAULT_BUTTONS_VARIANT;
+    @api previousButtonIconPosition = DEFAULT_PREVIOUS_ICON_POSITION;
+    @api previousButtonVariant = DEFAULT_BUTTONS_VARIANT;
+    @api nextButtonIconPosition = DEFAULT_NEXT_ICON_POSITION;
+    @api nextButtonVariant = DEFAULT_BUTTONS_VARIANT;
     @api buttonPosition = DEFAULT_BUTTON_POSITION;
     @api indicatorType = DEFAULT_INDICATOR_TYPE;
     @api indicatorPosition = DEFAULT_INDICATOR_POSITION;

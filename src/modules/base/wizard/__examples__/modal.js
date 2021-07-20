@@ -46,18 +46,18 @@ export const ModalWizard = ({
     indicatorType,
     indicatorPosition,
     hideIndicator,
-    buttonPreviousIconName,
-    buttonPreviousIconPosition,
-    buttonPreviousLabel,
-    buttonPreviousVariant,
-    buttonNextIconName,
-    buttonNextIconPosition,
-    buttonNextLabel,
-    buttonNextVariant,
-    buttonFinishIconName,
-    buttonFinishIconPosition,
-    buttonFinishLabel,
-    buttonFinishVariant,
+    previousButtonIconName,
+    previousButtonIconPosition,
+    previousButtonLabel,
+    previousButtonVariant,
+    nextButtonIconName,
+    nextButtonIconPosition,
+    nextButtonLabel,
+    nextButtonVariant,
+    finishButtonIconName,
+    finishButtonIconPosition,
+    finishButtonLabel,
+    finishButtonVariant,
     buttonAlignmentBump,
     actionPosition,
     fractionPrefixLabel,
@@ -72,18 +72,18 @@ export const ModalWizard = ({
     element.indicatorType = indicatorType;
     element.indicatorPosition = indicatorPosition;
     element.hideIndicator = hideIndicator;
-    element.buttonPreviousIconName = buttonPreviousIconName;
-    element.buttonPreviousIconPosition = buttonPreviousIconPosition;
-    element.buttonPreviousLabel = buttonPreviousLabel;
-    element.buttonPreviousVariant = buttonPreviousVariant;
-    element.buttonNextIconName = buttonNextIconName;
-    element.buttonNextIconPosition = buttonNextIconPosition;
-    element.buttonNextLabel = buttonNextLabel;
-    element.buttonNextVariant = buttonNextVariant;
-    element.buttonFinishIconName = buttonFinishIconName;
-    element.buttonFinishIconPosition = buttonFinishIconPosition;
-    element.buttonFinishLabel = buttonFinishLabel;
-    element.buttonFinishVariant = buttonFinishVariant;
+    element.previousButtonIconName = previousButtonIconName;
+    element.previousButtonIconPosition = previousButtonIconPosition;
+    element.previousButtonLabel = previousButtonLabel;
+    element.previousButtonVariant = previousButtonVariant;
+    element.nextButtonIconName = nextButtonIconName;
+    element.nextButtonIconPosition = nextButtonIconPosition;
+    element.nextButtonLabel = nextButtonLabel;
+    element.nextButtonVariant = nextButtonVariant;
+    element.finishButtonIconName = finishButtonIconName;
+    element.finishButtonIconPosition = finishButtonIconPosition;
+    element.finishButtonLabel = finishButtonLabel;
+    element.finishButtonVariant = finishButtonVariant;
     element.buttonAlignmentBump = buttonAlignmentBump;
     element.actionPosition = actionPosition;
     element.fractionPrefixLabel = fractionPrefixLabel;

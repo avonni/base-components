@@ -37,16 +37,27 @@
         <div class="slds-page-header__row">
             <div class="slds-page-header__col-title">
                 <div class="slds-media">
-                    <div class="slds-media__figure">
-                        <div class={computedIconClass}>
-                            <c-primitive-icon
-                                svg-class="slds-icon slds-page-header__icon"
-                                icon-name={iconName}
-                                variant="bare"
-                            >
-                            </c-primitive-icon>
+                    <template if:true={iconName}>
+                        <div class="slds-media__figure">
+                            <div class={computedIconClass}>
+                                <c-primitive-icon
+                                    svg-class="slds-icon slds-page-header__icon"
+                                    icon-name={iconName}
+                                    variant="bare"
+                                >
+                                </c-primitive-icon>
+                            </div>
+                            <div class={computedMobileIconClass}>
+                                <c-primitive-icon
+                                    svg-class="slds-icon"
+                                    icon-name={iconName}
+                                    variant="bare"
+                                    size="large"
+                                >
+                                </c-primitive-icon>
+                            </div>
                         </div>
-                    </div>
+                    </template>
                     <div class="slds-media__body">
                         <div class="slds-page-header__name">
                             <div class="slds-page-header__name-title">
@@ -96,7 +107,7 @@
                 </div>
             </div>
             <template if:true={showActions}>
-                <div class="slds-page-header__col-actions">
+                <div class="slds-page-header__col-actions slds-show_small">
                     <div class="slds-page-header__controls">
                         <div class="slds-page-header__control">
                             <slot name="actions"></slot>
@@ -125,31 +136,16 @@
             </template>
         </div>
         <template if:true={isRecordHomeVariant}>
-            <template if:false={fieldsIsEmpty}>
+            <template if:true={showDetails}>
                 <div
                     class="slds-page-header__row slds-page-header__row_gutters"
                 >
                     <div class="slds-page-header__col-details">
-                        <ul class="slds-page-header__detail-row">
-                            <template for:each={fields} for:item="field">
-                                <li
-                                    class="slds-page-header__detail-block"
-                                    key={field.label}
-                                >
-                                    <c-output-data
-                                        label={field.label}
-                                        value={field.value}
-                                        type={field.type}
-                                        type-attributes={field.typeAttributes}
-                                    ></c-output-data>
-                                </li>
-                            </template>
-                        </ul>
+                        <div class="slds-page-header__detail-row">
+                            <slot name="details"></slot>
+                        </div>
                     </div>
                 </div>
-            </template>
-            <template if:true={fieldsIsEmpty}>
-                <slot name="details"></slot>
             </template>
         </template>
     </div>

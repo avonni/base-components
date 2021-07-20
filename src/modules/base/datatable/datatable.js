@@ -36,6 +36,7 @@ import { normalizeArray } from 'c/utilsPrivate';
 
 import avatar from './avatar.html';
 import avatarGroup from './avatarGroup.html';
+import badge from './badge.html';
 import checkboxButton from './checkboxButton.html';
 import colorPicker from './colorPicker.html';
 import dynamicIcon from './dynamicIcon.html';
@@ -52,6 +53,7 @@ import rating from './rating.html';
 
 const CUSTOM_TYPES_ALWAYS_WRAPPED = [
     'avatar',
+    'badge',
     'avatar-group',
     'checkbox-button',
     'color-picker',
@@ -100,6 +102,11 @@ export default class Datatable extends LightningDatatable {
         'avatar-group': {
             template: avatarGroup,
             typeAttributes: ['layout', 'maxCount', 'size', 'variant'],
+            standardCellLayout: true
+        },
+        badge: {
+            template: badge,
+            typeAttributes: ['variant'],
             standardCellLayout: true
         },
         'checkbox-button': {
@@ -252,6 +259,9 @@ export default class Datatable extends LightningDatatable {
     renderedCallback() {
         super.renderedCallback();
 
+        this._data = JSON.parse(JSON.stringify(normalizeArray(super.data)));
+        this.computeEditableOption();
+
         // Make sure custom edited cells stay yellow on hover
         // Make sure error cells appear edited and with a red border
         const edited = Array.from(
@@ -289,19 +299,7 @@ export default class Datatable extends LightningDatatable {
     }
 
     @api
-    // eslint-disable-next-line @lwc/lwc/valid-api
-    get data() {
-        return super.data;
-    }
-    set data(proxy) {
-        // Normalize proxy
-        this._data = JSON.parse(JSON.stringify(normalizeArray(proxy)));
-        this.computeEditableOption();
-
-        super.data = this._data;
-    }
-
-    @api getRowHeight(rowKeyField) {
+    getRowHeight(rowKeyField) {
         const row = this.template.querySelector(
             `tr[data-row-key-value="${rowKeyField}"]`
         );

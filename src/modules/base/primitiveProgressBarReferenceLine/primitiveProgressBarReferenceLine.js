@@ -35,7 +35,7 @@ import { classSet } from 'c/utils';
 import { normalizeString } from 'c/utilsPrivate';
 
 const REFERENCE_VARIANTS = {
-    valid: ['default', 'darker', 'success', 'warning', 'error', 'lightest'],
+    valid: ['default', 'inverse', 'success', 'warning', 'error', 'lightest'],
     default: 'default'
 };
 
@@ -120,8 +120,8 @@ export default class PrimitiveProgressBarReferenceLine extends LightningElement 
     get computedBadgeClass() {
         return classSet('avonni-progress-bar-reference-line')
             .add({
-                'avonni-progress-bar-reference-line_darker':
-                    this._variant === 'darker',
+                'avonni-progress-bar-reference-line_inverse':
+                    this._variant === 'inverse',
                 'avonni-progress-bar-reference-line_lightest':
                     this._variant === 'lightest',
                 'avonni-progress-bar-reference-line_success':
@@ -156,8 +156,8 @@ export default class PrimitiveProgressBarReferenceLine extends LightningElement 
                     this.thickness === 'large' && this.isHorizontal
             })
             .add({
-                'avonni-progress-bar-reference-line-border-color_darker':
-                    this._variant === 'darker',
+                'avonni-progress-bar-reference-line-border-color_inverse':
+                    this._variant === 'inverse',
                 'avonni-progress-bar-reference-line-border-color_success':
                     this._variant === 'success',
                 'avonni-progress-bar-reference-line-border-color_warning':
@@ -187,8 +187,8 @@ export default class PrimitiveProgressBarReferenceLine extends LightningElement 
                     this.thickness === 'large' && !this.isHorizontal
             })
             .add({
-                'avonni-progress-bar-reference-line-border-vertical-color_darker':
-                    this._variant === 'darker',
+                'avonni-progress-bar-reference-line-border-vertical-color_inverse':
+                    this._variant === 'inverse',
                 'avonni-progress-bar-reference-line-border-vertical-color_success':
                     this._variant === 'success',
                 'avonni-progress-bar-reference-line-border-vertical-color_warning':

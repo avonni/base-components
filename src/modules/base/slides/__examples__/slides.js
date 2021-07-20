@@ -40,10 +40,10 @@ export const Slides = ({
     autoplayDelay,
     initialSlide,
     speed,
-    buttonPreviousIconName,
-    buttonPreviousLabel,
-    buttonNextIconName,
-    buttonNextLabel,
+    previousButtonIconName,
+    previousButtonLabel,
+    nextButtonIconName,
+    nextButtonLabel,
     fractionPrefixLabel,
     fractionLabel,
     width,
@@ -52,10 +52,10 @@ export const Slides = ({
     coverflowSlideHeight,
     direction,
     effect,
-    buttonPreviousIconPosition,
-    buttonPreviousVariant,
-    buttonNextIconPosition,
-    buttonNextVariant,
+    previousButtonIconPosition,
+    previousButtonVariant,
+    nextButtonIconPosition,
+    nextButtonVariant,
     buttonPosition,
     indicatorType,
     indicatorPosition,
@@ -71,10 +71,10 @@ export const Slides = ({
     element.autoplayDelay = autoplayDelay;
     element.initialSlide = initialSlide;
     element.speed = speed;
-    element.buttonPreviousIconName = buttonPreviousIconName;
-    element.buttonPreviousLabel = buttonPreviousLabel;
-    element.buttonNextIconName = buttonNextIconName;
-    element.buttonNextLabel = buttonNextLabel;
+    element.previousButtonIconName = previousButtonIconName;
+    element.previousButtonLabel = previousButtonLabel;
+    element.nextButtonIconName = nextButtonIconName;
+    element.nextButtonLabel = nextButtonLabel;
     element.fractionPrefixLabel = fractionPrefixLabel;
     element.fractionLabel = fractionLabel;
     element.width = width;
@@ -83,10 +83,10 @@ export const Slides = ({
     element.coverflowSlideHeight = coverflowSlideHeight;
     element.direction = direction;
     element.effect = effect;
-    element.buttonPreviousIconPosition = buttonPreviousIconPosition;
-    element.buttonPreviousVariant = buttonPreviousVariant;
-    element.buttonNextIconPosition = buttonNextIconPosition;
-    element.buttonNextVariant = buttonNextVariant;
+    element.previousButtonIconPosition = previousButtonIconPosition;
+    element.previousButtonVariant = previousButtonVariant;
+    element.nextButtonIconPosition = nextButtonIconPosition;
+    element.nextButtonVariant = nextButtonVariant;
     element.buttonPosition = buttonPosition;
     element.indicatorType = indicatorType;
     element.indicatorPosition = indicatorPosition;

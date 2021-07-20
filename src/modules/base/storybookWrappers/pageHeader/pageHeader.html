@@ -39,7 +39,6 @@
         label={label}
         info={info}
         variant={variant}
-        fields={fields}
     >
         <div slot="title">Slot Title</div>
         <div slot="label">Slot Label</div>
@@ -53,7 +52,7 @@
         </div>
         <div slot="controls">
             <ul class="slds-button-group-row">
-                <li class="slds-button-group-item">
+                <li class="slds-button-group-item avonni-page-header-desktop">
                     <lightning-button-icon
                         icon-name="utility:edit"
                         variant="border-filled"
@@ -93,6 +92,13 @@
                 </li>
             </ul>
         </div>
-        <div slot="details">Slot Details</div>
+        <div slot="details">
+            <div class="slds-m-top_small">
+                <c-publisher
+                    placeholder="Write a comment"
+                    button-label="Comment"
+                ></c-publisher>
+            </div>
+        </div>
     </c-page-header>
 </template>

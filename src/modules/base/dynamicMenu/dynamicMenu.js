@@ -96,16 +96,10 @@ export default class DynamicMenu extends LightningElement {
     _iconSize = ICON_SIZES.default;
 
     connectedCallback() {
-        this._connected = true;
-
         this.classList.add(
             'slds-dropdown-trigger',
             'slds-dropdown-trigger_click'
         );
-    }
-
-    disconnectedCallback() {
-        this._connected = false;
     }
 
     renderedCallback() {
@@ -192,7 +186,7 @@ export default class DynamicMenu extends LightningElement {
 
     @api
     focus() {
-        if (this._connected) {
+        if (this.isConnected) {
             this.focusOnButton();
         }
         this.dispatchEvent(new CustomEvent('focus'));
@@ -200,7 +194,7 @@ export default class DynamicMenu extends LightningElement {
 
     @api
     click() {
-        if (this._connected) {
+        if (this.isConnected) {
             if (this.label) {
                 this.template.querySelector('lightning-button').click();
             } else {
@@ -328,7 +322,7 @@ export default class DynamicMenu extends LightningElement {
         if (this.isAutoAlignment() && this._dropdownVisible) {
             // eslint-disable-next-line @lwc/lwc/no-async-operation
             setTimeout(() => {
-                if (this._connected) {
+                if (this.isConnected) {
                     observePosition(this, 300, this._boundingRect, () => {
                         this.close();
                     });
