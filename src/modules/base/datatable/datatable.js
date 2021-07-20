@@ -33,6 +33,16 @@
 import LightningDatatable from 'lightning/datatable';
 import { api } from 'lwc';
 import { normalizeArray } from 'c/utilsPrivate';
+import {
+    count,
+    countUnique,
+    sum,
+    average,
+    median,
+    max,
+    min,
+    mode
+} from './summarizeFunctions';
 
 import avatar from './avatar.html';
 import avatarGroup from './avatarGroup.html';
@@ -78,6 +88,17 @@ const CUSTOM_TYPES_EDITABLE = [
     'input-toggle',
     'rating',
     'slider'
+];
+
+const SUMMARIZATIONS = [
+    'count',
+    'countUnique',
+    'sum',
+    'average',
+    'median',
+    'min',
+    'max',
+    'mode'
 ];
 
 export default class Datatable extends LightningDatatable {
@@ -247,6 +268,20 @@ export default class Datatable extends LightningDatatable {
         }
     };
 
+    _currencyArray = [];
+    _numberArray = [];
+    _percentArray = [];
+    rendered = false;
+
+    _countArray = [];
+    _sumArray = [];
+    _countUniqueArray = [];
+    _averageArray = [];
+    _medianArray = [];
+    _maxArray = [];
+    _minArray = [];
+    _modeArray = [];
+
     connectedCallback() {
         super.connectedCallback();
 
@@ -254,6 +289,14 @@ export default class Datatable extends LightningDatatable {
             'privateeditcustomcell',
             this.handleEditCell
         );
+        console.log('Count', this._countArray);
+        console.log('Count Unique', this._countUniqueArray);
+        console.log('Sum', this._sumArray);
+        console.log('Average', this._averageArray);
+        console.log('Median', this._medianArray);
+        console.log('Max', this._maxArray);
+        console.log('Min', this._minArray);
+        console.log('Mode', this._modeArray);
     }
 
     renderedCallback() {
@@ -261,6 +304,12 @@ export default class Datatable extends LightningDatatable {
 
         this._data = JSON.parse(JSON.stringify(normalizeArray(super.data)));
         this.computeEditableOption();
+
+        if (!this.rendered) {
+            this.computeSummarizationNumber();
+            this.computeSummarizationCurrency();
+            this.computeSummarizationPercent();
+        }
 
         // Make sure custom edited cells stay yellow on hover
         // Make sure error cells appear edited and with a red border
@@ -275,6 +324,8 @@ export default class Datatable extends LightningDatatable {
         editCells.forEach((cell) => {
             cell.classList.add('slds-cell-edit');
         });
+
+        this.rendered = true;
     }
 
     disconnectedCallback() {
@@ -314,7 +365,6 @@ export default class Datatable extends LightningDatatable {
                 // Transform the value into an object containing the editable property
                 if (CUSTOM_TYPES_EDITABLE.includes(column.type)) {
                     const fieldName = column.fieldName;
-
                     this._data.forEach((row) => {
                         const value = row[fieldName];
                         row[fieldName] = {
@@ -324,6 +374,113 @@ export default class Datatable extends LightningDatatable {
                     });
                 }
             });
+        }
+    }
+
+    computeSummarizationCurrency() {
+        if (this.columns && this._data) {
+            this.columns.forEach((column) => {
+                const summarizeTypes = column.summarizeTypes;
+                if (
+                    'currency'.includes(column.type) &&
+                    SUMMARIZATIONS.some((i) => summarizeTypes.includes(i))
+                ) {
+                    const fieldName = column.fieldName;
+                    this._data.forEach((row) => {
+                        const value = row[fieldName];
+                        row[fieldName] = {
+                            value: value
+                        };
+                        this._currencyArray.push(value);
+                    });
+                    this.summarizations(
+                        this._currencyArray,
+                        column.summarizeTypes,
+                        'currency'
+                    );
+                }
+            });
+        }
+    }
+
+    computeSummarizationNumber() {
+        if (this.columns && this._data) {
+            this.columns.forEach((column) => {
+                const summarizeTypes = column.summarizeTypes;
+                if (
+                    'number'.includes(column.type) &&
+                    SUMMARIZATIONS.some((i) => summarizeTypes.includes(i))
+                ) {
+                    const fieldName = column.fieldName;
+                    this._data.forEach((row) => {
+                        const value = row[fieldName];
+                        row[fieldName] = {
+                            value: value
+                        };
+                        this._numberArray.push(value);
+                    });
+                    this.summarizations(
+                        this._numberArray,
+                        summarizeTypes,
+                        'number'
+                    );
+                }
+            });
+        }
+    }
+
+    computeSummarizationPercent() {
+        if (this.columns && this._data) {
+            this.columns.forEach((column) => {
+                const summarizeTypes = column.summarizeTypes;
+                if (
+                    'percent'.includes(column.type) &&
+                    SUMMARIZATIONS.some((i) => summarizeTypes.includes(i))
+                ) {
+                    const fieldName = column.fieldName;
+                    this._data.forEach((row) => {
+                        const value = row[fieldName];
+                        row[fieldName] = {
+                            value: value
+                        };
+                        this._percentArray.push(value);
+                    });
+                    this.summarizations(
+                        this._percentArray,
+                        summarizeTypes,
+                        'percent'
+                    );
+                }
+            });
+        }
+    }
+
+    summarizations(array, summarizationTypes, type) {
+        if (summarizationTypes.includes('count')) {
+            this._countArray.push({ [type]: count(array) });
+        }
+        if (summarizationTypes.includes('countUnique')) {
+            this._countUniqueArray.push({
+                [type]: countUnique(array, count(array))
+            });
+        }
+        if (summarizationTypes.includes('sum')) {
+            this._sumArray.push({ [type]: sum(array) });
+        }
+        if (summarizationTypes.includes('average')) {
+            this._averageArray.push({ [type]: average(array) });
+        }
+        if (summarizationTypes.includes('median')) {
+            this._medianArray.push({ [type]: median(array) });
+        }
+        if (summarizationTypes.includes('max')) {
+            this._maxArray.push({ [type]: max(array) });
+        }
+        if (summarizationTypes.includes('min')) {
+            this._minArray.push({ [type]: min(array) });
+        }
+        if (summarizationTypes.includes('mode')) {
+            this._modeArray.push({ [type]: mode(array) });
         }
     }
 

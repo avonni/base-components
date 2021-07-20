@@ -181,7 +181,8 @@ const columnsCE = [
         typeAttributes: {
             currencyCode: 'CAD'
         },
-        editable: true
+        editable: true,
+        summarizeTypes: 'sum'
     },
     {
         label: 'Date',
@@ -296,7 +297,8 @@ const columnsFN = [
         editable: true,
         typeAttributes: {
             minimumFractionDigits: 2
-        }
+        },
+        summarizeTypes: ['max', 'min', 'sum']
     }
 ];
 
@@ -305,7 +307,8 @@ const columnsOQ = [
         label: 'Percent',
         fieldName: 'percent',
         type: 'percent',
-        editable: true
+        editable: true,
+        summarizeTypes: 'mode'
     },
     {
         label: 'Phone',
@@ -393,6 +396,63 @@ const columnsRZ = [
             label: { fieldName: 'urlLabel' },
             target: '_blank'
         }
+    }
+];
+
+const columnsSum = [
+    {
+        label: 'Currency',
+        fieldName: 'currency',
+        type: 'currency',
+        typeAttributes: {
+            currencyCode: 'CAD'
+        },
+        editable: true,
+        summarizeTypes: [
+            'count',
+            'countUnique',
+            'sum',
+            'average',
+            'median',
+            'min',
+            'max',
+            'mode'
+        ]
+    },
+    {
+        label: 'Number',
+        type: 'number',
+        fieldName: 'number',
+        editable: true,
+        typeAttributes: {
+            minimumFractionDigits: 2
+        },
+        summarizeTypes: [
+            'count',
+            'countUnique',
+            'sum',
+            'average',
+            'median',
+            'min',
+            'max',
+            'mode'
+        ]
+    },
+    {
+        label: 'Percent',
+        fieldName: 'percent',
+        type: 'percent',
+        editable: true,
+        summarizeTypes: [
+            'count',
+            'countUnique',
+            'sum',
+            'average',
+            'median',
+            'min',
+            'max',
+            'mode'
+        ]
     }
 ];
 
@@ -724,15 +784,56 @@ const dataRZ = [
     }
 ];
 
+const dataSum = [
+    {
+        id: 1,
+        currency: 5,
+        number: 5,
+        percent: 0.05
+    },
+    {
+        id: 2,
+        currency: 10,
+        number: 10,
+        percent: 0.1
+    },
+    {
+        id: 3,
+        currency: 15,
+        number: 15,
+        percent: 0.15
+    },
+    {
+        id: 4,
+        currency: 20,
+        number: 20,
+        percent: 0.2
+    },
+    {
+        id: 5,
+        currency: 25,
+        number: 25,
+        percent: 0.25
+    },
+    {
+        id: 6,
+        currency: 25,
+        number: 25,
+        percent: 0.25
+    }
+];
+
 export {
     columnsAB,
     columnsCE,
     columnsFN,
     columnsOQ,
     columnsRZ,
+    columnsSum,
     dataAB,
     dataCE,
     dataFN,
     dataOQ,
-    dataRZ
+    dataRZ,
+    dataSum
 };
