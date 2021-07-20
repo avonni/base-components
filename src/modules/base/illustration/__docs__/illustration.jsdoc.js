@@ -2,10 +2,10 @@
  * @namespace slots
  */
 /**
- * Placeholder main slot.
+ * Placeholder for your content below the illustration.
  *
  * @memberof slots
- * @name main
+ * @name default
  */
 /**
  * @namespace examples

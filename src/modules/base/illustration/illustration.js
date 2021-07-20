@@ -66,9 +66,15 @@ const ILLUSTRATION_VARIANTS = {
     default: 'text-only'
 };
 
+/**
+ * @class
+ * @descriptor avonni-illustration
+ * @example example-illustration--small-size
+ * @public
+ */
 export default class Illustration extends LightningElement {
     /**
-     * The text to display for the illustration.
+     * The illustration title.
      *
      * @type {string}
      * @public
