@@ -75,6 +75,18 @@ const DEFAULT_VISIBLE_SPAN = {
     unit: 'hour',
     span: 12
 };
+const DEFAULT_CONTEXT_MENU_ACTIONS = [
+    {
+        name: 'edit',
+        label: 'Edit',
+        iconName: 'utility:edit'
+    },
+    {
+        name: 'delete',
+        label: 'Delete',
+        iconName: 'utility:delete'
+    }
+];
 
 const PALETTES = {
     aurora: ['#3296ed', '#77b9f2', '#9d53f2', '#c398f5', '#26aba4', '#4ed4cd'],
@@ -150,6 +162,7 @@ export {
     DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
     DEFAULT_AVAILABLE_TIME_FRAMES,
     DEFAULT_AVAILABLE_MONTHS,
+    DEFAULT_CONTEXT_MENU_ACTIONS,
     DEFAULT_START_DATE,
     DEFAULT_VISIBLE_SPAN,
     PALETTES,

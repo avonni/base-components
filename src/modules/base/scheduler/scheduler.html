@@ -168,12 +168,13 @@
                                             data-from={event.from}
                                             data-to={event.to}
                                             tabindex="0"
+                                            oncontextmenu={handleEventContextMenu}
                                             onmouseup={handleEventMouseUp}
                                             onmousedown={handleEventMouseDown}
                                             onmouseenter={handleEventMouseEnter}
-                                            onmouseleave={hidePopover}
+                                            onmouseleave={hideDetailPopover}
                                             onfocus={handleEventMouseEnter}
-                                            onblur={hidePopover}
+                                            onblur={hideDetailPopover}
                                         >
                                             <div
                                                 class={event.class}
@@ -236,4 +237,13 @@
             </div>
         </div>
     </div>
+
+    <!-- Event context menu -->
+    <c-primitive-dropdown-menu
+        class="slds-is-fixed"
+        show={showContextMenu}
+        items={contextMenuActions}
+        onclose={hideContextMenu}
+        onprivateselect={handleActionSelect}
+    ></c-primitive-dropdown-menu>
 </template>

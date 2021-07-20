@@ -1,3 +1,4 @@
+<!--
 /**
  * BSD 3-Clause License
  *
@@ -29,89 +30,35 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+-->
 
-.scheduler__datatable-col {
-    background-color: #fafaf9;
-    flex-basis: 25%;
-}
-
-.scheduler__schedule-table {
-    overflow: hidden;
-}
-
-.scheduler__disabled-date {
-    height: 100%;
-    z-index: 1;
-}
-
-.scheduler__disabled-date-title {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    max-width: 100%;
-    z-index: 1;
-}
-
-/* -------- Events ------- */
-.scheduler__event-wrapper[aria-hidden='true'] {
-    visibility: hidden;
-}
-
-.scheduler__event {
-    width: 100%;
-    opacity: 0.9;
-    cursor: pointer;
-    position: relative;
-    z-index: 2;
-}
-.scheduler__event:hover {
-    opacity: 1;
-}
-
-.scheduler__event_transparent {
-    border-left-width: 3px;
-    border-left-style: solid;
-}
-
-.scheduler__event_rounded {
-    border-radius: var(--lwc-borderRadiusLarge, 0.5rem);
-}
-
-.scheduler__event_hollow {
-    border-width: 2px;
-    border-style: solid;
-    border-radius: var(--lwc-borderRadiusMedium, 0.25rem);
-}
-
-.scheduler__event_line {
-    border-top-width: 5px;
-    border-top-style: solid;
-}
-.scheduler__event_line::before,
-.scheduler__event_line::after {
-    content: '';
-    border-color: inherit;
-    border-style: solid;
-    border-radius: 2px;
-    border-width: 2px;
-    position: absolute;
-    top: -9px;
-    height: 13px;
-}
-.scheduler__event_line::before {
-    left: 0;
-}
-.scheduler__event_line::after {
-    right: 0;
-}
-.scheduler__event-dragged {
-    z-index: 3;
-}
-/* --------------- */
-
-.scheduler__event-detail-popover {
-    width: auto;
-}
-.scheduler__event-detail-icon {
-    color: #706e6b;
-}
+<template>
+    <div
+        if:true={show}
+        class="slds-popover slds-dropdown slds-dropdown_left primitive-dropdown-menu"
+        onmousedown={handleMenuMouseDown}
+        onmouseup={handleMenuMouseUp}
+        onmouseleave={handleMenuMouseLeave}
+        onscroll={handleMenuScroll}
+    >
+        <div
+            class="slds-dropdown__list"
+            role="menu"
+            onprivateselect={handleMenuItemPrivateSelect}
+            onprivateblur={handleMenuItemPrivateBlur}
+            onprivatefocus={handleMenuItemPrivateFocus}
+            onmouseover={handleMouseOverOnMenuItem}
+            onmouseout={allowBlur}
+            onkeydown={handleKeyOnMenuItem}
+        >
+            <template for:each={items} for:item="item">
+                <lightning-menu-item
+                    key={item.name}
+                    label={item.label}
+                    prefix-icon-name={item.iconName}
+                    value={item.name}
+                ></lightning-menu-item>
+            </template>
+        </div>
+    </div>
+</template>

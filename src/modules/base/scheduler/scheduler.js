@@ -54,6 +54,7 @@ import {
     EVENTS_THEMES,
     EVENTS_PALETTES,
     THEMES,
+    DEFAULT_CONTEXT_MENU_ACTIONS,
     DEFAULT_START_DATE,
     DEFAULT_VISIBLE_SPAN,
     PALETTES,
@@ -65,12 +66,12 @@ import {
 import Header from './header';
 import Row from './row';
 import Event from './event';
-
 export default class Scheduler extends LightningElement {
     _availableDaysOfTheWeek = DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
     _availableMonths = DEFAULT_AVAILABLE_MONTHS;
     _availableTimeFrames = DEFAULT_AVAILABLE_TIME_FRAMES;
     _columns = [];
+    _contextMenuActions = DEFAULT_CONTEXT_MENU_ACTIONS;
     _customEventsPalette = [];
     _disabledDatesTimes = [];
     _eventsPalette = EVENTS_PALETTES.default;
@@ -78,7 +79,7 @@ export default class Scheduler extends LightningElement {
     _headers = [];
     _rows = [];
     _rowsKeyField;
-    _start = DEFAULT_START_DATE;
+    _start = dateTimeObjectFrom(DEFAULT_START_DATE);
     _theme = THEMES.default;
     _visibleSpan = DEFAULT_VISIBLE_SPAN;
 
@@ -90,10 +91,15 @@ export default class Scheduler extends LightningElement {
     computedRows = [];
     computedEvents = [];
     selectedEvent;
+    showContextMenu = false;
+    showEditPopover = false;
     showDetailPopover = false;
 
     connectedCallback() {
         this.initSchedule();
+
+        // Close the context menu on scroll
+        window.addEventListener('scroll', this.hideContextMenu);
     }
 
     renderedCallback() {
@@ -104,13 +110,31 @@ export default class Scheduler extends LightningElement {
 
         this.updateHeadersStyle();
         this.updateBodyStyle();
+        this.stopPositioning();
 
         if (this.showDetailPopover) {
+            const popover = this.template.querySelector(
+                '.scheduler__event-detail-popover'
+            );
             const event = this.template.querySelector(
                 `.scheduler__event-wrapper[data-key="${this.selectedEvent.key}"]`
             );
-            this.startPositioning(event);
+            this.startPositioning(event, popover);
         }
+
+        if (this.showContextMenu) {
+            const contextMenu = this.template.querySelector(
+                'c-primitive-dropdown-menu'
+            );
+            const event = this.template.querySelector(
+                `.scheduler__event-wrapper[data-key="${this.selectedEvent.key}"]`
+            );
+            this.startPositioning(event, contextMenu);
+        }
+    }
+
+    disconnectedCallback() {
+        window.removeEventListener('scroll', this.hideContextMenu);
     }
 
     @api
@@ -155,6 +179,14 @@ export default class Scheduler extends LightningElement {
     }
     set columns(value) {
         this._columns = normalizeArray(value);
+    }
+
+    @api
+    get contextMenuActions() {
+        return this._contextMenuActions;
+    }
+    set contextMenuActions(value) {
+        this._contextMenuActions = normalizeArray(value);
     }
 
     @api
@@ -249,7 +281,7 @@ export default class Scheduler extends LightningElement {
     }
     set start(value) {
         const computedDate = dateTimeObjectFrom(value);
-        this._start = computedDate || DEFAULT_START_DATE;
+        this._start = computedDate || dateTimeObjectFrom(DEFAULT_START_DATE);
 
         if (this.isConnected) this.initSchedule();
     }
@@ -649,9 +681,8 @@ export default class Scheduler extends LightningElement {
         });
     }
 
-    startPositioning(target) {
+    startPositioning(target, element) {
         this._positioning = true;
-        const element = this.detailPopover;
 
         const align = {
             horizontal: Direction.Left,
@@ -706,28 +737,35 @@ export default class Scheduler extends LightningElement {
         this._positioning = false;
     }
 
-    hidePopover() {
+    selectEvent(event) {
+        const eventWrapper = event.currentTarget;
+        this.selectedEvent = {
+            key: eventWrapper.dataset.key,
+            name: eventWrapper.dataset.name,
+            title: eventWrapper.dataset.title,
+            from: eventWrapper.dataset.from,
+            to: eventWrapper.dataset.to
+        };
+    }
+
+    hideDetailPopover() {
         this.stopPositioning();
         this.showDetailPopover = false;
     }
 
     handleEventMouseEnter(event) {
-        if (this._draggedEvent) return;
+        if (this._draggedEvent || this.showContextMenu) return;
 
-        const eventWrapper = event.currentTarget;
-        this.selectedEvent = {
-            key: eventWrapper.dataset.key,
-            title: eventWrapper.dataset.title,
-            from: eventWrapper.dataset.from,
-            to: eventWrapper.dataset.to
-        };
+        this.selectEvent(event);
         this.showDetailPopover = true;
     }
 
     handleEventMouseDown(event) {
+        if (event.button !== 0) return;
+
         this._draggedEvent = event.currentTarget;
         this._draggedEvent.classList.add('scheduler__event-dragged');
-        this.hidePopover();
+        this.hideDetailPopover();
 
         // Save the initial position values
         const schedule = this.template.querySelector('tbody');
@@ -749,7 +787,7 @@ export default class Scheduler extends LightningElement {
     }
 
     handleEventMouseMove(event) {
-        if (!this._draggedEvent) return;
+        if (!this._draggedEvent || event.button !== 0) return;
 
         // Prevent scrolling
         event.preventDefault();
@@ -795,6 +833,8 @@ export default class Scheduler extends LightningElement {
     }
 
     handleEventMouseUp(mouseEvent) {
+        if (mouseEvent.button !== 0) return;
+
         // Get the new event position
         const initialX = this._dragInitialPosition.initialX;
         const eventLeft = this._dragInitialPosition.eventLeft;
@@ -843,5 +883,57 @@ export default class Scheduler extends LightningElement {
     handleDatatableResize() {
         this.updateDatatableRowsHeight();
         this.updateBodyStyle();
+    }
+
+    handleEventContextMenu(event) {
+        event.preventDefault();
+
+        this.selectEvent(event);
+        this.hideDetailPopover();
+        this.showContextMenu = true;
+    }
+
+    hideContextMenu = () => {
+        if (this.showContextMenu) {
+            this.showContextMenu = false;
+        }
+    };
+
+    handleActionSelect(event) {
+        const name = event.detail.name;
+
+        const actionclick = new CustomEvent('actionclick', {
+            detail: {
+                name: name,
+                targetName: this.selectedEvent.name
+            },
+            bubbles: true,
+            cancelable: true
+        });
+
+        // If the default action behavior was prevented,
+        // do not execute the edit and delete behavior
+        if (!actionclick.defaultPrevented) {
+            if (name === 'edit') {
+                this.showEditPopover = true;
+            } else if (name === 'delete') {
+                // Delete the event
+                const index = this.computedEvents.findIndex(
+                    (evt) => evt.name === this.selectedEvent.name
+                );
+                this.computedEvents.splice(index, 1);
+                this.initRows();
+
+                // Dispatch the deletion
+                this.dispatchEvent(
+                    new CustomEvent('eventdelete', {
+                        detail: {
+                            name: this.selectedEvent.name
+                        }
+                    })
+                );
+            }
+            this.selectedEvent = undefined;
+        }
     }
 }

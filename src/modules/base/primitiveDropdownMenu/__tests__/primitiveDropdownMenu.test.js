@@ -30,88 +30,38 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.scheduler__datatable-col {
-    background-color: #fafaf9;
-    flex-basis: 25%;
-}
+import { createElement } from 'lwc';
+import PrimitiveDropdownMenu from 'c/primitiveDropdownMenu';
 
-.scheduler__schedule-table {
-    overflow: hidden;
-}
+describe('PrimitiveDropdownMenu', () => {
+    afterEach(() => {
+        while (document.body.firstChild) {
+            document.body.removeChild(document.body.firstChild);
+        }
+    });
 
-.scheduler__disabled-date {
-    height: 100%;
-    z-index: 1;
-}
+    it('Default attributes', () => {
+        const element = createElement('base-primitive-dropdown-menu', {
+            is: PrimitiveDropdownMenu
+        });
 
-.scheduler__disabled-date-title {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    max-width: 100%;
-    z-index: 1;
-}
+        expect(element.items).toMatchObject([]);
+    });
 
-/* -------- Events ------- */
-.scheduler__event-wrapper[aria-hidden='true'] {
-    visibility: hidden;
-}
+    /* ----- ATTRIBUTES ----- */
 
-.scheduler__event {
-    width: 100%;
-    opacity: 0.9;
-    cursor: pointer;
-    position: relative;
-    z-index: 2;
-}
-.scheduler__event:hover {
-    opacity: 1;
-}
+    // // items
+    // it('items', () => {
+    //     const element = createElement('base-primitive-dropdown-menu', {
+    //         is: PrimitiveDropdownMenu
+    //     });
 
-.scheduler__event_transparent {
-    border-left-width: 3px;
-    border-left-style: solid;
-}
+    //     document.body.appendChild(element);
 
-.scheduler__event_rounded {
-    border-radius: var(--lwc-borderRadiusLarge, 0.5rem);
-}
+    //     element.items = [];
 
-.scheduler__event_hollow {
-    border-width: 2px;
-    border-style: solid;
-    border-radius: var(--lwc-borderRadiusMedium, 0.25rem);
-}
+    //     return Promise.resolve().then(() => {
 
-.scheduler__event_line {
-    border-top-width: 5px;
-    border-top-style: solid;
-}
-.scheduler__event_line::before,
-.scheduler__event_line::after {
-    content: '';
-    border-color: inherit;
-    border-style: solid;
-    border-radius: 2px;
-    border-width: 2px;
-    position: absolute;
-    top: -9px;
-    height: 13px;
-}
-.scheduler__event_line::before {
-    left: 0;
-}
-.scheduler__event_line::after {
-    right: 0;
-}
-.scheduler__event-dragged {
-    z-index: 3;
-}
-/* --------------- */
-
-.scheduler__event-detail-popover {
-    width: auto;
-}
-.scheduler__event-detail-icon {
-    color: #706e6b;
-}
+    //     });
+    // });
+});
