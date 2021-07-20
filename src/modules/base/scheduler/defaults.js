@@ -88,6 +88,16 @@ const DEFAULT_CONTEXT_MENU_ACTIONS = [
     }
 ];
 
+const DEFAULT_EDIT_DIALOG_LABELS = {
+    title: 'Title',
+    from: 'From',
+    to: 'To',
+    resources: 'Resources',
+    saveButton: 'Save',
+    cancelButton: 'Cancel',
+    deleteButton: 'Delete'
+};
+
 const PALETTES = {
     aurora: ['#3296ed', '#77b9f2', '#9d53f2', '#c398f5', '#26aba4', '#4ed4cd'],
     bluegrass: [
@@ -159,6 +169,7 @@ export {
     EVENTS_THEMES,
     EVENTS_PALETTES,
     THEMES,
+    DEFAULT_EDIT_DIALOG_LABELS,
     DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
     DEFAULT_AVAILABLE_TIME_FRAMES,
     DEFAULT_AVAILABLE_MONTHS,

@@ -80,6 +80,7 @@ export default {
             }
         },
         rowsKeyField: {
+            name: 'rows-key-field',
             control: {
                 type: 'text'
             },
@@ -235,6 +236,33 @@ export default {
             table: {
                 type: { summary: 'object' },
                 category: 'Events'
+            }
+        },
+        contextMenuActions: {
+            name: 'context-menu-actions',
+            control: {
+                type: 'object'
+            },
+            defaultValue: [
+                {
+                    name: 'edit',
+                    label: 'Edit',
+                    iconName: 'utility:edit'
+                },
+                {
+                    name: 'delete',
+                    label: 'Delete',
+                    iconName: 'utility:delete'
+                }
+            ],
+            description:
+                'Array of action objects. The actions will be displayed in the context menu that appears when a user right-clicks on an event. \nOn click on an action, an actionclick event is dispatched. To avoid the two default actions (edit and delete) to proceed, you can call preventDefault() on actionclick.',
+            table: {
+                type: { summary: 'object[]' },
+                defaultValue: {
+                    summary: 'edit and delete actions',
+                    detail: `[{ name: 'edit', label: 'Edit', iconName: 'utility:edit' }, { name: 'delete', label: 'Delete', iconName: 'utility:delete' }]`
+                }
             }
         }
     }

@@ -120,6 +120,7 @@ export default class Row {
                             wrapperClass: event.wrapperClass,
                             wrapperStyle: event.wrapperStyle,
                             name: event.name,
+                            keyFields: event.keyFields,
                             title: event.title,
                             class: event.class,
                             style: event.style,

@@ -164,6 +164,7 @@
                                             data-row-key={row.key}
                                             data-name={event.name}
                                             data-key={event.key}
+                                            data-key-fields={event.keyFields}
                                             data-title={event.title}
                                             data-from={event.from}
                                             data-to={event.to}
@@ -175,6 +176,7 @@
                                             onmouseleave={hideDetailPopover}
                                             onfocus={handleEventMouseEnter}
                                             onblur={hideDetailPopover}
+                                            ondblclick={handleEventDoubleClick}
                                         >
                                             <div
                                                 class={event.class}
@@ -246,4 +248,61 @@
         onclose={hideContextMenu}
         onprivateselect={handleActionSelect}
     ></c-primitive-dropdown-menu>
+
+    <!-- Event edit dialog -->
+    <c-dialog
+        if:true={showEditDialog}
+        show-dialog={showEditDialog}
+        title={selectedEvent.title}
+        size="small"
+        onclosedialog={hideEditDialog}
+    >
+        <lightning-input
+            label={editDialogLabels.title}
+            value={selectedEvent.title}
+            name="title"
+            class="slds-m-bottom_small"
+            autocomplete="off"
+            onchange={handleEventTitleChange}
+        ></lightning-input>
+        <div class="slds-m-bottom_small">
+            <c-input-date-range
+                label-start-date={editDialogLabels.from}
+                start-date={selectedEvent.from}
+                end-date={selectedEvent.to}
+                label-end-date={editDialogLabels.to}
+                type="datetime"
+                onchange={handleEventDateChange}
+            ></c-input-date-range>
+        </div>
+        <div class="slds-m-bottom_small">
+            <c-combobox
+                allow-search
+                is-multi-select
+                label={editDialogLabels.resources}
+                value={selectedEvent.keyFields}
+                options={allResourcesKeyFields}
+                remove-selected-options
+                dropdown-length="5-items"
+                onchange={handleEventKeyFieldsChange}
+            ></c-combobox>
+        </div>
+        <div class="slds-text-align_right">
+            <lightning-button-group>
+                <lightning-button
+                    label={editDialogLabels.cancelButton}
+                    onclick={hideEditDialog}
+                ></lightning-button>
+                <lightning-button
+                    label={editDialogLabels.deleteButton}
+                    onclick={deleteSelectedEvent}
+                ></lightning-button>
+                <lightning-button
+                    label={editDialogLabels.saveButton}
+                    variant="brand"
+                    onclick={handleSaveEditDialog}
+                ></lightning-button>
+            </lightning-button-group>
+        </div>
+    </c-dialog>
 </template>

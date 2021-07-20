@@ -54,19 +54,21 @@ import {
     EVENTS_THEMES,
     EVENTS_PALETTES,
     THEMES,
+    DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
+    DEFAULT_AVAILABLE_MONTHS,
+    DEFAULT_AVAILABLE_TIME_FRAMES,
+    DEFAULT_EDIT_DIALOG_LABELS,
     DEFAULT_CONTEXT_MENU_ACTIONS,
     DEFAULT_START_DATE,
     DEFAULT_VISIBLE_SPAN,
     PALETTES,
-    UNITS,
-    DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
-    DEFAULT_AVAILABLE_TIME_FRAMES,
-    DEFAULT_AVAILABLE_MONTHS
+    UNITS
 } from './defaults';
 import Header from './header';
 import Row from './row';
 import Event from './event';
 export default class Scheduler extends LightningElement {
+    _editDialogLabels = DEFAULT_EDIT_DIALOG_LABELS;
     _availableDaysOfTheWeek = DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
     _availableMonths = DEFAULT_AVAILABLE_MONTHS;
     _availableTimeFrames = DEFAULT_AVAILABLE_TIME_FRAMES;
@@ -92,14 +94,14 @@ export default class Scheduler extends LightningElement {
     computedEvents = [];
     selectedEvent;
     showContextMenu = false;
-    showEditPopover = false;
+    showEditDialog = false;
     showDetailPopover = false;
 
     connectedCallback() {
         this.initSchedule();
 
-        // Close the context menu on scroll
-        window.addEventListener('scroll', this.hideContextMenu);
+        // Close the popovers on scroll
+        window.addEventListener('scroll', this.hideAllPopovers);
     }
 
     renderedCallback() {
@@ -134,7 +136,26 @@ export default class Scheduler extends LightningElement {
     }
 
     disconnectedCallback() {
-        window.removeEventListener('scroll', this.hideContextMenu);
+        window.removeEventListener('scroll', this.hideAllPopovers);
+    }
+
+    @api
+    get editDialogLabels() {
+        return this._editDialogLabels;
+    }
+    set editDialogLabels(value) {
+        const labels = {};
+        labels.title = value.title || DEFAULT_EDIT_DIALOG_LABELS.title;
+        labels.from = value.from || DEFAULT_EDIT_DIALOG_LABELS.from;
+        labels.to = value.to || DEFAULT_EDIT_DIALOG_LABELS.to;
+        labels.resources =
+            value.resources || DEFAULT_EDIT_DIALOG_LABELS.resources;
+        labels.saveButton =
+            value.saveButton || DEFAULT_EDIT_DIALOG_LABELS.saveButton;
+        labels.cancelButton =
+            value.cancelButton || DEFAULT_EDIT_DIALOG_LABELS.cancelButton;
+
+        this._editDialogLabels = labels;
     }
 
     @api
@@ -306,6 +327,15 @@ export default class Scheduler extends LightningElement {
             typeof value === 'object' ? value : DEFAULT_VISIBLE_SPAN;
 
         if (this.isConnected) this.initSchedule();
+    }
+
+    get allResourcesKeyFields() {
+        return this.rows.map((row) => {
+            return {
+                label: row[this.rowsKeyField],
+                value: row[this.rowsKeyField]
+            };
+        });
     }
 
     get cellWidth() {
@@ -516,18 +546,6 @@ export default class Scheduler extends LightningElement {
         }
     }
 
-    updateEventWidth(event) {
-        const header = this.smallestHeader;
-        const columnEnd = addToDate(header.start, header.unit, header.span) - 1;
-        const duration = DateTime.fromMillis(columnEnd).diff(header.start)
-            .milliseconds;
-
-        event.updateWidth({
-            columns: header.columns,
-            columnDuration: duration
-        });
-    }
-
     initEvents() {
         if (!this.computedHeaders.length) return;
 
@@ -625,6 +643,18 @@ export default class Scheduler extends LightningElement {
             const rowKey = row[this.rowsKeyField];
             const height = datatable.getRowHeight(rowKey);
             this._datatableRowsHeight.push({ rowKey, height });
+        });
+    }
+
+    updateEventWidth(event) {
+        const header = this.smallestHeader;
+        const columnEnd = addToDate(header.start, header.unit, header.span) - 1;
+        const duration = DateTime.fromMillis(columnEnd).diff(header.start)
+            .milliseconds;
+
+        event.updateWidth({
+            columns: header.columns,
+            columnDuration: duration
         });
     }
 
@@ -739,18 +769,61 @@ export default class Scheduler extends LightningElement {
 
     selectEvent(event) {
         const eventWrapper = event.currentTarget;
+        const from = new Date(Number(eventWrapper.dataset.from));
+        const to = new Date(Number(eventWrapper.dataset.to));
+        const keyFields = eventWrapper.dataset.keyFields.split(',');
+
         this.selectedEvent = {
             key: eventWrapper.dataset.key,
+            keyFields: keyFields,
             name: eventWrapper.dataset.name,
             title: eventWrapper.dataset.title,
-            from: eventWrapper.dataset.from,
-            to: eventWrapper.dataset.to
+            from: from.toISOString(),
+            to: to.toISOString(),
+            draftValues: {}
         };
     }
 
+    deleteSelectedEvent() {
+        // Delete the event
+        const index = this.computedEvents.findIndex((evt) => {
+            return evt.name === this.selectedEvent.name;
+        });
+        this.computedEvents.splice(index, 1);
+        this.initRows();
+
+        // Dispatch the deletion
+        this.dispatchEvent(
+            new CustomEvent('eventdelete', {
+                detail: {
+                    name: this.selectedEvent.name
+                },
+                bubbles: true
+            })
+        );
+
+        this.selectedEvent = undefined;
+        this.hideAllPopovers();
+    }
+
+    hideAllPopovers = () => {
+        this.hideDetailPopover();
+        this.hideContextMenu();
+        this.hideEditDialog();
+    };
+
+    hideContextMenu() {
+        this.showContextMenu = false;
+    }
+
     hideDetailPopover() {
-        this.stopPositioning();
         this.showDetailPopover = false;
+    }
+
+    hideEditDialog() {
+        this.showEditDialog = false;
+        // Remove the changes from the selected event
+        if (this.selectedEvent) this.selectedEvent.draftValues = {};
     }
 
     handleEventMouseEnter(event) {
@@ -765,7 +838,7 @@ export default class Scheduler extends LightningElement {
 
         this._draggedEvent = event.currentTarget;
         this._draggedEvent.classList.add('scheduler__event-dragged');
-        this.hideDetailPopover();
+        this.hideAllPopovers();
 
         // Save the initial position values
         const schedule = this.template.querySelector('tbody');
@@ -835,45 +908,58 @@ export default class Scheduler extends LightningElement {
     handleEventMouseUp(mouseEvent) {
         if (mouseEvent.button !== 0) return;
 
-        // Get the new event position
-        const initialX = this._dragInitialPosition.initialX;
-        const eventLeft = this._dragInitialPosition.eventLeft;
-        const x = mouseEvent.clientX - (initialX - eventLeft);
-        const y = mouseEvent.clientY;
+        // If the dragged event has moved
+        if (this._draggedEvent.style.transform) {
+            // Get the new event position
+            const initialX = this._dragInitialPosition.initialX;
+            const eventLeft = this._dragInitialPosition.eventLeft;
+            const x = mouseEvent.clientX - (initialX - eventLeft);
+            const y = mouseEvent.clientY;
 
-        // Find the row and cell the event was dropped on
-        const rowElement = this.getRowFromPosition(y);
-        const cellElement = this.getCellFromPosition(rowElement, x);
+            // Find the row and cell the event was dropped on
+            const rowElement = this.getRowFromPosition(y);
+            const cellElement = this.getCellFromPosition(rowElement, x);
 
-        // Update the event dates
-        const event = this.computedEvents.find(
-            (computedEvent) =>
-                computedEvent.name === this._draggedEvent.dataset.name
-        );
-        const start = dateTimeObjectFrom(Number(cellElement.dataset.start));
-        const duration = event.to - event.from;
-        const end = addToDate(start, 'millisecond', duration);
-        event.from = start;
-        event.to = end;
-        this.updateEventWidth(event);
-
-        // Update the event rows
-        const rowKey = rowElement.dataset.key;
-        const previousRowKey = this._draggedEvent.dataset.rowKey;
-
-        if (previousRowKey !== rowKey) {
-            // Remove the old row key from the event
-            const keyFieldIndex = event.keyFields.findIndex(
-                (key) => key === previousRowKey
+            // Update the event dates
+            const name = this._draggedEvent.dataset.name;
+            const event = this.computedEvents.find(
+                (computedEvent) => computedEvent.name === name
             );
-            event.keyFields.splice(keyFieldIndex, 1);
+            const start = dateTimeObjectFrom(Number(cellElement.dataset.start));
+            const duration = event.to - event.from;
+            const end = addToDate(start, 'millisecond', duration);
+            event.from = start;
+            event.to = end;
+            this.updateEventWidth(event);
 
-            // Add the new row key to the event
-            event.keyFields.push(rowKey);
+            const draftValues = {
+                from: event.from,
+                to: event.to
+            };
+
+            // Update the event rows
+            const rowKey = rowElement.dataset.key;
+            const previousRowKey = this._draggedEvent.dataset.rowKey;
+
+            if (previousRowKey !== rowKey) {
+                // Remove the old row key from the event
+                const keyFieldIndex = event.keyFields.findIndex(
+                    (key) => key === previousRowKey
+                );
+                event.keyFields.splice(keyFieldIndex, 1);
+
+                // Add the new row key to the event
+                event.keyFields.push(rowKey);
+
+                draftValues.keyFields = event.keyFields;
+            }
+
+            // Update the rows
+            this.initRows();
+
+            // Dispatch the change
+            this.dispatchChangeEvent(name, draftValues);
         }
-
-        // Update the rows
-        this.initRows();
 
         // Clean the dragged element
         this._draggedEvent.classList.remove('scheduler__event-dragged');
@@ -889,15 +975,9 @@ export default class Scheduler extends LightningElement {
         event.preventDefault();
 
         this.selectEvent(event);
-        this.hideDetailPopover();
+        this.hideAllPopovers();
         this.showContextMenu = true;
     }
-
-    hideContextMenu = () => {
-        if (this.showContextMenu) {
-            this.showContextMenu = false;
-        }
-    };
 
     handleActionSelect(event) {
         const name = event.detail.name;
@@ -915,25 +995,69 @@ export default class Scheduler extends LightningElement {
         // do not execute the edit and delete behavior
         if (!actionclick.defaultPrevented) {
             if (name === 'edit') {
-                this.showEditPopover = true;
+                this.showEditDialog = true;
             } else if (name === 'delete') {
-                // Delete the event
-                const index = this.computedEvents.findIndex(
-                    (evt) => evt.name === this.selectedEvent.name
-                );
-                this.computedEvents.splice(index, 1);
-                this.initRows();
-
-                // Dispatch the deletion
-                this.dispatchEvent(
-                    new CustomEvent('eventdelete', {
-                        detail: {
-                            name: this.selectedEvent.name
-                        }
-                    })
-                );
+                this.deleteSelectedEvent();
             }
-            this.selectedEvent = undefined;
         }
+    }
+
+    handleEventDoubleClick(event) {
+        this._draggedEvent = undefined;
+        this.selectEvent(event);
+        this.hideAllPopovers();
+        this.showEditDialog = true;
+    }
+
+    handleEventTitleChange(event) {
+        const title = event.currentTarget.value;
+        this.selectedEvent.draftValues.title = title;
+    }
+
+    handleEventDateChange(event) {
+        const from = event.detail.startDate;
+        const to = event.detail.endDate;
+
+        this.selectedEvent.draftValues.from = from;
+        this.selectedEvent.draftValues.to = to;
+    }
+
+    handleEventKeyFieldsChange(event) {
+        const keyFields = event.detail.value;
+        this.selectedEvent.draftValues.keyFields = keyFields;
+    }
+
+    handleSaveEditDialog() {
+        const name = this.selectedEvent.name;
+        const event = this.computedEvents.find((evt) => evt.name === name);
+
+        // Change the event and update the rows
+        const draftValues = this.selectedEvent.draftValues;
+        Object.entries(draftValues).forEach((entry) => {
+            const [key, value] = entry;
+
+            if (value.length) {
+                event[key] = value;
+            }
+        });
+
+        this.updateEventWidth(event);
+        this.initRows();
+
+        // Dispatch the change and close the dialog
+        this.dispatchChangeEvent(name, draftValues);
+        this.hideEditDialog();
+    }
+
+    dispatchChangeEvent(name, draftValues) {
+        this.dispatchEvent(
+            new CustomEvent('eventchange', {
+                detail: {
+                    name: name,
+                    draftValues: draftValues
+                },
+                bubbles: true
+            })
+        );
     }
 }
