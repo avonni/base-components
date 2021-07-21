@@ -110,7 +110,7 @@ export default class ButtonIconDialog extends LightningElement {
      * 
      * @public
      * @type {string}
-     * @default "medium"
+     * @default medium
      */
     @api
     get size() {
@@ -136,7 +136,7 @@ export default class ButtonIconDialog extends LightningElement {
      * 
      * @public
      * @type {string}
-     * @default "border"
+     * @default border
      */
     @api
     get variant() {
@@ -166,7 +166,9 @@ export default class ButtonIconDialog extends LightningElement {
     }
 
     /**
-     * Open modal box.
+     * Open modal box method.
+     * 
+     * @public
      */
     @api
     show() {
@@ -182,8 +184,9 @@ export default class ButtonIconDialog extends LightningElement {
     }
 
     /**
-     * Close the modal box.
+     * Close the modal box method.
      * 
+     * @public
      */
     @api
     hide() {
@@ -199,7 +202,9 @@ export default class ButtonIconDialog extends LightningElement {
     }
 
     /**
-     * Clicks the button.
+     * Clicks the button method.
+     * 
+     * @public
      */
     @api
     click() {
@@ -215,7 +220,9 @@ export default class ButtonIconDialog extends LightningElement {
     }
 
     /**
-     * Sets focus on the button.
+     * Sets focus on the button method.
+     * 
+     * @public
      */
     @api
     focus() {

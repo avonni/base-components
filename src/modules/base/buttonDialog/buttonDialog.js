@@ -99,7 +99,7 @@ export default class ButtonDialog extends LightningElement {
      * 
      * @public
      * @type {string}
-     * @default "neutral"
+     * @default neutral
      */
     @api
     get variant() {
@@ -118,7 +118,7 @@ export default class ButtonDialog extends LightningElement {
      * 
      * @public
      * @type {string}
-     * @default "left"
+     * @default left
      */
     @api
     get iconPosition() {
@@ -149,7 +149,7 @@ export default class ButtonDialog extends LightningElement {
     }
 
     /**
-     * Opens the modal box.
+     * Open the modal box method.
      * 
      * @public
      */
@@ -167,7 +167,7 @@ export default class ButtonDialog extends LightningElement {
     }
 
     /**
-     * Close the modal box.
+     * Close the modal box method.
      * 
      * @public
      */
@@ -185,7 +185,7 @@ export default class ButtonDialog extends LightningElement {
     }
 
     /**
-     * Clicks the button.
+     * Clicks the button method.
      * 
      * @public
      */
@@ -204,7 +204,7 @@ export default class ButtonDialog extends LightningElement {
     }
 
     /**
-     * Sets focus on the button.
+     * Sets focus on the button method.
      * 
      * @public
      */

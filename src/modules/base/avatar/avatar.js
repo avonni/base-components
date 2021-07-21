@@ -200,7 +200,7 @@ export default class Avatar extends LightningElement {
      *
      * @public
      * @type {string}
-     * @default "medium"
+     * @default medium
      */
     @api
     get size() {
@@ -235,7 +235,7 @@ export default class Avatar extends LightningElement {
      *
      * @public
      * @type {string}
-     * @default "square"
+     * @default square
      */
     @api
     get variant() {
@@ -254,7 +254,7 @@ export default class Avatar extends LightningElement {
      *
      * @public
      * @type {string}
-     * @default "right"
+     * @default right
      */
     @api
     get textPosition() {
@@ -292,7 +292,7 @@ export default class Avatar extends LightningElement {
      *
      * @public
      * @type {string}
-     * @default "Status"
+     * @default Status
      */
     @api
     get statusTitle() {
@@ -309,7 +309,7 @@ export default class Avatar extends LightningElement {
      *
      * @public
      * @type {string}
-     * @default "top-right"
+     * @default top-right
      */
     @api
     get statusPosition() {
@@ -346,7 +346,7 @@ export default class Avatar extends LightningElement {
      *
      * @public
      * @type {string}
-     * @default "bottom-right"
+     * @default bottom-right
      */
     @api
     get presencePosition() {
@@ -365,7 +365,7 @@ export default class Avatar extends LightningElement {
      *
      * @public
      * @type {string}
-     * @default "Presence"
+     * @default Presence
      */
     @api
     get presenceTitle() {
@@ -382,7 +382,7 @@ export default class Avatar extends LightningElement {
      *
      * @public
      * @type {string}
-     * @default "top-left"
+     * @default top-left
      */
     @api
     get entityPosition() {
@@ -416,7 +416,7 @@ export default class Avatar extends LightningElement {
      *
      * @public
      * @type {string}
-     * @default "Entity"
+     * @default Entity
      */
     @api
     get entityTitle() {
@@ -433,7 +433,7 @@ export default class Avatar extends LightningElement {
      *
      * @public
      * @type {string}
-     * @default "square"
+     * @default square
      */
     @api
     get entityVariant() {

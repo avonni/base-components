@@ -223,7 +223,7 @@ export default class ColorPicker extends LightningElement {
      * 
      * @public
      * @type {string}
-     * @default "standard"
+     * @default standard
      */
     @api
     get variant() {
@@ -242,7 +242,7 @@ export default class ColorPicker extends LightningElement {
      * 
      * @public
      * @type {string}
-     * @default "base"
+     * @default base
      */
     @api
     get type() {
@@ -261,7 +261,7 @@ export default class ColorPicker extends LightningElement {
      * 
      * @public
      * @type {string}
-     * @default "border"
+     * @default border
      */
     @api
     get menuVariant() {
@@ -447,7 +447,7 @@ export default class ColorPicker extends LightningElement {
      * 
      * @public
      * @type {string}
-     * @default "Please ensure value is correct"
+     * @default Please ensure value is correct
      */
     @api
     get messageWhenBadInput() {
@@ -500,7 +500,7 @@ export default class ColorPicker extends LightningElement {
     /**
      * Show label.
      * 
-     * @returns label | required
+     * @returns {boolean}
      */
     get showLabel() {
         return this.label || this.required;
@@ -509,7 +509,7 @@ export default class ColorPicker extends LightningElement {
     /**
      * Disabled input.
      * 
-     * @returns disabled | readOnly
+     * @returns {boolean}
      */
     get disabledInput() {
         return this.disabled || this.readOnly;

@@ -271,19 +271,11 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * A list of options that are available for selection. Each option has the following attributes: label, description, value, iconName, iconSrc, initials and variant.
-     *
-     * @typedef {[Object<string,string>]} Option
-     * @name options
-     * @property {string} label Label for options.
-     * @property {string} value Text to name the option.
-     * @property {string} initials If the record name contains two words, like first and last name, use the first capitalized letter of each. For records that only have a single word name, use the first two letters of that word using one capital and one lower case letter.
-     * @property {string} description Description for the option.
-     * @property {string} iconName The Lightning Design System name of the icon used as a fallback when the image fails to load. The initials fallback relies on this for its background color. Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. Only icons from the standard and custom categories are allowed.
-     * @property {string} iconSize This property will change the size of the avatar icon for each options. Valid values are x-small, small, medium, large, x-large and xx-large. The value defaults to medium.
-     * @property {string} src Image URL for the avatar of the group. If present, the avatar is displayed before the label.
-     * @property {string} variant The variant changes the shape of the avatar. Valid values are empty, circle, and square. The value defaults to square.
-     */
+    * A list of options that are available for selection. Each option has the following attributes: label, description, value, iconName, iconSrc, initials and variant.
+    *
+    * @type {object[]}
+    * @public
+    */
     @api
     get options() {
         return this._options;
@@ -996,7 +988,7 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * Computed OUter Class styling.
+     * Computed Outer Class styling.
      *
      * @return string
      */
@@ -1009,7 +1001,7 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * Computed Group Label CLass styling.
+     * Computed Group Label Class styling.
      *
      * @return string
      */
@@ -1427,7 +1419,7 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * Add Required Options to value
+     * Add Required Options to value.
      */
     addRequiredOptionsToValue() {
         if (
@@ -1459,7 +1451,7 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * Validation with constraint Api
+     * Validation with constraint Api.
      */
     get _constraint() {
         if (!this._constraintApi) {
@@ -1477,7 +1469,7 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * Update Selected List with current selection
+     * Update Selected List with current selection.
      *
      * @param {string} currentList
      * @param {boolean} isMultiple

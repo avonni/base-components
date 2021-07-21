@@ -1,5 +1,5 @@
 /**
- * @typedef Action
+ * @typedef {Object} Action
  * @name actions
  * @property {string} label Required. The action label.
  * @property {string} name Required. The name of the action, which identifies the selected action.

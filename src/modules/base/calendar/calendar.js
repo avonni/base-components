@@ -88,7 +88,6 @@ export default class Calendar extends LightningElement {
      * 
      * @public
      * @type {object[]}
-     * @name disabled-dates
      */
     @api
     get disabledDates() {
@@ -105,7 +104,6 @@ export default class Calendar extends LightningElement {
      * 
      * @public
      * @type {object[]}
-     * @name marked-dates
      */
     @api
     get markedDates() {
@@ -534,6 +532,7 @@ export default class Calendar extends LightningElement {
 
     /**
      * Date selection handler.
+     * 
      * @param {object} event
      */
     handlerSelectDate(event) {

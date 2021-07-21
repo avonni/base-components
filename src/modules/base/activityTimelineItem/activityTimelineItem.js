@@ -129,8 +129,8 @@ export default class ActivityTimelineItem extends LightningElement {
     @api loadingStateAlternativeText = DEFAULT_LOADING_TEXT;
     /**
      * Actions object sent from Activity Timeline
+     * 
      * @type {object[]}
-     * @name actions
      */
     @api actions = [];
 
@@ -202,7 +202,6 @@ export default class ActivityTimelineItem extends LightningElement {
      * 
      * @public
      * @type {object[]}
-     * @name fields
      */
     @api
     get fields() {
@@ -218,7 +217,7 @@ export default class ActivityTimelineItem extends LightningElement {
      * 
      * @public
      * @type {string}
-     * @default "left"
+     * @default left
      */
     @api
     get buttonIconPosition() {
@@ -237,7 +236,7 @@ export default class ActivityTimelineItem extends LightningElement {
      * 
      * @public
      * @type {string}
-     * @default "neutral"
+     * @default neutral
      */
     @api
     get buttonVariant() {
