@@ -171,8 +171,13 @@ export default class Event {
     }
 
     get computedTo() {
-        const to =
-            this.allDay && this.from ? addToDate(this.from, 'day', 1) : this.to;
+        let to = this.to;
+
+        if (this.allDay && to) {
+            to = to.endOf('day');
+        } else if (this.allDay && this.from) {
+            to = this.from.endOf('day');
+        }
 
         return !this.schedulerEnd || this.recurrence || to < this.schedulerEnd
             ? to
@@ -260,7 +265,7 @@ export default class Event {
         // Leave dates empty if we miss one needed property
         if (
             !this.from ||
-            !this.to ||
+            !this.computedTo ||
             !this.smallestHeader ||
             !this.availableDaysOfTheWeek ||
             !this.availableMonths ||
@@ -317,12 +322,26 @@ export default class Event {
                     recurrenceAttributes.weekdays &&
                     recurrenceAttributes.weekdays.length;
 
-                end = start.set({
-                    weekday: weekdays ? start.weekday : to.weekday,
-                    hours: to.hour,
-                    minutes: to.minute,
-                    seconds: to.second
-                });
+                if (weekdays) {
+                    // If "to" has no time (00:00:00), the event will span on the whole day
+                    if (to.ts === to.startOf('day').ts) {
+                        end = start.endOf('day');
+                    } else {
+                        end = start.set({
+                            weekday: start.weekday,
+                            hours: to.hour,
+                            minutes: to.minute,
+                            seconds: to.second
+                        });
+                    }
+                } else {
+                    end = start.set({
+                        weekday: to.weekday,
+                        hours: to.hour,
+                        minutes: to.minute,
+                        seconds: to.second
+                    });
+                }
                 break;
             }
             case 'monthly':

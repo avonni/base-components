@@ -702,9 +702,14 @@ export default class Scheduler extends LightningElement {
 
     getCellFromPosition(row, x) {
         const cells = Array.from(row.querySelectorAll('td'));
-        return cells.find((td) => {
+
+        return cells.find((td, index) => {
             const left = td.getBoundingClientRect().left;
             const right = td.getBoundingClientRect().right;
+
+            // Handle the cases where the events are on the side and the mouse moved
+            if (index === 0 && left >= x) return td;
+            if (index === cells.length - 1 && x > right) return td;
 
             if (x >= left && x < right) return td;
             return undefined;
@@ -908,62 +913,68 @@ export default class Scheduler extends LightningElement {
     handleEventMouseUp(mouseEvent) {
         if (mouseEvent.button !== 0) return;
 
-        // If the dragged event has moved
-        if (this._draggedEvent.style.transform) {
-            // Get the new event position
-            const initialX = this._dragInitialPosition.initialX;
-            const eventLeft = this._dragInitialPosition.eventLeft;
-            const x = mouseEvent.clientX - (initialX - eventLeft);
-            const y = mouseEvent.clientY;
+        if (this._draggedEvent) {
+            // If the dragged event has moved
+            if (this._draggedEvent.style.transform) {
+                // Get the new event position
+                const initialX = this._dragInitialPosition.initialX;
+                const eventLeft = this._dragInitialPosition.eventLeft;
+                const x = mouseEvent.clientX - (initialX - eventLeft);
+                const y = mouseEvent.clientY;
 
-            // Find the row and cell the event was dropped on
-            const rowElement = this.getRowFromPosition(y);
-            const cellElement = this.getCellFromPosition(rowElement, x);
+                // Find the row and cell the event was dropped on
+                const rowElement = this.getRowFromPosition(y);
+                const cellElement = this.getCellFromPosition(rowElement, x);
 
-            // Update the event dates
-            const name = this._draggedEvent.dataset.name;
-            const event = this.computedEvents.find(
-                (computedEvent) => computedEvent.name === name
-            );
-            const start = dateTimeObjectFrom(Number(cellElement.dataset.start));
-            const duration = event.to - event.from;
-            const end = addToDate(start, 'millisecond', duration);
-            event.from = start;
-            event.to = end;
-            this.updateEventWidth(event);
-
-            const draftValues = {
-                from: event.from,
-                to: event.to
-            };
-
-            // Update the event rows
-            const rowKey = rowElement.dataset.key;
-            const previousRowKey = this._draggedEvent.dataset.rowKey;
-
-            if (previousRowKey !== rowKey) {
-                // Remove the old row key from the event
-                const keyFieldIndex = event.keyFields.findIndex(
-                    (key) => key === previousRowKey
+                // Update the event dates
+                const name = this._draggedEvent.dataset.name;
+                const event = this.computedEvents.find(
+                    (computedEvent) => computedEvent.name === name
                 );
-                event.keyFields.splice(keyFieldIndex, 1);
+                const start = dateTimeObjectFrom(
+                    Number(cellElement.dataset.start)
+                );
+                const duration = event.to - event.from;
+                const end = addToDate(start, 'millisecond', duration);
+                event.from = start;
+                event.to = end;
+                this.updateEventWidth(event);
 
-                // Add the new row key to the event
-                event.keyFields.push(rowKey);
+                const draftValues = {
+                    from: event.from,
+                    to: event.to
+                };
 
-                draftValues.keyFields = event.keyFields;
+                // Update the event rows
+                const rowKey = rowElement.dataset.key;
+                const previousRowKey = this._draggedEvent.dataset.rowKey;
+
+                if (previousRowKey !== rowKey) {
+                    // Remove the old row key from the event
+                    const keyFieldIndex = event.keyFields.findIndex(
+                        (key) => key === previousRowKey
+                    );
+                    event.keyFields.splice(keyFieldIndex, 1);
+
+                    // If it's not already present, add the new row key to the event
+                    if (event.keyFields.indexOf(rowKey) < 0) {
+                        event.keyFields.push(rowKey);
+                    }
+
+                    draftValues.keyFields = event.keyFields;
+                }
+
+                // Update the rows
+                this.initRows();
+
+                // Dispatch the change
+                this.dispatchChangeEvent(name, draftValues);
             }
 
-            // Update the rows
-            this.initRows();
-
-            // Dispatch the change
-            this.dispatchChangeEvent(name, draftValues);
+            // Clean the dragged element
+            this._draggedEvent.classList.remove('scheduler__event-dragged');
+            this._draggedEvent = undefined;
         }
-
-        // Clean the dragged element
-        this._draggedEvent.classList.remove('scheduler__event-dragged');
-        this._draggedEvent = undefined;
     }
 
     handleDatatableResize() {
@@ -982,23 +993,20 @@ export default class Scheduler extends LightningElement {
     handleActionSelect(event) {
         const name = event.detail.name;
 
-        const actionclick = new CustomEvent('actionclick', {
-            detail: {
-                name: name,
-                targetName: this.selectedEvent.name
-            },
-            bubbles: true,
-            cancelable: true
-        });
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                detail: {
+                    name: name,
+                    targetName: this.selectedEvent.name
+                },
+                bubbles: true
+            })
+        );
 
-        // If the default action behavior was prevented,
-        // do not execute the edit and delete behavior
-        if (!actionclick.defaultPrevented) {
-            if (name === 'edit') {
-                this.showEditDialog = true;
-            } else if (name === 'delete') {
-                this.deleteSelectedEvent();
-            }
+        if (name === 'edit') {
+            this.showEditDialog = true;
+        } else if (name === 'delete') {
+            this.deleteSelectedEvent();
         }
     }
 

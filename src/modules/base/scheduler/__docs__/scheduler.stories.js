@@ -256,13 +256,45 @@ export default {
                 }
             ],
             description:
-                'Array of action objects. The actions will be displayed in the context menu that appears when a user right-clicks on an event. \nOn click on an action, an actionclick event is dispatched. To avoid the two default actions (edit and delete) to proceed, you can call preventDefault() on actionclick.',
+                'Array of action objects. The actions will be displayed in the context menu that appears when a user right-clicks on an event. On click on an action, an actionclick event is dispatched. To avoid the two default actions (edit and delete) to proceed, you can call preventDefault() on actionclick.',
             table: {
                 type: { summary: 'object[]' },
                 defaultValue: {
                     summary: 'edit and delete actions',
                     detail: `[{ name: 'edit', label: 'Edit', iconName: 'utility:edit' }, { name: 'delete', label: 'Delete', iconName: 'utility:delete' }]`
                 }
+            }
+        },
+        editDialogLabels: {
+            name: 'edit-dialog-labels',
+            control: {
+                type: 'object'
+            },
+            defaultValue: {
+                title: 'Title',
+                from: 'From',
+                to: 'To',
+                resources: 'Resources',
+                saveButton: 'Save',
+                cancelButton: 'Cancel',
+                deleteButton: 'Delete'
+            },
+            description: 'Labels of the elements in the event edit dialog.',
+            table: {
+                type: { summary: 'object' },
+                defaultValue: {
+                    summary: 'object containing key-label pairs',
+                    detail: `{
+                        title: 'Title',
+                        from: 'From',
+                        to: 'To',
+                        resources: 'Resources',
+                        saveButton: 'Save',
+                        cancelButton: 'Cancel',
+                        deleteButton: 'Delete'
+                    }`
+                },
+                category: 'Events'
             }
         }
     }
