@@ -19,9 +19,14 @@
  * @property {string} primaryText Primary text displayed next to the avatar.
  * @property {string} secondaryText Secondary text displayed next to the avatar.
  * @property {string} tertiaryText Tertiary text displayed next to the avatar.
- * @property {object[]} tags Fields:
- * * label: string.
- * * variant: string. Valid values include default, inverse, lightest, success, warning, error. Default to default.
+ * @property {object[]} tags Array of tag objects. The tags will be displayed as badges in the avatar’s details.
+ */
+
+/**
+ * @typedef Tag
+ * @name Tags
+ * @property {string} label Tag label.
+ * @property {string} variant The variant changes the appearance of the badge. Valid values include default, inverse, lightest, success, warning and error. Defaults to default.
  */
 
 /**
