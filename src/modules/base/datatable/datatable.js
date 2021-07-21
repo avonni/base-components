@@ -289,6 +289,9 @@ export default class Datatable extends LightningDatatable {
             'privateeditcustomcell',
             this.handleEditCell
         );
+        console.log('Currency', this._currencyArray);
+        console.log('Number', this._numberArray);
+        console.log('Percent', this._percentArray);
         console.log('Count', this._countArray);
         console.log('Count Unique', this._countUniqueArray);
         console.log('Sum', this._sumArray);

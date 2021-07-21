@@ -446,7 +446,6 @@ const columnsSum = [
         summarizeTypes: [
             'count',
             'countUnique',
-            'sum',
             'average',
             'median',
             'min',
