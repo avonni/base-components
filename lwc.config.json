@@ -306,6 +306,10 @@
             "path": "src/modules/base/primitiveComboboxGroup/primitiveComboboxGroup.js"
         },
         {
+            "name": "c/primitiveDatatable",
+            "path": "src/modules/base/primitiveDatatable/primitiveDatatable.js"
+        },
+        {
             "name": "c/primitiveCoordinateItem",
             "path": "src/modules/base/primitiveCoordinateItem/primitiveCoordinateItem.js"
         },
