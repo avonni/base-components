@@ -180,19 +180,10 @@ export default class DynamicMenu extends LightningElement {
     }
 
     /**
-     * @typedef {Object[]} Item
-     * @name items
-     * @property {string} label
-     * @property {string[]} meta
-     * @property {number} id
-     * @property {string} value
-     * @property {object{}} avatar
-     * *fallbackIconName: string,
-     * *initials: string,
-     * *src: string,
-     * *alternativeText: string,
-     * *size: string,
-     * *variant: string,
+     * An Array of item fields.
+     *
+     * @type {object[]}
+     * @public
      */
     @api
     get items() {

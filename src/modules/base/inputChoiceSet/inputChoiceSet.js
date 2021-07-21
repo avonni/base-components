@@ -77,14 +77,11 @@ export default class InputChoiceSet extends LightningElement {
      */
     @api label;
     /**
-     * @typedef {Object} Option
-     * @name options
-     * @description Array of option objects.
+     * Array of option objects.
+     *
+     * @type {object[]}
+     * @public
      * @required
-     * @property {string} label - Label of the option.
-     * @property {string} value - Value of the option.
-     * @property {string} iconName - The Lightning Design System name of the icon. Names are written in the format standard:opportunity. The icon is appended to the left of the header label.
-     * @property {string} iconPosition - The position of the icon with respect to the label. Valid options include left, right, top and bottom. This value defaults to left.
      */
     @api options;
     /**
@@ -303,6 +300,7 @@ export default class InputChoiceSet extends LightningElement {
 
     /**
      * Get constraint validity.
+     *
      * @public
      */
     @api
@@ -314,6 +312,7 @@ export default class InputChoiceSet extends LightningElement {
      * Returns the valid attribute value (Boolean) on the ValidityState object.
      *
      * @returns boolean
+     * @public
      */
     @api
     checkValidity() {
@@ -325,6 +324,7 @@ export default class InputChoiceSet extends LightningElement {
      *
      * @returns boolean
      * @returns {string} helpMessage
+     * @public
      */
     @api
     reportValidity() {
@@ -337,6 +337,7 @@ export default class InputChoiceSet extends LightningElement {
      * Sets a custom error message to be displayed when the input value is submitted.
      *
      * @param {string} message
+     * @public
      */
     @api
     setCustomValidity(message) {
@@ -345,6 +346,8 @@ export default class InputChoiceSet extends LightningElement {
 
     /**
      * Displays an error message if the input value is required and no option is selected.
+     *
+     * @public
      */
     @api
     showHelpMessageIfInvalid() {
@@ -363,6 +366,8 @@ export default class InputChoiceSet extends LightningElement {
 
     /**
      * Focus method. Sets focus on the first input option.
+     *
+     * @public
      */
     @api
     focus() {

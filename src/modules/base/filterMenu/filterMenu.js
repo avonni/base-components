@@ -366,13 +366,10 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * @typedef {Object[]} Item
-     * @name items
-     * @property {string} label  Text of the item.
-     * @property {string} value  A value associated with the item.
-     * @property {boolean} disabled  If present, the item is disabled and users cannot interact with it.
-     * @property {string} iconName  The name of an icon to display after the text of the item. This attribute isn’t supported for the vertical variant.
-     * @property {string} prefixIconName  The name of an icon to display before the text of the item. This attribute isn’t supported for the vertical variant.
+     * Array of item objects.
+     *
+     * @type {object[]}
+     * @public
      */
     @api
     get items() {
@@ -764,6 +761,8 @@ export default class FilterMenu extends LightningElement {
 
     /**
      * Focus method.
+     *
+     * @public
      */
     @api
     focus() {
@@ -776,6 +775,8 @@ export default class FilterMenu extends LightningElement {
 
     /**
      * Apply method.
+     *
+     * @public
      */
     @api
     apply() {
@@ -785,6 +786,8 @@ export default class FilterMenu extends LightningElement {
 
     /**
      * Clear Method.
+     *
+     * @public
      */
     @api
     clear() {
