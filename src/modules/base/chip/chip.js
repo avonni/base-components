@@ -53,6 +53,7 @@ const CHIP_VARIANTS = {
  * @class
  * @descriptor avonni-chip
  * @example example-chip--info-outline
+ * @public
  */
 export default class Chip extends LightningElement {
     /**
@@ -82,7 +83,7 @@ export default class Chip extends LightningElement {
      * 
      * @public
      * @type {string}
-     * @default "base"
+     * @default base
      */
     @api
     get variant() {

@@ -50,7 +50,8 @@ const DEFAULT_COLOR = '#000000';
  */
 export default class ColorPickerPanel extends LightningElement {
     /**
-     * Get currentColor
+     * Get currentColor.
+     * 
      * @public
      */
     @api currentColor;

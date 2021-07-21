@@ -1,8 +1,8 @@
 /**
- * @typedef Tag
+ * @typedef {Object} Tag
  * @name tags
  * @property {string} label The tag label.
- * @property {string} variant Tag variant changes the style of the badge. Valid values include default, warning, error, success, lightest, inverse.
+ * @property {string} variant Tag variant changes the style of the badge. Valid values include default, warning, error, success, lightest, inverse. The default value is "default".
  */
 
 /**

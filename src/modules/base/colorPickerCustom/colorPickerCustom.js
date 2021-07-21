@@ -431,6 +431,7 @@ export default class ColorPickerCustom extends LightningElement {
 
     /**
      * Compute color from gradient from x,y coordinates of cursor position.
+     * 
      * @param {Event} event 
      */
     getColorFromGradient(event) {
@@ -649,6 +650,7 @@ export default class ColorPickerCustom extends LightningElement {
 
     /**
      * Keydown handler.
+     * 
      * @param {Event} event 
      */
     handleKeydown(event) {

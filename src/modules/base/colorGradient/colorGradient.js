@@ -56,7 +56,7 @@ export default class ColorGradient extends LightningElement {
      * 
      * @public
      * @type {string}
-     * @default "Please ensure value is correct"
+     * @default Please ensure value is correct
      */
     @api messageWhenBadInput = DEFAULT_MESSAGE_WHEN_BAD_INPUT;
 
