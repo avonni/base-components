@@ -52,17 +52,20 @@ const DEFAULT_STEP = 1;
  * @example example-input-counter--base
  * @description The Input Counter allows a user to increase or decrease a numerical value.
  * @descriptor avonni-input-counter
+ * @public
  */
 export default class InputCounter extends LightningElement {
     /**
      * Text label for the input.
+     *
      * @type {string}
      * @required
      * @public
      */
     @api label;
     /**
-     * 'Error message to be displayed when a bad input is detected.'
+     * Error message to be displayed when a bad input is detected.
+     *
      * @type {string}
      * @public
      */
@@ -74,67 +77,78 @@ export default class InputCounter extends LightningElement {
      */
     @api messageWhenPatternMismatch;
     /**
-     * 'Error message to be displayed when a range overflow is detected.'
+     * Error message to be displayed when a range overflow is detected.
+     *
      * @type {string}
      * @public
      */
     @api messageWhenRangeOverflow;
     /**
-     * 'Error message to be displayed when a range underflow is detected.'
+     * Error message to be displayed when a range underflow is detected.
+     *
      * @type {string}
      * @public
      */
     @api messageWhenRangeUnderflow;
     /**
-     * 'Error message to be displayed when a step mismatch is detected.'
+     * Error message to be displayed when a step mismatch is detected.
+     *
      * @type {string}
      * @public
      */
     @api messageWhenStepMismatch;
     /**
-     * 'Error message to be displayed when the value is missing.'
+     * Error message to be displayed when the value is missing.
+     *
      * @type {string}
      * @public
      */
     @api messageWhenValueMissing;
     /**
      * Help text detailing the purpose and function of the input.
+     *
      * @type {string}
      * @public
      */
     @api fieldLevelHelp;
     /**
      * Specifies the name of an input element.
+     *
      * @type {string}
      * @public
      */
     @api name;
     /**
      * Describes the input to assistive technologies.
+     *
      * @type {string}
      * @public
      */
     @api ariaLabel;
     /**
      * A space-separated list of element IDs whose presence or content is controlled by the input.
+     *
      * @type {string}
      * @public
      */
     @api ariaControls;
     /**
      * A space-separated list of element IDs that provide labels for the input.
+     *
      * @type {string}
      * @public
      */
     @api ariaLabelledBy;
     /**
      * A space-separated list of element IDs that provide descriptive labels for the input.
+     *
      * @type {string}
      * @public
      */
     @api ariaDescribedBy;
     /**
      * Specifies a shortcut key to activate or focus an element.
+     *
      * @type {string}
      * @public
      */
@@ -175,6 +189,7 @@ export default class InputCounter extends LightningElement {
     }
     /**
      * Specifies the value of an input element.
+     *
      * @type {number}
      * @default null
      * @public
@@ -189,7 +204,9 @@ export default class InputCounter extends LightningElement {
 
     /**
      * The minimum acceptable value for the input. Constrains the decrementer to stop at the specified min. If an entered value is below the min, incrementing or decrementing will then set the value to the specified min.
+     *
      * @type {number}
+     * @default null
      * @public
      */
     @api get min() {
@@ -202,6 +219,7 @@ export default class InputCounter extends LightningElement {
 
     /**
      * The maximum acceptable value for the input. Constrains the incrementer to stop at the specified max. If the entered value is above the max, incrementing or decrementing will then set the value to the specified max.
+     *
      * @type {number}
      * @default null
      * @public
@@ -216,6 +234,7 @@ export default class InputCounter extends LightningElement {
 
     /**
      * Granularity of the value - precision of significant decimal digits ( specified as a positive integer. ex: 2 formats the value to 2 digits after the decimal ).
+     *
      * @type {number}
      * @default null
      * @public
@@ -243,8 +262,9 @@ export default class InputCounter extends LightningElement {
 
     /**
      * The variant changes the appearance of an input field. Accepted variants include standard, label-inline, label-hidden, and label-stacked. This value defaults to standard, which displays the label above the field. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and input field. Use label-stacked to place the label above the input field.
+     *
      * @type {string}
-     * @default "standard"
+     * @default standard
      * @public
      */
     @api get variant() {
@@ -269,8 +289,9 @@ export default class InputCounter extends LightningElement {
 
     /**
      * Input counter type. Valid values include number (default), currency, percent.
+     *
      * @type {string}
-     * @default "number"
+     * @default number
      * @public
      */
     @api get type() {
@@ -286,6 +307,7 @@ export default class InputCounter extends LightningElement {
 
     /**
      * If present, the input field is disabled and users cannot interact with it.
+     *
      * @type {boolean}
      * @default false
      * @public
@@ -301,6 +323,7 @@ export default class InputCounter extends LightningElement {
 
     /**
      * If present, the input field is read-only and cannot be edited by users.
+     *
      * @type {boolean}
      * @default false
      * @public
@@ -316,6 +339,7 @@ export default class InputCounter extends LightningElement {
 
     /**
      * Amount to add or substract from the value.
+     *
      * @type {number}
      * @default 1
      * @public
@@ -331,6 +355,7 @@ export default class InputCounter extends LightningElement {
 
     /**
      * If present, the input field must be filled out before the form is submitted.
+     *
      * @type {boolean}
      * @default false
      * @public
@@ -344,6 +369,11 @@ export default class InputCounter extends LightningElement {
         this._required = normalizeBoolean(value);
     }
 
+    /**
+     * Form Element class add error if showError.
+     *
+     * @return string
+     */
     get formElementClass() {
         return classSet('slds-form-element')
             .add({
@@ -352,6 +382,11 @@ export default class InputCounter extends LightningElement {
             .toString();
     }
 
+    /**
+     * Button Increment class styling.
+     *
+     * @return string
+     */
     get buttonIncrementClass() {
         return classSet('slds-input__button_increment')
             .add({
@@ -363,6 +398,11 @@ export default class InputCounter extends LightningElement {
             .toString();
     }
 
+    /**
+     * Button Decrement class styling.
+     *
+     * @return string
+     */
     get buttonDecrementClass() {
         return classSet('slds-input__button_decrement')
             .add({
@@ -374,22 +414,41 @@ export default class InputCounter extends LightningElement {
             .toString();
     }
 
+    /**
+     * Input class if readOnly
+     *
+     * @return string
+     */
     get inputClass() {
         return this._readOnly ? '' : 'avonni-input-counter';
     }
 
+    /**
+     * Check if variant is inline
+     *
+     * @return {boolean}
+     */
     get isInline() {
         return this.variant === 'label-inline';
     }
 
+    /**
+     * Get Aria Controls
+     */
     get computedAriaControls() {
         return this.ariaControls || null;
     }
 
+    /**
+     * Get Aria Labelled by
+     */
     get computedAriaLabelledBy() {
         return this.ariaLabelledBy || null;
     }
 
+    /**
+     * Get Aria Described By
+     */
     get computedAriaDescribedBy() {
         return this.ariaDescribedBy || null;
     }
@@ -479,6 +538,7 @@ export default class InputCounter extends LightningElement {
 
     /**
      * Sets the input values to a specified decimal length based on fractionDigits.
+     *
      * @param input
      * @returns number
      */
@@ -505,7 +565,7 @@ export default class InputCounter extends LightningElement {
          * @event
          * @name change
          * @description The event fired when the value change.
-         * @param value
+         * @param {number} value
          */
         this.dispatchEvent(
             new CustomEvent('change', {
@@ -519,7 +579,8 @@ export default class InputCounter extends LightningElement {
 
     /**
      * Once a user finishes the input field entry the handler normalizes the value and sends it to update.
-     * @param event
+     *
+     * @param {Event} event
      */
     handlerCommit(event) {
         this._value = +event.target.value;
@@ -529,6 +590,7 @@ export default class InputCounter extends LightningElement {
 
     /**
      * Sets focus on the input element.
+     *
      * @public
      */
     @api
@@ -538,6 +600,7 @@ export default class InputCounter extends LightningElement {
 
     /**
      * Removes keyboard focus from the input element.
+     *
      * @public
      */
     @api
@@ -545,17 +608,24 @@ export default class InputCounter extends LightningElement {
         this.template.querySelector('lightning-input').blur();
     }
 
+    /**
+     * Focus handler.
+     */
     handlerFocus() {
         this.dispatchEvent(new CustomEvent('focus'));
     }
 
+    /**
+     * Blur handler.
+     */
     handlerBlur() {
         this.dispatchEvent(new CustomEvent('blur'));
     }
 
     /**
-     * Method for handling user Up and Down arrow inside input field to increment or decrement the value.
-     * @param event
+     * Method for handling user Up and Down arrows inside input field to increment or decrement the value.
+     *
+     * @param {Event} event
      */
     handlerKeyDown(event) {
         let key = event.key;
@@ -575,7 +645,8 @@ export default class InputCounter extends LightningElement {
     }
 
     /**
-     * Get validation for custom proxy input
+     * Get validation for custom proxy input.
+     *
      * @public
      */
     @api get validity() {
@@ -583,7 +654,8 @@ export default class InputCounter extends LightningElement {
     }
 
     /**
-     * Check validation against constraints
+     * Check validation against constraints.
+     *
      * @public
      */
     @api
@@ -593,7 +665,8 @@ export default class InputCounter extends LightningElement {
 
     /**
      * Displays the error messages and returns false if the input is invalid. If the input is valid, reportValidity() clears displayed error messages and returns true.
-     * @returns this.HelpMessage
+     *
+     * @returns {string} helpMessage
      * @public
      */
     @api
@@ -605,7 +678,8 @@ export default class InputCounter extends LightningElement {
 
     /**
      * Sets a custom error message to be displayed when a form is submitted.
-     * @param message
+     *
+     * @param {string} message
      * @public
      */
     @api
@@ -615,6 +689,7 @@ export default class InputCounter extends LightningElement {
 
     /**
      * Displays error messages on invalid fields. An invalid field fails at least one constraint validation and returns false when checkValidity() is called.
+     *
      * @public
      */
     @api
@@ -622,12 +697,20 @@ export default class InputCounter extends LightningElement {
         this.reportValidity();
     }
 
+    /**
+     * Proxy Input Attributes updater.
+     *
+     * @param {object} attributes
+     */
     _updateProxyInputAttributes(attributes) {
         if (this._constraintApiProxyInputUpdater) {
             this._constraintApiProxyInputUpdater(attributes);
         }
     }
 
+    /**
+     * Compute constraintApi with fieldConstraintApiWithProxyInput.
+     */
     get _constraint() {
         if (!this._constraintApi) {
             this._constraintApi = new FieldConstraintApiWithProxyInput(
