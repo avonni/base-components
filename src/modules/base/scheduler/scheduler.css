@@ -57,6 +57,10 @@
     visibility: hidden;
 }
 
+.scheduler__event-wrapper {
+    overflow: hidden;
+}
+
 .scheduler__event {
     width: 100%;
     opacity: 0.9;
@@ -86,6 +90,7 @@
 .scheduler__event_line {
     border-top-width: 5px;
     border-top-style: solid;
+    margin-top: 5px;
 }
 .scheduler__event_line::before,
 .scheduler__event_line::after {
@@ -107,6 +112,9 @@
 .scheduler__event-dragged {
     z-index: 3;
 }
+.scheduler__event-dragged .scheduler__event {
+    cursor: grabbing;
+}
 /* --------------- */
 
 .scheduler__event-detail-popover {
@@ -114,4 +122,22 @@
 }
 .scheduler__event-detail-icon {
     color: #706e6b;
+}
+
+.scheduler__event:hover .scheduler__event-resize-icon {
+    visibility: visible;
+}
+.scheduler__event-resize-icon {
+    visibility: hidden;
+    opacity: 0.7;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: col-resize;
+}
+.scheduler__event-resize-icon_left {
+    left: 0;
+}
+.scheduler__event-resize-icon_right {
+    right: 0;
 }

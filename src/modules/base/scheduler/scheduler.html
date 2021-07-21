@@ -79,7 +79,7 @@
                 </thead>
 
                 <!-- Rows -->
-                <tbody onmousemove={handleEventMouseMove}>
+                <tbody onmousemove={handleMouseMove}>
                     <template
                         for:each={computedRows}
                         for:item="row"
@@ -96,6 +96,7 @@
                                     key={column.start}
                                     class="slds-border_right slds-col slds-p-around_none slds-wrap"
                                     data-start={column.start}
+                                    data-end={column.end}
                                 >
                                     <!-- Disabled dates/times -->
                                     <template
@@ -183,6 +184,12 @@
                                                 style={event.style}
                                             >
                                                 <lightning-icon
+                                                    class="scheduler__event-resize-icon scheduler__event-resize-icon_left"
+                                                    icon-name="utility:drag_and_drop"
+                                                    size="xx-small"
+                                                    data-resize="left"
+                                                ></lightning-icon>
+                                                <lightning-icon
                                                     if:true={event.iconName}
                                                     icon-name={event.iconName}
                                                     size="x-small"
@@ -191,6 +198,12 @@
                                                 <span class="slds-truncate"
                                                     >{event.title}</span
                                                 >
+                                                <lightning-icon
+                                                    class="scheduler__event-resize-icon scheduler__event-resize-icon_right"
+                                                    icon-name="utility:drag_and_drop"
+                                                    size="xx-small"
+                                                    data-resize="right"
+                                                ></lightning-icon>
                                             </div>
                                         </div>
                                     </template>

@@ -87,8 +87,9 @@ export default class Scheduler extends LightningElement {
 
     _datatableRowsHeight;
     _draggedEvent;
-    _dragInitialPosition;
+    _initialPosition;
     _referenceHeader;
+    _resizedEvent;
     computedHeaders = [];
     computedRows = [];
     computedEvents = [];
@@ -838,76 +839,92 @@ export default class Scheduler extends LightningElement {
         this.showDetailPopover = true;
     }
 
-    handleEventMouseDown(event) {
-        if (event.button !== 0) return;
+    handleEventMouseDown(mouseEvent) {
+        if (mouseEvent.button !== 0) return;
 
-        this._draggedEvent = event.currentTarget;
+        this._resizeSide = mouseEvent.target.dataset.resize;
+        this._draggedEvent = mouseEvent.currentTarget;
         this._draggedEvent.classList.add('scheduler__event-dragged');
         this.hideAllPopovers();
 
         // Save the initial position values
-        const schedule = this.template.querySelector('tbody');
-        const schedulePosition = schedule.getBoundingClientRect();
-        const eventPosition = this._draggedEvent.getBoundingClientRect();
+        const scheduleElement = this.template.querySelector('tbody');
+        const schedule = scheduleElement.getBoundingClientRect();
+        const event = this._draggedEvent.getBoundingClientRect();
 
-        this._dragInitialPosition = {
-            initialX: event.clientX,
-            initialY: event.clientY,
-            eventTop: eventPosition.top,
-            eventBottom: eventPosition.bottom,
-            eventLeft: eventPosition.left,
-            eventRight: eventPosition.right,
-            scheduleTop: schedulePosition.top,
-            scheduleBottom: schedulePosition.bottom,
-            scheduleLeft: schedulePosition.left,
-            scheduleRight: schedulePosition.right
+        const leftBoundary =
+            this._resizeSide === 'right'
+                ? event.left + 24
+                : schedule.left + (mouseEvent.clientX - event.left);
+        const rightBoundary =
+            this._resizeSide === 'left'
+                ? event.right - 24
+                : schedule.right + (mouseEvent.clientX - event.right);
+
+        this._initialPosition = {
+            initialX: mouseEvent.clientX,
+            initialY: mouseEvent.clientY,
+            eventLeft: event.left,
+            eventRight: event.right,
+            eventWidth: event.width,
+            left: leftBoundary,
+            right: rightBoundary,
+            top: schedule.top + (mouseEvent.clientY - event.top),
+            bottom: schedule.bottom + (mouseEvent.clientY - event.bottom)
         };
     }
 
-    handleEventMouseMove(event) {
-        if (!this._draggedEvent || event.button !== 0) return;
-
+    handleMouseMove(event) {
         // Prevent scrolling
         event.preventDefault();
 
-        const {
-            scheduleTop,
-            scheduleBottom,
-            scheduleLeft,
-            scheduleRight,
-            initialX,
-            initialY,
-            eventTop,
-            eventBottom,
-            eventLeft,
-            eventRight
-        } = this._dragInitialPosition;
+        if (this._draggedEvent) {
+            const {
+                top,
+                bottom,
+                left,
+                right,
+                initialX,
+                initialY,
+                eventWidth
+            } = this._initialPosition;
+            const side = this._resizeSide;
 
-        let y = event.clientY;
-        let x = event.clientX;
+            let y = event.clientY;
+            let x = event.clientX;
 
-        // Prevent the events from being dragged out of the schedule grid
-        const top = scheduleTop + (initialY - eventTop);
-        const bottom = scheduleBottom + (initialY - eventBottom);
-        const left = scheduleLeft + (initialX - eventLeft);
-        const right = scheduleRight + (initialX - eventRight);
+            // Prevent the events from being dragged out of the schedule grid,
+            // or from being squished outside of their boundaries when resizing
+            if (y < top) {
+                y = top;
+            } else if (y > bottom) {
+                y = bottom;
+            }
 
-        if (y < top) {
-            y = top;
-        } else if (y > bottom) {
-            y = bottom;
+            if (x < left) {
+                x = left;
+            } else if (x > right) {
+                x = right;
+            }
+
+            x = x - initialX;
+            y = y - initialY;
+
+            // If it is a resizing
+            if (side) {
+                const width =
+                    side === 'left' ? eventWidth + x * -1 : eventWidth + x;
+
+                if (side === 'left') {
+                    this._draggedEvent.style.transform = `translateX(${x}px)`;
+                }
+
+                this._draggedEvent.style.width = `${width}px`;
+            } else {
+                // If it is a drag and drop
+                this._draggedEvent.style.transform = `translate(${x}px, ${y}px)`;
+            }
         }
-
-        if (x < left) {
-            x = left;
-        } else if (x > right) {
-            x = right;
-        }
-
-        x = x - initialX;
-        y = y - initialY;
-
-        this._draggedEvent.style.transform = `translate(${x}px, ${y}px)`;
     }
 
     handleEventMouseUp(mouseEvent) {
@@ -915,11 +932,17 @@ export default class Scheduler extends LightningElement {
 
         if (this._draggedEvent) {
             // If the dragged event has moved
-            if (this._draggedEvent.style.transform) {
+            if (this._draggedEvent.style.transform || this._resizeSide) {
                 // Get the new event position
-                const initialX = this._dragInitialPosition.initialX;
-                const eventLeft = this._dragInitialPosition.eventLeft;
-                const x = mouseEvent.clientX - (initialX - eventLeft);
+                const {
+                    initialX,
+                    eventLeft,
+                    eventRight
+                } = this._initialPosition;
+                const side = this._resizeSide;
+                const leftX = mouseEvent.clientX - (initialX - eventLeft);
+                const rightX = mouseEvent.clientX + (eventRight - initialX);
+                const x = side === 'right' ? rightX : leftX;
                 const y = mouseEvent.clientY;
 
                 // Find the row and cell the event was dropped on
@@ -931,13 +954,25 @@ export default class Scheduler extends LightningElement {
                 const event = this.computedEvents.find(
                     (computedEvent) => computedEvent.name === name
                 );
-                const start = dateTimeObjectFrom(
-                    Number(cellElement.dataset.start)
-                );
-                const duration = event.to - event.from;
-                const end = addToDate(start, 'millisecond', duration);
-                event.from = start;
-                event.to = end;
+
+                if (side === 'right') {
+                    // Update the end date if the event was resized from the right
+                    event.to = dateTimeObjectFrom(
+                        Number(cellElement.dataset.end)
+                    );
+                } else {
+                    // Update the start date if the event was dragged or resized from the left
+                    const start = dateTimeObjectFrom(
+                        Number(cellElement.dataset.start)
+                    );
+
+                    if (!side) {
+                        // Update the end date if the event was dragged
+                        const duration = event.to - event.from;
+                        event.to = addToDate(start, 'millisecond', duration);
+                    }
+                    event.from = start;
+                }
                 this.updateEventWidth(event);
 
                 const draftValues = {

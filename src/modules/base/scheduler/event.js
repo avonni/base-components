@@ -236,7 +236,7 @@ export default class Event {
     get class() {
         const theme = this.theme;
         return classSet(
-            `slds-p-around_xx-small scheduler__event slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate scheduler__event_${theme}`
+            `slds-p-vertical_xx-small slds-p-horizontal_small scheduler__event slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate scheduler__event_${theme}`
         )
             .add({
                 'slds-text-color_inverse slds-current-color':
