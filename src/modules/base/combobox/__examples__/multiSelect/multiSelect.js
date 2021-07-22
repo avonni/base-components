@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class MultiSelect extends LightningElement {
+export default class ComboboxMultiSelect extends LightningElement {
     options = [
         {
             label: 'Burlington Textiles Corp of America',

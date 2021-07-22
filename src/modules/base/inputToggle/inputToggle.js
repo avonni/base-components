@@ -175,6 +175,9 @@ export default class InputToggle extends LightningElement {
         this._synchronizeA11y();
     }
 
+    /**
+     * Synchronize all inputs Aria help element ID.
+     */
     _synchronizeA11y() {
         const input = this.template.querySelector('input');
 
@@ -457,12 +460,15 @@ export default class InputToggle extends LightningElement {
         this.reportValidity();
     }
 
+    /**
+     * Localization.
+     */
     get i18n() {
         return i18n;
     }
 
     /**
-     * Class of the input toggle wrapper.
+     * Computed Wrapper Class styling.
      * 
      * @type {string}
      */
@@ -474,7 +480,7 @@ export default class InputToggle extends LightningElement {
     }
 
     /**
-     * Class of the faux toggle.
+     * Computed Faux Toggle Class styling.
      * 
      * @type {string}
      */
@@ -488,7 +494,7 @@ export default class InputToggle extends LightningElement {
     }
 
     /**
-     * Class of the label container.
+     * Computed Label Class styling.
      * 
      * @type {string}
      */
@@ -501,15 +507,28 @@ export default class InputToggle extends LightningElement {
         });
     }
 
+    /**
+     * Gets element unique help ID.
+     *
+     * @type {string}
+     */
     get computedUniqueHelpElementId() {
         return getRealDOMId(this.template.querySelector('[data-help-message]'));
     }
 
+    /**
+     * Gets element described by ID.
+     *
+     * @type {string}
+     */
     get computedUniqueToggleElementDescribedById() {
         const toggle = this.template.querySelector('[data-toggle-description]');
         return getRealDOMId(toggle);
     }
 
+    /**
+     * Gets Aria Described By.
+     */
     get computedAriaDescribedBy() {
         const ariaValues = [];
 
@@ -528,6 +547,9 @@ export default class InputToggle extends LightningElement {
         return normalizeAriaAttribute(ariaValues);
     }
 
+    /**
+     * Gets Aria Controls.
+     */
     get computedAriaControls() {
         const ariaValues = [];
 
@@ -538,6 +560,9 @@ export default class InputToggle extends LightningElement {
         return normalizeAriaAttribute(ariaValues);
     }
 
+    /**
+     * Gets Aria Labelled by.
+     */
     get computedAriaLabelledBy() {
         const ariaValues = [];
 
@@ -548,10 +573,20 @@ export default class InputToggle extends LightningElement {
         return normalizeAriaAttribute(ariaValues);
     }
 
+    /**
+     * Gets input element.
+     * 
+     * @type {element}
+     */
     get _inputElement() {
         return this.template.querySelector('input');
     }
 
+    /**
+     * Gets FieldConstraintApi.
+     *
+     * @type {object}
+     */
     get _constraint() {
         if (!this._constraintApi) {
             this._constraintApi = new FieldConstraintApiWithProxyInput(
@@ -569,6 +604,11 @@ export default class InputToggle extends LightningElement {
         return this._constraintApi;
     }
 
+    /**
+     * Updates proxy input attributes.
+     * 
+     * @param {string} attributes
+     */
     _updateProxyInputAttributes(attributes) {
         if (this._constraintApiProxyInputUpdater) {
             this._constraintApiProxyInputUpdater(attributes);

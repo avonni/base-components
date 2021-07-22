@@ -66,11 +66,30 @@ const ILLUSTRATION_VARIANTS = {
     default: 'text-only'
 };
 
+/**
+ * @class
+ * @descriptor avonni-illustration
+ * @example example-illustration--small-size
+ * @public
+ */
 export default class Illustration extends LightningElement {
+    /**
+     * The illustration title.
+     *
+     * @type {string}
+     * @public
+     */
     @api title;
     _size = ILLUSTRATION_SIZES.default;
     _variant = ILLUSTRATION_VARIANTS.default;
 
+    /**
+     * The variant types of illustrations.
+     *
+     * @type {string}
+     * @public
+     * @default text-only
+     */
     @api
     get variant() {
         return this._variant;
@@ -83,6 +102,13 @@ export default class Illustration extends LightningElement {
         });
     }
 
+    /**
+     * The illustration sizes. Valid options include 'small', 'large'.
+     *
+     * @type {string}
+     * @public
+     * @default small
+     */
     @api
     get size() {
         return this._size;
@@ -95,6 +121,11 @@ export default class Illustration extends LightningElement {
         });
     }
 
+    /**
+     * Illustration class styling.
+     *
+     * @return string
+     */
     get illustrationClass() {
         return classSet('slds-illustration')
             .add({
@@ -104,10 +135,20 @@ export default class Illustration extends LightningElement {
             .toString();
     }
 
+    /**
+     * Assign variant to svg URL.
+     *
+     * @return string
+     */
     get svgURL() {
         return `/assets/canvas-elements/illustrationLibrary/${this.variant}.svg`;
     }
 
+    /**
+     * Show Illustration SVG.
+     *
+     * @return boolean
+     */
     get showSvg() {
         return this._variant !== 'text-only';
     }

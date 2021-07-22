@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class HorizontalButtons extends LightningElement {
+export default class InputChoiceSetHorizontalButtons extends LightningElement {
     options = [
         { label: 'Mon', value: 'mon' },
         { label: 'Tue', value: 'tue' },
@@ -9,5 +9,5 @@ export default class HorizontalButtons extends LightningElement {
         { label: 'Fri', value: 'fri' }
     ];
 
-    value = ['fri'];
+    dayValue = ['fri'];
 }

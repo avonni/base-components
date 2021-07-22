@@ -1,13 +1,12 @@
 import { LightningElement } from 'lwc';
 
-export default class Checkboxes extends LightningElement {
-    options = [
+export default class InputChoiceSetCheckboxes extends LightningElement {
+    optionsWithoutIcon = [
         { label: 'Mon', value: 'mon' },
         { label: 'Tue', value: 'tue' },
         { label: 'Wed', value: 'wed' },
         { label: 'Thu', value: 'thu' },
         { label: 'Fri', value: 'fri' }
     ];
-
-    value = ['thu', 'fri'];
+    dayValue = ['fri'];
 }

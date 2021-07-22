@@ -584,6 +584,11 @@ export default class PrimitiveCombobox extends LightningElement {
         this.computeGroups();
     }
 
+    /**
+     * Gets FieldConstraintApi.
+     *
+     * @type {object}
+     */
     get _constraint() {
         if (!this._constraintApi) {
             this._constraintApi = new FieldConstraintApi(() => this, {
@@ -615,7 +620,7 @@ export default class PrimitiveCombobox extends LightningElement {
     /**
      * Returns an icon name for the input depending on allow-search attribute.
      * 
-     * @return {string}
+     * @type {string}
      */
     get inputIconName() {
         return this.allowSearch ? 'utility:search' : 'utility:down';
@@ -624,7 +629,7 @@ export default class PrimitiveCombobox extends LightningElement {
     /**
      * If true, display value avatar.
      * 
-     * @return {boolean}
+     * @type {boolean}
      */
     get showInputValueAvatar() {
         return (
@@ -639,7 +644,7 @@ export default class PrimitiveCombobox extends LightningElement {
     /**
      * If true, display value icon.
      * 
-     * @return {boolean}
+     * @type {boolean}
      */
     get showInputValueIcon() {
         return this.selectedOption && this.selectedOption.iconName;
@@ -648,7 +653,7 @@ export default class PrimitiveCombobox extends LightningElement {
     /**
      * True if disabled or read-only are true.
      * 
-     * @return {boolean}
+     * @type {boolean}
      */
     get inputIsDisabled() {
         return this.disabled || this.readOnly;
@@ -657,7 +662,7 @@ export default class PrimitiveCombobox extends LightningElement {
     /**
      * True if allow-search is false.
      * 
-     * @return {boolean}
+     * @type {boolean}
      */
     get hasNoSearch() {
         return !this.allowSearch;
@@ -666,12 +671,17 @@ export default class PrimitiveCombobox extends LightningElement {
     /**
      * Returns true as a string if dropdown-visible is true and false as a string if false.
      * 
-     * @return {string}
+     * @type {string}
      */
     get computedAriaExpanded() {
         return this.dropdownVisible ? 'true' : 'false';
     }
 
+    /**
+     * Returns none if this.readOnly or this.disabled is present and list if not.
+     * 
+     * @type {string}
+     */
     get computedAriaAutocomplete() {
         return this.readOnly || this.disabled ? 'none' : 'list';
     }
@@ -679,7 +689,7 @@ export default class PrimitiveCombobox extends LightningElement {
     /**
      * True if parent-options-values and current parent.
      * 
-     * @return {boolean}
+     * @type {boolean}
      */
     get currentParent() {
         return (
@@ -732,7 +742,7 @@ export default class PrimitiveCombobox extends LightningElement {
     /**
      * True if highlighted-option.
      * 
-     * @return {boolean}
+     * @type {boolean}
      */
     get _highlightedOption() {
         return (
@@ -744,7 +754,7 @@ export default class PrimitiveCombobox extends LightningElement {
     /**
      * True if selected-options, multi-select is true and hide-selected-options is false.
      * 
-     * @return {boolean}
+     * @type {boolean}
      */
     get showSelectedOptions() {
         return (
@@ -757,7 +767,7 @@ export default class PrimitiveCombobox extends LightningElement {
     /**
      * True if show-clear-input is true, this.input and hide-selected-options is false.
      * 
-     * @return {boolean}
+     * @type {boolean}
      */
     get showClearInputIcon() {
         return this.showClearInput && this.input && this.inputValue !== '';
@@ -766,14 +776,14 @@ export default class PrimitiveCombobox extends LightningElement {
     /**
      * True if input-value and no visible-options.
      * 
-     * @return {boolean}
+     * @type {boolean}
      */
     get showNoSearchResultMessage() {
         return this.inputValue && !this.visibleOptions.length;
     }
 
     /**
-     * Class of the label container.
+     * Computed Label Class styling.
      * 
      * @type {string}
      */
@@ -784,7 +794,7 @@ export default class PrimitiveCombobox extends LightningElement {
     }
 
     /**
-     * Class of the dropdown trigger.
+     * Computed Dropdown Trigger Class styling.
      * 
      * @type {string}
      */
@@ -801,7 +811,7 @@ export default class PrimitiveCombobox extends LightningElement {
     }
 
     /**
-     * Class of the dropdown.
+     * Computed Dropdown Class styling.
      * 
      * @type {string}
      */
@@ -826,7 +836,7 @@ export default class PrimitiveCombobox extends LightningElement {
     }
 
     /**
-     * Class of the dropdown trigger.
+     * Computed Input Container Class styling.
      * 
      * @type {string}
      */
@@ -1376,7 +1386,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * If selected-option and input-value = '' closes the dropdown.
-     * Dispatch blur event.
+     * Dispatches blur event.
      */
     handleBlur() {
         if (this._cancelBlur) {
@@ -1393,7 +1403,7 @@ export default class PrimitiveCombobox extends LightningElement {
     }
 
     /**
-     * Dispatch focus event.
+     * Dispatches focus event.
      */
     handleFocus() {
         this.interactingState.enter();
@@ -1403,7 +1413,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Handles the input for the search function.
-     * Dispatch search event.
+     * Dispatches search event.
      */
     handleInput(event) {
         const searchTerm = event.currentTarget.value;
@@ -1517,6 +1527,9 @@ export default class PrimitiveCombobox extends LightningElement {
         }
     }
 
+    /**
+     * Handles the back link click.
+     */
     handleBackLinkClick() {
         const parents = this.parentOptionsValues;
         parents.pop();
@@ -1535,7 +1548,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Clears the input value.
-     * Dispatch change event.
+     * Dispatches change event.
      */
     handleClearInput(event) {
         event.stopPropagation();
@@ -1566,7 +1579,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Handles the click on action.
-     * Dispatch actionClick event.
+     * Dispatches actionClick event.
      * Closes the dropdown.
      * 
      * @param {event} event If clicked with mouse we receive the event
@@ -1601,7 +1614,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Handles the click on option.
-     * Dispatch change event.
+     * Dispatches change event.
      * Closes the dropdown.
      * 
      * @param {event} event click event
@@ -1670,7 +1683,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Handles the remove of lightning-pill (selected-option).
-     * Dispatch change event.
+     * Dispatches change event.
      * 
      * @param {event} event onremove event
      * @public
@@ -1697,7 +1710,7 @@ export default class PrimitiveCombobox extends LightningElement {
     /**
      * Handles the trigger click.
      * If dropdown is closed, it opens it.
-     * Dispatch open event.
+     * Dispatches open event.
      */
     handleTriggerClick() {
         if (!this.dropdownVisible) {

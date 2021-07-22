@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class Loading extends LightningElement {
+export default class ComboboxLoading extends LightningElement {
     options = [
         {
             label: 'Burlington Textiles Corp of America',

@@ -53,7 +53,7 @@
  */
 
 /**
- * @typedef Option
+ * @typedef {Object} Option
  * @name Options
  * @property {string} avatarFallbackIconName The Lightning Design System name of the icon used as a fallback when the image fails to load. The initials fallback relies on this for its background color.
  * Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. Only icons from the standard and custom categories are allowed.
@@ -68,7 +68,7 @@
  */
 
 /**
- * @typedef Scope
+ * @typedef {Object} Scope
  * @name Scopes
  * @property {string} iconName The Lightning Design System name of the icon used as a fallback when the image fails to load. The initials fallback relies on this for its background color.
  * Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. Only icons from the standard and custom categories are allowed.
@@ -78,14 +78,14 @@
  */
 
 /**
- * @typedef Group
+ * @typedef {Object} Group
  * @name Groups
  * @property {string} label Label of the option.
  * @property {string} name Required. A unique name for the group. It will be used as a reference in the options.
  */
 
 /**
- * @typedef Action
+ * @typedef {Object} Action
  * @name Actions
  * @property {string} label Required. The action label.
  * @property {string} name Required. The name of the action, which identifies the selected action. It will be returned by the actionclick event.

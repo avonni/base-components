@@ -1,7 +1,7 @@
 import { LightningElement } from 'lwc';
 
-export default class CheckboxesWithRightIcons extends LightningElement {
-    options = [
+export default class InputChoiceSetCheckboxesWithRightIcons extends LightningElement {
+    optionsWithIcon = [
         {
             label: 'Left',
             value: 'left',
@@ -21,6 +21,5 @@ export default class CheckboxesWithRightIcons extends LightningElement {
             iconPosition: 'right'
         }
     ];
-
-    value = ['center'];
+    alignmentValue = ['center'];
 }

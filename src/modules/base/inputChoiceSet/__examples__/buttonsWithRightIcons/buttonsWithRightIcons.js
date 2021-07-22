@@ -1,7 +1,7 @@
 import { LightningElement } from 'lwc';
 
-export default class ButtonsWithRightIcons extends LightningElement {
-    options = [
+export default class InputChoiceSetButtonsWithRightIcons extends LightningElement {
+    optionsWithIcon = [
         {
             label: 'Left',
             value: 'left',
@@ -21,6 +21,5 @@ export default class ButtonsWithRightIcons extends LightningElement {
             iconPosition: 'right'
         }
     ];
-
-    value = ['center'];
+    alignmentValue = ['center'];
 }

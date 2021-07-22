@@ -59,45 +59,42 @@ const INPUT_CHOICE_TYPES = { valid: ['default', 'button'], default: 'default' };
 
 /**
  * @class
- * @public
- * @storyId example-input-choice-set--radio-buttons
  * @descriptor avonni-input-choice-set
+ * @storyId example-input-choice-set--radio-buttons
+ * @public
  */
 export default class InputChoiceSet extends LightningElement {
     static delegatesFocus = true;
 
     /**
      * Text label for the input.
-     * 
+     *
      * @type {string}
-     * @required
      * @public
+     * @required
      */
     @api label;
-
     /**
      * Array of option objects.
-     * 
+     *
      * @type {object[]}
-     * @required
      * @public
+     * @required
      */
     @api options;
-
     /**
      * Optional message to be displayed when no option is selected and the required attribute is set.
-     * 
+     *
      * @type {string}
      * @public
      */
     @api messageWhenValueMissing;
-
     /**
      * Specifies the name of an input element.
-     * 
+     *
      * @type {string}
-     * @required
      * @public
+     * @required
      */
     @api name;
 
@@ -114,6 +111,9 @@ export default class InputChoiceSet extends LightningElement {
         this.itemIndex = 0;
     }
 
+    /**
+     * Synchronize all inputs Aria help element ID.
+     */
     synchronizeA11y() {
         const inputs = this.template.querySelectorAll('input');
         Array.prototype.slice.call(inputs).forEach((input) => {
@@ -130,6 +130,9 @@ export default class InputChoiceSet extends LightningElement {
         this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
     }
 
+    /**
+     * Update form class styling.
+     */
     updateClassList() {
         classListMutation(this.classList, {
             'slds-form-element_stacked': this.variant === VARIANT.LABEL_STACKED,
@@ -143,13 +146,11 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * The list of selected options.
-     * Each array entry contains the value of a selected option.
-     * The value of each option is set in the options attribute.
-     * 
-     * @type {string[]}
-     * @required
+     * The list of selected options. Each array entry contains the value of a selected option. The value of each option is set in the options attribute.
+     *
+     * @type {string}
      * @public
+     * @required
      */
     @api
     get value() {
@@ -273,10 +274,18 @@ export default class InputChoiceSet extends LightningElement {
         return this.type === 'default';
     }
 
+    /**
+     * Localization.
+     */
     get i18n() {
         return i18n;
     }
 
+    /**
+     * Create new InputChoiceOption object.
+     *
+     * @type {Object[]}
+     */
     get transformedOptions() {
         const { options, value } = this;
         if (Array.isArray(options)) {
@@ -346,14 +355,19 @@ export default class InputChoiceSet extends LightningElement {
         this.reportValidity();
     }
 
+    /**
+     * Get element unique help ID.
+     *
+     * @type {string}
+     */
     get computedUniqueHelpElementId() {
         const helpElement = this.template.querySelector('[data-helptext]');
         return getRealDOMId(helpElement);
     }
 
     /**
-     * Sets focus on the first input option.
-     * 
+     * Focus method. Sets focus on the first input option.
+     *
      * @public
      */
     @api
@@ -396,7 +410,9 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * Handle the click event.
+     * Click handler.
+     *
+     * @param {Event} event
      */
     handleClick(event) {
         if (this.template.activeElement !== event.target) {
@@ -405,7 +421,7 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * Computes the area of a circle.
+     * Value change handler.
      * 
      * @param {array} inputs All inputs.
      * @returns {array} Checked values.
@@ -417,7 +433,7 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * Dispatch the change event.
+     * Dispatches the change event.
      */
     handleChange(event) {
         event.stopPropagation();
@@ -452,14 +468,15 @@ export default class InputChoiceSet extends LightningElement {
         }
 
         /**
+         * The event fired when the value changed.
+         *
          * @event
          * @name change
-         * The event fired when the value changed.
          * @param {string} value The input value.
-         * @bubbles
-         * @composed
-         * @cancelable
          * @public
+         * @bubbles
+         * @cancelable
+         * @composed
          */
         this.dispatchEvent(
             new CustomEvent('change', {
@@ -473,6 +490,11 @@ export default class InputChoiceSet extends LightningElement {
         );
     }
 
+    /**
+     * Gets FieldConstraintApi.
+     *
+     * @type {object}
+     */
     get _constraint() {
         if (!this._constraintApi) {
             this._constraintApi = new FieldConstraintApi(() => this, {
@@ -484,8 +506,8 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * Class of the legend.
-     * 
+     * Computed Legend Class styling.
+     *
      * @type {string}
      */
     get computedLegendClass() {
@@ -501,8 +523,8 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * Class of the button.
-     * 
+     * Computed Button Class styling.
+     *
      * @type {string}
      */
     get computedButtonClass() {
@@ -512,8 +534,8 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * Class of checkbox container.
-     * 
+     * Computed Checkbox Container Class styling.
+     *
      * @type {string}
      */
     get computedCheckboxContainerClass() {
@@ -526,8 +548,8 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * Class of the label container.
-     * 
+     * Computed Label Class styling.
+     *
      * @type {string}
      */
     get computedLabelClass() {
@@ -541,7 +563,7 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * Return checkbox if is-multi-select is true or type is not default and radio if is-multi-select is false.
+     * Returns checkbox if is-multi-select is true or type is not default and radio if is-multi-select is false.
      * 
      * @type {string}
      */
@@ -552,7 +574,7 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * Return slds-checkbox_faux if is-multi-select is true and slds-radio_faux if is-multi-select is false.
+     * Returns slds-checkbox_faux if is-multi-select is true and slds-radio_faux if is-multi-select is false.
      * 
      * @type {string}
      */

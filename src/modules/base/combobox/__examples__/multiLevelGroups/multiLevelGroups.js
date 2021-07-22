@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class MultiLevelGroups extends LightningElement {
+export default class ComboboxMultiLevelGroups extends LightningElement {
     options = [
         {
             label: 'Burlington Textiles Corp of America',

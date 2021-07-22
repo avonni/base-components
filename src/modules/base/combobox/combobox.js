@@ -508,7 +508,7 @@ export default class Combobox extends LightningElement {
     /**
      * Selects the main combobox.
      * 
-     * @returns {element}
+     * @type {element}
      */
     get mainCombobox() {
         return this.template.querySelector('.combobox__main-combobox');
@@ -517,7 +517,7 @@ export default class Combobox extends LightningElement {
     /**
      * True if scopes.
      * 
-     * @returns {boolean}
+     * @type {boolean}
      */
     get showScopes() {
         return this.scopes.length;
@@ -526,7 +526,7 @@ export default class Combobox extends LightningElement {
     /**
      * True if hide-selected-options is false, is-multi-select is true and selected-options.
      * 
-     * @returns {boolean}
+     * @type {boolean}
      */
     get showSelectedOptions() {
         return (
@@ -537,7 +537,7 @@ export default class Combobox extends LightningElement {
     }
 
     /**
-     * Class of the label container.
+     * Computed Label Class styling.
      * 
      * @type {string}
      */
@@ -548,7 +548,7 @@ export default class Combobox extends LightningElement {
     }
 
     /**
-     * Class of the main combobox.
+     * Computed Main Combobox Class styling.
      * 
      * @type {string}
      */
@@ -561,7 +561,7 @@ export default class Combobox extends LightningElement {
     }
 
     /**
-     * Class of the combobox group.
+     * Computed Combobox Group Class styling.
      * 
      * @type {string}
      */

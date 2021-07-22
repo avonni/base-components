@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class Lookup extends LightningElement {
+export default class ComboboxLookup extends LightningElement {
     options = [
         {
             label: 'Burlington Textiles Corp of America',

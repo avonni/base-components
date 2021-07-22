@@ -530,7 +530,12 @@ export default class InputDateRange extends LightningElement {
     showHelpMessageIfInvalid() {
         this.reportValidity();
     }
-
+    
+    /**
+     * Gets FieldConstraintApi.
+     *
+     * @type {object}
+     */
     get _constraint() {
         if (!this._constraintApi) {
             this._constraintApi = new FieldConstraintApi(() => this, {

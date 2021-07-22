@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class ScopesWithIcons extends LightningElement {
+export default class ComboboxScopesWithIcons extends LightningElement {
     options = [
         {
             label: 'Burlington Textiles Corp of America',

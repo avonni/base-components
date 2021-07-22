@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class CustomSearch extends LightningElement {
+export default class ComboboxCustomSearch extends LightningElement {
     options = [
         {
             label: 'Burlington Textiles Corp of America',

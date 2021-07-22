@@ -1,11 +1,8 @@
-<template>
-    <avonni-input-choice-set
-        label="Please select a value"
-        orientation="horizontal"
-        is-multi-selected="true"
-        message-when-value-missing="Value missing"
-        options={options}
-        value={value}
-    >
-    </avonni-input-choice-set>
-</template>
+<avonni-input-choice-set
+    label="Please select a value"
+    options={optionsWithoutIcon}
+    message-when-value-missing="Value missing"
+    orientation="horizontal"
+    is-multi-select="true"
+    value={dayValue}
+></avonni-input-choice-set>
