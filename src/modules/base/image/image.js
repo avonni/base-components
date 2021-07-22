@@ -48,26 +48,29 @@ const CROP_POSITION_X_DEFAULT = '50';
 const CROP_POSITION_Y_DEFAULT = '50';
 
 /**
- * Avonni Image
  * @class
  * @descriptor avonni-image
  * @storyId example-image--base
+ * @public
  */
 export default class Image extends LightningElement {
     /**
      * The value to set for the 'alt' attribute.
+     *
      * @public
      * @type  {string}
      */
     @api alt;
     /**
      * X-axis of the image position ( in percent ).
+     *
      * @public
      * @type {string}
      */
     @api cropPositionX = CROP_POSITION_X_DEFAULT;
     /**
      * Y-axis of the image position ( in percent ).
+     *
      * @public
      * @type {string}
      */
@@ -104,6 +107,7 @@ export default class Image extends LightningElement {
 
     /**
      * Sets the image as static. Images retain their current dimensions and will no longer be responsive.
+     *
      * @public
      * @type {boolean}
      */
@@ -119,6 +123,7 @@ export default class Image extends LightningElement {
     /**
      * Enables lazy loading for images that are offscreen. If set to true, the property ensures that offscreen images are loaded early enough so that they have finished loading once the user scrolls near them.
      * Note: Keep in mind that the property uses the loading attribute of HTML <img> element which is not supported for Internet Explorer.
+     *
      * @public
      * @type {boolean}
      */
@@ -133,6 +138,7 @@ export default class Image extends LightningElement {
 
     /**
      * Crops the image to desired aspect ratio ( valid options : “1x1”, “4x3”, “16x9”, “none” ).
+     *
      * @public
      * @type {string}
      */
@@ -140,6 +146,9 @@ export default class Image extends LightningElement {
         return this._cropSize;
     }
 
+    /**
+     * Assign cropSize numerical value and aspectRatio fraction based on user input.
+     */
     set cropSize(value) {
         const cropSize = normalizeString(value, {
             fallbackValue: CROP_SIZE.default,
@@ -166,9 +175,10 @@ export default class Image extends LightningElement {
 
     /**
      * Image fit behaviour inside its container ( valid options : “cover”, “contain”, “fill”, “none” ).
+     *
      * @public
      * @type {string}
-     * @default 'cover'
+     * @default cover
      */
     @api get cropFit() {
         return this._cropFit;
@@ -183,6 +193,7 @@ export default class Image extends LightningElement {
 
     /**
      * URL to set for the 'src' attribute.
+     *
      * @public
      * @type {string}
      */
@@ -199,8 +210,9 @@ export default class Image extends LightningElement {
 
     /**
      * The value to set on the image's 'width' attribute.
+     *
      * @public
-     * @type { number | string }
+     * @type {number | string} width
      */
     @api
     get width() {
@@ -221,8 +233,9 @@ export default class Image extends LightningElement {
 
     /**
      * The value to set on the image's 'height' attribute.
+     *
      * @public
-     * @type { number | string }
+     * @type {number | string} height
      */
     @api
     get height() {
@@ -243,9 +256,10 @@ export default class Image extends LightningElement {
 
     /**
      * Sets the color of the blank image to the CSS color value specified.
+     *
      * @public
      * @type {string}
-     * @deafult 'transparent'
+     * @default transparent
      */
     @api
     get blankColor() {
@@ -259,6 +273,7 @@ export default class Image extends LightningElement {
 
     /**
      * One or more strings separated by commas (or an array of strings), indicating possible image sources for the user agent to use.
+     *
      * @public
      * @type {string | object[]}
      */
@@ -277,6 +292,7 @@ export default class Image extends LightningElement {
 
     /**
      * One or more strings separated by commas (or an array of strings), indicating a set of source sizes. Optionally used in combination with the srcset prop.
+     *
      * @public
      * @type {string | object[]}
      */
@@ -295,6 +311,7 @@ export default class Image extends LightningElement {
 
     /**
      * Forces the image to display as a block element rather than the browser default of inline-block element.
+     *
      * @public
      * @type {boolean}
      * @default false
@@ -310,6 +327,7 @@ export default class Image extends LightningElement {
 
     /**
      * Makes the image responsive. The image will shrink as needed or grow up the the image's native width.
+     *
      * @public
      * @type {boolean}
      * @default false
@@ -325,6 +343,7 @@ export default class Image extends LightningElement {
 
     /**
      * Similar to the 'fluid' prop, but allows the image to scale up past its native width.
+     *
      * @public
      * @type {boolean}
      * @default false
@@ -340,6 +359,7 @@ export default class Image extends LightningElement {
 
     /**
      * If present, makes the image corners slightly rounded. Can also be used to disable rounded corners or make the image a circle/oval. See docs for details.
+     *
      * @public
      * @type {boolean|string}
      */
@@ -363,6 +383,7 @@ export default class Image extends LightningElement {
 
     /**
      * Adds a thumbnail border around the image.
+     *
      * @public
      * @type {boolean}
      * @default false
@@ -378,6 +399,7 @@ export default class Image extends LightningElement {
 
     /**
      * Floats the image to the left when set.
+     *
      * @public
      * @type {boolean}
      * @default false
@@ -393,6 +415,7 @@ export default class Image extends LightningElement {
 
     /**
      * Floats the image to the right when set.
+     *
      * @public
      * @type {boolean}
      * @default false
@@ -408,6 +431,7 @@ export default class Image extends LightningElement {
 
     /**
      * Centers the image horizontally.
+     *
      * @public
      * @type {boolean}
      * @default false
@@ -423,6 +447,7 @@ export default class Image extends LightningElement {
 
     /**
      * Creates a blank/transparent image via an SVG data URI.
+     *
      * @public
      * @type {boolean}
      * @default false
@@ -437,6 +462,11 @@ export default class Image extends LightningElement {
         this.initBlank();
     }
 
+    /**
+     * Computed Image class styling.
+     *
+     * @type {string} class
+     */
     get computedImageClass() {
         return classSet({
             'avonni-img-fluid': this.fluid || this.fluidGrow,
@@ -457,8 +487,9 @@ export default class Image extends LightningElement {
     }
 
     /**
-     * Canvas render for blank image
-     * @returns src
+     * Canvas render for blank image.
+     *
+     * @returns {HTMLCanvasElement} src
      */
     initBlank() {
         if (this.blank) {
@@ -477,8 +508,9 @@ export default class Image extends LightningElement {
     }
 
     /**
-     * Final Computed Image Style
-     * @returns image style
+     * Final Computed Image Style.
+     *
+     * @type {boolean} check if image is cropped
      */
     get computedImgStyle() {
         if (!this._cropSize) {
@@ -493,12 +525,14 @@ export default class Image extends LightningElement {
     }
 
     /**
-     * Compute No Crop image style
-     * @returns image style
+     * Compute No Crop image style.
+     *
+     * @returns {string} image style
      */
     imgHandlerNoCrop() {
         // Repeated computed styles for fit and position
-        const imageFitPosition = `object-fit: ${this.cropFit};
+        const imageFitPosition = `
+            object-fit: ${this.cropFit};
             object-position: ${this.cropPositionX}% ${this.cropPositionY}%;
             `;
         // No Crop - Static Image
@@ -650,12 +684,14 @@ export default class Image extends LightningElement {
     }
 
     /**
-     * Compute Cropped image style
-     * @returns image style
+     * Compute Cropped image style.
+     *
+     * @returns {string} image style
      */
     imgHandlerCropped() {
         // Repeated computed styles for Fit, Position and Aspect-ratio
-        const imageFitPositionAspectRatio = `object-fit: ${this.cropFit};
+        const imageFitPositionAspectRatio = `
+            object-fit: ${this.cropFit};
             object-position: ${this.cropPositionX}% ${this.cropPositionY}%;
             aspect-ratio: ${this._aspectRatio};
             `;
@@ -787,8 +823,9 @@ export default class Image extends LightningElement {
     }
 
     /**
-     * Get Image dimensions when values missing or %
-     * @returns _imgHeight , _imgWidth
+     * Get Image dimensions when values missing or %.
+     *
+     * @returns {number} imgHeight , imgWidth
      */
     getImageDimensions() {
         const img = this.template.querySelector('img');
