@@ -31,6 +31,7 @@
  */
 
 import { ButtonIconPopover } from '../__examples__/buttonIconPopover';
+import { ButtonIconPopoverWithToggle } from '../__examples__/buttonIconPopoverWithToggle';
 
 export default {
     title: 'Example/Button Icon Popover',
@@ -63,6 +64,20 @@ export default {
                 'The tile can include text, and is displayed in the header. To include additional markup or another component, use the title slot.',
             table: {
                 type: { summary: 'string' },
+                category: 'Popover'
+            }
+        },
+        hideCloseButton: {
+            name: 'hide-close-button',
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description:
+                'If present, the close button of the popover is hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
                 category: 'Popover'
             }
         },
@@ -213,7 +228,7 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
+            defaultValue: false,
             description:
                 'If present, the popover is in a loading state and shows a spinner.',
             table: {
@@ -226,8 +241,8 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
-            description: 'If present, the popover can be opened by users.',
+            defaultValue: false,
+            description: "If present, the popover can't be opened by users.",
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -235,33 +250,40 @@ export default {
         }
     },
     args: {
+        hideCloseButton: false,
         disabled: false,
         isLoading: false
     }
 };
 
 const Template = (args) => ButtonIconPopover(args);
+const TemplateWithToggle = (args) => ButtonIconPopoverWithToggle(args);
 
-export const BorderWithPopoverBase = Template.bind({});
-BorderWithPopoverBase.args = {
+export const BaseWithPopoverBase = Template.bind({});
+BaseWithPopoverBase.args = {
     iconName: 'utility:favorite',
     tooltip: 'Tooltip text'
 };
 
-export const BorderWithPopoverLoading = Template.bind({});
-BorderWithPopoverLoading.args = {
+export const BaseWithPopoverLoading = Template.bind({});
+BaseWithPopoverLoading.args = {
     iconName: 'utility:favorite',
     tooltip: 'Tooltip text',
     isLoading: 'true'
 };
 
-export const BorderWithPopoverWarning = Template.bind({});
-BorderWithPopoverWarning.args = {
+export const BaseWithPopoverWarning = Template.bind({});
+BaseWithPopoverWarning.args = {
     iconName: 'utility:warning',
     iconClass: 'slds-icon-text-warning',
     tooltip: 'Tooltip text',
     size: 'small',
     popoverVariant: 'warning'
+};
+
+export const BaseWithToggleInDefaultSlot = TemplateWithToggle.bind({});
+BaseWithToggleInDefaultSlot.args = {
+    iconName: 'utility:favorite'
 };
 
 export const Brand = Template.bind({});
