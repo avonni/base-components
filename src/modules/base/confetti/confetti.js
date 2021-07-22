@@ -63,7 +63,7 @@ const DEFAULT_Z_INDEX = 100
  * @class
  * @public
  * @descriptor avonni-confetti
- * @example example-confetti--base
+ * @storyId example-confetti--base
  */
 export default class Confetti extends LightningElement {
     /**

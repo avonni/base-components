@@ -72,7 +72,7 @@ const DEFAULT_COLUMNS = 7
 /**
  * @class
  * @descriptor avonni-color-palette
- * @example example-color-gradient--base
+ * @storyId example-color-gradient--base
  * @public
  */
 export default class ColorPalette extends LightningElement {

@@ -84,7 +84,7 @@ const i18n = {
 /**
  * @class
  * @descriptor avonni-dual-listbox
- * @example example-dual-listbox--base
+ * @storyId example-dual-listbox--base
  * @public
  */
 export default class DualListbox extends LightningElement {

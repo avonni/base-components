@@ -108,7 +108,7 @@ const DEFAULT_RESET_BUTTON_LABEL = 'Reset';
 /**
  * @class
  * @descriptor avonni-filter-menu
- * @example example-filter-menu--base
+ * @storyId example-filter-menu--base
  * @public
  */
 export default class FilterMenu extends LightningElement {

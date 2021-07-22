@@ -3,7 +3,7 @@
     @overview Builds a tree-like JSON string from the doclet data.
     @version 0.0.3
     @example
-        ./jsdoc scratch/jsdoc_test.js -t templates/haruki -d console -q format=xml
+        ./node_modules/jsdoc/jsdoc.js ./src/modules/base/alert/alert.js ./src/modules/base/alert/__docs__/alert.jsdoc.js -t ./jsdoc -c ./jsdoc/jsdoc.config.json -d console
 */
 const xml = require('js2xmlparser');
 

@@ -49,7 +49,7 @@ const DEFAULT_RESET_BUTTON_LABEL = 'Reset';
 /**
  * @class
  * @descriptor avonni-filter-menu-group
- * @example example-filter-menu-group--base
+ * @storyId example-filter-menu-group--base
  * @public
  */
 export default class FilterMenuGroup extends LightningElement {

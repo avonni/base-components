@@ -62,7 +62,7 @@ const INPUT_CHOICE_TYPES = { valid: ['default', 'button'], default: 'default' };
 /**
  * @class
  * @descriptor avonni-input-choice-set
- * @example example-input-choice-set--radio-buttons
+ * @storyId example-input-choice-set--radio-buttons
  * @public
  */
 export default class InputChoiceSet extends LightningElement {

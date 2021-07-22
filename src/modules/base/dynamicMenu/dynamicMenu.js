@@ -73,7 +73,7 @@ const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Search…';
 /**
  * @class
  * @descriptor  avonni-dynamic-menu
- * @example example-dynamic-menu--base
+ * @storyId example-dynamic-menu--base
  * @public
  */
 export default class DynamicMenu extends LightningElement {

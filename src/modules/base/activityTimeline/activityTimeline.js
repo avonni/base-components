@@ -44,7 +44,7 @@ const GROUP_BY_OPTIONS = {
 /**
  * @class
  * @descriptor avonni-activity-timeline
- * @example example-activitytimeline--base
+ * @storyId example-activitytimeline--base
  * @public
  */
 export default class ActivityTimeline extends LightningElement {
