@@ -266,6 +266,10 @@
             "path": "src/modules/base/primitiveBubble/primitiveBubble.js"
         },
         {
+            "name": "c/primitiveCellAvatarGroup",
+            "path": "src/modules/base/primitiveCellAvatarGroup/primitiveCellAvatarGroup.js"
+        },
+        {
             "name": "c/primitiveCellBadge",
             "path": "src/modules/base/primitiveCellBadge/primitiveCellBadge.js"
         },

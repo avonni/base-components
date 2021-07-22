@@ -101,7 +101,14 @@ export default class Datatable extends LightningDatatable {
         },
         'avatar-group': {
             template: avatarGroup,
-            typeAttributes: ['layout', 'maxCount', 'size', 'variant'],
+            typeAttributes: [
+                'layout',
+                'maxCount',
+                'size',
+                'variant',
+                'actionIconName',
+                'name'
+            ],
             standardCellLayout: true
         },
         badge: {
@@ -254,6 +261,16 @@ export default class Datatable extends LightningDatatable {
             'privateeditcustomcell',
             this.handleEditCell
         );
+
+        this.template.addEventListener(
+            'privateavatarclick',
+            this.handleDispatchEvents
+        );
+
+        this.template.addEventListener(
+            'privateactionclick',
+            this.handleDispatchEvents
+        );
     }
 
     renderedCallback() {
@@ -329,7 +346,6 @@ export default class Datatable extends LightningDatatable {
 
     handleEditCell = (event) => {
         event.stopPropagation();
-
         const { colKeyValue, rowKeyValue, value } = event.detail;
         const dirtyValues = this.state.inlineEdit.dirtyValues;
 
@@ -342,7 +358,59 @@ export default class Datatable extends LightningDatatable {
         // Add the new cell value to the state dirty values
         dirtyValues[rowKeyValue][colKeyValue] = value;
 
+        const cellChange = { [rowKeyValue]: { [colKeyValue]: value } };
+
+        this.dispatchEvent(
+            new CustomEvent('cellchange', {
+                detail: {
+                    draftValues: this.getChangesForCustomer(
+                        this.state,
+                        cellChange
+                    )
+                }
+            })
+        );
+
         // Show yellow background and save/cancel button
         super.updateRowsState(this.state);
     };
+
+    handleDispatchEvents(event) {
+        event.stopPropagation();
+        this.dispatchEvent(
+            new CustomEvent(`${event.detail.type}`, {
+                detail: event.detail.detail,
+                bubbles: event.detail.bubbles,
+                composed: event.detail.composed,
+                cancelable: event.detail.cancelable
+            })
+        );
+    }
+
+    getColumnsChangesForCustomer(state, changes) {
+        return Object.keys(changes).reduce((result, colKey) => {
+            const columns = state.columns;
+            const columnIndex = state.headerIndexes[colKey];
+
+            result[columns[columnIndex].fieldName] = changes[colKey];
+
+            return result;
+        }, {});
+    }
+
+    getChangesForCustomer(state, changes) {
+        const keyField = state.keyField;
+        return Object.keys(changes).reduce((result, rowKey) => {
+            const rowChanges = this.getColumnsChangesForCustomer(
+                state,
+                changes[rowKey]
+            );
+
+            if (Object.keys(rowChanges).length > 0) {
+                rowChanges[keyField] = rowKey;
+                result.push(rowChanges);
+            }
+            return result;
+        }, []);
+    }
 }

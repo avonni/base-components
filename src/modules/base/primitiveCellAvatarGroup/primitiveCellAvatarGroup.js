@@ -1,4 +1,3 @@
-<!--
 /**
  * BSD 3-Clause License
  *
@@ -30,18 +29,50 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
--->
 
-<template>
-    <div class="reset-z-index slds-m-left_x-small">
-        <c-primitive-cell-avatar-group
-            size={typeAttributes.size}
-            variant={typeAttributes.variant}
-            items={value}
-            layout={typeAttributes.layout}
-            max-count={typeAttributes.maxCount}
-            action-icon-name={typeAttributes.actionIconName}
-            name={typeAttributes.name}
-        ></c-primitive-cell-avatar-group>
-    </div>
-</template>
+import { LightningElement, api } from 'lwc';
+
+export default class PrimitiveCellAvatarGroup extends LightningElement {
+    @api colKeyValue;
+    @api rowKeyValue;
+    @api items;
+    @api layout;
+    @api maxCount;
+    @api size;
+    @api variant;
+    @api actionIconName;
+    @api name;
+    @api value;
+
+    handleAvatarClick(event) {
+        this.dispatchEvent(
+            new CustomEvent('privateavatarclick', {
+                detail: {
+                    detail: event.detail,
+                    bubbles: event.bubbles,
+                    composed: event.composed,
+                    cancelable: event.cancelable,
+                    type: event.type
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
+    }
+
+    handleActionClick(event) {
+        this.dispatchEvent(
+            new CustomEvent('privateactionclick', {
+                detail: {
+                    detail: event.detail,
+                    bubbles: event.bubbles,
+                    composed: event.composed,
+                    cancelable: event.cancelable,
+                    type: event.type
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
+    }
+}
