@@ -422,7 +422,7 @@ export default class ButtonIconPopover extends LightningElement {
     }
 
     /**
-     * Class of the popover header.
+     * Computed Popover Header Class styling.
      *
      * @type {string}
      */
@@ -436,7 +436,7 @@ export default class ButtonIconPopover extends LightningElement {
     }
 
     /**
-     * Class of the popover.
+     * Computed Popover Class styling.
      *
      * @type {string}
      */
