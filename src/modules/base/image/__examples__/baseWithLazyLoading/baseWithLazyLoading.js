@@ -20,7 +20,7 @@ const srcList = [
     'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300'
 ];
 
-export default class Image extends LightningElement {
+export default class ImageBaseWithLazyLoading extends LightningElement {
     src = srcList;
 
     get itemList() {
