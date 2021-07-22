@@ -71,7 +71,7 @@ const DEFAULT_LIST_BUTTON_SHOW_LESS_LABEL = 'Show less';
  * @class
  * @name Avatar Group
  * @descriptor avonni-avatar-group
- * @example example-avatar-group--base-with-two-avatars
+ * @storyId example-avatar-group--base-with-two-avatars
  * @public
  */
 export default class AvatarGroup extends LightningElement {
