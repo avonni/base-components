@@ -30,9 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { classSet } from 'c/utils';
 import { normalizeArray } from 'c/utilsPrivate';
-import { generateUniqueId } from 'c/utils';
+import Cell from './cell';
 
 export default class Row {
     constructor(props) {
@@ -53,28 +52,15 @@ export default class Row {
         }
     }
 
-    getColumnClass(column) {
-        return classSet(
-            'slds-border_right slds-col slds-p-around_none slds-wrap'
-        )
-            .add({
-                'slds-theme_alert-texture slds-theme_shade':
-                    column && column.disabled
-            })
-            .toString();
-    }
-
     generateColumns(headerColumns) {
         this.columns = [];
         headerColumns.forEach((element) => {
-            this.columns.push({
-                start: element.start,
-                end: element.end,
-                class: this.getColumnClass(),
-                events: [],
-                crossingEvents: [],
-                disabledDates: []
-            });
+            this.columns.push(
+                new Cell({
+                    start: element.start,
+                    end: element.end
+                })
+            );
         });
 
         this.generateEvents();
@@ -93,70 +79,13 @@ export default class Row {
                     return column.end > date.from;
                 });
                 if (i > -1) {
-                    // If the event is a disabled date/time
-                    if (event.disabled) {
-                        columns[i].disabledDates.push({
-                            title: event.title,
-                            from: date.from.ts,
-                            to: date.to.ts,
-                            style: event.wrapperStyle,
-                            iconName: event.iconName,
-                            showTitle: event.iconName || event.title
-                        });
-                    } else {
-                        // If an event is already crossing this column
-                        // and started before the current event,
-                        // add a placeholder to push the current event down in the column
-                        let placeholders = [];
-                        columns[i].crossingEvents.forEach((crossingEvent) => {
-                            if (crossingEvent.from < date.from) {
-                                placeholders.push(crossingEvent);
-                            }
-                        });
-
-                        // Push the current event in the first column
-                        columns[i].events.push({
-                            key: generateUniqueId(),
-                            wrapperClass: event.wrapperClass,
-                            wrapperStyle: event.wrapperStyle,
-                            name: event.name,
-                            keyFields: event.keyFields,
-                            title: event.title,
-                            class: event.class,
-                            style: event.style,
-                            iconName: event.iconName,
-                            from: date.from.ts,
-                            to: date.to.ts,
-                            placeholders: placeholders
-                        });
-                    }
+                    columns[i].addEvent(event, date);
 
                     // In every other column the event crosses, add the event to crossingEvents
                     i += 1;
                     if (!event.disabled) {
                         while (i < columns.length && date.to > columns[i].end) {
-                            const crossingEvent = {
-                                from: date.from,
-                                key: generateUniqueId(),
-                                wrapperClass: event.wrapperClass,
-                                wrapperStyle: event.wrapperStyle,
-                                class: event.class,
-                                style: event.style,
-                                iconName: event.iconName,
-                                title: event.title
-                            };
-                            columns[i].crossingEvents.push(crossingEvent);
-
-                            // If there were already crossing events, make sure they don't need placeholders
-                            if (columns[i].events.length) {
-                                columns[i].events.forEach((existingEvent) => {
-                                    if (existingEvent.from > date.from) {
-                                        existingEvent.placeholders.push(
-                                            crossingEvent
-                                        );
-                                    }
-                                });
-                            }
+                            columns[i].addCrossingEvent(event, date);
                             i += 1;
                         }
                     }
