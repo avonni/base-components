@@ -133,7 +133,7 @@ const columnsAB = [
             maxCount: 3,
             size: 'small',
             actionIconName: 'utility:add',
-            name: { fieldName: 'avatarGroupName'}
+            name: { fieldName: 'avatarGroupName' }
         }
     },
     {
@@ -205,8 +205,7 @@ const columnsCE = [
         type: 'combobox',
         typeAttributes: {
             label: 'Simple Combobox',
-            options: options,
-            disabled: false
+            options: options
         },
         editable: true,
         fixedWidth: 230

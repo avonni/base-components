@@ -53,7 +53,7 @@ export default class PrimitiveCellCombobox extends LightningElement {
     set value(value) {
         // When data is first set, the value is an object containing the editable state
         // When the cell is edited, only the value is sent back
-        if (typeof value === 'object') {
+        if (typeof value === 'object' && value.editable !== undefined) {
             this.readOnly = !value.editable;
             this._value = value.value;
         } else {
