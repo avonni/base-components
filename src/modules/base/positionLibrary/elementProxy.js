@@ -92,23 +92,10 @@ export class ElementProxy {
         this._releaseCb = cb.bind(scopeObj);
     }
 
-    checkNodeIsInDom() {
-        // if underlying DOM node is gone,
-        // this proxy should be released
-        if (!isInDom(this._node)) {
-            return false;
-        }
-        return true;
-    }
-
     refresh() {
         const w = WindowManager.window;
 
         if (!this.isDirty()) {
-            if (!this.checkNodeIsInDom()) {
-                return this.release();
-            }
-
             let box, x, scrollTop, scrollLeft;
 
             if (typeof w.pageYOffset !== 'undefined') {
