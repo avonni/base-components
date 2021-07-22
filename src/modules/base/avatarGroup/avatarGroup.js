@@ -72,7 +72,6 @@ export default class AvatarGroup extends LightningElement {
     @api listButtonIconName;
     @api listButtonShowMoreLabel = DEFAULT_LIST_BUTTON_SHOW_MORE_LABEL;
     @api listButtonShowLessLabel = DEFAULT_LIST_BUTTON_SHOW_LESS_LABEL;
-
     @api listButtonShowMoreIconName;
     @api listButtonShowLessIconName;
     @api name;
@@ -127,7 +126,8 @@ export default class AvatarGroup extends LightningElement {
         this._maxCount = value;
     }
 
-    @api get size() {
+    @api
+    get size() {
         return this._size;
     }
 
@@ -138,7 +138,8 @@ export default class AvatarGroup extends LightningElement {
         });
     }
 
-    @api get layout() {
+    @api
+    get layout() {
         return this._layout;
     }
 
@@ -149,7 +150,8 @@ export default class AvatarGroup extends LightningElement {
         });
     }
 
-    @api get listButtonVariant() {
+    @api
+    get listButtonVariant() {
         return this._listButtonVariant;
     }
 
@@ -160,7 +162,8 @@ export default class AvatarGroup extends LightningElement {
         });
     }
 
-    @api get listButtonShowMoreIconPosition() {
+    @api
+    get listButtonShowMoreIconPosition() {
         return this._listButtonShowMoreIconPosition;
     }
 
@@ -170,7 +173,8 @@ export default class AvatarGroup extends LightningElement {
             validValues: BUTTON_ICON_POSITIONS.valid
         });
     }
-    @api get listButtonShowLessIconPosition() {
+    @api
+    get listButtonShowLessIconPosition() {
         return this._listButtonShowLessIconPosition;
     }
 
@@ -181,7 +185,8 @@ export default class AvatarGroup extends LightningElement {
         });
     }
 
-    @api get variant() {
+    @api
+    get variant() {
         return this._variant;
     }
 
@@ -449,7 +454,7 @@ export default class AvatarGroup extends LightningElement {
         }
     }
 
-    actionClick() {
+    handleActionClick() {
         // * action event *
         const name = this.name;
 

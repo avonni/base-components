@@ -41,8 +41,9 @@ export const ButtonPopover = ({
     accessKey,
     label,
     title,
-    iconName,
     loadingStateAlternativeText,
+    hideCloseButton,
+    iconName,
     iconPosition,
     popoverSize,
     placement,
@@ -56,8 +57,9 @@ export const ButtonPopover = ({
     element.accessKey = accessKey;
     element.label = label;
     element.title = title;
-    element.iconName = iconName;
     element.loadingStateAlternativeText = loadingStateAlternativeText;
+    element.hideCloseButton = hideCloseButton;
+    element.iconName = iconName;
     element.iconPosition = iconPosition;
     element.popoverSize = popoverSize;
     element.placement = placement;
