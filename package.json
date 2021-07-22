@@ -64,7 +64,6 @@
         "test:unit:debug": "lwc-services test:unit --debug",
         "test:unit:watch": "lwc-services test:unit --watch",
         "syncingRepositories": "bash ./scripts/syncingRepositories.sh",
-        "chromatic": "npx chromatic build-storybook --project-token df555afc6c3b",
-        "docs": "./node_modules/jsdoc/jsdoc.js"
+        "chromatic": "npx chromatic build-storybook --project-token df555afc6c3b"
     }
 }
