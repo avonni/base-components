@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class Timeline extends LightningElement {
+export default class DateTimePickerTimeline extends LightningElement {
     disabledDateTimes = [
         new Date(new Date().setHours(9, 35, 0, 0)),
         new Date(new Date().setHours(9, 30, 0, 0)),

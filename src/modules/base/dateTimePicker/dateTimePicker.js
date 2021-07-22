@@ -172,7 +172,7 @@ export default class DateTimePicker extends LightningElement {
     dayClass = DEFAULT_DAY_CLASS;
     calendarDisabledDates = [];
 
-    valid = true
+    _valid = true
 
     connectedCallback() {
         this._processValue();
@@ -775,6 +775,9 @@ export default class DateTimePicker extends LightningElement {
         return date;
     }
 
+    /**
+     * Processes the values to make sure it's an ISOstring.
+     */
     _processValue() {
         if (this.type === 'checkbox') {
             // Make sure the values are in an array
@@ -1252,9 +1255,9 @@ export default class DateTimePicker extends LightningElement {
      * Removes slds-has-error on the whole element if not valid.
      */    
     handleValueBlur() {
-        this.valid = !(this.required && !this.value);
+        this._valid = !(this.required && !this.value);
         this.interactingState.leave();
-        if(!this.valid) {
+        if(!this._valid) {
             this.classList.remove('slds-has-error')
         }
     }

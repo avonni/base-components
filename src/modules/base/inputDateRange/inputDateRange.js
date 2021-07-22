@@ -122,7 +122,7 @@ export default class InputDateRange extends LightningElement {
     _cancelBlurEndDate = false;
 
     helpMessage;
-    valid = true;
+    _valid = true;
 
     connectedCallback() {
         this.interactingState = new InteractingState();
@@ -439,7 +439,7 @@ export default class InputDateRange extends LightningElement {
      * Removes it from every input when valid.
      */
     updateClassListWhenError() {
-        if(!this.valid) {
+        if(!this._valid) {
             this.classList.remove('slds-has-error')
             this.startDateInput.classList.add('slds-has-error')
             this.startDateInput.classList.add('avonni-input-date-rage-input-error')
@@ -450,7 +450,7 @@ export default class InputDateRange extends LightningElement {
                 this.endTimeInput.classList.add('slds-has-error')
             }
         }
-        if(this.valid) {
+        if(this._valid) {
             this.startDateInput.classList.remove('slds-has-error')
             this.startDateInput.classList.remove('avonni-input-date-rage-input-error')
             this.endDateInput.classList.remove('slds-has-error')
@@ -648,7 +648,7 @@ export default class InputDateRange extends LightningElement {
     handleBlurStartDate(event) {
         this.interactingState.leave();
 
-        this.valid = !(this.required && !this.startDate);
+        this._valid = !(this.required && !this.startDate);
         if (this._cancelBlurStartDate) {
             return;
         }
