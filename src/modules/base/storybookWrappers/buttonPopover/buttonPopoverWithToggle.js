@@ -30,47 +30,28 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from '../../storybookWrappers/buttonIconPopover/buttonIconPopover';
+import { LightningElement, api } from 'lwc';
 
-customElements.define(
-    'ac-base-button-icon-popover',
-    Component.CustomElementConstructor
-);
+const DEFAULT_POPOVER_SIZE = 'medium';
+const DEFAULT_POPOVER_PLACEMENT = 'left';
+const DEFAULT_POPOVER_VARIANT = 'base';
+const DEFAULT_ICON_POSITION = 'left';
+const DEFAULT_BUTTON_VARIANT = 'neutral';
+const DEFAULT_BUTTON_TRIGGER = 'click';
 
-export const ButtonIconPopover = ({
-    accessKey,
-    alternativeText,
-    title,
-    hideCloseButton,
-    iconName,
-    iconClass,
-    loadingStateAlternativeText,
-    tooltip,
-    disabled,
-    isLoading,
-    size,
-    placement,
-    variant,
-    popoverSize,
-    triggers,
-    popoverVariant
-}) => {
-    const element = document.createElement('ac-base-button-icon-popover');
-    element.accessKey = accessKey;
-    element.alternativeText = alternativeText;
-    element.title = title;
-    element.hideCloseButton = hideCloseButton;
-    element.iconName = iconName;
-    element.iconClass = iconClass;
-    element.loadingStateAlternativeText = loadingStateAlternativeText;
-    element.tooltip = tooltip;
-    element.disabled = disabled;
-    element.isLoading = isLoading;
-    element.size = size;
-    element.placement = placement;
-    element.variant = variant;
-    element.popoverSize = popoverSize;
-    element.triggers = triggers;
-    element.popoverVariant = popoverVariant;
-    return element;
-};
+export default class ButtonPopoverWithToggle extends LightningElement {
+    @api accessKey;
+    @api label;
+    @api title;
+    @api iconName;
+    @api loadingStateAlternativeText;
+    @api disabled = false;
+    @api hideCloseButton = false;
+    @api isLoading = false;
+    @api popoverSize = DEFAULT_POPOVER_SIZE;
+    @api placement = DEFAULT_POPOVER_PLACEMENT;
+    @api popoverVariant = DEFAULT_POPOVER_VARIANT;
+    @api iconPosition = DEFAULT_ICON_POSITION;
+    @api variant = DEFAULT_BUTTON_VARIANT;
+    @api triggers = DEFAULT_BUTTON_TRIGGER;
+}

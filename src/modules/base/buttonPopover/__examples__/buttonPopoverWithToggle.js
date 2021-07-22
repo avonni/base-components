@@ -30,47 +30,45 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from '../../storybookWrappers/buttonIconPopover/buttonIconPopover';
+import Component from '../../storybookWrappers/buttonPopover/buttonPopoverWithToggle';
 
 customElements.define(
-    'ac-base-button-icon-popover',
+    'ac-base-button-popover-with-toggle',
     Component.CustomElementConstructor
 );
 
-export const ButtonIconPopover = ({
+export const ButtonPopoverWithToggle = ({
     accessKey,
-    alternativeText,
+    label,
     title,
+    loadingStateAlternativeText,
     hideCloseButton,
     iconName,
-    iconClass,
-    loadingStateAlternativeText,
-    tooltip,
-    disabled,
-    isLoading,
-    size,
+    iconPosition,
+    popoverSize,
     placement,
     variant,
-    popoverSize,
     triggers,
-    popoverVariant
+    popoverVariant,
+    disabled,
+    isLoading
 }) => {
-    const element = document.createElement('ac-base-button-icon-popover');
+    const element = document.createElement(
+        'ac-base-button-popover-with-toggle'
+    );
     element.accessKey = accessKey;
-    element.alternativeText = alternativeText;
+    element.label = label;
     element.title = title;
+    element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.hideCloseButton = hideCloseButton;
     element.iconName = iconName;
-    element.iconClass = iconClass;
-    element.loadingStateAlternativeText = loadingStateAlternativeText;
-    element.tooltip = tooltip;
-    element.disabled = disabled;
-    element.isLoading = isLoading;
-    element.size = size;
+    element.iconPosition = iconPosition;
+    element.popoverSize = popoverSize;
     element.placement = placement;
     element.variant = variant;
-    element.popoverSize = popoverSize;
     element.triggers = triggers;
     element.popoverVariant = popoverVariant;
+    element.disabled = disabled;
+    element.isLoading = isLoading;
     return element;
 };

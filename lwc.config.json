@@ -90,10 +90,6 @@
             "path": "src/modules/base/carousel/carousel.js"
         },
         {
-            "name": "c/checkboxGroup",
-            "path": "src/modules/base/checkboxGroup/checkboxGroup.js"
-        },
-        {
             "name": "c/chip",
             "path": "src/modules/base/chip/chip.js"
         },
@@ -184,6 +180,10 @@
         {
             "name": "c/image",
             "path": "src/modules/base/image/image.js"
+        },
+        {
+            "name": "c/inputChoiceSet",
+            "path": "src/modules/base/inputChoiceSet/inputChoiceSet.js"
         },
         {
             "name": "c/inputCounter",
@@ -514,10 +514,6 @@
             "path": "src/modules/base/carousel/carousel.js"
         },
         {
-            "name": "avonni/checkboxGroup",
-            "path": "src/modules/base/checkboxGroup/checkboxGroup.js"
-        },
-        {
             "name": "avonni/chip",
             "path": "src/modules/base/chip/chip.js"
         },
@@ -592,6 +588,10 @@
         {
             "name": "avonni/image",
             "path": "src/modules/base/image/image.js"
+        },
+        {
+            "name": "avonni/inputChoiceSet",
+            "path": "src/modules/base/inputChoiceSet/inputChoiceSet.js"
         },
         {
             "name": "avonni/inputCounter",
@@ -779,7 +779,6 @@
         "avonni/buttonPopover",
         "avonni/calendar",
         "avonni/carousel",
-        "avonni/checkboxGroup",
         "avonni/chip",
         "avonni/colorGradient",
         "avonni/colorPalette",
@@ -799,6 +798,7 @@
         "avonni/heroBanner",
         "avonni/illustration",
         "avonni/image",
+        "avonni/inputChoiceSet",
         "avonni/inputCounter",
         "avonni/inputDateRange",
         "avonni/inputPen",

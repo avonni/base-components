@@ -30,14 +30,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from '../../storybookWrappers/buttonIconPopover/buttonIconPopover';
+import Component from '../../storybookWrappers/buttonIconPopover/buttonIconPopoverWithToggle';
 
 customElements.define(
-    'ac-base-button-icon-popover',
+    'ac-base-button-icon-popover-with-toggle',
     Component.CustomElementConstructor
 );
 
-export const ButtonIconPopover = ({
+export const ButtonIconPopoverWithToggle = ({
     accessKey,
     alternativeText,
     title,
@@ -55,7 +55,9 @@ export const ButtonIconPopover = ({
     triggers,
     popoverVariant
 }) => {
-    const element = document.createElement('ac-base-button-icon-popover');
+    const element = document.createElement(
+        'ac-base-button-icon-popover-with-toggle'
+    );
     element.accessKey = accessKey;
     element.alternativeText = alternativeText;
     element.title = title;
