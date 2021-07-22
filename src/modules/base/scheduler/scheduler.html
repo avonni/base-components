@@ -33,7 +33,7 @@
 -->
 
 <template>
-    <div class="slds-grid">
+    <div class="slds-grid" onmouseup={handleEventMouseUp}>
         <!-- Datatable -->
         <div class="slds-border_right scheduler__datatable-col">
             <c-datatable
@@ -171,7 +171,6 @@
                                             data-to={event.to}
                                             tabindex="0"
                                             oncontextmenu={handleEventContextMenu}
-                                            onmouseup={handleEventMouseUp}
                                             onmousedown={handleEventMouseDown}
                                             onmouseenter={handleEventMouseEnter}
                                             onmouseleave={hideDetailPopover}

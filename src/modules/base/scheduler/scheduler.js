@@ -812,6 +812,27 @@ export default class Scheduler extends LightningElement {
         this.hideAllPopovers();
     }
 
+    normalizeMousePosition(mouseX, mouseY) {
+        const { top, bottom, left, right } = this._initialPosition;
+
+        let x = mouseX;
+        let y = mouseY;
+
+        if (y < top) {
+            y = top;
+        } else if (y > bottom) {
+            y = bottom;
+        }
+
+        if (x < left) {
+            x = left;
+        } else if (x > right) {
+            x = right;
+        }
+
+        return { x, y };
+    }
+
     hideAllPopovers = () => {
         this.hideDetailPopover();
         this.hideContextMenu();
@@ -870,7 +891,8 @@ export default class Scheduler extends LightningElement {
             left: leftBoundary,
             right: rightBoundary,
             top: schedule.top + (mouseEvent.clientY - event.top),
-            bottom: schedule.bottom + (mouseEvent.clientY - event.bottom)
+            bottom: schedule.bottom + (mouseEvent.clientY - event.bottom),
+            row: this.getRowFromPosition(mouseEvent.clientY)
         };
     }
 
@@ -879,36 +901,18 @@ export default class Scheduler extends LightningElement {
         event.preventDefault();
 
         if (this._draggedEvent) {
-            const {
-                top,
-                bottom,
-                left,
-                right,
-                initialX,
-                initialY,
-                eventWidth
-            } = this._initialPosition;
+            const { initialX, initialY, eventWidth } = this._initialPosition;
             const side = this._resizeSide;
-
-            let y = event.clientY;
-            let x = event.clientX;
 
             // Prevent the events from being dragged out of the schedule grid,
             // or from being squished outside of their boundaries when resizing
-            if (y < top) {
-                y = top;
-            } else if (y > bottom) {
-                y = bottom;
-            }
+            const position = this.normalizeMousePosition(
+                event.clientX,
+                event.clientY
+            );
 
-            if (x < left) {
-                x = left;
-            } else if (x > right) {
-                x = right;
-            }
-
-            x = x - initialX;
-            y = y - initialY;
+            const x = position.x - initialX;
+            const y = position.y - initialY;
 
             // If it is a resizing
             if (side) {
@@ -939,11 +943,16 @@ export default class Scheduler extends LightningElement {
                     eventLeft,
                     eventRight
                 } = this._initialPosition;
+                const draftValues = {};
                 const side = this._resizeSide;
-                const leftX = mouseEvent.clientX - (initialX - eventLeft);
-                const rightX = mouseEvent.clientX + (eventRight - initialX);
+                const position = this.normalizeMousePosition(
+                    mouseEvent.clientX,
+                    mouseEvent.clientY
+                );
+                const leftX = position.x - (initialX - eventLeft);
+                const rightX = position.x + (eventRight - initialX);
                 const x = side === 'right' ? rightX : leftX;
-                const y = mouseEvent.clientY;
+                const y = position.y;
 
                 // Find the row and cell the event was dropped on
                 const rowElement = this.getRowFromPosition(y);
@@ -960,6 +969,7 @@ export default class Scheduler extends LightningElement {
                     event.to = dateTimeObjectFrom(
                         Number(cellElement.dataset.end)
                     );
+                    draftValues.to = event.to.toUTC().toISO();
                 } else {
                     // Update the start date if the event was dragged or resized from the left
                     const start = dateTimeObjectFrom(
@@ -970,34 +980,32 @@ export default class Scheduler extends LightningElement {
                         // Update the end date if the event was dragged
                         const duration = event.to - event.from;
                         event.to = addToDate(start, 'millisecond', duration);
+
+                        // Update the event rows
+                        const rowKey = rowElement.dataset.key;
+                        const previousRowKey = this._draggedEvent.dataset
+                            .rowKey;
+
+                        if (previousRowKey !== rowKey) {
+                            // Remove the old row key from the event
+                            const keyFieldIndex = event.keyFields.findIndex(
+                                (key) => key === previousRowKey
+                            );
+                            event.keyFields.splice(keyFieldIndex, 1);
+
+                            // If it's not already present, add the new row key to the event
+                            if (event.keyFields.indexOf(rowKey) < 0) {
+                                event.keyFields.push(rowKey);
+                            }
+
+                            draftValues.keyFields = event.keyFields;
+                        }
                     }
                     event.from = start;
+                    draftValues.from = event.from.toUTC().toISO();
+                    if (!side) draftValues.to = event.to.toUTC().toISO();
                 }
                 this.updateEventWidth(event);
-
-                const draftValues = {
-                    from: event.from,
-                    to: event.to
-                };
-
-                // Update the event rows
-                const rowKey = rowElement.dataset.key;
-                const previousRowKey = this._draggedEvent.dataset.rowKey;
-
-                if (previousRowKey !== rowKey) {
-                    // Remove the old row key from the event
-                    const keyFieldIndex = event.keyFields.findIndex(
-                        (key) => key === previousRowKey
-                    );
-                    event.keyFields.splice(keyFieldIndex, 1);
-
-                    // If it's not already present, add the new row key to the event
-                    if (event.keyFields.indexOf(rowKey) < 0) {
-                        event.keyFields.push(rowKey);
-                    }
-
-                    draftValues.keyFields = event.keyFields;
-                }
 
                 // Update the rows
                 this.initRows();

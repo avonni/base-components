@@ -186,8 +186,8 @@ const events = [
         recurrenceAttributes: {
             weekdays: [1, 3, 5]
         },
-        color: '#300561'
-        // theme: 'line'
+        color: '#300561',
+        theme: 'default'
     }
 ];
 
