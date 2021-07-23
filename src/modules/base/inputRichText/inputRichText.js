@@ -186,7 +186,7 @@ export default class InputRichText extends LightningElement {
     /**
     * A comma-separated list of button categories to remove from the toolbar.
     *
-    * @type {srting} //TODO
+    * @type {object} proxy
     * @public
     */
     @api disabledCategories = '';
@@ -194,7 +194,7 @@ export default class InputRichText extends LightningElement {
     * A list of allowed formats. By default, the list is computed based on enabled categories.
     * The 'table' format is always enabled to support copying and pasting of tables if formats are not provided.
     *
-    * @type {string} //TODO
+    * @type {object} proxy
     * @public
     */
     @api formats = '';
@@ -217,19 +217,17 @@ export default class InputRichText extends LightningElement {
     /**
     * Custom buttons to add to the toolbar.
     *
-    * @type {} //TODO
     * @public
     */
     @api customButtons;
     /**
     * Entity ID to share the image with.
     *
-    * @type {} //TODO
     * @public
     */
     @api shareWithEntityId;
     /**
-    * Check if parent component is Publisher. //TODO 
+    * Check if editor is in Publisher category.
     *
     * @type {boolean}
     * @public
@@ -259,7 +257,7 @@ export default class InputRichText extends LightningElement {
     /**
     * The HTML content in the rich text editor.
     *
-    * @type {string} //TODO
+    * @type {string}
     * @public
     */
     @api
@@ -361,7 +359,7 @@ export default class InputRichText extends LightningElement {
      * The format also applies to currently selected content.
      * Valid formats are font, size, and align.
      * 
-     * @param {object} value A key-value pair with format names and values. //TODO
+     * @param {object} value A key-value pair with format names and values.
      * @public 
      */
     @api
@@ -405,7 +403,7 @@ export default class InputRichText extends LightningElement {
     /**
      * Check if Link Value is shown.
      * 
-     * @type {string} //TODO
+     * @type {string}
      */
     get showLinkValue() {
         return this.linkValue;
@@ -471,7 +469,7 @@ export default class InputRichText extends LightningElement {
     /**
      * Retrieve Unique Label Id.
      * 
-     * @type {string} //TODO
+     * @type {string}
      */
     get labelId() {
         return this.uniqueLabelId;
@@ -1355,9 +1353,9 @@ export default class InputRichText extends LightningElement {
     }
 
     /**
-     * Local device image file selection.
+     * Local device image file selection. Opens local file explorer.
      * 
-     * @param {*} container //TODO 
+     * @param {function} container
      */
     loadNativeFileSelector(container) {
         const documentFragment = document.createDocumentFragment();
@@ -1503,7 +1501,7 @@ export default class InputRichText extends LightningElement {
     /**
      * Sets user selection to given range, which will also focus the editor.
      * 
-     * @param {*} item  //TODO
+     * @param {*} item
      */
     expandSelectionToNode(item) {
         const quill = this.quill;
@@ -1629,7 +1627,7 @@ export default class InputRichText extends LightningElement {
     /**
      * Apply text alignment.
      * 
-     * @param {*} t //TODO
+     * @param {object} t
      */
     applyTextAlignment(t) {
         if (!(!isRTL() && t.align && '' !== t.align)) {
@@ -1699,7 +1697,7 @@ export default class InputRichText extends LightningElement {
         *
         * @event
         * @name change 
-        * @param {*} value //TODO
+        * @param {string} value
         * @public
         * @bubbles
         * @cancelable
@@ -1735,7 +1733,7 @@ export default class InputRichText extends LightningElement {
     /**
      * Reserved for internal use. Insert text in the rich text editor at cursor position.
      * 
-     * @param {*} t //TODO
+     * @param {*} t
      */
     @api
     insertTextAtCursor(t) {
