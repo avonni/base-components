@@ -126,10 +126,20 @@ export default class HeroBanner extends LightningElement {
         }
     }
 
+    /**
+     * Returns slot element.
+     *
+     * @type {element}
+     */
     get slot() {
         return this.template.querySelector('slot');
     }
 
+    /**
+     * Returns footer slot element.
+     *
+     * @type {element}
+     */
     get footerSlot() {
         return this.template.querySelector('slot[name=footer]');
     }
@@ -236,7 +246,7 @@ export default class HeroBanner extends LightningElement {
     }
 
     /**
-     * Width for the width container based on the maxWidth.
+     * Computed width for the width container based on the attribute maxWidth.
      *
      * @type {string}
      */
@@ -245,7 +255,7 @@ export default class HeroBanner extends LightningElement {
     }
 
     /**
-     * Width for the content container based on the contentWidth.
+     * Computed width for the content container based on the attribute contentWidth.
      *
      * @type {string}
      */
@@ -254,7 +264,7 @@ export default class HeroBanner extends LightningElement {
     }
 
     /**
-     * Class of the content container.
+     * Computed Content Container Class styling.
      *
      * @type {string}
      */
@@ -276,7 +286,7 @@ export default class HeroBanner extends LightningElement {
     }
 
     /**
-     * Class of the width container.
+     * Computed Width Container Class styling.
      *
      * @type {string}
      */
@@ -294,7 +304,7 @@ export default class HeroBanner extends LightningElement {
     }
 
     /**
-     * Class of the button.
+     * Computed Button Class styling.
      *
      * @type {string}
      */
