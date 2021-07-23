@@ -32,7 +32,7 @@
 
 import LightningDatatable from 'lightning/datatable';
 import { api } from 'lwc';
-import { normalizeArray } from 'c/utilsPrivate';
+import { normalizeArray, normalizeString } from 'c/utilsPrivate';
 import {
     count,
     countUnique,
@@ -90,6 +90,8 @@ const CUSTOM_TYPES_EDITABLE = [
     'slider'
 ];
 
+const SUMMARIZATIONS_TYPES = ['currency', 'number', 'percent']
+
 const SUMMARIZATIONS = [
     'count',
     'countUnique',
@@ -101,9 +103,11 @@ const SUMMARIZATIONS = [
     'mode'
 ];
 
-export default class PrimitiveDatatable extends LightningDatatable {
-    @api columnsWidthsMode;
+const COLUMN_WIDTHS_MODES = {valid: ['fixed', 'auto'], default: 'fixed'}
 
+const SORT_DIRECTIONS = {valid: ['asc', 'desc'], default: 'desc'}
+
+export default class PrimitiveDatatable extends LightningDatatable {
     static customTypes = {
         avatar: {
             template: avatar,
@@ -308,6 +312,8 @@ export default class PrimitiveDatatable extends LightningDatatable {
             'privateactionclick',
             this.handleDispatchEvents
         );
+
+        this.template.addEventListener('rowselection', () => console.log('hello'))
         // console.log('Currency', this._currencyArray);
         // console.log('Number', this._numberArray);
         // console.log('Percent', this._percentArray);
@@ -328,9 +334,9 @@ export default class PrimitiveDatatable extends LightningDatatable {
         this.computeEditableOption();
 
         if (!this.rendered) {
-            this.computeSummarizationNumber();
-            this.computeSummarizationCurrency();
-            this.computeSummarizationPercent();
+            // this.computeSummarizationCurrency();
+            // this.computeSummarizationNumber();
+            // this.computeSummarizationPercent();
         }
 
         // Make sure custom edited cells stay yellow on hover
@@ -370,6 +376,122 @@ export default class PrimitiveDatatable extends LightningDatatable {
         this.removeWrapOption();
         this.computeEditableOption();
     }
+
+    @api
+    get columnWidthsMode() {
+        return super.columnWidthsMode
+    }w
+
+    set columnWidthsMode(value) {
+        super.columnWidthsMode = normalizeString(value, {
+            fallbackValue: COLUMN_WIDTHS_MODES.default,
+            validValues: COLUMN_WIDTHS_MODES.valid
+        });
+    }
+
+    @api
+    get defaultSortDirection() {
+        return super.defaultSortDirection
+    }
+
+    set defaultSortDirection(value) {
+        super.defaultSortDirection = normalizeString(value, {
+            fallbackValue: SORT_DIRECTIONS.default,
+            validValues: SORT_DIRECTIONS.valid
+        });
+    }
+
+    @api
+    get sortedDirection() {
+        return super.sortedDirection
+    }
+
+    set sortedDirection(value) {
+        super.sortedDirection = normalizeString(value, {
+            fallbackValue: SORT_DIRECTIONS.default,
+            validValues: SORT_DIRECTIONS.valid
+        });
+    }
+
+    @api
+    get wrapTextMaxLines() {
+        return super.wrapTextMaxLines
+    }
+
+    set wrapTextMaxLines(value) {
+        if(value === undefined) return;
+        super.wrapTextMaxLines = value
+    }
+
+    @api
+    get loadMoreOffset() {
+        return super.loadMoreOffset
+    }
+
+    set loadMoreOffset(value) {
+        if(value === undefined) return;
+        super.loadMoreOffset = value
+    }
+
+    @api
+    get maxColumnWidth() {
+        return super.maxColumnWidth
+    }
+
+    set maxColumnWidth(value) {
+        if(value === undefined) return;
+        super.maxColumnWidth = value
+    }    
+
+    @api
+    get minColumnWidth() {
+        return super.minColumnWidth
+    }
+
+    set minColumnWidth(value) {
+        if(value === undefined) return;
+        super.minColumnWidth = value
+    }    
+
+    @api
+    get resizeStep() {
+        return super.resizeStep
+    }
+
+    set resizeStep(value) {
+        if(value === undefined) return;
+        super.resizeStep = value
+    }    
+
+    @api
+    get rowNumberOffset() {
+        return super.rowNumberOffset
+    }
+
+    set rowNumberOffset(value) {
+        if(value === undefined) return;
+        super.rowNumberOffset = value
+    }    
+
+    @api
+    get maxRowSelection() {
+        return super.maxRowSelection
+    }
+
+    set maxRowSelection(value) {
+        if(value === undefined) return;
+        super.maxRowSelection = value
+    }    
+
+    @api
+    get selectedRows() {
+        return super.selectedRows
+    }
+
+    set selectedRows(value) {
+        if(value === undefined) return;
+        super.selectedRows = value
+    }    
 
     removeWrapOption() {
         this.columns.forEach((column) => {
@@ -418,7 +540,7 @@ export default class PrimitiveDatatable extends LightningDatatable {
                     this.summarizations(
                         this._currencyArray,
                         column.summarizeTypes,
-                        'currency'
+                        fieldName
                     );
                 }
             });

@@ -7,7 +7,7 @@
         draft-values={draftValues}
         enable-infinite-loading={enableInfiniteLoading}
         errors={errors}
-        hide-checkbox-column="true"
+        hide-checkbox-column={hideCheckboxColumn}
         hide-table-header={hideTableHeader}
         is-loading={isLoading}
         key-field={keyField}
@@ -23,8 +23,17 @@
         show-row-number-column={showRowNumberColumn}
         sorted-by={sortedBy}
         sorted-direction={sortedDirection}
-        suppress-bottom-bar="true"
+        suppress-bottom-bar={suppressBottomBar}
         wrap-text-max-lines={wrapTextMaxLines}
+        onrowselection={handleDispatchEvents}
+        onsort={handleDispatchEvents}
+        onresize={handleDispatchEvents}
+        onsave={handleDispatchEvents}
+        oncancel={handleDispatchEvents}
+        onheaderaction={handleDispatchEvents}
+        onloadmore={handleDispatchEvents}
+        oncellchange={handleDispatchEvents}
+        onrowaction={handleDispatchEvents}
     >
     </c-primitive-datatable>
 </template>

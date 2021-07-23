@@ -37,7 +37,7 @@ export default class PrimitiveDatatable extends LightningElement {
     @api columns;
     // eslint-disable-next-line @lwc/lwc/valid-api
     @api data;
-    @api defaultSortDirection;
+    @api defaultSortDirection
     @api draftValues;
     @api enableInfiniteLoading;
     @api errors;
@@ -58,5 +58,17 @@ export default class PrimitiveDatatable extends LightningElement {
     @api sortedBy;
     @api sortedDirection;
     @api suppressBottomBar;
-    @api wrapTextMaxLines = 1;
+    @api wrapTextMaxLines
+
+    handleDispatchEvents(event) {
+        event.stopPropagation();
+        this.dispatchEvent(
+            new CustomEvent(`${event.type}`, {
+                detail: event.detail,
+                bubbles: event.bubbles,
+                composed: event.composed,
+                cancelable: event.cancelable
+            })
+        );
+    }
 }
