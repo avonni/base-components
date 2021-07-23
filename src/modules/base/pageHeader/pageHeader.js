@@ -259,7 +259,7 @@ export default class PageHeader extends LightningElement {
     }
 
     /**
-     * Check if Title is specified.
+     * Check if Title text is specified.
      *
      * @type {string}
      */
@@ -268,7 +268,7 @@ export default class PageHeader extends LightningElement {
     }
 
     /**
-     * Check if Label is specified.
+     * Check if Label text is specified.
      *
      * @type {string}
      */
@@ -277,7 +277,7 @@ export default class PageHeader extends LightningElement {
     }
 
     /**
-     * Check if Info is specified.
+     * Check if Info text is specified.
      *
      * @type {string}
      */
