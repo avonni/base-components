@@ -303,7 +303,7 @@ export default class InputRichText extends LightningElement {
             );
             const root = this.quill.root;
 
-            if (this.valid) {
+            if (this._valid) {
                 editor.classList.remove('slds-has-error');
                 root.removeAttribute('aria-describedby');
             } else {
@@ -1179,7 +1179,7 @@ export default class InputRichText extends LightningElement {
      * Set the editor validity state if the content is valid/invalid. If invalid, adds slds-has-error and sets the Aria describedby to the error message Id.
      */
     setEditorValidityState() {
-        if (!this.valid) {
+        if (!this._valid) {
             this.template
                 .querySelector('.slds-rich-text-editor')
                 .classList.add('slds-has-error');

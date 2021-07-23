@@ -424,6 +424,46 @@ describe('Input choice set', () => {
         });
     });
 
+    /* ----- METHODS ----- */
+
+    // reportValidity
+    // Depends on required
+    it('reportValidity method', () => {
+        const element = createElement('base-input-choice-set', {
+            is: InputChoiceSet
+        });
+        document.body.appendChild(element);
+
+        element.required = true;
+        element.reportValidity();
+
+        return Promise.resolve().then(() => {
+            const help = element.shadowRoot.querySelector(
+                '.slds-form-element__help'
+            );
+            expect(help).toBeTruthy();
+        });
+    });
+
+    // showHelpMessageIfInvalid
+    // Depends on required
+    it('showHelpMessageIfInvalid method', () => {
+        const element = createElement('base-input-choice-set', {
+            is: InputChoiceSet
+        });
+        document.body.appendChild(element);
+
+        element.required = true;
+        element.showHelpMessageIfInvalid();
+
+        return Promise.resolve().then(() => {
+            const help = element.shadowRoot.querySelector(
+                '.slds-form-element__help'
+            );
+            expect(help).toBeTruthy();
+        });
+    });
+
     /* ----- EVENTS ----- */
 
     // change event

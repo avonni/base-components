@@ -193,6 +193,7 @@ const optionsWithoutIcon = [
     { label: 'Fri', value: 'fri' }
 ];
 const dayValue = ['fri'];
+const daysValue = ['thu', 'fri'];
 const alignmentValue = ['center'];
 
 export const RadioButtons = Template.bind({});
@@ -200,8 +201,7 @@ RadioButtons.args = {
     label: 'Please select a value',
     messageWhenValueMissing: 'Value missing',
     options: optionsWithoutIcon,
-    value: dayValue,
-    isMultiSelect: false
+    value: dayValue
 };
 
 export const Checkboxes = Template.bind({});
@@ -211,7 +211,7 @@ Checkboxes.args = {
     required: true,
     isMultiSelect: true,
     options: optionsWithoutIcon,
-    value: dayValue
+    value: daysValue
 };
 
 export const HorizontalCheckboxes = Template.bind({});
@@ -317,18 +317,16 @@ export const ButtonsWithMultiSelect = Template.bind({});
 ButtonsWithMultiSelect.args = {
     label: 'Please select a value',
     type: 'button',
-    disabled: false,
     isMultiSelect: true,
     messageWhenValueMissing: 'Value missing',
     options: optionsWithoutIcon,
-    value: dayValue
+    value: daysValue
 };
 
 export const ButtonsWithRightIcons = Template.bind({});
 ButtonsWithRightIcons.args = {
     label: 'Please select a value',
     type: 'button',
-    disabled: false,
     messageWhenValueMissing: 'Value missing',
     options: optionsWithIcon,
     value: alignmentValue
