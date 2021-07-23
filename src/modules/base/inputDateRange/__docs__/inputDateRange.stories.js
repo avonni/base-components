@@ -188,6 +188,18 @@ export default {
                 category: 'Validation'
             }
         },
+        messageWhenValueMissing: {
+            name: 'message-when-value-missing',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Error message to be displayed when the start-date is missing.',
+            table: {
+                category: 'Validation',
+                type: { summary: 'string' }
+            }
+        },
         variant: {
             control: {
                 type: 'select'

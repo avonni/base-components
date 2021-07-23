@@ -32,10 +32,10 @@
 
 import { LightningElement, api } from 'lwc';
 import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
+import { classSet } from 'c/utils';
 import BaseView from './base.html';
 import ModalView from './modal.html';
 import CardView from './card.html';
-import { classSet } from '../utils/classSet';
 
 const VARIANTS = {
     valid: ['base', 'modal', 'card'],

@@ -108,7 +108,9 @@ const columnsAB = [
         typeAttributes: {
             variant: 'circle',
             maxCount: 3,
-            size: 'small'
+            size: 'small',
+            actionIconName: 'utility:add',
+            name: { fieldName: 'avatarGroupName'}
         }
     },
     {
@@ -411,6 +413,7 @@ const dataAB = [
             avatarGroupItems[4],
             avatarGroupItems[3]
         ],
+        avatarGroupName: 'avatar-group-1',
         badge: 'approved',
         badgeVariant: 'success',
         boolean: true
@@ -430,6 +433,7 @@ const dataAB = [
             avatarGroupItems[4],
             avatarGroupItems[2]
         ],
+        avatarGroupName: 'avatar-group-2',
         badge: 'declined',
         badgeVariant: 'error',
         boolean: false
@@ -447,6 +451,7 @@ const dataAB = [
             avatarGroupItems[1],
             avatarGroupItems[3]
         ],
+        avatarGroupName: 'avatar-group-3',
         badge: 'unknown',
         badgeVariant: 'inverse',
         buttonDisabled: true,
@@ -463,6 +468,7 @@ const dataAB = [
             avatarGroupItems[2],
             avatarGroupItems[0]
         ],
+        avatarGroupName: 'avatar-group-4',
         badge: 'approved',
         badgeVariant: 'success',
         boolean: true
@@ -482,6 +488,7 @@ const dataAB = [
             avatarGroupItems[1],
             avatarGroupItems[3]
         ],
+        avatarGroupName: 'avatar-group-5',
         badge: 'approved',
         badgeVariant: 'success'
     }
