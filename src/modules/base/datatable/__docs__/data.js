@@ -61,6 +61,29 @@ const avatarGroupItems = [
     }
 ];
 
+const options = [
+    {
+        label: 'Burlington Textiles Corp of America',
+        value: 'no-avatar-burlington'
+    },
+    {
+        label: 'Dickenson plc',
+        value: 'no-avatar-dickenson'
+    },
+    {
+        label: 'United Oil SLA',
+        value: 'no-avatar-oil-sla'
+    },
+    {
+        label: 'United Oil Standby Generators',
+        value: 'no-avatar-united-oil'
+    },
+    {
+        label: 'Edge Communication',
+        value: 'no-avatar-edge'
+    }
+];
+
 const columnsAB = [
     {
         label: 'Action',
@@ -110,7 +133,7 @@ const columnsAB = [
             maxCount: 3,
             size: 'small',
             actionIconName: 'utility:add',
-            name: { fieldName: 'avatarGroupName'}
+            name: { fieldName: 'avatarGroupName' }
         }
     },
     {
@@ -175,6 +198,17 @@ const columnsCE = [
         },
         fixedWidth: 190,
         editable: true
+    },
+    {
+        label: 'Combobox',
+        fieldName: 'combobox',
+        type: 'combobox',
+        typeAttributes: {
+            label: 'Simple Combobox',
+            options: options
+        },
+        editable: true,
+        fixedWidth: 230
     },
     {
         label: 'Currency',
