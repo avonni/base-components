@@ -329,20 +329,17 @@ export default class PrimitiveDatatable extends LightningDatatable {
             this.handleDispatchEvents
         );
 
-        this.template.addEventListener('rowselection', () =>
-            console.log('hello')
-        );
-        console.log('Currency', this._currencyArray);
-        console.log('Number', this._numberArray);
-        console.log('Percent', this._percentArray);
-        console.log('Count', this._countArray);
-        console.log('Count Unique', this._countUniqueArray);
-        console.log('Sum', this._sumArray);
-        console.log('Average', this._averageArray);
-        console.log('Median', this._medianArray);
-        console.log('Max', this._maxArray);
-        console.log('Min', this._minArray);
-        console.log('Mode', this._modeArray);
+        // console.log('Currency', this._currencyArray);
+        // console.log('Number', this._numberArray);
+        // console.log('Percent', this._percentArray);
+        // console.log('Count', this._countArray);
+        // console.log('Count Unique', this._countUniqueArray);
+        // console.log('Sum', this._sumArray);
+        // console.log('Average', this._averageArray);
+        // console.log('Median', this._medianArray);
+        // console.log('Max', this._maxArray);
+        // console.log('Min', this._minArray);
+        // console.log('Mode', this._modeArray);
     }
 
     renderedCallback() {
@@ -671,5 +668,15 @@ export default class PrimitiveDatatable extends LightningDatatable {
             }
             return result;
         }, []);
+    }
+
+    @api
+    save(event) {
+        super.handleInlineEditSave(event);
+    }
+
+    @api
+    cancel(event) {
+        super.handleInlineEditCancel(event);
     }
 }

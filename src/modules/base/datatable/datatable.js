@@ -81,11 +81,11 @@ export default class PrimitiveDatatable extends LightningElement {
     }
 
     handleCancel(event) {
-        event.stopPropagation();
         this.showStatusBar = false;
-        this.dispatchEvent(new CustomEvent('privatecancels'), {
-            bubbles: true,
-            composed: true
-        });
+        this.template.querySelector('c-primitive-datatable').cancel(event);
+    }
+
+    handleSave(event) {
+        this.template.querySelector('c-primitive-datatable').save(event);
     }
 }
