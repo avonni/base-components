@@ -49,6 +49,7 @@ import avatarGroup from './avatarGroup.html';
 import badge from './badge.html';
 import checkboxButton from './checkboxButton.html';
 import colorPicker from './colorPicker.html';
+import combobox from './combobox.html';
 import dynamicIcon from './dynamicIcon.html';
 import image from './image.html';
 import inputCounter from './inputCounter.html';
@@ -67,6 +68,7 @@ const CUSTOM_TYPES_ALWAYS_WRAPPED = [
     'avatar-group',
     'checkbox-button',
     'color-picker',
+    'combobox',
     'dynamic-icon',
     'image',
     'input-counter',
@@ -83,6 +85,7 @@ const CUSTOM_TYPES_ALWAYS_WRAPPED = [
 const CUSTOM_TYPES_EDITABLE = [
     'checkbox-button',
     'color-picker',
+    'combobox',
     'input-counter',
     'input-date-range',
     'input-toggle',
@@ -90,7 +93,7 @@ const CUSTOM_TYPES_EDITABLE = [
     'slider'
 ];
 
-const SUMMARIZATIONS_TYPES = ['currency', 'number', 'percent']
+// const SUMMARIZATIONS_TYPES = ['currency', 'number', 'percent']
 
 const SUMMARIZATIONS = [
     'count',
@@ -103,9 +106,9 @@ const SUMMARIZATIONS = [
     'mode'
 ];
 
-const COLUMN_WIDTHS_MODES = {valid: ['fixed', 'auto'], default: 'fixed'}
+const COLUMN_WIDTHS_MODES = { valid: ['fixed', 'auto'], default: 'fixed' };
 
-const SORT_DIRECTIONS = {valid: ['asc', 'desc'], default: 'desc'}
+const SORT_DIRECTIONS = { valid: ['asc', 'desc'], default: 'desc' };
 
 export default class PrimitiveDatatable extends LightningDatatable {
     static customTypes = {
@@ -162,6 +165,19 @@ export default class PrimitiveDatatable extends LightningDatatable {
                 'name',
                 'opacity',
                 'type'
+            ],
+            standardCellLayout: true
+        },
+        combobox: {
+            template: combobox,
+            typeAttributes: [
+                'disabled',
+                'dropdownAlignment',
+                'dropdownLenght',
+                'isMultiSelect',
+                'label',
+                'placeholder',
+                'options'
             ],
             standardCellLayout: true
         },
@@ -313,18 +329,20 @@ export default class PrimitiveDatatable extends LightningDatatable {
             this.handleDispatchEvents
         );
 
-        this.template.addEventListener('rowselection', () => console.log('hello'))
-        // console.log('Currency', this._currencyArray);
-        // console.log('Number', this._numberArray);
-        // console.log('Percent', this._percentArray);
-        // console.log('Count', this._countArray);
-        // console.log('Count Unique', this._countUniqueArray);
-        // console.log('Sum', this._sumArray);
-        // console.log('Average', this._averageArray);
-        // console.log('Median', this._medianArray);
-        // console.log('Max', this._maxArray);
-        // console.log('Min', this._minArray);
-        // console.log('Mode', this._modeArray);
+        this.template.addEventListener('rowselection', () =>
+            console.log('hello')
+        );
+        console.log('Currency', this._currencyArray);
+        console.log('Number', this._numberArray);
+        console.log('Percent', this._percentArray);
+        console.log('Count', this._countArray);
+        console.log('Count Unique', this._countUniqueArray);
+        console.log('Sum', this._sumArray);
+        console.log('Average', this._averageArray);
+        console.log('Median', this._medianArray);
+        console.log('Max', this._maxArray);
+        console.log('Min', this._minArray);
+        console.log('Mode', this._modeArray);
     }
 
     renderedCallback() {
@@ -334,9 +352,9 @@ export default class PrimitiveDatatable extends LightningDatatable {
         this.computeEditableOption();
 
         if (!this.rendered) {
-            // this.computeSummarizationCurrency();
-            // this.computeSummarizationNumber();
-            // this.computeSummarizationPercent();
+            this.computeSummarizationCurrency();
+            this.computeSummarizationNumber();
+            this.computeSummarizationPercent();
         }
 
         // Make sure custom edited cells stay yellow on hover
@@ -379,8 +397,9 @@ export default class PrimitiveDatatable extends LightningDatatable {
 
     @api
     get columnWidthsMode() {
-        return super.columnWidthsMode
-    }w
+        return super.columnWidthsMode;
+    }
+    w;
 
     set columnWidthsMode(value) {
         super.columnWidthsMode = normalizeString(value, {
@@ -391,7 +410,7 @@ export default class PrimitiveDatatable extends LightningDatatable {
 
     @api
     get defaultSortDirection() {
-        return super.defaultSortDirection
+        return super.defaultSortDirection;
     }
 
     set defaultSortDirection(value) {
@@ -403,7 +422,7 @@ export default class PrimitiveDatatable extends LightningDatatable {
 
     @api
     get sortedDirection() {
-        return super.sortedDirection
+        return super.sortedDirection;
     }
 
     set sortedDirection(value) {
@@ -415,83 +434,83 @@ export default class PrimitiveDatatable extends LightningDatatable {
 
     @api
     get wrapTextMaxLines() {
-        return super.wrapTextMaxLines
+        return super.wrapTextMaxLines;
     }
 
     set wrapTextMaxLines(value) {
-        if(value === undefined) return;
-        super.wrapTextMaxLines = value
+        if (value === undefined) return;
+        super.wrapTextMaxLines = value;
     }
 
     @api
     get loadMoreOffset() {
-        return super.loadMoreOffset
+        return super.loadMoreOffset;
     }
 
     set loadMoreOffset(value) {
-        if(value === undefined) return;
-        super.loadMoreOffset = value
+        if (value === undefined) return;
+        super.loadMoreOffset = value;
     }
 
     @api
     get maxColumnWidth() {
-        return super.maxColumnWidth
+        return super.maxColumnWidth;
     }
 
     set maxColumnWidth(value) {
-        if(value === undefined) return;
-        super.maxColumnWidth = value
-    }    
+        if (value === undefined) return;
+        super.maxColumnWidth = value;
+    }
 
     @api
     get minColumnWidth() {
-        return super.minColumnWidth
+        return super.minColumnWidth;
     }
 
     set minColumnWidth(value) {
-        if(value === undefined) return;
-        super.minColumnWidth = value
-    }    
+        if (value === undefined) return;
+        super.minColumnWidth = value;
+    }
 
     @api
     get resizeStep() {
-        return super.resizeStep
+        return super.resizeStep;
     }
 
     set resizeStep(value) {
-        if(value === undefined) return;
-        super.resizeStep = value
-    }    
+        if (value === undefined) return;
+        super.resizeStep = value;
+    }
 
     @api
     get rowNumberOffset() {
-        return super.rowNumberOffset
+        return super.rowNumberOffset;
     }
 
     set rowNumberOffset(value) {
-        if(value === undefined) return;
-        super.rowNumberOffset = value
-    }    
+        if (value === undefined) return;
+        super.rowNumberOffset = value;
+    }
 
     @api
     get maxRowSelection() {
-        return super.maxRowSelection
+        return super.maxRowSelection;
     }
 
     set maxRowSelection(value) {
-        if(value === undefined) return;
-        super.maxRowSelection = value
-    }    
+        if (value === undefined) return;
+        super.maxRowSelection = value;
+    }
 
     @api
     get selectedRows() {
-        return super.selectedRows
+        return super.selectedRows;
     }
 
     set selectedRows(value) {
-        if(value === undefined) return;
-        super.selectedRows = value
-    }    
+        if (value === undefined) return;
+        super.selectedRows = value;
+    }
 
     removeWrapOption() {
         this.columns.forEach((column) => {
@@ -521,109 +540,65 @@ export default class PrimitiveDatatable extends LightningDatatable {
         }
     }
 
-    computeSummarizationCurrency() {
+    computeSummarization(type, arrayType) {
         if (this.columns && this._data) {
             this.columns.forEach((column) => {
-                const summarizeTypes = column.summarizeTypes;
+                const summarizeType = column.summarizeTypes;
+                const fieldName = column.fieldName;
                 if (
-                    'currency'.includes(column.type) &&
-                    SUMMARIZATIONS.some((i) => summarizeTypes.includes(i))
+                    type.includes(column.type) &&
+                    SUMMARIZATIONS.some((i) => summarizeType.includes(i))
                 ) {
-                    const fieldName = column.fieldName;
                     this._data.forEach((row) => {
                         const value = row[fieldName];
                         row[fieldName] = {
                             value: value
                         };
-                        this._currencyArray.push(value);
+                        arrayType.push(value);
                     });
-                    this.summarizations(
-                        this._currencyArray,
-                        column.summarizeTypes,
-                        fieldName
-                    );
+                    this.summarizations(arrayType, summarizeType, fieldName);
                 }
             });
         }
+    }
+
+    computeSummarizationCurrency() {
+        this.computeSummarization('currency', this._currencyArray);
     }
 
     computeSummarizationNumber() {
-        if (this.columns && this._data) {
-            this.columns.forEach((column) => {
-                const summarizeTypes = column.summarizeTypes;
-                if (
-                    'number'.includes(column.type) &&
-                    SUMMARIZATIONS.some((i) => summarizeTypes.includes(i))
-                ) {
-                    const fieldName = column.fieldName;
-                    this._data.forEach((row) => {
-                        const value = row[fieldName];
-                        row[fieldName] = {
-                            value: value
-                        };
-                        this._numberArray.push(value);
-                    });
-                    this.summarizations(
-                        this._numberArray,
-                        summarizeTypes,
-                        'number'
-                    );
-                }
-            });
-        }
+        this.computeSummarization('number', this._numberArray);
     }
 
     computeSummarizationPercent() {
-        if (this.columns && this._data) {
-            this.columns.forEach((column) => {
-                const summarizeTypes = column.summarizeTypes;
-                if (
-                    'percent'.includes(column.type) &&
-                    SUMMARIZATIONS.some((i) => summarizeTypes.includes(i))
-                ) {
-                    const fieldName = column.fieldName;
-                    this._data.forEach((row) => {
-                        const value = row[fieldName];
-                        row[fieldName] = {
-                            value: value
-                        };
-                        this._percentArray.push(value);
-                    });
-                    this.summarizations(
-                        this._percentArray,
-                        summarizeTypes,
-                        'percent'
-                    );
-                }
-            });
-        }
+        this.computeSummarization('percent', this._percentArray);
     }
 
-    summarizations(array, summarizationTypes, type) {
-        if (summarizationTypes.includes('count')) {
+    summarizations(array, summarizeType, type) {
+        if (summarizeType.includes('count')) {
             this._countArray.push({ [type]: count(array) });
         }
-        if (summarizationTypes.includes('countUnique')) {
+        if (summarizeType.includes('countUnique')) {
             this._countUniqueArray.push({
                 [type]: countUnique(array, count(array))
             });
         }
-        if (summarizationTypes.includes('sum')) {
+        if (summarizeType.includes('sum')) {
             this._sumArray.push({ [type]: sum(array) });
         }
-        if (summarizationTypes.includes('average')) {
+        if (summarizeType.includes('average')) {
             this._averageArray.push({ [type]: average(array) });
         }
-        if (summarizationTypes.includes('median')) {
+        if (summarizeType.includes('median')) {
             this._medianArray.push({ [type]: median(array) });
         }
-        if (summarizationTypes.includes('max')) {
+        if (summarizeType.includes('max')) {
             this._maxArray.push({ [type]: max(array) });
         }
-        if (summarizationTypes.includes('min')) {
+        if (summarizeType.includes('min')) {
             this._minArray.push({ [type]: min(array) });
         }
-        if (summarizationTypes.includes('mode')) {
+        if (summarizeType.includes('mode')) {
             this._modeArray.push({ [type]: mode(array) });
         }
     }
