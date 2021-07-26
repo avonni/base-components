@@ -48,11 +48,11 @@ export default class Row {
         this._events = normalizeArray(value);
 
         if (this.columns.length) {
-            this.generateEvents();
+            this.initEvents();
         }
     }
 
-    generateColumns(headerColumns) {
+    initColumns(headerColumns) {
         this.columns = [];
         headerColumns.forEach((element) => {
             this.columns.push(
@@ -63,10 +63,10 @@ export default class Row {
             );
         });
 
-        this.generateEvents();
+        this.initEvents();
     }
 
-    generateEvents() {
+    initEvents() {
         const columns = this.columns;
 
         this.events.forEach((event) => {
@@ -84,7 +84,10 @@ export default class Row {
                     // In every other column the event crosses, add the event to crossingEvents
                     i += 1;
                     if (!event.disabled) {
-                        while (i < columns.length && date.to > columns[i].end) {
+                        while (
+                            i < columns.length &&
+                            date.to > columns[i].start
+                        ) {
                             columns[i].addCrossingEvent(event, date);
                             i += 1;
                         }
@@ -92,5 +95,9 @@ export default class Row {
                 }
             });
         });
+    }
+
+    getColumnFromStart(start) {
+        return this.columns.find((column) => column.start === start);
     }
 }

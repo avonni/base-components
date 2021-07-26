@@ -35,7 +35,7 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+import { classSet, generateUniqueId } from 'c/utils';
 import {
     addToDate,
     containsAllowedDateTimes,
@@ -69,6 +69,7 @@ export default class Event {
             (recurrenceObject) => recurrenceObject.name === props.recurrence
         );
 
+        this.key = generateUniqueId();
         this.allDay = props.allDay;
         this.availableMonths = props.availableMonths;
         this.availableDaysOfTheWeek = props.availableDaysOfTheWeek;
@@ -302,7 +303,8 @@ export default class Event {
         if (containsAllowedTimes) {
             this.dates.push({
                 from: start,
-                to: computedEnd
+                to: computedEnd,
+                key: `${this.key}${this.dates.length}`
             });
         }
     }

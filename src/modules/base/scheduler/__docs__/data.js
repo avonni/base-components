@@ -132,15 +132,16 @@ const events = [
         name: 'identify-need',
         title: 'Identify need',
         iconName: 'utility:search',
-        from: new Date(2021, 11, 13, 10, 20),
-        to: new Date(2021, 11, 13, 15, 30)
+        from: new Date(2021, 11, 13, 7),
+        to: new Date(2021, 11, 13, 11, 14),
+        theme: 'transparent'
     },
     {
         keyFields: ['3'],
         name: 'find-examples',
-        title: 'Find examples of solutions',
-        from: new Date(2021, 11, 13, 14),
-        to: new Date(2021, 11, 14)
+        title: 'Find existing examples of solutions',
+        from: new Date(2021, 11, 13, 11),
+        to: new Date(2021, 11, 13, 14)
     },
     {
         keyFields: ['1', '3'],

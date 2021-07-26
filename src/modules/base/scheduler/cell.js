@@ -30,7 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { classSet, generateUniqueId } from 'c/utils';
+import { classSet } from 'c/utils';
+
 export default class Cell {
     constructor(props) {
         this.start = props.start;
@@ -50,40 +51,46 @@ export default class Cell {
             .toString();
     }
 
+    get numberOfEvents() {
+        return this.events.length + this.crossingEvents.length;
+    }
+
     addEvent(event, date) {
+        const eventOccurrence = {
+            title: event.title,
+            from: date.from.ts,
+            to: date.to.ts,
+            iconName: event.iconName,
+            key: date.key
+        };
         if (event.disabled) {
             this.disabledDates.push({
-                title: event.title,
-                from: date.from.ts,
-                to: date.to.ts,
+                ...eventOccurrence,
                 style: event.wrapperStyle,
-                iconName: event.iconName,
                 showTitle: event.iconName || event.title
             });
         } else {
-            // If an event is already crossing this cell
-            // and started before the current event,
-            // add a placeholder to push the current event down in the cell
+            // If this is the first event of the cell
+            // and events starting before the current event are already crossing it,
+            // add a placeholder per crossing event, to push the events down in the cell
             let placeholders = [];
-            this.crossingEvents.forEach((crossingEvent) => {
-                if (crossingEvent.from < date.from) {
-                    placeholders.push(crossingEvent);
-                }
-            });
+            if (!this.events.length) {
+                this.crossingEvents.forEach((crossingEvent) => {
+                    if (crossingEvent.from < date.from) {
+                        placeholders.push(crossingEvent);
+                    }
+                });
+            }
 
             // Push the event
             this.events.push({
-                key: generateUniqueId(),
+                ...eventOccurrence,
                 wrapperClass: event.wrapperClass,
                 wrapperStyle: event.wrapperStyle,
                 name: event.name,
                 keyFields: event.keyFields,
-                title: event.title,
                 class: event.class,
                 style: event.style,
-                iconName: event.iconName,
-                from: date.from.ts,
-                to: date.to.ts,
                 placeholders: placeholders
             });
         }
@@ -91,8 +98,8 @@ export default class Cell {
 
     addCrossingEvent(event, date) {
         const crossingEvent = {
+            key: date.key,
             from: date.from,
-            key: generateUniqueId(),
             wrapperClass: event.wrapperClass,
             wrapperStyle: event.wrapperStyle,
             class: event.class,
