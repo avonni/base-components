@@ -76,13 +76,13 @@ const DEFAULT_GROUP_NAME = 'ungrouped';
 
 /**
  * Primitive Combobox.
- * 
+ *
  * @class
  */
 export default class PrimitiveCombobox extends LightningElement {
     /**
      * Help text detailing the purpose and function of the primitive combobox.
-     * 
+     *
      * @type {string}
      * @public
      */
@@ -90,7 +90,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Text label for the primitive combobox.
-     * 
+     *
      * @type {string}
      * @public
      */
@@ -98,7 +98,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Error message to be displayed when the value is missing and input is required.
-     * 
+     *
      * @type {string}
      * @public
      */
@@ -106,7 +106,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Specifies the name of the primitive combobox.
-     * 
+     *
      * @type {string}
      * @public
      */
@@ -172,7 +172,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Array of action objects. The actions are displayed at the end of the primitive combobox options.
-     * 
+     *
      * @type {object[]}
      * @public
      */
@@ -200,7 +200,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * If present, the primitive combobox options are searchable.
-     * 
+     *
      * @type {boolean}
      * @default false
      * @public
@@ -215,7 +215,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * If present, the primitive combobox is disabled and users cannot interact with it.
-     * 
+     *
      * @type {boolean}
      * @default false
      * @public
@@ -234,7 +234,7 @@ export default class PrimitiveCombobox extends LightningElement {
      * By default the list is aligned with the selection field at the top left so the list opens down.
      * Use bottom-left to make the selection field display at the bottom so the list opens above it.
      * Use auto to let the component determine where to open the list based on space available.
-     * 
+     *
      * @type {string}
      * @default left
      * @public
@@ -252,7 +252,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Maximum length of the dropdown menu. Valid values include 5-items, 7-items and 10-items.
-     * 
+     *
      * @type {string}
      * @default 7-items
      * @public
@@ -274,7 +274,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Array of group objects. The groups are used to separate the options inside the drop-down.
-     * 
+     *
      * @type {object[]}
      * @public
      */
@@ -292,7 +292,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * If present, the selected options pills will be hidden.
-     * 
+     *
      * @type {boolean}
      * @default false
      * @public
@@ -307,7 +307,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * If true, the drop-down menu is in a loading state and shows a spinner.
-     * 
+     *
      * @type {boolean}
      * @default false
      * @public
@@ -322,7 +322,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * If present, multiple options can be selected.
-     * 
+     *
      * @type {boolean}
      * @default false
      * @public
@@ -338,7 +338,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Message displayed while the combobox is in the loading state.
-     * 
+     *
      * @type {string}
      * @default Loading
      * @public
@@ -359,7 +359,7 @@ export default class PrimitiveCombobox extends LightningElement {
      *
      * If false, there will be only one level of groups.
      * If an option belongs to several groups, the option will be repeated in each group.
-     * 
+     *
      * @type {boolean}
      * @default false
      * @public
@@ -377,7 +377,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Array of option objects.
-     * 
+     *
      * @type {object[]}
      * @public
      */
@@ -400,7 +400,7 @@ export default class PrimitiveCombobox extends LightningElement {
      * Text that is displayed before an option is selected, to prompt the user to select an option.
      *
      * The default value varies depending on the value of allow-search.
-     * 
+     *
      * @type {string}
      * @default Select an Option -or- Search…
      * @public
@@ -419,7 +419,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * If present, the combobox is read-only. A read-only combobox is also disabled.
-     * 
+     *
      * @type {boolean}
      * @default false
      * @public
@@ -436,7 +436,7 @@ export default class PrimitiveCombobox extends LightningElement {
      * If present, the selected options will be removed from the options.
      *
      * If false, a checkmark will be displayed next to the selected options.
-     * 
+     *
      * @type {boolean}
      * @default false
      * @public
@@ -451,7 +451,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * If present, a value must be selected before the form can be submitted.
-     * 
+     *
      * @type {boolean}
      * @default false
      * @public
@@ -468,7 +468,7 @@ export default class PrimitiveCombobox extends LightningElement {
      * Custom search function to execute instead of the default search. It has to:
      * * Take an object with two keys as an argument: options and searchTerm
      * * Return the new options.
-     * 
+     *
      * @type {function}
      * @public
      */
@@ -482,7 +482,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Describes the selected options section to assistive technologies.
-     * 
+     *
      * @type {string}
      * @default Selected Options
      * @public
@@ -500,7 +500,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * If present, a value must be selected before the form can be submitted.
-     * 
+     *
      * @type {boolean}
      * @default false
      * @public
@@ -515,7 +515,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Represents the validity states that an element can be in, with respect to constraint validation.
-     * 
+     *
      * @type {string}
      * @public
      */
@@ -526,7 +526,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Array of selected options value. If is-multi-select is false and several values are passed, only the first one will be taken into account.
-     * 
+     *
      * @type {string[]}
      * @public
      */
@@ -546,7 +546,7 @@ export default class PrimitiveCombobox extends LightningElement {
      * This value defaults to standard. Use label-hidden to hide the label but make it available to assistive technology.
      * Use label-inline to horizontally align the label and combobox.
      * Use label-stacked to place the label above the combobox.
-     * 
+     *
      * @type {string}
      * @default standard
      * @public
@@ -569,7 +569,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Returns an array of visible options.
-     * 
+     *
      * @type {object[]}
      */
     get visibleOptions() {
@@ -601,7 +601,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Returns a unique ID.
-     * 
+     *
      * @type {string}
      */
     get generateKey() {
@@ -610,7 +610,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Returns an input element.
-     * 
+     *
      * @type {element}
      */
     get input() {
@@ -619,7 +619,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Returns an icon name for the input depending on allow-search attribute.
-     * 
+     *
      * @type {string}
      */
     get inputIconName() {
@@ -628,7 +628,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * If true, display value avatar.
-     * 
+     *
      * @type {boolean}
      */
     get showInputValueAvatar() {
@@ -643,7 +643,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * If true, display value icon.
-     * 
+     *
      * @type {boolean}
      */
     get showInputValueIcon() {
@@ -652,7 +652,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * True if disabled or read-only are true.
-     * 
+     *
      * @type {boolean}
      */
     get inputIsDisabled() {
@@ -661,7 +661,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * True if allow-search is false.
-     * 
+     *
      * @type {boolean}
      */
     get hasNoSearch() {
@@ -670,7 +670,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Returns true as a string if dropdown-visible is true and false as a string if false.
-     * 
+     *
      * @type {string}
      */
     get computedAriaExpanded() {
@@ -679,7 +679,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Returns none if this.readOnly or this.disabled is present and list if not.
-     * 
+     *
      * @type {string}
      */
     get computedAriaAutocomplete() {
@@ -688,7 +688,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * True if parent-options-values and current parent.
-     * 
+     *
      * @type {boolean}
      */
     get currentParent() {
@@ -702,7 +702,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Returns an array of options element.
-     * 
+     *
      * @type {element}
      */
     get _optionElements() {
@@ -741,7 +741,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * True if highlighted-option.
-     * 
+     *
      * @type {boolean}
      */
     get _highlightedOption() {
@@ -753,7 +753,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * True if selected-options, multi-select is true and hide-selected-options is false.
-     * 
+     *
      * @type {boolean}
      */
     get showSelectedOptions() {
@@ -766,7 +766,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * True if show-clear-input is true, this.input and hide-selected-options is false.
-     * 
+     *
      * @type {boolean}
      */
     get showClearInputIcon() {
@@ -775,7 +775,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * True if input-value and no visible-options.
-     * 
+     *
      * @type {boolean}
      */
     get showNoSearchResultMessage() {
@@ -784,7 +784,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Computed Label Class styling.
-     * 
+     *
      * @type {string}
      */
     get computedLabelClass() {
@@ -795,7 +795,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Computed Dropdown Trigger Class styling.
-     * 
+     *
      * @type {string}
      */
     get computedDropdownTriggerClass() {
@@ -812,7 +812,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Computed Dropdown Class styling.
-     * 
+     *
      * @type {string}
      */
     get computedDropdownClass() {
@@ -837,7 +837,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Computed Input Container Class styling.
-     * 
+     *
      * @type {string}
      */
     get computedInputContainerClass() {
@@ -853,7 +853,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Removes focus from the input.
-     * 
+     *
      * @public
      */
     @api
@@ -863,7 +863,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Indicates whether the element meets all constraint validations.
-     * 
+     *
      * @returns {boolean} the valid attribute value on the ValidityState object.
      * @public
      */
@@ -874,7 +874,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Closes the dropdown.
-     * 
+     *
      * @public
      */
     @api
@@ -904,7 +904,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Sets focus on the input.
-     * 
+     *
      * @public
      */
     @api
@@ -914,7 +914,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Opens the dropdown.
-     * 
+     *
      * @public
      */
     @api
@@ -933,7 +933,7 @@ export default class PrimitiveCombobox extends LightningElement {
     /**
      * Displays the error messages and returns false if the input is invalid.
      * If the input is valid, reportValidity() clears displayed error messages and returns true.
-     * 
+     *
      * @returns {boolean} - The validity status of the input fields.
      * @public
      */
@@ -946,7 +946,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Sets a custom error message to be displayed when a form is submitted.
-     * 
+     *
      * @param {string} message - The string that describes the error.
      * If message is an empty string, the error message is reset.
      * @public
@@ -959,7 +959,7 @@ export default class PrimitiveCombobox extends LightningElement {
     /**
      * Displays error messages on invalid fields.
      * An invalid field fails at least one constraint validation and returns false when checkValidity() is called.
-     * 
+     *
      * @public
      */
     @api
@@ -988,6 +988,9 @@ export default class PrimitiveCombobox extends LightningElement {
                 selectedOption.selected = true;
                 this.selectedOption = selectedOption;
                 this.inputValue = selectedOption.label;
+            } else {
+                this.selectedOption = undefined;
+                this.inputValue = '';
             }
         }
     }
@@ -1245,7 +1248,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Search function.
-     * 
+     *
      * @param {object} params The search term and an array of the options
      * @returns {array} Array of options that includes the search term
      */
@@ -1260,7 +1263,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Removes selected options from the options array.
-     * 
+     *
      * @param {array} options Array of all the options
      * @returns {array} Array of all unselected options
      */
@@ -1286,7 +1289,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Unselects selected options.
-     * 
+     *
      * @param {array} options Array of all the options
      */
     unselectOption(options = this.options) {
@@ -1309,7 +1312,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Return an array of all selected options.
-     * 
+     *
      * @param {array} options Array of all the options
      * @returns {array} Array of all selected options
      */
@@ -1327,7 +1330,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Gets the option.
-     * 
+     *
      * @param {string[]} value Array of selected options value.
      * @param {array} options Array of all the options.
      * @returns {string} option
@@ -1350,7 +1353,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Hightlights the option with focus on.
-     * 
+     *
      * @param {number} index index of the option with focus on.
      */
     highlightOption(index) {
@@ -1371,7 +1374,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Updates the back link.
-     * 
+     *
      * @param {string} label
      */
     updateBackLink(label) {
@@ -1581,7 +1584,7 @@ export default class PrimitiveCombobox extends LightningElement {
      * Handles the click on action.
      * Dispatches actionClick event.
      * Closes the dropdown.
-     * 
+     *
      * @param {event} event If clicked with mouse we receive the event
      * @param {string} name If clicked with keyboard we receive the name
      */
@@ -1616,7 +1619,7 @@ export default class PrimitiveCombobox extends LightningElement {
      * Handles the click on option.
      * Dispatches change event.
      * Closes the dropdown.
-     * 
+     *
      * @param {event} event click event
      */
     handleOptionClick(event) {
@@ -1684,7 +1687,7 @@ export default class PrimitiveCombobox extends LightningElement {
     /**
      * Handles the remove of lightning-pill (selected-option).
      * Dispatches change event.
-     * 
+     *
      * @param {event} event onremove event
      * @public
      */
