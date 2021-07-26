@@ -205,7 +205,8 @@ const columnsCE = [
         type: 'combobox',
         typeAttributes: {
             label: 'Simple Combobox',
-            options: options
+            options: options,
+            isMultiSelect: { fieldName: 'isMultiSelect' }
         },
         editable: true,
         fixedWidth: 230
@@ -555,7 +556,8 @@ const dataCE = [
         dynamicIcon: 'strength',
         dynamicIconOption: -3,
         date: new Date('2022/05/04'),
-        email: 'jung.phung@email.com'
+        email: 'jung.phung@email.com',
+        isMultiSelect: true
     },
     {
         id: 4,
