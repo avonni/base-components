@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from 'avonni/image';
+import Component from '../../storybookWrappers/image/image';
 
 customElements.define('ac-base-image', Component.CustomElementConstructor);
 
