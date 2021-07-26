@@ -168,7 +168,7 @@ const columnsAB = [
     }
 ];
 
-const columnsCE = [
+const columnsCD = [
     {
         label: 'Checkbox button',
         fieldName: 'checkboxButton',
@@ -205,10 +205,11 @@ const columnsCE = [
         type: 'combobox',
         typeAttributes: {
             label: 'Simple Combobox',
-            options: options
+            options: options,
+            isMultiSelect: { fieldName: 'isMultiSelect' }
         },
         editable: true,
-        fixedWidth: 230
+        fixedWidth: 260
     },
     {
         label: 'Currency',
@@ -217,8 +218,7 @@ const columnsCE = [
         typeAttributes: {
             currencyCode: 'CAD'
         },
-        editable: true,
-        summarizeTypes: 'sum'
+        editable: true
     },
     {
         label: 'Date',
@@ -252,16 +252,16 @@ const columnsCE = [
             alternativeText: { fieldName: 'dynamicIcon' },
             option: { fieldName: 'dynamicIconOption' }
         }
-    },
+    }
+];
+
+const columnsEN = [
     {
         label: 'Email',
         fieldName: 'email',
         type: 'email',
         editable: true
-    }
-];
-
-const columnsFN = [
+    },
     {
         label: 'Image',
         fieldName: 'image',
@@ -333,8 +333,7 @@ const columnsFN = [
         editable: true,
         typeAttributes: {
             minimumFractionDigits: 2
-        },
-        summarizeTypes: ['max', 'min', 'sum']
+        }
     }
 ];
 
@@ -343,8 +342,7 @@ const columnsOQ = [
         label: 'Percent',
         fieldName: 'percent',
         type: 'percent',
-        editable: true,
-        summarizeTypes: 'mode'
+        editable: true
     },
     {
         label: 'Phone',
@@ -432,62 +430,6 @@ const columnsRZ = [
             label: { fieldName: 'urlLabel' },
             target: '_blank'
         }
-    }
-];
-
-const columnsSum = [
-    {
-        label: 'Currency',
-        fieldName: 'currency',
-        type: 'currency',
-        typeAttributes: {
-            currencyCode: 'CAD'
-        },
-        editable: true,
-        summarizeTypes: [
-            'count',
-            'countUnique',
-            'sum',
-            'average',
-            'median',
-            'min',
-            'max',
-            'mode'
-        ]
-    },
-    {
-        label: 'Number',
-        type: 'number',
-        fieldName: 'number',
-        editable: true,
-        typeAttributes: {
-            minimumFractionDigits: 2
-        },
-        summarizeTypes: [
-            'count',
-            'countUnique',
-            'sum',
-            'average',
-            'median',
-            'min',
-            'max',
-            'mode'
-        ]
-    },
-    {
-        label: 'Percent',
-        fieldName: 'percent',
-        type: 'percent',
-        editable: true,
-        summarizeTypes: [
-            'count',
-            'countUnique',
-            'average',
-            'median',
-            'min',
-            'max',
-            'mode'
-        ]
     }
 ];
 
@@ -587,14 +529,13 @@ const dataAB = [
     }
 ];
 
-const dataCE = [
+const dataCD = [
     {
         id: 1,
         colorPicker: '#00a1e0',
         currency: 200,
         dynamicIcon: 'ellie',
-        date: new Date('2022/03/24'),
-        email: 'nina.gomez@email.com'
+        date: new Date('2022/03/24')
     },
     {
         id: 2,
@@ -602,8 +543,7 @@ const dataCE = [
         colorPicker: '#e65cd1',
         dynamicIcon: 'score',
         dynamicIconOption: 'negative',
-        date: new Date('2022/03/21'),
-        email: 'dave.mckinsley@email.com'
+        date: new Date('2022/03/21')
     },
     {
         id: 3,
@@ -614,15 +554,14 @@ const dataCE = [
         dynamicIcon: 'strength',
         dynamicIconOption: -3,
         date: new Date('2022/05/04'),
-        email: 'jung.phung@email.com'
+        isMultiSelect: true
     },
     {
         id: 4,
         colorPicker: '#f4bc25',
         currency: 432,
         dynamicIcon: 'eq',
-        date: new Date('2021/02/14'),
-        email: 'lily.murray@email.com'
+        date: new Date('2021/02/14')
     },
     {
         id: 5,
@@ -630,13 +569,13 @@ const dataCE = [
         colorPicker: '#f99120',
         currency: 217,
         dynamicIcon: 'waffle',
-        date: new Date('2022/10/12'),
-        email: 'reginald.martin@email.com'
+        date: new Date('2022/10/12')
     }
 ];
-const dataFN = [
+const dataEN = [
     {
         id: 1,
+        email: 'nina.gomez@email.com',
         image:
             'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
         inputDateRange: {
@@ -651,6 +590,7 @@ const dataFN = [
     },
     {
         id: 2,
+        email: 'dave.mckinsley@email.com',
         image:
             'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
         inputCounter: 3,
@@ -667,6 +607,7 @@ const dataFN = [
     },
     {
         id: 3,
+        email: 'jung.phung@email.com',
         image:
             'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
         imageBlank: true,
@@ -685,6 +626,7 @@ const dataFN = [
         id: 4,
         image:
             'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-home-bg_2x.png',
+        email: 'lily.murray@email.com',
         inputCounter: 5,
         inputDateRange: {
             startDate: new Date('2021/09/17'),
@@ -698,6 +640,7 @@ const dataFN = [
     },
     {
         id: 5,
+        email: 'reginald.martin@email.com',
         image:
             'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-header-bg_2x.png',
         inputCounterStep: 2,
@@ -824,56 +767,15 @@ const dataRZ = [
     }
 ];
 
-const dataSum = [
-    {
-        id: 1,
-        currency: 5,
-        number: 5,
-        percent: 0.05
-    },
-    {
-        id: 2,
-        currency: 10,
-        number: 10,
-        percent: 0.1
-    },
-    {
-        id: 3,
-        currency: 15,
-        number: 15,
-        percent: 0.15
-    },
-    {
-        id: 4,
-        currency: 20,
-        number: 20,
-        percent: 0.2
-    },
-    {
-        id: 5,
-        currency: 25,
-        number: 25,
-        percent: 0.25
-    },
-    {
-        id: 6,
-        currency: 25,
-        number: 25,
-        percent: 0.25
-    }
-];
-
 export {
     columnsAB,
-    columnsCE,
-    columnsFN,
+    columnsCD,
+    columnsEN,
     columnsOQ,
     columnsRZ,
-    columnsSum,
     dataAB,
-    dataCE,
-    dataFN,
+    dataCD,
+    dataEN,
     dataOQ,
-    dataRZ,
-    dataSum
+    dataRZ
 };
