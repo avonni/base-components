@@ -409,7 +409,6 @@ DataTypesFromCToD.args = {
         }
     }
 };
-
 export const DataTypesFromEToN = Template.bind({});
 DataTypesFromEToN.args = {
     columns: columnsEN,

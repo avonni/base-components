@@ -205,10 +205,11 @@ const columnsCD = [
         type: 'combobox',
         typeAttributes: {
             label: 'Simple Combobox',
-            options: options
+            options: options,
+            isMultiSelect: { fieldName: 'isMultiSelect' }
         },
         editable: true,
-        fixedWidth: 230
+        fixedWidth: 260
     },
     {
         label: 'Currency',
@@ -617,7 +618,8 @@ const dataCD = [
         colorPickerDisabled: true,
         dynamicIcon: 'strength',
         dynamicIconOption: -3,
-        date: new Date('2022/05/04')
+        date: new Date('2022/05/04'),
+        isMultiSelect: true
     },
     {
         id: 4,
