@@ -118,7 +118,11 @@ export default class ProgressBar extends LightningElement {
     _thickness = PROGRESS_BAR_THICKNESSES.default;
     _orientation = PROGRESS_BAR_ORIENTATIONS.default;
 
-    // render the progress bar depending on its orientation
+    /**
+     * Render the progress bar depending on its orientation.
+     *
+     * @returns {File} progressBar.html | progressBarVertical.html
+     */
     render() {
         if (this._orientation === 'horizontal') {
             return progressBar;
