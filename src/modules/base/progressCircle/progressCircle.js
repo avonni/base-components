@@ -34,9 +34,15 @@ import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-const VALUE_VARIANTS = { valid: ['standard', 'value-hidden'], default: 'standard' };
+const VALUE_VARIANTS = {
+    valid: ['standard', 'value-hidden'],
+    default: 'standard'
+};
 
-const PROGRESS_CIRCLE_DIRECTIONS = { valid: ['fill', 'drain'], default: 'fill' };
+const PROGRESS_CIRCLE_DIRECTIONS = {
+    valid: ['fill', 'drain'],
+    default: 'fill'
+};
 
 const PROGRESS_CIRCLE_SIZES = {
     valid: ['x-small', 'small', 'medium', 'large', 'x-large'],
@@ -53,6 +59,12 @@ const TITLE_POSITIONS = { valid: ['top', 'bottom'], default: 'bottom' };
 const DEFAULT_COLOR = '#1589ee';
 const DEFAULT_VALUE = 0;
 
+/**
+ * @class
+ * @descriptor avonni-progress-bar
+ * @storyId example-progress-circle--base
+ * @public
+ */
 export default class ProgressCircle extends LightningElement {
     @api title;
     @api label;
