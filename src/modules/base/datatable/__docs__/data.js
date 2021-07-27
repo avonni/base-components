@@ -437,6 +437,12 @@ const columnsRZ = [
 
 const columnsSum = [
     {
+        label: 'Boolean',
+        fieldName: 'boolean',
+        type: 'boolean',
+        editable: true
+    },
+    {
         label: 'Currency',
         fieldName: 'currency',
         type: 'currency',
