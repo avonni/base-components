@@ -74,21 +74,21 @@ export default class Row {
                 event.color = this.color;
             }
             // Create one event for each occurrence
-            event.dates.forEach((date) => {
+            event.occurrences.forEach((occurrence) => {
                 let i = columns.findIndex((column) => {
-                    return column.end > date.from;
+                    return column.end > occurrence.from;
                 });
                 if (i > -1) {
-                    columns[i].addEvent(event, date);
+                    columns[i].addEvent(occurrence);
 
                     // In every other column the event crosses, add the event to crossingEvents
                     i += 1;
                     if (!event.disabled) {
                         while (
                             i < columns.length &&
-                            date.to > columns[i].start
+                            occurrence.to > columns[i].start
                         ) {
-                            columns[i].addCrossingEvent(event, date);
+                            columns[i].addCrossingEvent(occurrence);
                             i += 1;
                         }
                     }

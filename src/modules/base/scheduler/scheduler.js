@@ -606,7 +606,7 @@ export default class Scheduler extends LightningElement {
 
             const computedEvent = new Event(event);
 
-            if (computedEvent.dates.length) {
+            if (computedEvent.occurrences.length) {
                 this.updateEventWidth(computedEvent);
                 computedEvents.push(computedEvent);
             }

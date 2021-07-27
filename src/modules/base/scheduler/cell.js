@@ -39,6 +39,7 @@ export default class Cell {
         this.events = [];
         this.crossingEvents = [];
         this.disabledDates = [];
+        this.placeholders = [];
     }
 
     get class() {
@@ -51,69 +52,36 @@ export default class Cell {
             .toString();
     }
 
-    get numberOfEvents() {
-        return this.events.length + this.crossingEvents.length;
-    }
-
-    addEvent(event, date) {
-        const eventOccurrence = {
-            title: event.title,
-            from: date.from.ts,
-            to: date.to.ts,
-            iconName: event.iconName,
-            key: date.key
-        };
+    addEvent(event) {
         if (event.disabled) {
-            this.disabledDates.push({
-                ...eventOccurrence,
-                style: event.wrapperStyle,
-                showTitle: event.iconName || event.title
-            });
+            this.disabledDates.push(event);
         } else {
             // If this is the first event of the cell
             // and events starting before the current event are already crossing it,
             // add a placeholder per crossing event, to push the events down in the cell
-            let placeholders = [];
+            // let placeholders = [];
             if (!this.events.length) {
                 this.crossingEvents.forEach((crossingEvent) => {
-                    if (crossingEvent.from < date.from) {
-                        placeholders.push(crossingEvent);
+                    if (crossingEvent.from < event.from) {
+                        this.placeholders.push(crossingEvent);
                     }
                 });
             }
 
             // Push the event
-            this.events.push({
-                ...eventOccurrence,
-                wrapperClass: event.wrapperClass,
-                wrapperStyle: event.wrapperStyle,
-                name: event.name,
-                keyFields: event.keyFields,
-                class: event.class,
-                style: event.style,
-                placeholders: placeholders
-            });
+            this.events.push(event);
         }
     }
 
-    addCrossingEvent(event, date) {
-        const crossingEvent = {
-            key: date.key,
-            from: date.from,
-            wrapperClass: event.wrapperClass,
-            wrapperStyle: event.wrapperStyle,
-            class: event.class,
-            style: event.style,
-            iconName: event.iconName,
-            title: event.title
-        };
-        this.crossingEvents.push(crossingEvent);
+    addCrossingEvent(event) {
+        this.crossingEvents.push(event);
 
         // If there were already crossing events, make sure they don't need placeholders
         if (this.events.length) {
             this.events.forEach((existingEvent) => {
-                if (existingEvent.from > date.from) {
-                    existingEvent.placeholders.push(crossingEvent);
+                if (existingEvent.from > event.from) {
+                    // existingEvent.placeholders.push(event);
+                    this.placeholders.push(event);
                 }
             });
         }
