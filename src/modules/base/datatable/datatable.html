@@ -39,7 +39,20 @@
     <table class="slds-table slds-table_bordered">
         <tbody>
             <tr>
-                <td role="gridcell" tabindex="0">Sum</td>
+                <td style="width: 52px" class="slds-text-align_right">sum</td>
+                <template
+                    for:each={columns}
+                    for:item="column"
+                    for:index="index"
+                >
+                    <td
+                        key={column.index}
+                        class="slds-text-align_right"
+                        data-column={column.fieldName}
+                    >
+                        {index}
+                    </td>
+                </template>
             </tr>
         </tbody>
     </table>

@@ -466,7 +466,7 @@ const columnsSum = [
         label: 'Number',
         type: 'number',
         fieldName: 'number',
-        editable: true,
+        // editable: true,
         typeAttributes: {
             minimumFractionDigits: 2
         },

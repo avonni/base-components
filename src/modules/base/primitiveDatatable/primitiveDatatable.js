@@ -291,12 +291,24 @@ export default class PrimitiveDatatable extends LightningDatatable {
             'privateactionclick',
             this.handleDispatchEvents
         );
+
+        this.addEventListener('resize', (event) => {
+            this._columnsWidth = event.detail.columnWidths;
+            console.log(this._columnsWidth);
+        });
     }
 
     renderedCallback() {
         super.renderedCallback();
 
         this._data = JSON.parse(JSON.stringify(normalizeArray(super.data)));
+        this._columnsWidth = JSON.parse(
+            JSON.stringify(normalizeArray(super.widthsData.columnWidths))
+        );
+        this._columnsEditable = [];
+        this.columns.forEach((column) => {
+            this._columnsEditable.push(column.editable);
+        });
         this.computeEditableOption();
 
         // Make sure custom edited cells stay yellow on hover
@@ -327,6 +339,7 @@ export default class PrimitiveDatatable extends LightningDatatable {
     get columns() {
         return super.columns;
     }
+
     set columns(value) {
         super.columns = value;
 
@@ -336,10 +349,20 @@ export default class PrimitiveDatatable extends LightningDatatable {
     }
 
     @api
+    columnsWidth() {
+        return this._columnsWidth;
+    }
+
+    @api
+    columnsEditable() {
+        return this._columnsEditable;
+    }
+
+    // Normalization of primitive datatable attributes
+    @api
     get columnWidthsMode() {
         return super.columnWidthsMode;
     }
-    w;
 
     set columnWidthsMode(value) {
         super.columnWidthsMode = normalizeString(value, {

@@ -56,7 +56,7 @@ const SUMMARIZATIONS = [
 
 export default class PrimitiveDatatable extends LightningElement {
     @api columnWidthsMode;
-    @api columns;
+    _columns;
     // eslint-disable-next-line @lwc/lwc/valid-api
     @api data;
     @api defaultSortDirection;
@@ -84,7 +84,9 @@ export default class PrimitiveDatatable extends LightningElement {
 
     showStatusBar = false;
     rendered = false;
-    _columnWidth;
+
+    _columnsWidth = [];
+    _columnsEditable = [];
 
     _currencyArray = [];
     _numberArray = [];
@@ -99,30 +101,35 @@ export default class PrimitiveDatatable extends LightningElement {
     _minArray = [];
     _modeArray = [];
 
+    @api
+    get columns() {
+        return this._columns;
+    }
+
+    set columns(value) {
+        this._columns = JSON.parse(JSON.stringify(normalizeArray(value)));
+    }
+
     connectedCallback() {
         this.addEventListener('cellchange', () => {
             this.showStatusBar = true;
         });
 
         this.addEventListener('resize', (event) => {
-            console.log(event.detail.columnWidths);
+            this._columnsWidth = JSON.parse(
+                JSON.stringify(event.detail.columnWidths)
+            );
+            this.updateColumnStyleResize();
+            this.updateTableWidth();
         });
-
-        console.log('Currency', this._currencyArray);
-        console.log('Number', this._numberArray);
-        console.log('Percent', this._percentArray);
-        console.log('Count', this._countArray);
-        console.log('Count Unique', this._countUniqueArray);
-        console.log('Sum', this._sumArray);
-        console.log('Average', this._averageArray);
-        console.log('Median', this._medianArray);
-        console.log('Max', this._maxArray);
-        console.log('Min', this._minArray);
-        console.log('Mode', this._modeArray);
     }
 
     renderedCallback() {
         this._data = JSON.parse(JSON.stringify(normalizeArray(this.data)));
+        this.getDatatableColumnsWidth();
+        this.getDatatableEditable();
+        this.updateColumnStyle();
+        this.updateTableWidth();
 
         if (!this.rendered) {
             this.computeSummarizationCurrency();
@@ -132,17 +139,49 @@ export default class PrimitiveDatatable extends LightningElement {
         this.rendered = true;
     }
 
+    getDatatableColumnsWidth() {
+        const datatable = this.template.querySelector('c-primitive-datatable');
+        this._columnsWidth = JSON.parse(
+            JSON.stringify(datatable.columnsWidth())
+        );
+    }
+
+    getDatatableEditable() {
+        const datatable = this.template.querySelector('c-primitive-datatable');
+        this._columnsEditable = datatable.columnsEditable();
+    }
+
+    updateColumnStyle() {
+        const columns = this.template.querySelectorAll('td');
+        columns.forEach((column, index) => {
+            column.style.width = `${this._columnsWidth[index]}px`;
+            if (this._columnsEditable[index - 1]) {
+                column.style.paddingRight = '35px';
+            }
+        });
+    }
+
+    updateColumnStyleResize() {
+        const columns = this.template.querySelectorAll('td');
+        // on resize, it doesn't take in consideration the first column which is always 52 px.
+        this._columnsWidth.unshift(52);
+        columns.forEach((column, index) => {
+            column.style.width = `${this._columnsWidth[index]}px`;
+            // if column is editable, there is a button-icon which is 35 px but not on the first column.
+            if (this._columnsEditable[index - 1]) {
+                column.style.paddingRight = '35px';
+            }
+        });
+    }
+
+    updateTableWidth() {
+        const table = this.template.querySelector('table');
+        table.style.width = `${sum(this._columnsWidth)}px`;
+    }
+
     handleDispatchEvents(event) {
         event.stopPropagation();
         this.dispatchEvent(
-            new CustomEvent(`${event.type}`, {
-                detail: event.detail,
-                bubbles: event.bubbles,
-                composed: event.composed,
-                cancelable: event.cancelable
-            })
-        );
-        console.log(
             new CustomEvent(`${event.type}`, {
                 detail: event.detail,
                 bubbles: event.bubbles,
