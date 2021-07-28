@@ -1,61 +1,74 @@
 <template>
-    <c-primitive-datatable
-        column-widths-mode={columnWidthsMode}
-        columns={columns}
-        data={data}
-        default-sort-direction={defaultSortDirection}
-        draft-values={draftValues}
-        enable-infinite-loading={enableInfiniteLoading}
-        errors={errors}
-        hide-checkbox-column="true"
-        hide-table-header={hideTableHeader}
-        is-loading={isLoading}
-        key-field={keyField}
-        load-more-offset={loadMoreOffset}
-        max-column-width={maxColumnWidth}
-        max-row-selection={maxRowSelection}
-        min-column-width={minColumnWidth}
-        render-config={renderConfig}
-        resize-column-disabled={resizeColumnDisabled}
-        resize-step={resizeStep}
-        row-number-offset={rowNumberOffset}
-        selected-rows={selectedRows}
-        show-row-number-column={showRowNumberColumn}
-        sorted-by={sortedBy}
-        sorted-direction={sortedDirection}
-        suppress-bottom-bar="true"
-        wrap-text-max-lines={wrapTextMaxLines}
-        onrowselection={handleDispatchEvents}
-        onsort={handleDispatchEvents}
-        onresize={handleDispatchEvents}
-        onsave={handleDispatchEvents}
-        oncancel={handleDispatchEvents}
-        onheaderaction={handleDispatchEvents}
-        onloadmore={handleDispatchEvents}
-        oncellchange={handleDispatchEvents}
-        onrowaction={handleDispatchEvents}
-    >
-    </c-primitive-datatable>
-    <table class="slds-table slds-table_bordered">
-        <tbody>
-            <tr>
-                <td style="width: 52px" class="slds-text-align_right">sum</td>
-                <template
-                    for:each={columns}
-                    for:item="column"
-                    for:index="index"
-                >
-                    <td
-                        key={column.index}
-                        class="slds-text-align_right"
-                        data-column={column.fieldName}
-                    >
-                        {index}
+    <div class="avonni-datatable-container">
+        <c-primitive-datatable
+            column-widths-mode={columnWidthsMode}
+            columns={columns}
+            data={data}
+            default-sort-direction={defaultSortDirection}
+            draft-values={draftValues}
+            enable-infinite-loading={enableInfiniteLoading}
+            errors={errors}
+            hide-checkbox-column="true"
+            hide-table-header={hideTableHeader}
+            is-loading={isLoading}
+            key-field={keyField}
+            load-more-offset={loadMoreOffset}
+            max-column-width={maxColumnWidth}
+            max-row-selection={maxRowSelection}
+            min-column-width={minColumnWidth}
+            render-config={renderConfig}
+            resize-column-disabled={resizeColumnDisabled}
+            resize-step={resizeStep}
+            row-number-offset={rowNumberOffset}
+            selected-rows={selectedRows}
+            show-row-number-column={showRowNumberColumn}
+            sorted-by={sortedBy}
+            sorted-direction={sortedDirection}
+            suppress-bottom-bar="true"
+            wrap-text-max-lines={wrapTextMaxLines}
+            onrowselection={handleDispatchEvents}
+            onsort={handleDispatchEvents}
+            onresize={handleDispatchEvents}
+            onsave={handleDispatchEvents}
+            oncancel={handleDispatchEvents}
+            onheaderaction={handleDispatchEvents}
+            onloadmore={handleDispatchEvents}
+            oncellchange={handleDispatchEvents}
+            onrowaction={handleDispatchEvents}
+        >
+        </c-primitive-datatable>
+        <table class="slds-table slds-table_bordered">
+            <tbody>
+                <tr>
+                    <td class="avonni-datatable-first-column">
+                        <span class="slds-grid slds-grid_align-spread">
+                            <div class="slds-truncate">
+                                <span
+                                    class="slds-text-body_small slds-text-color_weak"
+                                >
+                                    type
+                                </span>
+                            </div>
+                        </span>
                     </td>
-                </template>
-            </tr>
-        </tbody>
-    </table>
+                    <template
+                        for:each={columns}
+                        for:item="column"
+                        for:index="index"
+                    >
+                        <td
+                            key={column.index}
+                            class="slds-text-align_right"
+                            data-column={column.fieldName}
+                            role="gridcell"
+                        >
+                            {index}
+                        </td>
+                    </template>
+                </tr>
+            </tbody>
+        </table>
+    </div>
     <div class="avonni-datatable-bottom-bar" if:true={showStatusBar}>
         <div class="slds-grid slds-grid_align-center">
             <lightning-button

@@ -291,24 +291,17 @@ export default class PrimitiveDatatable extends LightningDatatable {
             'privateactionclick',
             this.handleDispatchEvents
         );
-
-        this.addEventListener('resize', (event) => {
-            this._columnsWidth = event.detail.columnWidths;
-            console.log(this._columnsWidth);
-        });
     }
 
     renderedCallback() {
         super.renderedCallback();
 
         this._data = JSON.parse(JSON.stringify(normalizeArray(super.data)));
-        this._columnsWidth = JSON.parse(
-            JSON.stringify(normalizeArray(super.widthsData.columnWidths))
-        );
-        this._columnsEditable = [];
-        this.columns.forEach((column) => {
-            this._columnsEditable.push(column.editable);
-        });
+
+        this.columnsWidth();
+        this.tableWidth();
+        this.cancelScrollable();
+
         this.computeEditableOption();
 
         // Make sure custom edited cells stay yellow on hover
@@ -350,12 +343,36 @@ export default class PrimitiveDatatable extends LightningDatatable {
 
     @api
     columnsWidth() {
+        this._columnsWidth = JSON.parse(
+            JSON.stringify(normalizeArray(super.widthsData.columnWidths))
+        );
         return this._columnsWidth;
     }
 
     @api
     columnsEditable() {
+        this._columnsEditable = [];
+        this.columns.forEach((column) => {
+            this._columnsEditable.push(column.editable);
+        });
         return this._columnsEditable;
+    }
+
+    @api
+    tableWidth() {
+        this._tableWidth = JSON.parse(
+            JSON.stringify(super.widthsData.tableWidth)
+        );
+        return this._tableWidth;
+    }
+
+    cancelScrollable() {
+        const scrollable = this.template.querySelector(
+            '.slds-table_header-fixed_container'
+        );
+        scrollable.style.overflowX = 'hidden';
+        scrollable.style.width = `${this._tableWidth}px`;
+        scrollable.style.maxWidth = 'none';
     }
 
     // Normalization of primitive datatable attributes

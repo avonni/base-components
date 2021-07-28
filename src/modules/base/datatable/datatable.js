@@ -116,11 +116,10 @@ export default class PrimitiveDatatable extends LightningElement {
         });
 
         this.addEventListener('resize', (event) => {
-            this._columnsWidth = JSON.parse(
-                JSON.stringify(event.detail.columnWidths)
-            );
+            this._columnsWidth = event.detail.columnWidths;
             this.updateColumnStyleResize();
             this.updateTableWidth();
+            this.updateBottomBarWidth();
         });
     }
 
@@ -130,6 +129,7 @@ export default class PrimitiveDatatable extends LightningElement {
         this.getDatatableEditable();
         this.updateColumnStyle();
         this.updateTableWidth();
+        this.updateBottomBarWidth();
 
         if (!this.rendered) {
             this.computeSummarizationCurrency();
@@ -175,8 +175,30 @@ export default class PrimitiveDatatable extends LightningElement {
     }
 
     updateTableWidth() {
+        const datatable = this.template.querySelector('c-primitive-datatable');
+        this._tableWidth = JSON.parse(JSON.stringify(datatable.tableWidth()));
         const table = this.template.querySelector('table');
-        table.style.width = `${sum(this._columnsWidth)}px`;
+        if (table) {
+            table.style.width = `${this._tableWidth}px`;
+        }
+    }
+
+    updateBottomBarWidth() {
+        if (this.showStatusBar) {
+            const bottomBar = this.template.querySelector(
+                '.avonni-datatable-bottom-bar'
+            );
+            const container = this.template.querySelector(
+                '.avonni-datatable-container'
+            );
+            const containerWidth = container.offsetWidth;
+
+            if (this._tableWidth < containerWidth) {
+                bottomBar.style.width = `${this._tableWidth}px`;
+            } else if (this._tableWidth > containerWidth) {
+                bottomBar.style.width = `${containerWidth}px`;
+            }
+        }
     }
 
     handleDispatchEvents(event) {
