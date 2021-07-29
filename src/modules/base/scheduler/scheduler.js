@@ -110,60 +110,61 @@ export default class Scheduler extends LightningElement {
         // On the first render, save the datatable rows height
         if (!this._datatableRowsHeight) {
             this.updateDatatableRowsHeight();
-        }
+        } else {
+            this.updateHeadersStyle();
+            this.updateBodyStyle();
+            this.stopPositioning();
 
-        this.updateHeadersStyle();
-        this.updateBodyStyle();
-        this.stopPositioning();
+            // Position the detail popover
+            if (this.showDetailPopover) {
+                const popover = this.template.querySelector(
+                    '.scheduler__event-detail-popover'
+                );
+                const event = this.template.querySelector(
+                    `.scheduler__event-wrapper[data-key="${this.selectedEvent.key}"]`
+                );
+                this.startPositioning(event, popover);
+            }
 
-        // Position the detail popover
-        if (this.showDetailPopover) {
-            const popover = this.template.querySelector(
-                '.scheduler__event-detail-popover'
-            );
-            const event = this.template.querySelector(
-                `.scheduler__event-wrapper[data-key="${this.selectedEvent.key}"]`
-            );
-            this.startPositioning(event, popover);
-        }
+            // Position the context menu
+            if (this.showContextMenu) {
+                const contextMenu = this.template.querySelector(
+                    'c-primitive-dropdown-menu'
+                );
+                const event = this.template.querySelector(
+                    `.scheduler__event-wrapper[data-key="${this.selectedEvent.key}"]`
+                );
+                this.startPositioning(event, contextMenu);
+            }
 
-        // Position the context menu
-        if (this.showContextMenu) {
-            const contextMenu = this.template.querySelector(
-                'c-primitive-dropdown-menu'
-            );
-            const event = this.template.querySelector(
-                `.scheduler__event-wrapper[data-key="${this.selectedEvent.key}"]`
-            );
-            this.startPositioning(event, contextMenu);
-        }
+            // If the render happened in the middle of a resizing
+            const side = this._resizeSide;
+            if (this._draggedEvent && side) {
+                // Update the dragged event with the new HTML element
+                const key = this._draggedEvent.dataset.key;
+                const event = this.template.querySelector(
+                    `.scheduler__event-wrapper[data-key="${key}"]`
+                );
+                event.classList.add('scheduler__event-dragged');
+                this._draggedEvent = event;
 
-        // If the render happened in the middle of a resizing
-        const side = this._resizeSide;
-        if (this._draggedEvent && side) {
-            // Update the dragged event with the new HTML element
-            const key = this._draggedEvent.dataset.key;
-            const event = this.template.querySelector(
-                `.scheduler__event-wrapper[data-key="${key}"]`
-            );
-            event.classList.add('scheduler__event-dragged');
-            this._draggedEvent = event;
+                // Update the initial dragging state
+                const state = this._initialState;
+                const initialX = state.initialX;
+                const position = event.getBoundingClientRect();
+                state.eventWidth = position.width;
+                state.eventLeft = position.left;
+                state.eventRight = position.right;
 
-            // Update the initial dragging state
-            const state = this._initialState;
-            const initialX = state.initialX;
-            const position = event.getBoundingClientRect();
-            state.eventWidth = position.width;
-            state.eventLeft = position.left;
-            state.eventRight = position.right;
+                // Adjust the dragged event style to follow the cursor
+                const sideX =
+                    side === 'left' ? state.eventLeft : state.eventRight;
+                const x = initialX - sideX;
+                this.updateDraggedEventStyleAfterResize(x);
 
-            // Adjust the dragged event style to follow the cursor
-            const sideX = side === 'left' ? state.eventLeft : state.eventRight;
-            const x = initialX - sideX;
-            this.updateDraggedEventStyleAfterResize(x);
-
-            // Update the initialX position to remove the x offset
-            state.initialX = state.initialX - x;
+                // Update the initialX position to remove the x offset
+                state.initialX = state.initialX - x;
+            }
         }
     }
 
@@ -368,6 +369,14 @@ export default class Scheduler extends LightningElement {
                 value: row[this.rowsKeyField]
             };
         });
+    }
+
+    get smallestColumnDuration() {
+        const header = this.smallestHeader;
+        const headerColumnEnd =
+            addToDate(header.start, header.unit, header.span) - 1;
+        return dateTimeObjectFrom(headerColumnEnd).diff(header.start)
+            .milliseconds;
     }
 
     get cellWidth() {
@@ -604,12 +613,7 @@ export default class Scheduler extends LightningElement {
                 ? 'disabled'
                 : event.theme || this.eventsTheme;
 
-            const computedEvent = new Event(event);
-
-            if (computedEvent.occurrences.length) {
-                this.updateEventWidth(computedEvent);
-                computedEvents.push(computedEvent);
-            }
+            computedEvents.push(new Event(event));
         });
 
         this.computedEvents = computedEvents;
@@ -619,51 +623,61 @@ export default class Scheduler extends LightningElement {
         let colorIndex = 0;
         this.computedRows = this.rows.map((row) => {
             const rowKey = row[this.rowsKeyField];
-            const events = [];
-            this.computedEvents.forEach((event) => {
-                const isInRow = event.keyFields.includes(rowKey);
-                if (isInRow) events.push(event);
-            });
 
+            // If there is no color left in the palette,
+            // restart from the beginning
             if (!this.palette[colorIndex]) {
                 colorIndex = 0;
             }
 
+            const events = this.computedEvents.filter((event) => {
+                return event.keyFields.includes(rowKey) && !event.disabled;
+            });
+
+            const occurrences = [];
+            events.forEach((event) => {
+                const rowOccurrences = event.occurrences.filter(
+                    (occ) => occ.rowKey === rowKey
+                );
+                occurrences.push(rowOccurrences);
+            });
+
             const computedRow = new Row({
-                key: rowKey,
                 color: this.palette[colorIndex],
-                events: events
+                columnWidth: this.cellWidth,
+                key: rowKey,
+                referenceColumns: this.smallestHeader.columns,
+                events: occurrences.flat()
             });
 
             colorIndex += 1;
             return computedRow;
         });
-
-        this.updateRowColumns();
     }
 
     updateBodyStyle() {
         // Set the rows height
         const datatable = this.template.querySelector('c-datatable');
         const rows = this.template.querySelectorAll('tbody tr');
+
         rows.forEach((row, index) => {
             const key = row.dataset.key;
+            const computedRow = this.computedRows.find((cptRow) => {
+                return cptRow.key === key;
+            });
+            const rowHeight = computedRow.height;
+            row.style.height = `${rowHeight}px`;
+
             const dataRowHeight = this._datatableRowsHeight.find(
                 (dataRow) => dataRow.rowKey === key
             ).height;
-            const rowHeight = row.offsetHeight;
             row.style.minHeight = `${dataRowHeight}px`;
+
             if (index === 0) {
                 datatable.setRowHeight(key, rowHeight - 1);
             } else {
                 datatable.setRowHeight(key, rowHeight);
             }
-        });
-
-        // Give the body cells their width
-        const cells = this.template.querySelectorAll('tbody td');
-        cells.forEach((cell) => {
-            cell.style.width = `${this.cellWidth}%`;
         });
     }
 
@@ -671,10 +685,11 @@ export default class Scheduler extends LightningElement {
         this._datatableRowsHeight = [];
         const datatable = this.template.querySelector('c-datatable');
 
-        this.rows.forEach((row) => {
-            const rowKey = row[this.rowsKeyField];
+        this.computedRows.forEach((row) => {
+            const rowKey = row.key;
             const height = datatable.getRowHeight(rowKey);
             this._datatableRowsHeight.push({ rowKey, height });
+            row.minHeight = height;
         });
     }
 
@@ -692,16 +707,8 @@ export default class Scheduler extends LightningElement {
         }
     }
 
-    updateEventWidth(event) {
-        const header = this.smallestHeader;
-        const columnEnd = addToDate(header.start, header.unit, header.span) - 1;
-        const duration = DateTime.fromMillis(columnEnd).diff(header.start)
-            .milliseconds;
-
-        event.updateWidth({
-            columns: header.columns,
-            columnDuration: duration
-        });
+    updateEventWidth() {
+        //
     }
 
     updateHeadersStyle() {
@@ -711,6 +718,11 @@ export default class Scheduler extends LightningElement {
         );
         const thead = this.template.querySelector('thead');
         datatableCol.style.paddingTop = `${thead.offsetHeight - 34}px`;
+
+        // Push the events block at the bottom of the headers
+        const events = this.template.querySelector('.scheduler__events');
+        events.style.top = `${thead.offsetHeight}px`;
+        events.style.height = `calc(100% - ${thead.offsetHeight}px)`;
 
         // Get the header rows and sort them from the shortest unit to the longest
         const headerRows = Array.from(
@@ -726,12 +738,6 @@ export default class Scheduler extends LightningElement {
             cells.forEach((cell, index) => {
                 cell.style.width = `${header.columnWidths[index]}%`;
             });
-        });
-    }
-
-    updateRowColumns() {
-        this.computedRows.forEach((row) => {
-            row.initColumns(this.smallestHeader.columns);
         });
     }
 
@@ -827,23 +833,23 @@ export default class Scheduler extends LightningElement {
         this._positioning = false;
     }
 
-    selectEvent(event) {
-        const eventWrapper = event.currentTarget;
-        const from = new Date(Number(eventWrapper.dataset.from));
-        const to = new Date(Number(eventWrapper.dataset.to));
-        const keyFields = eventWrapper.dataset.keyFields.split(',');
+    // selectEvent(event) {
+    //     const eventWrapper = event.currentTarget;
+    //     const from = new Date(Number(eventWrapper.dataset.from));
+    //     const to = new Date(Number(eventWrapper.dataset.to));
+    //     const keyFields = eventWrapper.dataset.keyFields.split(',');
 
-        this.selectedEvent = {
-            key: eventWrapper.dataset.key,
-            keyFields: keyFields,
-            name: eventWrapper.dataset.name,
-            title: eventWrapper.dataset.title,
-            from: from.toISOString(),
-            to: to.toISOString(),
-            draftValues: {},
-            crossingEvents: []
-        };
-    }
+    //     this.selectedEvent = {
+    //         key: eventWrapper.dataset.key,
+    //         keyFields: keyFields,
+    //         name: eventWrapper.dataset.name,
+    //         title: eventWrapper.dataset.title,
+    //         from: from.toISOString(),
+    //         to: to.toISOString(),
+    //         draftValues: {},
+    //         crossingEvents: []
+    //     };
+    // }
 
     resizeEventTo(cell) {
         const side = this._resizeSide;
@@ -968,7 +974,11 @@ export default class Scheduler extends LightningElement {
     handleEventMouseEnter(mouseEvent) {
         if (this._draggedEvent || this.showContextMenu) return;
 
-        this.selectEvent(mouseEvent);
+        this.selectedEvent = {
+            ...mouseEvent.detail.event,
+            draftValues: {},
+            crossingEvents: []
+        };
         this.showDetailPopover = true;
     }
 

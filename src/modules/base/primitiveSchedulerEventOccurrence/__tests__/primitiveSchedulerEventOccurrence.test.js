@@ -18,7 +18,7 @@
  *   contributors may be used to endorse or promote products derived from
  *   this software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS∫ AND CONTRIBUTORS "AS IS"
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
@@ -30,23 +30,44 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.scheduler__datatable-col {
-    background-color: #fafaf9;
-    flex-basis: 25%;
-}
+import { createElement } from 'lwc';
+import PrimitiveSchedulerEventOccurrence from 'c/primitiveSchedulerEventOccurrence';
 
-.scheduler__schedule-table {
-    overflow: hidden;
-}
+describe('PrimitiveSchedulerEventOccurrence', () => {
+    afterEach(() => {
+        while (document.body.firstChild) {
+            document.body.removeChild(document.body.firstChild);
+        }
+    });
 
-.scheduler__event-detail-popover {
-    width: auto;
-}
-.scheduler__event-detail-icon {
-    color: #706e6b;
-}
+    it('Default attributes', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
 
-.scheduler__events {
-    left: 0;
-    right: 0;
-}
+        expect(element.name).toBeUndefined();
+    });
+
+    /* ----- ATTRIBUTES ----- */
+
+    // // name
+    // it('name', () => {
+    //     const element = createElement(
+    //         'base-primitive-scheduler-event-occurrence',
+    //         {
+    //             is: PrimitiveSchedulerEventOccurrence
+    //         }
+    //     );
+
+    //     document.body.appendChild(element);
+
+    //     element.name = 'a-string-name';
+
+    //     return Promise.resolve().then(() => {
+
+    //     });
+    // });
+});

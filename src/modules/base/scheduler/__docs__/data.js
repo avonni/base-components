@@ -128,20 +128,20 @@ const headers = [
 
 const events = [
     {
-        keyFields: ['3'],
+        keyFields: ['1'],
         name: 'identify-need',
         title: 'Identify need',
         iconName: 'utility:search',
-        from: new Date(2021, 11, 13, 7),
-        to: new Date(2021, 11, 13, 11, 14),
+        from: new Date(2021, 11, 11, 15),
+        to: new Date(2021, 11, 13, 10, 30),
         theme: 'transparent'
     },
     {
         keyFields: ['3'],
         name: 'find-examples',
         title: 'Find existing examples of solutions',
-        from: new Date(2021, 11, 13, 11),
-        to: new Date(2021, 11, 13, 14)
+        from: new Date(2021, 11, 8, 30),
+        to: new Date(2021, 11, 11, 30)
     },
     {
         keyFields: ['1', '3'],
@@ -152,12 +152,12 @@ const events = [
         allDay: true
     },
     {
-        keyFields: ['2'],
+        keyFields: ['1'],
         name: 'create-wireframe',
         title: 'Create wireframe',
         iconName: 'utility:description',
-        from: new Date(2021, 11, 16, 9),
-        to: new Date(2021, 11, 20, 14)
+        from: new Date(2021, 11, 13, 9, 30),
+        to: new Date(2021, 11, 13, 12)
     },
     {
         keyFields: ['4'],
@@ -165,23 +165,25 @@ const events = [
         title: 'Create mockup',
         iconName: 'utility:brush',
         from: new Date(2021, 11, 20, 7),
-        to: new Date(2021, 11, 22, 10, 30)
+        to: new Date(2021, 11, 22, 10, 30),
+        theme: 'hollow'
     },
     {
         keyFields: ['1', '5'],
         name: 'implement-feature',
         title: 'Implement feature',
         iconName: 'utility:apex',
-        from: new Date(2021, 11, 22, 11, 30),
-        to: new Date(2021, 11, 24)
+        from: new Date(2021, 11, 13, 11, 30),
+        to: new Date(2021, 11, 15),
+        theme: 'line'
     },
     {
         keyFields: ['1', '5'],
         name: 'standup',
         title: 'Dev team standup meeting',
         iconName: 'standard:team_member',
-        from: new Date(2021, 11, 13, 9, 30),
-        to: new Date(2021, 11, 14, 10, 30),
+        from: new Date(2021, 11, 13, 10, 45),
+        to: new Date(2021, 11, 14, 12, 15),
         recurrence: 'weekly',
         // recurrenceCount: 3,
         recurrenceAttributes: {

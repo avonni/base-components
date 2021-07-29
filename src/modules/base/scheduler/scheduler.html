@@ -47,7 +47,7 @@
         </div>
 
         <!-- Schedule -->
-        <div class="slds-col">
+        <div class="slds-col slds-is-relative">
             <table class={tableClass}>
                 <!-- Headers -->
                 <thead>
@@ -97,121 +97,43 @@
                                     class="slds-border_right slds-col slds-p-around_none slds-wrap"
                                     data-start={column.start}
                                     data-end={column.end}
-                                >
-                                    <!-- Disabled dates/times -->
-                                    <template
-                                        for:each={column.disabledDates}
-                                        for:item="disabledDate"
-                                    >
-                                        <div
-                                            key={disabledDate.key}
-                                            class="slds-is-absolute scheduler__disabled-date slds-theme_alert-texture slds-theme_shade"
-                                            style={disabledDate.wrapperStyle}
-                                        >
-                                            <div
-                                                if:true={disabledDate.showTitle}
-                                                class="scheduler__disabled-date-title slds-text-body_small slds-p-around_xx-small slds-text-color_inverse-weak slds-grid slds-grid-vertical-align_center"
-                                                title={column.title}
-                                            >
-                                                <lightning-icon
-                                                    if:true={disabledDate.iconName}
-                                                    icon-name={disabledDate.iconName}
-                                                    size="x-small"
-                                                    class="slds-m-right_xx-small slds-current-color"
-                                                ></lightning-icon>
-                                                <span class="slds-truncate"
-                                                    >{disabledDate.title}</span
-                                                >
-                                            </div>
-                                        </div>
-                                    </template>
-
-                                    <!-- Event placeholders, to prevent events from overlapping -->
-                                    <template
-                                        for:each={column.placeholders}
-                                        for:item="placeholder"
-                                    >
-                                        <div
-                                            key={placeholder.key}
-                                            class={placeholder.wrapperClass}
-                                            style={placeholder.wrapperStyle}
-                                            aria-hidden="true"
-                                        >
-                                            <div
-                                                class={placeholder.class}
-                                                style={placeholder.style}
-                                            >
-                                                <lightning-icon
-                                                    if:true={placeholder.iconName}
-                                                    icon-name={placeholder.iconName}
-                                                    size="x-small"
-                                                    class="slds-m-right_xx-small"
-                                                ></lightning-icon>
-                                                <span class="slds-truncate"
-                                                    >{placeholder.title}</span
-                                                >
-                                            </div>
-                                        </div>
-                                    </template>
-                                    <template
-                                        for:each={column.events}
-                                        for:item="event"
-                                    >
-                                        <!-- Events -->
-                                        <div
-                                            key={event.key}
-                                            class={event.wrapperClass}
-                                            style={event.wrapperStyle}
-                                            data-row-key={row.key}
-                                            data-name={event.name}
-                                            data-key={event.key}
-                                            data-key-fields={event.keyFields}
-                                            data-title={event.title}
-                                            data-from={event.from.ts}
-                                            data-to={event.to.ts}
-                                            tabindex="0"
-                                            oncontextmenu={handleEventContextMenu}
-                                            onmousedown={handleEventMouseDown}
-                                            onmouseenter={handleEventMouseEnter}
-                                            onmouseleave={hideDetailPopover}
-                                            onfocus={handleEventMouseEnter}
-                                            onblur={hideDetailPopover}
-                                            ondblclick={handleEventDoubleClick}
-                                        >
-                                            <div
-                                                class={event.class}
-                                                style={event.style}
-                                            >
-                                                <lightning-icon
-                                                    class="scheduler__event-resize-icon scheduler__event-resize-icon_left"
-                                                    icon-name="utility:drag_and_drop"
-                                                    size="xx-small"
-                                                    data-resize="left"
-                                                ></lightning-icon>
-                                                <lightning-icon
-                                                    if:true={event.iconName}
-                                                    icon-name={event.iconName}
-                                                    size="x-small"
-                                                    class="slds-m-right_xx-small"
-                                                ></lightning-icon>
-                                                <span class="slds-truncate"
-                                                    >{event.title}</span
-                                                >
-                                                <lightning-icon
-                                                    class="scheduler__event-resize-icon scheduler__event-resize-icon_right"
-                                                    icon-name="utility:drag_and_drop"
-                                                    size="xx-small"
-                                                    data-resize="right"
-                                                ></lightning-icon>
-                                            </div>
-                                        </div>
-                                    </template>
-                                </td>
+                                ></td>
                             </template>
                         </tr>
                     </template>
                 </tbody>
             </table>
+
+            <!-- Events -->
+            <div class="scheduler__events slds-is-absolute">
+                <template for:each={computedEvents} for:item="event">
+                    <div key={event.key}>
+                        <template
+                            for:each={event.occurrences}
+                            for:item="occurrence"
+                        >
+                            <c-primitive-scheduler-event-occurrence
+                                key={occurrence.key}
+                                color={event.color}
+                                columns={smallestHeader.columns}
+                                column-duration={smallestColumnDuration}
+                                column-width={cellWidth}
+                                disabled={event.disabled}
+                                event-name={event.name}
+                                from={occurrence.from}
+                                icon-name={event.iconName}
+                                occurrence-key={occurrence.key}
+                                offset-top={occurrence.offsetTop}
+                                row-key={occurrence.rowKey}
+                                rows={computedRows}
+                                title={event.title}
+                                theme={event.theme}
+                                to={occurrence.to}
+                            ></c-primitive-scheduler-event-occurrence>
+                        </template>
+                    </div>
+                </template>
+            </div>
         </div>
     </div>
 

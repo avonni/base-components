@@ -42,7 +42,6 @@ import {
     dateTimeObjectFrom
 } from './dateUtils';
 import { RECURRENCES, EVENTS_THEMES } from './defaults';
-import Occurrence from './eventOccurence';
 
 /**
  * Scheduler event
@@ -71,17 +70,17 @@ export default class Event {
         );
 
         this.key = generateUniqueId();
-        this.allDay = props.allDay;
+        this._allDay = normalizeBoolean(props.allDay);
         this.availableMonths = props.availableMonths;
         this.availableDaysOfTheWeek = props.availableDaysOfTheWeek;
         this.availableTimeFrames = props.availableTimeFrames;
         this.color = props.color;
         this.disabled = props.disabled;
-        this.schedulerEnd = props.schedulerEnd;
-        this.schedulerStart = props.schedulerStart;
+        this._schedulerEnd = props.schedulerEnd;
+        this._schedulerStart = props.schedulerStart;
         this.smallestHeader = props.smallestHeader;
-        this.from = props.from;
-        this.to = props.to;
+        this._from = dateTimeObjectFrom(props.from);
+        this._to = dateTimeObjectFrom(props.to);
         this.iconName = props.iconName;
         this.keyFields = props.keyFields;
 
@@ -100,8 +99,6 @@ export default class Event {
         this.theme = props.theme;
         this.title = props.title;
         this.name = props.name;
-        this.width = 0;
-        this.offsetLeft = 0;
 
         this.initOccurrences();
     }
@@ -208,7 +205,7 @@ export default class Event {
     }
 
     addOccurrence(from, to) {
-        const { schedulerEnd, schedulerStart } = this;
+        const { schedulerEnd, schedulerStart, keyFields } = this;
         const computedTo = to || this.computeOccurenceEnd(from);
 
         if (
@@ -227,13 +224,16 @@ export default class Event {
         );
 
         if (containsAllowedTimes) {
-            const occurrence = new Occurrence({
-                from: from,
-                key: `${this.key}${this.occurrences.length}`,
-                to: computedTo,
-                event: this
+            keyFields.forEach((keyField) => {
+                const occurrence = {
+                    from: from,
+                    key: `${this.name}-${keyField}-${this.occurrences.length}`,
+                    rowKey: keyField,
+                    to: computedTo,
+                    offsetTop: 0
+                };
+                this.occurrences.push(occurrence);
             });
-            this.occurrences.push(occurrence);
         }
     }
 
@@ -453,59 +453,5 @@ export default class Event {
             default:
                 break;
         }
-    }
-
-    updateWidth({ columnDuration, columns }) {
-        if (!this.occurrences.length) return;
-
-        const from = this.occurrences[0].from;
-        const to = this.occurrences[0].to;
-
-        // Find the column where the event starts
-        let i = columns.findIndex((column) => {
-            return column.end > from;
-        });
-
-        if (i < 0) return;
-
-        let width = 0;
-
-        // If the event starts in the middle of a column,
-        // add only the appropriate width in the first column
-        if (columns[i].start < from) {
-            const columnEnd = dateTimeObjectFrom(columns[i].end);
-            const eventDurationLeft = columnEnd.diff(from).milliseconds;
-            width += (eventDurationLeft * 100) / columnDuration;
-            this.offsetLeft = 100 - width;
-
-            // If the event ends before the end of the first column
-            // remove the appropriate width of the first column
-            if (columnEnd > to) {
-                const columnLeft = columnEnd.diff(to).milliseconds;
-                this.width = width - (columnLeft * 100) / columnDuration;
-                return;
-            }
-
-            i += 1;
-        } else {
-            this.offsetLeft = 0;
-        }
-
-        // Add the width of the columns completely filled by the event
-        while (i < columns.length) {
-            if (columns[i].end > to) break;
-            width += 100;
-            i += 1;
-        }
-
-        // If the event ends in the middle of a column,
-        // add the remaining width
-        if (columns[i] && columns[i].start < to) {
-            const columnStart = dateTimeObjectFrom(columns[i].start);
-            const eventDurationLeft = to.diff(columnStart).milliseconds;
-            width += (eventDurationLeft * 100) / columnDuration;
-        }
-
-        this.width = width;
     }
 }

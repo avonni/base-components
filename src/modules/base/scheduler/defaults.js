@@ -62,6 +62,8 @@ const EVENTS_PALETTES = {
     default: 'aurora'
 };
 
+const EVENTS_HEIGHT = 36;
+
 const THEMES = {
     valid: ['default', 'inverse'],
     default: 'default'
@@ -166,6 +168,7 @@ const RECURRENCES = [
 
 export {
     EVENTS_DATES_FORMAT,
+    EVENTS_HEIGHT,
     EVENTS_THEMES,
     EVENTS_PALETTES,
     THEMES,

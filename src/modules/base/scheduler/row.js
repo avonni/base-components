@@ -30,71 +30,99 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import { EVENTS_HEIGHT } from './defaults';
 import { normalizeArray } from 'c/utilsPrivate';
-import Cell from './cell';
 
 export default class Row {
     constructor(props) {
-        this.key = props.key.toString();
         this.color = props.color;
+        this.key = props.key.toString();
         this.columns = [];
-        this.events = props.events;
+        this.minHeight = 0;
+        this.referenceColumns = normalizeArray(props.referenceColumns);
+        this.events = normalizeArray(props.events);
+        this._height = EVENTS_HEIGHT;
+        this.initColumns();
     }
 
-    get events() {
-        return this._events;
+    get height() {
+        return this._height > this.minHeight ? this._height : this.minHeight;
     }
-    set events(value) {
-        this._events = normalizeArray(value);
-
-        if (this.columns.length) {
-            this.initEvents();
-        }
+    set height(value) {
+        this._height = value;
     }
 
-    initColumns(headerColumns) {
+    initColumns() {
         this.columns = [];
-        headerColumns.forEach((element) => {
-            this.columns.push(
-                new Cell({
-                    start: element.start,
-                    end: element.end
-                })
-            );
+        this.referenceColumns.forEach((element) => {
+            this.columns.push({
+                start: element.start,
+                end: element.end,
+                events: []
+            });
         });
 
         this.initEvents();
     }
 
     initEvents() {
-        const columns = this.columns;
+        const { columns, events } = this;
 
-        this.events.forEach((event) => {
-            if (!event.color) {
-                event.color = this.color;
-            }
-            // Create one event for each occurrence
-            event.occurrences.forEach((occurrence) => {
-                let i = columns.findIndex((column) => {
-                    return column.end > occurrence.from;
-                });
-                if (i > -1) {
-                    columns[i].addEvent(occurrence);
-
-                    // In every other column the event crosses, add the event to crossingEvents
-                    i += 1;
-                    if (!event.disabled) {
-                        while (
-                            i < columns.length &&
-                            occurrence.to > columns[i].start
-                        ) {
-                            columns[i].addCrossingEvent(occurrence);
-                            i += 1;
-                        }
-                    }
-                }
+        events.forEach((event) => {
+            // Find the column where the event starts
+            let i = columns.findIndex((column) => {
+                return column.end >= event.from;
             });
+
+            if (i > -1) {
+                // Add the event to every column it crosses
+                while (i < columns.length && event.to > columns[i].start) {
+                    columns[i].events.push(event);
+                    columns[i].events = columns[i].events.sort(
+                        (a, b) => a.from - b.from
+                    );
+                    i += 1;
+                }
+            }
         });
+        this.updateHeightAndPositions();
+    }
+
+    updateHeightAndPositions() {
+        let numberOfEvents = 0;
+        this.columns.forEach((column) => {
+            // Update the maximum number of events in one column
+            if (column.events.length > numberOfEvents) {
+                numberOfEvents = column.events.length;
+            }
+
+            // For each event, except the first one of the column
+            for (let i = 1; i < column.events.length; i++) {
+                // Go through the previous events of this column
+                // until we find a hole to place this event
+                let j = 0;
+                let offsetTop = 0;
+                while (j <= i && j < column.events.length - 1) {
+                    const offset = offsetTop;
+                    const eventHasThisOffset = column.events.find((event) => {
+                        return event.offsetTop === offset;
+                    });
+
+                    if (
+                        eventHasThisOffset &&
+                        eventHasThisOffset.key !== column.events[i].key
+                    ) {
+                        offsetTop += EVENTS_HEIGHT;
+                    } else break;
+                    j += 1;
+                }
+                if (column.events[i].offsetTop < offsetTop) {
+                    column.events[i].offsetTop = offsetTop;
+                }
+            }
+        });
+
+        this.height = numberOfEvents * EVENTS_HEIGHT + 10;
     }
 
     getColumnFromStart(start) {
