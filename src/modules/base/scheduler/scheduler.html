@@ -129,6 +129,8 @@
                                 title={event.title}
                                 theme={event.theme}
                                 to={occurrence.to}
+                                data-key={occurrence.key}
+                                onprivatecontextmenu={handleEventContextMenu}
                             ></c-primitive-scheduler-event-occurrence>
                         </template>
                     </div>
@@ -176,7 +178,7 @@
 
     <!-- Event context menu -->
     <c-primitive-dropdown-menu
-        class="slds-is-fixed"
+        class="slds-is-fixed scheduler__context-menu"
         show={showContextMenu}
         items={contextMenuActions}
         onclose={hideContextMenu}

@@ -50,3 +50,7 @@
     left: 0;
     right: 0;
 }
+
+.scheduler__context-menu {
+    z-index: 1;
+}

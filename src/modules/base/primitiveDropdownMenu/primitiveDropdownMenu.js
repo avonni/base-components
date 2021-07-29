@@ -63,6 +63,18 @@ export default class PrimitiveDropdownMenu extends LightningElement {
         this._show = normalizeBoolean(value);
     }
 
+    @api
+    get height() {
+        const menu = this.template.querySelector('.slds-popover');
+        return menu && menu.offsetHeight;
+    }
+
+    @api
+    get width() {
+        const menu = this.template.querySelector('.slds-popover');
+        return menu && menu.offsetWidth;
+    }
+
     get menuItems() {
         return Array.from(
             this.template.querySelectorAll(
@@ -85,6 +97,9 @@ export default class PrimitiveDropdownMenu extends LightningElement {
             },
             isMenuVisible() {
                 return that.show;
+            },
+            returnFocus() {
+                that.dispatchReturnFocus();
             },
             toggleMenuVisibility() {
                 that.toggleMenuVisibility();
@@ -272,5 +287,9 @@ export default class PrimitiveDropdownMenu extends LightningElement {
         // We don't want this to bubble up to the modal which due to event retargeting wouldn't be able
         // to know what is actually being scrolled and thus may lead to the scrolling of the modal
         event.stopPropagation();
+    }
+
+    dispatchReturnFocus() {
+        this.dispatchEvent(new CustomEvent('returnfocus'));
     }
 }

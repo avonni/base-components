@@ -128,13 +128,7 @@ export default class Scheduler extends LightningElement {
 
             // Position the context menu
             if (this.showContextMenu) {
-                const contextMenu = this.template.querySelector(
-                    'c-primitive-dropdown-menu'
-                );
-                const event = this.template.querySelector(
-                    `.scheduler__event-wrapper[data-key="${this.selectedEvent.key}"]`
-                );
-                this.startPositioning(event, contextMenu);
+                this.positionContextMenu();
             }
 
             // If the render happened in the middle of a resizing
@@ -777,6 +771,31 @@ export default class Scheduler extends LightningElement {
         });
     }
 
+    positionContextMenu() {
+        const contextMenu = this.template.querySelector(
+            '.scheduler__context-menu'
+        );
+        if (!contextMenu) return;
+
+        // Make sure the menu is not outside of the screen
+        const y = this.selection.y;
+        const x = this.selection.x;
+        const height = contextMenu.height;
+        const width = contextMenu.width;
+        const menuBottom = y + height;
+        const menuRight = x + width;
+
+        const bottomView = window.innerHeight;
+        const rightView = window.innerWidth;
+
+        const yTransform = menuBottom > bottomView ? height * -1 : 0;
+        const xTransform = menuRight > rightView ? width * -1 : 0;
+
+        contextMenu.style.transform = `translate(${xTransform}px, ${yTransform}px)`;
+        contextMenu.style.top = `${y}px`;
+        contextMenu.style.left = `${x}px`;
+    }
+
     startPositioning(target, element) {
         this._positioning = true;
 
@@ -1134,10 +1153,19 @@ export default class Scheduler extends LightningElement {
         this.updateBodyStyle();
     }
 
-    handleEventContextMenu(event) {
-        event.preventDefault();
+    handleEventContextMenu(mouseEvent) {
+        const { eventName, key, x, y } = mouseEvent.detail;
+        const event = this.computedEvents.find((evt) => evt.name === eventName);
+        const occurrence = event.occurrences.find((occ) => occ.key === key);
 
-        this.selectEvent(event);
+        this.selection = {
+            event,
+            occurrence,
+            x,
+            y,
+            draftValues: {}
+        };
+
         this.hideAllPopovers();
         this.showContextMenu = true;
     }

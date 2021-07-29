@@ -53,8 +53,13 @@ export default class Occurrence extends LightningElement {
     _offsetTop = 0;
     _rows = [];
 
+    connectedCallback() {
+        if (!this.disabled)
+            this.template.host.classList.add('scheduler__primitive-event');
+    }
+
     renderedCallback() {
-        const event = this.template.querySelector('.scheduler__event-wrapper');
+        const event = this.template.host;
         if (event) {
             this.updatePosition(event);
             this.updateWidth(event);
@@ -268,5 +273,20 @@ export default class Occurrence extends LightningElement {
         }
 
         element.style.width = `${width}%`;
+    }
+
+    handleContextMenu(mouseEvent) {
+        mouseEvent.preventDefault();
+
+        this.dispatchEvent(
+            new CustomEvent('privatecontextmenu', {
+                detail: {
+                    eventName: this.eventName,
+                    key: this.occurrenceKey,
+                    x: mouseEvent.clientX,
+                    y: mouseEvent.clientY
+                }
+            })
+        );
     }
 }

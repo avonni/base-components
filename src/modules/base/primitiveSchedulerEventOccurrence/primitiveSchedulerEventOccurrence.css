@@ -30,13 +30,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.scheduler__event-wrapper {
+:host {
+    position: absolute;
     overflow: hidden;
     top: 0;
     width: 100%;
 }
 
-.scheduler__event-wrapper:not(.scheduler__disabled-date) {
+:host.scheduler__primitive-event {
     z-index: 1;
 }
 
@@ -98,6 +99,11 @@
 }
 
 /* Disabled dates --------- */
+.scheduler__disabled-date {
+    height: 100%;
+    width: 100%;
+    opacity: 0.5;
+}
 .scheduler__disabled-date-title {
     position: absolute;
     bottom: 0;

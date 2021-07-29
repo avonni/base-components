@@ -36,16 +36,9 @@
     <!-- Events -->
     <div
         if:false={disabled}
-        key={key}
-        class="slds-grid slds-grid_vertical-align-center scheduler__event-wrapper slds-is-absolute slds-p-vertical_x-small"
-        data-row-key={rowKey}
-        data-name={eventName}
-        data-key={key}
-        data-key-fields={keyFields}
-        data-title={title}
-        data-from={from.ts}
-        data-to={to.ts}
+        class="slds-grid slds-grid_vertical-align-center scheduler__event-wrapper slds-p-vertical_x-small"
         tabindex="0"
+        oncontextmenu={handleContextMenu}
     >
         <div class={computedClass} style={style}>
             <lightning-icon
@@ -73,12 +66,11 @@
     <!-- Disabled dates/times -->
     <div
         if:true={disabled}
-        key={key}
-        class="slds-is-absolute scheduler__disabled-date slds-theme_alert-texture slds-theme_shade scheduler__event-wrapper"
+        class="slds-is-absolute scheduler__disabled-date slds-theme_alert-texture slds-theme_shade"
     >
         <div
             if:true={showTitle}
-            class="scheduler__disabled-date-title slds-text-body_small slds-p-around_xx-small slds-text-color_inverse-weak slds-grid slds-grid-vertical-align_center"
+            class="scheduler__disabled-date-title slds-text-body_small slds-p-around_xx-small slds-grid slds-grid-vertical-align_center slds-text-color_weak"
             title={title}
         >
             <lightning-icon
@@ -92,8 +84,7 @@
     </div>
 </template>
 
-<!-- oncontextmenu={handleContextMenu}
-onmousedown={handleMouseDown}
+<!-- onmousedown={handleMouseDown}
 onmouseenter={handleMouseEnter}
 onmouseleave={hideDetailPopover}
 onfocus={handleMouseEnter}
