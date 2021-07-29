@@ -87,6 +87,7 @@ export default class PrimitiveDatatable extends LightningElement {
 
     _columnsWidth = [];
     _columnsEditable = [];
+    _isDatatableEditable;
 
     _currencyArray = [];
     _numberArray = [];
@@ -117,20 +118,19 @@ export default class PrimitiveDatatable extends LightningElement {
 
         this.addEventListener('resize', (event) => {
             this._columnsWidth = event.detail.columnWidths;
-            this.updateColumnStyleResize();
-            this.updateTableWidth();
-            this.updateBottomBarWidth();
+            this.tableResize();
         });
     }
 
     renderedCallback() {
         this._data = JSON.parse(JSON.stringify(normalizeArray(this.data)));
+
         this.tableInitialization();
 
         if (!this.rendered) {
-            this.computeSummarizationCurrency();
-            this.computeSummarizationNumber();
-            this.computeSummarizationPercent();
+            this.computeSummarizations();
+            this.getColumnsEditable();
+            this.getDatatableEditable();
         }
         this.rendered = true;
     }
@@ -139,53 +139,88 @@ export default class PrimitiveDatatable extends LightningElement {
         return this.template.querySelector('c-primitive-datatable');
     }
 
-    get columnsTD() {
-        return this.template.querySelectorAll('td');
+    get rowsTr() {
+        return this.template.querySelectorAll('tr');
+    }
+
+    get isDatatableEditable() {
+        return (
+            this._isDatatableEditable ||
+            (!this._isDatatableEditable && this.showRowNumberColumn)
+        );
     }
 
     tableInitialization() {
-        this.getDatatableEditable();
         this.getDatatableColumnsWidth();
         this.updateColumnStyle();
         this.updateTableWidth();
         this.updateBottomBarWidth();
     }
 
-    getDatatableColumnsWidth() {
-        this._columnsWidth = JSON.parse(
-            JSON.stringify(this.primitiveDatatable.columnsWidth())
-        );
+    tableResize() {
+        this.updateColumnStyleResize();
+        this.updateTableWidth();
+        this.updateBottomBarWidth();
     }
 
-    getDatatableEditable() {
+    computeSummarizations() {
+        this.computeSummarizationCurrency();
+        this.computeSummarizationNumber();
+        this.computeSummarizationPercent();
+    }
+
+    getDatatableColumnsWidth() {
+        if (!this.hideTableHeader) {
+            this._columnsWidth = this.primitiveDatatable.columnsWidth();
+        } else
+            this._columnsWidth = this.primitiveDatatable.columnsWidthWithoutHeader();
+    }
+
+    getColumnsEditable() {
         this._columnsEditable = this.primitiveDatatable.columnsEditable();
     }
 
+    getDatatableEditable() {
+        this._isDatatableEditable = this.primitiveDatatable.isDatatableEditable();
+    }
+
     updateColumnStyle() {
-        this.columnsTD.forEach((column, index) => {
-            column.style.width = `${this._columnsWidth[index]}px`;
-            if (this._columnsEditable[index - 1]) {
-                column.style.paddingRight = '35px';
-            }
+        this.rowsTr.forEach((row) => {
+            const dataCell = Array.from(row.querySelectorAll('td'));
+            dataCell.forEach((cell, index) => {
+                // if column is editable, there is a button-icon which is 35 px but not on the first column.
+                cell.style.width = `${this._columnsWidth[index]}px`;
+                if (!this.hideCheckboxColumn) {
+                    if (this._columnsEditable[index - 2]) {
+                        cell.style.paddingRight = '35px';
+                    }
+                } else {
+                    if (this._columnsEditable[index - 1]) {
+                        cell.style.paddingRight = '35px';
+                    }
+                }
+            });
         });
     }
 
     updateColumnStyleResize() {
         // on resize, it doesn't take in consideration the first column which is always 52 px.
-        this._columnsWidth.unshift(52);
-        this.columnsTD.forEach((column, index) => {
-            column.style.width = `${this._columnsWidth[index]}px`;
-            // if column is editable, there is a button-icon which is 35 px but not on the first column.
-            if (this._columnsEditable[index - 1]) {
-                column.style.paddingRight = '35px';
+        console.log(this.isDatatableEditable);
+        if (this.isDatatableEditable) {
+            console.log('hello', this._columnsWidth);
+            if (!this.hideCheckboxColumn) {
+                this._columnsWidth.unshift(52, 32);
+            } else this._columnsWidth.unshift(52);
+        } else if (!this.isDatatableEditable) {
+            if (!this.hideCheckboxColumn && !this.hideTableHeader) {
+                this._columnsWidth.unshift(32);
             }
-        });
+        }
+        this.updateColumnStyle();
     }
 
     updateTableWidth() {
-        this._tableWidth = JSON.parse(
-            JSON.stringify(this.primitiveDatatable.tableWidth())
-        );
+        this._tableWidth = this.primitiveDatatable.tableWidth();
         const table = this.template.querySelector('table');
         if (table) {
             table.style.width = `${this._tableWidth}px`;
@@ -232,8 +267,8 @@ export default class PrimitiveDatatable extends LightningElement {
     }
 
     computeSummarization(type, array) {
-        if (this.columns && this._data) {
-            this.columns.forEach((column) => {
+        if (this._columns && this._data) {
+            this._columns.forEach((column) => {
                 const summarizeType = column.summarizeTypes;
                 const fieldName = column.fieldName;
                 if (

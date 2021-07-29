@@ -440,8 +440,8 @@ const columnsSum = [
     {
         label: 'Boolean',
         fieldName: 'boolean',
-        type: 'boolean',
-        editable: true
+        type: 'boolean'
+        // editable: true
     },
     {
         label: 'Currency',
@@ -450,7 +450,7 @@ const columnsSum = [
         typeAttributes: {
             currencyCode: 'CAD'
         },
-        editable: true,
+        // editable: true,
         summarizeTypes: [
             'count',
             'countUnique',
@@ -466,7 +466,6 @@ const columnsSum = [
         label: 'Number',
         type: 'number',
         fieldName: 'number',
-        // editable: true,
         typeAttributes: {
             minimumFractionDigits: 2
         },
@@ -485,7 +484,7 @@ const columnsSum = [
         label: 'Percent',
         fieldName: 'percent',
         type: 'percent',
-        editable: true,
+        // editable: true,
         summarizeTypes: [
             'count',
             'countUnique',

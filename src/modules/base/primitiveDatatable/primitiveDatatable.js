@@ -298,6 +298,10 @@ export default class PrimitiveDatatable extends LightningDatatable {
 
         this._data = JSON.parse(JSON.stringify(normalizeArray(super.data)));
 
+        if (!this.rendered) {
+            this.columnsWidthWithoutHeader();
+        }
+
         this.columnsWidth();
         this.tableWidth();
         this.cancelScrollable();
@@ -317,6 +321,8 @@ export default class PrimitiveDatatable extends LightningDatatable {
         editCells.forEach((cell) => {
             cell.classList.add('slds-cell-edit');
         });
+
+        this.rendered = true;
     }
 
     disconnectedCallback() {
@@ -346,16 +352,37 @@ export default class PrimitiveDatatable extends LightningDatatable {
         this._columnsWidth = JSON.parse(
             JSON.stringify(normalizeArray(super.widthsData.columnWidths))
         );
+        console.log(this._columnsWidth);
         return this._columnsWidth;
     }
 
     @api
-    columnsEditable() {
-        this._columnsEditable = [];
-        this.columns.forEach((column) => {
-            this._columnsEditable.push(column.editable);
+    columnsWidthWithoutHeader() {
+        const columnsWidthWithoutHeader = [];
+        const row = this.template.querySelector('tbody > tr');
+        const everything = row.querySelectorAll('td, th');
+        everything.forEach((cell) => {
+            columnsWidthWithoutHeader.push(cell.offsetWidth);
         });
-        return this._columnsEditable;
+        return columnsWidthWithoutHeader;
+    }
+
+    @api
+    columnsEditable() {
+        const columns = [];
+        this.columns.forEach((column) => {
+            columns.push(column.editable);
+        });
+        return columns;
+    }
+
+    @api
+    isDatatableEditable() {
+        const columns = [];
+        this.columns.forEach((column) => {
+            columns.push(column.editable);
+        });
+        return columns.filter(Boolean).length > 0;
     }
 
     @api

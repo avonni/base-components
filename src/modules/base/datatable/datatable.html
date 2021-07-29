@@ -8,7 +8,7 @@
             draft-values={draftValues}
             enable-infinite-loading={enableInfiniteLoading}
             errors={errors}
-            hide-checkbox-column="true"
+            hide-checkbox-column={hideCheckboxColumn}
             hide-table-header={hideTableHeader}
             is-loading={isLoading}
             key-field={keyField}
@@ -37,20 +37,20 @@
             onrowaction={handleDispatchEvents}
         >
         </c-primitive-datatable>
-        <table class="slds-table slds-table_bordered">
+        <table
+            class="slds-table slds-table_bordered slds-table_resizable-cols"
+            role="grid"
+        >
             <tbody>
                 <tr>
-                    <td class="avonni-datatable-first-column">
-                        <span class="slds-grid slds-grid_align-spread">
-                            <div class="slds-truncate">
-                                <span
-                                    class="slds-text-body_small slds-text-color_weak"
-                                >
-                                    type
-                                </span>
-                            </div>
-                        </span>
-                    </td>
+                    <td
+                        if:true={isDatatableEditable}
+                        class="avonni-datatable-first-column"
+                    ></td>
+                    <td
+                        if:false={hideCheckboxColumn}
+                        style="width: 32px !important"
+                    ></td>
                     <template
                         for:each={columns}
                         for:item="column"
