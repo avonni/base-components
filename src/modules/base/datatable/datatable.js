@@ -125,11 +125,7 @@ export default class PrimitiveDatatable extends LightningElement {
 
     renderedCallback() {
         this._data = JSON.parse(JSON.stringify(normalizeArray(this.data)));
-        this.getDatatableColumnsWidth();
-        this.getDatatableEditable();
-        this.updateColumnStyle();
-        this.updateTableWidth();
-        this.updateBottomBarWidth();
+        this.tableInitialization();
 
         if (!this.rendered) {
             this.computeSummarizationCurrency();
@@ -139,21 +135,34 @@ export default class PrimitiveDatatable extends LightningElement {
         this.rendered = true;
     }
 
+    get primitiveDatatable() {
+        return this.template.querySelector('c-primitive-datatable');
+    }
+
+    get columnsTD() {
+        return this.template.querySelectorAll('td');
+    }
+
+    tableInitialization() {
+        this.getDatatableEditable();
+        this.getDatatableColumnsWidth();
+        this.updateColumnStyle();
+        this.updateTableWidth();
+        this.updateBottomBarWidth();
+    }
+
     getDatatableColumnsWidth() {
-        const datatable = this.template.querySelector('c-primitive-datatable');
         this._columnsWidth = JSON.parse(
-            JSON.stringify(datatable.columnsWidth())
+            JSON.stringify(this.primitiveDatatable.columnsWidth())
         );
     }
 
     getDatatableEditable() {
-        const datatable = this.template.querySelector('c-primitive-datatable');
-        this._columnsEditable = datatable.columnsEditable();
+        this._columnsEditable = this.primitiveDatatable.columnsEditable();
     }
 
     updateColumnStyle() {
-        const columns = this.template.querySelectorAll('td');
-        columns.forEach((column, index) => {
+        this.columnsTD.forEach((column, index) => {
             column.style.width = `${this._columnsWidth[index]}px`;
             if (this._columnsEditable[index - 1]) {
                 column.style.paddingRight = '35px';
@@ -162,10 +171,9 @@ export default class PrimitiveDatatable extends LightningElement {
     }
 
     updateColumnStyleResize() {
-        const columns = this.template.querySelectorAll('td');
         // on resize, it doesn't take in consideration the first column which is always 52 px.
         this._columnsWidth.unshift(52);
-        columns.forEach((column, index) => {
+        this.columnsTD.forEach((column, index) => {
             column.style.width = `${this._columnsWidth[index]}px`;
             // if column is editable, there is a button-icon which is 35 px but not on the first column.
             if (this._columnsEditable[index - 1]) {
@@ -175,8 +183,9 @@ export default class PrimitiveDatatable extends LightningElement {
     }
 
     updateTableWidth() {
-        const datatable = this.template.querySelector('c-primitive-datatable');
-        this._tableWidth = JSON.parse(JSON.stringify(datatable.tableWidth()));
+        this._tableWidth = JSON.parse(
+            JSON.stringify(this.primitiveDatatable.tableWidth())
+        );
         const table = this.template.querySelector('table');
         if (table) {
             table.style.width = `${this._tableWidth}px`;
@@ -215,11 +224,11 @@ export default class PrimitiveDatatable extends LightningElement {
 
     handleCancel(event) {
         this.showStatusBar = false;
-        this.template.querySelector('c-primitive-datatable').cancel(event);
+        this.primitiveDatatable.cancel(event);
     }
 
     handleSave(event) {
-        this.template.querySelector('c-primitive-datatable').save(event);
+        this.primitiveDatatable.save(event);
     }
 
     computeSummarization(type, array) {
