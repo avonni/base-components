@@ -30,43 +30,34 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.list-item {
-    height: fit-content;
-}
+import Component from 'c/dataList';
 
-.sortable-item {
-    cursor: var(--list-item-cursor, grab);
-}
+customElements.define('avonni-data-list', Component.CustomElementConstructor);
 
-.sortable-icon-cursor {
-    cursor: grab;
-}
-
-/* Disable the hover on touch */
-@media (hover: hover) {
-    .sortable-item:hover {
-        background-color: var(--lwc-colorBackground, #f3f2f2);
-    }
-}
-
-.sortable-item > div {
-    width: 100%;
-}
-
-.expanded-item > div {
-    width: 100%;
-}
-
-.sortable-item_moved {
-    transition: transform 300ms;
-}
-
-.sortable-item.sortable-item_dragged {
-    position: relative;
-    z-index: 1;
-    border: none;
-    box-shadow: 0 0 10px rgb(0 0 0 / 40%);
-    opacity: 0.8;
-    cursor: grabbing;
-    background-color: rgba(255, 255, 255, 0.6);
-}
+export const DataList = ({
+    actions,
+    alternativeText,
+    data,
+    divider,
+    fields,
+    label,
+    listActions,
+    popoverPosition,
+    sortable,
+    sortableIconName,
+    sortableIconPosition
+}) => {
+    const element = document.createElement('avonni-data-list');
+    element.actions = actions;
+    element.alternativeText = alternativeText;
+    element.data = data;
+    element.divider = divider;
+    element.fields = fields;
+    element.label = label;
+    element.listActions = listActions;
+    element.popoverPosition = popoverPosition;
+    element.sortable = sortable;
+    element.sortableIconName = sortableIconName;
+    element.sortableIconPosition = sortableIconPosition;
+    return element;
+};

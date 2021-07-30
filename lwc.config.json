@@ -126,6 +126,10 @@
             "path": "src/modules/data/dataInput/dataInput.js"
         },
         {
+            "name": "c/dataList",
+            "path": "src/modules/data/dataList/dataList.js"
+        },
+        {
             "name": "c/dataPageHeader",
             "path": "src/modules/data/pageHeader/pageHeader.js"
         },
@@ -554,6 +558,10 @@
             "path": "src/modules/data/dataInput/dataInput.js"
         },
         {
+            "name": "avonni/dataList",
+            "path": "src/modules/data/dataList/dataList.js"
+        },
+        {
             "name": "avonni/dataPageHeader",
             "path": "src/modules/data/pageHeader/pageHeader.js"
         },
@@ -802,6 +810,7 @@
         "avonni/combobox",
         "avonni/confetti",
         "avonni/dataInput",
+        "avonni/dataList",
         "avonni/dataPageHeader",
         "avonni/datatable",
         "avonni/dateTimePicker",
