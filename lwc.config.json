@@ -90,10 +90,6 @@
             "path": "src/modules/base/carousel/carousel.js"
         },
         {
-            "name": "c/checkboxGroup",
-            "path": "src/modules/base/checkboxGroup/checkboxGroup.js"
-        },
-        {
             "name": "c/chip",
             "path": "src/modules/base/chip/chip.js"
         },
@@ -194,6 +190,10 @@
             "path": "src/modules/base/image/image.js"
         },
         {
+            "name": "c/inputChoiceSet",
+            "path": "src/modules/base/inputChoiceSet/inputChoiceSet.js"
+        },
+        {
             "name": "c/inputCounter",
             "path": "src/modules/base/inputCounter/inputCounter.js"
         },
@@ -270,6 +270,10 @@
             "path": "src/modules/base/primitiveBubble/primitiveBubble.js"
         },
         {
+            "name": "c/primitiveCellAvatarGroup",
+            "path": "src/modules/base/primitiveCellAvatarGroup/primitiveCellAvatarGroup.js"
+        },
+        {
             "name": "c/primitiveCellBadge",
             "path": "src/modules/base/primitiveCellBadge/primitiveCellBadge.js"
         },
@@ -280,6 +284,10 @@
         {
             "name": "c/primitiveCellColorPicker",
             "path": "src/modules/base/primitiveCellColorPicker/primitiveCellColorPicker.js"
+        },
+        {
+            "name": "c/primitiveCellCombobox",
+            "path": "src/modules/base/primitiveCellCombobox/primitiveCellCombobox.js"
         },
         {
             "name": "c/primitiveCellInputCounter",
@@ -522,10 +530,6 @@
             "path": "src/modules/base/carousel/carousel.js"
         },
         {
-            "name": "avonni/checkboxGroup",
-            "path": "src/modules/base/checkboxGroup/checkboxGroup.js"
-        },
-        {
             "name": "avonni/chip",
             "path": "src/modules/base/chip/chip.js"
         },
@@ -608,6 +612,10 @@
         {
             "name": "avonni/image",
             "path": "src/modules/base/image/image.js"
+        },
+        {
+            "name": "avonni/inputChoiceSet",
+            "path": "src/modules/base/inputChoiceSet/inputChoiceSet.js"
         },
         {
             "name": "avonni/inputCounter",
@@ -795,7 +803,6 @@
         "avonni/buttonPopover",
         "avonni/calendar",
         "avonni/carousel",
-        "avonni/checkboxGroup",
         "avonni/chip",
         "avonni/colorGradient",
         "avonni/colorPalette",
@@ -817,6 +824,7 @@
         "avonni/heroBanner",
         "avonni/illustration",
         "avonni/image",
+        "avonni/inputChoiceSet",
         "avonni/inputCounter",
         "avonni/inputDateRange",
         "avonni/inputPen",

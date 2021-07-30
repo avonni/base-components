@@ -31,6 +31,7 @@
  */
 
 import { ButtonPopover } from '../__examples__/buttonPopover';
+import { ButtonPopoverWithToggle } from '../__examples__/buttonPopoverWithToggle';
 
 export default {
     title: 'Example/Button Popover',
@@ -62,6 +63,20 @@ export default {
                 'The tile can include text, and is displayed in the header. To include additional markup or another component, use the title slot.',
             table: {
                 type: { summary: 'string' },
+                category: 'Popover'
+            }
+        },
+        hideCloseButton: {
+            name: 'hide-close-button',
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description:
+                'If present, the close button of the popover is hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
                 category: 'Popover'
             }
         },
@@ -193,8 +208,8 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
-            description: 'If present, the popover can be opened by users.',
+            defaultValue: false,
+            description: "If present, the popover can't be opened by users.",
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -205,7 +220,7 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
+            defaultValue: false,
             description:
                 'If present, the popover is in a loading state and shows a spinner.',
             table: {
@@ -217,19 +232,13 @@ export default {
     },
     args: {
         disabled: false,
+        hideCloseButton: false,
         isLoading: false
     }
 };
 
 const Template = (args) => ButtonPopover(args);
-
-export const BaseWithPopoverVariantWalkthrough = Template.bind({});
-BaseWithPopoverVariantWalkthrough.args = {
-    label: 'Info',
-    iconName: 'utility:favorite',
-    variant: 'base',
-    popoverVariant: 'walkthrough'
-};
+const SecondTemplate = (args) => ButtonPopoverWithToggle(args);
 
 export const Neutral = Template.bind({});
 Neutral.args = {
@@ -244,6 +253,20 @@ NeutralLargeWithIconRight.args = {
     iconPosition: 'right'
 };
 
+export const NeutralWithToggleInDefaultSlot = SecondTemplate.bind({});
+NeutralWithToggleInDefaultSlot.args = {
+    label: 'Info',
+    iconName: 'utility:favorite'
+};
+
+export const BaseWithPopoverVariantWalkthrough = Template.bind({});
+BaseWithPopoverVariantWalkthrough.args = {
+    label: 'Info',
+    iconName: 'utility:favorite',
+    variant: 'base',
+    popoverVariant: 'walkthrough'
+};
+
 export const Brand = Template.bind({});
 Brand.args = {
     label: 'Info',
@@ -256,7 +279,7 @@ BrandOutlineWithPopoverWarning.args = {
     label: 'Info',
     iconName: 'utility:question_mark',
     variant: 'brand-outline',
-    popoverVariant: 'error'
+    popoverVariant: 'warning'
 };
 
 export const DestructiveWithPopoverError = Template.bind({});

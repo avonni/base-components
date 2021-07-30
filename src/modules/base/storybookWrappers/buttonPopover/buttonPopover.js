@@ -32,13 +32,12 @@
 
 import { LightningElement, api } from 'lwc';
 
-const DEFAULT_POPOVER_SIZE = 'medium'
-const DEFAULT_POPOVER_PLACEMENT = 'left'
-const DEFAULT_POPOVER_VARIANT = 'base'
-const DEFAULT_ICON_POSITION = 'left'
-const DEFAULT_BUTTON_VARIANT = 'neutral'
-const DEFAULT_BUTTON_TRIGGER = 'click'
-
+const DEFAULT_POPOVER_SIZE = 'medium';
+const DEFAULT_POPOVER_PLACEMENT = 'left';
+const DEFAULT_POPOVER_VARIANT = 'base';
+const DEFAULT_ICON_POSITION = 'left';
+const DEFAULT_BUTTON_VARIANT = 'neutral';
+const DEFAULT_BUTTON_TRIGGER = 'click';
 
 export default class ButtonPopover extends LightningElement {
     @api accessKey;
@@ -47,6 +46,7 @@ export default class ButtonPopover extends LightningElement {
     @api iconName;
     @api loadingStateAlternativeText;
     @api disabled = false;
+    @api hideCloseButton = false;
     @api isLoading = false;
     @api popoverSize = DEFAULT_POPOVER_SIZE;
     @api placement = DEFAULT_POPOVER_PLACEMENT;
