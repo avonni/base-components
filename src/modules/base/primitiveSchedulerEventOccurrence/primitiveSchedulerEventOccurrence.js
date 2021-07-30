@@ -59,17 +59,8 @@ export default class Occurrence extends LightningElement {
     }
 
     renderedCallback() {
-        const event = this.template.host;
-        if (event) {
-            this.updatePosition(event);
-            this.updateWidth(event);
-
-            if (this.disabled) {
-                const row = this.rows.find((rw) => rw.key === this.rowKey);
-                const height = row.height;
-                event.style.height = `${height}px`;
-            }
-        }
+        this.updatePosition();
+        this.updateWidthAndHeight();
     }
 
     @api
@@ -192,8 +183,11 @@ export default class Occurrence extends LightningElement {
         return this.computedColor;
     }
 
-    updatePosition(element) {
+    @api
+    updatePosition() {
         const { from, columns } = this;
+        const element = this.template.host;
+        element.style.width = '100%';
 
         // Find the column where the event starts
         let i = columns.findIndex((column) => {
@@ -222,8 +216,10 @@ export default class Occurrence extends LightningElement {
         element.style.transform = `translate(${x}px, ${y}px)`;
     }
 
-    updateWidth(element) {
+    @api
+    updateWidthAndHeight() {
         const { from, to, columns, columnWidth, columnDuration } = this;
+        const element = this.template.host;
 
         // Find the column where the event starts
         let i = columns.findIndex((column) => {
@@ -273,6 +269,13 @@ export default class Occurrence extends LightningElement {
         }
 
         element.style.width = `${width}%`;
+
+        // Update the height if the event is a disabled date
+        if (this.disabled) {
+            const row = this.rows.find((rw) => rw.key === this.rowKey);
+            const height = row.height;
+            element.style.height = `${height}px`;
+        }
     }
 
     handleContextMenu(mouseEvent) {

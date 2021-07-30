@@ -115,6 +115,19 @@ export default class Scheduler extends LightningElement {
             this.updateBodyStyle();
             this.stopPositioning();
 
+            // Update the position, width and height of occurrences
+            if (this._updateOccurrences) {
+                const eventOccurrences = this.template.querySelectorAll(
+                    'c-primitive-scheduler-event-occurrence'
+                );
+                eventOccurrences.forEach((occurrence) => {
+                    occurrence.updatePosition();
+                    occurrence.updateWidthAndHeight();
+                });
+
+                this._updateOccurrences = false;
+            }
+
             // Position the detail popover
             if (this.showDetailPopover) {
                 const popover = this.template.querySelector(
@@ -613,6 +626,15 @@ export default class Scheduler extends LightningElement {
         this.computedEvents = computedEvents;
     }
 
+    initEventOccurrences() {
+        this.computedEvents.forEach((event) => {
+            event.initOccurrences();
+        });
+
+        // We will want to update the occurrences position on the next render
+        this._updateOccurrences = true;
+    }
+
     initRows() {
         let colorIndex = 0;
         this.computedRows = this.rows.map((row) => {
@@ -624,10 +646,12 @@ export default class Scheduler extends LightningElement {
                 colorIndex = 0;
             }
 
+            // Find the events in this rows
             const events = this.computedEvents.filter((event) => {
                 return event.keyFields.includes(rowKey) && !event.disabled;
             });
 
+            // Find the event occurrences of this row
             const occurrences = [];
             events.forEach((event) => {
                 const rowOccurrences = event.occurrences.filter(
@@ -643,6 +667,15 @@ export default class Scheduler extends LightningElement {
                 referenceColumns: this.smallestHeader.columns,
                 events: occurrences.flat()
             });
+
+            // If there's already been a render and we know the datatable rows height,
+            // assign the min-height of the row
+            if (this._datatableRowsHeight) {
+                const dataRowHeight = this._datatableRowsHeight.find(
+                    (dataRow) => dataRow.rowKey === rowKey
+                ).height;
+                computedRow.minHeight = dataRowHeight;
+            }
 
             colorIndex += 1;
             return computedRow;
@@ -678,6 +711,7 @@ export default class Scheduler extends LightningElement {
     updateDatatableRowsHeight() {
         this._datatableRowsHeight = [];
         const datatable = this.template.querySelector('c-datatable');
+        if (!datatable) return;
 
         this.computedRows.forEach((row) => {
             const rowKey = row.key;
@@ -928,24 +962,27 @@ export default class Scheduler extends LightningElement {
     }
 
     deleteSelectedEvent() {
+        const name = this.selection.event.name;
+
         // Delete the event
         const index = this.computedEvents.findIndex((evt) => {
-            return evt.name === this.selectedEvent.name;
+            return evt.name === name;
         });
         this.computedEvents.splice(index, 1);
+        this.initEventOccurrences();
         this.initRows();
 
         // Dispatch the deletion
         this.dispatchEvent(
             new CustomEvent('eventdelete', {
                 detail: {
-                    name: this.selectedEvent.name
+                    name
                 },
                 bubbles: true
             })
         );
 
-        this.selectedEvent = undefined;
+        this.selection = undefined;
         this.hideAllPopovers();
     }
 
@@ -1177,7 +1214,7 @@ export default class Scheduler extends LightningElement {
             new CustomEvent('actionclick', {
                 detail: {
                     name: name,
-                    targetName: this.selectedEvent.name
+                    targetName: this.selection.event.name
                 },
                 bubbles: true
             })
