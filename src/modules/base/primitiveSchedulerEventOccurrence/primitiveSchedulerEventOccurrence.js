@@ -52,6 +52,8 @@ export default class Occurrence extends LightningElement {
     _disabled = false;
     _offsetTop = 0;
     _rows = [];
+    _x = 0;
+    _y = 0;
 
     connectedCallback() {
         if (!this.disabled)
@@ -111,8 +113,30 @@ export default class Occurrence extends LightningElement {
         this._rows = normalizeArray(value);
     }
 
+    @api
+    get x() {
+        return this._x;
+    }
+    set x(value) {
+        this._x = parseInt(value, 10);
+        this.updateHostTranslate();
+    }
+
+    @api
+    get y() {
+        return this._y;
+    }
+    set y(value) {
+        this._y = parseInt(value, 10);
+        this.updateHostTranslate();
+    }
+
     get computedColor() {
         return this.color || this.rowColor;
+    }
+
+    get hostElement() {
+        return this.template.host;
     }
 
     get rowColor() {
@@ -186,7 +210,7 @@ export default class Occurrence extends LightningElement {
     @api
     updatePosition() {
         const { from, columns } = this;
-        const element = this.template.host;
+        const element = this.hostElement;
         element.style.width = '100%';
 
         // Find the column where the event starts
@@ -213,13 +237,16 @@ export default class Occurrence extends LightningElement {
             y += rows[j].height;
         }
         y += this.offsetTop;
-        element.style.transform = `translate(${x}px, ${y}px)`;
+
+        this._x = x;
+        this._y = y;
+        this.updateHostTranslate();
     }
 
     @api
     updateWidthAndHeight() {
         const { from, to, columns, columnWidth, columnDuration } = this;
-        const element = this.template.host;
+        const element = this.hostElement;
 
         // Find the column where the event starts
         let i = columns.findIndex((column) => {
@@ -238,7 +265,8 @@ export default class Occurrence extends LightningElement {
             const colPercentStart = (eventDurationLeft * 100) / columnDuration;
             const offsetWidth = columnWidth * colPercentStart;
             width += offsetWidth;
-            this.x += offsetWidth;
+            this._x += offsetWidth;
+            this.updateWidthAndHeight();
 
             // If the event ends before the end of the first column
             // remove the appropriate width of the first column
@@ -278,6 +306,12 @@ export default class Occurrence extends LightningElement {
         }
     }
 
+    updateHostTranslate() {
+        if (this.hostElement) {
+            this.hostElement.style.transform = `translate(${this.x}px, ${this.y}px)`;
+        }
+    }
+
     handleContextMenu(event) {
         event.preventDefault();
         this.dispatchCustomEvent('privatecontextmenu', event);
@@ -302,5 +336,30 @@ export default class Occurrence extends LightningElement {
 
     handleMouseLeave(event) {
         this.dispatchCustomEvent('privatemouseleave', event);
+    }
+
+    handleDoubleClick(event) {
+        this.dispatchCustomEvent('privatedblclick', event);
+    }
+
+    handleFocus(event) {
+        this.dispatchCustomEvent('focus', event);
+    }
+
+    handleMouseDown(event) {
+        if (event.button !== 0) return;
+
+        const resize = event.target.dataset.resize;
+        this.dispatchEvent(
+            new CustomEvent('privatemousedown', {
+                detail: {
+                    eventName: this.eventName,
+                    key: this.occurrenceKey,
+                    x: event.clientX,
+                    y: event.clientY,
+                    side: resize
+                }
+            })
+        );
     }
 }

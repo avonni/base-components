@@ -157,7 +157,7 @@ export default class Scheduler extends LightningElement {
 
                 // Update the initial dragging state
                 const state = this._initialState;
-                const initialX = state.initialX;
+                const mouseX = state.mouseX;
                 const position = event.getBoundingClientRect();
                 state.eventWidth = position.width;
                 state.eventLeft = position.left;
@@ -166,11 +166,11 @@ export default class Scheduler extends LightningElement {
                 // Adjust the dragged event style to follow the cursor
                 const sideX =
                     side === 'left' ? state.eventLeft : state.eventRight;
-                const x = initialX - sideX;
+                const x = mouseX - sideX;
                 this.updateDraggedEventStyleAfterResize(x);
 
-                // Update the initialX position to remove the x offset
-                state.initialX = state.initialX - x;
+                // Update the mouseX position to remove the x offset
+                state.mouseX = state.mouseX - x;
             }
         }
     }
@@ -735,10 +735,6 @@ export default class Scheduler extends LightningElement {
         }
     }
 
-    updateEventWidth() {
-        //
-    }
-
     updateHeadersStyle() {
         // Set the datatable header height
         const datatableCol = this.template.querySelector(
@@ -911,14 +907,13 @@ export default class Scheduler extends LightningElement {
             draftValues.from = event.from.toUTC().toISO();
         }
 
-        this.updateEventWidth(event);
+        this.initEventOccurrences();
         this.initRows();
     }
 
     dragEventTo(row, cell) {
-        const name = this._draggedEvent.dataset.name;
-        const event = this.getEventFromName(name);
-        const draftValues = this.selectedEvent.draftValues;
+        const event = this.selection.event;
+        const draftValues = this.selection.draftValues;
 
         // Update the start and end date
         const duration = event.to - event.from;
@@ -948,7 +943,7 @@ export default class Scheduler extends LightningElement {
             draftValues.keyFields = event.keyFields;
         }
 
-        this.updateEventWidth(event);
+        this.initEventOccurrences();
         this.initRows();
     }
 
@@ -1026,9 +1021,9 @@ export default class Scheduler extends LightningElement {
     }
 
     handleEventMouseDown(mouseEvent) {
-        if (mouseEvent.button !== 0) return;
-
-        this._resizeSide = mouseEvent.target.dataset.resize;
+        const mouseX = mouseEvent.detail.x;
+        const mouseY = mouseEvent.detail.y;
+        this._resizeSide = mouseEvent.detail.resize;
         this._draggedEvent = mouseEvent.currentTarget;
         this._draggedEvent.classList.add('scheduler__event-dragged');
         this.hideAllPopovers();
@@ -1041,28 +1036,25 @@ export default class Scheduler extends LightningElement {
         const leftBoundary =
             this._resizeSide === 'right'
                 ? eventPosition.left + 24
-                : schedulePosition.left +
-                  (mouseEvent.clientX - eventPosition.left);
+                : schedulePosition.left + (mouseX - eventPosition.left);
         const rightBoundary =
             this._resizeSide === 'left'
                 ? eventPosition.right - 24
-                : schedulePosition.right +
-                  (mouseEvent.clientX - eventPosition.right);
+                : schedulePosition.right + (mouseX - eventPosition.right);
 
         this._initialState = {
-            initialX: mouseEvent.clientX,
-            initialY: mouseEvent.clientY,
+            mouseX,
+            mouseY,
+            initialX: this._draggedEvent.x,
+            initialY: this._draggedEvent.y,
             eventLeft: eventPosition.left,
             eventRight: eventPosition.right,
             eventWidth: eventPosition.width,
             left: leftBoundary,
             right: rightBoundary,
-            top:
-                schedulePosition.top + (mouseEvent.clientY - eventPosition.top),
-            bottom:
-                schedulePosition.bottom +
-                (mouseEvent.clientY - eventPosition.bottom),
-            row: this.getRowFromPosition(mouseEvent.clientY)
+            top: schedulePosition.top + (mouseY - eventPosition.top),
+            bottom: schedulePosition.bottom + (mouseY - eventPosition.bottom),
+            row: this.getRowFromPosition(mouseY)
         };
     }
 
@@ -1071,7 +1063,13 @@ export default class Scheduler extends LightningElement {
         mouseEvent.preventDefault();
 
         if (this._draggedEvent) {
-            const { initialX, initialY, row } = this._initialState;
+            const {
+                mouseX,
+                mouseY,
+                row,
+                initialX,
+                initialY
+            } = this._initialState;
             const side = this._resizeSide;
 
             // Prevent the events from being dragged out of the schedule grid,
@@ -1081,10 +1079,10 @@ export default class Scheduler extends LightningElement {
                 mouseEvent.clientY
             );
 
-            const x = position.x - initialX;
-            const y = position.y - initialY;
+            const x = position.x - mouseX + initialX;
+            const y = position.y - mouseY + initialY;
 
-            // If it is a resizing
+            // Resizing
             if (side) {
                 const selected = this.selectedEvent;
 
@@ -1118,15 +1116,16 @@ export default class Scheduler extends LightningElement {
                     selected.crossingEvents = cellEvents.concat({
                         key: selected.key
                     });
-                    this._initialState.initialX = mouseEvent.clientX;
+                    this._initialState.mouseX = mouseEvent.clientX;
                 } else {
                     // If we are not passing above another event,
                     // change the styling of the dragged event to follow the cursor
                     this.updateDraggedEventStyleAfterResize(x);
                 }
             } else {
-                // If it is a drag and drop
-                this._draggedEvent.style.transform = `translate(${x}px, ${y}px)`;
+                // Drag and drop
+                this._draggedEvent.x = x;
+                this._draggedEvent.y = y;
             }
         }
     }
@@ -1138,14 +1137,14 @@ export default class Scheduler extends LightningElement {
             // If the dragged event has moved
             if (this._draggedEvent.style.transform || this._resizeSide) {
                 // Get the new event position
-                const { initialX, eventLeft, eventRight } = this._initialState;
+                const { mouseX, eventLeft, eventRight } = this._initialState;
                 const side = this._resizeSide;
                 const position = this.normalizeMousePosition(
                     mouseEvent.clientX,
                     mouseEvent.clientY
                 );
-                const leftX = position.x - (initialX - eventLeft);
-                const rightX = position.x + (eventRight - initialX);
+                const leftX = position.x - (mouseX - eventLeft);
+                const rightX = position.x + (eventRight - mouseX);
                 const x = side === 'right' ? rightX : leftX;
                 const y = position.y;
 
@@ -1212,28 +1211,27 @@ export default class Scheduler extends LightningElement {
 
     handleEventTitleChange(event) {
         const title = event.currentTarget.value;
-        this.selectedEvent.draftValues.title = title;
+        this.selection.draftValues.title = title;
     }
 
     handleEventDateChange(event) {
         const from = event.detail.startDate;
         const to = event.detail.endDate;
 
-        this.selectedEvent.draftValues.from = from;
-        this.selectedEvent.draftValues.to = to;
+        this.selection.draftValues.from = from;
+        this.selection.draftValues.to = to;
     }
 
     handleEventKeyFieldsChange(event) {
         const keyFields = event.detail.value;
-        this.selectedEvent.draftValues.keyFields = keyFields;
+        this.selection.draftValues.keyFields = keyFields;
     }
 
     handleSaveEditDialog() {
-        const name = this.selectedEvent.name;
-        const event = this.computedEvents.find((evt) => evt.name === name);
+        const event = this.selection.event;
 
         // Change the event and update the rows
-        const draftValues = this.selectedEvent.draftValues;
+        const draftValues = this.selection.draftValues;
         Object.entries(draftValues).forEach((entry) => {
             const [key, value] = entry;
 
@@ -1242,11 +1240,11 @@ export default class Scheduler extends LightningElement {
             }
         });
 
-        this.updateEventWidth(event);
+        this.initEventOccurrences();
         this.initRows();
 
         // Dispatch the change and close the dialog
-        this.dispatchChangeEvent(name);
+        this.dispatchChangeEvent(event.name);
         this.hideEditDialog();
     }
 
@@ -1255,7 +1253,7 @@ export default class Scheduler extends LightningElement {
             new CustomEvent('eventchange', {
                 detail: {
                     name: name,
-                    draftValues: this.selectedEvent.draftValues
+                    draftValues: this.selection.draftValues
                 },
                 bubbles: true
             })

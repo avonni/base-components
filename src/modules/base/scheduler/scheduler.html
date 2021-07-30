@@ -79,7 +79,7 @@
                 </thead>
 
                 <!-- Rows -->
-                <tbody onmousemove={handleMouseMove}>
+                <tbody>
                     <template
                         for:each={computedRows}
                         for:item="row"
@@ -105,7 +105,10 @@
             </table>
 
             <!-- Events -->
-            <div class="scheduler__events slds-is-absolute">
+            <div
+                class="scheduler__events slds-is-absolute"
+                onmousemove={handleMouseMove}
+            >
                 <template for:each={computedEvents} for:item="event">
                     <div key={event.key}>
                         <template
@@ -130,9 +133,13 @@
                                 theme={event.theme}
                                 to={occurrence.to}
                                 data-key={occurrence.key}
+                                onfocus={selectEvent}
                                 onprivatecontextmenu={handleEventContextMenu}
                                 onprivatemouseenter={handleEventMouseEnter}
                                 onprivatemouseleave={hideDetailPopover}
+                                onprivatedblclick={handleEventDoubleClick}
+                                onprivatemousedown={handleEventMouseDown}
+                                onprivateresize={handleEventResize}
                             ></c-primitive-scheduler-event-occurrence>
                         </template>
                     </div>
@@ -191,13 +198,13 @@
     <c-dialog
         if:true={showEditDialog}
         show-dialog={showEditDialog}
-        title={selectedEvent.title}
+        title={selection.event.title}
         size="small"
         onclosedialog={hideEditDialog}
     >
         <lightning-input
             label={editDialogLabels.title}
-            value={selectedEvent.title}
+            value={selection.event.title}
             name="title"
             class="slds-m-bottom_small"
             autocomplete="off"
@@ -206,8 +213,8 @@
         <div class="slds-m-bottom_small">
             <c-input-date-range
                 label-start-date={editDialogLabels.from}
-                start-date={selectedEvent.from}
-                end-date={selectedEvent.to}
+                start-date={selection.occurrence.from}
+                end-date={selection.occurrence.to}
                 label-end-date={editDialogLabels.to}
                 type="datetime"
                 onchange={handleEventDateChange}
@@ -218,7 +225,7 @@
                 allow-search
                 is-multi-select
                 label={editDialogLabels.resources}
-                value={selectedEvent.keyFields}
+                value={selection.event.keyFields}
                 options={allResourcesKeyFields}
                 remove-selected-options
                 dropdown-length="5-items"

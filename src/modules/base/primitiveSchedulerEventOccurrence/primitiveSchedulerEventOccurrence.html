@@ -41,6 +41,9 @@
         oncontextmenu={handleContextMenu}
         onmouseenter={handleMouseEnter}
         onmouseleave={handleMouseLeave}
+        ondblclick={handleDoubleClick}
+        onmousedown={handleMouseDown}
+        onfocus={handleFocus}
     >
         <div class={computedClass} style={style}>
             <lightning-icon
@@ -85,9 +88,3 @@
         </div>
     </div>
 </template>
-
-<!-- onmousedown={handleMouseDown}
-
-onfocus={handleMouseEnter}
-onblur={hideDetailPopover}
-ondblclick={handleDoubleClick} -->
