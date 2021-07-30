@@ -426,6 +426,11 @@ export default class List extends LightningElement {
         event.stopPropagation();
     }
 
+    /**
+     * Handles a click on an item action.
+     *
+     * @param {Event} event
+     */
     handleActionClick(event) {
         const actionName = this.hasMultipleActions
             ? event.detail.value
@@ -434,6 +439,15 @@ export default class List extends LightningElement {
             'data-index'
         );
 
+        /**
+         * The event fired when a user clicks on an action.
+         *
+         * @event
+         * @name actionclick
+         * @param {string} name  Name of the action clicked.
+         * @param {object} items Item clicked.
+         * @public
+         */
         this.dispatchEvent(
             new CustomEvent('actionclick', {
                 detail: {
@@ -444,6 +458,12 @@ export default class List extends LightningElement {
         );
     }
 
+    /**
+     * Handles a click on an item.
+     * The click event will not dispatch an event if the clicked element already has a purpose (action or link).
+     *
+     * @param {Event} event
+     */
     handleItemClick(event) {
         if (
             this.denyItemClick ||
@@ -452,6 +472,15 @@ export default class List extends LightningElement {
         )
             return;
 
+        /**
+         * The event fired when a user clicks on an item.
+         *
+         * @event
+         * @name itemclick
+         * @param {object}  item Item clicked.
+         * @param {DOMRect} name Bounds of the item clicked.
+         * @public
+         */
         this.dispatchEvent(
             new CustomEvent('itemclick', {
                 detail: {

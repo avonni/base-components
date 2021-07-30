@@ -41,8 +41,8 @@ import {
 /**
  * @constant
  * @type {object}
- * @property {string[]} valid   - The valid icon positions.
- * @property {string}   default - The default icon position.
+ * @property {string[]} valid   The valid icon positions.
+ * @property {string}   default The default icon position.
  */
 const ICON_POSITIONS = {
     valid: ['left', 'right'],
@@ -52,8 +52,8 @@ const ICON_POSITIONS = {
 /**
  * @constant
  * @type {object}
- * @property {string[]} valid   - The valid list item dividers.
- * @property {string}   default - The default list item divider.
+ * @property {string[]} valid   The valid list item dividers.
+ * @property {string}   default The default list item divider.
  */
 const LIST_ITEM_DIVIDERS = {
     valid: ['top', 'bottom', 'around'],
@@ -63,8 +63,8 @@ const LIST_ITEM_DIVIDERS = {
 /**
  * @constant
  * @type {object}
- * @property {string[]} valid   - The valid popover positions.
- * @property {string}   default - The default popover position.
+ * @property {string[]} valid   The valid popover positions.
+ * @property {string}   default The default popover position.
  */
 const POPOVER_POSITIONS = {
     valid: ['bottom', 'left', 'right'],
@@ -76,7 +76,7 @@ const POPOVER_POSITIONS = {
  * @classdesc Editable and sortable data list.
  * @name DataList
  * @descriptor avonni-data-list
- * @example example-data-list--base
+ * @storyId example-data-list--base
  * @public
  */
 export default class AvonniDataListBasic extends LightningElement {
@@ -85,7 +85,8 @@ export default class AvonniDataListBasic extends LightningElement {
      * If the list is sortable, it should describe its behavior, for example: 'Sortable menu.
      * Press spacebar to grab or drop an item.
      * Press up and down arrow keys to change position.
-     * Press escape to cancel.'
+     * Press escape to cancel.
+     *
      * @type {string}
      * @public
      */
@@ -93,6 +94,7 @@ export default class AvonniDataListBasic extends LightningElement {
 
     /**
      * Label of the list.
+     *
      * @type {string}
      * @public
      */
@@ -101,6 +103,7 @@ export default class AvonniDataListBasic extends LightningElement {
     /**
      * The Lightning Design System name of the sortable icon.
      * Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed.
+     *
      * @type {string}
      * @public
      */
@@ -128,6 +131,7 @@ export default class AvonniDataListBasic extends LightningElement {
     /**
      * Called when the element is inserted in a document.
      * Initializes the event listeners and the items for the List component.
+     *
      * @callback connectedCallback
      */
     connectedCallback() {
@@ -137,6 +141,7 @@ export default class AvonniDataListBasic extends LightningElement {
 
     /**
      * Array of actions.
+     *
      * @type {Action[]}
      * @public
      */
@@ -150,6 +155,7 @@ export default class AvonniDataListBasic extends LightningElement {
 
     /**
      * The array of data to be displayed.
+     *
      * @type {Data[]}
      * @public
      */
@@ -167,6 +173,7 @@ export default class AvonniDataListBasic extends LightningElement {
     /**
      * Changes the appearance of the list.
      * Valid values include top, bottom and around.
+     *
      * @type {string}
      * @default around
      * @public
@@ -184,6 +191,7 @@ export default class AvonniDataListBasic extends LightningElement {
 
     /**
      * Array of fields displayed in the popover.
+     *
      * @type {Field[]}
      * @public
      */
@@ -197,6 +205,7 @@ export default class AvonniDataListBasic extends LightningElement {
 
     /**
      * Array of actions for the list.
+     *
      * @type {Action[]}
      * @public
      */
@@ -212,6 +221,7 @@ export default class AvonniDataListBasic extends LightningElement {
      * The items of the list can be edited using a popover.
      * Accepted positions for the popover include bottom, left and right.
      * This value defaults to bottom.
+     *
      * @type {string}
      * @default bottom
      * @public
@@ -230,6 +240,7 @@ export default class AvonniDataListBasic extends LightningElement {
 
     /**
      * If true, it will be possible to reorder the list items.
+     *
      * @type {boolean}
      * @public
      */
@@ -244,6 +255,7 @@ export default class AvonniDataListBasic extends LightningElement {
     /**
      * Position of the sortable icon.
      * Valid values include left and right.
+     *
      * @type {string}
      * @default left
      * @public
@@ -261,6 +273,7 @@ export default class AvonniDataListBasic extends LightningElement {
 
     /**
      * The data as items for the List component.
+     *
      * @type {ListItem[]}
      */
     get dataAsItems() {
@@ -283,6 +296,7 @@ export default class AvonniDataListBasic extends LightningElement {
 
     /**
      * Whether the list actions contains actions to display.
+     *
      * @type {boolean}
      */
     get hasListActions() {
@@ -291,6 +305,7 @@ export default class AvonniDataListBasic extends LightningElement {
 
     /**
      * Whether the popover should be visible.
+     *
      * @type {boolean}
      */
     get showPopover() {
@@ -303,6 +318,7 @@ export default class AvonniDataListBasic extends LightningElement {
 
     /**
      * Computed CSS classes for the popover.
+     *
      * @type {string}
      */
     get computedPopover() {
@@ -317,6 +333,7 @@ export default class AvonniDataListBasic extends LightningElement {
 
     /**
      * If the items have been sorted by the user, resets the items to their original order.
+     *
      * @public
      */
     @api
@@ -339,7 +356,8 @@ export default class AvonniDataListBasic extends LightningElement {
 
     /**
      * Returns the index of the element from the data array corresponding to an item from the List Component.
-     * @param {ListItem} item - Item from the List component.
+     *
+     * @param {ListItem} item Item from the List component.
      * @return {number}
      */
     getDataIndexFromListItem(item) {
@@ -357,6 +375,7 @@ export default class AvonniDataListBasic extends LightningElement {
 
     /**
      * Transfers a 'reorder' event from the List component to the Data List component.
+     *
      * @param {Event} event
      */
     handleReorder(event) {
@@ -369,6 +388,14 @@ export default class AvonniDataListBasic extends LightningElement {
         });
         this._data = newData;
 
+        /**
+         * The event fired when a user reordered the items.
+         *
+         * @event
+         * @name reorder
+         * @param {object[]} items Item objects, in their new order.
+         * @public
+         */
         this.dispatchEvent(
             new CustomEvent('reorder', {
                 detail: {
@@ -380,9 +407,19 @@ export default class AvonniDataListBasic extends LightningElement {
 
     /**
      * Transfers an 'actionclick' event from the List component to the Data List component.
+     *
      * @param {Event} event
      */
     handleActionClick(event) {
+        /**
+         * The event fired when a user clicks on an action.
+         *
+         * @event
+         * @name actionclick
+         * @param {string} name  Name of the action clicked.
+         * @param {object} items Item clicked.
+         * @public
+         */
         this.dispatchEvent(
             new CustomEvent('actionclick', {
                 detail: {
@@ -398,9 +435,18 @@ export default class AvonniDataListBasic extends LightningElement {
     /**
      * Handles a click on a list action.
      * The name of the action is dispatched in a 'listactionclick' event.
+     *
      * @param {Event} event
      */
     handleListActionClick(event) {
+        /**
+         * The event fired when a user clicks on a list action.
+         *
+         * @event
+         * @name listactionclick
+         * @param {string} name Name of the list action clicked.
+         * @public
+         */
         this.dispatchEvent(
             new CustomEvent('listactionclick', {
                 detail: {
@@ -412,6 +458,7 @@ export default class AvonniDataListBasic extends LightningElement {
 
     /**
      * Handles a click on an item from the List component.
+     *
      * @param {Event} event
      */
     handleItemClick(event) {
@@ -432,7 +479,8 @@ export default class AvonniDataListBasic extends LightningElement {
 
     /**
      * Changes the popover to display.
-     * @param {number} index - The index of the popover to open.
+     *
+     * @param {number} index The index of the popover to open.
      */
     changeCurrentPopover(index) {
         this.currentPopover = index;
@@ -441,7 +489,8 @@ export default class AvonniDataListBasic extends LightningElement {
 
     /**
      * Updates the position of the popover according to the bounds of an item from the List component.
-     * @param {DOMRect} bounds - The bounds of an item from the List component.
+     *
+     * @param {DOMRect} bounds The bounds of an item from the List component.
      */
     updatePopoverPosition(bounds) {
         const nubbinOffset = 30;
@@ -565,9 +614,18 @@ export default class AvonniDataListBasic extends LightningElement {
 
     /**
      * Dispatches a save event, where 'draftValues' corresponds to the current value that is provided during popover editing.
-     * @param {Data} popoverData - The data from the popover fields.
+     *
+     * @param {Data} popoverData The data from the popover fields.
      */
     dispatchSaveEvent(popoverData) {
+        /**
+         * The event fired when data is saved during popover editing.
+         *
+         * @event
+         * @name save
+         * @param {object} draftValues The current value that's provided during popover editing.
+         * @public
+         */
         this.dispatchEvent(
             new CustomEvent('save', {
                 detail: {
@@ -580,6 +638,7 @@ export default class AvonniDataListBasic extends LightningElement {
     /**
      * Handles a blur of the 'Done' button in the popover.
      * Focus will be given to the first input field if Tab is pressed when the focus is on the 'Done' button.
+     *
      * @param {Event} event
      */
     handlePopoverDoneButtonBlur(event) {
@@ -601,6 +660,7 @@ export default class AvonniDataListBasic extends LightningElement {
 
     /**
      * Handles a keydown inside the popover.
+     *
      * @param {Event} event
      */
     handlePopoverKeydown(event) {
@@ -615,6 +675,7 @@ export default class AvonniDataListBasic extends LightningElement {
 
     /**
      * Handles a keyup inside the popover.
+     *
      * @param {Event} event
      */
     handlePopoverKeyup(event) {
