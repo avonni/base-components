@@ -274,134 +274,6 @@ export default class PrimitiveDatatable extends LightningDatatable {
         }
     };
 
-    connectedCallback() {
-        super.connectedCallback();
-
-        this.template.addEventListener(
-            'privateeditcustomcell',
-            this.handleEditCell
-        );
-
-        this.template.addEventListener(
-            'privateavatarclick',
-            this.handleDispatchEvents
-        );
-
-        this.template.addEventListener(
-            'privateactionclick',
-            this.handleDispatchEvents
-        );
-    }
-
-    renderedCallback() {
-        super.renderedCallback();
-
-        this._data = JSON.parse(JSON.stringify(normalizeArray(super.data)));
-
-        if (!this.rendered) {
-            this.columnsWidthWithoutHeader();
-        }
-
-        this.columnsWidth();
-        this.tableWidth();
-        this.cancelScrollable();
-
-        this.computeEditableOption();
-
-        // Make sure custom edited cells stay yellow on hover
-        // Make sure error cells appear edited and with a red border
-        const edited = Array.from(
-            this.template.querySelectorAll('td.slds-is-edited')
-        );
-        const error = Array.from(
-            this.template.querySelectorAll('td.slds-has-error')
-        );
-        const editCells = edited.concat(error);
-
-        editCells.forEach((cell) => {
-            cell.classList.add('slds-cell-edit');
-        });
-
-        this.rendered = true;
-    }
-
-    disconnectedCallback() {
-        super.disconnectedCallback();
-
-        this.template.removeEventListener(
-            'privateeditcustomcell',
-            this.handleEditCell
-        );
-    }
-
-    @api
-    get columns() {
-        return super.columns;
-    }
-
-    set columns(value) {
-        super.columns = value;
-
-        this._columns = JSON.parse(JSON.stringify(this._columns));
-        this.removeWrapOption();
-        this.computeEditableOption();
-    }
-
-    @api
-    columnsWidth() {
-        this._columnsWidth = JSON.parse(
-            JSON.stringify(normalizeArray(super.widthsData.columnWidths))
-        );
-        console.log(this._columnsWidth);
-        return this._columnsWidth;
-    }
-
-    @api
-    columnsWidthWithoutHeader() {
-        const columnsWidthWithoutHeader = [];
-        const row = this.template.querySelector('tbody > tr');
-        const everything = row.querySelectorAll('td, th');
-        everything.forEach((cell) => {
-            columnsWidthWithoutHeader.push(cell.offsetWidth);
-        });
-        return columnsWidthWithoutHeader;
-    }
-
-    @api
-    columnsEditable() {
-        const columns = [];
-        this.columns.forEach((column) => {
-            columns.push(column.editable);
-        });
-        return columns;
-    }
-
-    @api
-    isDatatableEditable() {
-        const columns = [];
-        this.columns.forEach((column) => {
-            columns.push(column.editable);
-        });
-        return columns.filter(Boolean).length > 0;
-    }
-
-    @api
-    tableWidth() {
-        this._tableWidth = JSON.parse(
-            JSON.stringify(super.widthsData.tableWidth)
-        );
-        return this._tableWidth;
-    }
-
-    cancelScrollable() {
-        const scrollable = this.template.querySelector(
-            '.slds-table_header-fixed_container'
-        );
-        scrollable.style.overflowX = 'hidden';
-        scrollable.style.width = `${this._tableWidth}px`;
-        scrollable.style.maxWidth = 'none';
-    }
-
     // Normalization of primitive datatable attributes
     @api
     get columnWidthsMode() {
@@ -517,6 +389,133 @@ export default class PrimitiveDatatable extends LightningDatatable {
     set selectedRows(value) {
         if (value === undefined) return;
         super.selectedRows = value;
+    }
+
+    connectedCallback() {
+        super.connectedCallback();
+
+        this.template.addEventListener(
+            'privateeditcustomcell',
+            this.handleEditCell
+        );
+
+        this.template.addEventListener(
+            'privateavatarclick',
+            this.handleDispatchEvents
+        );
+
+        this.template.addEventListener(
+            'privateactionclick',
+            this.handleDispatchEvents
+        );
+    }
+
+    renderedCallback() {
+        super.renderedCallback();
+
+        this._data = JSON.parse(JSON.stringify(normalizeArray(super.data)));
+
+        if (!this.rendered) {
+            this.columnsWidthWithoutHeader();
+        }
+
+        this.columnsWidth();
+        this.tableWidth();
+        this.unscrollableMainDatatable();
+
+        this.computeEditableOption();
+
+        // Make sure custom edited cells stay yellow on hover
+        // Make sure error cells appear edited and with a red border
+        const edited = Array.from(
+            this.template.querySelectorAll('td.slds-is-edited')
+        );
+        const error = Array.from(
+            this.template.querySelectorAll('td.slds-has-error')
+        );
+        const editCells = edited.concat(error);
+
+        editCells.forEach((cell) => {
+            cell.classList.add('slds-cell-edit');
+        });
+
+        this.rendered = true;
+    }
+
+    disconnectedCallback() {
+        super.disconnectedCallback();
+
+        this.template.removeEventListener(
+            'privateeditcustomcell',
+            this.handleEditCell
+        );
+    }
+
+    @api
+    get columns() {
+        return super.columns;
+    }
+
+    set columns(value) {
+        super.columns = value;
+
+        this._columns = JSON.parse(JSON.stringify(this._columns));
+        this.removeWrapOption();
+        this.computeEditableOption();
+    }
+
+    @api
+    columnsWidth() {
+        this._columnsWidth = JSON.parse(
+            JSON.stringify(normalizeArray(super.widthsData.columnWidths))
+        );
+        return this._columnsWidth;
+    }
+
+    @api
+    columnsWidthWithoutHeader() {
+        const columnsWidthWithoutHeader = [];
+        const row = this.template.querySelector('tbody > tr');
+        const data = row.querySelectorAll('td, th');
+        data.forEach((cell) => {
+            columnsWidthWithoutHeader.push(cell.offsetWidth);
+        });
+        return columnsWidthWithoutHeader;
+    }
+
+    @api
+    columnsEditable() {
+        const columns = [];
+        this.columns.forEach((column) => {
+            columns.push(column.editable);
+        });
+        return columns;
+    }
+
+    @api
+    isDatatableEditable() {
+        const columns = [];
+        this.columns.forEach((column) => {
+            columns.push(column.editable);
+        });
+        return columns.filter(Boolean).length > 0;
+    }
+
+    @api
+    tableWidth() {
+        this._tableWidth = JSON.parse(
+            JSON.stringify(super.widthsData.tableWidth)
+        );
+        return this._tableWidth;
+    }
+
+    unscrollableMainDatatable() {
+        const mainDatatable = this.template.querySelector(
+            '.slds-table_header-fixed_container'
+        );
+        mainDatatable.style.overflowX = 'hidden';
+        mainDatatable.style.width = `${this._tableWidth}px`;
+        mainDatatable.style.maxWidth = 'none';
     }
 
     removeWrapOption() {

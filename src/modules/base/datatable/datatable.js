@@ -125,22 +125,18 @@ export default class PrimitiveDatatable extends LightningElement {
     renderedCallback() {
         this._data = JSON.parse(JSON.stringify(normalizeArray(this.data)));
 
-        this.tableInitialization();
+        this.bottomTableInitialization();
 
         if (!this.rendered) {
             this.computeSummarizations();
-            this.getColumnsEditable();
-            this.getDatatableEditable();
+            this.datatableEditable();
         }
+
         this.rendered = true;
     }
 
     get primitiveDatatable() {
         return this.template.querySelector('c-primitive-datatable');
-    }
-
-    get rowsTr() {
-        return this.template.querySelectorAll('tr');
     }
 
     get isDatatableEditable() {
@@ -150,8 +146,8 @@ export default class PrimitiveDatatable extends LightningElement {
         );
     }
 
-    tableInitialization() {
-        this.getDatatableColumnsWidth();
+    bottomTableInitialization() {
+        this.datatableColumnsWidth();
         this.updateColumnStyle();
         this.updateTableWidth();
         this.updateBottomBarWidth();
@@ -169,23 +165,21 @@ export default class PrimitiveDatatable extends LightningElement {
         this.computeSummarizationPercent();
     }
 
-    getDatatableColumnsWidth() {
+    datatableColumnsWidth() {
         if (!this.hideTableHeader) {
             this._columnsWidth = this.primitiveDatatable.columnsWidth();
         } else
             this._columnsWidth = this.primitiveDatatable.columnsWidthWithoutHeader();
     }
 
-    getColumnsEditable() {
+    datatableEditable() {
         this._columnsEditable = this.primitiveDatatable.columnsEditable();
-    }
-
-    getDatatableEditable() {
         this._isDatatableEditable = this.primitiveDatatable.isDatatableEditable();
     }
 
     updateColumnStyle() {
-        this.rowsTr.forEach((row) => {
+        const rows = Array.from(this.template.querySelectorAll('tr'));
+        rows.forEach((row) => {
             const dataCell = Array.from(row.querySelectorAll('td'));
             dataCell.forEach((cell, index) => {
                 // if column is editable, there is a button-icon which is 35 px but not on the first column.
@@ -205,9 +199,7 @@ export default class PrimitiveDatatable extends LightningElement {
 
     updateColumnStyleResize() {
         // on resize, it doesn't take in consideration the first column which is always 52 px.
-        console.log(this.isDatatableEditable);
         if (this.isDatatableEditable) {
-            console.log('hello', this._columnsWidth);
             if (!this.hideCheckboxColumn) {
                 this._columnsWidth.unshift(52, 32);
             } else this._columnsWidth.unshift(52);

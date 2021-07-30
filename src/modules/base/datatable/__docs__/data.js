@@ -440,8 +440,8 @@ const columnsSum = [
     {
         label: 'Boolean',
         fieldName: 'boolean',
-        type: 'boolean'
-        // editable: true
+        type: 'boolean',
+        editable: true
     },
     {
         label: 'Currency',
