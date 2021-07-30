@@ -150,13 +150,11 @@ export default class PrimitiveDatatable extends LightningElement {
         this.datatableColumnsWidth();
         this.updateColumnStyle();
         this.updateTableWidth();
-        this.updateBottomBarWidth();
     }
 
     tableResize() {
         this.updateColumnStyleResize();
         this.updateTableWidth();
-        this.updateBottomBarWidth();
     }
 
     computeSummarizations() {
@@ -216,24 +214,6 @@ export default class PrimitiveDatatable extends LightningElement {
         const table = this.template.querySelector('table');
         if (table) {
             table.style.width = `${this._tableWidth}px`;
-        }
-    }
-
-    updateBottomBarWidth() {
-        if (this.showStatusBar) {
-            const bottomBar = this.template.querySelector(
-                '.avonni-datatable-bottom-bar'
-            );
-            const container = this.template.querySelector(
-                '.avonni-datatable-container'
-            );
-            const containerWidth = container.offsetWidth;
-
-            if (this._tableWidth < containerWidth) {
-                bottomBar.style.width = `${this._tableWidth}px`;
-            } else if (this._tableWidth > containerWidth) {
-                bottomBar.style.width = `${containerWidth}px`;
-            }
         }
     }
 

@@ -39,6 +39,7 @@
     background: #f3f2f2;
     box-shadow: 0 -2px 2px 0 rgb(0 0 0 / 16%);
     overflow: 'hidden';
+    width: 100%;
 }
 
 .avonni-datatable-first-column {
@@ -47,4 +48,5 @@
 
 .avonni-datatable-container {
     overflow-x: auto;
+    background: #f3f2f2;
 }
