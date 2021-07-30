@@ -278,18 +278,29 @@ export default class Occurrence extends LightningElement {
         }
     }
 
-    handleContextMenu(mouseEvent) {
-        mouseEvent.preventDefault();
+    handleContextMenu(event) {
+        event.preventDefault();
+        this.dispatchCustomEvent('privatecontextmenu', event);
+    }
 
+    dispatchCustomEvent(name, event) {
         this.dispatchEvent(
-            new CustomEvent('privatecontextmenu', {
+            new CustomEvent(name, {
                 detail: {
                     eventName: this.eventName,
                     key: this.occurrenceKey,
-                    x: mouseEvent.clientX,
-                    y: mouseEvent.clientY
+                    x: event.clientX,
+                    y: event.clientY
                 }
             })
         );
+    }
+
+    handleMouseEnter(event) {
+        this.dispatchCustomEvent('privatemouseenter', event);
+    }
+
+    handleMouseLeave(event) {
+        this.dispatchCustomEvent('privatemouseleave', event);
     }
 }

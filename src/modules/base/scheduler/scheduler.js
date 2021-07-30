@@ -133,15 +133,15 @@ export default class Scheduler extends LightningElement {
                 const popover = this.template.querySelector(
                     '.scheduler__event-detail-popover'
                 );
-                const event = this.template.querySelector(
-                    `.scheduler__event-wrapper[data-key="${this.selectedEvent.key}"]`
-                );
-                this.startPositioning(event, popover);
+                this.positionPopover(popover);
             }
 
             // Position the context menu
             if (this.showContextMenu) {
-                this.positionContextMenu();
+                const contextMenu = this.template.querySelector(
+                    '.scheduler__context-menu'
+                );
+                this.positionPopover(contextMenu);
             }
 
             // If the render happened in the middle of a resizing
@@ -805,29 +805,24 @@ export default class Scheduler extends LightningElement {
         });
     }
 
-    positionContextMenu() {
-        const contextMenu = this.template.querySelector(
-            '.scheduler__context-menu'
-        );
-        if (!contextMenu) return;
-
-        // Make sure the menu is not outside of the screen
+    positionPopover(popover) {
+        // Make sure the popover is not outside of the screen
         const y = this.selection.y;
         const x = this.selection.x;
-        const height = contextMenu.height;
-        const width = contextMenu.width;
-        const menuBottom = y + height;
-        const menuRight = x + width;
+        const height = popover.offsetHeight;
+        const width = popover.offsetWidth;
+        const popoverBottom = y + height;
+        const popoverRight = x + width;
 
         const bottomView = window.innerHeight;
         const rightView = window.innerWidth;
 
-        const yTransform = menuBottom > bottomView ? height * -1 : 0;
-        const xTransform = menuRight > rightView ? width * -1 : 0;
+        const yTransform = popoverBottom > bottomView ? height * -1 : 0;
+        const xTransform = popoverRight > rightView ? width * -1 : 0;
 
-        contextMenu.style.transform = `translate(${xTransform}px, ${yTransform}px)`;
-        contextMenu.style.top = `${y}px`;
-        contextMenu.style.left = `${x}px`;
+        popover.style.transform = `translate(${xTransform}px, ${yTransform}px)`;
+        popover.style.top = `${y}px`;
+        popover.style.left = `${x}px`;
     }
 
     startPositioning(target, element) {
@@ -886,23 +881,19 @@ export default class Scheduler extends LightningElement {
         this._positioning = false;
     }
 
-    // selectEvent(event) {
-    //     const eventWrapper = event.currentTarget;
-    //     const from = new Date(Number(eventWrapper.dataset.from));
-    //     const to = new Date(Number(eventWrapper.dataset.to));
-    //     const keyFields = eventWrapper.dataset.keyFields.split(',');
+    selectEvent(mouseEvent) {
+        const { eventName, key, x, y } = mouseEvent.detail;
+        const event = this.computedEvents.find((evt) => evt.name === eventName);
+        const occurrence = event.occurrences.find((occ) => occ.key === key);
 
-    //     this.selectedEvent = {
-    //         key: eventWrapper.dataset.key,
-    //         keyFields: keyFields,
-    //         name: eventWrapper.dataset.name,
-    //         title: eventWrapper.dataset.title,
-    //         from: from.toISOString(),
-    //         to: to.toISOString(),
-    //         draftValues: {},
-    //         crossingEvents: []
-    //     };
-    // }
+        this.selection = {
+            event,
+            occurrence,
+            x,
+            y,
+            draftValues: {}
+        };
+    }
 
     resizeEventTo(cell) {
         const side = this._resizeSide;
@@ -1030,11 +1021,7 @@ export default class Scheduler extends LightningElement {
     handleEventMouseEnter(mouseEvent) {
         if (this._draggedEvent || this.showContextMenu) return;
 
-        this.selectedEvent = {
-            ...mouseEvent.detail.event,
-            draftValues: {},
-            crossingEvents: []
-        };
+        this.selectEvent(mouseEvent);
         this.showDetailPopover = true;
     }
 
@@ -1191,18 +1178,7 @@ export default class Scheduler extends LightningElement {
     }
 
     handleEventContextMenu(mouseEvent) {
-        const { eventName, key, x, y } = mouseEvent.detail;
-        const event = this.computedEvents.find((evt) => evt.name === eventName);
-        const occurrence = event.occurrences.find((occ) => occ.key === key);
-
-        this.selection = {
-            event,
-            occurrence,
-            x,
-            y,
-            draftValues: {}
-        };
-
+        this.selectEvent(mouseEvent);
         this.hideAllPopovers();
         this.showContextMenu = true;
     }

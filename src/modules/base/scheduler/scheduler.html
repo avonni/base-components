@@ -131,6 +131,8 @@
                                 to={occurrence.to}
                                 data-key={occurrence.key}
                                 onprivatecontextmenu={handleEventContextMenu}
+                                onprivatemouseenter={handleEventMouseEnter}
+                                onprivatemouseleave={hideDetailPopover}
                             ></c-primitive-scheduler-event-occurrence>
                         </template>
                     </div>
@@ -142,12 +144,12 @@
     <!-- Event detail popover -->
     <div
         if:true={showDetailPopover}
-        class="scheduler__event-detail-popover slds-popover slds-dropdown slds-dropdown_left"
+        class="scheduler__event-detail-popover slds-is-fixed slds-popover slds-dropdown slds-dropdown_left"
         role="tooltip"
     >
         <div class="slds-popover__body">
             <div class="slds-m-bottom_x-small">
-                <strong>{selectedEvent.title}</strong>
+                <strong>{selection.event.title}</strong>
             </div>
             <div class="slds-grid">
                 <lightning-icon
@@ -157,7 +159,7 @@
                 ></lightning-icon>
                 <c-output-data
                     type="date"
-                    value={selectedEvent.from}
+                    value={selection.occurrence.from}
                     type-attributes={eventDateFormat}
                 ></c-output-data>
             </div>
@@ -169,7 +171,7 @@
                 ></lightning-icon>
                 <c-output-data
                     type="date"
-                    value={selectedEvent.to}
+                    value={selection.occurrence.to}
                     type-attributes={eventDateFormat}
                 ></c-output-data>
             </div>

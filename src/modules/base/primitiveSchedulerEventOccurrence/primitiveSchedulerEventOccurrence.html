@@ -39,6 +39,8 @@
         class="slds-grid slds-grid_vertical-align-center scheduler__event-wrapper slds-p-vertical_x-small"
         tabindex="0"
         oncontextmenu={handleContextMenu}
+        onmouseenter={handleMouseEnter}
+        onmouseleave={handleMouseLeave}
     >
         <div class={computedClass} style={style}>
             <lightning-icon
@@ -85,8 +87,7 @@
 </template>
 
 <!-- onmousedown={handleMouseDown}
-onmouseenter={handleMouseEnter}
-onmouseleave={hideDetailPopover}
+
 onfocus={handleMouseEnter}
 onblur={hideDetailPopover}
 ondblclick={handleDoubleClick} -->

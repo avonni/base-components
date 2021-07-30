@@ -64,13 +64,13 @@ export default class PrimitiveDropdownMenu extends LightningElement {
     }
 
     @api
-    get height() {
+    get offsetHeight() {
         const menu = this.template.querySelector('.slds-popover');
         return menu && menu.offsetHeight;
     }
 
     @api
-    get width() {
+    get offsetWidth() {
         const menu = this.template.querySelector('.slds-popover');
         return menu && menu.offsetWidth;
     }
