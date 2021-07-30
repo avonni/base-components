@@ -51,11 +51,11 @@
 .scheduler__event:hover {
     opacity: 1;
 }
-
-.scheduler__event-dragged {
+:host.scheduler__event-dragged {
     z-index: 3;
 }
-.scheduler__event-dragged .scheduler__event {
+
+:host.scheduler__event-dragged .scheduler__event {
     cursor: grabbing;
 }
 

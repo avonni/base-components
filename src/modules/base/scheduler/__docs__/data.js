@@ -118,12 +118,12 @@ const headers = [
         unit: 'hour',
         span: 1,
         label: 'h a'
-    },
-    {
-        unit: 'minute',
-        span: 15,
-        label: 'mm'
     }
+    // {
+    //     unit: 'minute',
+    //     span: 15,
+    //     label: 'mm'
+    // }
 ];
 
 const events = [
@@ -182,8 +182,8 @@ const events = [
         name: 'standup',
         title: 'Dev team standup meeting',
         iconName: 'standard:team_member',
-        from: new Date(2021, 11, 13, 10, 45),
-        to: new Date(2021, 11, 14, 12, 15),
+        from: new Date(2021, 11, 13, 10, 15),
+        to: new Date(2021, 11, 14, 10, 45),
         recurrence: 'weekly',
         // recurrenceCount: 3,
         recurrenceAttributes: {

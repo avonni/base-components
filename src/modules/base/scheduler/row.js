@@ -77,6 +77,7 @@ export default class Row {
             if (i > -1) {
                 // Add the event to every column it crosses
                 while (i < columns.length && event.to > columns[i].start) {
+                    event.offsetTop = 0;
                     columns[i].events.push(event);
                     columns[i].events = columns[i].events.sort(
                         (a, b) => a.from - b.from
@@ -102,6 +103,7 @@ export default class Row {
                 // until we find a hole to place this event
                 let j = 0;
                 let offsetTop = 0;
+
                 while (j <= i && j < column.events.length - 1) {
                     const offset = offsetTop;
                     const eventHasThisOffset = column.events.find((event) => {
@@ -122,6 +124,7 @@ export default class Row {
             }
         });
 
+        // Compute the height according to the maximum number of events in one column
         this.height = numberOfEvents * EVENTS_HEIGHT + 10;
     }
 

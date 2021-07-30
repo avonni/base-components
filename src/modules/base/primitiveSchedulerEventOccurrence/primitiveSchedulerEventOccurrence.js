@@ -240,6 +240,7 @@ export default class Occurrence extends LightningElement {
 
         this._x = x;
         this._y = y;
+        this._columnPxWidth = columnWidth;
         this.updateHostTranslate();
     }
 
@@ -261,19 +262,23 @@ export default class Occurrence extends LightningElement {
         // add only the appropriate width in the first column
         if (columns[i].start < from) {
             const columnEnd = DateTime.fromMillis(columns[i].end);
-            const eventDurationLeft = columnEnd.diff(from).milliseconds;
-            const colPercentStart = (eventDurationLeft * 100) / columnDuration;
-            const offsetWidth = columnWidth * colPercentStart;
+            const eventDuration = columnEnd.diff(from).milliseconds;
+            const eventPercentageOfCol = eventDuration / columnDuration;
+            const offsetWidth = columnWidth * eventPercentageOfCol;
             width += offsetWidth;
-            this._x += offsetWidth;
-            this.updateWidthAndHeight();
+
+            const emptyDuration = columnDuration - eventDuration;
+            const emptyPercentageOfCol = emptyDuration / columnDuration;
+            this._x += this._columnPxWidth * emptyPercentageOfCol;
+            this.updateHostTranslate();
 
             // If the event ends before the end of the first column
             // remove the appropriate width of the first column
             if (columnEnd > to) {
-                const columnLeft = columnEnd.diff(to).milliseconds;
-                const colPercentEnd = (columnLeft * 100) / columnDuration;
-                this.width = width - colPercentEnd * columnWidth;
+                const durationLeft = columnEnd.diff(to).milliseconds;
+                const percentageLeft = durationLeft / columnDuration;
+                width = width - percentageLeft * columnWidth;
+                element.style.width = `${width}%`;
                 return;
             }
 
@@ -292,7 +297,7 @@ export default class Occurrence extends LightningElement {
         if (columns[i] && columns[i].start < to) {
             const columnStart = DateTime.fromMillis(columns[i].start);
             const eventDurationLeft = to.diff(columnStart).milliseconds;
-            const colPercentEnd = (eventDurationLeft * 100) / columnDuration;
+            const colPercentEnd = eventDurationLeft / columnDuration;
             width += columnWidth * colPercentEnd;
         }
 
@@ -301,8 +306,10 @@ export default class Occurrence extends LightningElement {
         // Update the height if the event is a disabled date
         if (this.disabled) {
             const row = this.rows.find((rw) => rw.key === this.rowKey);
-            const height = row.height;
-            element.style.height = `${height}px`;
+            if (row) {
+                const height = row.height;
+                element.style.height = `${height}px`;
+            }
         }
     }
 
@@ -350,6 +357,7 @@ export default class Occurrence extends LightningElement {
         if (event.button !== 0) return;
 
         const resize = event.target.dataset.resize;
+
         this.dispatchEvent(
             new CustomEvent('privatemousedown', {
                 detail: {
