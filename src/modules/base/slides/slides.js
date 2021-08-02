@@ -816,7 +816,7 @@ export default class Slides extends LightningElement {
     /**
      * Dynamic Bullets index method.
      * 
-     * @type {} //TODO
+     * @type {object}
      */
     get dynamicBullets() {
         let startIndex = this.slide < 3 ? 0 : this.slide - 2;
@@ -1003,7 +1003,7 @@ export default class Slides extends LightningElement {
      * 
      * @param {Element} slide 
      * @param {number} index 
-     * @param {*} cube //TODO
+     * @param {number} cube
      * @param {number} cubeIndex 
      */
     initCubeAttributes(slide, index, cube, cubeIndex) {
