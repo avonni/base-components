@@ -115,12 +115,55 @@ const DEFAULT_COLORS = [
 
 const DEFAULT_MESSAGE_WHEN_BAD_INPUT = 'Please ensure value is correct';
 
+/**
+ * @class
+ * @descriptor avonni-color-picker
+ * @example example-color-picker--standard
+ * @public
+ */
 export default class ColorPicker extends LightningElement {
+    /**
+     * Specifies a shortcut key to activate or focus an element.
+     * 
+     * @public
+     * @type {string}
+     */
     @api accessKey;
+    /**
+     * Help text detailing the purpose and function of the input. This attribute isn't supported for file, radio, toggle, and checkbox-button types.
+     * 
+     * @public
+     * @type {string}
+     */
     @api fieldLevelHelp;
+    /**
+     * Text label for the input.
+     * 
+     * @public
+     * @type {string}
+     * @required
+     */
     @api label;
+    /**
+     * Specifies the name of an input element.
+     * 
+     * @public
+     * @type {string}
+     */
     @api name;
+    /**
+     * If no icon-name specified, display default dropdown icon and color box.
+     * 
+     * @public
+     * @type {string}
+     */
     @api menuIconName;
+    /**
+     * Optional text to be shown on the button.
+     * 
+     * @public
+     * @type {string}
+     */
     @api menuLabel;
 
     _value;
@@ -161,6 +204,12 @@ export default class ColorPicker extends LightningElement {
         }
     }
 
+    /**
+     * Specifies the value of an input element.
+     * 
+     * @public
+     * @type {string}
+     */
     @api
     get value() {
         return this._value;
@@ -171,6 +220,13 @@ export default class ColorPicker extends LightningElement {
         this.initSwatchColor();
     }
 
+    /**
+     * The variant changes the appearance of an input field. Accepted variants include standard, label-inline, label-hidden, and label-stacked. This value defaults to standard, which displays the label above the field. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and input field. Use label-stacked to place the label above the input field.
+     * 
+     * @public
+     * @type {string}
+     * @default standard
+     */
     @api
     get variant() {
         return this._variant;
@@ -183,6 +239,13 @@ export default class ColorPicker extends LightningElement {
         });
     }
 
+    /**
+     * Values include base, custom, predefined.
+     * 
+     * @public
+     * @type {string}
+     * @default base
+     */
     @api
     get type() {
         return this._type;
@@ -195,6 +258,13 @@ export default class ColorPicker extends LightningElement {
         });
     }
 
+    /**
+     * The variant changes the look of the button. Accepted variants include bare, container, border, border-filled, bare-inverse, and border-inverse.
+     * 
+     * @public
+     * @type {string}
+     * @default border
+     */
     @api
     get menuVariant() {
         return this._menuVariant;
@@ -207,6 +277,13 @@ export default class ColorPicker extends LightningElement {
         });
     }
 
+    /**
+     * The size of the icon. Options include xx-small, x-small, small, medium, or large.
+     * 
+     * @public
+     * @type {string}
+     * @default x-small
+     */
     @api
     get menuIconSize() {
         return this._menuIconSize;
@@ -219,6 +296,13 @@ export default class ColorPicker extends LightningElement {
         });
     }
 
+    /**
+     * Determines the alignment of the menu relative to the button. Available options are: auto, left, center, right, bottom-left, bottom-center, bottom-right. The auto option aligns the dropdown menu based on available space.
+     * 
+     * @public
+     * @type {string}
+     * @default left
+     */
     @api
     get menuAlignment() {
         return this._menuAlignment;
@@ -231,6 +315,13 @@ export default class ColorPicker extends LightningElement {
         });
     }
 
+    /**
+     * If present, the input field is disabled and users cannot interact with it.
+     * 
+     * @public
+     * @type {boolean}
+     * @default false
+     */
     @api
     get disabled() {
         return this._disabled;
@@ -240,6 +331,13 @@ export default class ColorPicker extends LightningElement {
         this._disabled = normalizeBoolean(value);
     }
 
+    /**
+     * If present, a spinner is displayed to indicate that data is loading.
+     * 
+     * @public
+     * @type {boolean}
+     * @default false
+     */
     @api
     get isLoading() {
         return this._isLoading;
@@ -249,6 +347,13 @@ export default class ColorPicker extends LightningElement {
         this._isLoading = normalizeBoolean(value);
     }
 
+    /**
+     * If present, the input field is read-only and cannot be edited by users.
+     * 
+     * @public
+     * @type {boolean}
+     * @default false
+     */
     @api
     get readOnly() {
         return this._readOnly;
@@ -258,6 +363,13 @@ export default class ColorPicker extends LightningElement {
         this._readOnly = normalizeBoolean(value);
     }
 
+    /**
+     * If present, the input field must be filled out before the form is submitted.
+     * 
+     * @public
+     * @type {boolean}
+     * @default false
+     */
     @api
     get required() {
         return this._required;
@@ -267,6 +379,13 @@ export default class ColorPicker extends LightningElement {
         this._required = normalizeBoolean(value);
     }
 
+    /**
+     * Color values displayed in the default palette.
+     * 
+     * @public
+     * @type {string[]}
+     * @default [“#e3abec”, “#c2dbf6”, ”#9fd6ff”, ”#9de7da”, ”#9df0bf”, ”#fff099”, ”#fed49a”, ”#d073df”, ”#86b9f3”, ”#5ebbff”, ”#44d8be”, ”#3be281”, ”#ffe654”, ”#ffb758”, ”#bd35bd”, ”#5778c1”, ”#5ebbff”, ”#00aea9”, ”#3bba4c”, ”#f4bc25”, ”#f99120”, ”#580d8c”, ”#001870”, ”#0a2399”, ”#097476”, ”#096a50”, ”#b67d11”, ”#b85d0d”]
+     */
     @api
     get colors() {
         return this._colors;
@@ -277,6 +396,13 @@ export default class ColorPicker extends LightningElement {
         this._colors = colors.length > 0 ? colors : DEFAULT_COLORS;
     }
 
+    /**
+     * If true, hide the input color value.
+     * 
+     * @public
+     * @type {boolean}
+     * @default false
+     */
     @api
     get hideColorInput() {
         return this._hideColorInput;
@@ -286,6 +412,13 @@ export default class ColorPicker extends LightningElement {
         this._hideColorInput = normalizeBoolean(value);
     }
 
+    /**
+     * If present, a nubbin is present on the menu. A nubbin is a stub that protrudes from the menu item towards the button menu. The nubbin position is based on the menu-alignment.
+     * 
+     * @public
+     * @type {boolean}
+     * @default false
+     */
     @api
     get menuNubbin() {
         return this._menuNubbin;
@@ -295,6 +428,13 @@ export default class ColorPicker extends LightningElement {
         this._menuNubbin = normalizeBoolean(value);
     }
 
+    /**
+     * Defines whether the alpha slider will be displayed.
+     * 
+     * @public
+     * @type {boolean}
+     * @default false
+     */
     @api
     get opacity() {
         return this._opacity;
@@ -304,6 +444,13 @@ export default class ColorPicker extends LightningElement {
         this._opacity = normalizeBoolean(value);
     }
 
+    /**
+     * Error message to be displayed when a bad input is detected.
+     * 
+     * @public
+     * @type {string}
+     * @default Please ensure value is correct
+     */
     @api
     get messageWhenBadInput() {
         return this._messageWhenBadInput;
@@ -320,34 +467,69 @@ export default class ColorPicker extends LightningElement {
         return generateUniqueId();
     }
 
+    /**
+     * Verify if type is Base.
+     * 
+     * @returns {boolean}
+     */
     get isBase() {
         return this.type === 'base';
     }
 
+    /**
+     * Verify if type is Custom.
+     * 
+     * @returns {boolean}
+     */
     get isCustom() {
         return this.type === 'custom';
     }
 
+    /**
+     * Verify if type is Predefined.
+     * 
+     * @returns {boolean}
+     */
     get isPredefined() {
         return this.type === 'predefined';
     }
 
+    /**
+     * Get the icon class.
+     * 
+     * @returns menuLabel
+     */
     get iconClass() {
         return this.menuLabel ? 'slds-m-left_xx-small' : '';
     }
 
+    /**
+     * Show label.
+     * 
+     * @returns {boolean}
+     */
     get showLabel() {
         return this.label || this.required;
     }
 
+    /**
+     * Disabled input.
+     * 
+     * @returns {boolean}
+     */
     get disabledInput() {
         return this.disabled || this.readOnly;
     }
 
-	get inputValue(){
-		return this.currentLabel ? this.currentLabel : this.value;
-	}
-
+	  get inputValue(){
+		  return this.currentLabel ? this.currentLabel : this.value;
+	  }
+  
+    /**
+     * Sets focus on the input element.
+     * 
+     * @public
+     */
     @api
     focus() {
         if (this.isConnected) {
@@ -355,8 +537,25 @@ export default class ColorPicker extends LightningElement {
         }
     }
 
+    /**
+     * Change event dispatcher.
+     * 
+     * @param {object} colors
+     */
     dispatchChange(colors) {
         if (!this.disabled && !this.readOnly) {
+            /**
+             * The event fired when the color value changed.
+             * 
+             * @event
+             * @public
+             * @name change
+             * @param {string} hex Color in hexadecimal format.
+             * @param {string} hexa Color in hexadecimal format with alpha.
+             * @param {string} rgb Color in rgb format.
+             * @param {string} rgba Color in rgba format.
+             * @param {string} alpha Alpha value of the color.
+             */
             this.dispatchEvent(
                 new CustomEvent('change', {
                     detail: {
@@ -371,6 +570,9 @@ export default class ColorPicker extends LightningElement {
         }
     }
 
+    /**
+     * Initialize swatch colors.
+     */
     initSwatchColor() {
         let element = this.template.querySelector('.slds-swatch');
 
@@ -379,14 +581,28 @@ export default class ColorPicker extends LightningElement {
         }
     }
 
+    /**
+     * Button focus handler.
+     */
     focusOnButton() {
         this.template.querySelector('button').focus();
     }
 
+    /**
+     * Compute Aria Expanded for dropdown.
+     * 
+     * @type {string}
+     * @return {String} from dropdownVisible
+     */
     get computedAriaExpanded() {
         return String(this._dropdownVisible);
     }
 
+    /**
+     * Computed container class styling.
+     * 
+     * @type {string}
+     */
     get computedContainerClass() {
         return classSet()
             .add({
@@ -396,6 +612,11 @@ export default class ColorPicker extends LightningElement {
             .toString();
     }
 
+    /**
+     * Computed Legend class styling.
+     * 
+     * @type {string}
+     */
     get computedLegendClass() {
         return classSet('slds-form-element__label slds-no-flex')
             .add({
@@ -404,6 +625,11 @@ export default class ColorPicker extends LightningElement {
             .toString();
     }
 
+    /**
+     * Computed Button class styling.
+     * 
+     * @type {string}
+     */
     get computedButtonClass() {
         const isDropdownIcon = !this.computedShowDownIcon;
         const isBare =
@@ -456,6 +682,11 @@ export default class ColorPicker extends LightningElement {
         return classes.toString();
     }
 
+    /**
+     * Compute show down Icon.
+     * 
+     * @type {boolean}
+     */
     get computedShowDownIcon() {
         return !(
             this.menuIconName === 'utility:down' ||
@@ -463,6 +694,11 @@ export default class ColorPicker extends LightningElement {
         );
     }
 
+    /**
+     * Computed dropdown menu classs styling.
+     * 
+     * @type {string}
+     */
     get computedDropdownClass() {
         return classSet('slds-color-picker__selector slds-dropdown')
             .add({
@@ -492,10 +728,20 @@ export default class ColorPicker extends LightningElement {
             .toString();
     }
 
+    /**
+     * Check if auto aligned.
+     * 
+     * @returns {boolean}
+     */
     isAutoAlignment() {
         return this.menuAlignment.startsWith('auto');
     }
 
+    /**
+     * Change Handler.
+     * 
+     * @param {Event} event
+     */
     handlerChange(event) {
         if (event.detail) {
             this.newValue =
@@ -507,6 +753,9 @@ export default class ColorPicker extends LightningElement {
 
     }
 
+    /**
+     * Handle new value change and update ui.
+     */
     handlerDone() {
         if (!this.readOnly && this.newValue) {
             this.value = this.newValue;
@@ -539,6 +788,9 @@ export default class ColorPicker extends LightningElement {
         this.handleBlur();
     }
 
+    /**
+     * Handle new value canceled.
+     */
     handlerCancel() {
         this.newValue = '';
 
@@ -553,12 +805,20 @@ export default class ColorPicker extends LightningElement {
         this.handleBlur();
     }
 
+    /**
+     * Button click handler.
+     */
     handleButtonClick() {
         this.allowBlur();
         this.toggleMenuVisibility();
         this.focus();
     }
 
+    /**
+     * Handle mouse down on Button.
+     * 
+     * @param {Event} event
+     */
     handleButtonMouseDown(event) {
         const mainButton = 0;
         if (event.button === mainButton) {
@@ -566,6 +826,11 @@ export default class ColorPicker extends LightningElement {
         }
     }
 
+    /**
+     * Dropdown menu mouse down handler.
+     * 
+     * @param {Event} event
+     */
     handleDropdownMouseDown(event) {
         const mainButton = 0;
         if (event.button === mainButton) {
@@ -573,16 +838,27 @@ export default class ColorPicker extends LightningElement {
         }
     }
 
+    /**
+     * Dropdown menu mouse up handler.
+     */
     handleDropdownMouseUp() {
         this.allowBlur();
     }
 
+    /**
+     * Dropdown menu mouse leave handler.
+     */
     handleDropdownMouseLeave() {
         if (!this._menuHasFocus) {
             this.close();
         }
     }
 
+    /**
+     * Tab click event handler.
+     * 
+     * @param {Event} event
+     */
     handlerTabClick(event) {
         event.preventDefault();
 
@@ -596,14 +872,23 @@ export default class ColorPicker extends LightningElement {
         });
     }
 
+    /**
+     * Sets blur.
+     */
     allowBlur() {
         this._cancelBlur = false;
     }
 
+    /**
+     * Cancels blur.
+     */
     cancelBlur() {
         this._cancelBlur = true;
     }
 
+    /**
+     * Blur handler.
+     */
     handleBlur() {
         if (this._cancelBlur) {
             return;
@@ -614,6 +899,11 @@ export default class ColorPicker extends LightningElement {
         }
     }
 
+    /**
+     * Private focus handler.
+     * 
+     * @param {Event} event
+     */
     handlePrivateFocus(event) {
         event.stopPropagation();
 
@@ -621,6 +911,11 @@ export default class ColorPicker extends LightningElement {
         this._menuHasFocus = true;
     }
 
+    /**
+     * Private blur handler.
+     * 
+     * @param {Event} event
+     */
     handlePrivateBlur(event) {
         event.stopPropagation();
 
@@ -628,6 +923,11 @@ export default class ColorPicker extends LightningElement {
         this._menuHasFocus = false;
     }
 
+    /**
+     * Input color event handler.
+     * 
+     * @param {Event} event
+     */
     handleInputColor(event) {
         let color = event.target.value;
 
@@ -667,6 +967,9 @@ export default class ColorPicker extends LightningElement {
         event.stopPropagation();
     }
 
+    /**
+     * Dropdown menu visibility toggle.
+     */
     toggleMenuVisibility() {
         if (!this.disabled) {
             this._dropdownVisible = !this._dropdownVisible;
@@ -686,12 +989,18 @@ export default class ColorPicker extends LightningElement {
         }
     }
 
+    /**
+     * Close dropdown menu.
+     */
     close() {
         if (this._dropdownVisible) {
             this.toggleMenuVisibility();
         }
     }
 
+    /**
+     * Poll bounding rect of the dropdown menu.
+     */
     pollBoundingRect() {
         if (this.isAutoAlignment() && this._dropdownVisible) {
             // eslint-disable-next-line @lwc/lwc/no-async-operation

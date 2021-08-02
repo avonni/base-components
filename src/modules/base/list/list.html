@@ -57,6 +57,7 @@
                 ontouchmove={drag}
                 ontouchend={dragEnd}
                 onkeydown={handleKeyDown}
+                onclick={handleItemClick}
                 data-index={index}
                 data-position="0"
                 role={itemRole}
@@ -67,7 +68,7 @@
                 <div class="slds-grid slds-grid_vertical-align-center">
                     <lightning-icon
                         if:true={showIconLeft}
-                        class="icon-left"
+                        class="icon-left draggable-element sortable-icon-cursor"
                         icon-name={sortableIconName}
                         size="x-small"
                     ></lightning-icon>
@@ -121,7 +122,7 @@
                     </div>
                     <lightning-icon
                         if:true={showIconRight}
-                        class="slds-m-right_x-small icon-right"
+                        class="slds-m-right_x-small icon-right draggable-element sortable-icon-cursor"
                         icon-name={sortableIconName}
                         size="x-small"
                     ></lightning-icon>
@@ -135,6 +136,7 @@
                             menu-alignment="right"
                             icon-size="x-small"
                             ontouchstart={handleButtonMenuTouchStart}
+                            onselect={handleActionClick}
                         >
                             <template
                                 for:each={computedActions}
@@ -159,17 +161,18 @@
                                 label={firstAction.label}
                                 disabled={firstAction.disabled}
                                 icon-name={firstAction.iconName}
+                                onclick={handleActionClick}
                             ></lightning-button>
                             <lightning-button-icon
                                 if:false={firstAction.label}
                                 class="slds-m-right_none"
-                                size="x-small"
                                 ontouchstart={handleButtonMenuTouchStart}
                                 key={firstAction.name}
                                 value={firstAction.name}
                                 disabled={firstAction.disabled}
                                 icon-name={firstAction.iconName}
                                 variant="bare"
+                                onclick={handleActionClick}
                             ></lightning-button-icon>
                         </template>
                     </div>

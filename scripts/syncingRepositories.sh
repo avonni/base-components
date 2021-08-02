@@ -100,7 +100,6 @@ do
         "utilsPrivate"
         "tooltipLibrary"
         "positionLibrary"
-        "primitiveBubble"
         "jsconfig.json"
     )
 
