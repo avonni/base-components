@@ -163,7 +163,7 @@ export default class InputCounter extends LightningElement {
     _fractionDigits;
     _constraintApi;
     _constraintApiProxyInputUpdater;
-    _value;
+    _value = null;
     _previousValue;
     _inputStep;
     helpMessage;
@@ -564,7 +564,7 @@ export default class InputCounter extends LightningElement {
         /**
          * @event
          * @name change
-         * @description The event fired when the value change.
+         * @description The event fired when the value changes.
          * @param {number} value
          */
         this.dispatchEvent(
