@@ -275,6 +275,7 @@ export default class ColorPicker extends LightningElement {
     set colors(value) {
         const colors = normalizeArray(value);
         this._colors = colors.length > 0 ? colors : DEFAULT_COLORS;
+
     }
 
     @api
@@ -346,6 +347,10 @@ export default class ColorPicker extends LightningElement {
 
 	get inputValue(){
 		return this.currentLabel ? this.currentLabel : this.value;
+	}
+
+	get isLabelDisplayed(){
+		return this.currentLabel;
 	}
 
     @api
