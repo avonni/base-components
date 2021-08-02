@@ -109,16 +109,18 @@
                         >
                             {item.description}
                         </p>
-                        <ul
-                            if:true={item.infos.length}
-                            class="slds-list_horizontal slds-has-dividers_left slds-has-block-links"
-                        >
-                            <template for:each={item.infos} for:item="info">
-                                <li key={info.label} class="slds-item">
-                                    <a href={info.href}>{info.label}</a>
-                                </li>
-                            </template>
-                        </ul>
+                        <template if:true={item.infos}>
+                            <ul
+                                if:true={item.infos.length}
+                                class="slds-list_horizontal slds-has-dividers_left slds-has-block-links"
+                            >
+                                <template for:each={item.infos} for:item="info">
+                                    <li key={info.label} class="slds-item">
+                                        <a href={info.href}>{info.label}</a>
+                                    </li>
+                                </template>
+                            </ul>
+                        </template>
                     </div>
                     <lightning-icon
                         if:true={showIconRight}
