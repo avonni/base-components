@@ -591,7 +591,7 @@ export default class ButtonIconPopover extends LightningElement {
         const isButton =
             this.template.querySelector(
                 'lightning-button-icon[data-role="button-icon-popover"]'
-            ) === event?.relatedTarget;
+            ) === event.relatedTarget;
         if (this._cancelBlur) {
             return;
         }

@@ -469,7 +469,10 @@ export default class AvonniDataListBasic extends LightningElement {
                     // eslint-disable-next-line @lwc/lwc/no-async-operation
                     setTimeout(() => {
                         this.updatePopoverPosition(event.detail.bounds);
-                        this.template.querySelector('c-data-input')?.focus();
+                        const input = this.template.querySelector(
+                            'c-data-input'
+                        );
+                        if (input) input.focus();
                     }, 0);
                 }
                 break;
