@@ -182,7 +182,10 @@ export default class Event {
 
         if (this.allDay && to) {
             to = to.endOf('day');
-        } else if (this.allDay && this.from) {
+        } else if (
+            (this.allDay && this.from) ||
+            (this.from && to < this.from)
+        ) {
             to = this.from.endOf('day');
         }
 
@@ -261,16 +264,16 @@ export default class Event {
                     recurrenceAttributes.weekdays.length;
 
                 if (weekdays) {
-                    // If "to" has no time (00:00:00), the event will span on the whole day
-                    if (to.ts === to.startOf('day').ts) {
+                    end = start.set({
+                        hours: to.hour,
+                        minutes: to.minute,
+                        seconds: to.second
+                    });
+
+                    // If "to" has no time (00:00:00) or its time is before start,
+                    // the event will span on the whole day
+                    if (to.ts === to.startOf('day').ts || end < start) {
                         end = start.endOf('day');
-                    } else {
-                        end = start.set({
-                            weekday: start.weekday,
-                            hours: to.hour,
-                            minutes: to.minute,
-                            seconds: to.second
-                        });
                     }
                 } else {
                     end = start.set({
