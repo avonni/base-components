@@ -118,12 +118,12 @@ const headers = [
         unit: 'hour',
         span: 1,
         label: 'h a'
+    },
+    {
+        unit: 'minute',
+        span: 15,
+        label: 'mm'
     }
-    // {
-    //     unit: 'minute',
-    //     span: 15,
-    //     label: 'mm'
-    // }
 ];
 
 const events = [

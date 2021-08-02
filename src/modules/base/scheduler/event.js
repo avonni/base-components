@@ -98,7 +98,15 @@ export default class Event {
 
         this.theme = props.theme;
         this.title = props.title;
-        this.name = props.name;
+
+        // If the event was created by a user, it won't have a name.
+        // Generate a lower-case-dash-separated-name from the title.
+        if (props.name || this.disabled) {
+            this.name = props.name;
+        } else {
+            const lowerCaseName = this.title.toLowerCase();
+            this.name = lowerCaseName.replaceAll(/\s/g, '-');
+        }
 
         this.initOccurrences();
     }

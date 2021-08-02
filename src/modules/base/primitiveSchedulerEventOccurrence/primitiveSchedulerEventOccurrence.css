@@ -47,6 +47,7 @@
     cursor: pointer;
     position: relative;
     z-index: 2;
+    user-select: none;
 }
 .scheduler__event:hover {
     opacity: 1;

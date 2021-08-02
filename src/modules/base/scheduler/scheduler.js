@@ -48,7 +48,8 @@ import {
     DEFAULT_AVAILABLE_MONTHS,
     DEFAULT_AVAILABLE_TIME_FRAMES,
     DEFAULT_EDIT_DIALOG_LABELS,
-    DEFAULT_CONTEXT_MENU_ACTIONS,
+    DEFAULT_CONTEXT_MENU_EMPTY_SPOT_ACTIONS,
+    DEFAULT_CONTEXT_MENU_EVENT_ACTIONS,
     DEFAULT_START_DATE,
     DEFAULT_VISIBLE_SPAN,
     PALETTES,
@@ -64,7 +65,8 @@ export default class Scheduler extends LightningElement {
     _availableMonths = DEFAULT_AVAILABLE_MONTHS;
     _availableTimeFrames = DEFAULT_AVAILABLE_TIME_FRAMES;
     _columns = [];
-    _contextMenuActions = DEFAULT_CONTEXT_MENU_ACTIONS;
+    _contextMenuEmptySpotActions = DEFAULT_CONTEXT_MENU_EMPTY_SPOT_ACTIONS;
+    _contextMenuEventActions = DEFAULT_CONTEXT_MENU_EVENT_ACTIONS;
     _customEventsPalette = [];
     _disabledDatesTimes = [];
     _eventsPalette = EVENTS_PALETTES.default;
@@ -84,6 +86,7 @@ export default class Scheduler extends LightningElement {
     computedHeaders = [];
     computedRows = [];
     computedEvents = [];
+    contextMenuActions = [];
     selectedEvent;
     showContextMenu = false;
     showEditDialog = false;
@@ -203,11 +206,19 @@ export default class Scheduler extends LightningElement {
     }
 
     @api
-    get contextMenuActions() {
-        return this._contextMenuActions;
+    get contextMenuEmptySpotActions() {
+        return this._contextMenuEmptySpotActions;
     }
-    set contextMenuActions(value) {
-        this._contextMenuActions = normalizeArray(value);
+    set contextMenuEmptySpotActions(value) {
+        this._contextMenuEmptySpotActions = normalizeArray(value);
+    }
+
+    @api
+    get contextMenuEventActions() {
+        return this._contextMenuEventActions;
+    }
+    set contextMenuEventActions(value) {
+        this._contextMenuEventActions = normalizeArray(value);
     }
 
     @api
@@ -557,9 +568,6 @@ export default class Scheduler extends LightningElement {
     initEvents() {
         if (!this.computedHeaders.length) return;
 
-        const computedEvents = [];
-        const start = this._referenceHeader.start;
-
         // The disabled dates/times are special events
         const disabledEvents = this.disabledDatesTimes.map((evt) => {
             const event = { ...evt };
@@ -568,18 +576,10 @@ export default class Scheduler extends LightningElement {
         });
         const events = this.events.concat(disabledEvents);
 
+        const computedEvents = [];
         events.forEach((evt) => {
             const event = { ...evt };
-            event.schedulerEnd = this.end;
-            event.schedulerStart = start;
-            event.availableMonths = this.availableMonths;
-            event.availableDaysOfTheWeek = this.availableDaysOfTheWeek;
-            event.availableTimeFrames = this.availableTimeFrames;
-            event.smallestHeader = this.smallestHeader;
-            event.theme = event.disabled
-                ? 'disabled'
-                : event.theme || this.eventsTheme;
-
+            this.updateEventDefaults(event);
             computedEvents.push(new Event(event));
         });
 
@@ -682,6 +682,18 @@ export default class Scheduler extends LightningElement {
         if (side === 'left') {
             event.x = computedX;
         }
+    }
+
+    updateEventDefaults(event) {
+        event.schedulerEnd = this.end;
+        event.schedulerStart = this._referenceHeader.start;
+        event.availableMonths = this.availableMonths;
+        event.availableDaysOfTheWeek = this.availableDaysOfTheWeek;
+        event.availableTimeFrames = this.availableTimeFrames;
+        event.smallestHeader = this.smallestHeader;
+        event.theme = event.disabled
+            ? 'disabled'
+            : event.theme || this.eventsTheme;
     }
 
     updateHeadersStyle() {
@@ -1079,6 +1091,41 @@ export default class Scheduler extends LightningElement {
         this.selectEvent(mouseEvent);
         this.hideAllPopovers();
         this.showContextMenu = true;
+        this.contextMenuActions = this.contextMenuEventActions;
+    }
+
+    handleEmptySpotContextMenu(mouseEvent) {
+        const target = mouseEvent.target;
+        if (
+            target.tagName === 'C-PRIMITIVE-SCHEDULER-EVENT-OCCURRENCE' &&
+            !target.disabled
+        )
+            return;
+        mouseEvent.preventDefault();
+
+        this.hideAllPopovers();
+        this.showContextMenu = true;
+        this.contextMenuActions = this.contextMenuEmptySpotActions;
+
+        const x = mouseEvent.clientX;
+        const y = mouseEvent.clientY;
+        const row = this.getRowFromPosition(y);
+        const cell = this.getCellFromPosition(row, x);
+        const from = dateTimeObjectFrom(Number(cell.dataset.start));
+        const to = addToDate(from, 'hour', 1);
+
+        this.selection = {
+            x,
+            y,
+            event: {
+                keyFields: [row.dataset.key]
+            },
+            occurrence: {
+                from,
+                to
+            },
+            draftValues: {}
+        };
     }
 
     handleActionSelect(event) {
@@ -1088,16 +1135,26 @@ export default class Scheduler extends LightningElement {
             new CustomEvent('actionclick', {
                 detail: {
                     name: name,
-                    targetName: this.selection.event.name
+                    targetName: this.selection.event
+                        ? this.selection.event.name
+                        : undefined
                 },
                 bubbles: true
             })
         );
 
-        if (name === 'edit') {
-            this.showEditDialog = true;
-        } else if (name === 'delete') {
-            this.deleteSelectedEvent();
+        switch (name) {
+            case 'edit':
+                this.showEditDialog = true;
+                break;
+            case 'delete':
+                this.deleteSelectedEvent();
+                break;
+            case 'add-event':
+                this.showEditDialog = true;
+                break;
+            default:
+                break;
         }
     }
 
@@ -1129,7 +1186,7 @@ export default class Scheduler extends LightningElement {
     handleSaveEditDialog() {
         const event = this.selection.event;
 
-        // Change the event and update the rows
+        // Set the event values
         const draftValues = this.selection.draftValues;
         Object.entries(draftValues).forEach((entry) => {
             const [key, value] = entry;
@@ -1139,11 +1196,41 @@ export default class Scheduler extends LightningElement {
             }
         });
 
+        // Create the event if it is a new event
+        let computedEvent;
+        if (!event.key) {
+            this.updateEventDefaults(event);
+            if (!event.from) event.from = this.selection.occurrence.from;
+            if (!event.to) event.to = this.selection.occurrence.to;
+            if (!event.keyFields)
+                event.keyFields = this.selection.event.keyFields;
+
+            computedEvent = new Event(event);
+            this.computedEvents.push(computedEvent);
+        }
+
         this.initEventOccurrences();
         this.initRows();
 
-        // Dispatch the change and close the dialog
-        this.dispatchChangeEvent(event.name);
+        // Dispatch the change or create event and close the dialog
+        if (computedEvent) {
+            this.dispatchEvent(
+                new CustomEvent('eventcreate', {
+                    detail: {
+                        event: {
+                            from: computedEvent.from,
+                            keyFields: computedEvent.keyFields,
+                            name: computedEvent.name,
+                            title: computedEvent.title,
+                            to: computedEvent.to
+                        },
+                        bubbles: true
+                    }
+                })
+            );
+        } else {
+            this.dispatchChangeEvent(event.name);
+        }
         this.hideEditDialog();
     }
 

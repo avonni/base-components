@@ -77,7 +77,7 @@ const DEFAULT_VISIBLE_SPAN = {
     unit: 'hour',
     span: 12
 };
-const DEFAULT_CONTEXT_MENU_ACTIONS = [
+const DEFAULT_CONTEXT_MENU_EVENT_ACTIONS = [
     {
         name: 'edit',
         label: 'Edit',
@@ -87,6 +87,13 @@ const DEFAULT_CONTEXT_MENU_ACTIONS = [
         name: 'delete',
         label: 'Delete',
         iconName: 'utility:delete'
+    }
+];
+const DEFAULT_CONTEXT_MENU_EMPTY_SPOT_ACTIONS = [
+    {
+        name: 'add-event',
+        label: 'Add event',
+        iconName: 'utility:add'
     }
 ];
 
@@ -176,7 +183,8 @@ export {
     DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
     DEFAULT_AVAILABLE_TIME_FRAMES,
     DEFAULT_AVAILABLE_MONTHS,
-    DEFAULT_CONTEXT_MENU_ACTIONS,
+    DEFAULT_CONTEXT_MENU_EMPTY_SPOT_ACTIONS,
+    DEFAULT_CONTEXT_MENU_EVENT_ACTIONS,
     DEFAULT_START_DATE,
     DEFAULT_VISIBLE_SPAN,
     PALETTES,
