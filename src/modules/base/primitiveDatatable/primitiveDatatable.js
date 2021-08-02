@@ -474,31 +474,28 @@ export default class PrimitiveDatatable extends LightningDatatable {
 
     @api
     columnsWidthWithoutHeader() {
-        const columnsWidthWithoutHeader = [];
+        let columnsWidthWithoutHeader = [];
         const row = this.template.querySelector('tbody > tr');
-        const data = row.querySelectorAll('td, th');
-        data.forEach((cell) => {
-            columnsWidthWithoutHeader.push(cell.offsetWidth);
+        const data = Array.from(row.querySelectorAll('td, th'));
+
+        columnsWidthWithoutHeader = data.map((cell) => {
+            return cell.offsetWidth;
         });
+
         return columnsWidthWithoutHeader;
     }
 
     @api
     columnsEditable() {
-        const columns = [];
-        this.columns.forEach((column) => {
-            columns.push(column.editable);
+        this._columnsEditable = this.columns.map((column) => {
+            return column.editable;
         });
-        return columns;
+        return this._columnsEditable;
     }
 
     @api
     isDatatableEditable() {
-        const columns = [];
-        this.columns.forEach((column) => {
-            columns.push(column.editable);
-        });
-        return columns.filter(Boolean).length > 0;
+        return this._columnsEditable.filter(Boolean).length > 0;
     }
 
     @api

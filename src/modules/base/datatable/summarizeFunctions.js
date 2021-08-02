@@ -35,8 +35,9 @@ export function count(array) {
 }
 
 // function for countUnique
-export function countUnique(array, n) {
+export function countUnique(array) {
     let res = 1;
+    let n = array.length;
 
     // Pick all elements one by one
     for (let i = 1; i < n; i++) {
@@ -56,7 +57,7 @@ export function sum(array) {
 
 // function for average
 export function average(array) {
-    return sum(array) / count(array);
+    return (sum(array) / count(array)).toFixed(2);
 }
 
 // function for median
@@ -78,19 +79,22 @@ export function min(array) {
 
 // function for mode
 export function mode(array) {
-    const store = {};
-    let maxCount = 0;
+    let modeObj = {};
+    let maximum = 0,
+        counter = 0;
 
-    array.forEach((item) => {
-        if (!store[item]) {
-            store[item] = 0;
+    array.forEach((e) => {
+        if (modeObj[e]) {
+            modeObj[e]++;
+        } else {
+            modeObj[e] = 1;
         }
-        store[item] += 1;
-        if (store[item] > maxCount) {
-            maxCount = store[item];
+
+        if (counter < modeObj[e]) {
+            maximum = e;
+            counter = modeObj[e];
         }
     });
-    const modes = Object.keys(store).filter((key) => store[key] === maxCount);
 
-    return modes;
+    return maximum;
 }

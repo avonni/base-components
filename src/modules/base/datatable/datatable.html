@@ -37,37 +37,71 @@
             onrowaction={handleDispatchEvents}
         >
         </c-primitive-datatable>
-        <table
-            class="slds-table slds-table_bordered slds-table_resizable-cols"
-            role="grid"
-        >
-            <tbody>
-                <tr>
-                    <td
-                        if:true={isDatatableEditable}
-                        class="avonni-datatable-first-column"
-                    ></td>
-                    <td
-                        if:false={hideCheckboxColumn}
-                        style="width: 32px !important"
-                    ></td>
-                    <template
-                        for:each={columns}
-                        for:item="column"
-                        for:index="index"
-                    >
+        <template if:true={isSummarizePresent}>
+            <table
+                class="slds-table slds-table_bordered slds-table_resizable-cols"
+                role="grid"
+            >
+                <tbody>
+                    <tr>
                         <td
-                            key={column.index}
-                            class="slds-text-align_right"
-                            data-column={column.fieldName}
-                            role="gridcell"
-                        >
-                            {index}
-                        </td>
-                    </template>
-                </tr>
-            </tbody>
-        </table>
+                            if:true={isDatatableEditable}
+                            class="avonni-datatable-first-column"
+                        ></td>
+                        <td
+                            if:false={hideCheckboxColumn}
+                            style="width: 32px !important"
+                        ></td>
+                        <template for:each={columnsExample} for:item="column">
+                            <template if:true={column.numberType}>
+                                <td
+                                    key={column.type}
+                                    class="slds-text-align_right avonni-datatable-vertical-align_top"
+                                    data-column={column.fieldName}
+                                    role="gridcell"
+                                >
+                                    <template
+                                        for:each={column.summarizeTypes}
+                                        for:item="type"
+                                    >
+                                        <div key={type.label}>
+                                            <div
+                                                class="avonni-datatable-summarize_flex-end"
+                                            >
+                                                <div
+                                                    class="avonni-datatable-summarize-type-text"
+                                                >
+                                                    {type.label}:
+                                                </div>
+                                                <lightning-formatted-number
+                                                    format-style={type.type}
+                                                    value={type.value}
+                                                    currency-code={type.typeAttributes.currencyCode}
+                                                    currency-display-as={type.typeAttributes.currencyDisplayAs}
+                                                    minimum-fraction-digits={type.typeAttributes.minimumFractionDigits}
+                                                    maximum-fraction-digits={type.typeAttributes.maximumFractionDigits}
+                                                    minimum-integer-digits={type.typeAttributes.minimumIntegerDigits}
+                                                    minimum-significant-digits={type.typeAttributes.minimumSignificantDigits}
+                                                    maximum-significant-digits={type.typeAttributes.maximumSignificantDigits}
+                                                ></lightning-formatted-number>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </td>
+                            </template>
+                            <template if:false={column.numberType}>
+                                <td
+                                    key={column.type}
+                                    class="slds-text-align_right"
+                                    data-column={column.fieldName}
+                                    role="gridcell"
+                                ></td>
+                            </template>
+                        </template>
+                    </tr>
+                </tbody>
+            </table>
+        </template>
     </div>
     <div class="avonni-datatable-bottom-bar" if:true={showStatusBar}>
         <div class="slds-grid slds-grid_align-center">

@@ -31,6 +31,8 @@
  */
 
 import { api, LightningElement } from 'lwc';
+import { normalizeArray } from 'c/utilsPrivate';
+
 import {
     count,
     countUnique,
@@ -41,22 +43,9 @@ import {
     min,
     mode
 } from './summarizeFunctions';
-import { normalizeArray } from 'c/utilsPrivate';
-
-const SUMMARIZATIONS = [
-    'count',
-    'countUnique',
-    'sum',
-    'average',
-    'median',
-    'min',
-    'max',
-    'mode'
-];
 
 export default class PrimitiveDatatable extends LightningElement {
     @api columnWidthsMode;
-    _columns;
     // eslint-disable-next-line @lwc/lwc/valid-api
     @api data;
     @api defaultSortDirection;
@@ -82,6 +71,7 @@ export default class PrimitiveDatatable extends LightningElement {
     @api suppressBottomBar;
     @api wrapTextMaxLines;
 
+    _columns;
     showStatusBar = false;
     rendered = false;
 
@@ -89,18 +79,9 @@ export default class PrimitiveDatatable extends LightningElement {
     _columnsEditable = [];
     _isDatatableEditable;
 
-    _currencyArray = [];
-    _numberArray = [];
-    _percentArray = [];
-
-    _countArray = [];
-    _sumArray = [];
-    _countUniqueArray = [];
-    _averageArray = [];
-    _medianArray = [];
-    _maxArray = [];
-    _minArray = [];
-    _modeArray = [];
+    _object = [];
+    _valuesObject = [];
+    _bigObject = [];
 
     @api
     get columns() {
@@ -128,11 +109,88 @@ export default class PrimitiveDatatable extends LightningElement {
         this.bottomTableInitialization();
 
         if (!this.rendered) {
-            this.computeSummarizations();
             this.datatableEditable();
+            this.setupThree();
+            this.setupOne();
         }
 
         this.rendered = true;
+    }
+
+    setupOne() {
+        this._bigObject = this.columns.map((column, index) => {
+            let numberType =
+                column.type === 'number' ||
+                column.type === 'percent' ||
+                column.type === 'currency';
+            this._object = {
+                fieldName: column.fieldName,
+                type: column.type,
+                summarizeTypes: [],
+                values: this._valuesObject[index],
+                numberType: numberType
+            };
+            if (column.summarizeTypes !== undefined) {
+                if (column.type === 'number') {
+                    column.type = 'decimal';
+                }
+                if (typeof column.summarizeTypes === 'string') {
+                    column.summarizeTypes = [column.summarizeTypes];
+                }
+                this._object.summarizeTypes = column.summarizeTypes.map(
+                    (type) => {
+                        let computedValue = this.summarizations(
+                            this._object.values,
+                            type
+                        );
+                        if (type === 'countUnique') {
+                            type = 'count unique';
+                        }
+                        if (type === 'count' || type === 'count unique') {
+                            return {
+                                label: type,
+                                value: computedValue,
+                                type: 'decimal',
+                                typeAttributes: []
+                            };
+                        }
+                        if (column.typeAttributes !== undefined) {
+                            return {
+                                label: type,
+                                value: computedValue,
+                                type: column.type,
+                                typeAttributes: column.typeAttributes
+                            };
+                        }
+                        return {
+                            label: type,
+                            value: computedValue,
+                            type: column.type,
+                            typeAttributes: []
+                        };
+                    }
+                );
+            }
+            return this._object;
+        });
+    }
+
+    get columnsExample() {
+        return this._bigObject;
+    }
+
+    setupThree() {
+        this._columns.forEach((column) => {
+            const fieldName = column.fieldName;
+            this._values = this._data.map((row) => {
+                const value = row[fieldName];
+                row[fieldName] = {
+                    value: value
+                };
+                return value;
+            });
+            this._valuesObject.push(this._values);
+        });
     }
 
     get primitiveDatatable() {
@@ -155,12 +213,6 @@ export default class PrimitiveDatatable extends LightningElement {
     tableResize() {
         this.updateColumnStyleResize();
         this.updateTableWidth();
-    }
-
-    computeSummarizations() {
-        this.computeSummarizationCurrency();
-        this.computeSummarizationNumber();
-        this.computeSummarizationPercent();
     }
 
     datatableColumnsWidth() {
@@ -238,66 +290,42 @@ export default class PrimitiveDatatable extends LightningElement {
         this.primitiveDatatable.save(event);
     }
 
-    computeSummarization(type, array) {
-        if (this._columns && this._data) {
-            this._columns.forEach((column) => {
-                const summarizeType = column.summarizeTypes;
-                const fieldName = column.fieldName;
-                if (
-                    type.includes(column.type) &&
-                    SUMMARIZATIONS.some((i) => summarizeType.includes(i))
-                ) {
-                    this._data.forEach((row) => {
-                        const value = row[fieldName];
-                        row[fieldName] = {
-                            value: value
-                        };
-                        array.push(value);
-                    });
-                    this.summarizations(array, summarizeType, fieldName);
-                }
-            });
-        }
-    }
-
-    computeSummarizationCurrency() {
-        this.computeSummarization('currency', this._currencyArray);
-    }
-
-    computeSummarizationNumber() {
-        this.computeSummarization('number', this._numberArray);
-    }
-
-    computeSummarizationPercent() {
-        this.computeSummarization('percent', this._percentArray);
-    }
-
-    summarizations(array, summarizeType, fieldName) {
+    summarizations(array, summarizeType) {
+        let answer = 0;
         if (summarizeType.includes('count')) {
-            this._countArray.push({ [fieldName]: count(array) });
+            answer = count(array);
         }
         if (summarizeType.includes('countUnique')) {
-            this._countUniqueArray.push({
-                [fieldName]: countUnique(array, count(array))
-            });
+            answer = countUnique(array);
         }
         if (summarizeType.includes('sum')) {
-            this._sumArray.push({ [fieldName]: sum(array) });
+            answer = sum(array);
         }
         if (summarizeType.includes('average')) {
-            this._averageArray.push({ [fieldName]: average(array) });
+            answer = average(array);
         }
         if (summarizeType.includes('median')) {
-            this._medianArray.push({ [fieldName]: median(array) });
+            answer = median(array);
         }
         if (summarizeType.includes('max')) {
-            this._maxArray.push({ [fieldName]: max(array) });
+            answer = max(array);
         }
         if (summarizeType.includes('min')) {
-            this._minArray.push({ [fieldName]: min(array) });
+            answer = min(array);
         }
         if (summarizeType.includes('mode')) {
-            this._modeArray.push({ [fieldName]: mode(array) });
+            answer = mode(array);
         }
+        return answer;
+    }
+
+    get isSummarizePresent() {
+        const summarized = this._columns.map((column) => {
+            if (column.summarizeTypes) {
+                return true;
+            }
+            return false;
+        });
+        return summarized.includes(true);
     }
 }

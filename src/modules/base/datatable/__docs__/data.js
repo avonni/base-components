@@ -87,6 +87,7 @@ const options = [
 const columnsAB = [
     {
         label: 'Action',
+        fieldName: 'action',
         type: 'action',
         typeAttributes: {
             rowActions: [
@@ -152,6 +153,7 @@ const columnsAB = [
     },
     {
         label: 'Button',
+        fieldName: 'button',
         type: 'button',
         typeAttributes: {
             disabled: { fieldName: 'buttonDisabled' },
@@ -160,6 +162,7 @@ const columnsAB = [
     },
     {
         label: 'Button icon',
+        fieldName: 'buttonIcon',
         type: 'button-icon',
         typeAttributes: {
             disabled: { fieldName: 'buttonIconDisabled' },
@@ -219,7 +222,7 @@ const columnsCD = [
             currencyCode: 'CAD'
         },
         editable: true,
-        summarizeTypes: 'sum'
+        summarizeTypes: ['max', 'min', 'sum']
     },
     {
         label: 'Date',
@@ -450,7 +453,7 @@ const columnsSum = [
         typeAttributes: {
             currencyCode: 'CAD'
         },
-        // editable: true,
+        editable: true,
         summarizeTypes: [
             'count',
             'countUnique',
@@ -484,7 +487,7 @@ const columnsSum = [
         label: 'Percent',
         fieldName: 'percent',
         type: 'percent',
-        // editable: true,
+        editable: true,
         summarizeTypes: [
             'count',
             'countUnique',
@@ -840,7 +843,7 @@ const dataSum = [
     },
     {
         id: 2,
-        currency: 10,
+        currency: 5,
         number: 10,
         percent: 0.1
     },
