@@ -33,7 +33,7 @@
 -->
 
 <template>
-    <div class="slds-grid" onmouseup={handleEventMouseUp}>
+    <div class="slds-grid" onmouseup={handleMouseUp}>
         <!-- Datatable -->
         <div class="slds-border_right scheduler__datatable-col">
             <c-datatable
@@ -109,6 +109,7 @@
                 class="scheduler__events slds-is-absolute"
                 onmousemove={handleMouseMove}
                 oncontextmenu={handleEmptySpotContextMenu}
+                onmousedown={handleMouseDown}
             >
                 <template for:each={computedEvents} for:item="event">
                     <div key={event.key}>
@@ -199,9 +200,9 @@
     <c-dialog
         if:true={showEditDialog}
         show-dialog={showEditDialog}
-        title={selection.event.title}
+        title={editDialogTitle}
         size="small"
-        onclosedialog={hideEditDialog}
+        onclosedialog={handleCloseEditDialog}
     >
         <lightning-input
             label={editDialogLabels.title}
@@ -237,10 +238,10 @@
             <lightning-button-group>
                 <lightning-button
                     label={editDialogLabels.cancelButton}
-                    onclick={hideEditDialog}
+                    onclick={handleCloseEditDialog}
                 ></lightning-button>
                 <lightning-button
-                    if:true={selection.event.key}
+                    if:false={selection.newEvent}
                     label={editDialogLabels.deleteButton}
                     onclick={deleteSelectedEvent}
                 ></lightning-button>

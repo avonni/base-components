@@ -104,7 +104,8 @@ const DEFAULT_EDIT_DIALOG_LABELS = {
     resources: 'Resources',
     saveButton: 'Save',
     cancelButton: 'Cancel',
-    deleteButton: 'Delete'
+    deleteButton: 'Delete',
+    newEventTitle: 'New Event'
 };
 
 const PALETTES = {
