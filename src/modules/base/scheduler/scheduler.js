@@ -969,7 +969,7 @@ export default class Scheduler extends LightningElement {
         const draftValues = this.selection.draftValues;
 
         // Update the start and end date
-        const duration = event.to - event.from;
+        const duration = event.computedTo - event.computedFrom;
         const start = dateTimeObjectFrom(Number(cell.dataset.start));
         event.from = start;
         event.to = addToDate(start, 'millisecond', duration);
@@ -1022,6 +1022,7 @@ export default class Scheduler extends LightningElement {
         );
 
         this.selection = undefined;
+        this.cleanDraggedElement();
         this.hideAllPopovers();
     }
 
@@ -1279,6 +1280,7 @@ export default class Scheduler extends LightningElement {
                 break;
             default:
                 this.cleanSelection();
+                this.cleanDraggedElement();
                 break;
         }
     }
