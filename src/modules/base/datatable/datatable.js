@@ -165,7 +165,8 @@ export default class PrimitiveDatatable extends LightningElement {
             const dataCell = Array.from(row.querySelectorAll('td'));
             dataCell.forEach((cell, index) => {
                 // if column is editable, there is a button-icon which is 35 px but not on the first column.
-                cell.style.width = `${this._columnsWidth[index]}px`;
+                cell.style.minWidth = `${this._columnsWidth[index]}px`;
+                cell.style.maxWidth = `${this._columnsWidth[index]}px`;
                 if (!this.hideCheckboxColumn) {
                     if (this._columnsEditable[index - 2]) {
                         cell.style.paddingRight = '35px';

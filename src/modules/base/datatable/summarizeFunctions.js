@@ -154,18 +154,17 @@ const computeSummarizeObject = (columns, values) => {
                         summarizeColumnObject.values,
                         type
                     );
-                    if (type === 'countUnique') {
-                        type = 'count unique';
-                    }
-                    if (type === 'count' || type === 'count unique') {
+                    if (type === 'count' || type === 'countUnique') {
+                        if (type === 'countUnique') {
+                            type = 'count unique';
+                        }
                         return {
                             label: type,
                             value: computedValue,
                             type: 'decimal',
                             typeAttributes: []
                         };
-                    }
-                    if (column.typeAttributes !== undefined) {
+                    } else if (column.typeAttributes !== undefined) {
                         return {
                             label: type,
                             value: computedValue,

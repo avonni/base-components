@@ -61,9 +61,9 @@
                                         for:each={column.summarizeTypes}
                                         for:item="type"
                                     >
-                                        <div key={type.label}>
+                                        <span key={type.label}>
                                             <div
-                                                class="avonni-datatable-summarize_flex-end"
+                                                class="slds-truncate avonni-datatable-summarize_flex-end"
                                             >
                                                 <div
                                                     class="avonni-datatable-summarize-type-text"
@@ -82,14 +82,13 @@
                                                     maximum-significant-digits={type.typeAttributes.maximumSignificantDigits}
                                                 ></lightning-formatted-number>
                                             </div>
-                                        </div>
+                                        </span>
                                     </template>
                                 </td>
                             </template>
                             <template if:false={column.numberType}>
                                 <td
                                     key={column.type}
-                                    class="slds-text-align_right"
                                     data-column={column.fieldName}
                                     role="gridcell"
                                 ></td>
