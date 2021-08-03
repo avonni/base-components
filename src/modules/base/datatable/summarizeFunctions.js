@@ -30,12 +30,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-export function count(array) {
+const count = (array) => {
     return array.length;
-}
+};
 
 // function for countUnique
-export function countUnique(array) {
+const countUnique = (array) => {
     let res = 1;
     let n = array.length;
 
@@ -48,37 +48,37 @@ export function countUnique(array) {
         if (i === j) res++;
     }
     return res;
-}
+};
 
 // function for sum
-export function sum(array) {
+const sum = (array) => {
     return array.reduce((a, b) => a + b, 0);
-}
+};
 
 // function for average
-export function average(array) {
+const average = (array) => {
     return (sum(array) / count(array)).toFixed(5);
-}
+};
 
 // function for median
-export function median(array) {
+const median = (array) => {
     const mid = Math.floor(count(array) / 2),
         nums = [...array].sort((a, b) => a - b);
     return array.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;
-}
+};
 
 // function for max
-export function max(array) {
+const max = (array) => {
     return Math.max(...array);
-}
+};
 
 // function for min
-export function min(array) {
+const min = (array) => {
     return Math.min(...array);
-}
+};
 
 // function for mode
-export function mode(array) {
+const mode = (array) => {
     let modeObj = {};
     let maximum = 0,
         counter = 0;
@@ -97,4 +97,104 @@ export function mode(array) {
     });
 
     return maximum;
-}
+};
+
+const summarizations = (array, summarizeType) => {
+    let answer;
+    if (summarizeType.includes('count')) {
+        answer = count(array);
+    }
+    if (summarizeType.includes('countUnique')) {
+        answer = countUnique(array);
+    }
+    if (summarizeType.includes('sum')) {
+        answer = sum(array);
+    }
+    if (summarizeType.includes('average')) {
+        answer = average(array);
+    }
+    if (summarizeType.includes('median')) {
+        answer = median(array);
+    }
+    if (summarizeType.includes('max')) {
+        answer = max(array);
+    }
+    if (summarizeType.includes('min')) {
+        answer = min(array);
+    }
+    if (summarizeType.includes('mode')) {
+        answer = mode(array);
+    }
+    return answer;
+};
+
+const computeSummarizeObject = (columns, values) => {
+    const computedSummarizeArray = columns.map((column, index) => {
+        let numberType =
+            column.type === 'number' ||
+            column.type === 'percent' ||
+            column.type === 'currency';
+        const summarizeColumnObject = {
+            fieldName: column.fieldName,
+            type: column.type,
+            summarizeTypes: [],
+            values: values[index],
+            numberType: numberType
+        };
+        if (column.summarizeTypes !== undefined) {
+            if (column.type === 'number') {
+                column.type = 'decimal';
+            }
+            if (typeof column.summarizeTypes === 'string') {
+                column.summarizeTypes = [column.summarizeTypes];
+            }
+            summarizeColumnObject.summarizeTypes = column.summarizeTypes.map(
+                (type) => {
+                    let computedValue = summarizations(
+                        summarizeColumnObject.values,
+                        type
+                    );
+                    if (type === 'countUnique') {
+                        type = 'count unique';
+                    }
+                    if (type === 'count' || type === 'count unique') {
+                        return {
+                            label: type,
+                            value: computedValue,
+                            type: 'decimal',
+                            typeAttributes: []
+                        };
+                    }
+                    if (column.typeAttributes !== undefined) {
+                        return {
+                            label: type,
+                            value: computedValue,
+                            type: column.type,
+                            typeAttributes: column.typeAttributes
+                        };
+                    }
+                    return {
+                        label: type,
+                        value: computedValue,
+                        type: column.type,
+                        typeAttributes: []
+                    };
+                }
+            );
+        }
+        return summarizeColumnObject;
+    });
+    return computedSummarizeArray;
+};
+
+export {
+    sum,
+    count,
+    countUnique,
+    average,
+    median,
+    max,
+    min,
+    mode,
+    computeSummarizeObject
+};
