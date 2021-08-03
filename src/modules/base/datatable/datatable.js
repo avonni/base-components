@@ -38,7 +38,6 @@ import { computeSummarizeObject } from './summarizeFunctions';
 export default class PrimitiveDatatable extends LightningElement {
     @api columnWidthsMode;
     // eslint-disable-next-line @lwc/lwc/valid-api
-    @api data;
     @api defaultSortDirection;
     @api draftValues;
     @api enableInfiniteLoading;
@@ -61,11 +60,12 @@ export default class PrimitiveDatatable extends LightningElement {
     @api sortedDirection;
     @api suppressBottomBar;
     @api wrapTextMaxLines;
-
+    
     _columns;
+    _data;
     _showStatusBar = false;
     rendered = false;
-
+    
     _columnsWidth = [];
     _columnsEditable = [];
     _isDatatableEditable;
@@ -82,6 +82,18 @@ export default class PrimitiveDatatable extends LightningElement {
         this._columns = JSON.parse(JSON.stringify(normalizeArray(value)));
     }
 
+    @api
+    get data() {
+        return this._data
+    }
+
+    set data(value) {
+        this._data = JSON.parse(JSON.stringify(normalizeArray(value)))
+        
+        this.computeFilteredDataValues();
+        this.summarizeInitialization();
+    }
+
     connectedCallback() {
         this.addEventListener('cellchange', () => {
             this._showStatusBar = true;
@@ -94,14 +106,10 @@ export default class PrimitiveDatatable extends LightningElement {
     }
 
     renderedCallback() {
-        this._data = JSON.parse(JSON.stringify(normalizeArray(this.data)));
-
         this.bottomTableInitialization();
 
         if (!this.rendered) {
             this.datatableEditable();
-            this.computeFilteredDataValues();
-            this.summarizeInitialization();
         }
 
         this.rendered = true;
@@ -206,11 +214,7 @@ export default class PrimitiveDatatable extends LightningElement {
         this._filteredDataValues = this._columns.map((column) => {
             const fieldName = column.fieldName;
             this._values = this._data.map((row) => {
-                const value = row[fieldName];
-                row[fieldName] = {
-                    value: value
-                };
-                return value;
+                return row[fieldName];
             });
             return this._values.filter(Number);
         });

@@ -134,19 +134,19 @@ const computeSummarizeObject = (columns, values) => {
             column.type === 'number' ||
             column.type === 'percent' ||
             column.type === 'currency';
+        let formatType = column.type !== 'number' ? column.type : 'decimal'
         const summarizeColumnObject = {
             fieldName: column.fieldName,
             type: column.type,
             summarizeTypes: [],
             values: values[index],
-            numberType: numberType
+            numberType: numberType,
+            formatType: formatType
         };
         if (column.summarizeTypes !== undefined) {
-            if (column.type === 'number') {
-                column.type = 'decimal';
-            }
+            // if there is only one summarizeType and as a string, we convert it to a string.
             if (typeof column.summarizeTypes === 'string') {
-                column.summarizeTypes = [column.summarizeTypes];
+                column.summarizeTypes = (column.summarizeTypes).split();
             }
             summarizeColumnObject.summarizeTypes = column.summarizeTypes.map(
                 (type) => {
@@ -155,9 +155,6 @@ const computeSummarizeObject = (columns, values) => {
                         type
                     );
                     if (type === 'count' || type === 'countUnique') {
-                        if (type === 'countUnique') {
-                            type = 'count unique';
-                        }
                         return {
                             label: type,
                             value: computedValue,
@@ -168,14 +165,14 @@ const computeSummarizeObject = (columns, values) => {
                         return {
                             label: type,
                             value: computedValue,
-                            type: column.type,
+                            type: formatType,
                             typeAttributes: column.typeAttributes
                         };
                     }
                     return {
                         label: type,
                         value: computedValue,
-                        type: column.type,
+                        type: formatType,
                         typeAttributes: []
                     };
                 }
