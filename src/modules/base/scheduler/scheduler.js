@@ -106,60 +106,55 @@ export default class Scheduler extends LightningElement {
     }
 
     renderedCallback() {
-        // On the first render, save the datatable rows height
+        // Save the datatable row height and update the header and body styles
         if (!this._datatableRowsHeight) {
             this.updateDatatableRowsHeight();
-        } else {
-            this.updateHeadersStyle();
-            this.updateBodyStyle();
+        }
+        this.updateHeadersStyle();
+        this.updateBodyStyle();
 
-            // Update the position, width and height of occurrences
-            if (this._updateOccurrences) {
-                const eventOccurrences = this.template.querySelectorAll(
-                    'c-primitive-scheduler-event-occurrence'
-                );
-                eventOccurrences.forEach((occurrence) => {
-                    occurrence.updatePosition();
-                    occurrence.updateWidthAndHeight();
-                });
+        // Update the position, width and height of occurrences
+        if (this._updateOccurrences) {
+            const eventOccurrences = this.template.querySelectorAll(
+                'c-primitive-scheduler-event-occurrence'
+            );
+            eventOccurrences.forEach((occurrence) => {
+                occurrence.updatePosition();
+                occurrence.updateWidthAndHeight();
+            });
 
-                this._updateOccurrences = false;
+            this._updateOccurrences = false;
+        }
+
+        // Position the detail popover
+        if (this.showDetailPopover) {
+            const popover = this.template.querySelector(
+                '.scheduler__event-detail-popover'
+            );
+            this.positionPopover(popover);
+        }
+
+        // Position the context menu
+        if (this.showContextMenu && this.contextMenuActions.length) {
+            const contextMenu = this.template.querySelector(
+                '.scheduler__context-menu'
+            );
+            this.positionPopover(contextMenu);
+        }
+
+        // If a new event was just created, set the dragged event
+        if (this.selection && this.selection.newEvent && !this._draggedEvent) {
+            this._draggedEvent = this.template.querySelector(
+                `c-primitive-scheduler-event-occurrence[data-key="${this.selection.occurrence.key}"]`
+            );
+            if (this._draggedEvent) {
+                this.initDraggedEventState();
             }
+        }
 
-            // Position the detail popover
-            if (this.showDetailPopover) {
-                const popover = this.template.querySelector(
-                    '.scheduler__event-detail-popover'
-                );
-                this.positionPopover(popover);
-            }
-
-            // Position the context menu
-            if (this.showContextMenu && this.contextMenuActions.length) {
-                const contextMenu = this.template.querySelector(
-                    '.scheduler__context-menu'
-                );
-                this.positionPopover(contextMenu);
-            }
-
-            // If a new event was just created, set the dragged event
-            if (
-                this.selection &&
-                this.selection.newEvent &&
-                !this._draggedEvent
-            ) {
-                this._draggedEvent = this.template.querySelector(
-                    `c-primitive-scheduler-event-occurrence[data-key="${this.selection.occurrence.key}"]`
-                );
-                if (this._draggedEvent) {
-                    this.initDraggedEventState();
-                }
-            }
-
-            // If the edit dialog is opened, focus on the first input
-            if (this.showEditDialog) {
-                this.template.querySelector('c-dialog lightning-input').focus();
-            }
+        // If the edit dialog is opened, focus on the first input
+        if (this.showEditDialog) {
+            this.template.querySelector('c-dialog lightning-input').focus();
         }
     }
 
@@ -1218,9 +1213,14 @@ export default class Scheduler extends LightningElement {
         this.cleanDraggedElement();
     }
 
-    handleDatatableResize() {
-        this.updateDatatableRowsHeight();
-        this.updateBodyStyle();
+    handleDatatableResize(event) {
+        if (event.detail.isUserTriggered) {
+            this._datatableRowsHeight = undefined;
+            this.initRows();
+        } else {
+            this.updateDatatableRowsHeight();
+            this.updateBodyStyle();
+        }
     }
 
     handleEventContextMenu(mouseEvent) {
