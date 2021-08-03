@@ -63,7 +63,7 @@ export default class PrimitiveDatatable extends LightningElement {
     @api wrapTextMaxLines;
 
     _columns;
-    showStatusBar = false;
+    _showStatusBar = false;
     rendered = false;
 
     _columnsWidth = [];
@@ -84,7 +84,7 @@ export default class PrimitiveDatatable extends LightningElement {
 
     connectedCallback() {
         this.addEventListener('cellchange', () => {
-            this.showStatusBar = true;
+            this._showStatusBar = true;
         });
 
         this.addEventListener('resize', (event) => {
@@ -130,6 +130,10 @@ export default class PrimitiveDatatable extends LightningElement {
             return false;
         });
         return summarized.includes(true);
+    }
+
+    get showStatusBar() {
+        return this._showStatusBar && !this.suppressBottomBar;
     }
 
     bottomTableInitialization() {
@@ -231,7 +235,7 @@ export default class PrimitiveDatatable extends LightningElement {
     }
 
     handleCancel(event) {
-        this.showStatusBar = false;
+        this._showStatusBar = false;
         this.primitiveDatatable.cancel(event);
     }
 
