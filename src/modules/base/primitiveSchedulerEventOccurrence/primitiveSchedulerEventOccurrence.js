@@ -51,6 +51,7 @@ export default class Occurrence extends LightningElement {
     _columnWidth = 0;
     _disabled = false;
     _offsetTop = 0;
+    _readOnly = false;
     _rows = [];
     _x = 0;
     _y = 0;
@@ -103,6 +104,14 @@ export default class Occurrence extends LightningElement {
     }
     set offsetTop(value) {
         this._offsetTop = !isNaN(Number(value)) ? Number(value) : 0;
+    }
+
+    @api
+    get readOnly() {
+        return this._readOnly;
+    }
+    set readOnly(value) {
+        this._readOnly = normalizeBoolean(value);
     }
 
     @api
@@ -346,6 +355,8 @@ export default class Occurrence extends LightningElement {
     }
 
     handleDoubleClick(event) {
+        if (this.readOnly) return;
+
         this.dispatchCustomEvent('privatedblclick', event);
     }
 
@@ -354,7 +365,7 @@ export default class Occurrence extends LightningElement {
     }
 
     handleMouseDown(event) {
-        if (event.button !== 0) return;
+        if (event.button !== 0 || this.readOnly) return;
 
         const resize = event.target.dataset.resize;
 

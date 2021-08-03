@@ -47,6 +47,7 @@
     >
         <div class={computedClass} style={style}>
             <lightning-icon
+                if:false={readOnly}
                 class="scheduler__event-resize-icon scheduler__event-resize-icon_left"
                 icon-name="utility:drag_and_drop"
                 size="xx-small"
@@ -60,6 +61,7 @@
             ></lightning-icon>
             <span class="slds-truncate">{title}</span>
             <lightning-icon
+                if:false={readOnly}
                 class="scheduler__event-resize-icon scheduler__event-resize-icon_right"
                 icon-name="utility:drag_and_drop"
                 size="xx-small"

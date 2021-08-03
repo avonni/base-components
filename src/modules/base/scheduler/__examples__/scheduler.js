@@ -39,12 +39,15 @@ export const Scheduler = ({
     availableMonths,
     availableTimeFrames,
     columns,
+    contextMenuEmptySpotActions,
+    contextMenuEventActions,
     customEventsPalette,
     disabledDatesTimes,
     events,
     eventsPalette,
     eventsTheme,
     headers,
+    readOnly,
     rows,
     rowsKeyField,
     start,
@@ -56,12 +59,15 @@ export const Scheduler = ({
     element.availableMonths = availableMonths;
     element.availableTimeFrames = availableTimeFrames;
     element.columns = columns;
+    element.contextMenuEmptySpotActions = contextMenuEmptySpotActions;
+    element.contextMenuEventActions = contextMenuEventActions;
     element.customEventsPalette = customEventsPalette;
     element.disabledDatesTimes = disabledDatesTimes;
     element.events = events;
     element.eventsPalette = eventsPalette;
     element.eventsTheme = eventsTheme;
     element.headers = headers;
+    element.readOnly = readOnly;
     element.rows = rows;
     element.rowsKeyField = rowsKeyField;
     element.start = start;

@@ -130,6 +130,7 @@
                                 icon-name={event.iconName}
                                 occurrence-key={occurrence.key}
                                 offset-top={occurrence.offsetTop}
+                                read-only={readOnly}
                                 row-key={occurrence.rowKey}
                                 rows={computedRows}
                                 title={event.title}
@@ -190,6 +191,7 @@
 
     <!-- Event context menu -->
     <c-primitive-dropdown-menu
+        if:true={contextMenuActions.length}
         class="slds-is-fixed scheduler__context-menu"
         show={showContextMenu}
         items={contextMenuActions}

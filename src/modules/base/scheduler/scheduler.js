@@ -32,7 +32,11 @@
 
 import { LightningElement, api } from 'lwc';
 import { DateTime } from 'c/luxon';
-import { normalizeArray, normalizeString } from 'c/utilsPrivate';
+import {
+    normalizeArray,
+    normalizeBoolean,
+    normalizeString
+} from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import {
     dateTimeObjectFrom,
@@ -65,13 +69,14 @@ export default class Scheduler extends LightningElement {
     _availableMonths = DEFAULT_AVAILABLE_MONTHS;
     _availableTimeFrames = DEFAULT_AVAILABLE_TIME_FRAMES;
     _columns = [];
-    _contextMenuEmptySpotActions = DEFAULT_CONTEXT_MENU_EMPTY_SPOT_ACTIONS;
-    _contextMenuEventActions = DEFAULT_CONTEXT_MENU_EVENT_ACTIONS;
+    _contextMenuEmptySpotActions = [];
+    _contextMenuEventActions = [];
     _customEventsPalette = [];
     _disabledDatesTimes = [];
     _eventsPalette = EVENTS_PALETTES.default;
     _eventsTheme = EVENTS_THEMES.default;
     _headers = [];
+    _readOnly = false;
     _rows = [];
     _rowsKeyField;
     _start = dateTimeObjectFrom(DEFAULT_START_DATE);
@@ -81,6 +86,7 @@ export default class Scheduler extends LightningElement {
     _datatableRowsHeight;
     _draggedEvent;
     _initialState = {};
+    _mouseIsDown = false;
     _referenceHeader;
     _resizedEvent;
     computedHeaders = [];
@@ -129,7 +135,7 @@ export default class Scheduler extends LightningElement {
             }
 
             // Position the context menu
-            if (this.showContextMenu) {
+            if (this.showContextMenu && this.contextMenuActions.length) {
                 const contextMenu = this.template.querySelector(
                     '.scheduler__context-menu'
                 );
@@ -313,6 +319,14 @@ export default class Scheduler extends LightningElement {
     }
 
     @api
+    get readOnly() {
+        return this._readOnly;
+    }
+    set readOnly(value) {
+        this._readOnly = normalizeBoolean(value);
+    }
+
+    @api
     get rows() {
         return this._rows;
     }
@@ -386,6 +400,21 @@ export default class Scheduler extends LightningElement {
         if (!this.smallestHeader || !this.smallestHeader.columns.length)
             return 0;
         return 100 / this.smallestHeader.columns.length;
+    }
+
+    get computedContextMenuEmptySpot() {
+        const actions = this.contextMenuEmptySpotActions;
+        return this.readOnly
+            ? actions
+            : (actions.length && actions) ||
+                  DEFAULT_CONTEXT_MENU_EMPTY_SPOT_ACTIONS;
+    }
+
+    get computedContextMenuEvent() {
+        const actions = this.contextMenuEventActions;
+        return this.readOnly
+            ? actions
+            : (actions.length && actions) || DEFAULT_CONTEXT_MENU_EVENT_ACTIONS;
     }
 
     get palette() {
@@ -850,7 +879,12 @@ export default class Scheduler extends LightningElement {
 
     cleanSelection() {
         // If a new event was being created, remove the unfinished event from the computedEvents
-        if (this.selection && this.selection.newEvent) {
+        const lastEvent = this.computedEvents[this.computedEvents.length - 1];
+        if (
+            this.selection &&
+            this.selection.newEvent &&
+            lastEvent === this.selection.event
+        ) {
             this.computedEvents.pop();
             this._updateOccurrences = true;
             this.initRows();
@@ -992,7 +1026,7 @@ export default class Scheduler extends LightningElement {
             })
         );
 
-        this.cleanSelection();
+        this.selection = undefined;
         this.hideAllPopovers();
     }
 
@@ -1024,6 +1058,7 @@ export default class Scheduler extends LightningElement {
     };
 
     hideContextMenu() {
+        this.contextMenuActions = [];
         this.showContextMenu = false;
     }
 
@@ -1036,7 +1071,8 @@ export default class Scheduler extends LightningElement {
     }
 
     handleMouseDown(mouseEvent) {
-        if (mouseEvent.button !== 0) return;
+        if (mouseEvent.button !== 0 || this.readOnly) return;
+        this._mouseIsDown = true;
 
         this._initialState.mouseX = mouseEvent.clientX;
         this._initialState.mouseY = mouseEvent.clientY;
@@ -1048,7 +1084,6 @@ export default class Scheduler extends LightningElement {
             target.disabled
         ) {
             this.selectEvent(mouseEvent, true);
-            this.computedEvents.push(this.selection.event);
         } else {
             this.initDraggedEventState();
         }
@@ -1068,6 +1103,8 @@ export default class Scheduler extends LightningElement {
     }
 
     handleMouseMove(mouseEvent) {
+        if (!this._mouseIsDown) return;
+
         // Prevent scrolling
         mouseEvent.preventDefault();
 
@@ -1134,13 +1171,14 @@ export default class Scheduler extends LightningElement {
             }
         } else if (this.selection && this.selection.newEvent) {
             // Display the new event
-            // this.initEventOccurrences();
+            this.computedEvents.push(this.selection.event);
             this._updateOccurrences = true;
             this.initRows();
         }
     }
 
     handleMouseUp(mouseEvent) {
+        this._mouseIsDown = false;
         if (mouseEvent.button !== 0) return;
 
         if (this.selection && this.selection.isMoving) {
@@ -1172,9 +1210,9 @@ export default class Scheduler extends LightningElement {
                 this.selection.isMoving = false;
             } else {
                 this.dispatchChangeEvent(this.selection.event.name);
-                this.cleanSelection();
+                this.selection = undefined;
             }
-        } else {
+        } else if (this.selection) {
             this.cleanSelection();
         }
         this.cleanDraggedElement();
@@ -1188,10 +1226,12 @@ export default class Scheduler extends LightningElement {
     handleEventContextMenu(mouseEvent) {
         if (mouseEvent.currentTarget.disabled) return;
 
-        this.selectEvent(mouseEvent);
-        this.hideAllPopovers();
-        this.showContextMenu = true;
-        this.contextMenuActions = this.contextMenuEventActions;
+        if (this.computedContextMenuEvent.length) {
+            this.hideAllPopovers();
+            this.contextMenuActions = this.computedContextMenuEvent;
+            this.selectEvent(mouseEvent);
+            this.showContextMenu = true;
+        }
     }
 
     handleEmptySpotContextMenu(mouseEvent) {
@@ -1203,10 +1243,12 @@ export default class Scheduler extends LightningElement {
             return;
         mouseEvent.preventDefault();
 
-        this.hideAllPopovers();
-        this.showContextMenu = true;
-        this.contextMenuActions = this.contextMenuEmptySpotActions;
-        this.selectEvent(mouseEvent, true);
+        if (this.computedContextMenuEmptySpot.length) {
+            this.hideAllPopovers();
+            this.contextMenuActions = this.computedContextMenuEmptySpot;
+            this.showContextMenu = true;
+            this.selectEvent(mouseEvent, true);
+        }
     }
 
     handleActionSelect(event) {
@@ -1236,15 +1278,17 @@ export default class Scheduler extends LightningElement {
                 this.computedEvents.push(this.selection.event);
                 break;
             default:
+                this.cleanSelection();
                 break;
         }
     }
 
     handleDoubleClick(mouseEvent) {
         if (
-            mouseEvent.target.tagName ===
+            (mouseEvent.target.tagName ===
                 'C-PRIMITIVE-SCHEDULER-EVENT-OCCURRENCE' &&
-            !mouseEvent.target.disabled
+                !mouseEvent.target.disabled) ||
+            this.readOnly
         ) {
             return;
         }
@@ -1301,7 +1345,7 @@ export default class Scheduler extends LightningElement {
         if (newEvent) {
             // Generate a name for the new event, based on its title
             const lowerCaseName = event.title.toLowerCase();
-            event.name = lowerCaseName.replaceAll(/\s/g, '-');
+            event.name = lowerCaseName.replaceAll(/\s/g, '-').concat(event.key);
 
             this.dispatchEvent(
                 new CustomEvent('eventcreate', {
@@ -1317,7 +1361,7 @@ export default class Scheduler extends LightningElement {
                     }
                 })
             );
-            this.selection.newEvent = false;
+            this.selection = undefined;
         } else {
             this.dispatchChangeEvent(event.name);
         }

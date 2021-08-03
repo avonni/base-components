@@ -113,6 +113,19 @@ export default {
                 category: 'Events'
             }
         },
+        readOnly: {
+            name: 'read-only',
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description:
+                'If present, the scheduler is not editable. The events cannot be dragged and the default actions (edit, delete and add event) will be hidden from the context menus.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         availableTimeFrames: {
             name: 'available-time-frames',
             control: {
@@ -238,30 +251,34 @@ export default {
                 category: 'Events'
             }
         },
-        contextMenuActions: {
-            name: 'context-menu-actions',
+        contextMenuEventActions: {
+            name: 'context-menu-event-actions',
             control: {
                 type: 'object'
             },
-            defaultValue: [
-                {
-                    name: 'edit',
-                    label: 'Edit',
-                    iconName: 'utility:edit'
-                },
-                {
-                    name: 'delete',
-                    label: 'Delete',
-                    iconName: 'utility:delete'
-                }
-            ],
             description:
-                'Array of action objects. The actions will be displayed in the context menu that appears when a user right-clicks on an event. On click on an action, an actionclick event is dispatched. To avoid the two default actions (edit and delete) to proceed, you can call preventDefault() on actionclick.',
+                'Array of action objects. These actions will be displayed in the context menu that appears when a user right-clicks on an event.',
             table: {
                 type: { summary: 'object[]' },
                 defaultValue: {
                     summary: 'edit and delete actions',
                     detail: `[{ name: 'edit', label: 'Edit', iconName: 'utility:edit' }, { name: 'delete', label: 'Delete', iconName: 'utility:delete' }]`
+                },
+                category: 'Events'
+            }
+        },
+        contextMenuEmptySpotActions: {
+            name: 'context-menu-empty-spot-actions',
+            control: {
+                type: 'object'
+            },
+            description:
+                'Array of action objects. These actions will be displayed in the context menu that appears when a user right-clicks on an empty space of the schedule.',
+            table: {
+                type: { summary: 'object[]' },
+                defaultValue: {
+                    summary: 'add-event actions',
+                    detail: `[{ name: 'add-event', label: 'Add event', iconName: 'utility:add' }]`
                 }
             }
         },
@@ -315,8 +332,29 @@ Base.args = {
     start: new Date(2021, 11, 13),
     availableTimeFrames: ['08:00-16:59'],
     availableDaysOfTheWeek: [1, 2, 3, 4, 5],
-    // availableMonths: [1, 4],
     events: events,
-    // eventsTheme: 'line',
     disabledDatesTimes: disabledDatesTimes
+};
+
+export const ReadOnly = Template.bind({});
+ReadOnly.args = {
+    columns: columns,
+    rowsKeyField: 'id',
+    rows: rows,
+    headers: headers,
+    visibleSpan: {
+        unit: 'day',
+        span: 5
+    },
+    start: new Date(2021, 11, 13),
+    availableTimeFrames: ['09:00-17:59'],
+    events: events,
+    eventsTheme: 'line',
+    readOnly: true,
+    contextMenuEventActions: [
+        {
+            name: 'see-details',
+            label: 'See details'
+        }
+    ]
 };
