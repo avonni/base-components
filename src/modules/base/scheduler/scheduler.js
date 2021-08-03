@@ -1169,7 +1169,6 @@ export default class Scheduler extends LightningElement {
 
             if (this.selection.newEvent) {
                 this.showEditDialog = true;
-                this.selection.event.title = undefined;
                 this.selection.isMoving = false;
             } else {
                 this.dispatchChangeEvent(this.selection.event.name);
@@ -1234,12 +1233,25 @@ export default class Scheduler extends LightningElement {
                 break;
             case 'add-event':
                 this.showEditDialog = true;
-                this.selection.event.title = undefined;
                 this.computedEvents.push(this.selection.event);
                 break;
             default:
                 break;
         }
+    }
+
+    handleDoubleClick(mouseEvent) {
+        if (
+            mouseEvent.target.tagName ===
+                'C-PRIMITIVE-SCHEDULER-EVENT-OCCURRENCE' &&
+            !mouseEvent.target.disabled
+        ) {
+            return;
+        }
+
+        this.selectEvent(mouseEvent, true);
+        this.computedEvents.push(this.selection.event);
+        this.showEditDialog = true;
     }
 
     handleEventDoubleClick(event) {

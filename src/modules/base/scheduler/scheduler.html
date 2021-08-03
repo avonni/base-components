@@ -110,6 +110,7 @@
                 onmousemove={handleMouseMove}
                 oncontextmenu={handleEmptySpotContextMenu}
                 onmousedown={handleMouseDown}
+                ondblclick={handleDoubleClick}
             >
                 <template for:each={computedEvents} for:item="event">
                     <div key={event.key}>
