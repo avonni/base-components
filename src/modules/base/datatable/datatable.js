@@ -180,7 +180,7 @@ export default class PrimitiveDatatable extends LightningElement {
     }
 
     setupThree() {
-        this._columns.forEach((column) => {
+        this._valuesObject = this._columns.map((column) => {
             const fieldName = column.fieldName;
             this._values = this._data.map((row) => {
                 const value = row[fieldName];
@@ -189,7 +189,7 @@ export default class PrimitiveDatatable extends LightningElement {
                 };
                 return value;
             });
-            this._valuesObject.push(this._values);
+            return this._values.filter(Number);
         });
     }
 

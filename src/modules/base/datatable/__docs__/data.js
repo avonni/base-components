@@ -849,7 +849,6 @@ const dataSum = [
     },
     {
         id: 3,
-        currency: 15,
         number: 15,
         percent: 0.15
     },
