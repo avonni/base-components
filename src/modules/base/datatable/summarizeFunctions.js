@@ -57,7 +57,7 @@ export function sum(array) {
 
 // function for average
 export function average(array) {
-    return (sum(array) / count(array)).toFixed(2);
+    return (sum(array) / count(array)).toFixed(5);
 }
 
 // function for median

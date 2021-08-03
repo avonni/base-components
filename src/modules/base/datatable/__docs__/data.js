@@ -470,7 +470,7 @@ const columnsSum = [
         type: 'number',
         fieldName: 'number',
         typeAttributes: {
-            minimumFractionDigits: 2
+            minimumFractionDigits: 4
         },
         summarizeTypes: [
             'count',
