@@ -173,8 +173,8 @@ const events = [
         name: 'implement-feature',
         title: 'Implement feature',
         iconName: 'utility:apex',
-        from: new Date(2021, 11, 13, 11, 30),
-        to: new Date(2021, 11, 15),
+        from: new Date(2021, 11, 13, 7, 30),
+        to: new Date(2021, 11, 13, 9, 15),
         theme: 'line'
     },
     {

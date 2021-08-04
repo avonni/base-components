@@ -115,6 +115,12 @@ export default class Row {
         events.splice(eventIndex, 1);
     }
 
+    resetEventsOffsetTop() {
+        this.events.forEach((event) => {
+            event.offsetTop = 0;
+        });
+    }
+
     updateHeightAndPositions() {
         let numberOfEvents = 0;
         const columns = this.columns.filter((column) => column.events.length);

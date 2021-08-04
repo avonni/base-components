@@ -970,6 +970,7 @@ export default class Scheduler extends LightningElement {
 
         // Add the occurrence to the row with the updated start/end date
         row.addEvent(occurrence);
+        row.resetEventsOffsetTop();
         this.updateRowsHeight();
         this.updateRowsStyle();
         this.updateOccurrencesPosition();
@@ -1119,6 +1120,7 @@ export default class Scheduler extends LightningElement {
         this._resizeSide = mouseEvent.detail.side;
         this._draggedEvent = mouseEvent.currentTarget;
         this._draggedEvent.classList.add('scheduler__event-dragged');
+        this.selectEvent(mouseEvent);
     }
 
     handleMouseMove(mouseEvent) {

@@ -161,6 +161,10 @@ export default class Occurrence extends LightningElement {
         return this.template.host;
     }
 
+    get key() {
+        return this.occurrence.key;
+    }
+
     get offsetTop() {
         return this.occurrence.offsetTop || 0;
     }
@@ -348,7 +352,7 @@ export default class Occurrence extends LightningElement {
             new CustomEvent(name, {
                 detail: {
                     eventName: this.eventName,
-                    key: this.occurrenceKey,
+                    key: this.key,
                     x: event.clientX,
                     y: event.clientY
                 }
@@ -383,7 +387,7 @@ export default class Occurrence extends LightningElement {
             new CustomEvent('privatemousedown', {
                 detail: {
                     eventName: this.eventName,
-                    key: this.occurrenceKey,
+                    key: this.key,
                     x: event.clientX,
                     y: event.clientY,
                     side: resize
