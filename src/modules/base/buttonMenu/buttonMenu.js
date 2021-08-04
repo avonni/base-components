@@ -89,7 +89,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * The size of the icon. Options include xx-small, x-small, small, or medium.
-     * 
+     *
      * @public
      * @type {string}
      * @default medium
@@ -97,7 +97,7 @@ export default class ButtonMenu extends LightningElement {
     @api iconSize = ICON_SIZES.default;
     /**
      * The name of the icon to be used in the format 'utility:down'. If an icon other than 'utility:down' or 'utility:chevrondown' is used, a utility:down icon is appended to the right of that icon.
-     * 
+     *
      * @public
      * @type {string}
      * @default utility:down
@@ -105,14 +105,14 @@ export default class ButtonMenu extends LightningElement {
     @api iconName = DEFAULT_ICON_NAME;
     /**
      * The value for the button element. This value is optional and can be used when submitting a form.
-     * 
+     *
      * @public
      * @type {string}
      */
     @api value = '';
     /**
      * The assistive text for the button menu.
-     * 
+     *
      * @public
      * @type {string}
      * @default Show Menu
@@ -120,7 +120,7 @@ export default class ButtonMenu extends LightningElement {
     @api alternativeText = i18n.showMenu;
     /**
      * Message displayed while the menu is in the loading state.
-     * 
+     *
      * @public
      * @type {string}
      * @default Loading
@@ -128,14 +128,14 @@ export default class ButtonMenu extends LightningElement {
     @api loadingStateAlternativeText = i18n.loading;
     /**
      * Optional text to be shown on the button.
-     * 
+     *
      * @public
      * @type {string}
      */
     @api label;
     /**
      * Describes the reason for showing the draft indicator. This is required when is-draft is true.
-     * 
+     *
      * @public
      * @type {string}
      */
@@ -215,7 +215,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * The variant changes the look of the button. Accepted variants include bare, container, border, border-filled, bare-inverse, and border-inverse.
-     * 
+     *
      * @public
      * @type {string}
      * @default border
@@ -234,7 +234,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Determines the alignment of the menu relative to the button. Available options are: auto, left, center, right, bottom-left, bottom-center, bottom-right. The auto option aligns the dropdown menu based on available space.
-     * 
+     *
      * @public
      * @type {string}
      * @default left
@@ -253,7 +253,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * If present, the menu can be opened by users.
-     * 
+     *
      * @public
      * @type {boolean}
      * @default false
@@ -269,7 +269,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * If present, a nubbin is present on the menu. A nubbin is a stub that protrudes from the menu item towards the button menu. The nubbin position is based on the menu-alignment.
-     * 
+     *
      * @public
      * @type {boolean}
      * @default false
@@ -285,7 +285,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Displays title text when the mouse moves over the button menu.
-     * 
+     *
      * @public
      * @type {string}
      */
@@ -300,7 +300,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * If present, the menu trigger shows a draft indicator.
-     * 
+     *
      * @public
      * @type {boolean}
      * @default false
@@ -316,7 +316,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * If true, the menu is in a loading state and shows a spinner.
-     * 
+     *
      * @public
      * @type {boolean}
      * @default false
@@ -337,7 +337,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * The keyboard shortcut for the button menu.
-     * 
+     *
      * @public
      * @type {string}
      */
@@ -352,7 +352,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Text to display when the user mouses over or focuses on the button. The tooltip is auto-positioned relative to the button and screen space.
-     * 
+     *
      * @public
      * @type {string}
      */
@@ -378,7 +378,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Sets focus on the button.
-     * 
+     *
      * @public
      */
     @api
@@ -390,7 +390,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Simulates a mouse click on the button.
-     * 
+     *
      * @public
      */
     @api
@@ -444,8 +444,8 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Computed access key.
-     * 
-     * @return {string}
+     *
+     * @type {string}
      */
     get computedAccessKey() {
         return this._accesskey;
@@ -453,8 +453,8 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Computed title.
-     * 
-     * @return {string}
+     *
+     * @type {string}
      */
     get computedTitle() {
         return this._title;
@@ -462,8 +462,8 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Computed alternative text.
-     * 
-     * @return {string}
+     *
+     * @type {string}
      */
     get computedAlternativeText() {
         return this.alternativeText || i18n.showMenu;
@@ -471,8 +471,8 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Computed loading state default or loading state alternative text.
-     * 
-     * @return {string}
+     *
+     * @type {string}
      */
     get computedLoadingStateAlternativeText() {
         return this.loadingStateAlternativeText || i18n.loading;
@@ -480,8 +480,8 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Computed button class styling.
-     * 
-     * @return {string}
+     *
+     * @type {string}
      */
     get computedButtonClass() {
         const isDropdownIcon = !this.computedShowDownIcon;
@@ -535,8 +535,8 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Show downwards icon on button.
-     * 
-     * @return {boolean}
+     *
+     * @type {boolean}
      */
     get computedShowDownIcon() {
         return !(
@@ -547,8 +547,8 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Computed dropdown class styling.
-     * 
-     * @return {string}
+     *
+     * @type {string}
      */
     get computedDropdownClass() {
         return classSet('slds-dropdown')
@@ -581,7 +581,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Menu item selector handler.
-     * 
+     *
      * @param {Event} event
      */
     handleMenuItemPrivateSelect(event) {
@@ -619,7 +619,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Menu item select dispatch method.
-     * 
+     *
      * @param {Event} event
      */
     dispatchSelect(event) {
@@ -652,7 +652,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Button mouse down handler.
-     * 
+     *
      * @param {Event} event
      */
     handleButtonMouseDown(event) {
@@ -664,7 +664,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Dropdown menu mouse down handler.
-     * 
+     *
      * @param {Event} event
      */
     handleDropdownMouseDown(event) {
@@ -692,7 +692,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Dropdown menu scroll event handler.
-     * 
+     *
      * @param {Event} event
      */
     handleDropdownScroll(event) {
@@ -708,7 +708,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Set focus on menu item via Item Index.
-     * 
+     *
      * @param {object} itemIndex
      */
     focusOnMenuItem(itemIndex) {
@@ -720,7 +720,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Auto alignement handler.
-     * 
+     *
      * @return {boolean}
      */
     isAutoAlignment() {
@@ -762,7 +762,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Get item array from menu.
-     * 
+     *
      * @return {object[]}
      */
     getMenuItems() {
@@ -771,7 +771,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Get item with index in menu item array.
-     * 
+     *
      * @param {object[]} index
      * @return menu item from array
      */
@@ -781,7 +781,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Find menu item's index.
-     * 
+     *
      * @param {object} menuItemElement
      * @returns {number} index of menu item
      */
@@ -791,9 +791,9 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Find menu item from event target.
-     * 
+     *
      * @param {Element} element
-     * @returns menu item
+     * @returns {Element} menu item
      */
     findMenuItemFromEventTarget(element) {
         let currentNode = element;
@@ -817,7 +817,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Menu item mouse over handler.
-     * 
+     *
      * @param {Event} event
      */
     handleMouseOverOnMenuItem(event) {
@@ -839,7 +839,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Blur cancel and set focus on menu item.
-     * 
+     *
      * @param {object} menuItem
      */
     cancelBlurAndFocusOnMenuItem(menuItem) {
@@ -862,7 +862,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Private blur handler.
-     * 
+     *
      * @param {Event} event
      */
     handlePrivateBlur(event) {
@@ -874,7 +874,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Private focus handler.
-     * 
+     *
      * @param {Event} event
      */
     handlePrivateFocus(event) {
@@ -919,7 +919,7 @@ export default class ButtonMenu extends LightningElement {
 
     /**
      * Set button order.
-     * 
+     *
      * @param {object} order
      */
     setOrder(order) {
