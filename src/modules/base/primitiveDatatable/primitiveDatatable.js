@@ -414,6 +414,7 @@ export default class PrimitiveDatatable extends LightningDatatable {
         super.renderedCallback();
 
         this._data = JSON.parse(JSON.stringify(normalizeArray(super.data)));
+        this.computeEditableOption();
 
         if (!this.rendered) {
             this.columnsWidthWithoutHeader();
@@ -422,7 +423,6 @@ export default class PrimitiveDatatable extends LightningDatatable {
         this.columnsWidth();
         this.tableWidth();
         this.unscrollableMainDatatable();
-        this.computeEditableOption();
 
         // Make sure custom edited cells stay yellow on hover
         // Make sure error cells appear edited and with a red border
@@ -437,7 +437,6 @@ export default class PrimitiveDatatable extends LightningDatatable {
         editCells.forEach((cell) => {
             cell.classList.add('slds-cell-edit');
         });
-
         this.rendered = true;
     }
 
@@ -494,7 +493,7 @@ export default class PrimitiveDatatable extends LightningDatatable {
 
     @api
     isDatatableEditable() {
-        return this._columnsEditable.filter(Boolean).length > 0;
+        return this._columnsEditable.filter(Boolean).length;
     }
 
     @api
@@ -503,6 +502,11 @@ export default class PrimitiveDatatable extends LightningDatatable {
             JSON.stringify(super.widthsData.tableWidth)
         );
         return this._tableWidth;
+    }
+
+    @api
+    hasDraftValues() {
+        return this.draftValues.length;
     }
 
     unscrollableMainDatatable() {

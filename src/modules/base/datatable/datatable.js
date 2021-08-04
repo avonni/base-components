@@ -64,6 +64,7 @@ export default class PrimitiveDatatable extends LightningElement {
     _columns;
     _data;
     _showStatusBar = false;
+    _hasDraftValues = false;
 
     _columnsWidth = [];
     _columnsEditable = [];
@@ -133,13 +134,18 @@ export default class PrimitiveDatatable extends LightningElement {
     }
 
     get showStatusBar() {
-        return this._showStatusBar && !this.suppressBottomBar;
+        return (
+            this._showStatusBar &&
+            this._hasDraftValues &&
+            !this.suppressBottomBar
+        );
     }
 
     bottomTableInitialization() {
         this.datatableColumnsWidth();
         this.updateColumnStyle();
         this.updateTableWidth();
+        this.hasDraftValues();
     }
 
     tableResize() {
@@ -156,6 +162,11 @@ export default class PrimitiveDatatable extends LightningElement {
     datatableEditable() {
         this._columnsEditable = this.primitiveDatatable.columnsEditable();
         this._isDatatableEditable = this.primitiveDatatable.isDatatableEditable();
+    }
+
+    hasDraftValues() {
+        this._hasDraftValues = this.primitiveDatatable.hasDraftValues();
+        this._showStatusBar = this._hasDraftValues ? true : false;
     }
 
     updateColumnStyle() {
