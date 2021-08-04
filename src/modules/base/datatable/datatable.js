@@ -60,12 +60,11 @@ export default class PrimitiveDatatable extends LightningElement {
     @api sortedDirection;
     @api suppressBottomBar;
     @api wrapTextMaxLines;
-    
+
     _columns;
     _data;
     _showStatusBar = false;
-    rendered = false;
-    
+
     _columnsWidth = [];
     _columnsEditable = [];
     _isDatatableEditable;
@@ -82,17 +81,18 @@ export default class PrimitiveDatatable extends LightningElement {
         this._columns = JSON.parse(JSON.stringify(normalizeArray(value)));
     }
 
+    /* eslint-disable */
     @api
     get data() {
-        return this._data
+        return this._data;
     }
 
     set data(value) {
-        this._data = JSON.parse(JSON.stringify(normalizeArray(value)))
-        
+        this._data = JSON.parse(JSON.stringify(normalizeArray(value)));
         this.computeFilteredDataValues();
         this.summarizeInitialization();
     }
+    /* eslint-enable */
 
     connectedCallback() {
         this.addEventListener('cellchange', () => {
@@ -107,12 +107,7 @@ export default class PrimitiveDatatable extends LightningElement {
 
     renderedCallback() {
         this.bottomTableInitialization();
-
-        if (!this.rendered) {
-            this.datatableEditable();
-        }
-
-        this.rendered = true;
+        this.datatableEditable();
     }
 
     get columnsExample() {
@@ -132,10 +127,7 @@ export default class PrimitiveDatatable extends LightningElement {
 
     get isSummarizePresent() {
         const summarized = this._columns.map((column) => {
-            if (column.summarizeTypes) {
-                return true;
-            }
-            return false;
+            return column.summarizeTypes ? true : false;
         });
         return summarized.includes(true);
     }
@@ -156,10 +148,9 @@ export default class PrimitiveDatatable extends LightningElement {
     }
 
     datatableColumnsWidth() {
-        if (!this.hideTableHeader) {
-            this._columnsWidth = this.primitiveDatatable.columnsWidth();
-        } else
-            this._columnsWidth = this.primitiveDatatable.columnsWidthWithoutHeader();
+        this._columnsWidth = !this.hideTableHeader
+            ? this.primitiveDatatable.columnsWidth()
+            : this.primitiveDatatable.columnsWidthWithoutHeader();
     }
 
     datatableEditable() {
@@ -190,11 +181,12 @@ export default class PrimitiveDatatable extends LightningElement {
 
     updateColumnStyleResize() {
         // on resize, it doesn't take in consideration the first column which is always 52 px.
+        // and 32 px for the checkbox column
         if (this.isDatatableEditable) {
             if (!this.hideCheckboxColumn) {
                 this._columnsWidth.unshift(52, 32);
             } else this._columnsWidth.unshift(52);
-        } else if (!this.isDatatableEditable) {
+        } else {
             if (!this.hideCheckboxColumn && !this.hideTableHeader) {
                 this._columnsWidth.unshift(32);
             }

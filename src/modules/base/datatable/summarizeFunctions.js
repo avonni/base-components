@@ -30,24 +30,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+// function for count
 const count = (array) => {
     return array.length;
 };
 
 // function for countUnique
 const countUnique = (array) => {
-    let res = 1;
-    let n = array.length;
-
-    // Pick all elements one by one
-    for (let i = 1; i < n; i++) {
-        let j = 0;
-        for (j = 0; j < i; j++) if (array[i] === array[j]) break;
-
-        // If not printed earlier, then print it
-        if (i === j) res++;
-    }
-    return res;
+    return new Set(array).size;
 };
 
 // function for sum
@@ -64,7 +54,7 @@ const average = (array) => {
 const median = (array) => {
     const mid = Math.floor(count(array) / 2),
         nums = [...array].sort((a, b) => a - b);
-    return array.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;
+    return count(array) % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;
 };
 
 // function for max
@@ -99,84 +89,77 @@ const mode = (array) => {
     return maximum;
 };
 
-const summarizations = (array, summarizeType) => {
-    let answer;
-    if (summarizeType.includes('count')) {
-        answer = count(array);
+const summarizations = (array, type) => {
+    switch (type) {
+        default:
+            return count(array);
+        case 'countUnique':
+            return countUnique(array);
+        case 'sum':
+            return sum(array);
+        case 'average':
+            return average(array);
+        case 'median':
+            return median(array);
+        case 'max':
+            return max(array);
+        case 'min':
+            return min(array);
+        case 'mode':
+            return mode(array);
     }
-    if (summarizeType.includes('countUnique')) {
-        answer = countUnique(array);
-    }
-    if (summarizeType.includes('sum')) {
-        answer = sum(array);
-    }
-    if (summarizeType.includes('average')) {
-        answer = average(array);
-    }
-    if (summarizeType.includes('median')) {
-        answer = median(array);
-    }
-    if (summarizeType.includes('max')) {
-        answer = max(array);
-    }
-    if (summarizeType.includes('min')) {
-        answer = min(array);
-    }
-    if (summarizeType.includes('mode')) {
-        answer = mode(array);
-    }
-    return answer;
 };
 
 const computeSummarizeObject = (columns, values) => {
     const computedSummarizeArray = columns.map((column, index) => {
-        let numberType =
+        let sumTypes = column.summarizeTypes;
+        const isNumberType =
             column.type === 'number' ||
             column.type === 'percent' ||
             column.type === 'currency';
-        let formatType = column.type !== 'number' ? column.type : 'decimal'
+        const formatType = column.type !== 'number' ? column.type : 'decimal';
+        const hasTypeAttributes = column.typeAttributes
+            ? column.typeAttributes
+            : [];
+
+        // Formating of the object we need to iterate in the markup.
         const summarizeColumnObject = {
             fieldName: column.fieldName,
             type: column.type,
-            summarizeTypes: [],
+            summarizeTypes: sumTypes,
             values: values[index],
-            numberType: numberType,
+            numberType: isNumberType,
             formatType: formatType
         };
-        if (column.summarizeTypes !== undefined) {
-            // if there is only one summarizeType and as a string, we convert it to a string.
-            if (typeof column.summarizeTypes === 'string') {
-                column.summarizeTypes = (column.summarizeTypes).split();
+
+        if (sumTypes) {
+            // if there is only one summarizeType and as a string, we convert it to an array.
+            if (typeof sumTypes === 'string') {
+                sumTypes = sumTypes.split();
             }
-            summarizeColumnObject.summarizeTypes = column.summarizeTypes.map(
-                (type) => {
-                    let computedValue = summarizations(
-                        summarizeColumnObject.values,
-                        type
-                    );
-                    if (type === 'count' || type === 'countUnique') {
-                        return {
-                            label: type,
-                            value: computedValue,
-                            type: 'decimal',
-                            typeAttributes: []
-                        };
-                    } else if (column.typeAttributes !== undefined) {
-                        return {
-                            label: type,
-                            value: computedValue,
-                            type: formatType,
-                            typeAttributes: column.typeAttributes
-                        };
-                    }
-                    return {
-                        label: type,
-                        value: computedValue,
-                        type: formatType,
-                        typeAttributes: []
-                    };
-                }
-            );
+            summarizeColumnObject.summarizeTypes = sumTypes.map((type) => {
+                // The value is computed depending on what type of summarization.
+                const computedValue = summarizations(
+                    summarizeColumnObject.values,
+                    type
+                );
+
+                // Count and countUnique don't need formating since we only need the numbers of occurences.
+                // And they are always type decimal.
+                return type === 'count' || type === 'countUnique'
+                    ? {
+                          label: type,
+                          value: computedValue,
+                          type: 'decimal',
+                          typeAttributes: []
+                      }
+                    : {
+                          label: type,
+                          value: computedValue,
+                          type: formatType,
+                          typeAttributes: hasTypeAttributes
+                      };
+            });
         }
         return summarizeColumnObject;
     });

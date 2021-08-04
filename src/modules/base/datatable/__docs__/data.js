@@ -221,8 +221,7 @@ const columnsCD = [
         typeAttributes: {
             currencyCode: 'CAD'
         },
-        editable: true,
-        summarizeTypes: ['max', 'min', 'sum']
+        editable: true
     },
     {
         label: 'Date',
@@ -337,8 +336,7 @@ const columnsEN = [
         editable: true,
         typeAttributes: {
             minimumFractionDigits: 2
-        },
-        summarizeTypes: ['max', 'min', 'sum']
+        }
     }
 ];
 
@@ -347,8 +345,7 @@ const columnsOQ = [
         label: 'Percent',
         fieldName: 'percent',
         type: 'percent',
-        editable: true,
-        summarizeTypes: 'mode'
+        editable: true
     },
     {
         label: 'Phone',
@@ -447,7 +444,7 @@ const columnsSum = [
         editable: true
     },
     {
-        label: 'Currency',
+        label: 'Amount',
         fieldName: 'currency',
         type: 'currency',
         typeAttributes: {
@@ -472,16 +469,7 @@ const columnsSum = [
         typeAttributes: {
             minimumFractionDigits: 4
         },
-        summarizeTypes: [
-            'count',
-            'countUnique',
-            'sum',
-            'average',
-            'median',
-            'min',
-            'max',
-            'mode'
-        ]
+        summarizeTypes: ['sum', 'average', 'median', 'min', 'max', 'mode']
     },
     {
         label: 'Percent',
