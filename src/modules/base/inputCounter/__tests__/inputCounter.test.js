@@ -70,7 +70,7 @@ describe('Input Counter', () => {
         expect(element.max).toBeUndefined();
         expect(element.min).toBeUndefined();
         expect(element.step).toBe(1);
-        expect(element.value).toBeUndefined();
+        expect(element.value).toBeNull();
         expect(element.variant).toBe('standard');
         expect(element.disabled).toBeFalsy();
         expect(element.readOnly).toBeFalsy();

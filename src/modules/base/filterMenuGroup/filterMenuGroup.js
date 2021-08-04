@@ -268,7 +268,6 @@ export default class FilterMenuGroup extends LightningElement {
      * @param {string[]} value
      */
     computeValue(menuName, value) {
-        console.log(value);
         const index = this.menus.findIndex((menu) => menu.name === menuName);
         this.menus[index].value = value;
     }

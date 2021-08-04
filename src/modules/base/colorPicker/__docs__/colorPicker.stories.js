@@ -281,6 +281,26 @@ export default {
     }
 };
 
+const colorsWithLabel = [
+    { label: 'brand-accessible', value: '#0176d3' },
+    { label: 'brand-accessible-active', value: '#014486' },
+    { label: 'brand-background-dark', value: '#014486' },
+    {
+        label: 'dark-transparent',
+        value: 'rgba(1, 68, 134, 0)'
+    },
+    { label: 'background-primary', value: '#eef4ff' },
+    {
+        label: 'primary-transparent',
+        value: 'rgba(176,196,223,0)'
+    },
+    { label: 'brand-contrast', value: 'rgb(26, 27, 30)' },
+    { label: 'color 1', value: '#e3abec' },
+    { label: 'color 2', value: '#c2dbf7' },
+    { label: 'color 3', value: '#9fd6ff' },
+    { label: 'color 4', value: '#9de7da' }
+];
+
 const colorsValue = [
     '#e3abec',
     '#c2dbf7',
@@ -321,6 +341,15 @@ Standard.args = {
     value: '#419fec',
     messageWhenBadInput: 'Please ensure value is correct',
     colors: colorsValue
+};
+
+export const StandardWithLabels = Template.bind({});
+StandardWithLabels.args = {
+    label: 'Color label',
+    fieldLevelHelp: 'Help text',
+    value: '#419fec',
+    messageWhenBadInput: 'Please ensure value is correct',
+    colors: colorsWithLabel
 };
 
 export const StandardWithIcon = Template.bind({});
