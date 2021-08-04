@@ -435,8 +435,8 @@ DataTypesFromRToZ.args = {
     columnWidthsMode: 'auto'
 };
 
-export const summarizations = Template.bind({});
-summarizations.args = {
+export const DatatableWithSummarizeTypes = Template.bind({});
+DatatableWithSummarizeTypes.args = {
     columns: columnsSum,
     data: dataSum,
     keyField: 'id',

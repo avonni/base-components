@@ -438,13 +438,15 @@ const columnsRZ = [
 
 const columnsSum = [
     {
-        label: 'Boolean',
-        fieldName: 'boolean',
-        type: 'boolean',
-        editable: true
+        label: 'Status',
+        fieldName: 'badge',
+        type: 'badge',
+        typeAttributes: {
+            variant: { fieldName: 'badgeVariant' }
+        }
     },
     {
-        label: 'Amount',
+        label: 'Price',
         fieldName: 'currency',
         type: 'currency',
         typeAttributes: {
@@ -454,22 +456,20 @@ const columnsSum = [
         summarizeTypes: [
             'count',
             'countUnique',
-            'sum',
             'average',
             'median',
             'min',
-            'max',
-            'mode'
+            'max'
         ]
     },
     {
-        label: 'Number',
+        label: 'Amount',
         type: 'number',
         fieldName: 'number',
         typeAttributes: {
-            minimumFractionDigits: 4
+            minimumFractionDigits: 1
         },
-        summarizeTypes: ['sum', 'average', 'median', 'min', 'max', 'mode']
+        summarizeTypes: ['sum', 'min', 'max', 'mode']
     },
     {
         label: 'Percent',
@@ -825,35 +825,47 @@ const dataRZ = [
 const dataSum = [
     {
         id: 1,
+        badge: 'approved',
+        badgeVariant: 'success',
         currency: 5,
         number: 5,
         percent: 0.05
     },
     {
         id: 2,
+        badge: 'declined',
+        badgeVariant: 'error',
         currency: 5,
         number: 10,
         percent: 0.1
     },
     {
         id: 3,
+        badge: 'unknown',
+        badgeVariant: 'inverse',
         number: 15,
         percent: 0.15
     },
     {
         id: 4,
+        badge: 'approved',
+        badgeVariant: 'success',
         currency: 20,
         number: 20,
         percent: 0.2
     },
     {
         id: 5,
+        badge: 'approved',
+        badgeVariant: 'success',
         currency: 25,
         number: 25,
         percent: 0.25
     },
     {
         id: 6,
+        badge: 'approved',
+        badgeVariant: 'success',
         currency: 25,
         number: 25,
         percent: 0.25

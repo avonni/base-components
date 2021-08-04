@@ -42,10 +42,6 @@
     width: 100%;
 }
 
-.avonni-datatable-first-column {
-    text-align: right;
-}
-
 .avonni-datatable-container {
     overflow-x: auto;
     background: #f3f2f2;
@@ -56,9 +52,10 @@
     margin-right: 5px;
 }
 
-.avonni-datatable-summarize_flex-end {
+.avonni-datatable-summarize_styling {
     display: flex;
     justify-content: flex-end;
+    padding: 0.1rem 0;
 }
 
 .avonni-datatable-vertical-align_top {

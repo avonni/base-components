@@ -44,10 +44,7 @@
             >
                 <tbody>
                     <tr>
-                        <td
-                            if:true={isDatatableEditable}
-                            class="avonni-datatable-first-column"
-                        ></td>
+                        <td if:true={isDatatableEditable}></td>
                         <td if:false={hideCheckboxColumn}></td>
                         <template for:each={columnsExample} for:item="column">
                             <template if:true={column.numberType}>
@@ -61,28 +58,27 @@
                                         for:each={column.summarizeTypes}
                                         for:item="type"
                                     >
-                                        <span key={type.label}>
+                                        <div
+                                            key={type.label}
+                                            class="slds-truncate avonni-datatable-summarize_styling"
+                                        >
                                             <div
-                                                class="slds-truncate avonni-datatable-summarize_flex-end"
+                                                class="avonni-datatable-summarize-type-text"
                                             >
-                                                <div
-                                                    class="avonni-datatable-summarize-type-text"
-                                                >
-                                                    {type.label}:
-                                                </div>
-                                                <lightning-formatted-number
-                                                    format-style={type.type}
-                                                    value={type.value}
-                                                    currency-code={type.typeAttributes.currencyCode}
-                                                    currency-display-as={type.typeAttributes.currencyDisplayAs}
-                                                    minimum-fraction-digits={type.typeAttributes.minimumFractionDigits}
-                                                    maximum-fraction-digits={type.typeAttributes.maximumFractionDigits}
-                                                    minimum-integer-digits={type.typeAttributes.minimumIntegerDigits}
-                                                    minimum-significant-digits={type.typeAttributes.minimumSignificantDigits}
-                                                    maximum-significant-digits={type.typeAttributes.maximumSignificantDigits}
-                                                ></lightning-formatted-number>
+                                                {type.label}:
                                             </div>
-                                        </span>
+                                            <lightning-formatted-number
+                                                format-style={type.type}
+                                                value={type.value}
+                                                currency-code={type.typeAttributes.currencyCode}
+                                                currency-display-as={type.typeAttributes.currencyDisplayAs}
+                                                minimum-fraction-digits={type.typeAttributes.minimumFractionDigits}
+                                                maximum-fraction-digits={type.typeAttributes.maximumFractionDigits}
+                                                minimum-integer-digits={type.typeAttributes.minimumIntegerDigits}
+                                                minimum-significant-digits={type.typeAttributes.minimumSignificantDigits}
+                                                maximum-significant-digits={type.typeAttributes.maximumSignificantDigits}
+                                            ></lightning-formatted-number>
+                                        </div>
                                     </template>
                                 </td>
                             </template>
