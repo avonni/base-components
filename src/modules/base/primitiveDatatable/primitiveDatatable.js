@@ -416,10 +416,7 @@ export default class PrimitiveDatatable extends LightningDatatable {
         this._data = JSON.parse(JSON.stringify(normalizeArray(super.data)));
         this.computeEditableOption();
 
-        if (!this.rendered) {
-            this.columnsWidthWithoutHeader();
-        }
-
+        this.columnsWidthWithoutHeader();
         this.columnsWidth();
         this.tableWidth();
         this.unscrollableMainDatatable();
@@ -437,7 +434,6 @@ export default class PrimitiveDatatable extends LightningDatatable {
         editCells.forEach((cell) => {
             cell.classList.add('slds-cell-edit');
         });
-        this.rendered = true;
     }
 
     disconnectedCallback() {
