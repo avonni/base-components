@@ -38,19 +38,15 @@ import { normalizeArray, normalizeBoolean } from 'c/utilsPrivate';
 export default class Occurrence extends LightningElement {
     @api color;
     @api eventName;
-    @api from;
     @api iconName;
-    @api occurrenceKey;
-    @api rowKey;
     @api title;
     @api theme;
-    @api to;
 
     _columnDuration = 0;
     _columns = [];
     _columnWidth = 0;
     _disabled = false;
-    _offsetTop = 0;
+    _occurrence = {};
     _readOnly = false;
     _rows = [];
     _x = 0;
@@ -63,7 +59,8 @@ export default class Occurrence extends LightningElement {
 
     renderedCallback() {
         this.updatePosition();
-        this.updateWidthAndHeight();
+        this.updateWidth();
+        this.updateHeight();
     }
 
     @api
@@ -99,11 +96,11 @@ export default class Occurrence extends LightningElement {
     }
 
     @api
-    get offsetTop() {
-        return this._offsetTop;
+    get occurrence() {
+        return this._occurrence;
     }
-    set offsetTop(value) {
-        this._offsetTop = !isNaN(Number(value)) ? Number(value) : 0;
+    set occurrence(value) {
+        this._occurrence = value || {};
     }
 
     @api
@@ -140,12 +137,32 @@ export default class Occurrence extends LightningElement {
         this.updateHostTranslate();
     }
 
+    get computedClass() {
+        const theme = this.theme;
+        return classSet(
+            `slds-p-vertical_xx-small slds-p-horizontal_small scheduler__event slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate scheduler__event_${theme}`
+        )
+            .add({
+                'slds-text-color_inverse slds-current-color':
+                    theme === 'default' || theme === 'rounded'
+            })
+            .toString();
+    }
+
     get computedColor() {
         return this.color || this.rowColor;
     }
 
+    get from() {
+        return this.occurrence.from;
+    }
+
     get hostElement() {
         return this.template.host;
+    }
+
+    get offsetTop() {
+        return this.occurrence.offsetTop || 0;
     }
 
     get rowColor() {
@@ -153,6 +170,10 @@ export default class Occurrence extends LightningElement {
             (computedRow) => computedRow.key === this.rowKey
         );
         return row && row.color;
+    }
+
+    get rowKey() {
+        return this.occurrence.rowKey;
     }
 
     get showTitle() {
@@ -184,16 +205,8 @@ export default class Occurrence extends LightningElement {
         return style;
     }
 
-    get computedClass() {
-        const theme = this.theme;
-        return classSet(
-            `slds-p-vertical_xx-small slds-p-horizontal_small scheduler__event slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate scheduler__event_${theme}`
-        )
-            .add({
-                'slds-text-color_inverse slds-current-color':
-                    theme === 'default' || theme === 'rounded'
-            })
-            .toString();
+    get to() {
+        return this.occurrence.to;
     }
 
     get transparentColor() {
@@ -218,9 +231,7 @@ export default class Occurrence extends LightningElement {
 
     @api
     updatePosition() {
-        const { from, columns } = this;
-        const element = this.hostElement;
-        element.style.width = '100%';
+        const { from, columns, columnWidth } = this;
 
         // Find the column where the event starts
         let i = columns.findIndex((column) => {
@@ -228,10 +239,6 @@ export default class Occurrence extends LightningElement {
         });
 
         if (i < 0) return;
-
-        // Comvert the column width from % to pixels
-        const fullWidth = element.offsetWidth;
-        const columnWidth = (this.columnWidth / 100) * fullWidth;
 
         // Set the horizontal position
         const x = i * columnWidth;
@@ -249,12 +256,11 @@ export default class Occurrence extends LightningElement {
 
         this._x = x;
         this._y = y;
-        this._columnPxWidth = columnWidth;
         this.updateHostTranslate();
     }
 
     @api
-    updateWidthAndHeight() {
+    updateWidth() {
         const { from, to, columns, columnWidth, columnDuration } = this;
         const element = this.hostElement;
 
@@ -278,7 +284,7 @@ export default class Occurrence extends LightningElement {
 
             const emptyDuration = columnDuration - eventDuration;
             const emptyPercentageOfCol = emptyDuration / columnDuration;
-            this._x += this._columnPxWidth * emptyPercentageOfCol;
+            this._x += columnWidth * emptyPercentageOfCol;
             this.updateHostTranslate();
 
             // If the event ends before the end of the first column
@@ -287,7 +293,7 @@ export default class Occurrence extends LightningElement {
                 const durationLeft = columnEnd.diff(to).milliseconds;
                 const percentageLeft = durationLeft / columnDuration;
                 width = width - percentageLeft * columnWidth;
-                element.style.width = `${width}%`;
+                element.style.width = `${width}px`;
                 return;
             }
 
@@ -310,11 +316,15 @@ export default class Occurrence extends LightningElement {
             width += columnWidth * colPercentEnd;
         }
 
-        element.style.width = `${width}%`;
+        element.style.width = `${width}px`;
+    }
 
-        // Update the height if the event is a disabled date
+    @api
+    updateHeight() {
         if (this.disabled) {
+            const element = this.hostElement;
             const row = this.rows.find((rw) => rw.key === this.rowKey);
+
             if (row) {
                 const height = row.height;
                 element.style.height = `${height}px`;

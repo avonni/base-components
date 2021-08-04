@@ -106,6 +106,7 @@
 
             <!-- Events -->
             <div
+                if:true={cellWidth}
                 class="scheduler__events slds-is-absolute"
                 onmousemove={handleMouseMove}
                 oncontextmenu={handleEmptySpotContextMenu}
@@ -126,16 +127,12 @@
                                 column-width={cellWidth}
                                 disabled={event.disabled}
                                 event-name={event.name}
-                                from={occurrence.from}
                                 icon-name={event.iconName}
-                                occurrence-key={occurrence.key}
-                                offset-top={occurrence.offsetTop}
+                                occurrence={occurrence}
                                 read-only={readOnly}
-                                row-key={occurrence.rowKey}
                                 rows={computedRows}
                                 title={event.title}
                                 theme={event.theme}
-                                to={occurrence.to}
                                 data-key={occurrence.key}
                                 onfocus={selectEvent}
                                 onprivatecontextmenu={handleEventContextMenu}

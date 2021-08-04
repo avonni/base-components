@@ -89,6 +89,7 @@ export default class Scheduler extends LightningElement {
     _mouseIsDown = false;
     _referenceHeader;
     _resizedEvent;
+    cellWidth = 0;
     computedHeaders = [];
     computedRows = [];
     computedEvents = [];
@@ -106,23 +107,24 @@ export default class Scheduler extends LightningElement {
     }
 
     renderedCallback() {
+        // On the first render, save the cell width to pass the info to the primitives
+        if (!this.cellWidth) {
+            const tbody = this.template.querySelector('tbody');
+            this.cellWidth =
+                tbody.offsetWidth / this.smallestHeader.numberOfColumns;
+            return;
+        }
+
         // Save the datatable row height and update the header and body styles
         if (!this._datatableRowsHeight) {
             this.updateDatatableRowsHeight();
         }
         this.updateHeadersStyle();
-        this.updateBodyStyle();
+        this.updateRowsStyle();
 
-        // Update the position, width and height of occurrences
+        // Update the position and height of occurrences
         if (this._updateOccurrences) {
-            const eventOccurrences = this.template.querySelectorAll(
-                'c-primitive-scheduler-event-occurrence'
-            );
-            eventOccurrences.forEach((occurrence) => {
-                occurrence.updatePosition();
-                occurrence.updateWidthAndHeight();
-            });
-
+            this.updateOccurrencesPosition();
             this._updateOccurrences = false;
         }
 
@@ -391,7 +393,7 @@ export default class Scheduler extends LightningElement {
             .milliseconds;
     }
 
-    get cellWidth() {
+    get percentCellWidth() {
         if (!this.smallestHeader || !this.smallestHeader.columns.length)
             return 0;
         return 100 / this.smallestHeader.columns.length;
@@ -572,7 +574,7 @@ export default class Scheduler extends LightningElement {
     }
 
     initHeaderWidths() {
-        if (!this.cellWidth) return;
+        if (!this.percentCellWidth) return;
 
         const smallestHeaderColumns = this.smallestHeader.columns;
         for (let i = 0; i < this.computedHeaders.length; i++) {
@@ -582,7 +584,7 @@ export default class Scheduler extends LightningElement {
             // The columns of the header with the shortest unit all have the same width
             if (i === this.computedHeaders.length - 1) {
                 header.columns.forEach(() => {
-                    header.columnWidths.push(this.cellWidth);
+                    header.columnWidths.push(this.percentCellWidth);
                 });
 
                 // The other headers base their column widths on the header with the shortest unit
@@ -612,7 +614,7 @@ export default class Scheduler extends LightningElement {
                         // Stop if the next smallestHeader column belongs to the next header unit
                         if (endUnit <= startUnit) break;
 
-                        width += this.cellWidth;
+                        width += this.percentCellWidth;
                         columnIndex += 1;
                     }
                     header.columnWidths.push(width);
@@ -698,7 +700,7 @@ export default class Scheduler extends LightningElement {
 
             const computedRow = new Row({
                 color: this.palette[colorIndex],
-                columnWidth: this.cellWidth,
+                columnWidth: this.percentCellWidth,
                 key: rowKey,
                 referenceColumns: this.smallestHeader.columns,
                 events: occurrences
@@ -718,7 +720,7 @@ export default class Scheduler extends LightningElement {
         });
     }
 
-    updateBodyStyle() {
+    updateRowsStyle() {
         // Set the rows height
         const datatable = this.template.querySelector('c-datatable');
         const rows = this.template.querySelectorAll('tbody tr');
@@ -811,6 +813,12 @@ export default class Scheduler extends LightningElement {
             cells.forEach((cell, index) => {
                 cell.style.width = `${header.columnWidths[index]}%`;
             });
+        });
+    }
+
+    updateRowsHeight() {
+        this.computedRows.forEach((row) => {
+            row.updateHeightAndPositions();
         });
     }
 
@@ -945,23 +953,38 @@ export default class Scheduler extends LightningElement {
 
     resizeEventTo(cell) {
         const side = this._resizeSide;
-        const { event, draftValues, occurrence } = this.selection;
+        const occurrence = this.selection.occurrence;
+
+        // Remove the occurrence from the row
+        const rowKey = occurrence.rowKey;
+        const row = this.getRowFromKey(rowKey);
+        row.removeEvent(occurrence);
 
         if (side === 'right') {
             // Update the end date if the event was resized from the right
-            event.to = dateTimeObjectFrom(Number(cell.dataset.end));
-            draftValues.to = event.to.toUTC().toISO();
+            occurrence.to = dateTimeObjectFrom(Number(cell.dataset.end));
         } else if (side === 'left') {
             // Update the start date if the event was resized from the left
-            event.from = Number(cell.dataset.start);
-            draftValues.from = event.from.toUTC().toISO();
+            occurrence.from = dateTimeObjectFrom(Number(cell.dataset.start));
         }
 
-        this.initRows();
-        this.selection.occurrence = event.occurrences.find(
-            (occ) => occ.key === occurrence.key
+        // Add the occurrence to the row with the updated start/end date
+        row.addEvent(occurrence);
+        this.updateRowsHeight();
+        this.updateRowsStyle();
+        this.updateOccurrencesPosition();
+    }
+
+    updateOccurrencesPosition() {
+        const eventOccurrences = this.template.querySelectorAll(
+            'c-primitive-scheduler-event-occurrence'
         );
-        this._updateOccurrences = true;
+        eventOccurrences.forEach((occurrence) => {
+            if (occurrence.disabled) {
+                occurrence.updateHeight(occurrence);
+            }
+            occurrence.updatePosition();
+        });
     }
 
     dragEventTo(row, cell) {
@@ -1196,7 +1219,22 @@ export default class Scheduler extends LightningElement {
 
             // Update the event
             if (side) {
-                this.resizeEventTo(cellElement);
+                const { event, draftValues } = this.selection;
+
+                if (side === 'right') {
+                    // Update the end date if the event was resized from the right
+                    event.to = dateTimeObjectFrom(
+                        Number(cellElement.dataset.end)
+                    );
+                    draftValues.to = event.to.toUTC().toISO();
+                } else if (side === 'left') {
+                    // Update the start date if the event was resized from the left
+                    event.from = Number(cellElement.dataset.start);
+                    draftValues.from = event.from.toUTC().toISO();
+                }
+
+                this.initRows();
+                this._updateOccurrences = true;
             } else {
                 this.dragEventTo(rowElement, cellElement);
             }
@@ -1220,7 +1258,7 @@ export default class Scheduler extends LightningElement {
             this.initRows();
         } else {
             this.updateDatatableRowsHeight();
-            this.updateBodyStyle();
+            this.updateRowsStyle();
         }
     }
 

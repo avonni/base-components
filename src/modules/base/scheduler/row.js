@@ -66,32 +66,60 @@ export default class Row {
     }
 
     initEvents() {
+        const events = this.events;
+        events.forEach((event) => {
+            this.addEvent(event);
+        });
+
+        this.updateHeightAndPositions();
+    }
+
+    addEvent(event) {
+        const columns = this.columns;
+
+        // Find the column where the event starts
+        let i = columns.findIndex((column) => {
+            return column.end >= event.from;
+        });
+
+        if (i > -1) {
+            // Add the event to every column it crosses
+            while (i < columns.length && event.to > columns[i].start) {
+                event.offsetTop = 0;
+                columns[i].events.push(event);
+                columns[i].events = columns[i].events.sort(
+                    (a, b) => a.from - b.from
+                );
+                i += 1;
+            }
+        }
+    }
+
+    removeEvent(event) {
         const { columns, events } = this;
 
-        events.forEach((event) => {
-            // Find the column where the event starts
-            let i = columns.findIndex((column) => {
-                return column.end >= event.from;
-            });
-
-            if (i > -1) {
-                // Add the event to every column it crosses
-                while (i < columns.length && event.to > columns[i].start) {
-                    event.offsetTop = 0;
-                    columns[i].events.push(event);
-                    columns[i].events = columns[i].events.sort(
-                        (a, b) => a.from - b.from
-                    );
-                    i += 1;
-                }
+        // Remove the event from the columns
+        let i = columns.findIndex((column) => column.end >= event.from);
+        if (i > -1) {
+            while (i < columns.length && event.to > columns[i].start) {
+                const eventIndex = columns[i].events.findIndex(
+                    (evt) => evt.key === event.key
+                );
+                columns[i].events.splice(eventIndex, 1);
+                i += 1;
             }
-        });
-        this.updateHeightAndPositions();
+        }
+
+        // Remove the event
+        const eventIndex = events.findIndex((evt) => evt.key === event.key);
+        events.splice(eventIndex, 1);
     }
 
     updateHeightAndPositions() {
         let numberOfEvents = 0;
-        this.columns.forEach((column) => {
+        const columns = this.columns.filter((column) => column.events.length);
+
+        columns.forEach((column) => {
             // Update the maximum number of events in one column
             if (column.events.length > numberOfEvents) {
                 numberOfEvents = column.events.length;
