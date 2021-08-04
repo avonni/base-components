@@ -422,7 +422,6 @@ export default class PrimitiveDatatable extends LightningDatatable {
         this.columnsWidth();
         this.tableWidth();
         this.unscrollableMainDatatable();
-
         this.computeEditableOption();
 
         // Make sure custom edited cells stay yellow on hover

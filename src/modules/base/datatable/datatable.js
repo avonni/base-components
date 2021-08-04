@@ -208,7 +208,7 @@ export default class PrimitiveDatatable extends LightningElement {
             this._values = this._data.map((row) => {
                 return row[fieldName];
             });
-            return this._values.filter(Number);
+            return this._values.map(Number).filter(Number);
         });
     }
 

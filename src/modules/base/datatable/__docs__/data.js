@@ -588,13 +588,13 @@ const dataCD = [
     {
         id: 1,
         colorPicker: '#00a1e0',
-        currency: 200,
+        currency: '200',
         dynamicIcon: 'ellie',
         date: new Date('2022/03/24')
     },
     {
         id: 2,
-        currency: 230,
+        currency: '230',
         colorPicker: '#e65cd1',
         dynamicIcon: 'score',
         dynamicIconOption: 'negative',
@@ -604,7 +604,7 @@ const dataCD = [
         id: 3,
         checkboxButton: true,
         checkboxButtonDisabled: true,
-        currency: 3045,
+        currency: '3045',
         colorPickerDisabled: true,
         dynamicIcon: 'strength',
         dynamicIconOption: -3,
@@ -614,7 +614,7 @@ const dataCD = [
     {
         id: 4,
         colorPicker: '#f4bc25',
-        currency: 432,
+        currency: '432',
         dynamicIcon: 'eq',
         date: new Date('2021/02/14')
     },
@@ -622,7 +622,7 @@ const dataCD = [
         id: 5,
         checkboxButton: true,
         colorPicker: '#f99120',
-        currency: 217,
+        currency: '217',
         dynamicIcon: 'waffle',
         date: new Date('2022/10/12')
     }
@@ -641,7 +641,7 @@ const dataEN = [
             latitude: '45.53',
             longitude: '-73.61'
         },
-        number: 6
+        number: '6'
     },
     {
         id: 2,
@@ -658,7 +658,7 @@ const dataEN = [
             latitude: '45.53',
             longitude: '-73.58'
         },
-        number: 18
+        number: '18'
     },
     {
         id: 3,
@@ -675,7 +675,7 @@ const dataEN = [
             latitude: '45.54',
             longitude: '-73.60'
         },
-        number: 1789
+        number: '1789'
     },
     {
         id: 4,
@@ -691,7 +691,7 @@ const dataEN = [
             latitude: '45.55',
             longitude: '-73.62'
         },
-        number: 345
+        number: '345'
     },
     {
         id: 5,
@@ -708,7 +708,7 @@ const dataEN = [
             latitude: '45.56',
             longitude: '-73.56'
         },
-        number: 9
+        number: '9'
     }
 ];
 
@@ -827,48 +827,48 @@ const dataSum = [
         id: 1,
         badge: 'approved',
         badgeVariant: 'success',
-        currency: 5,
-        number: 5,
-        percent: 0.05
+        currency: '5',
+        number: '5',
+        percent: '0.05'
     },
     {
         id: 2,
         badge: 'declined',
         badgeVariant: 'error',
-        currency: 5,
-        number: 10,
-        percent: 0.1
+        currency: '5',
+        number: '10',
+        percent: '0.1'
     },
     {
         id: 3,
         badge: 'unknown',
         badgeVariant: 'inverse',
-        number: 15,
-        percent: 0.15
+        number: '15',
+        percent: '0.15'
     },
     {
         id: 4,
         badge: 'approved',
         badgeVariant: 'success',
-        currency: 20,
-        number: 20,
-        percent: 0.2
+        currency: '20',
+        number: '20',
+        percent: '0.2'
     },
     {
         id: 5,
         badge: 'approved',
         badgeVariant: 'success',
-        currency: 25,
-        number: 25,
-        percent: 0.25
+        currency: '25',
+        number: '25',
+        percent: '0.25'
     },
     {
         id: 6,
         badge: 'approved',
         badgeVariant: 'success',
-        currency: 25,
-        number: 25,
-        percent: 0.25
+        currency: '25',
+        number: '25',
+        percent: '0.25'
     }
 ];
 
