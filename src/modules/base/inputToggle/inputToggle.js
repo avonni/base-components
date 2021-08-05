@@ -658,9 +658,10 @@ export default class InputToggle extends LightningElement {
         this._updateProxyInputAttributes('checked');
 
         /**
+         * The event fired when a value is changed in the input toggle.
+         * 
          * @event
          * @name change
-         * The event fired when a value is changed in the input toggle.
          * @param {boolean} checked For input types checkbox and checkbox-button, the value of checked attribute.
          * @bubbles
          * @composed
