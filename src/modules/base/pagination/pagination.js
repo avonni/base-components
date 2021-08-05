@@ -295,6 +295,8 @@ export default class Pagination extends LightningElement {
 
     /**
      * Generate unique Key iD for buttons.
+     * 
+     * @type {string}
      */
     get uniqueKey() {
         return generateUniqueId();
@@ -320,6 +322,8 @@ export default class Pagination extends LightningElement {
 
     /**
      * Check which label or icon to display on the first button.
+     * 
+     * @type {boolean}
      */
     get showFirstButton() {
         return this.firstButtonLabel || this.firstButtonIconName;
@@ -327,6 +331,8 @@ export default class Pagination extends LightningElement {
 
     /**
      * Check whether the label is not specified and that the icon is present to display on the first button.
+     * 
+     * @type {string}
      */
     get firstButtonIcon() {
         return !this.firstButtonLabel && this.firstButtonIconName;
@@ -334,6 +340,8 @@ export default class Pagination extends LightningElement {
 
     /**
      * Check which label or icon to display on the last button.
+     * 
+     * @type {boolean}
      */
     get showLastButton() {
         return this.lastButtonLabel || this.lastButtonIconName;
@@ -341,6 +349,8 @@ export default class Pagination extends LightningElement {
 
     /**
      * Check whether the label is not specified and that the icon is present to display on the first button.
+     * 
+     * @type {string}
      */
     get lastButtonIcon() {
         return !this.lastButtonLabel && this.lastButtonIconName;
@@ -348,6 +358,8 @@ export default class Pagination extends LightningElement {
 
     /**
      * Computed container class styling for alignement attribute.
+     * 
+     * @type {string}
      */
     get computedContainerClass() {
         return classSet('avonni-pagination-container')
@@ -357,6 +369,8 @@ export default class Pagination extends LightningElement {
 
     /**
      * Compute pagination buttons to array object and display according to index and limit.
+     * 
+     * @type {object}
      */
     get paginationButtons() {
         let paginationButtons = [
@@ -426,7 +440,7 @@ export default class Pagination extends LightningElement {
     }
 
     /**
-     * Go to first page.
+     * Go to previous page.
      * 
      * @public
      */
@@ -439,7 +453,7 @@ export default class Pagination extends LightningElement {
     }
 
     /**
-     * Go to previous page.
+     * Go to next page.
      * 
      * @public
      */
