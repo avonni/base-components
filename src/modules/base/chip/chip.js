@@ -115,6 +115,8 @@ export default class Chip extends LightningElement {
 
     /**
      * Get left slot dom element.
+     * 
+     * @type {Element}
      */
     get leftSlot() {
         return this.template.querySelector('slot[name=left]');
@@ -122,6 +124,8 @@ export default class Chip extends LightningElement {
 
     /**
      * Get right slot dom element.
+     * 
+     * @type {Element}
      */
     get rightSlot() {
         return this.template.querySelector('slot[name=right]');
@@ -129,6 +133,8 @@ export default class Chip extends LightningElement {
 
     /**
      * Compute chip class style.
+     * 
+     * @type {string}
      */
     get chipClass() {
         const classes = classSet('slds-badge');

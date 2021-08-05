@@ -228,6 +228,8 @@ export default class ColorGradient extends LightningElement {
 
     /**
      * Retrieve color value if present.
+     * 
+     * @type {string}
      */
     get colorValue() {
         return this.colors.A < 1 && this.opacity
