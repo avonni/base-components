@@ -279,13 +279,14 @@ export default class Datatable extends LightningElement {
     set data(value) {
         this._data = JSON.parse(JSON.stringify(normalizeArray(value)));
         this.computeFilteredDataValues();
-        this.summarizeInitialization();
+        this.computeSummarizeArray();
     }
     /* eslint-enable */
 
     connectedCallback() {
         this.addEventListener('cellchange', () => {
             this._showStatusBar = true;
+            this.updateData();
         });
 
         this.addEventListener('resize', (event) => {
@@ -299,14 +300,29 @@ export default class Datatable extends LightningElement {
         this.datatableEditable();
     }
 
-    get columnsExample() {
-        return this._computedSummarizeArray;
-    }
-
+    /**
+     * Returns the primitive datatable.
+     *
+     * @type {element}
+     */
     get primitiveDatatable() {
         return this.template.querySelector('c-primitive-datatable');
     }
 
+    /**
+     * Returns the computed summarize array.
+     *
+     * @type {object}
+     */
+    get computedSummarizeArray() {
+        return this._computedSummarizeArray;
+    }
+
+    /**
+     * Checks if one of the columns is editable or if none but showRowNumberColumn is true.
+     *
+     * @type {boolean}
+     */
     get isDatatableEditable() {
         return (
             this._isDatatableEditable ||
@@ -314,6 +330,11 @@ export default class Datatable extends LightningElement {
         );
     }
 
+    /**
+     * Checks if one of the columns has a summarizeType.
+     *
+     * @type {boolean}
+     */
     get isSummarizePresent() {
         const summarized = this._columns.map((column) => {
             return column.summarizeTypes ? true : false;
@@ -321,6 +342,11 @@ export default class Datatable extends LightningElement {
         return summarized.includes(true);
     }
 
+    /**
+     * Checks we need to show the status bar. If there is draft values and suppressBottomBar is false.
+     *
+     * @type {boolean}
+     */
     get showStatusBar() {
         return (
             this._showStatusBar &&
@@ -329,34 +355,74 @@ export default class Datatable extends LightningElement {
         );
     }
 
+    /**
+     * Gets the draft values from the primitive datatable.
+     *
+     * @type {object}
+     */
+    get primitiveDatatableDraftValues() {
+        return this.primitiveDatatable.primitiveDatatableDraftValues();
+    }
+
+    updateData() {
+        this.primitiveDatatableDraftValues.forEach((value) => {
+            let draftId = value.id;
+            let fieldName = Object.keys(value)[0];
+            let draftValue = Object.values(value)[0];
+            const changedRow = this._data.find(
+                (row) => row.id === parseInt(draftId, 10)
+            );
+            changedRow[fieldName] = draftValue;
+        });
+    }
+
+    /**
+     * Initialization of the bottom datatable used for for summarize.
+     */
     bottomTableInitialization() {
         this.datatableColumnsWidth();
         this.updateColumnStyle();
         this.updateTableWidth();
-        this.hasDraftValues();
+        this.primitiveDraftValues();
     }
 
+    /**
+     * Resize of the bottom datatable when the primitive-datatable is resized.
+     */
     tableResize() {
         this.updateColumnStyleResize();
         this.updateTableWidth();
     }
 
+    /**
+     * Gets the columns width of the primitive datatable depending on if there is a header or not.
+     */
     datatableColumnsWidth() {
         this._columnsWidth = !this.hideTableHeader
             ? this.primitiveDatatable.columnsWidth()
             : this.primitiveDatatable.columnsWidthWithoutHeader();
     }
 
+    /**
+     * Gets the columns the information about if they are editable or not.
+     */
     datatableEditable() {
         this._columnsEditable = this.primitiveDatatable.columnsEditable();
         this._isDatatableEditable = this.primitiveDatatable.isDatatableEditable();
     }
 
-    hasDraftValues() {
-        this._hasDraftValues = this.primitiveDatatable.hasDraftValues();
+    /**
+     * Verify if there is draft values.
+     */
+    primitiveDraftValues() {
+        this._hasDraftValues = this.primitiveDatatableDraftValues.length;
         this._showStatusBar = this._hasDraftValues ? true : false;
     }
 
+    /**
+     * Updates the column size and padding depending on the columns width of the primitive datatable and depending on if
+     * the columns are editable.
+     */
     updateColumnStyle() {
         const rows = Array.from(this.template.querySelectorAll('tr'));
         rows.forEach((row) => {
@@ -378,6 +444,9 @@ export default class Datatable extends LightningElement {
         });
     }
 
+    /**
+     * Calls the updateColumnStyle method on resize.
+     */
     updateColumnStyleResize() {
         // on resize, it doesn't take in consideration the first column which is always 52 px.
         // and 32 px for the checkbox column
@@ -393,6 +462,9 @@ export default class Datatable extends LightningElement {
         this.updateColumnStyle();
     }
 
+    /**
+     * Updates the table width base on the width of the primitive datatable on initialization and on resize.
+     */
     updateTableWidth() {
         this._tableWidth = this.primitiveDatatable.tableWidth();
         const table = this.template.querySelector('table');
@@ -401,6 +473,9 @@ export default class Datatable extends LightningElement {
         }
     }
 
+    /**
+     * Updates the table width base on the width of the primitive datatable on initialization and on resize.
+     */
     computeFilteredDataValues() {
         this._filteredDataValues = this._columns.map((column) => {
             const fieldName = column.fieldName;
@@ -411,7 +486,10 @@ export default class Datatable extends LightningElement {
         });
     }
 
-    summarizeInitialization() {
+    /**
+     * Computes the summarizeArray to create the object used to display the summarize types.
+     */
+    computeSummarizeArray() {
         this._computedSummarizeArray = computeSummarizeObject(
             this._columns,
             this._filteredDataValues

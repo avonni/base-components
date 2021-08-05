@@ -30,44 +30,84 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-// function for count
+/**
+ * Method to count numbers of element in array.
+ *
+ * @param {object} array Array of elements to count.
+ * @returns {number} Number of elements.
+ */
 const count = (array) => {
     return array.length;
 };
 
-// function for countUnique
+/**
+ * Method to count unique numbers of element in array.
+ *
+ * @param {object} array Array of elements to count.
+ * @returns {number} Number of unique elements.
+ */
 const countUnique = (array) => {
     return new Set(array).size;
 };
 
-// function for sum
+/**
+ * Method to sum elements in array.
+ *
+ * @param {object} array Array of elements to sum.
+ * @returns {number} Sum of array.
+ */
 const sum = (array) => {
     return array.reduce((a, b) => a + b, 0);
 };
 
-// function for average
+/**
+ * Method to do the average of the array.
+ *
+ * @param {object} array Array of elements to average.
+ * @returns {number} Average of array.
+ */
 const average = (array) => {
     return (sum(array) / count(array)).toFixed(5);
 };
 
-// function for median
+/**
+ * Method to find the median of the array.
+ *
+ * @param {object} array Array of elements.
+ * @returns {number} Median of the array.
+ */
 const median = (array) => {
     const mid = Math.floor(count(array) / 2),
         nums = [...array].sort((a, b) => a - b);
     return count(array) % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;
 };
 
-// function for max
+/**
+ * Method to find the highest number of the array.
+ *
+ * @param {object} array Array of elements.
+ * @returns {number} Highest number of the array.
+ */
 const max = (array) => {
     return Math.max(...array);
 };
 
-// function for min
+/**
+ * Method to find the lowest number of the array.
+ *
+ * @param {object} array Array of elements.
+ * @returns {number} Lowest number of the array.
+ */
 const min = (array) => {
     return Math.min(...array);
 };
 
-// function for mode
+/**
+ * Method to find which number appears the most often in the array.
+ *
+ * @param {object} array Array of elements.
+ * @returns {number} Most frequent number of the array.
+ */
 const mode = (array) => {
     let modeObj = {};
     let maximum = 0,
@@ -89,6 +129,13 @@ const mode = (array) => {
     return maximum;
 };
 
+/**
+ * Method compute the summarization depending on which summarize type.
+ *
+ * @param {object} array Array of elements.
+ * @param {string} type Which summarize type to compute.
+ * @returns {number} computed number depending on type.
+ */
 const summarizations = (array, type) => {
     switch (type) {
         default:
@@ -110,6 +157,20 @@ const summarizations = (array, type) => {
     }
 };
 
+/**
+ * Method compute the summarization depending on which summarize type.
+ *
+ * @param {object} columns Array of object containing the columns with label, fieldName, type and typeAttributes.
+ * @param {object} values Array of number containing the different values of each column.
+ * @returns {object} Array of object containing the information of each columns with the information needed to iterate in the markup.
+ * It contains :
+ * * fieldName
+ * * type
+ * * summarizeTypes
+ * * values
+ * * numberType
+ * * formatType
+ */
 const computeSummarizeObject = (columns, values) => {
     const computedSummarizeArray = columns.map((column, index) => {
         let sumTypes = column.summarizeTypes;

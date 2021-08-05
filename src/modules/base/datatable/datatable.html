@@ -46,7 +46,10 @@
                     <tr>
                         <td if:true={isDatatableEditable}></td>
                         <td if:false={hideCheckboxColumn}></td>
-                        <template for:each={columnsExample} for:item="column">
+                        <template
+                            for:each={computedSummarizeArray}
+                            for:item="column"
+                        >
                             <template if:true={column.numberType}>
                                 <td
                                     key={column.type}

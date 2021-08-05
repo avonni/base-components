@@ -434,6 +434,7 @@ export default class PrimitiveDatatable extends LightningDatatable {
         editCells.forEach((cell) => {
             cell.classList.add('slds-cell-edit');
         });
+        console.log(this.state);
     }
 
     disconnectedCallback() {
@@ -501,8 +502,8 @@ export default class PrimitiveDatatable extends LightningDatatable {
     }
 
     @api
-    hasDraftValues() {
-        return this.draftValues.length;
+    primitiveDatatableDraftValues() {
+        return this.draftValues;
     }
 
     unscrollableMainDatatable() {
