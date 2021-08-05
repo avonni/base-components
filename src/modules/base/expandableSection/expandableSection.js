@@ -87,7 +87,7 @@ export default class ExpandableSection extends LightningElement {
     /**
      * Computed section class styling.
      *
-     * @return string
+     * @type {string}
      */
     get sectionClass() {
         return classSet('slds-section')
@@ -100,7 +100,7 @@ export default class ExpandableSection extends LightningElement {
     /**
      * Computed section Title class styling.
      *
-     * @return string
+     * @type {string}
      */
     get sectionTitleClass() {
         return classSet('slds-section__title')

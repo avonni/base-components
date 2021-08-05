@@ -609,7 +609,7 @@ export default class FilterMenu extends LightningElement {
     /**
      * Computed checkbox Items.
      *
-     * @return object
+     * @type {object}
      */
     get checkboxComputedItems() {
         return this.computedItems.filter((item) => !item.hidden);
@@ -618,7 +618,7 @@ export default class FilterMenu extends LightningElement {
     /**
      * Computed showdown icon.
      *
-     * @return boolean
+     * @type {boolean}
      */
     get computedShowDownIcon() {
         return !(
@@ -630,7 +630,7 @@ export default class FilterMenu extends LightningElement {
     /**
      * Computed Aria Expanded from dropdown menu.
      *
-     * @return string
+     * @type {string}
      */
     get computedAriaExpanded() {
         return String(this._dropdownVisible); // default value must be a string for the attribute to always be present with a string value
@@ -639,7 +639,7 @@ export default class FilterMenu extends LightningElement {
     /**
      * Computed Button class styling.
      *
-     * @return string
+     * @type {string}
      */
     get computedButtonClass() {
         const isDropdownIcon = !this.computedShowDownIcon;
@@ -699,7 +699,7 @@ export default class FilterMenu extends LightningElement {
     /**
      * Computed Dropdown class styling.
      *
-     * @return string
+     * @type {string}
      */
     get computedDropdownClass() {
         return classSet('slds-dropdown')
@@ -742,7 +742,7 @@ export default class FilterMenu extends LightningElement {
     /**
      * Computed Item List Class styling.
      *
-     * @return string
+     * @type {string}
      */
     get computedItemListClass() {
         return classSet('slds-dropdown__list').add({
@@ -755,6 +755,11 @@ export default class FilterMenu extends LightningElement {
         });
     }
 
+    /**
+     * Display selected items.
+     *
+     * @type {boolean}
+     */
     get showSelectedItems() {
         return !this.hideSelectedItems && this.selectedItems.length > 0;
     }
