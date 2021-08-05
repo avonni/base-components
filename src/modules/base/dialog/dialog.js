@@ -157,6 +157,8 @@ export default class Dialog extends LightningElement {
 
     /**
      * Verify if Title string present.
+     *
+     * @type {boolean}
      */
     get hasStringTitle() {
         return !!this.title;
@@ -193,7 +195,6 @@ export default class Dialog extends LightningElement {
      * Computed Header class styling.
      *
      * @type {string}
-     * @return string
      */
     get computedHeaderClass() {
         return classSet('slds-modal__header')
@@ -207,7 +208,6 @@ export default class Dialog extends LightningElement {
      * Computed Modal class styling
      *
      * @type {string}
-     * @return string
      */
     get computedModalClass() {
         return classSet('slds-modal slds-fade-in-open')
