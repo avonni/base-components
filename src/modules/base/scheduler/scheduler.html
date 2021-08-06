@@ -245,6 +245,7 @@
             name="title"
             class="slds-m-bottom_small"
             autocomplete="off"
+            required
             onchange={handleEventTitleChange}
         ></lightning-input>
         <div class="slds-m-bottom_small">
@@ -254,6 +255,8 @@
                 end-date={selection.occurrence.to}
                 label-end-date={editDialogLabels.to}
                 type="datetime"
+                required
+                variant="label-hidden"
                 onchange={handleEventDateChange}
             ></c-input-date-range>
         </div>
@@ -266,6 +269,7 @@
                 options={allResourcesKeyFields}
                 remove-selected-options
                 dropdown-length="5-items"
+                required
                 onchange={handleEventKeyFieldsChange}
             ></c-combobox>
         </div>
