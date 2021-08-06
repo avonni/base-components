@@ -106,8 +106,20 @@ export default class Scheduler extends LightningElement {
         this.initSchedule();
 
         // Close the popovers on scroll
-        window.addEventListener('scroll', this.hideAllPopovers);
+        window.addEventListener('scroll', this.handleScroll);
     }
+
+    handleScroll = () => {
+        if (this.showDetailPopover) {
+            // Hide the detail popover only if it goes off screen
+            const right = this._draggedEvent.getBoundingClientRect().right;
+            console.log(right);
+            if (right < 0) this.hideDetailPopover();
+        } else {
+            this.hideDetailPopover();
+            this.hideContextMenu();
+        }
+    };
 
     renderedCallback() {
         // On the first render, save the cell width to pass the info to the primitives
@@ -164,7 +176,7 @@ export default class Scheduler extends LightningElement {
     }
 
     disconnectedCallback() {
-        window.removeEventListener('scroll', this.hideAllPopovers);
+        window.removeEventListener('scroll', this.handleScroll);
     }
 
     @api
@@ -1125,11 +1137,11 @@ export default class Scheduler extends LightningElement {
         return { x, y };
     }
 
-    hideAllPopovers = () => {
+    hideAllPopovers() {
         this.hideDetailPopover();
         this.hideContextMenu();
         this.hideEditDialog();
-    };
+    }
 
     hideContextMenu() {
         this.contextMenuActions = [];
@@ -1167,11 +1179,12 @@ export default class Scheduler extends LightningElement {
         }
     }
 
-    handleEventMouseEnter(mouseEvent) {
-        if (this._draggedEvent || this.showContextMenu) return;
+    handleEventMouseEnter(event) {
+        if (this._mouseIsDown || this.showContextMenu) return;
 
-        this.selectEvent(mouseEvent);
+        this.selectEvent(event);
         this.showDetailPopover = true;
+        this._draggedEvent = event.currentTarget;
     }
 
     handleEventMouseDown(mouseEvent) {
@@ -1590,6 +1603,12 @@ export default class Scheduler extends LightningElement {
         }
 
         event.initOccurrences();
+    }
+
+    handleEditSaveKeyDown(event) {
+        if (event.key === 'Tab') {
+            this.template.querySelector('lightning-input').focus();
+        }
     }
 
     dispatchChangeEvent(name, onlyOneOccurrence = false) {

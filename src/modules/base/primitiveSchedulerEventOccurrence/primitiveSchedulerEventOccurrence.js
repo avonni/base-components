@@ -384,7 +384,11 @@ export default class Occurrence extends LightningElement {
     }
 
     handleFocus(event) {
-        this.dispatchCustomEvent('focus', event);
+        this.dispatchCustomEvent('privatefocus', event);
+    }
+
+    handleBlur() {
+        this.dispatchEvent(new CustomEvent('privateblur'));
     }
 
     handleMouseDown(event) {

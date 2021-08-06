@@ -139,7 +139,8 @@
                                 theme={event.theme}
                                 to={occurrence.to}
                                 data-key={occurrence.key}
-                                onfocus={selectEvent}
+                                onprivatefocus={handleEventMouseEnter}
+                                onprivateblur={hideDetailPopover}
                                 onprivatecontextmenu={handleEventContextMenu}
                                 onprivatemouseenter={handleEventMouseEnter}
                                 onprivatemouseleave={hideDetailPopover}
@@ -159,6 +160,7 @@
         if:true={showDetailPopover}
         class="scheduler__event-detail-popover slds-is-fixed slds-popover slds-dropdown slds-dropdown_left"
         role="tooltip"
+        aria-live="polite"
     >
         <div class="slds-popover__body">
             <div class="slds-m-bottom_x-small">
@@ -289,12 +291,14 @@
                     label={editDialogLabels.saveButton}
                     variant="brand"
                     onclick={handleSaveEvent}
+                    onkeyup={handleEditSaveKeyDown}
                 ></lightning-button>
                 <lightning-button-menu
                     if:true={showRecurrenceSaveOptions}
                     label={editDialogLabels.saveButton}
                     menu-alignment="bottom-right"
                     onselect={handleSaveEvent}
+                    onkeydown={handleEditSaveKeyDown}
                 >
                     <lightning-menu-item
                         value="one"
