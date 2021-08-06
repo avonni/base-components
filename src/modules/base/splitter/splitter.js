@@ -342,7 +342,9 @@ export default class Splitter extends LightningElement {
     }
 
     /**
-     * Computed oritentation class based on vertical or horizontal display.
+     * Computed orientation class based on vertical or horizontal display.
+     * 
+     * @type {string}
      */
     get computedOrientationClass() {
         return this._orientation === 'vertical'
@@ -352,6 +354,8 @@ export default class Splitter extends LightningElement {
 
     /**
      * Computed separator class based on vertical or horizontal display.
+     * 
+     * @type {string}
      */
     get computedSeparatorClass() {
         return this._orientation === 'vertical'
@@ -485,7 +489,7 @@ export default class Splitter extends LightningElement {
      *
      * @param {number} delta
      * @param {Element} element
-     * @returns valide
+     * @returns {boolean} valide
      */
     validate(delta, element) {
         let valide = true;

@@ -26,8 +26,8 @@
  * @property {object[]} groups Array of nested item groups.
  * @property {object[]} actions Array of custom actions for this item. These actions will be added to the default actions, if present.
  * @property {object[]} data Array of data, displayed in the item body. The objects must have a these keys:
- * *label
- * *value
+ * * label
+ * * value
  */
 /**
  * @typedef {Object} Action

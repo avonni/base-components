@@ -588,11 +588,11 @@ export default class Slides extends LightningElement {
     }
 
     /**
-    * 
+    * Set the indicator’s type. Valid values include progress-bar, bullets, dynamic-bullets, fractions.
     *
-    * @type {}
+    * @type {string}
     * @public
-    * @default
+    * @default bullets
     */
     @api get indicatorType() {
         return this._indicatorType;
@@ -606,11 +606,11 @@ export default class Slides extends LightningElement {
     }
 
     /**
-    * Set the indicator’s type. Valid values include progress-bar, bullets, dynamic-bullets, fractions.
+    * Position of the indicators. Valid values include top-left, bottom-left, top-right, bottom-right, top-center, bottom-center.
     *
     * @type {string}
     * @public
-    * @default bullet
+    * @default bottom-center
     */
     @api get indicatorPosition() {
         return this._indicatorPosition;
