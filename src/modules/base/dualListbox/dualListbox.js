@@ -924,8 +924,6 @@ export default class DualListbox extends LightningElement {
      * @return string
      */
     get sourceHeight() {
-        console.log('source', this._sourceBoxHeight);
-        console.log('selected', this._selectedBoxHeight);
         if (this.searchEngine) {
             return this._selectedBoxHeight > this._sourceBoxHeight
                 ? `height: ${this._selectedBoxHeight - 48}px`
