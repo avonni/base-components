@@ -365,15 +365,18 @@ export default class Datatable extends LightningElement {
     }
 
     updateData() {
-        this.primitiveDatatableDraftValues.forEach((value) => {
-            let draftId = value.id;
-            let fieldName = Object.keys(value)[0];
-            let draftValue = Object.values(value)[0];
-            const changedRow = this._data.find(
-                (row) => row.id === parseInt(draftId, 10)
-            );
-            changedRow[fieldName] = draftValue;
-        });
+        // this.primitiveDatatableDraftValues.forEach((value) => {
+        //     let draftId = value.id;
+        //     let fieldName = Object.keys(value)[0];
+        //     let draftValue = Object.values(value)[0];
+        //     const changedRow = this._data.find(
+        //         (row) => row.id === parseInt(draftId, 10)
+        //     );
+        //     changedRow[fieldName] = draftValue;
+        // });
+        // const updatedData = this._data.map((row) => {
+        //     console.log(row.id === 6)
+        // })
     }
 
     /**
@@ -399,7 +402,7 @@ export default class Datatable extends LightningElement {
      */
     datatableColumnsWidth() {
         this._columnsWidth = !this.hideTableHeader
-            ? this.primitiveDatatable.columnsWidth()
+            ? this.primitiveDatatable.columnsWidthWithHeader()
             : this.primitiveDatatable.columnsWidthWithoutHeader();
     }
 
@@ -498,6 +501,54 @@ export default class Datatable extends LightningElement {
 
     handleDispatchEvents(event) {
         event.stopPropagation();
+        /**
+         * The event fired when a header action is selected, such as text wrapping, text clipping, or a custom header action.
+         *
+         * @event
+         * @name headeraction
+         * @param {object} action The action definition described in the “Actions” table.
+         * @param {object} columnDefinition The column definition specified in the columns property,
+         * for example, the key-value pairs for label, fieldName, type, typeAttributes, and wrapText.
+         * @public
+         */
+        /**
+         * The event fired when you scroll to the bottom of the table to load more data, until there are no more data to load.
+         *
+         * @event
+         * @name loadmore
+         * @param {boolean} enableInfiniteLoading Specifies whether infinite loading is available on the table.
+         * @param {boolean} isLoading Specifies that data is loading and displays a spinner on the table.
+         * @param {boolean} loadMoreOffset The number of pixels between the bottom of the table and the current scroll position,
+         * used to trigger more data loading.
+         * @public
+         */
+        /**
+         * The event fired when the a table column is resized.
+         *
+         * @event
+         * @name resize
+         * @param {object} columnsWidth The width of all columns, in pixels. For example,
+         * a table with 5 columns of 205px width each at initial render returns [205, 205, 205, 205, 205].
+         * @param {boolean} isUserTriggered Specifies whether the column resize is caused by a user action.
+         * @public
+         */
+        /**
+         * The event fired when the row is selected.
+         *
+         * @event
+         * @name rowselection
+         * @param {object} selectedRows The data in the rows that are selected.
+         * @public
+         */
+        /**
+         * The event fired when a column is sorted.
+         *
+         * @event
+         * @name sort
+         * @param {string} fieldName The fieldName that controls the sorting.
+         * @param {string} sortedDirection The sorting direction. Valid options include 'asc' and 'desc'.
+         * @public
+         */
         this.dispatchEvent(
             new CustomEvent(`${event.type}`, {
                 detail: event.detail,
@@ -510,10 +561,27 @@ export default class Datatable extends LightningElement {
 
     handleCancel(event) {
         this._showStatusBar = false;
+        /**
+        * The event fired when data is saved during inline editing.
+        *
+        * @event
+        * @name cancel
+
+        * @public
+        * @cancelable
+        */
         this.primitiveDatatable.cancel(event);
     }
 
     handleSave(event) {
+        /**
+         * The event fired when data is saved during inline editing.
+         *
+         * @event
+         * @name save
+         * @param {object} draftValues The current value that's provided during inline editing.
+         * @public
+         */
         this.primitiveDatatable.save(event);
     }
 }

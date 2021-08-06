@@ -417,7 +417,7 @@ export default class PrimitiveDatatable extends LightningDatatable {
         this.computeEditableOption();
 
         this.columnsWidthWithoutHeader();
-        this.columnsWidth();
+        this.columnsWidthWithHeader();
         this.tableWidth();
         this.unscrollableMainDatatable();
 
@@ -434,7 +434,6 @@ export default class PrimitiveDatatable extends LightningDatatable {
         editCells.forEach((cell) => {
             cell.classList.add('slds-cell-edit');
         });
-        console.log(this.state);
     }
 
     disconnectedCallback() {
@@ -459,14 +458,20 @@ export default class PrimitiveDatatable extends LightningDatatable {
         this.computeEditableOption();
     }
 
+    /**
+     * Gets the columns width of the datatable if hide-table-header is false.
+     */
     @api
-    columnsWidth() {
+    columnsWidthWithHeader() {
         this._columnsWidth = JSON.parse(
             JSON.stringify(normalizeArray(super.widthsData.columnWidths))
         );
         return this._columnsWidth;
     }
 
+    /**
+     * Gets the columns width of the datatable if hide-table-header is true.
+     */
     @api
     columnsWidthWithoutHeader() {
         let columnsWidthWithoutHeader = [];
@@ -480,6 +485,9 @@ export default class PrimitiveDatatable extends LightningDatatable {
         return columnsWidthWithoutHeader;
     }
 
+    /**
+     * Verifies if a column is editable or not.
+     */
     @api
     columnsEditable() {
         this._columnsEditable = this.columns.map((column) => {
@@ -488,11 +496,17 @@ export default class PrimitiveDatatable extends LightningDatatable {
         return this._columnsEditable;
     }
 
+    /**
+     * Verifies if one of the column is editable or not.
+     */
     @api
     isDatatableEditable() {
         return this._columnsEditable.filter(Boolean).length;
     }
 
+    /**
+     * Gets the width of the datatable.
+     */
     @api
     tableWidth() {
         this._tableWidth = JSON.parse(
@@ -501,11 +515,17 @@ export default class PrimitiveDatatable extends LightningDatatable {
         return this._tableWidth;
     }
 
+    /**
+     * Returns the draft values of changed data in the datatable.
+     */
     @api
     primitiveDatatableDraftValues() {
         return this.draftValues;
     }
 
+    /**
+     * Makes the primitive datatable unscrollable since it is the main datatable that is scrollable.
+     */
     unscrollableMainDatatable() {
         const mainDatatable = this.template.querySelector(
             '.slds-table_header-fixed_container'
@@ -574,6 +594,9 @@ export default class PrimitiveDatatable extends LightningDatatable {
         super.updateRowsState(this.state);
     };
 
+    /**
+     * Dispatches event from the lighnting-datatable.
+     */
     handleDispatchEvents(event) {
         event.stopPropagation();
         this.dispatchEvent(
@@ -586,6 +609,12 @@ export default class PrimitiveDatatable extends LightningDatatable {
         );
     }
 
+    /**
+     *
+     * @param {Object} state - Datatable state.
+     * @param {Object} changes - The internal representation of changes in a row.
+     * @returns {Object} - the list of customer changes in a row
+     */
     getColumnsChangesForCustomer(state, changes) {
         return Object.keys(changes).reduce((result, colKey) => {
             const columns = state.columns;
@@ -597,6 +626,12 @@ export default class PrimitiveDatatable extends LightningDatatable {
         }, {});
     }
 
+    /**
+     *
+     * @param {Object} state - Datatable state
+     * @param {Object} changes - The internal representation of changes in a row
+     * @returns {Object} - The formatted data for draft values.
+     */
     getChangesForCustomer(state, changes) {
         const keyField = state.keyField;
         return Object.keys(changes).reduce((result, rowKey) => {
@@ -609,15 +644,22 @@ export default class PrimitiveDatatable extends LightningDatatable {
                 rowChanges[keyField] = rowKey;
                 result.push(rowChanges);
             }
+            console.log(result);
             return result;
         }, []);
     }
 
+    /**
+     * Calls the save method of the lightning datatable.
+     */
     @api
     save(event) {
         super.handleInlineEditSave(event);
     }
 
+    /**
+     * Calls the cancel method of the lightning datatable.
+     */
     @api
     cancel(event) {
         super.handleInlineEditCancel(event);
