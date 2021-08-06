@@ -351,14 +351,19 @@ export default class Occurrence extends LightningElement {
     }
 
     dispatchCustomEvent(name, event) {
+        const x =
+            event.clientX || event.currentTarget.getBoundingClientRect().x;
+        const y =
+            event.clientY || event.currentTarget.getBoundingClientRect().bottom;
+
         this.dispatchEvent(
             new CustomEvent(name, {
                 detail: {
                     eventName: this.eventName,
                     key: this.key,
                     from: this.from,
-                    x: event.clientX,
-                    y: event.clientY
+                    x,
+                    y
                 }
             })
         );
@@ -399,5 +404,13 @@ export default class Occurrence extends LightningElement {
                 }
             })
         );
+    }
+
+    handleKeyDown(event) {
+        const key = event.key;
+        if (key === 'Enter' || key === ' ' || key === 'Spacebar') {
+            event.preventDefault();
+            this.handleContextMenu(event);
+        }
     }
 }
