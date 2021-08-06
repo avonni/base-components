@@ -500,6 +500,48 @@ export default class Scheduler extends LightningElement {
             .toString();
     }
 
+    @api
+    newEvent(x, y, showDialog = true) {
+        this.hideDetailPopover();
+        this.hideEditDialog();
+
+        let keyFields, from, to;
+        if (x && y) {
+            const row = this.getRowFromPosition(y);
+            const cell = this.getCellFromPosition(row, x);
+            keyFields = [row.dataset.key];
+            from = Number(cell.dataset.start);
+            to = Number(cell.dataset.end);
+        } else {
+            keyFields = [this.computedRows[0].key];
+            from = this.smallestHeader.columns[0].start;
+            to = this.smallestHeader.columns[0].end;
+        }
+
+        const event = {
+            keyFields,
+            title: this.editDialogLabels.newEventTitle,
+            from,
+            to
+        };
+        this.updateEventDefaults(event);
+        const computedEvent = new Event(event);
+        this.selection = {
+            event: computedEvent,
+            occurrences: computedEvent.occurrences,
+            occurrence: computedEvent.occurrences[0],
+            draftValues: {},
+            x,
+            y,
+            newEvent: true
+        };
+
+        if (showDialog) {
+            this.computedEvents.push(computedEvent);
+            this.showEditDialog = true;
+        }
+    }
+
     initSchedule() {
         this.initHeaders();
         this.initEvents();
@@ -962,45 +1004,25 @@ export default class Scheduler extends LightningElement {
         popover.style.left = `${x}px`;
     }
 
-    selectEvent(mouseEvent, newEvent = false) {
-        let computedEvent;
-        let occurrences = [];
-        let occurrence;
+    selectEvent(mouseEvent) {
+        const { eventName, from } = mouseEvent.detail;
 
-        if (newEvent) {
-            const row = this.getRowFromPosition(mouseEvent.clientY);
-            const cell = this.getCellFromPosition(row, mouseEvent.clientX);
-
-            const event = {
-                keyFields: [row.dataset.key],
-                title: this.editDialogLabels.newEventTitle,
-                from: Number(cell.dataset.start),
-                to: Number(cell.dataset.end)
-            };
-            this.updateEventDefaults(event);
-            computedEvent = new Event(event);
-            occurrences = computedEvent.occurrences;
-            occurrence = occurrences[0];
-        } else if (mouseEvent.detail) {
-            const { eventName, from } = mouseEvent.detail;
-            computedEvent = this.computedEvents.find(
-                (evt) => evt.name === eventName
-            );
-            occurrences = computedEvent.occurrences.filter(
-                (occ) => occ.from.ts === from.ts
-            );
-            const key = mouseEvent.target.dataset.key;
-            occurrence = occurrences.find((occ) => occ.key === key);
-        }
+        const computedEvent = this.computedEvents.find(
+            (evt) => evt.name === eventName
+        );
+        const occurrences = computedEvent.occurrences.filter(
+            (occ) => occ.from.ts === from.ts
+        );
+        const key = mouseEvent.target.dataset.key;
+        const occurrence = occurrences.find((occ) => occ.key === key);
 
         this.selection = {
             event: computedEvent,
             occurrences,
             occurrence,
-            x: mouseEvent.detail ? mouseEvent.detail.x : mouseEvent.clientX,
-            y: mouseEvent.detail ? mouseEvent.detail.y : mouseEvent.clientY,
-            draftValues: {},
-            newEvent
+            x: mouseEvent.detail.x,
+            y: mouseEvent.detail.y,
+            draftValues: {}
         };
     }
 
@@ -1139,7 +1161,7 @@ export default class Scheduler extends LightningElement {
             target.tagName !== 'C-PRIMITIVE-SCHEDULER-EVENT-OCCURRENCE' ||
             target.disabled
         ) {
-            this.selectEvent(mouseEvent, true);
+            this.newEvent(mouseEvent.clientX, mouseEvent.clientY, false);
         } else {
             this.initDraggedEventState();
         }
@@ -1327,7 +1349,7 @@ export default class Scheduler extends LightningElement {
             this.hideAllPopovers();
             this.contextMenuActions = this.computedContextMenuEmptySpot;
             this.showContextMenu = true;
-            this.selectEvent(mouseEvent, true);
+            this.newEvent(mouseEvent.clientX, mouseEvent.clientY, false);
         }
     }
 
@@ -1374,9 +1396,7 @@ export default class Scheduler extends LightningElement {
             return;
         }
 
-        this.selectEvent(mouseEvent, true);
-        this.computedEvents.push(this.selection.event);
-        this.showEditDialog = true;
+        this.selectEvent(mouseEvent.clientX, mouseEvent.clientY);
     }
 
     handleEventDoubleClick(event) {
