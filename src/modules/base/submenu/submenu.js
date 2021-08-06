@@ -35,6 +35,12 @@ import { normalizeBoolean } from 'c/utilsPrivate';
 
 const DEFAULT_TAB_INDEX = '0';
 
+/**
+ * @class
+ * @descriptor avonni-submenu
+ * @storyId example-submenu--base
+ * @public
+ */
 export default class Submenu extends LightningElement {
     /**
      * The keyboard shortcut for the menu item.

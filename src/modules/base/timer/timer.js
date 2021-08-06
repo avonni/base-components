@@ -240,6 +240,8 @@ export default class Timer extends LightningElement {
 
     /**
      * Return the time format to display based on inputted format ( hh, mm, ss ).
+     *
+     * @type {string|number}
      */
     get time() {
         if (this.format === 'hh:mm:ss') {

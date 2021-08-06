@@ -33,6 +33,12 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean } from 'c/utilsPrivate';
 
+/**
+ * @class
+ * @descriptor avonni-splitter-pane
+ * @storyId example-splitter--base
+ * @public
+ */
 export default class SplitterPane extends LightningElement {
     _collapsed = false;
     _collapsedSize;

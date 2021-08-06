@@ -37,6 +37,12 @@ import { classSet } from 'c/utils';
 const DEFAULT_SHRINK_ICON_NAME = 'utility:chevrondown';
 const DEFAULT_EXPAND_ICON_NAME = 'utility:chevronright';
 
+/**
+ * @class
+ * @descriptor avonni-summary-detail
+ * @storyId example-summary-detail--base
+ * @public
+ */
 export default class SummaryDetail extends LightningElement {
     /**
      * The title can include text, and is displayed in the header. To include additional markup or another component, use the title slot.
