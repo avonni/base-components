@@ -126,6 +126,20 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         },
+        recurrentEditModes: {
+            name: 'recurrent-edit-modes',
+            control: {
+                type: 'object'
+            },
+            defaultValue: ['all', 'one'],
+            description:
+                'Allowed edition modes for recurrent events. Available options are: - "all": All recurrent event occurrences will be updated when a change is made to one occurrence. - "one": Only the selected occurrence will be updated when a change is made.',
+            table: {
+                type: { summary: 'string[]' },
+                defaultValue: { summary: ['all', 'one'] },
+                category: 'Events'
+            }
+        },
         availableTimeFrames: {
             name: 'available-time-frames',
             control: {
@@ -293,8 +307,12 @@ export default {
                 to: 'To',
                 resources: 'Resources',
                 saveButton: 'Save',
+                saveOneRecurrent: 'Only this event',
+                saveAllRecurrent: 'All events',
+                editRecurrent: 'Edit recurring event.',
                 cancelButton: 'Cancel',
-                deleteButton: 'Delete'
+                deleteButton: 'Delete',
+                newEventTitle: 'New event'
             },
             description: 'Labels of the elements in the event edit dialog.',
             table: {
@@ -307,8 +325,12 @@ export default {
                         to: 'To',
                         resources: 'Resources',
                         saveButton: 'Save',
+                        saveOneRecurrent: 'Only this event',
+                        saveAllRecurrent: 'All events',
+                        editRecurrent: 'Edit recurring event.',
                         cancelButton: 'Cancel',
-                        deleteButton: 'Delete'
+                        deleteButton: 'Delete',
+                        newEventTitle: 'New event'
                     }`
                 },
                 category: 'Events'

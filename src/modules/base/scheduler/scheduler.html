@@ -127,12 +127,17 @@
                                 column-width={cellWidth}
                                 disabled={event.disabled}
                                 event-name={event.name}
+                                from={occurrence.from}
                                 icon-name={event.iconName}
+                                key-fields={occurrence.keyFields}
                                 occurrence={occurrence}
+                                occurrence-key={occurrence.key}
                                 read-only={readOnly}
+                                row-key={occurrence.rowKey}
                                 rows={computedRows}
-                                title={event.title}
+                                title={occurrence.title}
                                 theme={event.theme}
+                                to={occurrence.to}
                                 data-key={occurrence.key}
                                 onfocus={selectEvent}
                                 onprivatecontextmenu={handleEventContextMenu}
@@ -157,7 +162,7 @@
     >
         <div class="slds-popover__body">
             <div class="slds-m-bottom_x-small">
-                <strong>{selection.event.title}</strong>
+                <strong>{selection.occurrence.title}</strong>
             </div>
             <div class="slds-grid">
                 <lightning-icon
@@ -196,6 +201,36 @@
         onprivateselect={handleActionSelect}
     ></c-primitive-dropdown-menu>
 
+    <!-- Recurrent event edit choice dialog -->
+    <c-dialog
+        if:true={showRecurrenceDialog}
+        show-dialog={showRecurrenceDialog}
+        title={editDialogTitle}
+        size="small"
+        onclosedialog={handleCloseRecurrenceDialog}
+    >
+        <p class="slds-m-bottom_medium">{editDialogLabels.editRecurrent}</p>
+        <lightning-button
+            class="slds-m-right_xx-small"
+            label={editDialogLabels.cancelButton}
+            onclick={handleCloseRecurrenceDialog}
+        ></lightning-button>
+        <lightning-button
+            class="slds-m-right_xx-small"
+            label={editDialogLabels.saveOneRecurrent}
+            variant="brand"
+            value="one"
+            onclick={handleSaveEvent}
+        ></lightning-button>
+        <lightning-button
+            class="slds-m-right_xx-small"
+            label={editDialogLabels.saveAllRecurrent}
+            variant="brand"
+            value="all"
+            onclick={handleSaveEvent}
+        ></lightning-button>
+    </c-dialog>
+
     <!-- Event edit dialog -->
     <c-dialog
         if:true={showEditDialog}
@@ -206,7 +241,7 @@
     >
         <lightning-input
             label={editDialogLabels.title}
-            value={selection.event.title}
+            value={selection.occurrence.title}
             name="title"
             class="slds-m-bottom_small"
             autocomplete="off"
@@ -227,7 +262,7 @@
                 allow-search
                 is-multi-select
                 label={editDialogLabels.resources}
-                value={selection.event.keyFields}
+                value={selection.occurrence.keyFields}
                 options={allResourcesKeyFields}
                 remove-selected-options
                 dropdown-length="5-items"
@@ -246,10 +281,26 @@
                     onclick={deleteSelectedEvent}
                 ></lightning-button>
                 <lightning-button
+                    if:false={showRecurrenceSaveOptions}
                     label={editDialogLabels.saveButton}
                     variant="brand"
-                    onclick={handleSaveEditDialog}
+                    onclick={handleSaveEvent}
                 ></lightning-button>
+                <lightning-button-menu
+                    if:true={showRecurrenceSaveOptions}
+                    label={editDialogLabels.saveButton}
+                    menu-alignment="bottom-right"
+                    onselect={handleSaveEvent}
+                >
+                    <lightning-menu-item
+                        value="one"
+                        label={editDialogLabels.saveOneRecurrent}
+                    ></lightning-menu-item>
+                    <lightning-menu-item
+                        value="all"
+                        label={editDialogLabels.saveAllRecurrent}
+                    ></lightning-menu-item>
+                </lightning-button-menu>
             </lightning-button-group>
         </div>
     </c-dialog>

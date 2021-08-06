@@ -68,14 +68,15 @@ export default class Row {
     initEvents() {
         const events = this.events;
         events.forEach((event) => {
-            this.addEvent(event);
+            this.addEventToColumns(event);
         });
 
         this.updateHeightAndPositions();
     }
 
-    addEvent(event) {
+    addEventToColumns(event) {
         const columns = this.columns;
+        event.offsetTop = 0;
 
         // Find the column where the event starts
         let i = columns.findIndex((column) => {
@@ -85,7 +86,6 @@ export default class Row {
         if (i > -1) {
             // Add the event to every column it crosses
             while (i < columns.length && event.to > columns[i].start) {
-                event.offsetTop = 0;
                 columns[i].events.push(event);
                 columns[i].events = columns[i].events.sort(
                     (a, b) => a.from - b.from

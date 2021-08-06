@@ -41,6 +41,7 @@ import {
     containsAllowedDateTimes,
     dateTimeObjectFrom
 } from './dateUtils';
+import { DateTime } from 'c/luxon';
 import { RECURRENCES, EVENTS_THEMES } from './defaults';
 
 /**
@@ -115,7 +116,8 @@ export default class Event {
         return this._from;
     }
     set from(value) {
-        this._from = dateTimeObjectFrom(value);
+        this._from =
+            value instanceof DateTime ? value : dateTimeObjectFrom(value);
         this.initOccurrences();
     }
 
@@ -156,7 +158,8 @@ export default class Event {
         return this._to;
     }
     set to(value) {
-        this._to = dateTimeObjectFrom(value);
+        this._to =
+            value instanceof DateTime ? value : dateTimeObjectFrom(value);
         this.initOccurrences();
     }
 
@@ -231,13 +234,22 @@ export default class Event {
                 const occurrence = {
                     from: from,
                     key: `${this.name}-${keyField}-${this.occurrences.length}`,
+                    keyFields: keyFields,
+                    offsetTop: 0,
                     rowKey: keyField,
-                    to: computedTo,
-                    offsetTop: 0
+                    title: this.title,
+                    to: computedTo
                 };
                 this.occurrences.push(occurrence);
             });
         }
+    }
+
+    removeOccurrence(occurrence) {
+        const index = this.occurrences.findIndex(
+            (occ) => occ.key === occurrence.key
+        );
+        this.occurrences.splice(index, 1);
     }
 
     computeOccurenceEnd(start) {

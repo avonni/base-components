@@ -29,45 +29,6 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-const EVENTS_DATES_FORMAT = {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit'
-};
-
-const EVENTS_THEMES = {
-    valid: ['default', 'transparent', 'line', 'hollow', 'rounded'],
-    default: 'default'
-};
-
-const EVENTS_PALETTES = {
-    valid: [
-        'aurora',
-        'bluegrass',
-        'dusk',
-        'fire',
-        'heat',
-        'lake',
-        'mineral',
-        'nightfall',
-        'ocean',
-        'pond',
-        'sunrise',
-        'water',
-        'watermelon',
-        'wildflowers'
-    ],
-    default: 'aurora'
-};
-
-const EVENTS_HEIGHT = 36;
-
-const THEMES = {
-    valid: ['default', 'inverse'],
-    default: 'default'
-};
 
 const DEFAULT_AVAILABLE_TIME_FRAMES = ['00:00-23:59'];
 const DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK = [0, 1, 2, 3, 4, 5, 6];
@@ -103,10 +64,50 @@ const DEFAULT_EDIT_DIALOG_LABELS = {
     to: 'To',
     resources: 'Resources',
     saveButton: 'Save',
+    saveOneRecurrent: 'Only this event',
+    saveAllRecurrent: 'All events',
+    editRecurrent: 'Edit recurring event.',
     cancelButton: 'Cancel',
     deleteButton: 'Delete',
     newEventTitle: 'New Event'
 };
+
+const EDIT_MODES = ['all', 'one'];
+
+const EVENTS_DATES_FORMAT = {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit'
+};
+
+const EVENTS_THEMES = {
+    valid: ['default', 'transparent', 'line', 'hollow', 'rounded'],
+    default: 'default'
+};
+
+const EVENTS_PALETTES = {
+    valid: [
+        'aurora',
+        'bluegrass',
+        'dusk',
+        'fire',
+        'heat',
+        'lake',
+        'mineral',
+        'nightfall',
+        'ocean',
+        'pond',
+        'sunrise',
+        'water',
+        'watermelon',
+        'wildflowers'
+    ],
+    default: 'aurora'
+};
+
+const EVENTS_HEIGHT = 36;
 
 const PALETTES = {
     aurora: ['#3296ed', '#77b9f2', '#9d53f2', '#c398f5', '#26aba4', '#4ed4cd'],
@@ -153,8 +154,6 @@ const PALETTES = {
     ]
 };
 
-const UNITS = ['minute', 'hour', 'day', 'week', 'month', 'year'];
-
 const RECURRENCES = [
     {
         name: 'daily',
@@ -174,7 +173,15 @@ const RECURRENCES = [
     }
 ];
 
+const THEMES = {
+    valid: ['default', 'inverse'],
+    default: 'default'
+};
+
+const UNITS = ['minute', 'hour', 'day', 'week', 'month', 'year'];
+
 export {
+    EDIT_MODES,
     EVENTS_DATES_FORMAT,
     EVENTS_HEIGHT,
     EVENTS_THEMES,

@@ -38,17 +38,24 @@ import { normalizeArray, normalizeBoolean } from 'c/utilsPrivate';
 export default class Occurrence extends LightningElement {
     @api color;
     @api eventName;
+    @api from;
     @api iconName;
-    @api title;
+    @api occurrenceKey;
+    @api rowKey;
     @api theme;
+    @api title;
+    @api to;
 
     _columnDuration = 0;
     _columns = [];
     _columnWidth = 0;
     _disabled = false;
+    _from;
+    _keyFields = [];
     _occurrence = {};
     _readOnly = false;
     _rows = [];
+    _to;
     _x = 0;
     _y = 0;
 
@@ -96,11 +103,19 @@ export default class Occurrence extends LightningElement {
     }
 
     @api
+    get keyFields() {
+        return this._keyFields;
+    }
+    set keyFields(value) {
+        this._keyFields = normalizeArray(value);
+    }
+
+    @api
     get occurrence() {
         return this._occurrence;
     }
     set occurrence(value) {
-        this._occurrence = value || {};
+        this._occurrence = typeof value === 'object' ? value : {};
     }
 
     @api
@@ -153,16 +168,12 @@ export default class Occurrence extends LightningElement {
         return this.color || this.rowColor;
     }
 
-    get from() {
-        return this.occurrence.from;
-    }
-
     get hostElement() {
         return this.template.host;
     }
 
     get key() {
-        return this.occurrence.key;
+        return this.occurrenceKey;
     }
 
     get offsetTop() {
@@ -174,10 +185,6 @@ export default class Occurrence extends LightningElement {
             (computedRow) => computedRow.key === this.rowKey
         );
         return row && row.color;
-    }
-
-    get rowKey() {
-        return this.occurrence.rowKey;
     }
 
     get showTitle() {
@@ -207,10 +214,6 @@ export default class Occurrence extends LightningElement {
         }
 
         return style;
-    }
-
-    get to() {
-        return this.occurrence.to;
     }
 
     get transparentColor() {
@@ -353,6 +356,7 @@ export default class Occurrence extends LightningElement {
                 detail: {
                     eventName: this.eventName,
                     key: this.key,
+                    from: this.from,
                     x: event.clientX,
                     y: event.clientY
                 }
@@ -388,6 +392,7 @@ export default class Occurrence extends LightningElement {
                 detail: {
                     eventName: this.eventName,
                     key: this.key,
+                    from: this.from,
                     x: event.clientX,
                     y: event.clientY,
                     side: resize

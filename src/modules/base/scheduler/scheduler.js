@@ -44,6 +44,7 @@ import {
     numberOfUnitsBetweenDates
 } from './dateUtils';
 import {
+    EDIT_MODES,
     EVENTS_DATES_FORMAT,
     EVENTS_THEMES,
     EVENTS_PALETTES,
@@ -77,6 +78,7 @@ export default class Scheduler extends LightningElement {
     _eventsTheme = EVENTS_THEMES.default;
     _headers = [];
     _readOnly = false;
+    _recurrentEditModes = EDIT_MODES;
     _rows = [];
     _rowsKeyField;
     _start = dateTimeObjectFrom(DEFAULT_START_DATE);
@@ -98,6 +100,7 @@ export default class Scheduler extends LightningElement {
     showContextMenu = false;
     showEditDialog = false;
     showDetailPopover = false;
+    showRecurrenceDialog = false;
 
     connectedCallback() {
         this.initSchedule();
@@ -324,6 +327,21 @@ export default class Scheduler extends LightningElement {
     }
 
     @api
+    get recurrentEditModes() {
+        return this._recurrentEditModes;
+    }
+    set recurrentEditModes(value) {
+        const modes = normalizeArray(value);
+        this._recurrentEditModes = modes.filter((mode) => {
+            return EDIT_MODES.includes(mode);
+        });
+
+        if (!this._recurrentEditModes.length) {
+            this._recurrentEditModes = EDIT_MODES;
+        }
+    }
+
+    @api
     get rows() {
         return this._rows;
     }
@@ -453,6 +471,20 @@ export default class Scheduler extends LightningElement {
 
     get detailPopover() {
         return this.template.querySelector('.scheduler__event-detail-popover');
+    }
+
+    get onlyOccurrenceEditAllowed() {
+        return (
+            this.recurrentEditModes.length === 1 &&
+            this.recurrentEditModes[0] === 'one'
+        );
+    }
+
+    get showRecurrenceSaveOptions() {
+        return (
+            this.recurrentEditModes.length > 1 &&
+            this.selection.event.recurrence
+        );
     }
 
     get tableClass() {
@@ -816,10 +848,25 @@ export default class Scheduler extends LightningElement {
         });
     }
 
+    updateOccurrencesPosition() {
+        const eventOccurrences = this.template.querySelectorAll(
+            'c-primitive-scheduler-event-occurrence'
+        );
+        eventOccurrences.forEach((occurrence) => {
+            if (occurrence.disabled) {
+                occurrence.updateHeight();
+            }
+            occurrence.updatePosition();
+        });
+    }
+
     updateRowsHeight() {
         this.computedRows.forEach((row) => {
             row.updateHeightAndPositions();
         });
+
+        this.updateRowsStyle();
+        this.updateOccurrencesPosition();
     }
 
     getCellFromPosition(row, x) {
@@ -916,7 +963,9 @@ export default class Scheduler extends LightningElement {
     }
 
     selectEvent(mouseEvent, newEvent = false) {
-        let computedEvent, occurrence;
+        let computedEvent;
+        let occurrences = [];
+        let occurrence;
 
         if (newEvent) {
             const row = this.getRowFromPosition(mouseEvent.clientY);
@@ -930,20 +979,24 @@ export default class Scheduler extends LightningElement {
             };
             this.updateEventDefaults(event);
             computedEvent = new Event(event);
+            occurrences = computedEvent.occurrences;
+            occurrence = occurrences[0];
         } else if (mouseEvent.detail) {
-            const { eventName, key } = mouseEvent.detail;
+            const { eventName, from } = mouseEvent.detail;
             computedEvent = this.computedEvents.find(
                 (evt) => evt.name === eventName
             );
-            occurrence = computedEvent.occurrences.find(
-                (occ) => occ.key === key
+            occurrences = computedEvent.occurrences.filter(
+                (occ) => occ.from.ts === from.ts
             );
+            const key = mouseEvent.target.dataset.key;
+            occurrence = occurrences.find((occ) => occ.key === key);
         }
 
         this.selection = {
             event: computedEvent,
-            occurrence:
-                occurrence || (computedEvent && computedEvent.occurrences[0]),
+            occurrences,
+            occurrence,
             x: mouseEvent.detail ? mouseEvent.detail.x : mouseEvent.clientX,
             y: mouseEvent.detail ? mouseEvent.detail.y : mouseEvent.clientY,
             draftValues: {},
@@ -969,59 +1022,38 @@ export default class Scheduler extends LightningElement {
         }
 
         // Add the occurrence to the row with the updated start/end date
-        row.addEvent(occurrence);
+        row.events.push(occurrence);
+        row.addEventToColumns(occurrence);
         row.resetEventsOffsetTop();
         this.updateRowsHeight();
-        this.updateRowsStyle();
-        this.updateOccurrencesPosition();
-    }
-
-    updateOccurrencesPosition() {
-        const eventOccurrences = this.template.querySelectorAll(
-            'c-primitive-scheduler-event-occurrence'
-        );
-        eventOccurrences.forEach((occurrence) => {
-            if (occurrence.disabled) {
-                occurrence.updateHeight(occurrence);
-            }
-            occurrence.updatePosition();
-        });
     }
 
     dragEventTo(row, cell) {
-        const event = this.selection.event;
-        const draftValues = this.selection.draftValues;
+        const { occurrence, draftValues } = this.selection;
 
         // Update the start and end date
-        const duration = event.computedTo - event.computedFrom;
+        const duration = occurrence.to - occurrence.from;
         const start = dateTimeObjectFrom(Number(cell.dataset.start));
-        event.from = start;
-        event.to = addToDate(start, 'millisecond', duration);
-
-        draftValues.from = event.from.toUTC().toISO();
-        draftValues.to = event.to.toUTC().toISO();
+        draftValues.from = start.toUTC().toISO();
+        draftValues.to = addToDate(start, 'millisecond', duration)
+            .toUTC()
+            .toISO();
 
         // Update the rows
         const rowKey = row.dataset.key;
-        const previousRowKey = this.selection.occurrence.rowKey;
+        const previousRowKey = occurrence.rowKey;
 
         if (previousRowKey !== rowKey) {
-            // Remove the old row key from the event
-            const keyFieldIndex = event.keyFields.findIndex(
+            const keyFieldIndex = occurrence.keyFields.findIndex(
                 (key) => key === previousRowKey
             );
-            event.keyFields.splice(keyFieldIndex, 1);
+            draftValues.keyFields = [...occurrence.keyFields];
+            draftValues.keyFields.splice(keyFieldIndex, 1);
 
-            // If it's not already present, add the new row key to the event
-            if (event.keyFields.indexOf(rowKey) < 0) {
-                event.keyFields.push(rowKey);
+            if (!occurrence.keyFields.includes(rowKey)) {
+                draftValues.keyFields.push(rowKey);
             }
-
-            draftValues.keyFields = event.keyFields;
         }
-
-        this.initEventOccurrences();
-        this.initRows();
     }
 
     deleteSelectedEvent() {
@@ -1088,6 +1120,10 @@ export default class Scheduler extends LightningElement {
 
     hideEditDialog() {
         this.showEditDialog = false;
+    }
+
+    hideRecurrenceDialog() {
+        this.showRecurrenceDialog = false;
     }
 
     handleMouseDown(mouseEvent) {
@@ -1205,6 +1241,7 @@ export default class Scheduler extends LightningElement {
         if (this.selection && this.selection.isMoving) {
             // Get the new position
             const { mouseX, eventLeft, eventRight } = this._initialState;
+            const { draftValues, newEvent, event } = this.selection;
             const side = this._resizeSide;
             const position = this.normalizeMousePosition(
                 mouseEvent.clientX,
@@ -1219,34 +1256,36 @@ export default class Scheduler extends LightningElement {
             const rowElement = this.getRowFromPosition(y);
             const cellElement = this.getCellFromPosition(rowElement, x);
 
-            // Update the event
-            if (side) {
-                const { event, draftValues } = this.selection;
-
-                if (side === 'right') {
-                    // Update the end date if the event was resized from the right
-                    event.to = dateTimeObjectFrom(
-                        Number(cellElement.dataset.end)
-                    );
-                    draftValues.to = event.to.toUTC().toISO();
-                } else if (side === 'left') {
-                    // Update the start date if the event was resized from the left
-                    event.from = Number(cellElement.dataset.start);
-                    draftValues.from = event.from.toUTC().toISO();
-                }
-
-                this.initRows();
-                this._updateOccurrences = true;
-            } else {
-                this.dragEventTo(rowElement, cellElement);
+            // Update the draft values
+            const to = dateTimeObjectFrom(Number(cellElement.dataset.end));
+            const from = dateTimeObjectFrom(Number(cellElement.dataset.start));
+            switch (side) {
+                case 'right':
+                    draftValues.to = to.toUTC().toISO();
+                    break;
+                case 'left':
+                    draftValues.from = from.toUTC().toISO();
+                    break;
+                default:
+                    this.dragEventTo(rowElement, cellElement);
+                    break;
             }
 
-            if (this.selection.newEvent) {
+            if (newEvent) {
                 this.showEditDialog = true;
                 this.selection.isMoving = false;
             } else {
-                this.dispatchChangeEvent(this.selection.event.name);
-                this.selection = undefined;
+                if (this.showRecurrenceSaveOptions) {
+                    this.showRecurrenceDialog = true;
+                    return;
+                } else if (event.recurrence && this.onlyOccurrenceEditAllowed) {
+                    this.saveEventOccurrence();
+                } else {
+                    this.saveEvent();
+                }
+                this.initRows();
+                this._updateOccurrences = true;
+                this.cleanSelection();
             }
         } else if (this.selection) {
             this.cleanSelection();
@@ -1371,11 +1410,133 @@ export default class Scheduler extends LightningElement {
         this.hideEditDialog();
     }
 
-    handleSaveEditDialog() {
-        const { event, newEvent } = this.selection;
+    handleCloseRecurrenceDialog() {
+        if (this._resizeSide) {
+            const row = this._initialState.row;
+            let x;
+            if (this._resizeSide === 'left') {
+                x = this._initialState.eventLeft;
+            } else {
+                x = this._initialState.eventRight;
+            }
+            const initialCell = this.getCellFromPosition(row, x);
+            this.resizeEventTo(initialCell);
+        }
+        this.cleanDraggedElement();
+        this.cleanSelection();
+        this.hideRecurrenceDialog();
+    }
 
-        // Set the event values
-        const draftValues = this.selection.draftValues;
+    handleSaveEvent(mouseEvent) {
+        const { event, occurrence } = this.selection;
+        const recurrentChange =
+            mouseEvent.detail.value || mouseEvent.currentTarget.value;
+
+        if (
+            recurrentChange === 'one' ||
+            (event.recurrence && this.onlyOccurrenceEditAllowed)
+        ) {
+            this.saveEventOccurrence();
+        } else {
+            // Update the event with the selected occurrence values,
+            // in case the selected occurrence had already been edited
+            if (occurrence.from !== event.from) event._from = occurrence.from;
+            if (occurrence.to !== event.to) event._to = occurrence.to;
+            if (occurrence.title !== event.title)
+                event.title = occurrence.title;
+            if (occurrence.keyFields !== event.keyFields)
+                event.keyFields = occurrence.keyFields;
+
+            // Update the event with the draft values from the edit form
+            this.saveEvent();
+        }
+
+        this.initRows();
+        this._updateOccurrences = true;
+        this.cleanDraggedElement();
+        this.cleanSelection();
+
+        if (this.showRecurrenceDialog) {
+            this.hideRecurrenceDialog();
+        } else {
+            this.hideEditDialog();
+        }
+    }
+
+    saveEventOccurrence() {
+        const { event, occurrences, draftValues } = this.selection;
+        const updatedKeyFields = normalizeArray(draftValues.keyFields);
+        const keyFields = updatedKeyFields.length
+            ? updatedKeyFields
+            : event.keyFields;
+        const processedKeyFields = [...keyFields];
+        const newOccurrences = [];
+
+        occurrences.forEach((occurrence) => {
+            // Remove the old occurrence from the row
+            const rowKey = occurrence.rowKey;
+            const row = this.getRowFromKey(rowKey);
+            row.removeEvent(occurrence);
+
+            // If the occurrence row key is still included in the key fields
+            const keyField = processedKeyFields.indexOf(rowKey);
+            if (keyField > -1) {
+                // Update the occurrence with the new values
+                Object.entries(draftValues).forEach((entry) => {
+                    const [key, value] = entry;
+
+                    if (value.length) {
+                        if (key === 'from' || key === 'to') {
+                            // Convert the ISO dates into DateTime objects
+                            occurrence[key] = dateTimeObjectFrom(value);
+                        } else {
+                            occurrence[key] = value;
+                        }
+                    }
+                });
+                occurrence.keyFields = keyFields;
+
+                // Add the updated occurrence to the row and the selection occurrences
+                row.events.push(occurrence);
+                row.addEventToColumns(occurrence);
+                newOccurrences.push(occurrence);
+
+                // Remove the processed key field from the list
+                processedKeyFields.splice(keyField, 1);
+            } else {
+                // If the occurrence row key have been removed,
+                // remove it from the event as well
+                event.removeOccurrence(occurrence);
+            }
+            row.resetEventsOffsetTop();
+        });
+
+        // The key fields left are new ones added by the user
+        processedKeyFields.forEach((keyField) => {
+            const occurrence = Object.assign(
+                {},
+                newOccurrences[0] || occurrences[0]
+            );
+            occurrence.rowKey = keyField;
+            occurrence.key = `${event.name}-${keyField}-${
+                event.occurrences.length + 1
+            }`;
+            occurrence.keyFields = keyFields;
+            event.occurrences.push(occurrence);
+
+            const row = this.getRowFromKey(keyField);
+            row.events.push(occurrence);
+            row.addEventToColumns(occurrence);
+            row.resetEventsOffsetTop();
+        });
+
+        this.dispatchChangeEvent(event.name, true);
+    }
+
+    saveEvent() {
+        const { event, newEvent, draftValues } = this.selection;
+
+        // Update the event with the new values
         Object.entries(draftValues).forEach((entry) => {
             const [key, value] = entry;
 
@@ -1393,11 +1554,11 @@ export default class Scheduler extends LightningElement {
                 new CustomEvent('eventcreate', {
                     detail: {
                         event: {
-                            from: event.from,
+                            from: event.from.toUTC().toISO(),
                             keyFields: event.keyFields,
                             name: event.name,
                             title: event.title,
-                            to: event.to
+                            to: event.to.toUTC().toISO()
                         },
                         bubbles: true
                     }
@@ -1408,18 +1569,25 @@ export default class Scheduler extends LightningElement {
             this.dispatchChangeEvent(event.name);
         }
 
-        this.initEventOccurrences();
-        this.initRows();
-        this.handleCloseEditDialog();
+        event.initOccurrences();
     }
 
-    dispatchChangeEvent(name) {
+    dispatchChangeEvent(name, onlyOneOccurrence = false) {
+        const detail = {
+            name: name,
+            draftValues: this.selection.draftValues
+        };
+
+        if (onlyOneOccurrence) {
+            detail.recurrenceDates = {
+                from: this.selection.occurrence.from,
+                to: this.selection.occurrence.to
+            };
+        }
+
         this.dispatchEvent(
             new CustomEvent('eventchange', {
-                detail: {
-                    name: name,
-                    draftValues: this.selection.draftValues
-                },
+                detail,
                 bubbles: true
             })
         );

@@ -183,9 +183,9 @@ const events = [
         title: 'Dev team standup meeting',
         iconName: 'standard:team_member',
         from: new Date(2021, 11, 13, 10, 15),
-        to: new Date(2021, 11, 14, 10, 45),
+        to: new Date(2021, 11, 14, 14, 45),
         recurrence: 'weekly',
-        // recurrenceCount: 3,
+        recurrenceCount: 2,
         recurrenceAttributes: {
             weekdays: [1, 3, 5]
         },

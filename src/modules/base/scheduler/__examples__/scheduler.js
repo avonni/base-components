@@ -48,6 +48,7 @@ export const Scheduler = ({
     eventsTheme,
     headers,
     readOnly,
+    recurrentEditModes,
     rows,
     rowsKeyField,
     start,
@@ -68,6 +69,7 @@ export const Scheduler = ({
     element.eventsTheme = eventsTheme;
     element.headers = headers;
     element.readOnly = readOnly;
+    element.recurrentEditModes = recurrentEditModes;
     element.rows = rows;
     element.rowsKeyField = rowsKeyField;
     element.start = start;
