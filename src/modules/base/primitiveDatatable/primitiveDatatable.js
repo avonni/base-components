@@ -535,6 +535,9 @@ export default class PrimitiveDatatable extends LightningDatatable {
         mainDatatable.style.maxWidth = 'none';
     }
 
+    /**
+     * Sets the wrapText and hideDefaultActions attributes to true for custom types that are always wrapped.
+     */
     removeWrapOption() {
         this.columns.forEach((column) => {
             if (CUSTOM_TYPES_ALWAYS_WRAPPED.includes(column.type)) {
@@ -544,11 +547,12 @@ export default class PrimitiveDatatable extends LightningDatatable {
         });
     }
 
+    /**
+     * If the data type is editable, transforms the value into an object containing the editable property.
+     */
     computeEditableOption() {
         if (this.columns && this._data) {
             this.columns.forEach((column) => {
-                // If the data type is editable,
-                // Transform the value into an object containing the editable property
                 if (CUSTOM_TYPES_EDITABLE.includes(column.type)) {
                     const fieldName = column.fieldName;
                     this._data.forEach((row) => {
@@ -596,6 +600,8 @@ export default class PrimitiveDatatable extends LightningDatatable {
 
     /**
      * Dispatches event from the lighnting-datatable.
+     *
+     * @param {event} event
      */
     handleDispatchEvents(event) {
         event.stopPropagation();
@@ -644,13 +650,14 @@ export default class PrimitiveDatatable extends LightningDatatable {
                 rowChanges[keyField] = rowKey;
                 result.push(rowChanges);
             }
-            console.log(result);
             return result;
         }, []);
     }
 
     /**
      * Calls the save method of the lightning datatable.
+     *
+     * @param {event} event
      */
     @api
     save(event) {
@@ -659,6 +666,8 @@ export default class PrimitiveDatatable extends LightningDatatable {
 
     /**
      * Calls the cancel method of the lightning datatable.
+     *
+     * @param {event} event
      */
     @api
     cancel(event) {

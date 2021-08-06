@@ -286,7 +286,6 @@ export default class Datatable extends LightningElement {
     connectedCallback() {
         this.addEventListener('cellchange', () => {
             this._showStatusBar = true;
-            this.updateData();
         });
 
         this.addEventListener('resize', (event) => {
@@ -297,7 +296,6 @@ export default class Datatable extends LightningElement {
 
     renderedCallback() {
         this.bottomTableInitialization();
-        this.datatableEditable();
     }
 
     /**
@@ -364,21 +362,6 @@ export default class Datatable extends LightningElement {
         return this.primitiveDatatable.primitiveDatatableDraftValues();
     }
 
-    updateData() {
-        // this.primitiveDatatableDraftValues.forEach((value) => {
-        //     let draftId = value.id;
-        //     let fieldName = Object.keys(value)[0];
-        //     let draftValue = Object.values(value)[0];
-        //     const changedRow = this._data.find(
-        //         (row) => row.id === parseInt(draftId, 10)
-        //     );
-        //     changedRow[fieldName] = draftValue;
-        // });
-        // const updatedData = this._data.map((row) => {
-        //     console.log(row.id === 6)
-        // })
-    }
-
     /**
      * Initialization of the bottom datatable used for for summarize.
      */
@@ -387,6 +370,7 @@ export default class Datatable extends LightningElement {
         this.updateColumnStyle();
         this.updateTableWidth();
         this.primitiveDraftValues();
+        this.datatableEditable();
     }
 
     /**
@@ -499,6 +483,11 @@ export default class Datatable extends LightningElement {
         );
     }
 
+    /**
+     * Dispatches events from the primitive-datatable.
+     *
+     * @param {event} event
+     */
     handleDispatchEvents(event) {
         event.stopPropagation();
         /**
@@ -559,6 +548,11 @@ export default class Datatable extends LightningElement {
         );
     }
 
+    /**
+     * Calls the cancel method of the primitive datatable.
+     *
+     * @param {event} event
+     */
     handleCancel(event) {
         this._showStatusBar = false;
         /**
@@ -573,6 +567,11 @@ export default class Datatable extends LightningElement {
         this.primitiveDatatable.cancel(event);
     }
 
+    /**
+     * Calls the save method of the primitive datatable.
+     *
+     * @param {event} event
+     */
     handleSave(event) {
         /**
          * The event fired when data is saved during inline editing.
