@@ -271,11 +271,11 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-    * A list of options that are available for selection. Each option has the following attributes: label, description, value, iconName, iconSrc, initials and variant.
-    *
-    * @type {object[]}
-    * @public
-    */
+     * A list of options that are available for selection. Each option has the following attributes: label, description, value, iconName, iconSrc, initials and variant.
+     *
+     * @type {object[]}
+     * @public
+     */
     @api
     get options() {
         return this._options;
@@ -864,8 +864,8 @@ export default class DualListbox extends LightningElement {
      * @returns {number} Box heights
      */
     updateBoxesHeight() {
-        let overSelectedHeight = 0;
-        let overSourceHeight = 0;
+        let overSelectedHeight;
+        let overSourceHeight;
         const sourceOptions = this.template.querySelectorAll(
             'li[data-role="source"]'
         );
@@ -903,16 +903,19 @@ export default class DualListbox extends LightningElement {
             overSelectedHeight;
 
         if (this.searchEngine) {
-            this._sourceBoxHeight =
-                sourceOptionsHeight +
-                getListHeight(
-                    this.template.querySelector(
-                        '.avonni-dual-listbox-search-engine'
-                    )
-                ) +
-                overSourceHeight;
-        }
-        this._sourceBoxHeight = sourceOptionsHeight + overSourceHeight;
+            if (this.computedSourceList.length > 0) {
+                this._sourceBoxHeight =
+                    sourceOptionsHeight +
+                    getListHeight(
+                        this.template.querySelector(
+                            '.avonni-dual-listbox-search-engine'
+                        )
+                    ) +
+                    overSourceHeight;
+            } else if (this.computedSourceList.length === 0) {
+                this._sourceBoxHeight = this._maxVisibleOptions * 41;
+            }
+        } else this._sourceBoxHeight = sourceOptionsHeight + overSourceHeight;
     }
 
     /**
@@ -921,10 +924,16 @@ export default class DualListbox extends LightningElement {
      * @return string
      */
     get sourceHeight() {
-        return this.searchEngine &&
-            this._selectedBoxHeight > this._sourceBoxHeight
-            ? `height: ${this._selectedBoxHeight - 48}px`
-            : `height: ${this._sourceBoxHeight}px`;
+        if (this.searchEngine) {
+            return this._selectedBoxHeight > this._sourceBoxHeight
+                ? `height: ${this._selectedBoxHeight - 48}px`
+                : `height: ${this._sourceBoxHeight}px`;
+        }
+        {
+            return this._selectedBoxHeight > this._sourceBoxHeight
+                ? `height: ${this._selectedBoxHeight}px`
+                : `height: ${this._sourceBoxHeight}px`;
+        }
     }
 
     /**
@@ -933,10 +942,16 @@ export default class DualListbox extends LightningElement {
      * @return string
      */
     get selectedHeight() {
-        return this.searchEngine &&
-            this._selectedBoxHeight <= this._sourceBoxHeight
-            ? `height: ${this._selectedBoxHeight + 48}px`
-            : `height: ${this._sourceBoxHeight}px`;
+        if (this.searchEngine) {
+            return this._selectedBoxHeight <= this._sourceBoxHeight
+                ? `height: ${this._sourceBoxHeight + 48}px`
+                : `height: ${this._selectedBoxHeight}px`;
+        }
+        {
+            return this._selectedBoxHeight > this._sourceBoxHeight
+                ? `height: ${this._selectedBoxHeight}px`
+                : `height: ${this._sourceBoxHeight}px`;
+        }
     }
 
     /**
