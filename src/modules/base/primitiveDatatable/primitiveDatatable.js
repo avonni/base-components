@@ -391,6 +391,8 @@ export default class PrimitiveDatatable extends LightningDatatable {
         super.selectedRows = value;
     }
 
+    @api groupBy;
+
     connectedCallback() {
         super.connectedCallback();
 

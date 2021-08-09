@@ -38,12 +38,14 @@ import {
     columnsOQ,
     columnsRZ,
     columnsSum,
+    columnsGroupBy,
     dataAB,
     dataCD,
     dataEN,
     dataOQ,
     dataRZ,
-    dataSum
+    dataSum,
+    dataGroupBy
 } from './data';
 
 export default {
@@ -134,6 +136,18 @@ export default {
                 "Specifies an object containing information about cell level, row level, and table level errors. When it's set, error messages are displayed on the table accordingly.",
             table: {
                 type: { summary: 'object' },
+                category: 'Data'
+            }
+        },
+        groupBy: {
+            name: 'group-by',
+            control: {
+                type: 'text'
+            },
+            description:
+                'If present, the value will define how the data will be grouped.',
+            table: {
+                type: { summary: 'string' },
                 category: 'Data'
             }
         },
@@ -441,4 +455,13 @@ DatatableWithSummarizeTypes.args = {
     data: dataSum,
     keyField: 'id',
     columnWidthsMode: 'auto'
+};
+
+export const DatatableWithGroupBy = Template.bind({});
+DatatableWithGroupBy.args = {
+    columns: columnsGroupBy,
+    data: dataGroupBy,
+    keyField: 'id',
+    columnWidthsMode: 'auto',
+    minColumnWidth: 100
 };

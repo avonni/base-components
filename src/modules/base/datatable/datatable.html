@@ -1,116 +1,125 @@
 <template>
-    <div class="avonni-datatable-container">
-        <c-primitive-datatable
-            column-widths-mode={columnWidthsMode}
-            columns={columns}
-            data={data}
-            default-sort-direction={defaultSortDirection}
-            draft-values={draftValues}
-            enable-infinite-loading={enableInfiniteLoading}
-            errors={errors}
-            hide-checkbox-column={hideCheckboxColumn}
-            hide-table-header={hideTableHeader}
-            is-loading={isLoading}
-            key-field={keyField}
-            load-more-offset={loadMoreOffset}
-            max-column-width={maxColumnWidth}
-            max-row-selection={maxRowSelection}
-            min-column-width={minColumnWidth}
-            render-config={renderConfig}
-            resize-column-disabled={resizeColumnDisabled}
-            resize-step={resizeStep}
-            row-number-offset={rowNumberOffset}
-            selected-rows={selectedRows}
-            show-row-number-column={showRowNumberColumn}
-            sorted-by={sortedBy}
-            sorted-direction={sortedDirection}
-            suppress-bottom-bar="true"
-            wrap-text-max-lines={wrapTextMaxLines}
-            onrowselection={handleDispatchEvents}
-            onsort={handleDispatchEvents}
-            onresize={handleDispatchEvents}
-            onsave={handleDispatchEvents}
-            oncancel={handleDispatchEvents}
-            onheaderaction={handleDispatchEvents}
-            onloadmore={handleDispatchEvents}
-            oncellchange={handleDispatchEvents}
-            onrowaction={handleDispatchEvents}
+    <c-summary-detail>
+        <h3
+            slot="title"
+            class="slds-text-heading_small slds-truncate slds-p-right_small"
         >
-        </c-primitive-datatable>
-        <template if:true={isSummarizePresent}>
-            <table
-                class="slds-table slds-table_bordered slds-table_resizable-cols"
-                role="grid"
+            laval
+        </h3>
+        <div class="avonni-datatable-container">
+            <c-primitive-datatable
+                column-widths-mode={columnWidthsMode}
+                columns={columns}
+                data={data}
+                default-sort-direction={defaultSortDirection}
+                draft-values={draftValues}
+                enable-infinite-loading={enableInfiniteLoading}
+                group-by={groupBy}
+                errors={errors}
+                hide-checkbox-column={hideCheckboxColumn}
+                hide-table-header={hideTableHeader}
+                is-loading={isLoading}
+                key-field={keyField}
+                load-more-offset={loadMoreOffset}
+                max-column-width={maxColumnWidth}
+                max-row-selection={maxRowSelection}
+                min-column-width={minColumnWidth}
+                render-config={renderConfig}
+                resize-column-disabled={resizeColumnDisabled}
+                resize-step={resizeStep}
+                row-number-offset={rowNumberOffset}
+                selected-rows={selectedRows}
+                show-row-number-column={showRowNumberColumn}
+                sorted-by={sortedBy}
+                sorted-direction={sortedDirection}
+                suppress-bottom-bar="true"
+                wrap-text-max-lines={wrapTextMaxLines}
+                onrowselection={handleDispatchEvents}
+                onsort={handleDispatchEvents}
+                onresize={handleDispatchEvents}
+                onsave={handleDispatchEvents}
+                oncancel={handleDispatchEvents}
+                onheaderaction={handleDispatchEvents}
+                onloadmore={handleDispatchEvents}
+                oncellchange={handleDispatchEvents}
+                onrowaction={handleDispatchEvents}
             >
-                <tbody>
-                    <tr>
-                        <td if:true={isDatatableEditable}></td>
-                        <td if:false={hideCheckboxColumn}></td>
-                        <template
-                            for:each={computedSummarizeArray}
-                            for:item="column"
-                        >
-                            <template if:true={column.numberType}>
-                                <td
-                                    key={column.type}
-                                    class="avonni-datatable-vertical-align_top"
-                                    data-column={column.fieldName}
-                                    role="gridcell"
-                                >
-                                    <template
-                                        for:each={column.summarizeTypes}
-                                        for:item="type"
+            </c-primitive-datatable>
+            <template if:true={isSummarizePresent}>
+                <table
+                    class="slds-table slds-table_bordered slds-table_resizable-cols"
+                    role="grid"
+                >
+                    <tbody>
+                        <tr>
+                            <td if:true={isDatatableEditable}></td>
+                            <td if:false={hideCheckboxColumn}></td>
+                            <template
+                                for:each={computedSummarizeArray}
+                                for:item="column"
+                            >
+                                <template if:true={column.numberType}>
+                                    <td
+                                        key={column.type}
+                                        class="avonni-datatable-vertical-align_top"
+                                        data-column={column.fieldName}
+                                        role="gridcell"
                                     >
-                                        <div
-                                            key={type.label}
-                                            class="slds-truncate avonni-datatable-summarize_styling"
+                                        <template
+                                            for:each={column.summarizeTypes}
+                                            for:item="type"
                                         >
                                             <div
-                                                class="avonni-datatable-summarize-type-text"
+                                                key={type.label}
+                                                class="slds-truncate avonni-datatable-summarize_styling"
                                             >
-                                                {type.label}:
+                                                <div
+                                                    class="avonni-datatable-summarize-type-text"
+                                                >
+                                                    {type.label}:
+                                                </div>
+                                                <lightning-formatted-number
+                                                    format-style={type.type}
+                                                    value={type.value}
+                                                    currency-code={type.typeAttributes.currencyCode}
+                                                    currency-display-as={type.typeAttributes.currencyDisplayAs}
+                                                    minimum-fraction-digits={type.typeAttributes.minimumFractionDigits}
+                                                    maximum-fraction-digits={type.typeAttributes.maximumFractionDigits}
+                                                    minimum-integer-digits={type.typeAttributes.minimumIntegerDigits}
+                                                    minimum-significant-digits={type.typeAttributes.minimumSignificantDigits}
+                                                    maximum-significant-digits={type.typeAttributes.maximumSignificantDigits}
+                                                ></lightning-formatted-number>
                                             </div>
-                                            <lightning-formatted-number
-                                                format-style={type.type}
-                                                value={type.value}
-                                                currency-code={type.typeAttributes.currencyCode}
-                                                currency-display-as={type.typeAttributes.currencyDisplayAs}
-                                                minimum-fraction-digits={type.typeAttributes.minimumFractionDigits}
-                                                maximum-fraction-digits={type.typeAttributes.maximumFractionDigits}
-                                                minimum-integer-digits={type.typeAttributes.minimumIntegerDigits}
-                                                minimum-significant-digits={type.typeAttributes.minimumSignificantDigits}
-                                                maximum-significant-digits={type.typeAttributes.maximumSignificantDigits}
-                                            ></lightning-formatted-number>
-                                        </div>
-                                    </template>
-                                </td>
+                                        </template>
+                                    </td>
+                                </template>
+                                <template if:false={column.numberType}>
+                                    <td
+                                        key={column.type}
+                                        data-column={column.fieldName}
+                                        role="gridcell"
+                                    ></td>
+                                </template>
                             </template>
-                            <template if:false={column.numberType}>
-                                <td
-                                    key={column.type}
-                                    data-column={column.fieldName}
-                                    role="gridcell"
-                                ></td>
-                            </template>
-                        </template>
-                    </tr>
-                </tbody>
-            </table>
-        </template>
-    </div>
-    <div class="avonni-datatable-bottom-bar" if:true={showStatusBar}>
-        <div class="slds-grid slds-grid_align-center">
-            <lightning-button
-                class="slds-button"
-                label="Cancel"
-                onclick={handleCancel}
-            ></lightning-button>
-            <lightning-button
-                class="slds-button"
-                label="Save"
-                variant="brand"
-                onclick={handleSave}
-            ></lightning-button>
+                        </tr>
+                    </tbody>
+                </table>
+            </template>
         </div>
-    </div>
+        <div class="avonni-datatable-bottom-bar" if:true={showStatusBar}>
+            <div class="slds-grid slds-grid_align-center">
+                <lightning-button
+                    class="slds-button"
+                    label="Cancel"
+                    onclick={handleCancel}
+                ></lightning-button>
+                <lightning-button
+                    class="slds-button"
+                    label="Save"
+                    variant="brand"
+                    onclick={handleSave}
+                ></lightning-button>
+            </div>
+        </div>
+    </c-summary-detail>
 </template>

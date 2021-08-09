@@ -488,6 +488,32 @@ const columnsSum = [
     }
 ];
 
+const columnsGroupBy = [
+    {
+        label: 'Name',
+        fieldName: 'name'
+    },
+    {
+        label: 'Age',
+        fieldName: 'age',
+        type: 'number'
+    },
+    {
+        label: 'City',
+        fieldName: 'city'
+    },
+    {
+        label: 'Rank',
+        fieldName: 'rank',
+        type: 'number'
+    },
+    {
+        label: 'Score',
+        fieldName: 'score',
+        type: 'number'
+    }
+];
+
 const dataAB = [
     {
         id: 1,
@@ -872,6 +898,105 @@ const dataSum = [
     }
 ];
 
+const dataGroupBy = [
+    {
+        id: 1,
+        name: 'Karen',
+        age: '88',
+        city: 'Montreal',
+        rank: '11',
+        score: '666'
+    },
+    {
+        id: 2,
+        name: 'James',
+        age: '87',
+        city: 'Montreal',
+        rank: '5',
+        score: '891'
+    },
+    {
+        id: 3,
+        name: 'Melissa',
+        age: '73',
+        city: 'Montreal',
+        rank: '10',
+        score: '799'
+    },
+    {
+        id: 4,
+        name: 'Doug',
+        age: '61',
+        city: 'Montreal',
+        rank: '2',
+        score: '997'
+    },
+    {
+        id: 5,
+        name: 'Tyrone',
+        age: '16',
+        city: 'Montreal',
+        rank: '9',
+        score: '806'
+    },
+    {
+        id: 6,
+        name: 'Jenny',
+        age: '56',
+        city: 'Longueuil',
+        rank: '4',
+        score: '920'
+    },
+    {
+        id: 7,
+        name: 'Don',
+        age: '18',
+        city: 'Longueuil',
+        rank: '7',
+        score: '874'
+    },
+    {
+        id: 8,
+        name: 'Daniel',
+        age: '41',
+        city: 'Laval',
+        rank: '1',
+        score: '1000'
+    },
+    {
+        id: 9,
+        name: 'Mike',
+        age: '30',
+        city: 'Laval',
+        rank: '12',
+        score: '601'
+    },
+    {
+        id: 10,
+        name: 'Jane',
+        age: '30',
+        city: 'Laval',
+        rank: '6',
+        score: '889'
+    },
+    {
+        id: 11,
+        name: 'Lisa',
+        age: '15',
+        city: 'Laval',
+        rank: '8',
+        score: '862'
+    },
+    {
+        id: 12,
+        name: 'Linda',
+        age: '14',
+        city: 'Laval',
+        rank: '3',
+        score: '980'
+    }
+];
+
 export {
     columnsAB,
     columnsCD,
@@ -879,10 +1004,12 @@ export {
     columnsOQ,
     columnsRZ,
     columnsSum,
+    columnsGroupBy,
     dataAB,
     dataCD,
     dataEN,
     dataOQ,
     dataRZ,
-    dataSum
+    dataSum,
+    dataGroupBy
 };

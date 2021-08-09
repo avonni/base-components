@@ -90,6 +90,13 @@ export default class Datatable extends LightningElement {
     @api errors;
 
     /**
+     * If present, the value will define how the data will be grouped.
+     * @public
+     * @type {string}
+     */
+    @api groupBy;
+
+    /**
      * If present, the checkbox column for row selection is hidden.
      * @public
      * @type {boolean}
