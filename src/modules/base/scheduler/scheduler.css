@@ -30,9 +30,16 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+.scheduler {
+    overflow-x: auto;
+}
+
 .scheduler__datatable-col {
     background-color: #fafaf9;
     flex-basis: 25%;
+    position: sticky;
+    left: 0;
+    z-index: 4;
 }
 
 .scheduler__schedule-table {
@@ -41,9 +48,6 @@
 
 .scheduler__event-detail-popover {
     width: auto;
-}
-.scheduler__event-detail-icon {
-    color: #706e6b;
 }
 
 .scheduler__events {

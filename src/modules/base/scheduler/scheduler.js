@@ -1556,6 +1556,8 @@ export default class Scheduler extends LightningElement {
         this.cleanDraggedElement();
         this.cleanSelection();
         this.hideRecurrenceDialog();
+        this.initRows();
+        this._updateOccurrences = true;
     }
 
     handleSaveEvent(mouseEvent) {
