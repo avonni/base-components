@@ -119,10 +119,9 @@ export default {
             description:
                 'Position of the sortable icon. Valid values include left and right.',
             table: {
-                type: { summary: 'string' },
+                type: { summary: 'string' }
             }
-        },
-
+        }
     }
 };
 

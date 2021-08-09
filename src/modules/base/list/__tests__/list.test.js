@@ -387,7 +387,9 @@ describe('List', () => {
 
             // Item is clicked on
             items[1].dispatchEvent(new CustomEvent('mousedown'));
-            expect(items[1].classList).toContain('sortable-item_dragged');
+            expect(items[1].classList).not.toContain('sortable-item_dragged');
+
+            // The sortable-item_dragged is added the selected item moved, then removed when the item is released.
 
             // Item is dropped
             items[1].dispatchEvent(new CustomEvent('mouseup'));

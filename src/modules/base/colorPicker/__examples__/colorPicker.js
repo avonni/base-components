@@ -52,7 +52,7 @@ export const ColorPicker = ({
     menuLabel,
     menuAlignment,
     menuNubbin,
-    colorsValue,
+    colors,
     hideColorInput,
     opacity,
     messageWhenBadInput
@@ -72,7 +72,7 @@ export const ColorPicker = ({
     element.menuLabel = menuLabel;
     element.menuAlignment = menuAlignment;
     element.menuNubbin = menuNubbin;
-    element.colorsValue = colorsValue;
+    element.colors = colors;
     element.hideColorInput = hideColorInput;
     element.opacity = opacity;
     element.messageWhenBadInput = messageWhenBadInput;

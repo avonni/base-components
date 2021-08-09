@@ -1,0 +1,68 @@
+<avonni-page-header
+    title="Title"
+    icon-name="standard:opportunity"
+    label="Label"
+    info="Info"
+    variant="object-home"
+>
+    <div slot="title">Slot Title</div>
+    <div slot="label">Slot Label</div>
+    <p slot="info">Slot Info</p>
+    <div slot="actions">
+        <lightning-button-group>
+            <lightning-button label="Edit"></lightning-button>
+            <lightning-button label="Delete"></lightning-button>
+            <lightning-button label="Clone"></lightning-button>
+        </lightning-button-group>
+    </div>
+    <div slot="controls">
+        <ul class="slds-button-group-row">
+            <li class="slds-button-group-item avonni-page-header-desktop">
+                <lightning-button-icon
+                    icon-name="utility:edit"
+                    variant="border-filled"
+                    alternative-text="Settings"
+                    size="medium"
+                ></lightning-button-icon>
+            </li>
+            <li class="slds-button-group-item">
+                <lightning-button-icon
+                    icon-name="utility:refresh"
+                    variant="border-filled"
+                    alternative-text="Settings"
+                    size="medium"
+                ></lightning-button-icon>
+            </li>
+            <li class="slds-button-group-item">
+                <lightning-button-icon
+                    icon-name="utility:chart"
+                    variant="border-filled"
+                    alternative-text="Settings"
+                    size="medium"
+                ></lightning-button-icon>
+            </li>
+            <li class="slds-button-group-item">
+                <lightning-button-icon
+                    icon-name="utility:filterList"
+                    variant="border-filled"
+                    alternative-text="Settings"
+                    size="medium"
+                ></lightning-button-icon>
+            </li>
+            <li class="slds-button-group-item">
+                <lightning-button-menu
+                    alternative-text="Show menu"
+                    icon-name="utility:settings"
+                ></lightning-button-menu>
+            </li>
+        </ul>
+    </div>
+    <div slot="details">
+        <div class="slds-m-top_small">
+            <avonni-publisher
+                placeholder="Write a comment"
+                button-label="Comment"
+            ></avonni-publisher>
+        </div>
+    </div>
+</avonni-page-header>

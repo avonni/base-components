@@ -193,7 +193,8 @@ export default class AvatarGroup extends LightningElement {
      * @default medium
      * @public
      */
-    @api get size() {
+    @api
+    get size() {
         return this._size;
     }
 
@@ -210,7 +211,8 @@ export default class AvatarGroup extends LightningElement {
      * @default stack
      * @public
      */
-    @api get layout() {
+    @api
+    get layout() {
         return this._layout;
     }
 
@@ -228,7 +230,8 @@ export default class AvatarGroup extends LightningElement {
      * @default neutral
      * @public
      */
-    @api get listButtonVariant() {
+    @api
+    get listButtonVariant() {
         return this._listButtonVariant;
     }
 
@@ -246,7 +249,8 @@ export default class AvatarGroup extends LightningElement {
      * @default left
      * @public
      */
-    @api get listButtonShowMoreIconPosition() {
+    @api
+    get listButtonShowMoreIconPosition() {
         return this._listButtonShowMoreIconPosition;
     }
 
@@ -264,7 +268,8 @@ export default class AvatarGroup extends LightningElement {
      * @default left
      * @public
      */
-    @api get listButtonShowLessIconPosition() {
+    @api
+    get listButtonShowLessIconPosition() {
         return this._listButtonShowLessIconPosition;
     }
 
@@ -281,7 +286,8 @@ export default class AvatarGroup extends LightningElement {
      * @default square
      * @public
      */
-    @api get variant() {
+    @api
+    get variant() {
         return this._variant;
     }
 
@@ -629,7 +635,7 @@ export default class AvatarGroup extends LightningElement {
     /**
      * Dispatch the actionclick event
      */
-    actionClick() {
+    handleActionClick() {
         const name = this.name;
 
         /**

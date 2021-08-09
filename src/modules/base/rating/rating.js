@@ -52,10 +52,35 @@ const LABEL_VARIANTS = {
 const DEFAULT_MIN = 1;
 const DEFAULT_MAX = 5;
 
+/**
+ * @class
+ * @descriptor avonni-rating
+ * @storyId example-rating--base
+ * @public
+ */
 export default class Rating extends LightningElement {
+    /**
+     * Label for the rating component.
+     *
+     * @type {string}
+     * @public
+     */
     @api label;
+    /**
+     * Help text detailing the purpose and function of the rating component.
+     *
+     * @type {string}
+     * @public
+     */
     @api fieldLevelHelp;
+    // todo
     @api name = generateUniqueId();
+    /**
+     * The Lightning Design System name of the icon. Specify the name in the format 'utility:favorite' where 'utility' is the category, and 'favorite' is the specific icon to be displayed.
+     *
+     * @type {string}
+     * @public
+     */
     @api iconName;
 
     _min = DEFAULT_MIN;
@@ -116,6 +141,13 @@ export default class Rating extends LightningElement {
         this.init = true;
     }
 
+    /**
+     * The minimum acceptable value for the rating component.
+     *
+     * @type {number}
+     * @public
+     * @default 1
+     */
     @api
     get min() {
         return this._min;
@@ -129,6 +161,13 @@ export default class Rating extends LightningElement {
         }
     }
 
+    /**
+     * The maximum acceptable value for the rating component.
+     *
+     * @type {number}
+     * @public
+     * @default 5
+     */
     @api
     get max() {
         return this._max;
@@ -142,6 +181,12 @@ export default class Rating extends LightningElement {
         }
     }
 
+    /**
+     * Specifies the value of the Rating.
+     *
+     * @type {string}
+     * @public
+     */
     @api
     get value() {
         return this._value;
@@ -155,6 +200,15 @@ export default class Rating extends LightningElement {
         }
     }
 
+    /**
+     * The variant changes the appearance of an input field. Accepted variants include standard, label-inline, label-hidden, and label-stacked.
+     * This value defaults to standard, which displays the label above the field. Use label-hidden to hide the label but make it available to assistive technology.
+     * Use label-inline to horizontally align the label and input field. Use label-stacked to place the label above the input field.
+     *
+     * @type {string}
+     * @public
+     * @default standard
+     */
     @api
     get variant() {
         return this._variant;
@@ -167,6 +221,13 @@ export default class Rating extends LightningElement {
         });
     }
 
+    /**
+     * Valid values include x-small, small, medium and large.
+     *
+     * @type {string}
+     * @public
+     * @default large
+     */
     @api
     get iconSize() {
         return this._iconSize;
@@ -179,6 +240,13 @@ export default class Rating extends LightningElement {
         });
     }
 
+    /**
+     * Valid values include continuous and single.
+     *
+     * @type {string}
+     * @public
+     * @default continuous
+     */
     @api
     get selection() {
         return this._selection;
@@ -195,6 +263,13 @@ export default class Rating extends LightningElement {
         }
     }
 
+    /**
+     * If present, the rating component is disabled and users cannot interact with it.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api
     get disabled() {
         return this._disabled;
@@ -208,6 +283,13 @@ export default class Rating extends LightningElement {
         }
     }
 
+    /**
+     * If present, the rating component is read-only and cannot be edited by users.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api
     get readOnly() {
         return this._readOnly;
@@ -221,6 +303,13 @@ export default class Rating extends LightningElement {
         }
     }
 
+    /**
+     * Hide the rating fraction representation (e.g. "4/5" rating).
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api
     get valueHidden() {
         return this._valueHidden;
@@ -230,10 +319,20 @@ export default class Rating extends LightningElement {
         this._valueHidden = normalizeBoolean(value);
     }
 
+    /**
+     * Display the rating.
+     *
+     * @type {boolean}
+     */
     get showRating() {
         return !this._valueHidden && this.value;
     }
 
+    /**
+     * Compute items to display with min and max ratings.
+     *
+     * @type {object[]} items
+     */
     get items() {
         let items = [];
 
@@ -244,6 +343,11 @@ export default class Rating extends LightningElement {
         return items.reverse();
     }
 
+    /**
+     * Computed container class styling for label inline and stacked.
+     *
+     * @type {string}
+     */
     get computedContainerClass() {
         return classSet()
             .add({
@@ -253,6 +357,11 @@ export default class Rating extends LightningElement {
             .toString();
     }
 
+    /**
+     * Computed legend class styling.
+     *
+     * @type {string}
+     */
     get computedLegendClass() {
         return classSet('slds-form-element__label slds-no-flex')
             .add({
@@ -261,10 +370,23 @@ export default class Rating extends LightningElement {
             .toString();
     }
 
+    /**
+     * Get rating value and dispatch the change as the selected event.
+     *
+     * @param {Event} event
+     */
     selectRating(event) {
         if (!this._readOnly) {
             this._value = Number(event.target.value);
 
+            /**
+             * The event fired when the value change..
+             *
+             * @event
+             * @name change
+             * @param {string} The value of the selected rating.
+             * @public
+             */
             const selectedEvent = new CustomEvent('change', {
                 detail: {
                     value: this._value
@@ -276,6 +398,9 @@ export default class Rating extends LightningElement {
         }
     }
 
+    /**
+     * Calculate rating button and icon button classes and styling based on rating value selection and attributes.
+     */
     ratingRecalculation() {
         let buttons = this.template.querySelectorAll('button');
 
