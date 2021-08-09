@@ -37,7 +37,7 @@ import { normalizeBoolean } from 'c/utilsPrivate';
 /**
  * @class
  * @descriptor avonni-expandable-section
- * @example example-expandable-section--base
+ * @storyId example-expandable-section--base
  * @public
  */
 export default class ExpandableSection extends LightningElement {

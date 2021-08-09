@@ -118,7 +118,7 @@ const DEFAULT_MESSAGE_WHEN_BAD_INPUT = 'Please ensure value is correct';
 /**
  * @class
  * @descriptor avonni-color-picker
- * @example example-color-picker--standard
+ * @storyId example-color-picker--standard
  * @public
  */
 export default class ColorPicker extends LightningElement {

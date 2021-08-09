@@ -69,7 +69,7 @@ const ILLUSTRATION_VARIANTS = {
 /**
  * @class
  * @descriptor avonni-illustration
- * @example example-illustration--small-size
+ * @storyId example-illustration--small-size
  * @public
  */
 export default class Illustration extends LightningElement {

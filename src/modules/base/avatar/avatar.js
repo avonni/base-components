@@ -82,7 +82,7 @@ const DEFAULT_STATUS_TITLE = 'Status';
 /**
  * @class
  * @descriptor avonni-avatar
- * @example example-avatar--base
+ * @storyId example-avatar--base
  * @public
  */
 export default class Avatar extends LightningElement {
