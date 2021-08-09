@@ -629,6 +629,8 @@ export default class DualListbox extends LightningElement {
 
     /**
      * Get validity from field constraint API.
+     *
+     * @type {boolean}
      */
     get validity() {
         return this._constraint.validity;
@@ -680,7 +682,7 @@ export default class DualListbox extends LightningElement {
     /**
      * Get fieldLevelHelp existence.
      *
-     * @return boolean
+     * @type {boolean}
      */
     get hasFieldLevelHelp() {
         return !!this.fieldLevelHelp;
@@ -689,7 +691,7 @@ export default class DualListbox extends LightningElement {
     /**
      * Computed real DOM Id for Source List.
      *
-     * @return {string} DOM Id
+     * @type {string} DOM Id
      */
     get computedSourceListId() {
         return getRealDOMId(this.template.querySelector('[data-source-list]'));
@@ -698,7 +700,7 @@ export default class DualListbox extends LightningElement {
     /**
      * Computed real DOM Id for Selected List.
      *
-     * @return {string} DOM Id
+     * @type {string} DOM Id
      */
     get computedSelectedListId() {
         return getRealDOMId(
@@ -709,7 +711,7 @@ export default class DualListbox extends LightningElement {
     /**
      * Computed Source Listbox.
      *
-     * @return Element
+     * @type {Element}
      */
     get computedSourceListbox() {
         return this.template.querySelector('[data-source-list]');
@@ -718,7 +720,7 @@ export default class DualListbox extends LightningElement {
     /**
      * Computed Selected Listbox.
      *
-     * @return Element
+     * @type {Element}
      */
     get computedSelectedListbox() {
         return this.template.querySelector('[data-selected-list]');
@@ -727,7 +729,7 @@ export default class DualListbox extends LightningElement {
     /**
      * Get Aria Disabled.
      *
-     * @return string
+     * @type {string}
      */
     get ariaDisabled() {
         return String(this.disabled);
@@ -736,7 +738,7 @@ export default class DualListbox extends LightningElement {
     /**
      * Get Computed Source List.
      *
-     * @return object
+     * @type {object}
      */
     get computedSourceList() {
         let sourceListOptions = [];
@@ -765,7 +767,7 @@ export default class DualListbox extends LightningElement {
     /**
      * Get Computed Selected List.
      *
-     * @return object
+     * @type {object}
      */
     get computedSelectedList() {
         const selectedListOptions = [];
@@ -807,7 +809,7 @@ export default class DualListbox extends LightningElement {
      *
      * @param {object} options
      * @param {string} focusableOptionValue
-     * @returns {object} object
+     * @returns {object} list options
      */
     computeListOptions(options, focusableOptionValue) {
         if (options.length > 0) {
@@ -921,7 +923,7 @@ export default class DualListbox extends LightningElement {
     /**
      * Get Source List Height.
      *
-     * @return string
+     * @type {string}
      */
     get sourceHeight() {
         if (this.searchEngine) {
@@ -939,7 +941,7 @@ export default class DualListbox extends LightningElement {
     /**
      * Get Selected Box Height.
      *
-     * @return string
+     * @type {string}
      */
     get selectedHeight() {
         if (this.searchEngine) {
@@ -957,7 +959,7 @@ export default class DualListbox extends LightningElement {
     /**
      * Check if Label Hidden.
      *
-     * @return {boolean} boolean
+     * @type {boolean}
      */
     get isLabelHidden() {
         return this.variant === 'label-hidden';
@@ -966,7 +968,7 @@ export default class DualListbox extends LightningElement {
     /**
      * Check if Selected Box is Empty.
      *
-     * @return {boolean} boolean
+     * @type {boolean}
      */
     get isSelectedBoxEmpty() {
         return this._selectedValues.length === 0;
@@ -975,7 +977,7 @@ export default class DualListbox extends LightningElement {
     /**
      * Computed Lock Assistive Text.
      *
-     * @return formatLabel
+     * @type {string}
      */
     get computedLockAssistiveText() {
         return formatLabel(
@@ -987,7 +989,7 @@ export default class DualListbox extends LightningElement {
     /**
      * Localization.
      *
-     * @return {i18n} i18n
+     * @type {i18n}
      */
     get i18n() {
         return i18n;
@@ -996,7 +998,7 @@ export default class DualListbox extends LightningElement {
     /**
      * Check if move buttons are disabled.
      *
-     * @returns {boolean} boolean
+     * @type {boolean}
      */
     get moveButtonsDisabled() {
         return this.disabled;
@@ -1005,7 +1007,7 @@ export default class DualListbox extends LightningElement {
     /**
      * Computed Outer Class styling.
      *
-     * @return string
+     * @type {string}
      */
     get computedOuterClass() {
         return classSet('')
@@ -1018,7 +1020,7 @@ export default class DualListbox extends LightningElement {
     /**
      * Computed Group Label Class styling.
      *
-     * @return string
+     * @type {string}
      */
     get computedGroupLabelClass() {
         return classSet('slds-form-element__label slds-form-element__legend')
@@ -1029,7 +1031,7 @@ export default class DualListbox extends LightningElement {
     /**
      * Computed Listbox Columns Class styling.
      *
-     * @return string
+     * @type {string}
      */
     get computedListboxColumnsClass() {
         return classSet('avonni-dual-listbox-list__column')
@@ -1047,7 +1049,7 @@ export default class DualListbox extends LightningElement {
     /**
      * Computed Listbox Source Container Class styling.
      *
-     * @return string
+     * @type {string}
      */
     get computedListboxSourceContainerClass() {
         return classSet(
@@ -1066,7 +1068,7 @@ export default class DualListbox extends LightningElement {
     /**
      * Computed Listbox Selected Container Class styling.
      *
-     * @return string
+     * @type {string}
      */
     get computedListboxSelectedContainerClass() {
         return classSet(
@@ -1091,7 +1093,7 @@ export default class DualListbox extends LightningElement {
     /**
      * Computed List Item Class styling.
      *
-     * @return string
+     * @type {string}
      */
     get computedListItemClass() {
         return classSet('slds-listbox__item')
@@ -1467,6 +1469,8 @@ export default class DualListbox extends LightningElement {
 
     /**
      * Validation with constraint Api.
+     *
+     * @type {object}
      */
     get _constraint() {
         if (!this._constraintApi) {
@@ -1602,7 +1606,7 @@ export default class DualListbox extends LightningElement {
      * Compute Option Index number.
      *
      * @param {Element} optionElement
-     * @returns number Option Index
+     * @returns {number} Option Index
      */
     getOptionIndex(optionElement) {
         return parseInt(optionElement.getAttribute('data-index'), 10);
@@ -1612,7 +1616,7 @@ export default class DualListbox extends LightningElement {
      * Get DOM Id for the List element.
      *
      * @param {Element} optionElement
-     * @returns string DOM id
+     * @returns {string} DOM id
      */
     getListId(optionElement) {
         return getRealDOMId(optionElement.parentElement.parentElement);
@@ -1637,7 +1641,7 @@ export default class DualListbox extends LightningElement {
      * Check whether value passed is a number.
      *
      * @param {string|number} value
-     * @returns boolean
+     * @returns {boolean}
      */
     isNumber(value) {
         return value !== '' && value !== null && isFinite(value);

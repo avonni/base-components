@@ -464,7 +464,7 @@ export default class Avatar extends LightningElement {
     /**
      * Computed JSON string of tags object.
      *
-     * @returns {object[]} computed tags json
+     * @type {object[]} computed tags json
      */
     get computedTags() {
         this._computedTags = JSON.parse(JSON.stringify(this._tags));

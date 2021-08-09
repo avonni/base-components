@@ -521,9 +521,14 @@ export default class ColorPicker extends LightningElement {
         return this.disabled || this.readOnly;
     }
 
-	  get inputValue(){
-		  return this.currentLabel ? this.currentLabel : this.value;
-	  }
+    /**
+     * Retrieve the input value.
+     * 
+     * @type {string}
+     */
+    get inputValue(){
+        return this.currentLabel ? this.currentLabel : this.value;
+    }
   
     /**
      * Sets focus on the input element.

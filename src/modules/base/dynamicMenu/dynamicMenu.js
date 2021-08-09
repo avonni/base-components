@@ -294,6 +294,7 @@ export default class DynamicMenu extends LightningElement {
 
     /**
      * Set focus on the button.
+     *
      * @public
      */
     @api
@@ -312,7 +313,8 @@ export default class DynamicMenu extends LightningElement {
     }
 
     /**
-     * Clicks the button.
+     * Click method on the button.
+     *
      * @public
      */
     @api
@@ -327,16 +329,18 @@ export default class DynamicMenu extends LightningElement {
     }
 
     /**
-     * Computed Aria Expanded from dropdown menu
-     * @return string dropdown menu
+     * Computed Aria Expanded from dropdown menu.
+     *
+     * @type {string} dropdown menu
      */
     get computedAriaExpanded() {
         return String(this._dropdownVisible);
     }
 
     /**
-     * Computed Dropdown class styling
-     * @return string
+     * Computed Dropdown class styling.
+     *
+     * @type {string}
      */
     get computedDropdownClass() {
         return classSet('slds-dropdown slds-popover slds-dynamic-menu')
@@ -365,7 +369,7 @@ export default class DynamicMenu extends LightningElement {
     /**
      * Check if there's Items to display.
      *
-     * @return boolean
+     * @type {boolean}
      */
     get showItems() {
         return this.filteredItems.length > 0;
