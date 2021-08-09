@@ -1,0 +1,67 @@
+/**
+ * @typedef {Object} Group
+ * @name groups
+ * @property {string} label Label of the group.
+ * @property {string} name A unique name for the group. It will be returned by the onactionclick event handlers.
+ * @property {string} avatarSrc Image URL for the avatar of the group. If present, the avatar is displayed before the label.
+ * @property {string} avatarFallbackIconName The Lightning Design System name of the icon used as a fallback when the avatar image fails to load.
+ * Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
+ * @property {string} href URL for the group label link.
+ * @property {boolean} expanded If true, the group is expanded. Defaults to true.
+ * @property {boolean} hideDefaultActions If true, hide the default actions for this group.
+ * @property {object[]} items Array of nested items.
+ * @property {object[]} actions Array of custom actions for this group. These actions will be added to the default actions, if present.
+ */
+/**
+ * @typedef {Object} Item
+ * @name items
+ * @property {string} label Label of the item.
+ * @property {string} name A unique name for the item. It will be returned by the onselect and the onactionclick event handlers.
+ * @property {string} avatarSrc Image URL for the avatar of the item. If present, the avatar is displayed before the label.
+ * @property {string} avatarFallbackIconName The Lightning Design System name of the icon used as a fallback when the avatar image fails to load.
+ * Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
+ * @property {string} href URL for the item label link.
+ * @property {boolean} hideDefaultActions If true, hide the default actions for this item.
+ * @property {boolean} disabled If true, the item is disabled and cannot be selected.
+ * @property {object[]} groups Array of nested item groups.
+ * @property {object[]} actions Array of custom actions for this item. These actions will be added to the default actions, if present.
+ * @property {object[]} data Array of data, displayed in the item body. The objects must have a these keys:
+ * * label
+ * * value
+ */
+/**
+ * @typedef {Object} Action
+ * @name actions
+ * @property {string} label Required. The action label.
+ * @property {string} name Required. The nam eof the action, which identifies the selected action.
+ * @property {string} iconName The Lightning Design System name of the icon. Names are written in the format standard:opportunity. The icon is appended to the left of the label.
+ * @property {boolean} disabled Specifies whether the action can be selected. If true, the action item is shown as disabled. This value defaults to false.
+ */
+/**
+ * @namespace examples
+ */
+/**
+ * @memberof examples
+ * @name base
+ * @storyId example-relationship-graph--base
+ */
+/**
+ * @memberof examples
+ * @name selectedItem
+ * @storyId example-relationship-graph--selected-item
+ */
+/**
+ * @memberof examples
+ * @name inverseItem
+ * @storyId example-relationship-graph--inverse-item
+ */
+/**
+ * @memberof examples
+ * @name mixedThemes
+ * @storyId example-relationship-graph--mixed-themes
+ */
+/**
+ * @memberof examples
+ * @name vertical
+ * @storyId example-relationship-graph--vertical
+ */
