@@ -106,20 +106,8 @@ export default class Scheduler extends LightningElement {
         this.initSchedule();
 
         // Close the popovers on scroll
-        window.addEventListener('scroll', this.handleScroll);
+        this.addEventListener('scroll', this.handleScroll);
     }
-
-    handleScroll = () => {
-        if (this.showDetailPopover) {
-            // Hide the detail popover only if it goes off screen
-            const right = this._draggedEvent.getBoundingClientRect().right;
-            console.log(right);
-            if (right < 0) this.hideDetailPopover();
-        } else {
-            this.hideDetailPopover();
-            this.hideContextMenu();
-        }
-    };
 
     renderedCallback() {
         // On the first render, save the cell width to pass the info to the primitives
@@ -176,7 +164,7 @@ export default class Scheduler extends LightningElement {
     }
 
     disconnectedCallback() {
-        window.removeEventListener('scroll', this.handleScroll);
+        this.removeEventListener('scroll', this.handleScroll);
     }
 
     @api
@@ -1116,6 +1104,115 @@ export default class Scheduler extends LightningElement {
         this.hideAllPopovers();
     }
 
+    saveEvent() {
+        const { event, newEvent, draftValues } = this.selection;
+
+        // Update the event with the new values
+        Object.entries(draftValues).forEach((entry) => {
+            const [key, value] = entry;
+
+            if (value.length) {
+                event[key] = value;
+            }
+        });
+
+        if (newEvent) {
+            // Generate a name for the new event, based on its title
+            const lowerCaseName = event.title.toLowerCase();
+            event.name = lowerCaseName.replaceAll(/\s/g, '-').concat(event.key);
+
+            this.dispatchEvent(
+                new CustomEvent('eventcreate', {
+                    detail: {
+                        event: {
+                            from: event.from.toUTC().toISO(),
+                            keyFields: event.keyFields,
+                            name: event.name,
+                            title: event.title,
+                            to: event.to.toUTC().toISO()
+                        },
+                        bubbles: true
+                    }
+                })
+            );
+            this.selection = undefined;
+        } else {
+            this.dispatchChangeEvent(event.name);
+        }
+
+        event.initOccurrences();
+    }
+
+    saveEventOccurrence() {
+        const { event, occurrences, draftValues } = this.selection;
+        const updatedKeyFields = normalizeArray(draftValues.keyFields);
+        const keyFields = updatedKeyFields.length
+            ? updatedKeyFields
+            : event.keyFields;
+        const processedKeyFields = [...keyFields];
+        const newOccurrences = [];
+
+        occurrences.forEach((occurrence) => {
+            // Remove the old occurrence from the row
+            const rowKey = occurrence.rowKey;
+            const row = this.getRowFromKey(rowKey);
+            row.removeEvent(occurrence);
+
+            // If the occurrence row key is still included in the key fields
+            const keyField = processedKeyFields.indexOf(rowKey);
+            if (keyField > -1) {
+                // Update the occurrence with the new values
+                Object.entries(draftValues).forEach((entry) => {
+                    const [key, value] = entry;
+
+                    if (value.length) {
+                        if (key === 'from' || key === 'to') {
+                            // Convert the ISO dates into DateTime objects
+                            occurrence[key] = dateTimeObjectFrom(value);
+                        } else {
+                            occurrence[key] = value;
+                        }
+                    }
+                });
+                occurrence.keyFields = keyFields;
+
+                // Add the updated occurrence to the row and the selection occurrences
+                row.events.push(occurrence);
+                row.addEventToColumns(occurrence);
+                newOccurrences.push(occurrence);
+
+                // Remove the processed key field from the list
+                processedKeyFields.splice(keyField, 1);
+            } else {
+                // If the occurrence row key have been removed,
+                // remove it from the event as well
+                event.removeOccurrence(occurrence);
+            }
+            row.resetEventsOffsetTop();
+        });
+
+        // The key fields left are new ones added by the user
+        processedKeyFields.forEach((keyField) => {
+            const occurrence = Object.assign(
+                {},
+                newOccurrences[0] || occurrences[0]
+            );
+            occurrence.rowKey = keyField;
+            occurrence.key = `${event.name}-${keyField}-${
+                event.occurrences.length + 1
+            }`;
+            occurrence.keyFields = keyFields;
+            event.occurrences.push(occurrence);
+
+            const row = this.getRowFromKey(keyField);
+            row.events.push(occurrence);
+            row.addEventToColumns(occurrence);
+            row.resetEventsOffsetTop();
+        });
+
+        this.dispatchChangeEvent(event.name, true);
+    }
+
     normalizeMousePosition(mouseX, mouseY) {
         const { top, bottom, left, right } = this._initialState;
 
@@ -1173,6 +1270,7 @@ export default class Scheduler extends LightningElement {
             target.tagName !== 'C-PRIMITIVE-SCHEDULER-EVENT-OCCURRENCE' ||
             target.disabled
         ) {
+            this.cleanDraggedElement();
             this.newEvent(mouseEvent.clientX, mouseEvent.clientY, false);
         } else {
             this.initDraggedEventState();
@@ -1496,120 +1594,22 @@ export default class Scheduler extends LightningElement {
         }
     }
 
-    saveEventOccurrence() {
-        const { event, occurrences, draftValues } = this.selection;
-        const updatedKeyFields = normalizeArray(draftValues.keyFields);
-        const keyFields = updatedKeyFields.length
-            ? updatedKeyFields
-            : event.keyFields;
-        const processedKeyFields = [...keyFields];
-        const newOccurrences = [];
-
-        occurrences.forEach((occurrence) => {
-            // Remove the old occurrence from the row
-            const rowKey = occurrence.rowKey;
-            const row = this.getRowFromKey(rowKey);
-            row.removeEvent(occurrence);
-
-            // If the occurrence row key is still included in the key fields
-            const keyField = processedKeyFields.indexOf(rowKey);
-            if (keyField > -1) {
-                // Update the occurrence with the new values
-                Object.entries(draftValues).forEach((entry) => {
-                    const [key, value] = entry;
-
-                    if (value.length) {
-                        if (key === 'from' || key === 'to') {
-                            // Convert the ISO dates into DateTime objects
-                            occurrence[key] = dateTimeObjectFrom(value);
-                        } else {
-                            occurrence[key] = value;
-                        }
-                    }
-                });
-                occurrence.keyFields = keyFields;
-
-                // Add the updated occurrence to the row and the selection occurrences
-                row.events.push(occurrence);
-                row.addEventToColumns(occurrence);
-                newOccurrences.push(occurrence);
-
-                // Remove the processed key field from the list
-                processedKeyFields.splice(keyField, 1);
-            } else {
-                // If the occurrence row key have been removed,
-                // remove it from the event as well
-                event.removeOccurrence(occurrence);
-            }
-            row.resetEventsOffsetTop();
-        });
-
-        // The key fields left are new ones added by the user
-        processedKeyFields.forEach((keyField) => {
-            const occurrence = Object.assign(
-                {},
-                newOccurrences[0] || occurrences[0]
-            );
-            occurrence.rowKey = keyField;
-            occurrence.key = `${event.name}-${keyField}-${
-                event.occurrences.length + 1
-            }`;
-            occurrence.keyFields = keyFields;
-            event.occurrences.push(occurrence);
-
-            const row = this.getRowFromKey(keyField);
-            row.events.push(occurrence);
-            row.addEventToColumns(occurrence);
-            row.resetEventsOffsetTop();
-        });
-
-        this.dispatchChangeEvent(event.name, true);
-    }
-
-    saveEvent() {
-        const { event, newEvent, draftValues } = this.selection;
-
-        // Update the event with the new values
-        Object.entries(draftValues).forEach((entry) => {
-            const [key, value] = entry;
-
-            if (value.length) {
-                event[key] = value;
-            }
-        });
-
-        if (newEvent) {
-            // Generate a name for the new event, based on its title
-            const lowerCaseName = event.title.toLowerCase();
-            event.name = lowerCaseName.replaceAll(/\s/g, '-').concat(event.key);
-
-            this.dispatchEvent(
-                new CustomEvent('eventcreate', {
-                    detail: {
-                        event: {
-                            from: event.from.toUTC().toISO(),
-                            keyFields: event.keyFields,
-                            name: event.name,
-                            title: event.title,
-                            to: event.to.toUTC().toISO()
-                        },
-                        bubbles: true
-                    }
-                })
-            );
-            this.selection = undefined;
-        } else {
-            this.dispatchChangeEvent(event.name);
-        }
-
-        event.initOccurrences();
-    }
-
     handleEditSaveKeyDown(event) {
         if (event.key === 'Tab') {
             this.template.querySelector('lightning-input').focus();
         }
     }
+
+    handleScroll = () => {
+        if (this.showDetailPopover) {
+            // Hide the detail popover only if it goes off screen
+            const right = this._draggedEvent.getBoundingClientRect().right;
+            if (right < 0) this.hideDetailPopover();
+        } else {
+            this.hideDetailPopover();
+            this.hideContextMenu();
+        }
+    };
 
     dispatchChangeEvent(name, onlyOneOccurrence = false) {
         const detail = {
