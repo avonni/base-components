@@ -55,6 +55,9 @@
 :host.scheduler__event-dragged {
     z-index: 3;
 }
+:host.scheduler__event-dragged .scheduler__event-wrapper:focus {
+    outline: none;
+}
 
 :host.scheduler__event-dragged .scheduler__event {
     cursor: grabbing;
