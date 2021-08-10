@@ -114,10 +114,13 @@ export default class Scheduler extends LightningElement {
     }
 
     renderedCallback() {
-        // On the first render, save the cell width to pass the info to the primitives
+        // Save the cell width
         if (!this.cellWidth) {
-            const td = this.template.querySelector('td');
-            this.cellWidth = td.getBoundingClientRect().width;
+            const th = this.template.querySelector('thead tr:last-of-type th');
+            // We add one pixel for the right border
+            this.cellWidth = Math.ceil(th.getBoundingClientRect().width) + 1;
+            this.initHeaderWidths();
+            // The cellWidth change will trigger another render, so we return right away
             return;
         }
 
@@ -436,12 +439,6 @@ export default class Scheduler extends LightningElement {
             .milliseconds;
     }
 
-    get percentCellWidth() {
-        if (!this.smallestHeader || !this.smallestHeader.columns.length)
-            return 0;
-        return 100 / this.smallestHeader.columns.length;
-    }
-
     get computedContextMenuEmptySpot() {
         const actions = this.contextMenuEmptySpotActions;
         return this.readOnly
@@ -669,11 +666,13 @@ export default class Scheduler extends LightningElement {
         });
 
         this.computedHeaders = headerObjects;
-        this.initHeaderWidths();
+
+        // On next render, reset the headers widths
+        this.cellWidth = undefined;
     }
 
     initHeaderWidths() {
-        if (!this.percentCellWidth) return;
+        if (!this.cellWidth) return;
 
         const smallestHeaderColumns = this.smallestHeader.columns;
         for (let i = 0; i < this.computedHeaders.length; i++) {
@@ -683,7 +682,7 @@ export default class Scheduler extends LightningElement {
             // The columns of the header with the shortest unit all have the same width
             if (i === this.computedHeaders.length - 1) {
                 header.columns.forEach(() => {
-                    header.columnWidths.push(this.percentCellWidth);
+                    header.columnWidths.push(this.cellWidth);
                 });
 
                 // The other headers base their column widths on the header with the shortest unit
@@ -713,7 +712,7 @@ export default class Scheduler extends LightningElement {
                         // Stop if the next smallestHeader column belongs to the next header unit
                         if (endUnit <= startUnit) break;
 
-                        width += this.percentCellWidth;
+                        width += this.cellWidth;
                         columnIndex += 1;
                     }
                     header.columnWidths.push(width);
@@ -799,7 +798,6 @@ export default class Scheduler extends LightningElement {
 
             const computedRow = new Row({
                 color: this.palette[colorIndex],
-                columnWidth: this.percentCellWidth,
                 key: rowKey,
                 referenceColumns: this.smallestHeader.columns,
                 events: occurrences
@@ -821,7 +819,6 @@ export default class Scheduler extends LightningElement {
 
     updateRowsStyle() {
         // Set the rows height
-        const datatable = this.template.querySelector('c-datatable');
         const rows = this.template.querySelectorAll('tbody tr');
 
         rows.forEach((row, index) => {
@@ -838,9 +835,9 @@ export default class Scheduler extends LightningElement {
             row.style.minHeight = `${dataRowHeight}px`;
 
             if (index === 0) {
-                datatable.setRowHeight(key, rowHeight - 1);
+                this.datatable.setRowHeight(key, rowHeight - 1);
             } else {
-                datatable.setRowHeight(key, rowHeight);
+                this.datatable.setRowHeight(key, rowHeight);
             }
         });
     }
@@ -907,7 +904,7 @@ export default class Scheduler extends LightningElement {
             // Give the header cells their width
             const cells = row.querySelectorAll('th');
             cells.forEach((cell, index) => {
-                cell.style.width = `${header.columnWidths[index]}%`;
+                cell.style.width = `${header.columnWidths[index]}px`;
             });
         });
     }
