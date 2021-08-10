@@ -35,15 +35,84 @@ import { classSet } from 'c/utils';
 import { DateTime } from 'c/luxon';
 import { normalizeArray, normalizeBoolean } from 'c/utilsPrivate';
 
-export default class Occurrence extends LightningElement {
+/**
+ * Event occurrence displayed by the scheduler.
+ *
+ * @class
+ * @descriptor c-primitive-scheduler-event-occurrence
+ */
+export default class PrimitiveSchedulerEventOccurrence extends LightningElement {
+    /**
+     * Background color of the occurrence.
+     *
+     * @type {string}
+     * @public
+     */
     @api color;
+
+    /**
+     * Unique name of the event this occurrence belongs to.
+     *
+     * @type {string}
+     * @public
+     */
     @api eventName;
+
+    /**
+     * Start date of the occurrence.
+     *
+     * @type {DateTime}
+     * @public
+     */
     @api from;
+
+    /**
+     * The Lightning Design System name of the icon. Names are written in the format utility:user.
+     * The icon is appended to the left of the title.
+     *
+     * @type {string}
+     * @public
+     */
     @api iconName;
+
+    /**
+     * Unique key of the occurrence.
+     *
+     * @type {string}
+     * @public
+     */
     @api occurrenceKey;
+
+    /**
+     * Unique key of the scheduler row this occurrence appears on.
+     *
+     * @type {string}
+     * @public
+     */
     @api rowKey;
+
+    /**
+     * Theme of the occurrence. Valid values include default, transparent, line, hollow and rounded.
+     *
+     * @type {string}
+     * @public
+     */
     @api theme;
+
+    /**
+     * Title of the occurrence.
+     *
+     * @type {string}
+     * @public
+     */
     @api title;
+
+    /**
+     * End date of the occurrence.
+     *
+     * @type {DateTime}
+     * @public
+     */
     @api to;
 
     _columnDuration = 0;
@@ -70,6 +139,13 @@ export default class Occurrence extends LightningElement {
         this.updateHeight();
     }
 
+    /**
+     * Duration of a scheduler column, in milliseconds.
+     *
+     * @type {number}
+     * @public
+     * @default 0
+     */
     @api
     get columnDuration() {
         return this._columnDuration;
@@ -78,6 +154,12 @@ export default class Occurrence extends LightningElement {
         this._columnDuration = !isNaN(Number(value)) ? Number(value) : 0;
     }
 
+    /**
+     * The columns of the shortest header unit of the scheduler.
+     *
+     * @type {object[]}
+     * @public
+     */
     @api
     get columns() {
         return this._columns;
@@ -86,6 +168,13 @@ export default class Occurrence extends LightningElement {
         this._columns = normalizeArray(value);
     }
 
+    /**
+     * Width of a column, in pixels.
+     *
+     * @type {number}
+     * @public
+     * @default 0
+     */
     @api
     get columnWidth() {
         return this._columnWidth;
@@ -94,6 +183,13 @@ export default class Occurrence extends LightningElement {
         this._columnWidth = !isNaN(Number(value)) ? Number(value) : 0;
     }
 
+    /**
+     * If present, the occurrence is a disabled date/time.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api
     get disabled() {
         return this._disabled;
@@ -102,6 +198,12 @@ export default class Occurrence extends LightningElement {
         this._disabled = normalizeBoolean(value);
     }
 
+    /**
+     * Keys of the rows the event appears on. A primitive-scheduler-event-occurrence will be created for each row.
+     *
+     * @type {string[]}
+     * @public
+     */
     @api
     get keyFields() {
         return this._keyFields;
@@ -110,6 +212,12 @@ export default class Occurrence extends LightningElement {
         this._keyFields = normalizeArray(value);
     }
 
+    /**
+     * Event occurrence object this component is based on. The object is used to make sure the changes made in the scheduler are taken into account, even without a re-render.
+     *
+     * @type {object}
+     * @public
+     */
     @api
     get occurrence() {
         return this._occurrence;
@@ -118,6 +226,13 @@ export default class Occurrence extends LightningElement {
         this._occurrence = typeof value === 'object' ? value : {};
     }
 
+    /**
+     * If true, the occurrence cannot be dragged, resized or edited in any way.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api
     get readOnly() {
         return this._readOnly;
@@ -126,6 +241,12 @@ export default class Occurrence extends LightningElement {
         this._readOnly = normalizeBoolean(value);
     }
 
+    /**
+     * Array of the scheduler row objects.
+     *
+     * @type {object[]}
+     * @public
+     */
     @api
     get rows() {
         return this._rows;
@@ -134,6 +255,13 @@ export default class Occurrence extends LightningElement {
         this._rows = normalizeArray(value);
     }
 
+    /**
+     * Horizontal position of the occurrence in the scheduler, in pixels.
+     *
+     * @type {number}
+     * @public
+     * @default 0
+     */
     @api
     get x() {
         return this._x;
@@ -143,6 +271,13 @@ export default class Occurrence extends LightningElement {
         this.updateHostTranslate();
     }
 
+    /**
+     * Vertical position of the occurrence in the scheduler, in pixels.
+     *
+     * @type {number}
+     * @public
+     * @default 0
+     */
     @api
     get y() {
         return this._y;
@@ -152,6 +287,11 @@ export default class Occurrence extends LightningElement {
         this.updateHostTranslate();
     }
 
+    /**
+     * Computed class of the occurrence.
+     *
+     * @type {string}
+     */
     get computedClass() {
         const theme = this.theme;
         return classSet(
@@ -164,22 +304,39 @@ export default class Occurrence extends LightningElement {
             .toString();
     }
 
+    /**
+     * Computed background color of the occurrence.
+     *
+     * @type {string}
+     */
     get computedColor() {
         return this.color || this.rowColor;
     }
 
+    /**
+     * Outermost HTML element of the component.
+     *
+     * @type {HTMLElement}
+     */
     get hostElement() {
         return this.template.host;
     }
 
-    get key() {
-        return this.occurrenceKey;
-    }
-
+    /**
+     * Space between the top of the occurrence and the top of its row, in pixels.
+     *
+     * @type {number}
+     * @default 0
+     */
     get offsetTop() {
         return this.occurrence.offsetTop || 0;
     }
 
+    /**
+     * Default color of the occurrence's row.
+     *
+     * @type {string}
+     */
     get rowColor() {
         const row = this.rows.find(
             (computedRow) => computedRow.key === this.rowKey
@@ -187,10 +344,21 @@ export default class Occurrence extends LightningElement {
         return row && row.color;
     }
 
+    /**
+     * If true, the title HTML element will be displayed. This property is only used by disabled occurrences.
+     *
+     * @type {boolean}
+     * @default false
+     */
     get showTitle() {
         return this.disabled && (this.title || this.iconName);
     }
 
+    /**
+     * Computed inline style of the occurrence.
+     *
+     * @type {string}
+     */
     get style() {
         const { computedColor, transparentColor, theme } = this;
         const isDefault = theme === 'default';
@@ -216,6 +384,11 @@ export default class Occurrence extends LightningElement {
         return style;
     }
 
+    /**
+     * If the computedColor is a hexadecimal or RGB color, transparent version of the computedColor (30% of opacity). Else, it is equal to the computedColor.
+     *
+     * @type {string}
+     */
     get transparentColor() {
         if (!this.computedColor) return undefined;
 
@@ -236,6 +409,11 @@ export default class Occurrence extends LightningElement {
         return this.computedColor;
     }
 
+    /**
+     * Update the position of the occurrence in the scheduler grid.
+     *
+     * @public
+     */
     @api
     updatePosition() {
         const { from, columns, columnWidth } = this;
@@ -266,6 +444,11 @@ export default class Occurrence extends LightningElement {
         this.updateHostTranslate();
     }
 
+    /**
+     * Update the width of the occurrence in the scheduler grid.
+     *
+     * @public
+     */
     @api
     updateWidth() {
         const { from, to, columns, columnWidth, columnDuration } = this;
@@ -326,6 +509,11 @@ export default class Occurrence extends LightningElement {
         element.style.width = `${width}px`;
     }
 
+    /**
+     * Update the height of the occurrence in the scheduler grid.
+     *
+     * @public
+     */
     @api
     updateHeight() {
         if (this.disabled) {
@@ -339,17 +527,43 @@ export default class Occurrence extends LightningElement {
         }
     }
 
+    /**
+     * Add the computed position to the inline style of the component host.
+     */
     updateHostTranslate() {
         if (this.hostElement) {
             this.hostElement.style.transform = `translate(${this.x}px, ${this.y}px)`;
         }
     }
 
+    /**
+     * Handle the contextmenu event fired by the occurrence if it is not disabled.
+     * Dispatch a privatecontextmenu event.
+     *
+     * @param {Event} event
+     */
     handleContextMenu(event) {
         event.preventDefault();
+
+        /**
+         * The event fired when the user opens the context menu of the occurrence, if it is not disabled.
+         *
+         * @event
+         * @name privatecontextmenu
+         * @param {string} eventName Name of the event this occurrence belongs to.
+         * @param {string} key Key of this occurrence.
+         * @param {number} x Horizontal position of the occurrence.
+         * @param {number} y Vertical position of the occurrence.
+         */
         this.dispatchCustomEvent('privatecontextmenu', event);
     }
 
+    /**
+     * Dispatch a custom event. The name of the event to dispatch is given as a parameter.
+     *
+     * @param {string} name
+     * @param {Event} event
+     */
     dispatchCustomEvent(name, event) {
         const x =
             event.clientX || event.currentTarget.getBoundingClientRect().x;
@@ -360,7 +574,7 @@ export default class Occurrence extends LightningElement {
             new CustomEvent(name, {
                 detail: {
                     eventName: this.eventName,
-                    key: this.key,
+                    key: this.occurrenceKey,
                     from: this.from,
                     x,
                     y
@@ -369,38 +583,134 @@ export default class Occurrence extends LightningElement {
         );
     }
 
+    /**
+     * Handle the mouseenter event fired by the occurrence if it is not disabled.
+     * Dispatch a privatemouseenter event.
+     *
+     * @param {Event} event
+     */
     handleMouseEnter(event) {
+        /**
+         * The event fired when the mouse enters the occurrence, if it is not disabled.
+         *
+         * @event
+         * @name privatemouseenter
+         * @param {string} eventName Name of the event this occurrence belongs to.
+         * @param {string} key Key of this occurrence.
+         * @param {number} x Horizontal position of the occurrence.
+         * @param {number} y Vertical position of the occurrence.
+         */
         this.dispatchCustomEvent('privatemouseenter', event);
     }
 
+    /**
+     * Handle the mouseleave event fired by the occurrence if it is not disabled.
+     * Dispatch a privatemouseleave event.
+     *
+     * @param {Event} event
+     */
     handleMouseLeave(event) {
+        /**
+         * The event fired when the mouse leaves the occurrence, if it is not disabled.
+         *
+         * @event
+         * @name privatemouseleave
+         * @param {string} eventName Name of the event this occurrence belongs to.
+         * @param {string} key Key of this occurrence.
+         * @param {number} x Horizontal position of the occurrence.
+         * @param {number} y Vertical position of the occurrence.
+         */
         this.dispatchCustomEvent('privatemouseleave', event);
     }
 
+    /**
+     * Handle the dblclick event fired by the occurrence if it is not disabled.
+     * Dispatch a privatedblclick event.
+     *
+     * @param {Event} event
+     */
     handleDoubleClick(event) {
         if (this.readOnly) return;
 
+        /**
+         * The event fired when the user double-clicks on the occurrence, if it is not disabled.
+         *
+         * @event
+         * @name privatedblclick
+         * @param {string} eventName Name of the event this occurrence belongs to.
+         * @param {string} key Key of this occurrence.
+         * @param {number} x Horizontal position of the occurrence.
+         * @param {number} y Vertical position of the occurrence.
+         */
         this.dispatchCustomEvent('privatedblclick', event);
     }
 
+    /**
+     * Handle the focus event fired by the occurrence if it is not disabled.
+     * Dispatch a privatefocus event.
+     *
+     * @param {Event} event
+     */
     handleFocus(event) {
+        /**
+         * The event fired when the occurrence is focused, if it is not disabled.
+         *
+         * @event
+         * @name privatefocus
+         * @param {string} eventName Name of the event this occurrence belongs to.
+         * @param {string} key Key of this occurrence.
+         * @param {number} x Horizontal position of the occurrence.
+         * @param {number} y Vertical position of the occurrence.
+         */
         this.dispatchCustomEvent('privatefocus', event);
     }
 
+    /**
+     * Handle the blur event fired by the occurrence if it is not disabled.
+     * Dispatch a privateblur event.
+     *
+     * @param {Event} event
+     */
     handleBlur() {
+        /**
+         * The event fired when the occurrence is blurred, if it is not disabled.
+         *
+         * @event
+         * @name privateblur
+         * @param {string} eventName Name of the event this occurrence belongs to.
+         * @param {string} key Key of this occurrence.
+         * @param {number} x Horizontal position of the occurrence.
+         * @param {number} y Vertical position of the occurrence.
+         */
         this.dispatchEvent(new CustomEvent('privateblur'));
     }
 
+    /**
+     * Handle the mousedown event fired by the occurrence if it is not disabled.
+     * Dispatch a privatemousedown event.
+     *
+     * @param {Event} event
+     */
     handleMouseDown(event) {
         if (event.button !== 0 || this.readOnly) return;
 
         const resize = event.target.dataset.resize;
 
+        /**
+         * The event fired when the mouse is pressed on the occurrence, if it is not disabled.
+         *
+         * @event
+         * @name privatemousedown
+         * @param {string} eventName Name of the event this occurrence belongs to.
+         * @param {string} key Key of this occurrence.
+         * @param {number} x Horizontal position of the occurrence.
+         * @param {number} y Vertical position of the occurrence.
+         */
         this.dispatchEvent(
             new CustomEvent('privatemousedown', {
                 detail: {
                     eventName: this.eventName,
-                    key: this.key,
+                    key: this.occurrenceKey,
                     from: this.from,
                     x: event.clientX,
                     y: event.clientY,
@@ -410,6 +720,12 @@ export default class Occurrence extends LightningElement {
         );
     }
 
+    /**
+     * Handle the keydown event fired by the occurrence if it is not disabled.
+     * Open the context menu if the space bar or enter were pressed.
+     *
+     * @param {Event} event
+     */
     handleKeyDown(event) {
         const key = event.key;
         if (key === 'Enter' || key === ' ' || key === 'Spacebar') {
