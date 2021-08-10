@@ -221,17 +221,7 @@ const columnsCD = [
         typeAttributes: {
             currencyCode: 'CAD'
         },
-        editable: true,
-        summarizeTypes: [
-            'count',
-            'countUnique',
-            'sum',
-            'average',
-            'median',
-            'max',
-            'min',
-            'mode'
-        ]
+        editable: true
     },
     {
         label: 'Date',
@@ -244,17 +234,7 @@ const columnsCD = [
             hour: '2-digit',
             timeZone: 'Pacific/Honolulu'
         },
-        editable: true,
-        summarizeTypes: [
-            'count',
-            'countUnique',
-            'sum',
-            'average',
-            'median',
-            'max',
-            'min',
-            'mode'
-        ]
+        editable: true
     },
     {
         label: 'Date local',
@@ -265,17 +245,7 @@ const columnsCD = [
             month: 'long',
             year: 'numeric'
         },
-        editable: true,
-        summarizeTypes: [
-            'count',
-            'countUnique',
-            'sum',
-            'average',
-            'median',
-            'max',
-            'min',
-            'mode'
-        ]
+        editable: true
     },
     {
         label: 'Dynamic icon',
@@ -293,8 +263,7 @@ const columnsEN = [
         label: 'Email',
         fieldName: 'email',
         type: 'email',
-        editable: true,
-        summarizeTypes: ['count', 'countUnique', 'mode']
+        editable: true
     },
     {
         label: 'Image',
@@ -311,8 +280,7 @@ const columnsEN = [
             { label: 'All', checked: true, name: 'all' },
             { label: 'Published', checked: false, name: 'show_published' },
             { label: 'Unpublished', checked: false, name: 'show_unpublished' }
-        ],
-        summarizeTypes: ['count', 'countUnique']
+        ]
     },
     {
         label: 'Input Counter',
@@ -327,7 +295,7 @@ const columnsEN = [
         cellAttributes: {
             alignment: 'center'
         },
-        summarizeTypes: ['count', 'countUnique']
+        summarizeTypes: ['count', 'sum', 'mode', 'average', 'min', 'max']
     },
     {
         label: 'Input Date Range',
@@ -340,8 +308,7 @@ const columnsEN = [
             labelStartDate: 'Start',
             labelEndDate: 'End'
         },
-        editable: true,
-        summarizeTypes: ['count', 'countUnique']
+        editable: true
     },
     {
         label: 'Input Toggle',
@@ -355,15 +322,13 @@ const columnsEN = [
         editable: true,
         cellAttributes: {
             alignment: 'center'
-        },
-        summarizeTypes: ['count', 'countUnique']
+        }
     },
     {
         label: 'Location',
         type: 'location',
         fieldName: 'location',
-        editable: true,
-        summarizeTypes: ['count', 'countUnique']
+        editable: true
     },
     {
         label: 'Number',
@@ -387,8 +352,7 @@ const columnsOQ = [
         label: 'Phone',
         fieldName: 'phone',
         type: 'phone',
-        editable: true,
-        summarizeTypes: ['count', 'countUnique']
+        editable: true
     },
     {
         label: 'Progress Bar',
@@ -401,7 +365,7 @@ const columnsOQ = [
             thickness: 'large'
         },
         initialWidth: 150,
-        summarizeTypes: ['count', 'countUnique']
+        summarizeTypes: ['count', 'sum', 'mode', 'average', 'min', 'max']
     },
     {
         label: 'Progress Circle',
@@ -412,7 +376,7 @@ const columnsOQ = [
             size: 'small',
             color: { fieldName: 'progressCircleColor' }
         },
-        summarizeTypes: ['count', 'countUnique']
+        summarizeTypes: ['count', 'sum', 'mode', 'average', 'min', 'max']
     },
     {
         label: 'Progress Ring',
@@ -422,7 +386,7 @@ const columnsOQ = [
             variant: { fieldName: 'progressRingVariant' },
             size: 'large'
         },
-        summarizeTypes: ['count', 'countUnique']
+        summarizeTypes: ['count', 'sum', 'mode', 'average', 'min', 'max']
     },
     {
         label: 'QR Code',
@@ -432,8 +396,7 @@ const columnsOQ = [
             borderColor: { fieldName: 'qrcodeBorderColor' },
             borderWidth: { fieldName: 'qrcodeBorderWidth' },
             size: 50
-        },
-        summarizeTypes: ['count', 'countUnique']
+        }
     }
 ];
 
@@ -449,7 +412,7 @@ const columnsRZ = [
         },
         editable: true,
         initialWidth: 200,
-        summarizeTypes: ['count', 'countUnique']
+        summarizeTypes: ['count', 'sum', 'mode', 'average', 'min', 'max']
     },
     {
         label: 'Slider',
@@ -461,14 +424,13 @@ const columnsRZ = [
             step: { fieldName: 'sliderStep' }
         },
         editable: true,
-        summarizeTypes: ['count', 'countUnique']
+        summarizeTypes: ['count', 'sum', 'mode', 'average', 'min', 'max']
     },
     {
         label: 'Text',
         fieldName: 'text',
         type: 'text',
-        editable: true,
-        summarizeTypes: ['count', 'countUnique']
+        editable: true
     },
     {
         label: 'URL',
@@ -477,8 +439,7 @@ const columnsRZ = [
         typeAttributes: {
             label: { fieldName: 'urlLabel' },
             target: '_blank'
-        },
-        summarizeTypes: ['count', 'countUnique', 'mode']
+        }
     }
 ];
 
@@ -490,6 +451,28 @@ const columnsSum = [
         typeAttributes: {
             variant: { fieldName: 'badgeVariant' }
         }
+    },
+    {
+        label: 'Date',
+        fieldName: 'date',
+        type: 'date',
+        typeAttributes: {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+            hour: '2-digit',
+            timeZone: 'Pacific/Honolulu'
+        },
+        editable: true,
+        summarizeTypes: [
+            'count',
+            'countUnique',
+            'average',
+            'median',
+            'max',
+            'min',
+            'mode'
+        ]
     },
     {
         label: 'Price',
@@ -522,15 +505,7 @@ const columnsSum = [
         fieldName: 'percent',
         type: 'percent',
         editable: true,
-        summarizeTypes: [
-            'count',
-            'countUnique',
-            'average',
-            'median',
-            'min',
-            'max',
-            'mode'
-        ]
+        summarizeTypes: ['count', 'countUnique', 'median', 'min', 'max', 'mode']
     }
 ];
 
@@ -683,6 +658,7 @@ const dataEN = [
         email: 'nina.gomez@email.com',
         image:
             'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+        inputCounter: 1,
         inputDateRange: {
             startDate: new Date('2021/10/02'),
             endDate: new Date('2021/10/05')
@@ -835,6 +811,7 @@ const dataOQ = [
 const dataRZ = [
     {
         id: 1,
+        rating: '3',
         slider: 36,
         text: 'Nina Gomez',
         url: 'https://www.avonnicomponents.com/',
@@ -842,6 +819,7 @@ const dataRZ = [
     },
     {
         id: 2,
+        rating: '2',
         slider: 78,
         text: 'Dave McKinsley',
         url: 'https://www.avonni.app/',
@@ -858,6 +836,7 @@ const dataRZ = [
     },
     {
         id: 4,
+        rating: '5',
         slider: 36,
         sliderStep: 4,
         text: 'Lily Murray',
@@ -866,6 +845,8 @@ const dataRZ = [
     },
     {
         id: 5,
+        rating: '4',
+        slider: '0',
         text: 'Reginald Martin',
         url: 'https://lwc.dev/',
         urlLabel: 'LWC Documentation'
@@ -875,6 +856,7 @@ const dataRZ = [
 const dataSum = [
     {
         id: 1,
+        date: new Date('2021/09/24'),
         badge: 'approved',
         badgeVariant: 'success',
         currency: '5',
@@ -883,6 +865,7 @@ const dataSum = [
     },
     {
         id: 2,
+        date: new Date('2021/10/24'),
         badge: 'declined',
         badgeVariant: 'error',
         currency: '5',
@@ -891,6 +874,7 @@ const dataSum = [
     },
     {
         id: 3,
+        date: new Date('2021/10/24'),
         badge: 'unknown',
         badgeVariant: 'inverse',
         number: '15',
@@ -898,6 +882,7 @@ const dataSum = [
     },
     {
         id: 4,
+        date: new Date('2021/11/24'),
         badge: 'approved',
         badgeVariant: 'success',
         currency: '20',
@@ -906,6 +891,7 @@ const dataSum = [
     },
     {
         id: 5,
+        date: new Date('2021/12/24'),
         badge: 'approved',
         badgeVariant: 'success',
         currency: '25',
@@ -914,6 +900,7 @@ const dataSum = [
     },
     {
         id: 6,
+        date: new Date('2022/01/24'),
         badge: 'approved',
         badgeVariant: 'success',
         currency: '25',

@@ -71,10 +71,10 @@
                                             >
                                                 {type.label}:
                                             </div>
-                                            <template
-                                                if:true={column.numberType}
-                                            >
-                                                <template if:false={type.count}>
+                                            <template if:false={type.count}>
+                                                <template
+                                                    if:true={column.numberType}
+                                                >
                                                     <lightning-formatted-number
                                                         format-style={type.type}
                                                         value={type.value}
@@ -87,32 +87,46 @@
                                                         maximum-significant-digits={type.typeAttributes.maximumSignificantDigits}
                                                     ></lightning-formatted-number>
                                                 </template>
-                                            </template>
-                                            <template if:true={column.dateType}>
-                                                <template if:false={type.count}>
-                                                    <lightning-formatted-date-time
-                                                        value={type.value}
-                                                        day={type.typeAttributes.day}
-                                                        era={type.typeAttributes.era}
-                                                        hour={type.typeAttributes.hour}
-                                                        hour12={type.typeAttributes.hour12}
-                                                        minute={type.typeAttributes.minute}
-                                                        month={type.typeAttributes.month}
-                                                        second={type.typeAttributes.second}
-                                                        time-zone={type.typeAttributes.timeZone}
-                                                        time-zone-name={type.typeAttributes.timeZoneName}
-                                                        weekday={type.typeAttributes.weekday}
-                                                        year={type.typeAttributes.year}
-                                                    ></lightning-formatted-date-time>
+                                                <template
+                                                    if:true={column.dateType}
+                                                >
+                                                    <template
+                                                        if:true={type.value}
+                                                    >
+                                                        <lightning-formatted-date-time
+                                                            value={type.value}
+                                                            day={type.typeAttributes.day}
+                                                            era={type.typeAttributes.era}
+                                                            hour={type.typeAttributes.hour}
+                                                            hour12={type.typeAttributes.hour12}
+                                                            minute={type.typeAttributes.minute}
+                                                            month={type.typeAttributes.month}
+                                                            second={type.typeAttributes.second}
+                                                            time-zone={type.typeAttributes.timeZone}
+                                                            time-zone-name={type.typeAttributes.timeZoneName}
+                                                            weekday={type.typeAttributes.weekday}
+                                                            year={type.typeAttributes.year}
+                                                        ></lightning-formatted-date-time>
+                                                    </template>
                                                 </template>
-                                            </template>
-                                            <template
-                                                if:true={column.stringType}
-                                            >
-                                                <template if:true={type.mode}>
-                                                    <lightning-formatted-text
+                                                <template
+                                                    if:true={column.stringType}
+                                                >
+                                                    <template
+                                                        if:true={type.mode}
+                                                    >
+                                                        <lightning-formatted-text
+                                                            value={type.value}
+                                                        ></lightning-formatted-text>
+                                                    </template>
+                                                </template>
+                                                <template
+                                                    if:true={column.customType}
+                                                >
+                                                    <lightning-formatted-number
+                                                        format-style="decimal"
                                                         value={type.value}
-                                                    ></lightning-formatted-text>
+                                                    ></lightning-formatted-number>
                                                 </template>
                                             </template>
                                             <template if:true={type.count}>

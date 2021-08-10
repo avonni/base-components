@@ -157,6 +157,29 @@ const summarizations = (array, type) => {
     }
 };
 
+const isNumberType = (type) => {
+    return type === 'number' || type === 'percent' || type === 'currency';
+};
+
+const isDateType = (type) => {
+    return type === 'date' || type === 'date-local';
+};
+
+const isStringType = (type) => {
+    return type === 'email' || type === 'text' || type === 'url';
+};
+
+const isCustomType = (type) => {
+    return (
+        type === 'slider' ||
+        type === 'rating' ||
+        type === 'progress-circle' ||
+        type === 'progress-ring' ||
+        type === 'progress-bar' ||
+        type === 'input-counter'
+    );
+};
+
 /**
  * Method compute the summarization depending on which summarize type.
  *
@@ -176,13 +199,12 @@ const computeSummarizeObject = (columns, values) => {
         let sumTypes = column.summarizeTypes;
         const cType = column.type;
         const hasSummarizeType = column.summarizeTypes ? true : false;
-        const isNumberType =
-            cType === 'number' || cType === 'percent' || cType === 'currency';
-        const isDateType = cType === 'date' || cType === 'date-local';
-        const isStringType =
-            cType === 'email' || cType === 'text' || cType === 'url';
+        const numberType = isNumberType(cType);
+        const dateType = isDateType(cType);
+        const stringType = isStringType(cType);
+        const customType = isCustomType(cType);
         const formatType = cType !== 'number' ? cType : 'decimal';
-        const alignement = isNumberType
+        const alignement = numberType
             ? 'justify-content: flex-end'
             : 'justify-content: flex-start';
         const hasTypeAttributes = column.typeAttributes
@@ -196,9 +218,10 @@ const computeSummarizeObject = (columns, values) => {
             hasSummarizeType: hasSummarizeType,
             summarizeTypes: sumTypes,
             values: values[index],
-            numberType: isNumberType,
-            dateType: isDateType,
-            stringType: isStringType,
+            numberType: numberType,
+            dateType: dateType,
+            stringType: stringType,
+            customType: customType,
             formatType: formatType,
             alignement: alignement
         };
@@ -216,13 +239,11 @@ const computeSummarizeObject = (columns, values) => {
 
                 // Count and countUnique don't need formating since we only need the numbers of occurences.
                 // And they are always type decimal.
-                const stringMode = type === 'mode' && isStringType;
+                const stringMode = type === 'mode' && stringType;
                 return type === 'count' || type === 'countUnique'
                     ? {
                           label: type,
                           value: computedValue,
-                          type: 'decimal',
-                          typeAttributes: [],
                           count: true
                       }
                     : {
@@ -239,14 +260,4 @@ const computeSummarizeObject = (columns, values) => {
     return computedSummarizeArray;
 };
 
-export {
-    sum,
-    count,
-    countUnique,
-    average,
-    median,
-    max,
-    min,
-    mode,
-    computeSummarizeObject
-};
+export { computeSummarizeObject, isCustomType, isNumberType, isDateType };

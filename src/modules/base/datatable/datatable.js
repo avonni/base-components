@@ -33,7 +33,12 @@
 import { api, LightningElement } from 'lwc';
 import { normalizeArray } from 'c/utilsPrivate';
 
-import { computeSummarizeObject } from './summarizeFunctions';
+import {
+    computeSummarizeObject,
+    isDateType,
+    isNumberType,
+    isCustomType
+} from './summarizeFunctions';
 
 /**
  * Lightning datatable with custom cell types and extended functionalities.
@@ -470,17 +475,14 @@ export default class Datatable extends LightningElement {
             this._values = this._data.map((row) => {
                 return row[fieldName];
             });
-            if (
-                type === 'number' ||
-                type === 'currency' ||
-                type === 'percent'
-            ) {
-                return this._values.map(Number).filter(Number);
-            } else if (type === 'date' || type === 'date-local') {
-                const numberArray = this._values.map((date) => {
-                    return Date.parse(date);
-                });
-                return numberArray.filter(Number);
+            if (isCustomType(type) || isNumberType(type)) {
+                return this._values.map(Number).filter(Number.isFinite);
+            } else if (isDateType(type)) {
+                return this._values
+                    .map((date) => {
+                        return Date.parse(date);
+                    })
+                    .filter(Number);
             }
             return this._values.filter((e) => {
                 return e !== null && e !== undefined;
