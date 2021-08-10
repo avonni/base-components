@@ -33,11 +33,16 @@
 -->
 
 <template>
-    <div class="slds-grid scheduler" onmouseup={handleMouseUp}>
+    <div
+        class="slds-grid"
+        onmouseup={handleMouseUp}
+        onmousemove={handleMouseMove}
+    >
         <!-- Datatable -->
-        <div class="slds-border_right scheduler__datatable-col">
+        <div class={datatableColClass}>
             <c-datatable
                 class="slds-show slds-border_top"
+                max-column-width="9999999999"
                 columns={columns}
                 data={rows}
                 hide-checkbox-column
@@ -46,8 +51,35 @@
             ></c-datatable>
         </div>
 
+        <!-- Resizing splitter -->
+        <div class="slds-is-relative">
+            <div
+                class="scheduler__splitter slds-is-absolute slds-grid slds-grid_align-end"
+                onmousedown={handleSplitterMouseDown}
+            >
+                <div
+                    class="slds-theme_shade slds-grid slds-grid_vertical-align-center slds-wrap"
+                >
+                    <lightning-button-icon
+                        if:false={datatableIsHidden}
+                        class="scheduler__splitter-icon slds-is-relative"
+                        icon-name="utility:left"
+                        variant="bare"
+                        onclick={handleHideDatatable}
+                    ></lightning-button-icon>
+                    <lightning-button-icon
+                        if:false={datatableIsOpen}
+                        class="scheduler__splitter-icon slds-is-relative"
+                        icon-name="utility:right"
+                        variant="bare"
+                        onclick={handleOpenDatatable}
+                    ></lightning-button-icon>
+                </div>
+            </div>
+        </div>
+
         <!-- Schedule -->
-        <div class="slds-col slds-is-relative">
+        <div class="slds-col slds-is-relative scheduler__schedule-col">
             <table class={tableClass}>
                 <!-- Headers -->
                 <thead>
@@ -108,7 +140,6 @@
             <div
                 if:true={cellWidth}
                 class="scheduler__events slds-is-absolute"
-                onmousemove={handleMouseMove}
                 oncontextmenu={handleEmptySpotContextMenu}
                 onmousedown={handleMouseDown}
                 ondblclick={handleDoubleClick}

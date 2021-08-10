@@ -86,7 +86,9 @@ export default class Scheduler extends LightningElement {
     _visibleSpan = DEFAULT_VISIBLE_SPAN;
 
     _datatableRowsHeight;
+    _datatableWidth;
     _draggedEvent;
+    _draggedSplitter = false;
     _initialState = {};
     _mouseIsDown = false;
     _referenceHeader;
@@ -96,6 +98,8 @@ export default class Scheduler extends LightningElement {
     computedRows = [];
     computedEvents = [];
     contextMenuActions = [];
+    datatableIsHidden = false;
+    datatableIsOpen = false;
     selectedEvent;
     showContextMenu = false;
     showEditDialog = false;
@@ -112,10 +116,14 @@ export default class Scheduler extends LightningElement {
     renderedCallback() {
         // On the first render, save the cell width to pass the info to the primitives
         if (!this.cellWidth) {
-            const tbody = this.template.querySelector('tbody');
-            this.cellWidth =
-                tbody.offsetWidth / this.smallestHeader.numberOfColumns;
+            const td = this.template.querySelector('td');
+            this.cellWidth = td.getBoundingClientRect().width;
             return;
+        }
+
+        // Save the default datatable column width, in case the styling hook was used
+        if (!this._datatableWidth) {
+            this._datatableWidth = this.datatableCol.getBoundingClientRect().width;
         }
 
         // Save the datatable row height and update the header and body styles
@@ -233,7 +241,7 @@ export default class Scheduler extends LightningElement {
         return this._columns;
     }
     set columns(value) {
-        this._columns = normalizeArray(value);
+        this._columns = JSON.parse(JSON.stringify(normalizeArray(value)));
     }
 
     @api
@@ -401,6 +409,23 @@ export default class Scheduler extends LightningElement {
                 value: row[this.rowsKeyField]
             };
         });
+    }
+
+    get datatable() {
+        return this.template.querySelector('c-datatable');
+    }
+
+    get datatableCol() {
+        return this.template.querySelector('.scheduler__datatable-col');
+    }
+
+    get datatableColClass() {
+        return classSet('slds-border_right scheduler__datatable-col')
+            .add({
+                'scheduler__datatable-col_hidden': this.datatableIsHidden,
+                'scheduler__datatable-col_open': this.datatableIsOpen
+            })
+            .toString();
     }
 
     get smallestColumnDuration() {
@@ -862,11 +887,8 @@ export default class Scheduler extends LightningElement {
 
     updateHeadersStyle() {
         // Set the datatable header height
-        const datatableCol = this.template.querySelector(
-            '.scheduler__datatable-col'
-        );
         const thead = this.template.querySelector('thead');
-        datatableCol.style.paddingTop = `${thead.offsetHeight - 34}px`;
+        this.datatableCol.style.paddingTop = `${thead.offsetHeight - 34}px`;
 
         // Push the events block at the bottom of the headers
         const events = this.template.querySelector('.scheduler__events');
@@ -1026,7 +1048,45 @@ export default class Scheduler extends LightningElement {
         };
     }
 
-    resizeEventTo(cell) {
+    resizeEventToX(x) {
+        const occurrence = this.selection.occurrence;
+        const { row, mouseX } = this._initialState;
+        const computedX = x - mouseX;
+
+        // If a new event is created through click and drag,
+        // Set the direction the user is going to
+        if (this.selection.newEvent) {
+            this._resizeSide = computedX >= 0 ? 'right' : 'left';
+        }
+
+        // Get the events present in the cell crossed
+        const hoveredCell = this.getCellFromPosition(row, x);
+        const computedRow = this.getRowFromKey(row.dataset.key);
+        const computedCell = computedRow.getColumnFromStart(
+            Number(hoveredCell.dataset.start)
+        );
+        const cellEvents = computedCell.events;
+
+        // Check if any event in the cell has the same offsetTop
+        const eventIsHovered = cellEvents.some((cellEvent) => {
+            return (
+                cellEvent.offsetTop === occurrence.offsetTop &&
+                cellEvent.key !== occurrence.key
+            );
+        });
+
+        // If one of them do, the dragged event is passing over it
+        // We have to rerender the grid so the row height enlarges
+        if (eventIsHovered) {
+            this.resizeEventToCell(hoveredCell);
+        } else {
+            // If we are not passing above another event,
+            // change the styling of the dragged event to follow the cursor
+            this.updateDraggedEventStyleAfterResize(computedX);
+        }
+    }
+
+    resizeEventToCell(cell) {
         const side = this._resizeSide;
         const occurrence = this.selection.occurrence;
 
@@ -1298,69 +1358,42 @@ export default class Scheduler extends LightningElement {
         // Prevent scrolling
         mouseEvent.preventDefault();
 
-        if (this._draggedEvent) {
-            const {
-                mouseX,
-                mouseY,
-                row,
-                initialX,
-                initialY
-            } = this._initialState;
+        // The splitter between the datatable and the schedule is being dragged
+        if (this._draggedSplitter) {
+            const { mouseX, datatableWidth } = this._initialState;
+            const x = mouseEvent.clientX;
+            const width = datatableWidth + (x - mouseX);
+
+            this.datatable.style.width = `${width}px`;
+            this.datatableCol.style.width = `${width}px`;
+
+            // An event is being dragged
+        } else if (this._draggedEvent) {
+            const { mouseX, mouseY, initialX, initialY } = this._initialState;
 
             this.selection.isMoving = true;
 
-            // Prevent the events from being dragged out of the schedule grid,
-            // or from being squished outside of their boundaries when resizing
+            // Prevent the event from being dragged out of the schedule grid,
+            // or from being squished outside of its boundaries when resizing
             const position = this.normalizeMousePosition(
                 mouseEvent.clientX,
                 mouseEvent.clientY
             );
 
-            const x = position.x - mouseX;
-            const y = position.y - mouseY;
-
-            // If a new event is created through click and drag,
-            // Set the direction the user is going to, to simulate a resize
-            if (this.selection.newEvent) {
-                this._resizeSide = x >= 0 ? 'right' : 'left';
-            }
-
-            // Resizing
-            if (this._resizeSide) {
-                const { occurrence } = this.selection;
-
-                // Get the events present in the cell crossed
-                const hoveredCell = this.getCellFromPosition(row, position.x);
-                const computedRow = this.getRowFromKey(row.dataset.key);
-                const computedCell = computedRow.getColumnFromStart(
-                    Number(hoveredCell.dataset.start)
-                );
-                const cellEvents = computedCell.events;
-
-                // Check if any event in the cell has the same offsetTop
-                const eventIsHovered = cellEvents.some((cellEvent) => {
-                    return (
-                        cellEvent.offsetTop === occurrence.offsetTop &&
-                        cellEvent.key !== occurrence.key
-                    );
-                });
-
-                // If one of them do, the dragged event is passing over it
-                // We have to rerender the grid so the row height enlarges
-                if (eventIsHovered) {
-                    this.resizeEventTo(hoveredCell);
-                } else {
-                    // If we are not passing above another event,
-                    // change the styling of the dragged event to follow the cursor
-                    this.updateDraggedEventStyleAfterResize(x);
-                }
+            if (this._resizeSide || this.selection.newEvent) {
+                // Resizing
+                this.resizeEventToX(position.x);
             } else {
                 // Drag and drop
+                const x = position.x - mouseX;
+                const y = position.y - mouseY;
                 this._draggedEvent.x = x + initialX;
                 this._draggedEvent.y = y + initialY;
             }
+
+            // The user started the creation of a new event, through click and drag.
+            // On the first move, display the new event on the schedule.
         } else if (this.selection && this.selection.newEvent) {
-            // Display the new event
             this.computedEvents.push(this.selection.event);
             this._updateOccurrences = true;
             this.initRows();
@@ -1371,7 +1404,9 @@ export default class Scheduler extends LightningElement {
         this._mouseIsDown = false;
         if (mouseEvent.button !== 0) return;
 
-        if (this.selection && this.selection.isMoving) {
+        if (this._draggedSplitter) {
+            this._draggedSplitter = false;
+        } else if (this.selection && this.selection.isMoving) {
             // Get the new position
             const { mouseX, eventLeft, eventRight } = this._initialState;
             const { draftValues, newEvent, event } = this.selection;
@@ -1428,6 +1463,7 @@ export default class Scheduler extends LightningElement {
 
     handleDatatableResize(event) {
         if (event.detail.isUserTriggered) {
+            this.datatable.style.width = null;
             this._datatableRowsHeight = undefined;
             this.initRows();
         } else {
@@ -1507,7 +1543,7 @@ export default class Scheduler extends LightningElement {
             return;
         }
 
-        this.selectEvent(mouseEvent.clientX, mouseEvent.clientY);
+        this.newEvent(mouseEvent.clientX, mouseEvent.clientY, true);
     }
 
     handleEventDoubleClick(event) {
@@ -1551,7 +1587,7 @@ export default class Scheduler extends LightningElement {
                 x = this._initialState.eventRight;
             }
             const initialCell = this.getCellFromPosition(row, x);
-            this.resizeEventTo(initialCell);
+            this.resizeEventToCell(initialCell);
         }
         this.cleanDraggedElement();
         this.cleanSelection();
@@ -1612,6 +1648,57 @@ export default class Scheduler extends LightningElement {
             this.hideContextMenu();
         }
     };
+
+    handleSplitterMouseDown(mouseEvent) {
+        if (
+            mouseEvent.button !== 0 ||
+            mouseEvent.target.tagName === 'LIGHTNING-BUTTON-ICON'
+        )
+            return;
+
+        this.clearDatatableColumnWidth();
+        this._mouseIsDown = true;
+        this._draggedSplitter = true;
+        this._initialState = {
+            mouseX: mouseEvent.clientX,
+            datatableWidth: this.datatable.offsetWidth
+        };
+        this.datatableIsHidden = false;
+        this.datatableIsOpen = false;
+    }
+
+    handleHideDatatable() {
+        this.datatableCol.style.width = null;
+        this.datatable.style.width = null;
+
+        if (this.datatableIsOpen) {
+            this.datatableIsOpen = false;
+        } else {
+            this.datatableIsHidden = true;
+        }
+    }
+
+    clearDatatableColumnWidth() {
+        const lastColumn = this.columns[this.columns.length - 1];
+        if (lastColumn.initialWidth) {
+            lastColumn.initialWidth = undefined;
+            this._columns = [...this.columns];
+        }
+    }
+
+    handleOpenDatatable() {
+        this.datatableCol.style.width = null;
+        this.datatable.style.width = null;
+
+        if (this.datatableIsHidden) {
+            this.datatableIsHidden = false;
+            this.datatable.style.width = `${this._datatableWidth}px`;
+        } else {
+            this.datatableIsOpen = true;
+            const width = this.template.host.getBoundingClientRect().width;
+            this.datatable.style.width = `${width}px`;
+        }
+    }
 
     dispatchChangeEvent(name, onlyOneOccurrence = false) {
         const detail = {
