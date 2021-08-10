@@ -67,7 +67,7 @@ const sum = (array) => {
  * @returns {number} Average of array.
  */
 const average = (array) => {
-    return (sum(array) / count(array)).toFixed(5);
+    return parseInt((sum(array) / count(array)).toFixed(5), 10);
 };
 
 /**
@@ -174,18 +174,17 @@ const summarizations = (array, type) => {
 const computeSummarizeObject = (columns, values) => {
     const computedSummarizeArray = columns.map((column, index) => {
         let sumTypes = column.summarizeTypes;
-        const isSummarizeType =
-            column.type === 'number' ||
-            column.type === 'percent' ||
-            column.type === 'currency' ||
-            column.type === 'date' ||
-            column.type === 'date-local';
+        const hasSummarizeType = column.summarizeTypes ? true : false;
         const isNumberType =
             column.type === 'number' ||
             column.type === 'percent' ||
             column.type === 'currency';
         const isDateType =
             column.type === 'date' || column.type === 'date-local';
+        const isStringType =
+            column.type === 'email' ||
+            column.type === 'text' ||
+            column.type === 'url';
         let formatType = column.type !== 'number' ? column.type : 'decimal';
 
         const hasTypeAttributes = column.typeAttributes
@@ -196,11 +195,12 @@ const computeSummarizeObject = (columns, values) => {
         const summarizeColumnObject = {
             fieldName: column.fieldName,
             type: column.type,
+            hasSummarizeType: hasSummarizeType,
             summarizeTypes: sumTypes,
             values: values[index],
-            summarizeType: isSummarizeType,
             numberType: isNumberType,
             dateType: isDateType,
+            stringType: isStringType,
             formatType: formatType
         };
 
@@ -218,6 +218,7 @@ const computeSummarizeObject = (columns, values) => {
 
                 // Count and countUnique don't need formating since we only need the numbers of occurences.
                 // And they are always type decimal.
+                const stringMode = type === 'mode' && isStringType;
                 return type === 'count' || type === 'countUnique'
                     ? {
                           label: type,
@@ -230,7 +231,8 @@ const computeSummarizeObject = (columns, values) => {
                           label: type,
                           value: computedValue,
                           type: formatType,
-                          typeAttributes: hasTypeAttributes
+                          typeAttributes: hasTypeAttributes,
+                          mode: stringMode
                       };
             });
         }

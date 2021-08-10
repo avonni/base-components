@@ -50,7 +50,7 @@
                             for:each={computedSummarizeArray}
                             for:item="column"
                         >
-                            <template if:true={column.summarizeType}>
+                            <template if:true={column.hasSummarizeType}>
                                 <td
                                     key={column.type}
                                     class="avonni-datatable-vertical-align_top"
@@ -73,25 +73,21 @@
                                             <template
                                                 if:true={column.numberType}
                                             >
-                                                <lightning-formatted-number
-                                                    format-style={type.type}
-                                                    value={type.value}
-                                                    currency-code={type.typeAttributes.currencyCode}
-                                                    currency-display-as={type.typeAttributes.currencyDisplayAs}
-                                                    minimum-fraction-digits={type.typeAttributes.minimumFractionDigits}
-                                                    maximum-fraction-digits={type.typeAttributes.maximumFractionDigits}
-                                                    minimum-integer-digits={type.typeAttributes.minimumIntegerDigits}
-                                                    minimum-significant-digits={type.typeAttributes.minimumSignificantDigits}
-                                                    maximum-significant-digits={type.typeAttributes.maximumSignificantDigits}
-                                                ></lightning-formatted-number>
-                                            </template>
-                                            <template if:true={column.dateType}>
-                                                <template if:true={type.count}>
+                                                <template if:false={type.count}>
                                                     <lightning-formatted-number
                                                         format-style={type.type}
                                                         value={type.value}
+                                                        currency-code={type.typeAttributes.currencyCode}
+                                                        currency-display-as={type.typeAttributes.currencyDisplayAs}
+                                                        minimum-fraction-digits={type.typeAttributes.minimumFractionDigits}
+                                                        maximum-fraction-digits={type.typeAttributes.maximumFractionDigits}
+                                                        minimum-integer-digits={type.typeAttributes.minimumIntegerDigits}
+                                                        minimum-significant-digits={type.typeAttributes.minimumSignificantDigits}
+                                                        maximum-significant-digits={type.typeAttributes.maximumSignificantDigits}
                                                     ></lightning-formatted-number>
                                                 </template>
+                                            </template>
+                                            <template if:true={column.dateType}>
                                                 <template if:false={type.count}>
                                                     <lightning-formatted-date-time
                                                         value={type.value}
@@ -109,11 +105,26 @@
                                                     ></lightning-formatted-date-time>
                                                 </template>
                                             </template>
+                                            <template
+                                                if:true={column.stringType}
+                                            >
+                                                <template if:true={type.mode}>
+                                                    <lightning-formatted-text
+                                                        value={type.value}
+                                                    ></lightning-formatted-text>
+                                                </template>
+                                            </template>
+                                            <template if:true={type.count}>
+                                                <lightning-formatted-number
+                                                    format-style="decimal"
+                                                    value={type.value}
+                                                ></lightning-formatted-number>
+                                            </template>
                                         </div>
                                     </template>
                                 </td>
                             </template>
-                            <template if:false={column.summarizeType}>
+                            <template if:false={column.hasSummarizeType}>
                                 <td
                                     key={column.type}
                                     data-column={column.fieldName}

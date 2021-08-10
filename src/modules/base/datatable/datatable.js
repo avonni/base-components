@@ -296,8 +296,6 @@ export default class Datatable extends LightningElement {
 
     renderedCallback() {
         this.bottomTableInitialization();
-        console.log(this._computedSummarizeArray);
-        console.log(this._columnsWidth);
     }
 
     /**
@@ -484,9 +482,10 @@ export default class Datatable extends LightningElement {
                 });
                 return numberArray.filter(Number);
             }
-            return [];
+            return this._values.filter((e) => {
+                return e !== null && e !== undefined;
+            });
         });
-        console.log(this._filteredDataValues);
     }
 
     /**

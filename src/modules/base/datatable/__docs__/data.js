@@ -293,7 +293,8 @@ const columnsEN = [
         label: 'Email',
         fieldName: 'email',
         type: 'email',
-        editable: true
+        editable: true,
+        summarizeTypes: ['count', 'countUnique', 'mode']
     },
     {
         label: 'Image',
@@ -310,7 +311,8 @@ const columnsEN = [
             { label: 'All', checked: true, name: 'all' },
             { label: 'Published', checked: false, name: 'show_published' },
             { label: 'Unpublished', checked: false, name: 'show_unpublished' }
-        ]
+        ],
+        summarizeTypes: ['count', 'countUnique']
     },
     {
         label: 'Input Counter',
@@ -324,7 +326,8 @@ const columnsEN = [
         editable: true,
         cellAttributes: {
             alignment: 'center'
-        }
+        },
+        summarizeTypes: ['count', 'countUnique']
     },
     {
         label: 'Input Date Range',
@@ -337,7 +340,8 @@ const columnsEN = [
             labelStartDate: 'Start',
             labelEndDate: 'End'
         },
-        editable: true
+        editable: true,
+        summarizeTypes: ['count', 'countUnique']
     },
     {
         label: 'Input Toggle',
@@ -351,13 +355,15 @@ const columnsEN = [
         editable: true,
         cellAttributes: {
             alignment: 'center'
-        }
+        },
+        summarizeTypes: ['count', 'countUnique']
     },
     {
         label: 'Location',
         type: 'location',
         fieldName: 'location',
-        editable: true
+        editable: true,
+        summarizeTypes: ['count', 'countUnique']
     },
     {
         label: 'Number',
@@ -381,7 +387,8 @@ const columnsOQ = [
         label: 'Phone',
         fieldName: 'phone',
         type: 'phone',
-        editable: true
+        editable: true,
+        summarizeTypes: ['count', 'countUnique']
     },
     {
         label: 'Progress Bar',
@@ -393,7 +400,8 @@ const columnsOQ = [
             variant: 'circular',
             thickness: 'large'
         },
-        initialWidth: 150
+        initialWidth: 150,
+        summarizeTypes: ['count', 'countUnique']
     },
     {
         label: 'Progress Circle',
@@ -403,7 +411,8 @@ const columnsOQ = [
             thickness: 'large',
             size: 'small',
             color: { fieldName: 'progressCircleColor' }
-        }
+        },
+        summarizeTypes: ['count', 'countUnique']
     },
     {
         label: 'Progress Ring',
@@ -412,7 +421,8 @@ const columnsOQ = [
         typeAttributes: {
             variant: { fieldName: 'progressRingVariant' },
             size: 'large'
-        }
+        },
+        summarizeTypes: ['count', 'countUnique']
     },
     {
         label: 'QR Code',
@@ -422,7 +432,8 @@ const columnsOQ = [
             borderColor: { fieldName: 'qrcodeBorderColor' },
             borderWidth: { fieldName: 'qrcodeBorderWidth' },
             size: 50
-        }
+        },
+        summarizeTypes: ['count', 'countUnique']
     }
 ];
 
@@ -437,7 +448,8 @@ const columnsRZ = [
             disabled: { fieldName: 'ratingDisabled' }
         },
         editable: true,
-        initialWidth: 200
+        initialWidth: 200,
+        summarizeTypes: ['count', 'countUnique']
     },
     {
         label: 'Slider',
@@ -448,12 +460,15 @@ const columnsRZ = [
             label: 'Slider',
             step: { fieldName: 'sliderStep' }
         },
-        editable: true
+        editable: true,
+        summarizeTypes: ['count', 'countUnique']
     },
     {
         label: 'Text',
         fieldName: 'text',
-        editable: true
+        type: 'text',
+        editable: true,
+        summarizeTypes: ['count', 'countUnique']
     },
     {
         label: 'URL',
@@ -462,7 +477,8 @@ const columnsRZ = [
         typeAttributes: {
             label: { fieldName: 'urlLabel' },
             target: '_blank'
-        }
+        },
+        summarizeTypes: ['count', 'countUnique', 'mode']
     }
 ];
 
@@ -842,7 +858,7 @@ const dataRZ = [
     },
     {
         id: 4,
-        slider: 3,
+        slider: 36,
         sliderStep: 4,
         text: 'Lily Murray',
         url: 'https://www.lightningdesignsystem.com/',
