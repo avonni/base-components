@@ -11,7 +11,9 @@ const hasOwnProp = Object.prototype.hasOwnProperty;
 
 function graft(parentNode, childNodes, parentLongname) {
     childNodes
-        .filter(({ memberof }) => memberof === parentLongname)
+        .filter(
+            ({ memberof }) => !parentLongname || memberof === parentLongname
+        )
         .forEach((element) => {
             let i;
             let len;
