@@ -948,18 +948,14 @@ export default class Scheduler extends LightningElement {
     }
 
     getEventOccurrencesFromRowKey(key) {
-        // Find the events in this rows
-        const events = this.computedEvents.filter((event) => {
-            return event.keyFields.includes(key) && !event.disabled;
-        });
-
-        // Find the event occurrences of this row
         const occurrences = [];
-        events.forEach((event) => {
-            const rowOccurrences = event.occurrences.filter(
-                (occ) => occ.rowKey === key
-            );
-            occurrences.push(rowOccurrences);
+        this.computedEvents.forEach((event) => {
+            if (!event.disabled) {
+                const occ = event.occurrences.filter((occurrence) => {
+                    return occurrence.rowKey === key;
+                });
+                occurrences.push(occ);
+            }
         });
 
         return occurrences.flat();
@@ -1129,7 +1125,7 @@ export default class Scheduler extends LightningElement {
             draftValues.keyFields = [...occurrence.keyFields];
             draftValues.keyFields.splice(keyFieldIndex, 1);
 
-            if (!occurrence.keyFields.includes(rowKey)) {
+            if (!draftValues.keyFields.includes(rowKey)) {
                 draftValues.keyFields.push(rowKey);
             }
         }
@@ -1201,19 +1197,16 @@ export default class Scheduler extends LightningElement {
     }
 
     saveEventOccurrence() {
-        const { event, occurrences, draftValues } = this.selection;
-        const updatedKeyFields = normalizeArray(draftValues.keyFields);
-        const keyFields = updatedKeyFields.length
-            ? updatedKeyFields
-            : event.keyFields;
+        const { event, occurrences, occurrence, draftValues } = this.selection;
+        const draftKeyFields = normalizeArray(draftValues.keyFields);
+        const keyFields = draftKeyFields.length
+            ? draftKeyFields
+            : occurrence.keyFields;
         const processedKeyFields = [...keyFields];
         const newOccurrences = [];
 
-        occurrences.forEach((occurrence) => {
-            // Remove the old occurrence from the row
-            const rowKey = occurrence.rowKey;
-            const row = this.getRowFromKey(rowKey);
-            row.removeEvent(occurrence);
+        occurrences.forEach((occ) => {
+            const rowKey = occ.rowKey;
 
             // If the occurrence row key is still included in the key fields
             const keyField = processedKeyFields.indexOf(rowKey);
@@ -1225,46 +1218,33 @@ export default class Scheduler extends LightningElement {
                     if (value.length) {
                         if (key === 'from' || key === 'to') {
                             // Convert the ISO dates into DateTime objects
-                            occurrence[key] = dateTimeObjectFrom(value);
+                            occ[key] = dateTimeObjectFrom(value);
                         } else {
-                            occurrence[key] = value;
+                            occ[key] = value;
                         }
                     }
                 });
-                occurrence.keyFields = keyFields;
-
-                // Add the updated occurrence to the row and the selection occurrences
-                row.events.push(occurrence);
-                row.addEventToColumns(occurrence);
-                newOccurrences.push(occurrence);
+                occ.keyFields = keyFields;
+                newOccurrences.push(occ);
 
                 // Remove the processed key field from the list
                 processedKeyFields.splice(keyField, 1);
             } else {
-                // If the occurrence row key have been removed,
+                // If the occurrence row key has been removed,
                 // remove it from the event as well
-                event.removeOccurrence(occurrence);
+                event.removeOccurrence(occ);
             }
-            row.resetEventsOffsetTop();
         });
 
         // The key fields left are new ones added by the user
         processedKeyFields.forEach((keyField) => {
-            const occurrence = Object.assign(
-                {},
-                newOccurrences[0] || occurrences[0]
-            );
-            occurrence.rowKey = keyField;
-            occurrence.key = `${event.name}-${keyField}-${
+            const occ = Object.assign({}, newOccurrences[0] || occurrences[0]);
+            occ.rowKey = keyField;
+            occ.key = `${event.name}-${keyField}-${
                 event.occurrences.length + 1
             }`;
-            occurrence.keyFields = keyFields;
-            event.occurrences.push(occurrence);
-
-            const row = this.getRowFromKey(keyField);
-            row.events.push(occurrence);
-            row.addEventToColumns(occurrence);
-            row.resetEventsOffsetTop();
+            occ.keyFields = keyFields;
+            event.occurrences.push(occ);
         });
 
         this.dispatchChangeEvent(event.name, true);
