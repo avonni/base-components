@@ -296,6 +296,8 @@ export default class Datatable extends LightningElement {
 
     renderedCallback() {
         this.bottomTableInitialization();
+        console.log(this._computedSummarizeArray);
+        console.log(this._columnsWidth);
     }
 
     /**
@@ -461,16 +463,30 @@ export default class Datatable extends LightningElement {
     }
 
     /**
-     * Updates the table width base on the width of the primitive datatable on initialization and on resize.
+     *
      */
     computeFilteredDataValues() {
         this._filteredDataValues = this._columns.map((column) => {
             const fieldName = column.fieldName;
+            const type = column.type;
             this._values = this._data.map((row) => {
                 return row[fieldName];
             });
-            return this._values.map(Number).filter(Number);
+            if (
+                type === 'number' ||
+                type === 'currency' ||
+                type === 'percent'
+            ) {
+                return this._values.map(Number).filter(Number);
+            } else if (type === 'date' || type === 'date-local') {
+                const numberArray = this._values.map((date) => {
+                    return Date.parse(date);
+                });
+                return numberArray.filter(Number);
+            }
+            return [];
         });
+        console.log(this._filteredDataValues);
     }
 
     /**

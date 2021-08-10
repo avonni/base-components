@@ -174,11 +174,20 @@ const summarizations = (array, type) => {
 const computeSummarizeObject = (columns, values) => {
     const computedSummarizeArray = columns.map((column, index) => {
         let sumTypes = column.summarizeTypes;
+        const isSummarizeType =
+            column.type === 'number' ||
+            column.type === 'percent' ||
+            column.type === 'currency' ||
+            column.type === 'date' ||
+            column.type === 'date-local';
         const isNumberType =
             column.type === 'number' ||
             column.type === 'percent' ||
             column.type === 'currency';
-        const formatType = column.type !== 'number' ? column.type : 'decimal';
+        const isDateType =
+            column.type === 'date' || column.type === 'date-local';
+        let formatType = column.type !== 'number' ? column.type : 'decimal';
+
         const hasTypeAttributes = column.typeAttributes
             ? column.typeAttributes
             : [];
@@ -189,7 +198,9 @@ const computeSummarizeObject = (columns, values) => {
             type: column.type,
             summarizeTypes: sumTypes,
             values: values[index],
+            summarizeType: isSummarizeType,
             numberType: isNumberType,
+            dateType: isDateType,
             formatType: formatType
         };
 
@@ -212,7 +223,8 @@ const computeSummarizeObject = (columns, values) => {
                           label: type,
                           value: computedValue,
                           type: 'decimal',
-                          typeAttributes: []
+                          typeAttributes: [],
+                          count: true
                       }
                     : {
                           label: type,

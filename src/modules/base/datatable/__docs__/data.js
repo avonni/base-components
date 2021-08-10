@@ -221,7 +221,17 @@ const columnsCD = [
         typeAttributes: {
             currencyCode: 'CAD'
         },
-        editable: true
+        editable: true,
+        summarizeTypes: [
+            'count',
+            'countUnique',
+            'sum',
+            'average',
+            'median',
+            'max',
+            'min',
+            'mode'
+        ]
     },
     {
         label: 'Date',
@@ -234,18 +244,38 @@ const columnsCD = [
             hour: '2-digit',
             timeZone: 'Pacific/Honolulu'
         },
-        editable: true
+        editable: true,
+        summarizeTypes: [
+            'count',
+            'countUnique',
+            'sum',
+            'average',
+            'median',
+            'max',
+            'min',
+            'mode'
+        ]
     },
     {
         label: 'Date local',
-        fieldName: 'date',
+        fieldName: 'dateLocal',
         type: 'date-local',
         typeAttributes: {
             day: 'numeric',
             month: 'long',
             year: 'numeric'
         },
-        editable: true
+        editable: true,
+        summarizeTypes: [
+            'count',
+            'countUnique',
+            'sum',
+            'average',
+            'median',
+            'max',
+            'min',
+            'mode'
+        ]
     },
     {
         label: 'Dynamic icon',
@@ -590,7 +620,8 @@ const dataCD = [
         colorPicker: '#00a1e0',
         currency: '200',
         dynamicIcon: 'ellie',
-        date: new Date('2022/03/24')
+        date: new Date('2022/03/24'),
+        dateLocal: new Date('2022/03/24')
     },
     {
         id: 2,
@@ -598,7 +629,8 @@ const dataCD = [
         colorPicker: '#e65cd1',
         dynamicIcon: 'score',
         dynamicIconOption: 'negative',
-        date: new Date('2022/03/21')
+        date: new Date('2022/03/21'),
+        dateLocal: new Date('2022/03/21')
     },
     {
         id: 3,
@@ -609,6 +641,7 @@ const dataCD = [
         dynamicIcon: 'strength',
         dynamicIconOption: -3,
         date: new Date('2022/05/04'),
+        dateLocal: new Date('2022/05/04'),
         isMultiSelect: true
     },
     {
@@ -616,7 +649,8 @@ const dataCD = [
         colorPicker: '#f4bc25',
         currency: '432',
         dynamicIcon: 'eq',
-        date: new Date('2021/02/14')
+        date: new Date('2021/02/14'),
+        dateLocal: new Date('2021/02/14')
     },
     {
         id: 5,
@@ -624,7 +658,7 @@ const dataCD = [
         colorPicker: '#f99120',
         currency: '217',
         dynamicIcon: 'waffle',
-        date: new Date('2022/10/12')
+        dateLocal: new Date('2022/10/12')
     }
 ];
 const dataEN = [
