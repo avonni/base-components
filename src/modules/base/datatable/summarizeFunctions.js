@@ -174,19 +174,17 @@ const summarizations = (array, type) => {
 const computeSummarizeObject = (columns, values) => {
     const computedSummarizeArray = columns.map((column, index) => {
         let sumTypes = column.summarizeTypes;
+        const cType = column.type;
         const hasSummarizeType = column.summarizeTypes ? true : false;
         const isNumberType =
-            column.type === 'number' ||
-            column.type === 'percent' ||
-            column.type === 'currency';
-        const isDateType =
-            column.type === 'date' || column.type === 'date-local';
+            cType === 'number' || cType === 'percent' || cType === 'currency';
+        const isDateType = cType === 'date' || cType === 'date-local';
         const isStringType =
-            column.type === 'email' ||
-            column.type === 'text' ||
-            column.type === 'url';
-        let formatType = column.type !== 'number' ? column.type : 'decimal';
-
+            cType === 'email' || cType === 'text' || cType === 'url';
+        const formatType = cType !== 'number' ? cType : 'decimal';
+        const alignement = isNumberType
+            ? 'justify-content: flex-end'
+            : 'justify-content: flex-start';
         const hasTypeAttributes = column.typeAttributes
             ? column.typeAttributes
             : [];
@@ -194,16 +192,16 @@ const computeSummarizeObject = (columns, values) => {
         // Formating of the object we need to iterate in the markup.
         const summarizeColumnObject = {
             fieldName: column.fieldName,
-            type: column.type,
+            type: cType,
             hasSummarizeType: hasSummarizeType,
             summarizeTypes: sumTypes,
             values: values[index],
             numberType: isNumberType,
             dateType: isDateType,
             stringType: isStringType,
-            formatType: formatType
+            formatType: formatType,
+            alignement: alignement
         };
-
         if (sumTypes) {
             // if there is only one summarizeType and as a string, we convert it to an array.
             if (typeof sumTypes === 'string') {
