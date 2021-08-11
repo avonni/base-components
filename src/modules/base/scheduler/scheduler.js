@@ -75,6 +75,7 @@ export default class Scheduler extends LightningElement {
     _contextMenuEmptySpotActions = [];
     _contextMenuEventActions = [];
     _customEventsPalette = [];
+    _collapseDisabled = false;
     _disabledDatesTimes = [];
     _eventsPalette = EVENTS_PALETTES.default;
     _eventsTheme = EVENTS_THEMES.default;
@@ -83,6 +84,7 @@ export default class Scheduler extends LightningElement {
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     _readOnly = false;
     _recurrentEditModes = EDIT_MODES;
+    _resizeColumnDisabled = false;
     _rows = [];
     _rowsKeyField;
     _start = dateTimeObjectFrom(DEFAULT_START_DATE);
@@ -277,6 +279,14 @@ export default class Scheduler extends LightningElement {
     }
 
     @api
+    get collapseDisabled() {
+        return this._collapseDisabled;
+    }
+    set collapseDisabled(value) {
+        this._collapseDisabled = normalizeBoolean(value);
+    }
+
+    @api
     get disabledDatesTimes() {
         return this._disabledDatesTimes;
     }
@@ -374,6 +384,14 @@ export default class Scheduler extends LightningElement {
         if (!this._recurrentEditModes.length) {
             this._recurrentEditModes = EDIT_MODES;
         }
+    }
+
+    @api
+    get resizeColumnDisabled() {
+        return this._resizeColumnDisabled;
+    }
+    set resizeColumnDisabled(value) {
+        this._resizeColumnDisabled = normalizeBoolean(value);
     }
 
     @api
@@ -522,11 +540,29 @@ export default class Scheduler extends LightningElement {
         );
     }
 
+    get showCollapseLeft() {
+        return !this.collapseDisabled && !this.datatableIsHidden;
+    }
+
+    get showCollapseRight() {
+        return !this.collapseDisabled && !this.datatableIsOpen;
+    }
+
     get showRecurrenceSaveOptions() {
         return (
             this.recurrentEditModes.length > 1 &&
             this.selection.event.recurrence
         );
+    }
+
+    get splitterClass() {
+        return classSet(
+            'scheduler__splitter slds-is-absolute slds-grid slds-grid_align-end'
+        )
+            .add({
+                scheduler__splitter_disabled: this.resizeColumnDisabled
+            })
+            .toString();
     }
 
     get tableClass() {
@@ -1478,6 +1514,7 @@ export default class Scheduler extends LightningElement {
 
     handleSplitterMouseDown(mouseEvent) {
         if (
+            this.resizeColumnDisabled ||
             mouseEvent.button !== 0 ||
             mouseEvent.target.tagName === 'LIGHTNING-BUTTON-ICON'
         )

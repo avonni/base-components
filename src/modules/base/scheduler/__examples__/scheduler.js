@@ -38,6 +38,7 @@ export const Scheduler = ({
     availableDaysOfTheWeek,
     availableMonths,
     availableTimeFrames,
+    collapseDisabled,
     columns,
     contextMenuEmptySpotActions,
     contextMenuEventActions,
@@ -50,6 +51,7 @@ export const Scheduler = ({
     isLoading,
     readOnly,
     recurrentEditModes,
+    resizeColumnDisabled,
     rows,
     rowsKeyField,
     start,
@@ -60,6 +62,7 @@ export const Scheduler = ({
     element.availableDaysOfTheWeek = availableDaysOfTheWeek;
     element.availableMonths = availableMonths;
     element.availableTimeFrames = availableTimeFrames;
+    element.collapseDisabled = collapseDisabled;
     element.columns = columns;
     element.contextMenuEmptySpotActions = contextMenuEmptySpotActions;
     element.contextMenuEventActions = contextMenuEventActions;
@@ -72,6 +75,7 @@ export const Scheduler = ({
     element.isLoading = isLoading;
     element.readOnly = readOnly;
     element.recurrentEditModes = recurrentEditModes;
+    element.resizeColumnDisabled = resizeColumnDisabled;
     element.rows = rows;
     element.rowsKeyField = rowsKeyField;
     element.start = start;

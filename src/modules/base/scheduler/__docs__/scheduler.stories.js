@@ -69,6 +69,31 @@ export default {
                 type: { summary: 'object' }
             }
         },
+        resizeColumnDisabled: {
+            name: 'resize-column-disabled',
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description: 'If present, column resizing is disabled.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
+        collapseDisabled: {
+            name: 'collapse-disabled',
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description:
+                'If present, the schedule column is not collapsible or expandable.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         rows: {
             control: {
                 type: 'object'
