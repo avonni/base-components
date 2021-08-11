@@ -91,7 +91,7 @@ export default class ColorPalette extends LightningElement {
 
     _type = TYPES.default;
     _colors = DEFAULT_COLORS;
-    _pairColorLabels = [];
+    bundles = [];
     _columns = DEFAULT_COLUMNS;
     _tileWidth = DEFAULT_TILE_WIDTH;
     _tileHeight = DEFAULT_TILE_HEIGHT;
@@ -100,6 +100,7 @@ export default class ColorPalette extends LightningElement {
     _readOnly = false;
     init = false;
     currentLabel;
+	currentToken;
 	lastTarget;
 
     renderedCallback() {
@@ -145,7 +146,7 @@ export default class ColorPalette extends LightningElement {
         }
 
         if (typeof values[0] == 'object') {
-            this._pairColorLabels = values;
+            this.bundles = values;
             this._type = 'list';
         } else {
             this._colors = values;
@@ -256,10 +257,6 @@ export default class ColorPalette extends LightningElement {
         return generateUniqueId();
     }
 
-    get pairColorLabels() {
-        return this._pairColorLabels;
-    }
-
     get isBase() {
         return this._type === 'base';
     }
@@ -348,6 +345,7 @@ export default class ColorPalette extends LightningElement {
 		currentTarget.children[0].classList.add('slds-is-selected');
         this.value = currentTarget.getAttribute('item-color');
 		this.currentLabel = currentTarget.getAttribute('item-label');
+		this.currentToken = currentTarget.getAttribute('item-token');
 		this.lastTarget = currentTarget;
         event.preventDefault();
         this.dispatchChange();
@@ -382,7 +380,8 @@ export default class ColorPalette extends LightningElement {
                         rgb: colors.rgb,
                         rgba: colors.rgba,
                         alpha: colors.A,
-						label: this.currentLabel
+						label: this.currentLabel,
+						token: this.currentToken
                     }
                 })
             );

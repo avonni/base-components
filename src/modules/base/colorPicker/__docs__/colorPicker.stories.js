@@ -282,23 +282,16 @@ export default {
 };
 
 const colorsWithLabel = [
-    { label: 'brand-accessible', value: '#0176d3' },
-    { label: 'brand-accessible-active', value: '#014486' },
-    { label: 'brand-background-dark', value: '#014486' },
     {
-        label: 'dark-transparent',
-        value: 'rgba(1, 68, 134, 0)'
+        label: 'brand-accessible',
+        token: '--lwc-brand-accessible',
+        value: '#0176d3'
     },
-    { label: 'background-primary', value: '#eef4ff' },
     {
-        label: 'primary-transparent',
-        value: 'rgba(176,196,223,0)'
-    },
-    { label: 'brand-contrast', value: 'rgb(26, 27, 30)' },
-    { label: 'color 1', value: '#e3abec' },
-    { label: 'color 2', value: '#c2dbf7' },
-    { label: 'color 3', value: '#9fd6ff' },
-    { label: 'color 4', value: '#9de7da' }
+        label: 'brand-accessible-active',
+        token: '--lwc-brand-accessible-active',
+        value: '#014486'
+    }
 ];
 
 const colorsValue = [

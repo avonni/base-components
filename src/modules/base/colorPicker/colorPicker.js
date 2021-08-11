@@ -190,6 +190,7 @@ export default class ColorPicker extends LightningElement {
     newValue;
 
 	currentLabel;
+	currentToken;
 
     connectedCallback() {
         if (!this.name) {
@@ -578,7 +579,7 @@ export default class ColorPicker extends LightningElement {
                         rgb: colors.rgb,
                         rgba: colors.rgba,
                         alpha: colors.alpha,
-						token: this.currentLabel,
+						token: this.currentToken,
                     }
                 })
             );
@@ -764,6 +765,7 @@ export default class ColorPicker extends LightningElement {
                     ? event.detail.hexa
                     : event.detail.hex;
 			this.currentLabel = event.detail.label;
+			this.currentToken = event.detail.token;
         }
 
     }
