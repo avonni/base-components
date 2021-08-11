@@ -33,13 +33,13 @@
 import { Datatable } from '../__examples__/datatable';
 import {
     columnsAB,
-    columnsCE,
-    columnsFN,
+    columnsCD,
+    columnsEN,
     columnsOQ,
     columnsRZ,
     dataAB,
-    dataCE,
-    dataFN,
+    dataCD,
+    dataEN,
     dataOQ,
     dataRZ
 } from './data';
@@ -381,10 +381,10 @@ DataTypesFromAToB.args = {
     columnWidthsMode: 'auto'
 };
 
-export const DataTypesFromCToE = Template.bind({});
-DataTypesFromCToE.args = {
-    columns: columnsCE,
-    data: dataCE,
+export const DataTypesFromCToD = Template.bind({});
+DataTypesFromCToD.args = {
+    columns: columnsCD,
+    data: dataCD,
     keyField: 'id',
     columnWidthsMode: 'auto',
     draftValues: [
@@ -407,11 +407,10 @@ DataTypesFromCToE.args = {
         }
     }
 };
-
-export const DataTypesFromFToN = Template.bind({});
-DataTypesFromFToN.args = {
-    columns: columnsFN,
-    data: dataFN,
+export const DataTypesFromEToN = Template.bind({});
+DataTypesFromEToN.args = {
+    columns: columnsEN,
+    data: dataEN,
     keyField: 'id',
     columnWidthsMode: 'auto',
     hideCheckboxColumn: true

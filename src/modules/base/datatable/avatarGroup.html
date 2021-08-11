@@ -34,12 +34,14 @@
 
 <template>
     <div class="reset-z-index slds-m-left_x-small">
-        <c-avatar-group
+        <c-primitive-cell-avatar-group
             size={typeAttributes.size}
             variant={typeAttributes.variant}
             items={value}
             layout={typeAttributes.layout}
             max-count={typeAttributes.maxCount}
-        ></c-avatar-group>
+            action-icon-name={typeAttributes.actionIconName}
+            name={typeAttributes.name}
+        ></c-primitive-cell-avatar-group>
     </div>
 </template>

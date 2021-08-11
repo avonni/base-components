@@ -1295,9 +1295,9 @@ describe('Avatar Group', () => {
             expect(handler.mock.calls[0][0].detail.name).toBe(
                 'Avatar group name'
             );
-            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
     });
 });

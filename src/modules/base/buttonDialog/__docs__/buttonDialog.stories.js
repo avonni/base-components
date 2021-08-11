@@ -55,11 +55,6 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        alternativeText: {
-            control: {
-                type: 'text'
-            }
-        },
         label: {
             control: {
                 type: 'text'

@@ -74,27 +74,20 @@ const DEFAULT_COLUMNS = 7;
 
 const TYPES = { valid: ['base', 'list'], default: 'base' };
 
+/**
+ * @class
+ * @descriptor avonni-color-palette
+ * @storyId example-color-gradient--base
+ * @public
+ */
 export default class ColorPalette extends LightningElement {
+    /**
+     * Specifies the value of an input element.
+     * 
+     * @public
+     * @type {string}
+     */
     @api value;
-	currentLabel;
-
-    @api
-    get colors() {
-        return this._colors;
-    }
-    set colors(values) {
-        if (!values || values.length === 0) {
-            return;
-        }
-
-        if (typeof values[0] == 'object') {
-            this._pairColorLabels = values;
-            this._type = 'list';
-        } else {
-            this._colors = values;
-            this._type = 'base';
-        }
-    }
 
     _type = TYPES.default;
     _colors = DEFAULT_COLORS;
@@ -106,12 +99,16 @@ export default class ColorPalette extends LightningElement {
     _isLoading = false;
     _readOnly = false;
     init = false;
+    currentLabel;
 	lastTarget;
 
     renderedCallback() {
         this.initContainer();
     }
 
+    /**
+     * Initialize Palette container.
+     */
     initContainer() {
         let containerWidth = this.columns * (Number(this.tileWidth) + 8);
         let containerMinHeight = Number(this.tileHeight) + 8;
@@ -137,7 +134,31 @@ export default class ColorPalette extends LightningElement {
             }
         );
     }
+    
+    @api
+    get colors() {
+        return this._colors;
+    }
+    set colors(values) {
+        if (!values || values.length === 0) {
+            return;
+        }
 
+        if (typeof values[0] == 'object') {
+            this._pairColorLabels = values;
+            this._type = 'list';
+        } else {
+            this._colors = values;
+            this._type = 'base';
+        }
+    }
+
+    /**
+     * Specifies the number of columns that will be displayed. 
+     * 
+     * @public
+     * @type {number}
+     */
     @api
     get columns() {
         return this._columns;
@@ -148,6 +169,12 @@ export default class ColorPalette extends LightningElement {
         this.initContainer();
     }
 
+    /**
+     * Tile width in px.
+     * 
+     * @public
+     * @type {number}
+     */
     @api
     get tileWidth() {
         return this._tileWidth;
@@ -158,6 +185,12 @@ export default class ColorPalette extends LightningElement {
         this.initContainer();
     }
 
+    /**
+     * Tile height in px.
+     * 
+     * @public
+     * @type {number}
+     */
     @api
     get tileHeight() {
         return this._tileHeight;
@@ -168,6 +201,13 @@ export default class ColorPalette extends LightningElement {
         this.initContainer();
     }
 
+    /**
+     * If present, the input field is disabled and users cannot interact with it.
+     * 
+     * @public
+     * @type {boolean}
+     * @default false
+     */
     @api get disabled() {
         return this._disabled;
     }
@@ -177,6 +217,13 @@ export default class ColorPalette extends LightningElement {
         this.initContainer();
     }
 
+    /**
+     * If present, a spinner is displayed to indicate that data is loading. 
+     * 
+     * @public
+     * @type {boolean}
+     * @default false
+     */
     @api get isLoading() {
         return this._isLoading;
     }
@@ -186,6 +233,13 @@ export default class ColorPalette extends LightningElement {
         this.initContainer();
     }
 
+    /**
+     * If present, the palette is read-only and cannot be edited by users.
+     * 
+     * @public
+     * @type {boolean}
+     * @default false
+     */
     @api get readOnly() {
         return this._readOnly;
     }
@@ -195,6 +249,9 @@ export default class ColorPalette extends LightningElement {
         this.initContainer();
     }
 
+    /**
+     * Generate unique Key ID.
+     */
     get uniqKey() {
         return generateUniqueId();
     }
@@ -211,13 +268,27 @@ export default class ColorPalette extends LightningElement {
         return this._type === 'list';
     }
 
+    /**
+     * Clears the color value of the ColorPalette.
+     * 
+     * @public
+     */
     @api
     reset() {
         this.value = '';
         this.dispatchChange();
     }
 
+    /**
+     * Private focus event handler.
+     */
     handleFocus() {
+        /**
+         * @event
+         * @name privatefocus
+         * @bubbles
+         * @cancelable
+         */
         this.dispatchEvent(
             new CustomEvent('privatefocus', {
                 bubbles: true,
@@ -226,9 +297,24 @@ export default class ColorPalette extends LightningElement {
         );
     }
 
+    /**
+     * Blur and private blur event handler.
+     */
     handleBlur() {
+        /**
+         * @event
+         * @name blur
+         * @public
+         */
         this.dispatchEvent(new CustomEvent('blur'));
 
+        /**
+         * @event
+         * @name privateblur
+         * @composed
+         * @bubbles
+         * @cancelable
+         */
         this.dispatchEvent(
             new CustomEvent('privateblur', {
                 composed: true,
@@ -242,6 +328,12 @@ export default class ColorPalette extends LightningElement {
 		event.preventDefault();
 	}
 
+    /**
+     * Click event handler.
+     * 
+     * @param {object} event 
+     * @returns {string} value 
+     */
     handleClick(event) {
         if (this.disabled || this.readOnly) {
             event.preventDefault();
@@ -261,10 +353,25 @@ export default class ColorPalette extends LightningElement {
         this.dispatchChange();
     }
 
+    /**
+     * Change event handler.
+     */
     dispatchChange() {
         let colors = generateColors(this.value);
 
         if (!this.disabled && !this.readOnly) {
+            /**
+             * @event
+             * @public
+             * @name change
+             * @param {string} hex Color in hexadecimal format.
+             * @param {string} hexa Color in hexadecimal format with alpha.
+             * @param {string} rgb Color in rgb format.
+             * @param {string} rgba Color in rgba format.
+             * @param {string} alpha Alpha value of the color.
+             * @bubbles
+             * @cancelable
+             */
             this.dispatchEvent(
                 new CustomEvent('change', {
                     bubbles: true,

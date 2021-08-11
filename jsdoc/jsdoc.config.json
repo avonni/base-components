@@ -1,0 +1,7 @@
+{
+    "plugins": ["plugins/markdown", "./customDictionary.js"],
+    "recurseDepth": 2,
+    "markdown": {
+        "hardwrap": "true"
+    }
+}

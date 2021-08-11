@@ -62,6 +62,7 @@ describe('Input Date Range', () => {
         expect(element.labelEndDate).toBeUndefined();
         expect(element.readOnly).toBeFalsy();
         expect(element.required).toBeFalsy();
+        expect(element.messageWhenValueMissing).toBeUndefined();
         expect(element.startDate).toBeUndefined();
         expect(element.endDate).toBeUndefined();
         expect(element.variant).toBe('standard');
@@ -478,6 +479,30 @@ describe('Input Date Range', () => {
         });
     });
 
+    // message-when-value-missing
+    // Depends on required, focus(), blur() and showHelpMessageIfInvalid()
+    it('messageWhenValueMissing', () => {
+        const element = createElement('base-input-date-range', {
+            is: InputDateRange
+        });
+        document.body.appendChild(element);
+        element.required = true;
+        element.messageWhenValueMissing = 'Missing value!';
+
+        return Promise.resolve()
+            .then(() => {
+                element.focus();
+                element.blur();
+                element.showHelpMessageIfInvalid();
+            })
+            .then(() => {
+                const message = element.shadowRoot.querySelector(
+                    '.slds-form-element__help'
+                );
+                expect(message.textContent).toBe('Missing value!');
+            });
+    });
+
     // variant
     it('Input Date Range variant standard', () => {
         const element = createElement('base-input-date-range', {
@@ -600,6 +625,44 @@ describe('Input Date Range', () => {
 
         return Promise.resolve().then(() => {
             expect(blurEvent).toBeTruthy();
+        });
+    });
+
+    // reportValidity
+    // Depends on required
+    it('reportValidity method', () => {
+        const element = createElement('base-input-date-range', {
+            is: InputDateRange
+        });
+        document.body.appendChild(element);
+
+        element.required = true;
+        element.reportValidity();
+
+        return Promise.resolve().then(() => {
+            const help = element.shadowRoot.querySelector(
+                '.slds-form-element__help'
+            );
+            expect(help).toBeTruthy();
+        });
+    });
+
+    // showHelpMessageIfInvalid
+    // Depends on required
+    it('showHelpMessageIfInvalid method', () => {
+        const element = createElement('base-input-date-range', {
+            is: InputDateRange
+        });
+        document.body.appendChild(element);
+
+        element.required = true;
+        element.showHelpMessageIfInvalid();
+
+        return Promise.resolve().then(() => {
+            const help = element.shadowRoot.querySelector(
+                '.slds-form-element__help'
+            );
+            expect(help).toBeTruthy();
         });
     });
 
