@@ -59,7 +59,7 @@ import {
  * @param {number[]} availableDaysOfTheWeek Array of available days
  * @param {number[]} availableMonths Array of available months
  */
-export default class Header {
+export default class SchedulerHeader {
     constructor(props) {
         this.availableDaysOfTheWeek = props.availableDaysOfTheWeek;
         this.availableMonths = props.availableMonths;

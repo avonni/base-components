@@ -64,7 +64,7 @@ import { RECURRENCES, EVENTS_THEMES } from './defaults';
  * It has to be a valid {@link https://developer.mozilla.org/en-US/docs/Web/CSS/color_value CSS color value}. For example #3A7D44 or rgba(58, 125, 68, 0.8)
  * @param {string} theme Custom theme for the event. If present, it will overwrite the default event theme. Valid values include default, transparent, line, hollow and rounded.
  */
-export default class Event {
+export default class SchedulerEvent {
     constructor(props) {
         const recurrence = RECURRENCES.find(
             (recurrenceObject) => recurrenceObject.name === props.recurrence

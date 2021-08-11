@@ -33,7 +33,7 @@
 import { EVENTS_HEIGHT } from './defaults';
 import { normalizeArray } from 'c/utilsPrivate';
 
-export default class Row {
+export default class SchedulerRow {
     constructor(props) {
         this.color = props.color;
         this.key = props.key.toString();

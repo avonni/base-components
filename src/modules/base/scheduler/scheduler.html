@@ -33,6 +33,8 @@
 -->
 
 <template>
+    <lightning-button label="New" onclick={newEvent}></lightning-button>
+
     <div
         class="slds-grid"
         onmouseup={handleMouseUp}
@@ -315,7 +317,7 @@
                 <lightning-button
                     if:false={selection.newEvent}
                     label={editDialogLabels.deleteButton}
-                    onclick={deleteSelectedEvent}
+                    onclick={crud.deleteEvent}
                 ></lightning-button>
                 <lightning-button
                     if:false={showRecurrenceSaveOptions}
