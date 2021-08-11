@@ -37,7 +37,7 @@
             onrowaction={handleDispatchEvents}
         >
         </c-primitive-datatable>
-        <template if:true={isSummarizePresent}>
+        <template if:true={allowSummarize}>
             <table
                 class="slds-table slds-table_bordered slds-table_resizable-cols"
                 role="grid"
@@ -50,21 +50,20 @@
                             for:each={computedSummarizeArray}
                             for:item="column"
                         >
-                            <template if:true={column.hasSummarizeType}>
-                                <td
-                                    key={column.type}
-                                    class="avonni-datatable-vertical-align_top"
-                                    data-column={column.fieldName}
-                                    role="gridcell"
-                                >
+                            <td
+                                key={column.type}
+                                class="avonni-datatable-vertical-align_top"
+                                data-column={column.fieldName}
+                                role="gridcell"
+                            >
+                                <template if:true={column.hasSummarizeType}>
                                     <template
                                         for:each={column.summarizeTypes}
                                         for:item="type"
                                     >
                                         <div
                                             key={type.label}
-                                            class="slds-truncate avonni-datatable-summarize_styling"
-                                            style={column.alignement}
+                                            class={column.className}
                                             if:true={type.displaySumType}
                                         >
                                             <div
@@ -74,7 +73,7 @@
                                             </div>
                                             <template if:false={type.count}>
                                                 <template
-                                                    if:true={column.numberType}
+                                                    if:true={column.formattedNumberType}
                                                 >
                                                     <lightning-formatted-number
                                                         format-style={type.type}
@@ -91,43 +90,25 @@
                                                 <template
                                                     if:true={column.dateType}
                                                 >
-                                                    <template
-                                                        if:true={type.value}
-                                                    >
-                                                        <lightning-formatted-date-time
-                                                            value={type.value}
-                                                            day={type.typeAttributes.day}
-                                                            era={type.typeAttributes.era}
-                                                            hour={type.typeAttributes.hour}
-                                                            hour12={type.typeAttributes.hour12}
-                                                            minute={type.typeAttributes.minute}
-                                                            month={type.typeAttributes.month}
-                                                            second={type.typeAttributes.second}
-                                                            time-zone={type.typeAttributes.timeZone}
-                                                            time-zone-name={type.typeAttributes.timeZoneName}
-                                                            weekday={type.typeAttributes.weekday}
-                                                            year={type.typeAttributes.year}
-                                                        ></lightning-formatted-date-time>
-                                                    </template>
-                                                </template>
-                                                <template
-                                                    if:true={column.stringType}
-                                                >
-                                                    <template
-                                                        if:true={type.mode}
-                                                    >
-                                                        <lightning-formatted-text
-                                                            value={type.value}
-                                                        ></lightning-formatted-text>
-                                                    </template>
-                                                </template>
-                                                <template
-                                                    if:true={column.customType}
-                                                >
-                                                    <lightning-formatted-number
-                                                        format-style="decimal"
+                                                    <lightning-formatted-date-time
                                                         value={type.value}
-                                                    ></lightning-formatted-number>
+                                                        day={type.typeAttributes.day}
+                                                        era={type.typeAttributes.era}
+                                                        hour={type.typeAttributes.hour}
+                                                        hour12={type.typeAttributes.hour12}
+                                                        minute={type.typeAttributes.minute}
+                                                        month={type.typeAttributes.month}
+                                                        second={type.typeAttributes.second}
+                                                        time-zone={type.typeAttributes.timeZone}
+                                                        time-zone-name={type.typeAttributes.timeZoneName}
+                                                        weekday={type.typeAttributes.weekday}
+                                                        year={type.typeAttributes.year}
+                                                    ></lightning-formatted-date-time>
+                                                </template>
+                                                <template if:true={type.mode}>
+                                                    <lightning-formatted-text
+                                                        value={type.value}
+                                                    ></lightning-formatted-text>
                                                 </template>
                                             </template>
                                             <template if:true={type.count}>
@@ -138,15 +119,8 @@
                                             </template>
                                         </div>
                                     </template>
-                                </td>
-                            </template>
-                            <template if:false={column.hasSummarizeType}>
-                                <td
-                                    key={column.type}
-                                    data-column={column.fieldName}
-                                    role="gridcell"
-                                ></td>
-                            </template>
+                                </template>
+                            </td>
                         </template>
                     </tr>
                 </tbody>

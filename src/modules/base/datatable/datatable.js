@@ -34,10 +34,8 @@ import { api, LightningElement } from 'lwc';
 import { normalizeArray } from 'c/utilsPrivate';
 
 import {
-    computeSummarizeObject,
-    isDateType,
-    isNumberType,
-    isCustomType
+    hasValidSummarizeType,
+    computeSummarizeArray
 } from './summarizeFunctions';
 
 /**
@@ -251,9 +249,6 @@ export default class Datatable extends LightningElement {
     _columnsEditable = [];
     _isDatatableEditable;
 
-    _filteredDataValues = [];
-    _computedSummarizeArray = [];
-
     /**
      * Array of the columns object that's used to define the data types.
      * Required properties include 'label', 'fieldName', and 'type'. The default type is 'text'.
@@ -283,8 +278,6 @@ export default class Datatable extends LightningElement {
 
     set data(value) {
         this._data = JSON.parse(JSON.stringify(normalizeArray(value)));
-        this.computeFilteredDataValues();
-        this.computeSummarizeArray();
     }
     /* eslint-enable */
 
@@ -313,12 +306,12 @@ export default class Datatable extends LightningElement {
     }
 
     /**
-     * Returns the computed summarize array.
+     * Returns the computed summarize array use in the markup.
      *
      * @type {object}
      */
     get computedSummarizeArray() {
-        return this._computedSummarizeArray;
+        return computeSummarizeArray(this._columns, this._data);
     }
 
     /**
@@ -334,12 +327,12 @@ export default class Datatable extends LightningElement {
     }
 
     /**
-     * Checks if one of the columns has a summarizeType.
+     * Checks if one of the columns has a valid summarizeType.
      *
      * @type {boolean}
      */
-    get isSummarizePresent() {
-        return this.hasValidSummarize();
+    get allowSummarize() {
+        return hasValidSummarizeType(this.computedSummarizeArray);
     }
 
     /**
@@ -364,20 +357,6 @@ export default class Datatable extends LightningElement {
         return this.primitiveDatatable.primitiveDatatableDraftValues();
     }
 
-    hasValidSummarize() {
-        const summarized = [];
-        this._computedSummarizeArray.forEach((column) => {
-            const summarizeTypes = column.summarizeTypes;
-            if (summarizeTypes) {
-                summarizeTypes.forEach((type) => {
-                    const displaySumType = type.displaySumType;
-                    summarized.push(displaySumType);
-                });
-            }
-        });
-        return summarized.includes(true);
-    }
-
     /**
      * Initialization of the bottom datatable used for for summarize.
      */
@@ -387,7 +366,6 @@ export default class Datatable extends LightningElement {
         this.updateTableWidth();
         this.primitiveDraftValues();
         this.datatableEditable();
-        this.hasValidSummarize();
     }
 
     /**
@@ -475,41 +453,6 @@ export default class Datatable extends LightningElement {
         if (table) {
             table.style.width = `${this._tableWidth}px`;
         }
-    }
-
-    /**
-     *
-     */
-    computeFilteredDataValues() {
-        this._filteredDataValues = this._columns.map((column) => {
-            const fieldName = column.fieldName;
-            const type = column.type;
-            this._values = this._data.map((row) => {
-                return row[fieldName];
-            });
-            if (isCustomType(type) || isNumberType(type)) {
-                return this._values.map(Number).filter(Number.isFinite);
-            } else if (isDateType(type)) {
-                return this._values
-                    .map((date) => {
-                        return Date.parse(date);
-                    })
-                    .filter(Number);
-            }
-            return this._values.filter((e) => {
-                return e !== null && e !== undefined;
-            });
-        });
-    }
-
-    /**
-     * Computes the summarizeArray to create the object used to display the summarize types.
-     */
-    computeSummarizeArray() {
-        this._computedSummarizeArray = computeSummarizeObject(
-            this._columns,
-            this._filteredDataValues
-        );
     }
 
     /**

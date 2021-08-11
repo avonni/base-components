@@ -170,14 +170,44 @@ const isStringType = (type) => {
 };
 
 const isCustomType = (type) => {
+    return type === 'slider' || type === 'rating' || type === 'input-counter';
+};
+
+const isProgressType = (type) => {
     return (
-        type === 'slider' ||
-        type === 'rating' ||
         type === 'progress-circle' ||
         type === 'progress-ring' ||
-        type === 'progress-bar' ||
-        type === 'input-counter'
+        type === 'progress-bar'
     );
+};
+
+const isFormattedNumberType = (type) => {
+    return isNumberType(type) || isProgressType(type) || isCustomType(type);
+};
+
+const computeFilteredDataValues = (columns, data) => {
+    let values = [];
+    let filteredDataValues = [];
+    filteredDataValues = columns.map((column) => {
+        const fieldName = column.fieldName;
+        const type = column.type;
+        values = data.map((row) => {
+            return row[fieldName];
+        });
+        if (isCustomType(type) || isNumberType(type)) {
+            return values.map(Number).filter(Number.isFinite);
+        } else if (isDateType(type)) {
+            return values
+                .map((date) => {
+                    return Date.parse(date);
+                })
+                .filter(Number);
+        }
+        return values.filter((e) => {
+            return e !== null && e !== undefined;
+        });
+    });
+    return filteredDataValues;
 };
 
 const displaySumType = (summarizeTypes, type) => {
@@ -191,7 +221,8 @@ const displaySumType = (summarizeTypes, type) => {
         !isStringType(type) &&
         !isDateType(type) &&
         !isNumberType(type) &&
-        !isCustomType(type)
+        !isCustomType(type) &&
+        !isProgressType(type)
     ) {
         return otherAllowedSummarizeTypes.includes(summarizeTypes)
             ? true
@@ -200,8 +231,41 @@ const displaySumType = (summarizeTypes, type) => {
     return true;
 };
 
+const transformComputedValue = (value, progressType) => {
+    if (progressType) {
+        return value / 100;
+    }
+    return value;
+};
+
+const hasValidSummarizeType = (computedSummarizeArray) => {
+    const summarized = [];
+    computedSummarizeArray.forEach((column) => {
+        const summarizeTypes = column.summarizeTypes;
+        if (summarizeTypes) {
+            summarizeTypes.forEach((type) => {
+                summarized.push(type.displaySumType);
+            });
+        }
+    });
+    return summarized.includes(true);
+};
+
+const formatNumberType = (type) => {
+    if (type === 'number' || isCustomType(type)) {
+        return 'decimal';
+    } else if (isProgressType(type)) {
+        return 'percent';
+    }
+    return type;
+};
+
+const isCountSummarizeType = (type) => {
+    return type === 'count' || type === 'countUnique';
+};
+
 /**
- * Method compute the summarization depending on which summarize type.
+ *
  *
  * @param {object} columns Array of object containing the columns with label, fieldName, type and typeAttributes.
  * @param {object} values Array of number containing the different values of each column.
@@ -214,36 +278,33 @@ const displaySumType = (summarizeTypes, type) => {
  * * numberType
  * * formatType
  */
-const computeSummarizeObject = (columns, values) => {
+const computeSummarizeArray = (columns, data) => {
     const computedSummarizeArray = columns.map((column, index) => {
         let sumTypes = column.summarizeTypes;
+        const filteredDataValues = computeFilteredDataValues(columns, data);
         const cType = column.type;
         const hasSummarizeType = column.summarizeTypes ? true : false;
-        const numberType = isNumberType(cType);
         const dateType = isDateType(cType);
-        const stringType = isStringType(cType);
-        const customType = isCustomType(cType);
-        const formatType = cType !== 'number' ? cType : 'decimal';
-        const alignement = numberType
-            ? 'justify-content: flex-end'
-            : 'justify-content: flex-start';
+        const formattedNumberType = isFormattedNumberType(cType);
+        const formatType = formatNumberType(cType);
+        const className = isNumberType(cType)
+            ? 'slds-truncate avonni-datatable-summarize_styling-number'
+            : 'slds-truncate avonni-datatable-summarize_styling';
         const hasTypeAttributes = column.typeAttributes
             ? column.typeAttributes
             : [];
 
-        // Formating of the object we need to iterate in the markup.
+        // Formatting of the object that we need to iterate on, in the markup.
         const summarizeColumnObject = {
             fieldName: column.fieldName,
             type: cType,
             hasSummarizeType: hasSummarizeType,
             summarizeTypes: sumTypes,
-            values: values[index],
-            numberType: numberType,
+            values: filteredDataValues[index],
+            formattedNumberType: formattedNumberType,
             dateType: dateType,
-            stringType: stringType,
-            customType: customType,
             formatType: formatType,
-            alignement: alignement
+            className: className
         };
         if (sumTypes) {
             // if there is only one summarizeType and as a string, we convert it to an array.
@@ -259,22 +320,19 @@ const computeSummarizeObject = (columns, values) => {
 
                 // Count and countUnique don't need formating since we only need the numbers of occurences.
                 // And they are always type decimal.
-                const stringMode = type === 'mode' && stringType;
-                return type === 'count' || type === 'countUnique'
-                    ? {
-                          label: type,
-                          value: computedValue,
-                          count: true,
-                          displaySumType: displaySumType(type, cType)
-                      }
-                    : {
-                          label: type,
-                          value: computedValue,
-                          type: formatType,
-                          typeAttributes: hasTypeAttributes,
-                          mode: stringMode,
-                          displaySumType: displaySumType(type, cType)
-                      };
+                const stringMode = type === 'mode' && isStringType(cType);
+                return {
+                    label: type,
+                    value: transformComputedValue(
+                        computedValue,
+                        isProgressType(cType)
+                    ),
+                    type: formatType,
+                    typeAttributes: hasTypeAttributes,
+                    mode: stringMode,
+                    displaySumType: displaySumType(type, cType),
+                    count: isCountSummarizeType(type)
+                };
             });
         }
         return summarizeColumnObject;
@@ -282,4 +340,4 @@ const computeSummarizeObject = (columns, values) => {
     return computedSummarizeArray;
 };
 
-export { computeSummarizeObject, isCustomType, isNumberType, isDateType };
+export { computeSummarizeArray, hasValidSummarizeType };

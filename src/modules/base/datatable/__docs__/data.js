@@ -294,8 +294,7 @@ const columnsEN = [
         editable: true,
         cellAttributes: {
             alignment: 'center'
-        },
-        summarizeTypes: ['count', 'sum', 'mode', 'average', 'min', 'max']
+        }
     },
     {
         label: 'Input Date Range',
@@ -612,7 +611,8 @@ const dataCD = [
         currency: '200',
         dynamicIcon: 'ellie',
         date: new Date('2022/03/24'),
-        dateLocal: new Date('2022/03/24')
+        dateLocal: new Date('2022/03/24'),
+        combobox: 'no-avatar-burlington'
     },
     {
         id: 2,
