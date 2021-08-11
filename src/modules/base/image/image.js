@@ -174,7 +174,7 @@ export default class Image extends LightningElement {
     }
 
     /**
-     * Image fit behaviour inside its container ( valid options : “cover”, “contain”, “fill”, “none” ).
+     * Image fit behaviour inside its container ( valid options : “cover”, “contain”, “fill”, “none” ). Default is cover.
      *
      * @public
      * @type {string}
@@ -255,7 +255,7 @@ export default class Image extends LightningElement {
     }
 
     /**
-     * Sets the color of the blank image to the CSS color value specified.
+     * Sets the color of the blank image to the CSS color value specified. Default is transparent.
      *
      * @public
      * @type {string}
@@ -465,7 +465,7 @@ export default class Image extends LightningElement {
     /**
      * Computed Image class styling.
      *
-     * @type {string} class
+     * @type {string}
      */
     get computedImageClass() {
         return classSet({

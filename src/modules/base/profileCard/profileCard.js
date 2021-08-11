@@ -181,6 +181,8 @@ export default class ProfileCard extends LightningElement {
 
     /**
      * Get the avatar action slot DOM element.
+     * 
+     * @type {Element}
      */
     get avatarActionsSlot() {
         return this.template.querySelector('slot[name=avataractions]');
@@ -188,6 +190,8 @@ export default class ProfileCard extends LightningElement {
 
     /**
      * Get the action slot DOM element.
+     * 
+     * @type {Element}
      */
     get actionsSlot() {
         return this.template.querySelector('slot[name=actions]');
@@ -195,6 +199,8 @@ export default class ProfileCard extends LightningElement {
 
     /**
      * Get the footer slot DOM element.
+     * 
+     * @type {Element}
      */
     get footerSlot() {
         return this.template.querySelector('slot[name=footer]');
@@ -303,6 +309,8 @@ export default class ProfileCard extends LightningElement {
 
     /**
      * Computed Main container class styling based on selected attributes.
+     * 
+     * @type {string}
      */
     get computedMainContainerClass() {
         return classSet('')

@@ -49,7 +49,7 @@ const DEFAULT_RESET_BUTTON_LABEL = 'Reset';
 /**
  * @class
  * @descriptor avonni-filter-menu-group
- * @example example-filter-menu-group--base
+ * @storyId example-filter-menu-group--base
  * @public
  */
 export default class FilterMenuGroup extends LightningElement {
@@ -150,7 +150,7 @@ export default class FilterMenuGroup extends LightningElement {
     /**
      * Check if Vertical variant.
      *
-     * @return boolean
+     * @type {boolean}
      */
     get isVertical() {
         return this.variant === 'vertical';
@@ -159,7 +159,7 @@ export default class FilterMenuGroup extends LightningElement {
     /**
      * Check if selectedPills is populated and if items are not hidden.
      *
-     * @return boolean
+     * @type {boolean}
      */
     get showSelectedItems() {
         return !this.hideSelectedItems && this.selectedPills.length > 0;
@@ -168,7 +168,7 @@ export default class FilterMenuGroup extends LightningElement {
     /**
      * Filter Wrapper class styling
      *
-     * @return string
+     * @type {string}
      */
     get filtersWrapperClass() {
         return classSet().add({
@@ -179,7 +179,7 @@ export default class FilterMenuGroup extends LightningElement {
     /**
      * Filters class styling
      *
-     * @return string
+     * @type {string}
      */
     get filtersClass() {
         return classSet().add({
@@ -191,7 +191,7 @@ export default class FilterMenuGroup extends LightningElement {
     /**
      * Get Node list of all filter menu elements.
      *
-     * @return NodeListof<Element>
+     * @type {NodeListof<Element>}
      */
     get menuComponents() {
         return this.template.querySelectorAll('c-filter-menu');

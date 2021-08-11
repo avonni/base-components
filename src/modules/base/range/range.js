@@ -44,6 +44,12 @@ const RATING_TYPES = {valid: ['horizontal', 'vertical'], default: 'horizontal'};
 const LABEL_VARIANTS = {valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked'], default: 'standard'};
 const RATING_UNITS = {valid: ['decimal', 'currency', 'percent'], default: 'decimal'};
 
+/**
+* @class
+* @descriptor avonni-range
+* @storyId example-range--base
+* @public
+*/
 export default class Range extends LightningElement {
     /**
     * Text label to describe the slider. Provide your own label to describe the slider.
@@ -502,6 +508,8 @@ export default class Range extends LightningElement {
 
     /**
      * Calculate the max range from the lower value.
+     * 
+     * @type {number}
      */
     get calculateMax() {
         return (
@@ -512,6 +520,8 @@ export default class Range extends LightningElement {
 
     /**
      * Calculate the max range from the lower value.
+     * 
+     * @type {number}
      */
     get calculateMin() {
         let minVaule =

@@ -83,7 +83,7 @@ const ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
 
 /**
- * The button popover display a lightning button. On click, open the popover.
+ * The button popover displays a lightning button. On click, open the popover.
  *
  * @class
  * @name ButtonPopover

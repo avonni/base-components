@@ -65,6 +65,8 @@ export default class ColorPickerPanel extends LightningElement {
 
     /**
      * Localization.
+     * 
+     * @type {object}
      */
     get i18n() {
         return i18n;
@@ -72,6 +74,8 @@ export default class ColorPickerPanel extends LightningElement {
 
     /**
      * Computed Panel class default styling.
+     * 
+     * @type {string}
      */
     get computedClassDefault() {
         return classSet({
@@ -82,6 +86,8 @@ export default class ColorPickerPanel extends LightningElement {
 
     /**
      * Computed Panel class custom styling.
+     * 
+     * @type {string}
      */
     get computedClassCustom() {
         return classSet({
@@ -92,6 +98,8 @@ export default class ColorPickerPanel extends LightningElement {
 
     /**
      * Aria for Default Panel.
+     * 
+     * @type {string}
      */
     get ariaSelectedDefault() {
         return !this._isCustomTabActive.toString();
@@ -99,6 +107,8 @@ export default class ColorPickerPanel extends LightningElement {
 
     /**
      * Aria for Custom Panel.
+     * 
+     * @type {string}
      */
     get ariaSelectedCustom() {
         return this._isCustomTabActive.toString();
@@ -134,6 +144,8 @@ export default class ColorPickerPanel extends LightningElement {
      */
     dispatchUpdateColorEventWithColor(color) {
         /**
+         * Event that fires when updating the color value.
+         * 
          * @event
          * @name updatecolor
          * @param {string} color

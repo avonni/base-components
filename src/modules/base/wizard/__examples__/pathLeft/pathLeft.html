@@ -1,0 +1,43 @@
+<avonni-wizard indicator-type="path" indicator-position="left">
+    <div slot="title">
+        <h1 class="slds-text-heading_small">Title slot</h1>
+        <p>
+            The title slot content appears only when the title property is
+            unset.
+        </p>
+    </div>
+    <avonni-wizard-step label="First step">
+        <h2>This step has these properties set:</h2>
+        <ul>
+            <li><strong>label:</strong> "First step"</li>
+        </ul>
+    </avonni-wizard-step>
+    <avonni-wizard-step
+        label="Second step"
+        name="second-step"
+        before-change={beforeAction}
+        before-change-error-message="There is an error in this step"
+    >
+        <h2>This step has these properties set:</h2>
+        <ul>
+            <li><strong>label:</strong> "Second step"</li>
+            <li><strong>hide-previous-button:</strong> "true"</li>
+            <li><strong>name:</strong> "second-step"</li>
+        </ul>
+    </avonni-wizard-step>
+    <avonni-wizard-step>
+        <h2>This step has no property set.</h2>
+    </avonni-wizard-step>
+    <avonni-wizard-step label="Last step">
+        <h2>This step has these properties set:</h2>
+        <ul>
+            <li><strong>label:</strong> "Last step"</li>
+        </ul>
+    </avonni-wizard-step>
+    <div
+        slot="actions"
+        class="slds-p-vertical_xx-small slds-p-horizontal_x-small"
+    >
+        Action slot
+    </div>
+</avonni-wizard>

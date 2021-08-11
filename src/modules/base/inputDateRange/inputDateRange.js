@@ -888,9 +888,10 @@ export default class InputDateRange extends LightningElement {
             : endDate;
 
         /**
+         * The event fired when the value changed.
+         * 
          * @event
          * @name change
-         * The event fired when the value changed.
          * @param {string} startDate Start date value.
          * @param {string} endDate End date value
          * @public

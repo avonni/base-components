@@ -177,6 +177,8 @@ export default class Publisher extends LightningElement {
 
     /**
      * Set focus on the publisher.
+     * 
+     * @public
      */
     @api
     focus() {
@@ -185,6 +187,8 @@ export default class Publisher extends LightningElement {
 
     /**
      * Removes focus from the publisher.
+     * 
+     * @public
      */
     @api
     blur() {

@@ -971,6 +971,12 @@ export default class PrimitiveCombobox extends LightningElement {
      * Value initialization.
      */
     initValue() {
+        this.inputValue = '';
+        if (this.selectedOption) {
+            this.selectedOption.selected = false;
+            this.selectedOption = undefined;
+        }
+
         if (this.isMultiSelect) {
             this.selectedOptions.forEach((option) => {
                 option.selected = false;
@@ -992,12 +998,6 @@ export default class PrimitiveCombobox extends LightningElement {
                 selectedOption.selected = true;
                 this.selectedOption = selectedOption;
                 this.inputValue = selectedOption.label;
-            } else {
-                this.inputValue = '';
-                if (this.selectedOption) {
-                    this.selectedOption.selected = false;
-                    this.selectedOption = undefined;
-                }
             }
         }
     }

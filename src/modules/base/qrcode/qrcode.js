@@ -347,6 +347,8 @@ export default class Qrcode extends LightningElement {
 
     /**
      * Redraws the QR code using the current value and options.
+     * 
+     * @public
      */
     @api
     redraw() {
