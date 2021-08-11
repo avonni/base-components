@@ -126,6 +126,18 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         },
+        isLoading: {
+            name: 'is-loading',
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description: 'If present, a loading spinner will be visible.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         recurrentEditModes: {
             name: 'recurrent-edit-modes',
             control: {

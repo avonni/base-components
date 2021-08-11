@@ -56,6 +56,7 @@ import {
     DEFAULT_EDIT_DIALOG_LABELS,
     DEFAULT_CONTEXT_MENU_EMPTY_SPOT_ACTIONS,
     DEFAULT_CONTEXT_MENU_EVENT_ACTIONS,
+    DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT,
     DEFAULT_START_DATE,
     DEFAULT_VISIBLE_SPAN,
     PALETTES,
@@ -78,6 +79,8 @@ export default class Scheduler extends LightningElement {
     _eventsPalette = EVENTS_PALETTES.default;
     _eventsTheme = EVENTS_THEMES.default;
     _headers = [];
+    _isLoading = false;
+    _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     _readOnly = false;
     _recurrentEditModes = EDIT_MODES;
     _rows = [];
@@ -108,8 +111,8 @@ export default class Scheduler extends LightningElement {
     showRecurrenceDialog = false;
 
     connectedCallback() {
-        this.initSchedule();
         this.crud = eventCrudMethods(this);
+        this.initSchedule();
 
         // Close the popovers on scroll
         this.addEventListener('scroll', this.handleScroll);
@@ -329,6 +332,25 @@ export default class Scheduler extends LightningElement {
         this._headers = normalizeArray(value);
 
         if (this.isConnected) this.initSchedule();
+    }
+
+    @api
+    get isLoading() {
+        return this._isLoading;
+    }
+    set isLoading(value) {
+        this._isLoading = normalizeBoolean(value);
+    }
+
+    @api
+    get loadingStateAlternativeText() {
+        return this._loadingStateAlternativeText;
+    }
+    set loadingStateAlternativeText(value) {
+        this._loadingStateAlternativeText =
+            typeof value === 'string'
+                ? value
+                : DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     }
 
     @api

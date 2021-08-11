@@ -33,10 +33,8 @@
 -->
 
 <template>
-    <lightning-button label="New" onclick={newEvent}></lightning-button>
-
     <div
-        class="slds-grid"
+        class="slds-grid slds-is-relative"
         onmouseup={handleMouseUp}
         onmousemove={handleMouseMove}
     >
@@ -186,6 +184,11 @@
                 </template>
             </div>
         </div>
+        <lightning-spinner
+            if:true={isLoading}
+            alternative-text={loadingStateAlternativeText}
+            size="large"
+        ></lightning-spinner>
     </div>
 
     <!-- Event detail popover -->

@@ -47,6 +47,7 @@ export const Scheduler = ({
     eventsPalette,
     eventsTheme,
     headers,
+    isLoading,
     readOnly,
     recurrentEditModes,
     rows,
@@ -68,6 +69,7 @@ export const Scheduler = ({
     element.eventsPalette = eventsPalette;
     element.eventsTheme = eventsTheme;
     element.headers = headers;
+    element.isLoading = isLoading;
     element.readOnly = readOnly;
     element.recurrentEditModes = recurrentEditModes;
     element.rows = rows;
