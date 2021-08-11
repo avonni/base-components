@@ -180,6 +180,26 @@ const isCustomType = (type) => {
     );
 };
 
+const displaySumType = (summarizeTypes, type) => {
+    const allowedStringSummarizeTypes = ['count', 'countUnique', 'mode'];
+    const otherAllowedSummarizeTypes = ['count', 'countUnique'];
+    if (isStringType(type)) {
+        return allowedStringSummarizeTypes.includes(summarizeTypes)
+            ? true
+            : false;
+    } else if (
+        !isStringType(type) &&
+        !isDateType(type) &&
+        !isNumberType(type) &&
+        !isCustomType(type)
+    ) {
+        return otherAllowedSummarizeTypes.includes(summarizeTypes)
+            ? true
+            : false;
+    }
+    return true;
+};
+
 /**
  * Method compute the summarization depending on which summarize type.
  *
@@ -244,14 +264,16 @@ const computeSummarizeObject = (columns, values) => {
                     ? {
                           label: type,
                           value: computedValue,
-                          count: true
+                          count: true,
+                          displaySumType: displaySumType(type, cType)
                       }
                     : {
                           label: type,
                           value: computedValue,
                           type: formatType,
                           typeAttributes: hasTypeAttributes,
-                          mode: stringMode
+                          mode: stringMode,
+                          displaySumType: displaySumType(type, cType)
                       };
             });
         }

@@ -339,10 +339,7 @@ export default class Datatable extends LightningElement {
      * @type {boolean}
      */
     get isSummarizePresent() {
-        const summarized = this._columns.map((column) => {
-            return column.summarizeTypes ? true : false;
-        });
-        return summarized.includes(true);
+        return this.hasValidSummarize();
     }
 
     /**
@@ -367,6 +364,20 @@ export default class Datatable extends LightningElement {
         return this.primitiveDatatable.primitiveDatatableDraftValues();
     }
 
+    hasValidSummarize() {
+        const summarized = [];
+        this._computedSummarizeArray.forEach((column) => {
+            const summarizeTypes = column.summarizeTypes;
+            if (summarizeTypes) {
+                summarizeTypes.forEach((type) => {
+                    const displaySumType = type.displaySumType;
+                    summarized.push(displaySumType);
+                });
+            }
+        });
+        return summarized.includes(true);
+    }
+
     /**
      * Initialization of the bottom datatable used for for summarize.
      */
@@ -376,6 +387,7 @@ export default class Datatable extends LightningElement {
         this.updateTableWidth();
         this.primitiveDraftValues();
         this.datatableEditable();
+        this.hasValidSummarize();
     }
 
     /**

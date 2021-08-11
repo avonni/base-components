@@ -649,6 +649,7 @@ const dataCD = [
         colorPicker: '#f99120',
         currency: '217',
         dynamicIcon: 'waffle',
+        date: new Date('2021/02/14'),
         dateLocal: new Date('2022/10/12')
     }
 ];
