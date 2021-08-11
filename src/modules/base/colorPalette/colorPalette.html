@@ -35,11 +35,12 @@
 <template>
     <template if:true={isList}>
         <div class="list-container slds-scrollable">
-            <template for:each={pairColorLabels} for:item="pair">
+            <template for:each={bundles} for:item="bundle">
                 <div
                     key={uniqKey}
-                    item-color={pair.value}
-					item-label={pair.label}
+					item-label={bundle.label}
+					item-token={bundle.token}
+                    item-color={bundle.value}
                     onclick={handleClick}
                     onblur={handleBlur}
                     onfocus={handleFocus}
@@ -60,13 +61,13 @@
                                         xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#check"
                                     ></use>
                                 </svg>
-                                {pair.label}</span
+                                {bundle.label}</span
                             >
                             <div role="presentation">
                                 <div
                                     class="slds-color-picker__swatch-trigger"
                                     href="javascript:void(0)"
-                                    item-color={pair.value}
+                                    item-color={bundle.value}
                                     is-disabled={disabled}
                                     read-only={readOnly}
                                     role="option"
@@ -74,7 +75,7 @@
                                 >
                                     <span class="slds-swatch">
                                         <p class="slds-assistive-text">
-                                            {pair.value}
+                                            {bundle.value}
                                         </p>
                                     </span>
                                 </div>
