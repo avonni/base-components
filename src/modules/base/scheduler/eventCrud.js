@@ -52,11 +52,11 @@ function newEvent(x, y, showDialog = true) {
         const cell = this.getCellFromPosition(row, x);
         keyFields = [row.dataset.key];
         from = Number(cell.dataset.start);
-        to = Number(cell.dataset.end);
+        to = Number(cell.dataset.end) + 1;
     } else {
         keyFields = [this.computedRows[0].key];
         from = this.smallestHeader.columns[0].start;
-        to = this.smallestHeader.columns[0].end;
+        to = this.smallestHeader.columns[0].end + 1;
     }
 
     const event = {

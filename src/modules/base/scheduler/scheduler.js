@@ -1095,7 +1095,7 @@ export default class Scheduler extends LightningElement {
 
         if (side === 'right') {
             // Update the end date if the event was resized from the right
-            occurrence.to = dateTimeObjectFrom(Number(cell.dataset.end));
+            occurrence.to = dateTimeObjectFrom(Number(cell.dataset.end) + 1);
         } else if (side === 'left') {
             // Update the start date if the event was resized from the left
             occurrence.from = dateTimeObjectFrom(Number(cell.dataset.start));
@@ -1115,7 +1115,7 @@ export default class Scheduler extends LightningElement {
         const duration = occurrence.to - occurrence.from;
         const start = dateTimeObjectFrom(Number(cell.dataset.start));
         draftValues.from = start.toUTC().toISO();
-        draftValues.to = addToDate(start, 'millisecond', duration)
+        draftValues.to = addToDate(start, 'millisecond', duration + 1)
             .toUTC()
             .toISO();
 
@@ -1272,7 +1272,7 @@ export default class Scheduler extends LightningElement {
         } else if (this.selection && this.selection.isMoving) {
             // Get the new position
             const { mouseX, eventLeft, eventRight } = this._initialState;
-            const { draftValues, newEvent, event } = this.selection;
+            const { draftValues, newEvent, event, occurrence } = this.selection;
             const side = this._resizeSide;
             const position = this.normalizeMousePosition(
                 mouseEvent.clientX,
@@ -1288,14 +1288,16 @@ export default class Scheduler extends LightningElement {
             const cellElement = this.getCellFromPosition(rowElement, x);
 
             // Update the draft values
-            const to = dateTimeObjectFrom(Number(cellElement.dataset.end));
+            const to = dateTimeObjectFrom(Number(cellElement.dataset.end) + 1);
             const from = dateTimeObjectFrom(Number(cellElement.dataset.start));
             switch (side) {
                 case 'right':
                     draftValues.to = to.toUTC().toISO();
+                    if (newEvent) occurrence.to = to;
                     break;
                 case 'left':
                     draftValues.from = from.toUTC().toISO();
+                    if (newEvent) occurrence.from = from;
                     break;
                 default:
                     this.dragEventTo(rowElement, cellElement);
@@ -1406,7 +1408,7 @@ export default class Scheduler extends LightningElement {
             return;
         }
 
-        this.crud.Event(mouseEvent.clientX, mouseEvent.clientY, true);
+        this.crud.newEvent(mouseEvent.clientX, mouseEvent.clientY, true);
     }
 
     handleEventDoubleClick(event) {
