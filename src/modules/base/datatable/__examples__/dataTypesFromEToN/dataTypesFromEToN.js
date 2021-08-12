@@ -93,6 +93,7 @@ export default class DataTypesFromEtoN extends LightningElement {
             email: 'nina.gomez@email.com',
             image:
                 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+            inputCounter: 1,
             inputDateRange: {
                 startDate: new Date('2021/10/02'),
                 endDate: new Date('2021/10/05')

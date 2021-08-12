@@ -44,6 +44,7 @@ export default class DataTypesFromRToZ extends LightningElement {
     data = [
         {
             id: 1,
+            rating: '3',
             slider: 36,
             text: 'Nina Gomez',
             url: 'https://www.avonnicomponents.com/',
@@ -51,6 +52,7 @@ export default class DataTypesFromRToZ extends LightningElement {
         },
         {
             id: 2,
+            rating: '2',
             slider: 78,
             text: 'Dave McKinsley',
             url: 'https://www.avonni.app/',
@@ -67,7 +69,8 @@ export default class DataTypesFromRToZ extends LightningElement {
         },
         {
             id: 4,
-            slider: 3,
+            rating: '5',
+            slider: 36,
             sliderStep: 4,
             text: 'Lily Murray',
             url: 'https://www.lightningdesignsystem.com/',
@@ -75,6 +78,8 @@ export default class DataTypesFromRToZ extends LightningElement {
         },
         {
             id: 5,
+            rating: '4',
+            slider: '0',
             text: 'Reginald Martin',
             url: 'https://lwc.dev/',
             urlLabel: 'LWC Documentation'

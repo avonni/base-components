@@ -363,8 +363,7 @@ const columnsOQ = [
             variant: 'circular',
             thickness: 'large'
         },
-        initialWidth: 150,
-        summarizeTypes: ['count', 'sum', 'mode', 'average', 'min', 'max']
+        initialWidth: 150
     },
     {
         label: 'Progress Circle',
@@ -374,8 +373,7 @@ const columnsOQ = [
             thickness: 'large',
             size: 'small',
             color: { fieldName: 'progressCircleColor' }
-        },
-        summarizeTypes: ['count', 'sum', 'mode', 'average', 'min', 'max']
+        }
     },
     {
         label: 'Progress Ring',
@@ -384,8 +382,7 @@ const columnsOQ = [
         typeAttributes: {
             variant: { fieldName: 'progressRingVariant' },
             size: 'large'
-        },
-        summarizeTypes: ['count', 'sum', 'mode', 'average', 'min', 'max']
+        }
     },
     {
         label: 'QR Code',
@@ -410,8 +407,7 @@ const columnsRZ = [
             disabled: { fieldName: 'ratingDisabled' }
         },
         editable: true,
-        initialWidth: 200,
-        summarizeTypes: ['count', 'sum', 'mode', 'average', 'min', 'max']
+        initialWidth: 200
     },
     {
         label: 'Slider',
@@ -422,8 +418,7 @@ const columnsRZ = [
             label: 'Slider',
             step: { fieldName: 'sliderStep' }
         },
-        editable: true,
-        summarizeTypes: ['count', 'sum', 'mode', 'average', 'min', 'max']
+        editable: true
     },
     {
         label: 'Text',
@@ -471,7 +466,19 @@ const columnsSum = [
             'max',
             'min',
             'mode'
-        ]
+        ],
+        initialWidth: 280
+    },
+    {
+        label: 'Progress Ring',
+        fieldName: 'progress',
+        type: 'progress-ring',
+        typeAttributes: {
+            variant: { fieldName: 'progressRingVariant' },
+            size: 'large'
+        },
+        summarizeTypes: ['count', 'sum', 'average', 'min', 'max'],
+        initialWidth: 130
     },
     {
         label: 'Price',
@@ -858,6 +865,8 @@ const dataSum = [
     {
         id: 1,
         date: new Date('2021/09/24'),
+        progress: 100,
+        progressRingVariant: 'base-autocomplete',
         badge: 'approved',
         badgeVariant: 'success',
         currency: '5',
@@ -868,6 +877,8 @@ const dataSum = [
         id: 2,
         date: new Date('2021/10/24'),
         badge: 'declined',
+        progressRingVariant: 'expired',
+        progress: 0,
         badgeVariant: 'error',
         currency: '5',
         number: '10',
@@ -876,6 +887,8 @@ const dataSum = [
     {
         id: 3,
         date: new Date('2021/10/24'),
+        progress: 75,
+        progressRingVariant: 'warning',
         badge: 'unknown',
         badgeVariant: 'inverse',
         number: '15',
@@ -884,6 +897,7 @@ const dataSum = [
     {
         id: 4,
         date: new Date('2021/11/24'),
+        progress: 50,
         badge: 'approved',
         badgeVariant: 'success',
         currency: '20',
@@ -893,6 +907,7 @@ const dataSum = [
     {
         id: 5,
         date: new Date('2021/12/24'),
+        progress: 35,
         badge: 'approved',
         badgeVariant: 'success',
         currency: '25',
@@ -902,6 +917,7 @@ const dataSum = [
     {
         id: 6,
         date: new Date('2022/01/24'),
+        progress: 20,
         badge: 'approved',
         badgeVariant: 'success',
         currency: '25',
