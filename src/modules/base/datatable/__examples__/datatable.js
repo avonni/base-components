@@ -42,6 +42,7 @@ export const Datatable = ({
     draftValues,
     enableInfiniteLoading,
     errors,
+    groupBy,
     hideCheckboxColumn,
     hideTableHeader,
     isLoading,
@@ -68,6 +69,7 @@ export const Datatable = ({
     element.draftValues = draftValues;
     element.enableInfiniteLoading = enableInfiniteLoading;
     element.errors = errors;
+    element.groupBy = groupBy;
     element.hideCheckboxColumn = hideCheckboxColumn;
     element.hideTableHeader = hideTableHeader;
     element.isLoading = isLoading;

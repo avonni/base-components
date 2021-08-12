@@ -490,24 +490,29 @@ const columnsSum = [
 
 const columnsGroupBy = [
     {
+        id: 1,
         label: 'Name',
         fieldName: 'name'
     },
     {
+        id: 2,
         label: 'Age',
         fieldName: 'age',
         type: 'number'
     },
     {
+        id: 3,
         label: 'City',
         fieldName: 'city'
     },
     {
+        id: 4,
         label: 'Rank',
         fieldName: 'rank',
         type: 'number'
     },
     {
+        id: 5,
         label: 'Score',
         fieldName: 'score',
         type: 'number'

@@ -32,7 +32,11 @@
 
 import LightningDatatable from 'lightning/datatable';
 import { api } from 'lwc';
-import { normalizeArray, normalizeString } from 'c/utilsPrivate';
+import {
+    normalizeArray,
+    normalizeString,
+    normalizeBoolean
+} from 'c/utilsPrivate';
 
 import avatar from './avatar.html';
 import avatarGroup from './avatarGroup.html';
@@ -390,6 +394,14 @@ export default class PrimitiveDatatable extends LightningDatatable {
         if (value === undefined) return;
         super.selectedRows = value;
     }
+    @api
+    get hideTableHeader() {
+        return super.hideTableHeader;
+    }
+
+    set hideTableHeader(value) {
+        super.hideTableHeader = normalizeBoolean(value);
+    }
 
     @api groupBy;
 
@@ -422,6 +434,8 @@ export default class PrimitiveDatatable extends LightningDatatable {
         this.columnsWidthWithHeader();
         this.tableWidth();
         this.unscrollableMainDatatable();
+        this.hideTableHeaderPadding();
+        this.hideTable();
 
         // Make sure custom edited cells stay yellow on hover
         // Make sure error cells appear edited and with a red border
@@ -535,6 +549,38 @@ export default class PrimitiveDatatable extends LightningDatatable {
         mainDatatable.style.overflowX = 'hidden';
         mainDatatable.style.width = `${this._tableWidth}px`;
         mainDatatable.style.maxWidth = 'none';
+    }
+
+    hideTableHeaderPadding() {
+        const mainDatatable = this.template.querySelector(
+            '.slds-table_header-fixed_container'
+        );
+
+        if (this.hideTableHeader) {
+            mainDatatable.style.paddingTop = '0px';
+        }
+    }
+
+    @api
+    get hidePrimitiveDatatable() {
+        return this._hidePrimitiveDatatable;
+    }
+
+    set hidePrimitiveDatatable(value) {
+        this._hidePrimitiveDatatable = normalizeBoolean(value);
+    }
+
+    hideTable() {
+        // const headerDatatable = this.template.querySelector('.header-datatable')
+        const datatableTable = this.template.querySelector(
+            '.header-datatable tbody'
+        );
+        if (datatableTable) {
+            datatableTable.style.display = 'none';
+            // headerDatatable.style.overflowX = 'hidden';
+            // headerDatatable.style.width = `${this._tableWidth}px`;
+            // headerDatatable.style.maxWidth = 'none';
+        }
     }
 
     /**
