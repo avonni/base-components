@@ -263,6 +263,13 @@ const columnsEN = [
         label: 'Email',
         fieldName: 'email',
         type: 'email',
+        editable: true,
+        initialWidth: 225
+    },
+    {
+        label: 'Formatted Rich Text',
+        fieldName: 'formattedRichText',
+        type: 'formatted-rich-text',
         editable: true
     },
     {
@@ -664,6 +671,7 @@ const dataEN = [
     {
         id: 1,
         email: 'nina.gomez@email.com',
+        formattedRichText: '<h1>Header 1</h1>',
         image:
             'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
         inputCounter: 1,
@@ -680,6 +688,7 @@ const dataEN = [
     {
         id: 2,
         email: 'dave.mckinsley@email.com',
+        formattedRichText: '<h2>Header 2</h2>',
         image:
             'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
         inputCounter: 3,
@@ -697,6 +706,7 @@ const dataEN = [
     {
         id: 3,
         email: 'jung.phung@email.com',
+        formattedRichText: '<h3>Header 3</h3>',
         image:
             'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
         imageBlank: true,
@@ -714,6 +724,7 @@ const dataEN = [
     {
         id: 4,
         email: 'lily.murray@email.com',
+        formattedRichText: '<h4>Header 4</h4>',
         image:
             'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-home-bg_2x.png',
         inputCounter: 5,
@@ -730,6 +741,7 @@ const dataEN = [
     {
         id: 5,
         email: 'reginald.martin@email.com',
+        formattedRichText: '<h5>Header 5</h5>',
         image:
             'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-header-bg_2x.png',
         inputCounterStep: 2,
