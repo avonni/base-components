@@ -41,6 +41,7 @@ export default class Datatable extends LightningElement {
     @api draftValues;
     @api enableInfiniteLoading;
     @api errors;
+    @api groupBy;
     @api hideCheckboxColumn;
     @api hideTableHeader;
     @api isLoading;
