@@ -541,15 +541,8 @@ const columnsGroupBy = [
     },
     {
         id: 4,
-        label: 'Rank',
-        fieldName: 'rank',
-        type: 'number'
-    },
-    {
-        id: 5,
-        label: 'Score',
-        fieldName: 'score',
-        type: 'number'
+        label: 'District',
+        fieldName: 'district'
     }
 ];
 
@@ -975,96 +968,103 @@ const dataGroupBy = [
         name: 'Karen',
         age: '88',
         city: 'Montreal',
-        rank: '11',
-        score: '666'
+        district: 'Plateau'
     },
     {
         id: 2,
         name: 'James',
         age: '87',
         city: 'Montreal',
-        rank: '5',
-        score: '891'
+        district: 'Villeray'
     },
     {
         id: 3,
         name: 'Melissa',
         age: '73',
         city: 'Montreal',
-        rank: '10',
-        score: '799'
+        district: 'Plateau'
     },
     {
         id: 4,
         name: 'Doug',
         age: '61',
         city: 'Montreal',
-        rank: '2',
-        score: '997'
+        district: 'Outremont'
     },
     {
         id: 5,
         name: 'Tyrone',
         age: '16',
         city: 'Montreal',
-        rank: '9',
-        score: '806'
+        district: 'Outremont'
     },
     {
         id: 6,
         name: 'Jenny',
         age: '56',
         city: 'Longueuil',
-        rank: '4',
-        score: '920'
+        district: 'Greenfield Park'
     },
     {
         id: 7,
         name: 'Don',
         age: '18',
         city: 'Longueuil',
-        rank: '7',
-        score: '874'
+        district: 'Old Longueuil'
     },
     {
         id: 8,
-        name: 'Daniel',
-        age: '41',
-        city: 'Laval',
-        rank: '1',
-        score: '1000'
+        name: 'Michel',
+        age: '19',
+        city: 'Longueuil',
+        district: 'Greenfield Park'
     },
     {
         id: 9,
-        name: 'Mike',
-        age: '30',
-        city: 'Laval',
-        rank: '12',
-        score: '601'
+        name: 'Renaud',
+        age: '29',
+        city: 'Longueuil'
     },
     {
         id: 10,
-        name: 'Jane',
-        age: '30',
-        city: 'Laval',
-        rank: '6',
-        score: '889'
+        name: 'Donald',
+        age: '16',
+        city: 'Longueuil',
+        district: 'Saint-Hubert'
     },
     {
         id: 11,
-        name: 'Lisa',
-        age: '15',
-        city: 'Laval',
-        rank: '8',
-        score: '862'
+        name: 'Daniel',
+        age: '41',
+        city: 'Laval'
     },
     {
         id: 12,
+        name: 'Mike',
+        age: '30',
+        city: 'Laval',
+        district: 'Vimont'
+    },
+    {
+        id: 13,
+        name: 'Jane',
+        age: '30',
+        city: 'Laval',
+        district: 'Viau'
+    },
+    {
+        id: 14,
+        name: 'Lisa',
+        age: '15',
+        city: 'Laval',
+        district: 'Viau'
+    },
+    {
+        id: 15,
         name: 'Linda',
         age: '14',
         city: 'Laval',
-        rank: '3',
-        score: '980'
+        district: 'Vimont'
     }
 ];
 
