@@ -311,7 +311,8 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                 'slds-text-color_inverse slds-current-color':
                     theme === 'default' ||
                     theme === 'rounded' ||
-                    (this._focused && this.theme === 'transparent')
+                    (this._focused && this.theme === 'transparent'),
+                'scheduler__event-wrapper_focused': this._focused
             })
             .toString();
     }
@@ -675,9 +676,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     handleFocus(event) {
         this._focused = true;
-        this.template
-            .querySelector('.scheduler__event-wrapper')
-            .classList.add('scheduler__event-wrapper_focused');
 
         /**
          * The event fired when the occurrence is focused, if it is not disabled.
@@ -700,9 +698,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     handleBlur() {
         this._focused = false;
-        this.template
-            .querySelector('.scheduler__event-wrapper')
-            .classList.remove('scheduler__event-wrapper_focused');
 
         /**
          * The event fired when the occurrence is blurred, if it is not disabled.

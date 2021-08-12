@@ -2,8 +2,16 @@ import { normalizeArray } from 'c/utilsPrivate';
 import { dateTimeObjectFrom } from './dateUtils';
 import SchedulerEvent from './event';
 
-function deleteEvent() {
-    const name = this.selection.event.name;
+function createEvent(event) {
+    const computedEvent = { ...event };
+    this.updateEventDefaults(computedEvent);
+    this.computedEvents.push(new SchedulerEvent(computedEvent));
+    this.initRows();
+    this._updateOccurrences = true;
+}
+
+function deleteEvent(eventName) {
+    const name = eventName || this.selection.event.name;
 
     // Delete the event
     const index = this.computedEvents.findIndex((evt) => {
@@ -171,6 +179,7 @@ function saveOccurrence() {
 
 export function eventCrudMethods(context) {
     return {
+        createEvent: createEvent.bind(context),
         deleteEvent: deleteEvent.bind(context),
         focusEvent: focusEvent.bind(context),
         newEvent: newEvent.bind(context),

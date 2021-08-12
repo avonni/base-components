@@ -579,12 +579,31 @@ export default class Scheduler extends LightningElement {
     }
 
     @api
+    createEvent(eventObject) {
+        this.crud.createEvent(eventObject);
+    }
+
+    @api
+    deleteEvent(eventName) {
+        this.crud.deleteEvent(eventName);
+    }
+
+    @api
     focusEvent(eventName) {
+        this._programmaticFocus = true;
         this.crud.focusEvent(eventName);
     }
 
     @api
-    newEvent() {
+    opentEditEventDialog(eventName) {
+        this._draggedEvent = undefined;
+        this.focusEvent(eventName);
+        this.hideAllPopovers();
+        this.showEditDialog = true;
+    }
+
+    @api
+    openNewEventDialog() {
         this.crud.newEvent();
     }
 
@@ -1209,12 +1228,16 @@ export default class Scheduler extends LightningElement {
                 to: event.detail.to.toUTC().toISO()
             };
         }
-        this.dispatchEvent(
-            new CustomEvent('eventselect', {
-                detail,
-                bubbles: true
-            })
-        );
+
+        if (!this._programmaticFocus) {
+            this.dispatchEvent(
+                new CustomEvent('eventselect', {
+                    detail,
+                    bubbles: true
+                })
+            );
+        }
+        this._programmaticFocus = false;
 
         this.handleEventMouseEnter(event);
     }
