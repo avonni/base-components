@@ -67,11 +67,11 @@
  * * max
  * * min
  * * mode
- *
- * Summarization is only supported for the following data types:
- * * currency
- * * number
- * * percent
+ * 
+ * Action, Avatar, button and button-icon don’t support summarize type.
+ * Date type column and number type column support every summarize types. String type column support count, countUnique and mode. 
+ * The rest support count and countUnique.
+
  * @property {string} type Required. The data type to be used for data formatting. For more information, see table below.
  * @property {object} typeAttributes Provides custom formatting with component attributes for the data type. For example, currency-code for the currency type. For more information, see table below.
  * @property {boolean} wrapText Specifies whether text in a column is wrapped when the table renders. Wrapped text vertically expands a row to reveal its full content. Use with wrap-text-max-lines to display a number of lines before hiding the rest.
