@@ -330,8 +330,8 @@
             "path": "src/modules/base/primitiveIframe/primitiveIframe.js"
         },
         {
-            "name": "c/primitiveProgressBarReferenceLine",
-            "path": "src/modules/base/primitiveProgressBarReferenceLine/primitiveProgressBarReferenceLine.js"
+            "name": "c/primitiveReferenceLine",
+            "path": "src/modules/base/primitiveReferenceLine/primitiveReferenceLine.js"
         },
         {
             "name": "c/primitiveProgressStep",
