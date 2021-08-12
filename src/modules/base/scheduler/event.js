@@ -42,7 +42,11 @@ import {
     dateTimeObjectFrom
 } from './dateUtils';
 import { DateTime } from 'c/luxon';
-import { RECURRENCES, EVENTS_THEMES } from './defaults';
+import {
+    RECURRENCES,
+    EVENTS_THEMES,
+    REFERENCE_LINE_VARIANTS
+} from './defaults';
 
 /**
  * Scheduler event
@@ -84,6 +88,7 @@ export default class SchedulerEvent {
         this._to = dateTimeObjectFrom(props.to);
         this.iconName = props.iconName;
         this.keyFields = props.keyFields;
+        this.referenceLine = props.referenceLine;
 
         if (recurrence) {
             this.recurrence = recurrence;
@@ -97,7 +102,9 @@ export default class SchedulerEvent {
             this.recurrenceCount = Number(props.recurrenceCount);
         }
 
-        this.name = props.name || (!this.disabled && 'new-event');
+        this.name =
+            props.name ||
+            (!this.referenceLine && !this.disabled && 'new-event');
         this.theme = props.theme;
         this.title = props.title;
 
@@ -149,8 +156,12 @@ export default class SchedulerEvent {
     }
     set theme(value) {
         this._theme = normalizeString(value, {
-            fallbackValue: EVENTS_THEMES.default,
-            validValues: EVENTS_THEMES.valid
+            fallbackValue: this.referenceLine
+                ? REFERENCE_LINE_VARIANTS.default
+                : EVENTS_THEMES.default,
+            validValues: this.referenceLine
+                ? REFERENCE_LINE_VARIANTS.valid
+                : EVENTS_THEMES.valid
         });
     }
 
@@ -230,18 +241,28 @@ export default class SchedulerEvent {
         );
 
         if (containsAllowedTimes) {
-            keyFields.forEach((keyField) => {
+            if (this.referenceLine) {
                 const occurrence = {
-                    from: from,
-                    key: `${this.name}-${keyField}-${this.occurrences.length}`,
-                    keyFields: keyFields,
-                    offsetTop: 0,
-                    rowKey: keyField,
-                    title: this.title,
-                    to: computedTo
+                    from,
+                    to,
+                    key: `${this.title}-${this.occurrences.length}`,
+                    title: this.title
                 };
                 this.occurrences.push(occurrence);
-            });
+            } else {
+                keyFields.forEach((keyField) => {
+                    const occurrence = {
+                        from,
+                        key: `${this.name}-${keyField}-${this.occurrences.length}`,
+                        keyFields: keyFields,
+                        offsetTop: 0,
+                        rowKey: keyField,
+                        title: this.title,
+                        to: computedTo
+                    };
+                    this.occurrences.push(occurrence);
+                });
+            }
         }
     }
 

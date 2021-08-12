@@ -175,8 +175,8 @@ const RECURRENCES = [
     }
 ];
 
-const THEMES = {
-    valid: ['default', 'inverse'],
+const REFERENCE_LINE_VARIANTS = {
+    valid: ['default', 'inverse', 'success', 'warning', 'error', 'lightest'],
     default: 'default'
 };
 
@@ -197,8 +197,8 @@ export {
     EVENTS_HEIGHT,
     EVENTS_THEMES,
     EVENTS_PALETTES,
-    THEMES,
     PALETTES,
     RECURRENCES,
+    REFERENCE_LINE_VARIANTS,
     UNITS
 };

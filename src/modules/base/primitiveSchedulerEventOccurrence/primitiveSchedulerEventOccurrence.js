@@ -34,6 +34,9 @@ import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { DateTime } from 'c/luxon';
 import { normalizeArray, normalizeBoolean } from 'c/utilsPrivate';
+import disabled from './disabled.html';
+import eventOccurrence from './eventOccurrence.html';
+import referenceLine from './referenceLine.html';
 
 /**
  * Event occurrence displayed by the scheduler.
@@ -131,6 +134,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     _keyFields = [];
     _occurrence = {};
     _readOnly = false;
+    _referenceLine = false;
     _rows = [];
     _to;
 
@@ -147,6 +151,12 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         this.updatePosition();
         this.updateWidth();
         this.updateHeight();
+    }
+
+    render() {
+        if (this.disabled) return disabled;
+        if (this.referenceLine) return referenceLine;
+        return eventOccurrence;
     }
 
     /**
@@ -249,6 +259,21 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
     set readOnly(value) {
         this._readOnly = normalizeBoolean(value);
+    }
+
+    /**
+     * If true, the occurrence is a referenceLine.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get referenceLine() {
+        return this._referenceLine;
+    }
+    set referenceLine(value) {
+        this._referenceLine = normalizeBoolean(value);
     }
 
     /**
@@ -448,21 +473,22 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         if (i < 0) return;
 
         // Set the horizontal position
-        const x = i * columnWidth;
+        this._x = i * columnWidth;
 
         // Set the vertical position
-        const rows = this.rows;
-        let y = 0;
-        for (let j = 0; j < rows.length; j++) {
-            const rowKey = rows[j].key;
-            if (rowKey === this.rowKey) break;
+        if (!this.referenceLine) {
+            const rows = this.rows;
+            let y = 0;
+            for (let j = 0; j < rows.length; j++) {
+                const rowKey = rows[j].key;
+                if (rowKey === this.rowKey) break;
 
-            y += rows[j].height;
+                y += rows[j].height;
+            }
+            y += this.offsetTop;
+            this._y = y;
         }
-        y += this.offsetTop;
 
-        this._x = x;
-        this._y = y;
         this.updateHostTranslate();
     }
 
@@ -490,14 +516,15 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         if (columns[i].start < from) {
             const columnEnd = DateTime.fromMillis(columns[i].end);
             const eventDuration = columnEnd.diff(from).milliseconds;
-            const eventPercentageOfCol = eventDuration / columnDuration;
-            const offsetWidth = columnWidth * eventPercentageOfCol;
-            width += offsetWidth;
-
             const emptyDuration = columnDuration - eventDuration;
             const emptyPercentageOfCol = emptyDuration / columnDuration;
             this._x += columnWidth * emptyPercentageOfCol;
             this.updateHostTranslate();
+            if (this.referenceLine) return;
+
+            const eventPercentageOfCol = eventDuration / columnDuration;
+            const offsetWidth = columnWidth * eventPercentageOfCol;
+            width += offsetWidth;
 
             // If the event ends before the end of the first column
             // remove the appropriate width of the first column
@@ -510,7 +537,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             }
 
             i += 1;
-        }
+        } else if (this.referenceLine) return;
 
         // Add the width of the columns completely filled by the event
         while (i < columns.length) {

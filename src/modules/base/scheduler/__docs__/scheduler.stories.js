@@ -31,7 +31,14 @@
  */
 
 import { Scheduler } from '../__examples__/scheduler';
-import { columns, rows, headers, events, disabledDatesTimes } from './data';
+import {
+    columns,
+    rows,
+    headers,
+    events,
+    disabledDatesTimes,
+    referenceLines
+} from './data';
 
 export default {
     title: 'Example/Scheduler',
@@ -177,6 +184,16 @@ export default {
                 category: 'Events'
             }
         },
+        referenceLines: {
+            name: 'reference-lines',
+            control: {
+                type: 'object'
+            },
+            description: 'Array of reference line objects.',
+            table: {
+                type: { summary: 'object[]' }
+            }
+        },
         availableTimeFrames: {
             name: 'available-time-frames',
             control: {
@@ -230,19 +247,6 @@ export default {
             table: {
                 type: { summary: 'object' },
                 category: 'Available dates'
-            }
-        },
-        theme: {
-            control: {
-                type: 'radio'
-            },
-            options: ['default', 'inverse'],
-            defaultValue: 'default',
-            description:
-                'Theme of the scheduler. Valid values include default and inverse.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'default' }
             }
         },
         eventsTheme: {
@@ -392,7 +396,8 @@ Base.args = {
     availableTimeFrames: ['08:00-16:59'],
     availableDaysOfTheWeek: [1, 2, 3, 4, 5],
     events: events,
-    disabledDatesTimes: disabledDatesTimes
+    disabledDatesTimes: disabledDatesTimes,
+    referenceLines: referenceLines
 };
 
 export const ReadOnly = Template.bind({});

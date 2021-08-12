@@ -51,11 +51,11 @@ export const Scheduler = ({
     isLoading,
     readOnly,
     recurrentEditModes,
+    referenceLines,
     resizeColumnDisabled,
     rows,
     rowsKeyField,
     start,
-    theme,
     visibleSpan
 }) => {
     const element = document.createElement('ac-base-scheduler');
@@ -75,11 +75,11 @@ export const Scheduler = ({
     element.isLoading = isLoading;
     element.readOnly = readOnly;
     element.recurrentEditModes = recurrentEditModes;
+    element.referenceLines = referenceLines;
     element.resizeColumnDisabled = resizeColumnDisabled;
     element.rows = rows;
     element.rowsKeyField = rowsKeyField;
     element.start = start;
-    element.theme = theme;
     element.visibleSpan = visibleSpan;
     return element;
 };

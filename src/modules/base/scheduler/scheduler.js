@@ -49,7 +49,6 @@ import {
     EVENTS_DATES_FORMAT,
     EVENTS_THEMES,
     EVENTS_PALETTES,
-    THEMES,
     DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
     DEFAULT_AVAILABLE_MONTHS,
     DEFAULT_AVAILABLE_TIME_FRAMES,
@@ -84,11 +83,11 @@ export default class Scheduler extends LightningElement {
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     _readOnly = false;
     _recurrentEditModes = EDIT_MODES;
+    _referenceLines = [];
     _resizeColumnDisabled = false;
     _rows = [];
     _rowsKeyField;
     _start = dateTimeObjectFrom(DEFAULT_START_DATE);
-    _theme = THEMES.default;
     _visibleSpan = DEFAULT_VISIBLE_SPAN;
 
     _datatableRowsHeight;
@@ -100,7 +99,9 @@ export default class Scheduler extends LightningElement {
     _referenceHeader;
     _resizedEvent;
     cellWidth = 0;
+    computedDisabledDatesTimes = [];
     computedHeaders = [];
+    computedReferenceLines = [];
     computedRows = [];
     computedEvents = [];
     contextMenuActions = [];
@@ -293,6 +294,14 @@ export default class Scheduler extends LightningElement {
     set disabledDatesTimes(value) {
         this._disabledDatesTimes = normalizeArray(value);
 
+        this.computedDisabledDatesTimes = this._disabledDatesTimes.map(
+            (evt) => {
+                const event = { ...evt };
+                event.disabled = true;
+                return event;
+            }
+        );
+
         if (this.isConnected) {
             this.initEvents();
             this.initRows();
@@ -387,6 +396,33 @@ export default class Scheduler extends LightningElement {
     }
 
     @api
+    get referenceLines() {
+        return this._referenceLines;
+    }
+    set referenceLines(value) {
+        this._referenceLines = normalizeArray(value);
+
+        this.computedReferenceLines = this._referenceLines.map((line) => {
+            const from = line.date
+                ? dateTimeObjectFrom(line.date)
+                : dateTimeObjectFrom(Date.now());
+            const to = addToDate(from, 'millisecond', 1);
+
+            return {
+                title: line.label,
+                theme: line.variant,
+                from,
+                to,
+                recurrence: line.recurrence,
+                recurrenceEndDate: line.recurrenceEndDate,
+                recurrenceCount: line.recurrenceCount,
+                recurrenceAttributes: line.recurrenceAttributes,
+                referenceLine: true
+            };
+        });
+    }
+
+    @api
     get resizeColumnDisabled() {
         return this._resizeColumnDisabled;
     }
@@ -423,17 +459,6 @@ export default class Scheduler extends LightningElement {
         this._start = computedDate || dateTimeObjectFrom(DEFAULT_START_DATE);
 
         if (this.isConnected) this.initSchedule();
-    }
-
-    @api
-    get theme() {
-        return this._theme;
-    }
-    set theme(value) {
-        this._theme = normalizeString(value, {
-            fallbackValue: THEMES.default,
-            validValues: THEMES.valid
-        });
     }
 
     @api
@@ -767,13 +792,10 @@ export default class Scheduler extends LightningElement {
     initEvents() {
         if (!this.computedHeaders.length) return;
 
-        // The disabled dates/times are special events
-        const disabledEvents = this.disabledDatesTimes.map((evt) => {
-            const event = { ...evt };
-            event.disabled = true;
-            return event;
-        });
-        const events = this.events.concat(disabledEvents);
+        // The disabled dates/times and reference lines are special events
+        const events = this.events
+            .concat(this.computedDisabledDatesTimes)
+            .concat(this.computedReferenceLines);
 
         const computedEvents = [];
         events.forEach((evt) => {

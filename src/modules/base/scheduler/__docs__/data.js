@@ -207,16 +207,6 @@ const disabledDatesTimes = [
         }
     },
     {
-        keyFields: ['1', '2', '3', '4', '5'],
-        iconName: 'utility:food_and_drink',
-        from: new Date(2021, 0, 1, 10),
-        to: new Date(2021, 0, 1, 10, 15),
-        recurrence: 'weekly',
-        recurrenceAttributes: {
-            weekdays: [1, 2, 3, 4, 5]
-        }
-    },
-    {
         keyFields: ['4'],
         title: 'Vacation',
         from: new Date(2021, 11, 6),
@@ -224,4 +214,21 @@ const disabledDatesTimes = [
     }
 ];
 
-export { columns, disabledDatesTimes, rows, headers, events };
+const referenceLines = [
+    {
+        label: 'Now',
+        variant: 'success'
+    },
+    {
+        label: 'Deadline',
+        variant: 'error',
+        date: new Date(2021, 11, 13, 15)
+    },
+    {
+        label: 'Coffee break',
+        date: new Date(2021, 1, 1, 10),
+        recurrence: 'daily'
+    }
+];
+
+export { columns, disabledDatesTimes, rows, headers, events, referenceLines };
