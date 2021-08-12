@@ -181,6 +181,15 @@ const isProgressType = (type) => {
     );
 };
 
+const isNoSummarizeType = (type) => {
+    return (
+        type === 'avatar' ||
+        type === 'action' ||
+        type === 'button' ||
+        type === 'ButtonIcon'
+    );
+};
+
 const isFormattedNumberType = (type) => {
     return isNumberType(type) || isProgressType(type) || isCustomType(type);
 };
@@ -222,11 +231,14 @@ const displaySumType = (summarizeTypes, type) => {
         !isDateType(type) &&
         !isNumberType(type) &&
         !isCustomType(type) &&
-        !isProgressType(type)
+        !isProgressType(type) &&
+        !isNoSummarizeType(type)
     ) {
         return otherAllowedSummarizeTypes.includes(summarizeTypes)
             ? true
             : false;
+    } else if (isNoSummarizeType(type)) {
+        return false;
     }
     return true;
 };
