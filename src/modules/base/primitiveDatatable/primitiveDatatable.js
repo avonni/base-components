@@ -41,6 +41,7 @@ import checkboxButton from './checkboxButton.html';
 import colorPicker from './colorPicker.html';
 import combobox from './combobox.html';
 import dynamicIcon from './dynamicIcon.html';
+import formattedRichText from './formattedRichText.html';
 import image from './image.html';
 import inputCounter from './inputCounter.html';
 import inputDateRange from './inputDateRange.html';
@@ -161,6 +162,11 @@ export default class PrimitiveDatatable extends LightningDatatable {
         'dynamic-icon': {
             template: dynamicIcon,
             typeAttributes: ['alternativeText', 'option'],
+            standardCellLayout: true
+        },
+        'formatted-rich-text': {
+            template: formattedRichText,
+            typeAttributes: ['disableLinkify'],
             standardCellLayout: true
         },
         image: {

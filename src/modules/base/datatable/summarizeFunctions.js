@@ -184,7 +184,13 @@ const isDateType = (type) => {
  * @returns {Boolean} True if it's a string type column, false otherwise.
  */
 const isStringType = (type) => {
-    return type === 'email' || type === 'text' || type === 'url';
+    return (
+        type === 'email' ||
+        type === 'text' ||
+        type === 'url' ||
+        type === 'formatted-rich-text' ||
+        type === 'phone'
+    );
 };
 
 /**
