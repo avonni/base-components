@@ -216,13 +216,15 @@ export default class InputRichText extends LightningElement {
     @api messageWhenBadInput;
     /**
     * Custom buttons to add to the toolbar.
-    *
+    * 
+    * @type {object}
     * @public
     */
     @api customButtons;
     /**
     * Entity ID to share the image with.
     *
+    * @type {string}
     * @public
     */
     @api shareWithEntityId;
@@ -458,7 +460,7 @@ export default class InputRichText extends LightningElement {
     }
 
     /**
-     * Localization
+     * Localization.
      * 
      * @type {i18n}
      */
@@ -528,7 +530,7 @@ export default class InputRichText extends LightningElement {
     /**
      * Computed categories formats for rich text editor.
      * 
-     * @return {object} categories
+     * @type {object} categories
      */
     get computedCategories() {
         const formatsExist = !!this.formats.length;

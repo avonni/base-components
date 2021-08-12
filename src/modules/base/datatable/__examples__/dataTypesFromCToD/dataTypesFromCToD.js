@@ -115,7 +115,9 @@ export default class DataTypesFromCToD extends LightningElement {
             colorPicker: '#00a1e0',
             currency: '200',
             dynamicIcon: 'ellie',
-            date: new Date('2022/03/24')
+            date: new Date('2022/03/24'),
+            dateLocal: new Date('2022/03/24'),
+            combobox: 'no-avatar-burlington'
         },
         {
             id: 2,
@@ -123,7 +125,8 @@ export default class DataTypesFromCToD extends LightningElement {
             colorPicker: '#e65cd1',
             dynamicIcon: 'score',
             dynamicIconOption: 'negative',
-            date: new Date('2022/03/21')
+            date: new Date('2022/03/21'),
+            dateLocal: new Date('2022/03/21')
         },
         {
             id: 3,
@@ -134,6 +137,7 @@ export default class DataTypesFromCToD extends LightningElement {
             dynamicIcon: 'strength',
             dynamicIconOption: -3,
             date: new Date('2022/05/04'),
+            dateLocal: new Date('2022/05/04'),
             isMultiSelect: true
         },
         {
@@ -141,7 +145,8 @@ export default class DataTypesFromCToD extends LightningElement {
             colorPicker: '#f4bc25',
             currency: '432',
             dynamicIcon: 'eq',
-            date: new Date('2021/02/14')
+            date: new Date('2021/02/14'),
+            dateLocal: new Date('2021/02/14')
         },
         {
             id: 5,
@@ -149,7 +154,8 @@ export default class DataTypesFromCToD extends LightningElement {
             colorPicker: '#f99120',
             currency: '217',
             dynamicIcon: 'waffle',
-            date: new Date('2022/10/12')
+            date: new Date('2021/02/14'),
+            dateLocal: new Date('2022/10/12')
         }
     ];
 

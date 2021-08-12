@@ -11,6 +11,40 @@ export default class DatatableWithSummarizeTypes extends LightningElement {
             }
         },
         {
+            label: 'Date',
+            fieldName: 'date',
+            type: 'date',
+            typeAttributes: {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+                hour: '2-digit',
+                timeZone: 'Pacific/Honolulu'
+            },
+            editable: true,
+            summarizeTypes: [
+                'count',
+                'countUnique',
+                'average',
+                'median',
+                'max',
+                'min',
+                'mode'
+            ],
+            initialWidth: 280
+        },
+        {
+            label: 'Progress Ring',
+            fieldName: 'progress',
+            type: 'progress-ring',
+            typeAttributes: {
+                variant: { fieldName: 'progressRingVariant' },
+                size: 'large'
+            },
+            summarizeTypes: ['count', 'sum', 'average', 'min', 'max'],
+            initialWidth: 130
+        },
+        {
             label: 'Price',
             fieldName: 'currency',
             type: 'currency',
@@ -44,7 +78,6 @@ export default class DatatableWithSummarizeTypes extends LightningElement {
             summarizeTypes: [
                 'count',
                 'countUnique',
-                'average',
                 'median',
                 'min',
                 'max',
@@ -56,6 +89,9 @@ export default class DatatableWithSummarizeTypes extends LightningElement {
     data = [
         {
             id: 1,
+            date: new Date('2021/09/24'),
+            progress: 100,
+            progressRingVariant: 'base-autocomplete',
             badge: 'approved',
             badgeVariant: 'success',
             currency: '5',
@@ -64,7 +100,10 @@ export default class DatatableWithSummarizeTypes extends LightningElement {
         },
         {
             id: 2,
+            date: new Date('2021/10/24'),
             badge: 'declined',
+            progressRingVariant: 'expired',
+            progress: 0,
             badgeVariant: 'error',
             currency: '5',
             number: '10',
@@ -72,6 +111,9 @@ export default class DatatableWithSummarizeTypes extends LightningElement {
         },
         {
             id: 3,
+            date: new Date('2021/10/24'),
+            progress: 75,
+            progressRingVariant: 'warning',
             badge: 'unknown',
             badgeVariant: 'inverse',
             number: '15',
@@ -79,6 +121,8 @@ export default class DatatableWithSummarizeTypes extends LightningElement {
         },
         {
             id: 4,
+            date: new Date('2021/11/24'),
+            progress: 50,
             badge: 'approved',
             badgeVariant: 'success',
             currency: '20',
@@ -87,6 +131,8 @@ export default class DatatableWithSummarizeTypes extends LightningElement {
         },
         {
             id: 5,
+            date: new Date('2021/12/24'),
+            progress: 35,
             badge: 'approved',
             badgeVariant: 'success',
             currency: '25',
@@ -95,6 +141,8 @@ export default class DatatableWithSummarizeTypes extends LightningElement {
         },
         {
             id: 6,
+            date: new Date('2022/01/24'),
+            progress: 20,
             badge: 'approved',
             badgeVariant: 'success',
             currency: '25',

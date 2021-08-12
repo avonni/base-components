@@ -33,7 +33,10 @@
 import { api, LightningElement } from 'lwc';
 import { normalizeArray } from 'c/utilsPrivate';
 
-import { computeSummarizeObject } from './summarizeFunctions';
+import {
+    hasValidSummarizeType,
+    computeSummarizeArray
+} from './summarizeFunctions';
 
 /**
  * Lightning datatable with custom cell types and extended functionalities.
@@ -253,9 +256,6 @@ export default class Datatable extends LightningElement {
     _columnsEditable = [];
     _isDatatableEditable;
 
-    _filteredDataValues = [];
-    _computedSummarizeArray = [];
-
     /**
      * Array of the columns object that's used to define the data types.
      * Required properties include 'label', 'fieldName', and 'type'. The default type is 'text'.
@@ -285,8 +285,6 @@ export default class Datatable extends LightningElement {
 
     set data(value) {
         this._data = JSON.parse(JSON.stringify(normalizeArray(value)));
-        this.computeFilteredDataValues();
-        this.computeSummarizeArray();
     }
     /* eslint-enable */
 
@@ -315,12 +313,12 @@ export default class Datatable extends LightningElement {
     }
 
     /**
-     * Returns the computed summarize array.
+     * Returns the computed summarize array use in the markup.
      *
      * @type {object}
      */
     get computedSummarizeArray() {
-        return this._computedSummarizeArray;
+        return computeSummarizeArray(this._columns, this._data);
     }
 
     /**
@@ -336,15 +334,12 @@ export default class Datatable extends LightningElement {
     }
 
     /**
-     * Checks if one of the columns has a summarizeType.
+     * Checks if one of the columns has a valid summarizeType.
      *
      * @type {boolean}
      */
-    get isSummarizePresent() {
-        const summarized = this._columns.map((column) => {
-            return column.summarizeTypes ? true : false;
-        });
-        return summarized.includes(true);
+    get allowSummarize() {
+        return hasValidSummarizeType(this.computedSummarizeArray);
     }
 
     /**
@@ -389,7 +384,7 @@ export default class Datatable extends LightningElement {
     }
 
     /**
-     * Gets the columns width of the primitive datatable depending on if there is a header or not.
+     * Gets the columns width of the primitive-datatable depending on if there is a header or not.
      */
     datatableColumnsWidth() {
         this._columnsWidth = !this.hideTableHeader
@@ -406,7 +401,7 @@ export default class Datatable extends LightningElement {
     }
 
     /**
-     * Verify if there is draft values.
+     * Verify if there is draft values (modified values).
      */
     primitiveDraftValues() {
         this._hasDraftValues = this.primitiveDatatableDraftValues.length;
@@ -465,29 +460,6 @@ export default class Datatable extends LightningElement {
         if (table) {
             table.style.width = `${this._tableWidth}px`;
         }
-    }
-
-    /**
-     * Updates the table width base on the width of the primitive datatable on initialization and on resize.
-     */
-    computeFilteredDataValues() {
-        this._filteredDataValues = this._columns.map((column) => {
-            const fieldName = column.fieldName;
-            this._values = this._data.map((row) => {
-                return row[fieldName];
-            });
-            return this._values.map(Number).filter(Number);
-        });
-    }
-
-    /**
-     * Computes the summarizeArray to create the object used to display the summarize types.
-     */
-    computeSummarizeArray() {
-        this._computedSummarizeArray = computeSummarizeObject(
-            this._columns,
-            this._filteredDataValues
-        );
     }
 
     /**

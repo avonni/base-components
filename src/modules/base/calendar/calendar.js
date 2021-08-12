@@ -59,7 +59,7 @@ const DEFAULT_DATE = new Date(new Date().setHours(0, 0, 0, 0));
 /**
  * @class
  * @descriptor avonni-calendar
- * @example example-calendar--base
+ * @storyId example-calendar--base
  * @public
  */
 export default class Calendar extends LightningElement {

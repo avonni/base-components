@@ -214,6 +214,7 @@
                 name={name}
                 onchange={handleInputColor}
                 disabled={disabledInput}
+				read-only={isLabelDisplayed}
             ></lightning-input>
         </div>
         <p if:true={showError} class="slds-form-error">{messageWhenBadInput}</p>

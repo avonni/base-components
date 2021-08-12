@@ -1,4 +1,12 @@
 /**
+ * @typedef {Object} Color
+ * @name colors
+ * @property {string} label Label of the color. (ex. 'brand-accessible')
+ * @property {string} value Hex value of the color (ex. '#0176d3').
+ * @property {string} token Name of the token associated with this value (ex. --lwc-brand-accessible )
+ */
+
+/**
  * @namespace examples
  */
 /**

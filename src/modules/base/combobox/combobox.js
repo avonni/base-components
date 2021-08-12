@@ -634,9 +634,8 @@ export default class Combobox extends LightningElement {
 
     /**
      * Sets a custom error message to be displayed when a form is submitted.
-     *
-     * @param {string} message - The string that describes the error.
-     * If message is an empty string, the error message is reset.
+     * 
+     * @param {string} message - The string that describes the error. If message is an empty string, the error message is reset.
      * @public
      */
     @api
@@ -694,9 +693,10 @@ export default class Combobox extends LightningElement {
      */
     handleScopeChange(event) {
         /**
+         * The event fired when a scope is selected.
+         * 
          * @event
          * @name scopeChange
-         * The event fired when a scope is selected.
          * @param {string} value The value of the scope selected.
          * @bubbles
          * @public
@@ -739,9 +739,10 @@ export default class Combobox extends LightningElement {
     handleChange(event) {
         this._value = event.detail.value;
         /**
+         * The event fired when a user clicks on an action.
+         * 
          * @event
          * @name change
-         * The event fired when an option is selected or unselected.
          * @param {string[]} value The new value of the combobox.
          * @bubbles
          * @public
@@ -761,10 +762,11 @@ export default class Combobox extends LightningElement {
      */
     handleOpen() {
         /**
-         * @event
-         * @name open
          * The event fired when the drop-down is opened.
          * It is not fired when the drop-down is opened programmatically with the open() method.
+         * 
+         * @event
+         * @name open
          * @public
          */
         this.dispatchEvent(new CustomEvent('open'));

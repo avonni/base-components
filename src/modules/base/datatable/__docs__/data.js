@@ -238,7 +238,7 @@ const columnsCD = [
     },
     {
         label: 'Date local',
-        fieldName: 'date',
+        fieldName: 'dateLocal',
         type: 'date-local',
         typeAttributes: {
             day: 'numeric',
@@ -263,6 +263,13 @@ const columnsEN = [
         label: 'Email',
         fieldName: 'email',
         type: 'email',
+        editable: true,
+        initialWidth: 225
+    },
+    {
+        label: 'Formatted Rich Text',
+        fieldName: 'formattedRichText',
+        type: 'formatted-rich-text',
         editable: true
     },
     {
@@ -423,6 +430,7 @@ const columnsRZ = [
     {
         label: 'Text',
         fieldName: 'text',
+        type: 'text',
         editable: true
     },
     {
@@ -444,6 +452,40 @@ const columnsSum = [
         typeAttributes: {
             variant: { fieldName: 'badgeVariant' }
         }
+    },
+    {
+        label: 'Date',
+        fieldName: 'date',
+        type: 'date',
+        typeAttributes: {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+            hour: '2-digit',
+            timeZone: 'Pacific/Honolulu'
+        },
+        editable: true,
+        summarizeTypes: [
+            'count',
+            'countUnique',
+            'average',
+            'median',
+            'max',
+            'min',
+            'mode'
+        ],
+        initialWidth: 280
+    },
+    {
+        label: 'Progress Ring',
+        fieldName: 'progress',
+        type: 'progress-ring',
+        typeAttributes: {
+            variant: { fieldName: 'progressRingVariant' },
+            size: 'large'
+        },
+        summarizeTypes: ['count', 'sum', 'average', 'min', 'max'],
+        initialWidth: 130
     },
     {
         label: 'Price',
@@ -476,15 +518,7 @@ const columnsSum = [
         fieldName: 'percent',
         type: 'percent',
         editable: true,
-        summarizeTypes: [
-            'count',
-            'countUnique',
-            'average',
-            'median',
-            'min',
-            'max',
-            'mode'
-        ]
+        summarizeTypes: ['count', 'countUnique', 'median', 'min', 'max', 'mode']
     }
 ];
 
@@ -621,7 +655,9 @@ const dataCD = [
         colorPicker: '#00a1e0',
         currency: '200',
         dynamicIcon: 'ellie',
-        date: new Date('2022/03/24')
+        date: new Date('2022/03/24'),
+        dateLocal: new Date('2022/03/24'),
+        combobox: 'no-avatar-burlington'
     },
     {
         id: 2,
@@ -629,7 +665,8 @@ const dataCD = [
         colorPicker: '#e65cd1',
         dynamicIcon: 'score',
         dynamicIconOption: 'negative',
-        date: new Date('2022/03/21')
+        date: new Date('2022/03/21'),
+        dateLocal: new Date('2022/03/21')
     },
     {
         id: 3,
@@ -640,6 +677,7 @@ const dataCD = [
         dynamicIcon: 'strength',
         dynamicIconOption: -3,
         date: new Date('2022/05/04'),
+        dateLocal: new Date('2022/05/04'),
         isMultiSelect: true
     },
     {
@@ -647,7 +685,8 @@ const dataCD = [
         colorPicker: '#f4bc25',
         currency: '432',
         dynamicIcon: 'eq',
-        date: new Date('2021/02/14')
+        date: new Date('2021/02/14'),
+        dateLocal: new Date('2021/02/14')
     },
     {
         id: 5,
@@ -655,15 +694,18 @@ const dataCD = [
         colorPicker: '#f99120',
         currency: '217',
         dynamicIcon: 'waffle',
-        date: new Date('2022/10/12')
+        date: new Date('2021/02/14'),
+        dateLocal: new Date('2022/10/12')
     }
 ];
 const dataEN = [
     {
         id: 1,
         email: 'nina.gomez@email.com',
+        formattedRichText: '<h1>Header 1</h1>',
         image:
             'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+        inputCounter: 1,
         inputDateRange: {
             startDate: new Date('2021/10/02'),
             endDate: new Date('2021/10/05')
@@ -677,6 +719,7 @@ const dataEN = [
     {
         id: 2,
         email: 'dave.mckinsley@email.com',
+        formattedRichText: '<h2>Header 2</h2>',
         image:
             'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
         inputCounter: 3,
@@ -694,6 +737,7 @@ const dataEN = [
     {
         id: 3,
         email: 'jung.phung@email.com',
+        formattedRichText: '<h3>Header 3</h3>',
         image:
             'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
         imageBlank: true,
@@ -711,6 +755,7 @@ const dataEN = [
     {
         id: 4,
         email: 'lily.murray@email.com',
+        formattedRichText: '<h4>Header 4</h4>',
         image:
             'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-home-bg_2x.png',
         inputCounter: 5,
@@ -727,6 +772,7 @@ const dataEN = [
     {
         id: 5,
         email: 'reginald.martin@email.com',
+        formattedRichText: '<h5>Header 5</h5>',
         image:
             'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-header-bg_2x.png',
         inputCounterStep: 2,
@@ -816,6 +862,7 @@ const dataOQ = [
 const dataRZ = [
     {
         id: 1,
+        rating: '3',
         slider: 36,
         text: 'Nina Gomez',
         url: 'https://www.avonnicomponents.com/',
@@ -823,6 +870,7 @@ const dataRZ = [
     },
     {
         id: 2,
+        rating: '2',
         slider: 78,
         text: 'Dave McKinsley',
         url: 'https://www.avonni.app/',
@@ -839,7 +887,8 @@ const dataRZ = [
     },
     {
         id: 4,
-        slider: 3,
+        rating: '5',
+        slider: 36,
         sliderStep: 4,
         text: 'Lily Murray',
         url: 'https://www.lightningdesignsystem.com/',
@@ -847,6 +896,8 @@ const dataRZ = [
     },
     {
         id: 5,
+        rating: '4',
+        slider: '0',
         text: 'Reginald Martin',
         url: 'https://lwc.dev/',
         urlLabel: 'LWC Documentation'
@@ -856,6 +907,9 @@ const dataRZ = [
 const dataSum = [
     {
         id: 1,
+        date: new Date('2021/09/24'),
+        progress: 100,
+        progressRingVariant: 'base-autocomplete',
         badge: 'approved',
         badgeVariant: 'success',
         currency: '5',
@@ -864,7 +918,10 @@ const dataSum = [
     },
     {
         id: 2,
+        date: new Date('2021/10/24'),
         badge: 'declined',
+        progressRingVariant: 'expired',
+        progress: 0,
         badgeVariant: 'error',
         currency: '5',
         number: '10',
@@ -872,6 +929,9 @@ const dataSum = [
     },
     {
         id: 3,
+        date: new Date('2021/10/24'),
+        progress: 75,
+        progressRingVariant: 'warning',
         badge: 'unknown',
         badgeVariant: 'inverse',
         number: '15',
@@ -879,6 +939,8 @@ const dataSum = [
     },
     {
         id: 4,
+        date: new Date('2021/11/24'),
+        progress: 50,
         badge: 'approved',
         badgeVariant: 'success',
         currency: '20',
@@ -887,6 +949,8 @@ const dataSum = [
     },
     {
         id: 5,
+        date: new Date('2021/12/24'),
+        progress: 35,
         badge: 'approved',
         badgeVariant: 'success',
         currency: '25',
@@ -895,6 +959,8 @@ const dataSum = [
     },
     {
         id: 6,
+        date: new Date('2022/01/24'),
+        progress: 20,
         badge: 'approved',
         badgeVariant: 'success',
         currency: '25',

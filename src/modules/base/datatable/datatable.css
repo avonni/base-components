@@ -54,6 +54,12 @@
 
 .avonni-datatable-summarize_styling {
     display: flex;
+    justify-content: flex-start;
+    padding: 0.1rem 0;
+}
+
+.avonni-datatable-summarize_styling-number {
+    display: flex;
     justify-content: flex-end;
     padding: 0.1rem 0;
 }

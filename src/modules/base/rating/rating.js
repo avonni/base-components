@@ -73,7 +73,11 @@ export default class Rating extends LightningElement {
      * @public
      */
     @api fieldLevelHelp;
-    // todo
+    /**
+     * Assign a unique ID through the name of the rating component.
+     * 
+     * @type {string}
+     */
     @api name = generateUniqueId();
     /**
      * The Lightning Design System name of the icon. Specify the name in the format 'utility:favorite' where 'utility' is the category, and 'favorite' is the specific icon to be displayed.
