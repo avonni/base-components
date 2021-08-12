@@ -43,22 +43,29 @@
 
 .scheduler__event {
     width: 100%;
-    opacity: 0.9;
+    opacity: 0.8;
     cursor: pointer;
     position: relative;
     z-index: 2;
     user-select: none;
 }
+
+.scheduler__event-wrapper:focus {
+    outline: none;
+}
+.scheduler__event-wrapper_focused {
+    box-shadow: inset 0 0 0 1px var(--lwc-colorBorderRowSelectedHover, #1b96ff);
+}
+:host.scheduler__event-dragged .scheduler__event-wrapper_focused {
+    box-shadow: none;
+}
+
 .scheduler__event:hover {
     opacity: 1;
 }
 :host.scheduler__event-dragged {
     z-index: 3;
 }
-:host.scheduler__event-dragged .scheduler__event-wrapper:focus {
-    outline: none;
-}
-
 :host.scheduler__event-dragged .scheduler__event {
     cursor: grabbing;
 }

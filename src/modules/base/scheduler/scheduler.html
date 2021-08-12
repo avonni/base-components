@@ -162,13 +162,15 @@
                                 occurrence={occurrence}
                                 occurrence-key={occurrence.key}
                                 read-only={readOnly}
+                                recurrence={event.recurrence}
                                 row-key={occurrence.rowKey}
                                 rows={computedRows}
                                 title={occurrence.title}
                                 theme={event.theme}
                                 to={occurrence.to}
                                 data-key={occurrence.key}
-                                onprivatefocus={handleEventMouseEnter}
+                                data-event-name={event.name}
+                                onprivatefocus={handleEventFocus}
                                 onprivateblur={hideDetailPopover}
                                 onprivatecontextmenu={handleEventContextMenu}
                                 onprivatemouseenter={handleEventMouseEnter}
@@ -325,7 +327,7 @@
                     label={editDialogLabels.saveButton}
                     variant="brand"
                     onclick={handleSaveEvent}
-                    onkeyup={handleEditSaveKeyDown}
+                    onkeydown={handleEditSaveKeyDown}
                 ></lightning-button>
                 <lightning-button-menu
                     if:true={showRecurrenceSaveOptions}

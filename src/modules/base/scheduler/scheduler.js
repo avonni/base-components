@@ -579,6 +579,11 @@ export default class Scheduler extends LightningElement {
     }
 
     @api
+    focusEvent(eventName) {
+        this.crud.focusEvent(eventName);
+    }
+
+    @api
     newEvent() {
         this.crud.newEvent();
     }
@@ -813,7 +818,7 @@ export default class Scheduler extends LightningElement {
                 colorIndex = 0;
             }
 
-            const occurrences = this.crud.getOccurrencesFromRowKey(rowKey);
+            const occurrences = this.getOccurrencesFromRowKey(rowKey);
 
             const computedRow = new SchedulerRow({
                 color: this.palette[colorIndex],
@@ -964,6 +969,20 @@ export default class Scheduler extends LightningElement {
             if (x >= left && x < right) return td;
             return undefined;
         });
+    }
+
+    getOccurrencesFromRowKey(key) {
+        const occurrences = [];
+        this.computedEvents.forEach((event) => {
+            if (!event.disabled) {
+                const occ = event.occurrences.filter((occurrence) => {
+                    return occurrence.rowKey === key;
+                });
+                occurrences.push(occ);
+            }
+        });
+
+        return occurrences.flat();
     }
 
     getRowFromKey(key) {
@@ -1178,6 +1197,26 @@ export default class Scheduler extends LightningElement {
 
     hideRecurrenceDialog() {
         this.showRecurrenceDialog = false;
+    }
+
+    handleEventFocus(event) {
+        const detail = {
+            name: event.detail.eventName
+        };
+        if (event.currentTarget.recurrence) {
+            detail.recurrenceDates = {
+                from: event.detail.from.toUTC().toISO(),
+                to: event.detail.to.toUTC().toISO()
+            };
+        }
+        this.dispatchEvent(
+            new CustomEvent('eventselect', {
+                detail,
+                bubbles: true
+            })
+        );
+
+        this.handleEventMouseEnter(event);
     }
 
     handleMouseDown(mouseEvent) {
@@ -1499,7 +1538,7 @@ export default class Scheduler extends LightningElement {
 
     handleEditSaveKeyDown(event) {
         if (event.key === 'Tab') {
-            this.template.querySelector('lightning-input').focus();
+            this.template.querySelector('c-dialog lightning-input').focus();
         }
     }
 
@@ -1574,8 +1613,8 @@ export default class Scheduler extends LightningElement {
 
         if (onlyOneOccurrence) {
             detail.recurrenceDates = {
-                from: this.selection.occurrence.from,
-                to: this.selection.occurrence.to
+                from: this.selection.occurrence.from.toUTC().toISO(),
+                to: this.selection.occurrence.to.toUTC().toISO()
             };
         }
 

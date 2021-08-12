@@ -28,18 +28,13 @@ function deleteEvent() {
     this.hideAllPopovers();
 }
 
-function getOccurrencesFromRowKey(key) {
-    const occurrences = [];
-    this.computedEvents.forEach((event) => {
-        if (!event.disabled) {
-            const occ = event.occurrences.filter((occurrence) => {
-                return occurrence.rowKey === key;
-            });
-            occurrences.push(occ);
-        }
-    });
-
-    return occurrences.flat();
+function focusEvent(eventName) {
+    const event = this.template.querySelector(
+        `c-primitive-scheduler-event-occurrence[data-event-name="${eventName}"]`
+    );
+    if (event) {
+        event.focus();
+    }
 }
 
 function newEvent(x, y, showDialog = true) {
@@ -177,7 +172,7 @@ function saveOccurrence() {
 export function eventCrudMethods(context) {
     return {
         deleteEvent: deleteEvent.bind(context),
-        getOccurrencesFromRowKey: getOccurrencesFromRowKey.bind(context),
+        focusEvent: focusEvent.bind(context),
         newEvent: newEvent.bind(context),
         saveEvent: saveEvent.bind(context),
         saveOccurrence: saveOccurrence.bind(context)

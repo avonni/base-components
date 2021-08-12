@@ -84,6 +84,14 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     @api occurrenceKey;
 
     /**
+     * Recurrence of the parent event.
+     *
+     * @type {string}
+     * @public
+     */
+    @api recurrence;
+
+    /**
      * Unique key of the scheduler row this occurrence appears on.
      *
      * @type {string}
@@ -125,6 +133,8 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     _readOnly = false;
     _rows = [];
     _to;
+
+    _focused = false;
     _x = 0;
     _y = 0;
 
@@ -299,7 +309,9 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         )
             .add({
                 'slds-text-color_inverse slds-current-color':
-                    theme === 'default' || theme === 'rounded'
+                    theme === 'default' ||
+                    theme === 'rounded' ||
+                    (this._focused && this.theme === 'transparent')
             })
             .toString();
     }
@@ -368,14 +380,13 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         const isLine = theme === 'line';
 
         let style = '';
-        if (isDefault || isRounded) {
+        if (isDefault || isRounded || (isTransparent && this._focused)) {
             style += `background-color: ${computedColor};`;
+        } else if (isTransparent && !this._focused) {
+            style += `background-color: ${transparentColor};`;
         }
         if (isTransparent) {
-            style += `
-                background-color: ${transparentColor};
-                border-left-color: ${computedColor};
-            `;
+            style += `border-left-color: ${computedColor};`;
         }
         if (isHollow || isLine) {
             style += `border-color: ${computedColor}`;
@@ -407,6 +418,16 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             return `rgba(${isRGB[1]}, .3)`;
         }
         return this.computedColor;
+    }
+
+    /**
+     * Set the focus on the occurrence.
+     *
+     * @public
+     */
+    @api
+    focus() {
+        this.template.querySelector('.scheduler__event-wrapper').focus();
     }
 
     /**
@@ -576,6 +597,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                     eventName: this.eventName,
                     key: this.occurrenceKey,
                     from: this.from,
+                    to: this.to,
                     x,
                     y
                 }
@@ -652,6 +674,11 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * @param {Event} event
      */
     handleFocus(event) {
+        this._focused = true;
+        this.template
+            .querySelector('.scheduler__event-wrapper')
+            .classList.add('scheduler__event-wrapper_focused');
+
         /**
          * The event fired when the occurrence is focused, if it is not disabled.
          *
@@ -672,6 +699,11 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * @param {Event} event
      */
     handleBlur() {
+        this._focused = false;
+        this.template
+            .querySelector('.scheduler__event-wrapper')
+            .classList.remove('scheduler__event-wrapper_focused');
+
         /**
          * The event fired when the occurrence is blurred, if it is not disabled.
          *
