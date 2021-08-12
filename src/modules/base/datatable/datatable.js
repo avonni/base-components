@@ -294,7 +294,6 @@ export default class Datatable extends LightningElement {
 
     renderedCallback() {
         this.bottomTableInitialization();
-        console.log(computeSummarizeArray(this._columns, this._data));
     }
 
     /**
