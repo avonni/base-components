@@ -294,6 +294,7 @@ export default class Datatable extends LightningElement {
 
     renderedCallback() {
         this.bottomTableInitialization();
+        console.log(computeSummarizeArray(this._columns, this._data));
     }
 
     /**
@@ -377,7 +378,7 @@ export default class Datatable extends LightningElement {
     }
 
     /**
-     * Gets the columns width of the primitive datatable depending on if there is a header or not.
+     * Gets the columns width of the primitive-datatable depending on if there is a header or not.
      */
     datatableColumnsWidth() {
         this._columnsWidth = !this.hideTableHeader
@@ -394,7 +395,7 @@ export default class Datatable extends LightningElement {
     }
 
     /**
-     * Verify if there is draft values.
+     * Verify if there is draft values (modified values).
      */
     primitiveDraftValues() {
         this._hasDraftValues = this.primitiveDatatableDraftValues.length;

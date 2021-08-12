@@ -130,14 +130,14 @@ const mode = (array) => {
 };
 
 /**
- * Method compute the summarization depending on which summarize type.
+ * Method to compute the summarization depending on which summarize type.
  *
  * @param {object} array Array of elements.
- * @param {string} type Which summarize type to compute.
+ * @param {string} summarizeType Which summarize type to compute.
  * @returns {number} computed number depending on type.
  */
-const summarizations = (array, type) => {
-    switch (type) {
+const summarizations = (array, summarizeType) => {
+    switch (summarizeType) {
         default:
             return count(array);
         case 'countUnique':
@@ -157,22 +157,52 @@ const summarizations = (array, type) => {
     }
 };
 
+/**
+ * Method to verify if it's a number type column.
+ *
+ * @param {string} type Type of column.
+ * @returns {Boolean} True if it's a number type column, false otherwise.
+ */
 const isNumberType = (type) => {
     return type === 'number' || type === 'percent' || type === 'currency';
 };
 
+/**
+ * Method to verify if it's a date type column.
+ *
+ * @param {string} type Type of column.
+ * @returns {Boolean} True if it's a date type column, false otherwise.
+ */
 const isDateType = (type) => {
     return type === 'date' || type === 'date-local';
 };
 
+/**
+ * Method to verify if it's a string type column.
+ *
+ * @param {string} type Type of column.
+ * @returns {Boolean} True if it's a string type column, false otherwise.
+ */
 const isStringType = (type) => {
     return type === 'email' || type === 'text' || type === 'url';
 };
 
+/**
+ * Method to verify if it's a custom type column with numbers as values.
+ *
+ * @param {string} type Type of column.
+ * @returns {Boolean} True if it's a custom type column, false otherwise.
+ */
 const isCustomType = (type) => {
     return type === 'slider' || type === 'rating' || type === 'input-counter';
 };
 
+/**
+ * Method to verify if it's a progress type column.
+ *
+ * @param {string} type Type of column.
+ * @returns {Boolean} True if it's a progress type column, false otherwise.
+ */
 const isProgressType = (type) => {
     return (
         type === 'progress-circle' ||
@@ -181,6 +211,12 @@ const isProgressType = (type) => {
     );
 };
 
+/**
+ * Method to verify if it's a type column on which we cannot apply any summarize types.
+ *
+ * @param {string} type Type of column.
+ * @returns {Boolean} True if it's a no summarize type of column, false otherwise.
+ */
 const isNoSummarizeType = (type) => {
     return (
         type === 'avatar' ||
@@ -190,10 +226,34 @@ const isNoSummarizeType = (type) => {
     );
 };
 
+/**
+ * Method to verify if it's a number type column (number, progress and custom).
+ *
+ * @param {string} type Type of column.
+ * @returns {Boolean} True if it's a number type of column, false otherwise.
+ */
 const isFormattedNumberType = (type) => {
     return isNumberType(type) || isProgressType(type) || isCustomType(type);
 };
 
+/**
+ * Method to verify if it's a number type column (number, progress and custom).
+ *
+ * @param {string} summarizeType Type of summarize.
+ * @returns {Boolean} True if it's a count type of summarize, false otherwise.
+ */
+const isCountSummarizeType = (summarizeType) => {
+    return summarizeType === 'count' || summarizeType === 'countUnique';
+};
+
+/**
+ * Method to verify if it's a number type column (number, progress and custom).
+ * The method is used to format the data and delete null and undefined if all the rows don't have data.
+ *
+ * @param {object} columns Array of object containing the columns with label, fieldName, type and typeAttributes.
+ * @param {object} data Array of object containing the data.
+ * @returns {object} return an array of array containing the data filtered and with the right format.
+ */
 const computeFilteredDataValues = (columns, data) => {
     let values = [];
     let filteredDataValues = [];
@@ -203,9 +263,10 @@ const computeFilteredDataValues = (columns, data) => {
         values = data.map((row) => {
             return row[fieldName];
         });
-        if (isCustomType(type) || isNumberType(type)) {
+        if (isFormattedNumberType(type)) {
             return values.map(Number).filter(Number.isFinite);
         } else if (isDateType(type)) {
+            // For date type, we need to format the date to be a timeStamp.
             return values
                 .map((date) => {
                     return Date.parse(date);
@@ -219,11 +280,18 @@ const computeFilteredDataValues = (columns, data) => {
     return filteredDataValues;
 };
 
-const displaySumType = (summarizeTypes, type) => {
+/**
+ * Method to verify if it's a number type column (number, progress and custom).
+ *
+ * @param {string} summarizeType Type of summarize.
+ * @param {string} type Type of column.
+ * @returns {Boolean} True if it's a number type of column, false otherwise.
+ */
+const displaySumType = (summarizeType, type) => {
     const allowedStringSummarizeTypes = ['count', 'countUnique', 'mode'];
     const otherAllowedSummarizeTypes = ['count', 'countUnique'];
     if (isStringType(type)) {
-        return allowedStringSummarizeTypes.includes(summarizeTypes)
+        return allowedStringSummarizeTypes.includes(summarizeType)
             ? true
             : false;
     } else if (
@@ -234,7 +302,7 @@ const displaySumType = (summarizeTypes, type) => {
         !isProgressType(type) &&
         !isNoSummarizeType(type)
     ) {
-        return otherAllowedSummarizeTypes.includes(summarizeTypes)
+        return otherAllowedSummarizeTypes.includes(summarizeType)
             ? true
             : false;
     } else if (isNoSummarizeType(type)) {
@@ -243,13 +311,26 @@ const displaySumType = (summarizeTypes, type) => {
     return true;
 };
 
-const transformComputedValue = (value, progressType) => {
-    if (progressType) {
+/**
+ * Method to divide by 100 the computed value for the progress type of column except for count type of summarize.
+ *
+ * @param {string} summarizeType Type of summarize.
+ * @param {string} type Type of column.
+ * @returns {Boolean} True if it's a number type of column, false otherwise.
+ */
+const transformComputedValue = (value, progressType, summarizeType) => {
+    if (progressType && !isCountSummarizeType(summarizeType)) {
         return value / 100;
     }
     return value;
 };
 
+/**
+ * Method to verify if any column has a valid summarize type to display.
+ *
+ * @param {object} computedSummarizeArray Formatted array for the iteration in the markup.
+ * @returns {Boolean} True if one of the column has a valid summarize type to display, false otherwise.
+ */
 const hasValidSummarizeType = (computedSummarizeArray) => {
     const summarized = [];
     computedSummarizeArray.forEach((column) => {
@@ -263,6 +344,13 @@ const hasValidSummarizeType = (computedSummarizeArray) => {
     return summarized.includes(true);
 };
 
+/**
+ * Method to format the number, custom and progress type of column.
+ * Since the value is applied in a lightning-formatted-number, we need to make sure the type is decimal or percent and not number.
+ *
+ * @param {string} type Type of column.
+ * @returns {string} returns decimal if type is custom or number and percent for progress type.
+ */
 const formatNumberType = (type) => {
     if (type === 'number' || isCustomType(type)) {
         return 'decimal';
@@ -270,10 +358,6 @@ const formatNumberType = (type) => {
         return 'percent';
     }
     return type;
-};
-
-const isCountSummarizeType = (type) => {
-    return type === 'count' || type === 'countUnique';
 };
 
 /**
@@ -285,67 +369,77 @@ const isCountSummarizeType = (type) => {
  * It contains :
  * * fieldName
  * * type
+ * * hasSummarizeType
  * * summarizeTypes
+ * * formattedNumberType
+ * * dateType
  * * values
- * * numberType
+ * * className
  * * formatType
  */
 const computeSummarizeArray = (columns, data) => {
     const computedSummarizeArray = columns.map((column, index) => {
-        let sumTypes = column.summarizeTypes;
-        const filteredDataValues = computeFilteredDataValues(columns, data);
-        const cType = column.type;
+        let summarizeTypes = column.summarizeTypes;
+        const columnType = column.type;
         const hasSummarizeType = column.summarizeTypes ? true : false;
-        const dateType = isDateType(cType);
-        const formattedNumberType = isFormattedNumberType(cType);
-        const formatType = formatNumberType(cType);
-        const className = isNumberType(cType)
+        const dateType = isDateType(columnType);
+        const formattedNumberType = isFormattedNumberType(columnType);
+        const filteredDataValues = computeFilteredDataValues(columns, data);
+        const formatType = formatNumberType(columnType);
+        // If the column is a numberType, the alignement is right, otherwise it's left.
+        const className = isNumberType(columnType)
             ? 'slds-truncate avonni-datatable-summarize_styling-number'
             : 'slds-truncate avonni-datatable-summarize_styling';
-        const hasTypeAttributes = column.typeAttributes
-            ? column.typeAttributes
-            : [];
 
         // Formatting of the object that we need to iterate on, in the markup.
         const summarizeColumnObject = {
             fieldName: column.fieldName,
-            type: cType,
+            type: columnType,
             hasSummarizeType: hasSummarizeType,
-            summarizeTypes: sumTypes,
-            values: filteredDataValues[index],
+            summarizeTypes: summarizeTypes,
             formattedNumberType: formattedNumberType,
             dateType: dateType,
-            formatType: formatType,
-            className: className
+            values: filteredDataValues[index],
+            className: className,
+            formatType: formatType
         };
-        if (sumTypes) {
+        if (summarizeTypes) {
             // if there is only one summarizeType and as a string, we convert it to an array.
-            if (typeof sumTypes === 'string') {
-                sumTypes = sumTypes.split();
+            if (typeof summarizeTypes === 'string') {
+                summarizeTypes = summarizeTypes.split();
             }
-            summarizeColumnObject.summarizeTypes = sumTypes.map((type) => {
-                // The value is computed depending on what type of summarization.
-                const computedValue = summarizations(
-                    summarizeColumnObject.values,
-                    type
-                );
+            summarizeColumnObject.summarizeTypes = summarizeTypes.map(
+                (summarizeType) => {
+                    // The value is computed depending on what type of summarize.
+                    const computedValue = summarizations(
+                        summarizeColumnObject.values,
+                        summarizeType
+                    );
 
-                // Count and countUnique don't need formating since we only need the numbers of occurences.
-                // And they are always type decimal.
-                const stringMode = type === 'mode' && isStringType(cType);
-                return {
-                    label: type,
-                    value: transformComputedValue(
-                        computedValue,
-                        isProgressType(cType)
-                    ),
-                    type: formatType,
-                    typeAttributes: hasTypeAttributes,
-                    mode: stringMode,
-                    displaySumType: displaySumType(type, cType),
-                    count: isCountSummarizeType(type)
-                };
-            });
+                    // Verification of if the type is a string and if the summarize type is mode to display the text in the markup.
+                    const stringMode =
+                        summarizeType === 'mode' && isStringType(columnType);
+
+                    return {
+                        label: summarizeType,
+                        value: transformComputedValue(
+                            computedValue,
+                            isProgressType(columnType),
+                            summarizeType
+                        ),
+                        type: formatType,
+                        typeAttributes: column.typeAttributes
+                            ? column.typeAttributes
+                            : [],
+                        mode: stringMode,
+                        displaySumType: displaySumType(
+                            summarizeType,
+                            columnType
+                        ),
+                        count: isCountSummarizeType(summarizeType)
+                    };
+                }
+            );
         }
         return summarizeColumnObject;
     });
