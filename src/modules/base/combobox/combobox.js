@@ -69,7 +69,7 @@ const DEFAULT_SELECTED_OPTIONS_ARIA_LABEL = 'Selected Options';
 
 /**
  * A widget that provides a user with an input field that is either an autocomplete or readonly, accompanied by a listbox of options.
- * 
+ *
  * @class
  * @public
  * @storyId example-combobox--base
@@ -78,7 +78,7 @@ const DEFAULT_SELECTED_OPTIONS_ARIA_LABEL = 'Selected Options';
 export default class Combobox extends LightningElement {
     /**
      * Help text detailing the purpose and function of the combobox.
-     * 
+     *
      * @type {string}
      * @public
      */
@@ -86,7 +86,7 @@ export default class Combobox extends LightningElement {
 
     /**
      * Text label for the combobox.
-     * 
+     *
      * @type {string}
      * @public
      */
@@ -94,7 +94,7 @@ export default class Combobox extends LightningElement {
 
     /**
      * Error message to be displayed when the value is missing and input is required.
-     * 
+     *
      * @type {string}
      * @public
      */
@@ -102,7 +102,7 @@ export default class Combobox extends LightningElement {
 
     /**
      * Specifies the name of the combobox.
-     * 
+     *
      * @type {string}
      * @public
      */
@@ -112,7 +112,7 @@ export default class Combobox extends LightningElement {
      * Custom search function to execute instead of the default search. It has to:
      * * Take an object with two keys as an argument: options and searchTerm.
      * * Return the new options.
-     * 
+     *
      * @type {function}
      * @public
      */
@@ -146,7 +146,7 @@ export default class Combobox extends LightningElement {
 
     /**
      * Array of action objects. The actions are displayed at the end of the combobox options.
-     * 
+     *
      * @type {object[]}
      * @public
      */
@@ -160,7 +160,7 @@ export default class Combobox extends LightningElement {
 
     /**
      * If present, the combobox options are searchable.
-     * 
+     *
      * @type {boolean}
      * @default false
      * @public
@@ -175,7 +175,7 @@ export default class Combobox extends LightningElement {
 
     /**
      * If present, the combobox is disabled and users cannot interact with it.
-     * 
+     *
      * @type {boolean}
      * @default false
      * @public
@@ -194,7 +194,7 @@ export default class Combobox extends LightningElement {
      * By default the list is aligned with the selection field at the top left so the list opens down.
      * Use bottom-left to make the selection field display at the bottom so the list opens above it.
      * Use auto to let the component determine where to open the list based on space available.
-     * 
+     *
      * @type {string}
      * @default left
      * @public
@@ -212,7 +212,7 @@ export default class Combobox extends LightningElement {
 
     /**
      * Maximum length of the dropdown menu. Valid values include 5-items, 7-items and 10-items.
-     * 
+     *
      * @type {string}
      * @default 7-items
      * @public
@@ -230,7 +230,7 @@ export default class Combobox extends LightningElement {
 
     /**
      * Array of group objects. The groups are used to separate the options inside the drop-down.
-     * 
+     *
      * @type {object[]}
      * @public
      */
@@ -244,7 +244,7 @@ export default class Combobox extends LightningElement {
 
     /**
      * If present, the selected options pills will be hidden.
-     * 
+     *
      * @type {boolean}
      * @default false
      * @public
@@ -259,7 +259,7 @@ export default class Combobox extends LightningElement {
 
     /**
      * If true, the drop-down menu is in a loading state and shows a spinner.
-     * 
+     *
      * @type {boolean}
      * @default false
      * @public
@@ -274,7 +274,7 @@ export default class Combobox extends LightningElement {
 
     /**
      * If present, multiple options can be selected.
-     * 
+     *
      * @type {boolean}
      * @default false
      * @public
@@ -289,7 +289,7 @@ export default class Combobox extends LightningElement {
 
     /**
      * Message displayed while the combobox is in the loading state.
-     * 
+     *
      * @type {string}
      * @default Loading
      * @public
@@ -310,7 +310,7 @@ export default class Combobox extends LightningElement {
      *
      * If false, there will be only one level of groups.
      * If an option belongs to several groups, the option will be repeated in each group.
-     * 
+     *
      * @type {boolean}
      * @default false
      * @public
@@ -325,7 +325,7 @@ export default class Combobox extends LightningElement {
 
     /**
      * Array of option objects.
-     * 
+     *
      * @type {object[]}
      * @public
      */
@@ -341,7 +341,7 @@ export default class Combobox extends LightningElement {
      * Text that is displayed before an option is selected, to prompt the user to select an option.
      *
      * The default value varies depending on the value of allow-search.
-     * 
+     *
      * @type {string}
      * @default Select an option -or- Search…
      * @public
@@ -360,7 +360,7 @@ export default class Combobox extends LightningElement {
 
     /**
      * If present, the combobox is read-only. A read-only combobox is also disabled.
-     * 
+     *
      * @type {boolean}
      * @default false
      * @public
@@ -377,7 +377,7 @@ export default class Combobox extends LightningElement {
      * If present, the selected options will be removed from the options.
      *
      * If false, a checkmark will be displayed next to the selected options.
-     * 
+     *
      * @type {boolean}
      * @default false
      * @public
@@ -392,7 +392,7 @@ export default class Combobox extends LightningElement {
 
     /**
      * If present, a value must be selected before the form can be submitted.
-     * 
+     *
      * @type {boolean}
      * @default false
      * @public
@@ -407,7 +407,7 @@ export default class Combobox extends LightningElement {
 
     /**
      * Describes the selected options section to assistive technologies.
-     * 
+     *
      * @type {string}
      * @default Selected Options
      * @public
@@ -425,7 +425,7 @@ export default class Combobox extends LightningElement {
 
     /**
      * Array of scope objects. The scopes are displayed in a drop-down menu, to the left of the combobox input.
-     * 
+     *
      * @type {object[]}
      * @public
      */
@@ -440,7 +440,7 @@ export default class Combobox extends LightningElement {
 
     /**
      * Array of group objects. The groups are used to separate the scopes inside the drop-down.
-     * 
+     *
      * @type {object[]}
      * @public
      */
@@ -454,7 +454,7 @@ export default class Combobox extends LightningElement {
 
     /**
      * Represents the validity states that an element can be in, with respect to constraint validation.
-     * 
+     *
      * @type {string}
      * @public
      */
@@ -465,7 +465,7 @@ export default class Combobox extends LightningElement {
 
     /**
      * Array of selected options value. If is-multi-select is false and several values are passed, only the first one will be taken into account.
-     * 
+     *
      * @type {string[]}
      * @public
      */
@@ -484,7 +484,7 @@ export default class Combobox extends LightningElement {
      * This value defaults to standard. Use label-hidden to hide the label but make it available to assistive technology.
      * Use label-inline to horizontally align the label and combobox.
      * Use label-stacked to place the label above the combobox.
-     * 
+     *
      * @type {string}
      * @default standard
      * @public
@@ -507,7 +507,7 @@ export default class Combobox extends LightningElement {
 
     /**
      * Selects the main combobox.
-     * 
+     *
      * @type {element}
      */
     get mainCombobox() {
@@ -516,7 +516,7 @@ export default class Combobox extends LightningElement {
 
     /**
      * True if scopes.
-     * 
+     *
      * @type {boolean}
      */
     get showScopes() {
@@ -525,7 +525,7 @@ export default class Combobox extends LightningElement {
 
     /**
      * True if hide-selected-options is false, is-multi-select is true and selected-options.
-     * 
+     *
      * @type {boolean}
      */
     get showSelectedOptions() {
@@ -538,7 +538,7 @@ export default class Combobox extends LightningElement {
 
     /**
      * Computed Label Class styling.
-     * 
+     *
      * @type {string}
      */
     get computedLabelClass() {
@@ -549,7 +549,7 @@ export default class Combobox extends LightningElement {
 
     /**
      * Computed Main Combobox Class styling.
-     * 
+     *
      * @type {string}
      */
     get computedMainComboboxClass() {
@@ -562,7 +562,7 @@ export default class Combobox extends LightningElement {
 
     /**
      * Computed Combobox Group Class styling.
-     * 
+     *
      * @type {string}
      */
     get computedComboboxGroupClass() {
@@ -571,7 +571,7 @@ export default class Combobox extends LightningElement {
 
     /**
      * Removes focus from the combobox.
-     * 
+     *
      * @public
      */
     @api
@@ -581,7 +581,7 @@ export default class Combobox extends LightningElement {
 
     /**
      * Indicates whether the element meets all constraint validations.
-     * 
+     *
      * @returns {boolean} the valid attribute value on the ValidityState object.
      * @public
      */
@@ -592,7 +592,7 @@ export default class Combobox extends LightningElement {
 
     /**
      * Closes the dropdown.
-     * 
+     *
      * @public
      */
     @api
@@ -602,7 +602,7 @@ export default class Combobox extends LightningElement {
 
     /**
      * Sets focus on the combobox.
-     * 
+     *
      * @public
      */
     @api
@@ -612,7 +612,7 @@ export default class Combobox extends LightningElement {
 
     /**
      * Opens the dropdown.
-     * 
+     *
      * @public
      */
     @api
@@ -623,7 +623,7 @@ export default class Combobox extends LightningElement {
     /**
      * Displays the error messages and returns false if the input is invalid.
      * If the input is valid, reportValidity() clears displayed error messages and returns true.
-     * 
+     *
      * @returns {boolean} - The validity status of the input fields.
      * @public
      */
@@ -646,7 +646,7 @@ export default class Combobox extends LightningElement {
     /**
      * Displays error messages on invalid fields.
      * An invalid field fails at least one constraint validation and returns false when checkValidity() is called.
-     * 
+     *
      * @public
      */
     @api
