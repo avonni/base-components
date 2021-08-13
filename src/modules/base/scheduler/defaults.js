@@ -72,6 +72,10 @@ const DEFAULT_EDIT_DIALOG_LABELS = {
     newEventTitle: 'New Event'
 };
 
+const DEFAULT_EVENTS_LABELS = {
+    center: 'title'
+};
+
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
 
 const EDIT_MODES = ['all', 'one'];
@@ -108,8 +112,6 @@ const EVENTS_PALETTES = {
     ],
     default: 'aurora'
 };
-
-const EVENTS_HEIGHT = 36;
 
 const PALETTES = {
     aurora: ['#3296ed', '#77b9f2', '#9d53f2', '#c398f5', '#26aba4', '#4ed4cd'],
@@ -189,12 +191,12 @@ export {
     DEFAULT_CONTEXT_MENU_EMPTY_SPOT_ACTIONS,
     DEFAULT_CONTEXT_MENU_EVENT_ACTIONS,
     DEFAULT_EDIT_DIALOG_LABELS,
+    DEFAULT_EVENTS_LABELS,
     DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT,
     DEFAULT_START_DATE,
     DEFAULT_VISIBLE_SPAN,
     EDIT_MODES,
     EVENTS_DATES_FORMAT,
-    EVENTS_HEIGHT,
     EVENTS_THEMES,
     EVENTS_PALETTES,
     PALETTES,

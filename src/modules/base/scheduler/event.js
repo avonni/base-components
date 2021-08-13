@@ -80,6 +80,7 @@ export default class SchedulerEvent {
         this.availableDaysOfTheWeek = props.availableDaysOfTheWeek;
         this.availableTimeFrames = props.availableTimeFrames;
         this.color = props.color;
+        this.data = props.data;
         this.disabled = props.disabled;
         this._schedulerEnd = props.schedulerEnd;
         this._schedulerStart = props.schedulerStart;
@@ -88,6 +89,7 @@ export default class SchedulerEvent {
         this._to = dateTimeObjectFrom(props.to);
         this.iconName = props.iconName;
         this.keyFields = props.keyFields;
+        this.labels = props.labels;
         this.referenceLine = props.referenceLine;
 
         if (recurrence) {

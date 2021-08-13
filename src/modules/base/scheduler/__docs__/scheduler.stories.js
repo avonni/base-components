@@ -249,6 +249,22 @@ export default {
                 category: 'Available dates'
             }
         },
+        eventsLabels: {
+            name: 'events-labels',
+            control: {
+                type: 'object'
+            },
+            defaultValue: {
+                center: { fieldName: 'title' }
+            },
+            description:
+                'Labels of the events, by their position. Valid keys include: top, bottom, left, right, center. \nThe values can be the name of a row key, or the name of an event key. If the row and the event both have a key with the same name, the event value will be used.',
+            table: {
+                type: { summary: 'object' },
+                defaultValue: { summary: "{ center: { fieldName: 'title' } }" },
+                category: 'Events'
+            }
+        },
         eventsTheme: {
             name: 'events-theme',
             control: {
@@ -397,7 +413,28 @@ Base.args = {
     availableDaysOfTheWeek: [1, 2, 3, 4, 5],
     events: events,
     disabledDatesTimes: disabledDatesTimes,
-    referenceLines: referenceLines
+    referenceLines: referenceLines,
+    eventsLabels: {
+        center: {
+            fieldName: 'title'
+        },
+        top: {
+            fieldName: 'firstName',
+            iconName: 'utility:user'
+        },
+        bottom: {
+            fieldName: 'name'
+        },
+        left: {
+            value: 'Custom left label',
+            fieldName: 'title',
+            iconName: 'utility:user'
+        },
+        right: {
+            value: 'Custom right label',
+            iconName: 'utility:user'
+        }
+    }
 };
 
 export const ReadOnly = Template.bind({});

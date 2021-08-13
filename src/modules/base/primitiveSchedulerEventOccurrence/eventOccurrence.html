@@ -48,28 +48,109 @@
         onblur={handleBlur}
         onkeydown={handleKeyDown}
     >
-        <div class={computedClass} style={style}>
+        <!-- Left label -->
+        <div
+            if:true={computedLabels.left}
+            class="slds-p-around_xx-small slds-grid slds-is-absolute scheduler__event-label_left"
+        >
             <lightning-icon
-                if:false={readOnly}
-                class="scheduler__event-resize-icon scheduler__event-resize-icon_left"
-                icon-name="utility:drag_and_drop"
-                size="xx-small"
-                data-resize="left"
-            ></lightning-icon>
-            <lightning-icon
-                if:true={iconName}
-                icon-name={iconName}
+                if:true={computedLabels.left.iconName}
+                icon-name={computedLabels.left.iconName}
                 size="x-small"
                 class="slds-m-right_xx-small"
             ></lightning-icon>
-            <span class="slds-truncate">{title}</span>
+            <span if:true={computedLabels.left.value} class="slds-truncate"
+                >{computedLabels.left.value}</span
+            >
+        </div>
+
+        <div class="slds-col slds-has-flexi-truncate">
+            <!-- Top label -->
+            <div
+                if:true={computedLabels.top}
+                class="slds-grid_align-center slds-p-around_xx-small slds-grid"
+            >
+                <lightning-icon
+                    if:true={computedLabels.top.iconName}
+                    icon-name={computedLabels.top.iconName}
+                    size="x-small"
+                    class="slds-m-right_xx-small"
+                ></lightning-icon>
+                <span if:true={computedLabels.top.value} class="slds-truncate"
+                    >{computedLabels.top.value}</span
+                >
+            </div>
+
+            <!-- Event -->
+            <div class={computedClass} style={style}>
+                <!-- Resize left icon -->
+                <lightning-icon
+                    if:false={readOnly}
+                    class="scheduler__event-resize-icon scheduler__event-resize-icon_left"
+                    icon-name="utility:drag_and_drop"
+                    size="xx-small"
+                    data-resize="left"
+                ></lightning-icon>
+
+                <!-- Center label -->
+                <div
+                    if:true={computedLabels.center}
+                    class="slds-truncate slds-grid"
+                >
+                    <lightning-icon
+                        if:true={computedLabels.center.iconName}
+                        icon-name={computedLabels.center.iconName}
+                        size="x-small"
+                        class="slds-m-right_xx-small"
+                    ></lightning-icon>
+                    <span if:true={computedLabels.center.value}
+                        >{computedLabels.center.value}</span
+                    >
+                </div>
+
+                <!-- Resize right icon -->
+                <lightning-icon
+                    if:false={readOnly}
+                    class="scheduler__event-resize-icon scheduler__event-resize-icon_right"
+                    icon-name="utility:drag_and_drop"
+                    size="xx-small"
+                    data-resize="right"
+                ></lightning-icon>
+            </div>
+
+            <!-- Bottom label -->
+            <div
+                if:true={computedLabels.bottom}
+                class="slds-grid_align-center slds-p-around_xx-small slds-grid"
+            >
+                <lightning-icon
+                    if:true={computedLabels.bottom.iconName}
+                    icon-name={computedLabels.bottom.iconName}
+                    size="x-small"
+                    class="slds-m-right_xx-small"
+                ></lightning-icon>
+                <span
+                    if:true={computedLabels.bottom.value}
+                    class="slds-truncate"
+                    >{computedLabels.bottom.value}</span
+                >
+            </div>
+        </div>
+
+        <!-- Right label -->
+        <div
+            if:true={computedLabels.right}
+            class="slds-p-around_xx-small slds-grid slds-is-absolute scheduler__event-label_right"
+        >
             <lightning-icon
-                if:false={readOnly}
-                class="scheduler__event-resize-icon scheduler__event-resize-icon_right"
-                icon-name="utility:drag_and_drop"
-                size="xx-small"
-                data-resize="right"
+                if:true={computedLabels.right.iconName}
+                icon-name={computedLabels.right.iconName}
+                size="x-small"
+                class="slds-m-right_xx-small"
             ></lightning-icon>
+            <span if:true={computedLabels.right.value} class="slds-truncate"
+                >{computedLabels.right.value}</span
+            >
         </div>
     </div>
 </template>

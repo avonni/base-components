@@ -71,7 +71,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
 
     /**
      * The Lightning Design System name of the icon. Names are written in the format utility:user.
-     * The icon is appended to the left of the title.
+     * The icon is only used by the disabled occurrences and is appended to the left of the title.
      *
      * @type {string}
      * @public
@@ -93,14 +93,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * @public
      */
     @api recurrence;
-
-    /**
-     * Unique key of the scheduler row this occurrence appears on.
-     *
-     * @type {string}
-     * @public
-     */
-    @api rowKey;
 
     /**
      * Theme of the occurrence. Valid values include default, transparent, line, hollow and rounded.
@@ -129,22 +121,29 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     _columnDuration = 0;
     _columns = [];
     _columnWidth = 0;
+    _eventData = [];
     _disabled = false;
+    _event;
     _from;
     _keyFields = [];
+    _labels = {};
     _occurrence = {};
     _readOnly = false;
     _referenceLine = false;
+    _rowKey;
     _rows = [];
     _to;
 
     _focused = false;
     _x = 0;
     _y = 0;
+    computedLabels = {};
 
     connectedCallback() {
         if (!this.disabled)
             this.template.host.classList.add('scheduler__primitive-event');
+
+        this.initLabels();
     }
 
     renderedCallback() {
@@ -219,6 +218,23 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
+     * Initial event object, before it was computed and transformed into a SchedulerEvent.
+     * It may be used by the labels.
+     *
+     * @type {object}
+     * @public
+     */
+    @api
+    get eventData() {
+        return this._eventData;
+    }
+    set eventData(value) {
+        this._eventData = value;
+
+        if (this.isConnected) this.initLabels();
+    }
+
+    /**
      * Keys of the rows the event appears on. A primitive-scheduler-event-occurrence will be created for each row.
      *
      * @type {string[]}
@@ -233,6 +249,22 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
+     * Labels of the event, by their position.
+     *
+     * @type {object}
+     * @public
+     */
+    @api
+    get labels() {
+        return this._labels;
+    }
+    set labels(value) {
+        this._labels = typeof value === 'object' ? { ...value } : {};
+
+        if (this.isConnected) this.initLabels();
+    }
+
+    /**
      * Event occurrence object this component is based on. The object is used to make sure the changes made in the scheduler are taken into account, even without a re-render.
      *
      * @type {object}
@@ -243,7 +275,8 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         return this._occurrence;
     }
     set occurrence(value) {
-        this._occurrence = typeof value === 'object' ? value : {};
+        this._occurrence =
+            typeof value === 'object' ? JSON.parse(JSON.stringify(value)) : {};
     }
 
     /**
@@ -277,6 +310,22 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
+     * Unique key of the scheduler row this occurrence appears on.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get rowKey() {
+        return this._rowKey;
+    }
+    set rowKey(value) {
+        this._rowKey = value;
+
+        if (this.isConnected) this.initLabels();
+    }
+
+    /**
      * Array of the scheduler row objects.
      *
      * @type {object[]}
@@ -288,6 +337,8 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
     set rows(value) {
         this._rows = normalizeArray(value);
+
+        if (this.isConnected) this.initLabels();
     }
 
     /**
@@ -322,6 +373,40 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         this.updateHostTranslate();
     }
 
+    @api
+    get leftPosition() {
+        const leftLabel = this.template.querySelector(
+            '.scheduler__event-label_left'
+        );
+        if (leftLabel) {
+            const left = this._x - leftLabel.getBoundingClientRect().width;
+            return left > 0 ? left : 0;
+        }
+        return this._x;
+    }
+
+    @api
+    get rightPosition() {
+        const rightLabel = this.template.querySelector(
+            '.scheduler__event-label_right'
+        );
+        if (rightLabel) {
+            const leftLabel = this.template.querySelector(
+                '.scheduler__event-label_left'
+            );
+            const leftLabelWidth = leftLabel
+                ? leftLabel.getBoundingClientRect().width
+                : 0;
+            return (
+                leftLabelWidth +
+                this._x +
+                rightLabel.getBoundingClientRect().width
+            );
+        }
+        const position = this.hostElement.getBoundingClientRect();
+        return this._x + position.width;
+    }
+
     /**
      * Computed class of the occurrence.
      *
@@ -336,7 +421,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                 'slds-text-color_inverse slds-current-color':
                     theme === 'default' ||
                     theme === 'rounded' ||
-                    (this._focused && this.theme === 'transparent'),
+                    (this._focused && theme === 'transparent'),
                 'scheduler__event-wrapper_focused': this._focused
             })
             .toString();
@@ -574,6 +659,33 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                 element.style.height = `${height}px`;
             }
         }
+    }
+
+    initLabels() {
+        if (!this.eventData || !this.rows.length || !this.rowKey) return;
+
+        const labels = {};
+        const row = this.rows.find((rw) => rw.key === this.rowKey);
+
+        if (row) {
+            Object.entries(this.labels).forEach((label) => {
+                const position = label[0];
+                const { value, fieldName, iconName } = label[1];
+
+                labels[position] = {};
+                if (value) {
+                    labels[position].value = value;
+                } else if (fieldName) {
+                    labels[position].value =
+                        this[fieldName] ||
+                        this.eventData[fieldName] ||
+                        row.data[fieldName];
+                }
+                labels[position].iconName = iconName;
+            });
+        }
+
+        this.computedLabels = labels;
     }
 
     /**

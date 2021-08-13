@@ -57,7 +57,8 @@ const rows = [
         avatarFallbackIconName: 'standard:person_account',
         avatarInitials: 'NG',
         firstName: 'Nina',
-        role: 'Lead developer'
+        role: 'Lead developer',
+        sharedField: "This shouldn't show up"
     },
     {
         id: '2',
@@ -80,7 +81,8 @@ const rows = [
         avatarFallbackIconName: 'standard:person_account',
         avatarInitials: 'LM',
         firstName: 'Lily',
-        role: 'Graphic Designer'
+        role: 'Graphic Designer',
+        customField: "This comes from the row's custom field"
     },
     {
         id: '5',
@@ -131,59 +133,83 @@ const events = [
         keyFields: ['1'],
         name: 'identify-need',
         title: 'Identify need',
-        iconName: 'utility:search',
-        from: new Date(2021, 11, 11, 15),
-        to: new Date(2021, 11, 13, 10, 30),
-        theme: 'transparent'
+        from: new Date(2021, 11, 11, 10),
+        to: new Date(2021, 11, 13, 9, 30),
+        theme: 'transparent',
+        labels: {
+            center: {
+                fieldName: 'from',
+                iconName: 'utility:search'
+            }
+        }
     },
     {
         keyFields: ['3'],
         name: 'find-examples',
         title: 'Find existing examples of solutions',
-        from: new Date(2021, 11, 8, 30),
-        to: new Date(2021, 11, 11, 30)
+        from: new Date(2021, 11, 14, 8),
+        to: new Date(2021, 11, 14, 10, 30),
+        labels: {
+            center: {
+                value: 'This is a custom label'
+            }
+        }
     },
     {
         keyFields: ['1', '3'],
         name: 'write-spec',
         title: 'Write specifications',
-        iconName: 'utility:insert_tag_field',
         from: new Date(2021, 11, 15),
-        allDay: true
+        allDay: true,
+        labels: {
+            center: {
+                fieldName: 'title',
+                iconName: 'utility:insert_tag_field'
+            }
+        }
     },
     {
         keyFields: ['1'],
         name: 'create-wireframe',
         title: 'Create wireframe',
-        iconName: 'utility:description',
-        from: new Date(2021, 11, 13, 9, 30),
-        to: new Date(2021, 11, 13, 12)
+        from: new Date(2021, 11, 13, 10, 15),
+        to: new Date(2021, 11, 13, 12),
+        sharedField: 'The event field overwrites the row field',
+        labels: {
+            center: {
+                fieldName: 'sharedField',
+                iconName: 'utility:description'
+            }
+        }
     },
     {
         keyFields: ['4'],
         name: 'create-mockup',
         title: 'Create mockup',
-        iconName: 'utility:brush',
         from: new Date(2021, 11, 20, 7),
         to: new Date(2021, 11, 22, 10, 30),
-        theme: 'hollow'
+        theme: 'hollow',
+        labels: {
+            center: {
+                fieldName: 'customField',
+                iconName: 'utility:brush'
+            }
+        }
     },
     {
         keyFields: ['1', '5'],
         name: 'implement-feature',
         title: 'Implement feature',
-        iconName: 'utility:apex',
-        from: new Date(2021, 11, 13, 7, 30),
-        to: new Date(2021, 11, 13, 9, 15),
+        from: new Date(2021, 11, 13, 13, 15),
+        to: new Date(2021, 11, 13, 14),
         theme: 'line'
     },
     {
         keyFields: ['1', '5'],
         name: 'standup',
         title: 'Dev team standup meeting',
-        iconName: 'standard:team_member',
-        from: new Date(2021, 11, 13, 10, 15),
-        to: new Date(2021, 11, 14, 14, 45),
+        from: new Date(2021, 11, 13, 11),
+        to: new Date(2021, 11, 14, 14),
         recurrence: 'weekly',
         recurrenceCount: 2,
         recurrenceAttributes: {

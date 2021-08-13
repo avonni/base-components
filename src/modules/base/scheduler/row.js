@@ -30,18 +30,18 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { EVENTS_HEIGHT } from './defaults';
 import { normalizeArray } from 'c/utilsPrivate';
 
 export default class SchedulerRow {
     constructor(props) {
         this.color = props.color;
+        this.data = props.data;
         this.key = props.key.toString();
         this.columns = [];
         this.minHeight = 0;
         this.referenceColumns = normalizeArray(props.referenceColumns);
         this.events = normalizeArray(props.events);
-        this._height = EVENTS_HEIGHT;
+        this._height = 0;
         this.initColumns();
     }
 
@@ -122,44 +122,39 @@ export default class SchedulerRow {
     }
 
     updateHeightAndPositions() {
-        let numberOfEvents = 0;
-        const columns = this.columns.filter((column) => column.events.length);
-
-        columns.forEach((column) => {
-            // Update the maximum number of events in one column
-            if (column.events.length > numberOfEvents) {
-                numberOfEvents = column.events.length;
-            }
-
-            // For each event, except the first one of the column
-            for (let i = 1; i < column.events.length; i++) {
-                // Go through the previous events of this column
-                // until we find a hole to place this event
-                let j = 0;
-                let offsetTop = 0;
-
-                while (j <= i && j < column.events.length - 1) {
-                    const offset = offsetTop;
-                    const eventHasThisOffset = column.events.find((event) => {
-                        return event.offsetTop === offset;
-                    });
-
-                    if (
-                        eventHasThisOffset &&
-                        eventHasThisOffset.key !== column.events[i].key
-                    ) {
-                        offsetTop += EVENTS_HEIGHT;
-                    } else break;
-                    j += 1;
-                }
-                if (column.events[i].offsetTop < offsetTop) {
-                    column.events[i].offsetTop = offsetTop;
-                }
-            }
-        });
-
-        // Compute the height according to the maximum number of events in one column
-        this.height = numberOfEvents * EVENTS_HEIGHT + 10;
+        // let numberOfEvents = 0;
+        // const columns = this.columns.filter((column) => column.events.length);
+        // columns.forEach((column) => {
+        //     // Update the maximum number of events in one column
+        //     if (column.events.length > numberOfEvents) {
+        //         numberOfEvents = column.events.length;
+        //     }
+        //     // For each event, except the first one of the column
+        //     for (let i = 1; i < column.events.length; i++) {
+        //         // Go through the previous events of this column
+        //         // until we find a hole to place this event
+        //         let j = 0;
+        //         let offsetTop = 0;
+        //         while (j <= i && j < column.events.length - 1) {
+        //             const offset = offsetTop;
+        //             const eventHasThisOffset = column.events.find((event) => {
+        //                 return event.offsetTop === offset;
+        //             });
+        //             if (
+        //                 eventHasThisOffset &&
+        //                 eventHasThisOffset.key !== column.events[i].key
+        //             ) {
+        //                 offsetTop += EVENTS_HEIGHT;
+        //             } else break;
+        //             j += 1;
+        //         }
+        //         if (column.events[i].offsetTop < offsetTop) {
+        //             column.events[i].offsetTop = offsetTop;
+        //         }
+        //     }
+        // });
+        // // Compute the height according to the maximum number of events in one column
+        // this.height = numberOfEvents * EVENTS_HEIGHT + 10;
     }
 
     getColumnFromStart(start) {

@@ -53,6 +53,7 @@ import {
     DEFAULT_AVAILABLE_MONTHS,
     DEFAULT_AVAILABLE_TIME_FRAMES,
     DEFAULT_EDIT_DIALOG_LABELS,
+    DEFAULT_EVENTS_LABELS,
     DEFAULT_CONTEXT_MENU_EMPTY_SPOT_ACTIONS,
     DEFAULT_CONTEXT_MENU_EVENT_ACTIONS,
     DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT,
@@ -76,6 +77,7 @@ export default class Scheduler extends LightningElement {
     _customEventsPalette = [];
     _collapseDisabled = false;
     _disabledDatesTimes = [];
+    _eventsLabels = DEFAULT_EVENTS_LABELS;
     _eventsPalette = EVENTS_PALETTES.default;
     _eventsTheme = EVENTS_THEMES.default;
     _headers = [];
@@ -131,6 +133,50 @@ export default class Scheduler extends LightningElement {
             // The cellWidth change will trigger another render, so we return right away
             return;
         }
+
+        // For each row
+        this.computedRows.forEach((row) => {
+            let rowHeight = 0;
+            // Get all the event occurrences of the row
+            const occurrences = Array.from(
+                this.template.querySelectorAll(
+                    `.scheduler__primitive-event[data-row-key="${row.key}"]`
+                )
+            );
+
+            if (occurrences.length) {
+                // Sort the occurrences by ascending start date
+                occurrences.sort((a, b) => a.from - b.from);
+
+                const previousOccurrences = [];
+                for (let i = 0; i < occurrences.length; i++) {
+                    const left = occurrences[i].leftPosition;
+                    const offsetTop = this.computeEventOffsetTop(
+                        previousOccurrences,
+                        left
+                    );
+                    const height = occurrences[i].getBoundingClientRect()
+                        .height;
+
+                    occurrences[i].occurrence.offsetTop = offsetTop;
+
+                    previousOccurrences.unshift({
+                        offsetTop,
+                        left,
+                        right: occurrences[i].rightPosition,
+                        height
+                    });
+
+                    const totalHeight = height + offsetTop;
+                    if (totalHeight > rowHeight) {
+                        rowHeight = totalHeight;
+                    }
+                }
+            }
+
+            row.height = rowHeight + 10;
+        });
+        this._updateOccurrences = true;
 
         // Save the default datatable column width, in case the styling hook was used
         if (!this._datatableWidth) {
@@ -314,6 +360,20 @@ export default class Scheduler extends LightningElement {
     }
     set events(value) {
         this._events = normalizeArray(value);
+
+        if (this.isConnected) {
+            this.initEvents();
+            this.initRows();
+        }
+    }
+
+    @api
+    get eventsLabels() {
+        return this._eventsLabels;
+    }
+    set eventsLabels(value) {
+        this._eventsLabels =
+            typeof value === 'object' ? value : DEFAULT_EVENTS_LABELS;
 
         if (this.isConnected) {
             this.initEvents();
@@ -865,7 +925,10 @@ export default class Scheduler extends LightningElement {
                 color: this.palette[colorIndex],
                 key: rowKey,
                 referenceColumns: this.smallestHeader.columns,
-                events: occurrences
+                events: occurrences,
+                // We store the initial row object in a variable,
+                // in case one of its field is used by an event's label
+                data: row
             });
 
             // If there's already been a render and we know the datatable rows height,
@@ -945,6 +1008,12 @@ export default class Scheduler extends LightningElement {
         event.theme = event.disabled
             ? 'disabled'
             : event.theme || this.eventsTheme;
+
+        // We store the initial event object in a variable,
+        // in case a custom field is used by the labels
+        event.data = event;
+        event.labels =
+            typeof event.labels === 'object' ? event.labels : this.eventsLabels;
     }
 
     updateHeadersStyle() {
@@ -1062,6 +1131,26 @@ export default class Scheduler extends LightningElement {
             this.initRows();
         }
         this.selection = undefined;
+    }
+
+    computeEventOffsetTop(previousOccurrences, left, offsetTop = 0) {
+        // Find the last event with the same offsetTop
+        const sameOffset = previousOccurrences.find((occ) => {
+            return occ.offsetTop === offsetTop;
+        });
+        // If we find an event and their dates overlap,
+        // add the height of the event to the offsetTop,
+        // and make sure there isn't another event at the same height
+        if (sameOffset && left < sameOffset.right) {
+            offsetTop += sameOffset.height;
+            offsetTop = this.computeEventOffsetTop(
+                previousOccurrences,
+                left,
+                offsetTop
+            );
+        }
+
+        return offsetTop;
     }
 
     positionPopover(popover) {
