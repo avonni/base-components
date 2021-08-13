@@ -526,13 +526,15 @@ const columnsGroupBy = [
     {
         id: 1,
         label: 'Name',
-        fieldName: 'name'
+        fieldName: 'name',
+        editable: true
     },
     {
         id: 2,
         label: 'Age',
         fieldName: 'age',
-        type: 'number'
+        type: 'number',
+        summarizeTypes: ['average', 'count']
     },
     {
         id: 3,
@@ -976,96 +978,96 @@ const dataGroupBy = [
         age: '87',
         city: 'Montreal',
         district: 'Villeray'
-    },
-    {
-        id: 3,
-        name: 'Melissa',
-        age: '73',
-        city: 'Montreal',
-        district: 'Plateau'
-    },
-    {
-        id: 4,
-        name: 'Doug',
-        age: '61',
-        city: 'Montreal',
-        district: 'Outremont'
-    },
-    {
-        id: 5,
-        name: 'Tyrone',
-        age: '16',
-        city: 'Montreal',
-        district: 'Outremont'
-    },
-    {
-        id: 6,
-        name: 'Jenny',
-        age: '56',
-        city: 'Longueuil',
-        district: 'Greenfield Park'
-    },
-    {
-        id: 7,
-        name: 'Don',
-        age: '18',
-        city: 'Longueuil',
-        district: 'Old Longueuil'
-    },
-    {
-        id: 8,
-        name: 'Michel',
-        age: '19',
-        city: 'Longueuil',
-        district: 'Greenfield Park'
-    },
-    {
-        id: 9,
-        name: 'Renaud',
-        age: '29',
-        city: 'Longueuil'
-    },
-    {
-        id: 10,
-        name: 'Donald',
-        age: '16',
-        city: 'Longueuil',
-        district: 'Saint-Hubert'
-    },
-    {
-        id: 11,
-        name: 'Daniel',
-        age: '41',
-        city: 'Laval'
-    },
-    {
-        id: 12,
-        name: 'Mike',
-        age: '30',
-        city: 'Laval',
-        district: 'Vimont'
-    },
-    {
-        id: 13,
-        name: 'Jane',
-        age: '30',
-        city: 'Laval',
-        district: 'Viau'
-    },
-    {
-        id: 14,
-        name: 'Lisa',
-        age: '15',
-        city: 'Laval',
-        district: 'Viau'
-    },
-    {
-        id: 15,
-        name: 'Linda',
-        age: '14',
-        city: 'Laval',
-        district: 'Vimont'
     }
+    // {
+    //     id: 3,
+    //     name: 'Melissa',
+    //     age: '73',
+    //     city: 'Montreal',
+    //     district: 'Plateau'
+    // },
+    // {
+    //     id: 4,
+    //     name: 'Doug',
+    //     age: '61',
+    //     city: 'Montreal',
+    //     district: 'Outremont'
+    // },
+    // {
+    //     id: 5,
+    //     name: 'Tyrone',
+    //     age: '16',
+    //     city: 'Montreal',
+    //     district: 'Outremont'
+    // },
+    // {
+    //     id: 6,
+    //     name: 'Jenny',
+    //     age: '56',
+    //     city: 'Longueuil',
+    //     district: 'Greenfield Park'
+    // },
+    // {
+    //     id: 7,
+    //     name: 'Don',
+    //     age: '18',
+    //     city: 'Longueuil',
+    //     district: 'Old Longueuil'
+    // },
+    // {
+    //     id: 8,
+    //     name: 'Michel',
+    //     age: '19',
+    //     city: 'Longueuil',
+    //     district: 'Greenfield Park'
+    // },
+    // {
+    //     id: 9,
+    //     name: 'Renaud',
+    //     age: '29',
+    //     city: 'Longueuil'
+    // },
+    // {
+    //     id: 10,
+    //     name: 'Donald',
+    //     age: '16',
+    //     city: 'Longueuil',
+    //     district: 'Saint-Hubert'
+    // },
+    // {
+    //     id: 11,
+    //     name: 'Daniel',
+    //     age: '41',
+    //     city: 'Laval'
+    // },
+    // {
+    //     id: 12,
+    //     name: 'Mike',
+    //     age: '30',
+    //     city: 'Laval',
+    //     district: 'Vimont'
+    // },
+    // {
+    //     id: 13,
+    //     name: 'Jane',
+    //     age: '30',
+    //     city: 'Laval',
+    //     district: 'Viau'
+    // },
+    // {
+    //     id: 14,
+    //     name: 'Lisa',
+    //     age: '15',
+    //     city: 'Laval',
+    //     district: 'Viau'
+    // },
+    // {
+    //     id: 15,
+    //     name: 'Linda',
+    //     age: '14',
+    //     city: 'Laval',
+    //     district: 'Vimont'
+    // }
 ];
 
 export {

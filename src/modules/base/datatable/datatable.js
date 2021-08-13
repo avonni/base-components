@@ -304,12 +304,25 @@ export default class Datatable extends LightningElement {
     }
 
     /**
-     * Returns the primitive datatable.
+     * Returns the primitive grouped datatable.
      *
      * @type {element}
      */
-    get primitiveDatatable() {
-        return this.template.querySelector('c-primitive-datatable');
+    get primitiveGroupedDatatable() {
+        return this.template.querySelector(
+            'c-primitive-datatable.grouped-datatable'
+        );
+    }
+
+    /**
+     * Returns the primitive header datatable.
+     *
+     * @type {element}
+     */
+    get primitiveHeaderDatatable() {
+        return this.template.querySelector(
+            'c-primitive-datatable.header-datatable'
+        );
     }
 
     /**
@@ -361,7 +374,7 @@ export default class Datatable extends LightningElement {
      * @type {object}
      */
     get primitiveDatatableDraftValues() {
-        return this.primitiveDatatable.primitiveDatatableDraftValues();
+        return this.primitiveGroupedDatatable.primitiveDatatableDraftValues();
     }
 
     /**
@@ -387,17 +400,23 @@ export default class Datatable extends LightningElement {
      * Gets the columns width of the primitive-datatable depending on if there is a header or not.
      */
     datatableColumnsWidth() {
-        this._columnsWidth = !this.hideTableHeader
-            ? this.primitiveDatatable.columnsWidthWithHeader()
-            : this.primitiveDatatable.columnsWidthWithoutHeader();
+        if (!this.groupBy) {
+            this._columnsWidth = !this.hideTableHeader
+                ? this.primitiveGroupedDatatable.columnsWidthWithHeader()
+                : this.primitiveGroupedDatatable.columnsWidthWithoutHeader();
+        } else {
+            this._columnsWidth = !this.hideTableHeader
+                ? this.primitiveHeaderDatatable.columnsWidthWithHeader()
+                : this.primitiveHeaderDatatable.columnsWidthWithoutHeader();
+        }
     }
 
     /**
      * Gets the columns the information about if they are editable or not.
      */
     datatableEditable() {
-        this._columnsEditable = this.primitiveDatatable.columnsEditable();
-        this._isDatatableEditable = this.primitiveDatatable.isDatatableEditable();
+        this._columnsEditable = this.primitiveGroupedDatatable.columnsEditable();
+        this._isDatatableEditable = this.primitiveGroupedDatatable.isDatatableEditable();
     }
 
     /**
@@ -455,8 +474,14 @@ export default class Datatable extends LightningElement {
      * Updates the table width base on the width of the primitive datatable on initialization and on resize.
      */
     updateTableWidth() {
-        this._tableWidth = this.primitiveDatatable.tableWidth();
+        if (!this.groupBy) {
+            this._tableWidth = this.primitiveGroupedDatatable.tableWidth();
+        } else {
+            this._tableWidth = this.primitiveHeaderDatatable.tableWidth();
+        }
+
         const table = this.template.querySelector('table');
+
         if (table) {
             table.style.width = `${this._tableWidth}px`;
         }
@@ -543,7 +568,7 @@ export default class Datatable extends LightningElement {
         * @public
         * @cancelable
         */
-        this.primitiveDatatable.cancel(event);
+        this.primitiveGroupedDatatable.cancel(event);
     }
 
     /**
@@ -560,6 +585,6 @@ export default class Datatable extends LightningElement {
          * @param {object} draftValues The current value that's provided during inline editing.
          * @public
          */
-        this.primitiveDatatable.save(event);
+        this.primitiveGroupedDatatable.save(event);
     }
 }

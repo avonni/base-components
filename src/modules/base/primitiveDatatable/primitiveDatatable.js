@@ -439,7 +439,7 @@ export default class PrimitiveDatatable extends LightningDatatable {
         this.columnsWidthWithoutHeader();
         this.columnsWidthWithHeader();
         this.tableWidth();
-        this.unscrollableMainDatatable();
+        // this.unscrollableMainDatatable();
         this.hideTableHeaderPadding();
         this.hideTable();
 
@@ -550,42 +550,62 @@ export default class PrimitiveDatatable extends LightningDatatable {
      */
     unscrollableMainDatatable() {
         const mainDatatable = this.template.querySelector(
-            '.slds-table_header-fixed_container'
+            '.grouped-datatable .slds-table_header-fixed_container'
         );
-        mainDatatable.style.overflowX = 'hidden';
-        mainDatatable.style.width = `${this._tableWidth}px`;
-        mainDatatable.style.maxWidth = 'none';
-    }
-
-    hideTableHeaderPadding() {
-        const mainDatatable = this.template.querySelector(
-            '.slds-table_header-fixed_container'
-        );
-
-        if (this.hideTableHeader) {
-            mainDatatable.style.paddingTop = '0px';
+        if (mainDatatable) {
+            mainDatatable.style.overflowX = 'hidden';
+            mainDatatable.style.width = `${this._tableWidth}px`;
+            mainDatatable.style.maxWidth = 'none';
         }
     }
 
-    @api
-    get hidePrimitiveDatatable() {
-        return this._hidePrimitiveDatatable;
-    }
+    hideTableHeaderPadding() {
+        const headerDatatable = this.template.querySelector(
+            '.header-datatable .slds-table_header-fixed_container'
+        );
 
-    set hidePrimitiveDatatable(value) {
-        this._hidePrimitiveDatatable = normalizeBoolean(value);
+        const groupedDatatable = this.template.querySelector(
+            '.grouped-datatable .slds-table_header-fixed_container'
+        );
+
+        const groupedDatatableHeader = this.template.querySelector(
+            '.grouped-datatable .slds-table_header-fixed_container thead'
+        );
+
+        if (headerDatatable) {
+            if (this.hideTableHeader) {
+                headerDatatable.style.paddingTop = '0px';
+            }
+        }
+
+        if (groupedDatatable) {
+            if (this.hideTableHeader) {
+                groupedDatatable.style.paddingTop = '0px';
+            }
+
+            if (this.groupBy) {
+                groupedDatatable.style.paddingTop = '0px';
+                groupedDatatableHeader.style.visibility = 'hidden';
+            }
+        }
     }
 
     hideTable() {
-        // const headerDatatable = this.template.querySelector('.header-datatable')
-        const datatableTable = this.template.querySelector(
+        const headerDatatable = this.template.querySelector(
+            '.header-datatable .slds-table_header-fixed_container'
+        );
+        const headerDatatableBorder = this.template.querySelector(
+            '.header-datatable .slds-table_bordered'
+        );
+        const headerDatatableTable = this.template.querySelector(
             '.header-datatable tbody'
         );
-        if (datatableTable) {
-            datatableTable.style.display = 'none';
-            // headerDatatable.style.overflowX = 'hidden';
-            // headerDatatable.style.width = `${this._tableWidth}px`;
-            // headerDatatable.style.maxWidth = 'none';
+        if (headerDatatableTable) {
+            headerDatatableTable.style.display = 'none';
+            headerDatatableBorder.style.borderBottom = 'none';
+            headerDatatable.style.overflowX = 'hidden';
+            headerDatatable.style.width = `${this._tableWidth}px`;
+            headerDatatable.style.maxWidth = 'none';
         }
     }
 
