@@ -400,6 +400,7 @@ export default class PrimitiveDatatable extends LightningDatatable {
         if (value === undefined) return;
         super.selectedRows = value;
     }
+
     @api
     get hideTableHeader() {
         return super.hideTableHeader;
