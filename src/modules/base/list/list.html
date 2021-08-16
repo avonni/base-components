@@ -45,7 +45,7 @@
         >{alternativeText}</span
     >
 
-    <ul class={computedListClass} role={menuRole} style={computedListStyle}>
+    <ul class={computedListClass} role={menuRole}>
         <template for:each={computedItems} for:item="item" for:index="index">
             <li
                 key={item.label}
@@ -67,7 +67,7 @@
                 <div class="slds-grid slds-grid_vertical-align-center">
                     <lightning-icon
                         if:true={showIconLeft}
-                        class="icon-left slds-p-horizontal_xx-small"
+                        class="slds-p-horizontal_xx-small"
                         icon-name={sortableIconName}
                         size="x-small"
                     ></lightning-icon>
@@ -79,6 +79,7 @@
                             <img
                                 key={item.imageSrc}
                                 src={item.imageSrc}
+                                class="avonni-list__item-img"
                                 width={imageWidth}
                                 min-width={imageWidth}
                                 height="100%"
@@ -129,7 +130,7 @@
                             </div>
                             <p
                                 if:true={item.description}
-                                class="slds-text-body_regular slds-line-clamp_x-small slds-no-space description-text"
+                                class="slds-text-body_regular slds-line-clamp_x-small slds-no-space"
                             >
                                 {item.description}
                             </p>
@@ -200,7 +201,7 @@
                         </div>
                         <lightning-icon
                             if:true={showIconRight}
-                            class="slds-p-left_x-small icon-right"
+                            class="slds-p-left_x-small"
                             icon-name={sortableIconName}
                             size="x-small"
                         ></lightning-icon>

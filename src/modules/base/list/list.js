@@ -294,12 +294,12 @@ export default class List extends LightningElement {
         ) {
             this._hasImages = true;
         }
-        return classSet('menu')
+        return classSet('avonni-list__item-menu')
             .add({
                 'slds-has-dividers_around': this.divider === 'around',
                 'slds-has-dividers_top-space': this.divider === 'top',
                 'slds-has-dividers_bottom-space': this.divider === 'bottom',
-                'avonni-list-has-images': this._hasImages
+                'avonni-list__has-images': this._hasImages
             })
             .toString();
     }
@@ -310,9 +310,9 @@ export default class List extends LightningElement {
      * @type {string}
      */
     get computedImageContainerClass() {
-        return classSet('image-container')
+        return classSet('avonni-list__item-image-container')
             .add({
-                'image-container_rounded-corners':
+                'avonni-list__item-image-container_rounded-corners':
                     this.divider === 'around' &&
                     this.sortableIconName &&
                     this.sortableIconPosition === 'right'
@@ -326,10 +326,10 @@ export default class List extends LightningElement {
      * @type {string}
      */
     get computedItemClass() {
-        return classSet('slds-grid list-item slds-item')
+        return classSet('slds-grid avonni-list__item slds-item')
             .add({
-                'sortable-item': this.sortable,
-                'expanded-item': this._hasActions,
+                'avonni-list__item-sortable': this.sortable,
+                'avonni-list__item-expanded': this._hasActions,
                 'slds-p-vertical_x-small': !this.divider,
                 'slds-p-horizontal_none': this.divider === 'top' || 'bottom'
             })
@@ -403,7 +403,7 @@ export default class List extends LightningElement {
     switchWithItem(target) {
         const targetIndex = Number(target.dataset.index);
         const index = this._draggedIndex;
-        target.classList.add('sortable-item_moved');
+        target.classList.add('avonni-list__item-sortable_moved');
 
         // If the target has already been moved, move it back to its original position
         // Else, move it up or down
@@ -439,12 +439,14 @@ export default class List extends LightningElement {
             item.dataset.position = 0;
             item.dataset.index = index;
             item.className = item.className.replace(
-                /sortable-item_moved.*/g,
+                /avonni-list__item-sortable_moved.*/g,
                 ''
             );
         });
         if (this._draggedElement)
-            this._draggedElement.classList.remove('sortable-item_dragged');
+            this._draggedElement.classList.remove(
+                'avonni-list__item-sortable_dragged'
+            );
 
         this.template.querySelector(
             '.slds-assistive-text[aria-live="assertive"]'
@@ -461,7 +463,7 @@ export default class List extends LightningElement {
      */
     initPositions(event) {
         const menuPosition = this.template
-            .querySelector('.menu')
+            .querySelector('.avonni-list__item-menu')
             .getBoundingClientRect();
         this._menuTop = menuPosition.top;
         this._menuBottom = menuPosition.bottom;
@@ -497,12 +499,14 @@ export default class List extends LightningElement {
             return;
 
         this._itemElements = Array.from(
-            this.template.querySelectorAll('.sortable-item')
+            this.template.querySelectorAll('.avonni-list__item-sortable')
         );
         this._draggedElement = event.currentTarget;
         this._currentItemDraggedHeight = this._draggedElement.offsetHeight;
         this._draggedIndex = Number(this._draggedElement.dataset.index);
-        this._draggedElement.classList.add('sortable-item_dragged');
+        this._draggedElement.classList.add(
+            'avonni-list__item-sortable_dragged'
+        );
         if (event.type !== 'keydown') {
             this.initPositions(event);
         } else {
