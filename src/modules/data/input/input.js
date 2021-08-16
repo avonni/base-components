@@ -74,7 +74,7 @@ const VARIANTS = {
  * @example example-data-input--base
  * @public
  */
-export default class DataInputBasic extends LightningElement {
+export default class InputBasic extends LightningElement {
     /**
      * Label of the input. If present, it will be displayed on top of the data.
      * @type {string}

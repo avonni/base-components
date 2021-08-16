@@ -77,7 +77,7 @@ const fields = [
     }
 ];
 
-const data = [
+const records = [
     {
         label: 'Accordion Title A',
         title: 'Lightning Accodion Section',
@@ -112,7 +112,7 @@ describe('DataList', () => {
 
         expect(element.actions).toEqual([]);
         expect(element.alternativeText).toBeUndefined();
-        expect(element.data).toEqual([]);
+        expect(element.records).toEqual([]);
         expect(element.divider).toBe('around');
         expect(element.fields).toEqual([]);
         expect(element.label).toBeUndefined();
@@ -149,7 +149,7 @@ describe('DataList', () => {
 
         element.popoverPosition = 'right';
         element.fields = fields;
-        element.data = data;
+        element.records = records;
 
         return Promise.resolve()
             .then(() => {
@@ -183,7 +183,7 @@ describe('DataList', () => {
 
         const handler = jest.fn();
         element.fields = fields;
-        element.data = data;
+        element.records = records;
         element.listActions = listActions;
 
         return Promise.resolve()
@@ -208,7 +208,7 @@ describe('DataList', () => {
         const handler = jest.fn();
         element.addEventListener('reorder', handler);
         element.fields = fields;
-        element.data = data;
+        element.records = records;
         element.sortable = true;
 
         return Promise.resolve()
@@ -251,7 +251,7 @@ describe('DataList', () => {
         const handler = jest.fn();
         element.addEventListener('reorder', handler);
         element.fields = fields;
-        element.data = data;
+        element.records = records;
         element.sortable = true;
 
         return Promise.resolve()
@@ -286,7 +286,7 @@ describe('DataList', () => {
         const handler = jest.fn();
         element.addEventListener('actionclick', handler);
         element.fields = fields;
-        element.data = data;
+        element.records = records;
         element.sortable = true;
         element.popoverPosition = 'left';
 
@@ -320,7 +320,7 @@ describe('DataList', () => {
 
         const handler = jest.fn();
         element.fields = fields;
-        element.data = data;
+        element.records = records;
         element.actions = actions;
 
         return Promise.resolve()
@@ -359,7 +359,7 @@ describe('DataList', () => {
                 type: 'text'
             }
         ];
-        element.data = [
+        element.records = [
             { label: 'Accordion Title A' },
             { label: 'Accordion Title B' },
             { label: 'Accordion Title C' }
@@ -391,7 +391,7 @@ describe('DataList', () => {
         document.body.appendChild(element);
 
         element.fields = fields;
-        element.data = data;
+        element.records = records;
 
         return Promise.resolve()
             .then(() => {
@@ -432,7 +432,7 @@ describe('DataList', () => {
         document.body.appendChild(element);
 
         element.fields = fields;
-        element.data = data;
+        element.records = records;
 
         return Promise.resolve()
             .then(() => {
@@ -483,7 +483,7 @@ describe('DataList', () => {
         document.body.appendChild(element);
 
         element.fields = fields;
-        element.data = data;
+        element.records = records;
 
         return Promise.resolve()
             .then(() => {
@@ -532,7 +532,7 @@ describe('DataList', () => {
         document.body.appendChild(element);
 
         element.fields = fields;
-        element.data = data;
+        element.records = records;
 
         return Promise.resolve()
             .then(() => {
@@ -569,7 +569,7 @@ describe('DataList', () => {
         document.body.appendChild(element);
 
         element.fields = fields;
-        element.data = data;
+        element.records = records;
 
         return Promise.resolve()
             .then(() => {
@@ -621,7 +621,7 @@ describe('DataList', () => {
         document.body.appendChild(element);
 
         element.fields = fields;
-        element.data = data;
+        element.records = records;
 
         return Promise.resolve()
             .then(() => {
@@ -676,7 +676,7 @@ describe('DataList', () => {
         document.body.appendChild(element);
 
         element.fields = fields;
-        element.data = data;
+        element.records = records;
 
         return Promise.resolve()
             .then(() => {
@@ -727,7 +727,7 @@ describe('DataList', () => {
         document.body.appendChild(element);
 
         element.fields = fields;
-        element.data = data;
+        element.records = records;
 
         return Promise.resolve()
             .then(() => {
@@ -770,7 +770,7 @@ describe('DataList', () => {
         document.body.appendChild(element);
 
         element.fields = fields;
-        element.data = data;
+        element.records = records;
 
         return Promise.resolve()
             .then(() => {

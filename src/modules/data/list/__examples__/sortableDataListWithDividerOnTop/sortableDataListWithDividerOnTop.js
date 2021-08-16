@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class Base extends LightningElement {
+export default class SortableDataListWithDividerOnTop extends LightningElement {
     fields = [
         {
             label: 'Label',
@@ -19,7 +19,7 @@ export default class Base extends LightningElement {
         }
     ];
 
-    data = [
+    records = [
         {
             label: 'Accordion Title A',
             title: 'Lightning Accodion Section',

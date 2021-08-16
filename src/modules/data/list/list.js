@@ -79,7 +79,7 @@ const POPOVER_POSITIONS = {
  * @storyId example-data-list--base
  * @public
  */
-export default class AvonniDataListBasic extends LightningElement {
+export default class ListBasic extends LightningElement {
     /**
      * Alternative text used to describe the list.
      * If the list is sortable, it should describe its behavior, for example: 'Sortable menu.
@@ -159,16 +159,14 @@ export default class AvonniDataListBasic extends LightningElement {
      * @type {Data[]}
      * @public
      */
-    /* eslint-disable */
     @api
-    get data() {
-        return this._data;
+    get records() {
+        return this._records;
     }
-    set data(value) {
-        this._data = normalizeArray(value);
+    set records(value) {
+        this._records = normalizeArray(value);
         this.initialData = normalizeArray(value);
     }
-    /* eslint-enable */
 
     /**
      * Changes the appearance of the list.
@@ -280,13 +278,13 @@ export default class AvonniDataListBasic extends LightningElement {
         if (this.fields.length === 0) return [];
 
         let items = [];
-        for (let i = 0; i < this.data.length; i++) {
-            if (!this.data[i][this.fields[0].name]) continue;
+        for (let i = 0; i < this.records.length; i++) {
+            if (!this.records[i][this.fields[0].name]) continue;
             items.push({
-                label: this.data[i][this.fields[0].name],
+                label: this.records[i][this.fields[0].name],
                 description:
                     this.fields.length > 1
-                        ? this.data[i][this.fields[1].name]
+                        ? this.records[i][this.fields[1].name]
                         : ''
             });
         }
@@ -339,7 +337,7 @@ export default class AvonniDataListBasic extends LightningElement {
     @api
     reset() {
         this.template.querySelector('avonni-list').reset();
-        this._data = this.initialData;
+        this._records = this.initialData;
     }
 
     /**
@@ -361,11 +359,11 @@ export default class AvonniDataListBasic extends LightningElement {
      * @return {number}
      */
     getDataIndexFromListItem(item) {
-        for (let i = 0; i < this.data.length; i++) {
+        for (let i = 0; i < this.records.length; i++) {
             if (
-                this.data[i][this.fields[0].name] === item.label &&
+                this.records[i][this.fields[0].name] === item.label &&
                 (this.fields.length < 2 ||
-                    this.data[i][this.fields[1].name] === item.description)
+                    this.records[i][this.fields[1].name] === item.description)
             ) {
                 return i;
             }
@@ -384,9 +382,9 @@ export default class AvonniDataListBasic extends LightningElement {
 
         let newData = [];
         reorderedItems.forEach((item) => {
-            newData.push(this.data[this.getDataIndexFromListItem(item)]);
+            newData.push(this.records[this.getDataIndexFromListItem(item)]);
         });
-        this._data = newData;
+        this._records = newData;
 
         /**
          * The event fired when a user reordered the items.
@@ -424,7 +422,7 @@ export default class AvonniDataListBasic extends LightningElement {
             new CustomEvent('actionclick', {
                 detail: {
                     name: event.detail.name,
-                    item: this.data[
+                    item: this.records[
                         this.getDataIndexFromListItem(event.detail.item)
                     ]
                 }
@@ -462,8 +460,10 @@ export default class AvonniDataListBasic extends LightningElement {
      * @param {Event} event
      */
     handleItemClick(event) {
-        for (let i = 0; i < this.data.length; i++) {
-            if (this.data[i][this.fields[0].name] === event.detail.item.label) {
+        for (let i = 0; i < this.records.length; i++) {
+            if (
+                this.records[i][this.fields[0].name] === event.detail.item.label
+            ) {
                 if (i !== this.previousPopover) {
                     this.changeCurrentPopover(i);
                     // eslint-disable-next-line @lwc/lwc/no-async-operation
@@ -526,7 +526,7 @@ export default class AvonniDataListBasic extends LightningElement {
      * Generates the content of the popover as an element that can be rendered in the HTML.
      */
     generatePopoverContent() {
-        for (let i = 0; i < this.data.length; i++) {
+        for (let i = 0; i < this.records.length; i++) {
             if (i === this.currentPopover) {
                 this.popoverFields = [];
                 this.fields.forEach((field) => {
@@ -535,7 +535,7 @@ export default class AvonniDataListBasic extends LightningElement {
                         label: field.label,
                         name: field.name,
                         type: field.type,
-                        value: this.data[i][field.name]
+                        value: this.records[i][field.name]
                     });
                 });
                 break;
@@ -584,10 +584,10 @@ export default class AvonniDataListBasic extends LightningElement {
      */
     handlePopoverInputBlur(event) {
         if (this.currentPopover !== undefined) {
-            let newData = JSON.parse(JSON.stringify(this.data));
+            let newData = JSON.parse(JSON.stringify(this.records));
             newData[this.currentPopover][event.target.name] =
                 event.target.value;
-            this._data = newData;
+            this._records = newData;
             this.computedItems = this.dataAsItems;
 
             if (this.savePopoverData) {

@@ -123,11 +123,11 @@
         },
         {
             "name": "c/dataInput",
-            "path": "src/modules/data/dataInput/dataInput.js"
+            "path": "src/modules/data/input/input.js"
         },
         {
             "name": "c/dataList",
-            "path": "src/modules/data/dataList/dataList.js"
+            "path": "src/modules/data/list/list.js"
         },
         {
             "name": "c/dataPageHeader",
@@ -559,11 +559,11 @@
         },
         {
             "name": "avonni/dataInput",
-            "path": "src/modules/data/dataInput/dataInput.js"
+            "path": "src/modules/data/input/input.js"
         },
         {
             "name": "avonni/dataList",
-            "path": "src/modules/data/dataList/dataList.js"
+            "path": "src/modules/data/list/list.js"
         },
         {
             "name": "avonni/dataPageHeader",

@@ -522,7 +522,7 @@ const columnsSum = [
     }
 ];
 
-const dataAB = [
+const recordsAB = [
     {
         id: 1,
         avatar:
@@ -618,7 +618,7 @@ const dataAB = [
     }
 ];
 
-const dataCD = [
+const recordsCD = [
     {
         id: 1,
         colorPicker: '#00a1e0',
@@ -667,7 +667,7 @@ const dataCD = [
         dateLocal: new Date('2022/10/12')
     }
 ];
-const dataEN = [
+const recordsEN = [
     {
         id: 1,
         email: 'nina.gomez@email.com',
@@ -758,7 +758,7 @@ const dataEN = [
     }
 ];
 
-const dataOQ = [
+const recordsOQ = [
     {
         id: 1,
         percent: 0.34,
@@ -828,7 +828,7 @@ const dataOQ = [
         qrcode: 'https://www.avonni.app/'
     }
 ];
-const dataRZ = [
+const recordsRZ = [
     {
         id: 1,
         rating: '3',
@@ -873,7 +873,7 @@ const dataRZ = [
     }
 ];
 
-const dataSum = [
+const recordsSum = [
     {
         id: 1,
         date: new Date('2021/09/24'),
@@ -945,10 +945,10 @@ export {
     columnsOQ,
     columnsRZ,
     columnsSum,
-    dataAB,
-    dataCD,
-    dataEN,
-    dataOQ,
-    dataRZ,
-    dataSum
+    recordsAB,
+    recordsCD,
+    recordsEN,
+    recordsOQ,
+    recordsRZ,
+    recordsSum
 };

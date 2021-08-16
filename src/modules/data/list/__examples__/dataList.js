@@ -37,7 +37,7 @@ customElements.define('avonni-data-list', Component.CustomElementConstructor);
 export const DataList = ({
     actions,
     alternativeText,
-    data,
+    records,
     divider,
     fields,
     label,
@@ -50,7 +50,7 @@ export const DataList = ({
     const element = document.createElement('avonni-data-list');
     element.actions = actions;
     element.alternativeText = alternativeText;
-    element.data = data;
+    element.records = records;
     element.divider = divider;
     element.fields = fields;
     element.label = label;

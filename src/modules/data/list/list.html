@@ -33,7 +33,7 @@
 -->
 
 <template>
-    <avonni-list
+    <c-list
         label={label}
         alternative-text={alternativeText}
         items={computedItems}
@@ -45,7 +45,7 @@
         onreorder={handleReorder}
         onactionclick={handleActionClick}
         onitemclick={handleItemClick}
-    ></avonni-list>
+    ></c-list>
     <ul if:true={hasListActions} class="slds-p-top_x-small">
         <template for:each={listActions} for:item="listAction">
             <li key={listAction.label} class="slds-p-top_x-small">

@@ -92,7 +92,7 @@ export default class DataTypesFromAToB extends LightningElement {
         }
     ];
 
-    data = [
+    records = [
         {
             id: 1,
             avatar:

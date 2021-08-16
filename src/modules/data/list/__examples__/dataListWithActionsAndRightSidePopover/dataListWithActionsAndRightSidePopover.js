@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class SortableDataListWithDividerOnTop extends LightningElement {
+export default class DataListWithActionsAndRightSidePopover extends LightningElement {
     fields = [
         {
             label: 'Label',
@@ -19,7 +19,7 @@ export default class SortableDataListWithDividerOnTop extends LightningElement {
         }
     ];
 
-    data = [
+    records = [
         {
             label: 'Accordion Title A',
             title: 'Lightning Accodion Section',
@@ -34,6 +34,20 @@ export default class SortableDataListWithDividerOnTop extends LightningElement {
             label: 'Accordion Title C',
             title: 'Lightning Accodion Section',
             name: 'C'
+        }
+    ];
+
+    actions = [
+        {
+            label: 'Save',
+            name: 'save-action',
+            iconName: 'utility:save'
+        },
+        {
+            label: 'Delete',
+            name: 'delete-action',
+            iconName: 'utility:delete',
+            disabled: true
         }
     ];
 }

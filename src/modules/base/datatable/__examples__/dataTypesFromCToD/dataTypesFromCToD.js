@@ -109,7 +109,7 @@ export default class DataTypesFromCToD extends LightningElement {
         }
     ];
 
-    data = [
+    records = [
         {
             id: 1,
             colorPicker: '#00a1e0',

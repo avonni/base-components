@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class DataListWithActionsAndRightSidePopover extends LightningElement {
+export default class DataListWithListActions extends LightningElement {
     fields = [
         {
             label: 'Label',
@@ -19,7 +19,7 @@ export default class DataListWithActionsAndRightSidePopover extends LightningEle
         }
     ];
 
-    data = [
+    records = [
         {
             label: 'Accordion Title A',
             title: 'Lightning Accodion Section',
@@ -39,14 +39,20 @@ export default class DataListWithActionsAndRightSidePopover extends LightningEle
 
     actions = [
         {
-            label: 'Save',
-            name: 'save-action',
-            iconName: 'utility:save'
+            name: 'delete-action',
+            iconName: 'utility:close'
+        }
+    ];
+
+    listActions = [
+        {
+            label: 'Add Lightning Accordion Section',
+            name: 'addLightningAccordionSection'
         },
         {
-            label: 'Delete',
-            name: 'delete-action',
-            iconName: 'utility:delete',
+            label: 'Reset List',
+            name: 'resetList',
+            iconName: 'utility:loop',
             disabled: true
         }
     ];

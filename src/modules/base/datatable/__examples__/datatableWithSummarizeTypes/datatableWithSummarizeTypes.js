@@ -86,7 +86,7 @@ export default class DatatableWithSummarizeTypes extends LightningElement {
         }
     ];
 
-    data = [
+    records = [
         {
             id: 1,
             date: new Date('2021/09/24'),

@@ -241,7 +241,7 @@ export default class Datatable extends LightningElement {
     @api wrapTextMaxLines;
 
     _columns;
-    _data;
+    _records;
     _showStatusBar = false;
     _hasDraftValues = false;
 
@@ -270,16 +270,14 @@ export default class Datatable extends LightningElement {
      * @public
      * @type {array}
      */
-    /* eslint-disable */
     @api
-    get data() {
-        return this._data;
+    get records() {
+        return this._records;
     }
 
-    set data(value) {
-        this._data = JSON.parse(JSON.stringify(normalizeArray(value)));
+    set records(value) {
+        this._records = JSON.parse(JSON.stringify(normalizeArray(value)));
     }
-    /* eslint-enable */
 
     connectedCallback() {
         this.addEventListener('cellchange', () => {
@@ -311,7 +309,7 @@ export default class Datatable extends LightningElement {
      * @type {object}
      */
     get computedSummarizeArray() {
-        return computeSummarizeArray(this._columns, this._data);
+        return computeSummarizeArray(this._columns, this._records);
     }
 
     /**

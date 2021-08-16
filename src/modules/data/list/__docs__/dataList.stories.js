@@ -54,7 +54,7 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        data: {
+        records: {
             control: {
                 type: 'object'
             },
@@ -206,7 +206,7 @@ const fields = [
     }
 ];
 
-const data = [
+const records = [
     {
         label: 'Accordion Title A',
         title: 'Lightning Accodion Section',
@@ -231,7 +231,7 @@ Base.args = {
     label: 'Base Data List',
     alternativeText: 'Data List alternative text',
     fields: fields,
-    data: data
+    records: records
 };
 
 export const SortableDataListWithDividerOnTop = Template.bind({});
@@ -239,7 +239,7 @@ SortableDataListWithDividerOnTop.args = {
     label: 'Sortable Data List',
     alternativeText: 'Data List alternative text',
     fields: fields,
-    data: data,
+    records: records,
     divider: 'top',
     sortableIconName: 'utility:drag_and_drop',
     sortable: true
@@ -251,7 +251,7 @@ DataListWithActionsAndRightSidePopover.args = {
     alternativeText: 'Data List alternative text',
     actions: actions,
     fields: fields,
-    data: data,
+    records: records,
     popoverPosition: 'right'
 };
 
@@ -261,7 +261,7 @@ DataListWithListActions.args = {
     alternativeText: 'Data List alternative text',
     actions: action,
     fields: fields,
-    data: data,
+    records: records,
     listActions: listActions,
     sortableIconName: 'utility:drag_and_drop',
     sortable: true
