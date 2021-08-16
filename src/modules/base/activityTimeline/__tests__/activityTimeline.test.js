@@ -275,7 +275,6 @@ describe('ActivityTimeline', () => {
 
         document.body.appendChild(element);
 
-        // element.iconName = 'standard:hello'
         element.items = ITEMS;
         element.groupBy = 'week';
         element.collapsible = true;
