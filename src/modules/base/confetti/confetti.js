@@ -1,8 +1,40 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 import './confettiLib';
 
-const VALID_VARIANTS = {valid: [
+const CONFETTI_VARIANTS = {valid: [
     'base',
     'random-direction',
     'realistic',
@@ -10,6 +42,7 @@ const VALID_VARIANTS = {valid: [
     'snow',
     'pride'
 ], default: 'base'};
+
 const DEFAULT_COLORS = [
     '#529EE0',
     '#F0E442',
@@ -20,15 +53,62 @@ const DEFAULT_COLORS = [
     '#E287B2'
 ];
 
-export default class Confetti extends LightningElement {
-    @api colors = DEFAULT_COLORS;
-    @api originX = 0.5;
-    @api originY = 0.5;
-    @api zIndex = 100;
+const DEFAULT_ORIGIN_X = 0.5
 
-    _variant = VALID_VARIANTS.default;
+const DEFAULT_ORIGIN_Y = 0.5
+
+const DEFAULT_Z_INDEX = 100
+
+/**
+ * @class
+ * @public
+ * @descriptor avonni-confetti
+ * @storyId example-confetti--base
+ */
+export default class Confetti extends LightningElement {
+    /**
+     * An array of color strings, in the HEX format.
+     * 
+     * @public
+     * @type {string[]}
+     * @default ['#529EE0','#F0E442','#FFB03B','#E16032','#4FD2D2','#006699','#E287B2']
+     */
+    @api colors = DEFAULT_COLORS;
+    /**
+     * The x position on the page, with 0 being the left edge and 1 being the right edge.
+     * 
+     * @public
+     * @type {number}
+     * @default 0.5
+     */
+    @api originX = DEFAULT_ORIGIN_X;
+    /**
+     * The y position on the page, with 0 being the top edge and 1 being the bottom edge.
+     * 
+     * @public
+     * @type {number}
+     * @default 0.5
+     */
+    @api originY = DEFAULT_ORIGIN_Y;
+    /**
+     * The confetti should be on top, after all. But if you have a crazy high page, you can set it even higher.
+     * 
+     * @public
+     * @type {number}
+     * @default 100
+     */
+    @api zIndex = DEFAULT_Z_INDEX;
+
+    _variant = CONFETTI_VARIANTS.default;
     _name;
 
+    /**
+     * The variant changes the appearance of the confetti. Accepted variants include include base, random-direction, realistic, fireworks, snow and pride.
+     * 
+     * @public
+     * @type {string}
+     * @default base
+     */
     @api
     get variant() {
         return this._variant;
@@ -36,11 +116,17 @@ export default class Confetti extends LightningElement {
 
     set variant(value) {
         this._variant = normalizeString(value, {
-            fallbackValue: VALID_VARIANTS.default,
-            validValues: VALID_VARIANTS.valid
+            fallbackValue: CONFETTI_VARIANTS.default,
+            validValues: CONFETTI_VARIANTS.valid
         });
     }
 
+    /**
+     * Name of the confetti.
+     * 
+     * @public
+     * @type {string}
+     */
     @api
     get name() {
         return this._name;
@@ -51,6 +137,11 @@ export default class Confetti extends LightningElement {
         this.setAttribute('name', value);
     }
 
+    /**
+     * Confetti Fire method.
+     * 
+     * @public
+     */
     @api
     fire() {
         switch (this.variant) {
@@ -77,6 +168,9 @@ export default class Confetti extends LightningElement {
         }
     }
 
+    /**
+     * Base variant.
+     */
     base() {
         // eslint-disable-next-line no-undef
         confetti({
@@ -91,6 +185,9 @@ export default class Confetti extends LightningElement {
         });
     }
 
+    /**
+     * Random Direction variant.
+     */
     randomDirection() {
         // eslint-disable-next-line no-undef
         confetti({
@@ -106,6 +203,9 @@ export default class Confetti extends LightningElement {
         });
     }
 
+    /**
+     * Realistic variant.
+     */
     realistic() {
         let count = 200;
         let defaults = {
@@ -152,6 +252,9 @@ export default class Confetti extends LightningElement {
         });
     }
 
+    /**
+     * Fireworks variant.
+     */
     fireworks() {
         let animationEnd = Date.now() + 6000;
 
@@ -181,6 +284,9 @@ export default class Confetti extends LightningElement {
         }, 250);
     }
 
+    /**
+     * Snow variant.
+     */
     snow() {
         let animationEnd = Date.now() + 6000;
         let skew = 1;
@@ -215,6 +321,9 @@ export default class Confetti extends LightningElement {
         }, 10);
     }
 
+    /**
+     * Pride variant.
+     */
     pride() {
         let end = Date.now() + 6000;
 
@@ -247,6 +356,13 @@ export default class Confetti extends LightningElement {
         }, 150);
     }
 
+    /**
+     * Random number generator for min max range.
+     * 
+     * @param {number} min 
+     * @param {number} max 
+     * @returns number
+     */
     randomInRange(min, max) {
         return Math.random() * (max - min) + min;
     }

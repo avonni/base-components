@@ -1,35 +1,67 @@
-:host {
-    --item-height: 44px;
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+.avonni-list__item {
+    height: fit-content;
 }
 
-.list-item {
-    height: var(--item-height);
+.avonni-list__item-sortable {
+    cursor: var(--list-item-cursor, grab);
 }
 
-.sortable-item {
+.avonni-list__item-sortable-icon-cursor {
     cursor: grab;
 }
 
 /* Disable the hover on touch */
 @media (hover: hover) {
-    .sortable-item:hover {
+    .avonni-list__item-sortable:hover {
         background-color: var(--lwc-colorBackground, #f3f2f2);
     }
 }
 
-.sortable-item > div {
+.avonni-list__item-sortable > div {
     width: 100%;
 }
 
-.expanded-item > div {
+.avonni-list__item-expanded > div {
     width: 100%;
 }
 
-.sortable-item_moved {
+.avonni-list__item-sortable_moved {
     transition: transform 300ms;
 }
 
-.sortable-item.sortable-item_dragged {
+.avonni-list__item-sortable.avonni-list__item-sortable_dragged {
     position: relative;
     z-index: 1;
     border: none;
@@ -39,9 +71,30 @@
     background-color: rgba(255, 255, 255, 0.6);
 }
 
-.sortable-item_moved-up {
-    transform: translateY(calc(0px - var(--item-height)));
+.avonni-list__item-img {
+    position: absolute;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
 }
-.sortable-item_moved-down {
-    transform: translateY(var(--item-height));
+
+.avonni-list__item-image-container {
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+}
+
+.avonni-list__item-image-container_rounded-corners {
+    border-top-left-radius: 0.16rem;
+    border-bottom-left-radius: 0.16rem;
+}
+
+.avonni-list__item-menu {
+    display: grid;
+}
+
+@media (max-width: 320px) {
+    .avonni-list__has-images {
+        justify-content: center;
+    }
 }

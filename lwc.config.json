@@ -7,6 +7,9 @@
             "dir": "src/modules/base"
         },
         {
+            "dir": "src/modules/data"
+        },
+        {
             "name": "c/configProvider",
             "path": "src/modules/base/configProvider/configProvider.js"
         },
@@ -87,10 +90,6 @@
             "path": "src/modules/base/carousel/carousel.js"
         },
         {
-            "name": "c/checkboxGroup",
-            "path": "src/modules/base/checkboxGroup/checkboxGroup.js"
-        },
-        {
             "name": "c/chip",
             "path": "src/modules/base/chip/chip.js"
         },
@@ -115,8 +114,24 @@
             "path": "src/modules/base/colorPickerPanel/colorPickerPanel.js"
         },
         {
+            "name": "c/combobox",
+            "path": "src/modules/base/combobox/combobox.js"
+        },
+        {
             "name": "c/confetti",
             "path": "src/modules/base/confetti/confetti.js"
+        },
+        {
+            "name": "c/dataInput",
+            "path": "src/modules/data/input/input.js"
+        },
+        {
+            "name": "c/dataList",
+            "path": "src/modules/data/list/list.js"
+        },
+        {
+            "name": "c/dataPageHeader",
+            "path": "src/modules/data/pageHeader/pageHeader.js"
         },
         {
             "name": "c/datatable",
@@ -159,6 +174,10 @@
             "path": "src/modules/base/externalLink/externalLink.js"
         },
         {
+            "name": "c/heroBanner",
+            "path": "src/modules/base/heroBanner/heroBanner.js"
+        },
+        {
             "name": "c/iconUtils",
             "path": "src/modules/base/iconUtils/iconUtils.js"
         },
@@ -169,6 +188,10 @@
         {
             "name": "c/image",
             "path": "src/modules/base/image/image.js"
+        },
+        {
+            "name": "c/inputChoiceSet",
+            "path": "src/modules/base/inputChoiceSet/inputChoiceSet.js"
         },
         {
             "name": "c/inputCounter",
@@ -247,16 +270,12 @@
             "path": "src/modules/base/primitiveBubble/primitiveBubble.js"
         },
         {
-            "name": "c/primitiveColorpickerButton",
-            "path": "src/modules/base/primitiveColorpickerButton/primitiveColorpickerButton.js"
-        },
-        {
-            "name": "c/primitiveCoordinateItem",
-            "path": "src/modules/base/primitiveCoordinateItem/primitiveCoordinateItem.js"
-        },
-        {
             "name": "c/primitiveCellAvatarGroup",
             "path": "src/modules/base/primitiveCellAvatarGroup/primitiveCellAvatarGroup.js"
+        },
+        {
+            "name": "c/primitiveCellBadge",
+            "path": "src/modules/base/primitiveCellBadge/primitiveCellBadge.js"
         },
         {
             "name": "c/primitiveCellCheckboxButton",
@@ -265,6 +284,10 @@
         {
             "name": "c/primitiveCellColorPicker",
             "path": "src/modules/base/primitiveCellColorPicker/primitiveCellColorPicker.js"
+        },
+        {
+            "name": "c/primitiveCellCombobox",
+            "path": "src/modules/base/primitiveCellCombobox/primitiveCellCombobox.js"
         },
         {
             "name": "c/primitiveCellInputCounter",
@@ -285,6 +308,26 @@
         {
             "name": "c/primitiveCellSlider",
             "path": "src/modules/base/primitiveCellSlider/primitiveCellSlider.js"
+        },
+        {
+            "name": "c/primitiveColorpickerButton",
+            "path": "src/modules/base/primitiveColorpickerButton/primitiveColorpickerButton.js"
+        },
+        {
+            "name": "c/primitiveCombobox",
+            "path": "src/modules/base/primitiveCombobox/primitiveCombobox.js"
+        },
+        {
+            "name": "c/primitiveComboboxGroup",
+            "path": "src/modules/base/primitiveComboboxGroup/primitiveComboboxGroup.js"
+        },
+        {
+            "name": "c/primitiveDatatable",
+            "path": "src/modules/base/primitiveDatatable/primitiveDatatable.js"
+        },
+        {
+            "name": "c/primitiveCoordinateItem",
+            "path": "src/modules/base/primitiveCoordinateItem/primitiveCoordinateItem.js"
         },
         {
             "name": "c/primitiveIcon",
@@ -373,6 +416,10 @@
         {
             "name": "c/segmentButton",
             "path": "src/modules/base/segmentButton/segmentButton.js"
+        },
+        {
+            "name": "c/separator",
+            "path": "src/modules/base/separator/separator.js"
         },
         {
             "name": "c/slide",
@@ -487,10 +534,6 @@
             "path": "src/modules/base/carousel/carousel.js"
         },
         {
-            "name": "avonni/checkboxGroup",
-            "path": "src/modules/base/checkboxGroup/checkboxGroup.js"
-        },
-        {
             "name": "avonni/chip",
             "path": "src/modules/base/chip/chip.js"
         },
@@ -503,12 +546,28 @@
             "path": "src/modules/base/colorPalette/colorPalette.js"
         },
         {
+            "name": "avonni/combobox",
+            "path": "src/modules/base/combobox/combobox.js"
+        },
+        {
             "name": "avonni/colorPicker",
             "path": "src/modules/base/colorPicker/colorPicker.js"
         },
         {
             "name": "avonni/confetti",
             "path": "src/modules/base/confetti/confetti.js"
+        },
+        {
+            "name": "avonni/dataInput",
+            "path": "src/modules/data/input/input.js"
+        },
+        {
+            "name": "avonni/dataList",
+            "path": "src/modules/data/list/list.js"
+        },
+        {
+            "name": "avonni/dataPageHeader",
+            "path": "src/modules/data/pageHeader/pageHeader.js"
         },
         {
             "name": "avonni/datatable",
@@ -547,12 +606,20 @@
             "path": "src/modules/base/filterMenuGroup/filterMenuGroup.js"
         },
         {
+            "name": "avonni/heroBanner",
+            "path": "src/modules/base/heroBanner/heroBanner.js"
+        },
+        {
             "name": "avonni/illustration",
             "path": "src/modules/base/illustration/illustration.js"
         },
         {
             "name": "avonni/image",
             "path": "src/modules/base/image/image.js"
+        },
+        {
+            "name": "avonni/inputChoiceSet",
+            "path": "src/modules/base/inputChoiceSet/inputChoiceSet.js"
         },
         {
             "name": "avonni/inputCounter",
@@ -663,6 +730,10 @@
             "path": "src/modules/base/segmentButton/segmentButton.js"
         },
         {
+            "name": "avonni/separator",
+            "path": "src/modules/base/separator/separator.js"
+        },
+        {
             "name": "avonni/slide",
             "path": "src/modules/base/slide/slide.js"
         },
@@ -736,12 +807,15 @@
         "avonni/buttonPopover",
         "avonni/calendar",
         "avonni/carousel",
-        "avonni/checkboxGroup",
         "avonni/chip",
         "avonni/colorGradient",
         "avonni/colorPalette",
         "avonni/colorPicker",
+        "avonni/combobox",
         "avonni/confetti",
+        "avonni/dataInput",
+        "avonni/dataList",
+        "avonni/dataPageHeader",
         "avonni/datatable",
         "avonni/dateTimePicker",
         "avonni/dialog",
@@ -751,8 +825,10 @@
         "avonni/expandableSection",
         "avonni/filterMenuGroup",
         "avonni/filterMenu",
+        "avonni/heroBanner",
         "avonni/illustration",
         "avonni/image",
+        "avonni/inputChoiceSet",
         "avonni/inputCounter",
         "avonni/inputDateRange",
         "avonni/inputPen",
@@ -781,6 +857,7 @@
         "avonni/scopedNotification",
         "avonni/segment",
         "avonni/segmentButton",
+        "avonni/separator",
         "avonni/slide",
         "avonni/slides",
         "avonni/list",

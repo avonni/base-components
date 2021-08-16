@@ -1,12 +1,59 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
-const validVariants = ['shade', 'success', 'warning', 'error'];
+const SEGMENT_VARIANTS = {
+    valid: ['shade', 'success', 'warning', 'error'],
+    default: 'shade'
+};
 
+/**
+ * @class
+ * @descriptor avonni-segment
+ * @storyId example-segment--base
+ * @public
+ */
 export default class Segment extends LightningElement {
+    /**
+     * The value of the segment.
+     *
+     * @type {string}
+     * @public
+     */
     @api value;
 
-    _variant = 'shade';
+    _variant = SEGMENT_VARIANTS.default;
     _disabled = false;
 
     renderedCallback() {
@@ -23,17 +70,30 @@ export default class Segment extends LightningElement {
         }
     }
 
+    /**
+     * Values include shade, success, warning, error
+     *
+     * @type {string}
+     * @public
+     * @default shade
+     */
     @api get variant() {
         return this._variant;
     }
 
     set variant(value) {
         this._variant = normalizeString(value, {
-            fallbackValue: 'shade',
-            validValues: validVariants
+            fallbackValue: SEGMENT_VARIANTS.default,
+            validValues: SEGMENT_VARIANTS.valid
         });
     }
 
+    /**
+     * If true, the user cannot interact with the segment.
+     *
+     * @type {boolean}
+     * @public
+     */
     @api get disabled() {
         return this._disabled;
     }
@@ -42,14 +102,34 @@ export default class Segment extends LightningElement {
         this._disabled = normalizeBoolean(value);
     }
 
+    /**
+     * Computed segment class styling based on selected variant.
+     *
+     * @type {string}
+     */
     get computedSegmentClass() {
         return `avonni-segment-container avonni-segment-${this.variant}`;
     }
 
+    /**
+     * Click event handler.
+     *
+     * @param {Event} event
+     */
     handleClick(event) {
         if (event.detail.value !== undefined) {
             this.moveSwitch(event.detail.value);
 
+            /**
+             * Emitted when the value property has changed.
+             *
+             * @event
+             * @name change
+             * @param {string} value The value of the segment.
+             * @public
+             * @bubbles
+             * @cancelable
+             */
             this.dispatchEvent(
                 new CustomEvent('change', {
                     bubbles: true,
@@ -62,6 +142,11 @@ export default class Segment extends LightningElement {
         }
     }
 
+    /**
+     * Move selector switch container display when selecting element.
+     *
+     * @param {string} value
+     */
     moveSwitch(value) {
         let segmentButton = this.querySelector(`[data-value='${value}']`);
         let switchContainer = this.template.querySelector(

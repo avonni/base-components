@@ -1,3 +1,35 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { Pagination } from '../__examples__/pagination';
 
 export default {
@@ -106,7 +138,7 @@ export default {
             control: {
                 type: 'text'
             },
-            description: 'Text of the button.',
+            description: 'Label for the first button.',
             table: {
                 type: { summary: 'string' },
                 category: 'Buttons'
@@ -118,7 +150,7 @@ export default {
                 type: 'text'
             },
             description:
-                'The name of an icon to display after the text of the button.',
+                'The name of an icon to display after the label of the first button.',
             table: {
                 type: { summary: 'string' },
                 category: 'Buttons'
@@ -129,7 +161,7 @@ export default {
             control: {
                 type: 'text'
             },
-            description: 'Text of the button.',
+            description: 'Label for the previous button.',
             table: {
                 type: { summary: 'string' },
                 category: 'Buttons'
@@ -142,7 +174,7 @@ export default {
             },
             defaultValue: 'utility:chevronleft',
             description:
-                'The name of an icon to display after the text of the button.',
+                'The name of an icon to display after the label for the previous button.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'utility:chevronleft' },
@@ -154,7 +186,7 @@ export default {
             control: {
                 type: 'text'
             },
-            description: 'Text of the button.',
+            description: 'Label for the next button.',
             table: {
                 type: { summary: 'string' },
                 category: 'Buttons'
@@ -167,7 +199,7 @@ export default {
             },
             defaultValue: 'utility:chevronright',
             description:
-                'The name of an icon to display after the text of the button.',
+                'The name of an icon to display after the label for the next button.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'utility:chevronright' },
@@ -179,7 +211,7 @@ export default {
             control: {
                 type: 'text'
             },
-            description: 'Text of the button.',
+            description: 'Label for the last button.',
             table: {
                 type: { summary: 'string' },
                 category: 'Buttons'
@@ -191,7 +223,7 @@ export default {
                 type: 'text'
             },
             description:
-                'The name of an icon to display after the text of the button.',
+                'The name of an icon to display after the label for the last button.',
             table: {
                 type: { summary: 'string' },
                 category: 'Buttons'

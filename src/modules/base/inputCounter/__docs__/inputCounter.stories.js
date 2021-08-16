@@ -1,3 +1,35 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { InputCounter } from '../__examples__/inputCounter';
 
 export default {
@@ -28,7 +60,7 @@ export default {
             control: {
                 type: 'number'
             },
-            description: 'The maximum acceptable value for the input.',
+            description: 'The maximum acceptable value for the input. Constrains the incrementer to stop at the specified max. If the entered value is above the max, incrementing or decrementing will then set the value to the specified max',
             table: {
                 type: { summary: 'number' },
                 category: 'Validation'
@@ -38,32 +70,44 @@ export default {
             control: {
                 type: 'number'
             },
-            description: 'The minimum acceptable value for the input.',
+            description: 'The minimum acceptable value for the input. Constrains the decrementer to stop at the specified min. If an entered value is below the min, incrementing or decrementing will then set the value to the specified min',
             table: {
                 type: { summary: 'number' },
                 category: 'Validation'
             }
         },
         step: {
+            name: 'step',
             control: {
                 type: 'number'
             },
             defaultValue: 1,
             description:
-                'Granularity of the value, specified as a positive floating point number.',
+                'Amount to add or substract from the value',
             table: {
                 type: { summary: 'number' },
                 defaultValue: 1,
                 category: 'Validation'
             }
         },
+        fractionDigits: {
+            name: 'fraction-digits',
+            control: {
+                type: 'number'
+            },
+            description : 'Granularity of the value - precision of significant decimal digits ( specified as a positive integer. ex: 2 formats the value to 2 digits after the decimal  )',
+            table: {
+                type: { summary: 'number' },
+                category: 'Validation'
+            }
+        },
         value: {
             control: {
-                type: 'text'
+                type: 'number'
             },
             description: 'Specifies the value of an input element.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'number' }
             }
         },
         variant: {
@@ -201,6 +245,24 @@ export default {
                 subcategory: 'Error messages',
                 type: { summary: 'string' }
             }
+        },
+        type: {
+            name: 'type',
+            control: {
+                type: 'select'
+            },
+            options: [
+                'number',
+                'currency',
+                'percent'
+            ],
+            defaultValue: 'number',
+            description:
+            'Input counter type. Valid values include number (default), currency, percent.',
+            table: {
+                default: { summary: 'number' },
+                type: { summary: 'string' }
+            }
         }
     },
     args: {
@@ -210,22 +272,23 @@ export default {
     }
 };
 
+
 const Template = (args) => InputCounter(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    label: 'Text label'
+    label: 'Text label',
 };
 export const InlineLabel = Template.bind({});
 InlineLabel.args = {
     label: 'Input with inline label',
     fieldLevelHelp: 'Help text',
-    variant: 'label-inline'
+    variant: 'label-inline',
 };
 export const HiddenLabel = Template.bind({});
 HiddenLabel.args = {
     label: 'Input with hidden label',
-    variant: 'label-hidden'
+    variant: 'label-hidden',
 };
 
 export const ReadOnly = Template.bind({});
@@ -233,7 +296,7 @@ ReadOnly.args = {
     label: 'Read only input',
     fieldLevelHelp: 'The value has been set to 3',
     value: 3,
-    readOnly: true
+    readOnly: true,
 };
 
 export const Disabled = Template.bind({});
@@ -241,7 +304,7 @@ Disabled.args = {
     label: 'Disabled input',
     fieldLevelHelp: 'The value has been set to 16',
     value: 16,
-    disabled: true
+    disabled: true,
 };
 
 export const Validations = Template.bind({});
@@ -252,4 +315,17 @@ Validations.args = {
     max: 6,
     messageWhenRangeOverflow: 'The value needs to be equal or lesser than 6',
     messageWhenRangeUnderflow: 'The value needs to be equal or greater than 3'
+};
+
+export const FractionDigitsTypeCurrency = Template.bind({});
+FractionDigitsTypeCurrency.args = {
+    label: 'Input with fraction digits, type currency and min/max',
+    fieldLevelHelp: 'Max is set to $20, Min is set to $3.50, Step is set to $5.50, Fraction-Digits is 2 decimal spots',
+    type: 'currency',
+    step: 5.50,
+    fractionDigits: 2,
+    min: 3.50,
+    max: 20,
+    messageWhenRangeOverflow: 'The value needs to be equal or lesser than 20',
+    messageWhenRangeUnderflow: 'The value needs to be equal or greater than 3.50',
 };

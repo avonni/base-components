@@ -1,3 +1,35 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { createElement } from 'lwc';
 import DateTimePicker from 'c/dateTimePicker';
 
@@ -425,33 +457,40 @@ describe('DateTimePicker', () => {
         document.body.appendChild(element);
 
         element.startTime = '10:00';
+        const date = new Date(`1970-01-01T10:00`);
 
         return Promise.resolve().then(() => {
-            // cannot change the time zone so there is always a difference of 4 hours
-            const time = element.shadowRoot.querySelectorAll(
+            const times = element.shadowRoot.querySelectorAll(
                 'lightning-formatted-date-time'
             );
-            expect(time[0].value).toContain('14:00');
+            const startTimeDate = new Date(times[0].value);
+            expect(startTimeDate.getHours()).toBe(date.getHours());
+            expect(startTimeDate.getMinutes()).toBe(date.getMinutes());
         });
     });
 
     // end time
+    // Depends on showEndTime and startTime
     it('Date time picker end time', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
         document.body.appendChild(element);
 
-        element.startTime = '10:00';
+        element.startTime = '09:00';
         element.endTime = '11:00';
+        element.showEndTime = true;
+        const date = new Date(`1970-01-01T11:00`);
 
         return Promise.resolve().then(() => {
-            // cannot change the time zone so there is always a difference of 4 hours
-            // time slot duration of 30 min so only two button 14:00 and 14:30
-            const time = element.shadowRoot.querySelectorAll(
-                'lightning-formatted-date-time'
+            const times = element.shadowRoot.querySelectorAll(
+                '.date-time-picker__formatted-end-time'
             );
-            expect(time[1].value).toContain('14:30');
+
+            const endTime = times[times.length - 1].value;
+            const endTimeDate = new Date(endTime);
+            expect(endTimeDate.getHours()).toBe(date.getHours());
+            expect(endTimeDate.getMinutes()).toBe(date.getMinutes());
         });
     });
 
@@ -462,43 +501,16 @@ describe('DateTimePicker', () => {
         });
         document.body.appendChild(element);
 
-        element.startTime = '10:00';
-        element.endTime = '12:00';
         element.timeSlotDuration = '01:00';
 
         return Promise.resolve().then(() => {
-            // cannot change the time zone so there is always a difference of 4 hours
-            // time slot duration of 1 hour so only two button 14:00 and 15:00
-            const time = element.shadowRoot.querySelectorAll(
+            const times = element.shadowRoot.querySelectorAll(
                 'lightning-formatted-date-time'
             );
-            expect(time).toHaveLength(2);
-            expect(time[1].value).toContain('15:00');
-        });
-    });
+            const firstDate = new Date(times[0].value);
+            const secondDate = new Date(times[1].value);
 
-    it('Date time picker time slot duration timeline', () => {
-        const element = createElement('base-date-time-picker', {
-            is: DateTimePicker
-        });
-        document.body.appendChild(element);
-
-        element.startTime = '10:00';
-        element.endTime = '12:00';
-        element.timeSlotDuration = '01:00';
-        element.variant = 'timeline';
-
-        return Promise.resolve().then(() => {
-            // cannot change the time zone so there is always a difference of 4 hours
-            // time slot duration of 1 hour so only two button 14:00 and 15:00
-            const time = element.shadowRoot.querySelectorAll(
-                'lightning-formatted-date-time'
-            );
-            expect(time).toHaveLength(4);
-            expect(time[0].value).toContain('14:00');
-            expect(time[1].value).toContain('14:00');
-            expect(time[2].value).toContain('15:00');
-            expect(time[3].value).toContain('15:00');
+            expect(secondDate.getHours() - firstDate.getHours()).toBe(1);
         });
     });
 
@@ -638,25 +650,39 @@ describe('DateTimePicker', () => {
     });
 
     // show end time
-    it('Date time picker show end time', () => {
+    // Depends on startTime, endTime and timeSlotDuration
+    it('Date time picker show end time = false', () => {
         const element = createElement('base-date-time-picker', {
             is: DateTimePicker
         });
         document.body.appendChild(element);
 
-        element.startTime = '10:00';
-        element.endTime = '12:00';
-        element.timeSlotDuration = '01:00';
-        element.showEndTime = true;
+        element.showEndTime = false;
 
         return Promise.resolve().then(() => {
-            // cannot change the time zone so there is always a difference of 4 hours
-            // time slot duration of 1 hour so only two button 14:00 and 15:00
-            const time = element.shadowRoot.querySelectorAll(
-                'lightning-formatted-date-time'
+            const endTimes = element.shadowRoot.querySelectorAll(
+                '.date-time-picker__formatted-end-time'
             );
-            expect(time).toHaveLength(4);
-            expect(time[3].value).toContain('16:00');
+            expect(endTimes).toHaveLength(0);
+        });
+    });
+
+    it('Date time picker show end time = true', () => {
+        const element = createElement('base-date-time-picker', {
+            is: DateTimePicker
+        });
+        document.body.appendChild(element);
+
+        element.showEndTime = true;
+        element.timeSlotDuration = '01:00';
+        element.startTime = '10:00';
+        element.endTime = '12:00';
+
+        return Promise.resolve().then(() => {
+            const endTimes = element.shadowRoot.querySelectorAll(
+                '.date-time-picker__formatted-end-time'
+            );
+            expect(endTimes).toHaveLength(2);
         });
     });
 
@@ -757,17 +783,16 @@ describe('DateTimePicker', () => {
         });
         document.body.appendChild(element);
 
-        element.max = '2021, 11, 30';
-        element.min = '2021, 12, 01';
-
-        const maxDate = '2021-11-30T05:00:00.000Z';
-        const minDate = '2021-12-01T05:00:00.000Z';
+        const maxDate = new Date(2021, 11, 30);
+        const minDate = new Date(2021, 12, 1);
+        element.max = maxDate;
+        element.min = minDate;
 
         const input = element.shadowRoot.querySelector('lightning-input');
 
         return Promise.resolve().then(() => {
-            expect(input.max).toBe(maxDate);
-            expect(input.min).toBe(minDate);
+            expect(input.max).toBe(maxDate.toISOString());
+            expect(input.min).toBe(minDate.toISOString());
         });
     });
 
@@ -887,7 +912,8 @@ describe('DateTimePicker', () => {
         });
         document.body.appendChild(element);
 
-        element.startTime = '8:00';
+        element.startTime = '08:30';
+        const startTimeDate = new Date(`1970-01-01T08:30`);
         const now = new Date();
         const day = now.getDate();
         const month = now.getMonth();
@@ -908,8 +934,8 @@ describe('DateTimePicker', () => {
             expect(eventDay).toBe(day);
             expect(eventMonth).toBe(month);
             expect(eventYear).toBe(year);
-            expect(eventHour).toBe(8);
-            expect(eventMinutes).toBe(0);
+            expect(eventHour).toBe(startTimeDate.getHours());
+            expect(eventMinutes).toBe(startTimeDate.getMinutes());
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();

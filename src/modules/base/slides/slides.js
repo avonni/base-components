@@ -1,61 +1,224 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
-const validDirections = ['horizontal', 'vertical'];
-const validEffects = ['slide', 'fade', 'cube', 'coverflow', 'flip', 'none'];
-const validButtonIconPositions = ['left', 'right'];
-const validButtonPositions = ['top', 'middle', 'bottom'];
-const validButtonVariants = [
-    'bare',
-    'neutral',
-    'brand',
-    'brand-outline',
-    'inverse',
-    'destructive',
-    'destructive-text',
-    'success'
-];
-const validIndicatorTypes = [
-    'progress-bar',
-    'bullets',
-    'dynamic-bullets',
-    'fractions'
-];
-const validIndicatorPositions = [
-    'top-left',
-    'bottom-left',
-    'top-right',
-    'bottom-right',
-    'top-center',
-    'bottom-center'
-];
+const SLIDES_DIRECTIONS = {
+    valid: ['horizontal', 'vertical'],
+    default: 'horizontal'
+};
+const SLIDES_EFFECTS = {
+    valid: ['slide', 'fade', 'cube', 'coverflow', 'flip', 'none'],
+    default: 'slide'
+};
+const ICON_POSITIONS = {
+    valid: ['left', 'right'],
+    defaultPrevious: 'left',
+    defaultNext: 'right'
+};
+const BUTTON_POSITIONS = {
+    valid: ['top', 'middle', 'bottom'],
+    default: 'middle'
+};
+const BUTTON_VARIANTS = {
+    valid: [
+        'bare',
+        'neutral',
+        'brand',
+        'brand-outline',
+        'inverse',
+        'destructive',
+        'destructive-text',
+        'success'
+    ],
+    default: 'neutral'
+};
 
+const INDICATOR_TYPES = {
+    valid: ['progress-bar', 'bullets', 'dynamic-bullets', 'fractions'],
+    default: 'bullets'
+};
+
+const INDICATOR_POSITIONS = {
+    valid: [
+        'top-left',
+        'bottom-left',
+        'top-right',
+        'bottom-right',
+        'top-center',
+        'bottom-center'
+    ],
+    default: 'bottom-center'
+};
+
+const DEFAULT_SLIDES_PER_VIEW = 1;
+
+const DEFAULT_SPACE_BETWEEN = 0;
+
+const DEFAULT_SPEED = 300;
+
+const DEFAULT_PREVIOUS_BUTTON_ICON_NAME = 'utility:left';
+
+const DEFAULT_NEXT_BUTTON_ICON_NAME = 'utility:right';
+
+const DEFAULT_FRACTION_LABEL = '/';
+
+const DEFAULT_INITIAL_SLIDE = 0
+
+/**
+* @class
+* @descriptor avonni-slides
+* @storyId example-slides--base
+* @public
+*/
 export default class Slides extends LightningElement {
-    @api slidesPerView = 1;
-    @api spaceBetween = 0;
+    /**
+    * Number of slides to be displayed per view.
+    *
+    * @type {number}
+    * @public
+    * @default 1
+    */
+    @api slidesPerView = DEFAULT_SLIDES_PER_VIEW;
+    /**
+    * Distance between slides in px.
+    *
+    * @type {number}
+    * @public
+    * @default 0
+    */
+    @api spaceBetween = DEFAULT_SPACE_BETWEEN;
+    /**
+    * Delay for autoplay.
+    *
+    * @type {number}
+    * @public
+    */
     @api autoplayDelay;
-    @api speed = 300;
-    @api buttonPreviousIconName = 'utility:left';
-    @api buttonPreviousLabel;
-    @api buttonNextIconName = 'utility:right';
-    @api buttonNextLabel;
+    /**
+    * Duration of transition between slides (in ms)
+    *
+    * @type {number}
+    * @public
+    * @default 300
+    */
+    @api speed = DEFAULT_SPEED;
+    /**
+    * The name of an icon to display for the previous button.
+    *
+    * @type {string}
+    * @public
+    * @default utility:left
+    */
+    @api previousButtonIconName = DEFAULT_PREVIOUS_BUTTON_ICON_NAME;
+    /**
+    * Label for the previous button.
+    *
+    * @type {string}
+    * @public
+    */
+    @api previousButtonLabel;
+    /**
+    * The name of an icon to display for the next button.
+    *
+    * @type {string}
+    * @public
+    * @default utility:right
+    */
+    @api nextButtonIconName = DEFAULT_NEXT_BUTTON_ICON_NAME;
+    /**
+    * Label for the next button.
+    *
+    * @type {string}
+    * @public
+    */
+    @api nextButtonLabel;
+    /**
+    * Label displayed in front of fraction. Example: fraction-prefix-label == “Steps” => Steps 1 of 3
+    *
+    * @type {string}
+    * @public
+    */
     @api fractionPrefixLabel;
-    @api fractionLabel = '/';
+    /**
+    * Label displayed between current index and max number of slides. Example: fraction-label == “of” => 1 of 3
+    *
+    * @type {string}
+    * @public
+    * @default \
+    */
+    @api fractionLabel = DEFAULT_FRACTION_LABEL;
+    /**
+    * Slider width 100px,  50% and etc.
+    *
+    * @type {string}
+    * @public
+    * @required For the 'cube' effect
+    */
     @api width;
+    /**
+    * Slider height 100px,  50% and etc.
+    *
+    * @type {string}
+    * @public
+    * @required For the 'cube' effect
+    */
     @api height;
+    /**
+    * Slide width in px. 100, 200 and etc.
+    *
+    * @type {string}
+    * @public
+    */
     @api coverflowSlideWidth;
+    /**
+    * Slide height in px. 100, 200 and etc.
+    *
+    * @type {string}
+    * @public
+    */
     @api coverflowSlideHeight;
 
-    _direction = 'horizontal';
-    _effect = 'slide';
-    _buttonPreviousIconPosition = 'left';
-    _buttonPreviousVariant = 'neutral';
-    _buttonNextIconPosition = 'right';
-    _buttonNextVariant = 'neutral';
-    _buttonPosition = 'middle';
-    _indicatorType = 'bullets';
-    _indicatorPosition = 'bottom-center';
-    _initialSlide = 0;
+    _direction = SLIDES_DIRECTIONS.default;
+    _effect = SLIDES_EFFECTS.default;
+    _previousButtonIconPosition = ICON_POSITIONS.defaultPrevious;
+    _previousButtonVariant = BUTTON_VARIANTS.default;
+    _nextButtonIconPosition = ICON_POSITIONS.defaultNext;
+    _nextButtonVariant = BUTTON_VARIANTS.default;
+    _buttonPosition = BUTTON_POSITIONS.default;
+    _indicatorType = INDICATOR_TYPES.default;
+    _indicatorPosition = INDICATOR_POSITIONS.default;
+    _initialSlide = DEFAULT_INITIAL_SLIDE;
 
     _navigation = false;
     _buttonInner = false;
@@ -291,112 +454,182 @@ export default class Slides extends LightningElement {
         }
     }
 
+    /**
+    * Could be 'horizontal' or 'vertical' (for vertical slider).
+    *
+    * @type {string}
+    * @public
+    * @default horizontal
+    */
     @api get direction() {
         return this._direction;
     }
 
     set direction(direction) {
         this._direction = normalizeString(direction, {
-            fallbackValue: 'horizontal',
-            validValues: validDirections
+            fallbackValue: SLIDES_DIRECTIONS.default,
+            validValues: SLIDES_DIRECTIONS.valid
         });
     }
 
+    /**
+    * Transition effect. Could be "slide", "fade", "cube", "coverflow", "flip" or “none”.
+    *
+    * @type {string}
+    * @public
+    * @default slide
+    */
     @api get effect() {
         return this._effect;
     }
 
     set effect(effect) {
         this._effect = normalizeString(effect, {
-            fallbackValue: 'slide',
-            validValues: validEffects
+            fallbackValue: SLIDES_EFFECTS.default,
+            validValues: SLIDES_EFFECTS.valid
         });
     }
 
-    @api get buttonPreviousIconPosition() {
-        return this._buttonPreviousIconPosition;
+    /**
+    * Describes the position of the icon with respect to body. Options include left and right.
+    *
+    * @type {string}
+    * @public
+    * @default left
+    */
+    @api get previousButtonIconPosition() {
+        return this._previousButtonIconPosition;
     }
 
-    set buttonPreviousIconPosition(position) {
-        this._buttonPreviousIconPosition = normalizeString(position, {
-            fallbackValue: 'left',
-            validValues: validButtonIconPositions
+    set previousButtonIconPosition(position) {
+        this._previousButtonIconPosition = normalizeString(position, {
+            fallbackValue: ICON_POSITIONS.defaultPrevious,
+            validValues: ICON_POSITIONS.valid
         });
     }
 
-    @api get buttonPreviousVariant() {
-        return this._buttonPreviousVariant;
+    /**
+    * Change the appearance of the previous button. Valid values include bare, neutral, brand, brand-outline, inverse, destructive, destructive-text, success.
+    *
+    * @type {string}
+    * @public
+    * @default neutral
+    */
+    @api get previousButtonVariant() {
+        return this._previousButtonVariant;
     }
 
-    set buttonPreviousVariant(variant) {
-        this._buttonPreviousVariant = normalizeString(variant, {
-            fallbackValue: 'neutral',
-            validValues: validButtonVariants
+    set previousButtonVariant(variant) {
+        this._previousButtonVariant = normalizeString(variant, {
+            fallbackValue: BUTTON_VARIANTS.default,
+            validValues: BUTTON_VARIANTS.valid
         });
     }
 
-    @api get buttonNextIconPosition() {
-        return this._buttonNextIconPosition;
+    /**
+    * Describes the position of the icon with respect to body. Options include left and right.
+    *
+    * @type {string}
+    * @public
+    * @default right
+    */
+    @api get nextButtonIconPosition() {
+        return this._nextButtonIconPosition;
     }
 
-    set buttonNextIconPosition(position) {
-        this._buttonNextIconPosition = normalizeString(position, {
-            fallbackValue: 'right',
-            validValues: validButtonIconPositions
+    set nextButtonIconPosition(position) {
+        this._nextButtonIconPosition = normalizeString(position, {
+            fallbackValue: ICON_POSITIONS.defaultNext,
+            validValues: ICON_POSITIONS.valid
         });
     }
 
-    @api get buttonNextVariant() {
-        return this._buttonNextVariant;
+    /**
+    * Change the appearance of the next button. Valid values include bare, neutral, brand, brand-outline, inverse, destructive, destructive-text, success.
+    *
+    * @type {string}
+    * @public
+    * @default neutral
+    */
+    @api get nextButtonVariant() {
+        return this._nextButtonVariant;
     }
 
-    set buttonNextVariant(variant) {
-        this._buttonNextVariant = normalizeString(variant, {
-            fallbackValue: 'neutral',
-            validValues: validButtonVariants
+    set nextButtonVariant(variant) {
+        this._nextButtonVariant = normalizeString(variant, {
+            fallbackValue: BUTTON_VARIANTS.default,
+            validValues: BUTTON_VARIANTS.valid
         });
     }
 
+    /**
+    * Set the position of the button. Valid values include top, middle, bottom.
+    *
+    * @type {string}
+    * @public
+    * @default middle
+    */
     @api get buttonPosition() {
         return this._buttonPosition;
     }
 
     set buttonPosition(position) {
         this._buttonPosition = normalizeString(position, {
-            fallbackValue: 'middle',
-            validValues: validButtonPositions
+            fallbackValue: BUTTON_POSITIONS.default,
+            validValues: BUTTON_POSITIONS.valid
         });
 
         const wrapperClasses = Array.from(this.classList);
-        const currentClass = wrapperClasses.find(wrapperClass => {
-            return wrapperClass.match(/avonni-flex-(middle|top|bottom)/)
+        const currentClass = wrapperClasses.find((wrapperClass) => {
+            return wrapperClass.match(/avonni-flex-(middle|top|bottom)/);
         });
         this.classList.remove(currentClass);
         this.classList.add(`avonni-flex-${this._buttonPosition}`);
     }
 
+    /**
+    * Set the indicator’s type. Valid values include progress-bar, bullets, dynamic-bullets, fractions.
+    *
+    * @type {string}
+    * @public
+    * @default bullets
+    */
     @api get indicatorType() {
         return this._indicatorType;
     }
 
     set indicatorType(type) {
         this._indicatorType = normalizeString(type, {
-            fallbackValue: 'bullets',
-            validValues: validIndicatorTypes
+            fallbackValue: INDICATOR_TYPES.default,
+            validValues: INDICATOR_TYPES.valid
         });
     }
 
+    /**
+    * Position of the indicators. Valid values include top-left, bottom-left, top-right, bottom-right, top-center, bottom-center.
+    *
+    * @type {string}
+    * @public
+    * @default bottom-center
+    */
     @api get indicatorPosition() {
         return this._indicatorPosition;
     }
 
     set indicatorPosition(position) {
         this._indicatorPosition = normalizeString(position, {
-            fallbackValue: 'bottom-center',
-            validValues: validIndicatorPositions
+            fallbackValue: INDICATOR_POSITIONS.default,
+            validValues: INDICATOR_POSITIONS.valid
         });
     }
 
+    /**
+    * Index number of initial slide.
+    *
+    * @type {number}
+    * @public
+    * @default 0
+    */
     @api
     get initialSlide() {
         return this._initialSlide;
@@ -407,6 +640,13 @@ export default class Slides extends LightningElement {
         this.slide = Number(this.initialSlide);
     }
 
+    /**
+    * If present, display previous and next buttons.
+    *
+    * @type {boolean}
+    * @public
+    * @default false
+    */
     @api get navigation() {
         return this._navigation;
     }
@@ -415,6 +655,13 @@ export default class Slides extends LightningElement {
         this._navigation = normalizeBoolean(value);
     }
 
+    /**
+    * If present, display button inside slides.
+    *
+    * @type {boolean}
+    * @public
+    * @default false
+    */
     @api get buttonInner() {
         return this._buttonInner;
     }
@@ -429,6 +676,13 @@ export default class Slides extends LightningElement {
         }
     }
 
+    /**
+    * If present, display the indicator. The indicator can be a progress bar, bullet, dynamic bullet or fraction.
+    *
+    * @type {boolean}
+    * @public
+    * @default false
+    */
     @api get indicators() {
         return this._indicators;
     }
@@ -437,6 +691,13 @@ export default class Slides extends LightningElement {
         this._indicators = normalizeBoolean(value);
     }
 
+    /**
+    * If present, display the indicator inside the slider.
+    *
+    * @type {boolean}
+    * @public
+    * @default false
+    */
     @api get indicatorInner() {
         return this._indicatorInner;
     }
@@ -445,6 +706,13 @@ export default class Slides extends LightningElement {
         this._indicatorInner = normalizeBoolean(value);
     }
 
+    /**
+    * Set to true to enable continuous loop mode.
+    *
+    * @type {boolean}
+    * @public
+    * @default false
+    */
     @api get loop() {
         return this._loop;
     }
@@ -453,48 +721,103 @@ export default class Slides extends LightningElement {
         this._loop = normalizeBoolean(value);
     }
 
+    /**
+     * Verify if the direction is vertical.
+     * 
+     * @type {boolean}
+     */
     get isVertical() {
         return this.direction === 'vertical';
     }
 
+    /**
+     * Adjust slide display values based on orientation.
+     * 
+     * @type {number} 
+     */
     get translateValue() {
         let size = this.isVertical ? this.slideHeight : this.slideWidth;
         return -1 * this.slidePosition * (size + this.spaceBetween);
     }
 
+    /**
+     * Progress styling %.
+     * 
+     * @type {string}
+     */
     get progressValue() {
         let value = ((this.slide + 1) / this.slides) * 100;
         return `${value > 100 ? 100 : value}%`;
     }
 
+    /**
+     * Verify if the left button is disabled.
+     * 
+     * @type {string}
+     */
     get leftButtonDisabled() {
         return this.slide === 0 && !this.loop;
     }
 
+    /**
+    * Verify if the right button is disabled.
+    * 
+    * @type {string}
+    */
     get rightButtonDisabled() {
         return this.slide > this.slides - this.slidesPerView - 1 && !this.loop;
     }
 
+    /**
+     * Verify showing the progress bar.
+     * 
+     * @type {boolean}
+     */
     get showProgressBar() {
         return this.indicators && this.indicatorType === 'progress-bar';
     }
 
+    /**
+     * Verify showing fractions.
+     * 
+     * @type {boolean}
+     */
     get showFractions() {
         return this.indicators && this.indicatorType === 'fractions';
     }
 
+    /**
+     * Verify showing bullets.
+     * 
+     * @type {boolean}
+     */
     get showBullets() {
         return this.indicators && this.indicatorType === 'bullets';
     }
 
+    /**
+     * Verify show dynamic bullets.
+     * 
+     * @type {boolean}
+     */
     get showDynamicBullets() {
         return this.indicators && this.indicatorType === 'dynamic-bullets';
     }
 
+    /**
+     * Verify if bullets displayed.
+     * 
+     * @type {boolean}
+     */
     get isBullets() {
         return this.showBullets || this.showDynamicBullets;
     }
 
+    /**
+     * Dynamic Bullets index method.
+     * 
+     * @type {object}
+     */
     get dynamicBullets() {
         let startIndex = this.slide < 3 ? 0 : this.slide - 2;
         let endIndex =
@@ -504,22 +827,42 @@ export default class Slides extends LightningElement {
         return bullets;
     }
 
+    /**
+     * Check whether the indicator is bullets format or dynamicBullets.
+     * 
+     * @type {string}
+     */
     get bulletList() {
         return this.indicatorType === 'bullets'
             ? this.bullets
             : this.dynamicBullets;
     }
 
+    /**
+     * Fractions styling.
+     * 
+     * @type {string}
+     */
     get fractions() {
         return `${this.fractionPrefixLabel ? this.fractionPrefixLabel : ''} ${
             this.slide + 1
         } ${this.fractionLabel} ${this.slides}`;
     }
 
+    /**
+     * Return the slide position.
+     * 
+     * @type {boolean}
+     */
     get slidePosition() {
         return this.loop ? this.slide + this.slides : this.slide;
     }
 
+    /**
+     * Go to the first slide.
+     * 
+     * @public
+     */
     @api
     first() {
         this.slide = this.loop ? this.slides : 0;
@@ -527,6 +870,11 @@ export default class Slides extends LightningElement {
         this.updateSlides();
     }
 
+    /**
+     * Go to the last slide.
+     * 
+     * @public
+     */
     @api
     last() {
         this.slide =
@@ -535,6 +883,11 @@ export default class Slides extends LightningElement {
         this.updateSlides();
     }
 
+    /**
+     * Go to the next slide.
+     * 
+     * @public
+     */
     @api
     next() {
         this.slide = this.slide + 1;
@@ -542,6 +895,11 @@ export default class Slides extends LightningElement {
         this.updateSlides();
     }
 
+    /**
+     * Go to the previous slide.
+     * 
+     * @public
+     */
     @api
     previous() {
         this.slide = this.slide - 1;
@@ -549,11 +907,21 @@ export default class Slides extends LightningElement {
         this.updateSlides();
     }
 
+    /**
+     * Pause the slide cycling.
+     * 
+     * @public
+     */
     @api
     pause() {
         this.autoplayPause = !this.autoplayPause;
     }
 
+    /**
+     * Go to slide specified by index.
+     * 
+     * @param {number} value index of slide.
+     */
     @api
     setSlide(value) {
         this.slide = this.loop ? value + this.slides : value;
@@ -561,6 +929,9 @@ export default class Slides extends LightningElement {
         this.updateSlides();
     }
 
+    /**
+     * Initialize slides attributes.
+     */
     initAttributes() {
         this.containerWidth = this.container.offsetWidth;
         this.containerHeight = this.container.offsetHeight;
@@ -604,6 +975,12 @@ export default class Slides extends LightningElement {
         }
     }
 
+    /**
+     * Initialize fade transition style attributes.
+     * 
+     * @param {Element} slide 
+     * @param {number} index 
+     */
     initFadeAttributes(slide, index) {
         let x = -this.slideWidth * index;
         let y = -this.slideHeight * index;
@@ -621,6 +998,14 @@ export default class Slides extends LightningElement {
         }
     }
 
+    /**
+     * Initialize cube attributes.
+     * 
+     * @param {Element} slide 
+     * @param {number} index 
+     * @param {number} cube
+     * @param {number} cubeIndex 
+     */
     initCubeAttributes(slide, index, cube, cubeIndex) {
         let x;
         let y;
@@ -665,6 +1050,11 @@ export default class Slides extends LightningElement {
         slide.style.webkitBackfaceVisibility = 'hidden';
     }
 
+    /**
+     * Initialize Indicators styling based on selected attributes.
+     * 
+     * @param {Element} mainContainer 
+     */
     initIndicators(mainContainer) {
         if (this.indicatorType === 'progress-bar') {
             this.template.querySelector(
@@ -720,6 +1110,13 @@ export default class Slides extends LightningElement {
         }
     }
 
+    /**
+     * Compute transform value for the slide.
+     * 
+     * @param {number} value 
+     * @param {number} translateX 
+     * @param {number} translateY 
+     */
     setTransformValue(value, translateX, translateY) {
         if (
             this.effect === 'slide' ||
@@ -742,6 +1139,12 @@ export default class Slides extends LightningElement {
         }
     }
 
+    /**
+     * Set the slide opacity value.
+     * 
+     * @param {number} value 
+     * @param {Element} slide 
+     */
     setOpacityValue(value, slide) {
         let opacityDiff = Number(value) + slide;
         let sign = Math.sign(opacityDiff);
@@ -769,6 +1172,11 @@ export default class Slides extends LightningElement {
         }
     }
 
+    /**
+     * Set the slide visibility.
+     * 
+     * @param {number} slide 
+     */
     setSlideVisibility(slide) {
         let previusSlide = slide - 1 < 0 && !this.loop ? null : slide - 1;
         let nextSlide = slide + 1 < this.slides || this.loop ? slide + 1 : null;
@@ -788,6 +1196,11 @@ export default class Slides extends LightningElement {
         }
     }
 
+    /**
+     * Set the coverflow style for the slide.
+     * 
+     * @param {number} value 
+     */
     setCoverflowStyle(value) {
         this.slideList.forEach((slide, i) => {
             let index = i - value;
@@ -802,6 +1215,9 @@ export default class Slides extends LightningElement {
         });
     }
 
+    /**
+     * Set the flip style for the slide.
+     */
     setFlipStyle() {
         this.slideList.forEach((slide, index) => {
             let x = -index * this.slideWidth;
@@ -818,6 +1234,11 @@ export default class Slides extends LightningElement {
         });
     }
 
+    /**
+     * Click on bullet event handler.
+     * 
+     * @param {Event} event 
+     */
     handlerBulletClick(event) {
         event.preventDefault();
         this.slide = Number(event.target.getAttribute('slide-id'));
@@ -825,11 +1246,21 @@ export default class Slides extends LightningElement {
         this.updateSlides();
     }
 
+    /**
+     * Mouse down event handler.
+     * 
+     * @param {Event} event 
+     */
     handlerMouseDown(event) {
         this.isMouseDown = true;
         this.startPosition = this.isVertical ? event.clientY : event.clientX;
     }
 
+    /**
+     * Mouse up event handler.
+     * 
+     * @param {Event} event 
+     */
     handlerMouseUp(event) {
         if (this.isMouseDown) {
             let size = this.isVertical ? this.slideHeight : this.slideWidth;
@@ -864,6 +1295,11 @@ export default class Slides extends LightningElement {
         }
     }
 
+    /**
+     * Mouse move event handler.
+     * 
+     * @param {Event} event 
+     */
     handlerMouseMove(event) {
         event.preventDefault();
 
@@ -1008,6 +1444,9 @@ export default class Slides extends LightningElement {
         }
     }
 
+    /**
+     * Update slides and bullets display.
+     */
     updateSlides() {
         if (this.showBullets || this.showDynamicBullets) {
             this.template
@@ -1074,6 +1513,9 @@ export default class Slides extends LightningElement {
         }
     }
 
+    /**
+     * Update slide speed.
+     */
     updateSpeed() {
         this.container.style.setProperty('--speed', this.speed);
 
@@ -1082,6 +1524,9 @@ export default class Slides extends LightningElement {
         });
     }
 
+    /**
+     * Reassign slide.
+     */
     reassignSlide() {
         if (this.slide < 0) {
             this.slide = this.slide + this.slides;
@@ -1101,7 +1546,18 @@ export default class Slides extends LightningElement {
         }, this.speed);
     }
 
+    /**
+     * Change event dispatcher.
+     */
     dispatchChange() {
+        /**
+        * The event fired when the slide changed.
+        *
+        * @event
+        * @name change
+        * @param {string} value The new slide.
+        * @public
+        */
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {

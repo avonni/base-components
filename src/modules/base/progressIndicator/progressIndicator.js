@@ -1,20 +1,64 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { LightningElement, api } from 'lwc';
 import { normalizeString, normalizeArray } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-const TYPES = { valid: ['base', 'arrow'], default: 'base' };
+const PROGRESS_INDICATOR_TYPES = { valid: ['base', 'arrow'], default: 'base' };
 
-const VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
+const INDICATOR_VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
 
+/**
+ * @class
+ * @descriptor avonni-progress-indicator
+ * @storyId example-progress-indicator--base-with-popover-hidden
+ * @public
+ */
 export default class ProgressIndicator extends LightningElement {
+    /**
+     * Set current-step to match the value attribute of one of progress-step components.
+     *
+     * @type {string}
+     * @public
+     */
     @api currentStep;
 
     _completedSteps = [];
     _disabledSteps = [];
     _warningSteps = [];
     _errorSteps = [];
-    _variant = 'base';
-    _type = 'base';
+    _variant = PROGRESS_INDICATOR_TYPES.default;
+    _type = INDICATOR_VARIANTS.default;
     _initialRender = true;
     _steps = [];
 
@@ -25,6 +69,12 @@ export default class ProgressIndicator extends LightningElement {
         this.updateCurrentStep();
     }
 
+    /**
+     * All completed steps values.
+     *
+     * @type {string[]}
+     * @public
+     */
     @api
     get completedSteps() {
         return this._completedSteps;
@@ -33,6 +83,12 @@ export default class ProgressIndicator extends LightningElement {
         this._completedSteps = normalizeArray(value);
     }
 
+    /**
+     * All disabled steps values.
+     *
+     * @type {string[]}
+     * @public
+     */
     @api
     get disabledSteps() {
         return this._disabledSteps;
@@ -41,6 +97,12 @@ export default class ProgressIndicator extends LightningElement {
         this._disabledSteps = normalizeArray(value);
     }
 
+    /**
+     * All warning steps values.
+     *
+     * @type {string[]}
+     * @public
+     */
     @api
     get warningSteps() {
         return this._warningSteps;
@@ -49,6 +111,12 @@ export default class ProgressIndicator extends LightningElement {
         this._warningSteps = normalizeArray(value);
     }
 
+    /**
+     * All error steps values.
+     *
+     * @type {string[]}
+     * @public
+     */
     @api
     get errorSteps() {
         return this._errorSteps;
@@ -57,6 +125,14 @@ export default class ProgressIndicator extends LightningElement {
         this._errorSteps = normalizeArray(value);
     }
 
+    /**
+     * Changes the appearance of the progress indicator for the base type only.
+     * Valid values are base or shaded. The shaded variant adds a light gray border to the step indicators.
+     *
+     * @type {string}
+     * @public
+     * @default base
+     */
     @api
     get variant() {
         return this._variant;
@@ -64,11 +140,18 @@ export default class ProgressIndicator extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: VARIANTS.default,
-            validValues: VARIANTS.valid
+            fallbackValue: INDICATOR_VARIANTS.default,
+            validValues: INDICATOR_VARIANTS.valid
         });
     }
 
+    /**
+     * Changes the visual pattern of the indicator. Valid values are base.
+     *
+     * @type {string}
+     * @public
+     * @default base
+     */
     @api
     get type() {
         return this._type;
@@ -76,11 +159,17 @@ export default class ProgressIndicator extends LightningElement {
 
     set type(type) {
         this._type = normalizeString(type, {
-            fallbackValue: TYPES.default,
-            validValues: TYPES.valid
+            fallbackValue: PROGRESS_INDICATOR_TYPES.default,
+            validValues: PROGRESS_INDICATOR_TYPES.valid
         });
     }
 
+    /**
+     * Array of steps attributes.
+     *
+     * @type {object[]}
+     * @public
+     */
     @api
     get steps() {
         return this._steps;
@@ -90,6 +179,11 @@ export default class ProgressIndicator extends LightningElement {
         this._steps = normalizeArray(value);
     }
 
+    /**
+     * Computed Outer class styling.
+     *
+     * @type {string}
+     */
     get computedOuterClass() {
         return classSet('slds-progress slds-progress_horizontal')
             .add({
@@ -99,13 +193,20 @@ export default class ProgressIndicator extends LightningElement {
             .toString();
     }
 
-    // Set what type of step (active, completed, warning, error, disabled)
+    /**
+     * Set what type of step (active, completed, warning, error, disabled).
+     *
+     * @returns {Object[]}
+     */
     getSteps() {
         return Array.from(
             this.template.querySelectorAll('c-primitive-progress-step')
         );
     }
 
+    /**
+     * Update current step value.
+     */
     updateCurrentStep() {
         const steps = this.getSteps();
         steps.forEach((step) => {
@@ -115,6 +216,9 @@ export default class ProgressIndicator extends LightningElement {
         });
     }
 
+    /**
+     * Update step value if error.
+     */
     updateErrorSteps() {
         const steps = this.getSteps();
         steps.forEach((step) => {
@@ -127,6 +231,9 @@ export default class ProgressIndicator extends LightningElement {
         });
     }
 
+    /**
+     * Update step with icon and warning.
+     */
     updateWarningSteps() {
         const steps = this.getSteps();
         steps.forEach((step) => {
@@ -143,6 +250,9 @@ export default class ProgressIndicator extends LightningElement {
         });
     }
 
+    /**
+     * Update completed steps with icon and class.
+     */
     updateCompletedSteps() {
         const steps = this.getSteps();
         steps.forEach((step) => {
@@ -155,31 +265,101 @@ export default class ProgressIndicator extends LightningElement {
         });
     }
 
+    /**
+     * Click on step dispatcher.
+     */
     dispatchStepClick() {
+        /**
+         * Event that fires when clicking on step.
+         *
+         * @event
+         * @name stepclick
+         * @public
+         */
         this.dispatchEvent(new CustomEvent('stepclick'));
     }
 
+    /**
+     * Blur step dispatcher.
+     */
     dispatchStepBlur() {
+        /**
+         * Event that fires when step loses focus.
+         *
+         * @event
+         * @name stepblur
+         * @public
+         */
         this.dispatchEvent(new CustomEvent('stepblur'));
     }
 
+    /**
+     * Focus on step dispatcher.
+     */
     dispatchStepFocus() {
+        /**
+         * Event that fires when focusing on step.
+         *
+         * @event
+         * @name stepfocus
+         * @public
+         */
         this.dispatchEvent(new CustomEvent('stepfocus'));
     }
 
+    /**
+     * Mouse Enter step dispatcher.
+     */
     dispatchStepMouseEnter() {
+        /**
+         * Event that fires when mouse enters step.
+         *
+         * @event
+         * @name stepmouseenter
+         * @public
+         */
         this.dispatchEvent(new CustomEvent('stepmouseenter'));
     }
 
+    /**
+     * Mouse Leave step dispatcher.
+     */
     dispatchStepMouseLeave() {
+        /**
+         * Event that fires when mouse leaves step.
+         *
+         * @event
+         * @name stepmouseleave
+         * @public
+         */
         this.dispatchEvent(new CustomEvent('stepmouseleave'));
     }
 
+    /**
+     * Click on step button dispatcher.
+     */
     dispatchStepButtonClick() {
+        /**
+         * Event that fires when clicking on step button.
+         *
+         * @event
+         * @name stepbuttonclick
+         * @public
+         */
         this.dispatchEvent(new CustomEvent('stepbuttonclick'));
     }
 
+    /**
+     * Click on step popover dispatcher.
+     */
     dispatchStepPopoverClick() {
+        /**
+         * Event that fires when clicking on step popover.
+         *
+         * @event
+         * @name stepclick
+         * @public
+         */
         this.dispatchEvent(new CustomEvent('steppopoverclick'));
     }
 }

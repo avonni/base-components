@@ -1,3 +1,35 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { createElement } from 'lwc';
 import InputCounter from 'c/inputCounter';
 
@@ -38,13 +70,15 @@ describe('Input Counter', () => {
         expect(element.max).toBeUndefined();
         expect(element.min).toBeUndefined();
         expect(element.step).toBe(1);
-        expect(element.value).toBeUndefined();
+        expect(element.value).toBeNull();
         expect(element.variant).toBe('standard');
         expect(element.disabled).toBeFalsy();
         expect(element.readOnly).toBeFalsy();
         expect(element.required).toBeFalsy();
         expect(element.fieldLevelHelp).toBeUndefined();
         expect(element.accessKey).toBeUndefined();
+        expect(element.type).toBe('number');
+        expect(element.fractionDigits).toBeUndefined();
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -165,11 +199,10 @@ describe('Input Counter', () => {
         });
         document.body.appendChild(element);
 
-        element.max = 5;
+        element.max = 20;
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
-            expect(input.max).toBe(5);
+            expect(element.max).toBe(20);
         });
     });
 
@@ -183,13 +216,12 @@ describe('Input Counter', () => {
         element.min = 5;
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
-            expect(input.min).toBe(5);
+            expect(element.min).toBe(5);
         });
     });
 
     // step
-    it('Input Counter step', () => {
+    it('Input Counter step // no input-step given - defaults to 1', () => {
         const element = createElement('base-input-counter', {
             is: InputCounter
         });
@@ -197,11 +229,12 @@ describe('Input Counter', () => {
 
         element.step = 5;
         element.value = 0;
+        element.fractionDigits = null;
         const input = element.shadowRoot.querySelector('lightning-input');
 
         return Promise.resolve()
             .then(() => {
-                expect(input.step).toBe(5);
+                expect(input.step).toBe(1);
                 expect(element.value).toBe(0);
             })
             .then(() => {
@@ -210,6 +243,82 @@ describe('Input Counter', () => {
                 );
                 addButton.click();
                 expect(element.value).toBe(5);
+            });
+    });
+
+    it('Input Counter step no decimal // input-step 0.01', () => {
+        const element = createElement('base-input-counter', {
+            is: InputCounter
+        });
+        document.body.appendChild(element);
+
+        element.step = 5;
+        element.value = 0;
+        element.fractionDigits = 2;
+        const input = element.shadowRoot.querySelector('lightning-input');
+
+        return Promise.resolve()
+            .then(() => {
+                expect(input.step).toBe(0.01);
+                expect(element.value).toBe(0);
+            })
+            .then(() => {
+                const addButton = element.shadowRoot.querySelector(
+                    "lightning-button-icon[title='Increment counter']"
+                );
+                addButton.click();
+                expect(element.value).toBe(5);
+            });
+    });
+
+    it('Input Counter step decimal // input-step 0.01', () => {
+        const element = createElement('base-input-counter', {
+            is: InputCounter
+        });
+        document.body.appendChild(element);
+
+        element.step = 5.55;
+        element.value = 0;
+        element.fractionDigits = 2;
+        const input = element.shadowRoot.querySelector('lightning-input');
+
+        return Promise.resolve()
+            .then(() => {
+                expect(input.step).toBe(0.01);
+                expect(element.value).toBe(0);
+            })
+            .then(() => {
+                const addButton = element.shadowRoot.querySelector(
+                    "lightning-button-icon[title='Increment counter']"
+                );
+                addButton.click();
+                expect(element.value).toBe(5.55);
+            });
+    });
+
+    // Precision Handler
+    it('Input Counter Precision step decimal // input-step', () => {
+        const element = createElement('base-input-counter', {
+            is: InputCounter
+        });
+        document.body.appendChild(element);
+
+        element.step = 55.3658;
+        element.value = 1256.789;
+        element.fractionDigits = 3;
+        const input = element.shadowRoot.querySelector('lightning-input');
+
+        return Promise.resolve()
+            .then(() => {
+                expect(input.step).toBe(0.001);
+                expect(element.value).toBe(1256.789);
+            })
+            .then(() => {
+                const addButton = element.shadowRoot.querySelector(
+                    "lightning-button-icon[title='Increment counter']"
+                );
+                addButton.click();
+                expect(element.value).toBe(1312.155);
             });
     });
 
@@ -236,6 +345,49 @@ describe('Input Counter', () => {
                 minus.click();
                 expect(element.value).toBe(4);
             });
+    });
+
+    // type
+    it('Input Counter number', () => {
+        const element = createElement('base-input-counter', {
+            is: InputCounter
+        });
+        document.body.appendChild(element);
+
+        element.type = 'number';
+
+        return Promise.resolve().then(() => {
+            const input = element.shadowRoot.querySelector('lightning-input');
+            expect(input.formatter).toBe('number');
+        });
+    });
+
+    it('Input Counter percent', () => {
+        const element = createElement('base-input-counter', {
+            is: InputCounter
+        });
+        document.body.appendChild(element);
+
+        element.type = 'percent';
+
+        return Promise.resolve().then(() => {
+            const input = element.shadowRoot.querySelector('lightning-input');
+            expect(input.formatter).toBe('percent');
+        });
+    });
+
+    it('Input Counter currency', () => {
+        const element = createElement('base-input-counter', {
+            is: InputCounter
+        });
+        document.body.appendChild(element);
+
+        element.type = 'currency';
+
+        return Promise.resolve().then(() => {
+            const input = element.shadowRoot.querySelector('lightning-input');
+            expect(input.formatter).toBe('currency');
+        });
     });
 
     // disabled
@@ -328,7 +480,7 @@ describe('Input Counter', () => {
     /* ----- EVENTS ----- */
 
     // Input counter change
-    it('Input counter change event', () => {
+    it('Input counter change event // decrement defaults', () => {
         const element = createElement('base-input-counter', {
             is: InputCounter
         });
@@ -348,5 +500,183 @@ describe('Input Counter', () => {
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
+    });
+
+    it('Input counter change event // decrement to Min floor', () => {
+        const element = createElement('base-input-counter', {
+            is: InputCounter
+        });
+        document.body.appendChild(element);
+
+        element.min = 5;
+        element.value = 10;
+        element.step = 6;
+
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                'lightning-button-icon'
+            );
+            button.click();
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.value).toBe(5);
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    it('Input counter change event // decrement to Max ceiling', () => {
+        const element = createElement('base-input-counter', {
+            is: InputCounter
+        });
+        document.body.appendChild(element);
+
+        element.max = 20;
+        element.value = 25;
+        element.step = 6;
+
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                'lightning-button-icon'
+            );
+            button.click();
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.value).toBe(20);
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    it('Input counter change event // increment defaults', () => {
+        const element = createElement('base-input-counter', {
+            is: InputCounter
+        });
+        document.body.appendChild(element);
+
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelectorAll(
+                'lightning-button-icon'
+            );
+            button[1].click();
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.value).toBe(1);
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    it('Input counter test Max ceiling on increment', () => {
+        const element = createElement('base-input-counter', {
+            is: InputCounter
+        });
+        document.body.appendChild(element);
+
+        element.max = 5;
+        element.value = 0;
+        element.step = 6;
+
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelectorAll(
+                'lightning-button-icon'
+            );
+            button[1].click();
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.value).toBe(5);
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    it('Input counter test under Min floor on increment', () => {
+        const element = createElement('base-input-counter', {
+            is: InputCounter
+        });
+        document.body.appendChild(element);
+
+        element.min = 5;
+        element.value = 0;
+        element.step = 6;
+
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelectorAll(
+                'lightning-button-icon'
+            );
+            button[1].click();
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.value).toBe(5);
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    it('Input counter test Max and value unchanged on increment', () => {
+        const element = createElement('base-input-counter', {
+            is: InputCounter
+        });
+        document.body.appendChild(element);
+
+        element.max = 5;
+        element.value = 5;
+        element.step = 6;
+        element.messageWhenRangeOverflow = 'Maximum';
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelectorAll(
+                    'lightning-button-icon'
+                );
+                button[1].click();
+            })
+            .then(() => {
+                const input = element.shadowRoot.querySelector(
+                    'lightning-input'
+                );
+                expect(input.value).toBe(5);
+            });
+    });
+
+    it('Input counter test Min and value unchanged on decrement', () => {
+        const element = createElement('base-input-counter', {
+            is: InputCounter
+        });
+        document.body.appendChild(element);
+
+        element.min = 5;
+        element.value = 5;
+        element.step = 6;
+        element.messageWhenRangeOverflow = 'Maximum';
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelectorAll(
+                    'lightning-button-icon'
+                );
+                button[0].click();
+            })
+            .then(() => {
+                const input = element.shadowRoot.querySelector(
+                    'lightning-input'
+                );
+                expect(input.value).toBe(5);
+            });
     });
 });

@@ -1,3 +1,35 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { createElement } from 'lwc';
 import Slides from 'c/slides';
 
@@ -30,15 +62,15 @@ describe('Slides', () => {
 
         expect(element.autoplayDelay).toBeUndefined();
         expect(element.buttonInner).toBeFalsy();
-        expect(element.buttonNextIconName).toBe('utility:right');
-        expect(element.buttonNextIconPosition).toBe('right');
-        expect(element.buttonNextLabel).toBeUndefined();
-        expect(element.buttonNextVariant).toBe('neutral');
+        expect(element.nextButtonIconName).toBe('utility:right');
+        expect(element.nextButtonIconPosition).toBe('right');
+        expect(element.nextButtonLabel).toBeUndefined();
+        expect(element.nextButtonVariant).toBe('neutral');
         expect(element.buttonPosition).toBe('middle');
-        expect(element.buttonPreviousIconName).toBe('utility:left');
-        expect(element.buttonPreviousIconPosition).toBe('left');
-        expect(element.buttonPreviousLabel).toBeUndefined();
-        expect(element.buttonPreviousVariant).toBe('neutral');
+        expect(element.previousButtonIconName).toBe('utility:left');
+        expect(element.previousButtonIconPosition).toBe('left');
+        expect(element.previousButtonLabel).toBeUndefined();
+        expect(element.previousButtonVariant).toBe('neutral');
         expect(element.coverflowSlideHeight).toBeUndefined();
         expect(element.coverflowSlideWidth).toBeUndefined();
         expect(element.direction).toBe('horizontal');
@@ -89,13 +121,13 @@ describe('Slides', () => {
 
     // button-next-icon-name
     // Depends on navigation
-    it('buttonNextIconName', () => {
+    it('nextButtonIconName', () => {
         const element = createElement('base-slides', {
             is: Slides
         });
 
         document.body.appendChild(element);
-        element.buttonNextIconName = 'utility:apps';
+        element.nextButtonIconName = 'utility:apps';
         element.navigation = true;
 
         return Promise.resolve().then(() => {
@@ -108,13 +140,13 @@ describe('Slides', () => {
 
     // button-next-icon-position
     // Depends on navigation
-    it('buttonNextIconPosition', () => {
+    it('nextButtonIconPosition', () => {
         const element = createElement('base-slides', {
             is: Slides
         });
 
         document.body.appendChild(element);
-        element.buttonNextIconPosition = 'left';
+        element.nextButtonIconPosition = 'left';
         element.navigation = true;
 
         return Promise.resolve().then(() => {
@@ -127,13 +159,13 @@ describe('Slides', () => {
 
     // button-next-label
     // Depends on navigation
-    it('buttonNextLabel', () => {
+    it('nextButtonLabel', () => {
         const element = createElement('base-slides', {
             is: Slides
         });
 
         document.body.appendChild(element);
-        element.buttonNextLabel = 'A string label';
+        element.nextButtonLabel = 'A string label';
         element.navigation = true;
 
         return Promise.resolve().then(() => {
@@ -146,13 +178,13 @@ describe('Slides', () => {
 
     // button-next-variant
     // Depends on navigation
-    it('buttonNextVariant', () => {
+    it('nextButtonVariant', () => {
         const element = createElement('base-slides', {
             is: Slides
         });
 
         document.body.appendChild(element);
-        element.buttonNextVariant = 'brand';
+        element.nextButtonVariant = 'brand';
         element.navigation = true;
 
         return Promise.resolve().then(() => {
@@ -211,13 +243,13 @@ describe('Slides', () => {
 
     // button-previous-icon-name
     // Depends on navigation
-    it('buttonPreviousIconName', () => {
+    it('previousButtonIconName', () => {
         const element = createElement('base-slides', {
             is: Slides
         });
 
         document.body.appendChild(element);
-        element.buttonPreviousIconName = 'utility:apps';
+        element.previousButtonIconName = 'utility:apps';
         element.navigation = true;
 
         return Promise.resolve().then(() => {
@@ -230,13 +262,13 @@ describe('Slides', () => {
 
     // button-previous-icon-position
     // Depends on navigation
-    it('buttonPreviousIconPosition', () => {
+    it('previousButtonIconPosition', () => {
         const element = createElement('base-slides', {
             is: Slides
         });
 
         document.body.appendChild(element);
-        element.buttonPreviousIconPosition = 'right';
+        element.previousButtonIconPosition = 'right';
         element.navigation = true;
 
         return Promise.resolve().then(() => {
@@ -249,13 +281,13 @@ describe('Slides', () => {
 
     // button-previous-label
     // Depends on navigation
-    it('buttonPreviousLabel', () => {
+    it('previousButtonLabel', () => {
         const element = createElement('base-slides', {
             is: Slides
         });
 
         document.body.appendChild(element);
-        element.buttonPreviousLabel = 'A string label';
+        element.previousButtonLabel = 'A string label';
         element.navigation = true;
 
         return Promise.resolve().then(() => {
@@ -268,13 +300,13 @@ describe('Slides', () => {
 
     // button-previous-variant
     // Depends on navigation
-    it('buttonPreviousVariant', () => {
+    it('previousButtonVariant', () => {
         const element = createElement('base-slides', {
             is: Slides
         });
 
         document.body.appendChild(element);
-        element.buttonPreviousVariant = 'brand';
+        element.previousButtonVariant = 'brand';
         element.navigation = true;
 
         return Promise.resolve().then(() => {

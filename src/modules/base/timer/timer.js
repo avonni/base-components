@@ -1,39 +1,85 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
-const validVariants = [
-    'base',
-    'neutral',
-    'brand',
-    'brand-outline',
-    'destructive',
-    'destructive-text',
-    'inverse',
-    'success'
-];
+const BUTTON_VARIANTS = {
+    valid: [
+        'base',
+        'neutral',
+        'brand',
+        'brand-outline',
+        'destructive',
+        'destructive-text',
+        'inverse',
+        'success'
+    ],
+    default: 'neutral'
+};
 
-const validTypes = ['count-up', 'count-down'];
-const validIconPositions = ['left', 'right'];
-const validFormats = ['hh:mm:ss', 'mm:ss', 'hh:mm', 'hh', 'mm', 'ss'];
+const COUNT_TYPES = { valid: ['count-up', 'count-down'], default: 'count-up' };
+const ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
+const TIME_FORMATS = {
+    valid: ['hh:mm:ss', 'mm:ss', 'hh:mm', 'hh', 'mm', 'ss'],
+    default: 'hh:mm:ss'
+};
 
 const DEFAULT_VALUE = 0;
 const DEFAULT_DURATION = 1;
-const DEFAULT_VARIANT = 'neutral';
-const DEFAULT_TYPE = 'count-up';
-const DEFAULT_ICON_POSITION = 'left';
-const DEFAULT_FORMAT = 'hh:mm:ss';
 const DEFAULT_AUTO_START = false;
 const DEFAULT_REPEAT = false;
 
+/**
+ * @class
+ * @descriptor avonni-summary-detail
+ * @storyId example-timer--base
+ * @public
+ */
 export default class Timer extends LightningElement {
+    /**
+     * The Lightning Design System name of the icon. Names are written in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
+     *
+     * @type {string}
+     * @public
+     */
     @api iconName;
 
     _value = DEFAULT_VALUE;
     _duration = DEFAULT_DURATION;
-    _variant = DEFAULT_VARIANT;
-    _type = DEFAULT_TYPE;
-    _iconPosition = DEFAULT_ICON_POSITION;
-    _format = DEFAULT_FORMAT;
+    _variant = BUTTON_VARIANTS.default;
+    _type = COUNT_TYPES.default;
+    _iconPosition = ICON_POSITIONS.default;
+    _format = TIME_FORMATS.default;
     _autoStart = DEFAULT_AUTO_START;
     _repeat = DEFAULT_REPEAT;
 
@@ -45,6 +91,13 @@ export default class Timer extends LightningElement {
         clearInterval(this.interval);
     }
 
+    /**
+     * Default value of the timer.
+     *
+     * @type {number}
+     * @public
+     * @default 0
+     */
     @api
     get value() {
         return this._value;
@@ -55,6 +108,13 @@ export default class Timer extends LightningElement {
             typeof value === 'number' ? Number(value / 1000) : DEFAULT_VALUE;
     }
 
+    /**
+     * How long a timer runs in milliseconds. There is no maximum value.
+     *
+     * @type {number}
+     * @public
+     * @default 1000
+     */
     @api
     get duration() {
         return this._duration;
@@ -72,50 +132,85 @@ export default class Timer extends LightningElement {
         }
     }
 
+    /**
+     * The variant changes the appearance of the timer. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success.
+     *
+     * @type {string}
+     * @public
+     * @default neutral
+     */
     @api get variant() {
         return this._variant;
     }
 
     set variant(value) {
         this._variant = normalizeString(value, {
-            fallbackValue: 'neutral',
-            validValues: validVariants
+            fallbackValue: BUTTON_VARIANTS.default,
+            validValues: BUTTON_VARIANTS.valid
         });
     }
 
+    /**
+     * Type of the timer. Valid values include count-up and count-down.
+     *
+     * @type {string}
+     * @public
+     * @default count-up
+     */
     @api get type() {
         return this._type;
     }
 
     set type(value) {
         this._type = normalizeString(value, {
-            fallbackValue: 'count-up',
-            validValues: validTypes
+            fallbackValue: COUNT_TYPES.default,
+            validValues: COUNT_TYPES.valid
         });
     }
 
+    /**
+     * Describes the position of the icon with respect to body. Valid options include left and right.
+     *
+     * @type {string}
+     * @public
+     * @default left
+     */
     @api get iconPosition() {
         return this._iconPosition;
     }
 
     set iconPosition(value) {
         this._iconPosition = normalizeString(value, {
-            fallbackValue: 'left',
-            validValues: validIconPositions
+            fallbackValue: ICON_POSITIONS.default,
+            validValues: ICON_POSITIONS.valid
         });
     }
 
+    /**
+     * Format of the timer. Valid values include "hh:mm:ss", "mm:ss", "hh:mm", “hh”, “mm”, “ss”.
+     *
+     * @type {string}
+     * @public
+     * @default "hh:mm:ss"
+     */
     @api get format() {
         return this._format;
     }
 
     set format(value) {
         this._format = normalizeString(value, {
-            fallbackValue: 'hh:mm:ss',
-            validValues: validFormats
+            fallbackValue: TIME_FORMATS.default,
+            validValues: TIME_FORMATS.valid
         });
     }
 
+    /**
+     * Whether the timer control automatically starts to play when the user navigates to the component.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api get autoStart() {
         return this._autoStart;
     }
@@ -128,6 +223,13 @@ export default class Timer extends LightningElement {
         }
     }
 
+    /**
+     * Whether a timer automatically restarts when it finishes running.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api get repeat() {
         return this._repeat;
     }
@@ -136,6 +238,11 @@ export default class Timer extends LightningElement {
         this._repeat = normalizeBoolean(value);
     }
 
+    /**
+     * Return the time format to display based on inputted format ( hh, mm, ss ).
+     *
+     * @type {string|number}
+     */
     get time() {
         if (this.format === 'hh:mm:ss') {
             return (
@@ -201,6 +308,11 @@ export default class Timer extends LightningElement {
         return this.value;
     }
 
+    /**
+     * Retrieve the timer value.
+     *
+     * @type {number}
+     */
     get timerValue() {
         if (this.type === 'count-up') {
             return this.value;
@@ -209,21 +321,41 @@ export default class Timer extends LightningElement {
         return this.duration - this.value;
     }
 
+    /**
+     * Compute the hours based on the timer value.
+     *
+     * @type {number}
+     */
     get hours() {
         let time = parseFloat(this.timerValue).toFixed(3);
         return Math.floor(time / 60 / 60);
     }
 
+    /**
+     * Compute the minutes based on the timer value.
+     *
+     * @type {number}
+     */
     get minutes() {
         let time = parseFloat(this.timerValue).toFixed(3);
         return Math.floor(time / 60) % 60;
     }
 
+    /**
+     * Compute the minutes based on the timer value.
+     *
+     * @type {number}
+     */
     get seconds() {
         let time = parseFloat(this.timerValue).toFixed(3);
         return Math.floor(time - this.minutes * 60);
     }
 
+    /**
+     * Start the timer.
+     *
+     * @public
+     */
     @api
     start() {
         if (this.interval === null) {
@@ -233,12 +365,22 @@ export default class Timer extends LightningElement {
         this.dispatchTimerStart();
     }
 
+    /**
+     * Pause the timer.
+     *
+     * @public
+     */
     @api
     pause() {
         this.play = false;
         this.dispatchTimerPause();
     }
 
+    /**
+     * Stop the timer.
+     *
+     * @public
+     */
     @api
     stop() {
         this.play = false;
@@ -246,13 +388,35 @@ export default class Timer extends LightningElement {
         this.dispatchTimerStop();
     }
 
+    /**
+     * Reset the timer.
+     *
+     * @public
+     */
     @api
     reset() {
         this._value = 0;
         this.dispatchTimerReset();
     }
 
+    /**
+     * Timer start event dispatcher.
+     */
     dispatchTimerStart() {
+        /**
+         * The event fired when the timer start.
+         *
+         * @event
+         * @name timerstart
+         * @param {string} time the time value.
+         * @param {string} hours the hours value.
+         * @param {string} minutes the minutes value.
+         * @param {string} seconds the seconds value.
+         * @param {string} duration the duration value.
+         * @param {string} format the format value.
+         * @param {string} type the type value.
+         * @public
+         */
         this.dispatchEvent(
             new CustomEvent('timerstart', {
                 detail: {
@@ -268,7 +432,24 @@ export default class Timer extends LightningElement {
         );
     }
 
+    /**
+     * Timer pause event dispatcher.
+     */
     dispatchTimerPause() {
+        /**
+         * The event fired when the timer is paused.
+         *
+         * @event
+         * @name timerpause
+         * @param {string} time the time value.
+         * @param {string} hours the hours value.
+         * @param {string} minutes the minutes value.
+         * @param {string} seconds the seconds value.
+         * @param {string} duration the duration value.
+         * @param {string} format the format value.
+         * @param {string} type the type value.
+         * @public
+         */
         this.dispatchEvent(
             new CustomEvent('timerpause', {
                 detail: {
@@ -284,7 +465,24 @@ export default class Timer extends LightningElement {
         );
     }
 
+    /**
+     * Timer stop event dispatcher.
+     */
     dispatchTimerStop() {
+        /**
+         * The event fired when the timer stop.
+         *
+         * @event
+         * @name timerstop
+         * @param {string} time the time value.
+         * @param {string} hours the hours value.
+         * @param {string} minutes the minutes value.
+         * @param {string} seconds the seconds value.
+         * @param {string} duration the duration value.
+         * @param {string} format the format value.
+         * @param {string} type the type value.
+         * @public
+         */
         this.dispatchEvent(
             new CustomEvent('timerstop', {
                 detail: {
@@ -300,7 +498,24 @@ export default class Timer extends LightningElement {
         );
     }
 
+    /**
+     * Timer reset event dispatcher.
+     */
     dispatchTimerReset() {
+        /**
+         * The event fired when the timer start.
+         *
+         * @event
+         * @name timerreset
+         * @param {string} time the time value.
+         * @param {string} hours the hours value.
+         * @param {string} minutes the minutes value.
+         * @param {string} seconds the seconds value.
+         * @param {string} duration the duration value.
+         * @param {string} format the format value.
+         * @param {string} type the type value.
+         * @public
+         */
         this.dispatchEvent(
             new CustomEvent('timerreset', {
                 detail: {
@@ -316,6 +531,9 @@ export default class Timer extends LightningElement {
         );
     }
 
+    /**
+     * Create timer interval.
+     */
     createInterval() {
         // eslint-disable-next-line @lwc/lwc/no-async-operation
         this.interval = setInterval(() => {
@@ -345,6 +563,9 @@ export default class Timer extends LightningElement {
         }, 1000);
     }
 
+    /**
+     * Clear the current interval.
+     */
     clearCurrentInterval() {
         clearInterval(this.interval);
         this.interval = null;
@@ -352,6 +573,13 @@ export default class Timer extends LightningElement {
         this.dispatchTimerStop();
     }
 
+    /**
+     * Compute format time.
+     *
+     * @param {number} num
+     * @param {number} size
+     * @returns {string} formatTime
+     */
     formatTime(num, size) {
         return ('000' + num).slice(-size);
     }

@@ -1,4 +1,37 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { ButtonPopover } from '../__examples__/buttonPopover';
+import { ButtonPopoverWithToggle } from '../__examples__/buttonPopoverWithToggle';
 
 export default {
     title: 'Example/Button Popover',
@@ -30,6 +63,20 @@ export default {
                 'The tile can include text, and is displayed in the header. To include additional markup or another component, use the title slot.',
             table: {
                 type: { summary: 'string' },
+                category: 'Popover'
+            }
+        },
+        hideCloseButton: {
+            name: 'hide-close-button',
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description:
+                'If present, the close button of the popover is hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
                 category: 'Popover'
             }
         },
@@ -161,8 +208,8 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
-            description: 'If present, the popover can be opened by users.',
+            defaultValue: false,
+            description: "If present, the popover can't be opened by users.",
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -173,7 +220,7 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
+            defaultValue: false,
             description:
                 'If present, the popover is in a loading state and shows a spinner.',
             table: {
@@ -185,19 +232,13 @@ export default {
     },
     args: {
         disabled: false,
+        hideCloseButton: false,
         isLoading: false
     }
 };
 
 const Template = (args) => ButtonPopover(args);
-
-export const BaseWithPopoverVariantWalkthrough = Template.bind({});
-BaseWithPopoverVariantWalkthrough.args = {
-    label: 'Info',
-    iconName: 'utility:favorite',
-    variant: 'base',
-    popoverVariant: 'walkthrough'
-};
+const SecondTemplate = (args) => ButtonPopoverWithToggle(args);
 
 export const Neutral = Template.bind({});
 Neutral.args = {
@@ -212,6 +253,20 @@ NeutralLargeWithIconRight.args = {
     iconPosition: 'right'
 };
 
+export const NeutralWithToggleInDefaultSlot = SecondTemplate.bind({});
+NeutralWithToggleInDefaultSlot.args = {
+    label: 'Info',
+    iconName: 'utility:favorite'
+};
+
+export const BaseWithPopoverVariantWalkthrough = Template.bind({});
+BaseWithPopoverVariantWalkthrough.args = {
+    label: 'Info',
+    iconName: 'utility:favorite',
+    variant: 'base',
+    popoverVariant: 'walkthrough'
+};
+
 export const Brand = Template.bind({});
 Brand.args = {
     label: 'Info',
@@ -224,7 +279,7 @@ BrandOutlineWithPopoverWarning.args = {
     label: 'Info',
     iconName: 'utility:question_mark',
     variant: 'brand-outline',
-    popoverVariant: 'error'
+    popoverVariant: 'warning'
 };
 
 export const DestructiveWithPopoverError = Template.bind({});

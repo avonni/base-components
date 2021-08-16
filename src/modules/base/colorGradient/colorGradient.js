@@ -1,3 +1,35 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { LightningElement, api } from 'lwc';
 import {
     colorType,
@@ -6,11 +38,27 @@ import {
     normalizeBoolean
 } from 'c/utilsPrivate';
 
-const indicatorSize = 12;
+const INDICATOR_SIZE = 12;
+
 const DEFAULT_VALUE = '#ffffff';
 
+const DEFAULT_MESSAGE_WHEN_BAD_INPUT = 'Please ensure value is correct';
+
+/**
+ * @class
+ * @descriptor avonni-color-gradient
+ * @storyId example-color-gradient--base
+ * @public
+ */
 export default class ColorGradient extends LightningElement {
-    @api messageWhenBadInput = 'Please ensure value is correct';
+    /**
+     * Error message to be displayed when a bad input is detected.
+     * 
+     * @public
+     * @type {string}
+     * @default Please ensure value is correct
+     */
+    @api messageWhenBadInput = DEFAULT_MESSAGE_WHEN_BAD_INPUT;
 
     _disabled = false;
     _readOnly = false;
@@ -61,6 +109,12 @@ export default class ColorGradient extends LightningElement {
         }
     }
 
+    /**
+     * Specifies the value of an input element.
+     * 
+     * @public
+     * @type {string}
+     */
     @api
     get value() {
         return this._value;
@@ -79,6 +133,12 @@ export default class ColorGradient extends LightningElement {
         }
     }
 
+    /**
+     * If present, the input field is disabled and users cannot interact with it.
+     * 
+     * @public
+     * @type {boolean}
+     */
     @api
     get disabled() {
         return this._disabled;
@@ -98,6 +158,13 @@ export default class ColorGradient extends LightningElement {
         }
     }
 
+    /**
+     * If present, the palette is read-only and cannot be edited by users.
+     * 
+     * @public
+     * @type {boolean}
+     * @default false
+     */
     @api
     get readOnly() {
         return this._readOnly;
@@ -107,6 +174,13 @@ export default class ColorGradient extends LightningElement {
         this._readOnly = normalizeBoolean(value);
     }
 
+    /**
+     * Defines whether the alpha slider will be displayed.
+     * 
+     * @public
+     * @type {boolean}
+     * @default false
+     */
     @api
     get opacity() {
         return this._opacity;
@@ -122,6 +196,11 @@ export default class ColorGradient extends LightningElement {
         }, 1);
     }
 
+    /**
+     * Render value of color input.
+     * 
+     * @param {string} color
+     */
     @api
     renderValue(color) {
         if (this.colorValue !== color) {
@@ -138,17 +217,37 @@ export default class ColorGradient extends LightningElement {
         }
     }
 
+    /**
+     * Disable input handler.
+     * 
+     * @type {boolean}
+     */
     get disabledInput() {
         return this.disabled || this.readOnly;
     }
 
+    /**
+     * Retrieve color value if present.
+     * 
+     * @type {string}
+     */
     get colorValue() {
         return this.colors.A < 1 && this.opacity
             ? this.colors.hexa
             : this.colors.hex;
     }
 
+    /**
+     * Private focus handler.
+     */
     handleFocus() {
+        /**
+         * @event
+         * @name privatefocus
+         * @private
+         * @cancelable
+         * @bubbles
+         */
         this.dispatchEvent(
             new CustomEvent('privatefocus', {
                 bubbles: true,
@@ -157,9 +256,24 @@ export default class ColorGradient extends LightningElement {
         );
     }
 
+    /**
+     * Public and private blur handler.
+     */
     handleBlur() {
+        /**
+         * @event
+         * @name blur
+         * @public
+         */
         this.dispatchEvent(new CustomEvent('blur'));
 
+        /**
+         * @event
+         * @name privateblur
+         * @composed
+         * @bubbles
+         * @cancelable
+         */
         this.dispatchEvent(
             new CustomEvent('privateblur', {
                 composed: true,
@@ -169,8 +283,25 @@ export default class ColorGradient extends LightningElement {
         );
     }
 
+    /**
+     * Change dispatcher.
+     */
     dispatchChange() {
         if (!this.disabled && !this.readOnly) {
+            /**
+             * The event fired when the color value changed.
+             * 
+             * @event
+             * @name change
+             * @public
+             * @params {string} hex Color in hexadecimal format.
+             * @params {string} hexa Color in hexadecimal format with alpha.
+             * @params {string} rgb Color in rgb format.
+             * @params {string} rgba Color in rgba format.
+             * @params {string} alpha Alpha value of the color.
+             * @cancelable
+             * @bubbles
+             */
             this.dispatchEvent(
                 new CustomEvent('change', {
                     bubbles: true,
@@ -187,6 +318,11 @@ export default class ColorGradient extends LightningElement {
         }
     }
 
+    /**
+     * Input event handler.
+     * 
+     * @param {object} event
+     */
     handlerInput(event) {
         if (!this.readOnly) {
             let H = event.target.value;
@@ -217,6 +353,11 @@ export default class ColorGradient extends LightningElement {
         }
     }
 
+    /**
+     * Input opacity event handler.
+     * 
+     * @param {object} event
+     */
     handlerInputOpacity(event) {
         if (!this.readOnly) {
             let alpha = event.target.value;
@@ -231,6 +372,11 @@ export default class ColorGradient extends LightningElement {
         }
     }
 
+    /**
+     * Input color event handler.
+     * 
+     * @param {object} event
+     */
     handleInputColor(event) {
         let color = event.target.value;
 
@@ -254,26 +400,51 @@ export default class ColorGradient extends LightningElement {
         }
     }
 
+    /**
+     * Handle Red input in RGBA.
+     * 
+     * @param {object} event
+     */
     handleInputRed(event) {
         this.colors.R = event.target.value;
         this.processingRGBColor(event);
     }
 
+    /**
+     * Handle Green input in RGBA.
+     * 
+     * @param {object} event
+     */
     handleInputGreen(event) {
         this.colors.G = event.target.value;
         this.processingRGBColor(event);
     }
 
+    /**
+     * Handle Blue input in RGBA.
+     * 
+     * @param {object} event
+     */
     handleInputBlue(event) {
         this.colors.B = event.target.value;
         this.processingRGBColor(event);
     }
 
+    /**
+     * Handle Alpha input in RGBA.
+     * 
+     * @param {object} event
+     */
     handleInputAlpha(event) {
         this.colors.A = event.target.value;
         this.processingRGBColor(event);
     }
 
+    /**
+     * RGBA computed color method.
+     * 
+     * @param {object} event
+     */
     processingRGBColor(event) {
         let color = `rgba(${this.colors.R},${this.colors.G},${this.colors.B},${this.colors.A})`;
 
@@ -288,6 +459,11 @@ export default class ColorGradient extends LightningElement {
         }
     }
 
+    /**
+     * Palette Click event handler.
+     * 
+     * @param {object} event
+     */
     handlerClickPalet(event) {
         if (
             event.target.className !== 'slds-color-picker__range-indicator' &&
@@ -298,13 +474,18 @@ export default class ColorGradient extends LightningElement {
                 '.slds-color-picker__range-indicator'
             );
 
-            indicator.style.top = `${event.offsetY - indicatorSize}px`;
+            indicator.style.top = `${event.offsetY - INDICATOR_SIZE}px`;
             indicator.style.left = `${event.offsetX}px`;
 
-            this.setColor(event.offsetX, event.offsetY - indicatorSize);
+            this.setColor(event.offsetX, event.offsetY - INDICATOR_SIZE);
         }
     }
 
+    /**
+     * Mouse down event handler.
+     * 
+     * @param {object} event
+     */
     handlerMouseDown(event) {
         this.down = true;
         this.data = {
@@ -313,14 +494,22 @@ export default class ColorGradient extends LightningElement {
             top: event.target.offsetTop,
             left: event.target.offsetLeft,
             width: this.paletteWidth,
-            height: this.paletteHeight - indicatorSize
+            height: this.paletteHeight - INDICATOR_SIZE
         };
     }
 
+    /**
+     * Mouse up handler.
+     */
     handlerMouseUp() {
         this.down = false;
     }
 
+    /**
+     * Mouse mouse event handler.
+     * 
+     * @param {object} event
+     */
     handlerMouseMove(event) {
         if (this.down && !this.readOnly) {
             let indicator = this.template.querySelector(
@@ -345,9 +534,9 @@ export default class ColorGradient extends LightningElement {
             }
 
             if (delta.y < this.data.height) {
-                if (delta.y < -indicatorSize) {
-                    indicator.style.top = `-${indicatorSize}px`;
-                    delta.y = -indicatorSize;
+                if (delta.y < -INDICATOR_SIZE) {
+                    indicator.style.top = `-${INDICATOR_SIZE}px`;
+                    delta.y = -INDICATOR_SIZE;
                 } else {
                     indicator.style.top = `${delta.y}px`;
                 }
@@ -360,6 +549,12 @@ export default class ColorGradient extends LightningElement {
         }
     }
 
+    /**
+     * Set HSL/A colors via palette x/y coordinates.
+     * 
+     * @param {number} x
+     * @param {number} y
+     */
     setColor(x, y) {
         let s = x / this.paletteWidth;
         let v = 1 - y / this.paletteHeight;
@@ -408,6 +603,11 @@ export default class ColorGradient extends LightningElement {
         this.dispatchChange();
     }
 
+    /**
+     * Update color parameters.
+     * 
+     * @param {string} color
+     */
     updateColors(color) {
         this.colors = generateColors(color);
 
@@ -421,6 +621,9 @@ export default class ColorGradient extends LightningElement {
         this.dispatchChange();
     }
 
+    /**
+     * Set indicator position based on color value.
+     */
     setindIcatorPosition() {
         let x = this.paletteWidth * this.colors.hsv.s;
         let y = this.paletteHeight * (1 - this.colors.hsv.v);
@@ -443,6 +646,11 @@ export default class ColorGradient extends LightningElement {
         this.positionY = y;
     }
 
+    /**
+     * Set palette color range.
+     * 
+     * @param {string} value
+     */
     setPaletteColor(value) {
         let color = this.disabled ? '#ecebea' : `hsl(${value}, 100%, 50%)`;
 
@@ -451,11 +659,21 @@ export default class ColorGradient extends LightningElement {
         ).style.background = color;
     }
 
+    /**
+     * Set swatch color.
+     * 
+     * @param {string} value
+     */
     setSwatchColor(value) {
         let color = this.disabled ? '#ecebea' : value;
         this.template.querySelector('.slds-swatch').style.background = color;
     }
 
+    /**
+     * Set opacity color.
+     * 
+     * @param {string} value
+     */
     setOpacityColor(value) {
         let opacity = this.template.querySelector('.avonni-opacity-input');
 
@@ -464,6 +682,9 @@ export default class ColorGradient extends LightningElement {
             : `linear-gradient(to right, hsla(0,100%,50%, 0), hsla(${value},100%,50%,1))`;
     }
 
+    /**
+     * Remove errors.
+     */
     hideErrors() {
         this.showError = false;
 

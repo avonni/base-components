@@ -1,0 +1,5 @@
+@media (max-width: 480px) {
+    .avonni-page-header-desktop {
+        display: none;
+    }
+}

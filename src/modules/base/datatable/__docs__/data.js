@@ -1,3 +1,35 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 const avatarGroupItems = [
     {
         fallbackIconName: 'standard:person_account',
@@ -29,9 +61,33 @@ const avatarGroupItems = [
     }
 ];
 
+const options = [
+    {
+        label: 'Burlington Textiles Corp of America',
+        value: 'no-avatar-burlington'
+    },
+    {
+        label: 'Dickenson plc',
+        value: 'no-avatar-dickenson'
+    },
+    {
+        label: 'United Oil SLA',
+        value: 'no-avatar-oil-sla'
+    },
+    {
+        label: 'United Oil Standby Generators',
+        value: 'no-avatar-united-oil'
+    },
+    {
+        label: 'Edge Communication',
+        value: 'no-avatar-edge'
+    }
+];
+
 const columnsAB = [
     {
         label: 'Action',
+        fieldName: 'action',
         type: 'action',
         typeAttributes: {
             rowActions: [
@@ -76,7 +132,17 @@ const columnsAB = [
         typeAttributes: {
             variant: 'circle',
             maxCount: 3,
-            size: 'small'
+            size: 'small',
+            actionIconName: 'utility:add',
+            name: { fieldName: 'avatarGroupName' }
+        }
+    },
+    {
+        label: 'Badge',
+        fieldName: 'badge',
+        type: 'badge',
+        typeAttributes: {
+            variant: { fieldName: 'badgeVariant' }
         }
     },
     {
@@ -87,6 +153,7 @@ const columnsAB = [
     },
     {
         label: 'Button',
+        fieldName: 'button',
         type: 'button',
         typeAttributes: {
             disabled: { fieldName: 'buttonDisabled' },
@@ -95,6 +162,7 @@ const columnsAB = [
     },
     {
         label: 'Button icon',
+        fieldName: 'buttonIcon',
         type: 'button-icon',
         typeAttributes: {
             disabled: { fieldName: 'buttonIconDisabled' },
@@ -103,7 +171,7 @@ const columnsAB = [
     }
 ];
 
-const columnsCE = [
+const columnsCD = [
     {
         label: 'Checkbox button',
         fieldName: 'checkboxButton',
@@ -135,6 +203,18 @@ const columnsCE = [
         editable: true
     },
     {
+        label: 'Combobox',
+        fieldName: 'combobox',
+        type: 'combobox',
+        typeAttributes: {
+            label: 'Simple Combobox',
+            options: options,
+            isMultiSelect: { fieldName: 'isMultiSelect' }
+        },
+        editable: true,
+        fixedWidth: 260
+    },
+    {
         label: 'Currency',
         fieldName: 'currency',
         type: 'currency',
@@ -158,7 +238,7 @@ const columnsCE = [
     },
     {
         label: 'Date local',
-        fieldName: 'date',
+        fieldName: 'dateLocal',
         type: 'date-local',
         typeAttributes: {
             day: 'numeric',
@@ -175,16 +255,23 @@ const columnsCE = [
             alternativeText: { fieldName: 'dynamicIcon' },
             option: { fieldName: 'dynamicIconOption' }
         }
-    },
+    }
+];
+
+const columnsEN = [
     {
         label: 'Email',
         fieldName: 'email',
         type: 'email',
+        editable: true,
+        initialWidth: 225
+    },
+    {
+        label: 'Formatted Rich Text',
+        fieldName: 'formattedRichText',
+        type: 'formatted-rich-text',
         editable: true
-    }
-];
-
-const columnsFN = [
+    },
     {
         label: 'Image',
         fieldName: 'image',
@@ -343,6 +430,7 @@ const columnsRZ = [
     {
         label: 'Text',
         fieldName: 'text',
+        type: 'text',
         editable: true
     },
     {
@@ -356,7 +444,85 @@ const columnsRZ = [
     }
 ];
 
-const dataAB = [
+const columnsSum = [
+    {
+        label: 'Status',
+        fieldName: 'badge',
+        type: 'badge',
+        typeAttributes: {
+            variant: { fieldName: 'badgeVariant' }
+        }
+    },
+    {
+        label: 'Date',
+        fieldName: 'date',
+        type: 'date',
+        typeAttributes: {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+            hour: '2-digit',
+            timeZone: 'Pacific/Honolulu'
+        },
+        editable: true,
+        summarizeTypes: [
+            'count',
+            'countUnique',
+            'average',
+            'median',
+            'max',
+            'min',
+            'mode'
+        ],
+        initialWidth: 280
+    },
+    {
+        label: 'Progress Ring',
+        fieldName: 'progress',
+        type: 'progress-ring',
+        typeAttributes: {
+            variant: { fieldName: 'progressRingVariant' },
+            size: 'large'
+        },
+        summarizeTypes: ['count', 'sum', 'average', 'min', 'max'],
+        initialWidth: 130
+    },
+    {
+        label: 'Price',
+        fieldName: 'currency',
+        type: 'currency',
+        typeAttributes: {
+            currencyCode: 'CAD'
+        },
+        editable: true,
+        summarizeTypes: [
+            'count',
+            'countUnique',
+            'average',
+            'median',
+            'min',
+            'max'
+        ]
+    },
+    {
+        label: 'Amount',
+        type: 'number',
+        fieldName: 'number',
+        typeAttributes: {
+            minimumFractionDigits: 1
+        },
+        summarizeTypes: ['sum', 'min', 'max', 'mode']
+    },
+    {
+        label: 'Percent',
+        fieldName: 'percent',
+        type: 'percent',
+        editable: true,
+        summarizeTypes: ['count', 'countUnique', 'median', 'min', 'max', 'mode']
+    }
+];
+
+const recordsAB = [
     {
         id: 1,
         avatar:
@@ -371,6 +537,9 @@ const dataAB = [
             avatarGroupItems[4],
             avatarGroupItems[3]
         ],
+        avatarGroupName: 'avatar-group-1',
+        badge: 'approved',
+        badgeVariant: 'success',
         boolean: true
     },
     {
@@ -388,6 +557,9 @@ const dataAB = [
             avatarGroupItems[4],
             avatarGroupItems[2]
         ],
+        avatarGroupName: 'avatar-group-2',
+        badge: 'declined',
+        badgeVariant: 'error',
         boolean: false
     },
     {
@@ -403,6 +575,9 @@ const dataAB = [
             avatarGroupItems[1],
             avatarGroupItems[3]
         ],
+        avatarGroupName: 'avatar-group-3',
+        badge: 'unknown',
+        badgeVariant: 'inverse',
         buttonDisabled: true,
         buttonIconDisabled: true
     },
@@ -417,6 +592,9 @@ const dataAB = [
             avatarGroupItems[2],
             avatarGroupItems[0]
         ],
+        avatarGroupName: 'avatar-group-4',
+        badge: 'approved',
+        badgeVariant: 'success',
         boolean: true
     },
     {
@@ -433,62 +611,70 @@ const dataAB = [
             avatarGroupItems[2],
             avatarGroupItems[1],
             avatarGroupItems[3]
-        ]
+        ],
+        avatarGroupName: 'avatar-group-5',
+        badge: 'approved',
+        badgeVariant: 'success'
     }
 ];
 
-const dataCE = [
+const recordsCD = [
     {
         id: 1,
         colorPicker: '#00a1e0',
-        currency: 200,
+        currency: '200',
         dynamicIcon: 'ellie',
         date: new Date('2022/03/24'),
-        email: 'nina.gomez@email.com'
+        dateLocal: new Date('2022/03/24'),
+        combobox: 'no-avatar-burlington'
     },
     {
         id: 2,
-        currency: 230,
+        currency: '230',
         colorPicker: '#e65cd1',
         dynamicIcon: 'score',
         dynamicIconOption: 'negative',
         date: new Date('2022/03/21'),
-        email: 'dave.mckinsley@email.com'
+        dateLocal: new Date('2022/03/21')
     },
     {
         id: 3,
         checkboxButton: true,
         checkboxButtonDisabled: true,
-        currency: 3045,
+        currency: '3045',
         colorPickerDisabled: true,
         dynamicIcon: 'strength',
         dynamicIconOption: -3,
         date: new Date('2022/05/04'),
-        email: 'jung.phung@email.com'
+        dateLocal: new Date('2022/05/04'),
+        isMultiSelect: true
     },
     {
         id: 4,
         colorPicker: '#f4bc25',
-        currency: 432,
+        currency: '432',
         dynamicIcon: 'eq',
         date: new Date('2021/02/14'),
-        email: 'lily.murray@email.com'
+        dateLocal: new Date('2021/02/14')
     },
     {
         id: 5,
         checkboxButton: true,
         colorPicker: '#f99120',
-        currency: 217,
+        currency: '217',
         dynamicIcon: 'waffle',
-        date: new Date('2022/10/12'),
-        email: 'reginald.martin@email.com'
+        date: new Date('2021/02/14'),
+        dateLocal: new Date('2022/10/12')
     }
 ];
-const dataFN = [
+const recordsEN = [
     {
         id: 1,
+        email: 'nina.gomez@email.com',
+        formattedRichText: '<h1>Header 1</h1>',
         image:
             'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+        inputCounter: 1,
         inputDateRange: {
             startDate: new Date('2021/10/02'),
             endDate: new Date('2021/10/05')
@@ -497,10 +683,12 @@ const dataFN = [
             latitude: '45.53',
             longitude: '-73.61'
         },
-        number: 6
+        number: '6'
     },
     {
         id: 2,
+        email: 'dave.mckinsley@email.com',
+        formattedRichText: '<h2>Header 2</h2>',
         image:
             'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
         inputCounter: 3,
@@ -513,10 +701,12 @@ const dataFN = [
             latitude: '45.53',
             longitude: '-73.58'
         },
-        number: 18
+        number: '18'
     },
     {
         id: 3,
+        email: 'jung.phung@email.com',
+        formattedRichText: '<h3>Header 3</h3>',
         image:
             'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
         imageBlank: true,
@@ -529,10 +719,12 @@ const dataFN = [
             latitude: '45.54',
             longitude: '-73.60'
         },
-        number: 1789
+        number: '1789'
     },
     {
         id: 4,
+        email: 'lily.murray@email.com',
+        formattedRichText: '<h4>Header 4</h4>',
         image:
             'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-home-bg_2x.png',
         inputCounter: 5,
@@ -544,10 +736,12 @@ const dataFN = [
             latitude: '45.55',
             longitude: '-73.62'
         },
-        number: 345
+        number: '345'
     },
     {
         id: 5,
+        email: 'reginald.martin@email.com',
+        formattedRichText: '<h5>Header 5</h5>',
         image:
             'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-header-bg_2x.png',
         inputCounterStep: 2,
@@ -560,11 +754,11 @@ const dataFN = [
             latitude: '45.56',
             longitude: '-73.56'
         },
-        number: 9
+        number: '9'
     }
 ];
 
-const dataOQ = [
+const recordsOQ = [
     {
         id: 1,
         percent: 0.34,
@@ -634,9 +828,10 @@ const dataOQ = [
         qrcode: 'https://www.avonni.app/'
     }
 ];
-const dataRZ = [
+const recordsRZ = [
     {
         id: 1,
+        rating: '3',
         slider: 36,
         text: 'Nina Gomez',
         url: 'https://www.avonnicomponents.com/',
@@ -644,6 +839,7 @@ const dataRZ = [
     },
     {
         id: 2,
+        rating: '2',
         slider: 78,
         text: 'Dave McKinsley',
         url: 'https://www.avonni.app/',
@@ -660,7 +856,8 @@ const dataRZ = [
     },
     {
         id: 4,
-        slider: 3,
+        rating: '5',
+        slider: 36,
         sliderStep: 4,
         text: 'Lily Murray',
         url: 'https://www.lightningdesignsystem.com/',
@@ -668,21 +865,90 @@ const dataRZ = [
     },
     {
         id: 5,
+        rating: '4',
+        slider: '0',
         text: 'Reginald Martin',
         url: 'https://lwc.dev/',
         urlLabel: 'LWC Documentation'
     }
 ];
 
+const recordsSum = [
+    {
+        id: 1,
+        date: new Date('2021/09/24'),
+        progress: 100,
+        progressRingVariant: 'base-autocomplete',
+        badge: 'approved',
+        badgeVariant: 'success',
+        currency: '5',
+        number: '5',
+        percent: '0.05'
+    },
+    {
+        id: 2,
+        date: new Date('2021/10/24'),
+        badge: 'declined',
+        progressRingVariant: 'expired',
+        progress: 0,
+        badgeVariant: 'error',
+        currency: '5',
+        number: '10',
+        percent: '0.1'
+    },
+    {
+        id: 3,
+        date: new Date('2021/10/24'),
+        progress: 75,
+        progressRingVariant: 'warning',
+        badge: 'unknown',
+        badgeVariant: 'inverse',
+        number: '15',
+        percent: '0.15'
+    },
+    {
+        id: 4,
+        date: new Date('2021/11/24'),
+        progress: 50,
+        badge: 'approved',
+        badgeVariant: 'success',
+        currency: '20',
+        number: '20',
+        percent: '0.2'
+    },
+    {
+        id: 5,
+        date: new Date('2021/12/24'),
+        progress: 35,
+        badge: 'approved',
+        badgeVariant: 'success',
+        currency: '25',
+        number: '25',
+        percent: '0.25'
+    },
+    {
+        id: 6,
+        date: new Date('2022/01/24'),
+        progress: 20,
+        badge: 'approved',
+        badgeVariant: 'success',
+        currency: '25',
+        number: '25',
+        percent: '0.25'
+    }
+];
+
 export {
     columnsAB,
-    columnsCE,
-    columnsFN,
+    columnsCD,
+    columnsEN,
     columnsOQ,
     columnsRZ,
-    dataAB,
-    dataCE,
-    dataFN,
-    dataOQ,
-    dataRZ
+    columnsSum,
+    recordsAB,
+    recordsCD,
+    recordsEN,
+    recordsOQ,
+    recordsRZ,
+    recordsSum
 };

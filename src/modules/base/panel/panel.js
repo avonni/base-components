@@ -1,19 +1,63 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { LightningElement, api } from 'lwc';
 import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-const VALID_POSITIONS = { valid: ['right', 'left'], default: 'right' };
+const PANEL_POSITIONS = { valid: ['right', 'left'], default: 'right' };
 
-const VALID_SIZES = {
+const PANEL_SIZES = {
     valid: ['small', 'medium', 'large', 'x-large', 'full'],
     default: 'medium'
 };
 
+/**
+ * @class
+ * @descriptor avonni-panel
+ * @storyId example-panel--base
+ * @public
+ */
 export default class Pagination extends LightningElement {
+    /**
+     * The title can include text, and is displayed in the panel header. To include additional markup or another component, use the title slot.
+     *
+     * @type {string}
+     * @public
+     */
     @api title;
 
-    _position = VALID_POSITIONS.default;
-    _size = VALID_SIZES.default;
+    _position = PANEL_POSITIONS.default;
+    _size = PANEL_SIZES.default;
     _showPanel = false;
     _isRight = true;
 
@@ -31,14 +75,31 @@ export default class Pagination extends LightningElement {
         }
     }
 
+    /**
+     * Get title slot DOM element.
+     *
+     * @type {Element}
+     */
     get titleSlot() {
         return this.template.querySelector('slot[name=title]');
     }
 
+    /**
+     * Get Panel body slot DOM element.
+     *
+     * @type {Element}
+     */
     get panelBodySlot() {
         return this.template.querySelector('slot[name=panel-body]');
     }
 
+    /**
+     * Position of the panel. Valid values include left and right.
+     *
+     * @type {string}
+     * @public
+     * @default right
+     */
     @api
     get position() {
         return this._position;
@@ -46,11 +107,18 @@ export default class Pagination extends LightningElement {
 
     set position(position) {
         this._position = normalizeString(position, {
-            fallbackValue: VALID_POSITIONS.default,
-            validValues: VALID_POSITIONS.valid
+            fallbackValue: PANEL_POSITIONS.default,
+            validValues: PANEL_POSITIONS.valid
         });
     }
 
+    /**
+     * It defines the width of the panel. Valid values include small, medium, large, x-large and full.
+     *
+     * @type {string}
+     * @public
+     * @default medium
+     */
     @api
     get size() {
         return this._size;
@@ -58,11 +126,18 @@ export default class Pagination extends LightningElement {
 
     set size(size) {
         this._size = normalizeString(size, {
-            fallbackValue: VALID_SIZES.default,
-            validValues: VALID_SIZES.valid
+            fallbackValue: PANEL_SIZES.default,
+            validValues: PANEL_SIZES.valid
         });
     }
 
+    /**
+     * Attribute that toggles displaying the Panel.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api
     get showPanel() {
         return this._showPanel;
@@ -72,6 +147,11 @@ export default class Pagination extends LightningElement {
         this._showPanel = normalizeBoolean(value);
     }
 
+    /**
+     * Computed Outer class styling basedf on selected attributes.
+     *
+     * @type {string}
+     */
     get computedOuterClass() {
         return classSet('slds-panel slds-panel_docked')
             .add({
@@ -92,20 +172,40 @@ export default class Pagination extends LightningElement {
             .toString();
     }
 
+    /**
+     * Check if Title has text.
+     *
+     * @type {string}
+     */
     get hasStringTitle() {
         return !!this.title;
     }
 
+    /**
+     * Close the panel.
+     *
+     * @public
+     */
     @api
     close() {
         this._showPanel = false;
     }
 
+    /**
+     * Toggle the panel.
+     *
+     * @public
+     */
     @api
     toggle() {
         this._showPanel = !this._showPanel;
     }
 
+    /**
+     * Open the panel.
+     *
+     * @public
+     */
     @api
     open() {
         this._showPanel = true;

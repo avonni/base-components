@@ -1,25 +1,81 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
-const validVariants = {
+const TOOLBAR_VARIANTS = {
     valid: ['bottom-toolbar', 'top-toolbar'],
     default: 'bottom-toolbar'
 };
-const validModes = { valid: ['draw', 'erase'], default: 'draw' };
+const PEN_MODES = { valid: ['draw', 'erase'], default: 'draw' };
 
 const DEFAULT_COLOR = '#000';
 const DEFAULT_SIZE = 2;
 
+/**
+ * @class
+ * @descriptor avonni-input-pen
+ * @storyId example-input-pen--base
+ * @public
+ */
 export default class InputPen extends LightningElement {
+    /**
+     * Help text detailing the purpose and function of the input. This attribute isn't supported for file, radio, toggle, and checkbox-button types.
+     *
+     * @type {string}
+     * @public
+     */
     @api fieldLevelHelp;
+    /**
+     * Text label for the input.
+     *
+     * @type {string}
+     * @public
+     */
     @api label;
+    /**
+     * A comma-separated list of buttons to remove from the toolbar. Values include pen, eraser, clear, size, color
+     *
+     * @type {string[]}
+     * @public
+     */
     @api disabledButtons = [];
 
     _value;
     _color = DEFAULT_COLOR;
     _size = DEFAULT_SIZE;
-    _variant = validVariants.default;
-    _mode = validModes.default;
+    _variant = TOOLBAR_VARIANTS.default;
+    _mode = PEN_MODES.default;
     _disabled = false;
     _readOnly = false;
     _required = false;
@@ -70,7 +126,7 @@ export default class InputPen extends LightningElement {
             this.canvasElement.height =
                 this.canvasElement.parentElement.offsetWidth / 2;
 
-            this.initCusrsorStyles();
+            this.initCursorStyles();
 
             if (!this.hideControls && this.showSize) {
                 let srcElement = this.template.querySelector(
@@ -92,6 +148,12 @@ export default class InputPen extends LightningElement {
         }
     }
 
+    /**
+     * dataUrl like 'data:image/png;base64, …'
+     *
+     * @type {string}
+     * @public
+     */
     @api
     get value() {
         return this._value;
@@ -105,6 +167,13 @@ export default class InputPen extends LightningElement {
         }
     }
 
+    /**
+     * Defines the color of the pen.
+     *
+     * @type {string}
+     * @public
+     * @default #000
+     */
     @api
     get color() {
         return this._color;
@@ -112,9 +181,16 @@ export default class InputPen extends LightningElement {
 
     set color(value) {
         this._color = value;
-        this.initCusrsorStyles();
+        this.initCursorStyles();
     }
 
+    /**
+     * Defines the size of the pen.
+     *
+     * @type {string}
+     * @public
+     * @default 2
+     */
     @api
     get size() {
         return this._size;
@@ -122,17 +198,24 @@ export default class InputPen extends LightningElement {
 
     set size(value) {
         this._size = Number(value);
-        this.initCusrsorStyles();
+        this.initCursorStyles();
     }
 
+    /**
+     * The variant changes the appearance of the toolbar. Accepted variant is bottom-toolbar and top-toolbar which causes the toolbar to be displayed below the box.
+     *
+     * @type {string}
+     * @public
+     * @default bottom-toolbar
+     */
     @api get variant() {
         return this._variant;
     }
 
     set variant(value) {
         this._variant = normalizeString(value, {
-            fallbackValue: validVariants.default,
-            validValues: validVariants.valid
+            fallbackValue: TOOLBAR_VARIANTS.default,
+            validValues: TOOLBAR_VARIANTS.valid
         });
 
         if (this._variant === 'bottom-toolbar') {
@@ -142,18 +225,32 @@ export default class InputPen extends LightningElement {
         }
     }
 
+    /**
+     * Valid modes include draw and erase.
+     *
+     * @type {string}
+     * @public
+     * @default draw
+     */
     @api get mode() {
         return this._mode;
     }
 
     set mode(value) {
         this._mode = normalizeString(value, {
-            fallbackValue: validModes.default,
-            validValues: validModes.valid
+            fallbackValue: PEN_MODES.default,
+            validValues: PEN_MODES.valid
         });
-        this.initCusrsorStyles();
+        this.initCursorStyles();
     }
 
+    /**
+     * If present, the input field is disabled and users cannot interact with it.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api get disabled() {
         return this._disabled;
     }
@@ -166,6 +263,13 @@ export default class InputPen extends LightningElement {
         }
     }
 
+    /**
+     * If present, the input field is read-only and cannot be edited by users.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api get readOnly() {
         return this._readOnly;
     }
@@ -178,6 +282,13 @@ export default class InputPen extends LightningElement {
         }
     }
 
+    /**
+     * If present, the input field must be filled out before the form is submitted.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api get required() {
         return this._required;
     }
@@ -186,6 +297,13 @@ export default class InputPen extends LightningElement {
         this._required = normalizeBoolean(value);
     }
 
+    /**
+     * If present, hide the control bar.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api get hideControls() {
         if (
             !this.showPen &&
@@ -204,6 +322,13 @@ export default class InputPen extends LightningElement {
         this._hideControls = normalizeBoolean(value);
     }
 
+    /**
+     * Specifies whether the editor content is valid. If invalid, the slds-has-error class is added. This value defaults to false.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api get invalid() {
         return this._invalid;
     }
@@ -212,12 +337,20 @@ export default class InputPen extends LightningElement {
         this._invalid = normalizeBoolean(value);
     }
 
+    /**
+     * Check if Pen is shown.
+     *
+     * @type {boolean}
+     */
     get showPen() {
         return (
             !this.disabledButtons || this.disabledButtons.indexOf('pen') === -1
         );
     }
 
+    /**
+     * Check if Eraser is shown.
+     */
     get showErase() {
         return (
             !this.disabledButtons ||
@@ -225,6 +358,11 @@ export default class InputPen extends LightningElement {
         );
     }
 
+    /**
+     * Check if Clear is shown.
+     *
+     * @type {boolean}
+     */
     get showClear() {
         return (
             !this.disabledButtons ||
@@ -232,12 +370,22 @@ export default class InputPen extends LightningElement {
         );
     }
 
+    /**
+     * Check if Size is shown.
+     *
+     * @type {boolean}
+     */
     get showSize() {
         return (
             !this.disabledButtons || this.disabledButtons.indexOf('size') === -1
         );
     }
 
+    /**
+     * Check if Color is shown.
+     *
+     * @type {boolean}
+     */
     get showColor() {
         return (
             !this.disabledButtons ||
@@ -245,6 +393,11 @@ export default class InputPen extends LightningElement {
         );
     }
 
+    /**
+     * Clear method to reset canvas.
+     *
+     * @public
+     */
     @api
     clear() {
         if (!this.readOnly) {
@@ -259,14 +412,23 @@ export default class InputPen extends LightningElement {
         }
     }
 
+    /**
+     * Drawing mode method - Mode: draw, erase
+     *
+     * @param {string} modeName
+     * @public
+     */
     @api
     setMode(modeName) {
         this._mode = normalizeString(modeName, {
             fallbackValue: this._mode,
-            validValues: validModes
+            validValues: PEN_MODES
         });
     }
 
+    /**
+     * Initialize the Image canvas and dom elements.
+     */
     initSrc() {
         this.clear();
         this._invalid = false;
@@ -294,7 +456,10 @@ export default class InputPen extends LightningElement {
         }
     }
 
-    initCusrsorStyles() {
+    /**
+     * Initialize Cursor styling.
+     */
+    initCursorStyles() {
         this.cursor = this.template.querySelector('.avonni-cursor');
 
         if (this.cursor) {
@@ -306,6 +471,9 @@ export default class InputPen extends LightningElement {
         }
     }
 
+    /**
+     * Set the Mode to Draw.
+     */
     setDraw() {
         this.setMode('draw');
         if (this.cursor) {
@@ -313,6 +481,9 @@ export default class InputPen extends LightningElement {
         }
     }
 
+    /**
+     * Set the Mode to Erase.
+     */
     setErase() {
         this.setMode('erase');
         if (this.cursor) {
@@ -320,6 +491,11 @@ export default class InputPen extends LightningElement {
         }
     }
 
+    /**
+     * Color change handler.
+     *
+     * @param {Event} event
+     */
     handleColorChange(event) {
         this._color = event.detail.hex;
         if (this.cursor) {
@@ -328,6 +504,11 @@ export default class InputPen extends LightningElement {
         this.setDraw();
     }
 
+    /**
+     * Size change handler. Change cursor size.
+     *
+     * @param {Event} event
+     */
     handleSizeChange(event) {
         this._size = Number(event.detail.value);
         if (this.cursor) {
@@ -335,18 +516,38 @@ export default class InputPen extends LightningElement {
         }
     }
 
+    /**
+     * Mouse move handler. Search canvas coordinates on event trigger.
+     *
+     * @param {Event} event
+     */
     handleMouseMove(event) {
         this.searchCoordinatesForEvent('move', event);
     }
 
+    /**
+     * Mouse down handler. Search canvas coordinates on event trigger.
+     *
+     * @param {Event} event
+     */
     handleMouseDown(event) {
         this.searchCoordinatesForEvent('down', event);
     }
 
+    /**
+     * Mouse up handler. Search canvas coordinates on event trigger.
+     *
+     * @param {Event} event
+     */
     handleMouseUp(event) {
         this.searchCoordinatesForEvent('up', event);
     }
 
+    /**
+     * Mouse Enter handler. Set opacity to 1. Search canvas coordinates on event trigger.
+     *
+     * @param {Event} event
+     */
     handleMouseEnter(event) {
         if (!this.disabled && !this.readOnly) {
             this.cursor.style.opacity = 1;
@@ -354,10 +555,19 @@ export default class InputPen extends LightningElement {
         }
     }
 
+    /**
+     * Mouse leave handler. Set opacity to 0.
+     */
     handleMouseLeave() {
         this.cursor.style.opacity = 0;
     }
 
+    /**
+     * Search the canvas element for coordinates on Event trigger.
+     *
+     * @param {string} requestedEvent
+     * @param {Event} event
+     */
     searchCoordinatesForEvent(requestedEvent, event) {
         if (!this.disabled && !this.readOnly) {
             if (requestedEvent === 'down') {
@@ -405,6 +615,11 @@ export default class InputPen extends LightningElement {
         }
     }
 
+    /**
+     * Get cursor coordinates from Canvas Element on cursor move.
+     *
+     * @param {Event} event
+     */
     moveCursor(event) {
         const clientRect = this.canvasElement.getBoundingClientRect();
         let left = event.clientX - clientRect.left - this.size / 2;
@@ -414,6 +629,11 @@ export default class InputPen extends LightningElement {
         this.cursor.style.top = `${top}px`;
     }
 
+    /**
+     * Calculate coordinates for previous X, Y and current X, Y of cursor.
+     *
+     * @param {Event} eventParam
+     */
     setupCoordinate(eventParam) {
         const clientRect = this.canvasElement.getBoundingClientRect();
         this.prevX = this.currX;
@@ -422,6 +642,9 @@ export default class InputPen extends LightningElement {
         this.currY = eventParam.clientY - clientRect.top;
     }
 
+    /**
+     * Redraw Canvas context based on calculated cursor event cycle from previous to current coordinates.
+     */
     redraw() {
         this.ctx.beginPath();
         this.ctx.lineCap = 'round';
@@ -434,6 +657,9 @@ export default class InputPen extends LightningElement {
         this.ctx.stroke();
     }
 
+    /**
+     * Canvas draw dot method.
+     */
     drawDot() {
         this.ctx.beginPath();
         this.ctx.arc(
@@ -449,9 +675,20 @@ export default class InputPen extends LightningElement {
         this.ctx.closePath();
     }
 
+    /**
+     * Change event handler.
+     */
     handleChangeEvent() {
         var dataURL = this.canvasElement.toDataURL();
 
+        /**
+         * The event fired when the value changed.
+         *
+         * @event
+         * @name change
+         * @param {string} dataURL Base64 of the drawing.
+         * @public
+         */
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {

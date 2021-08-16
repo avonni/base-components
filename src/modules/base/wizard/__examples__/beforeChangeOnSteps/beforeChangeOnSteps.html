@@ -1,0 +1,39 @@
+<avonni-wizard icon-name="utility:touch_action" indicator-type="bar">
+    <div slot="title">
+        <h1 class="slds-text-title_caps">before-change example</h1>
+        <p class="slds-text-color_weak slds-text-title">
+            This is an example where functions have been passed to the
+            before-change property of the steps.
+        </p>
+    </div>
+    <avonni-wizard-step label="No before-change">
+        <h2 class="slds-text-heading_small">This step has no before-change</h2>
+        <p>
+            Clicking on the next button will get you to the next step
+            immediately.
+        </p>
+    </avonni-wizard-step>
+    <avonni-wizard-step
+        label="before-change with error"
+        before-change={beforeChangeWithError}
+        before-change-error-message={errorMessage}
+    >
+        <h2 class="slds-text-heading_small">This step has a before-change</h2>
+        <p>
+            A counter is set to 4. The <code>before-change</code> function
+            returns <code>false</code> as long as the counter is not down to 0.
+            When you click on a button, the counter decreases by one.
+        </p>
+    </avonni-wizard-step>
+    <avonni-wizard-step
+        label="before-change with console log"
+        before-change={beforeChangeWithConsoleLog}
+    >
+        <h2 class="slds-text-heading_small">This step has a before-change</h2>
+        <p>
+            The <code>before-change</code> function logs a message in the
+            console when you click on a button. It does not prevent you from
+            changing steps.
+        </p>
+    </avonni-wizard-step>
+</avonni-wizard>

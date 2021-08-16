@@ -1,0 +1,31 @@
+<template>
+    <c-hero-banner
+        title={title}
+        caption={caption}
+        subtitle={subtitle}
+        src={src}
+        height={height}
+        max-width={maxWidth}
+        content-horizontal-alignment={contentHorizontalAlignment}
+        content-vertical-alignment={contentVerticalAlignment}
+        content-width={contentWidth}
+        primary-button-label={primaryButtonLabel}
+        secondary-button-label={secondaryButtonLabel}
+    >
+        <div
+            slot="footer"
+            style="
+                width: 100%;
+                height: 25%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            "
+        >
+            <lightning-button
+                label="Sign up"
+                variant="success"
+            ></lightning-button>
+        </div>
+    </c-hero-banner>
+</template>

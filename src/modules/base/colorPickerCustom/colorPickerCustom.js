@@ -1,3 +1,35 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { LightningElement, api } from 'lwc';
 import { keyCodes } from 'c/utilsPrivate';
 import { generateUniqueId, getErrorMessage } from 'c/inputUtils';
@@ -26,6 +58,10 @@ const i18n = {
 
 const CANVAS = { x: 198, y: 80 };
 
+/**
+ * @class
+ * @descriptor avonni-color-picker-custom
+ */
 export default class ColorPickerCustom extends LightningElement {
     _hueValue = null;
     _rgb = {
@@ -56,6 +92,12 @@ export default class ColorPickerCustom extends LightningElement {
         }
     }
 
+    /**
+     * Current color value.
+     * 
+     * @public
+     * @type {string}
+     */
     @api
     get currentColor() {
         return this._currentColor;
@@ -67,41 +109,86 @@ export default class ColorPickerCustom extends LightningElement {
         this._rgb = hexToRgb(fullHex);
     }
 
+    /**
+     * Focus anchor element.
+     * 
+     * @public
+     */
     @api
     focus() {
         this.anchorElement.focus();
     }
 
+    /**
+     * Localization.
+     * 
+     * @type {object}
+     */
     get i18n() {
         return i18n;
     }
 
+    /**
+     * Compute thumbnail styling.
+     * 
+     * @type {string}
+     */
     get thumbnailStyle() {
         return `background: ${this._hex || 'hsl(220, 46%, 55%)'};`;
     }
 
+    /**
+     * Compute gradient styling.
+     * 
+     * @type {string}
+     */
     get gradientStyle() {
         return `background: ${
             this._hex || 'rgb(0, 85, 255)'
         }; position: relative;`;
     }
 
+    /**
+     * Get Canvas object dimensions.
+     * 
+     * @type {object}
+     */
     get canvasRect() {
         return CANVAS;
     }
 
+    /**
+     * Get DOM anchor element.
+     * 
+     * @type {Element} 
+     */
     get anchorElement() {
         return this.template.querySelector('*[data-id="color-anchor"]');
     }
 
+    /**
+     * Get DOM thumbnail element.
+     * 
+     * @type {Element}
+     */
     get thumbnailElement() {
         return this.template.querySelector('*[data-id="color-preview"]');
     }
 
+    /**
+     * Get DOM gradient element.
+     * 
+     * @type {Element}
+     */
     get gradientElement() {
         return this.template.querySelector('*[data-id="color-gradient"]');
     }
 
+    /**
+     * Computed Saturation and Brightness styling.
+     * 
+     * @type {string}
+     */
     get computedSaturationAndBrightness() {
         const rgb = this._rgb;
         const saturation = rgbToHsv(rgb).saturation || 0;
@@ -110,12 +197,32 @@ export default class ColorPickerCustom extends LightningElement {
         return `Saturation: ${saturation.toFixed()}%. Brightness: ${brightness.toFixed()}%.`;
     }
 
+    /**
+     * Prevent event default handler.
+     * 
+     * @param {Event} event
+     */
     handlePreventDefault(event) {
         event.preventDefault();
     }
 
+    /**
+     * Color select event handler.
+     * 
+     * @param {Event} event
+     */
     selectColor(event) {
         this.dispatchEvent(
+            /**
+             * Event that fires when updating the color value.
+             * 
+             * @event
+             * @name updatecolor
+             * @params {string} color
+             * @bubbles
+             * @composed
+             * @cancelable
+             */
             // eslint-disable-next-line lightning-global/no-custom-event-bubbling
             new CustomEvent('updatecolor', {
                 bubbles: true,
@@ -126,19 +233,38 @@ export default class ColorPickerCustom extends LightningElement {
         );
     }
 
+    /**
+     * Mouse down event handler.
+     * 
+     * @param {Event} event
+     */
     handleMouseDown(event) {
         event.preventDefault();
         this.onMouseDrag(event, true);
     }
 
+    /**
+     * Mouse Drag event handler.
+     * 
+     * @param {Event} event
+     */
     handleDrag(event) {
         this.onMouseDrag(event, false);
     }
 
+    /**
+     * On Change handler assign rainbow cursor.
+     */
     onChange() {
         this.rainbowCursor();
     }
 
+    /**
+     * Parse and limit color numerical values.
+     * 
+     * @param {number} value
+     * @return {number} out
+     */
     parseAndLimit(value) {
         let out = value;
         if (!value || parseInt(value, 10) < 0 || isNaN(value)) {
@@ -149,6 +275,11 @@ export default class ColorPickerCustom extends LightningElement {
         return out;
     }
 
+    /**
+     * RGB Change handler.
+     * 
+     * @param {Event} event
+     */
     handleRgbChange(event) {
         const target = event.currentTarget;
         const value = this.parseAndLimit(target.value);
@@ -176,6 +307,11 @@ export default class ColorPickerCustom extends LightningElement {
         this.updateSelectedColor(selectedColor);
     }
 
+    /**
+     * Hex Change handler.
+     * 
+     * @param {Event} event 
+     */
     handleHexChange(event) {
         const isInputValid = event.srcElement.validity.valid;
 
@@ -202,6 +338,11 @@ export default class ColorPickerCustom extends LightningElement {
         }
     }
 
+    /**
+     * Update Selected Color.
+     * 
+     * @param {string} selectedColor 
+     */
     updateSelectedColor(selectedColor) {
         this.template
             .querySelector(`[data-primary-input]`)
@@ -210,6 +351,16 @@ export default class ColorPickerCustom extends LightningElement {
 
         this._hex = selectedColor;
 
+        /**
+         * The event that fires when the selected color is updated.
+         * 
+         * @event
+         * @name updateselectedcolor
+         * @params {string} color
+         * @bubbles
+         * @composed
+         * @cancelable
+         */
         this.dispatchEvent(
             // eslint-disable-next-line lightning-global/no-custom-event-bubbling
             new CustomEvent('updateselectedcolor', {
@@ -221,6 +372,12 @@ export default class ColorPickerCustom extends LightningElement {
         );
     }
 
+    /**
+     * Mouse Drag handler.
+     * 
+     * @param {Event} event 
+     * @param {boolean} isGradientCursor
+     */
     onMouseDrag(event, isGradientCursor) {
         const that = this;
         let drag = false;
@@ -266,6 +423,9 @@ export default class ColorPickerCustom extends LightningElement {
         window.addEventListener('mousemove', that._mousemove);
     }
 
+    /**
+     * Compute hue gradient and update canvas.
+     */
     gradient() {
         const hue = rgbToHsl(this._rgb).hue;
         this.canvasContext();
@@ -273,6 +433,11 @@ export default class ColorPickerCustom extends LightningElement {
         this.updateRainbow(hue);
     }
 
+    /**
+     * Compute color from gradient from x,y coordinates of cursor position.
+     * 
+     * @param {Event} event 
+     */
     getColorFromGradient(event) {
         let cursorPosition;
 
@@ -294,6 +459,9 @@ export default class ColorPickerCustom extends LightningElement {
         this.setRGBValues(x, y);
     }
 
+    /**
+     * Compute color with cursor position on hue slider.
+     */
     rainbowCursor() {
         const rainbow = this.template.querySelector('*[data-id="hue-slider"]');
         const position = this._cachePosition || this.rgbToPosition(this._rgb);
@@ -303,10 +471,18 @@ export default class ColorPickerCustom extends LightningElement {
         this.updateRainbow(rainbow.value);
     }
 
+    /**
+     * Update hue color.
+     * 
+     * @param {string} hue 
+     */
     updateRainbow(hue) {
         this._hueValue = hue;
     }
 
+    /**
+     * Update anchor element position handler.
+     */
     handleUpdateAnchor() {
         const position = this._cachePosition || this.rgbToPosition(this._rgb);
 
@@ -321,6 +497,12 @@ export default class ColorPickerCustom extends LightningElement {
         anchor.style.top = `${yPercent}%`;
     }
 
+    /**
+     * Get Cursor position on canvas gradient.
+     * 
+     * @param {Event} event 
+     * @returns {object} x,y number coordinates
+     */
     gradientCursorPosition(event) {
         const canvas = this._canvas;
         const gradientCanvas = canvas.getBoundingClientRect();
@@ -349,6 +531,12 @@ export default class ColorPickerCustom extends LightningElement {
         return { x, y };
     }
 
+    /**
+     * Get Cursor position from keydown event on canvas gradient.
+     * 
+     * @param {Event} event 
+     * @return {object} x,y number coordinates
+     */
     gradientCursorPositionFromKeydown(event) {
         event.preventDefault();
         const canvas = this._canvas;
@@ -393,6 +581,12 @@ export default class ColorPickerCustom extends LightningElement {
         return { x, y };
     }
 
+    /**
+     * RGB values compute.
+     * 
+     * @param {number} x 
+     * @param {number} y 
+     */
     setRGBValues(x, y) {
         const ctx = this._canvasCtx;
         const imageData = ctx.getImageData(x, y, 1, 1).data;
@@ -407,6 +601,11 @@ export default class ColorPickerCustom extends LightningElement {
         this.handleUpdateAnchor();
     }
 
+    /**
+     * Set Canvas color.
+     * 
+     * @param {string} hue 
+     */
     setCanvasColor(hue) {
         const ctx = this._canvasCtx;
         // don't map the gradient onto extreme left and right to make extremes have their max values
@@ -425,6 +624,12 @@ export default class ColorPickerCustom extends LightningElement {
         ctx.fillRect(0, 0, this.canvasRect.x, this.canvasRect.y);
     }
 
+    /**
+     * Set Cursor position on canvas.
+     * 
+     * @param {number} x 
+     * @param {number} y 
+     */
     setCanvasCursor(x, y) {
         const position = { x, y };
 
@@ -439,16 +644,30 @@ export default class ColorPickerCustom extends LightningElement {
         anchor.style.top = `${yPercent}%`;
     }
 
+    /**
+     * Set Canvas context on canvas DOM element.
+     */
     canvasContext() {
         this._canvas = this.template.querySelector('canvas');
         this._canvasCtx = this._canvas.getContext('2d');
         this._cursorActive = false;
     }
 
+    /**
+     * Keydown handler.
+     * 
+     * @param {Event} event 
+     */
     handleKeydown(event) {
         this.getColorFromGradient(event);
     }
 
+    /**
+     * Use RGB to set position on canvas.
+     * 
+     * @param {string} rgb 
+     * @returns object x,y number
+     */
     rgbToPosition(rgb) {
         return rgbToPosition(rgb, this.canvasRect);
     }

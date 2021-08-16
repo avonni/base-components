@@ -1,38 +1,137 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
 
-const defaultMin = 0;
-const defaultMax = 100;
-const defaultStep = 1;
+const DEFAULT_MIN = 0;
+const DEFAULT_MAX = 100;
+const DEFAULT_STEP = 1;
 
-const validSizes = ['x-small', 'small', 'medium', 'large'];
-const validTypes = ['horizontal', 'vertical'];
-const validVariants = ['standard', 'label-hidden'];
-const validUnit = ['decimal', 'currency', 'percent'];
+const ICON_SIZES = {valid: ['x-small', 'small', 'medium', 'large'], default: ''};
+const RATING_TYPES = {valid: ['horizontal', 'vertical'], default: 'horizontal'};
+const LABEL_VARIANTS = {valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked'], default: 'standard'};
+const RATING_UNITS = {valid: ['decimal', 'currency', 'percent'], default: 'decimal'};
 
+/**
+* @class
+* @descriptor avonni-range
+* @storyId example-range--base
+* @public
+*/
 export default class Range extends LightningElement {
+    /**
+    * Text label to describe the slider. Provide your own label to describe the slider.
+    *
+    * @type {string}
+    * @public
+    */
     @api label;
+    /**
+    * Error message to be displayed when a range overflow is detected.
+    *
+    * @type {string}
+    * @public
+    */
     @api messageWhenRangeOverflow;
+    /**
+    * Error message to be displayed when a range underflow is detected.
+    *
+    * @type {string}
+    * @public
+    */
     @api messageWhenRangeUnderflow;
+    /**
+    * Error message to be displayed when a step mismatch is detected.
+    *
+    * @type {string}
+    * @public
+    */
     @api messageWhenStepMismatch;
+    /**
+    * Error message to be displayed when the value is missing.
+    *
+    * @type {string}
+    * @public
+    */
     @api messageWhenValueMissing;
+    /**
+    * Error message to be displayed when the value is too long.
+    *
+    * @type {string}
+    * @public
+    */
     @api messageWhenTooLong;
+    /**
+    * Error message to be displayed when a bad input is detected.
+    *
+    * @type {string}
+    * @public
+    */
     @api messageWhenBadInput;
+    /**
+    * Error message to be displayed when a pattern mismatch is detected.
+    *
+    * @type {string}
+    * @public
+    */
     @api messageWhenPatternMismatch;
+    /**
+    * Error message to be displayed when a type mismatch is detected.
+    *
+    * @type {string}
+    * @public
+    */
     @api messageWhenTypeMismatch;
+    /**
+    * Object containing selected fields for the unit type (currencyCode, currencyDisplayAs, minimumIntegerDigits, minimumFractionDigits, maximumFractionDigits, minimumSignificantDigits, maximumSignificantDigits).
+    *
+    * @type {object{}}
+    * @public
+    * @default
+    */
     @api unitAttributes = {};
 
-    _min = defaultMin;
-    _max = defaultMax;
-    _step = defaultStep;
+    _min = DEFAULT_MIN;
+    _max = DEFAULT_MAX;
+    _step = DEFAULT_STEP;
     _valueLower;
     _valueUpper;
-    _size = '';
-    _type = 'horizontal';
-    _variant = 'standard';
-    _unit = 'decimal';
+    _size = ICON_SIZES.default;
+    _type = RATING_TYPES.default;
+    _variant = LABEL_VARIANTS.default;
+    _unit = RATING_UNITS.default;
     _pin = false;
     _disabled = false;
     _helpMessage;
@@ -46,19 +145,33 @@ export default class Range extends LightningElement {
         }
     }
 
+    /**
+    * The minimum value of the input range. The default is 0.
+    *
+    * @type {number}
+    * @public
+    * @default 0
+    */
     @api
     get min() {
         return this._min;
     }
 
     set min(value) {
-        this._min = Number(value);
+        this._min = Number(value); 
 
         if (this.init) {
             this.initRange();
         }
     }
 
+    /**
+    * The maximum value of the input range. The default is 100.
+    *
+    * @type {number}
+    * @public
+    * @default 100
+    */
     @api
     get max() {
         return this._max;
@@ -72,6 +185,13 @@ export default class Range extends LightningElement {
         }
     }
 
+    /**
+    * The step increment value of the input range. Example steps include 0.1, 1, or 10. The default is 1.
+    *
+    * @type {number}
+    * @public
+    * @default 1
+    */
     @api
     get step() {
         return this._step;
@@ -85,6 +205,13 @@ export default class Range extends LightningElement {
         }
     }
 
+    /**
+    * The lower value of the range.
+    *
+    * @type {string}
+    * @public
+    * @default 0
+    */
     @api
     get valueLower() {
         return this._valueLower ? this._valueLower : this.min;
@@ -98,6 +225,12 @@ export default class Range extends LightningElement {
         }
     }
 
+    /**
+    * The upper value of the range.
+    *
+    * @type {string}
+    * @public
+    */
     @api
     get valueUpper() {
         if (!this._valueUpper) {
@@ -117,14 +250,20 @@ export default class Range extends LightningElement {
         }
     }
 
+    /**
+    * The size of the slider. The default is an empty string, which sets the slider to the width of the viewport. Accepted values are x-small, small, medium, and large.
+    *
+    * @type {string}
+    * @public
+    */
     @api get size() {
         return this._size;
     }
 
     set size(size) {
         this._size = normalizeString(size, {
-            fallbackValue: '',
-            validValues: validSizes
+            fallbackValue: ICON_SIZES.default,
+            validValues: ICON_SIZES.valid
         });
 
         if (this.init) {
@@ -132,14 +271,21 @@ export default class Range extends LightningElement {
         }
     }
 
+    /**
+    * The type determines the orientation of the slider. Accepted values are vertical and horizontal. The default is horizontal.
+    *
+    * @type {string}
+    * @public
+    * @default horizontal
+    */
     @api get type() {
         return this._type;
     }
 
     set type(type) {
         this._type = normalizeString(type, {
-            fallbackValue: 'horizontal',
-            validValues: validTypes
+            fallbackValue: RATING_TYPES.default,
+            validValues: RATING_TYPES.valid
         });
 
         if (this.init) {
@@ -147,14 +293,21 @@ export default class Range extends LightningElement {
         }
     }
 
+    /**
+    * The variant changes the appearance of the slider. Accepted variants include standard and label-hidden. The default is standard.
+    *
+    * @type {string}
+    * @public
+    * @default standard
+    */
     @api get variant() {
         return this._variant;
     }
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: 'standard',
-            validValues: validVariants
+            fallbackValue: LABEL_VARIANTS.default,
+            validValues: LABEL_VARIANTS.valid
         });
 
         if (this.init) {
@@ -162,14 +315,22 @@ export default class Range extends LightningElement {
         }
     }
 
+    /**
+    * Accepted unit include decimal, currency and percent. 
+    * Format the value displayed (lightning-formatted-number)
+    *
+    * @type {string}
+    * @public
+    * @default decimal
+    */
     @api get unit() {
         return this._unit;
     }
 
     set unit(unit) {
         this._unit = normalizeString(unit, {
-            fallbackValue: 'number',
-            validValues: validUnit
+            fallbackValue: RATING_UNITS.default,
+            validValues: RATING_UNITS.valid
         });
 
         if (this.init) {
@@ -177,6 +338,13 @@ export default class Range extends LightningElement {
         }
     }
 
+    /**
+    * If present, a pin with integer value is shown when the knob is pressed.
+    *
+    * @type {boolean}
+    * @public
+    * @default false
+    */
     @api get pin() {
         return this._pin;
     }
@@ -189,6 +357,13 @@ export default class Range extends LightningElement {
         }
     }
 
+    /**
+    * If present, the slider is disabled and users cannot interact with it.
+    *
+    * @type {boolean}
+    * @public
+    * @default false
+    */
     @api get disabled() {
         return this._disabled;
     }
@@ -201,6 +376,9 @@ export default class Range extends LightningElement {
         }
     }
 
+    /**
+     * Initialize range cmp.
+     */
     initRange() {
         this.showHelpMessageIfInvalid();
         this.setInputsWidth();
@@ -208,6 +386,11 @@ export default class Range extends LightningElement {
         this.setBubblesPosition();
     }
 
+    /**
+     * Handle left slider point value change.
+     * 
+     * @param {Event} event 
+     */
     handleChangeLeft(event) {
         this.valueLower = event.target.value;
         this.setInputsWidth();
@@ -216,6 +399,11 @@ export default class Range extends LightningElement {
         this.setBubblesPosition();
     }
 
+    /**
+     * Handle right slider point value change.
+     * 
+     * @param {Event} event 
+     */
     handleChangeRight(event) {
         this.valueUpper = event.target.value;
         this.setInputsWidth();
@@ -224,10 +412,22 @@ export default class Range extends LightningElement {
         this.setBubblesPosition();
     }
 
+    /**
+     * Update range upper and lower values.
+     */
     changeRange() {
         this._updateProxyInputLeftAttributes('value');
         this._updateProxyInputRightAttributes('value');
 
+        /**
+        * The event fired when the range value changed.
+        *
+        * @event
+        * @name change
+        * @param {string} valueLower The lower value of the range.
+        * @param {string} valueUpper The upper value of the range.
+        * @public
+        */
         const selectedEvent = new CustomEvent('change', {
             detail: {
                 valueLower: Number(this.valueLower),
@@ -238,6 +438,11 @@ export default class Range extends LightningElement {
         this.dispatchEvent(selectedEvent);
     }
 
+    /**
+     * Computed label class styling.
+     * 
+     * @type {string}
+     */
     get computedLabelClass() {
         const classes = classSet();
 
@@ -250,6 +455,11 @@ export default class Range extends LightningElement {
         return classes.toString();
     }
 
+    /**
+     * Computed container class styling ( size, vertical ).
+     * 
+     * @type {string}
+     */
     get computedContainerClass() {
         const { size, type } = this;
         const classes = classSet('');
@@ -265,22 +475,42 @@ export default class Range extends LightningElement {
         return classes.toString();
     }
 
+    /**
+     * Computed left bubble class styling.
+     * 
+     * @type {string}
+     */
     get computedBubbleLeftClass() {
         return this._type === 'vertical'
             ? 'avonni-bubble-vertical left-bubble'
             : 'avonni-bubble left-bubble';
     }
 
+    /**
+     * Computed right bubble class styling.
+     * 
+     * @type {string}
+     */
     get computedBubbleRightClass() {
         return this._type === 'vertical'
             ? 'avonni-bubble-vertical right-bubble'
             : 'avonni-bubble right-bubble';
     }
 
+    /**
+     * Verify if range is vertical.
+     * 
+     * @type {boolean}
+     */
     get isVertical() {
         return this._type === 'vertical';
     }
 
+    /**
+     * Calculate the max range from the lower value.
+     * 
+     * @type {number}
+     */
     get calculateMax() {
         return (
             Number(this.valueLower) +
@@ -288,6 +518,11 @@ export default class Range extends LightningElement {
         ).toFixed(3);
     }
 
+    /**
+     * Calculate the max range from the lower value.
+     * 
+     * @type {number}
+     */
     get calculateMin() {
         let minVaule =
             Number(this.valueUpper) - this.stepsCount('right') * this.step;
@@ -298,6 +533,12 @@ export default class Range extends LightningElement {
         return minVaule.toFixed(3);
     }
 
+    /**
+     * Calculate Steps count from position method.
+     * 
+     * @param {string} position 
+     * @returns {number} stepsForPosition
+     */
     stepsCount(position) {
         let stepCount = (this.valueUpper - this.valueLower) / this.step;
         let stepsForPosition = 0;
@@ -310,6 +551,9 @@ export default class Range extends LightningElement {
         return stepsForPosition;
     }
 
+    /**
+     * Calculate inputs width between left and right inputs.
+     */
     setInputsWidth() {
         let inputWidth = this.max - this.min;
         let leftStep = this.stepsCount('left');
@@ -330,6 +574,9 @@ export default class Range extends LightningElement {
         rightInput.style.width = leftInputWidth + '%';
     }
 
+    /**
+     * Progress indicator line.
+     */
     addProgressLine() {
         if (!this._disabled) {
             let leftInput = this.template.querySelector('.slider-left');
@@ -360,6 +607,9 @@ export default class Range extends LightningElement {
         }
     }
 
+    /**
+     * Display left bubble.
+     */
     showLeftBubble() {
         if (this._pin) {
             let bubbleLeft = this.template.querySelector('.left-bubble');
@@ -367,6 +617,9 @@ export default class Range extends LightningElement {
         }
     }
 
+    /**
+     * Display right bubble.
+     */
     showRightBubble() {
         if (this._pin) {
             let bubbleRight = this.template.querySelector('.right-bubble');
@@ -374,6 +627,9 @@ export default class Range extends LightningElement {
         }
     }
 
+    /**
+     * Hide left bubble.
+     */
     hideLeftBubble() {
         if (this._pin) {
             let bubbleLeft = this.template.querySelector('.left-bubble');
@@ -381,6 +637,9 @@ export default class Range extends LightningElement {
         }
     }
 
+    /**
+     * Hide right bubble.
+     */
     hideRightBubble() {
         if (this._pin) {
             let bubbleRight = this.template.querySelector('.right-bubble');
@@ -388,6 +647,9 @@ export default class Range extends LightningElement {
         }
     }
 
+    /**
+     * Calculate Bubbles position.
+     */
     setBubblesPosition() {
         if (this._pin) {
             setTimeout(() => {
@@ -422,6 +684,11 @@ export default class Range extends LightningElement {
         }
     }
 
+    /**
+     * Represents the validity states of the slider inputs, with respect to constraint validation.
+     * 
+     * @public
+     */
     @api get validity() {
         return (
             this._constraintLeft.validity +
@@ -430,6 +697,12 @@ export default class Range extends LightningElement {
         );
     }
 
+    /**
+     * Returns the valid attribute value (Boolean) on the ValidityState object.
+     * 
+     * @public
+     * @returns {boolean}
+     */
     @api
     checkValidity() {
         return (
@@ -438,6 +711,12 @@ export default class Range extends LightningElement {
         );
     }
 
+    /**
+     * Displays the error messages and returns false if the input is invalid. If the input is valid, reportValidity() clears displayed error messages and returns true.
+     * 
+     * @public
+     * @returns {string | boolean}
+     */
     @api
     reportValidity() {
         let helpMessage = '';
@@ -459,29 +738,55 @@ export default class Range extends LightningElement {
         return leftInput && rightInput;
     }
 
+    /**
+     * Sets a custom error message to be displayed when the input value is submitted.
+     * 
+     * @public
+     * @param {string} message 
+     */
     @api
     setCustomValidity(message) {
         this._constraintLeft.setCustomValidity(message);
         this._constraintRight.setCustomValidity(message);
     }
 
+    /**
+     * Displays an error message if the input value is required and no option is selected.
+     * 
+     * @public
+     */
     @api
     showHelpMessageIfInvalid() {
         this.reportValidity();
     }
 
+    /**
+     * Update input left proxy attributes.
+     * 
+     * @param {object} attributes 
+     */
     _updateProxyInputLeftAttributes(attributes) {
         if (this._constraintApiProxyInputLeftUpdater) {
             this._constraintApiProxyInputLeftUpdater(attributes);
         }
     }
 
+    /**
+     * Update input right proxy attributes.
+     * 
+     * @param {object} attributes 
+     */
     _updateProxyInputRightAttributes(attributes) {
         if (this._constraintApiProxyInputRightUpdater) {
             this._constraintApiProxyInputRightUpdater(attributes);
         }
     }
 
+    /**
+     * Get the left constraint API via proxy input.
+     * 
+     * @return {object} constraintApiLeft
+     */
     get _constraintLeft() {
         if (!this._constraintApiLeft) {
             this._constraintApiLeft = new FieldConstraintApiWithProxyInput(
@@ -502,6 +807,11 @@ export default class Range extends LightningElement {
         return this._constraintApiLeft;
     }
 
+    /**
+     * Get the right constraint API via proxy input.
+     * 
+     * @return {object} constraintApiRight
+     */
     get _constraintRight() {
         if (!this._constraintApiRight) {
             this._constraintApiRight = new FieldConstraintApiWithProxyInput(
