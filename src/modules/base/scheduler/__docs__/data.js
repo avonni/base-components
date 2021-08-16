@@ -135,38 +135,21 @@ const events = [
         title: 'Identify need',
         from: new Date(2021, 11, 11, 10),
         to: new Date(2021, 11, 13, 9, 30),
-        theme: 'transparent',
-        labels: {
-            center: {
-                fieldName: 'from',
-                iconName: 'utility:search'
-            }
-        }
+        theme: 'transparent'
     },
     {
         keyFields: ['3'],
         name: 'find-examples',
         title: 'Find existing examples of solutions',
         from: new Date(2021, 11, 14, 8),
-        to: new Date(2021, 11, 14, 10, 30),
-        labels: {
-            center: {
-                value: 'This is a custom label'
-            }
-        }
+        to: new Date(2021, 11, 14, 10, 30)
     },
     {
         keyFields: ['1', '3'],
         name: 'write-spec',
         title: 'Write specifications',
         from: new Date(2021, 11, 15),
-        allDay: true,
-        labels: {
-            center: {
-                fieldName: 'title',
-                iconName: 'utility:insert_tag_field'
-            }
-        }
+        allDay: true
     },
     {
         keyFields: ['1'],
@@ -174,13 +157,7 @@ const events = [
         title: 'Create wireframe',
         from: new Date(2021, 11, 13, 10, 15),
         to: new Date(2021, 11, 13, 12),
-        sharedField: 'The event field overwrites the row field',
-        labels: {
-            center: {
-                fieldName: 'sharedField',
-                iconName: 'utility:description'
-            }
-        }
+        sharedField: 'The event field overwrites the row field'
     },
     {
         keyFields: ['4'],
@@ -188,13 +165,7 @@ const events = [
         title: 'Create mockup',
         from: new Date(2021, 11, 20, 7),
         to: new Date(2021, 11, 22, 10, 30),
-        theme: 'hollow',
-        labels: {
-            center: {
-                fieldName: 'customField',
-                iconName: 'utility:brush'
-            }
-        }
+        theme: 'hollow'
     },
     {
         keyFields: ['1', '5'],

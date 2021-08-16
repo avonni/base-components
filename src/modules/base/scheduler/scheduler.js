@@ -134,50 +134,6 @@ export default class Scheduler extends LightningElement {
             return;
         }
 
-        // For each row
-        this.computedRows.forEach((row) => {
-            let rowHeight = 0;
-            // Get all the event occurrences of the row
-            const occurrences = Array.from(
-                this.template.querySelectorAll(
-                    `.scheduler__primitive-event[data-row-key="${row.key}"]`
-                )
-            );
-
-            if (occurrences.length) {
-                // Sort the occurrences by ascending start date
-                occurrences.sort((a, b) => a.from - b.from);
-
-                const previousOccurrences = [];
-                for (let i = 0; i < occurrences.length; i++) {
-                    const left = occurrences[i].leftPosition;
-                    const offsetTop = this.computeEventOffsetTop(
-                        previousOccurrences,
-                        left
-                    );
-                    const height = occurrences[i].getBoundingClientRect()
-                        .height;
-
-                    occurrences[i].occurrence.offsetTop = offsetTop;
-
-                    previousOccurrences.unshift({
-                        offsetTop,
-                        left,
-                        right: occurrences[i].rightPosition,
-                        height
-                    });
-
-                    const totalHeight = height + offsetTop;
-                    if (totalHeight > rowHeight) {
-                        rowHeight = totalHeight;
-                    }
-                }
-            }
-
-            row.height = rowHeight + 10;
-        });
-        this._updateOccurrences = true;
-
         // Save the default datatable column width, in case the styling hook was used
         if (!this._datatableWidth) {
             this._datatableWidth = this.datatableCol.getBoundingClientRect().width;
@@ -187,6 +143,7 @@ export default class Scheduler extends LightningElement {
         if (!this._datatableRowsHeight) {
             this.updateDatatableRowsHeight();
         }
+        this.updateOccurrencesOffsetTop();
         this.updateHeadersStyle();
         this.updateRowsStyle();
 
@@ -867,15 +824,6 @@ export default class Scheduler extends LightningElement {
         this.computedEvents = computedEvents;
     }
 
-    initEventOccurrences() {
-        this.computedEvents.forEach((event) => {
-            event.initOccurrences();
-        });
-
-        // We will want to update the occurrences position on the next render
-        this._updateOccurrences = true;
-    }
-
     initDraggedEventState() {
         // Save the initial position values
         const scheduleElement = this.template.querySelector('tbody');
@@ -1016,6 +964,72 @@ export default class Scheduler extends LightningElement {
             typeof event.labels === 'object' ? event.labels : this.eventsLabels;
     }
 
+    updateOccurrencesOffsetTop() {
+        // For each row
+        this.computedRows.forEach((row) => {
+            let rowHeight = 0;
+            let levelHeight = 0;
+
+            // Get all the event occurrences of the row
+            const occurrences = Array.from(
+                this.template.querySelectorAll(
+                    `.scheduler__primitive-event[data-row-key="${row.key}"]`
+                )
+            );
+
+            if (occurrences.length) {
+                // Sort the occurrences by ascending start date
+                occurrences.sort((a, b) => a.from - b.from);
+
+                // Compute the vertical level of the occurrences
+                const previousOccurrences = [];
+                for (let i = 0; i < occurrences.length; i++) {
+                    const left = occurrences[i].leftPosition;
+                    const level = this.computeEventVerticalLevel(
+                        previousOccurrences,
+                        left
+                    );
+
+                    // If the occurrence is taller than the previous ones,
+                    // update the default level height
+                    const height = occurrences[i].getBoundingClientRect()
+                        .height;
+                    if (height > levelHeight) {
+                        levelHeight = height;
+                    }
+
+                    const occurrence = row.events.find(
+                        (occ) => occ.key === occurrences[i].occurrenceKey
+                    );
+
+                    previousOccurrences.unshift({
+                        level,
+                        left,
+                        right: occurrences[i].rightPosition,
+                        occurrence
+                    });
+                }
+
+                // Add the corresponding offset to the top of the occurrences
+                previousOccurrences.forEach((position) => {
+                    const offsetTop = position.level * levelHeight;
+                    position.occurrence.offsetTop = offsetTop;
+
+                    // If the occurrence offset is bigger than the previous occurrences,
+                    // update the row height
+                    const totalHeight = levelHeight + offsetTop;
+                    if (totalHeight > rowHeight) {
+                        rowHeight = totalHeight;
+                    }
+                });
+            }
+
+            // Add 10 pixels to the row for padding
+            row.height = rowHeight + 10;
+        });
+        this._updateOccurrences = true;
+    }
+
     updateHeadersStyle() {
         // Set the datatable header height
         const thead = this.template.querySelector('thead');
@@ -1053,15 +1067,6 @@ export default class Scheduler extends LightningElement {
             }
             occurrence.updatePosition();
         });
-    }
-
-    updateRowsHeight() {
-        this.computedRows.forEach((row) => {
-            row.updateHeightAndPositions();
-        });
-
-        this.updateRowsStyle();
-        this.updateOccurrencesPosition();
     }
 
     getCellFromPosition(row, x) {
@@ -1133,24 +1138,24 @@ export default class Scheduler extends LightningElement {
         this.selection = undefined;
     }
 
-    computeEventOffsetTop(previousOccurrences, left, offsetTop = 0) {
-        // Find the last event with the same offsetTop
+    computeEventVerticalLevel(previousOccurrences, left, level = 0) {
+        // Find the last event with the same level
         const sameOffset = previousOccurrences.find((occ) => {
-            return occ.offsetTop === offsetTop;
+            return occ.level === level;
         });
-        // If we find an event and their dates overlap,
-        // add the height of the event to the offsetTop,
+
+        // If we find an event and their dates overlap, add one to the level
         // and make sure there isn't another event at the same height
         if (sameOffset && left < sameOffset.right) {
-            offsetTop += sameOffset.height;
-            offsetTop = this.computeEventOffsetTop(
+            level += 1;
+            level = this.computeEventVerticalLevel(
                 previousOccurrences,
                 left,
-                offsetTop
+                level
             );
         }
 
-        return offsetTop;
+        return level;
     }
 
     positionPopover(popover) {
@@ -1198,16 +1203,22 @@ export default class Scheduler extends LightningElement {
     resizeEventToX(x) {
         const occurrence = this.selection.occurrence;
         const { row, mouseX } = this._initialState;
-        const computedX = x - mouseX;
+        const distanceMoved = x - mouseX;
 
         // If a new event is created through click and drag,
         // Set the direction the user is going to
         if (this.selection.newEvent) {
-            this._resizeSide = computedX >= 0 ? 'right' : 'left';
+            this._resizeSide = distanceMoved >= 0 ? 'right' : 'left';
         }
 
+        const labelWidth =
+            this._resizeSide === 'left'
+                ? this._draggedEvent.leftLabelWidth * -1
+                : this._draggedEvent.rightLabelWidth;
+        const computedX = x + labelWidth;
+
         // Get the events present in the cell crossed
-        const hoveredCell = this.getCellFromPosition(row, x);
+        const hoveredCell = this.getCellFromPosition(row, computedX);
         const computedRow = this.getRowFromKey(row.dataset.key);
         const computedCell = computedRow.getColumnFromStart(
             Number(hoveredCell.dataset.start)
@@ -1225,11 +1236,14 @@ export default class Scheduler extends LightningElement {
         // If one of them do, the dragged event is passing over it
         // We have to rerender the grid so the row height enlarges
         if (eventIsHovered) {
-            this.resizeEventToCell(hoveredCell);
+            const cell = labelWidth
+                ? hoveredCell
+                : this.getCellFromPosition(row, x);
+            this.resizeEventToCell(cell);
         } else {
             // If we are not passing above another event,
             // change the styling of the dragged event to follow the cursor
-            this.updateDraggedEventStyleAfterResize(computedX);
+            this.updateDraggedEventStyleAfterResize(distanceMoved);
         }
     }
 
@@ -1253,8 +1267,9 @@ export default class Scheduler extends LightningElement {
         // Add the occurrence to the row with the updated start/end date
         row.events.push(occurrence);
         row.addEventToColumns(occurrence);
-        row.resetEventsOffsetTop();
-        this.updateRowsHeight();
+        this.updateOccurrencesOffsetTop();
+        this.updateOccurrencesPosition();
+        this.updateRowsStyle();
     }
 
     dragEventTo(row, cell) {

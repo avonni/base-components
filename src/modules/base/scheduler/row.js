@@ -62,16 +62,10 @@ export default class SchedulerRow {
             });
         });
 
-        this.initEvents();
-    }
-
-    initEvents() {
         const events = this.events;
         events.forEach((event) => {
             this.addEventToColumns(event);
         });
-
-        this.updateHeightAndPositions();
     }
 
     addEventToColumns(event) {
@@ -113,48 +107,6 @@ export default class SchedulerRow {
         // Remove the event
         const eventIndex = events.findIndex((evt) => evt.key === event.key);
         events.splice(eventIndex, 1);
-    }
-
-    resetEventsOffsetTop() {
-        this.events.forEach((event) => {
-            event.offsetTop = 0;
-        });
-    }
-
-    updateHeightAndPositions() {
-        // let numberOfEvents = 0;
-        // const columns = this.columns.filter((column) => column.events.length);
-        // columns.forEach((column) => {
-        //     // Update the maximum number of events in one column
-        //     if (column.events.length > numberOfEvents) {
-        //         numberOfEvents = column.events.length;
-        //     }
-        //     // For each event, except the first one of the column
-        //     for (let i = 1; i < column.events.length; i++) {
-        //         // Go through the previous events of this column
-        //         // until we find a hole to place this event
-        //         let j = 0;
-        //         let offsetTop = 0;
-        //         while (j <= i && j < column.events.length - 1) {
-        //             const offset = offsetTop;
-        //             const eventHasThisOffset = column.events.find((event) => {
-        //                 return event.offsetTop === offset;
-        //             });
-        //             if (
-        //                 eventHasThisOffset &&
-        //                 eventHasThisOffset.key !== column.events[i].key
-        //             ) {
-        //                 offsetTop += EVENTS_HEIGHT;
-        //             } else break;
-        //             j += 1;
-        //         }
-        //         if (column.events[i].offsetTop < offsetTop) {
-        //             column.events[i].offsetTop = offsetTop;
-        //         }
-        //     }
-        // });
-        // // Compute the height according to the maximum number of events in one column
-        // this.height = numberOfEvents * EVENTS_HEIGHT + 10;
     }
 
     getColumnFromStart(start) {

@@ -79,6 +79,14 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     @api iconName;
 
     /**
+     * Event occurrence object this component is based on. The object is used to make sure the changes made in the scheduler are taken into account, even without a re-render.
+     *
+     * @type {object}
+     * @public
+     */
+    @api occurrence;
+
+    /**
      * Unique key of the occurrence.
      *
      * @type {string}
@@ -265,21 +273,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
-     * Event occurrence object this component is based on. The object is used to make sure the changes made in the scheduler are taken into account, even without a re-render.
-     *
-     * @type {object}
-     * @public
-     */
-    @api
-    get occurrence() {
-        return this._occurrence;
-    }
-    set occurrence(value) {
-        this._occurrence =
-            typeof value === 'object' ? JSON.parse(JSON.stringify(value)) : {};
-    }
-
-    /**
      * If true, the occurrence cannot be dragged, resized or edited in any way.
      *
      * @type {boolean}
@@ -375,36 +368,23 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
 
     @api
     get leftPosition() {
-        const leftLabel = this.template.querySelector(
-            '.scheduler__event-label_left'
-        );
-        if (leftLabel) {
-            const left = this._x - leftLabel.getBoundingClientRect().width;
-            return left > 0 ? left : 0;
-        }
-        return this._x;
+        const left = this._x - this.leftLabelWidth;
+        return left > 0 ? left : 0;
     }
 
     @api
     get rightPosition() {
-        const rightLabel = this.template.querySelector(
-            '.scheduler__event-label_right'
+        return (
+            this._x +
+            this.hostElement.getBoundingClientRect().width +
+            this.rightLabelWidth
         );
-        if (rightLabel) {
-            const leftLabel = this.template.querySelector(
-                '.scheduler__event-label_left'
-            );
-            const leftLabelWidth = leftLabel
-                ? leftLabel.getBoundingClientRect().width
-                : 0;
-            return (
-                leftLabelWidth +
-                this._x +
-                rightLabel.getBoundingClientRect().width
-            );
-        }
-        const position = this.hostElement.getBoundingClientRect();
-        return this._x + position.width;
+    }
+
+    @api
+    get width() {
+        const width = this.hostElement.getBoundingClientRect().width;
+        return this.leftLabelWidth + width + this.rightLabelWidth;
     }
 
     /**
@@ -415,14 +395,16 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     get computedClass() {
         const theme = this.theme;
         return classSet(
-            `slds-p-vertical_xx-small slds-p-horizontal_small scheduler__event slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate scheduler__event_${theme}`
+            `slds-p-horizontal_small scheduler__event slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate scheduler__event_${theme}`
         )
             .add({
                 'slds-text-color_inverse slds-current-color':
                     theme === 'default' ||
                     theme === 'rounded' ||
                     (this._focused && theme === 'transparent'),
-                'scheduler__event-wrapper_focused': this._focused
+                'scheduler__event-wrapper_focused': this._focused,
+                'slds-p-vertical_xx-small': theme !== 'line',
+                'slds-p-bottom_xx-small': theme === 'line'
             })
             .toString();
     }
@@ -453,6 +435,36 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     get offsetTop() {
         return this.occurrence.offsetTop || 0;
+    }
+
+    /**
+     * Left label element width.
+     *
+     * @type {HTMLElement}
+     * @public
+     * @default 0
+     */
+    @api
+    get leftLabelWidth() {
+        const label = this.template.querySelector(
+            '.scheduler__event-label_left'
+        );
+        return label ? label.getBoundingClientRect().width : 0;
+    }
+
+    /**
+     * Right label element width.
+     *
+     * @type {HTMLElement}
+     * @public
+     * @default 0
+     */
+    @api
+    get rightLabelWidth() {
+        const label = this.template.querySelector(
+            '.scheduler__event-label_right'
+        );
+        return label ? label.getBoundingClientRect().width : 0;
     }
 
     /**
