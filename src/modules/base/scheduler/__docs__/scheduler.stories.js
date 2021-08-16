@@ -413,28 +413,7 @@ Base.args = {
     availableDaysOfTheWeek: [1, 2, 3, 4, 5],
     events: events,
     disabledDatesTimes: disabledDatesTimes,
-    referenceLines: referenceLines,
-    eventsLabels: {
-        center: {
-            fieldName: 'title'
-        },
-        top: {
-            fieldName: 'firstName',
-            iconName: 'utility:user'
-        },
-        bottom: {
-            fieldName: 'name'
-        },
-        left: {
-            value: 'Custom left label',
-            fieldName: 'title',
-            iconName: 'utility:user'
-        },
-        right: {
-            value: 'Custom right label',
-            iconName: 'utility:user'
-        }
-    }
+    referenceLines: referenceLines
 };
 
 export const ReadOnly = Template.bind({});

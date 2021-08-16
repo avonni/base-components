@@ -324,7 +324,7 @@
                 <lightning-button
                     if:false={selection.newEvent}
                     label={editDialogLabels.deleteButton}
-                    onclick={crud.deleteEvent}
+                    onclick={handleEventDelete}
                 ></lightning-button>
                 <lightning-button
                     if:false={showRecurrenceSaveOptions}

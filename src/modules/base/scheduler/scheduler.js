@@ -1006,7 +1006,9 @@ export default class Scheduler extends LightningElement {
                         level,
                         left,
                         right: occurrences[i].rightPosition,
-                        occurrence
+                        occurrence:
+                            occurrence ||
+                            (this.selection && this.selection.occurrence)
                     });
                 }
 
@@ -1379,7 +1381,8 @@ export default class Scheduler extends LightningElement {
         const target = mouseEvent.target;
         if (
             target.tagName !== 'C-PRIMITIVE-SCHEDULER-EVENT-OCCURRENCE' ||
-            target.disabled
+            target.disabled ||
+            target.referenceLine
         ) {
             this.cleanDraggedElement();
             this.crud.newEvent(mouseEvent.clientX, mouseEvent.clientY, false);
@@ -1586,11 +1589,16 @@ export default class Scheduler extends LightningElement {
         }
     }
 
+    handleEventDelete() {
+        this.crud.deleteEvent();
+    }
+
     handleDoubleClick(mouseEvent) {
+        const target = mouseEvent.target;
         if (
-            (mouseEvent.target.tagName ===
-                'C-PRIMITIVE-SCHEDULER-EVENT-OCCURRENCE' &&
-                !mouseEvent.target.disabled) ||
+            (target.tagName === 'C-PRIMITIVE-SCHEDULER-EVENT-OCCURRENCE' &&
+                !target.disabled &&
+                !target.referenceLine) ||
             this.readOnly
         ) {
             return;
