@@ -46,12 +46,12 @@ import {
 import { eventCrudMethods } from './eventCrud';
 import {
     EDIT_MODES,
-    EVENTS_DATES_FORMAT,
     EVENTS_THEMES,
     EVENTS_PALETTES,
     DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
     DEFAULT_AVAILABLE_MONTHS,
     DEFAULT_AVAILABLE_TIME_FRAMES,
+    DEFAULT_DATE_FORMAT,
     DEFAULT_EDIT_DIALOG_LABELS,
     DEFAULT_EVENTS_LABELS,
     DEFAULT_CONTEXT_MENU_EMPTY_SPOT_ACTIONS,
@@ -76,6 +76,7 @@ export default class Scheduler extends LightningElement {
     _contextMenuEventActions = [];
     _customEventsPalette = [];
     _collapseDisabled = false;
+    _dateFormat = DEFAULT_DATE_FORMAT;
     _disabledDatesTimes = [];
     _eventsLabels = DEFAULT_EVENTS_LABELS;
     _eventsPalette = EVENTS_PALETTES.default;
@@ -288,6 +289,16 @@ export default class Scheduler extends LightningElement {
     }
     set collapseDisabled(value) {
         this._collapseDisabled = normalizeBoolean(value);
+    }
+
+    @api
+    get dateFormat() {
+        return this._dateFormat;
+    }
+    set dateFormat(value) {
+        this._dateFormat =
+            value && typeof value === 'string' ? value : DEFAULT_DATE_FORMAT;
+        console.log(this.dateFormat);
     }
 
     @api
@@ -564,10 +575,6 @@ export default class Scheduler extends LightningElement {
         return DateTime.fromMillis(visibleSpanEnd - 1);
     }
 
-    get eventDateFormat() {
-        return EVENTS_DATES_FORMAT;
-    }
-
     get smallestHeader() {
         if (!this.computedHeaders.length) return null;
 
@@ -580,6 +587,14 @@ export default class Scheduler extends LightningElement {
             this.recurrentEditModes.length === 1 &&
             this.recurrentEditModes[0] === 'one'
         );
+    }
+
+    get selectionFrom() {
+        return this.selection.occurrence.from.toFormat(this.dateFormat);
+    }
+
+    get selectionTo() {
+        return this.selection.occurrence.to.toFormat(this.dateFormat);
     }
 
     get showCollapseLeft() {

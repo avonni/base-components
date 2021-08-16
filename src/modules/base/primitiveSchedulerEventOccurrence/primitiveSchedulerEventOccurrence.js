@@ -226,6 +226,22 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
+     * Luxon date format to use in the labels.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get dateFormat() {
+        return this._dateFormat;
+    }
+    set dateFormat(value) {
+        this._dateFormat = value;
+
+        if (this.isConnected) this.initLabels();
+    }
+
+    /**
      * Initial event object, before it was computed and transformed into a SchedulerEvent.
      * It may be used by the labels.
      *
@@ -366,12 +382,26 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         this.updateHostTranslate();
     }
 
+    /**
+     * Position of the left extremity of the occurrence.
+     *
+     * @type {number}
+     * @public
+     * @default 0
+     */
     @api
     get leftPosition() {
         const left = this._x - this.leftLabelWidth;
         return left > 0 ? left : 0;
     }
 
+    /**
+     * Position of the right extremity of the occurrence.
+     *
+     * @type {number}
+     * @public
+     * @default 0
+     */
     @api
     get rightPosition() {
         return (
@@ -381,6 +411,12 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         );
     }
 
+    /**
+     * Total width of the occurrence, including the labels.
+     *
+     * @type {number}
+     * @public
+     */
     @api
     get width() {
         const width = this.hostElement.getBoundingClientRect().width;
@@ -673,6 +709,12 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         }
     }
 
+    /**
+     * Initialize the labels values.
+     *
+     * @returns {}
+     * @public
+     */
     initLabels() {
         if (!this.eventData || !this.rows.length || !this.rowKey) return;
 
@@ -686,12 +728,21 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
 
                 labels[position] = {};
                 if (value) {
+                    // If the label has a fixed value, prioritize it
                     labels[position].value = value;
                 } else if (fieldName) {
-                    labels[position].value =
+                    // Else, search for a field name in the occurrence,
+                    // then the event, then the row
+                    const computedValue =
                         this[fieldName] ||
                         this.eventData[fieldName] ||
                         row.data[fieldName];
+
+                    // If the field name is a date, parse it with the date format
+                    labels[position].value =
+                        computedValue instanceof DateTime
+                            ? computedValue.toFormat(this.dateFormat)
+                            : computedValue;
                 }
                 labels[position].iconName = iconName;
             });

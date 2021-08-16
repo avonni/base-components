@@ -154,6 +154,7 @@
                                 columns={smallestHeader.columns}
                                 column-duration={smallestColumnDuration}
                                 column-width={cellWidth}
+                                date-format={dateFormat}
                                 disabled={event.disabled}
                                 event-data={event.data}
                                 event-name={event.name}
@@ -212,11 +213,7 @@
                     icon-name="utility:clock"
                     size="x-small"
                 ></lightning-icon>
-                <c-output-data
-                    type="date"
-                    value={selection.occurrence.from}
-                    type-attributes={eventDateFormat}
-                ></c-output-data>
+                {selectionFrom}
             </div>
             <div class="slds-grid">
                 <lightning-icon
@@ -224,11 +221,7 @@
                     icon-name="utility:clock"
                     size="x-small"
                 ></lightning-icon>
-                <c-output-data
-                    type="date"
-                    value={selection.occurrence.to}
-                    type-attributes={eventDateFormat}
-                ></c-output-data>
+                {selectionTo}
             </div>
         </div>
     </div>

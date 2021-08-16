@@ -238,6 +238,20 @@ export default {
                 category: 'Available dates'
             }
         },
+        dateFormat: {
+            name: 'date-format',
+            control: {
+                type: 'text'
+            },
+            defaultValue: 'ff',
+            description:
+                "The date format to use in the events' details popup and the labels. See Luxon’s documentation for accepted format. If you want to insert text in the label, you need to escape it using single quote.\n For example, the format of “Jan 14 day shift” would be “LLL dd 'day shift'\". ",
+            table: {
+                type: { summary: 'string' },
+                category: 'Events',
+                defaultValue: { summary: 'ff' }
+            }
+        },
         disabledDatesTimes: {
             name: 'disabled-dates-times',
             control: {

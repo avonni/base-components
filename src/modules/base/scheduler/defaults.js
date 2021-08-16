@@ -80,13 +80,7 @@ const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
 
 const EDIT_MODES = ['all', 'one'];
 
-const EVENTS_DATES_FORMAT = {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit'
-};
+const DEFAULT_DATE_FORMAT = 'ff';
 
 const EVENTS_THEMES = {
     valid: ['default', 'transparent', 'line', 'hollow', 'rounded'],
@@ -190,13 +184,13 @@ export {
     DEFAULT_AVAILABLE_MONTHS,
     DEFAULT_CONTEXT_MENU_EMPTY_SPOT_ACTIONS,
     DEFAULT_CONTEXT_MENU_EVENT_ACTIONS,
+    DEFAULT_DATE_FORMAT,
     DEFAULT_EDIT_DIALOG_LABELS,
     DEFAULT_EVENTS_LABELS,
     DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT,
     DEFAULT_START_DATE,
     DEFAULT_VISIBLE_SPAN,
     EDIT_MODES,
-    EVENTS_DATES_FORMAT,
     EVENTS_THEMES,
     EVENTS_PALETTES,
     PALETTES,
