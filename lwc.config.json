@@ -90,10 +90,6 @@
             "path": "src/modules/base/carousel/carousel.js"
         },
         {
-            "name": "c/checkboxGroup",
-            "path": "src/modules/base/checkboxGroup/checkboxGroup.js"
-        },
-        {
             "name": "c/chip",
             "path": "src/modules/base/chip/chip.js"
         },
@@ -127,11 +123,19 @@
         },
         {
             "name": "c/dataOutput",
-            "path": "src/modules/data/dataOutput/dataOutput.js"
+            "path": "src/modules/data/output/output.js"
+        },
+        {
+            "name": "c/dataInput",
+            "path": "src/modules/data/input/input.js"
+        },
+        {
+            "name": "c/dataList",
+            "path": "src/modules/data/list/list.js"
         },
         {
             "name": "c/dataPageHeader",
-            "path": "src/modules/data/pageHeader/dataPageHeader.js"
+            "path": "src/modules/data/pageHeader/pageHeader.js"
         },
         {
             "name": "c/datatable",
@@ -188,6 +192,10 @@
         {
             "name": "c/image",
             "path": "src/modules/base/image/image.js"
+        },
+        {
+            "name": "c/inputChoiceSet",
+            "path": "src/modules/base/inputChoiceSet/inputChoiceSet.js"
         },
         {
             "name": "c/inputCounter",
@@ -262,6 +270,10 @@
             "path": "src/modules/base/primitiveBubble/primitiveBubble.js"
         },
         {
+            "name": "c/primitiveCellAvatarGroup",
+            "path": "src/modules/base/primitiveCellAvatarGroup/primitiveCellAvatarGroup.js"
+        },
+        {
             "name": "c/primitiveCellBadge",
             "path": "src/modules/base/primitiveCellBadge/primitiveCellBadge.js"
         },
@@ -272,6 +284,10 @@
         {
             "name": "c/primitiveCellColorPicker",
             "path": "src/modules/base/primitiveCellColorPicker/primitiveCellColorPicker.js"
+        },
+        {
+            "name": "c/primitiveCellCombobox",
+            "path": "src/modules/base/primitiveCellCombobox/primitiveCellCombobox.js"
         },
         {
             "name": "c/primitiveCellInputCounter",
@@ -304,6 +320,10 @@
         {
             "name": "c/primitiveComboboxGroup",
             "path": "src/modules/base/primitiveComboboxGroup/primitiveComboboxGroup.js"
+        },
+        {
+            "name": "c/primitiveDatatable",
+            "path": "src/modules/base/primitiveDatatable/primitiveDatatable.js"
         },
         {
             "name": "c/primitiveCoordinateItem",
@@ -514,10 +534,6 @@
             "path": "src/modules/base/carousel/carousel.js"
         },
         {
-            "name": "avonni/checkboxGroup",
-            "path": "src/modules/base/checkboxGroup/checkboxGroup.js"
-        },
-        {
             "name": "avonni/chip",
             "path": "src/modules/base/chip/chip.js"
         },
@@ -543,11 +559,19 @@
         },
         {
             "name": "avonni/dataOutput",
-            "path": "src/modules/data/dataOutput/dataOutput.js"
+            "path": "src/modules/data/output/output.js"
+        },
+        {
+            "name": "avonni/dataInput",
+            "path": "src/modules/data/input/input.js"
+        },
+        {
+            "name": "avonni/dataList",
+            "path": "src/modules/data/list/list.js"
         },
         {
             "name": "avonni/dataPageHeader",
-            "path": "src/modules/data/pageHeader/dataPageHeader.js"
+            "path": "src/modules/data/pageHeader/pageHeader.js"
         },
         {
             "name": "avonni/datatable",
@@ -596,6 +620,10 @@
         {
             "name": "avonni/image",
             "path": "src/modules/base/image/image.js"
+        },
+        {
+            "name": "avonni/inputChoiceSet",
+            "path": "src/modules/base/inputChoiceSet/inputChoiceSet.js"
         },
         {
             "name": "avonni/inputCounter",
@@ -779,7 +807,6 @@
         "avonni/buttonPopover",
         "avonni/calendar",
         "avonni/carousel",
-        "avonni/checkboxGroup",
         "avonni/chip",
         "avonni/colorGradient",
         "avonni/colorPalette",
@@ -787,6 +814,8 @@
         "avonni/combobox",
         "avonni/confetti",
         "avonni/dataOutput",
+        "avonni/dataInput",
+        "avonni/dataList",
         "avonni/dataPageHeader",
         "avonni/datatable",
         "avonni/dateTimePicker",
@@ -800,6 +829,7 @@
         "avonni/heroBanner",
         "avonni/illustration",
         "avonni/image",
+        "avonni/inputChoiceSet",
         "avonni/inputCounter",
         "avonni/inputDateRange",
         "avonni/inputPen",
