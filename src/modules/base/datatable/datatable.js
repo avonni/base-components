@@ -297,6 +297,10 @@ export default class Datatable extends LightningElement {
             this._columnsWidth = event.detail.columnWidths;
             this.tableResize();
         });
+
+        this.addEventListener('resizecol', (event) => {
+            this.primitiveGroupedDatatable.handleResizeColumn(event);
+        });
     }
 
     renderedCallback() {
@@ -310,7 +314,7 @@ export default class Datatable extends LightningElement {
      */
     get primitiveGroupedDatatable() {
         return this.template.querySelector(
-            'c-primitive-datatable.grouped-datatable'
+            'c-primitive-datatable[data-role="grouped"]'
         );
     }
 
@@ -321,7 +325,7 @@ export default class Datatable extends LightningElement {
      */
     get primitiveHeaderDatatable() {
         return this.template.querySelector(
-            'c-primitive-datatable.header-datatable'
+            'c-primitive-datatable[data-role="header"]'
         );
     }
 
@@ -395,6 +399,20 @@ export default class Datatable extends LightningElement {
         this.updateColumnStyleResize();
         this.updateTableWidth();
     }
+
+    // groupByResizeColumns() {
+    //     if(this.groupBy) {
+    //         this.columns.forEach((column, index) => {
+    //             if(!this.hideCheckboxColumn) {
+    //                 column.fixedWidth = this._columnsWidth[index + 2];
+    //                 column.initialWidth = this._columnsWidth[index + 2];
+    //             } else {
+    //                 column.fixedWidth = this._columnsWidth[index + 1];
+    //                 column.initialWidth = this._columnsWidth[index + 1];
+    //             }
+    //         });
+    //     }
+    // }
 
     /**
      * Gets the columns width of the primitive-datatable depending on if there is a header or not.

@@ -394,8 +394,8 @@ const computeSummarizeArray = (columns, data) => {
         const formatType = formatNumberType(columnType);
         // If the column is a numberType, the alignement is right, otherwise it's left.
         const className = isNumberType(columnType)
-            ? 'slds-truncate avonni-datatable-summarize_styling-number'
-            : 'slds-truncate avonni-datatable-summarize_styling';
+            ? 'slds-truncate avonni-datatable-summarize-table_display-flex_end'
+            : 'slds-truncate avonni-datatable-summarize-table_display-flex_start';
 
         // Formatting of the object that we need to iterate on, in the markup.
         const summarizeColumnObject = {

@@ -429,6 +429,17 @@ export default class PrimitiveDatatable extends LightningDatatable {
             'privateactionclick',
             this.handleDispatchEvents
         );
+
+        this.template.addEventListener('resizecol', (event) => {
+            this.dispatchEvent(
+                new CustomEvent(`${event.type}`, {
+                    detail: event.detail,
+                    bubbles: event.bubbles,
+                    composed: event.composed,
+                    cancelable: event.cancelable
+                })
+            );
+        });
     }
 
     renderedCallback() {
@@ -437,12 +448,7 @@ export default class PrimitiveDatatable extends LightningDatatable {
         this._data = JSON.parse(JSON.stringify(normalizeArray(super.data)));
         this.computeEditableOption();
 
-        this.columnsWidthWithoutHeader();
-        this.columnsWidthWithHeader();
-        this.tableWidth();
-        // this.unscrollableMainDatatable();
-        this.hideTableHeaderPadding();
-        this.hideTable();
+        this.tablesInitialization();
 
         // Make sure custom edited cells stay yellow on hover
         // Make sure error cells appear edited and with a red border
@@ -466,6 +472,11 @@ export default class PrimitiveDatatable extends LightningDatatable {
             'privateeditcustomcell',
             this.handleEditCell
         );
+    }
+
+    @api
+    handleResizeColumn(event) {
+        super.handleResizeColumn(event);
     }
 
     @api
@@ -550,34 +561,25 @@ export default class PrimitiveDatatable extends LightningDatatable {
      * Makes the primitive datatable unscrollable since it is the main datatable that is scrollable.
      */
     unscrollableMainDatatable() {
-        const mainDatatable = this.template.querySelector(
-            '.grouped-datatable .slds-table_header-fixed_container'
+        const groupedDatatable = this.template.querySelector(
+            'c-primitive-datatable[data-role="grouped"] .slds-table_header-fixed_container'
         );
-        if (mainDatatable) {
-            mainDatatable.style.overflowX = 'hidden';
-            mainDatatable.style.width = `${this._tableWidth}px`;
-            mainDatatable.style.maxWidth = 'none';
+
+        if (groupedDatatable) {
+            groupedDatatable.style.overflowX = 'hidden';
+            groupedDatatable.style.width = `${this._tableWidth}px`;
+            groupedDatatable.style.maxWidth = 'none';
         }
     }
 
     hideTableHeaderPadding() {
-        const headerDatatable = this.template.querySelector(
-            '.header-datatable .slds-table_header-fixed_container'
-        );
-
         const groupedDatatable = this.template.querySelector(
-            '.grouped-datatable .slds-table_header-fixed_container'
+            'c-primitive-datatable[data-role="grouped"] .slds-table_header-fixed_container'
         );
 
         const groupedDatatableHeader = this.template.querySelector(
-            '.grouped-datatable .slds-table_header-fixed_container thead'
+            'c-primitive-datatable[data-role="grouped"] .slds-table_header-fixed_container thead'
         );
-
-        if (headerDatatable) {
-            if (this.hideTableHeader) {
-                headerDatatable.style.paddingTop = '0px';
-            }
-        }
 
         if (groupedDatatable) {
             if (this.hideTableHeader) {
@@ -591,15 +593,15 @@ export default class PrimitiveDatatable extends LightningDatatable {
         }
     }
 
-    hideTable() {
+    headerDatatableStyling() {
         const headerDatatable = this.template.querySelector(
-            '.header-datatable .slds-table_header-fixed_container'
+            'c-primitive-datatable[data-role="header"] .slds-table_header-fixed_container'
         );
         const headerDatatableBorder = this.template.querySelector(
-            '.header-datatable .slds-table_bordered'
+            'c-primitive-datatable[data-role="header"] .slds-table_bordered'
         );
         const headerDatatableTable = this.template.querySelector(
-            '.header-datatable tbody'
+            'c-primitive-datatable[data-role="header"] tbody'
         );
         if (headerDatatableTable) {
             headerDatatableTable.style.display = 'none';
@@ -608,6 +610,15 @@ export default class PrimitiveDatatable extends LightningDatatable {
             headerDatatable.style.width = `${this._tableWidth}px`;
             headerDatatable.style.maxWidth = 'none';
         }
+    }
+
+    tablesInitialization() {
+        this.columnsWidthWithoutHeader();
+        this.columnsWidthWithHeader();
+        this.tableWidth();
+        this.unscrollableMainDatatable();
+        this.hideTableHeaderPadding();
+        this.headerDatatableStyling();
     }
 
     /**

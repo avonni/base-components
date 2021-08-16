@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.avonni-datatable-bottom-bar {
+.avonni-datatable__bottom-bar_styling {
     display: flex;
     justify-content: center;
     padding: 0.5rem 0;
@@ -42,28 +42,32 @@
     width: 100%;
 }
 
-.avonni-datatable-container {
+.avonni-datatable__container {
     overflow-x: auto;
     background: #f3f2f2;
 }
 
-.avonni-datatable-summarize-type-text {
+.avonni-datatable__summarize-type-text_styling {
     color: #9e9e9e;
     margin-right: 5px;
 }
 
-.avonni-datatable-summarize_styling {
+.avonni-datatable-summarize-table_display-flex_start {
     display: flex;
     justify-content: flex-start;
     padding: 0.1rem 0;
 }
 
-.avonni-datatable-summarize_styling-number {
+.avonni-datatable-summarize-table_display-flex_end {
     display: flex;
     justify-content: flex-end;
     padding: 0.1rem 0;
 }
 
-.avonni-datatable-vertical-align_top {
+.avonni-datatable__summarize-table_border-top_none {
+    border-top: none;
+}
+
+.avonni-datatable__summarize-td_vertical-align_top {
     vertical-align: top;
 }

@@ -1,8 +1,8 @@
 <template>
-    <div class="avonni-datatable-container">
+    <div class="avonni-datatable__container">
         <c-primitive-datatable
             if:true={groupBy}
-            class="header-datatable"
+            data-role="header"
             column-widths-mode={columnWidthsMode}
             columns={columns}
             data={data}
@@ -38,7 +38,7 @@
             group-by={groupBy}
         ></c-primitive-datatable>
         <c-primitive-datatable
-            class="grouped-datatable"
+            data-role="grouped"
             column-widths-mode={columnWidthsMode}
             columns={columns}
             data={data}
@@ -78,7 +78,7 @@
         </c-primitive-datatable>
         <template if:true={allowSummarize}>
             <table
-                class="slds-table slds-table_bordered slds-table_resizable-cols avonni-datatable-summarize-border-top_none"
+                class="slds-table slds-table_bordered slds-table_resizable-cols avonni-datatable__summarize-table_border-top_none"
                 role="grid"
             >
                 <tbody>
@@ -91,7 +91,7 @@
                         >
                             <td
                                 key={column.fieldName}
-                                class="avonni-datatable-vertical-align_top"
+                                class="avonni-datatable__td_vertical-align_top"
                                 data-column={column.fieldName}
                                 role="gridcell"
                             >
@@ -106,7 +106,7 @@
                                             if:true={type.displaySumType}
                                         >
                                             <div
-                                                class="avonni-datatable-summarize-type-text"
+                                                class="avonni-datatable__summarize-type-text_styling"
                                             >
                                                 {type.label}:
                                             </div>
@@ -166,7 +166,7 @@
             </table>
         </template>
     </div>
-    <div class="avonni-datatable-bottom-bar" if:true={showStatusBar}>
+    <div class="avonni-datatable__bottom-bar_styling" if:true={showStatusBar}>
         <div class="slds-grid slds-grid_align-center">
             <lightning-button
                 class="slds-button"
