@@ -83,7 +83,7 @@ const ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
 
 /**
- * The button popover display a lightning button. On click, open the popover.
+ * The button popover displays a lightning button. On click, open the popover.
  *
  * @class
  * @name ButtonPopover
@@ -556,7 +556,7 @@ export default class ButtonPopover extends LightningElement {
         const isButton =
             this.template.querySelector(
                 'lightning-button[data-role="button-popover"]'
-            ) === event?.relatedTarget;
+            ) === event.relatedTarget;
         if (this._cancelBlur) {
             return;
         }

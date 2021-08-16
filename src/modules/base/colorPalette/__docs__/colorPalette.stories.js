@@ -164,11 +164,36 @@ const colors = [
     '#b85d0d'
 ];
 
+const colorsWithLabel = [
+    { label: 'brand-accessible', value: '#0176d3' },
+    { label: 'brand-active', value: '#014486' },
+    { label: 'brand-dark', value: '#014486' },
+    {
+        label: 'dark-transparent',
+        value: 'rgba(1, 68, 134, 0)'
+    },
+    { label: 'background-primary', value: '#eef4ff' },
+    {
+        label: 'primary-transparent',
+        value: 'rgba(176,196,223,0)'
+    },
+    { label: 'brand-contrast', value: 'rgb(26, 27, 30)' },
+    { label: 'color 1', value: '#e3abec' },
+    { label: 'color 2', value: '#c2dbf7' },
+    { label: 'color 3', value: '#9fd6ff' },
+    { label: 'color 4', value: '#9de7da' }
+];
+
 const Template = (args) => ColorPalette(args);
 
 export const Base = Template.bind({});
 Base.args = {
     colors: colors
+};
+
+export const WithLabels = Template.bind({});
+WithLabels.args = {
+    colors: colorsWithLabel
 };
 
 export const BaseSmall = Template.bind({});

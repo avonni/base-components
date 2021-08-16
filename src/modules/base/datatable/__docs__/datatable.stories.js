@@ -33,15 +33,17 @@
 import { Datatable } from '../__examples__/datatable';
 import {
     columnsAB,
-    columnsCE,
-    columnsFN,
+    columnsCD,
+    columnsEN,
     columnsOQ,
     columnsRZ,
-    dataAB,
-    dataCE,
-    dataFN,
-    dataOQ,
-    dataRZ
+    columnsSum,
+    recordsAB,
+    recordsCD,
+    recordsEN,
+    recordsOQ,
+    recordsRZ,
+    recordsSum
 } from './data';
 
 export default {
@@ -73,7 +75,7 @@ export default {
                 category: 'Data'
             }
         },
-        data: {
+        records: {
             control: {
                 type: 'object'
             },
@@ -376,15 +378,15 @@ const Template = (args) => Datatable(args);
 export const DataTypesFromAToB = Template.bind({});
 DataTypesFromAToB.args = {
     columns: columnsAB,
-    data: dataAB,
+    records: recordsAB,
     keyField: 'id',
     columnWidthsMode: 'auto'
 };
 
-export const DataTypesFromCToE = Template.bind({});
-DataTypesFromCToE.args = {
-    columns: columnsCE,
-    data: dataCE,
+export const DataTypesFromCToD = Template.bind({});
+DataTypesFromCToD.args = {
+    columns: columnsCD,
+    records: recordsCD,
     keyField: 'id',
     columnWidthsMode: 'auto',
     draftValues: [
@@ -407,11 +409,10 @@ DataTypesFromCToE.args = {
         }
     }
 };
-
-export const DataTypesFromFToN = Template.bind({});
-DataTypesFromFToN.args = {
-    columns: columnsFN,
-    data: dataFN,
+export const DataTypesFromEToN = Template.bind({});
+DataTypesFromEToN.args = {
+    columns: columnsEN,
+    records: recordsEN,
     keyField: 'id',
     columnWidthsMode: 'auto',
     hideCheckboxColumn: true
@@ -420,7 +421,7 @@ DataTypesFromFToN.args = {
 export const DataTypesFromOToQ = Template.bind({});
 DataTypesFromOToQ.args = {
     columns: columnsOQ,
-    data: dataOQ,
+    records: recordsOQ,
     keyField: 'id',
     columnWidthsMode: 'auto',
     selectedRows: ['2']
@@ -429,7 +430,15 @@ DataTypesFromOToQ.args = {
 export const DataTypesFromRToZ = Template.bind({});
 DataTypesFromRToZ.args = {
     columns: columnsRZ,
-    data: dataRZ,
+    records: recordsRZ,
+    keyField: 'id',
+    columnWidthsMode: 'auto'
+};
+
+export const DatatableWithSummarizeTypes = Template.bind({});
+DatatableWithSummarizeTypes.args = {
+    columns: columnsSum,
+    records: recordsSum,
     keyField: 'id',
     columnWidthsMode: 'auto'
 };

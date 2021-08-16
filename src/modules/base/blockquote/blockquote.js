@@ -53,14 +53,14 @@ const ICON_SIZES = {
 export default class Blockquote extends LightningElement {
     /**
      * The title can include text and is displayed in the header.
-     * 
+     *
      * @public
      * @type {string}
      */
     @api title;
     /**
      * Icon display next to the title.
-     * 
+     *
      * @public
      * @type {string}
      */
@@ -72,7 +72,7 @@ export default class Blockquote extends LightningElement {
 
     /**
      * The variant changes the appearance of the blockquote. Valid values include default, brand, warning, error, success.
-     * 
+     *
      * @public
      * @type {string}
      * @default default
@@ -91,7 +91,7 @@ export default class Blockquote extends LightningElement {
 
     /**
      * Describes the position of the icon. Options include left and right.
-     * 
+     *
      * @public
      * @type {string}
      * @default left
@@ -110,7 +110,7 @@ export default class Blockquote extends LightningElement {
 
     /**
      * The size of the icon. Valid values include xx-small, x-small, small, medium, large.
-     * 
+     *
      * @public
      * @type {string}
      * @default small
@@ -129,8 +129,8 @@ export default class Blockquote extends LightningElement {
 
     /**
      * Compute blockquote style by variant.
-     * 
-     * @return {string}
+     *
+     * @type {string}
      */
     get blockquoteClass() {
         return classSet('doc')
@@ -146,8 +146,8 @@ export default class Blockquote extends LightningElement {
 
     /**
      * Set icon left.
-     * 
-     * @return {boolean}
+     *
+     * @type {boolean}
      */
     get leftIcon() {
         return this._iconPosition === 'left' && this.iconName;
@@ -155,8 +155,8 @@ export default class Blockquote extends LightningElement {
 
     /**
      * Set icon right.
-     * 
-     * @return {boolean}
+     *
+     * @type {boolean}
      */
     get rightIcon() {
         return this._iconPosition === 'right' && this.iconName;

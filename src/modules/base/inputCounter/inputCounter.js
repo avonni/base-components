@@ -163,7 +163,7 @@ export default class InputCounter extends LightningElement {
     _fractionDigits;
     _constraintApi;
     _constraintApiProxyInputUpdater;
-    _value;
+    _value = null;
     _previousValue;
     _inputStep;
     helpMessage;
@@ -372,7 +372,7 @@ export default class InputCounter extends LightningElement {
     /**
      * Form Element class add error if showError.
      *
-     * @return string
+     * @type {string}
      */
     get formElementClass() {
         return classSet('slds-form-element')
@@ -385,7 +385,7 @@ export default class InputCounter extends LightningElement {
     /**
      * Button Increment class styling.
      *
-     * @return string
+     * @type {string}
      */
     get buttonIncrementClass() {
         return classSet('slds-input__button_increment')
@@ -401,7 +401,7 @@ export default class InputCounter extends LightningElement {
     /**
      * Button Decrement class styling.
      *
-     * @return string
+     * @type {string}
      */
     get buttonDecrementClass() {
         return classSet('slds-input__button_decrement')
@@ -415,32 +415,36 @@ export default class InputCounter extends LightningElement {
     }
 
     /**
-     * Input class if readOnly
+     * Input class if readOnly.
      *
-     * @return string
+     * @type {string}
      */
     get inputClass() {
         return this._readOnly ? '' : 'avonni-input-counter';
     }
 
     /**
-     * Check if variant is inline
+     * Check if variant is inline.
      *
-     * @return {boolean}
+     * @type {boolean}
      */
     get isInline() {
         return this.variant === 'label-inline';
     }
 
     /**
-     * Get Aria Controls
+     * Get Aria Controls.
+     * 
+     * @type {object}
      */
     get computedAriaControls() {
         return this.ariaControls || null;
     }
 
     /**
-     * Get Aria Labelled by
+     * Get Aria Labelled by.
+     * 
+     * @type {string}
      */
     get computedAriaLabelledBy() {
         return this.ariaLabelledBy || null;
@@ -448,6 +452,8 @@ export default class InputCounter extends LightningElement {
 
     /**
      * Get Aria Described By
+     * 
+     * @type {string}
      */
     get computedAriaDescribedBy() {
         return this.ariaDescribedBy || null;
@@ -540,7 +546,7 @@ export default class InputCounter extends LightningElement {
      * Sets the input values to a specified decimal length based on fractionDigits.
      *
      * @param input
-     * @returns number
+     * @type {number}
      */
     handlePrecision(input) {
         if (!isNaN(input)) {
@@ -564,7 +570,7 @@ export default class InputCounter extends LightningElement {
         /**
          * @event
          * @name change
-         * @description The event fired when the value change.
+         * @description The event fired when the value changes.
          * @param {number} value
          */
         this.dispatchEvent(

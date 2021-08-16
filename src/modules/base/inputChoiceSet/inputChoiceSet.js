@@ -276,6 +276,8 @@ export default class InputChoiceSet extends LightningElement {
 
     /**
      * Localization.
+     * 
+     * @type {i18n}
      */
     get i18n() {
         return i18n;
@@ -385,9 +387,10 @@ export default class InputChoiceSet extends LightningElement {
         this.interactingState.enter();
 
         /**
+         * The event fired when you focus the input.
+         * 
          * @event
          * @name focus
-         * The event fired when you focus the input.
          * @public
          */
         this.dispatchEvent(new CustomEvent('focus'));
@@ -401,9 +404,10 @@ export default class InputChoiceSet extends LightningElement {
 
 
         /**
+         * The event fired when the focus is removed from the input.
+         * 
          * @event
          * @name blur
-         * The event fired when the focus is removed from the input.
          * @public
          */
         this.dispatchEvent(new CustomEvent('blur'));
@@ -491,7 +495,7 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * Gets FieldConstraintApi.
+     * Gets FieldConstraintApi for validation.
      *
      * @type {object}
      */

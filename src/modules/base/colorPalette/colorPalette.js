@@ -31,7 +31,10 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { normalizeBoolean, generateColors } from 'c/utilsPrivate';
+import {
+    normalizeBoolean,
+    generateColors
+} from 'c/utilsPrivate';
 import { generateUniqueId } from 'c/utils';
 
 const DEFAULT_COLORS = [
@@ -65,14 +68,16 @@ const DEFAULT_COLORS = [
     '#b85d0d'
 ];
 
-const DEFAULT_TILE_WIDTH = 20
-const DEFAULT_TILE_HEIGHT = 20
-const DEFAULT_COLUMNS = 7
+const DEFAULT_TILE_WIDTH = 20;
+const DEFAULT_TILE_HEIGHT = 20;
+const DEFAULT_COLUMNS = 7;
+
+const TYPES = { valid: ['base', 'list'], default: 'base' };
 
 /**
  * @class
  * @descriptor avonni-color-palette
- * @example example-color-gradient--base
+ * @storyId example-color-gradient--base
  * @public
  */
 export default class ColorPalette extends LightningElement {
@@ -83,15 +88,10 @@ export default class ColorPalette extends LightningElement {
      * @type {string}
      */
     @api value;
-    /**
-     * Color values displayed in the palette.
-     * 
-     * @public
-     * @type {string[]}
-     * @default [“#e3abec”, “#c2dbf7”, ”#9fd6ff”, ”#9de7da”, ”#9df0bf”, ”#fff099”, ”#fed49a”, ”#d073df”, ”#86b9f3”, ”#5ebbff”, ”#44d8be”, ”#3be281”, ”#ffe654”, ”#ffb758”, ”#bd35bd”, ”#5778c1”, ”#5ebbff”, ”#00aea9”, ”#3bba4c”, ”#f4bc25”, ”#f99120”, ”#580d8c”, ”#001870”, ”#0a2399”, ”#097476”, ”#096a50”, ”#b67d11”, ”#b85d0d”]
-     */
-    @api colors = DEFAULT_COLORS;
 
+    _type = TYPES.default;
+    _colors = DEFAULT_COLORS;
+    bundles = [];
     _columns = DEFAULT_COLUMNS;
     _tileWidth = DEFAULT_TILE_WIDTH;
     _tileHeight = DEFAULT_TILE_HEIGHT;
@@ -99,6 +99,9 @@ export default class ColorPalette extends LightningElement {
     _isLoading = false;
     _readOnly = false;
     init = false;
+    currentLabel;
+	currentToken;
+	lastTarget;
 
     renderedCallback() {
         this.initContainer();
@@ -131,6 +134,24 @@ export default class ColorPalette extends LightningElement {
                 element.style.width = `${this.tileWidth}px`;
             }
         );
+    }
+    
+    @api
+    get colors() {
+        return this._colors;
+    }
+    set colors(values) {
+        if (!values || values.length === 0) {
+            return;
+        }
+
+        if (typeof values[0] == 'object') {
+            this.bundles = values;
+            this._type = 'list';
+        } else {
+            this._colors = values;
+            this._type = 'base';
+        }
     }
 
     /**
@@ -236,6 +257,14 @@ export default class ColorPalette extends LightningElement {
         return generateUniqueId();
     }
 
+    get isBase() {
+        return this._type === 'base';
+    }
+
+    get isList() {
+        return this._type === 'list';
+    }
+
     /**
      * Clears the color value of the ColorPalette.
      * 
@@ -292,6 +321,10 @@ export default class ColorPalette extends LightningElement {
         );
     }
 
+	preventD(event){
+		event.preventDefault();
+	}
+
     /**
      * Click event handler.
      * 
@@ -304,7 +337,16 @@ export default class ColorPalette extends LightningElement {
             return;
         }
 
-        this.value = event.target.parentElement.getAttribute('item-color');
+		if(this.lastTarget!=undefined){
+			this.lastTarget.children[0].classList.remove('slds-is-selected');
+		}
+
+		let currentTarget = event.currentTarget;
+		currentTarget.children[0].classList.add('slds-is-selected');
+        this.value = currentTarget.getAttribute('item-color');
+		this.currentLabel = currentTarget.getAttribute('item-label');
+		this.currentToken = currentTarget.getAttribute('item-token');
+		this.lastTarget = currentTarget;
         event.preventDefault();
         this.dispatchChange();
     }
@@ -337,7 +379,9 @@ export default class ColorPalette extends LightningElement {
                         hexa: colors.hexa,
                         rgb: colors.rgb,
                         rgba: colors.rgba,
-                        alpha: colors.A
+                        alpha: colors.A,
+						label: this.currentLabel,
+						token: this.currentToken
                     }
                 })
             );

@@ -32,7 +32,16 @@
 
 import { LightningElement } from 'lwc';
 
+/**
+ * @class
+ * @descriptor avonni-emoji-picker
+ */
 export default class EmojiPicker extends LightningElement {
+    /**
+     * Go to emoji picker selection viewer.
+     *
+     * @param {Event} event
+     */
     goToSection(event) {
         let section = this.template.querySelector(
             `section[data-value=${event.target.value}]`
@@ -43,7 +52,22 @@ export default class EmojiPicker extends LightningElement {
             .scrollTo({ top: section.offsetTop });
     }
 
+    /**
+     * Select Emoji selection event dispatcher.
+     *
+     * @param {Event} event
+     */
     dispatchSelectEmojiEvent(event) {
+        /**
+         * Event that fires when selecting an emoji.
+         *
+         * @event
+         * @name emoji
+         * @param {string} value
+         * @public
+         * @bubbles
+         * @composed
+         */
         this.dispatchEvent(
             new CustomEvent('emoji', {
                 composed: true,

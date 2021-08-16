@@ -103,6 +103,7 @@ export default class List extends LightningElement {
     _hasImages;
     menuRole;
     itemRole;
+    denyItemClick = false;
 
     /**
      * Position of the sortable icon. Valid values include left and right.
@@ -490,7 +491,10 @@ export default class List extends LightningElement {
      * @returns {function | object} intiPositions() | _savedComputedItems
      */
     dragStart(event) {
-        // Stop dragging if the click was on a button menu or link
+        // Reset denyItemClick attribute on item touch
+        this.denyItemClick = false;
+
+        // Stop dragging if the click was on a button menu
         if (
             !this.sortable ||
             event.target.tagName.startsWith('LIGHTNING-BUTTON') ||
@@ -530,6 +534,10 @@ export default class List extends LightningElement {
      */
     drag(event) {
         if (!this._draggedElement) return;
+        this._draggedElement.classList.add('sortable-item_dragged');
+
+        // Deny itemclick event dispatch on drag
+        this.denyItemClick = true;
 
         const mouseY =
             event.type === 'touchmove'
@@ -565,11 +573,13 @@ export default class List extends LightningElement {
         if (buttonMenu) buttonMenu.classList.remove('slds-is-open');
     }
 
-    /**
-     * Set new computedItems order and clear style // fire reorder event.
-     */
-    dragEnd() {
+    dragEnd(event) {
         if (!this._draggedElement) return;
+
+        // Allow imperfect item click within a 4px drag margin
+        if (event && Math.abs(event.clientY - this._initialY) < 4) {
+            this.denyItemClick = false;
+        }
 
         this.computedItems = [...this.computedItems];
 
@@ -655,5 +665,72 @@ export default class List extends LightningElement {
      */
     handleButtonMenuTouchStart(event) {
         event.stopPropagation();
+    }
+
+    /**
+     * Handles a click on an item action.
+     *
+     * @param {Event} event
+     */
+    handleActionClick(event) {
+        const actionName = this.hasMultipleActions
+            ? event.detail.value
+            : event.target.value;
+        const itemIndex = event.target.parentElement.parentElement.parentElement.getAttribute(
+            'data-index'
+        );
+
+        /**
+         * The event fired when a user clicks on an action.
+         *
+         * @event
+         * @name actionclick
+         * @param {string} name  Name of the action clicked.
+         * @param {object} items Item clicked.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                detail: {
+                    name: actionName,
+                    item: this.computedItems[itemIndex]
+                }
+            })
+        );
+    }
+
+    /**
+     * Handles a click on an item.
+     * The click event will not dispatch an event if the clicked element already has a purpose (action or link).
+     *
+     * @param {Event} event
+     */
+    handleItemClick(event) {
+        if (
+            this.denyItemClick ||
+            event.target.tagName.startsWith('LIGHTNING') ||
+            event.target.tagName === 'A'
+        )
+            return;
+
+        /**
+         * The event fired when a user clicks on an item.
+         *
+         * @event
+         * @name itemclick
+         * @param {object}  item Item clicked.
+         * @param {DOMRect} name Bounds of the item clicked.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('itemclick', {
+                detail: {
+                    item: this.computedItems[
+                        event.currentTarget.getAttribute('data-index')
+                    ],
+                    bounds: event.currentTarget.getBoundingClientRect()
+                }
+            })
+        );
     }
 }

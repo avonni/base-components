@@ -122,7 +122,7 @@ export default class ColorPickerCustom extends LightningElement {
     /**
      * Localization.
      * 
-     * @returns object i18n
+     * @type {object}
      */
     get i18n() {
         return i18n;
@@ -131,7 +131,7 @@ export default class ColorPickerCustom extends LightningElement {
     /**
      * Compute thumbnail styling.
      * 
-     * @returns string
+     * @type {string}
      */
     get thumbnailStyle() {
         return `background: ${this._hex || 'hsl(220, 46%, 55%)'};`;
@@ -140,7 +140,7 @@ export default class ColorPickerCustom extends LightningElement {
     /**
      * Compute gradient styling.
      * 
-     * @returns string
+     * @type {string}
      */
     get gradientStyle() {
         return `background: ${
@@ -151,7 +151,7 @@ export default class ColorPickerCustom extends LightningElement {
     /**
      * Get Canvas object dimensions.
      * 
-     * @returns CANVAS x, y coordinates
+     * @type {object}
      */
     get canvasRect() {
         return CANVAS;
@@ -160,7 +160,7 @@ export default class ColorPickerCustom extends LightningElement {
     /**
      * Get DOM anchor element.
      * 
-     * @returns object HTMLElement
+     * @type {Element} 
      */
     get anchorElement() {
         return this.template.querySelector('*[data-id="color-anchor"]');
@@ -169,7 +169,7 @@ export default class ColorPickerCustom extends LightningElement {
     /**
      * Get DOM thumbnail element.
      * 
-     * @returns object HTMLElement
+     * @type {Element}
      */
     get thumbnailElement() {
         return this.template.querySelector('*[data-id="color-preview"]');
@@ -178,7 +178,7 @@ export default class ColorPickerCustom extends LightningElement {
     /**
      * Get DOM gradient element.
      * 
-     * @returns object HTMLElement
+     * @type {Element}
      */
     get gradientElement() {
         return this.template.querySelector('*[data-id="color-gradient"]');
@@ -187,7 +187,7 @@ export default class ColorPickerCustom extends LightningElement {
     /**
      * Computed Saturation and Brightness styling.
      * 
-     * @returns string
+     * @type {string}
      */
     get computedSaturationAndBrightness() {
         const rgb = this._rgb;
@@ -214,6 +214,8 @@ export default class ColorPickerCustom extends LightningElement {
     selectColor(event) {
         this.dispatchEvent(
             /**
+             * Event that fires when updating the color value.
+             * 
              * @event
              * @name updatecolor
              * @params {string} color
@@ -261,7 +263,7 @@ export default class ColorPickerCustom extends LightningElement {
      * Parse and limit color numerical values.
      * 
      * @param {number} value
-     * @return number out
+     * @return {number} out
      */
     parseAndLimit(value) {
         let out = value;
@@ -350,6 +352,8 @@ export default class ColorPickerCustom extends LightningElement {
         this._hex = selectedColor;
 
         /**
+         * The event that fires when the selected color is updated.
+         * 
          * @event
          * @name updateselectedcolor
          * @params {string} color
@@ -469,6 +473,7 @@ export default class ColorPickerCustom extends LightningElement {
 
     /**
      * Update hue color.
+     * 
      * @param {string} hue 
      */
     updateRainbow(hue) {
@@ -496,7 +501,7 @@ export default class ColorPickerCustom extends LightningElement {
      * Get Cursor position on canvas gradient.
      * 
      * @param {Event} event 
-     * @returns object{} x,y number coordinates
+     * @returns {object} x,y number coordinates
      */
     gradientCursorPosition(event) {
         const canvas = this._canvas;
@@ -530,7 +535,7 @@ export default class ColorPickerCustom extends LightningElement {
      * Get Cursor position from keydown event on canvas gradient.
      * 
      * @param {Event} event 
-     * @return Object{x:number,y:number} - x,y number coordinates
+     * @return {object} x,y number coordinates
      */
     gradientCursorPositionFromKeydown(event) {
         event.preventDefault();

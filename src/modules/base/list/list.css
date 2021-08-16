@@ -35,6 +35,10 @@
 }
 
 .avonni-list__item-sortable {
+    cursor: var(--list-item-cursor, grab);
+}
+
+.avonni-list__item-sortable-icon-cursor {
     cursor: grab;
 }
 

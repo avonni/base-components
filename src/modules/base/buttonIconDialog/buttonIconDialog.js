@@ -56,7 +56,7 @@ const BUTTON_VARIANTS = {
  * @class
  * @descriptor avonni-button-icon-dialog
  * @description The button icon dialog component displays a lightning button icon. On click, open the modal box.
- * @example story/example-button-icon-dialog--border
+ * @storyId example-button-icon-dialog--border
  * @public
  */
 export default class ButtonIconDialog extends LightningElement {

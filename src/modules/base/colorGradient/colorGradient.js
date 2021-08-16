@@ -47,7 +47,7 @@ const DEFAULT_MESSAGE_WHEN_BAD_INPUT = 'Please ensure value is correct';
 /**
  * @class
  * @descriptor avonni-color-gradient
- * @example example-color-gradient--base
+ * @storyId example-color-gradient--base
  * @public
  */
 export default class ColorGradient extends LightningElement {
@@ -228,6 +228,8 @@ export default class ColorGradient extends LightningElement {
 
     /**
      * Retrieve color value if present.
+     * 
+     * @type {string}
      */
     get colorValue() {
         return this.colors.A < 1 && this.opacity

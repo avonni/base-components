@@ -123,7 +123,11 @@
         },
         {
             "name": "c/dataInput",
-            "path": "src/modules/data/dataInput/dataInput.js"
+            "path": "src/modules/data/input/input.js"
+        },
+        {
+            "name": "c/dataList",
+            "path": "src/modules/data/list/list.js"
         },
         {
             "name": "c/dataPageHeader",
@@ -282,6 +286,10 @@
             "path": "src/modules/base/primitiveCellColorPicker/primitiveCellColorPicker.js"
         },
         {
+            "name": "c/primitiveCellCombobox",
+            "path": "src/modules/base/primitiveCellCombobox/primitiveCellCombobox.js"
+        },
+        {
             "name": "c/primitiveCellInputCounter",
             "path": "src/modules/base/primitiveCellInputCounter/primitiveCellInputCounter.js"
         },
@@ -312,6 +320,10 @@
         {
             "name": "c/primitiveComboboxGroup",
             "path": "src/modules/base/primitiveComboboxGroup/primitiveComboboxGroup.js"
+        },
+        {
+            "name": "c/primitiveDatatable",
+            "path": "src/modules/base/primitiveDatatable/primitiveDatatable.js"
         },
         {
             "name": "c/primitiveCoordinateItem",
@@ -547,7 +559,11 @@
         },
         {
             "name": "avonni/dataInput",
-            "path": "src/modules/data/dataInput/dataInput.js"
+            "path": "src/modules/data/input/input.js"
+        },
+        {
+            "name": "avonni/dataList",
+            "path": "src/modules/data/list/list.js"
         },
         {
             "name": "avonni/dataPageHeader",
@@ -798,6 +814,7 @@
         "avonni/combobox",
         "avonni/confetti",
         "avonni/dataInput",
+        "avonni/dataList",
         "avonni/dataPageHeader",
         "avonni/datatable",
         "avonni/dateTimePicker",

@@ -69,7 +69,7 @@ const ILLUSTRATION_VARIANTS = {
 /**
  * @class
  * @descriptor avonni-illustration
- * @example example-illustration--small-size
+ * @storyId example-illustration--small-size
  * @public
  */
 export default class Illustration extends LightningElement {
@@ -124,7 +124,7 @@ export default class Illustration extends LightningElement {
     /**
      * Illustration class styling.
      *
-     * @return string
+     * @type {string}
      */
     get illustrationClass() {
         return classSet('slds-illustration')
@@ -138,7 +138,7 @@ export default class Illustration extends LightningElement {
     /**
      * Assign variant to svg URL.
      *
-     * @return string
+     * @type {string}
      */
     get svgURL() {
         return `/assets/canvas-elements/illustrationLibrary/${this.variant}.svg`;
@@ -147,7 +147,7 @@ export default class Illustration extends LightningElement {
     /**
      * Show Illustration SVG.
      *
-     * @return boolean
+     * @type {boolean}
      */
     get showSvg() {
         return this._variant !== 'text-only';

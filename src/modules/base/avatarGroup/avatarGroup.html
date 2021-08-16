@@ -133,7 +133,7 @@
                 <template if:true={showPopover}>
                     <div
                         key={item.key}
-                        class={hiddenListStyle}
+                        class={hiddenListClass}
                         onmouseenter={cancelBlur}
                         onmouseleave={allowBlur}
                     >
@@ -226,7 +226,7 @@
             </template>
         </template>
         <template if:true={actionIconName}>
-            <div class={actionButtonLayoutClass}>
+            <div class={actionButtonWrapperClass}>
                 <button
                     type="button"
                     title="ActionButton"
