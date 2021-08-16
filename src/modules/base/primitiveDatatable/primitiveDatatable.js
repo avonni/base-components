@@ -440,6 +440,28 @@ export default class PrimitiveDatatable extends LightningDatatable {
                 })
             );
         });
+
+        this.template.addEventListener('selectallrows', (event) => {
+            this.dispatchEvent(
+                new CustomEvent(`${event.type}`, {
+                    detail: event.detail,
+                    bubbles: event.bubbles,
+                    composed: event.composed,
+                    cancelable: event.cancelable
+                })
+            );
+        });
+
+        this.template.addEventListener('deselectallrows', (event) => {
+            this.dispatchEvent(
+                new CustomEvent(`${event.type}`, {
+                    detail: event.detail,
+                    bubbles: event.bubbles,
+                    composed: event.composed,
+                    cancelable: event.cancelable
+                })
+            );
+        });
     }
 
     renderedCallback() {
@@ -447,6 +469,7 @@ export default class PrimitiveDatatable extends LightningDatatable {
 
         this._data = JSON.parse(JSON.stringify(normalizeArray(super.data)));
         this.computeEditableOption();
+        this.removeDefaultActions();
 
         this.tablesInitialization();
 
@@ -480,6 +503,11 @@ export default class PrimitiveDatatable extends LightningDatatable {
     }
 
     @api
+    handleSelectionCellClick(event) {
+        super.handleSelectionCellClick(event);
+    }
+
+    @api
     get columns() {
         return super.columns;
     }
@@ -490,6 +518,7 @@ export default class PrimitiveDatatable extends LightningDatatable {
         this._columns = JSON.parse(JSON.stringify(this._columns));
         this.removeWrapOption();
         this.computeEditableOption();
+        this.removeDefaultActions();
     }
 
     /**
@@ -630,6 +659,13 @@ export default class PrimitiveDatatable extends LightningDatatable {
                 column.wrapText = true;
                 column.hideDefaultActions = true;
             }
+        });
+    }
+
+    removeDefaultActions() {
+        this.columns.forEach((column) => {
+            column.wrapText = true;
+            column.hideDefaultActions = true;
         });
     }
 

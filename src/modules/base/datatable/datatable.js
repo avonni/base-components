@@ -298,9 +298,19 @@ export default class Datatable extends LightningElement {
             this.tableResize();
         });
 
-        this.addEventListener('resizecol', (event) => {
-            this.primitiveGroupedDatatable.handleResizeColumn(event);
-        });
+        if (this.groupBy) {
+            this.addEventListener('resizecol', (event) => {
+                this.primitiveGroupedDatatable.handleResizeColumn(event);
+            });
+
+            this.addEventListener('selectallrows', (event) => {
+                this.primitiveGroupedDatatable.handleSelectionCellClick(event);
+            });
+
+            this.addEventListener('deselectallrows', (event) => {
+                this.primitiveGroupedDatatable.handleSelectionCellClick(event);
+            });
+        }
     }
 
     renderedCallback() {
