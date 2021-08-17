@@ -75,6 +75,8 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
         this._collapsible = normalizeBoolean(value);
     }
 
+    @api size;
+
     /**
      * Computed section class styling.
      *

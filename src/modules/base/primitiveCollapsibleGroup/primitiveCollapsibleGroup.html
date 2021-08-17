@@ -45,7 +45,9 @@
                         size="x-small"
                         class="slds-section__title-action-icon slds-button__icon slds-button__icon_left"
                     ></lightning-icon>
-                    <span class="slds-truncate" title={title}> {title} </span>
+                    <span class="slds-truncate" title={title}>
+                        {title} ({size})
+                    </span>
                 </button>
             </template>
             <template if:false={collapsible}>
@@ -53,7 +55,7 @@
                     class="slds-truncate slds-p-horizontal_small"
                     title={title}
                 >
-                    {title}
+                    {title} ({size})
                 </span>
             </template>
         </h3>

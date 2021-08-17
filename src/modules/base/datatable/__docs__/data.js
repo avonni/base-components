@@ -1025,7 +1025,8 @@ const dataGroupBy = [
         id: 9,
         name: 'Renaud',
         age: '29',
-        city: 'Longueuil'
+        city: 'Longueuil',
+        district: 'Saint-Hubert'
     },
     {
         id: 10,
@@ -1067,6 +1068,20 @@ const dataGroupBy = [
         age: '16',
         city: 'Montreal',
         district: 'Outremont'
+    },
+    {
+        id: 16,
+        name: 'Carlito',
+        age: '19',
+        city: 'Montreal',
+        district: 'Outremont'
+    },
+    {
+        id: 16,
+        name: 'Jeanne',
+        age: '29',
+        city: 'Longueuil',
+        district: 'Plateau'
     }
 ];
 

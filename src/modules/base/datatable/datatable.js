@@ -347,7 +347,8 @@ export default class Datatable extends LightningElement {
                 summarize: computeSummarizeArray(
                     this._columns,
                     this._groupedByData[key]
-                )
+                ),
+                size: this._groupedByData[key].length
             });
         });
     }
@@ -607,14 +608,18 @@ export default class Datatable extends LightningElement {
     updateTableWidth() {
         if (!this.hasGroupBy) {
             this._tableWidth = this.primitiveUngroupedDatatable.tableWidth();
+            const table = this.template.querySelector('table');
+            if (table) {
+                table.style.width = `${this._tableWidth}px`;
+            }
         } else {
             this._tableWidth = this.primitiveHeaderDatatable.tableWidth();
-        }
-
-        const table = this.template.querySelector('table');
-
-        if (table) {
-            table.style.width = `${this._tableWidth}px`;
+            const tables = this.template.querySelectorAll('table');
+            if (tables) {
+                tables.forEach((table) => {
+                    table.style.width = `${this._tableWidth}px`;
+                });
+            }
         }
     }
 
