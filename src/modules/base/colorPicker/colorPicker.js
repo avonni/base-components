@@ -536,7 +536,7 @@
 	 * Whether there a label next to each default color.
 	 */
 	 get isLabelDisplayed(){
-		 return this.currentLabel;
+		 return !!this.currentLabel;
 	 }
  
 	 /**
@@ -594,6 +594,21 @@
 			 );
 		 }
 	 }
+	 
+	 dispatchClear(){
+		this.dispatchEvent(
+			new CustomEvent('change', {
+				detail: {
+					hex: undefined,
+					hexa: undefined,
+					rgb: undefined,
+					rgba: undefined,
+					alpha: undefined,
+					token: undefined,
+				}
+			})
+		);
+	 }
  
 	 /**
 	  * Initialize swatch colors.
@@ -602,7 +617,6 @@
 		 let element = this.template.querySelector('.slds-swatch');
  
 		 if (element) {
-			 console.log(this.value);
 			 element.style.background = this.value;
 		 }
 	 }
@@ -761,6 +775,11 @@
 	  */
 	 isAutoAlignment() {
 		 return this.menuAlignment.startsWith('auto');
+	 }
+
+	 clearInput(){
+		 this.value = undefined;
+		 this.dispatchClear();
 	 }
  
 	 /**
