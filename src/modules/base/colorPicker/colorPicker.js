@@ -602,7 +602,6 @@
 		 let element = this.template.querySelector('.slds-swatch');
  
 		 if (element) {
-			 console.log(this.value);
 			 element.style.background = this.value;
 		 }
 	 }

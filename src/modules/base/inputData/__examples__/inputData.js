@@ -30,71 +30,36 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.avonni-list__item {
-    height: fit-content;
-}
+import Component from 'avonni/inputData';
 
-.avonni-list__item-sortable {
-    cursor: var(--avonni-list-item-cursor, grab);
-}
+customElements.define('ac-base-input-data', Component.CustomElementConstructor);
 
-.avonni-list__item-sortable-icon-cursor {
-    cursor: grab;
-}
-
-/* Disable the hover on touch */
-@media (hover: hover) {
-    .avonni-list__item-sortable:hover {
-        background-color: var(--lwc-colorBackground, #f3f2f2);
-    }
-}
-
-.avonni-list__item-sortable > div {
-    width: 100%;
-}
-
-.avonni-list__item-expanded > div {
-    width: 100%;
-}
-
-.avonni-list__item-sortable_moved {
-    transition: transform 300ms;
-}
-
-.avonni-list__item-sortable.avonni-list__item-sortable_dragged {
-    position: relative;
-    z-index: 1;
-    border: none;
-    box-shadow: 0 0 10px rgb(0 0 0 / 40%);
-    opacity: 0.8;
-    cursor: grabbing;
-    background-color: rgba(255, 255, 255, 0.6);
-}
-
-.avonni-list__item-img {
-    position: absolute;
-    height: 100%;
-    object-fit: cover;
-    pointer-events: none;
-}
-
-.avonni-list__item-image-container {
-    position: relative;
-    overflow: hidden;
-    height: 100%;
-}
-
-.avonni-list__item-image-container_rounded-corners {
-    border-top-left-radius: 0.16rem;
-    border-bottom-left-radius: 0.16rem;
-}
-
-.avonni-list__item-menu {
-    display: grid;
-}
-
-@media (max-width: 320px) {
-    .avonni-list__has-images {
-        justify-content: center;
-    }
-}
+export const InputData = ({
+    checked,
+    disabled,
+    label,
+    latitude,
+    longitude,
+    name,
+    placeholder,
+    readOnly,
+    required,
+    type,
+    value,
+    variant
+}) => {
+    const element = document.createElement('ac-base-input-data');
+    element.checked = checked;
+    element.disabled = disabled;
+    element.label = label;
+    element.latitude = latitude;
+    element.longitude = longitude;
+    element.name = name;
+    element.placeholder = placeholder;
+    element.readOnly = readOnly;
+    element.required = required;
+    element.type = type;
+    element.value = value;
+    element.variant = variant;
+    return element;
+};
