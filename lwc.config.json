@@ -310,6 +310,10 @@
             "path": "src/modules/base/primitiveCellSlider/primitiveCellSlider.js"
         },
         {
+            "name": "c/primitiveCollapsibleGroup",
+            "path": "src/modules/base/primitiveCollapsibleGroup/primitiveCollapsibleGroup.js"
+        },
+        {
             "name": "c/primitiveColorpickerButton",
             "path": "src/modules/base/primitiveColorpickerButton/primitiveColorpickerButton.js"
         },
