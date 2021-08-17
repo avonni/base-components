@@ -126,6 +126,104 @@
                     oncellchange={handleDispatchEvents}
                     onrowaction={handleDispatchEvents}
                 ></c-primitive-datatable>
+                <template if:true={allowSummarize}>
+                    <table
+                        data-role="summarize"
+                        class="slds-table slds-table_bordered slds-table_resizable-cols avonni-datatable__summarize-table_border-top_none"
+                        role="grid"
+                    >
+                        <tbody>
+                            <tr>
+                                <td if:true={isDatatableEditable}></td>
+                                <td if:false={hideCheckboxColumn}></td>
+                                <template
+                                    for:each={group.summarize}
+                                    for:item="column"
+                                >
+                                    <td
+                                        key={column.fieldName}
+                                        class="avonni-datatable__td_vertical-align_top"
+                                        data-column={column.fieldName}
+                                        role="gridcell"
+                                    >
+                                        <template
+                                            if:true={column.hasSummarizeType}
+                                        >
+                                            <template
+                                                for:each={column.summarizeTypes}
+                                                for:item="type"
+                                            >
+                                                <div
+                                                    key={type.label}
+                                                    class={column.className}
+                                                    if:true={type.displaySumType}
+                                                >
+                                                    <div
+                                                        class="avonni-datatable__summarize-type-text_styling"
+                                                    >
+                                                        {type.label}:
+                                                    </div>
+                                                    <template
+                                                        if:false={type.count}
+                                                    >
+                                                        <template
+                                                            if:true={column.formattedNumberType}
+                                                        >
+                                                            <lightning-formatted-number
+                                                                format-style={type.type}
+                                                                value={type.value}
+                                                                currency-code={type.typeAttributes.currencyCode}
+                                                                currency-display-as={type.typeAttributes.currencyDisplayAs}
+                                                                minimum-fraction-digits={type.typeAttributes.minimumFractionDigits}
+                                                                maximum-fraction-digits={type.typeAttributes.maximumFractionDigits}
+                                                                minimum-integer-digits={type.typeAttributes.minimumIntegerDigits}
+                                                                minimum-significant-digits={type.typeAttributes.minimumSignificantDigits}
+                                                                maximum-significant-digits={type.typeAttributes.maximumSignificantDigits}
+                                                            ></lightning-formatted-number>
+                                                        </template>
+                                                        <template
+                                                            if:true={column.dateType}
+                                                        >
+                                                            <lightning-formatted-date-time
+                                                                value={type.value}
+                                                                day={type.typeAttributes.day}
+                                                                era={type.typeAttributes.era}
+                                                                hour={type.typeAttributes.hour}
+                                                                hour12={type.typeAttributes.hour12}
+                                                                minute={type.typeAttributes.minute}
+                                                                month={type.typeAttributes.month}
+                                                                second={type.typeAttributes.second}
+                                                                time-zone={type.typeAttributes.timeZone}
+                                                                time-zone-name={type.typeAttributes.timeZoneName}
+                                                                weekday={type.typeAttributes.weekday}
+                                                                year={type.typeAttributes.year}
+                                                            ></lightning-formatted-date-time>
+                                                        </template>
+                                                        <template
+                                                            if:true={type.mode}
+                                                        >
+                                                            <lightning-formatted-text
+                                                                value={type.value}
+                                                            ></lightning-formatted-text>
+                                                        </template>
+                                                    </template>
+                                                    <template
+                                                        if:true={type.count}
+                                                    >
+                                                        <lightning-formatted-number
+                                                            format-style="decimal"
+                                                            value={type.value}
+                                                        ></lightning-formatted-number>
+                                                    </template>
+                                                </div>
+                                            </template>
+                                        </template>
+                                    </td>
+                                </template>
+                            </tr>
+                        </tbody>
+                    </table>
+                </template>
             </c-primitive-collapsible-group>
         </template>
         <template if:true={allowSummarize}>

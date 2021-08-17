@@ -343,7 +343,11 @@ export default class Datatable extends LightningElement {
         Object.keys(this._groupedByData).forEach((key) => {
             this.formattedGroupedData.push({
                 label: key,
-                data: this._groupedByData[key]
+                data: this._groupedByData[key],
+                summarize: computeSummarizeArray(
+                    this._columns,
+                    this._groupedByData[key]
+                )
             });
         });
     }
@@ -438,6 +442,15 @@ export default class Datatable extends LightningElement {
      */
     get computedSummarizeArray() {
         return computeSummarizeArray(this._columns, this._data);
+    }
+
+    get computedSummarizeGroupedArray() {
+        const groupedSummarize = this.formattedGroupedData.map(
+            (groupedData) => {
+                return computeSummarizeArray(this._columns, groupedData.data);
+            }
+        );
+        return groupedSummarize;
     }
 
     /**

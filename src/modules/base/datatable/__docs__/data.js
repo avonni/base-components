@@ -534,7 +534,7 @@ const columnsGroupBy = [
         label: 'Age',
         fieldName: 'age',
         type: 'number',
-        summarizeTypes: ['count']
+        summarizeTypes: ['count', 'average']
     },
     {
         id: 3,
