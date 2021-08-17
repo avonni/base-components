@@ -410,24 +410,8 @@
             "path": "src/modules/base/scopedNotification/scopedNotification.js"
         },
         {
-            "name": "c/segment",
-            "path": "src/modules/base/segment/segment.js"
-        },
-        {
-            "name": "c/segmentButton",
-            "path": "src/modules/base/segmentButton/segmentButton.js"
-        },
-        {
             "name": "c/separator",
             "path": "src/modules/base/separator/separator.js"
-        },
-        {
-            "name": "c/slide",
-            "path": "src/modules/base/slide/slide.js"
-        },
-        {
-            "name": "c/slides",
-            "path": "src/modules/base/slides/slides.js"
         },
         {
             "name": "c/list",
@@ -722,24 +706,8 @@
             "path": "src/modules/base/scopedNotification/scopedNotification.js"
         },
         {
-            "name": "avonni/segment",
-            "path": "src/modules/base/segment/segment.js"
-        },
-        {
-            "name": "avonni/segmentButton",
-            "path": "src/modules/base/segmentButton/segmentButton.js"
-        },
-        {
             "name": "avonni/separator",
             "path": "src/modules/base/separator/separator.js"
-        },
-        {
-            "name": "avonni/slide",
-            "path": "src/modules/base/slide/slide.js"
-        },
-        {
-            "name": "avonni/slides",
-            "path": "src/modules/base/slides/slides.js"
         },
         {
             "name": "avonni/list",
@@ -855,11 +823,7 @@
         "avonni/rating",
         "avonni/relationshipGraph",
         "avonni/scopedNotification",
-        "avonni/segment",
-        "avonni/segmentButton",
         "avonni/separator",
-        "avonni/slide",
-        "avonni/slides",
         "avonni/list",
         "avonni/splitter",
         "avonni/splitterPane",
