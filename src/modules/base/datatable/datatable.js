@@ -334,23 +334,60 @@ export default class Datatable extends LightningElement {
     }
 
     groupByData(array, fieldName) {
-        if (fieldName) {
-            const formattedFieldName = fieldName.toLowerCase();
-            this._groupedByData = array.reduce((previous, currentItem) => {
-                const group = currentItem[formattedFieldName];
-                if (!previous[group]) previous[group] = [];
-                previous[group].push(currentItem);
-                return previous;
-            }, []);
-
-            Object.keys(this._groupedByData).forEach((key) => {
-                this.formattedGroupedData.push({
-                    label: key,
-                    data: this._groupedByData[key]
-                });
+        this._groupedByData = array.reduce((previous, currentItem) => {
+            const group = currentItem[fieldName];
+            if (!previous[group]) previous[group] = [];
+            previous[group].push(currentItem);
+            return previous;
+        }, []);
+        Object.keys(this._groupedByData).forEach((key) => {
+            this.formattedGroupedData.push({
+                label: key,
+                data: this._groupedByData[key]
             });
-        }
+        });
     }
+
+    // groupByDatas(array, fieldName) {
+    //     const formattedGroupedDatas = [];
+    //     let groupedData = []
+    //     groupedData = array.reduce((previous, currentItem) => {
+    //         const group = currentItem[fieldName];
+    //         if (!previous[group]) previous[group] = [];
+    //         previous[group].push(currentItem);
+    //         return previous;
+    //     }, []);
+    //     Object.keys(groupedData).forEach((key) => {
+    //         formattedGroupedDatas.push({
+    //             label: key,
+    //             data: groupedData[key]
+    //         });
+    //     });
+    // }
+
+    // multiLevelGroupByData(data, keys) {
+    //     const result = [];
+    //     const temp = { _: result };
+    //     const formattedResult = [];
+    //     data.forEach((a) => {
+    //         keys.reduce((r, k) => {
+    //             if (!r[a[k]]) {
+    //                 r[a[k]] = { _: [] };
+    //                 r._.push({ [a[k]]: { [a[k]]: r[a[k]]._ } });
+    //             }
+    //             return r[a[k]];
+    //         }, temp)._.push(a);
+    //     });
+    //     result.forEach((res) => {
+    //         console.log(res);
+    //         Object.keys(res).forEach((key) => {
+    //             formattedResult.push({
+    //                 label: key,
+    //                 data: Object.values(res[key])
+    //             });
+    //         });
+    //     });
+    // }
 
     /**
      * Returns the primitive grouped datatable.
