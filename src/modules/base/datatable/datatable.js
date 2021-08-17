@@ -97,8 +97,15 @@ export default class Datatable extends LightningElement {
      * @public
      * @type {string}
      */
-    @api groupBy;
+    @api
+    get groupBy() {
+        return this._groupBy;
+    }
 
+    set groupBy(value) {
+        this._groupBy = value;
+        this.groupByData(this.data, this.groupBy);
+    }
     /**
      * If present, the checkbox column for row selection is hidden.
      * @public
@@ -256,6 +263,9 @@ export default class Datatable extends LightningElement {
     _columnsEditable = [];
     _isDatatableEditable;
 
+    _groupedByData = [];
+    formattedGroupedData = [];
+
     /**
      * Array of the columns object that's used to define the data types.
      * Required properties include 'label', 'fieldName', and 'type'. The default type is 'text'.
@@ -300,15 +310,21 @@ export default class Datatable extends LightningElement {
 
         if (this.groupBy) {
             this.addEventListener('resizecol', (event) => {
-                this.primitiveGroupedDatatable.handleResizeColumn(event);
+                this.primitiveGroupedDatatables.forEach((datatable) => {
+                    datatable.handleResizeColumn(event);
+                });
             });
 
             this.addEventListener('selectallrows', (event) => {
-                this.primitiveGroupedDatatable.handleSelectionCellClick(event);
+                this.primitiveGroupedDatatables.forEach((datatable) => {
+                    datatable.handleSelectionCellClick(event);
+                });
             });
 
             this.addEventListener('deselectallrows', (event) => {
-                this.primitiveGroupedDatatable.handleSelectionCellClick(event);
+                this.primitiveGroupedDatatables.forEach((datatable) => {
+                    datatable.handleSelectionCellClick(event);
+                });
             });
         }
     }
@@ -317,14 +333,30 @@ export default class Datatable extends LightningElement {
         this.bottomTableInitialization();
     }
 
+    groupByData(array, fieldName) {
+        this._groupedByData = array.reduce((previous, currentItem) => {
+            const group = currentItem[fieldName];
+            if (!previous[group]) previous[group] = [];
+            previous[group].push(currentItem);
+            return previous;
+        }, []);
+
+        Object.keys(this._groupedByData).forEach((key) => {
+            this.formattedGroupedData.push({
+                label: key,
+                data: this._groupedByData[key]
+            });
+        });
+    }
+
     /**
      * Returns the primitive grouped datatable.
      *
      * @type {element}
      */
-    get primitiveGroupedDatatable() {
+    get primitiveUngroupedDatatable() {
         return this.template.querySelector(
-            'c-primitive-datatable[data-role="grouped"]'
+            'c-primitive-datatable[data-role="ungrouped"]'
         );
     }
 
@@ -337,6 +369,22 @@ export default class Datatable extends LightningElement {
         return this.template.querySelector(
             'c-primitive-datatable[data-role="header"]'
         );
+    }
+
+    get primitiveGroupedDatatables() {
+        return this.template.querySelectorAll(
+            'c-primitive-datatable[data-role="grouped"]'
+        );
+    }
+
+    get primitiveGroupedDatatable() {
+        return this.template.querySelector(
+            'c-primitive-datatable[data-role="grouped"]'
+        );
+    }
+
+    get hasGroupBy() {
+        return this.groupBy !== undefined;
     }
 
     /**
@@ -388,7 +436,11 @@ export default class Datatable extends LightningElement {
      * @type {object}
      */
     get primitiveDatatableDraftValues() {
-        return this.primitiveGroupedDatatable.primitiveDatatableDraftValues();
+        return this.primitiveUngroupedDatatable.primitiveDatatableDraftValues();
+    }
+
+    get isFixedColumns() {
+        return this.hasGroupBy ? 'fixed' : this.columnWidthsMode;
     }
 
     /**
@@ -410,28 +462,14 @@ export default class Datatable extends LightningElement {
         this.updateTableWidth();
     }
 
-    // groupByResizeColumns() {
-    //     if(this.groupBy) {
-    //         this.columns.forEach((column, index) => {
-    //             if(!this.hideCheckboxColumn) {
-    //                 column.fixedWidth = this._columnsWidth[index + 2];
-    //                 column.initialWidth = this._columnsWidth[index + 2];
-    //             } else {
-    //                 column.fixedWidth = this._columnsWidth[index + 1];
-    //                 column.initialWidth = this._columnsWidth[index + 1];
-    //             }
-    //         });
-    //     }
-    // }
-
     /**
      * Gets the columns width of the primitive-datatable depending on if there is a header or not.
      */
     datatableColumnsWidth() {
         if (!this.groupBy) {
             this._columnsWidth = !this.hideTableHeader
-                ? this.primitiveGroupedDatatable.columnsWidthWithHeader()
-                : this.primitiveGroupedDatatable.columnsWidthWithoutHeader();
+                ? this.primitiveUngroupedDatatable.columnsWidthWithHeader()
+                : this.primitiveUngroupedDatatable.columnsWidthWithoutHeader();
         } else {
             this._columnsWidth = !this.hideTableHeader
                 ? this.primitiveHeaderDatatable.columnsWidthWithHeader()
@@ -443,8 +481,12 @@ export default class Datatable extends LightningElement {
      * Gets the columns the information about if they are editable or not.
      */
     datatableEditable() {
-        this._columnsEditable = this.primitiveGroupedDatatable.columnsEditable();
-        this._isDatatableEditable = this.primitiveGroupedDatatable.isDatatableEditable();
+        this._columnsEditable = !this.hasGroupBy
+            ? this.primitiveGroupedDatatable.columnsEditable()
+            : this.primitiveUngroupedDatatable.columnsEditable();
+        this._isDatatableEditable = !this.hasGroupBy
+            ? this.primitiveGroupedDatatable.isDatatableEditable()
+            : this.primitiveUngroupedDatatable.isDatatableEditable();
     }
 
     /**
@@ -503,7 +545,7 @@ export default class Datatable extends LightningElement {
      */
     updateTableWidth() {
         if (!this.groupBy) {
-            this._tableWidth = this.primitiveGroupedDatatable.tableWidth();
+            this._tableWidth = this.primitiveUngroupedDatatable.tableWidth();
         } else {
             this._tableWidth = this.primitiveHeaderDatatable.tableWidth();
         }
@@ -596,7 +638,7 @@ export default class Datatable extends LightningElement {
         * @public
         * @cancelable
         */
-        this.primitiveGroupedDatatable.cancel(event);
+        this.primitiveUngroupedDatatable.cancel(event);
     }
 
     /**
@@ -613,6 +655,6 @@ export default class Datatable extends LightningElement {
          * @param {object} draftValues The current value that's provided during inline editing.
          * @public
          */
-        this.primitiveGroupedDatatable.save(event);
+        this.primitiveUngroupedDatatable.save(event);
     }
 }

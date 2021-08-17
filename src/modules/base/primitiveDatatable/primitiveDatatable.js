@@ -285,6 +285,8 @@ export default class PrimitiveDatatable extends LightningDatatable {
     };
 
     // Normalization of primitive datatable attributes
+    @api groupBy;
+
     @api
     get columnWidthsMode() {
         return super.columnWidthsMode;
@@ -410,8 +412,6 @@ export default class PrimitiveDatatable extends LightningDatatable {
         super.hideTableHeader = normalizeBoolean(value);
     }
 
-    @api groupBy;
-
     connectedCallback() {
         super.connectedCallback();
 
@@ -469,7 +469,6 @@ export default class PrimitiveDatatable extends LightningDatatable {
 
         this._data = JSON.parse(JSON.stringify(normalizeArray(super.data)));
         this.computeEditableOption();
-        this.removeDefaultActions();
 
         this.tablesInitialization();
 
@@ -516,9 +515,10 @@ export default class PrimitiveDatatable extends LightningDatatable {
         super.columns = value;
 
         this._columns = JSON.parse(JSON.stringify(this._columns));
+
+        this.removeDefaultActions();
         this.removeWrapOption();
         this.computeEditableOption();
-        this.removeDefaultActions();
     }
 
     /**
@@ -590,35 +590,65 @@ export default class PrimitiveDatatable extends LightningDatatable {
      * Makes the primitive datatable unscrollable since it is the main datatable that is scrollable.
      */
     unscrollableMainDatatable() {
-        const groupedDatatable = this.template.querySelector(
+        const ungroupedDatatable = this.template.querySelector(
+            'c-primitive-datatable[data-role="ungrouped"] .slds-table_header-fixed_container'
+        );
+
+        const groupedDatatables = this.template.querySelectorAll(
             'c-primitive-datatable[data-role="grouped"] .slds-table_header-fixed_container'
         );
 
-        if (groupedDatatable) {
-            groupedDatatable.style.overflowX = 'hidden';
-            groupedDatatable.style.width = `${this._tableWidth}px`;
-            groupedDatatable.style.maxWidth = 'none';
+        if (ungroupedDatatable) {
+            ungroupedDatatable.style.overflowX = 'hidden';
+            ungroupedDatatable.style.width = `${this._tableWidth}px`;
+            ungroupedDatatable.style.maxWidth = 'none';
+        }
+
+        if (groupedDatatables) {
+            groupedDatatables.forEach((datatable) => {
+                datatable.style.overflowX = 'hidden';
+                datatable.style.width = `${this._tableWidth}px`;
+                datatable.style.maxWidth = 'none';
+            });
         }
     }
 
     hideTableHeaderPadding() {
-        const groupedDatatable = this.template.querySelector(
+        const ungroupedDatatable = this.template.querySelector(
+            'c-primitive-datatable[data-role="ungrouped"] .slds-table_header-fixed_container'
+        );
+
+        const ungroupedDatatableHeader = this.template.querySelector(
+            'c-primitive-datatable[data-role="ungrouped"] .slds-table_header-fixed_container thead'
+        );
+
+        const groupedDatatables = this.template.querySelectorAll(
             'c-primitive-datatable[data-role="grouped"] .slds-table_header-fixed_container'
         );
 
-        const groupedDatatableHeader = this.template.querySelector(
+        const groupedDatatableHeaders = this.template.querySelectorAll(
             'c-primitive-datatable[data-role="grouped"] .slds-table_header-fixed_container thead'
         );
 
-        if (groupedDatatable) {
+        if (ungroupedDatatable) {
             if (this.hideTableHeader) {
-                groupedDatatable.style.paddingTop = '0px';
+                ungroupedDatatable.style.paddingTop = '0px';
             }
 
             if (this.groupBy) {
-                groupedDatatable.style.paddingTop = '0px';
-                groupedDatatableHeader.style.visibility = 'hidden';
+                ungroupedDatatable.style.paddingTop = '0px';
+                ungroupedDatatableHeader.style.visibility = 'hidden';
             }
+        }
+
+        if (groupedDatatables) {
+            groupedDatatables.forEach((datatable) => {
+                datatable.style.paddingTop = '0px';
+            });
+
+            groupedDatatableHeaders.forEach((header) => {
+                header.style.visibility = 'hidden';
+            });
         }
     }
 

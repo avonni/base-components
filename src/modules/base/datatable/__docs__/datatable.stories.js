@@ -463,5 +463,5 @@ DatatableWithGroupBy.args = {
     data: dataGroupBy,
     keyField: 'id',
     columnWidthsMode: 'auto',
-    groupBy: 'category'
+    groupBy: 'city'
 };

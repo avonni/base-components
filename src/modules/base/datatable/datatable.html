@@ -1,9 +1,9 @@
 <template>
     <div class="avonni-datatable__container">
         <c-primitive-datatable
-            if:true={groupBy}
+            if:true={hasGroupBy}
             data-role="header"
-            column-widths-mode={columnWidthsMode}
+            column-widths-mode={isFixedColumns}
             columns={columns}
             data={data}
             default-sort-direction={defaultSortDirection}
@@ -38,10 +38,11 @@
             group-by={groupBy}
         ></c-primitive-datatable>
         <c-primitive-datatable
-            data-role="grouped"
-            column-widths-mode={columnWidthsMode}
+            if:false={hasGroupBy}
+            data-role="ungrouped"
             columns={columns}
             data={data}
+            column-widths-mode={isFixedColumns}
             default-sort-direction={defaultSortDirection}
             draft-values={draftValues}
             enable-infinite-loading={enableInfiniteLoading}
@@ -76,8 +77,54 @@
             onrowaction={handleDispatchEvents}
         >
         </c-primitive-datatable>
+        <template
+            if:true={hasGroupBy}
+            for:each={formattedGroupedData}
+            for:item="group"
+        >
+            <c-primitive-datatable
+                key={group.label}
+                data-role="grouped"
+                data={group.data}
+                columns={columns}
+                column-widths-mode={isFixedColumns}
+                default-sort-direction={defaultSortDirection}
+                draft-values={draftValues}
+                enable-infinite-loading={enableInfiniteLoading}
+                group-by={groupBy}
+                errors={errors}
+                hide-checkbox-column={hideCheckboxColumn}
+                hide-table-header={hideTableHeader}
+                is-loading={isLoading}
+                key-field={keyField}
+                load-more-offset={loadMoreOffset}
+                max-column-width={maxColumnWidth}
+                max-row-selection={maxRowSelection}
+                min-column-width={minColumnWidth}
+                render-config={renderConfig}
+                resize-column-disabled={resizeColumnDisabled}
+                resize-step={resizeStep}
+                row-number-offset={rowNumberOffset}
+                selected-rows={selectedRows}
+                show-row-number-column={showRowNumberColumn}
+                sorted-by={sortedBy}
+                sorted-direction={sortedDirection}
+                suppress-bottom-bar
+                wrap-text-max-lines={wrapTextMaxLines}
+                onrowselection={handleDispatchEvents}
+                onsort={handleDispatchEvents}
+                onresize={handleDispatchEvents}
+                onsave={handleDispatchEvents}
+                oncancel={handleDispatchEvents}
+                onheaderaction={handleDispatchEvents}
+                onloadmore={handleDispatchEvents}
+                oncellchange={handleDispatchEvents}
+                onrowaction={handleDispatchEvents}
+            ></c-primitive-datatable>
+        </template>
         <template if:true={allowSummarize}>
             <table
+                data-role="summarize"
                 class="slds-table slds-table_bordered slds-table_resizable-cols avonni-datatable__summarize-table_border-top_none"
                 role="grid"
             >
