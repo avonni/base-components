@@ -49,6 +49,7 @@ export const Scheduler = ({
     eventsLabels,
     eventsPalette,
     eventsTheme,
+    customHeaders,
     headers,
     isLoading,
     readOnly,
@@ -75,6 +76,7 @@ export const Scheduler = ({
     element.eventsLabels = eventsLabels;
     element.eventsPalette = eventsPalette;
     element.eventsTheme = eventsTheme;
+    element.customHeaders = customHeaders;
     element.headers = headers;
     element.isLoading = isLoading;
     element.readOnly = readOnly;

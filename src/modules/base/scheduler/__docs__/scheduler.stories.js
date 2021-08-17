@@ -58,12 +58,39 @@ export default {
         },
         headers: {
             control: {
+                type: 'select'
+            },
+            options: [
+                'minuteAndHour',
+                'minuteHourAndDay',
+                'hourAndDay',
+                'hourDayAndWeek',
+                'dayAndWeek',
+                'dayLetterAndWeek',
+                'dayWeekAndMonth',
+                'weekAndMonth',
+                'weekMonthAndYear',
+                'monthAndYear',
+                'quartersAndYear',
+                'fiveYears'
+            ],
+            defaultValue: 'hourAndDay',
+            description:
+                'Name of the header preset to use. The headers are displayed in rows above the schedule, and used to create its columns. ',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'hourAndDay' }
+            }
+        },
+        customHeaders: {
+            name: 'custom-headers',
+            control: {
                 type: 'object'
             },
             description:
-                'Array of date/time scheduler header objects. \nThe headers are displayed in rows above the schedule, and used to create its columns.',
+                'Array of date/time scheduler header objects. If present, it will overwrite the headers.',
             table: {
-                type: { summary: 'object' }
+                type: { summary: 'object[]' }
             }
         },
         columns: {
@@ -417,7 +444,7 @@ Base.args = {
     columns: columns,
     rowsKeyField: 'id',
     rows: rows,
-    headers: headers,
+    customHeaders: headers,
     visibleSpan: {
         unit: 'week',
         span: 3
@@ -435,7 +462,6 @@ ReadOnly.args = {
     columns: columns,
     rowsKeyField: 'id',
     rows: rows,
-    headers: headers,
     visibleSpan: {
         unit: 'day',
         span: 5

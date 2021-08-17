@@ -59,7 +59,9 @@ import {
     DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT,
     DEFAULT_START_DATE,
     DEFAULT_VISIBLE_SPAN,
+    HEADERS,
     PALETTES,
+    PRESET_HEADERS,
     UNITS
 } from './defaults';
 import SchedulerHeader from './header';
@@ -76,12 +78,13 @@ export default class Scheduler extends LightningElement {
     _contextMenuEventActions = [];
     _customEventsPalette = [];
     _collapseDisabled = false;
+    _customHeaders = [];
     _dateFormat = DEFAULT_DATE_FORMAT;
     _disabledDatesTimes = [];
     _eventsLabels = DEFAULT_EVENTS_LABELS;
     _eventsPalette = EVENTS_PALETTES.default;
     _eventsTheme = EVENTS_THEMES.default;
-    _headers = [];
+    _headers = HEADERS.default;
     _isLoading = false;
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     _readOnly = false;
@@ -284,6 +287,16 @@ export default class Scheduler extends LightningElement {
     }
 
     @api
+    get customHeaders() {
+        return this._customHeaders;
+    }
+    set customHeaders(value) {
+        this._customHeaders = normalizeArray(value);
+
+        if (this.isConnected) this.initSchedule();
+    }
+
+    @api
     get collapseDisabled() {
         return this._collapseDisabled;
     }
@@ -298,7 +311,6 @@ export default class Scheduler extends LightningElement {
     set dateFormat(value) {
         this._dateFormat =
             value && typeof value === 'string' ? value : DEFAULT_DATE_FORMAT;
-        console.log(this.dateFormat);
     }
 
     @api
@@ -376,7 +388,11 @@ export default class Scheduler extends LightningElement {
         return this._headers;
     }
     set headers(value) {
-        this._headers = normalizeArray(value);
+        this._headers = normalizeString(value, {
+            fallbackValue: HEADERS.default,
+            validValues: HEADERS.valid,
+            toLowerCase: false
+        });
 
         if (this.isConnected) this.initSchedule();
     }
@@ -671,18 +687,24 @@ export default class Scheduler extends LightningElement {
     }
 
     initHeaders() {
+        let headers = [...this.customHeaders];
+        if (!headers.length) {
+            const presetConfig = PRESET_HEADERS.find(
+                (preset) => preset.name === this.headers
+            );
+            headers = presetConfig.headers;
+        }
+
         // Sort the headers from the longest unit to the shortest
-        const sortedHeaders = [...this.headers].sort(
-            (firstHeader, secondHeader) => {
-                const firstIndex = UNITS.findIndex(
-                    (unit) => unit === firstHeader.unit
-                );
-                const secondIndex = UNITS.findIndex(
-                    (unit) => unit === secondHeader.unit
-                );
-                return secondIndex - firstIndex;
-            }
-        );
+        const sortedHeaders = headers.sort((firstHeader, secondHeader) => {
+            const firstIndex = UNITS.findIndex(
+                (unit) => unit === firstHeader.unit
+            );
+            const secondIndex = UNITS.findIndex(
+                (unit) => unit === secondHeader.unit
+            );
+            return secondIndex - firstIndex;
+        });
 
         // Create the reference header
         // The reference header is the header using the visibleSpan unit

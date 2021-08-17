@@ -107,6 +107,221 @@ const EVENTS_PALETTES = {
     default: 'aurora'
 };
 
+const HEADERS = {
+    valid: [
+        'minuteAndHour',
+        'minuteHourAndDay',
+        'hourAndDay',
+        'hourDayAndWeek',
+        'dayAndWeek',
+        'dayLetterAndWeek',
+        'dayWeekAndMonth',
+        'weekAndMonth',
+        'weekMonthAndYear',
+        'monthAndYear',
+        'quartersAndYear',
+        'fiveYears'
+    ],
+    default: 'hourAndDay'
+};
+const PRESET_HEADERS = [
+    {
+        name: 'minuteAndHour',
+        headers: [
+            {
+                unit: 'minute',
+                span: 30,
+                label: 'mm'
+            },
+            {
+                unit: 'hour',
+                span: 1,
+                label: 'h a'
+            }
+        ]
+    },
+    {
+        name: 'minuteHourAndDay',
+        headers: [
+            {
+                unit: 'minute',
+                span: 30,
+                label: 'mm'
+            },
+            {
+                unit: 'hour',
+                span: 1,
+                label: 'h a'
+            },
+            {
+                unit: 'day',
+                span: 1,
+                label: 'ccc, LLL d'
+            }
+        ]
+    },
+    {
+        name: 'hourAndDay',
+        headers: [
+            {
+                unit: 'hour',
+                span: 1,
+                label: 'h a'
+            },
+            {
+                unit: 'day',
+                span: 1,
+                label: 'ccc, LLL d'
+            }
+        ]
+    },
+    {
+        name: 'hourDayAndWeek',
+        headers: [
+            {
+                unit: 'hour',
+                span: 1,
+                label: 'h a'
+            },
+            {
+                unit: 'day',
+                span: 1,
+                label: 'ccc, LLL d'
+            },
+            {
+                unit: 'week',
+                span: 1,
+                label: "'w.'W 'of' yyyy"
+            }
+        ]
+    },
+    {
+        name: 'dayAndWeek',
+        headers: [
+            {
+                unit: 'day',
+                span: 1,
+                label: 'ccc, LLL d'
+            },
+            {
+                unit: 'week',
+                span: 1,
+                label: "'w.'W 'of' yyyy"
+            }
+        ]
+    },
+    {
+        name: 'dayLetterAndWeek',
+        headers: [
+            {
+                unit: 'day',
+                span: 1,
+                label: 'ccccc'
+            },
+            {
+                unit: 'week',
+                span: 1,
+                label: "'w.'W 'of' yyyy"
+            }
+        ]
+    },
+    {
+        name: 'dayWeekAndMonth',
+        headers: [
+            {
+                unit: 'day',
+                span: 1,
+                label: 'dd'
+            },
+            {
+                unit: 'week',
+                span: 1,
+                label: "'w.'W 'of' yyyy"
+            },
+            {
+                unit: 'month',
+                span: 1,
+                label: 'LLLL yyyy'
+            }
+        ]
+    },
+    {
+        name: 'weekAndMonth',
+        headers: [
+            {
+                unit: 'week',
+                span: 1,
+                label: "'w.'W 'of' yyyy"
+            },
+            {
+                unit: 'month',
+                span: 1,
+                label: 'LLLL yyyy'
+            }
+        ]
+    },
+    {
+        name: 'weekMonthAndYear',
+        headers: [
+            {
+                unit: 'week',
+                span: 1,
+                label: "'w.'W 'of' yyyy"
+            },
+            {
+                unit: 'month',
+                span: 1,
+                label: 'LLLL'
+            },
+            {
+                unit: 'year',
+                span: 1,
+                label: 'yyyy'
+            }
+        ]
+    },
+    {
+        name: 'monthAndYear',
+        headers: [
+            {
+                unit: 'month',
+                span: 1,
+                label: 'LLLL'
+            },
+            {
+                unit: 'year',
+                span: 1,
+                label: 'yyyy'
+            }
+        ]
+    },
+    {
+        name: 'quartersAndYear',
+        headers: [
+            {
+                unit: 'month',
+                span: 4,
+                label: 'LLL'
+            },
+            {
+                unit: 'year',
+                span: 1,
+                label: 'yyyy'
+            }
+        ]
+    },
+    {
+        name: 'fiveYears',
+        headers: [
+            {
+                unit: 'year',
+                span: 5,
+                label: 'yyyy'
+            }
+        ]
+    }
+];
+
 const PALETTES = {
     aurora: ['#3296ed', '#77b9f2', '#9d53f2', '#c398f5', '#26aba4', '#4ed4cd'],
     bluegrass: [
@@ -193,7 +408,9 @@ export {
     EDIT_MODES,
     EVENTS_THEMES,
     EVENTS_PALETTES,
+    HEADERS,
     PALETTES,
+    PRESET_HEADERS,
     RECURRENCES,
     REFERENCE_LINE_VARIANTS,
     UNITS
