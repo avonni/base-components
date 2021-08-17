@@ -7,9 +7,6 @@
             "dir": "src/modules/base"
         },
         {
-            "dir": "src/modules/data"
-        },
-        {
             "name": "c/configProvider",
             "path": "src/modules/base/configProvider/configProvider.js"
         },
@@ -114,8 +111,8 @@
             "path": "src/modules/base/confetti/confetti.js"
         },
         {
-            "name": "c/dataInput",
-            "path": "src/modules/data/input/input.js"
+            "name": "c/inputData",
+            "path": "src/modules/base/inputData/inputData.js"
         },
         {
             "name": "c/datatable",
@@ -518,8 +515,8 @@
             "path": "src/modules/base/confetti/confetti.js"
         },
         {
-            "name": "avonni/dataInput",
-            "path": "src/modules/data/input/input.js"
+            "name": "avonni/inputData",
+            "path": "src/modules/base/inputData/inputData.js"
         },
         {
             "name": "avonni/datatable",
@@ -756,7 +753,7 @@
         "avonni/colorPicker",
         "avonni/combobox",
         "avonni/confetti",
-        "avonni/dataInput",
+        "avonni/inputData",
         "avonni/datatable",
         "avonni/dateTimePicker",
         "avonni/dialog",

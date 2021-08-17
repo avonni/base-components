@@ -416,7 +416,6 @@
                  }
                 })
                 );
-                console.log(this.selectedMarkerValue);
      }
  
      /**
@@ -509,7 +508,6 @@
       * @param {object} t
       */
      sendMessage(e, t) {
-         console.log(e,t)
          if (
              ((t = t || config.SET_MAP_PARAM),
              this.iframeLoaded && this._handler)
