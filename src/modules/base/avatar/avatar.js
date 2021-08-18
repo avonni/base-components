@@ -81,6 +81,7 @@ const DEFAULT_STATUS_TITLE = 'Status';
 
 /**
  * @class
+ * @name Avatar
  * @descriptor avonni-avatar
  * @storyId example-avatar--base
  * @public

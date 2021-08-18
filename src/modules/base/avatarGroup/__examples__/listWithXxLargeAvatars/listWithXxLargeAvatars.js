@@ -1,9 +1,10 @@
 import { LightningElement } from 'lwc';
 
-export default class AvatarGroupList extends LightningElement {
+export default class AvatarGroupListWithXxLargeAvatars extends LightningElement {
     items = [
         {
-            src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+            src:
+                'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
             fallbackIconName: 'standard:user',
             alternativeText: 'This is the alternative text',
             status: 'locked',
@@ -24,7 +25,8 @@ export default class AvatarGroupList extends LightningElement {
             ]
         },
         {
-            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+            src:
+                'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
             fallbackIconName: 'standard:user',
             initials: 'UA',
             alternativeText: 'This is the alternative text',
@@ -81,7 +83,8 @@ export default class AvatarGroupList extends LightningElement {
             ]
         },
         {
-            src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+            src:
+                'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
             fallbackIconName: 'standard:user',
             alternativeText: 'This is the alternative text',
             status: 'locked',
@@ -102,7 +105,8 @@ export default class AvatarGroupList extends LightningElement {
             ]
         },
         {
-            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+            src:
+                'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
             fallbackIconName: 'standard:user',
             initials: 'UA',
             alternativeText: 'This is the alternative text',
@@ -159,7 +163,8 @@ export default class AvatarGroupList extends LightningElement {
             ]
         },
         {
-            src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+            src:
+                'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
             fallbackIconName: 'standard:user',
             alternativeText: 'This is the alternative text',
             status: 'locked',
@@ -180,7 +185,8 @@ export default class AvatarGroupList extends LightningElement {
             ]
         },
         {
-            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+            src:
+                'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
             fallbackIconName: 'standard:user',
             initials: 'UA',
             alternativeText: 'This is the alternative text',

@@ -69,7 +69,7 @@ const DEFAULT_LIST_BUTTON_SHOW_LESS_LABEL = 'Show less';
 
 /**
  * @class
- * @name Avatar Group
+ * @name AvatarGroup
  * @descriptor avonni-avatar-group
  * @storyId example-avatar-group--base-with-two-avatars
  * @public
@@ -610,7 +610,7 @@ export default class AvatarGroup extends LightningElement {
         } else {
             /**
              * The event fired when the user click on an avatar.
-             * 
+             *
              * @event
              * @name avatarclick
              * @param {object} item The avatar detail
@@ -641,7 +641,7 @@ export default class AvatarGroup extends LightningElement {
 
         /**
          * The event fired when the user clicks on an action.
-         * 
+         *
          * @event
          * @name actionclick
          * @param {string} name The avatar group name.
