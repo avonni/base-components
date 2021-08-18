@@ -1130,7 +1130,7 @@ export default class Scheduler extends LightningElement {
             ? dateTimeObjectFrom(Number(lastVisibleCol.dataset.end))
             : this.end;
 
-        // We add a buffer of the screen width
+        // The visible interval is three times the screen width
         const buffer = visibleEnd - visibleStart;
         const end = addToDate(visibleEnd, 'millisecond', buffer);
         const start = dateTimeObjectFrom(visibleStart - buffer);
@@ -1358,9 +1358,7 @@ export default class Scheduler extends LightningElement {
         // Add the occurrence to the row with the updated start/end date
         row.events.push(occurrence);
         row.addEventToColumns(occurrence);
-        this.updateOccurrencesOffsetTop();
-        this.updateOccurrencesPosition();
-        this.updateRowsStyle();
+        this.updateVisibleEvents();
     }
 
     dragEventTo(row, cell) {
