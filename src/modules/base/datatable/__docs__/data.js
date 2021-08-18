@@ -521,7 +521,6 @@ const columnsSum = [
         summarizeTypes: ['count', 'countUnique', 'median', 'min', 'max', 'mode']
     }
 ];
-
 const columnsGroupBy = [
     {
         id: 1,
@@ -548,7 +547,7 @@ const columnsGroupBy = [
     }
 ];
 
-const dataAB = [
+const recordsAB = [
     {
         id: 1,
         avatar:
@@ -644,7 +643,7 @@ const dataAB = [
     }
 ];
 
-const dataCD = [
+const recordsCD = [
     {
         id: 1,
         colorPicker: '#00a1e0',
@@ -693,7 +692,7 @@ const dataCD = [
         dateLocal: new Date('2022/10/12')
     }
 ];
-const dataEN = [
+const recordsEN = [
     {
         id: 1,
         email: 'nina.gomez@email.com',
@@ -784,7 +783,7 @@ const dataEN = [
     }
 ];
 
-const dataOQ = [
+const recordsOQ = [
     {
         id: 1,
         percent: 0.34,
@@ -854,7 +853,7 @@ const dataOQ = [
         qrcode: 'https://www.avonni.app/'
     }
 ];
-const dataRZ = [
+const recordsRZ = [
     {
         id: 1,
         rating: '3',
@@ -899,7 +898,7 @@ const dataRZ = [
     }
 ];
 
-const dataSum = [
+const recordsSum = [
     {
         id: 1,
         date: new Date('2021/09/24'),
@@ -964,7 +963,7 @@ const dataSum = [
     }
 ];
 
-const dataGroupBy = [
+const recordsGroupBy = [
     {
         id: 1,
         name: 'Karen',
@@ -1092,11 +1091,11 @@ export {
     columnsRZ,
     columnsSum,
     columnsGroupBy,
-    dataAB,
-    dataCD,
-    dataEN,
-    dataOQ,
-    dataRZ,
-    dataSum,
-    dataGroupBy
+    recordsAB,
+    recordsCD,
+    recordsEN,
+    recordsOQ,
+    recordsRZ,
+    recordsSum,
+    recordsGroupBy
 };

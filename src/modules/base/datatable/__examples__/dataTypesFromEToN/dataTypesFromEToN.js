@@ -94,7 +94,7 @@ export default class DataTypesFromEtoN extends LightningElement {
         }
     ];
 
-    data = [
+    records = [
         {
             id: 1,
             email: 'nina.gomez@email.com',

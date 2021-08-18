@@ -39,13 +39,13 @@ import {
     columnsRZ,
     columnsSum,
     columnsGroupBy,
-    dataAB,
-    dataCD,
-    dataEN,
-    dataOQ,
-    dataRZ,
-    dataSum,
-    dataGroupBy
+    recordsAB,
+    recordsCD,
+    recordsEN,
+    recordsOQ,
+    recordsRZ,
+    recordsSum,
+    recordsGroupBy
 } from './data';
 
 export default {
@@ -77,7 +77,7 @@ export default {
                 category: 'Data'
             }
         },
-        data: {
+        records: {
             control: {
                 type: 'object'
             },
@@ -392,7 +392,7 @@ const Template = (args) => Datatable(args);
 export const DataTypesFromAToB = Template.bind({});
 DataTypesFromAToB.args = {
     columns: columnsAB,
-    data: dataAB,
+    records: recordsAB,
     keyField: 'id',
     columnWidthsMode: 'auto'
 };
@@ -400,7 +400,7 @@ DataTypesFromAToB.args = {
 export const DataTypesFromCToD = Template.bind({});
 DataTypesFromCToD.args = {
     columns: columnsCD,
-    data: dataCD,
+    records: recordsCD,
     keyField: 'id',
     columnWidthsMode: 'auto',
     draftValues: [
@@ -426,7 +426,7 @@ DataTypesFromCToD.args = {
 export const DataTypesFromEToN = Template.bind({});
 DataTypesFromEToN.args = {
     columns: columnsEN,
-    data: dataEN,
+    records: recordsEN,
     keyField: 'id',
     columnWidthsMode: 'auto',
     hideCheckboxColumn: true
@@ -435,7 +435,7 @@ DataTypesFromEToN.args = {
 export const DataTypesFromOToQ = Template.bind({});
 DataTypesFromOToQ.args = {
     columns: columnsOQ,
-    data: dataOQ,
+    records: recordsOQ,
     keyField: 'id',
     columnWidthsMode: 'auto',
     selectedRows: ['2']
@@ -444,7 +444,7 @@ DataTypesFromOToQ.args = {
 export const DataTypesFromRToZ = Template.bind({});
 DataTypesFromRToZ.args = {
     columns: columnsRZ,
-    data: dataRZ,
+    records: recordsRZ,
     keyField: 'id',
     columnWidthsMode: 'auto'
 };
@@ -452,7 +452,7 @@ DataTypesFromRToZ.args = {
 export const DatatableWithSummarizeTypes = Template.bind({});
 DatatableWithSummarizeTypes.args = {
     columns: columnsSum,
-    data: dataSum,
+    records: recordsSum,
     keyField: 'id',
     columnWidthsMode: 'auto'
 };
@@ -460,7 +460,7 @@ DatatableWithSummarizeTypes.args = {
 export const DatatableWithGroupBy = Template.bind({});
 DatatableWithGroupBy.args = {
     columns: columnsGroupBy,
-    data: dataGroupBy,
+    data: recordsGroupBy,
     keyField: 'id',
     columnWidthsMode: 'auto',
     groupBy: 'city'

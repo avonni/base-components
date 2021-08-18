@@ -35,8 +35,7 @@ import { LightningElement, api } from 'lwc';
 export default class Datatable extends LightningElement {
     @api columnWidthsMode;
     @api columns;
-    // eslint-disable-next-line @lwc/lwc/valid-api
-    @api data;
+    @api records;
     @api defaultSortDirection;
     @api draftValues;
     @api enableInfiniteLoading;

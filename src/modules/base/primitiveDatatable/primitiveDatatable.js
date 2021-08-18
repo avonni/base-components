@@ -472,6 +472,12 @@ export default class PrimitiveDatatable extends LightningDatatable {
 
         this.tablesInitialization();
 
+        if (this.isLoading) {
+            this.template.querySelector(
+                'lightning-primitive-datatable-loading-indicator'
+            ).style.height = '40px';
+        }
+
         // Make sure custom edited cells stay yellow on hover
         // Make sure error cells appear edited and with a red border
         const edited = Array.from(

@@ -57,7 +57,7 @@ export default class DataTypesFromOToQ extends LightningElement {
         }
     ];
 
-    data = [
+    records = [
         {
             id: 1,
             percent: 0.34,

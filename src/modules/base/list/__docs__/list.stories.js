@@ -121,6 +121,18 @@ export default {
             table: {
                 type: { summary: 'string' }
             }
+        },
+        imageWidth: {
+            name: 'image-width',
+            control: {
+                type: 'select'
+            },
+            options: ['small', 'medium', 'large'],
+            description:
+                'Fixed width of image (3 sizes: (small 48px, medium 72px and large 128px)',
+            table: {
+                type: { summary: 'string' }
+            }
         }
     }
 };
@@ -132,19 +144,25 @@ const items = [
         label: 'Item 1',
         href: '',
         description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        imageSrc:
+            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
     },
     {
         label: 'Item 2',
         href: '/path/to_somewhere',
         description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        imageSrc:
+            'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?crop=entropy&cs=srgb&fm=jpg&ixid=MnwxNDAyMjV8MHwxfGFsbHw1NHx8fHx8fDF8fDE2MjAyNTA3MjY&ixlib=rb-1.2.1&q=85'
     },
     {
         label: 'Item 3',
         href: '',
         description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        imageSrc:
+            'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg'
     },
     {
         label: 'Item 4',
@@ -166,7 +184,9 @@ const items = [
                 alternativeText: 'refresh button',
                 title: 'Refresh'
             }
-        ]
+        ],
+        imageSrc:
+            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
     },
     {
         label: 'Item 5',
@@ -188,7 +208,8 @@ const items = [
                 alternativeText: 'refresh button',
                 title: 'Refresh'
             }
-        ]
+        ],
+        imageSrc: 'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300'
     }
 ];
 
@@ -219,6 +240,84 @@ const itemsWithAvatars = [
     }
 ];
 
+const itemsWithImagesAndAvatars = [
+    {
+        label: 'Item 1',
+        avatarSrc:
+            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+        avatarFallbackIconName: 'custom:custom5',
+        href: '',
+        description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        imageSrc:
+            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
+    },
+    {
+        label: 'Item 2',
+        avatarSrc:
+            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+        avatarFallbackIconName: 'custom:custom9',
+        href: '/path/to_somewhere',
+        description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        imageSrc:
+            'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?crop=entropy&cs=srgb&fm=jpg&ixid=MnwxNDAyMjV8MHwxfGFsbHw1NHx8fHx8fDF8fDE2MjAyNTA3MjY&ixlib=rb-1.2.1&q=85'
+    },
+    {
+        label: 'Item 3',
+        href: '',
+        description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        imageSrc:
+            'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg'
+    },
+    {
+        label: 'Item 4',
+        avatarSrc:
+            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+        avatarFallbackIconName: 'custom:custom11',
+        href: '',
+        description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        infos: [
+            { label: 'info 1', href: '' },
+            { label: 'info 2', href: '' }
+        ],
+        icons: [
+            {
+                iconName: 'utility:share',
+                alternativeText: 'share button',
+                title: 'Share'
+            },
+            {
+                iconName: 'utility:refresh',
+                alternativeText: 'refresh button',
+                title: 'Refresh'
+            }
+        ],
+        imageSrc:
+            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
+    },
+    {
+        label: 'Item 5',
+        avatarFallbackIconName: 'custom:custom1',
+        avatarSrc:
+            'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+        href: '',
+        description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        infos: [{ label: 'info 1', href: '' }],
+        icons: [
+            {
+                iconName: 'utility:share',
+                alternativeText: 'share button',
+                title: 'Share'
+            }
+        ],
+        imageSrc: 'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300'
+    }
+];
+
 const actions = [
     {
         label: 'Completed',
@@ -237,6 +336,15 @@ const actions = [
         name: 'delete-action',
         iconName: 'utility:delete',
         disabled: true
+    }
+];
+
+const action = [
+    {
+        label: 'Completed',
+        name: 'completed-action',
+        iconName: 'utility:check',
+        disabled: false
     }
 ];
 
@@ -279,10 +387,32 @@ SortableListWithAvatars.args = {
     divider: 'around'
 };
 
+export const SortableListWithAvatarsAndSingleAction = Template.bind({});
+SortableListWithAvatarsAndSingleAction.args = {
+    label: 'Sortable list with Icons and Single Action',
+    items: itemsWithAvatars,
+    actions: action,
+    sortableIconName: 'utility:drag_and_drop',
+    sortableIconPosition: 'left',
+    sortable: true,
+    divider: 'top'
+};
+
 export const ListWithActions = Template.bind({});
 ListWithActions.args = {
     label: 'List with actions menu',
     items: items,
     actions: actions,
+    divider: 'around'
+};
+
+export const SortableListWithImagesAndAvatars = Template.bind({});
+SortableListWithImagesAndAvatars.args = {
+    label: 'Sortable list Images and Avatars with Icons',
+    items: itemsWithImagesAndAvatars,
+    actions: actions,
+    sortableIconName: 'utility:drag_and_drop',
+    sortableIconPosition: 'left',
+    sortable: true,
     divider: 'around'
 };
