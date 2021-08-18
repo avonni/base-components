@@ -222,18 +222,20 @@
                         disabled={disabledInput}
                         read-only={isLabelDisplayed}
                     ></lightning-input>
-                    <button
-                        class="slds-button slds-button_icon slds-input__icon slds-input__icon_right avonni-builder-icon-picker-clear-icon"
-                        title="Clear"
-						onclick={clearInput}
-                    >
-                        <lightning-icon
-                            size="xx-small"
-                            class="slds-button__icon slds-icon-text-light"
-                            icon-name="utility:clear"
-                        ></lightning-icon>
-                        <span class="slds-assistive-text">Clear</span>
-                    </button>
+                    <template if:true={isInputFilled}>
+                        <button
+                            class="slds-button slds-button_icon slds-input__icon slds-input__icon_right avonni-builder-icon-picker-clear-icon"
+                            title="Clear"
+                            onclick={clearInput}
+                        >
+                            <lightning-icon
+                                size="xx-small"
+                                class="slds-button__icon slds-icon-text-light"
+                                icon-name="utility:clear"
+                            ></lightning-icon>
+                            <span class="slds-assistive-text">Clear</span>
+                        </button>
+                    </template>
                 </div>
             </div>
             <p if:true={showError} class="slds-form-error">
