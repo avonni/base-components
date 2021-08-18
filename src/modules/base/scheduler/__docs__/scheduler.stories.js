@@ -37,7 +37,9 @@ import {
     headers,
     events,
     disabledDatesTimes,
-    referenceLines
+    referenceLines,
+    start,
+    lotsOfEvents
 } from './data';
 
 export default {
@@ -449,10 +451,10 @@ Base.args = {
         unit: 'week',
         span: 3
     },
-    start: new Date(2021, 11, 13),
+    start,
     availableTimeFrames: ['08:00-16:59'],
     availableDaysOfTheWeek: [1, 2, 3, 4, 5],
-    events: events,
+    events: lotsOfEvents(),
     disabledDatesTimes: disabledDatesTimes,
     referenceLines: referenceLines
 };
@@ -466,7 +468,7 @@ ReadOnly.args = {
         unit: 'day',
         span: 5
     },
-    start: new Date(2021, 11, 13),
+    start,
     availableTimeFrames: ['09:00-17:59'],
     events: events,
     eventsTheme: 'line',

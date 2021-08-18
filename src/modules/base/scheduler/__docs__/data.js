@@ -30,6 +30,20 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import { generateUniqueId } from 'c/inputUtils';
+
+const start = new Date(2021, 11, 13, 8);
+
+const generateName = () => {
+    return generateUniqueId();
+};
+
+let titleCounter = 0;
+const generateTitle = () => {
+    titleCounter += 1;
+    return `Event ${titleCounter}`;
+};
+
 const columns = [
     {
         label: 'Staff',
@@ -128,6 +142,41 @@ const headers = [
     }
 ];
 
+const lotsOfEvents = () => {
+    const computedEvents = [];
+    const keyFields = rows.map((row) => row.id);
+
+    let startTime = start.getTime();
+    let endTime = startTime + 7200000;
+
+    for (let i = 0; i < 1000; i++) {
+        // The event will be on one to three rows
+        const keyFieldsNumber = Math.floor(Math.random() * 3) + 1;
+        const eventKeyFields = [];
+        const computedKeyFields = [...keyFields];
+        for (let j = 0; j < keyFieldsNumber; j++) {
+            const keyFieldIndex = Math.floor(
+                Math.random() * computedKeyFields.length
+            );
+            eventKeyFields.push(computedKeyFields[keyFieldIndex]);
+            computedKeyFields.splice(keyFieldIndex, 1);
+        }
+
+        computedEvents.push({
+            keyFields: eventKeyFields,
+            name: generateName(),
+            title: generateTitle(),
+            from: startTime,
+            to: endTime
+        });
+
+        startTime += 3600000;
+        endTime = startTime + 7200000;
+    }
+
+    return computedEvents;
+};
+
 const events = [
     {
         keyFields: ['1'],
@@ -182,7 +231,6 @@ const events = [
         from: new Date(2021, 11, 13, 11),
         to: new Date(2021, 11, 14, 14),
         recurrence: 'weekly',
-        recurrenceCount: 2,
         recurrenceAttributes: {
             weekdays: [1, 3, 5]
         },
@@ -228,4 +276,13 @@ const referenceLines = [
     }
 ];
 
-export { columns, disabledDatesTimes, rows, headers, events, referenceLines };
+export {
+    columns,
+    disabledDatesTimes,
+    rows,
+    headers,
+    events,
+    lotsOfEvents,
+    referenceLines,
+    start
+};

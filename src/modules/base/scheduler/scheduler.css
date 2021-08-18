@@ -44,11 +44,6 @@
     width: 100%;
 }
 
-.scheduler__schedule-col {
-    overflow-x: auto;
-    overflow-y: hidden;
-}
-
 .scheduler__event-detail-popover {
     width: auto;
 }

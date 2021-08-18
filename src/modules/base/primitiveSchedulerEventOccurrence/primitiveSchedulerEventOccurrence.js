@@ -111,14 +111,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     @api theme;
 
     /**
-     * Title of the occurrence.
-     *
-     * @type {string}
-     * @public
-     */
-    @api title;
-
-    /**
      * End date of the occurrence.
      *
      * @type {DateTime}
@@ -140,6 +132,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     _referenceLine = false;
     _rowKey;
     _rows = [];
+    _title;
     _to;
 
     _focused = false;
@@ -346,6 +339,22 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
     set rows(value) {
         this._rows = normalizeArray(value);
+
+        if (this.isConnected) this.initLabels();
+    }
+
+    /**
+     * Title of the occurrence.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get title() {
+        return this._title;
+    }
+    set title(value) {
+        this._title = value;
 
         if (this.isConnected) this.initLabels();
     }
@@ -674,7 +683,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
 
         // Add the width of the columns completely filled by the event
         while (i < columns.length) {
-            if (columns[i].end > to) break;
+            if (columns[i].start + columnDuration > to) break;
             width += columnWidth;
             i += 1;
         }

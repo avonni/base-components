@@ -31,7 +31,7 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { DateTime } from 'c/luxon';
+import { DateTime, Interval } from 'c/luxon';
 import {
     normalizeArray,
     normalizeBoolean,
@@ -104,6 +104,8 @@ export default class Scheduler extends LightningElement {
     _mouseIsDown = false;
     _referenceHeader;
     _resizedEvent;
+    _visibleStart;
+    _visibleEnd;
     cellWidth = 0;
     computedDisabledDatesTimes = [];
     computedHeaders = [];
@@ -118,23 +120,29 @@ export default class Scheduler extends LightningElement {
     showEditDialog = false;
     showDetailPopover = false;
     showRecurrenceDialog = false;
+    visibleEvents = [];
 
     connectedCallback() {
         this.crud = eventCrudMethods(this);
         this.initSchedule();
-
-        // Close the popovers on scroll
-        this.addEventListener('scroll', this.handleScroll);
     }
 
     renderedCallback() {
-        // Save the cell width
-        if (!this.cellWidth) {
-            const th = this.template.querySelector('thead tr:last-of-type th');
-            // We add one pixel for the right border
-            this.cellWidth = Math.ceil(th.getBoundingClientRect().width) + 1;
-            this.initHeaderWidths();
-            // The cellWidth change will trigger another render, so we return right away
+        if (!this.cellWidth || !this.visibleEvents.length) {
+            // Set the cell width
+            if (!this.cellWidth) {
+                const row = this.template.querySelector('tbody tr');
+                const cell = row.querySelector('td');
+                // We add one pixel for the right border
+                this.cellWidth =
+                    Math.ceil(cell.getBoundingClientRect().width) + 1;
+                this.initHeaderWidths();
+            }
+
+            // Set the visible events
+            if (!this.visibleEvents.length) this.updateVisibleEvents();
+
+            // The cellWidth and visibleEvents change trigger another render, so we return right away
             return;
         }
 
@@ -187,10 +195,6 @@ export default class Scheduler extends LightningElement {
         if (this.showEditDialog) {
             this.template.querySelector('c-dialog lightning-input').focus();
         }
-    }
-
-    disconnectedCallback() {
-        this.removeEventListener('scroll', this.handleScroll);
     }
 
     @api
@@ -984,6 +988,9 @@ export default class Scheduler extends LightningElement {
     }
 
     updateEventDefaults(event) {
+        // We store the initial event object in a variable,
+        // in case a custom field is used by the labels
+        event.data = event;
         event.schedulerEnd = this.end;
         event.schedulerStart = this._referenceHeader.start;
         event.availableMonths = this.availableMonths;
@@ -994,9 +1001,6 @@ export default class Scheduler extends LightningElement {
             ? 'disabled'
             : event.theme || this.eventsTheme;
 
-        // We store the initial event object in a variable,
-        // in case a custom field is used by the labels
-        event.data = event;
         event.labels =
             typeof event.labels === 'object' ? event.labels : this.eventsLabels;
     }
@@ -1108,6 +1112,45 @@ export default class Scheduler extends LightningElement {
         });
     }
 
+    updateVisibleEvents() {
+        // Find the visible schedule boundaries
+        const row = this.template.querySelector('tbody tr');
+        const schedule = this.template.querySelector(
+            '.scheduler__schedule-col'
+        );
+        const rightEnd = schedule.getBoundingClientRect().right;
+        const leftEnd = schedule.getBoundingClientRect().left;
+
+        // Get the first and last visible times
+        const firstVisibleCol = this.getCellFromPosition(row, leftEnd);
+        const lastVisibleCol = this.getCellFromPosition(row, rightEnd);
+
+        const visibleStart = Number(firstVisibleCol.dataset.start);
+        const visibleEnd = lastVisibleCol
+            ? dateTimeObjectFrom(Number(lastVisibleCol.dataset.end))
+            : this.end;
+
+        // We add a buffer of the screen width
+        const buffer = visibleEnd - visibleStart;
+        const end = addToDate(visibleEnd, 'millisecond', buffer);
+        const start = dateTimeObjectFrom(visibleStart - buffer);
+        const visibleInterval = Interval.fromDateTimes(start, end);
+
+        // Filter only the events that are visible on the screen
+        this.visibleEvents = this.computedEvents.filter((event) => {
+            const occurrences = event.occurrences;
+            if (!occurrences.length) return false;
+
+            const from = event.from;
+            const to = occurrences[occurrences.length - 1].to;
+            return (
+                visibleInterval.contains(from) ||
+                visibleInterval.contains(to) ||
+                (visibleInterval.isAfter(from) && visibleInterval.isBefore(to))
+            );
+        });
+    }
+
     getCellFromPosition(row, x) {
         const cells = Array.from(row.querySelectorAll('td'));
 
@@ -1173,8 +1216,17 @@ export default class Scheduler extends LightningElement {
             this.computedEvents.pop();
             this._updateOccurrences = true;
             this.initRows();
+            this.updateVisibleEvents();
         }
         this.selection = undefined;
+    }
+
+    clearDatatableColumnWidth() {
+        const lastColumn = this.columns[this.columns.length - 1];
+        if (lastColumn.initialWidth) {
+            lastColumn.initialWidth = undefined;
+            this._columns = [...this.columns];
+        }
     }
 
     computeEventVerticalLevel(previousOccurrences, left, level = 0) {
@@ -1488,6 +1540,7 @@ export default class Scheduler extends LightningElement {
             this.computedEvents.push(this.selection.event);
             this._updateOccurrences = true;
             this.initRows();
+            this.updateVisibleEvents();
         }
     }
 
@@ -1745,6 +1798,8 @@ export default class Scheduler extends LightningElement {
             this.hideDetailPopover();
             this.hideContextMenu();
         }
+
+        this.updateVisibleEvents();
     };
 
     handleSplitterMouseDown(mouseEvent) {
@@ -1774,14 +1829,6 @@ export default class Scheduler extends LightningElement {
             this.datatableIsOpen = false;
         } else {
             this.datatableIsHidden = true;
-        }
-    }
-
-    clearDatatableColumnWidth() {
-        const lastColumn = this.columns[this.columns.length - 1];
-        if (lastColumn.initialWidth) {
-            lastColumn.initialWidth = undefined;
-            this._columns = [...this.columns];
         }
     }
 

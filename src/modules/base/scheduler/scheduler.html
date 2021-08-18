@@ -77,7 +77,10 @@
         </div>
 
         <!-- Schedule -->
-        <div class="slds-col slds-is-relative scheduler__schedule-col">
+        <div
+            class="slds-col slds-is-relative scheduler__schedule-col slds-scrollable_x slds-scrollable_none"
+            onscroll={handleScroll}
+        >
             <table class={tableClass}>
                 <!-- Headers -->
                 <thead>
@@ -142,7 +145,7 @@
                 onmousedown={handleMouseDown}
                 ondblclick={handleDoubleClick}
             >
-                <template for:each={computedEvents} for:item="event">
+                <template for:each={visibleEvents} for:item="event">
                     <div key={event.key}>
                         <template
                             for:each={event.occurrences}
