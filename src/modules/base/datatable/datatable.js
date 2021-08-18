@@ -104,7 +104,7 @@ export default class Datatable extends LightningElement {
 
     set groupBy(value) {
         this._groupBy = value;
-        this.groupByData(this.data, this.groupBy);
+        this.groupByRecords(this._records, this.groupBy);
     }
     /**
      * If present, the checkbox column for row selection is hidden.
@@ -263,8 +263,9 @@ export default class Datatable extends LightningElement {
     _columnsEditable = [];
     _isDatatableEditable;
 
-    _groupedByData = [];
-    formattedGroupedData = [];
+    _groupedByRecords = [];
+    formattedGroupedRecords = [];
+    formattedResult = [];
 
     /**
      * Array of the columns object that's used to define the data types.
@@ -329,68 +330,100 @@ export default class Datatable extends LightningElement {
 
     renderedCallback() {
         this.bottomTableInitialization();
+        if (!this.rendered) {
+            this.multiLevelGroupByRecords(this._records, this.groupBy);
+        }
+        this.rendered = true;
+        console.log(this.formattedResult);
+        // console.log(this.multiLevelGroupByRecords(this._records, ['city', 'district']))
+        // console.log(this.multiLevelGroupByRecords(this._records, 'city'))
     }
 
-    groupByData(array, fieldName) {
-        this._groupedByData = array.reduce((previous, currentItem) => {
+    groupByRecords(array, fieldName) {
+        this._groupedByRecords = array.reduce((previous, currentItem) => {
             const group = currentItem[fieldName];
             if (!previous[group]) previous[group] = [];
             previous[group].push(currentItem);
             return previous;
         }, []);
-        Object.keys(this._groupedByData).forEach((key) => {
-            this.formattedGroupedData.push({
+        Object.keys(this._groupedByRecords).forEach((key) => {
+            this.formattedGroupedRecords.push({
                 label: key,
-                data: this._groupedByData[key],
+                records: this._groupedByRecords[key],
                 summarize: computeSummarizeArray(
                     this._columns,
-                    this._groupedByData[key]
+                    this._groupedByRecords[key]
                 ),
-                size: this._groupedByData[key].length
+                size: this._groupedByRecords[key].length
             });
         });
     }
 
-    // groupByDatas(array, fieldName) {
-    //     const formattedGroupedDatas = [];
-    //     let groupedData = []
-    //     groupedData = array.reduce((previous, currentItem) => {
-    //         const group = currentItem[fieldName];
-    //         if (!previous[group]) previous[group] = [];
-    //         previous[group].push(currentItem);
-    //         return previous;
-    //     }, []);
-    //     Object.keys(groupedData).forEach((key) => {
-    //         formattedGroupedDatas.push({
-    //             label: key,
-    //             data: groupedData[key]
-    //         });
-    //     });
-    // }
+    groupByDatas(array, fieldName) {
+        const formattedGroupedRecordss = [];
+        let groupedData = [];
+        groupedData = array.reduce((previous, currentItem) => {
+            const group = currentItem[fieldName];
+            if (!previous[group]) previous[group] = [];
+            previous[group].push(currentItem);
+            return previous;
+        }, []);
+        Object.keys(groupedData).forEach((key) => {
+            formattedGroupedRecordss.push({
+                label: key,
+                data: groupedData[key]
+            });
+        });
+    }
 
-    // multiLevelGroupByData(data, keys) {
-    //     const result = [];
-    //     const temp = { _: result };
-    //     const formattedResult = [];
-    //     data.forEach((a) => {
-    //         keys.reduce((r, k) => {
-    //             if (!r[a[k]]) {
-    //                 r[a[k]] = { _: [] };
-    //                 r._.push({ [a[k]]: { [a[k]]: r[a[k]]._ } });
-    //             }
-    //             return r[a[k]];
-    //         }, temp)._.push(a);
-    //     });
-    //     result.forEach((res) => {
-    //         console.log(res);
-    //         Object.keys(res).forEach((key) => {
-    //             formattedResult.push({
-    //                 label: key,
-    //                 data: Object.values(res[key])
-    //             });
-    //         });
-    //     });
-    // }
+    multiLevelGroupByRecords(records, fieldNames) {
+        // if there is only one groupBy and as a string, we convert it to an array.
+        if (typeof fieldNames === 'string') {
+            fieldNames = fieldNames.split();
+        }
+        const hasFieldNames = fieldNames.length > 1;
+        const result = [];
+        const temp = { _: result };
+        this.formattedResult = [];
+        records.forEach((a) => {
+            fieldNames
+                .reduce((r, k) => {
+                    if (!r[a[k]]) {
+                        r[a[k]] = { _: [] };
+                        r._.push({ [a[k]]: { [a[k]]: r[a[k]]._ } });
+                    }
+                    return r[a[k]];
+                }, temp)
+                ._.push(a);
+        });
+        // return result;
+        result.forEach((res) => {
+            Object.keys(res).forEach((key) => {
+                this.formattedResult.push({
+                    label: key,
+                    records: Object.values(res[key]).flat(),
+                    dataSize: Object.values(res[key]).flat().length,
+                    hasFieldNames: hasFieldNames,
+                    nestedRecords: this.result(Object.values(res[key]).flat())
+                });
+            });
+        });
+        return this.formattedResult;
+    }
+
+    result(results) {
+        const formattedResult = [];
+        results.forEach((res) => {
+            Object.keys(res).forEach((key) => {
+                formattedResult.push({
+                    label: key,
+                    records: Object.values(res[key]).flat(),
+                    dataSize: Object.values(res[key]).flat().length
+                });
+            });
+        });
+        return formattedResult;
+    }
 
     /**
      * Returns the primitive grouped datatable.
@@ -528,12 +561,12 @@ export default class Datatable extends LightningElement {
      * Gets the columns the information about if they are editable or not.
      */
     datatableEditable() {
-        this._columnsEditable = this.hasGroupBy
-            ? this.primitiveGroupedDatatable.columnsEditable()
-            : this.primitiveUngroupedDatatable.columnsEditable();
-        this._isDatatableEditable = this.hasGroupBy
-            ? this.primitiveGroupedDatatable.isDatatableEditable()
-            : this.primitiveUngroupedDatatable.isDatatableEditable();
+        // this._columnsEditable = this.hasGroupBy
+        //     ? this.primitiveGroupedDatatable.columnsEditable()
+        //     : this.primitiveUngroupedDatatable.columnsEditable();
+        // this._isDatatableEditable = this.hasGroupBy
+        //     ? this.primitiveGroupedDatatable.isDatatableEditable()
+        //     : this.primitiveUngroupedDatatable.isDatatableEditable();
     }
 
     /**

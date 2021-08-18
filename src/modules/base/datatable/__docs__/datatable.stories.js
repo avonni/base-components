@@ -460,8 +460,8 @@ DatatableWithSummarizeTypes.args = {
 export const DatatableWithGroupBy = Template.bind({});
 DatatableWithGroupBy.args = {
     columns: columnsGroupBy,
-    data: recordsGroupBy,
+    records: recordsGroupBy,
     keyField: 'id',
     columnWidthsMode: 'auto',
-    groupBy: 'city'
+    groupBy: ['city', 'district']
 };
