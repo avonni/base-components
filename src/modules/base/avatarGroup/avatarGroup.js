@@ -609,9 +609,10 @@ export default class AvatarGroup extends LightningElement {
             this.allowBlur();
         } else {
             /**
+             * The event fired when the user click on an avatar.
+             * 
              * @event
              * @name avatarclick
-             * The event fired when the user click on an avatar.
              * @param {object} item The avatar detail
              * @bubbles
              * @cancelable
@@ -639,9 +640,10 @@ export default class AvatarGroup extends LightningElement {
         const name = this.name;
 
         /**
+         * The event fired when the user clicks on an action.
+         * 
          * @event
          * @name actionclick
-         * The event fired when the user clicks on an action.
          * @param {string} name The avatar group name.
          * @public
          */
