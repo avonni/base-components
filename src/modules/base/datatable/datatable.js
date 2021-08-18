@@ -104,7 +104,6 @@ export default class Datatable extends LightningElement {
 
     set groupBy(value) {
         this._groupBy = value;
-        this.groupByRecords(this._records, this.groupBy);
     }
     /**
      * If present, the checkbox column for row selection is hidden.
@@ -263,10 +262,6 @@ export default class Datatable extends LightningElement {
     _columnsEditable = [];
     _isDatatableEditable;
 
-    _groupedByRecords = [];
-    formattedGroupedRecords = [];
-    formattedResult = [];
-
     /**
      * Array of the columns object that's used to define the data types.
      * Required properties include 'label', 'fieldName', and 'type'. The default type is 'text'.
@@ -307,7 +302,7 @@ export default class Datatable extends LightningElement {
             this.tableResize();
         });
 
-        if (this.groupBy) {
+        if (this.hasGroupBy) {
             this.addEventListener('resizecol', (event) => {
                 this.primitiveGroupedDatatables.forEach((datatable) => {
                     datatable.handleResizeColumn(event);
@@ -330,99 +325,6 @@ export default class Datatable extends LightningElement {
 
     renderedCallback() {
         this.bottomTableInitialization();
-        if (!this.rendered) {
-            this.multiLevelGroupByRecords(this._records, this.groupBy);
-        }
-        this.rendered = true;
-        console.log(this.formattedResult);
-        // console.log(this.multiLevelGroupByRecords(this._records, ['city', 'district']))
-        // console.log(this.multiLevelGroupByRecords(this._records, 'city'))
-    }
-
-    groupByRecords(array, fieldName) {
-        this._groupedByRecords = array.reduce((previous, currentItem) => {
-            const group = currentItem[fieldName];
-            if (!previous[group]) previous[group] = [];
-            previous[group].push(currentItem);
-            return previous;
-        }, []);
-        Object.keys(this._groupedByRecords).forEach((key) => {
-            this.formattedGroupedRecords.push({
-                label: key,
-                records: this._groupedByRecords[key],
-                summarize: computeSummarizeArray(
-                    this._columns,
-                    this._groupedByRecords[key]
-                ),
-                size: this._groupedByRecords[key].length
-            });
-        });
-    }
-
-    groupByDatas(array, fieldName) {
-        const formattedGroupedRecordss = [];
-        let groupedData = [];
-        groupedData = array.reduce((previous, currentItem) => {
-            const group = currentItem[fieldName];
-            if (!previous[group]) previous[group] = [];
-            previous[group].push(currentItem);
-            return previous;
-        }, []);
-        Object.keys(groupedData).forEach((key) => {
-            formattedGroupedRecordss.push({
-                label: key,
-                data: groupedData[key]
-            });
-        });
-    }
-
-    multiLevelGroupByRecords(records, fieldNames) {
-        // if there is only one groupBy and as a string, we convert it to an array.
-        if (typeof fieldNames === 'string') {
-            fieldNames = fieldNames.split();
-        }
-        const hasFieldNames = fieldNames.length > 1;
-        const result = [];
-        const temp = { _: result };
-        this.formattedResult = [];
-        records.forEach((a) => {
-            fieldNames
-                .reduce((r, k) => {
-                    if (!r[a[k]]) {
-                        r[a[k]] = { _: [] };
-                        r._.push({ [a[k]]: { [a[k]]: r[a[k]]._ } });
-                    }
-                    return r[a[k]];
-                }, temp)
-                ._.push(a);
-        });
-        // return result;
-        result.forEach((res) => {
-            Object.keys(res).forEach((key) => {
-                this.formattedResult.push({
-                    label: key,
-                    records: Object.values(res[key]).flat(),
-                    dataSize: Object.values(res[key]).flat().length,
-                    hasFieldNames: hasFieldNames,
-                    nestedRecords: this.result(Object.values(res[key]).flat())
-                });
-            });
-        });
-        return this.formattedResult;
-    }
-
-    result(results) {
-        const formattedResult = [];
-        results.forEach((res) => {
-            Object.keys(res).forEach((key) => {
-                formattedResult.push({
-                    label: key,
-                    records: Object.values(res[key]).flat(),
-                    dataSize: Object.values(res[key]).flat().length
-                });
-            });
-        });
-        return formattedResult;
     }
 
     /**
@@ -447,16 +349,16 @@ export default class Datatable extends LightningElement {
         );
     }
 
+    get primitivePrimitiveGroupByItem() {
+        return this.template.querySelector('c-primitive-group-by-item');
+    }
+
     get primitiveGroupedDatatables() {
-        return this.template.querySelectorAll(
-            'c-primitive-datatable[data-role="grouped"]'
-        );
+        return this.primitivePrimitiveGroupByItem.primitiveGroupedDatatables();
     }
 
     get primitiveGroupedDatatable() {
-        return this.template.querySelector(
-            'c-primitive-datatable[data-role="grouped"]'
-        );
+        return this.primitivePrimitiveGroupByItem.primitiveGroupedDatatable();
     }
 
     get hasGroupBy() {
@@ -519,6 +421,16 @@ export default class Datatable extends LightningElement {
         return this.primitiveUngroupedDatatable.primitiveDatatableDraftValues();
     }
 
+    get primitiveGroupedDatatableDraftValues() {
+        let draftValues = [];
+        this.primitiveGroupedDatatables.forEach((datatable) => {
+            draftValues.push(
+                datatable.primitiveDatatableDraftValues().length > 0
+            );
+        });
+        return draftValues.includes(true);
+    }
+
     get isFixedColumns() {
         return this.hasGroupBy ? 'fixed' : this.columnWidthsMode;
     }
@@ -561,12 +473,12 @@ export default class Datatable extends LightningElement {
      * Gets the columns the information about if they are editable or not.
      */
     datatableEditable() {
-        // this._columnsEditable = this.hasGroupBy
-        //     ? this.primitiveGroupedDatatable.columnsEditable()
-        //     : this.primitiveUngroupedDatatable.columnsEditable();
-        // this._isDatatableEditable = this.hasGroupBy
-        //     ? this.primitiveGroupedDatatable.isDatatableEditable()
-        //     : this.primitiveUngroupedDatatable.isDatatableEditable();
+        this._columnsEditable = this.hasGroupBy
+            ? this.primitiveGroupedDatatable.columnsEditable()
+            : this.primitiveUngroupedDatatable.columnsEditable();
+        this._isDatatableEditable = this.hasGroupBy
+            ? this.primitiveGroupedDatatable.isDatatableEditable()
+            : this.primitiveUngroupedDatatable.isDatatableEditable();
     }
 
     /**
@@ -577,7 +489,8 @@ export default class Datatable extends LightningElement {
             this._hasDraftValues = this.primitiveUngroupedDatatableDraftValues.length;
             this._showStatusBar = this._hasDraftValues ? true : false;
         } else if (this.hasGroupBy) {
-            this._hasDraftValues = this.primitiveGroupedDatatable;
+            this._hasDraftValues = this.primitiveGroupedDatatableDraftValues;
+            this._showStatusBar = this._hasDraftValues ? true : false;
         }
     }
 

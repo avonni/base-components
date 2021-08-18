@@ -307,6 +307,10 @@
             "path": "src/modules/base/primitiveDatatable/primitiveDatatable.js"
         },
         {
+            "name": "c/primitiveGroupByItem",
+            "path": "src/modules/base/primitiveGroupByItem/primitiveGroupByItem.js"
+        },
+        {
             "name": "c/primitiveCoordinateItem",
             "path": "src/modules/base/primitiveCoordinateItem/primitiveCoordinateItem.js"
         },

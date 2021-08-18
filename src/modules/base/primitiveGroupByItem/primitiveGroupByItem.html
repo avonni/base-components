@@ -1,0 +1,176 @@
+<!--
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+-->
+
+<template>
+    <template for:each={formattedGroupedRecords} for:item="group">
+        <c-primitive-collapsible-group
+            title={group.label}
+            size={group.size}
+            key={group.label}
+            collapsible
+        >
+            <c-primitive-datatable
+                key={group.label}
+                data-role="grouped"
+                data={group.records}
+                columns={columns}
+                column-widths-mode={isFixedColumns}
+                default-sort-direction={defaultSortDirection}
+                draft-values={draftValues}
+                enable-infinite-loading={enableInfiniteLoading}
+                group-by={groupBy}
+                errors={errors}
+                hide-checkbox-column={hideCheckboxColumn}
+                hide-table-header={hideTableHeader}
+                is-loading={isLoading}
+                key-field="id"
+                load-more-offset={loadMoreOffset}
+                max-column-width={maxColumnWidth}
+                max-row-selection={maxRowSelection}
+                min-column-width={minColumnWidth}
+                render-config={renderConfig}
+                resize-column-disabled={resizeColumnDisabled}
+                resize-step={resizeStep}
+                row-number-offset={rowNumberOffset}
+                selected-rows={selectedRows}
+                show-row-number-column={showRowNumberColumn}
+                sorted-by={sortedBy}
+                sorted-direction={sortedDirection}
+                suppress-bottom-bar
+                wrap-text-max-lines={wrapTextMaxLines}
+                onrowselection={handleDispatchEvents}
+                onsort={handleDispatchEvents}
+                onresize={handleDispatchEvents}
+                onsave={handleDispatchEvents}
+                oncancel={handleDispatchEvents}
+                onheaderaction={handleDispatchEvents}
+                onloadmore={handleDispatchEvents}
+                oncellchange={handleDispatchEvents}
+                onrowaction={handleDispatchEvents}
+            ></c-primitive-datatable>
+            <template if:true={allowSummarize}>
+                <table
+                    data-role="summarize"
+                    class="slds-table slds-table_bordered slds-table_resizable-cols avonni-datatable__summarize-table_border-top_none"
+                    role="grid"
+                >
+                    <tbody>
+                        <tr>
+                            <td if:true={isDatatableEditable}></td>
+                            <td if:false={hideCheckboxColumn}></td>
+                            <template
+                                for:each={group.summarize}
+                                for:item="column"
+                            >
+                                <td
+                                    key={column.fieldName}
+                                    class="avonni-datatable__td_vertical-align_top"
+                                    data-column={column.fieldName}
+                                    role="gridcell"
+                                >
+                                    <template if:true={column.hasSummarizeType}>
+                                        <template
+                                            for:each={column.summarizeTypes}
+                                            for:item="type"
+                                        >
+                                            <div
+                                                key={type.label}
+                                                class={column.className}
+                                                if:true={type.displaySumType}
+                                            >
+                                                <div
+                                                    class="avonni-datatable__summarize-type-text_styling"
+                                                >
+                                                    {type.label}:
+                                                </div>
+                                                <template if:false={type.count}>
+                                                    <template
+                                                        if:true={column.formattedNumberType}
+                                                    >
+                                                        <lightning-formatted-number
+                                                            format-style={type.type}
+                                                            value={type.value}
+                                                            currency-code={type.typeAttributes.currencyCode}
+                                                            currency-display-as={type.typeAttributes.currencyDisplayAs}
+                                                            minimum-fraction-digits={type.typeAttributes.minimumFractionDigits}
+                                                            maximum-fraction-digits={type.typeAttributes.maximumFractionDigits}
+                                                            minimum-integer-digits={type.typeAttributes.minimumIntegerDigits}
+                                                            minimum-significant-digits={type.typeAttributes.minimumSignificantDigits}
+                                                            maximum-significant-digits={type.typeAttributes.maximumSignificantDigits}
+                                                        ></lightning-formatted-number>
+                                                    </template>
+                                                    <template
+                                                        if:true={column.dateType}
+                                                    >
+                                                        <lightning-formatted-date-time
+                                                            value={type.value}
+                                                            day={type.typeAttributes.day}
+                                                            era={type.typeAttributes.era}
+                                                            hour={type.typeAttributes.hour}
+                                                            hour12={type.typeAttributes.hour12}
+                                                            minute={type.typeAttributes.minute}
+                                                            month={type.typeAttributes.month}
+                                                            second={type.typeAttributes.second}
+                                                            time-zone={type.typeAttributes.timeZone}
+                                                            time-zone-name={type.typeAttributes.timeZoneName}
+                                                            weekday={type.typeAttributes.weekday}
+                                                            year={type.typeAttributes.year}
+                                                        ></lightning-formatted-date-time>
+                                                    </template>
+                                                    <template
+                                                        if:true={type.mode}
+                                                    >
+                                                        <lightning-formatted-text
+                                                            value={type.value}
+                                                        ></lightning-formatted-text>
+                                                    </template>
+                                                </template>
+                                                <template if:true={type.count}>
+                                                    <lightning-formatted-number
+                                                        format-style="decimal"
+                                                        value={type.value}
+                                                    ></lightning-formatted-number>
+                                                </template>
+                                            </div>
+                                        </template>
+                                    </template>
+                                </td>
+                            </template>
+                        </tr>
+                    </tbody>
+                </table>
+            </template>
+        </c-primitive-collapsible-group>
+    </template>
+</template>
