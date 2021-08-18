@@ -445,15 +445,6 @@ export default class Datatable extends LightningElement {
         return computeSummarizeArray(this._columns, this._data);
     }
 
-    get computedSummarizeGroupedArray() {
-        const groupedSummarize = this.formattedGroupedData.map(
-            (groupedData) => {
-                return computeSummarizeArray(this._columns, groupedData.data);
-            }
-        );
-        return groupedSummarize;
-    }
-
     /**
      * Checks if one of the columns is editable or if none but showRowNumberColumn is true.
      *

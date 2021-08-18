@@ -1080,8 +1080,7 @@ const dataGroupBy = [
         id: 16,
         name: 'Jeanne',
         age: '29',
-        city: 'Longueuil',
-        district: 'Plateau'
+        city: 'Longueuil'
     }
 ];
 

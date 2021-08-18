@@ -694,7 +694,7 @@ export default class PrimitiveDatatable extends LightningDatatable {
 
     removeDefaultActions() {
         this.columns.forEach((column) => {
-            column.wrapText = true;
+            column.wrapText = false;
             column.hideDefaultActions = true;
         });
     }
