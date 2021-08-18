@@ -182,10 +182,13 @@ function graft(parentNode, childNodes, parentLongname) {
                     parentNode.classes = [];
                 }
 
+                const name = element.meta.filename.match(/^\w+/)[0];
+
                 thisClass = {
-                    name: element.name,
+                    name: name,
                     description: element.description || '',
                     descriptor: element.descriptor || '',
+                    storyId: element.storyId.value || '',
                     extends: element.augments || [],
                     access: element.access || '',
                     parameters: []
