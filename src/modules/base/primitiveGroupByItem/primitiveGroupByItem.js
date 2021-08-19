@@ -170,4 +170,293 @@ export default class ProgressGroupByItem extends LightningElement {
             })
         );
     }
+
+    get hardData() {
+        return this.hardCodedData;
+    }
+
+    hardCodedData = [
+        {
+            label: 'Montreal',
+            level: 0,
+            size: 10,
+            group: [
+                {
+                    label: 'Plateau',
+                    level: 1,
+                    size: 6,
+                    group: [
+                        {
+                            label: 'House',
+                            level: 2,
+                            size: 2,
+                            data: [
+                                {
+                                    id: 4,
+                                    name: 'Don',
+                                    age: '18',
+                                    city: 'Longueuil',
+                                    district: 'Old Longueuil',
+                                    habitation: 'Room'
+                                },
+                                {
+                                    id: 5,
+                                    name: 'Donald',
+                                    age: '16',
+                                    city: 'Longueuil',
+                                    district: 'Saint-Hubert'
+                                },
+                                {
+                                    id: 6,
+                                    name: 'Jenny',
+                                    age: '56',
+                                    city: 'Longueuil',
+                                    district: 'Greenfield Park',
+                                    habitation: 'Apartment'
+                                }
+                            ]
+                        },
+                        {
+                            label: 'Room',
+                            level: 2,
+                            size: 2,
+                            data: [
+                                {
+                                    id: 4,
+                                    name: 'Don',
+                                    age: '18',
+                                    city: 'Longueuil',
+                                    district: 'Old Longueuil',
+                                    habitation: 'Room'
+                                },
+                                {
+                                    id: 5,
+                                    name: 'Donald',
+                                    age: '16',
+                                    city: 'Longueuil',
+                                    district: 'Saint-Hubert'
+                                },
+                                {
+                                    id: 6,
+                                    name: 'Jenny',
+                                    age: '56',
+                                    city: 'Longueuil',
+                                    district: 'Greenfield Park',
+                                    habitation: 'Apartment'
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    label: 'Outremont',
+                    level: 1,
+                    size: 5,
+                    group: [
+                        {
+                            label: 'House',
+                            level: 2,
+                            size: 2,
+                            data: [
+                                {
+                                    id: 4,
+                                    name: 'Don',
+                                    age: '18',
+                                    city: 'Longueuil',
+                                    district: 'Old Longueuil',
+                                    habitation: 'Room'
+                                },
+                                {
+                                    id: 5,
+                                    name: 'Donald',
+                                    age: '16',
+                                    city: 'Longueuil',
+                                    district: 'Saint-Hubert'
+                                },
+                                {
+                                    id: 6,
+                                    name: 'Jenny',
+                                    age: '56',
+                                    city: 'Longueuil',
+                                    district: 'Greenfield Park',
+                                    habitation: 'Apartment'
+                                }
+                            ]
+                        },
+                        {
+                            label: 'Room',
+                            level: 2,
+                            size: 2,
+                            data: [
+                                {
+                                    id: 4,
+                                    name: 'Don',
+                                    age: '18',
+                                    city: 'Longueuil',
+                                    district: 'Old Longueuil',
+                                    habitation: 'Room'
+                                },
+                                {
+                                    id: 5,
+                                    name: 'Donald',
+                                    age: '16',
+                                    city: 'Longueuil',
+                                    district: 'Saint-Hubert'
+                                },
+                                {
+                                    id: 6,
+                                    name: 'Jenny',
+                                    age: '56',
+                                    city: 'Longueuil',
+                                    district: 'Greenfield Park',
+                                    habitation: 'Apartment'
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            label: 'Laval',
+            level: 0,
+            size: 10,
+            group: [
+                {
+                    label: 'Vimont',
+                    level: 1,
+                    size: 6,
+                    group: [
+                        {
+                            label: 'House',
+                            level: 2,
+                            size: 2,
+                            data: [
+                                {
+                                    id: 4,
+                                    name: 'Don',
+                                    age: '18',
+                                    city: 'Longueuil',
+                                    district: 'Old Longueuil',
+                                    habitation: 'Room'
+                                },
+                                {
+                                    id: 5,
+                                    name: 'Donald',
+                                    age: '16',
+                                    city: 'Longueuil',
+                                    district: 'Saint-Hubert'
+                                },
+                                {
+                                    id: 6,
+                                    name: 'Jenny',
+                                    age: '56',
+                                    city: 'Longueuil',
+                                    district: 'Greenfield Park',
+                                    habitation: 'Apartment'
+                                }
+                            ]
+                        },
+                        {
+                            label: 'Room',
+                            level: 2,
+                            size: 2,
+                            data: [
+                                {
+                                    id: 4,
+                                    name: 'Don',
+                                    age: '18',
+                                    city: 'Longueuil',
+                                    district: 'Old Longueuil',
+                                    habitation: 'Room'
+                                },
+                                {
+                                    id: 5,
+                                    name: 'Donald',
+                                    age: '16',
+                                    city: 'Longueuil',
+                                    district: 'Saint-Hubert'
+                                },
+                                {
+                                    id: 6,
+                                    name: 'Jenny',
+                                    age: '56',
+                                    city: 'Longueuil',
+                                    district: 'Greenfield Park',
+                                    habitation: 'Apartment'
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    label: 'Viau',
+                    level: 1,
+                    size: 5,
+                    group: [
+                        {
+                            label: 'House',
+                            level: 2,
+                            size: 2,
+                            data: [
+                                {
+                                    id: 4,
+                                    name: 'Don',
+                                    age: '18',
+                                    city: 'Longueuil',
+                                    district: 'Old Longueuil',
+                                    habitation: 'Room'
+                                },
+                                {
+                                    id: 5,
+                                    name: 'Donald',
+                                    age: '16',
+                                    city: 'Longueuil',
+                                    district: 'Saint-Hubert'
+                                },
+                                {
+                                    id: 6,
+                                    name: 'Jenny',
+                                    age: '56',
+                                    city: 'Longueuil',
+                                    district: 'Greenfield Park',
+                                    habitation: 'Apartment'
+                                }
+                            ]
+                        },
+                        {
+                            label: 'Room',
+                            level: 2,
+                            size: 2,
+                            data: [
+                                {
+                                    id: 4,
+                                    name: 'Don',
+                                    age: '18',
+                                    city: 'Longueuil',
+                                    district: 'Old Longueuil',
+                                    habitation: 'Room'
+                                },
+                                {
+                                    id: 5,
+                                    name: 'Donald',
+                                    age: '16',
+                                    city: 'Longueuil',
+                                    district: 'Saint-Hubert'
+                                },
+                                {
+                                    id: 6,
+                                    name: 'Jenny',
+                                    age: '56',
+                                    city: 'Longueuil',
+                                    district: 'Greenfield Park',
+                                    habitation: 'Apartment'
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ];
 }
