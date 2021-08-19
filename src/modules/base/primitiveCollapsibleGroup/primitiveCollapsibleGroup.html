@@ -34,26 +34,17 @@
 
 <template>
     <div class={sectionClass}>
-        <h3 class={sectionTitleClass} aria-level={level}>
+        <h3 class={sectionTitleClass}>
             <template if:true={collapsible}>
                 <button
                     class="slds-button slds-section__title-action"
                     onclick={changeSectionStatus}
                 >
-                    <template if:false={closed}>
-                        <lightning-icon
-                            icon-name="utility:switch"
-                            size="x-small"
-                            class="slds-button__icon slds-button__icon_left"
-                        ></lightning-icon>
-                    </template>
-                    <template if:true={closed}>
-                        <lightning-icon
-                            icon-name="utility:chevronright"
-                            size="x-small"
-                            class="slds-button__icon slds-button__icon_left"
-                        ></lightning-icon>
-                    </template>
+                    <lightning-icon
+                        icon-name="utility:switch"
+                        size="x-small"
+                        class="slds-section__title-action-icon slds-button__icon slds-button__icon_left"
+                    ></lightning-icon>
                     <span class="slds-truncate" title={title}>
                         {title} ({size})
                     </span>
@@ -68,10 +59,8 @@
                 </span>
             </template>
         </h3>
-        <template if:false={closed}>
-            <div class="avonni-primitive-collapsible-group__section">
-                <slot></slot>
-            </div>
-        </template>
+        <div class="slds-section__content">
+            <slot></slot>
+        </div>
     </div>
 </template>

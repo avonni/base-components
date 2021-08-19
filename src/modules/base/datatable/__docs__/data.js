@@ -544,11 +544,6 @@ const columnsGroupBy = [
         id: 4,
         label: 'District',
         fieldName: 'district'
-    },
-    {
-        id: 5,
-        label: 'Habitation',
-        fieldName: 'habitation'
     }
 ];
 
@@ -974,16 +969,14 @@ const recordsGroupBy = [
         name: 'Karen',
         age: '88',
         city: 'Montreal',
-        district: 'Plateau',
-        habitation: 'Apartment'
+        district: 'Plateau'
     },
     {
         id: 2,
         name: 'James',
         age: '87',
         city: 'Montreal',
-        district: 'Villeray',
-        habitation: 'Apartment'
+        district: 'Villeray'
     },
     {
         id: 3,
@@ -997,8 +990,7 @@ const recordsGroupBy = [
         name: 'Don',
         age: '18',
         city: 'Longueuil',
-        district: 'Old Longueuil',
-        habitation: 'Room'
+        district: 'Old Longueuil'
     },
     {
         id: 5,
@@ -1012,47 +1004,41 @@ const recordsGroupBy = [
         name: 'Jenny',
         age: '56',
         city: 'Longueuil',
-        district: 'Greenfield Park',
-        habitation: 'Apartment'
+        district: 'Greenfield Park'
     },
     {
         id: 7,
         name: 'Doug',
         age: '61',
         city: 'Montreal',
-        district: 'Outremont',
-        habitation: 'Room'
+        district: 'Outremont'
     },
     {
         id: 8,
         name: 'Michel',
         age: '19',
         city: 'Longueuil',
-        district: 'Greenfield Park',
-        habitation: 'Room'
+        district: 'Greenfield Park'
     },
     {
         id: 9,
         name: 'Renaud',
         age: '29',
         city: 'Longueuil',
-        district: 'Saint-Hubert',
-        habitation: 'Apartment'
+        district: 'Saint-Hubert'
     },
     {
         id: 10,
         name: 'Linda',
         age: '14',
         city: 'Laval',
-        district: 'Vimont',
-        habitation: 'Apartment'
+        district: 'Vimont'
     },
     {
         id: 11,
         name: 'Daniel',
         age: '41',
-        city: 'Laval',
-        habitation: 'House'
+        city: 'Laval'
     },
     {
         id: 12,
@@ -1066,39 +1052,34 @@ const recordsGroupBy = [
         name: 'Melissa',
         age: '73',
         city: 'Montreal',
-        district: 'Plateau',
-        habitation: 'Apartment'
+        district: 'Plateau'
     },
     {
         id: 14,
         name: 'Lisa',
         age: '15',
         city: 'Laval',
-        district: 'Viau',
-        habitation: 'House'
+        district: 'Viau'
     },
     {
         id: 15,
         name: 'Tyrone',
         age: '16',
         city: 'Montreal',
-        district: 'Outremont',
-        habitation: 'House'
+        district: 'Outremont'
     },
     {
         id: 16,
         name: 'Carlito',
         age: '19',
         city: 'Montreal',
-        district: 'Outremont',
-        habitation: 'House'
+        district: 'Outremont'
     },
     {
         id: 17,
         name: 'Jeanne',
         age: '29',
-        city: 'Longueuil',
-        habitation: 'Apartment'
+        city: 'Longueuil'
     }
 ];
 

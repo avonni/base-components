@@ -61,7 +61,7 @@ export default class ProgressGroupByItem extends LightningElement {
     formattedResult = [];
 
     renderedCallback() {
-        console.log(this.primitiveGroupedDatatables());
+        // console.log(this.formattedGroupedRecords);
     }
 
     @api
