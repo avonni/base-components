@@ -220,7 +220,7 @@ function graft(parentNode, childNodes, parentLongname) {
                     }
                 }
 
-                graft(thisClass, childNodes, element.longname);
+                // graft(thisClass, childNodes, element.longname);
             }
         });
 }
