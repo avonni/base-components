@@ -57,6 +57,12 @@
     z-index: 1;
 }
 
+.scheduler__schedule-col th,
+.scheduler__schedule-col td {
+    width: var(--avonni-scheduler-cell-width);
+    max-width: var(--avonni-scheduler-cell-width);
+}
+
 /* Splitter bar between the data table and the schedule --------- */
 .scheduler__splitter {
     z-index: 5;

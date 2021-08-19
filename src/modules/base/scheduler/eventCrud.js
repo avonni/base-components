@@ -7,7 +7,6 @@ function createEvent(event) {
     this.updateEventDefaults(computedEvent);
     this.computedEvents.push(new SchedulerEvent(computedEvent));
     this.initRows();
-    this._updateOccurrences = true;
     this.updateVisibleEvents();
 }
 
@@ -19,7 +18,6 @@ function deleteEvent(eventName) {
         return evt.name === name;
     });
     this.computedEvents.splice(index, 1);
-    this._updateOccurrences = true;
     this.initRows();
 
     // Dispatch the deletion

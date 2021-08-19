@@ -111,6 +111,7 @@ export default class SchedulerEvent {
         this.title = props.title;
 
         this.initOccurrences();
+        this.visibleOccurrences = [];
     }
 
     get allDay() {

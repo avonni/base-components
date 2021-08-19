@@ -102,10 +102,11 @@ export default class Scheduler extends LightningElement {
     _draggedSplitter = false;
     _initialState = {};
     _mouseIsDown = false;
+    _numberOfVisibleCells = 0;
     _referenceHeader;
     _resizedEvent;
-    _visibleStart;
-    _visibleEnd;
+    _scrollValue = 0;
+    _visibleColumnsStartIndex = 0;
     cellWidth = 0;
     computedDisabledDatesTimes = [];
     computedHeaders = [];
@@ -128,7 +129,7 @@ export default class Scheduler extends LightningElement {
     }
 
     renderedCallback() {
-        if (!this.cellWidth || !this.visibleEvents.length) {
+        if (!this.cellWidth || !this._numberOfVisibleCells) {
             // Set the cell width
             if (!this.cellWidth) {
                 const row = this.template.querySelector('tbody tr');
@@ -136,11 +137,12 @@ export default class Scheduler extends LightningElement {
                 // We add one pixel for the right border
                 this.cellWidth =
                     Math.ceil(cell.getBoundingClientRect().width) + 1;
-                this.initHeaderWidths();
             }
 
-            // Set the visible events
-            if (!this.visibleEvents.length) this.updateVisibleEvents();
+            // Set the visible grid and events
+            if (!this._numberOfVisibleCells) {
+                this.initVisibleSchedule();
+            }
 
             // The cellWidth and visibleEvents change trigger another render, so we return right away
             return;
@@ -160,10 +162,7 @@ export default class Scheduler extends LightningElement {
         this.updateRowsStyle();
 
         // Update the position and height of occurrences
-        if (this._updateOccurrences) {
-            this.updateOccurrencesPosition();
-            this._updateOccurrences = false;
-        }
+        this.updateOccurrencesPosition();
 
         // Position the detail popover
         if (this.showDetailPopover) {
@@ -797,56 +796,6 @@ export default class Scheduler extends LightningElement {
         this.cellWidth = undefined;
     }
 
-    initHeaderWidths() {
-        if (!this.cellWidth) return;
-
-        const smallestHeaderColumns = this.smallestHeader.columns;
-        for (let i = 0; i < this.computedHeaders.length; i++) {
-            const header = this.computedHeaders[i];
-            const unit = header.unit;
-
-            // The columns of the header with the shortest unit all have the same width
-            if (i === this.computedHeaders.length - 1) {
-                header.columns.forEach(() => {
-                    header.columnWidths.push(this.cellWidth);
-                });
-
-                // The other headers base their column widths on the header with the shortest unit
-            } else {
-                let columnIndex = 0;
-                header.columns.forEach((column) => {
-                    let width = 0;
-                    let start = DateTime.fromMillis(column.start);
-                    const end = addToDate(start, unit, header.span);
-
-                    while (columnIndex < smallestHeaderColumns.length) {
-                        const smallestHeaderColumn =
-                            smallestHeaderColumns[columnIndex];
-                        start = DateTime.fromMillis(smallestHeaderColumn.start);
-
-                        // Normalize the beginning of the week, because Luxon's week start on Monday
-                        const normalizedStart =
-                            unit === 'week'
-                                ? addToDate(start, 'day', 1)
-                                : start;
-                        const normalizedEnd =
-                            unit === 'week' ? addToDate(end, 'day', 1) : end;
-
-                        const startUnit = normalizedStart.startOf(unit);
-                        const endUnit = normalizedEnd.startOf(unit);
-
-                        // Stop if the next smallestHeader column belongs to the next header unit
-                        if (endUnit <= startUnit) break;
-
-                        width += this.cellWidth;
-                        columnIndex += 1;
-                    }
-                    header.columnWidths.push(width);
-                });
-            }
-        }
-    }
-
     initEvents() {
         if (!this.computedHeaders.length) return;
 
@@ -934,6 +883,21 @@ export default class Scheduler extends LightningElement {
         });
     }
 
+    initVisibleSchedule() {
+        this._visibleColumnsStartIndex = 0;
+
+        // Find the last visible column based on the schedule width
+        const schedule = this.template.querySelector(
+            '.scheduler__schedule-col'
+        );
+        const scheduleWidth = schedule.getBoundingClientRect().width;
+        const endIndex = Math.ceil(scheduleWidth / this.cellWidth);
+        this._numberOfVisibleCells = endIndex;
+
+        // Reload the schedule to only see the visible part
+        this.scrollScheduleTo(0);
+    }
+
     updateRowsStyle() {
         // Set the rows height
         const rows = this.template.querySelectorAll('tbody tr');
@@ -944,12 +908,16 @@ export default class Scheduler extends LightningElement {
                 return cptRow.key === key;
             });
             const rowHeight = computedRow.height;
-            row.style.height = `${rowHeight}px`;
 
             const dataRowHeight = this._datatableRowsHeight.find(
                 (dataRow) => dataRow.rowKey === key
             ).height;
-            row.style.minHeight = `${dataRowHeight}px`;
+
+            row.style = `
+                min-height: ${dataRowHeight}px;
+                height: ${rowHeight}px;
+                --avonni-scheduler-cell-width: ${this.cellWidth}px;
+            `;
 
             if (index === 0) {
                 this.datatable.setRowHeight(key, rowHeight - 1);
@@ -1012,20 +980,24 @@ export default class Scheduler extends LightningElement {
             let levelHeight = 0;
 
             // Get all the event occurrences of the row
-            const occurrences = Array.from(
+            const occurrenceElements = Array.from(
                 this.template.querySelectorAll(
                     `.scheduler__primitive-event[data-row-key="${row.key}"]`
                 )
             );
 
-            if (occurrences.length) {
+            if (occurrenceElements.length) {
                 // Sort the occurrences by ascending start date
-                occurrences.sort((a, b) => a.from - b.from);
+                occurrenceElements.sort((a, b) => a.from - b.from);
 
                 // Compute the vertical level of the occurrences
                 const previousOccurrences = [];
-                for (let i = 0; i < occurrences.length; i++) {
-                    const left = occurrences[i].leftPosition;
+                occurrenceElements.forEach((occElement) => {
+                    // We update the position, in case the element was visible in the scheduler,
+                    // but we changed the visibleEvents and its position changed
+                    occElement.updatePosition();
+
+                    const left = occElement.leftPosition;
                     const level = this.computeEventVerticalLevel(
                         previousOccurrences,
                         left
@@ -1033,25 +1005,24 @@ export default class Scheduler extends LightningElement {
 
                     // If the occurrence is taller than the previous ones,
                     // update the default level height
-                    const height = occurrences[i].getBoundingClientRect()
-                        .height;
+                    const height = occElement.getBoundingClientRect().height;
                     if (height > levelHeight) {
                         levelHeight = height;
                     }
 
                     const occurrence = row.events.find(
-                        (occ) => occ.key === occurrences[i].occurrenceKey
+                        (occ) => occ.key === occElement.occurrenceKey
                     );
 
                     previousOccurrences.unshift({
                         level,
                         left,
-                        right: occurrences[i].rightPosition,
+                        right: occElement.rightPosition,
                         occurrence:
                             occurrence ||
                             (this.selection && this.selection.occurrence)
                     });
-                }
+                });
 
                 // Add the corresponding offset to the top of the occurrences
                 previousOccurrences.forEach((position) => {
@@ -1070,7 +1041,6 @@ export default class Scheduler extends LightningElement {
             // Add 10 pixels to the row for padding
             row.height = rowHeight + 10;
         });
-        this._updateOccurrences = true;
     }
 
     updateHeadersStyle() {
@@ -1095,7 +1065,7 @@ export default class Scheduler extends LightningElement {
             // Give the header cells their width
             const cells = row.querySelectorAll('th');
             cells.forEach((cell, index) => {
-                cell.style.width = `${header.columnWidths[index]}px`;
+                cell.style = `--avonni-scheduler-cell-width: ${header.columnWidths[index]}px`;
             });
         });
     }
@@ -1112,43 +1082,88 @@ export default class Scheduler extends LightningElement {
         });
     }
 
-    updateVisibleEvents() {
-        // Find the visible schedule boundaries
-        const row = this.template.querySelector('tbody tr');
-        const schedule = this.template.querySelector(
-            '.scheduler__schedule-col'
+    updateVisibleEvents(interval) {
+        const visibleInterval =
+            interval ||
+            this.getVisibleIntervalFromStartIndex(
+                this._visibleColumnsStartIndex
+            );
+
+        this.visibleEvents = this.computedEvents.filter((event) => {
+            event.visibleOccurrences = [];
+
+            event.occurrences.forEach((occurrence) => {
+                const { from, to } = occurrence;
+
+                if (
+                    visibleInterval.contains(from) ||
+                    visibleInterval.contains(to) ||
+                    (visibleInterval.isAfter(from) &&
+                        visibleInterval.isBefore(to))
+                ) {
+                    event.visibleOccurrences.push(occurrence);
+                }
+            });
+
+            return event.visibleOccurrences.length;
+        });
+    }
+
+    scrollScheduleTo(startIndex) {
+        // Compute the visible date interval
+        const visibleInterval = this.getVisibleIntervalFromStartIndex(
+            startIndex
         );
-        const rightEnd = schedule.getBoundingClientRect().right;
-        const leftEnd = schedule.getBoundingClientRect().left;
-
-        // Get the first and last visible times
-        const firstVisibleCol = this.getCellFromPosition(row, leftEnd);
-        const lastVisibleCol = this.getCellFromPosition(row, rightEnd);
-
-        const visibleStart = Number(firstVisibleCol.dataset.start);
-        const visibleEnd = lastVisibleCol
-            ? dateTimeObjectFrom(Number(lastVisibleCol.dataset.end))
-            : this.end;
-
-        // The visible interval is three times the screen width
-        const buffer = visibleEnd - visibleStart;
-        const end = addToDate(visibleEnd, 'millisecond', buffer);
-        const start = dateTimeObjectFrom(visibleStart - buffer);
-        const visibleInterval = Interval.fromDateTimes(start, end);
 
         // Filter only the events that are visible on the screen
-        this.visibleEvents = this.computedEvents.filter((event) => {
-            const occurrences = event.occurrences;
-            if (!occurrences.length) return false;
+        this.updateVisibleEvents(visibleInterval);
 
-            const from = event.from;
-            const to = occurrences[occurrences.length - 1].to;
-            return (
-                visibleInterval.contains(from) ||
-                visibleInterval.contains(to) ||
-                (visibleInterval.isAfter(from) && visibleInterval.isBefore(to))
+        // Filter only the header columns that are visible on the screen
+        [...this.computedHeaders].reverse().forEach((header) => {
+            header.visibleColumns = header.columns.filter((column) => {
+                const from = dateTimeObjectFrom(column.start);
+                const to = dateTimeObjectFrom(column.end);
+
+                return (
+                    visibleInterval.contains(from) ||
+                    visibleInterval.contains(to) ||
+                    (visibleInterval.isAfter(from) &&
+                        visibleInterval.isBefore(to))
+                );
+            });
+
+            header.computeColumnWidths(
+                this.cellWidth,
+                this.smallestHeader.visibleColumns
             );
         });
+
+        // Filter only the body columns that are visible on the screen
+        this.computedRows.forEach((computedRow) => {
+            computedRow.visibleColumns = computedRow.columns.filter(
+                (column) => {
+                    const from = dateTimeObjectFrom(column.start);
+                    const to = dateTimeObjectFrom(column.end);
+                    return (
+                        visibleInterval.contains(from) ||
+                        visibleInterval.contains(to) ||
+                        (visibleInterval.isAfter(from) &&
+                            visibleInterval.isBefore(to))
+                    );
+                }
+            );
+        });
+
+        const cells = this._numberOfVisibleCells;
+        this._scrollValue = this.cellWidth * cells * 2;
+        this._visibleColumnsStartIndex = startIndex;
+
+        if (startIndex) {
+            const schedule = this.template.querySelector(
+                '.scheduler__schedule-col'
+            );
+            schedule.scrollTo({ left: this.cellWidth * cells * 2 });
+        }
     }
 
     getCellFromPosition(row, x) {
@@ -1197,6 +1212,20 @@ export default class Scheduler extends LightningElement {
         });
     }
 
+    getVisibleIntervalFromStartIndex(startIndex) {
+        const columns = this.smallestHeader.columns;
+        const cells = this._numberOfVisibleCells;
+
+        const startCol = columns[startIndex] || columns[0];
+        const start = dateTimeObjectFrom(startCol.start);
+
+        const endIndex = startIndex + cells * 4;
+        const endCol = columns[endIndex] || columns[columns.length - 1];
+        const end = dateTimeObjectFrom(endCol.end);
+
+        return Interval.fromDateTimes(start, end);
+    }
+
     cleanDraggedElement() {
         if (this._draggedEvent) {
             this._draggedEvent.classList.remove('scheduler__event-dragged');
@@ -1214,7 +1243,6 @@ export default class Scheduler extends LightningElement {
             lastEvent === this.selection.event
         ) {
             this.computedEvents.pop();
-            this._updateOccurrences = true;
             this.initRows();
             this.updateVisibleEvents();
         }
@@ -1364,6 +1392,8 @@ export default class Scheduler extends LightningElement {
     dragEventTo(row, cell) {
         const { occurrence, draftValues } = this.selection;
 
+        console.log(cell);
+
         // Update the start and end date
         const duration = occurrence.to - occurrence.from;
         const start = dateTimeObjectFrom(Number(cell.dataset.start));
@@ -1417,7 +1447,7 @@ export default class Scheduler extends LightningElement {
     }
 
     hideContextMenu() {
-        this.contextMenuActions = [];
+        this.contextMenuActions.splice(0);
         this.showContextMenu = false;
     }
 
@@ -1536,7 +1566,6 @@ export default class Scheduler extends LightningElement {
             // On the first move, display the new event on the schedule.
         } else if (this.selection && this.selection.newEvent) {
             this.computedEvents.push(this.selection.event);
-            this._updateOccurrences = true;
             this.initRows();
             this.updateVisibleEvents();
         }
@@ -1596,7 +1625,6 @@ export default class Scheduler extends LightningElement {
                     this.crud.saveEvent();
                 }
                 this.initRows();
-                this._updateOccurrences = true;
                 this.cleanSelection();
             }
         } else if (this.selection) {
@@ -1742,7 +1770,6 @@ export default class Scheduler extends LightningElement {
         this.cleanSelection();
         this.hideRecurrenceDialog();
         this.initRows();
-        this._updateOccurrences = true;
     }
 
     handleSaveEvent(mouseEvent) {
@@ -1770,7 +1797,6 @@ export default class Scheduler extends LightningElement {
         }
 
         this.initRows();
-        this._updateOccurrences = true;
         this.cleanDraggedElement();
         this.cleanSelection();
 
@@ -1797,7 +1823,27 @@ export default class Scheduler extends LightningElement {
             this.hideContextMenu();
         }
 
-        this.updateVisibleEvents();
+        const index = this._visibleColumnsStartIndex;
+        const cells = this._numberOfVisibleCells;
+
+        // Get the number of cells scrolled
+        const schedule = this.template.querySelector(
+            '.scheduler__schedule-col'
+        );
+        const scroll = schedule.scrollLeft;
+        const cellsScrolled = Math.floor(scroll / this.cellWidth);
+
+        const loadLeftSchedule = index !== 0 && cellsScrolled <= cells;
+        const loadRightSchedule = cellsScrolled >= cells * 3;
+
+        if (loadRightSchedule || loadLeftSchedule) {
+            // Take into account the scroll direction
+            const multiplier = loadRightSchedule ? 1 : -1;
+            const startIndex = index + cells * multiplier;
+
+            // Reload the schedule to only see the visible part
+            this.scrollScheduleTo(startIndex);
+        }
     };
 
     handleSplitterMouseDown(mouseEvent) {

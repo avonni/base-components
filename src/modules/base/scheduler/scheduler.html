@@ -92,7 +92,7 @@
                             data-key={header.key}
                         >
                             <template
-                                for:each={header.columns}
+                                for:each={header.visibleColumns}
                                 for:item="column"
                                 for:index="index"
                             >
@@ -124,7 +124,10 @@
                             data-index={index}
                             data-key={row.key}
                         >
-                            <template for:each={row.columns} for:item="column">
+                            <template
+                                for:each={row.visibleColumns}
+                                for:item="column"
+                            >
                                 <td
                                     key={column.start}
                                     class="slds-border_right slds-col slds-p-around_none slds-wrap"
@@ -146,15 +149,18 @@
                 ondblclick={handleDoubleClick}
             >
                 <template for:each={visibleEvents} for:item="event">
-                    <div key={event.key}>
+                    <div
+                        if:true={event.visibleOccurrences.length}
+                        key={event.key}
+                    >
                         <template
-                            for:each={event.occurrences}
+                            for:each={event.visibleOccurrences}
                             for:item="occurrence"
                         >
                             <c-primitive-scheduler-event-occurrence
                                 key={occurrence.key}
                                 color={event.color}
-                                columns={smallestHeader.columns}
+                                columns={smallestHeader.visibleColumns}
                                 column-duration={smallestColumnDuration}
                                 column-width={cellWidth}
                                 date-format={dateFormat}

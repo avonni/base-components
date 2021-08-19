@@ -182,6 +182,7 @@ export default class SchedulerHeader {
         this._start = DateTime.fromMillis(this.columns[0].start);
         this.setHeaderEnd();
         this.cleanEmptyLastColumn();
+        this.visibleColumns = [...this.columns];
     }
 
     dateIsBiggerThanEnd(date) {
@@ -273,5 +274,53 @@ export default class SchedulerHeader {
         } else {
             lastColumn.end = this.end.ts;
         }
+    }
+
+    computeColumnWidths(referenceCellWidth, referenceColumns) {
+        const { isReference, visibleColumns, unit, span } = this;
+        const columnWidths = [];
+
+        if (isReference) {
+            // The columns of the header with the shortest unit all have the same width
+            visibleColumns.forEach(() => {
+                columnWidths.push(referenceCellWidth);
+            });
+        } else {
+            // The other headers base their column widths on the header with the shortest unit
+            let columnIndex = 0;
+            visibleColumns.forEach((column, index) => {
+                let width = 0;
+                let start =
+                    index === 0
+                        ? DateTime.fromMillis(referenceColumns[0].start)
+                        : DateTime.fromMillis(column.start);
+                const end = addToDate(start, unit, span);
+
+                while (columnIndex < referenceColumns.length) {
+                    start = DateTime.fromMillis(
+                        referenceColumns[columnIndex].start
+                    );
+
+                    // Normalize the beginning of the week, because Luxon's week start on Monday
+                    const normalizedStart =
+                        unit === 'week' ? addToDate(start, 'day', 1) : start;
+                    const normalizedEnd =
+                        unit === 'week' ? addToDate(end, 'day', 1) : end;
+
+                    const startUnit = normalizedStart.startOf(unit);
+                    const endUnit = normalizedEnd.startOf(unit);
+
+                    // Stop if the next smallestHeader column belongs to the next header unit
+                    if (endUnit <= startUnit) break;
+
+                    width += referenceCellWidth;
+                    columnIndex += 1;
+                    // if (width === 1980) debugger
+                }
+                columnWidths.push(width);
+            });
+        }
+
+        this.columnWidths = columnWidths;
     }
 }

@@ -66,6 +66,8 @@ export default class SchedulerRow {
         events.forEach((event) => {
             this.addEventToColumns(event);
         });
+
+        this.visibleColumns = this.columns;
     }
 
     addEventToColumns(event) {
