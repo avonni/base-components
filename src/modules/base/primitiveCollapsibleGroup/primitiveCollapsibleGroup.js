@@ -41,9 +41,16 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
      * @type {string}
      */
     @api title;
+    @api level;
 
     _closed = false;
     _collapsible = false;
+
+    connectedCallback() {
+        // this.addEventListener('closegroup', () => {
+        //     this._closed = !this._closed;
+        // });
+    }
 
     /**
      * If present, close the section.
@@ -98,7 +105,9 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
      * @type {string}
      */
     get sectionTitleClass() {
-        return classSet('slds-section__title')
+        return classSet(
+            'slds-section__title avonni-primitive-collapsible-group__section_padding_bottom'
+        )
             .add({
                 'slds-theme_shade': !this.collapsible
             })
