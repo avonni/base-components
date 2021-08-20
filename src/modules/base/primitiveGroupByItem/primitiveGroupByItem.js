@@ -36,6 +36,27 @@ import { normalizeArray } from 'c/utilsPrivate';
 
 export default class ProgressGroupByItem extends LightningElement {
     @api columns;
+    @api keyField;
+    @api defaultSortDirection;
+    @api draftValues;
+    @api enableInfiniteLoading;
+    @api errors;
+    @api hideCheckboxColumn;
+    @api hideTableHeader;
+    @api isLoading;
+    @api loadMoreOffset;
+    @api maxColumnWidth;
+    @api maxRowSelection;
+    @api minColumnWidth;
+    @api renderConfig;
+    @api resizeColumnDisabled;
+    @api resizeStep;
+    @api rowNumberOffset;
+    @api selectedRows;
+    @api showRowNumberColumn;
+    @api sortedBy;
+    @api sortedDirection;
+    @api wrapTextMaxLines;
 
     @api
     get groupBy() {
@@ -91,23 +112,6 @@ export default class ProgressGroupByItem extends LightningElement {
         });
     }
 
-    groupByDatas(array, fieldName) {
-        const formattedGroupedRecordss = [];
-        let groupedData = [];
-        groupedData = array.reduce((previous, currentItem) => {
-            const group = currentItem[fieldName];
-            if (!previous[group]) previous[group] = [];
-            previous[group].push(currentItem);
-            return previous;
-        }, []);
-        Object.keys(groupedData).forEach((key) => {
-            formattedGroupedRecordss.push({
-                label: key,
-                data: groupedData[key]
-            });
-        });
-    }
-
     multiLevelGroupByRecords(records, fieldNames) {
         // if there is only one groupBy and as a string, we convert it to an array.
         if (typeof fieldNames === 'string') {
@@ -118,7 +122,6 @@ export default class ProgressGroupByItem extends LightningElement {
         const level = 0;
         const result = [];
         const temp = { _: result };
-        this.formattedResult = [];
         records.forEach((a) => {
             fieldNames
                 .reduce((r, k) => {
@@ -146,6 +149,7 @@ export default class ProgressGroupByItem extends LightningElement {
                 });
             });
         });
+        console.log(this.formattedResult);
         return this.formattedResult;
     }
 
