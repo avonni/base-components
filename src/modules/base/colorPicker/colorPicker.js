@@ -221,10 +221,12 @@ export default class ColorPicker extends LightningElement {
     set value(value) {
         if (!value) {
             this._value = '';
+            this._inputValue = '';
             this.currentLabel = '';
             this.currentToken = '';
         } else {
             this._value = value;
+            this.inputValue = value;
         }
         this.initSwatchColor();
     }
@@ -543,8 +545,14 @@ export default class ColorPicker extends LightningElement {
      * @type {string}
      */
     get inputValue() {
-        return this.currentLabel ? this.currentLabel : this.value;
+        return this.currentLabel ? this.currentLabel : this._inputValue;
     }
+
+    set inputValue(val){
+        this._inputValue = val;
+    }
+
+    _inputValue;
 
     /**
      * Whether the color input field contains a value.
@@ -591,6 +599,8 @@ export default class ColorPicker extends LightningElement {
              * @param {string} alpha Alpha value of the color.
              */
 
+            console.log(colors.hex, this.currentToken);
+
             this.dispatchEvent(
                 new CustomEvent('change', {
                     detail: {
@@ -624,6 +634,7 @@ export default class ColorPicker extends LightningElement {
          * @param {string} alpha Alpha value of the color.
          */
 
+        console.log("dispatched cleared")
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
@@ -807,6 +818,14 @@ export default class ColorPicker extends LightningElement {
 
     clearInput() {
         this.value = undefined;
+        this.inputValue = undefined;
+        this.currentLabel = undefined;
+        this.currentToken = undefined;
+        this.showError = false;
+            this.template
+                .querySelector('lightning-input')
+                .classList.remove('slds-has-error');
+
         this.dispatchClear();
     }
 
@@ -1003,6 +1022,7 @@ export default class ColorPicker extends LightningElement {
      */
     handleInputColor(event) {
         let color = event.target.value;
+        this.inputValue = color;
 
         if (
             colorType(color) === 'hex' ||
