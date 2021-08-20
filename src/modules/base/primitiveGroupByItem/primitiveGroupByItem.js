@@ -31,7 +31,7 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { normalizeArray } from 'c/utilsPrivate';
+import { normalizeArray, normalizeBoolean } from 'c/utilsPrivate';
 // import { computeSummarizeArray } from '../datatable/summarizeFunctions';
 
 export default class ProgressGroupByItem extends LightningElement {
@@ -73,6 +73,14 @@ export default class ProgressGroupByItem extends LightningElement {
     }
     set records(value) {
         this._records = JSON.parse(JSON.stringify(normalizeArray(value)));
+    }
+
+    @api
+    get hideUndefinedGroup() {
+        return this._hideUndefinedGroup;
+    }
+    set hideUndefinedGroup(value) {
+        this._hideUndefinedGroup = normalizeBoolean(value);
     }
 
     _records = [];

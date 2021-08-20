@@ -45,6 +45,7 @@ export const Datatable = ({
     groupBy,
     hideCheckboxColumn,
     hideTableHeader,
+    hideUndefinedGroup,
     isLoading,
     keyField,
     loadMoreOffset,
@@ -72,6 +73,7 @@ export const Datatable = ({
     element.groupBy = groupBy;
     element.hideCheckboxColumn = hideCheckboxColumn;
     element.hideTableHeader = hideTableHeader;
+    element.hideUndefinedGroup = hideUndefinedGroup;
     element.isLoading = isLoading;
     element.keyField = keyField;
     element.loadMoreOffset = loadMoreOffset;

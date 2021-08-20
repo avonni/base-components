@@ -148,7 +148,7 @@ export default {
                 'If present, the value will define how the data will be grouped.',
             table: {
                 type: { summary: 'string' },
-                category: 'Data'
+                category: 'Group by'
             }
         },
         hideCheckboxColumn: {
@@ -176,6 +176,20 @@ export default {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' },
                 category: 'Display'
+            }
+        },
+        hideUndefinedGroup: {
+            name: 'hide-undefined-group',
+            control: {
+                type: 'boolean'
+            },
+            defaultvalue: false,
+            description:
+                'In case of group-by, if present, hides undefined groups.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Group by'
             }
         },
         isLoading: {
@@ -462,6 +476,6 @@ DatatableWithGroupBy.args = {
     columns: columnsGroupBy,
     records: recordsGroupBy,
     keyField: 'id',
-    columnWidthsMode: 'auto',
+    columnWidthsMode: 'fixed',
     groupBy: ['city']
 };

@@ -43,6 +43,7 @@ export default class Datatable extends LightningElement {
     @api groupBy;
     @api hideCheckboxColumn;
     @api hideTableHeader;
+    @api hideUndefinedGroup;
     @api isLoading;
     @api keyField;
     @api loadMoreOffset;

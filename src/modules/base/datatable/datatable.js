@@ -31,7 +31,7 @@
  */
 
 import { api, LightningElement } from 'lwc';
-import { normalizeArray } from 'c/utilsPrivate';
+import { normalizeArray, normalizeBoolean } from 'c/utilsPrivate';
 
 import {
     hasValidSummarizeType,
@@ -255,6 +255,7 @@ export default class Datatable extends LightningElement {
 
     _columns;
     _records;
+    _hideUndefinedGroup;
     _showStatusBar = false;
     _hasDraftValues = false;
 
@@ -290,6 +291,14 @@ export default class Datatable extends LightningElement {
 
     set records(value) {
         this._records = JSON.parse(JSON.stringify(normalizeArray(value)));
+    }
+
+    @api
+    get hideUndefinedGroup() {
+        return this._hideUndefinedGroup;
+    }
+    set hideUndefinedGroup(value) {
+        this._hideUndefinedGroup = normalizeBoolean(value);
     }
 
     connectedCallback() {
