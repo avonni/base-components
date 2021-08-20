@@ -33,7 +33,7 @@
 -->
 
 <template>
-    <template for:each={records} for:item="group">
+    <template for:each={hardData} for:item="group">
         <c-primitive-collapsible-group
             title={group.label}
             size={group.size}
@@ -42,7 +42,7 @@
             collapsible
             class="collapsible-group"
         >
-            <template if:true={group.data}>
+            <template if:false={group.multiLevelGroupBy}>
                 <c-primitive-datatable
                     key={group.label}
                     data-role="grouped"
@@ -83,21 +83,113 @@
                     onrowaction={handleDispatchEvents}
                 ></c-primitive-datatable>
             </template>
-            <template if:true={group.group}>
-                <c-primitive-group-by-item
-                    records={group.group}
-                    group-by={groupBy}
-                    columns={columns}
-                    onrowselection={handleDispatchEvents}
-                    onsort={handleDispatchEvents}
-                    onresize={handleDispatchEvents}
-                    onsave={handleDispatchEvents}
-                    oncancel={handleDispatchEvents}
-                    onheaderaction={handleDispatchEvents}
-                    onloadmore={handleDispatchEvents}
-                    oncellchange={handleDispatchEvents}
-                    onrowaction={handleDispatchEvents}
-                ></c-primitive-group-by-item>
+            <template if:true={group.multiLevelGroupBy}>
+                <template for:each={group.group} for:item="group">
+                    <c-primitive-collapsible-group
+                        title={group.label}
+                        size={group.size}
+                        level={group.level}
+                        key={group.label}
+                        collapsible
+                        class="collapsible-group"
+                    >
+                        <template if:false={group.multiLevelGroupBy}>
+                            <c-primitive-datatable
+                                key={group.label}
+                                data-role="grouped"
+                                data={group.data}
+                                columns={columns}
+                                column-widths-mode={isFixedColumns}
+                                default-sort-direction={defaultSortDirection}
+                                draft-values={draftValues}
+                                enable-infinite-loading={enableInfiniteLoading}
+                                group-by={groupBy}
+                                errors={errors}
+                                hide-checkbox-column={hideCheckboxColumn}
+                                hide-table-header={hideTableHeader}
+                                is-loading={isLoading}
+                                key-field="id"
+                                load-more-offset={loadMoreOffset}
+                                max-column-width={maxColumnWidth}
+                                max-row-selection={maxRowSelection}
+                                min-column-width={minColumnWidth}
+                                render-config={renderConfig}
+                                resize-column-disabled={resizeColumnDisabled}
+                                resize-step={resizeStep}
+                                row-number-offset={rowNumberOffset}
+                                selected-rows={selectedRows}
+                                show-row-number-column={showRowNumberColumn}
+                                sorted-by={sortedBy}
+                                sorted-direction={sortedDirection}
+                                suppress-bottom-bar
+                                wrap-text-max-lines={wrapTextMaxLines}
+                                onrowselection={handleDispatchEvents}
+                                onsort={handleDispatchEvents}
+                                onresize={handleDispatchEvents}
+                                onsave={handleDispatchEvents}
+                                oncancel={handleDispatchEvents}
+                                onheaderaction={handleDispatchEvents}
+                                onloadmore={handleDispatchEvents}
+                                oncellchange={handleDispatchEvents}
+                                onrowaction={handleDispatchEvents}
+                            ></c-primitive-datatable>
+                        </template>
+                        <template if:true={group.multiLevelGroupBy}>
+                            <template for:each={group.group} for:item="group">
+                                <c-primitive-collapsible-group
+                                    title={group.label}
+                                    size={group.size}
+                                    level={group.level}
+                                    key={group.label}
+                                    collapsible
+                                    class="collapsible-group"
+                                >
+                                    <template if:true={group.data}>
+                                        <c-primitive-datatable
+                                            key={group.label}
+                                            data-role="grouped"
+                                            data={group.data}
+                                            columns={columns}
+                                            column-widths-mode={isFixedColumns}
+                                            default-sort-direction={defaultSortDirection}
+                                            draft-values={draftValues}
+                                            enable-infinite-loading={enableInfiniteLoading}
+                                            group-by={groupBy}
+                                            errors={errors}
+                                            hide-checkbox-column={hideCheckboxColumn}
+                                            hide-table-header={hideTableHeader}
+                                            is-loading={isLoading}
+                                            key-field="id"
+                                            load-more-offset={loadMoreOffset}
+                                            max-column-width={maxColumnWidth}
+                                            max-row-selection={maxRowSelection}
+                                            min-column-width={minColumnWidth}
+                                            render-config={renderConfig}
+                                            resize-column-disabled={resizeColumnDisabled}
+                                            resize-step={resizeStep}
+                                            row-number-offset={rowNumberOffset}
+                                            selected-rows={selectedRows}
+                                            show-row-number-column={showRowNumberColumn}
+                                            sorted-by={sortedBy}
+                                            sorted-direction={sortedDirection}
+                                            suppress-bottom-bar
+                                            wrap-text-max-lines={wrapTextMaxLines}
+                                            onrowselection={handleDispatchEvents}
+                                            onsort={handleDispatchEvents}
+                                            onresize={handleDispatchEvents}
+                                            onsave={handleDispatchEvents}
+                                            oncancel={handleDispatchEvents}
+                                            onheaderaction={handleDispatchEvents}
+                                            onloadmore={handleDispatchEvents}
+                                            oncellchange={handleDispatchEvents}
+                                            onrowaction={handleDispatchEvents}
+                                        ></c-primitive-datatable>
+                                    </template>
+                                </c-primitive-collapsible-group>
+                            </template>
+                        </template>
+                    </c-primitive-collapsible-group>
+                </template>
             </template>
         </c-primitive-collapsible-group>
     </template>

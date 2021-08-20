@@ -42,7 +42,7 @@ export default class ProgressGroupByItem extends LightningElement {
     }
     set groupBy(value) {
         this._groupBy = JSON.parse(JSON.stringify(normalizeArray(value)));
-        this.groupByRecords(this._records, this._groupBy);
+        this.multiLevelGroupByRecords(this.records, this.groupBy);
     }
 
     @api
@@ -60,9 +60,7 @@ export default class ProgressGroupByItem extends LightningElement {
     formattedGroupedRecords = [];
     formattedResult = [];
 
-    renderedCallback() {
-        // console.log(this.formattedGroupedRecords);
-    }
+    renderedCallback() {}
 
     @api
     primitiveGroupedDatatables() {
@@ -116,7 +114,9 @@ export default class ProgressGroupByItem extends LightningElement {
         if (typeof fieldNames === 'string') {
             fieldNames = fieldNames.split();
         }
-        const hasFieldNames = fieldNames.length > 1;
+        const groupBy = fieldNames.length > 1;
+        const multiLevelGroupBy = fieldNames.length > 2;
+        const level = 0;
         const result = [];
         const temp = { _: result };
         this.formattedResult = [];
@@ -131,29 +131,64 @@ export default class ProgressGroupByItem extends LightningElement {
                 }, temp)
                 ._.push(a);
         });
-        // return result;
         result.forEach((res) => {
             Object.keys(res).forEach((key) => {
                 this.formattedResult.push({
                     label: key,
-                    records: Object.values(res[key]).flat(),
-                    dataSize: Object.values(res[key]).flat().length,
-                    hasFieldNames: hasFieldNames,
-                    nestedRecords: this.result(Object.values(res[key]).flat())
+                    level: level,
+                    data: Object.values(res[key]).flat(),
+                    size: Object.values(res[key]).flat().length,
+                    multiLevelGroupBy: groupBy,
+                    group: this.result(
+                        Object.values(res[key]).flat(),
+                        level,
+                        multiLevelGroupBy
+                    )
                 });
             });
         });
         return this.formattedResult;
     }
 
-    result(results) {
+    result(results, level, multiLevelGroupBy) {
+        const formattedResult = [];
+        results.forEach((res) => {
+            Object.keys(res).forEach((key) => {
+                if (!multiLevelGroupBy) {
+                    formattedResult.push({
+                        label: key,
+                        level: level + 1,
+                        data: Object.values(res[key]).flat(),
+                        size: Object.values(res[key]).flat().length,
+                        multiLevelGroupBy: multiLevelGroupBy
+                    });
+                } else if (multiLevelGroupBy) {
+                    formattedResult.push({
+                        label: key,
+                        level: level + 1,
+                        data: Object.values(res[key]).flat(),
+                        size: Object.values(res[key]).flat().length,
+                        group: this.thirdLevel(
+                            Object.values(res[key]).flat(),
+                            level + 1
+                        ),
+                        multiLevelGroupBy: multiLevelGroupBy
+                    });
+                }
+            });
+        });
+        return formattedResult;
+    }
+
+    thirdLevel(results, level) {
         const formattedResult = [];
         results.forEach((res) => {
             Object.keys(res).forEach((key) => {
                 formattedResult.push({
                     label: key,
-                    records: Object.values(res[key]).flat(),
-                    dataSize: Object.values(res[key]).flat().length
+                    level: level + 1,
+                    data: Object.values(res[key]).flat(),
+                    size: Object.values(res[key]).flat().length
                 });
             });
         });
@@ -172,7 +207,7 @@ export default class ProgressGroupByItem extends LightningElement {
     }
 
     get hardData() {
-        return this.hardCodedData;
+        return this.formattedResult;
     }
 
     hardCodedData = [
@@ -185,66 +220,29 @@ export default class ProgressGroupByItem extends LightningElement {
                     label: 'Plateau',
                     level: 1,
                     size: 6,
-                    group: [
+                    data: [
                         {
-                            label: 'House',
-                            level: 2,
-                            size: 2,
-                            data: [
-                                {
-                                    id: 4,
-                                    name: 'Don',
-                                    age: '18',
-                                    city: 'Longueuil',
-                                    district: 'Old Longueuil',
-                                    habitation: 'Room'
-                                },
-                                {
-                                    id: 5,
-                                    name: 'Donald',
-                                    age: '16',
-                                    city: 'Longueuil',
-                                    district: 'Saint-Hubert'
-                                },
-                                {
-                                    id: 6,
-                                    name: 'Jenny',
-                                    age: '56',
-                                    city: 'Longueuil',
-                                    district: 'Greenfield Park',
-                                    habitation: 'Apartment'
-                                }
-                            ]
+                            id: 4,
+                            name: 'Don',
+                            age: '18',
+                            city: 'Longueuil',
+                            district: 'Old Longueuil',
+                            habitation: 'Room'
                         },
                         {
-                            label: 'Room',
-                            level: 2,
-                            size: 2,
-                            data: [
-                                {
-                                    id: 4,
-                                    name: 'Don',
-                                    age: '18',
-                                    city: 'Longueuil',
-                                    district: 'Old Longueuil',
-                                    habitation: 'Room'
-                                },
-                                {
-                                    id: 5,
-                                    name: 'Donald',
-                                    age: '16',
-                                    city: 'Longueuil',
-                                    district: 'Saint-Hubert'
-                                },
-                                {
-                                    id: 6,
-                                    name: 'Jenny',
-                                    age: '56',
-                                    city: 'Longueuil',
-                                    district: 'Greenfield Park',
-                                    habitation: 'Apartment'
-                                }
-                            ]
+                            id: 5,
+                            name: 'Donald',
+                            age: '16',
+                            city: 'Longueuil',
+                            district: 'Saint-Hubert'
+                        },
+                        {
+                            id: 6,
+                            name: 'Jenny',
+                            age: '56',
+                            city: 'Longueuil',
+                            district: 'Greenfield Park',
+                            habitation: 'Apartment'
                         }
                     ]
                 },
@@ -252,66 +250,29 @@ export default class ProgressGroupByItem extends LightningElement {
                     label: 'Outremont',
                     level: 1,
                     size: 5,
-                    group: [
+                    data: [
                         {
-                            label: 'House',
-                            level: 2,
-                            size: 2,
-                            data: [
-                                {
-                                    id: 4,
-                                    name: 'Don',
-                                    age: '18',
-                                    city: 'Longueuil',
-                                    district: 'Old Longueuil',
-                                    habitation: 'Room'
-                                },
-                                {
-                                    id: 5,
-                                    name: 'Donald',
-                                    age: '16',
-                                    city: 'Longueuil',
-                                    district: 'Saint-Hubert'
-                                },
-                                {
-                                    id: 6,
-                                    name: 'Jenny',
-                                    age: '56',
-                                    city: 'Longueuil',
-                                    district: 'Greenfield Park',
-                                    habitation: 'Apartment'
-                                }
-                            ]
+                            id: 4,
+                            name: 'Don',
+                            age: '18',
+                            city: 'Longueuil',
+                            district: 'Old Longueuil',
+                            habitation: 'Room'
                         },
                         {
-                            label: 'Room',
-                            level: 2,
-                            size: 2,
-                            data: [
-                                {
-                                    id: 4,
-                                    name: 'Don',
-                                    age: '18',
-                                    city: 'Longueuil',
-                                    district: 'Old Longueuil',
-                                    habitation: 'Room'
-                                },
-                                {
-                                    id: 5,
-                                    name: 'Donald',
-                                    age: '16',
-                                    city: 'Longueuil',
-                                    district: 'Saint-Hubert'
-                                },
-                                {
-                                    id: 6,
-                                    name: 'Jenny',
-                                    age: '56',
-                                    city: 'Longueuil',
-                                    district: 'Greenfield Park',
-                                    habitation: 'Apartment'
-                                }
-                            ]
+                            id: 5,
+                            name: 'Donald',
+                            age: '16',
+                            city: 'Longueuil',
+                            district: 'Saint-Hubert'
+                        },
+                        {
+                            id: 6,
+                            name: 'Jenny',
+                            age: '56',
+                            city: 'Longueuil',
+                            district: 'Greenfield Park',
+                            habitation: 'Apartment'
                         }
                     ]
                 }
