@@ -32,7 +32,7 @@
 
 import { generateUniqueId } from 'c/inputUtils';
 
-const start = new Date(2021, 11, 13, 8);
+const start = new Date(2021, 11, 13, 10);
 
 const generateName = () => {
     return generateUniqueId();

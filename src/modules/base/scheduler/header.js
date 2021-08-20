@@ -77,6 +77,7 @@ export default class SchedulerHeader {
         this._end = props.end;
         this.unit = props.unit;
         this.duration = props.duration;
+        this.visibleColumns = [];
 
         this.computeColumns();
     }
@@ -182,7 +183,10 @@ export default class SchedulerHeader {
         this._start = DateTime.fromMillis(this.columns[0].start);
         this.setHeaderEnd();
         this.cleanEmptyLastColumn();
-        this.visibleColumns = [...this.columns];
+
+        // On the first render, we only have one column.
+        // Its label will be used as a reference for the cell width.
+        this.visibleColumns = [this.columns[0]];
     }
 
     dateIsBiggerThanEnd(date) {
@@ -315,7 +319,6 @@ export default class SchedulerHeader {
 
                     width += referenceCellWidth;
                     columnIndex += 1;
-                    // if (width === 1980) debugger
                 }
                 columnWidths.push(width);
             });

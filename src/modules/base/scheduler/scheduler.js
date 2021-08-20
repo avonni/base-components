@@ -105,7 +105,6 @@ export default class Scheduler extends LightningElement {
     _numberOfVisibleCells = 0;
     _referenceHeader;
     _resizedEvent;
-    _scrollValue = 0;
     _visibleColumnsStartIndex = 0;
     cellWidth = 0;
     computedDisabledDatesTimes = [];
@@ -133,11 +132,11 @@ export default class Scheduler extends LightningElement {
             // Set the cell width
             if (!this.cellWidth) {
                 const cell = this.template.querySelector(
-                    'thead tr:last-of-type th'
+                    'thead tr:last-of-type th span'
                 );
-                // We add one pixel for the right border
+                // We add 20 pixels for padding
                 this.cellWidth =
-                    Math.ceil(cell.getBoundingClientRect().width) + 1;
+                    Math.ceil(cell.getBoundingClientRect().width) + 20;
             }
 
             // Set the visible grid and events
@@ -1128,25 +1127,13 @@ export default class Scheduler extends LightningElement {
         });
     }
 
-    updateVisibleRows(interval) {
-        const visibleInterval =
-            interval ||
-            this.getVisibleIntervalFromStartIndex(
-                this._visibleColumnsStartIndex
-            );
-
+    updateVisibleRows() {
+        const startIndex = this._visibleColumnsStartIndex;
+        const endIndex = startIndex + this._numberOfVisibleCells * 5 + 1;
         this.computedRows.forEach((computedRow) => {
-            computedRow.visibleColumns = computedRow.columns.filter(
-                (column) => {
-                    const from = dateTimeObjectFrom(column.start);
-                    const to = dateTimeObjectFrom(column.end);
-                    return (
-                        visibleInterval.contains(from) ||
-                        visibleInterval.contains(to) ||
-                        (visibleInterval.isAfter(from) &&
-                            visibleInterval.isBefore(to))
-                    );
-                }
+            computedRow.visibleColumns = computedRow.columns.slice(
+                startIndex,
+                endIndex
             );
         });
     }
@@ -1156,47 +1143,63 @@ export default class Scheduler extends LightningElement {
         const visibleInterval = this.getVisibleIntervalFromStartIndex(
             startIndex
         );
+        const endIndex = startIndex + this._numberOfVisibleCells * 5 + 1;
 
-        // Save the time of the last cell before the scroll.
-        // It will be used to update the width of the events that were previously cut
-        // by the end of the grid
+        // Save the time when the visible schedule was cut
         const limitCell =
             startIndex &&
             (startIndex > this._visibleColumnsStartIndex
                 ? this.template.querySelector('tbody tr td:last-of-type')
                 : this.template.querySelector('tbody tr td'));
-        this._previousVisibleLimitTime =
+        const limitTime =
             limitCell && dateTimeObjectFrom(Number(limitCell.dataset.end));
+        this._previousVisibleLimitTime = limitTime;
+
         // Filter only the body columns that are visible on the screen
-        this.updateVisibleRows(visibleInterval);
+        this._visibleColumnsStartIndex = startIndex;
+        this.updateVisibleRows();
 
         // Filter only the header columns that are visible on the screen
-        [...this.computedHeaders].reverse().forEach((header) => {
-            header.visibleColumns = header.columns.filter((column) => {
-                const from = dateTimeObjectFrom(column.start);
-                const to = dateTimeObjectFrom(column.end);
-
-                return (
-                    visibleInterval.contains(from) ||
-                    visibleInterval.contains(to) ||
-                    (visibleInterval.isAfter(from) &&
-                        visibleInterval.isBefore(to))
+        [...this.computedHeaders].reverse().forEach((header, index) => {
+            if (index === 0) {
+                // The smallest header will always have the same number of columns
+                header.visibleColumns = header.columns.slice(
+                    startIndex,
+                    endIndex
                 );
-            });
+            } else {
+                // The other headers may change their number of columns
+                header.visibleColumns = header.columns.filter((column) => {
+                    const from = dateTimeObjectFrom(column.start);
+                    const to = dateTimeObjectFrom(column.end);
 
-            header.computeColumnWidths(
-                this.cellWidth,
-                this.smallestHeader.visibleColumns
-            );
+                    return (
+                        visibleInterval.contains(from) ||
+                        visibleInterval.contains(to) ||
+                        (visibleInterval.isAfter(from) &&
+                            visibleInterval.isBefore(to))
+                    );
+                });
+            }
+
+            // On the first render, compute the headers width.
+            // On other renders, update only the width of the headers
+            // that were cut by the schedule visible limit
+            if (
+                !limitTime ||
+                (header.start <= limitTime && header.end >= limitTime)
+            ) {
+                header.computeColumnWidths(
+                    this.cellWidth,
+                    this.smallestHeader.visibleColumns
+                );
+            }
         });
 
         // Filter only the events that are visible on the screen
         this.updateVisibleEvents(visibleInterval);
 
         const cells = this._numberOfVisibleCells;
-        this._scrollValue = this.cellWidth * cells * 2;
-        this._visibleColumnsStartIndex = startIndex;
-
         if (startIndex) {
             const schedule = this.template.querySelector(
                 '.scheduler__schedule-col'
@@ -1258,7 +1261,7 @@ export default class Scheduler extends LightningElement {
         const startCol = columns[startIndex] || columns[0];
         const start = dateTimeObjectFrom(startCol.start);
 
-        const endIndex = startIndex + cells * 4;
+        const endIndex = startIndex + cells * 5;
         const endCol = columns[endIndex] || columns[columns.length - 1];
         const end = dateTimeObjectFrom(endCol.end);
 

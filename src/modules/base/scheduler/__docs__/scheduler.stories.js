@@ -448,7 +448,7 @@ Base.args = {
     rows: rows,
     customHeaders: headers,
     visibleSpan: {
-        unit: 'week',
+        unit: 'year',
         span: 3
     },
     start,
