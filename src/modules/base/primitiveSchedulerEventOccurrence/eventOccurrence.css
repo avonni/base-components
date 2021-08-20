@@ -43,7 +43,6 @@
     cursor: pointer;
     position: relative;
     z-index: 2;
-    user-select: none;
 }
 
 .scheduler__event-wrapper:focus {

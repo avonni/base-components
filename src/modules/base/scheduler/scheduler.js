@@ -132,8 +132,9 @@ export default class Scheduler extends LightningElement {
         if (!this.cellWidth || !this._numberOfVisibleCells) {
             // Set the cell width
             if (!this.cellWidth) {
-                const row = this.template.querySelector('tbody tr');
-                const cell = row.querySelector('td');
+                const cell = this.template.querySelector(
+                    'thead tr:last-of-type th'
+                );
                 // We add one pixel for the right border
                 this.cellWidth =
                     Math.ceil(cell.getBoundingClientRect().width) + 1;
@@ -186,7 +187,10 @@ export default class Scheduler extends LightningElement {
                 `c-primitive-scheduler-event-occurrence[data-key="${this.selection.occurrence.key}"]`
             );
             if (this._draggedEvent) {
-                this.initDraggedEventState();
+                this.initDraggedEventState(
+                    this._initialState.mouseX,
+                    this._initialState.mouseY
+                );
             }
         }
 
@@ -814,12 +818,11 @@ export default class Scheduler extends LightningElement {
         this.computedEvents = computedEvents;
     }
 
-    initDraggedEventState() {
+    initDraggedEventState(mouseX, mouseY) {
         // Save the initial position values
         const scheduleElement = this.template.querySelector('tbody');
         const schedulePosition = scheduleElement.getBoundingClientRect();
         const eventPosition = this._draggedEvent.getBoundingClientRect();
-        const { mouseX, mouseY } = this._initialState;
 
         const leftBoundary =
             this._resizeSide === 'right'
@@ -881,6 +884,11 @@ export default class Scheduler extends LightningElement {
             colorIndex += 1;
             return computedRow;
         });
+
+        // If the schedule has already been rendered once, update the visible rows
+        if (this._numberOfVisibleCells) {
+            this.updateVisibleRows();
+        }
     }
 
     initVisibleSchedule() {
@@ -1051,7 +1059,6 @@ export default class Scheduler extends LightningElement {
         // Push the events block at the bottom of the headers
         const events = this.template.querySelector('.scheduler__events');
         events.style.top = `${thead.offsetHeight}px`;
-        events.style.height = `calc(100% - ${thead.offsetHeight}px)`;
 
         // Get the header rows and sort them from the shortest unit to the longest
         const headerRows = Array.from(
@@ -1071,6 +1078,7 @@ export default class Scheduler extends LightningElement {
     }
 
     updateOccurrencesPosition() {
+        const limitTime = this._previousVisibleLimitTime;
         const eventOccurrences = this.template.querySelectorAll(
             'c-primitive-scheduler-event-occurrence'
         );
@@ -1079,7 +1087,18 @@ export default class Scheduler extends LightningElement {
                 occurrence.updateHeight();
             }
             occurrence.updatePosition();
+
+            // Update the width of the events previously cut by the limit of the schedule
+            if (
+                limitTime &&
+                occurrence.from <= limitTime &&
+                occurrence.to >= limitTime
+            ) {
+                occurrence.updateWidth();
+            }
         });
+
+        this._previousVisibleLimitTime = undefined;
     }
 
     updateVisibleEvents(interval) {
@@ -1109,14 +1128,47 @@ export default class Scheduler extends LightningElement {
         });
     }
 
+    updateVisibleRows(interval) {
+        const visibleInterval =
+            interval ||
+            this.getVisibleIntervalFromStartIndex(
+                this._visibleColumnsStartIndex
+            );
+
+        this.computedRows.forEach((computedRow) => {
+            computedRow.visibleColumns = computedRow.columns.filter(
+                (column) => {
+                    const from = dateTimeObjectFrom(column.start);
+                    const to = dateTimeObjectFrom(column.end);
+                    return (
+                        visibleInterval.contains(from) ||
+                        visibleInterval.contains(to) ||
+                        (visibleInterval.isAfter(from) &&
+                            visibleInterval.isBefore(to))
+                    );
+                }
+            );
+        });
+    }
+
     scrollScheduleTo(startIndex) {
         // Compute the visible date interval
         const visibleInterval = this.getVisibleIntervalFromStartIndex(
             startIndex
         );
 
-        // Filter only the events that are visible on the screen
-        this.updateVisibleEvents(visibleInterval);
+        // Save the time of the last cell before the scroll.
+        // It will be used to update the width of the events that were previously cut
+        // by the end of the grid
+        const limitCell =
+            startIndex &&
+            (startIndex > this._visibleColumnsStartIndex
+                ? this.template.querySelector('tbody tr td:last-of-type')
+                : this.template.querySelector('tbody tr td'));
+        this._previousVisibleLimitTime =
+            limitCell && dateTimeObjectFrom(Number(limitCell.dataset.end));
+        // Filter only the body columns that are visible on the screen
+        this.updateVisibleRows(visibleInterval);
 
         // Filter only the header columns that are visible on the screen
         [...this.computedHeaders].reverse().forEach((header) => {
@@ -1138,21 +1190,8 @@ export default class Scheduler extends LightningElement {
             );
         });
 
-        // Filter only the body columns that are visible on the screen
-        this.computedRows.forEach((computedRow) => {
-            computedRow.visibleColumns = computedRow.columns.filter(
-                (column) => {
-                    const from = dateTimeObjectFrom(column.start);
-                    const to = dateTimeObjectFrom(column.end);
-                    return (
-                        visibleInterval.contains(from) ||
-                        visibleInterval.contains(to) ||
-                        (visibleInterval.isAfter(from) &&
-                            visibleInterval.isBefore(to))
-                    );
-                }
-            );
-        });
+        // Filter only the events that are visible on the screen
+        this.updateVisibleEvents(visibleInterval);
 
         const cells = this._numberOfVisibleCells;
         this._scrollValue = this.cellWidth * cells * 2;
@@ -1392,8 +1431,6 @@ export default class Scheduler extends LightningElement {
     dragEventTo(row, cell) {
         const { occurrence, draftValues } = this.selection;
 
-        console.log(cell);
-
         // Update the start and end date
         const duration = occurrence.to - occurrence.from;
         const start = dateTimeObjectFrom(Number(cell.dataset.start));
@@ -1488,24 +1525,16 @@ export default class Scheduler extends LightningElement {
     }
 
     handleMouseDown(mouseEvent) {
-        if (mouseEvent.button !== 0 || this.readOnly) return;
+        if (mouseEvent.button || this.readOnly) return;
+
         this._mouseIsDown = true;
-
-        this._initialState.mouseX = mouseEvent.clientX;
-        this._initialState.mouseY = mouseEvent.clientY;
         this.hideAllPopovers();
+        this.cleanDraggedElement();
 
-        const target = mouseEvent.target;
-        if (
-            target.tagName !== 'C-PRIMITIVE-SCHEDULER-EVENT-OCCURRENCE' ||
-            target.disabled ||
-            target.referenceLine
-        ) {
-            this.cleanDraggedElement();
-            this.crud.newEvent(mouseEvent.clientX, mouseEvent.clientY, false);
-        } else {
-            this.initDraggedEventState();
-        }
+        const x = mouseEvent.clientX || mouseEvent.detail.x;
+        const y = mouseEvent.clientY || mouseEvent.detail.y;
+        this._initialState = { mouseX: x, mouseY: y };
+        this.crud.newEvent(x, y, false);
     }
 
     handleEventMouseEnter(event) {
@@ -1517,10 +1546,14 @@ export default class Scheduler extends LightningElement {
     }
 
     handleEventMouseDown(mouseEvent) {
-        this._resizeSide = mouseEvent.detail.side;
+        const { side, x, y } = mouseEvent.detail;
+        this._mouseIsDown = true;
+        this._resizeSide = side;
         this._draggedEvent = mouseEvent.currentTarget;
         this._draggedEvent.classList.add('scheduler__event-dragged');
         this.selectEvent(mouseEvent);
+        this.hideAllPopovers();
+        this.initDraggedEventState(x, y);
     }
 
     handleMouseMove(mouseEvent) {
@@ -1645,30 +1678,27 @@ export default class Scheduler extends LightningElement {
     }
 
     handleEventContextMenu(mouseEvent) {
-        if (mouseEvent.currentTarget.disabled) return;
+        const target = mouseEvent.currentTarget;
+        if (target.disabled || target.referenceLine) return;
 
         if (this.computedContextMenuEvent.length) {
             this.hideAllPopovers();
-            this.contextMenuActions = this.computedContextMenuEvent;
+            this.contextMenuActions = [...this.computedContextMenuEvent];
             this.selectEvent(mouseEvent);
             this.showContextMenu = true;
         }
     }
 
     handleEmptySpotContextMenu(mouseEvent) {
-        const target = mouseEvent.target;
-        if (
-            target.tagName === 'C-PRIMITIVE-SCHEDULER-EVENT-OCCURRENCE' &&
-            !target.disabled
-        )
-            return;
         mouseEvent.preventDefault();
 
         if (this.computedContextMenuEmptySpot.length) {
             this.hideAllPopovers();
-            this.contextMenuActions = this.computedContextMenuEmptySpot;
+            this.contextMenuActions = [...this.computedContextMenuEmptySpot];
             this.showContextMenu = true;
-            this.crud.newEvent(mouseEvent.clientX, mouseEvent.clientY, false);
+            const x = mouseEvent.clientX || mouseEvent.detail.x;
+            const y = mouseEvent.clientY || mouseEvent.detail.y;
+            this.crud.newEvent(x, y, false);
         }
     }
 
@@ -1710,17 +1740,9 @@ export default class Scheduler extends LightningElement {
     }
 
     handleDoubleClick(mouseEvent) {
-        const target = mouseEvent.target;
-        if (
-            (target.tagName === 'C-PRIMITIVE-SCHEDULER-EVENT-OCCURRENCE' &&
-                !target.disabled &&
-                !target.referenceLine) ||
-            this.readOnly
-        ) {
-            return;
-        }
-
-        this.crud.newEvent(mouseEvent.clientX, mouseEvent.clientY, true);
+        const x = mouseEvent.clientX || mouseEvent.detail.x;
+        const y = mouseEvent.clientY || mouseEvent.detail.y;
+        this.crud.newEvent(x, y, true);
     }
 
     handleEventDoubleClick(event) {

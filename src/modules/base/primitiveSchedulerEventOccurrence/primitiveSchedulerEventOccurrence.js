@@ -792,6 +792,33 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
+     * Handle the contextmenu event fired by disabled and reference line occurrences.
+     * Dispatch a privatedisabledcontextmenu event.
+     *
+     * @param {Event} event
+     */
+    handleDisabledContextMenu(event) {
+        event.preventDefault();
+
+        /**
+         * The event fired when the user opens the context menu of a disabled or reference line occurrence.
+         *
+         * @event
+         * @name privatedisabledcontextmenu
+         * @param {number} x Horizontal position of the occurrence.
+         * @param {number} y Vertical position of the occurrence.
+         */
+        this.dispatchEvent(
+            new CustomEvent('privatedisabledcontextmenu', {
+                detail: {
+                    x: event.clientX,
+                    y: event.clientY
+                }
+            })
+        );
+    }
+
+    /**
      * Dispatch a custom event. The name of the event to dispatch is given as a parameter.
      *
      * @param {string} name
@@ -880,6 +907,33 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
+     * Handle the dblclick event fired by the disabled and reference line occurrences.
+     * Dispatch a privatedisableddblclick event.
+     *
+     * @param {Event} event
+     */
+    handleDisabledDoubleClick(event) {
+        if (this.readOnly) return;
+
+        /**
+         * The event fired when the user double-clicks on a disabled or reference line occurrence.
+         *
+         * @event
+         * @name privatedisableddblclick
+         * @param {number} x Horizontal position of the occurrence.
+         * @param {number} y Vertical position of the occurrence.
+         */
+        this.dispatchEvent(
+            new CustomEvent('privatedisableddblclick', {
+                detail: {
+                    x: event.clientX,
+                    y: event.clientY
+                }
+            })
+        );
+    }
+
+    /**
      * Handle the focus event fired by the occurrence if it is not disabled.
      * Dispatch a privatefocus event.
      *
@@ -953,6 +1007,32 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                     x: event.clientX,
                     y: event.clientY,
                     side: resize
+                }
+            })
+        );
+    }
+
+    /**
+     * Handle the mousedown event fired by disabled and reference line occurrences.
+     * Dispatch a privatedisabledmousedown event.
+     *
+     * @param {Event} event
+     */
+    handleDisabledMouseDown(event) {
+        if (event.button !== 0 || this.readOnly) return;
+        /**
+         * The event fired when the mouse is pressed on a disabled or reference line occurrence.
+         *
+         * @event
+         * @name privatedisabledmousedown
+         * @param {number} x Horizontal position of the occurrence.
+         * @param {number} y Vertical position of the occurrence.
+         */
+        this.dispatchEvent(
+            new CustomEvent('privatedisabledmousedown', {
+                detail: {
+                    x: event.clientX,
+                    y: event.clientY
                 }
             })
         );

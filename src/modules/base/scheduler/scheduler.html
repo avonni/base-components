@@ -112,7 +112,11 @@
                 </thead>
 
                 <!-- Rows -->
-                <tbody>
+                <tbody
+                    oncontextmenu={handleEmptySpotContextMenu}
+                    onmousedown={handleMouseDown}
+                    ondblclick={handleDoubleClick}
+                >
                     <template
                         for:each={computedRows}
                         for:item="row"
@@ -141,13 +145,7 @@
             </table>
 
             <!-- Events -->
-            <div
-                if:true={cellWidth}
-                class="scheduler__events slds-is-absolute"
-                oncontextmenu={handleEmptySpotContextMenu}
-                onmousedown={handleMouseDown}
-                ondblclick={handleDoubleClick}
-            >
+            <div if:true={cellWidth} class="scheduler__events slds-is-absolute">
                 <template for:each={visibleEvents} for:item="event">
                     <div
                         if:true={event.visibleOccurrences.length}
@@ -187,10 +185,13 @@
                                 onprivatefocus={handleEventFocus}
                                 onprivateblur={hideDetailPopover}
                                 onprivatecontextmenu={handleEventContextMenu}
+                                onprivatedisabledcontextmenu={handleEmptySpotContextMenu}
                                 onprivatemouseenter={handleEventMouseEnter}
                                 onprivatemouseleave={hideDetailPopover}
                                 onprivatedblclick={handleEventDoubleClick}
+                                onprivatedisableddblclick={handleDoubleClick}
                                 onprivatemousedown={handleEventMouseDown}
+                                onprivatedisabledmousedown={handleMouseDown}
                                 onprivateresize={handleEventResize}
                             ></c-primitive-scheduler-event-occurrence>
                         </template>

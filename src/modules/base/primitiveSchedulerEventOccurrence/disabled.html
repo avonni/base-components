@@ -35,6 +35,9 @@
 <template>
     <div
         class="slds-is-absolute scheduler__disabled-date slds-theme_alert-texture slds-theme_shade"
+        oncontextmenu={handleDisabledContextMenu}
+        ondblclick={handleDisabledDoubleClick}
+        onmousedown={handleDisabledMouseDown}
     >
         <div
             if:true={showTitle}
