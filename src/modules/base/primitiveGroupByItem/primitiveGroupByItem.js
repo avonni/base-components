@@ -63,8 +63,8 @@ export default class ProgressGroupByItem extends LightningElement {
         return this._groupBy;
     }
     set groupBy(value) {
-        this._groupBy = JSON.parse(JSON.stringify(normalizeArray(value)));
-        this.multiLevelGroupByRecords(this.records, this.groupBy);
+        this._groupBy = JSON.parse(JSON.stringify(value));
+        this.multiLevelGroupByRecords(this._records, this._groupBy);
     }
 
     @api
@@ -90,6 +90,8 @@ export default class ProgressGroupByItem extends LightningElement {
     formattedGroupedRecords = [];
     formattedResult = [];
 
+    renderedCallback() {}
+
     @api
     primitiveGroupedDatatables() {
         return this.template.querySelectorAll(
@@ -104,24 +106,10 @@ export default class ProgressGroupByItem extends LightningElement {
         );
     }
 
-    groupByRecords(array, fieldName) {
-        this._groupedByRecords = array.reduce((previous, currentItem) => {
-            const group = currentItem[fieldName];
-            if (!previous[group]) previous[group] = [];
-            previous[group].push(currentItem);
-            return previous;
-        }, []);
-        Object.keys(this._groupedByRecords).forEach((key) => {
-            this.formattedGroupedRecords.push({
-                label: key,
-                records: this._groupedByRecords[key],
-                size: this._groupedByRecords[key].length
-            });
-        });
-    }
-
     multiLevelGroupByRecords(records, fieldNames) {
         // if there is only one groupBy and as a string, we convert it to an array.
+        console.log(typeof fieldNames);
+        console.log(fieldNames);
         if (typeof fieldNames === 'string') {
             fieldNames = fieldNames.split();
         }
