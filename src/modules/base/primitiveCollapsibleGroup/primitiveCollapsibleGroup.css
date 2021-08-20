@@ -21,15 +21,3 @@
 .slds-section__title[aria-level='2'] {
     padding-left: 2rem;
 }
-
-.slds-section__title[aria-level='3'] {
-    padding-left: 3rem;
-}
-
-.slds-section__title[aria-level='4'] {
-    padding-left: 4rem;
-}
-
-.slds-section__title[aria-level='5'] {
-    padding-left: 5rem;
-}

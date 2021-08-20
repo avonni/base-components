@@ -1080,10 +1080,95 @@ const recordsGroupBy = [
     },
     {
         id: 17,
-        name: 'Jeanne',
-        age: '29',
-        city: 'Longueuil',
+        name: 'Jean',
+        age: '24',
+        city: 'Montreal',
         habitation: 'Apartment'
+    },
+    {
+        id: 18,
+        name: 'Thulisa',
+        age: '19',
+        city: 'Laval',
+        district: 'Rosemere',
+        habitation: 'House'
+    },
+    {
+        id: 19,
+        name: 'Tygune',
+        age: '26',
+        city: 'Montreal',
+        district: 'Outremont',
+        habitation: 'House'
+    },
+    {
+        id: 20,
+        name: 'Carlita',
+        age: '19',
+        city: 'Montreal',
+        district: 'Villeray',
+        habitation: 'Duplex'
+    },
+    {
+        id: 21,
+        name: 'Delphine',
+        age: '29',
+        city: 'Montreal'
+    },
+    {
+        id: 22,
+        name: 'Max',
+        age: '87',
+        city: 'Montreal',
+        district: 'Villeray',
+        habitation: 'Duplex'
+    },
+    {
+        id: 23,
+        name: 'Done',
+        age: '2',
+        city: 'Longueuil',
+        district: 'Old Longueuil',
+        habitation: 'Room'
+    },
+    {
+        id: 24,
+        name: 'Donalda',
+        age: '99',
+        city: 'Longueuil',
+        district: 'Saint-Hubert'
+    },
+    {
+        id: 25,
+        name: 'Benny',
+        age: '75',
+        city: 'Longueuil',
+        district: 'Greenfield Park',
+        habitation: 'Apartment'
+    },
+    {
+        id: 26,
+        name: 'Goud',
+        age: '62',
+        city: 'Montreal',
+        district: 'Outremont',
+        habitation: 'Apartment'
+    },
+    {
+        id: 27,
+        name: 'Felix',
+        age: '21',
+        city: 'Montreal',
+        district: 'Plateau',
+        habitation: 'Apartment'
+    },
+    {
+        id: 28,
+        name: 'Xavier',
+        age: '27',
+        city: 'Montreal',
+        district: 'Plateau',
+        habitation: 'House'
     }
 ];
 
