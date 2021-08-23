@@ -599,7 +599,6 @@ export default class ColorPicker extends LightningElement {
              * @param {string} alpha Alpha value of the color.
              */
 
-            console.log(colors.hex, this.currentToken);
 
             this.dispatchEvent(
                 new CustomEvent('change', {
@@ -634,7 +633,6 @@ export default class ColorPicker extends LightningElement {
          * @param {string} alpha Alpha value of the color.
          */
 
-        console.log("dispatched cleared")
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
