@@ -31,14 +31,13 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { DateTime, Interval } from 'c/luxon';
+import { DateTime } from 'c/luxon';
 import {
     normalizeArray,
     normalizeBoolean,
     normalizeString,
     dateTimeObjectFrom,
-    addToDate,
-    numberOfUnitsBetweenDates
+    addToDate
 } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import { eventCrudMethods } from './eventCrud';
@@ -59,10 +58,8 @@ import {
     DEFAULT_VISIBLE_SPAN,
     HEADERS,
     PALETTES,
-    PRESET_HEADERS,
-    UNITS
+    PRESET_HEADERS
 } from './defaults';
-import SchedulerHeader from './header';
 import SchedulerRow from './row';
 import SchedulerEvent from './event';
 
@@ -103,7 +100,9 @@ export default class Scheduler extends LightningElement {
     _numberOfVisibleCells = 0;
     _referenceHeader;
     _resizedEvent;
+    _updateDatatablePosition = false;
     _visibleColumnsStartIndex = 0;
+    _visibleInterval;
     cellWidth = 0;
     computedDisabledDatesTimes = [];
     computedHeaders = [];
@@ -118,47 +117,32 @@ export default class Scheduler extends LightningElement {
     showEditDialog = false;
     showDetailPopover = false;
     showRecurrenceDialog = false;
+    smallestHeader;
     visibleEvents = [];
 
     connectedCallback() {
         this.crud = eventCrudMethods(this);
-        this.initSchedule();
+        this.initHeaders();
     }
 
     renderedCallback() {
-        if (!this.cellWidth || !this._numberOfVisibleCells) {
-            // Set the cell width
-            if (!this.cellWidth) {
-                const cell = this.template.querySelector(
-                    'thead tr:last-of-type th span'
-                );
-                // We add 20 pixels for padding
-                this.cellWidth =
-                    Math.ceil(cell.getBoundingClientRect().width) + 20;
-            }
-
-            // Set the visible grid and events
-            if (!this._numberOfVisibleCells) {
-                this.initVisibleSchedule();
-            }
-
-            // The cellWidth and visibleEvents change trigger another render, so we return right away
-            return;
-        }
-
         // Save the default datatable column width, in case the styling hook was used
         if (!this._datatableWidth) {
             this._datatableWidth = this.datatableCol.getBoundingClientRect().width;
         }
 
-        // Save the datatable row height and update the header and body styles
+        // Save the datatable row height and update the body styles
         if (!this._datatableRowsHeight) {
             this.updateDatatableRowsHeight();
         }
         this.updateOccurrencesOffsetTop();
-        this.updateHeadersStyle();
         this.updateRowsStyle();
-
+        
+        if (this._updateDatatablePosition) {
+            this.updateDatatablePosition();
+            this._updateDatatablePosition = false;
+        }
+        
         // Update the position and height of occurrences
         this.updateOccurrencesPosition();
 
@@ -546,14 +530,6 @@ export default class Scheduler extends LightningElement {
             .toString();
     }
 
-    get smallestColumnDuration() {
-        const header = this.smallestHeader;
-        const headerColumnEnd =
-            addToDate(header.start, header.unit, header.span) - 1;
-        return dateTimeObjectFrom(headerColumnEnd).diff(header.start)
-            .milliseconds;
-    }
-
     get computedContextMenuEmptySpot() {
         const actions = this.contextMenuEmptySpotActions;
         return this.readOnly
@@ -593,13 +569,6 @@ export default class Scheduler extends LightningElement {
         );
         // We take one millisecond off to exclude the next unit
         return DateTime.fromMillis(visibleSpanEnd - 1);
-    }
-
-    get smallestHeader() {
-        if (!this.computedHeaders.length) return null;
-
-        const lastIndex = this.computedHeaders.length - 1;
-        return this.computedHeaders[lastIndex];
     }
 
     get onlyOccurrenceEditAllowed() {
@@ -691,6 +660,7 @@ export default class Scheduler extends LightningElement {
     }
 
     initHeaders() {
+        // Use the custom headers or a preset
         let headers = [...this.customHeaders];
         if (!headers.length) {
             const presetConfig = PRESET_HEADERS.find(
@@ -699,125 +669,60 @@ export default class Scheduler extends LightningElement {
             headers = presetConfig.headers;
         }
 
-        // Sort the headers from the longest unit to the shortest
-        const sortedHeaders = headers.sort((firstHeader, secondHeader) => {
-            const firstIndex = UNITS.findIndex(
-                (unit) => unit === firstHeader.unit
-            );
-            const secondIndex = UNITS.findIndex(
-                (unit) => unit === secondHeader.unit
-            );
-            return secondIndex - firstIndex;
-        });
-
-        // Create the reference header
-        // The reference header is the header using the visibleSpan unit
-        const referenceUnit = this.visibleSpan.unit;
-
-        const referenceHeader = sortedHeaders.find(
-            (header) => header.unit === referenceUnit
-        );
-
-        const referenceColumns = numberOfUnitsBetweenDates(
-            referenceUnit,
-            this.start,
-            this.end
-        );
-
-        const referenceSpan = referenceHeader
-            ? referenceHeader.span
-            : this.visibleSpan.span;
-
-        const reference = new SchedulerHeader({
-            unit: referenceUnit,
-            span: referenceSpan,
-            duration: this.visibleSpan.span,
-            label: referenceHeader ? referenceHeader.label : '',
-            start: this.start,
-            end: this.end,
-            availableTimeFrames: this.availableTimeFrames,
-            availableDaysOfTheWeek: this.availableDaysOfTheWeek,
-            availableMonths: this.availableMonths,
-            numberOfColumns: referenceColumns / referenceSpan,
-            isReference: true,
-            // If there is no header using the visibleSpan unit,
-            // hide the reference header
-            isHidden: !referenceHeader
-        });
-
-        // Make sure the reference end is at the end of the smallest header unit
-        const referenceEnd = DateTime.fromMillis(
-            reference.columns[reference.columns.length - 1].end
-        );
-        reference.end = referenceEnd.endOf(
-            sortedHeaders[sortedHeaders.length - 1].unit
-        );
-
-        this._referenceHeader = reference;
-
-        // Create all headers
-        const headerObjects = [];
-        sortedHeaders.forEach((header) => {
-            const unit = header.unit;
-            let headerObject;
-
-            // If the current header is the reference, use the already made header object
-            if (
-                reference &&
-                referenceUnit === unit &&
-                reference.label === header.label
-            ) {
-                headerObject = reference;
-            } else {
-                const columns = numberOfUnitsBetweenDates(
-                    unit,
-                    this.start,
-                    this.end
-                );
-
-                headerObject = new SchedulerHeader({
-                    unit: unit,
-                    span: header.span,
-                    label: header.label,
-                    start: reference.start,
-                    end: this.end,
-                    availableTimeFrames: this.availableTimeFrames,
-                    availableDaysOfTheWeek: this.availableDaysOfTheWeek,
-                    availableMonths: this.availableMonths,
-                    numberOfColumns: columns / header.span
-                });
-            }
-
-            headerObjects.push(headerObject);
-        });
-
-        this.computedHeaders = headerObjects;
-
-        // On next render, reset the headers widths
-        this.cellWidth = undefined;
+        this.computedHeaders = headers;
     }
 
     initEvents() {
-        if (!this.computedHeaders.length) return;
+        if (!this.smallestHeader) return;
+        const interval = this._visibleInterval;
 
         // The disabled dates/times and reference lines are special events
         const events = this.events
             .concat(this.computedDisabledDatesTimes)
             .concat(this.computedReferenceLines);
 
+        // Filter only the visible events
+        const visibleEvents = events.filter(event => {
+            const from = dateTimeObjectFrom(event.from);
+            const to = dateTimeObjectFrom(event.to);
+            return (
+                interval.contains(from) ||
+                interval.contains(to) ||
+                (interval.isAfter(from) && interval.isBefore(to)) ||
+                event.recurrence
+            );
+        });
+
         const computedEvents = [];
-        events.forEach((evt) => {
+        visibleEvents.forEach(evt => {
             const event = { ...evt };
             this.updateEventDefaults(event);
             computedEvents.push(new SchedulerEvent(event));
         });
 
-        this.computedEvents = computedEvents;
+        // Keep only the events that have visible occurrences
+        this.computedEvents = computedEvents.filter((event) => {
+            event.visibleOccurrences = [];
+            event.occurrences.forEach((occurrence) => {
+                const { from, to } = occurrence;
+
+                if (
+                    interval.contains(from) ||
+                    interval.contains(to) ||
+                    (interval.isAfter(from) &&
+                        interval.isBefore(to))
+                ) {
+                    event.visibleOccurrences.push(occurrence);
+                }
+            });
+
+            return event.visibleOccurrences.length;
+        });
     }
 
     initDraggedEventState(mouseX, mouseY) {
         // Save the initial position values
-        const scheduleElement = this.template.querySelector('tbody');
+        const scheduleElement = this.template.querySelector('.scheduler__body');
         const schedulePosition = scheduleElement.getBoundingClientRect();
         const eventPosition = this._draggedEvent.getBoundingClientRect();
 
@@ -881,31 +786,11 @@ export default class Scheduler extends LightningElement {
             colorIndex += 1;
             return computedRow;
         });
-
-        // If the schedule has already been rendered once, update the visible rows
-        if (this._numberOfVisibleCells) {
-            this.updateVisibleRows();
-        }
-    }
-
-    initVisibleSchedule() {
-        this._visibleColumnsStartIndex = 0;
-
-        // Find the last visible column based on the schedule width
-        const schedule = this.template.querySelector(
-            '.scheduler__schedule-col'
-        );
-        const scheduleWidth = schedule.getBoundingClientRect().width;
-        const endIndex = Math.ceil(scheduleWidth / this.cellWidth);
-        this._numberOfVisibleCells = endIndex;
-
-        // Reload the schedule to only see the visible part
-        this.scrollScheduleTo(0);
     }
 
     updateRowsStyle() {
         // Set the rows height
-        const rows = this.template.querySelectorAll('tbody tr');
+        const rows = this.template.querySelectorAll('.scheduler__row');
 
         rows.forEach((row, index) => {
             const key = row.dataset.key;
@@ -932,11 +817,17 @@ export default class Scheduler extends LightningElement {
         });
     }
 
-    updateDatatableRowsHeight() {
-        this._datatableRowsHeight = [];
-        const datatable = this.template.querySelector('c-datatable');
-        if (!datatable) return;
+    updateDatatablePosition() {
+        // Align the datatable header with the smallest schedule header
+        const headers = this.template.querySelector('c-primitive-scheduler-header-group');
+        this.datatableCol.style.paddingTop = `${headers.offsetHeight - 39}px`;
+    }
 
+    updateDatatableRowsHeight() {
+        const datatable = this.template.querySelector('c-datatable');
+        if (!datatable || !this.computedRows.length) return;
+        
+        this._datatableRowsHeight = [];
         this.computedRows.forEach((row) => {
             const rowKey = row.key;
             const height = datatable.getRowHeight(rowKey);
@@ -965,7 +856,7 @@ export default class Scheduler extends LightningElement {
         // in case a custom field is used by the labels
         event.data = event;
         event.schedulerEnd = this.end;
-        event.schedulerStart = this._referenceHeader.start;
+        event.schedulerStart = this.smallestHeader.start;
         event.availableMonths = this.availableMonths;
         event.availableDaysOfTheWeek = this.availableDaysOfTheWeek;
         event.availableTimeFrames = this.availableTimeFrames;
@@ -1048,32 +939,6 @@ export default class Scheduler extends LightningElement {
         });
     }
 
-    updateHeadersStyle() {
-        // Set the datatable header height
-        const thead = this.template.querySelector('thead');
-        this.datatableCol.style.paddingTop = `${thead.offsetHeight - 34}px`;
-
-        // Push the events block at the bottom of the headers
-        const events = this.template.querySelector('.scheduler__events');
-        events.style.top = `${thead.offsetHeight}px`;
-
-        // Get the header rows and sort them from the shortest unit to the longest
-        const headerRows = Array.from(
-            this.template.querySelectorAll('thead tr')
-        ).reverse();
-        headerRows.forEach((row) => {
-            const header = this.computedHeaders.find((computedHeader) => {
-                return computedHeader.key === row.dataset.key;
-            });
-
-            // Give the header cells their width
-            const cells = row.querySelectorAll('th');
-            cells.forEach((cell, index) => {
-                cell.style = `--avonni-scheduler-cell-width: ${header.columnWidths[index]}px`;
-            });
-        });
-    }
-
     updateOccurrencesPosition() {
         const limitTime = this._previousVisibleLimitTime;
         const eventOccurrences = this.template.querySelectorAll(
@@ -1098,116 +963,49 @@ export default class Scheduler extends LightningElement {
         this._previousVisibleLimitTime = undefined;
     }
 
-    updateVisibleEvents(interval) {
-        const visibleInterval =
-            interval ||
-            this.getVisibleIntervalFromStartIndex(
-                this._visibleColumnsStartIndex
-            );
+    // updateVisibleEvents(interval) {
+    //     const visibleInterval =
+    //         interval || this._visibleInterval
+    //         // this.getVisibleIntervalFromStartIndex(
+    //         //     this._visibleColumnsStartIndex
+    //         // );
 
-        this.visibleEvents = this.computedEvents.filter((event) => {
-            event.visibleOccurrences = [];
+    //     this.visibleEvents = this.computedEvents.filter((event) => {
+    //         event.visibleOccurrences = [];
 
-            event.occurrences.forEach((occurrence) => {
-                const { from, to } = occurrence;
+    //         event.occurrences.forEach((occurrence) => {
+    //             const { from, to } = occurrence;
 
-                if (
-                    visibleInterval.contains(from) ||
-                    visibleInterval.contains(to) ||
-                    (visibleInterval.isAfter(from) &&
-                        visibleInterval.isBefore(to))
-                ) {
-                    event.visibleOccurrences.push(occurrence);
-                }
-            });
+    //             if (
+    //                 visibleInterval.contains(from) ||
+    //                 visibleInterval.contains(to) ||
+    //                 (visibleInterval.isAfter(from) &&
+    //                     visibleInterval.isBefore(to))
+    //             ) {
+    //                 event.visibleOccurrences.push(occurrence);
+    //             }
+    //         });
 
-            return event.visibleOccurrences.length;
-        });
-    }
+    //         return event.visibleOccurrences.length;
+    //     });
+    // }
 
     updateVisibleRows() {
-        const startIndex = this._visibleColumnsStartIndex;
-        const endIndex = startIndex + this._numberOfVisibleCells * 5 + 1;
+        // const startIndex = this._visibleColumnsStartIndex;
+        // const endIndex = startIndex + this._numberOfVisibleCells * 5 + 1;
         this.computedRows.forEach((computedRow) => {
-            computedRow.visibleColumns = computedRow.columns.slice(
-                startIndex,
-                endIndex
-            );
+            // computedRow.visibleColumns = computedRow.columns.slice(
+            //     startIndex,
+            //     endIndex
+            // );
+
+            computedRow.referenceColumns = this.smallestHeader.columns;
+            computedRow.initColumns();
         });
-    }
-
-    scrollScheduleTo(startIndex) {
-        // Compute the visible date interval
-        const visibleInterval = this.getVisibleIntervalFromStartIndex(
-            startIndex
-        );
-        const endIndex = startIndex + this._numberOfVisibleCells * 5 + 1;
-
-        // Save the time when the visible schedule was cut
-        const limitCell =
-            startIndex &&
-            (startIndex > this._visibleColumnsStartIndex
-                ? this.template.querySelector('tbody tr td:last-of-type')
-                : this.template.querySelector('tbody tr td'));
-        const limitTime =
-            limitCell && dateTimeObjectFrom(Number(limitCell.dataset.end));
-        this._previousVisibleLimitTime = limitTime;
-
-        // Filter only the body columns that are visible on the screen
-        this._visibleColumnsStartIndex = startIndex;
-        this.updateVisibleRows();
-
-        // Filter only the header columns that are visible on the screen
-        [...this.computedHeaders].reverse().forEach((header, index) => {
-            if (index === 0) {
-                // The smallest header will always have the same number of columns
-                header.visibleColumns = header.columns.slice(
-                    startIndex,
-                    endIndex
-                );
-            } else {
-                // The other headers may change their number of columns
-                header.visibleColumns = header.columns.filter((column) => {
-                    const from = dateTimeObjectFrom(column.start);
-                    const to = dateTimeObjectFrom(column.end);
-
-                    return (
-                        visibleInterval.contains(from) ||
-                        visibleInterval.contains(to) ||
-                        (visibleInterval.isAfter(from) &&
-                            visibleInterval.isBefore(to))
-                    );
-                });
-            }
-
-            // On the first render, compute the headers width.
-            // On other renders, update only the width of the headers
-            // that were cut by the schedule visible limit
-            if (
-                !limitTime ||
-                (header.start <= limitTime && header.end >= limitTime)
-            ) {
-                header.computeColumnWidths(
-                    this.cellWidth,
-                    this.smallestHeader.visibleColumns
-                );
-            }
-        });
-
-        // Filter only the events that are visible on the screen
-        this.updateVisibleEvents(visibleInterval);
-
-        const cells = this._numberOfVisibleCells;
-        if (startIndex) {
-            const schedule = this.template.querySelector(
-                '.scheduler__schedule-col'
-            );
-            schedule.scrollTo({ left: this.cellWidth * cells * 2 });
-        }
     }
 
     getCellFromPosition(row, x) {
-        const cells = Array.from(row.querySelectorAll('td'));
+        const cells = Array.from(row.querySelectorAll('.scheduler__cell'));
 
         return cells.find((td, index) => {
             const left = td.getBoundingClientRect().left;
@@ -1242,7 +1040,7 @@ export default class Scheduler extends LightningElement {
     }
 
     getRowFromPosition(y) {
-        const rows = Array.from(this.template.querySelectorAll('tbody tr'));
+        const rows = Array.from(this.template.querySelectorAll('.scheduler__row'));
         return rows.find((tr) => {
             const top = tr.getBoundingClientRect().top;
             const bottom = tr.getBoundingClientRect().bottom;
@@ -1252,19 +1050,19 @@ export default class Scheduler extends LightningElement {
         });
     }
 
-    getVisibleIntervalFromStartIndex(startIndex) {
-        const columns = this.smallestHeader.columns;
-        const cells = this._numberOfVisibleCells;
+    // getVisibleIntervalFromStartIndex(startIndex) {
+    //     const columns = this.smallestHeader.columns;
+    //     const cells = this._numberOfVisibleCells;
 
-        const startCol = columns[startIndex] || columns[0];
-        const start = dateTimeObjectFrom(startCol.start);
+    //     const startCol = columns[startIndex] || columns[0];
+    //     const start = dateTimeObjectFrom(startCol.start);
 
-        const endIndex = startIndex + cells * 5;
-        const endCol = columns[endIndex] || columns[columns.length - 1];
-        const end = dateTimeObjectFrom(endCol.end);
+    //     const endIndex = startIndex + cells * 5;
+    //     const endCol = columns[endIndex] || columns[columns.length - 1];
+    //     const end = dateTimeObjectFrom(endCol.end);
 
-        return Interval.fromDateTimes(start, end);
-    }
+    //     return Interval.fromDateTimes(start, end);
+    // }
 
     cleanDraggedElement() {
         if (this._draggedEvent) {
@@ -1499,6 +1297,48 @@ export default class Scheduler extends LightningElement {
 
     hideRecurrenceDialog() {
         this.showRecurrenceDialog = false;
+    }
+
+    handleHeaderCellWidthChange(event) {
+        this.cellWidth = event.detail.cellWidth;
+    }
+
+    handleHeaderChange(event) {
+        this.smallestHeader = event.detail.smallestHeader;
+    }
+
+    handleHeaderHeightChange() {
+        // If the datatable and headers have already been rendered, update the position.
+        // Else it will be updated on the next render.
+        const headers = this.template.querySelector('c-primitive-scheduler-header-group');
+        if (headers && this.datatableCol) {
+            this.updateDatatablePosition();
+        } else {
+            this._updateDatatablePosition = true;
+        }
+    }
+
+    handleHeaderVisibleCellsChange(event) {
+        const { previousLimitTime, startIndex, visibleCells, visibleInterval } = event.detail;
+        this._numberOfVisibleCells = visibleCells;
+        this._visibleInterval = visibleInterval;
+        this._previousVisibleLimitTime = previousLimitTime;
+        this._visibleColumnsStartIndex = startIndex;
+
+        // Create the visible events
+        this.initEvents();
+
+        // Create the rows or update the visible columns
+        if (!this.computedRows.length) {
+            this.initRows();
+        } else {
+            this.updateVisibleRows();
+        }
+        
+        const schedule = this.template.querySelector(
+            '.scheduler__schedule-col'
+        );
+        schedule.scrollTo({ left: this.cellWidth * this._numberOfVisibleCells * 2 });
     }
 
     handleEventFocus(event) {
@@ -1865,7 +1705,8 @@ export default class Scheduler extends LightningElement {
             const startIndex = index + cells * multiplier;
 
             // Reload the schedule to only see the visible part
-            this.scrollScheduleTo(startIndex);
+            const headers = this.template.querySelector('c-primitive-scheduler-header-group');
+            headers.scrollHeadersTo(startIndex);
         }
     };
 

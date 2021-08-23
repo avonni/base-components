@@ -454,7 +454,7 @@ Base.args = {
     start,
     availableTimeFrames: ['08:00-16:59'],
     availableDaysOfTheWeek: [1, 2, 3, 4, 5],
-    events: lotsOfEvents(),
+    events,
     disabledDatesTimes: disabledDatesTimes,
     referenceLines: referenceLines
 };

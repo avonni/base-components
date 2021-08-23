@@ -41,7 +41,7 @@
         <!-- Datatable -->
         <div class={datatableColClass}>
             <c-datatable
-                class="slds-show slds-border_top"
+                class="slds-show slds-border_top scheduler__datatable"
                 max-column-width="9999999999"
                 columns={columns}
                 data={rows}
@@ -81,122 +81,107 @@
             class="slds-col slds-is-relative scheduler__schedule-col slds-scrollable_x slds-scrollable_none"
             onscroll={handleScroll}
         >
-            <table class={tableClass}>
+            <div class={tableClass}>
                 <!-- Headers -->
-                <thead>
-                    <template for:each={computedHeaders} for:item="header">
-                        <tr
-                            if:false={header.isHidden}
-                            key={header.key}
-                            class="slds-grid slds-is-relative slds-border_bottom"
-                            data-key={header.key}
-                        >
-                            <template
-                                for:each={header.visibleColumns}
-                                for:item="column"
-                                for:index="index"
-                            >
-                                <th
-                                    key={column.start}
-                                    class="slds-border_right slds-th__action slds-col slds-grid slds-grid_vertical-align-center slds-grid_align-center"
-                                >
-                                    <span
-                                        class="slds-truncate slds-text-body_small"
-                                        title={column.label}
-                                        >{column.label}</span
-                                    >
-                                </th>
-                            </template>
-                        </tr>
-                    </template>
-                </thead>
+                <c-primitive-scheduler-header-group
+                    available-days-of-the-week={availableDaysOfTheWeek}
+                    available-months={availableMonths}
+                    available-time-frames={availableTimeFrames}
+                    headers={computedHeaders}
+                    start={start}
+                    visible-span={visibleSpan}
+                    onprivatecellwidthchange={handleHeaderCellWidthChange}
+                    onprivateheaderchange={handleHeaderChange}
+                    onprivateheaderheightchange={handleHeaderHeightChange}
+                    onprivatevisibleheaderchange={handleHeaderVisibleCellsChange}
+                ></c-primitive-scheduler-header-group>
 
                 <!-- Rows -->
-                <tbody
+                <div
                     oncontextmenu={handleEmptySpotContextMenu}
                     onmousedown={handleMouseDown}
                     ondblclick={handleDoubleClick}
+                    class="slds-is-relative scheduler__body"
                 >
                     <template
                         for:each={computedRows}
                         for:item="row"
                         for:index="index"
                     >
-                        <tr
+                        <div
                             key={row.key}
-                            class="slds-border_bottom slds-grid slds-is-relative"
+                            class="slds-grid slds-is-relative scheduler__row"
                             data-index={index}
                             data-key={row.key}
                         >
                             <template
-                                for:each={row.visibleColumns}
+                                for:each={row.columns}
                                 for:item="column"
                             >
-                                <td
+                                <div
                                     key={column.start}
-                                    class="slds-border_right slds-col slds-p-around_none slds-wrap"
+                                    class="slds-border_right slds-border_bottom slds-col slds-p-around_none slds-wrap scheduler__cell"
                                     data-start={column.start}
                                     data-end={column.end}
-                                ></td>
+                                ></div>
                             </template>
-                        </tr>
+                        </div>
                     </template>
-                </tbody>
-            </table>
 
-            <!-- Events -->
-            <div if:true={cellWidth} class="scheduler__events slds-is-absolute">
-                <template for:each={visibleEvents} for:item="event">
-                    <div
-                        if:true={event.visibleOccurrences.length}
-                        key={event.key}
-                    >
-                        <template
-                            for:each={event.visibleOccurrences}
-                            for:item="occurrence"
-                        >
-                            <c-primitive-scheduler-event-occurrence
-                                key={occurrence.key}
-                                color={event.color}
-                                columns={smallestHeader.visibleColumns}
-                                column-duration={smallestColumnDuration}
-                                column-width={cellWidth}
-                                date-format={dateFormat}
-                                disabled={event.disabled}
-                                event-data={event.data}
-                                event-name={event.name}
-                                from={occurrence.from}
-                                icon-name={event.iconName}
-                                key-fields={occurrence.keyFields}
-                                labels={event.labels}
-                                occurrence={occurrence}
-                                occurrence-key={occurrence.key}
-                                read-only={readOnly}
-                                recurrence={event.recurrence}
-                                reference-line={event.referenceLine}
-                                row-key={occurrence.rowKey}
-                                rows={computedRows}
-                                title={occurrence.title}
-                                theme={event.theme}
-                                to={occurrence.to}
-                                data-key={occurrence.key}
-                                data-event-name={event.name}
-                                data-row-key={occurrence.rowKey}
-                                onprivatefocus={handleEventFocus}
-                                onprivateblur={hideDetailPopover}
-                                onprivatecontextmenu={handleEventContextMenu}
-                                onprivatedisabledcontextmenu={handleEmptySpotContextMenu}
-                                onprivatemouseenter={handleEventMouseEnter}
-                                onprivatemouseleave={hideDetailPopover}
-                                onprivatedblclick={handleEventDoubleClick}
-                                onprivatedisableddblclick={handleDoubleClick}
-                                onprivatemousedown={handleEventMouseDown}
-                                onprivatedisabledmousedown={handleMouseDown}
-                                onprivateresize={handleEventResize}
-                            ></c-primitive-scheduler-event-occurrence>
+                    <!-- Events -->
+                    <div class="scheduler__events slds-is-absolute">
+                        <template for:each={computedEvents} for:item="event">
+                            <div
+                                key={event.key}
+                            >
+                                <template
+                                    for:each={event.visibleOccurrences}
+                                    for:item="occurrence"
+                                >
+                                    <c-primitive-scheduler-event-occurrence
+                                        key={occurrence.key}
+                                        color={event.color}
+                                        columns={smallestHeader.visibleColumns}
+                                        column-duration={smallestColumnDuration}
+                                        column-width={cellWidth}
+                                        date-format={dateFormat}
+                                        disabled={event.disabled}
+                                        event-data={event.data}
+                                        event-name={event.name}
+                                        from={occurrence.from}
+                                        icon-name={event.iconName}
+                                        key-fields={occurrence.keyFields}
+                                        labels={event.labels}
+                                        occurrence={occurrence}
+                                        occurrence-key={occurrence.key}
+                                        read-only={readOnly}
+                                        recurrence={event.recurrence}
+                                        reference-line={event.referenceLine}
+                                        row-key={occurrence.rowKey}
+                                        rows={computedRows}
+                                        title={occurrence.title}
+                                        theme={event.theme}
+                                        to={occurrence.to}
+                                        data-key={occurrence.key}
+                                        data-event-name={event.name}
+                                        data-row-key={occurrence.rowKey}
+                                        onprivatefocus={handleEventFocus}
+                                        onprivateblur={hideDetailPopover}
+                                        onprivatecontextmenu={handleEventContextMenu}
+                                        onprivatedisabledcontextmenu={handleEmptySpotContextMenu}
+                                        onprivatemouseenter={handleEventMouseEnter}
+                                        onprivatemouseleave={hideDetailPopover}
+                                        onprivatedblclick={handleEventDoubleClick}
+                                        onprivatedisableddblclick={handleDoubleClick}
+                                        onprivatemousedown={handleEventMouseDown}
+                                        onprivatedisabledmousedown={handleMouseDown}
+                                        onprivateresize={handleEventResize}
+                                    ></c-primitive-scheduler-event-occurrence>
+                                </template>
+                            </div>
                         </template>
                     </div>
-                </template>
+                </div>
             </div>
         </div>
         <lightning-spinner

@@ -18,7 +18,7 @@
  *   contributors may be used to endorse or promote products derived from
  *   this software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS∫ AND CONTRIBUTORS "AS IS"
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
@@ -30,68 +30,38 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.scheduler__datatable-col {
-    background-color: #fafaf9;
-    width: var(--avonni-scheduler-datatable-column-width, 300px);
-    position: sticky;
-    left: 0;
-    z-index: 4;
-}
-.scheduler__datatable-col.scheduler__datatable-col_hidden {
-    width: 0;
-}
-.scheduler__datatable-col.scheduler__datatable-col_open {
-    width: 100%;
-}
-.scheduler__datatable {
-    padding-top: 5px;
-}
+import { createElement } from 'lwc';
+import PrimitiveSchedulerHeaderGroup from 'c/primitiveSchedulerHeaderGroup';
 
-.scheduler__event-detail-popover {
-    width: auto;
-}
+describe('PrimitiveSchedulerHeaderGroup', () => {
+    afterEach(() => {
+        while (document.body.firstChild) {
+            document.body.removeChild(document.body.firstChild);
+        }
+    });
 
-.scheduler__events {
-    height: 100%;
-    top: 0;
-}
+    it('Default attributes', () => {
+        const element = createElement('base-primitive-scheduler-header-group', {
+            is: PrimitiveSchedulerHeaderGroup
+        });
 
-.scheduler__context-menu {
-    z-index: 1;
-}
+        expect(element.start).toMatchObject(new Date(1900, 0, 1));
+    });
 
-.scheduler__cell {
-    width: var(--avonni-scheduler-cell-width);
-    min-width: var(--avonni-scheduler-cell-width);
-    max-width: var(--avonni-scheduler-cell-width);
-}
+    /* ----- ATTRIBUTES ----- */
 
-/* Splitter bar between the data table and the schedule --------- */
-.scheduler__splitter {
-    z-index: 5;
-    top: 0;
-    bottom: 0;
-    left: -20px;
-    width: 20px;
-}
-.scheduler__splitter:hover > div,
-.scheduler__splitter:focus-within > div {
-    width: 15px;
-}
-.scheduler__splitter:hover .scheduler__splitter-icon,
-.scheduler__splitter-icon:focus {
-    left: 0;
-}
-.scheduler__splitter > div {
-    height: 100%;
-    overflow: hidden;
-    width: 5px;
-    transition: width 300ms;
-}
-.scheduler__splitter:not(.scheduler__splitter_disabled) > div {
-    cursor: col-resize;
-}
-.scheduler__splitter-icon {
-    left: 30px;
-}
-/* ---------- */
+    // // start
+    // it('start', () => {
+    //     const element = createElement('base-primitive-scheduler-header-group', {
+    //         is: PrimitiveSchedulerHeaderGroup
+    //     });
+
+    //     document.body.appendChild(element);
+
+    //     element.start = new Date();
+
+    //     return Promise.resolve().then(() => {
+
+    //     });
+    // });
+});

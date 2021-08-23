@@ -391,8 +391,6 @@ const REFERENCE_LINE_VARIANTS = {
     default: 'default'
 };
 
-const UNITS = ['minute', 'hour', 'day', 'week', 'month', 'year'];
-
 export {
     DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
     DEFAULT_AVAILABLE_TIME_FRAMES,
@@ -412,6 +410,5 @@ export {
     PALETTES,
     PRESET_HEADERS,
     RECURRENCES,
-    REFERENCE_LINE_VARIANTS,
-    UNITS
+    REFERENCE_LINE_VARIANTS
 };

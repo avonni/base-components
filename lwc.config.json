@@ -354,6 +354,10 @@
             "path": "src/modules/base/primitiveSchedulerEventOccurrence/primitiveSchedulerEventOccurrence.js"
         },
         {
+            "name": "c/primitiveSchedulerHeaderGroup",
+            "path": "src/modules/base/primitiveSchedulerHeaderGroup/primitiveSchedulerHeaderGroup.js"
+        },
+        {
             "name": "c/primitiveSelect",
             "path": "src/modules/base/primitiveSelect/primitiveSelect.js"
         },

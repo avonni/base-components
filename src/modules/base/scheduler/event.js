@@ -238,7 +238,8 @@ export default class SchedulerEvent {
             this.availableMonths,
             this.availableDaysOfTheWeek,
             this.availableTimeFrames,
-            this.smallestHeader
+            this.smallestHeader.unit,
+            this.smallestHeader.span
         );
 
         if (containsAllowedTimes) {

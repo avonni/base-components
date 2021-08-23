@@ -40,6 +40,9 @@ import {
     numberOfUnitsBetweenDates
 } from 'c/utilsPrivate';
 
+// Number of cells displayed on a 4K screen, if the label was empty
+const MAX_VISIBLE_COLUMNS = Math.ceil(3840 / 17);
+
 /**
  * Scheduler header
  * @class
@@ -69,7 +72,7 @@ export default class SchedulerHeader {
         this.isReference = props.isReference;
         this.key = generateUniqueId();
         this.label = props.label;
-        this.numberOfColumns = props.numberOfColumns;
+        this.numberOfColumns = props.numberOfColumns > MAX_VISIBLE_COLUMNS ? MAX_VISIBLE_COLUMNS : props.numberOfColumns;
         this.span = props.span;
         this.start = props.start;
         this._end = props.end;
@@ -77,7 +80,7 @@ export default class SchedulerHeader {
         this.duration = props.duration;
         this.visibleColumns = [];
 
-        this.computeColumns();
+        this.initColumns();
     }
 
     get end() {
@@ -91,11 +94,11 @@ export default class SchedulerHeader {
         }
     }
 
-    computeColumns() {
+    initColumns(startDate) {
         const { unit, label, span, isReference } = this;
         let iterations = this.numberOfColumns > 1 ? this.numberOfColumns : 1;
         this.columns = [];
-        let date = DateTime.fromMillis(this.start.ts);
+        let date = startDate || DateTime.fromMillis(this.start.ts);
 
         for (let i = 0; i < iterations; i++) {
             // If this is not the first column, we start the month on the first day
@@ -170,7 +173,7 @@ export default class SchedulerHeader {
                 end: columnEnd.ts
             });
 
-            // Compensate the fact that luxon week start on Monday
+            // Compensate the fact that luxon week starts on Monday
             date = addToDate(columnEnd, unit, 1);
             date =
                 unit === 'week'
@@ -237,7 +240,7 @@ export default class SchedulerHeader {
             duration,
             span,
             columns,
-            isReference,
+            // isReference,
             numberOfColumns
         } = this;
         const lastColumn = columns[columns.length - 1];
@@ -257,7 +260,7 @@ export default class SchedulerHeader {
             );
         }
 
-        if (isReference) {
+        // if (isReference) {
             if (unit === 'year') {
                 end = end.set({ months: start.month });
             }
@@ -272,10 +275,10 @@ export default class SchedulerHeader {
             }
 
             lastColumn.end = end.ts;
-            this._end = end.ts;
-        } else {
-            lastColumn.end = this.end.ts;
-        }
+            this._end = end;
+        // } else {
+        //     lastColumn.end = this.end.ts;
+        // }
     }
 
     computeColumnWidths(referenceCellWidth, referenceColumns) {
