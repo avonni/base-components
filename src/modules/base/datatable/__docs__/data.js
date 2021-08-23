@@ -1105,15 +1105,15 @@ const recordsGroupBy = [
         id: 20,
         name: 'Carlita',
         age: '19',
-        city: 'Montreal',
-        district: 'Villeray',
+        city: 'Laval',
+        district: 'Vimont',
         habitation: 'Duplex'
     },
     {
         id: 21,
         name: 'Delphine',
         age: '29',
-        city: 'Montreal'
+        city: 'Laval'
     },
     {
         id: 22,

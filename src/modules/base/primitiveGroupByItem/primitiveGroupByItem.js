@@ -90,7 +90,11 @@ export default class ProgressGroupByItem extends LightningElement {
     formattedGroupedRecords = [];
     formattedResult = [];
 
-    renderedCallback() {}
+    renderedCallback() {
+        console.log(
+            this.countPerObject(this._records, 'district', 'Outremont')
+        );
+    }
 
     @api
     primitiveGroupedDatatables() {
@@ -106,10 +110,18 @@ export default class ProgressGroupByItem extends LightningElement {
         );
     }
 
+    countPerObject(records, key, value) {
+        console.log(value);
+        return records.reduce((accumulator, currentVal) => {
+            if (currentVal[key] === value) {
+                accumulator += 1;
+            }
+            return accumulator;
+        }, 0);
+    }
+
     multiLevelGroupByRecords(records, fieldNames) {
         // if there is only one groupBy and as a string, we convert it to an array.
-        console.log(typeof fieldNames);
-        console.log(fieldNames);
         if (typeof fieldNames === 'string') {
             fieldNames = fieldNames.split();
         }
@@ -135,9 +147,13 @@ export default class ProgressGroupByItem extends LightningElement {
                     label: key,
                     level: level,
                     data: Object.values(res[key]).flat(),
-                    size: Object.values(res[key]).flat().length,
+                    size: this.countPerObject(
+                        this._records,
+                        this._groupBy[0],
+                        key
+                    ),
                     multiLevelGroupBy: groupBy,
-                    group: this.result(
+                    group: this.secondLevel(
                         Object.values(res[key]).flat(),
                         level,
                         multiLevelGroupBy
@@ -145,11 +161,10 @@ export default class ProgressGroupByItem extends LightningElement {
                 });
             });
         });
-        console.log(this.formattedResult);
         return this.formattedResult;
     }
 
-    result(results, level, multiLevelGroupBy) {
+    secondLevel(results, level, multiLevelGroupBy) {
         const formattedResult = [];
         results.forEach((res) => {
             Object.keys(res).forEach((key) => {
@@ -166,7 +181,11 @@ export default class ProgressGroupByItem extends LightningElement {
                         label: key,
                         level: level + 1,
                         data: Object.values(res[key]).flat(),
-                        size: Object.values(res[key]).flat().length,
+                        size: this.countPerObject(
+                            this._records,
+                            this._groupBy[1],
+                            key
+                        ),
                         group: this.thirdLevel(
                             Object.values(res[key]).flat(),
                             level + 1
