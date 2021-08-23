@@ -32,7 +32,6 @@
 
 import { LightningElement, api } from 'lwc';
 import { normalizeArray, normalizeBoolean } from 'c/utilsPrivate';
-// import { computeSummarizeArray } from '../datatable/summarizeFunctions';
 
 export default class ProgressGroupByItem extends LightningElement {
     @api columns;
@@ -85,16 +84,10 @@ export default class ProgressGroupByItem extends LightningElement {
 
     _records = [];
     _groupBy = [];
+    _hideUndefinedGroup = false;
 
-    _groupedByRecords = [];
-    formattedGroupedRecords = [];
     formattedResult = [];
-
-    renderedCallback() {
-        console.log(
-            this.countPerObject(this._records, 'district', 'Outremont')
-        );
-    }
+    formattedResultNoUndefined = [];
 
     @api
     primitiveGroupedDatatables() {
@@ -110,8 +103,10 @@ export default class ProgressGroupByItem extends LightningElement {
         );
     }
 
-    countPerObject(records, key, value) {
-        console.log(value);
+    countPerObject(records, key, value, undefinedGroup) {
+        if (value === 'undefined') {
+            return undefinedGroup;
+        }
         return records.reduce((accumulator, currentVal) => {
             if (currentVal[key] === value) {
                 accumulator += 1;
@@ -125,9 +120,6 @@ export default class ProgressGroupByItem extends LightningElement {
         if (typeof fieldNames === 'string') {
             fieldNames = fieldNames.split();
         }
-        const groupBy = fieldNames.length > 1;
-        const multiLevelGroupBy = fieldNames.length > 2;
-        const level = 0;
         const result = [];
         const temp = { _: result };
         records.forEach((a) => {
@@ -141,6 +133,14 @@ export default class ProgressGroupByItem extends LightningElement {
                 }, temp)
                 ._.push(a);
         });
+        this.firstLevel(result, fieldNames);
+        this.firstLevelNoUndefined(result, fieldNames);
+    }
+
+    firstLevel(result, fieldNames) {
+        const groupBy = fieldNames.length > 1;
+        const multiLevelGroupBy = fieldNames.length > 2;
+        const level = 0;
         result.forEach((res) => {
             Object.keys(res).forEach((key) => {
                 this.formattedResult.push({
@@ -150,18 +150,45 @@ export default class ProgressGroupByItem extends LightningElement {
                     size: this.countPerObject(
                         this._records,
                         this._groupBy[0],
-                        key
+                        key,
+                        Object.values(res[key]).flat().length
                     ),
                     multiLevelGroupBy: groupBy,
                     group: this.secondLevel(
                         Object.values(res[key]).flat(),
-                        level,
+                        level + 1,
                         multiLevelGroupBy
                     )
                 });
             });
         });
-        return this.formattedResult;
+    }
+
+    firstLevelNoUndefined(result, fieldNames) {
+        const groupBy = fieldNames.length > 1;
+        const multiLevelGroupBy = fieldNames.length > 2;
+        const level = 0;
+        result.forEach((res) => {
+            Object.keys(res).forEach((key) => {
+                this.formattedResultNoUndefined.push({
+                    label: key,
+                    level: level,
+                    data: Object.values(res[key]).flat(),
+                    size: this.countPerObject(
+                        this._records,
+                        this._groupBy[0],
+                        key,
+                        Object.values(res[key]).flat().length
+                    ),
+                    multiLevelGroupBy: groupBy,
+                    group: this.secondLevelNoUndefined(
+                        Object.values(res[key]).flat(),
+                        level + 1,
+                        multiLevelGroupBy
+                    )
+                });
+            });
+        });
     }
 
     secondLevel(results, level, multiLevelGroupBy) {
@@ -171,20 +198,20 @@ export default class ProgressGroupByItem extends LightningElement {
                 if (!multiLevelGroupBy) {
                     formattedResult.push({
                         label: key,
-                        level: level + 1,
+                        level: level,
                         data: Object.values(res[key]).flat(),
-                        size: Object.values(res[key]).flat().length,
-                        multiLevelGroupBy: multiLevelGroupBy
+                        size: Object.values(res[key]).flat().length
                     });
                 } else if (multiLevelGroupBy) {
                     formattedResult.push({
                         label: key,
-                        level: level + 1,
+                        level: level,
                         data: Object.values(res[key]).flat(),
                         size: this.countPerObject(
                             this._records,
                             this._groupBy[1],
-                            key
+                            key,
+                            Object.values(res[key]).flat().length
                         ),
                         group: this.thirdLevel(
                             Object.values(res[key]).flat(),
@@ -198,19 +225,80 @@ export default class ProgressGroupByItem extends LightningElement {
         return formattedResult;
     }
 
+    secondLevelNoUndefined(results, level, multiLevelGroupBy) {
+        const formattedResult = [];
+        results.forEach((res) => {
+            Object.keys(res).forEach((key) => {
+                if (!multiLevelGroupBy) {
+                    formattedResult.push({
+                        label: key,
+                        level: level,
+                        data: Object.values(res[key]).flat(),
+                        size: Object.values(res[key]).flat().length
+                    });
+                } else if (multiLevelGroupBy) {
+                    formattedResult.push({
+                        label: key,
+                        level: level,
+                        data: Object.values(res[key]).flat(),
+                        size: this.countPerObject(
+                            this._records,
+                            this._groupBy[1],
+                            key,
+                            Object.values(res[key]).flat().length
+                        ),
+                        group: this.thirdLevelNoUndefined(
+                            Object.values(res[key]).flat(),
+                            level + 1
+                        ),
+                        multiLevelGroupBy: multiLevelGroupBy
+                    });
+                }
+            });
+        });
+        return this.removeUndefined(formattedResult);
+    }
+
     thirdLevel(results, level) {
         const formattedResult = [];
         results.forEach((res) => {
             Object.keys(res).forEach((key) => {
                 formattedResult.push({
                     label: key,
-                    level: level + 1,
+                    level: level,
                     data: Object.values(res[key]).flat(),
                     size: Object.values(res[key]).flat().length
                 });
             });
         });
         return formattedResult;
+    }
+
+    thirdLevelNoUndefined(results, level) {
+        const formattedResult = [];
+        results.forEach((res) => {
+            Object.keys(res).forEach((key) => {
+                formattedResult.push({
+                    label: key,
+                    level: level,
+                    data: Object.values(res[key]).flat(),
+                    size: Object.values(res[key]).flat().length
+                });
+            });
+        });
+        return this.removeUndefined(formattedResult);
+    }
+
+    removeUndefined(formattedResult) {
+        const noUndefinedResult = [];
+        formattedResult.forEach((result) => {
+            if (result.label === 'undefined') {
+                noUndefinedResult.push();
+            } else {
+                noUndefinedResult.push(result);
+            }
+        });
+        return noUndefinedResult;
     }
 
     handleDispatchEvents(event) {
@@ -225,6 +313,9 @@ export default class ProgressGroupByItem extends LightningElement {
     }
 
     get hardData() {
-        return this.formattedResult;
+        console.log(this.formattedResultNoUndefined);
+        return this._hideUndefinedGroup
+            ? this.removeUndefined(this.formattedResultNoUndefined)
+            : this.formattedResult;
     }
 }

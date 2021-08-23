@@ -1119,7 +1119,6 @@ const recordsGroupBy = [
         id: 22,
         name: 'Max',
         age: '87',
-        city: 'Montreal',
         district: 'Villeray',
         habitation: 'Duplex'
     },
