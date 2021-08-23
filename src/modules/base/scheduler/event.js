@@ -33,14 +33,12 @@
 import {
     normalizeArray,
     normalizeBoolean,
-    normalizeString
-} from 'c/utilsPrivate';
-import { generateUniqueId } from 'c/utils';
-import {
+    normalizeString,
     addToDate,
     containsAllowedDateTimes,
     dateTimeObjectFrom
-} from './dateUtils';
+} from 'c/utilsPrivate';
+import { generateUniqueId } from 'c/utils';
 import { DateTime } from 'c/luxon';
 import {
     RECURRENCES,

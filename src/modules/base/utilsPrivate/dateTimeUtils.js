@@ -34,8 +34,8 @@ import { DateTime, Interval } from 'c/luxon';
 
 /**
  * Convert a timestamp or a date object into a Luxon DateTime object.
- * @param {(number | Date)} date Timestamp or date object to convert
- * @returns {(DateTime | false)} DateTime object or false
+ * @param {(number | Date)} date Timestamp or date object to convert.
+ * @returns {(DateTime | false)} DateTime object or false.
  */
 const dateTimeObjectFrom = (date) => {
     let time;
@@ -51,9 +51,9 @@ const dateTimeObjectFrom = (date) => {
 
 /**
  * Check if a time is included in a time frame.
- * @param {DateTime} date DateTime object
- * @param {string} timeFrame The time frame of reference, in the format '00:00-00:00'
- * @returns {boolean} true or false
+ * @param {DateTime} date DateTime object.
+ * @param {string} timeFrame The time frame of reference, in the format '00:00-00:00'.
+ * @returns {boolean} true or false.
  */
 const isInTimeFrame = (date, timeFrame) => {
     const startMatch = timeFrame.match(/^([0-9:]+)-/);
@@ -84,11 +84,11 @@ const isInTimeFrame = (date, timeFrame) => {
 };
 
 /**
- * Add unit * span to the date
- * @param {DateTime} date The date we want to add time to
- * @param {string} unit The unit (minute, hour, day, week, month or year)
- * @param {number} span The number of unit to add
- * @returns {DateTime} DateTime object with the added time
+ * Add unit * span to the date.
+ * @param {DateTime} date The date we want to add time to.
+ * @param {string} unit The time unit (minute, hour, day, week, month or year).
+ * @param {number} span The number of unit to add.
+ * @returns {DateTime} DateTime object with the added time.
  */
 const addToDate = (date, unit, span) => {
     const options = {};
@@ -96,6 +96,14 @@ const addToDate = (date, unit, span) => {
     return date.plus(options);
 };
 
+/**
+ * Calculate the number of units between two dates, including partial units.
+ *
+ * @param {string} unit The time unit (minute, hour, day, week, month or year).
+ * @param {DateTime} start The starting date.
+ * @param {DateTime} end The ending date.
+ * @returns {number} Number of units between the start and end dates.
+ */
 const numberOfUnitsBetweenDates = (unit, start, end) => {
     // Compensate the fact that luxon weeks start on Monday
     const isWeek = unit === 'week';
@@ -106,17 +114,38 @@ const numberOfUnitsBetweenDates = (unit, start, end) => {
     return interval.count(unit);
 };
 
+/**
+ * Check if the date day of the week is allowed.
+ *
+ * @param {DateTime} date Date to check.
+ * @param {number[]} allowedDays Array of allowed days. The days are represented by a number, starting from 0 for Sunday, and ending with 6 for Saturday.
+ * @returns {boolean} true or false.
+ */
 const isAllowedDay = (date, allowedDays) => {
     // Luxon week days start at Monday = 1
     const normalizedDate = date.weekday % 7;
     return allowedDays.includes(normalizedDate);
 };
 
+/**
+ * Check if the date month is allowed.
+ *
+ * @param {DateTime} date Date to check.
+ * @param {number[]} allowedMonths Array of allowed months. The months are represented by a number, starting from 0 for January, and ending with 11 for December.
+ * @returns {boolean} true or false.
+ */
 const isAllowedMonth = (date, allowedMonths) => {
     // Luxon months start at 1
     return allowedMonths.includes(date.month - 1);
 };
 
+/**
+ * Check if the date time is in an allowed time frame.
+ *
+ * @param {DateTime} date Date to check.
+ * @param {string[]} allowedTimeFrames Array of allowed time frames. Each time frame string must follow the pattern 'start-end', with start and end being ISO8601 formatted time strings.
+ * @returns {boolean} true or false.
+ */
 const isAllowedTime = (date, allowedTimeFrames) => {
     let i = 0;
     let isAllowed = false;
@@ -127,6 +156,14 @@ const isAllowedTime = (date, allowedTimeFrames) => {
     return isAllowed;
 };
 
+/**
+ * Find the next allowed month, based on a starting date. If the date month is already allowed, returns the original date.
+ *
+ * @param {DateTime} startDate The date we start from.
+ * @param {number[]} allowedMonths Array of allowed months. The months are represented by a number, starting from 0 for January, and ending with 11 for December.
+ * @param {boolean} startNewMonthOnFirstDay If false, the original day of the date will be kept, even if the original date month is not allowed. Defaults to true.
+ * @returns {DateTime} Date of the next allowed month.
+ */
 const nextAllowedMonth = (
     startDate,
     allowedMonths,
@@ -144,6 +181,14 @@ const nextAllowedMonth = (
     return date;
 };
 
+/**
+ * Find the next allowed day of the week, based on a starting date. If the date day is already allowed, returns the original date.
+ *
+ * @param {DateTime} startDate The date we start from.
+ * @param {number[]} allowedMonths Array of allowed months. The months are represented by a number, starting from 0 for January, and ending with 11 for December.
+ * @param {number[]} allowedDays Array of allowed days of the week. The days are represented by a number, starting from 0 for Sunday, and ending with 6 for Saturday.
+ * @returns {DateTime} Date of the next allowed day of the week.
+ */
 const nextAllowedDay = (startDate, allowedMonths, allowedDays) => {
     let date = DateTime.fromMillis(startDate.ts);
     if (!isAllowedDay(date, allowedDays)) {
@@ -162,6 +207,17 @@ const nextAllowedDay = (startDate, allowedMonths, allowedDays) => {
     return date;
 };
 
+/**
+ * Find the next allowed time, based on a starting date. If the date time is already allowed, returns the original date.
+ *
+ * @param {DateTime} startDate The date we start from.
+ * @param {number[]} allowedMonths Array of allowed months. The months are represented by a number, starting from 0 for January, and ending with 11 for December.
+ * @param {number[]} allowedDays Array of allowed days of the week. The days are represented by a number, starting from 0 for Sunday, and ending with 6 for Saturday.
+ * @param {string[]} allowedTimeFrames Array of allowed time frames. Each time frame string must follow the pattern 'start-end', with start and end being ISO8601 formatted time strings.
+ * @param {string} unit The time unit (hour or minute).
+ * @param {number} span Duration of each unit span. For example, the value would be 30 if the time spans are 30 minutes long.
+ * @returns {DateTime} Date of the next allowed time.
+ */
 const nextAllowedTime = (
     startDate,
     allowedMonths,
@@ -201,13 +257,26 @@ const nextAllowedTime = (
     return date;
 };
 
+/**
+ * Check if an interval of time contains allowed dates/times.
+ *
+ * @param {DateTime} start The starting date of the interval.
+ * @param {DateTime} end The ending date of the interval.
+ * @param {number[]} allowedMonths Array of allowed months. The months are represented by a number, starting from 0 for January, and ending with 11 for December.
+ * @param {number[]} allowedDays Array of allowed days of the week. The days are represented by a number, starting from 0 for Sunday, and ending with 6 for Saturday.
+ * @param {string[]} allowedTimeFrames Array of allowed time frames. Each time frame string must follow the pattern 'start-end', with start and end being ISO8601 formatted time strings.
+ * @param {string} unit The time unit (minute, hour, day, week, month or year).
+ * @param {number} span Duration of each unit span. For example, the value would be 30 if the time spans are 30 minutes long.
+ * @returns {DateTime} Date of the next allowed time.
+ */
 const containsAllowedDateTimes = (
     start,
     end,
     allowedMonths,
     allowedDays,
     allowedTimeFrames,
-    smallestHeader
+    unit,
+    span
 ) => {
     const firstAllowedMonth = nextAllowedMonth(start, allowedMonths);
     if (firstAllowedMonth > end) return false;
@@ -219,15 +288,15 @@ const containsAllowedDateTimes = (
     );
     if (firstAllowedDay > end) return false;
 
-    if (smallestHeader.unit === 'minute' || smallestHeader.unit === 'hour') {
-        const unit = smallestHeader.unit === 'minute' ? 'minute' : 'hour';
+    if (unit === 'minute' || unit === 'hour') {
+        const computedUnit = unit === 'minute' ? 'minute' : 'hour';
         const firstAllowedTime = nextAllowedTime(
             firstAllowedDay,
             allowedMonths,
             allowedDays,
             allowedTimeFrames,
-            unit,
-            smallestHeader.span
+            computedUnit,
+            span
         );
         return firstAllowedTime < end;
     }

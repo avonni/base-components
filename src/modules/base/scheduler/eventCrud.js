@@ -1,5 +1,4 @@
-import { normalizeArray } from 'c/utilsPrivate';
-import { dateTimeObjectFrom } from './dateUtils';
+import { normalizeArray, dateTimeObjectFrom } from 'c/utilsPrivate';
 import SchedulerEvent from './event';
 
 function createEvent(event) {

@@ -35,14 +35,12 @@ import { DateTime, Interval } from 'c/luxon';
 import {
     normalizeArray,
     normalizeBoolean,
-    normalizeString
-} from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
-import {
+    normalizeString,
     dateTimeObjectFrom,
     addToDate,
     numberOfUnitsBetweenDates
-} from './dateUtils';
+} from 'c/utilsPrivate';
+import { classSet } from 'c/utils';
 import { eventCrudMethods } from './eventCrud';
 import {
     EDIT_MODES,

@@ -38,7 +38,7 @@ import {
     nextAllowedTime,
     addToDate,
     numberOfUnitsBetweenDates
-} from './dateUtils';
+} from 'c/utilsPrivate';
 
 /**
  * Scheduler header
@@ -52,7 +52,6 @@ import {
  * @param {boolean} isHidden If true, the header will be hidden
  * @param {boolean} isReference If true, the header unit is the one used by the visibleSpan of the parent Scheduler
  * @param {number} numberOfColumns Number of columns in the header
- * @param {string} childKey Contains the key of the next smaller unit header, if one exists
  * @param {DateTime} end End date of the header
  * @param {DateTime} start Start date of the header
  * @param {string[]} availableTimeFrames Array of available time frames
@@ -64,7 +63,6 @@ export default class SchedulerHeader {
         this.availableDaysOfTheWeek = props.availableDaysOfTheWeek;
         this.availableMonths = props.availableMonths;
         this.availableTimeFrames = props.availableTimeFrames;
-        this.childKey = null;
         this.columns = [];
         this.columnWidths = [];
         this.isHidden = props.isHidden;
