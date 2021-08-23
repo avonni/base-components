@@ -45,7 +45,9 @@ export const Carousel = ({
     currentPanel,
     hideIndicator,
     hidePreviousNextPanelNavigation,
-    itemsPerPanel
+    itemsPerPanel,
+    actionsPosition,
+    actionsVariant
 }) => {
     const element = document.createElement('ac-base-carousel');
     element.assistiveText = assistiveText;
@@ -59,5 +61,7 @@ export const Carousel = ({
     element.hideIndicator = hideIndicator;
     element.hidePreviousNextPanelNavigation = hidePreviousNextPanelNavigation;
     element.itemsPerPanel = itemsPerPanel;
+    element.actionsPosition = actionsPosition;
+    element.actionsVariant = actionsVariant;
     return element;
 };

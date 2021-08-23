@@ -45,11 +45,15 @@ const ITEMS = [
         label: 'Item 1',
         avatarSrc:
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
-        avatarFallbackIconName: 'custom:custom5'
+        avatarFallbackIconName: 'custom:custom5',
+        imageSrc:
+            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
     },
     {
         label: 'Item 2',
-        avatarFallbackIconName: 'custom:custom9'
+        avatarFallbackIconName: 'custom:custom9',
+        imageSrc:
+            'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg'
     },
     {
         label: 'Item 3',
@@ -62,7 +66,9 @@ const ITEMS = [
     },
     {
         label: 'Item 5',
-        avatarFallbackIconName: 'custom:custom51'
+        avatarFallbackIconName: 'custom:custom51',
+        imageSrc:
+            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
     }
 ];
 
@@ -138,6 +144,7 @@ describe('List', () => {
         expect(element.sortableIconName).toBeUndefined();
         expect(element.sortableIconPosition).toBe('right');
         expect(element.actions).toMatchObject([]);
+        expect(element.imageWidth).toBeUndefined();
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -225,7 +232,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const menu = element.shadowRoot.querySelector('.menu');
-            expect(menu.classList).toContain('slds-has-dividers_around-space');
+            expect(menu.classList).toContain('slds-has-dividers_around');
         });
     });
     it('divider = top', () => {
@@ -446,7 +453,7 @@ describe('List', () => {
 
         document.body.appendChild(element);
 
-        element.sortableIconName = 'utility:apps';
+        element.sortableIconName = 'utility:drag_and_drop';
         element.sortable = true;
         element.sortableIconPosition = 'right';
         element.items = ITEMS_WITHOUT_ICONS;
@@ -480,6 +487,105 @@ describe('List', () => {
             const iconsLeft = element.shadowRoot.querySelectorAll('.icon-left');
             expect(iconsRight).toHaveLength(0);
             expect(iconsLeft).toHaveLength(4);
+        });
+    });
+    /* images */
+    it('images presence', () => {
+        const element = createElement('base-list', {
+            is: List
+        });
+
+        document.body.appendChild(element);
+
+        element.items = ITEMS;
+
+        return Promise.resolve().then(() => {
+            const images = element.shadowRoot.querySelectorAll('img');
+            expect(images).toHaveLength(3);
+        });
+    });
+
+    it('images width small', () => {
+        const element = createElement('base-list', {
+            is: List
+        });
+
+        document.body.appendChild(element);
+
+        element.items = ITEMS;
+        element.imageWidth = 'small';
+
+        return Promise.resolve().then(() => {
+            const images = element.shadowRoot.querySelectorAll('img');
+            expect(images[0].width).toBe(48);
+            expect(images[1].width).toBe(48);
+            expect(images[2].width).toBe(48);
+        });
+    });
+
+    it('images width medium', () => {
+        const element = createElement('base-list', {
+            is: List
+        });
+
+        document.body.appendChild(element);
+
+        element.items = ITEMS;
+        element.imageWidth = 'medium';
+
+        return Promise.resolve().then(() => {
+            const images = element.shadowRoot.querySelectorAll('img');
+            expect(images[0].width).toBe(72);
+            expect(images[1].width).toBe(72);
+            expect(images[2].width).toBe(72);
+        });
+    });
+
+    it('images width large', () => {
+        const element = createElement('base-list', {
+            is: List
+        });
+
+        document.body.appendChild(element);
+
+        element.items = ITEMS;
+        element.imageWidth = 'large';
+
+        return Promise.resolve().then(() => {
+            const images = element.shadowRoot.querySelectorAll('img');
+            expect(images[0].width).toBe(128);
+            expect(images[1].width).toBe(128);
+            expect(images[2].width).toBe(128);
+        });
+    });
+
+    it('images rounded on sortable icon right', () => {
+        const element = createElement('base-list', {
+            is: List
+        });
+
+        document.body.appendChild(element);
+
+        element.items = ITEMS;
+        element.imageWidth = 'large';
+        element.divider = 'around';
+        element.sortable = true;
+        element.sortableIconName = 'utility:add';
+        element.sortableIconPosition = 'right';
+
+        return Promise.resolve().then(() => {
+            const images = element.shadowRoot.querySelectorAll(
+                '.image-container'
+            );
+            expect(images[0].classList).toContain(
+                'image-container_rounded-corners'
+            );
+            expect(images[1].classList).toContain(
+                'image-container_rounded-corners'
+            );
+            expect(images[2].classList).toContain(
+                'image-container_rounded-corners'
+            );
         });
     });
 

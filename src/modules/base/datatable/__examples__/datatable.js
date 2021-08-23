@@ -37,7 +37,7 @@ customElements.define('ac-base-datatable', Component.CustomElementConstructor);
 export const Datatable = ({
     columnWidthsMode,
     columns,
-    data,
+    records,
     defaultSortDirection,
     draftValues,
     enableInfiniteLoading,
@@ -63,7 +63,7 @@ export const Datatable = ({
     const element = document.createElement('ac-base-datatable');
     element.columnWidthsMode = columnWidthsMode;
     element.columns = columns;
-    element.data = data;
+    element.records = records;
     element.defaultSortDirection = defaultSortDirection;
     element.draftValues = draftValues;
     element.enableInfiniteLoading = enableInfiniteLoading;

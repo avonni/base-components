@@ -41,7 +41,7 @@ export default class DataTypesFromRToZ extends LightningElement {
         }
     ];
 
-    data = [
+    records = [
         {
             id: 1,
             rating: '3',
