@@ -79,7 +79,7 @@
         </c-primitive-datatable>
         <template if:true={hasGroupBy}>
             <c-primitive-group-by-item
-                records={records}
+                records={formattedResult}
                 group-by={groupBy}
                 hide-undefined-group={hideUndefinedGroup}
                 columns={columns}

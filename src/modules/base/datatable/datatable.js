@@ -104,6 +104,7 @@ export default class Datatable extends LightningElement {
 
     set groupBy(value) {
         this._groupBy = value;
+        this.multiLevelGroupByRecords(this._records, this._groupBy);
     }
     /**
      * If present, the checkbox column for row selection is hidden.
@@ -262,6 +263,9 @@ export default class Datatable extends LightningElement {
     _columnsWidth = [];
     _columnsEditable = [];
     _isDatatableEditable;
+
+    formattedResult = [];
+    formattedResultNoUndefined = [];
 
     /**
      * Array of the columns object that's used to define the data types.
@@ -677,5 +681,203 @@ export default class Datatable extends LightningElement {
                 datatable.save(event);
             });
         }
+    }
+
+    countPerObject(records, key, value, undefinedGroup) {
+        if (value === 'undefined') {
+            return undefinedGroup;
+        }
+        return records.reduce((accumulator, currentVal) => {
+            if (currentVal[key] === value) {
+                accumulator += 1;
+            }
+            return accumulator;
+        }, 0);
+    }
+
+    multiLevelGroupByRecords(records, fieldNames) {
+        // if there is only one groupBy and as a string, we convert it to an array.
+        if (typeof fieldNames === 'string') {
+            fieldNames = fieldNames.split();
+        }
+        const result = [];
+        const temp = { _: result };
+        records.forEach((a) => {
+            fieldNames
+                .reduce((r, k) => {
+                    if (!r[a[k]]) {
+                        r[a[k]] = { _: [] };
+                        r._.push({ [a[k]]: { [a[k]]: r[a[k]]._ } });
+                    }
+                    return r[a[k]];
+                }, temp)
+                ._.push(a);
+        });
+        this.firstLevel(result, fieldNames);
+        this.firstLevelNoUndefined(result, fieldNames);
+    }
+
+    firstLevel(result, fieldNames) {
+        const groupBy = fieldNames.length > 1;
+        const multiLevelGroupBy = fieldNames.length > 2;
+        const level = 0;
+        result.forEach((res) => {
+            Object.keys(res).forEach((key) => {
+                this.formattedResult.push({
+                    label: key,
+                    level: level,
+                    data: Object.values(res[key]).flat(),
+                    size: this.countPerObject(
+                        this._records,
+                        this._groupBy[0],
+                        key,
+                        Object.values(res[key]).flat().length
+                    ),
+                    multiLevelGroupBy: groupBy,
+                    group: this.secondLevel(
+                        Object.values(res[key]).flat(),
+                        level + 1,
+                        multiLevelGroupBy
+                    )
+                });
+            });
+        });
+    }
+
+    firstLevelNoUndefined(result, fieldNames) {
+        const groupBy = fieldNames.length > 1;
+        const multiLevelGroupBy = fieldNames.length > 2;
+        const level = 0;
+        result.forEach((res) => {
+            Object.keys(res).forEach((key) => {
+                this.formattedResultNoUndefined.push({
+                    label: key,
+                    level: level,
+                    data: Object.values(res[key]).flat(),
+                    size: this.countPerObject(
+                        this._records,
+                        this._groupBy[0],
+                        key,
+                        Object.values(res[key]).flat().length
+                    ),
+                    multiLevelGroupBy: groupBy,
+                    group: this.secondLevelNoUndefined(
+                        Object.values(res[key]).flat(),
+                        level + 1,
+                        multiLevelGroupBy
+                    )
+                });
+            });
+        });
+    }
+
+    secondLevel(results, level, multiLevelGroupBy) {
+        const formattedResult = [];
+        results.forEach((res) => {
+            Object.keys(res).forEach((key) => {
+                if (!multiLevelGroupBy) {
+                    formattedResult.push({
+                        label: key,
+                        level: level,
+                        data: Object.values(res[key]).flat(),
+                        size: Object.values(res[key]).flat().length
+                    });
+                } else if (multiLevelGroupBy) {
+                    formattedResult.push({
+                        label: key,
+                        level: level,
+                        data: Object.values(res[key]).flat(),
+                        size: this.countPerObject(
+                            this._records,
+                            this._groupBy[1],
+                            key,
+                            Object.values(res[key]).flat().length
+                        ),
+                        group: this.thirdLevel(
+                            Object.values(res[key]).flat(),
+                            level + 1
+                        ),
+                        multiLevelGroupBy: multiLevelGroupBy
+                    });
+                }
+            });
+        });
+        return formattedResult;
+    }
+
+    secondLevelNoUndefined(results, level, multiLevelGroupBy) {
+        const formattedResult = [];
+        results.forEach((res) => {
+            Object.keys(res).forEach((key) => {
+                if (!multiLevelGroupBy) {
+                    formattedResult.push({
+                        label: key,
+                        level: level,
+                        data: Object.values(res[key]).flat(),
+                        size: Object.values(res[key]).flat().length
+                    });
+                } else if (multiLevelGroupBy) {
+                    formattedResult.push({
+                        label: key,
+                        level: level,
+                        data: Object.values(res[key]).flat(),
+                        size: this.countPerObject(
+                            this._records,
+                            this._groupBy[1],
+                            key,
+                            Object.values(res[key]).flat().length
+                        ),
+                        group: this.thirdLevelNoUndefined(
+                            Object.values(res[key]).flat(),
+                            level + 1
+                        ),
+                        multiLevelGroupBy: multiLevelGroupBy
+                    });
+                }
+            });
+        });
+        return this.removeUndefined(formattedResult);
+    }
+
+    thirdLevel(results, level) {
+        const formattedResult = [];
+        results.forEach((res) => {
+            Object.keys(res).forEach((key) => {
+                formattedResult.push({
+                    label: key,
+                    level: level,
+                    data: Object.values(res[key]).flat(),
+                    size: Object.values(res[key]).flat().length
+                });
+            });
+        });
+        return formattedResult;
+    }
+
+    thirdLevelNoUndefined(results, level) {
+        const formattedResult = [];
+        results.forEach((res) => {
+            Object.keys(res).forEach((key) => {
+                formattedResult.push({
+                    label: key,
+                    level: level,
+                    data: Object.values(res[key]).flat(),
+                    size: Object.values(res[key]).flat().length
+                });
+            });
+        });
+        return this.removeUndefined(formattedResult);
+    }
+
+    removeUndefined(formattedResult) {
+        const noUndefinedResult = [];
+        formattedResult.forEach((result) => {
+            if (result.label === 'undefined') {
+                noUndefinedResult.push();
+            } else {
+                noUndefinedResult.push(result);
+            }
+        });
+        return noUndefinedResult;
     }
 }
