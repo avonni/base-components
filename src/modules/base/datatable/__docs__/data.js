@@ -525,7 +525,8 @@ const columnsGroupBy = [
     {
         id: 1,
         label: 'Name',
-        fieldName: 'name'
+        fieldName: 'name',
+        editable: true
     },
     {
         id: 2,
@@ -1126,6 +1127,7 @@ const recordsGroupBy = [
         name: 'Done',
         age: '2',
         city: 'Longueuil',
+        district: 'Old Longueuil',
         habitation: 'Room'
     },
     {
