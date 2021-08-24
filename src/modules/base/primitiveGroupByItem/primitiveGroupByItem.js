@@ -63,7 +63,7 @@ export default class ProgressGroupByItem extends LightningElement {
     }
     set groupBy(value) {
         this._groupBy = JSON.parse(JSON.stringify(value));
-        this.multiLevelGroupByRecords(this._records, this._groupBy);
+        this.recursiveGroupByNoUndefined(this.records, this._groupBy, 0);
     }
 
     @api
@@ -86,8 +86,11 @@ export default class ProgressGroupByItem extends LightningElement {
     _groupBy = [];
     _hideUndefinedGroup = false;
 
-    formattedResult = [];
-    formattedResultNoUndefined = [];
+    renderedCallback() {
+        console.log(
+            this.recursiveGroupByNoUndefined(this.records, this._groupBy, 0)
+        );
+    }
 
     @api
     primitiveGroupedDatatables() {
@@ -115,178 +118,75 @@ export default class ProgressGroupByItem extends LightningElement {
         }, 0);
     }
 
-    multiLevelGroupByRecords(records, fieldNames) {
-        // if there is only one groupBy and as a string, we convert it to an array.
-        if (typeof fieldNames === 'string') {
-            fieldNames = fieldNames.split();
+    recursiveGroupBy(records, groupBy, level) {
+        let field = groupBy[0];
+        if (!field) return records;
+        let recursiveData = Object.values(
+            records.reduce((obj, current) => {
+                if (!obj[current[field]])
+                    obj[current[field]] = {
+                        label: this.isUndefined(current[field]),
+                        group: [],
+                        multiLevelGroupBy: groupBy.length !== 1,
+                        level: level
+                    };
+                obj[current[field]].group.push(current);
+                return obj;
+            }, {})
+        );
+
+        if (groupBy.length) {
+            recursiveData.forEach((obj) => {
+                obj.size = obj.group.length;
+                obj.group = this.recursiveGroupBy(
+                    obj.group,
+                    groupBy.slice(1),
+                    level + 1
+                );
+            });
         }
-        const result = [];
-        const temp = { _: result };
-        records.forEach((a) => {
-            fieldNames
-                .reduce((r, k) => {
-                    if (!r[a[k]]) {
-                        r[a[k]] = { _: [] };
-                        r._.push({ [a[k]]: { [a[k]]: r[a[k]]._ } });
-                    }
-                    return r[a[k]];
-                }, temp)
-                ._.push(a);
-        });
-        this.firstLevel(result, fieldNames);
-        this.firstLevelNoUndefined(result, fieldNames);
+        return recursiveData;
     }
 
-    firstLevel(result, fieldNames) {
-        const groupBy = fieldNames.length > 1;
-        const multiLevelGroupBy = fieldNames.length > 2;
-        const level = 0;
-        result.forEach((res) => {
-            Object.keys(res).forEach((key) => {
-                this.formattedResult.push({
-                    label: key,
-                    level: level,
-                    data: Object.values(res[key]).flat(),
-                    size: this.countPerObject(
-                        this._records,
-                        this._groupBy[0],
-                        key,
-                        Object.values(res[key]).flat().length
-                    ),
-                    multiLevelGroupBy: groupBy,
-                    group: this.secondLevel(
-                        Object.values(res[key]).flat(),
-                        level + 1,
-                        multiLevelGroupBy
-                    )
-                });
+    recursiveGroupByNoUndefined(records, groupBy, level) {
+        let field = groupBy[0];
+        if (!field) return records;
+        let recursiveData = Object.values(
+            records.reduce((obj, current) => {
+                if (!obj[current[field]])
+                    obj[current[field]] = {
+                        label: this.isUndefined(current[field]),
+                        group: [],
+                        multiLevelGroupBy: groupBy.length !== 1,
+                        level: level
+                    };
+                obj[current[field]].group.push(current);
+                return obj;
+            }, {})
+        );
+
+        if (groupBy.length) {
+            recursiveData.forEach((obj) => {
+                obj.size = obj.group.length;
+                obj.group = this.recursiveGroupByNoUndefined(
+                    obj.group,
+                    groupBy.slice(1),
+                    level + 1
+                );
             });
-        });
+        }
+        return this.removeUndefined(recursiveData);
     }
 
-    firstLevelNoUndefined(result, fieldNames) {
-        const groupBy = fieldNames.length > 1;
-        const multiLevelGroupBy = fieldNames.length > 2;
-        const level = 0;
-        result.forEach((res) => {
-            Object.keys(res).forEach((key) => {
-                this.formattedResultNoUndefined.push({
-                    label: key,
-                    level: level,
-                    data: Object.values(res[key]).flat(),
-                    size: this.countPerObject(
-                        this._records,
-                        this._groupBy[0],
-                        key,
-                        Object.values(res[key]).flat().length
-                    ),
-                    multiLevelGroupBy: groupBy,
-                    group: this.secondLevelNoUndefined(
-                        Object.values(res[key]).flat(),
-                        level + 1,
-                        multiLevelGroupBy
-                    )
-                });
-            });
-        });
+    isUndefined(value) {
+        return value === undefined ? 'undefined' : value;
     }
 
-    secondLevel(results, level, multiLevelGroupBy) {
-        const formattedResult = [];
-        results.forEach((res) => {
-            Object.keys(res).forEach((key) => {
-                if (!multiLevelGroupBy) {
-                    formattedResult.push({
-                        label: key,
-                        level: level,
-                        data: Object.values(res[key]).flat(),
-                        size: Object.values(res[key]).flat().length
-                    });
-                } else if (multiLevelGroupBy) {
-                    formattedResult.push({
-                        label: key,
-                        level: level,
-                        data: Object.values(res[key]).flat(),
-                        size: this.countPerObject(
-                            this._records,
-                            this._groupBy[1],
-                            key,
-                            Object.values(res[key]).flat().length
-                        ),
-                        group: this.thirdLevel(
-                            Object.values(res[key]).flat(),
-                            level + 1
-                        ),
-                        multiLevelGroupBy: multiLevelGroupBy
-                    });
-                }
-            });
-        });
-        return formattedResult;
-    }
-
-    secondLevelNoUndefined(results, level, multiLevelGroupBy) {
-        const formattedResult = [];
-        results.forEach((res) => {
-            Object.keys(res).forEach((key) => {
-                if (!multiLevelGroupBy) {
-                    formattedResult.push({
-                        label: key,
-                        level: level,
-                        data: Object.values(res[key]).flat(),
-                        size: Object.values(res[key]).flat().length
-                    });
-                } else if (multiLevelGroupBy) {
-                    formattedResult.push({
-                        label: key,
-                        level: level,
-                        data: Object.values(res[key]).flat(),
-                        size: this.countPerObject(
-                            this._records,
-                            this._groupBy[1],
-                            key,
-                            Object.values(res[key]).flat().length
-                        ),
-                        group: this.thirdLevelNoUndefined(
-                            Object.values(res[key]).flat(),
-                            level + 1
-                        ),
-                        multiLevelGroupBy: multiLevelGroupBy
-                    });
-                }
-            });
-        });
-        return this.removeUndefined(formattedResult);
-    }
-
-    thirdLevel(results, level) {
-        const formattedResult = [];
-        results.forEach((res) => {
-            Object.keys(res).forEach((key) => {
-                formattedResult.push({
-                    label: key,
-                    level: level,
-                    data: Object.values(res[key]).flat(),
-                    size: Object.values(res[key]).flat().length
-                });
-            });
-        });
-        return formattedResult;
-    }
-
-    thirdLevelNoUndefined(results, level) {
-        const formattedResult = [];
-        results.forEach((res) => {
-            Object.keys(res).forEach((key) => {
-                formattedResult.push({
-                    label: key,
-                    level: level,
-                    data: Object.values(res[key]).flat(),
-                    size: Object.values(res[key]).flat().length
-                });
-            });
-        });
-        return this.removeUndefined(formattedResult);
+    removeUndefinedRow(result) {
+        if (result.label !== 'undefined') {
+            return result;
+        }
+        return undefined;
     }
 
     removeUndefined(formattedResult) {
@@ -313,9 +213,8 @@ export default class ProgressGroupByItem extends LightningElement {
     }
 
     get hardData() {
-        console.log(this.formattedResultNoUndefined);
         return this._hideUndefinedGroup
-            ? this.removeUndefined(this.formattedResultNoUndefined)
-            : this.formattedResult;
+            ? this.recursiveGroupByNoUndefined(this._records, this._groupBy, 0)
+            : this.recursiveGroupBy(this.records, this._groupBy, 0);
     }
 }
