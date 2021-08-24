@@ -66,6 +66,14 @@
     max-width: var(--avonni-scheduler-cell-width);
 }
 
+.scheduler__infinite-load-spinner_right {
+    right: 0;
+    left: auto;
+}
+.scheduler__infinite-load-spinner_left {
+    left: 2rem;
+}
+
 /* Splitter bar between the data table and the schedule --------- */
 .scheduler__splitter {
     z-index: 5;

@@ -148,6 +148,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     renderedCallback() {
+        console.log('render');
         this.updatePosition();
         this.updateWidth();
         this.updateHeight();

@@ -33,6 +33,7 @@
 import { generateUniqueId } from 'c/utils';
 import { DateTime } from 'c/luxon';
 import {
+    dateTimeObjectFrom,
     nextAllowedDay,
     nextAllowedMonth,
     nextAllowedTime,
@@ -72,33 +73,33 @@ export default class SchedulerHeader {
         this.isReference = props.isReference;
         this.key = generateUniqueId();
         this.label = props.label;
-        this.numberOfColumns = props.numberOfColumns > MAX_VISIBLE_COLUMNS ? MAX_VISIBLE_COLUMNS : props.numberOfColumns;
+        this.numberOfColumns = props.numberOfColumns;
         this.span = props.span;
         this.start = props.start;
         this._end = props.end;
         this.unit = props.unit;
         this.duration = props.duration;
-        this.visibleColumns = [];
 
-        this.initColumns();
+        this.initColumns(DateTime.fromMillis(this.start.ts), true);
     }
 
     get end() {
         return this._end;
     }
     set end(value) {
-        this._end = value;
+        this._end =
+            value instanceof DateTime ? value : dateTimeObjectFrom(value);
 
         if (this.columns.length) {
             this.columns[this.columns.length - 1].end = value.ts;
         }
     }
 
-    initColumns(startDate) {
+    initColumns(startDate, firstRender) {
         const { unit, label, span, isReference } = this;
-        let iterations = this.numberOfColumns > 1 ? this.numberOfColumns : 1;
+        let iterations = this.computeNumberOfColumns(firstRender);
         this.columns = [];
-        let date = startDate || DateTime.fromMillis(this.start.ts);
+        let date = startDate;
 
         for (let i = 0; i < iterations; i++) {
             // If this is not the first column, we start the month on the first day
@@ -137,6 +138,7 @@ export default class SchedulerHeader {
             // because of the allowed dates/times
             if (
                 isReference &&
+                firstRender &&
                 i === 0 &&
                 date.ts !== this.start.ts &&
                 unit === 'week'
@@ -148,8 +150,7 @@ export default class SchedulerHeader {
                 );
                 this.numberOfColumns =
                     numberOfUnitsBetweenDates(unit, date, pushedEnd) / span;
-                iterations =
-                    this.numberOfColumns > 1 ? this.numberOfColumns : 1;
+                iterations = this.computeNumberOfColumns(firstRender);
             }
 
             // Compensate the fact that luxon weeks start on Monday
@@ -161,9 +162,10 @@ export default class SchedulerHeader {
                     : columnEnd.endOf(unit);
 
             // If the current date is bigger than the reference end, stop adding columns
-            if (!isReference && this.dateIsBiggerThanEnd(date)) {
-                this.numberOfColumns = this.columns.length;
+            if (this.dateIsBiggerThanEnd(date)) {
                 this.columns[this.columns.length - 1].end = this.end.ts;
+                this.setHeaderEnd();
+                this.cleanEmptyLastColumn();
                 break;
             }
 
@@ -181,13 +183,19 @@ export default class SchedulerHeader {
                     : date.startOf(unit);
         }
 
-        this._start = DateTime.fromMillis(this.columns[0].start);
-        this.setHeaderEnd();
-        this.cleanEmptyLastColumn();
+        if (firstRender) {
+            this._start = DateTime.fromMillis(this.columns[0].start);
+        }
+    }
 
-        // On the first render, we only have one column.
-        // Its label will be used as a reference for the cell width.
-        this.visibleColumns = [this.columns[0]];
+    computeNumberOfColumns(firstRender) {
+        // On the first render, we create only one column, to compute the default cell width.
+        if (firstRender || this.numberOfColumns < 1) {
+            return 1;
+        }
+        return this.numberOfColumns > MAX_VISIBLE_COLUMNS
+            ? MAX_VISIBLE_COLUMNS
+            : this.numberOfColumns;
     }
 
     dateIsBiggerThanEnd(date) {
@@ -240,7 +248,7 @@ export default class SchedulerHeader {
             duration,
             span,
             columns,
-            // isReference,
+            isReference,
             numberOfColumns
         } = this;
         const lastColumn = columns[columns.length - 1];
@@ -260,7 +268,7 @@ export default class SchedulerHeader {
             );
         }
 
-        // if (isReference) {
+        if (isReference) {
             if (unit === 'year') {
                 end = end.set({ months: start.month });
             }
@@ -276,34 +284,34 @@ export default class SchedulerHeader {
 
             lastColumn.end = end.ts;
             this._end = end;
-        // } else {
-        //     lastColumn.end = this.end.ts;
-        // }
+        } else {
+            lastColumn.end = this.end.ts;
+        }
     }
 
-    computeColumnWidths(referenceCellWidth, referenceColumns) {
-        const { isReference, visibleColumns, unit, span } = this;
+    computeColumnWidths(cellWidth, smallestColumns) {
+        const { isReference, columns, unit, span } = this;
         const columnWidths = [];
 
         if (isReference) {
             // The columns of the header with the shortest unit all have the same width
-            visibleColumns.forEach(() => {
-                columnWidths.push(referenceCellWidth);
+            columns.forEach(() => {
+                columnWidths.push(cellWidth);
             });
         } else {
             // The other headers base their column widths on the header with the shortest unit
             let columnIndex = 0;
-            visibleColumns.forEach((column, index) => {
+            columns.forEach((column, index) => {
                 let width = 0;
                 let start =
                     index === 0
-                        ? DateTime.fromMillis(referenceColumns[0].start)
+                        ? DateTime.fromMillis(smallestColumns[0].start)
                         : DateTime.fromMillis(column.start);
                 const end = addToDate(start, unit, span);
 
-                while (columnIndex < referenceColumns.length) {
+                while (columnIndex < smallestColumns.length) {
                     start = DateTime.fromMillis(
-                        referenceColumns[columnIndex].start
+                        smallestColumns[columnIndex].start
                     );
 
                     // Normalize the beginning of the week, because Luxon's week start on Monday
@@ -318,7 +326,7 @@ export default class SchedulerHeader {
                     // Stop if the next smallestHeader column belongs to the next header unit
                     if (endUnit <= startUnit) break;
 
-                    width += referenceCellWidth;
+                    width += cellWidth;
                     columnIndex += 1;
                 }
                 columnWidths.push(width);

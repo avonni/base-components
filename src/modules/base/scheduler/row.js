@@ -42,7 +42,6 @@ export default class SchedulerRow {
         this.referenceColumns = normalizeArray(props.referenceColumns);
         this.events = normalizeArray(props.events);
         this._height = 0;
-        this.visibleColumns = [];
         this.initColumns();
     }
 

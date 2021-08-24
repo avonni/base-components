@@ -78,10 +78,23 @@
 
         <!-- Schedule -->
         <div
-            class="slds-col slds-is-relative scheduler__schedule-col slds-scrollable_x slds-scrollable_none"
+            class="slds-col slds-grid slds-is-relative scheduler__schedule-col slds-scrollable_x slds-scrollable_none"
             onscroll={handleScroll}
         >
-            <div class={tableClass}>
+            <!-- Left infinite loading spinner -->
+            <div if:true={showLeftInfiniteLoadSpinner} class="slds-is-relative">
+                <div
+                    role="status"
+                    class="scheduler__infinite-load-spinner_left slds-spinner slds-spinner_medium"
+                >
+                    <span class="slds-assistive-text"
+                        >{loadingStateAlternativeText}</span
+                    >
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                </div>
+            </div>
+            <div class="slds-col">
                 <!-- Headers -->
                 <c-primitive-scheduler-header-group
                     available-days-of-the-week={availableDaysOfTheWeek}
@@ -92,10 +105,10 @@
                     visible-span={visibleSpan}
                     onprivatecellwidthchange={handleHeaderCellWidthChange}
                     onprivateheaderchange={handleHeaderChange}
+                    onprivateheaderfirstrender={handleHeaderFirstRender}
                     onprivateheaderheightchange={handleHeaderHeightChange}
                     onprivatevisibleheaderchange={handleHeaderVisibleCellsChange}
                 ></c-primitive-scheduler-header-group>
-
                 <!-- Rows -->
                 <div
                     oncontextmenu={handleEmptySpotContextMenu}
@@ -114,10 +127,7 @@
                             data-index={index}
                             data-key={row.key}
                         >
-                            <template
-                                for:each={row.columns}
-                                for:item="column"
-                            >
+                            <template for:each={row.columns} for:item="column">
                                 <div
                                     key={column.start}
                                     class="slds-border_right slds-border_bottom slds-col slds-p-around_none slds-wrap scheduler__cell"
@@ -127,13 +137,10 @@
                             </template>
                         </div>
                     </template>
-
                     <!-- Events -->
                     <div class="scheduler__events slds-is-absolute">
                         <template for:each={computedEvents} for:item="event">
-                            <div
-                                key={event.key}
-                            >
+                            <div key={event.key}>
                                 <template
                                     for:each={event.visibleOccurrences}
                                     for:item="occurrence"
@@ -141,7 +148,7 @@
                                     <c-primitive-scheduler-event-occurrence
                                         key={occurrence.key}
                                         color={event.color}
-                                        columns={smallestHeader.visibleColumns}
+                                        columns={smallestHeader.columns}
                                         column-duration={smallestColumnDuration}
                                         column-width={cellWidth}
                                         date-format={dateFormat}
@@ -183,7 +190,25 @@
                     </div>
                 </div>
             </div>
+            <!-- Right infinite loading spinner -->
+            <div
+                if:true={showRightInfiniteLoadSpinner}
+                class="slds-is-relative"
+            >
+                <div
+                    role="status"
+                    class="scheduler__infinite-load-spinner slds-spinner slds-spinner_medium"
+                >
+                    <span class="slds-assistive-text"
+                        >{loadingStateAlternativeText}</span
+                    >
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                </div>
+            </div>
         </div>
+
+        <!-- Complete schedule loading spinner -->
         <lightning-spinner
             if:true={isLoading}
             alternative-text={loadingStateAlternativeText}
