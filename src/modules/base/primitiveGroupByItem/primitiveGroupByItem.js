@@ -106,18 +106,6 @@ export default class ProgressGroupByItem extends LightningElement {
         );
     }
 
-    countPerObject(records, key, value, undefinedGroup) {
-        if (value === 'undefined') {
-            return undefinedGroup;
-        }
-        return records.reduce((accumulator, currentVal) => {
-            if (currentVal[key] === value) {
-                accumulator += 1;
-            }
-            return accumulator;
-        }, 0);
-    }
-
     recursiveGroupBy(records, groupBy, level) {
         let field = groupBy[0];
         if (!field) return records;
@@ -176,6 +164,18 @@ export default class ProgressGroupByItem extends LightningElement {
             });
         }
         return this.removeUndefined(recursiveData);
+    }
+
+    countPerObject(records, key, value, undefinedGroup) {
+        if (value === 'undefined') {
+            return undefinedGroup;
+        }
+        return records.reduce((accumulator, currentVal) => {
+            if (currentVal[key] === value) {
+                accumulator += 1;
+            }
+            return accumulator;
+        }, 0);
     }
 
     isUndefined(value) {
