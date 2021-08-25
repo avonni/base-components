@@ -313,20 +313,26 @@ export default class Datatable extends LightningElement {
 
         if (this.hasGroupBy) {
             this.addEventListener('resizecol', (event) => {
-                this.primitiveGroupedDatatables.forEach((datatable) => {
-                    datatable.handleResizeColumn(event);
+                this.groupByItems.forEach((groupByItem) => {
+                    groupByItem.elData().forEach((datatable) => {
+                        datatable.handleSelectionCellClick(event);
+                    });
                 });
             });
 
             this.addEventListener('selectallrows', (event) => {
-                this.primitiveGroupedDatatables.forEach((datatable) => {
-                    datatable.handleSelectionCellClick(event);
+                this.groupByItems.forEach((groupByItem) => {
+                    groupByItem.elData().forEach((datatable) => {
+                        datatable.handleSelectionCellClick(event);
+                    });
                 });
             });
 
             this.addEventListener('deselectallrows', (event) => {
-                this.primitiveGroupedDatatables.forEach((datatable) => {
-                    datatable.handleSelectionCellClick(event);
+                this.groupByItems.forEach((groupByItem) => {
+                    groupByItem.elData().forEach((datatable) => {
+                        datatable.handleSelectionCellClick(event);
+                    });
                 });
             });
         }
@@ -334,7 +340,25 @@ export default class Datatable extends LightningElement {
 
     renderedCallback() {
         this.bottomTableInitialization();
+        console.log(this.groupByItems)
     }
+
+    get groupByItem() {
+        return this.template.querySelector('c-primitive-group-by-item');
+    }
+
+    get groupByItems() {
+        return this.groupByItem.primitiveItems();
+    }
+
+    get allDatatables() {
+        this.groupByItems.forEach((groupByItem) => {
+            (groupByItem.elData()).forEach((s) => {
+                return s
+            });
+        });
+    }
+
 
     /**
      * Returns the primitive grouped datatable.
@@ -451,8 +475,8 @@ export default class Datatable extends LightningElement {
         this.datatableColumnsWidth();
         this.updateColumnStyle();
         this.updateTableWidth();
-        this.primitiveDraftValues();
-        this.datatableEditable();
+        // this.primitiveDraftValues();
+        // this.datatableEditable();
     }
 
     /**
@@ -678,4 +702,106 @@ export default class Datatable extends LightningElement {
             });
         }
     }
+
+    recursiveGroupBy(records, groupBy, level) {
+        let field = groupBy[0];
+        if (!field) return records;
+        let recursiveData = Object.values(
+            records.reduce((obj, current) => {
+                if (!obj[current[field]])
+                    obj[current[field]] = {
+                        label: this.isUndefined(current[field]),
+                        group: [],
+                        multiLevelGroupBy: groupBy.length !== 1,
+                        level: level
+                    };
+                obj[current[field]].group.push(current);
+                return obj;
+            }, {})
+        );
+
+        if (groupBy.length) {
+            recursiveData.forEach((obj) => {
+                obj.size = obj.group.length;
+                obj.group = this.recursiveGroupBy(
+                    obj.group,
+                    groupBy.slice(1),
+                    level + 1
+                );
+            });
+        }
+        return recursiveData;
+    }
+
+    recursiveGroupByNoUndefined(records, groupBy, level) {
+        let field = groupBy[0];
+        if (!field) return records;
+        let recursiveData = Object.values(
+            records.reduce((obj, current) => {
+                if (!obj[current[field]])
+                    obj[current[field]] = {
+                        label: this.isUndefined(current[field]),
+                        group: [],
+                        multiLevelGroupBy: groupBy.length !== 1,
+                        level: level
+                    };
+                obj[current[field]].group.push(current);
+                return obj;
+            }, {})
+        );
+
+        if (groupBy.length) {
+            recursiveData.forEach((obj) => {
+                obj.size = obj.group.length;
+                obj.group = this.recursiveGroupByNoUndefined(
+                    obj.group,
+                    groupBy.slice(1),
+                    level + 1
+                );
+            });
+        }
+        return this.removeUndefined(recursiveData);
+    }
+
+    countPerObject(records, key, value, undefinedGroup) {
+        if (value === 'undefined') {
+            return undefinedGroup;
+        }
+        return records.reduce((accumulator, currentVal) => {
+            if (currentVal[key] === value) {
+                accumulator += 1;
+            }
+            return accumulator;
+        }, 0);
+    }
+
+    isUndefined(value) {
+        return value === undefined ? 'undefined' : value;
+    }
+
+    removeUndefinedRow(result) {
+        if (result.label !== 'undefined') {
+            return result;
+        }
+        return undefined;
+    }
+
+    removeUndefined(formattedResult) {
+        const noUndefinedResult = [];
+        formattedResult.forEach((result) => {
+            if (result.label === 'undefined') {
+                noUndefinedResult.push();
+            } else {
+                noUndefinedResult.push(result);
+            }
+        });
+        return noUndefinedResult;
+    }
+
+    get hardData() {
+        return this._hideUndefinedGroup
+            ? this.recursiveGroupByNoUndefined(this._records, this._groupBy, 0)
+            : this.recursiveGroupBy(this.records, this._groupBy, 0);
+    }
+
 }

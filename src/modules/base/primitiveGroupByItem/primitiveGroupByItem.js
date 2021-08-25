@@ -58,15 +58,6 @@ export default class ProgressGroupByItem extends LightningElement {
     @api wrapTextMaxLines;
 
     @api
-    get groupBy() {
-        return this._groupBy;
-    }
-    set groupBy(value) {
-        this._groupBy = JSON.parse(JSON.stringify(value));
-        this.recursiveGroupByNoUndefined(this.records, this._groupBy, 0);
-    }
-
-    @api
     get records() {
         return this._records;
     }
@@ -83,13 +74,14 @@ export default class ProgressGroupByItem extends LightningElement {
     }
 
     _records = [];
-    _groupBy = [];
     _hideUndefinedGroup = false;
 
     renderedCallback() {
-        console.log(
-            this.recursiveGroupByNoUndefined(this.records, this._groupBy, 0)
-        );
+        if(!this.rendered) {
+            // this.template.querySelectorAll('c-primitive-group-by-item').forEach((primitive) =>{
+            //     console.log(primitive.primitiveGroupedDatatables());
+            // })    
+        }
     }
 
     @api
@@ -100,105 +92,27 @@ export default class ProgressGroupByItem extends LightningElement {
     }
 
     @api
+    primitiveItems() {
+        return this.template.querySelectorAll(
+            'c-primitive-group-by-item'
+        );
+    }
+
+    @api
     primitiveGroupedDatatable() {
         return this.template.querySelector(
             'c-primitive-datatable[data-role="grouped"]'
         );
     }
 
-    recursiveGroupBy(records, groupBy, level) {
-        let field = groupBy[0];
-        if (!field) return records;
-        let recursiveData = Object.values(
-            records.reduce((obj, current) => {
-                if (!obj[current[field]])
-                    obj[current[field]] = {
-                        label: this.isUndefined(current[field]),
-                        group: [],
-                        multiLevelGroupBy: groupBy.length !== 1,
-                        level: level
-                    };
-                obj[current[field]].group.push(current);
-                return obj;
-            }, {})
-        );
-
-        if (groupBy.length) {
-            recursiveData.forEach((obj) => {
-                obj.size = obj.group.length;
-                obj.group = this.recursiveGroupBy(
-                    obj.group,
-                    groupBy.slice(1),
-                    level + 1
-                );
-            });
-        }
-        return recursiveData;
+    @api
+    collapsibleGroups() {
+        return this.template.querySelectorAll('c-primitive-collapsible-group');
     }
 
-    recursiveGroupByNoUndefined(records, groupBy, level) {
-        let field = groupBy[0];
-        if (!field) return records;
-        let recursiveData = Object.values(
-            records.reduce((obj, current) => {
-                if (!obj[current[field]])
-                    obj[current[field]] = {
-                        label: this.isUndefined(current[field]),
-                        group: [],
-                        multiLevelGroupBy: groupBy.length !== 1,
-                        level: level
-                    };
-                obj[current[field]].group.push(current);
-                return obj;
-            }, {})
-        );
-
-        if (groupBy.length) {
-            recursiveData.forEach((obj) => {
-                obj.size = obj.group.length;
-                obj.group = this.recursiveGroupByNoUndefined(
-                    obj.group,
-                    groupBy.slice(1),
-                    level + 1
-                );
-            });
-        }
-        return this.removeUndefined(recursiveData);
-    }
-
-    countPerObject(records, key, value, undefinedGroup) {
-        if (value === 'undefined') {
-            return undefinedGroup;
-        }
-        return records.reduce((accumulator, currentVal) => {
-            if (currentVal[key] === value) {
-                accumulator += 1;
-            }
-            return accumulator;
-        }, 0);
-    }
-
-    isUndefined(value) {
-        return value === undefined ? 'undefined' : value;
-    }
-
-    removeUndefinedRow(result) {
-        if (result.label !== 'undefined') {
-            return result;
-        }
-        return undefined;
-    }
-
-    removeUndefined(formattedResult) {
-        const noUndefinedResult = [];
-        formattedResult.forEach((result) => {
-            if (result.label === 'undefined') {
-                noUndefinedResult.push();
-            } else {
-                noUndefinedResult.push(result);
-            }
-        });
-        return noUndefinedResult;
+    @api
+    elData() {
+        return this.template.querySelector('c-primitive-datatable')
     }
 
     handleDispatchEvents(event) {
@@ -213,8 +127,6 @@ export default class ProgressGroupByItem extends LightningElement {
     }
 
     get hardData() {
-        return this._hideUndefinedGroup
-            ? this.recursiveGroupByNoUndefined(this._records, this._groupBy, 0)
-            : this.recursiveGroupBy(this.records, this._groupBy, 0);
+        return this.records;
     }
 }
