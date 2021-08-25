@@ -267,6 +267,8 @@ export default class Datatable extends LightningElement {
     _columnsEditable = [];
     _isDatatableEditable;
 
+    privateChildrenRecord = {};
+
     /**
      * Array of the columns object that's used to define the data types.
      * Required properties include 'label', 'fieldName', and 'type'. The default type is 'text'.
@@ -314,28 +316,43 @@ export default class Datatable extends LightningElement {
             this._columnsWidth = event.detail.columnWidths;
             this.tableResize();
         });
-
-        if (this.hasGroupBy) {
-            this.addEventListener('resizecol', (event) => {
-                this.primitiveGroupedDatatables.forEach((datatable) => {
-                    datatable.handleResizeColumn(event);
-                });
-            });
-            this.addEventListener('selectallrows', (event) => {
-                this.primitiveGroupedDatatables.forEach((datatable) => {
-                    datatable.handleSelectionCellClick(event);
-                });
-            });
-            this.addEventListener('deselectallrows', (event) => {
-                this.primitiveGroupedDatatables.forEach((datatable) => {
-                    datatable.handleSelectionCellClick(event);
-                });
-            });
-        }
     }
 
     renderedCallback() {
         this.bottomTableInitialization();
+    }
+
+    handleChildRegister(event) {
+        const item = event.detail;
+
+        const guid = item.guid;
+
+        this.privateChildrenRecord[guid] = item;
+
+        this.addEventListener('selectallrows', (selectEvent) => {
+            this.privateChildrenRecord[guid].callbacks.selectAll(selectEvent);
+        });
+
+        this.addEventListener('deselectallrows', (deselectEvent) => {
+            this.privateChildrenRecord[guid].callbacks.deselectAll(
+                deselectEvent
+            );
+        });
+
+        this.addEventListener('resizecol', (resizeEvent) => {
+            this.privateChildrenRecord[guid].callbacks.resizeAll(resizeEvent);
+        });
+
+        // Add a callback that
+        // notifies the parent when child is unregistered
+        item.callbacks.registerDisconnectCallback(this.handleChildUnregister);
+    }
+
+    handleChildUnregister(event) {
+        const item = event.detail;
+        const guid = item.guid;
+
+        this.privateChildrenRecord[guid] = undefined;
     }
 
     /**

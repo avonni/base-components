@@ -32,6 +32,7 @@
 
 import { LightningElement, api } from 'lwc';
 import { normalizeArray } from 'c/utilsPrivate';
+import { generateUUID } from 'c/utils';
 
 export default class ProgressGroupByItem extends LightningElement {
     @api columns;
@@ -65,9 +66,11 @@ export default class ProgressGroupByItem extends LightningElement {
         this._records = JSON.parse(JSON.stringify(normalizeArray(value)));
     }
 
+    guid = generateUUID();
     _records = [];
 
     handleDispatchEvents(event) {
+        console.log(event);
         this.dispatchEvent(
             new CustomEvent(`${event.type}`, {
                 detail: event.detail,
@@ -78,8 +81,30 @@ export default class ProgressGroupByItem extends LightningElement {
         );
     }
 
-    get groupByRecords() {
-        return this.records;
+    connectedCallback() {
+        const itemregister = new CustomEvent('privateitemregister', {
+            bubbles: true,
+            detail: {
+                callbacks: {
+                    registerDisconnectCallback: this.registerDisconnectCallback,
+                    selectAll: this.selectAll.bind(this),
+                    deselectAll: this.deselectAll.bind(this),
+                    resizeAll: this.resizeAll.bind(this)
+                },
+                guid: this.guid
+            }
+        });
+
+        this.dispatchEvent(itemregister);
+    }
+
+    // Store the parent's callback so we can invoke later
+    registerDisconnectCallback(callback) {
+        this.disconnectFromParent = callback;
+    }
+
+    disconnectedCallback() {
+        this.disconnectFromParent(this.guid);
     }
 
     @api
@@ -89,15 +114,57 @@ export default class ProgressGroupByItem extends LightningElement {
         );
     }
 
-    @api
-    primitiveItems() {
+    get groupByRecords() {
+        return this.records;
+    }
+
+    get primitiveItems() {
         return this.template.querySelectorAll('c-primitive-group-by-item');
     }
 
+    get primitiveGroupByDatatables() {
+        return this.template.querySelectorAll('c-primitive-datatable');
+    }
+
     @api
-    primitiveGroupedDatatable() {
-        return this.template.querySelector(
-            'c-primitive-datatable[data-role="grouped"]'
-        );
+    selectAll(event) {
+        if (this.primitiveGroupByDatatables.length > 0) {
+            this.primitiveGroupByDatatables.forEach((datatable) => {
+                datatable.handleSelectionCellClick(event);
+            });
+        }
+        if (this.primitiveItems) {
+            this.primitiveItems.forEach((primitiveItem) => {
+                primitiveItem.selectAll(event);
+            });
+        }
+    }
+
+    @api
+    deselectAll(event) {
+        if (this.primitiveGroupByDatatables.length > 0) {
+            this.primitiveGroupByDatatables.forEach((datatable) => {
+                datatable.handleSelectionCellClick(event);
+            });
+        }
+        if (this.primitiveItems) {
+            this.primitiveItems.forEach((primitiveItem) => {
+                primitiveItem.deselectAll(event);
+            });
+        }
+    }
+
+    @api
+    resizeAll(event) {
+        if (this.primitiveGroupByDatatables.length > 0) {
+            this.primitiveGroupByDatatables.forEach((datatable) => {
+                datatable.handleResizeColumn(event);
+            });
+        }
+        if (this.primitiveItems) {
+            this.primitiveItems.forEach((primitiveItem) => {
+                primitiveItem.resizeAll(event);
+            });
+        }
     }
 }
