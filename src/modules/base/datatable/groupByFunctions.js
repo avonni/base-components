@@ -34,6 +34,9 @@ const removeUndefined = (formattedResult) => {
 };
 
 const recursiveGroupBy = (records, groupBy, level) => {
+    if (typeof groupBy === 'string') {
+        groupBy = groupBy.split();
+    }
     let field = groupBy[0];
     if (!field) return records;
     let recursiveData = Object.values(
@@ -64,6 +67,9 @@ const recursiveGroupBy = (records, groupBy, level) => {
 };
 
 const recursiveGroupByNoUndefined = (records, groupBy, level) => {
+    if (typeof groupBy === 'string') {
+        groupBy = groupBy.split();
+    }
     let field = groupBy[0];
     if (!field) return records;
     let recursiveData = Object.values(

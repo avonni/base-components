@@ -317,26 +317,18 @@ export default class Datatable extends LightningElement {
 
         if (this.hasGroupBy) {
             this.addEventListener('resizecol', (event) => {
-                this.groupByItems.forEach((groupByItem) => {
-                    groupByItem.elData().forEach((datatable) => {
-                        datatable.handleSelectionCellClick(event);
-                    });
+                this.primitiveGroupedDatatables.forEach((datatable) => {
+                    datatable.handleResizeColumn(event);
                 });
             });
-
             this.addEventListener('selectallrows', (event) => {
-                this.groupByItems.forEach((groupByItem) => {
-                    groupByItem.elData().forEach((datatable) => {
-                        datatable.handleSelectionCellClick(event);
-                    });
+                this.primitiveGroupedDatatables.forEach((datatable) => {
+                    datatable.handleSelectionCellClick(event);
                 });
             });
-
             this.addEventListener('deselectallrows', (event) => {
-                this.groupByItems.forEach((groupByItem) => {
-                    groupByItem.elData().forEach((datatable) => {
-                        datatable.handleSelectionCellClick(event);
-                    });
+                this.primitiveGroupedDatatables.forEach((datatable) => {
+                    datatable.handleSelectionCellClick(event);
                 });
             });
         }
@@ -461,8 +453,8 @@ export default class Datatable extends LightningElement {
         this.datatableColumnsWidth();
         this.updateColumnStyle();
         this.updateTableWidth();
-        // this.primitiveDraftValues();
-        // this.datatableEditable();
+        this.primitiveDraftValues();
+        this.datatableEditable();
     }
 
     /**
@@ -493,10 +485,10 @@ export default class Datatable extends LightningElement {
      */
     datatableEditable() {
         this._columnsEditable = this.hasGroupBy
-            ? this.primitiveGroupedDatatable.columnsEditable()
+            ? this.primitiveHeaderDatatable.columnsEditable()
             : this.primitiveUngroupedDatatable.columnsEditable();
         this._isDatatableEditable = this.hasGroupBy
-            ? this.primitiveGroupedDatatable.isDatatableEditable()
+            ? this.primitiveHeaderDatatable.isDatatableEditable()
             : this.primitiveUngroupedDatatable.isDatatableEditable();
     }
 

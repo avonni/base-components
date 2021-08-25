@@ -81,4 +81,23 @@ export default class ProgressGroupByItem extends LightningElement {
     get groupByRecords() {
         return this.records;
     }
+
+    @api
+    primitiveGroupedDatatables() {
+        return this.template.querySelectorAll(
+            'c-primitive-datatable[data-role="grouped"]'
+        );
+    }
+
+    @api
+    primitiveItems() {
+        return this.template.querySelectorAll('c-primitive-group-by-item');
+    }
+
+    @api
+    primitiveGroupedDatatable() {
+        return this.template.querySelector(
+            'c-primitive-datatable[data-role="grouped"]'
+        );
+    }
 }
