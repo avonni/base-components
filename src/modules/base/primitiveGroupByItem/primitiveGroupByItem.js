@@ -31,7 +31,7 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { normalizeArray, normalizeBoolean } from 'c/utilsPrivate';
+import { normalizeArray } from 'c/utilsPrivate';
 
 export default class ProgressGroupByItem extends LightningElement {
     @api columns;
@@ -65,55 +65,7 @@ export default class ProgressGroupByItem extends LightningElement {
         this._records = JSON.parse(JSON.stringify(normalizeArray(value)));
     }
 
-    @api
-    get hideUndefinedGroup() {
-        return this._hideUndefinedGroup;
-    }
-    set hideUndefinedGroup(value) {
-        this._hideUndefinedGroup = normalizeBoolean(value);
-    }
-
     _records = [];
-    _hideUndefinedGroup = false;
-
-    renderedCallback() {
-        if(!this.rendered) {
-            // this.template.querySelectorAll('c-primitive-group-by-item').forEach((primitive) =>{
-            //     console.log(primitive.primitiveGroupedDatatables());
-            // })    
-        }
-    }
-
-    @api
-    primitiveGroupedDatatables() {
-        return this.template.querySelectorAll(
-            'c-primitive-datatable[data-role="grouped"]'
-        );
-    }
-
-    @api
-    primitiveItems() {
-        return this.template.querySelectorAll(
-            'c-primitive-group-by-item'
-        );
-    }
-
-    @api
-    primitiveGroupedDatatable() {
-        return this.template.querySelector(
-            'c-primitive-datatable[data-role="grouped"]'
-        );
-    }
-
-    @api
-    collapsibleGroups() {
-        return this.template.querySelectorAll('c-primitive-collapsible-group');
-    }
-
-    @api
-    elData() {
-        return this.template.querySelector('c-primitive-datatable')
-    }
 
     handleDispatchEvents(event) {
         this.dispatchEvent(
@@ -126,7 +78,7 @@ export default class ProgressGroupByItem extends LightningElement {
         );
     }
 
-    get hardData() {
+    get groupByRecords() {
         return this.records;
     }
 }

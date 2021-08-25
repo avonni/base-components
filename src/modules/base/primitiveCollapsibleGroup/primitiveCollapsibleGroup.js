@@ -114,9 +114,4 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
     changeSectionStatus() {
         this._closed = !this._closed;
     }
-
-    @api
-    slots() {
-        return this.template.querySelectorAll('slot');
-    }
 }

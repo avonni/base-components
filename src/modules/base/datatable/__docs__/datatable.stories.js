@@ -477,6 +477,6 @@ DatatableWithGroupBy.args = {
     records: recordsGroupBy,
     keyField: 'id',
     columnWidthsMode: 'fixed',
-    groupBy: ['city', 'district', 'habitation', 'name','age'],
+    groupBy: ['city', 'district', 'habitation'],
     hideUndefinedGroup: true
 };
