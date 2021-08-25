@@ -310,6 +310,7 @@ export default class Datatable extends LightningElement {
     connectedCallback() {
         this.addEventListener('cellchange', () => {
             this._showStatusBar = true;
+            this._hasDraftValues = true;
         });
 
         this.addEventListener('resize', (event) => {
@@ -341,6 +342,14 @@ export default class Datatable extends LightningElement {
 
         this.addEventListener('resizecol', (resizeEvent) => {
             this.privateChildrenRecord[guid].callbacks.resizeAll(resizeEvent);
+        });
+
+        this.addEventListener('statusbarcancel', (cancelEvent) => {
+            this.privateChildrenRecord[guid].callbacks.cancelAll(cancelEvent);
+        });
+
+        this.addEventListener('statusbarsave', (saveEvent) => {
+            this.privateChildrenRecord[guid].callbacks.saveAll(saveEvent);
         });
 
         // Add a callback that
@@ -449,16 +458,6 @@ export default class Datatable extends LightningElement {
         return this.primitiveUngroupedDatatable.primitiveDatatableDraftValues();
     }
 
-    get primitiveGroupedDatatableDraftValues() {
-        let draftValues = [];
-        this.primitiveGroupedDatatables.forEach((datatable) => {
-            draftValues.push(
-                datatable.primitiveDatatableDraftValues().length > 0
-            );
-        });
-        return draftValues.includes(true);
-    }
-
     get isFixedColumns() {
         return this.hasGroupBy ? 'fixed' : this.columnWidthsMode;
     }
@@ -515,9 +514,6 @@ export default class Datatable extends LightningElement {
     primitiveDraftValues() {
         if (!this.hasGroupBy) {
             this._hasDraftValues = this.primitiveUngroupedDatatableDraftValues.length;
-            this._showStatusBar = this._hasDraftValues ? true : false;
-        } else if (this.hasGroupBy) {
-            this._hasDraftValues = this.primitiveGroupedDatatableDraftValues;
             this._showStatusBar = this._hasDraftValues ? true : false;
         }
     }
@@ -668,11 +664,9 @@ export default class Datatable extends LightningElement {
          */
         if (!this.hasGroupBy) {
             this.primitiveUngroupedDatatable.cancel(event);
-        } else if (this.hasGroupBy) {
-            this.primitiveGroupedDatatables.forEach((datatable) => {
-                datatable.cancel(event);
-            });
         }
+
+        this.dispatchEvent(new CustomEvent('statusbarcancel'));
     }
 
     /**
@@ -691,11 +685,9 @@ export default class Datatable extends LightningElement {
          */
         if (!this.hasGroupBy) {
             this.primitiveUngroupedDatatable.save(event);
-        } else if (this.hasGroupBy) {
-            this.primitiveGroupedDatatables.forEach((datatable) => {
-                datatable.save(event);
-            });
         }
+
+        this.dispatchEvent(new CustomEvent('statusbarsave'));
     }
 
     get groupByRecords() {

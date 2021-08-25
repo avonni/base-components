@@ -70,7 +70,6 @@ export default class ProgressGroupByItem extends LightningElement {
     _records = [];
 
     handleDispatchEvents(event) {
-        console.log(event);
         this.dispatchEvent(
             new CustomEvent(`${event.type}`, {
                 detail: event.detail,
@@ -89,7 +88,9 @@ export default class ProgressGroupByItem extends LightningElement {
                     registerDisconnectCallback: this.registerDisconnectCallback,
                     selectAll: this.selectAll.bind(this),
                     deselectAll: this.deselectAll.bind(this),
-                    resizeAll: this.resizeAll.bind(this)
+                    resizeAll: this.resizeAll.bind(this),
+                    saveAll: this.saveAll.bind(this),
+                    cancelAll: this.cancelAll.bind(this)
                 },
                 guid: this.guid
             }
@@ -123,7 +124,15 @@ export default class ProgressGroupByItem extends LightningElement {
     }
 
     get primitiveGroupByDatatables() {
-        return this.template.querySelectorAll('c-primitive-datatable');
+        return this.template.querySelectorAll(
+            'c-primitive-datatable[data-role="grouped"]'
+        );
+    }
+
+    get primitiveGroupByDatatable() {
+        return this.template.querySelector(
+            'c-primitive-datatable[data-role="grouped"]'
+        );
     }
 
     @api
@@ -164,6 +173,34 @@ export default class ProgressGroupByItem extends LightningElement {
         if (this.primitiveItems) {
             this.primitiveItems.forEach((primitiveItem) => {
                 primitiveItem.resizeAll(event);
+            });
+        }
+    }
+
+    @api
+    saveAll(event) {
+        if (this.primitiveGroupByDatatables.length > 0) {
+            this.primitiveGroupByDatatables.forEach((datatable) => {
+                datatable.save(event);
+            });
+        }
+        if (this.primitiveItems) {
+            this.primitiveItems.forEach((primitiveItem) => {
+                primitiveItem.saveAll(event);
+            });
+        }
+    }
+
+    @api
+    cancelAll(event) {
+        if (this.primitiveGroupByDatatables.length > 0) {
+            this.primitiveGroupByDatatables.forEach((datatable) => {
+                datatable.cancel(event);
+            });
+        }
+        if (this.primitiveItems) {
+            this.primitiveItems.forEach((primitiveItem) => {
+                primitiveItem.cancelAll(event);
             });
         }
     }
