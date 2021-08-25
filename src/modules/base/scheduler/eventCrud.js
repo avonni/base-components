@@ -6,7 +6,6 @@ function createEvent(event) {
     this.updateEventDefaults(computedEvent);
     this.computedEvents.push(new SchedulerEvent(computedEvent));
     this.initRows();
-    this.updateVisibleEvents();
 }
 
 function deleteEvent(eventName) {
@@ -32,7 +31,6 @@ function deleteEvent(eventName) {
     this.selection = undefined;
     this.cleanDraggedElement();
     this.hideAllPopovers();
-    this.updateVisibleEvents();
 }
 
 function focusEvent(eventName) {
@@ -122,7 +120,7 @@ function saveEvent() {
     }
 
     event.initOccurrences();
-    this.updateVisibleEvents();
+    this.computedEvents = [...this.computedEvents];
 }
 
 function saveOccurrence() {
@@ -175,7 +173,7 @@ function saveOccurrence() {
     });
 
     this.dispatchChangeEvent(event.name, true);
-    this.updateVisibleEvents();
+    this.computedEvents = [...this.computedEvents];
 }
 
 export function eventCrudMethods(context) {

@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { LightningElement, api } from 'lwc';
+import { LightningElement, api, track } from 'lwc';
 import {
     normalizeArray,
     normalizeBoolean,
@@ -106,7 +106,7 @@ export default class Scheduler extends LightningElement {
     computedHeaders = [];
     computedReferenceLines = [];
     computedRows = [];
-    computedEvents = [];
+    @track computedEvents = [];
     contextMenuActions = [];
     datatableIsHidden = false;
     datatableIsOpen = false;
@@ -215,7 +215,12 @@ export default class Scheduler extends LightningElement {
         this._availableDaysOfTheWeek =
             days.length > 0 ? days : DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
 
-        if (this.isConnected) this.initSchedule();
+        // The variable change will trigger the primitive header rerender,
+        // which will trigger the creation of events and rows if they are empty
+        if (this.isConnected) {
+            this.computedRows = [];
+            this.computedEvents = [];
+        }
     }
 
     @api
@@ -227,7 +232,12 @@ export default class Scheduler extends LightningElement {
         this._availableMonths =
             months.length > 0 ? months : DEFAULT_AVAILABLE_MONTHS;
 
-        if (this.isConnected) this.initSchedule();
+        // The variable change will trigger the primitive header rerender,
+        // which will trigger the creation of events and rows if they are empty
+        if (this.isConnected) {
+            this.computedRows = [];
+            this.computedEvents = [];
+        }
     }
 
     @api
@@ -239,7 +249,12 @@ export default class Scheduler extends LightningElement {
         this._availableTimeFrames =
             timeFrames.length > 0 ? timeFrames : DEFAULT_AVAILABLE_TIME_FRAMES;
 
-        if (this.isConnected) this.initSchedule();
+        // The variable change will trigger the primitive header rerender,
+        // which will trigger the creation of events and rows if they are empty
+        if (this.isConnected) {
+            this.computedRows = [];
+            this.computedEvents = [];
+        }
     }
 
     @api
@@ -281,7 +296,11 @@ export default class Scheduler extends LightningElement {
     set customHeaders(value) {
         this._customHeaders = normalizeArray(value);
 
-        if (this.isConnected) this.initSchedule();
+        if (this.isConnected) {
+            this.computedEvents = [];
+            this.computedRows = [];
+            this.initHeaders();
+        }
     }
 
     @api
@@ -318,7 +337,7 @@ export default class Scheduler extends LightningElement {
 
         if (this.isConnected) {
             this.initEvents();
-            this.initRows();
+            this.updateVisibleRows();
         }
     }
 
@@ -331,7 +350,7 @@ export default class Scheduler extends LightningElement {
 
         if (this.isConnected) {
             this.initEvents();
-            this.initRows();
+            this.updateVisibleRows();
         }
     }
 
@@ -345,7 +364,7 @@ export default class Scheduler extends LightningElement {
 
         if (this.isConnected) {
             this.initEvents();
-            this.initRows();
+            this.updateVisibleRows();
         }
     }
 
@@ -358,6 +377,11 @@ export default class Scheduler extends LightningElement {
             fallbackValue: EVENTS_PALETTES.default,
             validValues: EVENTS_PALETTES.valid
         });
+
+        if (this.isConnected) {
+            this.initEvents();
+            this.updateVisibleRows();
+        }
     }
 
     @api
@@ -369,6 +393,11 @@ export default class Scheduler extends LightningElement {
             fallbackValue: EVENTS_THEMES.default,
             validValues: EVENTS_THEMES.valid
         });
+
+        if (this.isConnected) {
+            this.initEvents();
+            this.updateVisibleRows();
+        }
     }
 
     @api
@@ -382,7 +411,11 @@ export default class Scheduler extends LightningElement {
             toLowerCase: false
         });
 
-        if (this.isConnected) this.initSchedule();
+        if (this.isConnected) {
+            this.computedRows = [];
+            this.computedEvents = [];
+            this.initHeaders();
+        }
     }
 
     @api
@@ -452,6 +485,11 @@ export default class Scheduler extends LightningElement {
                 referenceLine: true
             };
         });
+
+        if (this.isConnected) {
+            this.initEvents();
+            this.updateVisibleRows();
+        }
     }
 
     @api
@@ -490,7 +528,7 @@ export default class Scheduler extends LightningElement {
         const computedDate = dateTimeObjectFrom(value);
         this._start = computedDate || dateTimeObjectFrom(DEFAULT_START_DATE);
 
-        if (this.isConnected) this.initSchedule();
+        if (this.isConnected) this.initHeaders();
     }
 
     @api
@@ -501,7 +539,7 @@ export default class Scheduler extends LightningElement {
         this._visibleSpan =
             typeof value === 'object' ? value : DEFAULT_VISIBLE_SPAN;
 
-        if (this.isConnected) this.initSchedule();
+        if (this.isConnected) this.initHeaders();
     }
 
     get allResourcesKeyFields() {
@@ -558,10 +596,6 @@ export default class Scheduler extends LightningElement {
         );
     }
 
-    get end() {
-        return this.smallestHeader && this.smallestHeader.end;
-    }
-
     get onlyOccurrenceEditAllowed() {
         return (
             this.recurrentEditModes.length === 1 &&
@@ -614,7 +648,7 @@ export default class Scheduler extends LightningElement {
 
     get smallestColumnDuration() {
         const header = this.smallestHeader;
-        if (header) return 0;
+        if (!header) return 0;
 
         const headerColumnEnd =
             addToDate(header.start, header.unit, header.span) - 1;
@@ -659,12 +693,6 @@ export default class Scheduler extends LightningElement {
     @api
     openNewEventDialog() {
         this.crud.newEvent();
-    }
-
-    initSchedule() {
-        this.initHeaders();
-        this.initEvents();
-        this.initRows();
     }
 
     initHeaders() {
@@ -836,8 +864,8 @@ export default class Scheduler extends LightningElement {
         // We store the initial event object in a variable,
         // in case a custom field is used by the labels
         event.data = { ...event };
-        event.schedulerEnd = this.end;
-        event.schedulerStart = this.smallestHeader.start;
+        event.schedulerEnd = this._visibleInterval.e;
+        event.schedulerStart = this._visibleInterval.s;
         event.availableMonths = this.availableMonths;
         event.availableDaysOfTheWeek = this.availableDaysOfTheWeek;
         event.availableTimeFrames = this.availableTimeFrames;
@@ -939,21 +967,31 @@ export default class Scheduler extends LightningElement {
         const previousEvents = this.computedEvents.filter((event) => {
             const from = event.occurrences[0].from;
             const to = event.occurrences[event.occurrences.length - 1].to;
-            return (
+            if (
                 (intersection.contains(from) &&
                     this._previousInterval.contains(to)) ||
                 (intersection.contains(to) &&
-                    this._previousInterval.contains(from))
-            );
+                    this._previousInterval.contains(from)) ||
+                (intersection.isAfter(from) && intersection.isBefore(to))
+            ) {
+                // If the event had occurrences in the intersection,
+                // recreate occurrences only for the visible interval
+                event.schedulerEnd = this._visibleInterval.e;
+                event.schedulerStart = this._visibleInterval.s;
+                event.initOccurrences();
+                if (!event.occurrences.length) return false;
+                return true;
+            }
+            return false;
         });
 
         const newVisibleInterval = this._visibleInterval.difference(
             this._previousInterval
         )[0];
-        const newVisibleEvents = this.createEventsFromInterval(
-            newVisibleInterval
+        this.computedEvents = this.createEventsFromInterval(
+            newVisibleInterval,
+            previousEvents
         );
-        this.computedEvents = previousEvents.concat(newVisibleEvents);
     }
 
     updateVisibleRows() {
@@ -985,7 +1023,7 @@ export default class Scheduler extends LightningElement {
         const occurrences = [];
         this.computedEvents.forEach((event) => {
             if (!event.disabled) {
-                const occ = event.visibleOccurrences.filter((occurrence) => {
+                const occ = event.occurrences.filter((occurrence) => {
                     return occurrence.rowKey === key;
                 });
                 occurrences.push(occ);
@@ -1029,8 +1067,6 @@ export default class Scheduler extends LightningElement {
             lastEvent === this.selection.event
         ) {
             this.computedEvents.pop();
-            this.initRows();
-            this.updateVisibleEvents();
         }
         this.selection = undefined;
     }
@@ -1063,10 +1099,14 @@ export default class Scheduler extends LightningElement {
         return level;
     }
 
-    createEventsFromInterval(interval) {
+    createEventsFromInterval(interval, visibleEvents) {
+        // Filter only the events visible in the given interval
         const events = this._allEvents.filter((event) => {
             const from = dateTimeObjectFrom(event.from);
             const to = dateTimeObjectFrom(event.to);
+            // if (event.title === 'Vacation') {
+            //     console.log(from.c, to.c)
+            // }
             return (
                 interval.contains(from) ||
                 interval.contains(to) ||
@@ -1074,26 +1114,29 @@ export default class Scheduler extends LightningElement {
                 event.recurrence
             );
         });
-        const computedEvents = events.map((evt) => {
-            const event = { ...evt };
-            this.updateEventDefaults(event);
-            return new SchedulerEvent(event);
-        });
-
-        return computedEvents.filter((event) => {
-            event.visibleOccurrences = event.occurrences.filter(
-                (occurrence) => {
-                    const { from, to } = occurrence;
+        return events.reduce((computedEvents, evt) => {
+            // Make sure the new event is not one of the existing recurrent events
+            let existingEvent = false;
+            if (visibleEvents) {
+                existingEvent = visibleEvents.find((compEv) => {
                     return (
-                        interval.contains(from) ||
-                        interval.contains(to) ||
-                        (interval.isAfter(from) && interval.isBefore(to))
+                        (compEv.disabled && evt.title === compEv.title) ||
+                        compEv.name === evt.name
                     );
-                }
-            );
+                });
+            }
 
-            return event.visibleOccurrences.length;
-        });
+            // Create the new event
+            if (!existingEvent) {
+                const event = { ...evt };
+                this.updateEventDefaults(event);
+                const computedEvent = new SchedulerEvent(event);
+                if (computedEvent.occurrences.length) {
+                    computedEvents.push(computedEvent);
+                }
+            }
+            return computedEvents;
+        }, visibleEvents || []);
     }
 
     positionPopover(popover) {
@@ -1205,7 +1248,9 @@ export default class Scheduler extends LightningElement {
         // Add the occurrence to the row with the updated start/end date
         row.events.push(occurrence);
         row.addEventToColumns(occurrence);
-        this.updateVisibleEvents();
+
+        // Force the rerender
+        this.computedEvents = [...this.computedEvents];
     }
 
     dragEventTo(row, cell) {
@@ -1310,7 +1355,6 @@ export default class Scheduler extends LightningElement {
         } else {
             this.updateVisibleEvents();
         }
-
         // Create the rows or update the visible columns
         if (!this.computedRows.length) {
             this.initRows();
@@ -1430,8 +1474,7 @@ export default class Scheduler extends LightningElement {
             // On the first move, display the new event on the schedule.
         } else if (this.selection && this.selection.newEvent) {
             this.computedEvents.push(this.selection.event);
-            this.initRows();
-            this.updateVisibleEvents();
+            this.updateVisibleRows();
         }
     }
 
@@ -1488,7 +1531,7 @@ export default class Scheduler extends LightningElement {
                 } else {
                     this.crud.saveEvent();
                 }
-                this.initRows();
+                this.updateVisibleRows();
                 this.cleanSelection();
             }
         } else if (this.selection) {
@@ -1501,7 +1544,10 @@ export default class Scheduler extends LightningElement {
         if (event.detail.isUserTriggered) {
             this.datatable.style.width = null;
             this._datatableRowsHeight = undefined;
-            this.initRows();
+            this.computedRows.forEach((row) => {
+                row.minHeight = undefined;
+            });
+            this.computedRows = [...this.computedRows];
         } else {
             this.updateDatatableRowsHeight();
             this.updateRowsStyle();
@@ -1622,7 +1668,7 @@ export default class Scheduler extends LightningElement {
         this.cleanDraggedElement();
         this.cleanSelection();
         this.hideRecurrenceDialog();
-        this.initRows();
+        this.updateVisibleRows();
     }
 
     handleSaveEvent(mouseEvent) {
@@ -1649,7 +1695,7 @@ export default class Scheduler extends LightningElement {
             this.crud.saveEvent();
         }
 
-        this.initRows();
+        this.updateVisibleRows();
         this.cleanDraggedElement();
         this.cleanSelection();
 
@@ -1676,22 +1722,21 @@ export default class Scheduler extends LightningElement {
             this.hideContextMenu();
         }
 
-        // Get the number of cells scrolled
-        const cells = this._numberOfVisibleCells;
         const schedule = this.template.querySelector(
             '.scheduler__schedule-col'
         );
         const scroll = schedule.scrollLeft;
-        const cellsScrolled = Math.floor(scroll / this.cellWidth);
+        const scrollOffset = this.cellWidth * this._numberOfVisibleCells;
 
         const startOfSchedule =
             this._visibleInterval.s.ts === this.smallestHeader.start.ts;
-        const loadLeftSchedule = !startOfSchedule && cellsScrolled <= cells;
-        const loadRightSchedule = cellsScrolled >= cells * 3;
+        const loadLeftSchedule = !startOfSchedule && scroll <= scrollOffset;
+        const loadRightSchedule = scroll >= scrollOffset * 3;
 
+        // If the scroll value is at less or more than a quarter of the visible interval,
+        // reload the schedule with a new interval
         if (loadRightSchedule || loadLeftSchedule) {
             const direction = loadRightSchedule ? 'right' : 'left';
-            // Reload the schedule to only see the visible part
             const headers = this.template.querySelector(
                 'c-primitive-scheduler-header-group'
             );

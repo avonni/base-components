@@ -104,12 +104,12 @@ export default class SchedulerEvent {
 
         this.name =
             props.name ||
-            (!this.referenceLine && !this.disabled && 'new-event');
+            (!this.referenceLine && !this.disabled && 'new-event') ||
+            'disabled';
         this.theme = props.theme;
         this.title = props.title;
 
         this.initOccurrences();
-        this.visibleOccurrences = [];
     }
 
     get allDay() {
@@ -255,7 +255,7 @@ export default class SchedulerEvent {
                 keyFields.forEach((keyField) => {
                     const occurrence = {
                         from,
-                        key: `${this.name}-${keyField}-${this.occurrences.length}`,
+                        key: `${this.name}-${keyField}-${from.ts}`,
                         keyFields: keyFields,
                         offsetTop: 0,
                         rowKey: keyField,

@@ -110,12 +110,7 @@
                     onprivatevisibleheaderchange={handleHeaderVisibleCellsChange}
                 ></c-primitive-scheduler-header-group>
                 <!-- Rows -->
-                <div
-                    oncontextmenu={handleEmptySpotContextMenu}
-                    onmousedown={handleMouseDown}
-                    ondblclick={handleDoubleClick}
-                    class="slds-is-relative scheduler__body"
-                >
+                <div class="slds-is-relative scheduler__body">
                     <template
                         for:each={computedRows}
                         for:item="row"
@@ -133,6 +128,9 @@
                                     class="slds-border_right slds-border_bottom slds-col slds-p-around_none slds-wrap scheduler__cell"
                                     data-start={column.start}
                                     data-end={column.end}
+                                    oncontextmenu={handleEmptySpotContextMenu}
+                                    onmousedown={handleMouseDown}
+                                    ondblclick={handleDoubleClick}
                                 ></div>
                             </template>
                         </div>
@@ -142,7 +140,7 @@
                         <template for:each={computedEvents} for:item="event">
                             <div key={event.key}>
                                 <template
-                                    for:each={event.visibleOccurrences}
+                                    for:each={event.occurrences}
                                     for:item="occurrence"
                                 >
                                     <c-primitive-scheduler-event-occurrence
