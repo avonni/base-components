@@ -545,11 +545,14 @@ export default class PrimitiveDatatable extends LightningDatatable {
     columnsWidthWithoutHeader() {
         let columnsWidthWithoutHeader = [];
         const row = this.template.querySelector('tbody > tr');
-        const data = Array.from(row.querySelectorAll('td, th'));
 
-        columnsWidthWithoutHeader = data.map((cell) => {
-            return cell.offsetWidth;
-        });
+        if (row) {
+            const data = Array.from(row.querySelectorAll('td, th'));
+
+            columnsWidthWithoutHeader = data.map((cell) => {
+                return cell.offsetWidth;
+            });
+        }
 
         return columnsWidthWithoutHeader;
     }
