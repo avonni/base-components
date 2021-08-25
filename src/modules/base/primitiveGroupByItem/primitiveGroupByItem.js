@@ -104,10 +104,6 @@ export default class ProgressGroupByItem extends LightningElement {
         this.disconnectFromParent = callback;
     }
 
-    disconnectedCallback() {
-        this.disconnectFromParent(this.guid);
-    }
-
     @api
     primitiveGroupedDatatables() {
         return this.template.querySelectorAll(
@@ -125,12 +121,6 @@ export default class ProgressGroupByItem extends LightningElement {
 
     get primitiveGroupByDatatables() {
         return this.template.querySelectorAll(
-            'c-primitive-datatable[data-role="grouped"]'
-        );
-    }
-
-    get primitiveGroupByDatatable() {
-        return this.template.querySelector(
             'c-primitive-datatable[data-role="grouped"]'
         );
     }
