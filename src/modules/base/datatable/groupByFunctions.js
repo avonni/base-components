@@ -10,10 +10,10 @@ const removeUndefined = (formattedResult) => {
     return noUndefinedResult;
 };
 
-const countingRows = ([first, ...rest], condition, acc = 0) => {
+const countingRows = ([first, ...rest], condition, accumulator = 0) => {
     return (
-        condition(first) && ++acc,
-        rest.length ? countingRows(rest, condition, acc) : acc
+        condition(first) && ++accumulator,
+        rest.length ? countingRows(rest, condition, accumulator) : accumulator
     );
 };
 
@@ -21,7 +21,7 @@ const isUndefined = (value) => {
     return value === undefined ? 'undefined' : value;
 };
 
-const recursiveGroupBy = (records, groupBy, level) => {
+const recursiveGroupBy = (records, groupBy, level, rowNumberOffsetAtt = 0) => {
     if (typeof groupBy === 'string') {
         groupBy = groupBy.split();
     }
@@ -42,19 +42,28 @@ const recursiveGroupBy = (records, groupBy, level) => {
     );
 
     if (groupBy.length) {
+        let rowNumberOffset = rowNumberOffsetAtt;
         recursiveData.forEach((obj) => {
             obj.size = obj.group.length;
+            obj.rowNumberOffset = rowNumberOffset;
+            rowNumberOffset += obj.size;
             obj.group = recursiveGroupBy(
                 obj.group,
                 groupBy.slice(1),
-                level + 1
+                level + 1,
+                obj.rowNumberOffset
             );
         });
     }
     return recursiveData;
 };
 
-const recursiveGroupByNoUndefined = (records, groupBy, level) => {
+const recursiveGroupByNoUndefined = (
+    records,
+    groupBy,
+    level,
+    rowNumberOffsetAtt = 0
+) => {
     if (typeof groupBy === 'string') {
         groupBy = groupBy.split();
     }
@@ -75,6 +84,7 @@ const recursiveGroupByNoUndefined = (records, groupBy, level) => {
     );
 
     if (groupBy.length) {
+        let rowNumberOffset = rowNumberOffsetAtt;
         recursiveData.forEach((obj) => {
             obj.size = countingRows(records, (row) => {
                 let noUndefined = true;
@@ -86,10 +96,13 @@ const recursiveGroupByNoUndefined = (records, groupBy, level) => {
                 }
                 return row[groupBy[0]] === obj.label && noUndefined;
             });
+            obj.rowNumberOffset = rowNumberOffset;
+            rowNumberOffset += obj.size;
             obj.group = recursiveGroupByNoUndefined(
                 obj.group,
                 groupBy.slice(1),
-                level + 1
+                level + 1,
+                obj.rowNumberOffset
             );
         });
     }
