@@ -824,6 +824,15 @@ export default class Scheduler extends LightningElement {
         });
     }
 
+    updateCellWidth() {
+        const cell = this.template.querySelector('.scheduler__cell');
+        const cellWidth = cell.getBoundingClientRect().width;
+        if (cellWidth !== this.cellWidth) {
+            this.cellWidth = cellWidth;
+            this._updateOccurrencesWidth = true;
+        }
+    }
+
     updateDatatablePosition() {
         // Align the datatable header with the smallest schedule header
         const headers = this.template.querySelector(
@@ -956,46 +965,12 @@ export default class Scheduler extends LightningElement {
             if (occurrence.disabled) {
                 occurrence.updateHeight();
             }
+            if (this._updateOccurrencesWidth) {
+                occurrence.updateWidth();
+            }
             occurrence.updatePosition();
         });
-    }
-
-    updateVisibleEvents() {
-        const intersection = this._visibleInterval.intersection(
-            this._previousInterval
-        );
-        const previousEvents = this.computedEvents.filter((event) => {
-            const from = event.occurrences[0].from;
-            const to = event.occurrences[event.occurrences.length - 1].to;
-            if (
-                (intersection.contains(from) &&
-                    this._previousInterval.contains(to)) ||
-                (intersection.contains(to) &&
-                    this._previousInterval.contains(from)) ||
-                (intersection.isAfter(from) && intersection.isBefore(to))
-            ) {
-                // If the event had occurrences in the intersection,
-                // recreate occurrences only for the visible interval
-                event.schedulerEnd = this._visibleInterval.e;
-                event.schedulerStart = this._visibleInterval.s;
-                event.initOccurrences();
-                if (!event.occurrences.length) return false;
-                return true;
-            }
-            return false;
-        });
-
-        const newVisibleInterval = this._visibleInterval.difference(
-            this._previousInterval
-        )[0];
-        if (newVisibleInterval) {
-            this.computedEvents = this.createEventsFromInterval(
-                newVisibleInterval,
-                previousEvents
-            );
-        } else {
-            this.computedEvents = previousEvents;
-        }
+        this._updateOccurrencesWidth = false;
     }
 
     updateVisibleRows() {
@@ -1339,22 +1314,17 @@ export default class Scheduler extends LightningElement {
     }
 
     handleHeaderVisibleCellsChange(event) {
-        const {
-            direction,
-            previousInterval,
-            visibleCells,
-            visibleInterval
-        } = event.detail;
+        const { direction, visibleCells, visibleInterval } = event.detail;
         this._numberOfVisibleCells = visibleCells;
         this._visibleInterval = visibleInterval;
-        this._previousInterval =
-            visibleInterval.s.ts !== previousInterval.s.ts && previousInterval;
 
         // Create the visible events
-        if (!this.computedEvents.length || !this._previousInterval) {
+        if (!this.computedEvents.length) {
             this.initEvents();
         } else {
-            this.updateVisibleEvents();
+            this.computedEvents = this.createEventsFromInterval(
+                this._visibleInterval
+            );
         }
         // Create the rows or update the visible columns
         if (!this.computedRows.length) {
@@ -1446,6 +1416,7 @@ export default class Scheduler extends LightningElement {
 
             this.datatable.style.width = `${width}px`;
             this.datatableCol.style.width = `${width}px`;
+            this.updateCellWidth();
 
             // An event is being dragged
         } else if (this._draggedEvent) {
@@ -1773,6 +1744,8 @@ export default class Scheduler extends LightningElement {
         } else {
             this.datatableIsHidden = true;
         }
+
+        this.updateCellWidth();
     }
 
     handleOpenDatatable() {
@@ -1782,6 +1755,7 @@ export default class Scheduler extends LightningElement {
         if (this.datatableIsHidden) {
             this.datatableIsHidden = false;
             this.datatable.style.width = `${this._datatableWidth}px`;
+            this.updateCellWidth();
         } else {
             this.datatableIsOpen = true;
             const width = this.template.host.getBoundingClientRect().width;
