@@ -33,13 +33,17 @@
 import { Scheduler } from '../__examples__/scheduler';
 import {
     columns,
+    oneColumn,
     rows,
     headers,
     events,
+    eventsThemed,
+    eventsWithLabels,
     disabledDatesTimes,
     referenceLines,
     start,
-    lotsOfEvents
+    lotsOfEvents,
+    lotsOfRows
 } from './data';
 
 export default {
@@ -197,6 +201,18 @@ export default {
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
+            }
+        },
+        loadingStateAlternativeText: {
+            name: 'loading-state-alternative-text',
+            control: {
+                type: 'text'
+            },
+            defaultValue: 'Loading',
+            description: 'Alternative text of the loading spinner.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Loading' }
             }
         },
         recurrentEditModes: {
@@ -443,35 +459,57 @@ const Template = (args) => Scheduler(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    columns: columns,
+    columns,
     rowsKeyField: 'id',
-    rows: rows,
-    customHeaders: headers,
+    rows,
+    start,
+    events: lotsOfEvents().slice(0, 10)
+};
+
+export const BigDataSet = Template.bind({});
+BigDataSet.args = {
+    columns: oneColumn,
+    rowsKeyField: 'id',
+    rows: lotsOfRows(),
+    start,
+    events: lotsOfEvents(),
     visibleSpan: {
         unit: 'year',
         span: 3
+    }
+};
+
+export const AvailableAndDisabledTimes = Template.bind({});
+AvailableAndDisabledTimes.args = {
+    columns,
+    rowsKeyField: 'id',
+    rows,
+    customHeaders: headers,
+    visibleSpan: {
+        unit: 'week',
+        span: 2
     },
     start,
-    availableTimeFrames: ['08:00-16:59'],
+    availableTimeFrames: ['08:00-17:00'],
     availableDaysOfTheWeek: [1, 2, 3, 4, 5],
-    events: lotsOfEvents(),
+    events,
     disabledDatesTimes: disabledDatesTimes,
     referenceLines: referenceLines
 };
 
 export const ReadOnly = Template.bind({});
 ReadOnly.args = {
-    columns: columns,
+    columns,
     rowsKeyField: 'id',
-    rows: rows,
+    rows,
     visibleSpan: {
         unit: 'day',
         span: 5
     },
     start,
-    availableTimeFrames: ['09:00-17:59'],
-    events: events,
+    events,
     eventsTheme: 'line',
+    eventsPalette: 'dusk',
     readOnly: true,
     contextMenuEventActions: [
         {
@@ -479,4 +517,47 @@ ReadOnly.args = {
             label: 'See details'
         }
     ]
+};
+
+export const Labels = Template.bind({});
+Labels.args = {
+    columns,
+    rowsKeyField: 'id',
+    rows,
+    start,
+    events: eventsWithLabels,
+    visibleSpan: {
+        unit: 'day',
+        span: '2'
+    },
+    headers: 'minuteHourAndDay',
+    eventsLabels: {
+        left: {
+            fieldName: 'from'
+        },
+        top: {
+            fieldName: 'title'
+        },
+        bottom: {
+            fieldName: 'role'
+        },
+        right: {
+            fieldName: 'to'
+        },
+        center: {
+            fieldName: 'firstName',
+            iconName: 'utility:user'
+        }
+    },
+    dateFormat: 'hh:mm'
+};
+
+export const ThemesAndColors = Template.bind({});
+ThemesAndColors.args = {
+    columns,
+    rowsKeyField: 'id',
+    rows,
+    start,
+    events: eventsThemed,
+    eventsPalette: 'wildflowers'
 };

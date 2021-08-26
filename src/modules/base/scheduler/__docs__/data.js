@@ -30,19 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { generateUniqueId } from 'c/inputUtils';
-
-const start = new Date(2021, 11, 13, 10);
-
-const generateName = () => {
-    return generateUniqueId();
-};
-
-let titleCounter = 0;
-const generateTitle = () => {
-    titleCounter += 1;
-    return `Event ${titleCounter}`;
-};
+const start = new Date(2021, 11, 13, 8);
 
 const columns = [
     {
@@ -60,6 +48,14 @@ const columns = [
         label: 'Role',
         fieldName: 'role',
         hideDefaultActions: true
+    }
+];
+
+const oneColumn = [
+    {
+        label: 'Employee',
+        fieldName: 'name',
+        initialWidth: 120
     }
 ];
 
@@ -81,7 +77,8 @@ const rows = [
         avatarFallbackIconName: 'standard:person_account',
         avatarInitials: 'DM',
         firstName: 'Dave',
-        role: 'UX Specialist'
+        role: 'UX Specialist',
+        customRowField: 'Label coming from a custom field in the row'
     },
     {
         id: '3',
@@ -92,7 +89,7 @@ const rows = [
     },
     {
         id: '4',
-        avatarFallbackIconName: 'standard:person_account',
+        avatarFallbackIconName: 'standard:article',
         avatarInitials: 'LM',
         firstName: 'Lily',
         role: 'Graphic Designer',
@@ -109,22 +106,23 @@ const rows = [
     }
 ];
 
+const lotsOfRows = () => {
+    const computedRows = [];
+    for (let i = 1; i <= 20; i++) {
+        computedRows.push({
+            id: i.toString(),
+            name: `Employee #${i}`
+        });
+    }
+    return computedRows;
+};
+
 const headers = [
-    // {
-    //     unit: 'year',
-    //     span: 1,
-    //     label: 'y'
-    // },
-    // {
-    //     unit: 'month',
-    //     span: 1,
-    //     label: 'LLLL'
-    // },
-    // {
-    //     unit: 'week',
-    //     span: 1,
-    //     label: "'Sprint' W"
-    // },
+    {
+        unit: 'week',
+        span: 1,
+        label: "'Sprint' W"
+    },
     {
         unit: 'day',
         span: 1,
@@ -144,12 +142,15 @@ const headers = [
 
 const lotsOfEvents = () => {
     const computedEvents = [];
-    const keyFields = rows.map((row) => row.id);
+    const keyFields = [];
+    for (let i = 0; i < 20; i++) {
+        keyFields.push(i.toString());
+    }
 
     let startTime = start.getTime();
     let endTime = startTime + 7200000;
 
-    for (let i = 0; i < 1000; i++) {
+    for (let i = 1; i <= 1000; i++) {
         // The event will be on one to three rows
         const keyFieldsNumber = Math.floor(Math.random() * 3) + 1;
         const eventKeyFields = [];
@@ -164,8 +165,8 @@ const lotsOfEvents = () => {
 
         computedEvents.push({
             keyFields: eventKeyFields,
-            name: generateName(),
-            title: generateTitle(),
+            name: `event-${i}`,
+            title: `Event ${i}`,
             from: startTime,
             to: endTime
         });
@@ -179,19 +180,26 @@ const lotsOfEvents = () => {
 
 const events = [
     {
-        keyFields: ['1'],
-        name: 'identify-need',
-        title: 'Identify need',
-        from: new Date(2021, 11, 11, 10),
-        to: new Date(2021, 11, 13, 9, 30),
-        theme: 'transparent'
+        keyFields: ['3'],
+        name: 'research',
+        title: 'Research',
+        from: new Date(2021, 11, 13, 9),
+        to: new Date(2021, 11, 14, 12)
     },
     {
-        keyFields: ['3'],
-        name: 'find-examples',
-        title: 'Find existing examples of solutions',
+        keyFields: ['1'],
+        name: 'code-review',
+        title: 'Code review',
+        from: new Date(2021, 11, 13, 13),
+        to: new Date(2021, 11, 13, 15),
+        recurrence: 'daily'
+    },
+    {
+        keyFields: ['3', '2'],
+        name: 'seminar',
+        title: 'Online seminar',
         from: new Date(2021, 11, 14, 8),
-        to: new Date(2021, 11, 14, 10, 30)
+        to: new Date(2021, 11, 16)
     },
     {
         keyFields: ['1', '3'],
@@ -201,41 +209,208 @@ const events = [
         allDay: true
     },
     {
-        keyFields: ['1'],
+        keyFields: ['2'],
         name: 'create-wireframe',
         title: 'Create wireframe',
         from: new Date(2021, 11, 13, 10, 15),
-        to: new Date(2021, 11, 13, 12),
-        sharedField: 'The event field overwrites the row field'
+        to: new Date(2021, 11, 16, 12)
     },
     {
         keyFields: ['4'],
         name: 'create-mockup',
         title: 'Create mockup',
         from: new Date(2021, 11, 20, 7),
-        to: new Date(2021, 11, 22, 10, 30),
-        theme: 'hollow'
+        to: new Date(2021, 11, 22, 10, 30)
     },
     {
-        keyFields: ['1', '5'],
+        keyFields: ['2'],
+        name: 'test-new-ui',
+        title: 'Test new UI',
+        from: new Date(2021, 11, 17, 15),
+        to: new Date(2021, 11, 21)
+    },
+    {
+        keyFields: ['5'],
         name: 'implement-feature',
         title: 'Implement feature',
-        from: new Date(2021, 11, 13, 13, 15),
-        to: new Date(2021, 11, 13, 14),
-        theme: 'line'
+        from: new Date(2021, 11, 13, 14),
+        to: new Date(2021, 11, 15, 16)
+    },
+    {
+        keyFields: ['1'],
+        name: 'push-to-prod',
+        title: 'Push to production',
+        from: new Date(2021, 11, 16, 11),
+        to: new Date(2021, 11, 16, 12)
+    },
+    {
+        keyFields: ['1'],
+        name: 'phone-meeting',
+        title: 'Phone meeting',
+        from: new Date(2021, 11, 21, 10),
+        to: new Date(2021, 11, 21, 12)
+    },
+    {
+        keyFields: ['3'],
+        name: 'update-documentation',
+        title: 'Update documentation',
+        from: new Date(2021, 11, 17, 11),
+        to: new Date(2021, 11, 17, 18)
+    },
+    {
+        keyFields: ['3'],
+        name: 'presentation',
+        title: 'Presentation at the conference',
+        from: new Date(2021, 11, 16, 11),
+        to: new Date(2021, 11, 16, 18)
+    },
+    {
+        keyFields: ['2', '4'],
+        name: 'ux-ui-team-meeting',
+        title: 'UI/UX team meeting',
+        from: new Date(2021, 11, 17, 11),
+        to: new Date(2021, 11, 17, 12),
+        recurrence: 'weekly'
+    },
+    {
+        keyFields: ['1', '2', '3', '4', '5'],
+        name: 'office-party',
+        title: 'Office party',
+        from: new Date(2021, 11, 24, 12),
+        to: new Date(2021, 11, 25)
     },
     {
         keyFields: ['1', '5'],
         name: 'standup',
-        title: 'Dev team standup meeting',
-        from: new Date(2021, 11, 13, 11),
-        to: new Date(2021, 11, 14, 14),
+        title: 'Stand-up meeting',
+        from: new Date(2021, 11, 13, 9, 30),
+        to: new Date(2021, 11, 14, 10),
         recurrence: 'weekly',
         recurrenceAttributes: {
             weekdays: [1, 3, 5]
-        },
-        color: '#300561',
-        theme: 'default'
+        }
+    }
+];
+
+const eventsWithLabels = [
+    {
+        keyFields: ['3'],
+        name: 'research',
+        title: 'Research',
+        from: new Date(2021, 11, 13, 9),
+        to: new Date(2021, 11, 14, 12),
+        labels: {
+            center: {
+                value: 'Custom label and icon specific to this event',
+                iconName: 'utility:key_dates'
+            }
+        }
+    },
+    {
+        keyFields: ['1'],
+        name: 'code-review',
+        title: 'Code review',
+        from: new Date(2021, 11, 13, 13),
+        to: new Date(2021, 11, 13, 15),
+        recurrence: 'daily'
+    },
+    {
+        keyFields: ['3', '2'],
+        name: 'seminar',
+        title: 'Online seminar',
+        from: new Date(2021, 11, 14, 8),
+        to: new Date(2021, 11, 16)
+    },
+    {
+        keyFields: ['1', '3'],
+        name: 'write-spec',
+        title: 'Write specifications',
+        from: new Date(2021, 11, 15),
+        allDay: true
+    },
+    {
+        keyFields: ['2'],
+        name: 'create-wireframe',
+        title: 'Create wireframe',
+        from: new Date(2021, 11, 13, 10, 15),
+        to: new Date(2021, 11, 16, 12),
+        customEventField: 'Label coming from a custom field in the event',
+        labels: {
+            center: {
+                fieldName: 'customEventField'
+            },
+            top: {
+                fieldName: 'customRowField'
+            }
+        }
+    },
+    {
+        keyFields: ['5'],
+        name: 'implement-feature',
+        title: 'Implement feature',
+        from: new Date(2021, 11, 13, 14),
+        to: new Date(2021, 11, 15, 16)
+    },
+    {
+        keyFields: ['1', '5'],
+        name: 'standup',
+        title: 'Stand-up meeting',
+        from: new Date(2021, 11, 13, 9, 30),
+        to: new Date(2021, 11, 14, 10),
+        recurrence: 'weekly',
+        recurrenceAttributes: {
+            weekdays: [1, 3, 5]
+        }
+    }
+];
+
+const eventsThemed = [
+    {
+        keyFields: ['1', '5', '4'],
+        name: 'event-1',
+        title: 'Theme hollow',
+        from: 1639400400000,
+        to: 1639407600000,
+        theme: 'hollow'
+    },
+    {
+        keyFields: ['4'],
+        name: 'event-2',
+        title: 'Theme line',
+        from: 1639404000000,
+        to: 1639411200000,
+        theme: 'line'
+    },
+    {
+        keyFields: ['5', '3'],
+        name: 'event-3',
+        title: 'Custom color',
+        from: 1639432800000,
+        to: 1639440000000,
+        color: 'tomato'
+    },
+    {
+        keyFields: ['2', '4'],
+        name: 'event-4',
+        title: 'Theme transparent',
+        from: 1639411200000,
+        to: 1639418400000,
+        theme: 'transparent'
+    },
+    {
+        keyFields: ['2', '1'],
+        name: 'event-5',
+        title: 'Theme rounded',
+        from: 1639414800000,
+        to: 1639422000000,
+        theme: 'rounded'
+    },
+    {
+        keyFields: ['4', '1'],
+        name: 'event-6',
+        title: 'Default theme',
+        from: 1639425600000,
+        to: 1639432800000
     }
 ];
 
@@ -256,6 +431,12 @@ const disabledDatesTimes = [
         title: 'Vacation',
         from: new Date(2021, 11, 6),
         to: new Date(2021, 11, 20)
+    },
+    {
+        keyFields: ['3'],
+        title: 'Day off',
+        from: new Date(2021, 11, 23),
+        allDay: true
     }
 ];
 
@@ -267,7 +448,7 @@ const referenceLines = [
     {
         label: 'Deadline',
         variant: 'error',
-        date: new Date(2021, 11, 13, 15)
+        date: new Date(2021, 11, 17, 15)
     },
     {
         label: 'Coffee break',
@@ -282,7 +463,11 @@ export {
     rows,
     headers,
     events,
+    eventsThemed,
+    eventsWithLabels,
     lotsOfEvents,
+    lotsOfRows,
+    oneColumn,
     referenceLines,
     start
 };

@@ -156,7 +156,9 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         const stickyLabel = this.template.querySelector(
             '.scheduler__event-label_center'
         );
-        stickyLabel.style.left = `-${this._x + this._offsetX}px`;
+        if (stickyLabel) {
+            stickyLabel.style.left = `-${this._x + this._offsetX}px`;
+        }
     }
 
     render() {
