@@ -13,19 +13,3 @@
 .avonni-primitive-collapsible-group__section_padding_bottom {
     padding-bottom: 0.5rem;
 }
-
-.slds-section__title[aria-level='1'] {
-    padding-left: 1rem;
-}
-
-.slds-section__title[aria-level='2'] {
-    padding-left: 2rem;
-}
-
-.slds-section__title[aria-level='3'] {
-    padding-left: 3rem;
-}
-
-.slds-section__title[aria-level='4'] {
-    padding-left: 4rem;
-}

@@ -114,4 +114,16 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
     changeSectionStatus() {
         this._closed = !this._closed;
     }
+
+    get section() {
+        return this.template.querySelector('.slds-section__title');
+    }
+
+    setPadding() {
+        this.section.style.paddingLeft = `${this.level}rem`;
+    }
+
+    renderedCallback() {
+        this.setPadding();
+    }
 }
