@@ -152,6 +152,11 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         this.updatePosition();
         this.updateWidth();
         this.updateHeight();
+
+        const stickyLabel = this.template.querySelector(
+            '.scheduler__event-label_center'
+        );
+        stickyLabel.style.left = `-${this._x + this._offsetX}px`;
     }
 
     render() {
@@ -442,7 +447,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     get computedClass() {
         const theme = this.theme;
         return classSet(
-            `slds-p-horizontal_small scheduler__event slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate scheduler__event_${theme}`
+            `scheduler__event slds-p-horizontal_x-small slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate scheduler__event_${theme}`
         )
             .add({
                 'slds-text-color_inverse slds-current-color':
@@ -598,6 +603,36 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     @api
     focus() {
         this.template.querySelector('.scheduler__event-wrapper').focus();
+    }
+
+    /**
+     * Hide the right label. Since the label is not part of the component width, it is used to make sure it doesn't overflow.
+     *
+     * @public
+     */
+    @api
+    hideRightLabel() {
+        const rightLabel = this.template.querySelector(
+            '.scheduler__event-label_right'
+        );
+        if (rightLabel) {
+            rightLabel.classList.add('slds-hide');
+        }
+    }
+
+    /**
+     * Display the right label.
+     *
+     * @public
+     */
+    @api
+    showRightLabel() {
+        const rightLabel = this.template.querySelector(
+            '.scheduler__event-label_right'
+        );
+        if (rightLabel) {
+            rightLabel.classList.remove('slds-hide');
+        }
     }
 
     /**

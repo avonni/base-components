@@ -75,6 +75,10 @@
     transform: translateX(-100%);
 }
 
+.scheduler__event-label_center {
+    position: sticky;
+}
+
 /* Themes --------- */
 .scheduler__event_transparent {
     border-left-width: 3px;

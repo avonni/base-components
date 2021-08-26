@@ -801,9 +801,7 @@ export default class Scheduler extends LightningElement {
 
         rows.forEach((row, index) => {
             const key = row.dataset.key;
-            const computedRow = this.computedRows.find((cptRow) => {
-                return cptRow.key === key;
-            });
+            const computedRow = this.getRowFromKey(key);
             const rowHeight = computedRow.height;
 
             const dataRowHeight = this._datatableRowsHeight.find(
@@ -888,6 +886,9 @@ export default class Scheduler extends LightningElement {
     }
 
     updateOccurrencesOffsetTop() {
+        const schedule = this.template.querySelector('.scheduler__body');
+        const scheduleRightBorder = schedule.getBoundingClientRect().right;
+
         // For each row
         this.computedRows.forEach((row) => {
             let rowHeight = 0;
@@ -907,10 +908,6 @@ export default class Scheduler extends LightningElement {
                 // Compute the vertical level of the occurrences
                 const previousOccurrences = [];
                 occurrenceElements.forEach((occElement) => {
-                    // We update the position, in case the element was visible in the scheduler,
-                    // but we changed the computed events and its position changed
-                    occElement.updatePosition();
-
                     const left = occElement.leftPosition;
                     const level = this.computeEventVerticalLevel(
                         previousOccurrences,
@@ -936,6 +933,18 @@ export default class Scheduler extends LightningElement {
                             occurrence ||
                             (this.selection && this.selection.occurrence)
                     });
+
+                    // Hide the right label
+                    if (occElement.labels.right) {
+                        const elementRightBorder =
+                            occElement.getBoundingClientRect().right +
+                            occElement.rightLabelWidth;
+                        if (elementRightBorder >= scheduleRightBorder) {
+                            occElement.hideRightLabel();
+                        } else {
+                            occElement.showRightLabel();
+                        }
+                    }
                 });
 
                 // Add the corresponding offset to the top of the occurrences
@@ -1699,7 +1708,6 @@ export default class Scheduler extends LightningElement {
         );
         const scroll = schedule.scrollLeft;
         const scrollOffset = this.cellWidth * this._numberOfVisibleCells;
-
         const startOfSchedule =
             this._visibleInterval.s.ts === this.smallestHeader.start.ts;
         const loadLeftSchedule = !startOfSchedule && scroll <= scrollOffset;

@@ -34,8 +34,15 @@
     display: block;
 }
 
-.scheduler__cell {
+.scheduler__header-cell {
     width: var(--avonni-scheduler-cell-width);
     min-width: var(--avonni-scheduler-cell-width);
     background-color: #fafaf9;
+    color: #514f4d;
+    font-weight: 700;
+}
+
+.scheduler__header-label_sticky {
+    position: sticky;
+    left: 0;
 }
