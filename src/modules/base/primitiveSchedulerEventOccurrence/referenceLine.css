@@ -36,7 +36,7 @@
     height: 100%;
 }
 
-.scheduler__reference-line {
+.avonni-scheduler__reference-line {
     top: 0;
     bottom: 0;
     --avonni-reference-line-badge-position-top: var(

@@ -149,7 +149,7 @@ export default class Scheduler extends LightningElement {
         // Position the detail popover
         if (this.showDetailPopover) {
             const popover = this.template.querySelector(
-                '.scheduler__event-detail-popover'
+                '.avonni-scheduler__event-detail-popover'
             );
             this.positionPopover(popover);
         }
@@ -157,7 +157,7 @@ export default class Scheduler extends LightningElement {
         // Position the context menu
         if (this.showContextMenu && this.contextMenuActions.length) {
             const contextMenu = this.template.querySelector(
-                '.scheduler__context-menu'
+                '.avonni-scheduler__context-menu'
             );
             this.positionPopover(contextMenu);
         }
@@ -556,14 +556,15 @@ export default class Scheduler extends LightningElement {
     }
 
     get datatableCol() {
-        return this.template.querySelector('.scheduler__datatable-col');
+        return this.template.querySelector('.avonni-scheduler__datatable-col');
     }
 
     get datatableColClass() {
-        return classSet('slds-border_right scheduler__datatable-col')
+        return classSet('slds-border_right avonni-scheduler__datatable-col')
             .add({
-                'scheduler__datatable-col_hidden': this.datatableIsHidden,
-                'scheduler__datatable-col_open': this.datatableIsOpen
+                'avonni-scheduler__datatable-col_hidden': this
+                    .datatableIsHidden,
+                'avonni-scheduler__datatable-col_open': this.datatableIsOpen
             })
             .toString();
     }
@@ -658,10 +659,10 @@ export default class Scheduler extends LightningElement {
 
     get splitterClass() {
         return classSet(
-            'scheduler__splitter slds-is-absolute slds-grid slds-grid_align-end'
+            'avonni-scheduler__splitter slds-is-absolute slds-grid slds-grid_align-end'
         )
             .add({
-                scheduler__splitter_disabled: this.resizeColumnDisabled
+                'avonni-scheduler__splitter_disabled': this.resizeColumnDisabled
             })
             .toString();
     }
@@ -729,7 +730,9 @@ export default class Scheduler extends LightningElement {
 
     initDraggedEventState(mouseX, mouseY) {
         // Save the initial position values
-        const scheduleElement = this.template.querySelector('.scheduler__body');
+        const scheduleElement = this.template.querySelector(
+            '.avonni-scheduler__body'
+        );
         const schedulePosition = scheduleElement.getBoundingClientRect();
         const eventPosition = this._draggedEvent.getBoundingClientRect();
 
@@ -797,7 +800,7 @@ export default class Scheduler extends LightningElement {
 
     updateRowsStyle() {
         // Set the rows height
-        const rows = this.template.querySelectorAll('.scheduler__row');
+        const rows = this.template.querySelectorAll('.avonni-scheduler__row');
 
         rows.forEach((row, index) => {
             const key = row.dataset.key;
@@ -823,7 +826,7 @@ export default class Scheduler extends LightningElement {
     }
 
     updateCellWidth() {
-        const cell = this.template.querySelector('.scheduler__cell');
+        const cell = this.template.querySelector('.avonni-scheduler__cell');
         const cellWidth = cell.getBoundingClientRect().width;
         if (cellWidth !== this.cellWidth) {
             this.cellWidth = cellWidth;
@@ -886,7 +889,7 @@ export default class Scheduler extends LightningElement {
     }
 
     updateOccurrencesOffsetTop() {
-        const schedule = this.template.querySelector('.scheduler__body');
+        const schedule = this.template.querySelector('.avonni-scheduler__body');
         const scheduleRightBorder = schedule.getBoundingClientRect().right;
 
         // For each row
@@ -897,7 +900,7 @@ export default class Scheduler extends LightningElement {
             // Get all the event occurrences of the row
             const occurrenceElements = Array.from(
                 this.template.querySelectorAll(
-                    `.scheduler__primitive-event[data-row-key="${row.key}"]`
+                    `.avonni-scheduler__primitive-event[data-row-key="${row.key}"]`
                 )
             );
 
@@ -991,7 +994,9 @@ export default class Scheduler extends LightningElement {
     }
 
     getCellFromPosition(row, x) {
-        const cells = Array.from(row.querySelectorAll('.scheduler__cell'));
+        const cells = Array.from(
+            row.querySelectorAll('.avonni-scheduler__cell')
+        );
 
         return cells.find((td, index) => {
             const left = td.getBoundingClientRect().left;
@@ -1027,7 +1032,7 @@ export default class Scheduler extends LightningElement {
 
     getRowFromPosition(y) {
         const rows = Array.from(
-            this.template.querySelectorAll('.scheduler__row')
+            this.template.querySelectorAll('.avonni-scheduler__row')
         );
         return rows.find((tr) => {
             const top = tr.getBoundingClientRect().top;
@@ -1040,7 +1045,9 @@ export default class Scheduler extends LightningElement {
 
     cleanDraggedElement() {
         if (this._draggedEvent) {
-            this._draggedEvent.classList.remove('scheduler__event-dragged');
+            this._draggedEvent.classList.remove(
+                'avonni-scheduler__event-dragged'
+            );
             this._draggedEvent = undefined;
         }
         this._resizeSide = undefined;
@@ -1344,7 +1351,7 @@ export default class Scheduler extends LightningElement {
 
         if (direction) {
             const schedule = this.template.querySelector(
-                '.scheduler__schedule-col'
+                '.avonni-scheduler__schedule-col'
             );
             const scrollOffset = this.cellWidth * visibleCells;
             const scrollValue =
@@ -1405,7 +1412,7 @@ export default class Scheduler extends LightningElement {
         this._mouseIsDown = true;
         this._resizeSide = side;
         this._draggedEvent = mouseEvent.currentTarget;
-        this._draggedEvent.classList.add('scheduler__event-dragged');
+        this._draggedEvent.classList.add('avonni-scheduler__event-dragged');
         this.selectEvent(mouseEvent);
         this.hideAllPopovers();
         this.initDraggedEventState(x, y);
@@ -1704,7 +1711,7 @@ export default class Scheduler extends LightningElement {
         }
 
         const schedule = this.template.querySelector(
-            '.scheduler__schedule-col'
+            '.avonni-scheduler__schedule-col'
         );
         const scroll = schedule.scrollLeft;
         const scrollOffset = this.cellWidth * this._numberOfVisibleCells;

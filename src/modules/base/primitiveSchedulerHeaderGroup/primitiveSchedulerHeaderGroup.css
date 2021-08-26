@@ -34,7 +34,7 @@
     display: block;
 }
 
-.scheduler__header-cell {
+.avonni-scheduler__header-cell {
     width: var(--avonni-scheduler-cell-width);
     min-width: var(--avonni-scheduler-cell-width);
     background-color: #fafaf9;
@@ -42,7 +42,7 @@
     font-weight: 700;
 }
 
-.scheduler__header-label_sticky {
+.avonni-scheduler__header-label_sticky {
     position: sticky;
     left: 0;
 }

@@ -143,7 +143,9 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
 
     connectedCallback() {
         if (!this.disabled)
-            this.template.host.classList.add('scheduler__primitive-event');
+            this.template.host.classList.add(
+                'avonni-scheduler__primitive-event'
+            );
 
         this.initLabels();
     }
@@ -154,7 +156,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         this.updateHeight();
 
         const stickyLabel = this.template.querySelector(
-            '.scheduler__event-label_center'
+            '.avonni-scheduler__event-label_center'
         );
         if (stickyLabel) {
             stickyLabel.style.left = `-${this._x + this._offsetX}px`;
@@ -449,14 +451,14 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     get computedClass() {
         const theme = this.theme;
         return classSet(
-            `scheduler__event slds-p-horizontal_x-small slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate scheduler__event_${theme}`
+            `avonni-scheduler__event slds-p-horizontal_x-small slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate avonni-scheduler__event_${theme}`
         )
             .add({
                 'slds-text-color_inverse slds-current-color':
                     theme === 'default' ||
                     theme === 'rounded' ||
                     (this._focused && theme === 'transparent'),
-                'scheduler__event-wrapper_focused': this._focused,
+                'avonni-scheduler__event-wrapper_focused': this._focused,
                 'slds-p-vertical_xx-small': theme !== 'line',
                 'slds-p-bottom_xx-small': theme === 'line'
             })
@@ -501,7 +503,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     @api
     get leftLabelWidth() {
         const label = this.template.querySelector(
-            '.scheduler__event-label_left'
+            '.avonni-scheduler__event-label_left'
         );
         return label ? label.getBoundingClientRect().width : 0;
     }
@@ -516,7 +518,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     @api
     get rightLabelWidth() {
         const label = this.template.querySelector(
-            '.scheduler__event-label_right'
+            '.avonni-scheduler__event-label_right'
         );
         return label ? label.getBoundingClientRect().width : 0;
     }
@@ -604,7 +606,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     @api
     focus() {
-        this.template.querySelector('.scheduler__event-wrapper').focus();
+        this.template.querySelector('.avonni-scheduler__event-wrapper').focus();
     }
 
     /**
@@ -615,7 +617,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     @api
     hideRightLabel() {
         const rightLabel = this.template.querySelector(
-            '.scheduler__event-label_right'
+            '.avonni-scheduler__event-label_right'
         );
         if (rightLabel) {
             rightLabel.classList.add('slds-hide');
@@ -630,7 +632,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     @api
     showRightLabel() {
         const rightLabel = this.template.querySelector(
-            '.scheduler__event-label_right'
+            '.avonni-scheduler__event-label_right'
         );
         if (rightLabel) {
             rightLabel.classList.remove('slds-hide');

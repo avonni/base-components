@@ -37,7 +37,7 @@
         <div
             if:false={header.value.isHidden}
             key={header.value.key}
-            class="slds-grid slds-is-relative scheduler__header-row"
+            class="slds-grid slds-is-relative avonni-scheduler__header-row"
             data-key={header.value.key}
         >
             <template
@@ -47,13 +47,13 @@
             >
                 <div
                     key={column.start}
-                    class="slds-border_right slds-border_bottom slds-col slds-grid slds-theme_shade slds-grid_vertical-align-center slds-grid_align-center scheduler__header-cell"
+                    class="slds-border_right slds-border_bottom slds-col slds-grid slds-theme_shade slds-grid_vertical-align-center slds-grid_align-center avonni-scheduler__header-cell"
                     data-start={column.start}
                     data-end={column.end}
                 >
                     <template if:false={header.last}>
                         <span
-                            class="slds-truncate slds-text-body_small slds-p-horizontal_x-small scheduler__header-label_sticky"
+                            class="slds-truncate slds-text-body_small slds-p-horizontal_x-small avonni-scheduler__header-label_sticky"
                             title={column.label}
                             >{column.label}
                         </span>

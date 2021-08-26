@@ -63,7 +63,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     renderedCallback() {
         if (!this._cellWidth) {
             const cellText = this.template.querySelector(
-                '.scheduler__header-row:last-of-type .scheduler__header-cell span'
+                '.avonni-scheduler__header-row:last-of-type .avonni-scheduler__header-cell span'
             );
             // We add 20 pixels for padding
             this._cellWidth =
@@ -333,7 +333,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     updateCellsWidths() {
         // Get rows and sort them from the shortest unit to the longest
         const rows = Array.from(
-            this.template.querySelectorAll('.scheduler__header-row')
+            this.template.querySelectorAll('.avonni-scheduler__header-row')
         ).reverse();
 
         rows.forEach((row) => {
@@ -342,7 +342,9 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
             });
 
             // Give cells their width
-            const cells = row.querySelectorAll('.scheduler__header-cell');
+            const cells = row.querySelectorAll(
+                '.avonni-scheduler__header-cell'
+            );
             cells.forEach((cell, index) => {
                 cell.style = `--avonni-scheduler-cell-width: ${header.columnWidths[index]}px`;
             });

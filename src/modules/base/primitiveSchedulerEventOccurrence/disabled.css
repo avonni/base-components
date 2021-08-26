@@ -36,12 +36,12 @@
     overflow: hidden;
 }
 
-.scheduler__disabled-date {
+.avonni-scheduler__disabled-date {
     height: 100%;
     width: 100%;
     opacity: 0.5;
 }
-.scheduler__disabled-date-title {
+.avonni-scheduler__disabled-date-title {
     position: absolute;
     bottom: 0;
     left: 0;
