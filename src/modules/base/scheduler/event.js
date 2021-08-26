@@ -279,6 +279,16 @@ export default class SchedulerEvent {
         const { recurrence, recurrenceAttributes } = this;
         const from = this.computedFrom;
         const to = this.computedTo;
+
+        const hours = to.hour < from.hour ? 23 : to.hour;
+        const minutes =
+            hours === from.hour && to.minute < from.minute ? 59 : to.minute;
+        const seconds =
+            hours === from.hour &&
+            minutes === from.minute &&
+            to.second < from.second
+                ? 59
+                : to.second;
         let end;
 
         switch (recurrence.name) {
@@ -325,11 +335,7 @@ export default class SchedulerEvent {
                 break;
             default:
                 // The event can only span on one day, even if "from" and "to" are on different dates
-                end = start.set({
-                    hours: to.hour > from.hour ? to.hour : 23,
-                    minutes: to.minute > from.minute ? to.minute : 59,
-                    seconds: to.second > from.second ? to.second : 59
-                });
+                end = start.set({ hours, minutes, seconds });
                 break;
         }
         return end;
