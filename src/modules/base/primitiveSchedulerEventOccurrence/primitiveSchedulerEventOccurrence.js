@@ -136,6 +136,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     _to;
 
     _focused = false;
+    _offsetX = 0;
     _x = 0;
     _y = 0;
     computedLabels = {};
@@ -400,7 +401,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     @api
     get leftPosition() {
-        const left = this._x - this.leftLabelWidth;
+        const left = this.x + this._offsetX - this.leftLabelWidth;
         return left > 0 ? left : 0;
     }
 
@@ -414,7 +415,8 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     @api
     get rightPosition() {
         return (
-            this._x +
+            this.x +
+            this._offsetX +
             this.hostElement.getBoundingClientRect().width +
             this.rightLabelWidth
         );
@@ -660,7 +662,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             const eventDuration = columnEnd.diff(from).milliseconds;
             const emptyDuration = columnDuration - eventDuration;
             const emptyPercentageOfCol = emptyDuration / columnDuration;
-            this._x += columnWidth * emptyPercentageOfCol;
+            this._offsetX = columnWidth * emptyPercentageOfCol;
             this.updateHostTranslate();
             if (this.referenceLine) return;
 
@@ -765,7 +767,9 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     updateHostTranslate() {
         if (this.hostElement) {
-            this.hostElement.style.transform = `translate(${this.x}px, ${this.y}px)`;
+            this.hostElement.style.transform = `translate(${
+                this.x + this._offsetX
+            }px, ${this.y}px)`;
         }
     }
 
