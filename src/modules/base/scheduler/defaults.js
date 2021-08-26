@@ -73,7 +73,9 @@ const DEFAULT_EDIT_DIALOG_LABELS = {
 };
 
 const DEFAULT_EVENTS_LABELS = {
-    center: 'title'
+    center: {
+        fieldName: 'title'
+    }
 };
 
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';

@@ -184,7 +184,7 @@ export default class SchedulerHeader {
         }
 
         if (firstRender) {
-            this._start = DateTime.fromMillis(this.columns[0].start);
+            this.start = DateTime.fromMillis(this.columns[0].start);
         }
     }
 

@@ -63,7 +63,6 @@
 .scheduler__cell {
     width: var(--avonni-scheduler-cell-width);
     min-width: var(--avonni-scheduler-cell-width);
-    max-width: var(--avonni-scheduler-cell-width);
 }
 
 .scheduler__infinite-load-spinner_right {

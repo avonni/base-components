@@ -988,10 +988,14 @@ export default class Scheduler extends LightningElement {
         const newVisibleInterval = this._visibleInterval.difference(
             this._previousInterval
         )[0];
-        this.computedEvents = this.createEventsFromInterval(
-            newVisibleInterval,
-            previousEvents
-        );
+        if (newVisibleInterval) {
+            this.computedEvents = this.createEventsFromInterval(
+                newVisibleInterval,
+                previousEvents
+            );
+        } else {
+            this.computedEvents = previousEvents;
+        }
     }
 
     updateVisibleRows() {
@@ -1104,9 +1108,6 @@ export default class Scheduler extends LightningElement {
         const events = this._allEvents.filter((event) => {
             const from = dateTimeObjectFrom(event.from);
             const to = dateTimeObjectFrom(event.to);
-            // if (event.title === 'Vacation') {
-            //     console.log(from.c, to.c)
-            // }
             return (
                 interval.contains(from) ||
                 interval.contains(to) ||

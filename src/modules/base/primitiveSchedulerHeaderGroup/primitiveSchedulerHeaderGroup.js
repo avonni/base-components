@@ -62,20 +62,13 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
 
     renderedCallback() {
         if (!this._cellWidth) {
-            const cell = this.template.querySelector(
+            const cellText = this.template.querySelector(
                 '.scheduler__row:last-of-type .scheduler__cell span'
             );
             // We add 20 pixels for padding
             this._cellWidth =
-                Math.ceil(cell.getBoundingClientRect().width) + 20;
-
-            this.dispatchEvent(
-                new CustomEvent('privatecellwidthchange', {
-                    detail: {
-                        cellWidth: this._cellWidth
-                    }
-                })
-            );
+                Math.ceil(cellText.getBoundingClientRect().width) + 20;
+            this.dispatchCellWidth();
         }
 
         if (!this._numberOfVisibleCells) {
@@ -83,6 +76,17 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
             this._numberOfVisibleCells = Math.ceil(
                 totalWidth / this._cellWidth
             );
+
+            // If the maximum number of visible cells on the screen is bigger
+            // than the actual number of cells, recompute the cell width so the
+            // schedule takes the full screen
+            if (
+                this.smallestHeader.numberOfColumns < this._numberOfVisibleCells
+            ) {
+                this._numberOfVisibleCells = this.smallestHeader.numberOfColumns;
+                this._cellWidth = totalWidth / this._numberOfVisibleCells;
+                this.dispatchCellWidth();
+            }
 
             this.scrollHeadersTo();
             this.dispatchEvent(new CustomEvent('privateheaderheightchange'));
@@ -352,5 +356,15 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
                 cell.style = `--avonni-scheduler-cell-width: ${header.columnWidths[index]}px`;
             });
         });
+    }
+
+    dispatchCellWidth() {
+        this.dispatchEvent(
+            new CustomEvent('privatecellwidthchange', {
+                detail: {
+                    cellWidth: this._cellWidth
+                }
+            })
+        );
     }
 }
