@@ -220,6 +220,11 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
             isHidden: !referenceHeader
         });
 
+        // Make sure the reference end is at the end of the smallest header unit
+        reference.end = reference.end.endOf(
+            sortedHeaders[sortedHeaders.length - 1].unit
+        );
+
         // Create all headers
         const headerObjects = [];
         sortedHeaders.forEach((header) => {
@@ -262,14 +267,6 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
                 headerObject.end = reference.end;
             }
         });
-
-        // Make sure the reference end is at the end of the smallest header unit
-        const referenceEnd = DateTime.fromMillis(
-            reference.columns[reference.columns.length - 1].end
-        );
-        reference.end = referenceEnd.endOf(
-            sortedHeaders[sortedHeaders.length - 1].unit
-        );
 
         this._referenceHeader = reference;
         this.computedHeaders = headerObjects;
