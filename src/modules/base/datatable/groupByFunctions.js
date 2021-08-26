@@ -21,13 +21,6 @@ const isUndefined = (value) => {
     return value === undefined ? 'undefined' : value;
 };
 
-// const removeUndefinedRow = (result) => {
-//     if (result.label !== 'undefined') {
-//         return result;
-//     }
-//     return undefined;
-// }
-
 const recursiveGroupBy = (records, groupBy, level) => {
     if (typeof groupBy === 'string') {
         groupBy = groupBy.split();
@@ -83,49 +76,16 @@ const recursiveGroupByNoUndefined = (records, groupBy, level) => {
 
     if (groupBy.length) {
         recursiveData.forEach((obj) => {
-            if (groupBy.length === 1) {
-                obj.size = countingRows(records, (row) => {
-                    return row[groupBy[0]] === obj.label;
-                });
-            }
-            if (groupBy.length === 2) {
-                obj.size = countingRows(records, (row) => {
-                    return (
-                        row[groupBy[0]] === obj.label &&
-                        row[groupBy[1]] !== undefined
-                    );
-                });
-            }
-            if (groupBy.length === 3) {
-                obj.size = countingRows(records, (row) => {
-                    return (
-                        row[groupBy[0]] === obj.label &&
-                        row[groupBy[1]] !== undefined &&
-                        row[groupBy[2]] !== undefined
-                    );
-                });
-            }
-            if (groupBy.length === 4) {
-                obj.size = countingRows(records, (row) => {
-                    return (
-                        row[groupBy[0]] === obj.label &&
-                        row[groupBy[1]] !== undefined &&
-                        row[groupBy[2]] !== undefined &&
-                        row[groupBy[3]] !== undefined
-                    );
-                });
-            }
-            if (groupBy.length === 5) {
-                obj.size = countingRows(records, (row) => {
-                    return (
-                        row[groupBy[0]] === obj.label &&
-                        row[groupBy[1]] !== undefined &&
-                        row[groupBy[2]] !== undefined &&
-                        row[groupBy[3]] !== undefined &&
-                        row[groupBy[4]] !== undefined
-                    );
-                });
-            }
+            obj.size = countingRows(records, (row) => {
+                let noUndefined = true;
+                for (let i = 1; i < groupBy.length; i++) {
+                    if (row[groupBy[i]] === undefined) {
+                        noUndefined = false;
+                        break;
+                    }
+                }
+                return row[groupBy[0]] === obj.label && noUndefined;
+            });
             obj.group = recursiveGroupByNoUndefined(
                 obj.group,
                 groupBy.slice(1),
