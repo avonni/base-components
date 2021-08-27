@@ -45,30 +45,34 @@ import {
 const MAX_VISIBLE_COLUMNS = Math.ceil(3840 / 17);
 
 /**
- * Scheduler header
+ * Represent one row of the scheduler header group.
+ *
  * @class
- * @param {string} key Unique identifier for the header
- * @param {string} unit Unit used by the header (minute, hour, day, week, month or year)
- * @param {number} span Number of unit in one column of the header
- * @param {string} label Pattern of the columns labels
- * @param {object[]} columns Array of column objects. Each object has two keys: time and label.
- * @param {number[]} columnWidths Array of column widths in percent
- * @param {boolean} isHidden If true, the header will be hidden
- * @param {boolean} isReference If true, the header unit is the one used by the visibleSpan of the parent Scheduler
- * @param {number} numberOfColumns Number of columns in the header
- * @param {DateTime} end End date of the header
- * @param {DateTime} start Start date of the header
- * @param {string[]} availableTimeFrames Array of available time frames
- * @param {number[]} availableDaysOfTheWeek Array of available days
- * @param {number[]} availableMonths Array of available months
+ * @param {string[]} availableTimeFrames Array of available time frames.
+ * @param {number[]} availableDaysOfTheWeek Array of available days of the week.
+ * @param {number[]} availableMonths Array of available months.
+ * @param {DateTime} end End date of the header.
+ * @param {object[]} columns Array of column objects. Each object has three keys: start, end and label.
+ * @param {number[]} columnWidths Array of column widths in pixels.
+ * @param {number} duration Total number of reference units (it is the span of the scheduler visibleSpan).
+ * @param {boolean} isHidden If true, the header will be hidden.
+ * @param {boolean} isReference If true, the header unit is the one used by the visibleSpan of the parent Scheduler.
+ * @param {string} key Unique identifier for the header.
+ * @param {string} label Pattern used to create the columns labels.
+ * @param {number} numberOfColumns Total number of columns of the header.
+ * @param {number} span Number of unit in one column of the header.
+ * @param {DateTime} start Starting date of the header.
+ * @param {string} unit Unit used by the header (minute, hour, day, week, month or year).
  */
 export default class SchedulerHeader {
     constructor(props) {
         this.availableDaysOfTheWeek = props.availableDaysOfTheWeek;
         this.availableMonths = props.availableMonths;
         this.availableTimeFrames = props.availableTimeFrames;
+        this._end = props.end;
         this.columns = [];
         this.columnWidths = [];
+        this.duration = props.duration;
         this.isHidden = props.isHidden;
         this.isReference = props.isReference;
         this.key = generateUniqueId();
@@ -76,9 +80,7 @@ export default class SchedulerHeader {
         this.numberOfColumns = props.numberOfColumns;
         this.span = props.span;
         this.start = props.start;
-        this._end = props.end;
         this.unit = props.unit;
-        this.duration = props.duration;
 
         this.initColumns(DateTime.fromMillis(this.start.ts), true);
     }
@@ -95,6 +97,11 @@ export default class SchedulerHeader {
         }
     }
 
+    /**
+     * Create the header columns.
+     *
+     * @param {DateTime} startDate Starting date of the header.
+     */
     initColumns(startDate, firstRender) {
         const { unit, label, span, isReference } = this;
         let iterations = this.computeNumberOfColumns(firstRender);
@@ -188,6 +195,12 @@ export default class SchedulerHeader {
         }
     }
 
+    /**
+     * Computes the number of columns that should be created.
+     *
+     * @param {boolean} firstRender Should be true if it is the first render of the header.
+     * @returns {number} Number of visible columns.
+     */
     computeNumberOfColumns(firstRender) {
         // On the first render, we create only one column, to compute the default cell width.
         if (firstRender || this.numberOfColumns < 1) {
@@ -198,6 +211,12 @@ export default class SchedulerHeader {
             : this.numberOfColumns;
     }
 
+    /**
+     * Check if the given date is bigger than the header end.
+     *
+     * @param {DateTime} date
+     * @returns {boolean} True or false.
+     */
     dateIsBiggerThanEnd(date) {
         const { end, unit } = this;
         let dateUnit;
@@ -216,8 +235,9 @@ export default class SchedulerHeader {
         return false;
     }
 
-    // Make sure the last column contains allowed dates/times.
-    // If not, remove it.
+    /**
+     * Make sure the last column contains allowed dates/times and remove it if not.
+     */
     cleanEmptyLastColumn() {
         const lastColumn = this.columns[this.columns.length - 1];
         const nextDay = nextAllowedDay(
@@ -240,8 +260,9 @@ export default class SchedulerHeader {
         }
     }
 
-    // If the start date is in the middle of the unit,
-    // make sure the end date is too
+    /**
+     * Adjust the header end when the start or end is in the middle of a unit.
+     */
     setHeaderEnd() {
         const {
             unit,
@@ -268,6 +289,8 @@ export default class SchedulerHeader {
             );
         }
 
+        // If the start date is in the middle of the unit,
+        // make sure the end date is too
         if (isReference) {
             if (unit === 'year') {
                 end = end.set({ months: start.month });
@@ -289,6 +312,12 @@ export default class SchedulerHeader {
         }
     }
 
+    /**
+     * Compute the width of each column and creates the columnWidths array.
+     *
+     * @param {number} cellWidth The width of one cell of the smallest unit header.
+     * @param {object[]} smallestColumns Array containing the columns of the smallest unit header.
+     */
     computeColumnWidths(cellWidth, smallestColumns) {
         const { isReference, columns, unit, span } = this;
         const columnWidths = [];

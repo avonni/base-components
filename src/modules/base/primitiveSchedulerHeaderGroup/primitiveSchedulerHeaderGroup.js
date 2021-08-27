@@ -38,17 +38,21 @@ import {
     numberOfUnitsBetweenDates,
     normalizeArray
 } from 'c/utilsPrivate';
-import SchedulerHeader from './header';
+import SchedulerHeader from './schedulerHeader';
 
 const UNITS = ['minute', 'hour', 'day', 'week', 'month', 'year'];
+const DEFAULT_START_DATE = new Date();
 
+/**
+ * @class
+ * @descriptor avonni-primitive-scheduler-header-group
+ */
 export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
-    @api start;
-
     _availableDaysOfTheWeek = [];
     _availableMonths = [];
     _availableTimeFrames = [];
     _headers = [];
+    _start = DEFAULT_START_DATE;
     _visibleSpan = {};
 
     _cellWidth = 0;
@@ -89,13 +93,18 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
             }
 
             this.scrollHeadersTo();
-            this.dispatchEvent(new CustomEvent('privateheaderheightchange'));
             return;
         }
 
         this.updateCellsWidths();
     }
 
+    /**
+     * Array of available days of the week. The days are represented by a number, starting from 0 for Sunday, and ending with 6 for Saturday.
+     *
+     * @type {number[]}
+     * @public
+     */
     @api
     get availableDaysOfTheWeek() {
         return this._availableDaysOfTheWeek;
@@ -105,6 +114,12 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         if (this.isConnected) this.initHeaders();
     }
 
+    /**
+     * Array of available months. The months are represented by a number, starting from 0 for January, and ending with 11 for December.
+     *
+     * @type {number[]}
+     * @public
+     */
     @api
     get availableMonths() {
         return this._availableMonths;
@@ -114,6 +129,12 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         if (this.isConnected) this.initHeaders();
     }
 
+    /**
+     * Array of available time frames. Each time frame string must follow the pattern ‘start-end’, with start and end being ISO8601 formatted time strings.
+     *
+     * @type {string[]}
+     * @public
+     */
     @api
     get availableTimeFrames() {
         return this._availableTimeFrames;
@@ -123,6 +144,12 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         if (this.isConnected) this.initHeaders();
     }
 
+    /**
+     * Array of header objects. See the Scheduler for allowed keys.
+     *
+     * @type {object[]}
+     * @public
+     */
     @api
     get headers() {
         return this._headers;
@@ -132,6 +159,35 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         if (this.isConnected) this.initHeaders();
     }
 
+    /**
+     * Starting date of the headers.
+     *
+     * @type {(Date|number|string)}
+     * @public
+     * @default new Date()
+     */
+    @api
+    get start() {
+        return this._start;
+    }
+    set start(value) {
+        const start =
+            value instanceof DateTime ? value : dateTimeObjectFrom(value);
+        this._start =
+            start instanceof DateTime
+                ? start
+                : dateTimeObjectFrom(DEFAULT_START_DATE);
+    }
+
+    /**
+     * Object used to set the duration of the headers. It should have two keys:
+     * * unit (minute, hour, day, week, month or year)
+     * * span (number).
+     *
+     * @type {object}
+     * @public
+     * @default { unit: 'hour', span: 12 }
+     */
     @api
     get visibleSpan() {
         return this._visibleSpan;
@@ -141,6 +197,12 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         if (this.isConnected) this.initHeaders();
     }
 
+    /**
+     * Interval of time between the start and end of the currently loaded header columns.
+     *
+     * @type {Interval}
+     * @public
+     */
     @api
     get visibleInterval() {
         if (!this.smallestHeader) return undefined;
@@ -152,6 +214,11 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         return Interval.fromDateTimes(start, end);
     }
 
+    /**
+     * Computed end date of the headers.
+     *
+     * @type {DateTime}
+     */
     get end() {
         if (this._referenceHeader && this._referenceHeader.end) {
             return this._referenceHeader.end;
@@ -165,6 +232,11 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         return DateTime.fromMillis(visibleSpanEnd - 1);
     }
 
+    /**
+     * Header with the smallest unit.
+     *
+     * @type {SchedulerHeader}
+     */
     get smallestHeader() {
         if (!this.computedHeaders.length) return null;
 
@@ -172,6 +244,61 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         return this.computedHeaders[lastIndex];
     }
 
+    /**
+     * Update the headers columns depending on the direction of the scroll.
+     *
+     * @param {string} direction Direction of the scroll. Valid values are 'left' or 'right'.
+     * @public
+     */
+    @api
+    scrollHeadersTo(direction) {
+        let startTime;
+        if (!this._previousStartTimes.length) {
+            startTime = DateTime.fromMillis(this.start.ts);
+            this._previousStartTimes = [startTime];
+        } else if (direction === 'left') {
+            const lastIndex = this._previousStartTimes.length - 1;
+            if (lastIndex > -1) {
+                startTime = this._previousStartTimes[lastIndex];
+                this._previousStartTimes.pop();
+            } else return;
+        } else {
+            const startColumn = this.smallestHeader.columns[
+                this._numberOfVisibleCells
+            ];
+            if (startColumn) {
+                startTime = dateTimeObjectFrom(startColumn.start);
+                this._previousStartTimes.push(startTime);
+            } else return;
+        }
+
+        [...this.computedHeaders].reverse().forEach((header) => {
+            if (header !== this.smallestHeader) {
+                const lastIndex = this.smallestHeader.columns.length - 1;
+                header.end = this.smallestHeader.columns[lastIndex].end;
+            }
+            header.initColumns(startTime);
+            header.computeColumnWidths(
+                this._cellWidth,
+                this.smallestHeader.columns
+            );
+        });
+        this.computedHeaders = [...this.computedHeaders];
+
+        this.dispatchEvent(
+            new CustomEvent('privatevisibleheaderchange', {
+                detail: {
+                    direction,
+                    visibleCells: this._numberOfVisibleCells,
+                    visibleInterval: this.visibleInterval
+                }
+            })
+        );
+    }
+
+    /**
+     * Create the headers.
+     */
     initHeaders() {
         // Sort the headers from the longest unit to the shortest
         const sortedHeaders = [...this.headers].sort(
@@ -275,6 +402,13 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         this._cellWidth = undefined;
         this._numberOfVisibleCells = undefined;
 
+        /**
+         * The event fired when new headers are created.
+         *
+         * @event
+         * @name privateheaderchange
+         * @param {SchedulerHeader} smallestHeader Header with the smallest unit.
+         */
         this.dispatchEvent(
             new CustomEvent('privateheaderchange', {
                 detail: {
@@ -284,52 +418,9 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         );
     }
 
-    @api
-    scrollHeadersTo(direction) {
-        let startTime;
-        if (!this._previousStartTimes.length) {
-            startTime = DateTime.fromMillis(this.start.ts);
-            this._previousStartTimes = [startTime];
-        } else if (direction === 'left') {
-            const lastIndex = this._previousStartTimes.length - 1;
-            if (lastIndex > -1) {
-                startTime = this._previousStartTimes[lastIndex];
-                this._previousStartTimes.pop();
-            } else return;
-        } else {
-            const startColumn = this.smallestHeader.columns[
-                this._numberOfVisibleCells
-            ];
-            if (startColumn) {
-                startTime = dateTimeObjectFrom(startColumn.start);
-                this._previousStartTimes.push(startTime);
-            } else return;
-        }
-
-        [...this.computedHeaders].reverse().forEach((header) => {
-            if (header !== this.smallestHeader) {
-                const lastIndex = this.smallestHeader.columns.length - 1;
-                header.end = this.smallestHeader.columns[lastIndex].end;
-            }
-            header.initColumns(startTime);
-            header.computeColumnWidths(
-                this._cellWidth,
-                this.smallestHeader.columns
-            );
-        });
-        this.computedHeaders = [...this.computedHeaders];
-
-        this.dispatchEvent(
-            new CustomEvent('privatevisibleheaderchange', {
-                detail: {
-                    direction,
-                    visibleCells: this._numberOfVisibleCells,
-                    visibleInterval: this.visibleInterval
-                }
-            })
-        );
-    }
-
+    /**
+     * Update the header cells style with their computed width.
+     */
     updateCellsWidths() {
         // Get rows and sort them from the shortest unit to the longest
         const rows = Array.from(
@@ -351,7 +442,17 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         });
     }
 
+    /**
+     * Dispatch the privatecellwidthchange event.
+     */
     dispatchCellWidth() {
+        /**
+         * The event fired when the cell width variable is changed.
+         *
+         * @event
+         * @name privatecellwidthchange
+         * @param {number} cellWidth The new cell width value, in pixels.
+         */
         this.dispatchEvent(
             new CustomEvent('privatecellwidthchange', {
                 detail: {

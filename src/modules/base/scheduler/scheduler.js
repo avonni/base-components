@@ -726,7 +726,6 @@ export default class Scheduler extends LightningElement {
 
         // Create only the visible events
         this.computedEvents = this.createVisibleEvents();
-        console.log(this.computedEvents);
     }
 
     initDraggedEventState(mouseX, mouseY) {
@@ -1315,9 +1314,6 @@ export default class Scheduler extends LightningElement {
 
     handleHeaderChange(event) {
         this.smallestHeader = event.detail.smallestHeader;
-    }
-
-    handleHeaderHeightChange() {
         this._headerHeightChange = true;
     }
 
