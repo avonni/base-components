@@ -1,6 +1,11 @@
 import { normalizeArray, dateTimeObjectFrom } from 'c/utilsPrivate';
 import SchedulerEvent from './event';
 
+/**
+ * Create an event.
+ *
+ * @param {object} event The object describing the event to create.
+ */
 function createEvent(event) {
     const computedEvent = { ...event };
     this.updateEventDefaults(computedEvent);
@@ -8,6 +13,11 @@ function createEvent(event) {
     this.initRows();
 }
 
+/**
+ * Delete an event.
+ *
+ * @param {string} eventName Unique name of the event to delete.
+ */
 function deleteEvent(eventName) {
     const name = eventName || this.selection.event.name;
 
@@ -18,7 +28,15 @@ function deleteEvent(eventName) {
     this.computedEvents.splice(index, 1);
     this.initRows();
 
-    // Dispatch the deletion
+    /**
+     * The event fired when a user deletes an event.
+     *
+     * @event
+     * @name eventdelete
+     * @param {string} name Unique name of the deleted event.
+     * @public
+     * @bubbles
+     */
     this.dispatchEvent(
         new CustomEvent('eventdelete', {
             detail: {
@@ -33,6 +51,11 @@ function deleteEvent(eventName) {
     this.hideAllPopovers();
 }
 
+/**
+ * Set the focus on a event.
+ *
+ * @param {string} eventName Unique name of the event to focus.
+ */
 function focusEvent(eventName) {
     const event = this.template.querySelector(
         `c-primitive-scheduler-event-occurrence[data-event-name="${eventName}"]`
@@ -42,6 +65,13 @@ function focusEvent(eventName) {
     }
 }
 
+/**
+ * Display a new event on the schedule grid and open the edition dialog if showDialog is true.
+ *
+ * @param {number} x Horizontal position of the event in the schedule, in pixels.
+ * @param {number} y Vertical position of the event in the schedule, in pixels.
+ * @param {boolean} showDialog If true, the edit dialog will be opened. Defaults to true.
+ */
 function newEvent(x, y, showDialog = true) {
     this.hideDetailPopover();
     this.hideEditDialog();
@@ -83,6 +113,9 @@ function newEvent(x, y, showDialog = true) {
     }
 }
 
+/**
+ * Save the current changes made to the currently selected event.
+ */
 function saveEvent() {
     const { event, draftValues } = this.selection;
 
@@ -123,6 +156,9 @@ function saveEvent() {
     this.computedEvents = [...this.computedEvents];
 }
 
+/**
+ * Save the current changes made to the currently selected event occurrence.
+ */
 function saveOccurrence() {
     const { event, occurrences, occurrence, draftValues } = this.selection;
     const draftKeyFields = normalizeArray(draftValues.keyFields);
@@ -159,7 +195,7 @@ function saveOccurrence() {
         } else {
             // If the occurrence row key has been removed,
             // remove it from the event as well
-            event.removeOccurrence(occ);
+            event.removeOccurrence(occ.key);
         }
     });
 
@@ -176,6 +212,11 @@ function saveOccurrence() {
     this.computedEvents = [...this.computedEvents];
 }
 
+/**
+ * Bind the event CRUD functions to an execution context.
+ *
+ * @param {object} context The object that will be used as an execution context.
+ */
 export function eventCrudMethods(context) {
     return {
         createEvent: createEvent.bind(context),

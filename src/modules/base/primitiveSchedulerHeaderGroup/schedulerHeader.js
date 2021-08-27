@@ -49,19 +49,33 @@ const MAX_VISIBLE_COLUMNS = Math.ceil(3840 / 17);
  *
  * @class
  * @param {string[]} availableTimeFrames Array of available time frames.
+ *
  * @param {number[]} availableDaysOfTheWeek Array of available days of the week.
+ *
  * @param {number[]} availableMonths Array of available months.
+ *
  * @param {DateTime} end End date of the header.
+ *
  * @param {object[]} columns Array of column objects. Each object has three keys: start, end and label.
+ *
  * @param {number[]} columnWidths Array of column widths in pixels.
+ *
  * @param {number} duration Total number of reference units (it is the span of the scheduler visibleSpan).
+ *
  * @param {boolean} isHidden If true, the header will be hidden.
+ *
  * @param {boolean} isReference If true, the header unit is the one used by the visibleSpan of the parent Scheduler.
+ *
  * @param {string} key Unique identifier for the header.
+ *
  * @param {string} label Pattern used to create the columns labels.
+ *
  * @param {number} numberOfColumns Total number of columns of the header.
+ *
  * @param {number} span Number of unit in one column of the header.
+ *
  * @param {DateTime} start Starting date of the header.
+ *
  * @param {string} unit Unit used by the header (minute, hour, day, week, month or year).
  */
 export default class SchedulerHeader {

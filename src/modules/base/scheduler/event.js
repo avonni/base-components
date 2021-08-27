@@ -47,25 +47,57 @@ import {
 } from './defaults';
 
 /**
- * Scheduler event
  * @class
- * @param {string[]} keyFields Required. Array of unique row IDs. The event will be shown in the scheduler for each of these rows.
- * @param {string} title Title of the event.
- * @param {string} iconName The Lightning Design System name of the icon. Names are written in the format utility:user. The icon is appended to the left of the title.
- * @param {(object|number|string)} from Required. Start of the event. It can be a Date object, timestamp, or an ISO8601 formatted string.
- * @param {(object|number|string)} to Required if allDay is not true. End of the event. It can be a Date object, timestamp, or an ISO8601 formatted string.
  * @param {boolean} allDay If true, the event will be applied to the whole day(s). Defaults to false.
- * @param {string} name Required. Unique name for the event. It will be returned by the eventclick event.
+ *
+ * @param {number[]} availableDaysOfTheWeek Array of available days of the week. The days are represented by a number, starting from 0 for Sunday, and ending with 6 for Saturday.
+ *
+ * @param {number[]} availableMonths Array of available months. The months are represented by a number, starting from 0 for January, and ending with 11 for December.
+ *
+ * @param {string[]} availableTimeFrames Array of available time frames. Each time frame string must follow the pattern 'start-end', with start and end being ISO8601 formatted time strings.
+ *
+ * @param {string} color Custom color for the event. If present, it will overwrite the default color. It has to be a Hexadecimal or an RGB color.
+ *
+ * @param {object} data Original event object. It is used to generate labels based on custom fields.
+ *
+ * @param {boolean} disabled If true, the event will be considered a disabled date/time. Defaults to false.
+ *
+ * @param {(Date|number|string)} from Required. Start of the event. It can be a Date object, timestamp, or an ISO8601 formatted string.
+ *
+ * @param {string} iconName The Lightning Design System name of the icon used if the event is disabled. Names are written in the format utility:user. The icon is appended to the left of the title.
+ *
+ * @param {string[]} keyFields Required. Array of unique row IDs. The event will be shown in the scheduler for each of these rows.
+ *
+ * @param {object} labels Labels of the events. See Scheduler for more details on the structure.
+ *
+ * @param {string} name Required. Unique name for the event. It will be returned by the eventclick and actionclick events.
+ *
  * @param {string} recurrence Recurrence of the event. Valid values include daily, weekly, monthly and yearly.
- * @param {(object|number|string)} recurrenceEndDate End of the recurrence. It can be a Date object, timestamp, or an ISO8601 formatted string.
- * If a recurrenceCount is also given, the earliest ending date will be used.
+ *
+ * @param {object} recurrenceAttributes Attributes specific to the recurrence type (see Scheduler for more details).
+ *
  * @param {number} recurrenceCount Number of times the event will be repeated before the recurrence stops.
  * If a recurrenceEndDate is also given, the earliest ending date will be used.
- * @param {object} recurrenceAttributes Attributes specific to the recurrence type (see available attributes in the table below).
- * @param {string} color Custom color for the event. If present, it will overwrite the default color.
- * It has to be a valid {@link https://developer.mozilla.org/en-US/docs/Web/CSS/color_value CSS color value}. For example #3A7D44 or rgba(58, 125, 68, 0.8)
+ *
+ * @param {(Date|number|string)} recurrenceEndDate End of the recurrence. It can be a Date object, timestamp, or an ISO8601 formatted string.
+ * If a recurrenceCount is also given, the earliest ending date will be used.
+ *
+ * @param {boolean} referenceLine If true, the event will be displayed as a reference line. Defaults to false.
+ *
+ * @param {DateTime} schedulerEnd Ending date of the scheduler.
+ *
+ * @param {DateTime} schedulerStart Starting date of the scheduler.
+ *
+ * @param {SchedulerHeader} smallestHeader Scheduler header with the smallest unit.
+ *
  * @param {string} theme Custom theme for the event. If present, it will overwrite the default event theme. Valid values include default, transparent, line, hollow and rounded.
+ *
+ * @param {string} title Title of the event.
+ *
+ * @param {(Date|number|string)} to Required if allDay is not true. End of the event. It can be a Date object, timestamp, or an ISO8601 formatted string.
+ *
  */
+
 export default class SchedulerEvent {
     constructor(props) {
         const recurrence = RECURRENCES.find(
@@ -175,6 +207,11 @@ export default class SchedulerEvent {
         this.initOccurrences();
     }
 
+    /**
+     * Computed starting date of the event.
+     *
+     * @type {DateTime}
+     */
     get computedFrom() {
         const from = this.allDay ? this.from.startOf('day') : this.from;
         return !this.schedulerStart ||
@@ -184,6 +221,11 @@ export default class SchedulerEvent {
             : this.schedulerStart;
     }
 
+    /**
+     * Computed ending date of the event.
+     *
+     * @type {DateTime}
+     */
     get computedTo() {
         let to = this.to;
 
@@ -201,6 +243,9 @@ export default class SchedulerEvent {
             : this.schedulerEnd;
     }
 
+    /**
+     * Create the event occurrences.
+     */
     initOccurrences() {
         this.occurrences = [];
 
@@ -222,6 +267,12 @@ export default class SchedulerEvent {
         }
     }
 
+    /**
+     * Create one occurrence of the event from the starting and ending dates. If it is valid, push the occurrence in the occurrences property.
+     *
+     * @param {DateTime} from Starting date of the occurrence.
+     * @param {DateTime} to Ending date of the occurrence.
+     */
     addOccurrence(from, to) {
         const { schedulerEnd, schedulerStart, keyFields } = this;
         const computedTo = to || this.computeOccurenceEnd(from);
@@ -268,13 +319,22 @@ export default class SchedulerEvent {
         }
     }
 
-    removeOccurrence(occurrence) {
-        const index = this.occurrences.findIndex(
-            (occ) => occ.key === occurrence.key
-        );
+    /**
+     * Remove an occurrence from the occurrences property.
+     *
+     * @param {string} key The unique key of the occurrence that should be removed.
+     */
+    removeOccurrence(key) {
+        const index = this.occurrences.findIndex((occ) => occ.key === key);
         this.occurrences.splice(index, 1);
     }
 
+    /**
+     * Compute the occurrence end when the event is recurrent.
+     *
+     * @param {DateTime} start Starting time of the occurrence.
+     * @returns {DateTime} Ending date/time of the occurrence.
+     */
     computeOccurenceEnd(start) {
         const { recurrence, recurrenceAttributes } = this;
         const from = this.computedFrom;
@@ -341,6 +401,9 @@ export default class SchedulerEvent {
         return end;
     }
 
+    /**
+     * Compute the recurrence to create the occurrences.
+     */
     computeRecurrence() {
         const { recurrence, schedulerEnd } = this;
         const from = this.computedFrom;
