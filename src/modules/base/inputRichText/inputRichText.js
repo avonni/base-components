@@ -186,7 +186,7 @@ export default class InputRichText extends LightningElement {
     /**
     * A comma-separated list of button categories to remove from the toolbar.
     *
-    * @type {object} proxy
+    * @type {object} 
     * @public
     */
     @api disabledCategories = '';
@@ -194,7 +194,7 @@ export default class InputRichText extends LightningElement {
     * A list of allowed formats. By default, the list is computed based on enabled categories.
     * The 'table' format is always enabled to support copying and pasting of tables if formats are not provided.
     *
-    * @type {object} proxy
+    * @type {object}
     * @public
     */
     @api formats = '';
@@ -480,7 +480,7 @@ export default class InputRichText extends LightningElement {
     /**
      * Retrieve error message Id.
      * 
-     * @type {string} realDomId
+     * @type {string} 
      */
     get errorMessageId() {
         const element = this.template.querySelector('[data-error-message]');
@@ -530,7 +530,7 @@ export default class InputRichText extends LightningElement {
     /**
      * Computed categories formats for rich text editor.
      * 
-     * @type {object} categories
+     * @type {object} 
      */
     get computedCategories() {
         const formatsExist = !!this.formats.length;
@@ -1199,7 +1199,7 @@ export default class InputRichText extends LightningElement {
     /**
      * Get unique label Id.
      * 
-     * @type {string} realDomId.
+     * @type {string} 
      */
     get uniqueLabelId() {
         const label = this.template.querySelector('[data-label]');

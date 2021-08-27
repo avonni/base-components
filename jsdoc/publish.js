@@ -182,10 +182,10 @@ function graft(parentNode, childNodes, parentLongname) {
                     parentNode.classes = [];
                 }
 
-                const name = element.meta.filename.match(/^\w+/)[0];
+                // const name = element.meta.filename.match(/^\w+/)[0];
 
                 thisClass = {
-                    name: name,
+                    name: element.name,
                     description: element.description || '',
                     descriptor: element.descriptor || '',
                     storyId: element.storyId.value || '',
@@ -220,7 +220,7 @@ function graft(parentNode, childNodes, parentLongname) {
                     }
                 }
 
-                // graft(thisClass, childNodes, element.longname);
+                graft(thisClass, childNodes, element.longname);
             }
         });
 }
