@@ -491,7 +491,8 @@ DatatableWithSummarizeTypesAndGroupBy.args = {
     records: recordsSum,
     keyField: 'id',
     columnWidthsMode: 'auto',
-    groupBy: 'badge'
+    groupBy: 'badge',
+    hideCollapsibleIcon: true
 };
 
 export const DatatableWithGroupBy = Template.bind({});

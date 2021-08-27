@@ -263,7 +263,7 @@ export default class Datatable extends LightningElement {
     _columns;
     _records;
     _hideUndefinedGroup;
-    _collapsibleGroupBy;
+    _hideCollapsibleIcon;
     _showStatusBar = false;
     _hasDraftValues = false;
 
@@ -313,10 +313,10 @@ export default class Datatable extends LightningElement {
 
     @api
     get hideCollapsibleIcon() {
-        return this._collapsibleGroupBy;
+        return this._hideCollapsibleIcon;
     }
     set hideCollapsibleIcon(value) {
-        this._collapsibleGroupBy = normalizeBoolean(value);
+        this._hideCollapsibleIcon = normalizeBoolean(value);
     }
 
     connectedCallback() {
@@ -377,7 +377,7 @@ export default class Datatable extends LightningElement {
     }
 
     /**
-     * Returns the primitive grouped datatable.
+     * Returns the primitive ungrouped datatable.
      *
      * @type {element}
      */
@@ -404,10 +404,6 @@ export default class Datatable extends LightningElement {
 
     get primitiveGroupedDatatables() {
         return this.primitivePrimitiveGroupByItem.primitiveGroupedDatatables();
-    }
-
-    get primitiveGroupedDatatable() {
-        return this.primitivePrimitiveGroupByItem.primitiveGroupedDatatable();
     }
 
     get hasGroupBy() {
