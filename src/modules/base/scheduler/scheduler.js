@@ -110,6 +110,9 @@ export default class Scheduler extends LightningElement {
     contextMenuActions = [];
     datatableIsHidden = false;
     datatableIsOpen = false;
+    scrollHeadersTo = () => {
+        return true;
+    };
     selectedEvent;
     showContextMenu = false;
     showEditDialog = false;
@@ -1308,6 +1311,10 @@ export default class Scheduler extends LightningElement {
         this.showRecurrenceDialog = false;
     }
 
+    handleHeaderRegister(event) {
+        this.scrollHeadersTo = event.detail.callbacks.scrollHeadersTo;
+    }
+
     handleHeaderCellWidthChange(event) {
         this.cellWidth = event.detail.cellWidth;
     }
@@ -1710,10 +1717,7 @@ export default class Scheduler extends LightningElement {
         // reload the schedule with a new interval
         if (loadRightSchedule || loadLeftSchedule) {
             const direction = loadRightSchedule ? 'right' : 'left';
-            const headers = this.template.querySelector(
-                'c-primitive-scheduler-header-group'
-            );
-            headers.scrollHeadersTo(direction);
+            this.scrollHeadersTo(direction);
         }
     }
 

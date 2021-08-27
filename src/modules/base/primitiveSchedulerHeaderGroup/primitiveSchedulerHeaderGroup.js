@@ -61,6 +61,22 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     computedHeaders = [];
 
     connectedCallback() {
+        /**
+         * The event fired when the header group is connected.
+         *
+         * @event
+         * @name privateheaderregister
+         * @param {function} scrollHeadersTo Takes the direction of the scroll as an argument and creates the new header columns accordingly.
+         */
+        this.dispatchEvent(
+            new CustomEvent('privateheaderregister', {
+                detail: {
+                    callbacks: {
+                        scrollHeadersTo: this.scrollHeadersTo.bind(this)
+                    }
+                }
+            })
+        );
         this.initHeaders();
     }
 
@@ -248,9 +264,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
      * Update the headers columns depending on the direction of the scroll.
      *
      * @param {string} direction Direction of the scroll. Valid values are 'left' or 'right'.
-     * @public
      */
-    @api
     scrollHeadersTo(direction) {
         let startTime;
         if (!this._previousStartTimes.length) {
