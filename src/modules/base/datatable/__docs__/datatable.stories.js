@@ -471,6 +471,15 @@ DatatableWithSummarizeTypes.args = {
     columnWidthsMode: 'auto'
 };
 
+export const DatatableWithSummarizeTypesAndGroupBy = Template.bind({});
+DatatableWithSummarizeTypesAndGroupBy.args = {
+    columns: columnsSum,
+    records: recordsSum,
+    keyField: 'id',
+    columnWidthsMode: 'auto',
+    groupBy: 'badge'
+};
+
 export const DatatableWithGroupBy = Template.bind({});
 DatatableWithGroupBy.args = {
     columns: columnsGroupBy,
