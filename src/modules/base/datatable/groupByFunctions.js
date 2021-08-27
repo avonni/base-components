@@ -21,13 +21,8 @@ const isUndefined = (value) => {
     return value === undefined ? 'undefined' : value;
 };
 
-const recursiveGroupBy = (records, groupBy, level, rowNumberOffsetAtt = 0) => {
-    if (typeof groupBy === 'string') {
-        groupBy = groupBy.split();
-    }
-    let field = groupBy[0];
-    if (!field) return records;
-    let recursiveData = Object.values(
+const formattingRecursiveData = (records, field, groupBy, level) => {
+    return Object.values(
         records.reduce((obj, current) => {
             if (!obj[current[field]])
                 obj[current[field]] = {
@@ -40,6 +35,15 @@ const recursiveGroupBy = (records, groupBy, level, rowNumberOffsetAtt = 0) => {
             return obj;
         }, {})
     );
+};
+
+const recursiveGroupBy = (records, groupBy, level, rowNumberOffsetAtt = 0) => {
+    if (typeof groupBy === 'string') {
+        groupBy = groupBy.split();
+    }
+    let field = groupBy[0];
+    if (!field) return records;
+    let recursiveData = formattingRecursiveData(records, field, groupBy, level);
 
     if (groupBy.length) {
         let rowNumberOffset = rowNumberOffsetAtt;
@@ -69,19 +73,8 @@ const recursiveGroupByNoUndefined = (
     }
     let field = groupBy[0];
     if (!field) return records;
-    let recursiveData = Object.values(
-        records.reduce((obj, current) => {
-            if (!obj[current[field]])
-                obj[current[field]] = {
-                    label: isUndefined(current[field]),
-                    group: [],
-                    multiLevelGroupBy: groupBy.length !== 1,
-                    level: level
-                };
-            obj[current[field]].group.push(current);
-            return obj;
-        }, {})
-    );
+
+    let recursiveData = formattingRecursiveData(records, field, groupBy, level);
 
     if (groupBy.length) {
         let rowNumberOffset = rowNumberOffsetAtt;

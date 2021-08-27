@@ -57,6 +57,7 @@ export default class ProgressGroupByItem extends LightningElement {
     @api sortedBy;
     @api sortedDirection;
     @api wrapTextMaxLines;
+    @api groupBy;
 
     @api
     get records() {

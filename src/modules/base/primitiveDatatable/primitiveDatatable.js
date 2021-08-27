@@ -412,6 +412,20 @@ export default class PrimitiveDatatable extends LightningDatatable {
         super.hideTableHeader = normalizeBoolean(value);
     }
 
+    @api
+    get columns() {
+        return super.columns;
+    }
+
+    set columns(value) {
+        super.columns = value;
+
+        this._columns = JSON.parse(JSON.stringify(this._columns));
+
+        this.removeWrapOption();
+        this.computeEditableOption();
+    }
+
     connectedCallback() {
         super.connectedCallback();
 
@@ -510,21 +524,6 @@ export default class PrimitiveDatatable extends LightningDatatable {
     @api
     handleSelectionCellClick(event) {
         super.handleSelectionCellClick(event);
-    }
-
-    @api
-    get columns() {
-        return super.columns;
-    }
-
-    set columns(value) {
-        super.columns = value;
-
-        this._columns = JSON.parse(JSON.stringify(this._columns));
-
-        this.removeDefaultActions();
-        this.removeWrapOption();
-        this.computeEditableOption();
     }
 
     /**
@@ -698,13 +697,6 @@ export default class PrimitiveDatatable extends LightningDatatable {
                 column.wrapText = true;
                 column.hideDefaultActions = true;
             }
-        });
-    }
-
-    removeDefaultActions() {
-        this.columns.forEach((column) => {
-            column.wrapText = false;
-            column.hideDefaultActions = true;
         });
     }
 

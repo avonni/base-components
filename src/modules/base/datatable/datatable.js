@@ -108,6 +108,9 @@ export default class Datatable extends LightningElement {
 
     set groupBy(value) {
         this._groupBy = value;
+        if (this._groupBy) {
+            this.removeDefaultActions();
+        }
     }
     /**
      * If present, the checkbox column for row selection is hidden.
@@ -580,6 +583,13 @@ export default class Datatable extends LightningElement {
                 });
             }
         }
+    }
+
+    removeDefaultActions() {
+        this.columns.forEach((column) => {
+            column.wrapText = false;
+            column.hideDefaultActions = true;
+        });
     }
 
     /**
