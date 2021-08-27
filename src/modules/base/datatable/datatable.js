@@ -263,6 +263,7 @@ export default class Datatable extends LightningElement {
     _columns;
     _records;
     _hideUndefinedGroup;
+    _collapsibleGroupBy;
     _showStatusBar = false;
     _hasDraftValues = false;
 
@@ -308,6 +309,14 @@ export default class Datatable extends LightningElement {
     }
     set hideUndefinedGroup(value) {
         this._hideUndefinedGroup = normalizeBoolean(value);
+    }
+
+    @api
+    get hideCollapsibleIcon() {
+        return this._collapsibleGroupBy;
+    }
+    set hideCollapsibleIcon(value) {
+        this._collapsibleGroupBy = normalizeBoolean(value);
     }
 
     connectedCallback() {

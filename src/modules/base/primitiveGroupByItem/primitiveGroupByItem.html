@@ -39,7 +39,7 @@
             size={group.size}
             level={group.level}
             key={group.label}
-            collapsible
+            collapsible={hideCollapsibleIcon}
             class="collapsible-group"
         >
             <template if:false={group.multiLevelGroupBy}>
@@ -95,6 +95,7 @@
                     errors={errors}
                     hide-checkbox-column={hideCheckboxColumn}
                     hide-table-header={hideTableHeader}
+                    hide-collapsible-icon={hideCollapsibleIcon}
                     is-loading={isLoading}
                     load-more-offset={loadMoreOffset}
                     max-column-width={maxColumnWidth}

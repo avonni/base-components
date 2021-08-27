@@ -178,6 +178,20 @@ export default {
                 category: 'Display'
             }
         },
+        hideCollapsibleIcon: {
+            name: 'hide-collapsible-icon',
+            control: {
+                type: 'boolean'
+            },
+            defaultvalue: false,
+            description:
+                'In case of group-by, if present, the section is not collapsible and the left icon is hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Group by'
+            }
+        },
         hideUndefinedGroup: {
             name: 'hide-undefined-group',
             control: {

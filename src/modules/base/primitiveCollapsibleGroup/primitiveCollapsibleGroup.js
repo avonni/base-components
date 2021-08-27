@@ -90,7 +90,7 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
     }
 
     set collapsible(value) {
-        this._collapsible = normalizeBoolean(value);
+        this._collapsible = normalizeBoolean(!value);
     }
 
     _closed = false;

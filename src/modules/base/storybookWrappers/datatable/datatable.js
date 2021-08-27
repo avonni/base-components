@@ -33,6 +33,7 @@
 import { LightningElement, api } from 'lwc';
 
 export default class Datatable extends LightningElement {
+    @api hideCollapsibleIcon;
     @api columnWidthsMode;
     @api columns;
     @api records;

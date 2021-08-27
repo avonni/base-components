@@ -35,6 +35,7 @@ import Component from '../../storybookWrappers/datatable/datatable';
 customElements.define('ac-base-datatable', Component.CustomElementConstructor);
 
 export const Datatable = ({
+    hideCollapsibleIcon,
     columnWidthsMode,
     columns,
     records,
@@ -63,6 +64,7 @@ export const Datatable = ({
     suppressBottomBar
 }) => {
     const element = document.createElement('ac-base-datatable');
+    element.hideCollapsibleIcon = hideCollapsibleIcon;
     element.columnWidthsMode = columnWidthsMode;
     element.columns = columns;
     element.records = records;

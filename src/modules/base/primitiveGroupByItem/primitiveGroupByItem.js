@@ -35,6 +35,7 @@ import { normalizeArray } from 'c/utilsPrivate';
 import { generateUUID } from 'c/utils';
 
 export default class ProgressGroupByItem extends LightningElement {
+    @api hideCollapsibleIcon;
     @api columns;
     @api keyField;
     @api defaultSortDirection;
