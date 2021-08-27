@@ -525,7 +525,8 @@ const columnsGroupBy = [
     {
         id: 1,
         label: 'Name',
-        fieldName: 'name'
+        fieldName: 'name',
+        editable: true
     },
     {
         id: 2,

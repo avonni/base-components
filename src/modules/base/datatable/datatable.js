@@ -303,6 +303,12 @@ export default class Datatable extends LightningElement {
         this._records = JSON.parse(JSON.stringify(normalizeArray(value)));
     }
 
+    /**
+     * In case of group-by, if present, hides undefined groups.
+     * @public
+     * @type {boolean}
+     * @default false
+     */
     @api
     get hideUndefinedGroup() {
         return this._hideUndefinedGroup;
@@ -311,6 +317,12 @@ export default class Datatable extends LightningElement {
         this._hideUndefinedGroup = normalizeBoolean(value);
     }
 
+    /**
+     * In case of group-by, if present, the section is not collapsible and the left icon is hidden.
+     * @public
+     * @type {boolean}
+     * @default false
+     */
     @api
     get hideCollapsibleIcon() {
         return this._hideCollapsibleIcon;
@@ -388,7 +400,7 @@ export default class Datatable extends LightningElement {
     }
 
     /**
-     * Returns the primitive header datatable.
+     * Returns the primitive header datatable if there is a group-by.
      *
      * @type {element}
      */
@@ -398,14 +410,11 @@ export default class Datatable extends LightningElement {
         );
     }
 
-    get primitivePrimitiveGroupByItem() {
-        return this.template.querySelector('c-primitive-group-by-item');
-    }
-
-    get primitiveGroupedDatatables() {
-        return this.primitivePrimitiveGroupByItem.primitiveGroupedDatatables();
-    }
-
+    /**
+     * Checks if there is a group-by.
+     *
+     * @type {boolean}
+     */
     get hasGroupBy() {
         return (
             this.groupBy !== undefined &&
@@ -466,8 +475,24 @@ export default class Datatable extends LightningElement {
         return this.primitiveUngroupedDatatable.primitiveDatatableDraftValues();
     }
 
+    /**
+     * If there is a group-by, all primitive datatables columnWidthsMode is set to 'fixed'.
+     *
+     * @type {string}
+     */
     get isFixedColumns() {
         return this.hasGroupBy ? 'fixed' : this.columnWidthsMode;
+    }
+
+    /**
+     * Returns an array of formatted objects for primitive-group-by-item.
+     *
+     * @type {object}
+     */
+    get groupByRecords() {
+        return this._hideUndefinedGroup
+            ? recursiveGroupByNoUndefined(this._records, this._groupBy, 0)
+            : recursiveGroupBy(this.records, this._groupBy, 0);
     }
 
     /**
@@ -590,6 +615,9 @@ export default class Datatable extends LightningElement {
         }
     }
 
+    /**
+     * Sets the wrapText to false and hideDefaultActions attributes to true when there is a group-by.
+     */
     removeDefaultActions() {
         this.columns.forEach((column) => {
             column.wrapText = false;
@@ -703,11 +731,5 @@ export default class Datatable extends LightningElement {
         }
 
         this.dispatchEvent(new CustomEvent('statusbarsave'));
-    }
-
-    get groupByRecords() {
-        return this._hideUndefinedGroup
-            ? recursiveGroupByNoUndefined(this._records, this._groupBy, 0)
-            : recursiveGroupBy(this.records, this._groupBy, 0);
     }
 }

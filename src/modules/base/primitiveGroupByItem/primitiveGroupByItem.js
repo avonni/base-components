@@ -62,22 +62,6 @@ export default class ProgressGroupByItem extends LightningElement {
 
     guid = generateUUID();
 
-    /**
-     * Dispatches event from the lighnting-datatable.
-     *
-     * @param {event} event
-     */
-    handleDispatchEvents(event) {
-        this.dispatchEvent(
-            new CustomEvent(`${event.type}`, {
-                detail: event.detail,
-                bubbles: event.bubbles,
-                composed: event.composed,
-                cancelable: event.cancelable
-            })
-        );
-    }
-
     connectedCallback() {
         const itemregister = new CustomEvent('privateitemregister', {
             bubbles: true,
@@ -100,18 +84,6 @@ export default class ProgressGroupByItem extends LightningElement {
     // Store the parent's callback so we can invoke later
     registerDisconnectCallback(callback) {
         this.disconnectFromParent = callback;
-    }
-
-    /**
-     * Returns all the primitive grouped datatables.
-     *
-     * @returns {Array.<nodeList>}
-     */
-    @api
-    primitiveGroupedDatatables() {
-        return this.template.querySelectorAll(
-            'c-primitive-datatable[data-role="grouped"]'
-        );
     }
 
     /**
@@ -140,6 +112,22 @@ export default class ProgressGroupByItem extends LightningElement {
     get primitiveGroupByDatatables() {
         return this.template.querySelectorAll(
             'c-primitive-datatable[data-role="grouped"]'
+        );
+    }
+
+    /**
+     * Dispatches event from the lighnting-datatable.
+     *
+     * @param {event} event
+     */
+    handleDispatchEvents(event) {
+        this.dispatchEvent(
+            new CustomEvent(`${event.type}`, {
+                detail: event.detail,
+                bubbles: event.bubbles,
+                composed: event.composed,
+                cancelable: event.cancelable
+            })
         );
     }
 
