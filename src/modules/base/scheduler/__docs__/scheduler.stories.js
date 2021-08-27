@@ -463,7 +463,7 @@ Base.args = {
     rowsKeyField: 'id',
     rows,
     start,
-    events: lotsOfEvents().slice(0, 10)
+    events: lotsOfEvents(5).slice(0, 10)
 };
 
 export const BigDataSet = Template.bind({});

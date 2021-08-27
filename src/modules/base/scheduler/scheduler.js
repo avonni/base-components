@@ -560,7 +560,9 @@ export default class Scheduler extends LightningElement {
     }
 
     get datatableColClass() {
-        return classSet('slds-border_right avonni-scheduler__datatable-col')
+        return classSet(
+            'slds-border_right avonni-scheduler__datatable-col slds-grid'
+        )
             .add({
                 'avonni-scheduler__datatable-col_hidden': this
                     .datatableIsHidden,
@@ -658,11 +660,11 @@ export default class Scheduler extends LightningElement {
     }
 
     get splitterClass() {
-        return classSet(
-            'avonni-scheduler__splitter slds-is-absolute slds-grid slds-grid_align-end'
-        )
+        return classSet('avonni-scheduler__splitter slds-is-absolute slds-grid')
             .add({
-                'avonni-scheduler__splitter_disabled': this.resizeColumnDisabled
+                'avonni-scheduler__splitter_disabled': this
+                    .resizeColumnDisabled,
+                'slds-grid_align-end': this.datatableIsOpen
             })
             .toString();
     }
@@ -723,9 +725,8 @@ export default class Scheduler extends LightningElement {
         });
 
         // Create only the visible events
-        this.computedEvents = this.createEventsFromInterval(
-            this._visibleInterval
-        );
+        this.computedEvents = this.createVisibleEvents();
+        console.log(this.computedEvents);
     }
 
     initDraggedEventState(mouseX, mouseY) {
@@ -1094,7 +1095,10 @@ export default class Scheduler extends LightningElement {
         return level;
     }
 
-    createEventsFromInterval(interval, visibleEvents) {
+    createVisibleEvents() {
+        const interval = this._visibleInterval;
+        if (!interval) return [];
+
         // Filter only the events visible in the given interval
         const events = this._allEvents.filter((event) => {
             const from = dateTimeObjectFrom(event.from);
@@ -1106,29 +1110,17 @@ export default class Scheduler extends LightningElement {
                 event.recurrence
             );
         });
-        return events.reduce((computedEvents, evt) => {
-            // Make sure the new event is not one of the existing recurrent events
-            let existingEvent = false;
-            if (visibleEvents) {
-                existingEvent = visibleEvents.find((compEv) => {
-                    return (
-                        (compEv.disabled && evt.title === compEv.title) ||
-                        compEv.name === evt.name
-                    );
-                });
-            }
 
-            // Create the new event
-            if (!existingEvent) {
-                const event = { ...evt };
-                this.updateEventDefaults(event);
-                const computedEvent = new SchedulerEvent(event);
-                if (computedEvent.occurrences.length) {
-                    computedEvents.push(computedEvent);
-                }
+        return events.reduce((computedEvents, evt) => {
+            const event = { ...evt };
+            this.updateEventDefaults(event);
+            const computedEvent = new SchedulerEvent(event);
+
+            if (computedEvent.occurrences.length) {
+                computedEvents.push(computedEvent);
             }
             return computedEvents;
-        }, visibleEvents || []);
+        }, []);
     }
 
     positionPopover(popover) {
@@ -1338,9 +1330,7 @@ export default class Scheduler extends LightningElement {
         if (!this.computedEvents.length) {
             this.initEvents();
         } else {
-            this.computedEvents = this.createEventsFromInterval(
-                this._visibleInterval
-            );
+            this.computedEvents = this.createVisibleEvents();
         }
         // Create the rows or update the visible columns
         if (!this.computedRows.length) {
@@ -1351,7 +1341,7 @@ export default class Scheduler extends LightningElement {
 
         if (direction) {
             const schedule = this.template.querySelector(
-                '.avonni-scheduler__schedule-col'
+                '.avonni-scheduler__wrapper'
             );
             const scrollOffset = this.cellWidth * visibleCells;
             const scrollValue =
@@ -1700,7 +1690,7 @@ export default class Scheduler extends LightningElement {
         }
     }
 
-    handleScroll = () => {
+    handleScroll() {
         if (this.showDetailPopover) {
             // Hide the detail popover only if it goes off screen
             const right = this._draggedEvent.getBoundingClientRect().right;
@@ -1711,7 +1701,7 @@ export default class Scheduler extends LightningElement {
         }
 
         const schedule = this.template.querySelector(
-            '.avonni-scheduler__schedule-col'
+            '.avonni-scheduler__wrapper'
         );
         const scroll = schedule.scrollLeft;
         const scrollOffset = this.cellWidth * this._numberOfVisibleCells;
@@ -1729,7 +1719,7 @@ export default class Scheduler extends LightningElement {
             );
             headers.scrollHeadersTo(direction);
         }
-    };
+    }
 
     handleSplitterMouseDown(mouseEvent) {
         if (
@@ -1766,6 +1756,7 @@ export default class Scheduler extends LightningElement {
     handleOpenDatatable() {
         this.datatableCol.style.width = null;
         this.datatable.style.width = null;
+        this.clearDatatableColumnWidth();
 
         if (this.datatableIsHidden) {
             this.datatableIsHidden = false;

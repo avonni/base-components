@@ -34,9 +34,10 @@
 
 <template>
     <div
-        class="slds-grid slds-is-relative"
+        class="slds-grid slds-is-relative avonni-scheduler__wrapper"
         onmouseup={handleMouseUp}
         onmousemove={handleMouseMove}
+        onscroll={handleScroll}
     >
         <!-- Datatable -->
         <div class={datatableColClass}>
@@ -50,37 +51,37 @@
                 resize-column-disabled={resizeColumnDisabled}
                 onresize={handleDatatableResize}
             ></c-datatable>
-        </div>
 
-        <!-- Resizing splitter -->
-        <div class="slds-is-relative">
-            <div class={splitterClass} onmousedown={handleSplitterMouseDown}>
+            <!-- Resizing splitter -->
+            <div class="slds-is-relative">
                 <div
-                    class="slds-theme_shade slds-grid slds-grid_vertical-align-center slds-wrap"
+                    class={splitterClass}
+                    onmousedown={handleSplitterMouseDown}
                 >
-                    <lightning-button-icon
-                        if:true={showCollapseLeft}
-                        class="avonni-scheduler__splitter-icon slds-is-relative"
-                        icon-name="utility:left"
-                        variant="bare"
-                        onclick={handleHideDatatable}
-                    ></lightning-button-icon>
-                    <lightning-button-icon
-                        if:true={showCollapseRight}
-                        class="avonni-scheduler__splitter-icon slds-is-relative"
-                        icon-name="utility:right"
-                        variant="bare"
-                        onclick={handleOpenDatatable}
-                    ></lightning-button-icon>
+                    <div
+                        class="slds-theme_shade slds-grid slds-grid_vertical-align-center slds-wrap"
+                    >
+                        <lightning-button-icon
+                            if:true={showCollapseLeft}
+                            class="avonni-scheduler__splitter-icon slds-is-relative"
+                            icon-name="utility:left"
+                            variant="bare"
+                            onclick={handleHideDatatable}
+                        ></lightning-button-icon>
+                        <lightning-button-icon
+                            if:true={showCollapseRight}
+                            class="avonni-scheduler__splitter-icon slds-is-relative"
+                            icon-name="utility:right"
+                            variant="bare"
+                            onclick={handleOpenDatatable}
+                        ></lightning-button-icon>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Schedule -->
-        <div
-            class="slds-col slds-grid slds-is-relative avonni-scheduler__schedule-col slds-scrollable_x slds-scrollable_none"
-            onscroll={handleScroll}
-        >
+        <div class="slds-col slds-grid avonni-scheduler__schedule-col">
             <!-- Left infinite loading spinner -->
             <div if:true={showLeftInfiniteLoadSpinner} class="slds-is-relative">
                 <div
@@ -97,6 +98,7 @@
             <div class="slds-col">
                 <!-- Headers -->
                 <c-primitive-scheduler-header-group
+                    class="avonni-scheduler__header"
                     available-days-of-the-week={availableDaysOfTheWeek}
                     available-months={availableMonths}
                     available-time-frames={availableTimeFrames}

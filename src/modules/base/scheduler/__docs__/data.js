@@ -140,10 +140,10 @@ const headers = [
     }
 ];
 
-const lotsOfEvents = () => {
+const lotsOfEvents = (maxKeyFieldNumber = 20) => {
     const computedEvents = [];
     const keyFields = [];
-    for (let i = 0; i < 20; i++) {
+    for (let i = 1; i <= maxKeyFieldNumber; i++) {
         keyFields.push(i.toString());
     }
 
