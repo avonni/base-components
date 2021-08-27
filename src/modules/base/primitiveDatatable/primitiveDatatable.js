@@ -516,16 +516,6 @@ export default class PrimitiveDatatable extends LightningDatatable {
         );
     }
 
-    @api
-    handleResizeColumn(event) {
-        super.handleResizeColumn(event);
-    }
-
-    @api
-    handleSelectionCellClick(event) {
-        super.handleSelectionCellClick(event);
-    }
-
     /**
      * Gets the columns width of the datatable if hide-table-header is false.
      */
@@ -621,6 +611,10 @@ export default class PrimitiveDatatable extends LightningDatatable {
         }
     }
 
+    /**
+     * Hides the visibility and padding of each c-primitive-datatables in groups.
+     *
+     */
     hideTableHeaderPadding() {
         const ungroupedDatatable = this.template.querySelector(
             'c-primitive-datatable[data-role="ungrouped"] .slds-table_header-fixed_container'
@@ -660,6 +654,10 @@ export default class PrimitiveDatatable extends LightningDatatable {
         }
     }
 
+    /**
+     * Styling for the datatable header when there is group by.
+     *
+     */
     headerDatatableStyling() {
         const headerDatatable = this.template.querySelector(
             'c-primitive-datatable[data-role="header"] .slds-table_header-fixed_container'
@@ -679,6 +677,10 @@ export default class PrimitiveDatatable extends LightningDatatable {
         }
     }
 
+    /**
+     * Table initialization for every primitive-datatable.
+     *
+     */
     tablesInitialization() {
         this.columnsWidthWithoutHeader();
         this.columnsWidthWithHeader();
@@ -808,7 +810,7 @@ export default class PrimitiveDatatable extends LightningDatatable {
     }
 
     /**
-     * Calls the save method of the lightning datatable.
+     * Calls the save method of the lightning-datatable.
      *
      * @param {event} event
      */
@@ -818,12 +820,32 @@ export default class PrimitiveDatatable extends LightningDatatable {
     }
 
     /**
-     * Calls the cancel method of the lightning datatable.
+     * Calls the cancel method of the lightning-datatable.
      *
      * @param {event} event
      */
     @api
     cancel(event) {
         super.handleInlineEditCancel(event);
+    }
+
+    /**
+     * Calls the resize column method of lightning-datatable.
+     *
+     * @param {event} event
+     */
+    @api
+    handleResizeColumn(event) {
+        super.handleResizeColumn(event);
+    }
+
+    /**
+     * Calls the selection cell method of lightning-datatable.
+     *
+     * @param {event} event
+     */
+    @api
+    handleSelectionCellClick(event) {
+        super.handleSelectionCellClick(event);
     }
 }
