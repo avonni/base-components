@@ -41,10 +41,27 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
      * @type {string}
      */
     @api title;
+
+    /**
+     * The value is the number of levels deep it is nested to indicate the distinct grouping is nested within.
+     *
+     * @type {number}
+     */
     @api level;
 
-    _closed = false;
-    _collapsible = false;
+    /**
+     * Size of the group displayed.
+     *
+     * @type {number}
+     */
+    @api
+    get size() {
+        return this._size;
+    }
+
+    set size(value) {
+        this._size = typeof value === 'number' ? value : parseInt(value, 10);
+    }
 
     /**
      * If present, close the section.
@@ -76,7 +93,13 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
         this._collapsible = normalizeBoolean(value);
     }
 
-    @api size;
+    _closed = false;
+    _collapsible = false;
+    _size;
+
+    renderedCallback() {
+        this.setSectionPaddingLeft();
+    }
 
     /**
      * Computed section class styling.
@@ -94,7 +117,7 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
     }
 
     /**
-     * Computed section Title class styling.
+     * Computed section title class styling.
      *
      * @type {string}
      */
@@ -109,21 +132,25 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
     }
 
     /**
+     * Returns the section element.
+     *
+     * @type {element}
+     */
+    get section() {
+        return this.template.querySelector('.slds-section__title');
+    }
+
+    /**
      * Section change status toggle.
      */
     changeSectionStatus() {
         this._closed = !this._closed;
     }
 
-    get section() {
-        return this.template.querySelector('.slds-section__title');
-    }
-
-    setPadding() {
+    /**
+     * Set padding left for section title depending on the level.
+     */
+    setSectionPaddingLeft() {
         this.section.style.paddingLeft = `${this.level}rem`;
-    }
-
-    renderedCallback() {
-        this.setPadding();
     }
 }
