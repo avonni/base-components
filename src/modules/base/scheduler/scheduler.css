@@ -47,9 +47,6 @@
 .avonni-scheduler__datatable-col.avonni-scheduler__datatable-col_hidden {
     width: auto;
 }
-.avonni-scheduler__datatable-col_hidden .avonni-scheduler__datatable {
-    width: 0;
-}
 .avonni-scheduler__datatable-col.avonni-scheduler__datatable-col_open {
     width: 100%;
 }
@@ -60,6 +57,7 @@
 
 .avonni-scheduler__header {
     position: sticky;
+    position: -webkit-sticky;
     top: 0;
     z-index: 3;
 }

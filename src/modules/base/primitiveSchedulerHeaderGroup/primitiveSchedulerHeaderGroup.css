@@ -44,5 +44,6 @@
 
 .avonni-scheduler__header-label_sticky {
     position: sticky;
+    position: -webkit-sticky;
     left: 0;
 }

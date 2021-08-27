@@ -92,9 +92,10 @@ export default class Scheduler extends LightningElement {
 
     _allEvents = [];
     _datatableRowsHeight;
-    _datatableWidth;
+    datatableWidth = 0;
     _draggedEvent;
     _draggedSplitter = false;
+    _initialDatatableWidth;
     _initialState = {};
     _mouseIsDown = false;
     _numberOfVisibleCells = 0;
@@ -134,9 +135,10 @@ export default class Scheduler extends LightningElement {
             return;
         }
 
-        // Save the default datatable column width, in case the styling hook was used
-        if (!this._datatableWidth) {
-            this._datatableWidth = this.datatableCol.getBoundingClientRect().width;
+        // Save the default datatable column width
+        if (!this._initialDatatableWidth) {
+            this._initialDatatableWidth = this.datatableCol.getBoundingClientRect().width;
+            this.datatableWidth = this._initialDatatableWidth;
         }
 
         // Save the datatable row height and update the body styles
@@ -842,7 +844,7 @@ export default class Scheduler extends LightningElement {
         const headers = this.template.querySelector(
             'c-primitive-scheduler-header-group'
         );
-        this.datatableCol.style.paddingTop = `${headers.offsetHeight - 39}px`;
+        this.datatable.style.marginTop = `${headers.offsetHeight - 39}px`;
     }
 
     updateDatatableRowsHeight() {
@@ -1465,6 +1467,7 @@ export default class Scheduler extends LightningElement {
 
         if (this._draggedSplitter) {
             this._draggedSplitter = false;
+            this.datatableWidth = this.datatableCol.getBoundingClientRect().width;
         } else if (this.selection && this.selection.isMoving) {
             // Get the new position
             const { mouseX, eventLeft, eventRight } = this._initialState;
@@ -1738,34 +1741,42 @@ export default class Scheduler extends LightningElement {
         };
         this.datatableIsHidden = false;
         this.datatableIsOpen = false;
+        this.hideAllPopovers();
     }
 
     handleHideDatatable() {
+        this.hideAllPopovers();
         this.datatableCol.style.width = null;
-        this.datatable.style.width = null;
 
         if (this.datatableIsOpen) {
             this.datatableIsOpen = false;
+            this.datatable.style.width = null;
+            this.datatableWidth = this._initialDatatableWidth;
         } else {
             this.datatableIsHidden = true;
+            this.datatable.style.width = 0;
+            this.datatableWidth = 0;
         }
 
         this.updateCellWidth();
     }
 
     handleOpenDatatable() {
+        this.hideAllPopovers();
         this.datatableCol.style.width = null;
         this.datatable.style.width = null;
         this.clearDatatableColumnWidth();
 
         if (this.datatableIsHidden) {
             this.datatableIsHidden = false;
-            this.datatable.style.width = `${this._datatableWidth}px`;
+            this.datatable.style.width = `${this._initialDatatableWidth}px`;
+            this.datatableWidth = this._initialDatatableWidth;
             this.updateCellWidth();
         } else {
             this.datatableIsOpen = true;
             const width = this.template.host.getBoundingClientRect().width;
             this.datatable.style.width = `${width}px`;
+            this.datatableWidth = width;
         }
     }
 

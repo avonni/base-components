@@ -122,6 +122,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     _columns = [];
     _columnWidth = 0;
     _eventData = [];
+    _scrollLeftOffset = 0;
     _disabled = false;
     _event;
     _from;
@@ -159,7 +160,9 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             '.avonni-scheduler__event-label_center'
         );
         if (stickyLabel) {
-            stickyLabel.style.left = `-${this._x + this._offsetX}px`;
+            stickyLabel.style.left = `${
+                this.scrollLeftOffset - this._x - this._offsetX
+            }px`;
         }
     }
 
@@ -211,6 +214,30 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
     set columnWidth(value) {
         this._columnWidth = !isNaN(Number(value)) ? Number(value) : 0;
+    }
+
+    /**
+     * Width of the scheduler datatable column. It is used as an offset by the sticky labels.
+     *
+     * @type {number}
+     * @public
+     * @default 0
+     */
+    @api
+    get scrollLeftOffset() {
+        return this._scrollLeftOffset;
+    }
+    set scrollLeftOffset(value) {
+        this._scrollLeftOffset = !isNaN(Number(value)) ? Number(value) : 0;
+
+        const stickyLabel = this.template.querySelector(
+            '.avonni-scheduler__event-label_center'
+        );
+        if (stickyLabel) {
+            stickyLabel.style.left = `${
+                this.scrollLeftOffset - this._x - this._offsetX
+            }px`;
+        }
     }
 
     /**
