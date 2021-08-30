@@ -133,6 +133,15 @@ function saveEvent() {
         const lowerCaseName = event.title.toLowerCase();
         event.name = lowerCaseName.replaceAll(/\s/g, '-').concat(event.key);
 
+        /**
+         * The event fired when a user creates an event.
+         *
+         * @event
+         * @name eventcreate
+         * @param {object} event The event created.
+         * @public
+         * @bubbles
+         */
         this.dispatchEvent(
             new CustomEvent('eventcreate', {
                 detail: {

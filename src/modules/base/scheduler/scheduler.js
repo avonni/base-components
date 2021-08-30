@@ -62,6 +62,12 @@ import {
 import SchedulerRow from './row';
 import SchedulerEvent from './event';
 
+/**
+ * @class
+ * @descriptor avonni-scheduler
+ * @storyId example-scheduler--base
+ * @public
+ */
 export default class Scheduler extends LightningElement {
     _editDialogLabels = DEFAULT_EDIT_DIALOG_LABELS;
     _availableDaysOfTheWeek = DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
@@ -186,6 +192,241 @@ export default class Scheduler extends LightningElement {
         }
     }
 
+    /**
+     * Array of available days of the week. If present, the scheduler will only show the available days of the week. Defaults to all days being available.
+     * The days are represented by a number, starting from 0 for Sunday, and ending with 6 for Saturday.
+     * For example, if the available days are Monday to Friday, the value would be: <code>[1, 2, 3, 4, 5]</code>
+     *
+     * @type {number[]}
+     * @public
+     * @default [0, 1, ... , 5, 6]
+     */
+    @api
+    get availableDaysOfTheWeek() {
+        return this._availableDaysOfTheWeek;
+    }
+    set availableDaysOfTheWeek(value) {
+        const days = normalizeArray(value);
+        this._availableDaysOfTheWeek =
+            days.length > 0 ? days : DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
+
+        // The variable change will trigger the primitive header rerender,
+        // which will trigger the creation of events and rows if they are empty
+        if (this.isConnected) {
+            this.computedRows = [];
+            this.computedEvents = [];
+        }
+    }
+
+    /**
+     * Array of available months. If present, the scheduler will only show the available months. Defaults to all months being available.
+     * The months are represented by a number, starting from 0 for January, and ending with 11 for December.
+     * For example, if the available months are January, February, June, July, August and December, the value would be: <code>[0, 1, 5, 6, 7, 11]</code>
+     *
+     * @type {number[]}
+     * @public
+     * @default [0, 1, … , 10, 11]
+     */
+    @api
+    get availableMonths() {
+        return this._availableMonths;
+    }
+    set availableMonths(value) {
+        const months = normalizeArray(value);
+        this._availableMonths =
+            months.length > 0 ? months : DEFAULT_AVAILABLE_MONTHS;
+
+        // The variable change will trigger the primitive header rerender,
+        // which will trigger the creation of events and rows if they are empty
+        if (this.isConnected) {
+            this.computedRows = [];
+            this.computedEvents = [];
+        }
+    }
+
+    /**
+     * Array of available time frames. If present, the scheduler will only show the available time frames. Defaults to the full day being available.
+     * Each time frame string must follow the pattern ‘start-end’, with start and end being ISO8601 formatted time strings.
+     * For example, if the available times are from 10am to 12pm, and 2:30pm to 6:45pm, the value would be: <code>['10:00-11:59', '14:30-18:44']</code>
+     *
+     * @type {string[]}
+     * @public
+     * @default ['00:00-23:59']
+     */
+    @api
+    get availableTimeFrames() {
+        return this._availableTimeFrames;
+    }
+    set availableTimeFrames(value) {
+        const timeFrames = normalizeArray(value);
+        this._availableTimeFrames =
+            timeFrames.length > 0 ? timeFrames : DEFAULT_AVAILABLE_TIME_FRAMES;
+
+        // The variable change will trigger the primitive header rerender,
+        // which will trigger the creation of events and rows if they are empty
+        if (this.isConnected) {
+            this.computedRows = [];
+            this.computedEvents = [];
+        }
+    }
+
+    /**
+     * Array of datatable column objects. The columns are displayed to the left of the schedule. For more details on the allowed object keys, see the Data Table component.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api
+    get columns() {
+        return this._columns;
+    }
+    set columns(value) {
+        this._columns = JSON.parse(JSON.stringify(normalizeArray(value)));
+    }
+
+    /**
+     * Array of action objects. These actions will be displayed in the context menu that appears when a user right-clicks on an empty space of the schedule.
+     *
+     * @type {object[]}
+     * @public
+     * @default Add event
+     */
+    @api
+    get contextMenuEmptySpotActions() {
+        return this._contextMenuEmptySpotActions;
+    }
+    set contextMenuEmptySpotActions(value) {
+        this._contextMenuEmptySpotActions = normalizeArray(value);
+    }
+
+    /**
+     * Array of action objects. These actions will be displayed in the context menu that appears when a user right-clicks on an event.
+     *
+     * @type {object[]}
+     * @public
+     * @default Edit and Delete
+     */
+    @api
+    get contextMenuEventActions() {
+        return this._contextMenuEventActions;
+    }
+    set contextMenuEventActions(value) {
+        this._contextMenuEventActions = normalizeArray(value);
+    }
+
+    /**
+     * Array of colors to use as a palette for the events. If present, it will overwrite the events-palette selected.
+     * The color strings have to be a Hexadecimal or RGB color. For example <code>#3A7D44</code> or <code>rgb(58, 125, 68)</code>.
+     *
+     * @type {string[]}
+     * @public
+     */
+    @api
+    get customEventsPalette() {
+        return this._customEventsPalette;
+    }
+    set customEventsPalette(value) {
+        this._customEventsPalette = normalizeArray(value);
+    }
+
+    /**
+     * Array of header objects. If present, it will overwrite the predefined headers.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api
+    get customHeaders() {
+        return this._customHeaders;
+    }
+    set customHeaders(value) {
+        this._customHeaders = normalizeArray(value);
+
+        if (this.isConnected) {
+            this.computedEvents = [];
+            this.computedRows = [];
+            this.initHeaders();
+        }
+    }
+
+    /**
+     * If present, the schedule column is not collapsible or expandable.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get collapseDisabled() {
+        return this._collapseDisabled;
+    }
+    set collapseDisabled(value) {
+        this._collapseDisabled = normalizeBoolean(value);
+    }
+
+    /**
+     * The date format to use in the events' details popup and the labels. See {@link https://moment.github.io/luxon/#/formatting?id=table-of-tokens Luxon’s documentation} for accepted format. If you want to insert text in the label, you need to escape it using single quote.
+     * For example, the format of "Jan 14 day shift" would be <code>"LLL dd 'day shift'"</code>.
+     *
+     * @type {string}
+     * @public
+     * @default ff
+     */
+    @api
+    get dateFormat() {
+        return this._dateFormat;
+    }
+    set dateFormat(value) {
+        this._dateFormat =
+            value && typeof value === 'string' ? value : DEFAULT_DATE_FORMAT;
+    }
+
+    /**
+     * Array of disabled date/time objects.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api
+    get disabledDatesTimes() {
+        return this._disabledDatesTimes;
+    }
+    set disabledDatesTimes(value) {
+        this._disabledDatesTimes = normalizeArray(value);
+
+        this.computedDisabledDatesTimes = this._disabledDatesTimes.map(
+            (evt) => {
+                const event = { ...evt };
+                event.disabled = true;
+                return event;
+            }
+        );
+
+        if (this.isConnected) {
+            this.initEvents();
+            this.updateVisibleRows();
+        }
+    }
+
+    /**
+     * Labels of the elements in the event edit dialog.
+     *
+     * @type {object}
+     * @public
+     * @default {
+     *   title: 'Title',
+     *   from: 'From',
+     *   to: 'To',
+     *   resources: 'Resources',
+     *   saveButton: 'Save',
+     *   saveOneRecurrent: 'Only this event',
+     *   saveAllRecurrent: 'All events',
+     *   editRecurrent: 'Edit recurring event.',
+     *   cancelButton: 'Cancel',
+     *   deleteButton: 'Delete',
+     *   newEventTitle: 'New event'
+     * }
+     */
     @api
     get editDialogLabels() {
         return this._editDialogLabels;
@@ -211,141 +452,12 @@ export default class Scheduler extends LightningElement {
         }
     }
 
-    @api
-    get availableDaysOfTheWeek() {
-        return this._availableDaysOfTheWeek;
-    }
-    set availableDaysOfTheWeek(value) {
-        const days = normalizeArray(value);
-        this._availableDaysOfTheWeek =
-            days.length > 0 ? days : DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
-
-        // The variable change will trigger the primitive header rerender,
-        // which will trigger the creation of events and rows if they are empty
-        if (this.isConnected) {
-            this.computedRows = [];
-            this.computedEvents = [];
-        }
-    }
-
-    @api
-    get availableMonths() {
-        return this._availableMonths;
-    }
-    set availableMonths(value) {
-        const months = normalizeArray(value);
-        this._availableMonths =
-            months.length > 0 ? months : DEFAULT_AVAILABLE_MONTHS;
-
-        // The variable change will trigger the primitive header rerender,
-        // which will trigger the creation of events and rows if they are empty
-        if (this.isConnected) {
-            this.computedRows = [];
-            this.computedEvents = [];
-        }
-    }
-
-    @api
-    get availableTimeFrames() {
-        return this._availableTimeFrames;
-    }
-    set availableTimeFrames(value) {
-        const timeFrames = normalizeArray(value);
-        this._availableTimeFrames =
-            timeFrames.length > 0 ? timeFrames : DEFAULT_AVAILABLE_TIME_FRAMES;
-
-        // The variable change will trigger the primitive header rerender,
-        // which will trigger the creation of events and rows if they are empty
-        if (this.isConnected) {
-            this.computedRows = [];
-            this.computedEvents = [];
-        }
-    }
-
-    @api
-    get columns() {
-        return this._columns;
-    }
-    set columns(value) {
-        this._columns = JSON.parse(JSON.stringify(normalizeArray(value)));
-    }
-
-    @api
-    get contextMenuEmptySpotActions() {
-        return this._contextMenuEmptySpotActions;
-    }
-    set contextMenuEmptySpotActions(value) {
-        this._contextMenuEmptySpotActions = normalizeArray(value);
-    }
-
-    @api
-    get contextMenuEventActions() {
-        return this._contextMenuEventActions;
-    }
-    set contextMenuEventActions(value) {
-        this._contextMenuEventActions = normalizeArray(value);
-    }
-
-    @api
-    get customEventsPalette() {
-        return this._customEventsPalette;
-    }
-    set customEventsPalette(value) {
-        this._customEventsPalette = normalizeArray(value);
-    }
-
-    @api
-    get customHeaders() {
-        return this._customHeaders;
-    }
-    set customHeaders(value) {
-        this._customHeaders = normalizeArray(value);
-
-        if (this.isConnected) {
-            this.computedEvents = [];
-            this.computedRows = [];
-            this.initHeaders();
-        }
-    }
-
-    @api
-    get collapseDisabled() {
-        return this._collapseDisabled;
-    }
-    set collapseDisabled(value) {
-        this._collapseDisabled = normalizeBoolean(value);
-    }
-
-    @api
-    get dateFormat() {
-        return this._dateFormat;
-    }
-    set dateFormat(value) {
-        this._dateFormat =
-            value && typeof value === 'string' ? value : DEFAULT_DATE_FORMAT;
-    }
-
-    @api
-    get disabledDatesTimes() {
-        return this._disabledDatesTimes;
-    }
-    set disabledDatesTimes(value) {
-        this._disabledDatesTimes = normalizeArray(value);
-
-        this.computedDisabledDatesTimes = this._disabledDatesTimes.map(
-            (evt) => {
-                const event = { ...evt };
-                event.disabled = true;
-                return event;
-            }
-        );
-
-        if (this.isConnected) {
-            this.initEvents();
-            this.updateVisibleRows();
-        }
-    }
-
+    /**
+     * Array of event objects.
+     *
+     * @type {object[]}
+     * @public
+     */
     @api
     get events() {
         return this._events;
@@ -359,6 +471,23 @@ export default class Scheduler extends LightningElement {
         }
     }
 
+    /**
+     * Labels of the events. Valid keys include:
+     * * top
+     * * bottom
+     * * left
+     * * right
+     * * center
+     * The value of each key should be a label object.
+     *
+     * @type {object}
+     * @public
+     * @default {
+     *   center: {
+     *      fieldName: 'title'
+     *   }
+     * }
+     */
     @api
     get eventsLabels() {
         return this._eventsLabels;
@@ -373,6 +502,13 @@ export default class Scheduler extends LightningElement {
         }
     }
 
+    /**
+     * Default palette used for the event colors. Valid values include aurora, bluegrass, dusk, fire, heat, lake, mineral, nightfall, ocean, pond, sunrise, water, watermelon and wildflowers (see Palette table for more information).
+     *
+     * @type {string[]}
+     * @public
+     * @default aurora
+     */
     @api
     get eventsPalette() {
         return this._eventsPalette;
@@ -389,6 +525,13 @@ export default class Scheduler extends LightningElement {
         }
     }
 
+    /**
+     * Theme of the events. Valid values include default, transparent, line, hollow and rounded.
+     *
+     * @type {string}
+     * @public
+     * @default default
+     */
     @api
     get eventsTheme() {
         return this._eventsTheme;
@@ -405,6 +548,25 @@ export default class Scheduler extends LightningElement {
         }
     }
 
+    /**
+     * Name of the header preset to use. The headers are displayed in rows above the schedule, and used to create its columns. Valid values include:
+     * * minuteAndHour
+     * * minuteHourAndDay
+     * * hourAndDay
+     * * hourDayAndWeek
+     * * dayAndWeek
+     * * dayLetterAndWeek
+     * * dayWeekAndMonth
+     * * weekAndMonth
+     * * weekMonthAndYear
+     * * monthAndYear
+     * * quartersAndYear
+     * * fiveYears
+     *
+     * @type {string}
+     * @public
+     * @default hourAndDay
+     */
     @api
     get headers() {
         return this._headers;
@@ -423,6 +585,13 @@ export default class Scheduler extends LightningElement {
         }
     }
 
+    /**
+     * If present, a loading spinner will be visible.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api
     get isLoading() {
         return this._isLoading;
@@ -431,6 +600,13 @@ export default class Scheduler extends LightningElement {
         this._isLoading = normalizeBoolean(value);
     }
 
+    /**
+     * Alternative text of the loading spinner.
+     *
+     * @type {string}
+     * @public
+     * @default Loading
+     */
     @api
     get loadingStateAlternativeText() {
         return this._loadingStateAlternativeText;
@@ -442,6 +618,13 @@ export default class Scheduler extends LightningElement {
                 : DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     }
 
+    /**
+     * If present, the scheduler is not editable. The events cannot be dragged and the default actions (edit, delete and add event) will be hidden from the context menus.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api
     get readOnly() {
         return this._readOnly;
@@ -450,6 +633,15 @@ export default class Scheduler extends LightningElement {
         this._readOnly = normalizeBoolean(value);
     }
 
+    /**
+     * Allowed edition modes for recurring events. Available options are:
+     * * <code>all</code>: All recurrent event occurrences will be updated when a change is made to one occurrence.
+     * * <code>one</code>: Only the selected occurrence will be updated when a change is made.
+     *
+     * @type {string[]}
+     * @public
+     * @default ['all', 'one']
+     */
     @api
     get recurrentEditModes() {
         return this._recurrentEditModes;
@@ -465,6 +657,12 @@ export default class Scheduler extends LightningElement {
         }
     }
 
+    /**
+     * Array of reference line objects.
+     *
+     * @type {object[]}
+     * @public
+     */
     @api
     get referenceLines() {
         return this._referenceLines;
@@ -497,6 +695,13 @@ export default class Scheduler extends LightningElement {
         }
     }
 
+    /**
+     * If present, column resizing is disabled.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api
     get resizeColumnDisabled() {
         return this._resizeColumnDisabled;
@@ -505,6 +710,13 @@ export default class Scheduler extends LightningElement {
         this._resizeColumnDisabled = normalizeBoolean(value);
     }
 
+    /**
+     * Array of datatable data objects. Each object represent a row of the scheduler. For more details, see the Data Table component.
+     *
+     * @type {object[]}
+     * @public
+     * @required
+     */
     @api
     get rows() {
         return this._rows;
@@ -515,6 +727,13 @@ export default class Scheduler extends LightningElement {
         if (this.isConnected) this.initRows();
     }
 
+    /**
+     * Name of a key of the row objects. This key needs to be present in all row objects. Its value needs to be unique to a row, as it will be used as the row identifier.
+     *
+     * @type {string}
+     * @public
+     * @required
+     */
     @api
     get rowsKeyField() {
         return this._rowsKeyField;
@@ -525,6 +744,13 @@ export default class Scheduler extends LightningElement {
         if (this.isConnected) this.initRows();
     }
 
+    /**
+     * Specifies the starting date/timedate of the schedule. It can be a Date object, timestamp, or an ISO8601 formatted string.
+     *
+     * @type {(Date|number|string)}
+     * @public
+     * @default new Date()
+     */
     @api
     get start() {
         return this._start;
@@ -536,6 +762,17 @@ export default class Scheduler extends LightningElement {
         if (this.isConnected) this.initHeaders();
     }
 
+    /**
+     * Object used to set the duration of the scheduler. It has two keys:
+     * * <code>unit</code>. Valid values include minute, hour, day, week, month and year.
+     * * <code>span</code>. The number of unit the scheduler will show.
+     * For example, if the scheduler should be four-day long, the value would be: <code>{ unit: ‘day’, span: 4 }</code>
+     *
+     * @type {object}
+     * @public
+     * @default { unit: ‘hour’, span: 12 }
+     * @required
+     */
     @api
     get visibleSpan() {
         return this._visibleSpan;
@@ -547,6 +784,11 @@ export default class Scheduler extends LightningElement {
         if (this.isConnected) this.initHeaders();
     }
 
+    /**
+     * Array of all the key fields objects. The objects have two keys: label and value. Used in the edit form to generate a combobox of key fields.
+     *
+     * @type {object[]}
+     */
     get allResourcesKeyFields() {
         return this.rows.map((row) => {
             return {
@@ -556,14 +798,30 @@ export default class Scheduler extends LightningElement {
         });
     }
 
+    /**
+     * Datatable HTML Element.
+     *
+     * @type {HTMLElement}
+     */
     get datatable() {
         return this.template.querySelector('c-datatable');
     }
 
+    /**
+     * Datatable column HTML Element.
+     *
+     * @type {HTMLElement}
+     */
     get datatableCol() {
         return this.template.querySelector('.avonni-scheduler__datatable-col');
     }
 
+    /**
+     * Class list of the datable column.
+     *
+     * @type {string}
+     * @default 'slds-border_right avonni-scheduler__datatable-col slds-grid'
+     */
     get datatableColClass() {
         return classSet(
             'slds-border_right avonni-scheduler__datatable-col slds-grid'
@@ -576,6 +834,16 @@ export default class Scheduler extends LightningElement {
             .toString();
     }
 
+    /**
+    * Array of action objects, used by the context menu when opened on an empty spot of the schedule.
+    *
+    * @type {object[]}
+    * @default [{
+        name: 'add-event',
+        label: 'Add event',
+        iconName: 'utility:add'
+    }]
+    */
     get computedContextMenuEmptySpot() {
         const actions = this.contextMenuEmptySpotActions;
         return this.readOnly
@@ -584,6 +852,21 @@ export default class Scheduler extends LightningElement {
                   DEFAULT_CONTEXT_MENU_EMPTY_SPOT_ACTIONS;
     }
 
+    /**
+    * Array of action objects, used by the context menu when opened on an event.
+    *
+    * @type {object[]}
+    * @default [{
+        name: 'edit',
+        label: 'Edit',
+        iconName: 'utility:edit'
+    },
+    {
+        name: 'delete',
+        label: 'Delete',
+        iconName: 'utility:delete'
+    }]
+    */
     get computedContextMenuEvent() {
         const actions = this.contextMenuEventActions;
         return this.readOnly
@@ -591,12 +874,22 @@ export default class Scheduler extends LightningElement {
             : (actions.length && actions) || DEFAULT_CONTEXT_MENU_EVENT_ACTIONS;
     }
 
+    /**
+     * Array of color strings.
+     *
+     * @type {string[]}
+     */
     get palette() {
         return this.customEventsPalette.length
             ? this.customEventsPalette
             : PALETTES[this.eventsPalette];
     }
 
+    /**
+     * Computed title of the edit dialog.
+     *
+     * @type {string}
+     */
     get editDialogTitle() {
         return (
             (this.selection && this.selection.event.title) ||
@@ -604,6 +897,12 @@ export default class Scheduler extends LightningElement {
         );
     }
 
+    /**
+     * If true, editing a recurring event only updates the occurrence, never the complete event.
+     *
+     * @type {boolean}
+     * @default false
+     */
     get onlyOccurrenceEditAllowed() {
         return (
             this.recurrentEditModes.length === 1 &&
@@ -611,22 +910,50 @@ export default class Scheduler extends LightningElement {
         );
     }
 
+    /**
+     * Formated starting date of the currently selected event.
+     *
+     * @type {string}
+     */
     get selectionFrom() {
         return this.selection.occurrence.from.toFormat(this.dateFormat);
     }
 
+    /**
+     * Formated ending date of the currently selected event.
+     *
+     * @type {string}
+     */
     get selectionTo() {
         return this.selection.occurrence.to.toFormat(this.dateFormat);
     }
 
+    /**
+     * If true, the left collapse button is displayed on the splitter bar.
+     *
+     * @type {boolean}
+     * @default true
+     */
     get showCollapseLeft() {
         return !this.collapseDisabled && !this.datatableIsHidden;
     }
 
+    /**
+     * If true, the right collapse button is displayed on the splitter bar.
+     *
+     * @type {boolean}
+     * @default true
+     */
     get showCollapseRight() {
         return !this.collapseDisabled && !this.datatableIsOpen;
     }
 
+    /**
+     * If true, when editing a recurring event, the user always have the choice to save the changes only for the occurrence or for every occurrences of the event.
+     *
+     * @type {boolean}
+     * @default true
+     */
     get showRecurrenceSaveOptions() {
         return (
             this.recurrentEditModes.length > 1 &&
@@ -634,6 +961,12 @@ export default class Scheduler extends LightningElement {
         );
     }
 
+    /**
+     * If true, a loading spinner is displayed on the left of the schedule.
+     *
+     * @type {boolean}
+     * @default false
+     */
     get showLeftInfiniteLoadSpinner() {
         if (!this.smallestHeader || this.isLoading) return false;
 
@@ -643,6 +976,12 @@ export default class Scheduler extends LightningElement {
         return firstVisibleTime > this.smallestHeader.start;
     }
 
+    /**
+     * If true, a loading spinner is displayed on the right of the schedule.
+     *
+     * @type {boolean}
+     * @default false
+     */
     get showRightInfiniteLoadSpinner() {
         if (!this.smallestHeader || this.isLoading) return false;
 
@@ -654,6 +993,12 @@ export default class Scheduler extends LightningElement {
         return lastVisibleTime < this.smallestHeader.end;
     }
 
+    /**
+     * Duration of one column of the smallest unit header, in milliseconds.
+     *
+     * @type {number}
+     * @default 0
+     */
     get smallestColumnDuration() {
         const header = this.smallestHeader;
         if (!header) return 0;
@@ -664,6 +1009,12 @@ export default class Scheduler extends LightningElement {
             .milliseconds;
     }
 
+    /**
+     * Class list of the splitter.
+     *
+     * @type {string}
+     * @default 'avonni-scheduler__splitter slds-is-absolute slds-grid'
+     */
     get splitterClass() {
         return classSet('avonni-scheduler__splitter slds-is-absolute slds-grid')
             .add({
@@ -674,22 +1025,46 @@ export default class Scheduler extends LightningElement {
             .toString();
     }
 
+    /**
+     * Create a new event.
+     *
+     * @param {object} event Event object of the new event.
+     * @public
+     */
     @api
     createEvent(eventObject) {
         this.crud.createEvent(eventObject);
     }
 
+    /**
+     * Delete an event.
+     *
+     * @param {string} name Unique name of the event to delete.
+     * @public
+     */
     @api
     deleteEvent(eventName) {
         this.crud.deleteEvent(eventName);
     }
 
+    /**
+     * Set the focus on an event.
+     *
+     * @param {string} name Unique name of the event to set the focus on.
+     * @public
+     */
     @api
     focusEvent(eventName) {
         this._programmaticFocus = true;
         this.crud.focusEvent(eventName);
     }
 
+    /**
+     * Open the edit event dialog.
+     *
+     * @param {string} name Unique name of the event to edit.
+     * @public
+     */
     @api
     opentEditEventDialog(eventName) {
         this._draggedEvent = undefined;
@@ -698,11 +1073,19 @@ export default class Scheduler extends LightningElement {
         this.showEditDialog = true;
     }
 
+    /**
+     * Open the new event dialog.
+     *
+     * @public
+     */
     @api
     openNewEventDialog() {
         this.crud.newEvent();
     }
 
+    /**
+     * Create the computed headers.
+     */
     initHeaders() {
         // Use the custom headers or a preset
         let headers = [...this.customHeaders];
@@ -716,6 +1099,9 @@ export default class Scheduler extends LightningElement {
         this.computedHeaders = headers;
     }
 
+    /**
+     * Create the computed events.
+     */
     initEvents() {
         if (!this.smallestHeader) return;
 
@@ -733,39 +1119,9 @@ export default class Scheduler extends LightningElement {
         this.computedEvents = this.createVisibleEvents();
     }
 
-    initDraggedEventState(mouseX, mouseY) {
-        // Save the initial position values
-        const scheduleElement = this.template.querySelector(
-            '.avonni-scheduler__body'
-        );
-        const schedulePosition = scheduleElement.getBoundingClientRect();
-        const eventPosition = this._draggedEvent.getBoundingClientRect();
-
-        const leftBoundary =
-            this._resizeSide === 'right'
-                ? eventPosition.left + 24
-                : schedulePosition.left + (mouseX - eventPosition.left);
-        const rightBoundary =
-            this._resizeSide === 'left'
-                ? eventPosition.right - 24
-                : schedulePosition.right + (mouseX - eventPosition.right);
-
-        this._initialState = {
-            mouseX,
-            mouseY,
-            initialX: this._draggedEvent.x,
-            initialY: this._draggedEvent.y,
-            eventLeft: eventPosition.left,
-            eventRight: eventPosition.right,
-            eventWidth: eventPosition.width,
-            left: leftBoundary,
-            right: rightBoundary,
-            top: schedulePosition.top + (mouseY - eventPosition.top),
-            bottom: schedulePosition.bottom + (mouseY - eventPosition.bottom),
-            row: this.getRowFromPosition(mouseY)
-        };
-    }
-
+    /**
+     * Create the computed rows.
+     */
     initRows() {
         let colorIndex = 0;
         this.computedRows = this.rows.map((row) => {
@@ -803,8 +1159,49 @@ export default class Scheduler extends LightningElement {
         });
     }
 
+    /**
+     * Set the initial state of a dragged or resized event.
+     *
+     * @param {number} mouseX The position of the mouse on the horizontal axis.
+     * @param {number} mouseY The position of the mouse on the vertical axis.
+     */
+    initDraggedEventState(mouseX, mouseY) {
+        // Save the initial position values
+        const scheduleElement = this.template.querySelector(
+            '.avonni-scheduler__body'
+        );
+        const schedulePosition = scheduleElement.getBoundingClientRect();
+        const eventPosition = this._draggedEvent.getBoundingClientRect();
+
+        const leftBoundary =
+            this._resizeSide === 'right'
+                ? eventPosition.left + 24
+                : schedulePosition.left + (mouseX - eventPosition.left);
+        const rightBoundary =
+            this._resizeSide === 'left'
+                ? eventPosition.right - 24
+                : schedulePosition.right + (mouseX - eventPosition.right);
+
+        this._initialState = {
+            mouseX,
+            mouseY,
+            initialX: this._draggedEvent.x,
+            initialY: this._draggedEvent.y,
+            eventLeft: eventPosition.left,
+            eventRight: eventPosition.right,
+            eventWidth: eventPosition.width,
+            left: leftBoundary,
+            right: rightBoundary,
+            top: schedulePosition.top + (mouseY - eventPosition.top),
+            bottom: schedulePosition.bottom + (mouseY - eventPosition.bottom),
+            row: this.getRowFromPosition(mouseY)
+        };
+    }
+
+    /**
+     * Set the rows height and cell width.
+     */
     updateRowsStyle() {
-        // Set the rows height
         const rows = this.template.querySelectorAll('.avonni-scheduler__row');
 
         rows.forEach((row, index) => {
@@ -830,6 +1227,9 @@ export default class Scheduler extends LightningElement {
         });
     }
 
+    /**
+     * Update the cell width property if the cells grew because the splitter moved.
+     */
     updateCellWidth() {
         const cell = this.template.querySelector('.avonni-scheduler__cell');
         const cellWidth = cell.getBoundingClientRect().width;
@@ -839,14 +1239,19 @@ export default class Scheduler extends LightningElement {
         }
     }
 
+    /**
+     * Vertically align the datatable header with the smallest unit schedule header.
+     */
     updateDatatablePosition() {
-        // Align the datatable header with the smallest schedule header
         const headers = this.template.querySelector(
             'c-primitive-scheduler-header-group'
         );
         this.datatable.style.marginTop = `${headers.offsetHeight - 39}px`;
     }
 
+    /**
+     * Save the datatable rows heights and use them as a min-height for the schedule rows.
+     */
     updateDatatableRowsHeight() {
         const datatable = this.template.querySelector('c-datatable');
         if (!datatable || !this.computedRows.length) return;
@@ -860,6 +1265,9 @@ export default class Scheduler extends LightningElement {
         });
     }
 
+    /**
+     * Update the width of the resized event.
+     */
     updateDraggedEventStyleAfterResize(x) {
         const side = this._resizeSide;
         const eventWidth = this._initialState.eventWidth;
@@ -875,6 +1283,11 @@ export default class Scheduler extends LightningElement {
         }
     }
 
+    /**
+     * Set the default properties of the given event.
+     *
+     * @param {object} event The event object.
+     */
     updateEventDefaults(event) {
         // We store the initial event object in a variable,
         // in case a custom field is used by the labels
@@ -893,6 +1306,9 @@ export default class Scheduler extends LightningElement {
             typeof event.labels === 'object' ? event.labels : this.eventsLabels;
     }
 
+    /**
+     * Compute the vertical position of the events and the rows height, so the events don't overlap.
+     */
     updateOccurrencesOffsetTop() {
         const schedule = this.template.querySelector('.avonni-scheduler__body');
         const scheduleRightBorder = schedule.getBoundingClientRect().right;
@@ -974,6 +1390,9 @@ export default class Scheduler extends LightningElement {
         });
     }
 
+    /**
+     * Update the primitive occurrences height, width and position.
+     */
     updateOccurrencesPosition() {
         const eventOccurrences = this.template.querySelectorAll(
             'c-primitive-scheduler-event-occurrence'
@@ -990,6 +1409,9 @@ export default class Scheduler extends LightningElement {
         this._updateOccurrencesWidth = false;
     }
 
+    /**
+     * Update the columns and events of the currently loaded rows.
+     */
     updateVisibleRows() {
         this.computedRows.forEach((computedRow) => {
             computedRow.events = this.getOccurrencesFromRowKey(computedRow.key);
@@ -998,6 +1420,13 @@ export default class Scheduler extends LightningElement {
         });
     }
 
+    /**
+     * Find the cell element at a given schedule position.
+     *
+     * @param {HTMLElement} row The row element the cell is in.
+     * @param {number} x The horizontal position of the cell.
+     * @returns {(HTMLElement|undefined)} The cell element or undefined.
+     */
     getCellFromPosition(row, x) {
         const cells = Array.from(
             row.querySelectorAll('.avonni-scheduler__cell')
@@ -1017,6 +1446,12 @@ export default class Scheduler extends LightningElement {
         });
     }
 
+    /**
+     * Find the event occurrences for a given row key field.
+     *
+     * @param {string} key The unique key of the row.
+     * @returns {object[]} Array of occurrence objects.
+     */
     getOccurrencesFromRowKey(key) {
         const occurrences = [];
         this.computedEvents.forEach((event) => {
@@ -1031,10 +1466,22 @@ export default class Scheduler extends LightningElement {
         return occurrences.flat();
     }
 
+    /**
+     * Find a computed row from its key field value.
+     *
+     * @param {string} key The unique key of the row.
+     * @returns {SchedulerRow} The computed row object.
+     */
     getRowFromKey(key) {
         return this.computedRows.find((row) => row.key === key);
     }
 
+    /**
+     * Find a row element from its position in the schedule.
+     *
+     * @param {number} y The vertical position of the row.
+     * @returns {(HTMLElement|undefined)} The row element or undefined.
+     */
     getRowFromPosition(y) {
         const rows = Array.from(
             this.template.querySelectorAll('.avonni-scheduler__row')
@@ -1048,6 +1495,9 @@ export default class Scheduler extends LightningElement {
         });
     }
 
+    /**
+     * Clear the dragged class and empty the _draggedEvent and _resizeSide variables.
+     */
     cleanDraggedElement() {
         if (this._draggedEvent) {
             this._draggedEvent.classList.remove(
@@ -1058,6 +1508,9 @@ export default class Scheduler extends LightningElement {
         this._resizeSide = undefined;
     }
 
+    /**
+     * Clear the selected or new event.
+     */
     cleanSelection() {
         // If a new event was being created, remove the unfinished event from the computedEvents
         const lastEvent = this.computedEvents[this.computedEvents.length - 1];
@@ -1071,6 +1524,9 @@ export default class Scheduler extends LightningElement {
         this.selection = undefined;
     }
 
+    /**
+     * Remove the initial width of the datatable last column if there was one, so it will be resized when the splitter is moved.
+     */
     clearDatatableColumnWidth() {
         const lastColumn = this.columns[this.columns.length - 1];
         if (lastColumn.initialWidth) {
@@ -1079,6 +1535,14 @@ export default class Scheduler extends LightningElement {
         }
     }
 
+    /**
+     * Push an event occurrence down a level, until it doesn't overlap another occurrence.
+     *
+     * @param {object[]} previousOccurrences Array of previous occurrences for which the vertical level has already been computed.
+     * @param {number} left Left position of the occurrence.
+     * @param {number} level Vertical level of the occurrence. It starts at 0, so the occurrence is at the top of its row.
+     * @returns {number} Vertical level of the occurrence.
+     */
     computeEventVerticalLevel(previousOccurrences, left, level = 0) {
         // Find the last event with the same level
         const sameOffset = previousOccurrences.find((occ) => {
@@ -1099,11 +1563,13 @@ export default class Scheduler extends LightningElement {
         return level;
     }
 
+    /**
+     * Create the computed events that are included in the currently loaded interval of time.
+     */
     createVisibleEvents() {
         const interval = this._visibleInterval;
         if (!interval) return [];
 
-        // Filter only the events visible in the given interval
         const events = this._allEvents.filter((event) => {
             const from = dateTimeObjectFrom(event.from);
             const to = dateTimeObjectFrom(event.to);
@@ -1127,6 +1593,11 @@ export default class Scheduler extends LightningElement {
         }, []);
     }
 
+    /**
+     * Update the given popover position so it is next to the currently selected event occurrence.
+     *
+     * @param {HTMLElement} popover Popover element.
+     */
     positionPopover(popover) {
         // Make sure the popover is not outside of the screen
         const y = this.selection.y;
@@ -1147,6 +1618,11 @@ export default class Scheduler extends LightningElement {
         popover.style.left = `${x}px`;
     }
 
+    /**
+     * Set the selected event from an Event object.
+     *
+     * @param {Event} mouseEvent Event that triggered the selection.
+     */
     selectEvent(mouseEvent) {
         const { eventName, from } = mouseEvent.detail;
 
@@ -1169,6 +1645,11 @@ export default class Scheduler extends LightningElement {
         };
     }
 
+    /**
+     * Make sure the currently resized event occurrence doesn't overlap another event. If it is, save the resizing to the event so the schedule rerenders. Else, visually resize it without saving the change in the event.
+     *
+     * @param {number} x New horizontal position of the occurrence.
+     */
     resizeEventToX(x) {
         const occurrence = this.selection.occurrence;
         const { row, mouseX } = this._initialState;
@@ -1202,8 +1683,8 @@ export default class Scheduler extends LightningElement {
             );
         });
 
-        // If one of them do, the dragged event is passing over it
-        // We have to rerender the grid so the row height enlarges
+        // If one of them do, the dragged event is overlapping it.
+        // We have to rerender the scheduler so the row height enlarges.
         if (eventIsHovered) {
             const cell = labelWidth
                 ? hoveredCell
@@ -1216,6 +1697,11 @@ export default class Scheduler extends LightningElement {
         }
     }
 
+    /**
+     * Resize an event to a given cell element and save the change.
+     *
+     * @param {HTMLElement} cell The cell element.
+     */
     resizeEventToCell(cell) {
         const side = this._resizeSide;
         const occurrence = this.selection.occurrence;
@@ -1241,6 +1727,12 @@ export default class Scheduler extends LightningElement {
         this.computedEvents = [...this.computedEvents];
     }
 
+    /**
+     * Drag an event to a cell and save the change.
+     *
+     * @param {HTMLElement} row The row element the event is being dragged to.
+     * @param {HTMLElement} cell The cell element the event is being dragged to.
+     */
     dragEventTo(row, cell) {
         const { occurrence, draftValues } = this.selection;
 
@@ -1269,6 +1761,13 @@ export default class Scheduler extends LightningElement {
         }
     }
 
+    /**
+     * Normalize the mouse position so it will take the schedule borders as a value if the mouse is outside of the schedule.
+     *
+     * @param {number} mouseX The horizontal position of the mouse.
+     * @param {number} mouseY The vertical position of the mouse.
+     * @returns {object} Object with two keys: x and y
+     */
     normalizeMousePosition(mouseX, mouseY) {
         const { top, bottom, left, right } = this._initialState;
 
@@ -1290,42 +1789,69 @@ export default class Scheduler extends LightningElement {
         return { x, y };
     }
 
+    /**
+     * Hide the detail popover, the context menu and the edit dialog if any was open.
+     */
     hideAllPopovers() {
         this.hideDetailPopover();
         this.hideContextMenu();
         this.hideEditDialog();
     }
 
+    /**
+     * Hide the context menu.
+     */
     hideContextMenu() {
         this.contextMenuActions.splice(0);
         this.showContextMenu = false;
     }
 
+    /**
+     * Hide the detail popover.
+     */
     hideDetailPopover() {
         this.showDetailPopover = false;
     }
 
+    /**
+     * Hide the edit dialog.
+     */
     hideEditDialog() {
         this.showEditDialog = false;
     }
 
+    /**
+     * Hide the recurring event saving options dialog.
+     */
     hideRecurrenceDialog() {
         this.showRecurrenceDialog = false;
     }
 
+    /**
+     * Handle the privateheaderregister event fired by the primitive header. Save the header callback method to a variable.
+     */
     handleHeaderRegister(event) {
         this.scrollHeadersTo = event.detail.callbacks.scrollHeadersTo;
     }
 
+    /**
+     * Handle the privatecellwidthchange event fired by the primitive header. Save the smallest unit header cell width to a variable.
+     */
     handleHeaderCellWidthChange(event) {
         this.cellWidth = event.detail.cellWidth;
     }
 
+    /**
+     * Handle the privateheaderchange event fired by the primitive header. Save the smallest unit header to a variable and make sure the datatable position will be updated on next render.
+     */
     handleHeaderChange(event) {
         this.smallestHeader = event.detail.smallestHeader;
         this._headerHeightChange = true;
     }
 
+    /**
+     * Handle the privatevisibleheaderchange event fired by the primitive header. Create the computed events and computed rows of the new visible interval.
+     */
     handleHeaderVisibleCellsChange(event) {
         const { direction, visibleCells, visibleInterval } = event.detail;
         this._numberOfVisibleCells = visibleCells;
@@ -1357,6 +1883,9 @@ export default class Scheduler extends LightningElement {
         }
     }
 
+    /**
+     * Handle the privatefocus event fired by a primitive event occurrence. Dispatch the eventselect event and trigger the behaviour a mouse movement would have.
+     */
     handleEventFocus(event) {
         const detail = {
             name: event.detail.eventName
@@ -1369,6 +1898,16 @@ export default class Scheduler extends LightningElement {
         }
 
         if (!this._programmaticFocus) {
+            /**
+             * The event fired when the focus is set on an event. If the focus was set programmatically, the event will not be fired.
+             *
+             * @event
+             * @name eventselect
+             * @param {string} name Unique name of the event.
+             * @param {object} recurrenceDates If the event is recurrent, this object will contain two keys: from and to.
+             * @public
+             * @bubbles
+             */
             this.dispatchEvent(
                 new CustomEvent('eventselect', {
                     detail,
@@ -1381,6 +1920,9 @@ export default class Scheduler extends LightningElement {
         this.handleEventMouseEnter(event);
     }
 
+    /**
+     * Handle the mousedown event fired by an empty cell or a disabled primitive event occurrence. Prepare the scheduler for a new event to be created on drag.
+     */
     handleMouseDown(mouseEvent) {
         if (mouseEvent.button || this.readOnly) return;
 
@@ -1394,6 +1936,9 @@ export default class Scheduler extends LightningElement {
         this.crud.newEvent(x, y, false);
     }
 
+    /**
+     * Handle the privatemouseenter event fired by a primitive event occurrence. Select the hovered event and show the detail popover.
+     */
     handleEventMouseEnter(event) {
         if (this._mouseIsDown || this.showContextMenu) return;
 
@@ -1402,6 +1947,9 @@ export default class Scheduler extends LightningElement {
         this._draggedEvent = event.currentTarget;
     }
 
+    /**
+     * Handle the privatemousedown event fired by a primitive event occurrence. Select the event and prepare for it to be dragged or resized.
+     */
     handleEventMouseDown(mouseEvent) {
         const { side, x, y } = mouseEvent.detail;
         this._mouseIsDown = true;
@@ -1413,6 +1961,9 @@ export default class Scheduler extends LightningElement {
         this.initDraggedEventState(x, y);
     }
 
+    /**
+     * Handle the mousemove event fired by the schedule. If the splitter is being clicked, compute its movement. If an event is being clicked, compute its resizong or dragging.
+     */
     handleMouseMove(mouseEvent) {
         if (!this._mouseIsDown) return;
 
@@ -1461,6 +2012,9 @@ export default class Scheduler extends LightningElement {
         }
     }
 
+    /**
+     * Handle the mouseup event fired by the schedule. Save the splitter or the dragged/resized event new position.
+     */
     handleMouseUp(mouseEvent) {
         this._mouseIsDown = false;
         if (mouseEvent.button !== 0) return;
@@ -1524,6 +2078,9 @@ export default class Scheduler extends LightningElement {
         this.cleanDraggedElement();
     }
 
+    /**
+     * Handle the resize event fired by the datatable. Update the rows heights.
+     */
     handleDatatableResize(event) {
         if (event.detail.isUserTriggered) {
             this.datatable.style.width = null;
@@ -1538,6 +2095,9 @@ export default class Scheduler extends LightningElement {
         }
     }
 
+    /**
+     * Handle the privatecontextmenu event fired by a primitive event occurrence. Select the event and open its context menu.
+     */
     handleEventContextMenu(mouseEvent) {
         const target = mouseEvent.currentTarget;
         if (target.disabled || target.referenceLine) return;
@@ -1550,6 +2110,9 @@ export default class Scheduler extends LightningElement {
         }
     }
 
+    /**
+     * Handle the contextmenu event fired by an empty spot of the schedule, or a disabled primitive event occurrence. Open the context menu and prepare for the creation of a new event at this position.
+     */
     handleEmptySpotContextMenu(mouseEvent) {
         mouseEvent.preventDefault();
 
@@ -1563,9 +2126,22 @@ export default class Scheduler extends LightningElement {
         }
     }
 
+    /**
+     * Handle the privateselect event fired by the context menu. Dispatch the action click event and process the selected action.
+     */
     handleActionSelect(event) {
         const name = event.detail.name;
 
+        /**
+         * The event fired when a user clicks on an action.
+         *
+         * @event
+         * @name actionclick
+         * @param {string} name Name of the action clicked.
+         * @param {string} targetName If the action came from the context menu of an event, name of the event.
+         * @public
+         * @bubbles
+         */
         this.dispatchEvent(
             new CustomEvent('actionclick', {
                 detail: {
@@ -1596,16 +2172,25 @@ export default class Scheduler extends LightningElement {
         }
     }
 
+    /**
+     * Handle the click event fired by the edit dialog delete button. Delete the selected event.
+     */
     handleEventDelete() {
         this.crud.deleteEvent();
     }
 
+    /**
+     * Handle the dblclick event fired by an empty spot of the schedule or a disabled primitive event occurrence. Create a new event at this position and open the edit dialog.
+     */
     handleDoubleClick(mouseEvent) {
         const x = mouseEvent.clientX || mouseEvent.detail.x;
         const y = mouseEvent.clientY || mouseEvent.detail.y;
         this.crud.newEvent(x, y, true);
     }
 
+    /**
+     * Handle the privatedblclick event fired by a primitive event occurrence. Open the edit dialog for this event.
+     */
     handleEventDoubleClick(event) {
         this._draggedEvent = undefined;
         this.selectEvent(event);
@@ -1613,11 +2198,17 @@ export default class Scheduler extends LightningElement {
         this.showEditDialog = true;
     }
 
+    /**
+     * Handle the change event fired by the edit dialog title input. Save the new title to the draft values.
+     */
     handleEventTitleChange(event) {
         const title = event.currentTarget.value;
         this.selection.draftValues.title = title;
     }
 
+    /**
+     * Handle the change event fired by the edit dialog date input. Save the new dates to the draft values.
+     */
     handleEventDateChange(event) {
         const from = event.detail.startDate;
         const to = event.detail.endDate;
@@ -1626,17 +2217,26 @@ export default class Scheduler extends LightningElement {
         this.selection.draftValues.to = to;
     }
 
+    /**
+     * Handle the change event fired by the edit dialog key fields combobox. Save the new row keys to the draft values.
+     */
     handleEventKeyFieldsChange(event) {
         const keyFields = event.detail.value;
         this.selection.draftValues.keyFields = keyFields;
     }
 
+    /**
+     * Handle the closedialog event fired by the edit dialog. Cancel the changes and close the dialog.
+     */
     handleCloseEditDialog() {
         this.cleanDraggedElement();
         this.cleanSelection();
         this.hideEditDialog();
     }
 
+    /**
+     * Handle the closedialog event fired by the recurring event save dialog. Cancel the changes and close the dialog.
+     */
     handleCloseRecurrenceDialog() {
         if (this._resizeSide) {
             const row = this._initialState.row;
@@ -1655,6 +2255,9 @@ export default class Scheduler extends LightningElement {
         this.updateVisibleRows();
     }
 
+    /**
+     * Handle the click event fired by the save buttons of the edit or recurring event dialogs. Save the changes made to the event and close the dialog.
+     */
     handleSaveEvent(mouseEvent) {
         const { event, occurrence } = this.selection;
         const recurrentChange =
@@ -1690,12 +2293,18 @@ export default class Scheduler extends LightningElement {
         }
     }
 
+    /**
+     * Handle the keydown event fired by the save buttons of the edit dialog. Prevent the focus from leaving the dialog.
+     */
     handleEditSaveKeyDown(event) {
         if (event.key === 'Tab') {
             this.template.querySelector('c-dialog lightning-input').focus();
         }
     }
 
+    /**
+     * Handle the scroll event fired by the schedule. Trigger the headers, events and rows reloading if the scroll is big enough. Hide the popovers of the events that are scrolled out of the screen.
+     */
     handleScroll() {
         if (this.showDetailPopover) {
             // Hide the detail popover only if it goes off screen
@@ -1724,6 +2333,9 @@ export default class Scheduler extends LightningElement {
         }
     }
 
+    /**
+     * Handle the mousedown event fired by the splitter bar. Prepare for a column resize.
+     */
     handleSplitterMouseDown(mouseEvent) {
         if (
             this.resizeColumnDisabled ||
@@ -1744,6 +2356,9 @@ export default class Scheduler extends LightningElement {
         this.hideAllPopovers();
     }
 
+    /**
+     * Handle the click event fired by the splitter left collapse button. If the datatable column was taking the full screen, resize it to its initial width. Else, hide the datatable column.
+     */
     handleHideDatatable() {
         this.hideAllPopovers();
         this.datatableCol.style.width = null;
@@ -1761,6 +2376,9 @@ export default class Scheduler extends LightningElement {
         this.updateCellWidth();
     }
 
+    /**
+     * Handle the click event fired by the splitter right collapse button. If the datatable column was hidden, resize it to its initial width. Else, make it full screen.
+     */
     handleOpenDatatable() {
         this.hideAllPopovers();
         this.datatableCol.style.width = null;
@@ -1780,6 +2398,9 @@ export default class Scheduler extends LightningElement {
         }
     }
 
+    /**
+     * Dispatch the eventchange event.
+     */
     dispatchChangeEvent(name, onlyOneOccurrence = false) {
         const detail = {
             name: name,
@@ -1793,6 +2414,17 @@ export default class Scheduler extends LightningElement {
             };
         }
 
+        /**
+         * The event fired when a user edits an event.
+         *
+         * @event
+         * @name eventchange
+         * @param {string} name Unique name of the event.
+         * @param {object} draftValues Object containing one key-value pair per changed attribute.
+         * @param {object} recurrenceDates If the event is recurrent, and only one occurrence has been changed, this object will contain two keys: from and to.
+         * @public
+         * @bubbles
+         */
         this.dispatchEvent(
             new CustomEvent('eventchange', {
                 detail,
