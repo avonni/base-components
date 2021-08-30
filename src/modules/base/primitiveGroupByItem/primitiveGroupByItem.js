@@ -54,7 +54,6 @@ export default class ProgressGroupByItem extends LightningElement {
     @api resizeColumnDisabled;
     @api resizeStep;
     @api rowNumberOffset;
-    @api selectedRows;
     @api showRowNumberColumn;
     @api sortedBy;
     @api sortedDirection;
@@ -62,6 +61,7 @@ export default class ProgressGroupByItem extends LightningElement {
     @api groupBy;
 
     _records;
+    _selectedRows;
 
     @api
     get records() {
@@ -69,6 +69,14 @@ export default class ProgressGroupByItem extends LightningElement {
     }
     set records(value) {
         this._records = JSON.parse(JSON.stringify(normalizeArray(value)));
+    }
+
+    @api
+    get selectedRows() {
+        return this._selectedRows;
+    }
+    set selectedRows(value) {
+        this._selectedRows = JSON.parse(JSON.stringify(normalizeArray(value)));
     }
 
     guid = generateUUID();
@@ -90,6 +98,14 @@ export default class ProgressGroupByItem extends LightningElement {
         });
 
         this.dispatchEvent(itemregister);
+
+        this.addEventListener('rowselection', () => {
+            const selectedRowsArray = [];
+            this.primitiveGroupByDatatables.forEach((datatable) => {
+                selectedRowsArray.push(datatable.selectedRows);
+            });
+            this._selectedRows = selectedRowsArray.flat();
+        });
     }
 
     // Store the parent's callback so we can invoke later
