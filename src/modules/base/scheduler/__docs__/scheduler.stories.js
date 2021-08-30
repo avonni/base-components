@@ -43,7 +43,8 @@ import {
     referenceLines,
     start,
     lotsOfEvents,
-    lotsOfRows
+    lotsOfRows,
+    basicEvents
 } from './data';
 
 export default {
@@ -463,7 +464,7 @@ Base.args = {
     rowsKeyField: 'id',
     rows,
     start,
-    events: lotsOfEvents(5).slice(0, 10)
+    events: basicEvents
 };
 
 export const BigDataSet = Template.bind({});
