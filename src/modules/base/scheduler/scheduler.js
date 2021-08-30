@@ -1978,6 +1978,7 @@ export default class Scheduler extends LightningElement {
 
             this.datatable.style.width = `${width}px`;
             this.datatableCol.style.width = `${width}px`;
+            this.datatableWidth = width;
             this.updateCellWidth();
 
             // An event is being dragged
@@ -2021,7 +2022,6 @@ export default class Scheduler extends LightningElement {
 
         if (this._draggedSplitter) {
             this._draggedSplitter = false;
-            this.datatableWidth = this.datatableCol.getBoundingClientRect().width;
         } else if (this.selection && this.selection.isMoving) {
             // Get the new position
             const { mouseX, eventLeft, eventRight } = this._initialState;
