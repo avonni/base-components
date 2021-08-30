@@ -476,23 +476,24 @@ export default class Datatable extends LightningElement {
     }
 
     /**
-     * If there is a group-by, all primitive datatables columnWidthsMode is set to 'fixed'.
-     *
-     * @type {string}
-     */
-    get isFixedColumns() {
-        return this.hasGroupBy ? 'fixed' : this.columnWidthsMode;
-    }
-
-    /**
      * Returns an array of formatted objects for primitive-group-by-item.
      *
      * @type {object}
      */
     get groupByRecords() {
         return this._hideUndefinedGroup
-            ? recursiveGroupByNoUndefined(this._records, this._groupBy, 0)
-            : recursiveGroupBy(this.records, this._groupBy, 0);
+            ? recursiveGroupByNoUndefined(
+                  this._records,
+                  this._groupBy,
+                  0,
+                  this.rowNumberOffset
+              )
+            : recursiveGroupBy(
+                  this.records,
+                  this._groupBy,
+                  0,
+                  this.rowNumberOffset
+              );
     }
 
     /**

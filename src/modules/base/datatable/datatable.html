@@ -3,7 +3,7 @@
         <c-primitive-datatable
             if:true={hasGroupBy}
             data-role="header"
-            column-widths-mode={isFixedColumns}
+            column-widths-mode={columnWidthsMode}
             columns={columns}
             data={records}
             default-sort-direction={defaultSortDirection}
@@ -42,7 +42,7 @@
             data-role="ungrouped"
             columns={columns}
             data={records}
-            column-widths-mode={isFixedColumns}
+            column-widths-mode={columnWidthsMode}
             default-sort-direction={defaultSortDirection}
             draft-values={draftValues}
             enable-infinite-loading={enableInfiniteLoading}
@@ -80,13 +80,14 @@
                 records={groupByRecords}
                 columns={columns}
                 group-by={groupBy}
-                hide-collapsible-icon={hideCollapsibleIcon}
+                column-widths-mode={columnWidthsMode}
                 key-field={keyField}
                 default-sort-direction={defaultSortDirection}
                 draft-values={draftValues}
                 enable-infinite-loading={enableInfiniteLoading}
                 errors={errors}
                 hide-checkbox-column={hideCheckboxColumn}
+                hide-collapsible-icon={hideCollapsibleIcon}
                 hide-table-header={hideTableHeader}
                 is-loading={isLoading}
                 load-more-offset={loadMoreOffset}

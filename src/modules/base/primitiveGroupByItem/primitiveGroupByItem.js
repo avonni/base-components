@@ -31,11 +31,13 @@
  */
 
 import { LightningElement, api } from 'lwc';
+import { normalizeArray } from 'c/utilsPrivate';
 import { generateUUID } from 'c/utils';
 
 export default class ProgressGroupByItem extends LightningElement {
     @api columns;
     @api keyField;
+    @api columnWidthsMode;
     @api defaultSortDirection;
     @api draftValues;
     @api enableInfiniteLoading;
@@ -58,7 +60,16 @@ export default class ProgressGroupByItem extends LightningElement {
     @api sortedDirection;
     @api wrapTextMaxLines;
     @api groupBy;
-    @api records;
+
+    _records;
+
+    @api
+    get records() {
+        return this._records;
+    }
+    set records(value) {
+        this._records = JSON.parse(JSON.stringify(normalizeArray(value)));
+    }
 
     guid = generateUUID();
 
@@ -113,6 +124,18 @@ export default class ProgressGroupByItem extends LightningElement {
         return this.template.querySelectorAll(
             'c-primitive-datatable[data-role="grouped"]'
         );
+    }
+
+    get columnsEditable() {
+        let columnsEditable = [];
+        columnsEditable = this.columns.map((column) => {
+            return column.editable;
+        });
+        return columnsEditable.filter(Boolean).length > 0;
+    }
+
+    get showRowNumberColumnOrEditable() {
+        return this.showRowNumberColumn || this.columnsEditable;
     }
 
     /**

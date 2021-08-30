@@ -37,7 +37,7 @@ const formattingRecursiveData = (records, field, groupBy, level) => {
     );
 };
 
-const recursiveGroupBy = (records, groupBy, level, rowNumberOffsetAtt = 0) => {
+const recursiveGroupBy = (records, groupBy, level, rowNumberOffsetAtt) => {
     if (typeof groupBy === 'string') {
         groupBy = groupBy.split();
     }
@@ -66,7 +66,7 @@ const recursiveGroupByNoUndefined = (
     records,
     groupBy,
     level,
-    rowNumberOffsetAtt = 0
+    rowNumberOffsetAtt
 ) => {
     if (typeof groupBy === 'string') {
         groupBy = groupBy.split();
