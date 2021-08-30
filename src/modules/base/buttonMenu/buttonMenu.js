@@ -176,7 +176,7 @@ export default class ButtonMenu extends LightningElement {
         /**
          * @event
          * @name privatebuttonregister
-         * @param {object{}} 
+         * @param {object}
          * @private
          * @bubbles
          */
