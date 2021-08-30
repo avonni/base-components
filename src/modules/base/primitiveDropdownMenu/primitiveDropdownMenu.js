@@ -52,7 +52,7 @@ export default class PrimitiveDropdownMenu extends LightningElement {
     }
 
     /**
-     * Array of item objects.
+     * Array of item objects. Valid object keys include name, label and iconName.
      *
      * @type {object[]}
      * @public
