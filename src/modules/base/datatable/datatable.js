@@ -72,13 +72,6 @@ export default class Datatable extends LightningElement {
     @api defaultSortDirection;
 
     /**
-     * The current values per row that are provided during inline edit.
-     * @public
-     * @type {string[]}
-     */
-    @api draftValues;
-
-    /**
      * If present, you can load a subset of data and then display more
      * when users scroll to the end of the table.
      * Use with the onloadmore event handler to retrieve more data.
@@ -96,22 +89,6 @@ export default class Datatable extends LightningElement {
      */
     @api errors;
 
-    /**
-     * If present, the value will define how the data will be grouped.
-     * @public
-     * @type {string}
-     */
-    @api
-    get groupBy() {
-        return this._groupBy;
-    }
-
-    set groupBy(value) {
-        this._groupBy = value;
-        if (this._groupBy) {
-            this.removeDefaultActions();
-        }
-    }
     /**
      * If present, the checkbox column for row selection is hidden.
      * @public
@@ -261,6 +238,7 @@ export default class Datatable extends LightningElement {
     @api wrapTextMaxLines;
 
     _columns;
+    _draftValues;
     _records;
     _hideUndefinedGroup;
     _hideCollapsibleIcon;
@@ -304,6 +282,23 @@ export default class Datatable extends LightningElement {
     }
 
     /**
+     * If present, the value will define how the data will be grouped.
+     * @public
+     * @type {string}
+     */
+    @api
+    get groupBy() {
+        return this._groupBy;
+    }
+
+    set groupBy(value) {
+        this._groupBy = value;
+        if (this._groupBy) {
+            this.removeDefaultActions();
+        }
+    }
+
+    /**
      * In case of group-by, if present, hides undefined groups.
      * @public
      * @type {boolean}
@@ -331,10 +326,27 @@ export default class Datatable extends LightningElement {
         this._hideCollapsibleIcon = normalizeBoolean(value);
     }
 
+    /**
+     * The current values per row that are provided during inline edit.
+     * @public
+     * @type {string[]}
+     */
+    @api
+    get draftValues() {
+        return this._draftValues;
+    }
+    set draftValues(value) {
+        this._draftValues = normalizeArray(value);
+    }
+
     connectedCallback() {
         this.addEventListener('cellchange', () => {
             this._showStatusBar = true;
             this._hasDraftValues = true;
+        });
+
+        this.addEventListener('cellchangegroupby', (event) => {
+            this._draftValues = event.detail;
         });
 
         this.addEventListener('resize', (event) => {
@@ -709,6 +721,8 @@ export default class Datatable extends LightningElement {
         if (!this.hasGroupBy) {
             this.primitiveUngroupedDatatable.cancel(event);
         }
+
+        this._draftValues = [];
 
         this.dispatchEvent(new CustomEvent('statusbarcancel'));
     }

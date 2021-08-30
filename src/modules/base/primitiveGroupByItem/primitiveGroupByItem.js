@@ -42,6 +42,7 @@ export default class ProgressGroupByItem extends LightningElement {
     @api draftValues;
     @api enableInfiniteLoading;
     @api errors;
+    @api groupBy;
     @api hideCheckboxColumn;
     @api hideCollapsibleIcon;
     @api hideTableHeader;
@@ -58,7 +59,6 @@ export default class ProgressGroupByItem extends LightningElement {
     @api sortedBy;
     @api sortedDirection;
     @api wrapTextMaxLines;
-    @api groupBy;
 
     _records;
     _selectedRows;
@@ -105,6 +105,23 @@ export default class ProgressGroupByItem extends LightningElement {
                 selectedRowsArray.push(datatable.selectedRows);
             });
             this._selectedRows = selectedRowsArray.flat();
+        });
+
+        this.addEventListener('cellchange', (event) => {
+            const draftValuesArray = [];
+            draftValuesArray.push(event.detail.draftValues);
+
+            this.primitiveGroupByDatatables.forEach((datatable) => {
+                draftValuesArray.push(datatable.draftValues);
+            });
+
+            this.dispatchEvent(
+                new CustomEvent('cellchangegroupby', {
+                    detail: draftValuesArray.flat(),
+                    bubbles: true,
+                    composed: true
+                })
+            );
         });
     }
 
