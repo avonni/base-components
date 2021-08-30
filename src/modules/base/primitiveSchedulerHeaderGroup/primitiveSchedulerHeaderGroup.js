@@ -53,7 +53,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     _availableTimeFrames = [];
     _headers = [];
     _start = DEFAULT_START_DATE;
-    _visibleSpan = {};
+    _timeSpan = {};
 
     _cellWidth = 0;
     _numberOfVisibleCells = 0;
@@ -205,11 +205,11 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
      * @default { unit: 'hour', span: 12 }
      */
     @api
-    get visibleSpan() {
-        return this._visibleSpan;
+    get timeSpan() {
+        return this._timeSpan;
     }
-    set visibleSpan(value) {
-        this._visibleSpan = typeof value === 'object' ? value : {};
+    set timeSpan(value) {
+        this._timeSpan = typeof value === 'object' ? value : {};
         if (this.isConnected) this.initHeaders();
     }
 
@@ -239,13 +239,13 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         if (this._referenceHeader && this._referenceHeader.end) {
             return this._referenceHeader.end;
         }
-        const visibleSpanEnd = addToDate(
+        const timeSpanEnd = addToDate(
             this.start,
-            this.visibleSpan.unit,
-            this.visibleSpan.span
+            this.timeSpan.unit,
+            this.timeSpan.span
         );
         // We take one millisecond off to exclude the next unit
-        return DateTime.fromMillis(visibleSpanEnd - 1);
+        return DateTime.fromMillis(timeSpanEnd - 1);
     }
 
     /**
@@ -328,8 +328,8 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         );
 
         // Create the reference header
-        // The reference header is the header using the visibleSpan unit
-        const referenceUnit = this.visibleSpan.unit;
+        // The reference header is the header using the timeSpan unit
+        const referenceUnit = this.timeSpan.unit;
         const referenceHeader = sortedHeaders.find(
             (header) => header.unit === referenceUnit
         );
@@ -342,12 +342,12 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
 
         const referenceSpan = referenceHeader
             ? referenceHeader.span
-            : this.visibleSpan.span;
+            : this.timeSpan.span;
 
         const reference = new SchedulerHeader({
             unit: referenceUnit,
             span: referenceSpan,
-            duration: this.visibleSpan.span,
+            duration: this.timeSpan.span,
             label: referenceHeader ? referenceHeader.label : '',
             start: this.start,
             end: this.end,
@@ -356,7 +356,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
             availableMonths: this.availableMonths,
             numberOfColumns: referenceColumns / referenceSpan,
             isReference: true,
-            // If there is no header using the visibleSpan unit,
+            // If there is no header using the timeSpan unit,
             // hide the reference header
             isHidden: !referenceHeader
         });

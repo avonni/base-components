@@ -54,7 +54,7 @@ import {
     DEFAULT_CONTEXT_MENU_EVENT_ACTIONS,
     DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT,
     DEFAULT_START_DATE,
-    DEFAULT_VISIBLE_SPAN,
+    DEFAULT_TIME_SPAN,
     HEADERS,
     PALETTES,
     PRESET_HEADERS
@@ -94,7 +94,7 @@ export default class Scheduler extends LightningElement {
     _rows = [];
     _rowsKeyField;
     _start = dateTimeObjectFrom(DEFAULT_START_DATE);
-    _visibleSpan = DEFAULT_VISIBLE_SPAN;
+    _timeSpan = DEFAULT_TIME_SPAN;
 
     _allEvents = [];
     _datatableRowsHeight;
@@ -774,12 +774,11 @@ export default class Scheduler extends LightningElement {
      * @required
      */
     @api
-    get visibleSpan() {
-        return this._visibleSpan;
+    get timeSpan() {
+        return this._timeSpan;
     }
-    set visibleSpan(value) {
-        this._visibleSpan =
-            typeof value === 'object' ? value : DEFAULT_VISIBLE_SPAN;
+    set timeSpan(value) {
+        this._timeSpan = typeof value === 'object' ? value : DEFAULT_TIME_SPAN;
 
         if (this.isConnected) this.initHeaders();
     }

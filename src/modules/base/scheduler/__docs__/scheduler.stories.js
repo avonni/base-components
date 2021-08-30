@@ -155,13 +155,13 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        visibleSpan: {
-            name: 'visible-span',
+        timeSpan: {
+            name: 'time-span',
             control: {
                 type: 'object'
             },
             description:
-                'Object used to set the visible date/time span on the screen. It has two keys: unit (valid values include minute, hour, day, month and year) and span (number).',
+                'Object used to set the duration of the scheduler. It has two keys: unit (valid values include minute, hour, day, month and year) and span (number).',
             defaultValue: { unit: 'hour', span: 12 },
             table: {
                 type: { summary: 'object' },
@@ -473,7 +473,7 @@ BigDataSet.args = {
     rows: lotsOfRows(),
     start,
     events: lotsOfEvents(),
-    visibleSpan: {
+    timeSpan: {
         unit: 'year',
         span: 3
     }
@@ -485,7 +485,7 @@ AvailableAndDisabledTimes.args = {
     rowsKeyField: 'id',
     rows,
     customHeaders: headers,
-    visibleSpan: {
+    timeSpan: {
         unit: 'week',
         span: 2
     },
@@ -502,7 +502,7 @@ ReadOnly.args = {
     columns,
     rowsKeyField: 'id',
     rows,
-    visibleSpan: {
+    timeSpan: {
         unit: 'day',
         span: 5
     },
@@ -526,7 +526,7 @@ Labels.args = {
     rows,
     start,
     events: eventsWithLabels,
-    visibleSpan: {
+    timeSpan: {
         unit: 'day',
         span: '2'
     },
