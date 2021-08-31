@@ -80,12 +80,59 @@ const i18n = {
     autoplayButton: DEFAULT_ASSISTIVE_TEXT_AUTOPLAY_BUTTON
 };
 
+/**
+* @class
+* @descriptor avonni-carousel
+* @storyId example-carousel--base
+* @public
+*/
 export default class Carousel extends LightningElement {
+    /**
+    * Dictates the currently active/visible carousel panel.
+    *
+    * @type {number}
+    * @public
+    */
     @api currentPanel;
+    /**
+    * If present, the carousel doesn't loop after the last image is displayed.
+    *
+    * @type {boolean}
+    * @public
+    * @default false
+    */
     @api disableAutoRefresh;
+    /**
+    * If present, images do not automatically scroll and users must click the indicators to scroll.
+    *
+    * @type {boolean}
+    * @public
+    * @default false
+    */
     @api disableAutoScroll;
+    /**
+    * Boolean for displaying the navigation indicators (left/right arrows) of the carousel.
+    *
+    * @type {boolean}
+    * @public
+    * @default false
+    */
     @api hidePreviousNextPanelNavigation;
+    /**
+    * Boolean for infinite loop navigation. Note: if not true autoplay will stop automatically at the last panel.
+    *
+    * @type {boolean}
+    * @public
+    * @default false
+    */
     @api isInfinite;
+    /**
+    * The auto scroll duration. The default is 5 seconds, after that the next image is displayed.
+    *
+    * @type {number}
+    * @public
+    * @default 5
+    */
     @api scrollDuration = DEFAULT_SCROLL_DURATION;
 
     _assistiveText = {
@@ -123,6 +170,13 @@ export default class Carousel extends LightningElement {
         this._initialRender = true;
     }
 
+    /**
+    * Description of the carousel items for screen-readers.
+    *
+    * @type {object}
+    * @public
+    * @default {autoplayButton: Start / Stop auto-play, nextPanel: Next Panel, previousPanel: Previous Panel,}
+    */
     @api
     get assistiveText() {
         return this._assistiveText;
@@ -139,6 +193,13 @@ export default class Carousel extends LightningElement {
         };
     }
 
+    /**
+    * Array of item objects used by the default carousel item renderer. 
+    *
+    * @type {object[]}
+    * @public
+    * @required
+    */
     @api
     get items() {
         return this._carouselItems;
@@ -162,6 +223,13 @@ export default class Carousel extends LightningElement {
         }
     }
 
+    /**
+    * Number of items to be displayed at a time in the carousel.
+    *
+    * @type {number}
+    * @public
+    * @default 1
+    */
     @api
     get itemsPerPanel() {
         return this._itemsPerPanel;
@@ -173,6 +241,13 @@ export default class Carousel extends LightningElement {
         this._itemsPerPanel = parseInt(number, 10);
     }
 
+    /**
+    * Changes the appearance of the progress indicators. Valid values are base or shaded.
+    *
+    * @type {string}
+    * @public
+    * @default base
+    */
     @api
     get indicatorVariant() {
         return this._indicatorVariant;
@@ -188,6 +263,13 @@ export default class Carousel extends LightningElement {
         }
     }
 
+    /**
+    * Boolean for displaying the progress indicators.
+    *
+    * @type {boolean}
+    * @public
+    * @default false
+    */
     @api
     get hideIndicator() {
         return this._hideIndicator;
@@ -197,6 +279,13 @@ export default class Carousel extends LightningElement {
         this._hideIndicator = normalizeBoolean(value);
     }
 
+    /**
+    * Valid values include bare, border and menu.
+    *
+    * @type {string}
+    * @public
+    * @default border
+    */
     @api
     get actionsVariant() {
         return this._actionsVariant;
@@ -209,6 +298,13 @@ export default class Carousel extends LightningElement {
         });
     }
 
+    /**
+    * Valid values include top-left, top-right,  bottom-left, bottom-right and bottom-center.
+    *
+    * @type {string}
+    * @public
+    * @default bottom-center
+    */
     @api
     get actionsPosition() {
         return this._actionsPosition;
@@ -221,51 +317,91 @@ export default class Carousel extends LightningElement {
         });
     }
 
+    /**
+     * Verify if actions are present. 
+    */
     get hasActions() {
         return this.items.map((item) => {
             return item.actions && item.actions.length > 0;
         });
     }
 
+    /**
+     * Verify if the actions variant is menu. 
+     */
     get isMenuVariant() {
         return this._actionsVariant === 'menu';
     }
 
+    /**
+     * Verify if actions position is at the bottom.
+     */
     get isBottomPosition() {
         return this._actionsPosition.indexOf('bottom') > -1;
     }
 
-    // Sets the width of each item, depending on the number of items per panel
+    /**
+    * Sets the width of each item, depending on the number of items per panel
+    */ 
     get carouselItemStyle() {
         const flexBasis = 100 / this.itemsPerPanel;
         return `flex-basis: ${flexBasis}%;`;
     }
 
+    /**
+     * If navigation is not infinite - set previous panel as disabled.
+     * 
+     * @type {number}
+     */ 
     get previousPanelNavigationDisabled() {
         return !this.isInfinite ? this.activeIndexPanel === 0 : null;
     }
 
+    /**
+     * If not infinite - set next panel as disabled.
+     * 
+     * @type {number}
+     */ 
     get nextPanelNavigationDisabled() {
         return !this.isInfinite
             ? this.activeIndexPanel === this.paginationItems.length - 1
             : null;
     }
 
+    /**
+     * Set actions variant button to base if the action variant is bare, if not , set the button to neutral.
+     * 
+     * @type {string}
+     */ 
     get computedActionsVariantButton() {
         return this._actionsVariant === 'bare' ? 'base' : 'neutral';
     }
 
+    /**
+     * Set actions variant button icon to bare if the action variant is bare, if not , set the button icon to border-filled.
+     * 
+     * @type {string}
+     */
     get computedActionsVariantButtonIcon() {
         return this._actionsVariant === 'bare' ? 'bare' : 'border-filled';
     }
 
-    // Change the button position depending if hideIndicator is true or false
+    /**
+     * Change the button position depending if hideIndicator is true or false.
+     * 
+     * @type {string}
+     */ 
     get computedAutoScrollAutoplayButton() {
         return this._hideIndicator
             ? 'avonni-carousel__autoscroll-button-without-indicator'
             : 'avonni-carousel__autoscroll-button-with-indicator';
     }
 
+    /**
+     * Retrieve image class - set to relative if not in bottom position.
+     * 
+     * @type {string}
+     */ 
     get computedCarouselImageClass() {
         return classSet('slds-carousel__image')
             .add({
@@ -274,6 +410,11 @@ export default class Carousel extends LightningElement {
             .toString();
     }
 
+    /**
+     * Computed actions container class styling based on action position attributes.
+     * 
+     * @type {string}
+     */ 
     get computedActionsContainerClass() {
         return classSet('avonni-carousel__actions')
             .add({
@@ -293,6 +434,11 @@ export default class Carousel extends LightningElement {
             .toString();
     }
 
+    /**
+     * Computed carousel content class - set to display content bottom if position is bottom.
+     * 
+     * @type {string}
+     */ 
     get computedCarouselContentClass() {
         return classSet('slds-carousel__content')
             .add({
@@ -301,6 +447,11 @@ export default class Carousel extends LightningElement {
             .toString();
     }
 
+    /**
+     * Action button icon class styling based on attributes.
+     * 
+     * @type {string}
+     */ 
     get computedLightningButtonIconActionClass() {
         return classSet('')
             .add({
@@ -311,6 +462,11 @@ export default class Carousel extends LightningElement {
             .toString();
     }
 
+    /**
+     * Initialize Pagination items method.
+     * 
+     * @param {number} numberOfPanels
+     */ 
     initializePaginationItems(numberOfPanels) {
         for (let i = 0; i < numberOfPanels; i++) {
             const isItemActive = i === this.activeIndexPanel;
@@ -340,12 +496,19 @@ export default class Carousel extends LightningElement {
         }
     }
 
+    /**
+     * Initialize current panel method.
+     * 
+     * @param {number} numberOfPanels
+     */ 
     initializeCurrentPanel(numberOfPanels) {
         const firstPanel = parseInt(this.currentPanel, 10);
         this.activeIndexPanel = firstPanel < numberOfPanels ? firstPanel : 0;
     }
 
-    // Creates an array of panels, each containing an array of items
+    /**
+     * Creates an array of panels, each containing an array of items.
+     */ 
     initializePanels() {
         const panelItems = [];
         let panelIndex = 0;
@@ -369,6 +532,11 @@ export default class Carousel extends LightningElement {
         }%);`;
     }
 
+    /**
+    * Start the slide cycling.
+    * 
+    * @public
+    */
     @api
     start() {
         const scrollDuration = parseInt(this.scrollDuration, 10) * 1000;
@@ -392,11 +560,19 @@ export default class Carousel extends LightningElement {
         this.autoScrollIcon = DEFAULT_AUTOCROLL_PAUSE_ICON;
     }
 
+    /**
+     * Call the auto scroll.
+     */ 
     startAutoScroll() {
         this.next();
         this.start();
     }
 
+    /**
+    * Pause the slide cycling.
+    * 
+    * @public
+    */
     @api
     pause() {
         clearTimeout(this.autoScrollTimeOut);
@@ -404,6 +580,11 @@ export default class Carousel extends LightningElement {
         this.autoScrollIcon = DEFAULT_AUTOCROLL_PLAY_ICON;
     }
 
+    /**
+     * Item clicked event handler.
+     * 
+     * @param {event}
+     */ 
     handleItemClicked(event) {
         const panelNumber = parseInt(
             event.currentTarget.dataset.panelIndex,
@@ -411,6 +592,14 @@ export default class Carousel extends LightningElement {
         );
         const itemNumber = parseInt(event.currentTarget.dataset.itemIndex, 10);
         const itemData = this.panelItems[panelNumber].items[itemNumber];
+        /**
+        * The event fired when an item is clicked.
+        *
+        * @event
+        * @name itemclick
+        * @param {object} item The item data clicked.
+        * @public
+        */
         this.dispatchEvent(
             new CustomEvent('itemclick', {
                 detail: {
@@ -420,6 +609,11 @@ export default class Carousel extends LightningElement {
         );
     }
 
+    /**
+     * Key down event handler.
+     * 
+     * @param {Event}
+     */ 
     keyDownHandler(event) {
         const key = event.keyCode;
         let indicatorActionsElements = this.indicatorActionsElements;
@@ -460,6 +654,9 @@ export default class Carousel extends LightningElement {
         indicatorActionsElements[this.activeIndexPanel].focus();
     }
 
+    /**
+     * Carousel height initialization.
+     */ 
     initializeCarouselHeight() {
         let carouselContentHeights = this.hasActions.map((item) => {
             return item && this.isBottomPosition ? 7.5 : 6.625;
@@ -467,6 +664,9 @@ export default class Carousel extends LightningElement {
         this._carouselContentHeight = Math.max(...carouselContentHeights);
     }
 
+    /**
+     * Initialize Carousel method.
+     */ 
     initCarousel() {
         const numberOfPanels = Math.ceil(
             this._carouselItems.length / this.itemsPerPanel
@@ -478,6 +678,11 @@ export default class Carousel extends LightningElement {
         this.initializeCarouselHeight();
     }
 
+    /**
+     * Panel selection event method.
+     * 
+     * @param {Event}
+     */ 
     onPanelSelect(event) {
         const currentTarget = event.currentTarget;
         const itemIndex = parseInt(currentTarget.dataset.index, 10);
@@ -489,6 +694,11 @@ export default class Carousel extends LightningElement {
         }
     }
 
+    /**
+     * New panel selection method.
+     * 
+     * @param {number} panelIndex
+     */ 
     selectNewPanel(panelIndex) {
         const activePaginationItem = this.paginationItems[panelIndex];
         const activePanelItem = this.panelItems[panelIndex];
@@ -510,6 +720,9 @@ export default class Carousel extends LightningElement {
         this.activeIndexPanel = panelIndex;
     }
 
+    /**
+     * Selection removed from current panel.
+     */ 
     unselectCurrentPanel() {
         const activePaginationItem = this.paginationItems[
             this.activeIndexPanel
@@ -528,16 +741,31 @@ export default class Carousel extends LightningElement {
         }
     }
 
+    /**
+     * Go to first slide.
+     * 
+     * @public
+     */ 
     @api
     first() {
         this.selectNewPanel(0);
     }
 
+    /**
+     * Go to last slide.
+     * 
+     * @public
+     */ 
     @api
     last() {
         this.selectNewPanel(this.paginationItems.length - 1);
     }
 
+    /**
+     * Go to previous slide.
+     * 
+     * @public
+     */ 
     @api
     previous() {
         this.pause();
@@ -550,6 +778,11 @@ export default class Carousel extends LightningElement {
         this.selectNewPanel(this.activeIndexPanel);
     }
 
+    /**
+     * Go to next slide.
+     * 
+     * @public
+     */ 
     @api
     next() {
         this.pause();
@@ -562,14 +795,31 @@ export default class Carousel extends LightningElement {
         this.selectNewPanel(this.activeIndexPanel);
     }
 
+    /**
+     * Auto Scroll toggler method.
+     */ 
     toggleAutoScroll() {
         /*eslint no-unused-expressions: ["error", { "allowTernary": true }]*/
         this.autoScrollOn ? this.pause() : this.start();
     }
 
+    /**
+     * Action click event handler.
+     * 
+     * @param {Event}
+     */ 
     handleActionClick(event) {
         const name = event.currentTarget.name;
 
+        /**
+        * The event fired when a user clicks on an action.
+        *
+        * @event
+        * @name actionclick
+        * @param {string} name Name of the action clicked.
+        * @param {object} item Item clicked.
+        * @public
+        */
         this.dispatchEvent(
             new CustomEvent('actionclick', {
                 detail: {
@@ -582,6 +832,11 @@ export default class Carousel extends LightningElement {
         );
     }
 
+    /**
+     * Computed Carousle content size height styling.
+     * 
+     * @type {string}
+     */ 
     get computedCarouselContentSize() {
         return `height: ${this._carouselContentHeight}rem`;
     }

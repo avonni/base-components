@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class AvatarGroupList extends LightningElement {
+export default class AvatarGroupListWithXxLargeAvatars extends LightningElement {
     items = [
         {
             src:
@@ -16,7 +16,13 @@ export default class AvatarGroupList extends LightningElement {
             entityPosition: 'bottom-right',
             primaryText: 'John Doe',
             secondaryText: 'VP, Human Resources',
-            tertiaryText: 'FakeCompany Inc.'
+            tertiaryText: 'FakeCompany Inc.',
+            tags: [
+                { label: 'tag-01', variant: 'default' },
+                { label: 'tag-02', variant: 'inverse' },
+                { label: 'tag-03', variant: 'lightest' },
+                { label: 'tag-04', variant: 'success' }
+            ]
         },
         {
             src:
@@ -33,7 +39,11 @@ export default class AvatarGroupList extends LightningElement {
             entityVariant: 'circle',
             primaryText: 'Jane Doe',
             secondaryText: 'VP, Engineering',
-            tertiaryText: 'FakeCompany Inc.'
+            tertiaryText: 'FakeCompany Inc.',
+            tags: [
+                { label: 'tag-01', variant: 'warning' },
+                { label: 'tag-02', variant: 'error' }
+            ]
         },
         {
             fallbackIconName: 'standard:user',
@@ -45,7 +55,13 @@ export default class AvatarGroupList extends LightningElement {
             entityPosition: 'bottom-right',
             primaryText: 'Vishnu Doe',
             secondaryText: 'VP, Research and Development',
-            tertiaryText: 'MadeUp Co.'
+            tertiaryText: 'MadeUp Co.',
+            tags: [
+                { label: 'tag-01', variant: 'default' },
+                { label: 'tag-02', variant: 'inverse' },
+                { label: 'tag-03', variant: 'lightest' },
+                { label: 'tag-04', variant: 'success' }
+            ]
         },
         {
             fallbackIconName: 'standard:user',
@@ -58,7 +74,13 @@ export default class AvatarGroupList extends LightningElement {
             entityPosition: 'bottom-right',
             primaryText: 'Eliott Beauchesne',
             secondaryText: 'CEO',
-            tertiaryText: 'MadeUp Co.'
+            tertiaryText: 'MadeUp Co.',
+            tags: [
+                { label: 'tag-01', variant: 'default' },
+                { label: 'tag-02', variant: 'inverse' },
+                { label: 'tag-03', variant: 'lightest' },
+                { label: 'tag-04', variant: 'success' }
+            ]
         },
         {
             src:
@@ -74,7 +96,13 @@ export default class AvatarGroupList extends LightningElement {
             entityPosition: 'bottom-right',
             primaryText: 'John Doe',
             secondaryText: 'VP, Human Resources',
-            tertiaryText: 'FakeCompany Inc.'
+            tertiaryText: 'FakeCompany Inc.',
+            tags: [
+                { label: 'tag-01', variant: 'default' },
+                { label: 'tag-02', variant: 'inverse' },
+                { label: 'tag-03', variant: 'lightest' },
+                { label: 'tag-04', variant: 'success' }
+            ]
         },
         {
             src:
@@ -91,7 +119,11 @@ export default class AvatarGroupList extends LightningElement {
             entityVariant: 'circle',
             primaryText: 'Jane Doe',
             secondaryText: 'VP, Engineering',
-            tertiaryText: 'FakeCompany Inc.'
+            tertiaryText: 'FakeCompany Inc.',
+            tags: [
+                { label: 'tag-01', variant: 'warning' },
+                { label: 'tag-02', variant: 'error' }
+            ]
         },
         {
             fallbackIconName: 'standard:user',
@@ -103,7 +135,13 @@ export default class AvatarGroupList extends LightningElement {
             entityPosition: 'bottom-right',
             primaryText: 'Vishnu Doe',
             secondaryText: 'VP, Research and Development',
-            tertiaryText: 'MadeUp Co.'
+            tertiaryText: 'MadeUp Co.',
+            tags: [
+                { label: 'tag-01', variant: 'default' },
+                { label: 'tag-02', variant: 'inverse' },
+                { label: 'tag-03', variant: 'lightest' },
+                { label: 'tag-04', variant: 'success' }
+            ]
         },
         {
             fallbackIconName: 'standard:user',
@@ -116,7 +154,13 @@ export default class AvatarGroupList extends LightningElement {
             entityPosition: 'bottom-right',
             primaryText: 'Eliott Beauchesne',
             secondaryText: 'CEO',
-            tertiaryText: 'MadeUp Co.'
+            tertiaryText: 'MadeUp Co.',
+            tags: [
+                { label: 'tag-01', variant: 'default' },
+                { label: 'tag-02', variant: 'inverse' },
+                { label: 'tag-03', variant: 'lightest' },
+                { label: 'tag-04', variant: 'success' }
+            ]
         },
         {
             src:
@@ -132,7 +176,13 @@ export default class AvatarGroupList extends LightningElement {
             entityPosition: 'bottom-right',
             primaryText: 'John Doe',
             secondaryText: 'VP, Human Resources',
-            tertiaryText: 'FakeCompany Inc.'
+            tertiaryText: 'FakeCompany Inc.',
+            tags: [
+                { label: 'tag-01', variant: 'default' },
+                { label: 'tag-02', variant: 'inverse' },
+                { label: 'tag-03', variant: 'lightest' },
+                { label: 'tag-04', variant: 'success' }
+            ]
         },
         {
             src:
@@ -149,7 +199,11 @@ export default class AvatarGroupList extends LightningElement {
             entityVariant: 'circle',
             primaryText: 'Jane Doe',
             secondaryText: 'VP, Engineering',
-            tertiaryText: 'FakeCompany Inc.'
+            tertiaryText: 'FakeCompany Inc.',
+            tags: [
+                { label: 'tag-01', variant: 'warning' },
+                { label: 'tag-02', variant: 'error' }
+            ]
         },
         {
             fallbackIconName: 'standard:user',
@@ -161,7 +215,13 @@ export default class AvatarGroupList extends LightningElement {
             entityPosition: 'bottom-right',
             primaryText: 'Vishnu Doe',
             secondaryText: 'VP, Research and Development',
-            tertiaryText: 'MadeUp Co.'
+            tertiaryText: 'MadeUp Co.',
+            tags: [
+                { label: 'tag-01', variant: 'default' },
+                { label: 'tag-02', variant: 'inverse' },
+                { label: 'tag-03', variant: 'lightest' },
+                { label: 'tag-04', variant: 'success' }
+            ]
         },
         {
             fallbackIconName: 'standard:user',
@@ -174,7 +234,13 @@ export default class AvatarGroupList extends LightningElement {
             entityPosition: 'bottom-right',
             primaryText: 'Eliott Beauchesne',
             secondaryText: 'CEO',
-            tertiaryText: 'MadeUp Co.'
+            tertiaryText: 'MadeUp Co.',
+            tags: [
+                { label: 'tag-01', variant: 'default' },
+                { label: 'tag-02', variant: 'inverse' },
+                { label: 'tag-03', variant: 'lightest' },
+                { label: 'tag-04', variant: 'success' }
+            ]
         }
     ];
 }

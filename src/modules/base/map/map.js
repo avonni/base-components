@@ -87,7 +87,6 @@
  * @class
  * @descriptor avonni-map
  * @storyId example-map--single-marker
- * @extends
  */
  export default class Map extends LightningElement {
      /**

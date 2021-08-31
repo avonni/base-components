@@ -39,13 +39,33 @@
  */
 /**
  * @memberof examples
+ * @name baseExtraLargeWithTwoAvatars
+ * @storyId example-avatar-group--base-extra-large-with-two-avatars
+ */
+/**
+ * @memberof examples
  * @name baseWithMoreThanTwoAvatars
  * @storyId example-avatar-group--base-with-more-than-two-avatars
  */
 /**
  * @memberof examples
+ * @name baseLargeWithMoreThanTwoAvatars
+ * @storyId example-avatar-group--base-large-with-more-than-two-avatars
+ */
+/**
+ * @memberof examples
  * @name grid
  * @storyId example-avatar-group--grid
+ */
+/**
+ * @memberof examples
+ * @name gridWithPresence
+ * @storyId example-avatar-group--grid-with-presence
+ */
+/**
+ * @memberof examples
+ * @name gridSmall
+ * @storyId example-avatar-group--grid-small
  */
 /**
  * @memberof examples
