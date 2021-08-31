@@ -42,6 +42,7 @@ import {
     recursiveGroupBy,
     recursiveGroupByNoUndefined
 } from './groupByFunctions';
+
 /**
  * Lightning datatable with custom cell types and extended functionalities.
  *
@@ -250,7 +251,6 @@ export default class Datatable extends LightningElement {
     _isDatatableEditable;
 
     privateChildrenRecord = {};
-
     tableWidth;
 
     /**
@@ -270,17 +270,16 @@ export default class Datatable extends LightningElement {
     }
 
     /**
-     * The array of data to be displayed. The objects keys depend on the columns fieldNames.
+     * The current values per row that are provided during inline edit.
      * @public
-     * @type {array}
+     * @type {string[]}
      */
     @api
-    get records() {
-        return this._records;
+    get draftValues() {
+        return this._draftValues;
     }
-
-    set records(value) {
-        this._records = JSON.parse(JSON.stringify(normalizeArray(value)));
+    set draftValues(value) {
+        this._draftValues = normalizeArray(value);
     }
 
     /**
@@ -301,20 +300,6 @@ export default class Datatable extends LightningElement {
     }
 
     /**
-     * In case of group-by, if present, hides undefined groups.
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get hideUndefinedGroup() {
-        return this._hideUndefinedGroup;
-    }
-    set hideUndefinedGroup(value) {
-        this._hideUndefinedGroup = normalizeBoolean(value);
-    }
-
-    /**
      * In case of group-by, if present, the section is not collapsible and the left icon is hidden.
      * @public
      * @type {boolean}
@@ -329,16 +314,31 @@ export default class Datatable extends LightningElement {
     }
 
     /**
-     * The current values per row that are provided during inline edit.
+     * In case of group-by, if present, hides undefined groups.
      * @public
-     * @type {string[]}
+     * @type {boolean}
+     * @default false
      */
     @api
-    get draftValues() {
-        return this._draftValues;
+    get hideUndefinedGroup() {
+        return this._hideUndefinedGroup;
     }
-    set draftValues(value) {
-        this._draftValues = normalizeArray(value);
+    set hideUndefinedGroup(value) {
+        this._hideUndefinedGroup = normalizeBoolean(value);
+    }
+
+    /**
+     * The array of data to be displayed. The objects keys depend on the columns fieldNames.
+     * @public
+     * @type {array}
+     */
+    @api
+    get records() {
+        return this._records;
+    }
+
+    set records(value) {
+        this._records = JSON.parse(JSON.stringify(normalizeArray(value)));
     }
 
     connectedCallback() {
@@ -361,6 +361,12 @@ export default class Datatable extends LightningElement {
         this.bottomTableInitialization();
     }
 
+    /**
+     * Handle the event to notify the parent of the child component.
+     * A globally unique Id is required for the parent component to work with its child components.
+     *
+     * @param {event} event
+     */
     handleChildRegister(event) {
         const item = event.detail;
 
@@ -395,6 +401,11 @@ export default class Datatable extends LightningElement {
         item.callbacks.registerDisconnectCallback(this.handleChildUnregister);
     }
 
+    /**
+     * Handle the event to notify the parent that the child is no longer available.
+     *
+     * @param {event} event
+     */
     handleChildUnregister(event) {
         const item = event.detail;
         const guid = item.guid;

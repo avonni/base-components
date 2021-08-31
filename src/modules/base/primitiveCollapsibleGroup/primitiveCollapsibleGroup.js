@@ -36,13 +36,6 @@ import { normalizeBoolean } from 'c/utilsPrivate';
 
 export default class PrimitiveCollapsibleGroup extends LightningElement {
     /**
-     * The title can include text, and is displayed in the header.
-     *
-     * @type {string}
-     */
-    @api title;
-
-    /**
      * The value is the number of levels deep it is nested to indicate the distinct grouping is nested within.
      *
      * @type {number}
@@ -50,20 +43,18 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
     @api level;
 
     /**
-     * Size of the group displayed.
+     * Width of the header datatable.
      *
      * @type {number}
      */
-    @api
-    get size() {
-        return this._size;
-    }
-
-    set size(value) {
-        this._size = typeof value === 'number' ? value : parseInt(value, 10);
-    }
-
     @api tableWidth;
+
+    /**
+     * The title can include text, and is displayed in the header.
+     *
+     * @type {string}
+     */
+    @api title;
 
     /**
      * If present, close the section.
@@ -95,12 +86,26 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
         this._collapsible = normalizeBoolean(!value);
     }
 
+    /**
+     * Size of the group displayed.
+     *
+     * @type {number}
+     */
+    @api
+    get size() {
+        return this._size;
+    }
+
+    set size(value) {
+        this._size = typeof value === 'number' ? value : parseInt(value, 10);
+    }
+
     _closed = false;
     _collapsible = false;
     _size;
 
     renderedCallback() {
-        this.setSectionPaddingLeft();
+        this.sectionPaddingLeft();
         this.sectionWidth();
     }
 
@@ -151,12 +156,15 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
     }
 
     /**
-     * Set padding left for section title depending on the level.
+     * Sets padding left for section title depending on the level.
      */
-    setSectionPaddingLeft() {
+    sectionPaddingLeft() {
         this.section.style.paddingLeft = `${this.level}rem`;
     }
 
+    /**
+     * Sets the width of the section depending on the width of the header datatable.
+     */
     sectionWidth() {
         this.template.querySelectorAll('.slds-section').forEach((section) => {
             section.style.width = `${this.tableWidth}px`;

@@ -35,12 +35,10 @@
                 onloadmore={handleDispatchEvents}
                 oncellchange={handleDispatchEvents}
                 onrowaction={handleDispatchEvents}
-                group-by={groupBy}
             ></c-primitive-datatable>
             <c-primitive-group-by-item
                 records={groupByRecords}
                 columns={columns}
-                group-by={groupBy}
                 key-field={keyField}
                 default-sort-direction={defaultSortDirection}
                 draft-values={draftValues}
@@ -62,6 +60,7 @@
                 show-row-number-column={showRowNumberColumn}
                 sorted-by={sortedBy}
                 sorted-direction={sortedDirection}
+                table-width={tableWidth}
                 wrap-text-max-lines={wrapTextMaxLines}
                 onrowselection={handleDispatchEvents}
                 onsort={handleDispatchEvents}
@@ -73,7 +72,6 @@
                 oncellchange={handleDispatchEvents}
                 onrowaction={handleDispatchEvents}
                 onprivateitemregister={handleChildRegister}
-                table-width={tableWidth}
             ></c-primitive-group-by-item>
         </template>
         <c-primitive-datatable
