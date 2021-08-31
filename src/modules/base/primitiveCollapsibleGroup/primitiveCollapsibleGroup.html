@@ -68,10 +68,8 @@
                 </span>
             </template>
         </h3>
-        <template if:false={closed}>
-            <div class="avonni-primitive-collapsible-group__section">
-                <slot></slot>
-            </div>
-        </template>
+        <div class={slotSection}>
+            <slot></slot>
+        </div>
     </div>
 </template>

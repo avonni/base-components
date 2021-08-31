@@ -139,6 +139,12 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
             .toString();
     }
 
+    get slotSection() {
+        return classSet('avonni-primitive-collapsible-group__section')
+            .add({ 'slds-hide': this.closed })
+            .toString();
+    }
+
     /**
      * Returns the section element.
      *
