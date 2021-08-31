@@ -116,7 +116,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         expect(element.disabled).toBeFalsy();
         expect(element.eventData).toMatchObject({});
         expect(element.eventName).toBeUndefined();
-        expect(element.from).toBeInstanceOf(Date);
+        expect(element.from).toBeUndefined();
         expect(element.iconName).toBeUndefined();
         expect(element.labels).toMatchObject({});
         expect(element.leftPosition).toBe(0);

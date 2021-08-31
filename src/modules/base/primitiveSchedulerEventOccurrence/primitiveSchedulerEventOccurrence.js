@@ -100,7 +100,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     _scrollLeftOffset = 0;
     _disabled = false;
     _event;
-    _from = new Date();
+    _from;
     _keyFields = [];
     _labels = {};
     _occurrence = {};
