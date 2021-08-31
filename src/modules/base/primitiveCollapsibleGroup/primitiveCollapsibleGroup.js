@@ -63,6 +63,8 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
         this._size = typeof value === 'number' ? value : parseInt(value, 10);
     }
 
+    @api tableWidth;
+
     /**
      * If present, close the section.
      *
@@ -99,6 +101,7 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
 
     renderedCallback() {
         this.setSectionPaddingLeft();
+        this.sectionWidth();
     }
 
     /**
@@ -152,5 +155,11 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
      */
     setSectionPaddingLeft() {
         this.section.style.paddingLeft = `${this.level}rem`;
+    }
+
+    sectionWidth() {
+        this.template.querySelectorAll('.slds-section').forEach((section) => {
+            section.style.width = `${this.tableWidth}px`;
+        });
     }
 }

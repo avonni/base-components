@@ -37,7 +37,6 @@ import { generateUUID } from 'c/utils';
 export default class ProgressGroupByItem extends LightningElement {
     @api columns;
     @api keyField;
-    @api columnWidthsMode;
     @api defaultSortDirection;
     @api draftValues;
     @api enableInfiniteLoading;
@@ -58,6 +57,7 @@ export default class ProgressGroupByItem extends LightningElement {
     @api showRowNumberColumn;
     @api sortedBy;
     @api sortedDirection;
+    @api tableWidth;
     @api wrapTextMaxLines;
 
     _records;
@@ -146,6 +146,10 @@ export default class ProgressGroupByItem extends LightningElement {
      */
     get primitiveItems() {
         return this.template.querySelectorAll('c-primitive-group-by-item');
+    }
+
+    get primitiveCollapsibleGroups() {
+        return this.template.querySelectorAll('c-primitive-collapsible-group');
     }
 
     /**

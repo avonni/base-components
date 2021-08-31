@@ -251,6 +251,8 @@ export default class Datatable extends LightningElement {
 
     privateChildrenRecord = {};
 
+    tableWidth;
+
     /**
      * Array of the columns object that's used to define the data types.
      * Required properties include 'label', 'fieldName', and 'type'. The default type is 'text'.
@@ -612,17 +614,17 @@ export default class Datatable extends LightningElement {
      */
     updateTableWidth() {
         if (!this.hasGroupBy) {
-            this._tableWidth = this.primitiveUngroupedDatatable.tableWidth();
+            this.tableWidth = this.primitiveUngroupedDatatable.tableWidth();
             const table = this.template.querySelector('table');
             if (table) {
-                table.style.width = `${this._tableWidth}px`;
+                table.style.width = `${this.tableWidth}px`;
             }
         } else {
-            this._tableWidth = this.primitiveHeaderDatatable.tableWidth();
+            this.tableWidth = this.primitiveHeaderDatatable.tableWidth();
             const tables = this.template.querySelectorAll('table');
             if (tables) {
                 tables.forEach((table) => {
-                    table.style.width = `${this._tableWidth}px`;
+                    table.style.width = `${this.tableWidth}px`;
                 });
             }
         }

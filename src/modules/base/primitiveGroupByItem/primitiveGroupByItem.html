@@ -38,6 +38,7 @@
             title={group.label}
             size={group.size}
             level={group.level}
+            table-width={tableWidth}
             key={group.label}
             collapsible={hideCollapsibleIcon}
             class="collapsible-group"
@@ -109,6 +110,7 @@
                     show-row-number-column={showRowNumberColumn}
                     sorted-by={sortedBy}
                     sorted-direction={sortedDirection}
+                    table-width={tableWidth}
                     wrap-text-max-lines={wrapTextMaxLines}
                     onsort={handleDispatchEvents}
                     onresize={handleDispatchEvents}
