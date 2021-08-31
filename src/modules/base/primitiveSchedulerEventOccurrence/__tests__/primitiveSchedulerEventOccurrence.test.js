@@ -33,6 +33,66 @@
 import { createElement } from 'lwc';
 import PrimitiveSchedulerEventOccurrence from 'c/primitiveSchedulerEventOccurrence';
 
+// Not tested because depends on DOM measurements:
+// leftLabelWidth
+// rightLabelWidth
+// rightPosition
+// width
+
+const COLUMN_WIDTH = 50;
+const COLUMN_DURATION = 3599999;
+const COLUMNS = [
+    {
+        start: new Date(2021, 7, 30, 6).getTime(),
+        end: new Date(2021, 7, 30, 7).getTime() - 1
+    },
+    {
+        start: new Date(2021, 7, 30, 7).getTime(),
+        end: new Date(2021, 7, 30, 8).getTime() - 1
+    },
+    {
+        start: new Date(2021, 7, 30, 8).getTime(),
+        end: new Date(2021, 7, 30, 9).getTime() - 1
+    },
+    {
+        start: new Date(2021, 7, 30, 9).getTime(),
+        end: new Date(2021, 7, 30, 10).getTime() - 1
+    },
+    {
+        start: new Date(2021, 7, 30, 10).getTime(),
+        end: new Date(2021, 7, 30, 11).getTime() - 1
+    }
+];
+const FROM = new Date(2021, 7, 30, 8);
+const TO = new Date(2021, 7, 30, 10);
+const ROW_KEY = '3';
+const ROWS = [
+    {
+        key: '1',
+        height: 30,
+        color: 'rgb(0, 0, 0)',
+        data: {
+            customField: 'Some useless string',
+            overwrittenField: 'Another useless string',
+            height: 30,
+            key: '1',
+            color: 'rgb(0, 0, 0)'
+        }
+    },
+    {
+        key: '3',
+        height: 50,
+        color: 'rgb(51, 51, 51)',
+        data: {
+            customField: 'Row field',
+            overwrittenField: 'This will not show',
+            height: 50,
+            key: '3',
+            color: 'rgb(51, 51, 51)'
+        }
+    }
+];
+
 describe('PrimitiveSchedulerEventOccurrence', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -48,26 +108,1394 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
             }
         );
 
-        expect(element.name).toBeUndefined();
+        expect(element.color).toBeUndefined();
+        expect(element.columnDuration).toBe(0);
+        expect(element.columns).toMatchObject([]);
+        expect(element.columnWidth).toBe(0);
+        expect(element.dateFormat).toBe('ff');
+        expect(element.disabled).toBeFalsy();
+        expect(element.eventData).toMatchObject({});
+        expect(element.eventName).toBeUndefined();
+        expect(element.from).toBeInstanceOf(Date);
+        expect(element.iconName).toBeUndefined();
+        expect(element.labels).toMatchObject({});
+        expect(element.leftPosition).toBe(0);
+        expect(element.occurrence).toMatchObject({});
+        expect(element.occurrenceKey).toBeUndefined();
+        expect(element.readOnly).toBeFalsy();
+        expect(element.referenceLine).toBeFalsy();
+        expect(element.rightPosition).toBe(0);
+        expect(element.rowKey).toBeUndefined();
+        expect(element.rows).toMatchObject([]);
+        expect(element.scrollLeftOffset).toBe(0);
+        expect(element.theme).toBeUndefined();
+        expect(element.title).toBeUndefined();
+        expect(element.to).toBeUndefined();
+        expect(element.width).toBe(0);
+        expect(element.x).toBe(0);
+        expect(element.y).toBe(0);
     });
 
     /* ----- ATTRIBUTES ----- */
+    // NB: almost all attributes depends on from and to
 
-    // // name
-    // it('name', () => {
-    //     const element = createElement(
-    //         'base-primitive-scheduler-event-occurrence',
-    //         {
-    //             is: PrimitiveSchedulerEventOccurrence
-    //         }
-    //     );
+    // color
+    // Depends on theme, rows and rowKey
+    it('color', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
 
-    //     document.body.appendChild(element);
+        document.body.appendChild(element);
 
-    //     element.name = 'a-string-name';
+        element.from = FROM;
+        element.to = TO;
+        element.color = 'tomato';
+        element.theme = 'default';
 
-    //     return Promise.resolve().then(() => {
+        return Promise.resolve().then(() => {
+            const event = element.shadowRoot.querySelector(
+                '.avonni-scheduler__event'
+            );
+            expect(event.style.backgroundColor).toBe('tomato');
+        });
+    });
 
-    //     });
-    // });
+    it('color defined by the row color', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.from = FROM;
+        element.to = TO;
+        element.theme = 'default';
+        element.rowKey = ROW_KEY;
+        element.rows = ROWS;
+
+        return Promise.resolve().then(() => {
+            const event = element.shadowRoot.querySelector(
+                '.avonni-scheduler__event'
+            );
+            expect(event.style.backgroundColor).toBe('rgb(51, 51, 51)');
+        });
+    });
+
+    // date-format
+    // Depends on labels, rows and rowKey
+    it('dateFormat', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.from = FROM;
+        element.to = TO;
+        element.rows = ROWS;
+        element.rowKey = ROW_KEY;
+        element.labels = {
+            center: {
+                fieldName: 'from'
+            }
+        };
+        element.dateFormat = 'dd/LL/yy';
+
+        return Promise.resolve().then(() => {
+            const label = element.shadowRoot.querySelector(
+                '.avonni-scheduler__event-label_center span'
+            );
+            expect(label.textContent).toBe('30/08/21');
+        });
+    });
+
+    // disabled
+    // Depends on rows and rowKey
+    it('disabled = false', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.disabled = false;
+
+        return Promise.resolve().then(() => {
+            const disabledEvent = element.shadowRoot.querySelector(
+                '.avonni-scheduler__disabled-date'
+            );
+            expect(disabledEvent).toBeFalsy();
+        });
+    });
+
+    it('disabled = true', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.disabled = true;
+
+        return Promise.resolve().then(() => {
+            const disabledEvent = element.shadowRoot.querySelector(
+                '.avonni-scheduler__disabled-date'
+            );
+            expect(disabledEvent).toBeTruthy();
+        });
+    });
+
+    it('disabled occurrence height', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.disabled = true;
+        element.rows = ROWS;
+        element.rowKey = ROW_KEY;
+
+        return Promise.resolve().then(() => {
+            expect(element.style.height).toBe('50px');
+        });
+    });
+
+    // event-data
+    // Depends on labels, rows and rowKey
+    it('eventData', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.rows = ROWS;
+        element.rowKey = ROW_KEY;
+        element.labels = {
+            center: {
+                fieldName: 'customField'
+            }
+        };
+        element.eventData = {
+            customField: 'Custom string'
+        };
+
+        return Promise.resolve().then(() => {
+            const label = element.shadowRoot.querySelector(
+                '.avonni-scheduler__event-label_center span'
+            );
+            expect(label.textContent).toBe('Custom string');
+        });
+    });
+
+    // icon-name
+    // Depends on disabled
+    it('iconName', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.disabled = true;
+        element.iconName = 'utility:apps';
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector(
+                '.avonni-scheduler__disabled-date-title lightning-icon'
+            );
+            expect(icon.iconName).toBe('utility:apps');
+        });
+    });
+
+    // labels
+    // Depends on title, eventData, rows and rowKey
+    it('labels', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.rows = ROWS;
+        element.rowKey = ROW_KEY;
+        element.title = 'Title of the event';
+        element.labels = {
+            top: {
+                fieldName: 'title'
+            },
+            bottom: {
+                value: 'Some string',
+                iconName: 'utility:apps'
+            },
+            left: {
+                fieldName: 'customField',
+                iconName: 'utility:user'
+            },
+            right: {
+                fieldName: 'overwrittenField'
+            }
+        };
+        element.eventData = {
+            overwrittenField: 'Event field',
+            title: 'This will not show'
+        };
+
+        return Promise.resolve().then(() => {
+            const leftLabel = element.shadowRoot.querySelector(
+                '.avonni-scheduler__event-label_left span'
+            );
+            const leftIcon = element.shadowRoot.querySelector(
+                '.avonni-scheduler__event-label_left lightning-icon'
+            );
+            expect(leftIcon.iconName).toBe('utility:user');
+            expect(leftLabel.textContent).toBe('Row field');
+
+            const rightLabel = element.shadowRoot.querySelector(
+                '.avonni-scheduler__event-label_right span'
+            );
+            const rightIcon = element.shadowRoot.querySelector(
+                '.avonni-scheduler__event-label_right lightning-icon'
+            );
+            expect(rightIcon).toBeFalsy();
+            expect(rightLabel.textContent).toBe('Event field');
+
+            const topLabel = element.shadowRoot.querySelector(
+                '.avonni-scheduler__event-label_top span'
+            );
+            const topIcon = element.shadowRoot.querySelector(
+                '.avonni-scheduler__event-label_top lightning-icon'
+            );
+            expect(topIcon).toBeFalsy();
+            expect(topLabel.textContent).toBe('Title of the event');
+
+            const bottomLabel = element.shadowRoot.querySelector(
+                '.avonni-scheduler__event-label_bottom span'
+            );
+            const bottomIcon = element.shadowRoot.querySelector(
+                '.avonni-scheduler__event-label_bottom lightning-icon'
+            );
+            expect(bottomIcon.iconName).toBe('utility:apps');
+            expect(bottomLabel.textContent).toBe('Some string');
+        });
+    });
+
+    // read-only
+    // Depends on disabled and referenceLine
+    it('read-only = false', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.readOnly = false;
+        const dblClickHandler = jest.fn();
+        const mouseDownHandler = jest.fn();
+        element.addEventListener('privatedblclick', dblClickHandler);
+        element.addEventListener('privatemousedown', mouseDownHandler);
+
+        return Promise.resolve().then(() => {
+            const eventWrapper = element.shadowRoot.querySelector(
+                '.avonni-scheduler__event-wrapper'
+            );
+            eventWrapper.dispatchEvent(new CustomEvent('dblclick'));
+            const mouseDown = new CustomEvent('mousedown');
+            mouseDown.button = 0;
+            eventWrapper.dispatchEvent(mouseDown);
+
+            expect(dblClickHandler).toHaveBeenCalled();
+            expect(mouseDownHandler).toHaveBeenCalled();
+
+            const resizeIcons = element.shadowRoot.querySelectorAll(
+                '.avonni-scheduler__event-resize-icon'
+            );
+            expect(resizeIcons).toHaveLength(2);
+        });
+    });
+
+    it('read-only = false, disabled occurrence', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.readOnly = false;
+        element.disabled = true;
+        const disabledDblClickHandler = jest.fn();
+        const mouseDownHandler = jest.fn();
+        element.addEventListener(
+            'privatedisableddblclick',
+            disabledDblClickHandler
+        );
+        element.addEventListener('privatedisabledmousedown', mouseDownHandler);
+
+        return Promise.resolve().then(() => {
+            const eventWrapper = element.shadowRoot.querySelector(
+                '.avonni-scheduler__disabled-date'
+            );
+            const mouseDown = new CustomEvent('mousedown');
+            mouseDown.button = 0;
+            eventWrapper.dispatchEvent(mouseDown);
+            eventWrapper.dispatchEvent(new CustomEvent('dblclick'));
+
+            expect(disabledDblClickHandler).toHaveBeenCalled();
+            expect(mouseDownHandler).toHaveBeenCalled();
+        });
+    });
+
+    it('read-only = false, reference line', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.readOnly = false;
+        element.referenceLine = true;
+        const disabledDblClickHandler = jest.fn();
+        const mouseDownHandler = jest.fn();
+        element.addEventListener(
+            'privatedisableddblclick',
+            disabledDblClickHandler
+        );
+        element.addEventListener('privatedisabledmousedown', mouseDownHandler);
+
+        return Promise.resolve().then(() => {
+            const eventWrapper = element.shadowRoot.querySelector(
+                '.avonni-scheduler__reference-line'
+            );
+            const mouseDown = new CustomEvent('mousedown');
+            mouseDown.button = 0;
+            eventWrapper.dispatchEvent(mouseDown);
+            eventWrapper.dispatchEvent(new CustomEvent('dblclick'));
+
+            expect(disabledDblClickHandler).toHaveBeenCalled();
+            expect(mouseDownHandler).toHaveBeenCalled();
+        });
+    });
+
+    it('read-only = true', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.readOnly = true;
+        const dblClickHandler = jest.fn();
+        const mouseDownHandler = jest.fn();
+        element.addEventListener('privatedblclick', dblClickHandler);
+        element.addEventListener('privatemousedown', mouseDownHandler);
+
+        return Promise.resolve().then(() => {
+            const eventWrapper = element.shadowRoot.querySelector(
+                '.avonni-scheduler__event-wrapper'
+            );
+            eventWrapper.dispatchEvent(new CustomEvent('dblclick'));
+            const mouseDown = new CustomEvent('mousedown');
+            mouseDown.button = 0;
+            eventWrapper.dispatchEvent(mouseDown);
+
+            expect(dblClickHandler).not.toHaveBeenCalled();
+            expect(mouseDownHandler).not.toHaveBeenCalled();
+
+            const resizeIcons = element.shadowRoot.querySelectorAll(
+                '.avonni-scheduler__event-resize-icon'
+            );
+            expect(resizeIcons).toHaveLength(0);
+        });
+    });
+
+    it('read-only = true, disabled occurrence', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.readOnly = true;
+        element.disabled = true;
+        const disabledDblClickHandler = jest.fn();
+        const mouseDownHandler = jest.fn();
+        element.addEventListener(
+            'privatedisableddblclick',
+            disabledDblClickHandler
+        );
+        element.addEventListener('privatedisabledmousedown', mouseDownHandler);
+
+        return Promise.resolve().then(() => {
+            const eventWrapper = element.shadowRoot.querySelector(
+                '.avonni-scheduler__disabled-date'
+            );
+            const mouseDown = new CustomEvent('mousedown');
+            mouseDown.button = 0;
+            eventWrapper.dispatchEvent(mouseDown);
+            eventWrapper.dispatchEvent(new CustomEvent('dblclick'));
+
+            expect(disabledDblClickHandler).not.toHaveBeenCalled();
+            expect(mouseDownHandler).not.toHaveBeenCalled();
+        });
+    });
+
+    it('read-only = true, reference line', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.readOnly = true;
+        element.referenceLine = true;
+        const disabledDblClickHandler = jest.fn();
+        const mouseDownHandler = jest.fn();
+        element.addEventListener(
+            'privatedisableddblclick',
+            disabledDblClickHandler
+        );
+        element.addEventListener('privatedisabledmousedown', mouseDownHandler);
+
+        return Promise.resolve().then(() => {
+            const eventWrapper = element.shadowRoot.querySelector(
+                '.avonni-scheduler__reference-line'
+            );
+            const mouseDown = new CustomEvent('mousedown');
+            mouseDown.button = 0;
+            eventWrapper.dispatchEvent(mouseDown);
+            eventWrapper.dispatchEvent(new CustomEvent('dblclick'));
+
+            expect(disabledDblClickHandler).not.toHaveBeenCalled();
+            expect(mouseDownHandler).not.toHaveBeenCalled();
+        });
+    });
+
+    // reference-line
+    it('referenceLine = false', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.referenceLine = false;
+
+        return Promise.resolve().then(() => {
+            const referenceLineEvent = element.shadowRoot.querySelector(
+                '.avonni-scheduler__reference-line'
+            );
+            expect(referenceLineEvent).toBeFalsy();
+        });
+    });
+
+    it('referenceLine = true', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.referenceLine = true;
+
+        return Promise.resolve().then(() => {
+            const referenceLineEvent = element.shadowRoot.querySelector(
+                '.avonni-scheduler__reference-line'
+            );
+            expect(referenceLineEvent).toBeTruthy();
+        });
+    });
+
+    // scroll-left-offset
+    // Depends on labels, rows, and rowKey
+    it('scrollLeftOffset', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.scrollLeftOffset = 30;
+        element.from = FROM;
+        element.to = TO;
+        element.rowKey = ROW_KEY;
+        element.rows = ROWS;
+        element.labels = {
+            center: {
+                value: 'String value'
+            }
+        };
+
+        return Promise.resolve().then(() => {
+            const label = element.shadowRoot.querySelector(
+                '.avonni-scheduler__event-label_center'
+            );
+            expect(label.style.left).toBe('30px');
+        });
+    });
+
+    // theme
+    // Depends on color and referenceLine
+    it('theme = default', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.theme = 'default';
+        element.color = 'rgb(0, 0, 0)';
+
+        return Promise.resolve().then(() => {
+            const event = element.shadowRoot.querySelector(
+                '.avonni-scheduler__event_default'
+            );
+            expect(event).toBeTruthy();
+            expect(event.style.backgroundColor).toBe('rgb(0, 0, 0)');
+        });
+    });
+
+    it('theme = transparent', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.theme = 'transparent';
+        element.color = 'rgb(0, 0, 0)';
+
+        return Promise.resolve().then(() => {
+            const event = element.shadowRoot.querySelector(
+                '.avonni-scheduler__event_transparent'
+            );
+            expect(event).toBeTruthy();
+            expect(event.style.backgroundColor).toBe('rgba(0, 0, 0, 0.3)');
+            expect(event.style.borderLeftColor).toBe('rgb(0, 0, 0)');
+        });
+    });
+
+    it('theme = transparent, with hexadecimal color', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.theme = 'transparent';
+        element.color = '#000';
+
+        return Promise.resolve().then(() => {
+            const event = element.shadowRoot.querySelector(
+                '.avonni-scheduler__event_transparent'
+            );
+            expect(event).toBeTruthy();
+            expect(event.style.backgroundColor).toMatch(
+                /rgba\(0, 0, 0, 0\.3[0-9]*\)/
+            );
+            expect(event.style.borderLeftColor).toBe('#000');
+        });
+    });
+
+    it('theme = line', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.theme = 'line';
+        element.color = 'rgb(0, 0, 0)';
+
+        return Promise.resolve().then(() => {
+            const event = element.shadowRoot.querySelector(
+                '.avonni-scheduler__event_line'
+            );
+            expect(event).toBeTruthy();
+            expect(event.style.borderColor).toBe('rgb(0, 0, 0)');
+        });
+    });
+
+    it('theme = hollow', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.theme = 'hollow';
+        element.color = 'rgb(0, 0, 0)';
+
+        return Promise.resolve().then(() => {
+            const event = element.shadowRoot.querySelector(
+                '.avonni-scheduler__event_hollow'
+            );
+            expect(event).toBeTruthy();
+            expect(event.style.borderColor).toBe('rgb(0, 0, 0)');
+        });
+    });
+
+    it('theme = rounded', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.theme = 'rounded';
+        element.color = 'rgb(0, 0, 0)';
+
+        return Promise.resolve().then(() => {
+            const event = element.shadowRoot.querySelector(
+                '.avonni-scheduler__event_rounded'
+            );
+            expect(event).toBeTruthy();
+            expect(event.style.backgroundColor).toBe('rgb(0, 0, 0)');
+        });
+    });
+
+    it('theme, referenceLine = true', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.theme = 'inverse';
+        element.referenceLine = true;
+
+        return Promise.resolve().then(() => {
+            const event = element.shadowRoot.querySelector(
+                '.avonni-scheduler__reference-line'
+            );
+            expect(event.variant).toBe('inverse');
+        });
+    });
+
+    // title
+    // Depends on referenceLine and disabled
+    it('title, referenceLine = true', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.title = 'Title string';
+        element.referenceLine = true;
+
+        return Promise.resolve().then(() => {
+            const event = element.shadowRoot.querySelector(
+                '.avonni-scheduler__reference-line'
+            );
+            expect(event.label).toBe('Title string');
+        });
+    });
+
+    it('title, disabled = true', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.title = 'Title string';
+        element.disabled = true;
+
+        return Promise.resolve().then(() => {
+            const event = element.shadowRoot.querySelector(
+                '.avonni-scheduler__disabled-date-title span'
+            );
+            expect(event.textContent).toBe('Title string');
+        });
+    });
+
+    // x
+    it('x', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.x = 70;
+
+        return Promise.resolve().then(() => {
+            expect(element.style.transform).toBe('translate(70px, 0px)');
+        });
+    });
+
+    // y
+    it('y', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.y = 70;
+
+        return Promise.resolve().then(() => {
+            expect(element.style.transform).toBe('translate(0px, 70px)');
+        });
+    });
+
+    /* ----- METHODS ----- */
+
+    // focus
+    it('focus method', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        const handler = jest.fn();
+        const wrapper = element.shadowRoot.querySelector(
+            '.avonni-scheduler__event-wrapper'
+        );
+        wrapper.focus = handler;
+
+        element.focus();
+        expect(handler).toHaveBeenCalled();
+    });
+
+    // hideRightLabel
+    // Depends on labels, rowKey and rows
+    it('hideRightLabel method', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.rowKey = ROW_KEY;
+        element.rows = ROWS;
+        element.labels = {
+            right: {
+                value: 'String value'
+            }
+        };
+
+        return Promise.resolve().then(() => {
+            const rightLabel = element.shadowRoot.querySelector(
+                '.avonni-scheduler__event-label_right'
+            );
+            expect(rightLabel.classList).not.toContain('slds-hide');
+            element.hideRightLabel();
+            expect(rightLabel.classList).toContain('slds-hide');
+        });
+    });
+
+    // showRightLabel
+    // Depends on hideRightLabel() labels, rowKey and rows
+    it('showRightLabel method', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.rowKey = ROW_KEY;
+        element.rows = ROWS;
+        element.labels = {
+            right: {
+                value: 'String value'
+            }
+        };
+
+        return Promise.resolve().then(() => {
+            const rightLabel = element.shadowRoot.querySelector(
+                '.avonni-scheduler__event-label_right'
+            );
+            element.hideRightLabel();
+            expect(rightLabel.classList).toContain('slds-hide');
+            element.showRightLabel();
+            expect(rightLabel.classList).not.toContain('slds-hide');
+        });
+    });
+
+    // Horizontal position and width: updatePosition() and updateWidth()
+    // columnDuration, columns, columnWidth, from, leftPosition, to, x
+    it('updateWidth and updatePosition methods, event spans only on full columns', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.from = FROM;
+        element.to = TO;
+        element.columnWidth = COLUMN_WIDTH;
+        element.columns = COLUMNS;
+        element.columnDuration = COLUMN_DURATION;
+
+        element.updateWidth();
+        element.updatePosition();
+
+        expect(element.leftPosition).toBe(100);
+        expect(element.style.width).toBe('100px');
+    });
+
+    it('updateWidth and updatePosition methods, event spans on full and half columns', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.from = new Date(FROM.getTime()).setHours(7, 30);
+        element.to = new Date(TO.getTime()).setHours(9, 30);
+        element.columnWidth = COLUMN_WIDTH;
+        element.columns = COLUMNS;
+        element.columnDuration = COLUMN_DURATION;
+
+        element.updateWidth();
+        element.updatePosition();
+
+        expect(Math.floor(element.leftPosition)).toBe(75);
+        expect(element.style.width).toBe('100px');
+    });
+
+    it('updateWidth and updatePosition methods, event spans on only part of a column', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.from = new Date(FROM.getTime()).setHours(8, 15);
+        element.to = new Date(TO.getTime()).setHours(8, 45);
+        element.columnWidth = COLUMN_WIDTH;
+        element.columns = COLUMNS;
+        element.columnDuration = COLUMN_DURATION;
+
+        element.updateWidth();
+        element.updatePosition();
+
+        expect(Math.floor(element.leftPosition)).toBe(112);
+        expect(element.style.width).toMatch(/25\.?[0-9]*px/);
+    });
+
+    // Vertical position: updatePosition()
+    // occurrence, y, columns, rows and rowKey
+    it('updatePosition method, vertical position', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.from = FROM;
+        element.to = TO;
+        element.rows = ROWS;
+        element.rowKey = ROW_KEY;
+        element.occurrence = {
+            offsetTop: 12
+        };
+        element.columns = COLUMNS;
+
+        element.updatePosition();
+        expect(element.y).toBe(42);
+    });
+
+    /* ----- EVENTS ----- */
+
+    // privateblur
+    // Depends on eventName and occurrenceKey
+    it('privateblur event', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.eventName = 'event-name';
+        element.occurrenceKey = 'occurrence-key';
+        element.from = FROM;
+        element.to = TO;
+
+        const handler = jest.fn();
+        element.addEventListener('privateblur', handler);
+
+        const eventElement = element.shadowRoot.querySelector(
+            '.avonni-scheduler__event-wrapper'
+        );
+        eventElement.dispatchEvent(new CustomEvent('blur'));
+
+        expect(handler).toHaveBeenCalled();
+    });
+
+    // privatecontextmenu
+    // Depends on eventName and occurrenceKey
+    it('privatecontextmenu event', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.eventName = 'event-name';
+        element.occurrenceKey = 'occurrence-key';
+        element.from = FROM;
+        element.to = TO;
+
+        const handler = jest.fn();
+        element.addEventListener('privatecontextmenu', handler);
+
+        const eventElement = element.shadowRoot.querySelector(
+            '.avonni-scheduler__event-wrapper'
+        );
+        const event = new CustomEvent('contextmenu');
+        event.clientX = 10;
+        event.clientY = 20;
+        eventElement.dispatchEvent(event);
+
+        expect(handler).toHaveBeenCalled();
+        expect(handler.mock.calls[0][0].detail.eventName).toBe('event-name');
+        expect(handler.mock.calls[0][0].detail.key).toBe('occurrence-key');
+        expect(handler.mock.calls[0][0].detail.from).toBe(element.from);
+        expect(handler.mock.calls[0][0].detail.to).toBe(element.to);
+        expect(handler.mock.calls[0][0].detail.x).toBe(10);
+        expect(handler.mock.calls[0][0].detail.y).toBe(20);
+    });
+
+    it('privatecontextmenu event, triggered by the keyboard', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.eventName = 'event-name';
+        element.occurrenceKey = 'occurrence-key';
+        element.from = FROM;
+        element.to = TO;
+
+        const handler = jest.fn();
+        element.addEventListener('privatecontextmenu', handler);
+
+        const eventElement = element.shadowRoot.querySelector(
+            '.avonni-scheduler__event-wrapper'
+        );
+        const event = new CustomEvent('keydown');
+        event.clientX = 10;
+        event.clientY = 20;
+        event.key = 'Enter';
+        eventElement.dispatchEvent(event);
+
+        expect(handler).toHaveBeenCalled();
+        expect(handler.mock.calls[0][0].detail.eventName).toBe('event-name');
+        expect(handler.mock.calls[0][0].detail.key).toBe('occurrence-key');
+        expect(handler.mock.calls[0][0].detail.from).toBe(element.from);
+        expect(handler.mock.calls[0][0].detail.x).toBe(10);
+        expect(handler.mock.calls[0][0].detail.y).toBe(20);
+    });
+
+    // privatedblclick
+    // Depends on eventName and occurrenceKey
+    it('privatedblclick event', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.eventName = 'event-name';
+        element.occurrenceKey = 'occurrence-key';
+        element.from = FROM;
+        element.to = TO;
+
+        const handler = jest.fn();
+        element.addEventListener('privatedblclick', handler);
+
+        const eventElement = element.shadowRoot.querySelector(
+            '.avonni-scheduler__event-wrapper'
+        );
+        const event = new CustomEvent('dblclick');
+        event.clientX = 10;
+        event.clientY = 20;
+        eventElement.dispatchEvent(event);
+
+        expect(handler).toHaveBeenCalled();
+        expect(handler.mock.calls[0][0].detail.eventName).toBe('event-name');
+        expect(handler.mock.calls[0][0].detail.key).toBe('occurrence-key');
+        expect(handler.mock.calls[0][0].detail.from).toBe(element.from);
+        expect(handler.mock.calls[0][0].detail.to).toBe(element.to);
+        expect(handler.mock.calls[0][0].detail.x).toBe(10);
+        expect(handler.mock.calls[0][0].detail.y).toBe(20);
+    });
+
+    // privatedisabledcontextmenu
+    // Depends on disabled
+    it('privatedisabledcontextmenu event', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.disabled = true;
+
+        return Promise.resolve().then(() => {
+            const handler = jest.fn();
+            element.addEventListener('privatedisabledcontextmenu', handler);
+
+            const eventElement = element.shadowRoot.querySelector(
+                '.avonni-scheduler__disabled-date'
+            );
+            const event = new CustomEvent('contextmenu');
+            event.clientX = 10;
+            event.clientY = 20;
+            eventElement.dispatchEvent(event);
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.x).toBe(10);
+            expect(handler.mock.calls[0][0].detail.y).toBe(20);
+        });
+    });
+
+    // privatedisableddblclick
+    // Depends on disabled
+    it('privatedisableddblclick event', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.disabled = true;
+
+        return Promise.resolve().then(() => {
+            const handler = jest.fn();
+            element.addEventListener('privatedisableddblclick', handler);
+
+            const eventElement = element.shadowRoot.querySelector(
+                '.avonni-scheduler__disabled-date'
+            );
+            const event = new CustomEvent('dblclick');
+            event.clientX = 10;
+            event.clientY = 20;
+            eventElement.dispatchEvent(event);
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.x).toBe(10);
+            expect(handler.mock.calls[0][0].detail.y).toBe(20);
+        });
+    });
+
+    // privatedisabledmousedown
+    // Depends on disabled
+    it('privatedisabledmousedown event', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.disabled = true;
+
+        return Promise.resolve().then(() => {
+            const handler = jest.fn();
+            element.addEventListener('privatedisabledmousedown', handler);
+
+            const eventElement = element.shadowRoot.querySelector(
+                '.avonni-scheduler__disabled-date'
+            );
+            const event = new CustomEvent('mousedown');
+            event.clientX = 10;
+            event.clientY = 20;
+            event.button = 0;
+            eventElement.dispatchEvent(event);
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.x).toBe(10);
+            expect(handler.mock.calls[0][0].detail.y).toBe(20);
+        });
+    });
+
+    // privatefocus
+    // Depends on eventName and occurrenceKey
+    it('privatefocus event', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.eventName = 'event-name';
+        element.occurrenceKey = 'occurrence-key';
+        element.from = FROM;
+        element.to = TO;
+
+        const handler = jest.fn();
+        element.addEventListener('privatefocus', handler);
+
+        const eventElement = element.shadowRoot.querySelector(
+            '.avonni-scheduler__event-wrapper'
+        );
+        const event = new CustomEvent('focus');
+        event.clientX = 10;
+        event.clientY = 20;
+        eventElement.dispatchEvent(event);
+
+        expect(handler).toHaveBeenCalled();
+        expect(handler.mock.calls[0][0].detail.eventName).toBe('event-name');
+        expect(handler.mock.calls[0][0].detail.key).toBe('occurrence-key');
+        expect(handler.mock.calls[0][0].detail.from).toBe(element.from);
+        expect(handler.mock.calls[0][0].detail.to).toBe(element.to);
+        expect(handler.mock.calls[0][0].detail.x).toBe(10);
+        expect(handler.mock.calls[0][0].detail.y).toBe(20);
+
+        return Promise.resolve().then(() => {
+            const focusedEvent = element.shadowRoot.querySelector(
+                '.avonni-scheduler__event-wrapper_focused'
+            );
+            expect(focusedEvent).toBeTruthy();
+        });
+    });
+
+    // privatemousedown
+    // Depends on eventName and occurrenceKey
+    it('privatemousedown event', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.eventName = 'event-name';
+        element.occurrenceKey = 'occurrence-key';
+        element.from = FROM;
+        element.to = TO;
+
+        const handler = jest.fn();
+        element.addEventListener('privatemousedown', handler);
+
+        const eventElement = element.shadowRoot.querySelector(
+            '.avonni-scheduler__event-resize-icon_left'
+        );
+        const event = new CustomEvent('mousedown', { bubbles: true });
+        event.clientX = 10;
+        event.clientY = 20;
+        event.button = 0;
+        eventElement.dispatchEvent(event);
+
+        expect(handler).toHaveBeenCalled();
+        expect(handler.mock.calls[0][0].detail.eventName).toBe('event-name');
+        expect(handler.mock.calls[0][0].detail.key).toBe('occurrence-key');
+        expect(handler.mock.calls[0][0].detail.from).toBe(element.from);
+        expect(handler.mock.calls[0][0].detail.x).toBe(10);
+        expect(handler.mock.calls[0][0].detail.y).toBe(20);
+        expect(handler.mock.calls[0][0].detail.side).toBe('left');
+    });
+
+    // privatemouseenter
+    // Depends on eventName and occurrenceKey
+    it('privatemouseenter event', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.eventName = 'event-name';
+        element.occurrenceKey = 'occurrence-key';
+        element.from = FROM;
+        element.to = TO;
+
+        const handler = jest.fn();
+        element.addEventListener('privatemouseenter', handler);
+
+        const eventElement = element.shadowRoot.querySelector(
+            '.avonni-scheduler__event-wrapper'
+        );
+        const event = new CustomEvent('mouseenter');
+        event.clientX = 10;
+        event.clientY = 20;
+        eventElement.dispatchEvent(event);
+
+        expect(handler).toHaveBeenCalled();
+        expect(handler.mock.calls[0][0].detail.eventName).toBe('event-name');
+        expect(handler.mock.calls[0][0].detail.key).toBe('occurrence-key');
+        expect(handler.mock.calls[0][0].detail.from).toBe(element.from);
+        expect(handler.mock.calls[0][0].detail.x).toBe(10);
+        expect(handler.mock.calls[0][0].detail.y).toBe(20);
+    });
+
+    // privatemouseleave
+    // Depends on eventName and occurrenceKey
+    it('privatemouseleave event', () => {
+        const element = createElement(
+            'base-primitive-scheduler-event-occurrence',
+            {
+                is: PrimitiveSchedulerEventOccurrence
+            }
+        );
+
+        document.body.appendChild(element);
+
+        element.eventName = 'event-name';
+        element.occurrenceKey = 'occurrence-key';
+        element.from = FROM;
+        element.to = TO;
+
+        const handler = jest.fn();
+        element.addEventListener('privatemouseleave', handler);
+
+        const eventElement = element.shadowRoot.querySelector(
+            '.avonni-scheduler__event-wrapper'
+        );
+        const event = new CustomEvent('mouseleave');
+        event.clientX = 10;
+        event.clientY = 20;
+        eventElement.dispatchEvent(event);
+
+        expect(handler).toHaveBeenCalled();
+        expect(handler.mock.calls[0][0].detail.eventName).toBe('event-name');
+        expect(handler.mock.calls[0][0].detail.key).toBe('occurrence-key');
+        expect(handler.mock.calls[0][0].detail.from).toBe(element.from);
+        expect(handler.mock.calls[0][0].detail.to).toBe(element.to);
+        expect(handler.mock.calls[0][0].detail.x).toBe(10);
+        expect(handler.mock.calls[0][0].detail.y).toBe(20);
+    });
 });
