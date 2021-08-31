@@ -583,33 +583,6 @@ export default class PrimitiveDatatable extends LightningDatatable {
     }
 
     /**
-     * Makes the primitive datatable unscrollable since it is the main datatable that is scrollable.
-     */
-    unscrollableMainDatatable() {
-        const ungroupedDatatable = this.template.querySelector(
-            'c-primitive-datatable[data-role="ungrouped"] .slds-table_header-fixed_container'
-        );
-
-        const groupedDatatables = this.template.querySelectorAll(
-            'c-primitive-datatable[data-role="grouped"] .slds-table_header-fixed_container'
-        );
-
-        if (ungroupedDatatable) {
-            ungroupedDatatable.style.overflowX = 'hidden';
-            ungroupedDatatable.style.width = `${this._tableWidth}px`;
-            ungroupedDatatable.style.maxWidth = 'none';
-        }
-
-        if (groupedDatatables) {
-            groupedDatatables.forEach((datatable) => {
-                datatable.style.overflowX = 'hidden';
-                datatable.style.width = `${this._tableWidth}px`;
-                datatable.style.maxWidth = 'none';
-            });
-        }
-    }
-
-    /**
      * Hides the visibility and padding of each c-primitive-datatables in groups.
      *
      */
@@ -657,9 +630,6 @@ export default class PrimitiveDatatable extends LightningDatatable {
      *
      */
     headerDatatableStyling() {
-        const headerDatatable = this.template.querySelector(
-            'c-primitive-datatable[data-role="header"] .slds-table_header-fixed_container'
-        );
         const headerDatatableBorder = this.template.querySelector(
             'c-primitive-datatable[data-role="header"] .slds-table_bordered'
         );
@@ -669,9 +639,6 @@ export default class PrimitiveDatatable extends LightningDatatable {
         if (headerDatatableTable) {
             headerDatatableTable.style.display = 'none';
             headerDatatableBorder.style.borderBottom = 'none';
-            headerDatatable.style.overflowX = 'hidden';
-            headerDatatable.style.width = `${this._tableWidth}px`;
-            headerDatatable.style.maxWidth = 'none';
         }
     }
 
@@ -682,8 +649,6 @@ export default class PrimitiveDatatable extends LightningDatatable {
     tablesInitialization() {
         this.columnsWidthWithoutHeader();
         this.columnsWidthWithHeader();
-        this.tableWidth();
-        this.unscrollableMainDatatable();
         this.hideTableHeaderPadding();
         this.headerDatatableStyling();
     }
