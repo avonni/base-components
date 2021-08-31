@@ -231,7 +231,9 @@ describe('List', () => {
         element.divider = 'around';
 
         return Promise.resolve().then(() => {
-            const menu = element.shadowRoot.querySelector('.menu');
+            const menu = element.shadowRoot.querySelector(
+                '.avonni-list__item-menu'
+            );
             expect(menu.classList).toContain('slds-has-dividers_around');
         });
     });
@@ -245,7 +247,9 @@ describe('List', () => {
         element.divider = 'top';
 
         return Promise.resolve().then(() => {
-            const menu = element.shadowRoot.querySelector('.menu');
+            const menu = element.shadowRoot.querySelector(
+                '.avonni-list__item-menu'
+            );
             expect(menu.classList).toContain('slds-has-dividers_top-space');
         });
     });
@@ -259,7 +263,9 @@ describe('List', () => {
         element.divider = 'bottom';
 
         return Promise.resolve().then(() => {
-            const menu = element.shadowRoot.querySelector('.menu');
+            const menu = element.shadowRoot.querySelector(
+                '.avonni-list__item-menu'
+            );
             expect(menu.classList).toContain('slds-has-dividers_bottom-space');
         });
     });
@@ -356,7 +362,9 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const items = element.shadowRoot.querySelectorAll('li');
-            const menu = element.shadowRoot.querySelector('.menu');
+            const menu = element.shadowRoot.querySelector(
+                '.avonni-list__item-menu'
+            );
 
             expect(menu.role).toBeFalsy();
 
@@ -383,7 +391,9 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const items = element.shadowRoot.querySelectorAll('li');
-            const menu = element.shadowRoot.querySelector('.menu');
+            const menu = element.shadowRoot.querySelector(
+                '.avonni-list__item-menu'
+            );
 
             expect(menu.role).toBe('listbox');
 
@@ -575,16 +585,16 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const images = element.shadowRoot.querySelectorAll(
-                '.image-container'
+                '.avonni-list__item-image-container'
             );
             expect(images[0].classList).toContain(
-                'image-container_rounded-corners'
+                'avonni-list__item-image-container_rounded-corners'
             );
             expect(images[1].classList).toContain(
-                'image-container_rounded-corners'
+                'avonni-list__item-image-container_rounded-corners'
             );
             expect(images[2].classList).toContain(
-                'image-container_rounded-corners'
+                'avonni-list__item-image-container_rounded-corners'
             );
         });
     });
