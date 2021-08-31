@@ -41,19 +41,38 @@ import {
 import SchedulerHeader from './schedulerHeader';
 
 const UNITS = ['minute', 'hour', 'day', 'week', 'month', 'year'];
-const DEFAULT_START_DATE = new Date();
+const DEFAULT_START_DATE = dateTimeObjectFrom(new Date());
+const DEFAULT_AVAILABLE_MONTHS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+const DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK = [0, 1, 2, 3, 4, 5, 6];
+const DEFAULT_AVAILABLE_TIME_FRAMES = ['00:00-23:59'];
+const DEFAULT_TIME_SPAN = {
+    unit: 'hour',
+    span: '12'
+};
+const DEFAULT_HEADERS = [
+    {
+        unit: 'hour',
+        span: 1,
+        label: 'h a'
+    },
+    {
+        unit: 'day',
+        span: 1,
+        label: 'ccc, LLL d'
+    }
+];
 
 /**
  * @class
  * @descriptor avonni-primitive-scheduler-header-group
  */
 export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
-    _availableDaysOfTheWeek = [];
-    _availableMonths = [];
-    _availableTimeFrames = [];
-    _headers = [];
+    _availableDaysOfTheWeek = DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
+    _availableMonths = DEFAULT_AVAILABLE_MONTHS;
+    _availableTimeFrames = DEFAULT_AVAILABLE_TIME_FRAMES;
+    _headers = DEFAULT_HEADERS;
     _start = DEFAULT_START_DATE;
-    _timeSpan = {};
+    _timeSpan = DEFAULT_TIME_SPAN;
 
     _cellWidth = 0;
     _numberOfVisibleCells = 0;
@@ -193,6 +212,8 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
             start instanceof DateTime
                 ? start
                 : dateTimeObjectFrom(DEFAULT_START_DATE);
+
+        if (this.isConnected) this.initHeaders();
     }
 
     /**
@@ -209,7 +230,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         return this._timeSpan;
     }
     set timeSpan(value) {
-        this._timeSpan = typeof value === 'object' ? value : {};
+        this._timeSpan = typeof value === 'object' ? value : DEFAULT_TIME_SPAN;
         if (this.isConnected) this.initHeaders();
     }
 
@@ -366,6 +387,8 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
             sortedHeaders[sortedHeaders.length - 1].unit
         );
 
+        this._referenceHeader = reference;
+
         // Create all headers
         const headerObjects = [];
         sortedHeaders.forEach((header) => {
@@ -409,7 +432,6 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
             }
         });
 
-        this._referenceHeader = reference;
         this.computedHeaders = headerObjects;
 
         // On next render, reset the cells calculation

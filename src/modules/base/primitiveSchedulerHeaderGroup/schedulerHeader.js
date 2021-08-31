@@ -183,7 +183,7 @@ export default class SchedulerHeader {
                     : columnEnd.endOf(unit);
 
             // If the current date is bigger than the reference end, stop adding columns
-            if (this.dateIsBiggerThanEnd(date)) {
+            if (!isReference && this.dateIsBiggerThanEnd(date)) {
                 this.columns[this.columns.length - 1].end = this.end.ts;
                 this.setHeaderEnd();
                 this.cleanEmptyLastColumn();
@@ -207,6 +207,9 @@ export default class SchedulerHeader {
         if (firstRender) {
             this.start = DateTime.fromMillis(this.columns[0].start);
         }
+
+        this.setHeaderEnd();
+        this.cleanEmptyLastColumn();
     }
 
     /**
