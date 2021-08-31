@@ -33,10 +33,16 @@
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { DateTime } from 'c/luxon';
-import { normalizeArray, normalizeBoolean } from 'c/utilsPrivate';
+import {
+    dateTimeObjectFrom,
+    normalizeArray,
+    normalizeBoolean
+} from 'c/utilsPrivate';
 import disabled from './disabled.html';
 import eventOccurrence from './eventOccurrence.html';
 import referenceLine from './referenceLine.html';
+
+const DEFAULT_DATE_FORMAT = 'ff';
 
 /**
  * Event occurrence displayed by the scheduler.
@@ -62,14 +68,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     @api eventName;
 
     /**
-     * Start date of the occurrence.
-     *
-     * @type {DateTime}
-     * @public
-     */
-    @api from;
-
-    /**
      * The Lightning Design System name of the icon. Names are written in the format utility:user.
      * The icon is only used by the disabled occurrences and is appended to the left of the title.
      *
@@ -77,14 +75,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * @public
      */
     @api iconName;
-
-    /**
-     * Event occurrence object this component is based on. The object is used to make sure the changes made in the scheduler are taken into account, even without a re-render.
-     *
-     * @type {object}
-     * @public
-     */
-    @api occurrence;
 
     /**
      * Unique key of the occurrence.
@@ -95,14 +85,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     @api occurrenceKey;
 
     /**
-     * Recurrence of the parent event.
-     *
-     * @type {string}
-     * @public
-     */
-    @api recurrence;
-
-    /**
      * Theme of the occurrence. Valid values include default, transparent, line, hollow and rounded.
      *
      * @type {string}
@@ -110,22 +92,15 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     @api theme;
 
-    /**
-     * End date of the occurrence.
-     *
-     * @type {DateTime}
-     * @public
-     */
-    @api to;
-
     _columnDuration = 0;
     _columns = [];
     _columnWidth = 0;
-    _eventData = [];
+    _dateFormat = DEFAULT_DATE_FORMAT;
+    _eventData = {};
     _scrollLeftOffset = 0;
     _disabled = false;
     _event;
-    _from;
+    _from = new Date();
     _keyFields = [];
     _labels = {};
     _occurrence = {};
@@ -192,6 +167,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      *
      * @type {object[]}
      * @public
+     * @required
      */
     @api
     get columns() {
@@ -217,27 +193,20 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
-     * Width of the scheduler datatable column. It is used as an offset by the sticky labels.
+     * Luxon date format to use in the labels.
      *
-     * @type {number}
+     * @type {string}
      * @public
-     * @default 0
      */
     @api
-    get scrollLeftOffset() {
-        return this._scrollLeftOffset;
+    get dateFormat() {
+        return this._dateFormat;
     }
-    set scrollLeftOffset(value) {
-        this._scrollLeftOffset = !isNaN(Number(value)) ? Number(value) : 0;
+    set dateFormat(value) {
+        this._dateFormat =
+            typeof value === 'string' ? value : DEFAULT_DATE_FORMAT;
 
-        const stickyLabel = this.template.querySelector(
-            '.avonni-scheduler__event-label_center'
-        );
-        if (stickyLabel) {
-            stickyLabel.style.left = `${
-                this.scrollLeftOffset - this._x - this._offsetX
-            }px`;
-        }
+        if (this.isConnected) this.initLabels();
     }
 
     /**
@@ -256,22 +225,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
-     * Luxon date format to use in the labels.
-     *
-     * @type {string}
-     * @public
-     */
-    @api
-    get dateFormat() {
-        return this._dateFormat;
-    }
-    set dateFormat(value) {
-        this._dateFormat = value;
-
-        if (this.isConnected) this.initLabels();
-    }
-
-    /**
      * Initial event object, before it was computed and transformed into a SchedulerEvent.
      * It may be used by the labels.
      *
@@ -283,23 +236,25 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         return this._eventData;
     }
     set eventData(value) {
-        this._eventData = value;
+        this._eventData = typeof value === 'object' ? value : {};
 
         if (this.isConnected) this.initLabels();
     }
 
     /**
-     * Keys of the rows the event appears on. A primitive-scheduler-event-occurrence will be created for each row.
+     * Start date of the occurrence.
      *
-     * @type {string[]}
+     * @type {DateTime}
      * @public
+     * @required
      */
     @api
-    get keyFields() {
-        return this._keyFields;
+    get from() {
+        return this._from;
     }
-    set keyFields(value) {
-        this._keyFields = normalizeArray(value);
+    set from(value) {
+        this._from =
+            value instanceof DateTime ? value : dateTimeObjectFrom(value);
     }
 
     /**
@@ -316,6 +271,21 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         this._labels = typeof value === 'object' ? { ...value } : {};
 
         if (this.isConnected) this.initLabels();
+    }
+
+    /**
+     * Event occurrence object this component is based on. The object is used to make sure the changes made in the scheduler are taken into account, even without a re-render.
+     *
+     * @type {object}
+     * @public
+     * @required
+     */
+    @api
+    get occurrence() {
+        return this._occurrence;
+    }
+    set occurrence(value) {
+        this._occurrence = typeof value === 'object' ? value : {};
     }
 
     /**
@@ -353,6 +323,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      *
      * @type {string}
      * @public
+     * @required
      */
     @api
     get rowKey() {
@@ -381,6 +352,30 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
+     * Width of the scheduler datatable column. It is used as an offset by the sticky labels.
+     *
+     * @type {number}
+     * @public
+     * @default 0
+     */
+    @api
+    get scrollLeftOffset() {
+        return this._scrollLeftOffset;
+    }
+    set scrollLeftOffset(value) {
+        this._scrollLeftOffset = !isNaN(Number(value)) ? Number(value) : 0;
+
+        const stickyLabel = this.template.querySelector(
+            '.avonni-scheduler__event-label_center'
+        );
+        if (stickyLabel) {
+            stickyLabel.style.left = `${
+                this.scrollLeftOffset - this._x - this._offsetX
+            }px`;
+        }
+    }
+
+    /**
      * Title of the occurrence.
      *
      * @type {string}
@@ -394,6 +389,22 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         this._title = value;
 
         if (this.isConnected) this.initLabels();
+    }
+
+    /**
+     * End date of the occurrence.
+     *
+     * @type {DateTime}
+     * @public
+     * @required
+     */
+    @api
+    get to() {
+        return this._to;
+    }
+    set to(value) {
+        this._to =
+            value instanceof DateTime ? value : dateTimeObjectFrom(value);
     }
 
     /**
@@ -463,11 +474,15 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      *
      * @type {number}
      * @public
+     * @default 0
      */
     @api
     get width() {
-        const width = this.hostElement.getBoundingClientRect().width;
-        return this.leftLabelWidth + width + this.rightLabelWidth;
+        if (this.hostElement) {
+            const width = this.hostElement.getBoundingClientRect().width;
+            return this.leftLabelWidth + width + this.rightLabelWidth;
+        }
+        return 0;
     }
 
     /**
@@ -614,8 +629,8 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         );
         if (isHex) {
             return isHex[0].length === 4
-                ? `${isHex[0]}${isHex[1]}30`
-                : `${isHex[0]}30`;
+                ? `${isHex[0]}${isHex[1]}50`
+                : `${isHex[0]}50`;
         }
         const isRGB = this.computedColor.match(
             /rgb\(([0-9]+,\s?[0-9]+,\s?[0-9]+)\)/
