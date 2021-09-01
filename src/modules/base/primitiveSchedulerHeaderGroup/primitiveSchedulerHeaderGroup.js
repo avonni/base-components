@@ -461,6 +461,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         // On next render, reset the cells calculation
         this._cellWidth = undefined;
         this._numberOfVisibleCells = undefined;
+        this._previousStartTimes = [];
 
         /**
          * The event fired when new headers are created.
