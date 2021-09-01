@@ -115,8 +115,9 @@ export default class SchedulerHeader {
      * Create the header columns.
      *
      * @param {DateTime} startDate Starting date of the header.
+     * @param {boolean} firstRender If true, this is the first render of the header. Only one column will be created.
      */
-    initColumns(startDate, firstRender) {
+    initColumns(startDate, firstRender = false) {
         const { unit, label, span, isReference } = this;
         let iterations = this.computeNumberOfColumns(firstRender);
         this.columns = [];
@@ -171,7 +172,6 @@ export default class SchedulerHeader {
                 );
                 this.numberOfColumns =
                     numberOfUnitsBetweenDates(unit, date, pushedEnd) / span;
-                iterations = this.computeNumberOfColumns(firstRender);
             }
 
             // Compensate the fact that luxon weeks start on Monday
@@ -206,10 +206,10 @@ export default class SchedulerHeader {
 
         if (firstRender) {
             this.start = DateTime.fromMillis(this.columns[0].start);
+        } else {
+            this.setHeaderEnd();
+            this.cleanEmptyLastColumn();
         }
-
-        this.setHeaderEnd();
-        this.cleanEmptyLastColumn();
     }
 
     /**
@@ -316,15 +316,21 @@ export default class SchedulerHeader {
                 end = end.set({ days: start.day - 1 });
             }
             if (unit === 'week') {
-                if (end.weekday === 7 && start.weekday === 1) {
+                if (start.weekday === 1) {
                     end = addToDate(end, 'day', 1);
                 }
                 end = end.set({ weekday: start.weekday - 1 });
             }
+            if (unit === 'day') {
+                end = end.set({ hours: start.hour - 1 });
+            }
+            if (unit === 'hour') {
+                end = end.set({ minutes: start.minute - 1 });
+            }
 
             lastColumn.end = end.ts;
             this._end = end;
-        } else {
+        } else if (lastColumn.end > this.end) {
             lastColumn.end = this.end.ts;
         }
     }
@@ -336,10 +342,10 @@ export default class SchedulerHeader {
      * @param {object[]} smallestColumns Array containing the columns of the smallest unit header.
      */
     computeColumnWidths(cellWidth, smallestColumns) {
-        const { isReference, columns, unit, span } = this;
+        const { columns, unit, span } = this;
         const columnWidths = [];
 
-        if (isReference) {
+        if (this.columns === smallestColumns) {
             // The columns of the header with the shortest unit all have the same width
             columns.forEach(() => {
                 columnWidths.push(cellWidth);

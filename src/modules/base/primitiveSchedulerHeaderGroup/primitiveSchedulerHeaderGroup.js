@@ -310,8 +310,17 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         [...this.computedHeaders].reverse().forEach((header) => {
             if (header !== this.smallestHeader) {
                 const lastIndex = this.smallestHeader.columns.length - 1;
-                header.end = this.smallestHeader.columns[lastIndex].end;
+                const lastColumn = this.smallestHeader.columns[lastIndex];
+                const lastColumnStart = dateTimeObjectFrom(lastColumn.start);
+                const lastColumnEnd =
+                    addToDate(
+                        lastColumnStart,
+                        this.smallestHeader.unit,
+                        this.smallestHeader.span
+                    ) - 1;
+                header.end = lastColumnEnd;
             }
+
             header.initColumns(startTime);
             header.computeColumnWidths(
                 this._cellWidth,
@@ -427,8 +436,6 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
             // Update the reference end if the current header ended before the reference
             if (headerObject.end < reference.end) {
                 reference.end = headerObject.end;
-            } else {
-                headerObject.end = reference.end;
             }
         });
 
