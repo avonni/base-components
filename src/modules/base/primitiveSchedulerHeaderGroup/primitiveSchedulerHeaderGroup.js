@@ -71,6 +71,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     _availableMonths = DEFAULT_AVAILABLE_MONTHS;
     _availableTimeFrames = DEFAULT_AVAILABLE_TIME_FRAMES;
     _headers = DEFAULT_HEADERS;
+    _scrollLeftOffset = 0;
     _start = DEFAULT_START_DATE;
     _timeSpan = DEFAULT_TIME_SPAN;
 
@@ -132,6 +133,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         }
 
         this.updateCellsWidths();
+        this.updateStickyLabels();
     }
 
     /**
@@ -192,6 +194,21 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     set headers(value) {
         this._headers = normalizeArray(value);
         if (this.isConnected) this.initHeaders();
+    }
+
+    /**
+     * Scrolling offset, used to push the border the labels need to stick to when scrolling right.
+     *
+     * @type {number}
+     * @public
+     */
+    @api
+    get scrollLeftOffset() {
+        return this._scrollLeftOffset;
+    }
+    set scrollLeftOffset(value) {
+        this._scrollLeftOffset = !isNaN(Number(value)) ? Number(value) : 0;
+        this.updateStickyLabels();
     }
 
     /**
@@ -483,6 +500,20 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
                 cell.style = `--avonni-scheduler-cell-width: ${header.columnWidths[index]}px`;
             });
         });
+    }
+
+    /**
+     * Set the left position of the sticky labels.
+     */
+    updateStickyLabels() {
+        const stickyLabel = this.template.querySelectorAll(
+            '.avonni-scheduler__header-label_sticky'
+        );
+        if (stickyLabel.length) {
+            stickyLabel.forEach((label) => {
+                label.style.left = `${this.scrollLeftOffset}px`;
+            });
+        }
     }
 
     /**

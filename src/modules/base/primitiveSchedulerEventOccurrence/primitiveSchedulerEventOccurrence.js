@@ -130,15 +130,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         this.updatePosition();
         this.updateWidth();
         this.updateHeight();
-
-        const stickyLabel = this.template.querySelector(
-            '.avonni-scheduler__event-label_center'
-        );
-        if (stickyLabel) {
-            stickyLabel.style.left = `${
-                this.scrollLeftOffset - this._x - this._offsetX
-            }px`;
-        }
+        this.updateStickyLabels();
     }
 
     render() {
@@ -364,15 +356,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
     set scrollLeftOffset(value) {
         this._scrollLeftOffset = !isNaN(Number(value)) ? Number(value) : 0;
-
-        const stickyLabel = this.template.querySelector(
-            '.avonni-scheduler__event-label_center'
-        );
-        if (stickyLabel) {
-            stickyLabel.style.left = `${
-                this.scrollLeftOffset - this._x - this._offsetX
-            }px`;
-        }
+        this.updateStickyLabels();
     }
 
     /**
@@ -798,6 +782,20 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                 const height = row.height;
                 element.style.height = `${height}px`;
             }
+        }
+    }
+
+    /**
+     * Set the left position of the sticky label.
+     */
+    updateStickyLabels() {
+        const stickyLabel = this.template.querySelector(
+            '.avonni-scheduler__event-label_center'
+        );
+        if (stickyLabel) {
+            stickyLabel.style.left = `${
+                this.scrollLeftOffset - this._x - this._offsetX
+            }px`;
         }
     }
 
