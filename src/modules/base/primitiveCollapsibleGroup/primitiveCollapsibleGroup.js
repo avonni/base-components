@@ -100,7 +100,7 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
     _size;
 
     renderedCallback() {
-        this.setSectionPaddingLeft();
+        this.sectionPaddingLeft();
         this.sectionWidth();
     }
 
@@ -134,6 +134,11 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
             .toString();
     }
 
+    /**
+     * Computed slot section class styling.
+     *
+     * @type {string}
+     */
     get slotSection() {
         return classSet('avonni-primitive-collapsible-group__section')
             .add({ 'slds-hide': this.closed })
@@ -157,12 +162,15 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
     }
 
     /**
-     * Set padding left for section title depending on the level.
+     * Sets padding left for section title depending on the level.
      */
-    setSectionPaddingLeft() {
+    sectionPaddingLeft() {
         this.section.style.paddingLeft = `${this.level}rem`;
     }
 
+    /**
+     * Sets the width of the section depending on the width of the header datatable.
+     */
     sectionWidth() {
         this.template.querySelectorAll('.slds-section').forEach((section) => {
             section.style.width = `${this.tableWidth}px`;

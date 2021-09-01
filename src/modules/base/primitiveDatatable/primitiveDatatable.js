@@ -285,8 +285,6 @@ export default class PrimitiveDatatable extends LightningDatatable {
     };
 
     // Normalization of primitive datatable attributes
-    @api groupBy;
-
     @api
     get columnWidthsMode() {
         return super.columnWidthsMode;
@@ -646,7 +644,6 @@ export default class PrimitiveDatatable extends LightningDatatable {
 
     /**
      * Table initialization for every primitive-datatable.
-     *
      */
     tablesInitialization() {
         this.columnsWidthWithoutHeader();
@@ -687,6 +684,11 @@ export default class PrimitiveDatatable extends LightningDatatable {
         }
     }
 
+    /**
+     * Formatting of data for dispatching event cellchange.
+     *
+     * @param {event} event
+     */
     handleEditCell = (event) => {
         event.stopPropagation();
 

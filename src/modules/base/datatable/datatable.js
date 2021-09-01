@@ -61,6 +61,13 @@ export default class Datatable extends LightningElement {
     @api columnWidthsMode;
 
     /**
+     * The current values per row that are provided during inline edit.
+     * @public
+     * @type {string[]}
+     */
+    @api draftValues;
+
+    /**
      * Specifies the default sorting direction on an unsorted column.
      * Valid options include 'asc' and 'desc'.
      * The default is 'asc' for sorting in ascending order.
@@ -238,8 +245,8 @@ export default class Datatable extends LightningElement {
     @api wrapTextMaxLines;
 
     _columns;
-    _draftValues;
     _records;
+    _groupBy;
     _hideUndefinedGroup;
     _hideCollapsibleIcon;
     _showStatusBar = false;
@@ -328,27 +335,10 @@ export default class Datatable extends LightningElement {
         this._hideCollapsibleIcon = normalizeBoolean(value);
     }
 
-    /**
-     * The current values per row that are provided during inline edit.
-     * @public
-     * @type {string[]}
-     */
-    @api
-    get draftValues() {
-        return this._draftValues;
-    }
-    set draftValues(value) {
-        this._draftValues = normalizeArray(value);
-    }
-
     connectedCallback() {
         this.addEventListener('cellchange', () => {
             this._showStatusBar = true;
             this._hasDraftValues = true;
-        });
-
-        this.addEventListener('cellchangegroupby', (event) => {
-            this._draftValues = event.detail;
         });
 
         this.addEventListener('resize', (event) => {
@@ -361,6 +351,12 @@ export default class Datatable extends LightningElement {
         this.bottomTableInitialization();
     }
 
+    /**
+     * Handle the event to notify the parent of the child component.
+     * A globally unique Id is required for the parent component to work with its child components.
+     *
+     * @param {event} event
+     */
     handleChildRegister(event) {
         const item = event.detail;
 
@@ -395,6 +391,11 @@ export default class Datatable extends LightningElement {
         item.callbacks.registerDisconnectCallback(this.handleChildUnregister);
     }
 
+    /**
+     * Handle the event to notify the parent that the child is no longer available.
+     *
+     * @param {event} event
+     */
     handleChildUnregister(event) {
         const item = event.detail;
         const guid = item.guid;
@@ -731,8 +732,6 @@ export default class Datatable extends LightningElement {
         if (!this.hasGroupBy) {
             this.primitiveUngroupedDatatable.cancel(event);
         }
-
-        this._draftValues = [];
 
         this.dispatchEvent(new CustomEvent('statusbarcancel'));
     }
