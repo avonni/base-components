@@ -41,6 +41,7 @@ export default class ProgressGroupByItem extends LightningElement {
     @api draftValues;
     @api enableInfiniteLoading;
     @api errors;
+    @api groupBy;
     @api hideCheckboxColumn;
     @api hideCollapsibleIcon;
     @api hideTableHeader;
@@ -98,7 +99,6 @@ export default class ProgressGroupByItem extends LightningElement {
 
         this.dispatchEvent(itemregister);
 
-        // Those two events makes sure the row selection and the changes on the table are saved whem we open and close the collapsible group.
         this.addEventListener('rowselection', () => {
             const selectedRowsArray = [];
             this.primitiveGroupByDatatables.forEach((datatable) => {
@@ -148,6 +148,10 @@ export default class ProgressGroupByItem extends LightningElement {
         return this.template.querySelectorAll('c-primitive-group-by-item');
     }
 
+    get primitiveCollapsibleGroups() {
+        return this.template.querySelectorAll('c-primitive-collapsible-group');
+    }
+
     /**
      * Returns all the primitive grouped datatables.
      *
@@ -159,11 +163,6 @@ export default class ProgressGroupByItem extends LightningElement {
         );
     }
 
-    /**
-     * Verifies if one of the column is editable or not.
-     *
-     * @type {boolean}
-     */
     get columnsEditable() {
         let columnsEditable = [];
         columnsEditable = this.columns.map((column) => {
@@ -172,11 +171,6 @@ export default class ProgressGroupByItem extends LightningElement {
         return columnsEditable.filter(Boolean).length > 0;
     }
 
-    /**
-     * Returns true if on column is editable or showRowNumberColumn is true.
-     *
-     * @type {boolean}
-     */
     get showRowNumberColumnOrEditable() {
         return this.showRowNumberColumn || this.columnsEditable;
     }

@@ -285,6 +285,8 @@ export default class PrimitiveDatatable extends LightningDatatable {
     };
 
     // Normalization of primitive datatable attributes
+    @api groupBy;
+
     @api
     get columnWidthsMode() {
         return super.columnWidthsMode;
@@ -720,6 +722,54 @@ export default class PrimitiveDatatable extends LightningDatatable {
         }
     }
 
+    handleEditCell = (event) => {
+        event.stopPropagation();
+
+        const { colKeyValue, rowKeyValue, value } = event.detail;
+        const dirtyValues = this.state.inlineEdit.dirtyValues;
+
+        // If no values have been edited in the row yet,
+        // create the row object in the state dirty values
+        if (!dirtyValues[rowKeyValue]) {
+            dirtyValues[rowKeyValue] = {};
+        }
+
+        // Add the new cell value to the state dirty values
+        dirtyValues[rowKeyValue][colKeyValue] = value;
+
+        const cellChange = { [rowKeyValue]: { [colKeyValue]: value } };
+
+        this.dispatchEvent(
+            new CustomEvent('cellchange', {
+                detail: {
+                    draftValues: this.getChangesForCustomer(
+                        this.state,
+                        cellChange
+                    )
+                }
+            })
+        );
+        // Show yellow background and save/cancel button
+        super.updateRowsState(this.state);
+    };
+
+    /**
+     * Dispatches event from the lighnting-datatable.
+     *
+     * @param {event} event
+     */
+    handleDispatchEvents(event) {
+        event.stopPropagation();
+        this.dispatchEvent(
+            new CustomEvent(`${event.detail.type}`, {
+                detail: event.detail.detail,
+                bubbles: event.detail.bubbles,
+                composed: event.detail.composed,
+                cancelable: event.detail.cancelable
+            })
+        );
+    }
+
     /**
      *
      * @param {Object} state - Datatable state.
@@ -760,42 +810,6 @@ export default class PrimitiveDatatable extends LightningDatatable {
     }
 
     /**
-     * Formatting of data for dispatching event cellchange.
-     *
-     * @param {event} event
-     */
-    handleEditCell(event) {
-        event.stopPropagation();
-
-        const { colKeyValue, rowKeyValue, value } = event.detail;
-        const dirtyValues = this.state.inlineEdit.dirtyValues;
-
-        // If no values have been edited in the row yet,
-        // create the row object in the state dirty values
-        if (!dirtyValues[rowKeyValue]) {
-            dirtyValues[rowKeyValue] = {};
-        }
-
-        // Add the new cell value to the state dirty values
-        dirtyValues[rowKeyValue][colKeyValue] = value;
-
-        const cellChange = { [rowKeyValue]: { [colKeyValue]: value } };
-
-        this.dispatchEvent(
-            new CustomEvent('cellchange', {
-                detail: {
-                    draftValues: this.getChangesForCustomer(
-                        this.state,
-                        cellChange
-                    )
-                }
-            })
-        );
-        // Show yellow background and save/cancel button
-        super.updateRowsState(this.state);
-    }
-
-    /**
      * Calls the save method of the lightning-datatable.
      *
      * @param {event} event
@@ -833,22 +847,5 @@ export default class PrimitiveDatatable extends LightningDatatable {
     @api
     handleSelectionCellClick(event) {
         super.handleSelectionCellClick(event);
-    }
-
-    /**
-     * Dispatches event from the lighnting-datatable.
-     *
-     * @param {event} event
-     */
-    handleDispatchEvents(event) {
-        event.stopPropagation();
-        this.dispatchEvent(
-            new CustomEvent(`${event.detail.type}`, {
-                detail: event.detail.detail,
-                bubbles: event.detail.bubbles,
-                composed: event.detail.composed,
-                cancelable: event.detail.cancelable
-            })
-        );
     }
 }
