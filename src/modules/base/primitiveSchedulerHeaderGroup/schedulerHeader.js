@@ -321,10 +321,10 @@ export default class SchedulerHeader {
                 }
                 end = end.set({ weekday: start.weekday - 1 });
             }
-            if (unit === 'day') {
+            if (unit === 'day' && start.hour !== 0) {
                 end = end.set({ hours: start.hour - 1 });
             }
-            if (unit === 'hour') {
+            if (unit === 'hour' && start.minute !== 0) {
                 end = end.set({ minutes: start.minute - 1 });
             }
 
