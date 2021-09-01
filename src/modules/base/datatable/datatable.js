@@ -435,14 +435,6 @@ export default class Datatable extends LightningElement {
         );
     }
 
-    get headerColumnsWidth() {
-        let headerColumnsWidths = [];
-        if (this.primitiveHeaderDatatable) {
-            headerColumnsWidths = this.primitiveHeaderDatatable.columnsWidthWithHeader();
-        }
-        return headerColumnsWidths;
-    }
-
     /**
      * Checks if there is a group-by.
      *
