@@ -591,8 +591,8 @@ export default class PrimitiveDatatable extends LightningDatatable {
             'c-primitive-datatable[data-role="ungrouped"] .slds-table_header-fixed_container'
         );
 
-        const ungroupedDatatableHeader = this.template.querySelector(
-            'c-primitive-datatable[data-role="ungrouped"] .slds-table_header-fixed_container thead'
+        const headerDatatable = this.template.querySelector(
+            'c-primitive-datatable[data-role="header"] .slds-table_header-fixed_container'
         );
 
         const groupedDatatables = this.template.querySelectorAll(
@@ -603,14 +603,12 @@ export default class PrimitiveDatatable extends LightningDatatable {
             'c-primitive-datatable[data-role="grouped"] .slds-table_header-fixed_container thead'
         );
 
-        if (ungroupedDatatable) {
-            if (this.hideTableHeader) {
+        if (this.hideTableHeader) {
+            if (ungroupedDatatable) {
                 ungroupedDatatable.style.paddingTop = '0px';
             }
-
-            if (this.groupBy) {
-                ungroupedDatatable.style.paddingTop = '0px';
-                ungroupedDatatableHeader.style.visibility = 'hidden';
+            if (headerDatatable) {
+                headerDatatable.style.paddingTop = '0px';
             }
         }
 

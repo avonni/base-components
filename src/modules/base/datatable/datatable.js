@@ -344,6 +344,17 @@ export default class Datatable extends LightningElement {
         this.addEventListener('resize', (event) => {
             this._columnsWidth = event.detail.columnWidths;
             this.tableResize();
+            this.updateTableWidth();
+            this.datatableColumnsWidth();
+            this.updateColumnStyle();
+        });
+
+        window.addEventListener('resize', () => {
+            if (this.allowSummarize) {
+                this.tableResize();
+                this.datatableColumnsWidth();
+                this.updateColumnStyle();
+            }
         });
     }
 
@@ -423,6 +434,10 @@ export default class Datatable extends LightningElement {
         return this.template.querySelector(
             'c-primitive-datatable[data-role="header"]'
         );
+    }
+
+    get primitiveGroupByItem() {
+        return this.template.querySelector('c-primitive-group-by-item');
     }
 
     get headerColumnsWidth() {
@@ -546,10 +561,12 @@ export default class Datatable extends LightningElement {
             this._columnsWidth = !this.hideTableHeader
                 ? this.primitiveUngroupedDatatable.columnsWidthWithHeader()
                 : this.primitiveUngroupedDatatable.columnsWidthWithoutHeader();
-        } else {
+        } else if (this.hasGroupBy) {
             this._columnsWidth = !this.hideTableHeader
                 ? this.primitiveHeaderDatatable.columnsWidthWithHeader()
-                : this.primitiveHeaderDatatable.columnsWidthWithoutHeader();
+                : this.primitiveGroupByItem
+                      .recursivePrimitiveGroupByDatatable()
+                      .columnsWidthWithoutHeader();
         }
     }
 
@@ -628,7 +645,7 @@ export default class Datatable extends LightningElement {
             if (table) {
                 table.style.width = `${this.tableWidth}px`;
             }
-        } else {
+        } else if (this.hasGroupBy) {
             this.tableWidth = this.primitiveHeaderDatatable.tableWidth();
             const tables = this.template.querySelectorAll('table');
             if (tables) {

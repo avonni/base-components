@@ -127,6 +127,25 @@ export default class ProgressGroupByItem extends LightningElement {
         );
     }
 
+    get primitiveGroupByDatatable() {
+        return this.template.querySelector(
+            'c-primitive-datatable[data-role="grouped"]'
+        );
+    }
+
+    @api
+    recursivePrimitiveGroupByDatatable() {
+        let datatable = this.template.querySelector(
+            'c-primitive-datatable[data-role="grouped"]'
+        );
+        if (datatable) {
+            return datatable;
+        }
+        return this.template
+            .querySelector('c-primitive-group-by-item')
+            .recursivePrimitiveGroupByDatatable();
+    }
+
     /**
      * Verifies if one of the column is editable or not.
      *
