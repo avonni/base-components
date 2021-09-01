@@ -59,6 +59,7 @@ export default class ProgressGroupByItem extends LightningElement {
     @api sortedDirection;
     @api tableWidth;
     @api wrapTextMaxLines;
+    @api headerColumnsWidth;
 
     _records;
     _selectedRows;
