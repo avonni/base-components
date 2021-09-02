@@ -563,19 +563,24 @@ export default class PrimitiveDatatable extends LightningDatatable {
      * Gets the columns width of the datatable if hide-table-header is true.
      */
     @api
-    columnsWidthWithoutHeader() {
-        let columnsWidthWithoutHeader = [];
-        const row = this.template.querySelector('tbody > tr');
-
-        if (row) {
-            const data = Array.from(row.querySelectorAll('td, th'));
-
-            columnsWidthWithoutHeader = data.map((cell) => {
-                return cell.offsetWidth;
-            });
+    columnsWidthCalculation() {
+        // when hide-table-header is true, all columns widths are equal.
+        const value =
+            super.widthsData.tableWidth / super.widthsData.columnWidths.length;
+        const length = super.widthsData.columnWidths.length;
+        let arr = [];
+        for (let i = 0; i < length; i++) {
+            arr.push(value);
         }
+        return arr;
+    }
 
-        return columnsWidthWithoutHeader;
+    /**
+     * Gets the width of the datatable.
+     */
+    @api
+    tableWidth() {
+        return JSON.parse(JSON.stringify(super.widthsData.tableWidth));
     }
 
     /**
@@ -595,14 +600,6 @@ export default class PrimitiveDatatable extends LightningDatatable {
     @api
     isDatatableEditable() {
         return this._columnsEditable.filter(Boolean).length;
-    }
-
-    /**
-     * Gets the width of the datatable.
-     */
-    @api
-    tableWidth() {
-        return JSON.parse(JSON.stringify(super.widthsData.tableWidth));
     }
 
     /**
@@ -680,11 +677,9 @@ export default class PrimitiveDatatable extends LightningDatatable {
      * Table initialization for every primitive-datatable.
      */
     tablesInitialization() {
-        this.columnsWidthWithoutHeader();
-        this.columnsWidthWithHeader();
         this.hideTableHeaderPadding();
-        this.unscrollableDatatables();
         this.headerDatatableStyling();
+        this.unscrollableDatatables();
     }
 
     /**

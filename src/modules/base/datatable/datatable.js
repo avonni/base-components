@@ -346,7 +346,6 @@ export default class Datatable extends LightningElement {
             this.tableResize();
             this.updateTableWidth();
             this.datatableColumnsWidth();
-            this.updateColumnStyle();
         });
 
         window.addEventListener('resize', () => {
@@ -549,7 +548,7 @@ export default class Datatable extends LightningElement {
      * Resize of the bottom datatable when the primitive-datatable is resized.
      */
     tableResize() {
-        this.updateColumnStyle();
+        this.updateColumnStyleResize();
         this.updateTableWidth();
     }
 
@@ -560,13 +559,11 @@ export default class Datatable extends LightningElement {
         if (!this.hasGroupBy) {
             this._columnsWidth = !this.hideTableHeader
                 ? this.ungroupedDatatable.columnsWidthWithHeader()
-                : this.ungroupedDatatable.columnsWidthWithoutHeader();
+                : this.ungroupedDatatable.columnsWidthCalculation();
         } else if (this.hasGroupBy) {
             this._columnsWidth = !this.hideTableHeader
                 ? this.headerDatatable.columnsWidthWithHeader()
-                : this.groupByItem
-                      .recursivePrimitiveGroupByDatatable()
-                      .columnsWidthWithoutHeader();
+                : this.headerDatatable.columnsWidthCalculation();
         }
     }
 
@@ -615,6 +612,24 @@ export default class Datatable extends LightningElement {
                 }
             });
         });
+    }
+
+    /**
+     * Calls the updateColumnStyle method on resize.
+     */
+    updateColumnStyleResize() {
+        // on resize, it doesn't take in consideration the first column which is always 52 px.
+        // and 32 px for the checkbox column
+        if (this.isDatatableEditable) {
+            if (!this.hideCheckboxColumn) {
+                this._columnsWidth.unshift(52, 32);
+            } else this._columnsWidth.unshift(52);
+        } else {
+            if (!this.hideCheckboxColumn && !this.hideTableHeader) {
+                this._columnsWidth.unshift(32);
+            }
+        }
+        this.updateColumnStyle();
     }
 
     /**
