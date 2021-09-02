@@ -81,6 +81,7 @@ export default class Scheduler extends LightningElement {
     _customHeaders = [];
     _dateFormat = DEFAULT_DATE_FORMAT;
     _disabledDatesTimes = [];
+    _events = [];
     _eventsLabels = DEFAULT_EVENTS_LABELS;
     _eventsPalette = EVENTS_PALETTES.default;
     _eventsTheme = EVENTS_THEMES.default;

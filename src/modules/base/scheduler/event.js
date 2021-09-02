@@ -39,8 +39,12 @@ import {
     dateTimeObjectFrom
 } from 'c/utilsPrivate';
 import { generateUniqueId } from 'c/utils';
-import { DateTime } from 'c/luxon';
+import { DateTime, Interval } from 'c/luxon';
 import {
+    DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
+    DEFAULT_AVAILABLE_MONTHS,
+    DEFAULT_AVAILABLE_TIME_FRAMES,
+    DEFAULT_EVENTS_LABELS,
     RECURRENCES,
     EVENTS_THEMES,
     REFERENCE_LINE_VARIANTS
@@ -84,11 +88,11 @@ import {
  *
  * @param {boolean} referenceLine If true, the event will be displayed as a reference line. Defaults to false.
  *
- * @param {DateTime} schedulerEnd Ending date of the scheduler.
+ * @param {DateTime} schedulerEnd Required for recurring events. Ending date of the scheduler.
  *
  * @param {DateTime} schedulerStart Starting date of the scheduler.
  *
- * @param {SchedulerHeader} smallestHeader Scheduler header with the smallest unit.
+ * @param {SchedulerHeader} smallestHeader Required. Scheduler header with the smallest unit.
  *
  * @param {string} theme Custom theme for the event. If present, it will overwrite the default event theme. Valid values include default, transparent, line, hollow and rounded.
  *
@@ -106,12 +110,21 @@ export default class SchedulerEvent {
 
         this.key = generateUniqueId();
         this._allDay = normalizeBoolean(props.allDay);
-        this.availableMonths = props.availableMonths;
-        this.availableDaysOfTheWeek = props.availableDaysOfTheWeek;
-        this.availableTimeFrames = props.availableTimeFrames;
+        this.availableMonths = normalizeArray(props.availableMonths).length
+            ? normalizeArray(props.availableMonths)
+            : DEFAULT_AVAILABLE_MONTHS;
+        this.availableDaysOfTheWeek = normalizeArray(
+            props.availableDaysOfTheWeek
+        ).length
+            ? normalizeArray(props.availableDaysOfTheWeek)
+            : DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
+        this.availableTimeFrames = normalizeArray(props.availableTimeFrames)
+            .length
+            ? normalizeArray(props.availableTimeFrames)
+            : DEFAULT_AVAILABLE_TIME_FRAMES;
         this.color = props.color;
         this.data = props.data;
-        this.disabled = props.disabled;
+        this.disabled = normalizeBoolean(props.disabled);
         this._schedulerEnd = props.schedulerEnd;
         this._schedulerStart = props.schedulerStart;
         this.smallestHeader = props.smallestHeader;
@@ -119,8 +132,8 @@ export default class SchedulerEvent {
         this._to = dateTimeObjectFrom(props.to);
         this.iconName = props.iconName;
         this.keyFields = props.keyFields;
-        this.labels = props.labels;
-        this.referenceLine = props.referenceLine;
+        this.labels = props.labels || DEFAULT_EVENTS_LABELS;
+        this.referenceLine = normalizeBoolean(props.referenceLine);
 
         if (recurrence) {
             this.recurrence = recurrence;
@@ -440,7 +453,7 @@ export default class SchedulerEvent {
                           )
                         : [];
 
-                let weekdayIndex = 0;
+                let weekdayIndex;
                 if (weekdays.length) {
                     // Transform 0 into 7 because Luxon's week start on Monday = 1 instead of Sunday = 0
                     const sundayIndex = weekdays.findIndex((day) => day === 0);
@@ -450,11 +463,24 @@ export default class SchedulerEvent {
                     weekdays.sort();
 
                     // Set the starting week day
-                    for (let i = 0; i < weekdays.length; i++) {
-                        date = from.set({ weekday: weekdays[i] });
-                        if (date >= from) {
-                            weekdayIndex = i;
-                            break;
+                    let startingDate = dateTimeObjectFrom(from.ts);
+                    while (weekdayIndex === undefined) {
+                        for (let i = 0; i < weekdays.length; i++) {
+                            date = startingDate.set({ weekday: weekdays[i] });
+                            if (date >= from) {
+                                weekdayIndex = i;
+                                break;
+                            }
+                        }
+
+                        // If the first weekday is before the starting date,
+                        // go to the next week
+                        if (weekdayIndex === undefined) {
+                            startingDate = addToDate(
+                                startingDate,
+                                'week',
+                                1
+                            ).startOf('week');
                         }
                     }
                 } else {
@@ -510,8 +536,13 @@ export default class SchedulerEvent {
                         weekCount += 1;
                     }
 
+                    let to = dateTimeObjectFrom(this.to.ts);
+                    const daysDuration = Math.floor(
+                        Interval.fromDateTimes(date, to).length('days')
+                    );
+
                     while (date < end && occurrences < count) {
-                        this.addOccurrence(date);
+                        this.addOccurrence(date, to);
 
                         // Go to the next month of the recurrence
                         const startOfNextMonth = addToDate(
@@ -532,6 +563,12 @@ export default class SchedulerEvent {
                         for (let i = 1; i < weekCount; i++) {
                             date = addToDate(date, 'week', 1);
                         }
+                        // Update the end date
+                        to = addToDate(date, 'day', daysDuration);
+                        to = to.set({
+                            hours: this.to.hour,
+                            minutes: this.to.minute
+                        });
                         occurrences += 1;
                     }
 
