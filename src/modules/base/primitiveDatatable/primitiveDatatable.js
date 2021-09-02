@@ -424,6 +424,8 @@ export default class PrimitiveDatatable extends LightningDatatable {
         this.computeEditableOption();
     }
 
+    @api allowSummarize;
+
     connectedCallback() {
         super.connectedCallback();
 
@@ -515,14 +517,46 @@ export default class PrimitiveDatatable extends LightningDatatable {
     }
 
     /**
+     * Returns the primitive ungrouped datatable if there is a group-by.
+     *
+     * @type {element}
+     */
+    get ungroupedDatatable() {
+        return this.template.querySelector(
+            'c-primitive-datatable[data-role="ungrouped"] .slds-table_header-fixed_container'
+        );
+    }
+
+    /**
+     * Returns all the primitive grouped datatables.
+     *
+     * @type {Array.<nodeList>}
+     */
+    get groupedDatatables() {
+        return this.template.querySelectorAll(
+            'c-primitive-datatable[data-role="grouped"] .slds-table_header-fixed_container'
+        );
+    }
+
+    /**
+     * Returns the primitive header datatable if there is a group-by.
+     *
+     * @type {element}
+     */
+    get headerDatatable() {
+        return this.template.querySelector(
+            'c-primitive-datatable[data-role="header"] .slds-table_header-fixed_container'
+        );
+    }
+
+    /**
      * Gets the columns width of the datatable if hide-table-header is false.
      */
     @api
     columnsWidthWithHeader() {
-        this._columnsWidth = JSON.parse(
+        return JSON.parse(
             JSON.stringify(normalizeArray(super.widthsData.columnWidths))
         );
-        return this._columnsWidth;
     }
 
     /**
@@ -568,10 +602,7 @@ export default class PrimitiveDatatable extends LightningDatatable {
      */
     @api
     tableWidth() {
-        this._tableWidth = JSON.parse(
-            JSON.stringify(super.widthsData.tableWidth)
-        );
-        return this._tableWidth;
+        return JSON.parse(JSON.stringify(super.widthsData.tableWidth));
     }
 
     /**
@@ -587,33 +618,21 @@ export default class PrimitiveDatatable extends LightningDatatable {
      *
      */
     hideTableHeaderPadding() {
-        const ungroupedDatatable = this.template.querySelector(
-            'c-primitive-datatable[data-role="ungrouped"] .slds-table_header-fixed_container'
-        );
-
-        const headerDatatable = this.template.querySelector(
-            'c-primitive-datatable[data-role="header"] .slds-table_header-fixed_container'
-        );
-
-        const groupedDatatables = this.template.querySelectorAll(
-            'c-primitive-datatable[data-role="grouped"] .slds-table_header-fixed_container'
-        );
-
         const groupedDatatableHeaders = this.template.querySelectorAll(
             'c-primitive-datatable[data-role="grouped"] .slds-table_header-fixed_container thead'
         );
 
         if (this.hideTableHeader) {
-            if (ungroupedDatatable) {
-                ungroupedDatatable.style.paddingTop = '0px';
+            if (this.ungroupedDatatable) {
+                this.ungroupedDatatable.style.paddingTop = '0px';
             }
-            if (headerDatatable) {
-                headerDatatable.style.paddingTop = '0px';
+            if (this.headerDatatable) {
+                this.headerDatatable.style.paddingTop = '0px';
             }
         }
 
-        if (groupedDatatables) {
-            groupedDatatables.forEach((datatable) => {
+        if (this.groupedDatatables) {
+            this.groupedDatatables.forEach((datatable) => {
                 datatable.style.paddingTop = '0px';
             });
 
@@ -624,8 +643,7 @@ export default class PrimitiveDatatable extends LightningDatatable {
     }
 
     /**
-     * Styling for the datatable header when there is group by.
-     *
+     * Styling for the datatable header when group by.
      */
     headerDatatableStyling() {
         const headerDatatableBorder = this.template.querySelector(
@@ -634,9 +652,27 @@ export default class PrimitiveDatatable extends LightningDatatable {
         const headerDatatableTable = this.template.querySelector(
             'c-primitive-datatable[data-role="header"] tbody'
         );
+
         if (headerDatatableTable) {
             headerDatatableTable.style.display = 'none';
             headerDatatableBorder.style.borderBottom = 'none';
+        }
+    }
+
+    /**
+     * Makes the primitive datatable unscrollable to make the container scrollabale.
+     */
+    unscrollableDatatables() {
+        if (this.ungroupedDatatable) {
+            if (this.allowSummarize) {
+                this.ungroupedDatatable.style.overflowX = 'hidden';
+            }
+        }
+
+        if (this.groupedDatatables) {
+            this.groupedDatatables.forEach((datatable) => {
+                datatable.style.overflowX = 'hidden';
+            });
         }
     }
 
@@ -647,6 +683,7 @@ export default class PrimitiveDatatable extends LightningDatatable {
         this.columnsWidthWithoutHeader();
         this.columnsWidthWithHeader();
         this.hideTableHeaderPadding();
+        this.unscrollableDatatables();
         this.headerDatatableStyling();
     }
 

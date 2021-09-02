@@ -414,7 +414,8 @@ const columnsRZ = [
             disabled: { fieldName: 'ratingDisabled' }
         },
         editable: true,
-        initialWidth: 200
+        initialWidth: 200,
+        summarizeTypes: ['average']
     },
     {
         label: 'Slider',

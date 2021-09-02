@@ -43,29 +43,6 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
     @api title;
 
     /**
-     * The value is the number of levels deep it is nested to indicate the distinct grouping is nested within.
-     *
-     * @type {number}
-     */
-    @api level;
-
-    /**
-     * Size of the group displayed.
-     *
-     * @type {number}
-     */
-    @api
-    get size() {
-        return this._size;
-    }
-
-    set size(value) {
-        this._size = typeof value === 'number' ? value : parseInt(value, 10);
-    }
-
-    @api tableWidth;
-
-    /**
      * If present, close the section.
      *
      * @type {boolean}
@@ -95,9 +72,54 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
         this._collapsible = normalizeBoolean(!value);
     }
 
+    /**
+     * The value is the number of levels deep it is nested to indicate the distinct grouping is nested within.
+     *
+     * @type {number}
+     */
+    @api
+    get level() {
+        return this._level;
+    }
+
+    set level(value) {
+        this._level = typeof value === 'number' ? value : parseInt(value, 10);
+    }
+
+    /**
+     * Size of the group displayed.
+     *
+     * @type {number}
+     */
+    @api
+    get size() {
+        return this._size;
+    }
+
+    set size(value) {
+        this._size = typeof value === 'number' ? value : parseInt(value, 10);
+    }
+
+    /**
+     * Width of the main datatable.
+     *
+     * @type {number}
+     */
+    @api
+    get tableWidth() {
+        return this._tableWidth;
+    }
+
+    set tableWidth(value) {
+        this._tableWidth =
+            typeof value === 'number' ? value : parseInt(value, 10);
+    }
+
     _closed = false;
     _collapsible = false;
+    _level;
     _size;
+    _tableWidth;
 
     renderedCallback() {
         this.sectionPaddingLeft();
@@ -112,9 +134,9 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
     get sectionClass() {
         return classSet('slds-section')
             .add({
-                'slds-is-open': !this.collapsible || !this.closed,
+                'slds-is-open': !this._collapsible || !this._closed,
                 'avonni-primitive-collapsible-group__section_margin_bottom': !this
-                    .closed
+                    ._closed
             })
             .toString();
     }
@@ -129,7 +151,7 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
             'slds-section__title avonni-primitive-collapsible-group__section_padding_bottom'
         )
             .add({
-                'slds-theme_shade': !this.collapsible
+                'slds-theme_shade': !this._collapsible
             })
             .toString();
     }
@@ -141,7 +163,7 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
      */
     get slotSection() {
         return classSet('avonni-primitive-collapsible-group__section')
-            .add({ 'slds-hide': this.closed })
+            .add({ 'slds-hide': this._closed })
             .toString();
     }
 
@@ -165,7 +187,7 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
      * Sets padding left for section title depending on the level.
      */
     sectionPaddingLeft() {
-        this.section.style.paddingLeft = `${this.level}rem`;
+        this.section.style.paddingLeft = `${this._level}rem`;
     }
 
     /**
@@ -173,7 +195,7 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
      */
     sectionWidth() {
         this.template.querySelectorAll('.slds-section').forEach((section) => {
-            section.style.width = `${this.tableWidth}px`;
+            section.style.width = `${this._tableWidth}px`;
         });
     }
 }

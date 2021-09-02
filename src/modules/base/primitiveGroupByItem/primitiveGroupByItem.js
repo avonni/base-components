@@ -31,7 +31,6 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { normalizeArray } from 'c/utilsPrivate';
 import { generateUUID } from 'c/utils';
 
 export default class ProgressGroupByItem extends LightningElement {
@@ -61,16 +60,7 @@ export default class ProgressGroupByItem extends LightningElement {
     @api tableWidth;
     @api wrapTextMaxLines;
     @api headerColumnsWidth;
-
-    _records;
-
-    @api
-    get records() {
-        return this._records;
-    }
-    set records(value) {
-        this._records = JSON.parse(JSON.stringify(normalizeArray(value)));
-    }
+    @api records;
 
     guid = generateUUID();
 
@@ -99,20 +89,11 @@ export default class ProgressGroupByItem extends LightningElement {
     }
 
     /**
-     * Returns the records attribute.
-     *
-     * @type {Array}
-     */
-    get groupByRecords() {
-        return this.records;
-    }
-
-    /**
      * Returns all the primitive-group-by-item.
      *
      * @type {Element}
      */
-    get primitiveItems() {
+    get groupByItems() {
         return this.template.querySelectorAll('c-primitive-group-by-item');
     }
 
@@ -121,25 +102,19 @@ export default class ProgressGroupByItem extends LightningElement {
      *
      * @type {Array.<nodeList>}
      */
-    get primitiveGroupByDatatables() {
+    get groupedDatatables() {
         return this.template.querySelectorAll(
-            'c-primitive-datatable[data-role="grouped"]'
-        );
-    }
-
-    get primitiveGroupByDatatable() {
-        return this.template.querySelector(
             'c-primitive-datatable[data-role="grouped"]'
         );
     }
 
     @api
     recursivePrimitiveGroupByDatatable() {
-        let datatable = this.template.querySelector(
+        let groupedDatatable = this.template.querySelector(
             'c-primitive-datatable[data-role="grouped"]'
         );
-        if (datatable) {
-            return datatable;
+        if (groupedDatatable) {
+            return groupedDatatable;
         }
         return this.template
             .querySelector('c-primitive-group-by-item')
@@ -191,13 +166,13 @@ export default class ProgressGroupByItem extends LightningElement {
      */
     @api
     selectAll(event) {
-        if (this.primitiveGroupByDatatables) {
-            this.primitiveGroupByDatatables.forEach((datatable) => {
+        if (this.groupedDatatables) {
+            this.groupedDatatables.forEach((datatable) => {
                 datatable.handleSelectionCellClick(event);
             });
         }
-        if (this.primitiveItems) {
-            this.primitiveItems.forEach((primitiveItem) => {
+        if (this.groupByItems) {
+            this.groupByItems.forEach((primitiveItem) => {
                 primitiveItem.selectAll(event);
             });
         }
@@ -210,13 +185,13 @@ export default class ProgressGroupByItem extends LightningElement {
      */
     @api
     deselectAll(event) {
-        if (this.primitiveGroupByDatatables) {
-            this.primitiveGroupByDatatables.forEach((datatable) => {
+        if (this.groupedDatatables) {
+            this.groupedDatatables.forEach((datatable) => {
                 datatable.handleSelectionCellClick(event);
             });
         }
-        if (this.primitiveItems) {
-            this.primitiveItems.forEach((primitiveItem) => {
+        if (this.groupByItems) {
+            this.groupByItems.forEach((primitiveItem) => {
                 primitiveItem.deselectAll(event);
             });
         }
@@ -229,13 +204,13 @@ export default class ProgressGroupByItem extends LightningElement {
      */
     @api
     resizeAll(event) {
-        if (this.primitiveGroupByDatatables) {
-            this.primitiveGroupByDatatables.forEach((datatable) => {
+        if (this.groupedDatatables) {
+            this.groupedDatatables.forEach((datatable) => {
                 datatable.handleResizeColumn(event);
             });
         }
-        if (this.primitiveItems) {
-            this.primitiveItems.forEach((primitiveItem) => {
+        if (this.groupByItems) {
+            this.groupByItems.forEach((primitiveItem) => {
                 primitiveItem.resizeAll(event);
             });
         }
@@ -248,13 +223,13 @@ export default class ProgressGroupByItem extends LightningElement {
      */
     @api
     saveAll(event) {
-        if (this.primitiveGroupByDatatables) {
-            this.primitiveGroupByDatatables.forEach((datatable) => {
+        if (this.groupedDatatables) {
+            this.groupedDatatables.forEach((datatable) => {
                 datatable.save(event);
             });
         }
-        if (this.primitiveItems) {
-            this.primitiveItems.forEach((primitiveItem) => {
+        if (this.groupByItems) {
+            this.groupByItems.forEach((primitiveItem) => {
                 primitiveItem.saveAll(event);
             });
         }
@@ -267,13 +242,13 @@ export default class ProgressGroupByItem extends LightningElement {
      */
     @api
     cancelAll(event) {
-        if (this.primitiveGroupByDatatables) {
-            this.primitiveGroupByDatatables.forEach((datatable) => {
+        if (this.groupedDatatables) {
+            this.groupedDatatables.forEach((datatable) => {
                 datatable.cancel(event);
             });
         }
-        if (this.primitiveItems) {
-            this.primitiveItems.forEach((primitiveItem) => {
+        if (this.groupByItems) {
+            this.groupByItems.forEach((primitiveItem) => {
                 primitiveItem.cancelAll(event);
             });
         }

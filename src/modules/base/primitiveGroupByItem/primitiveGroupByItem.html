@@ -33,7 +33,7 @@
 -->
 
 <template>
-    <template for:each={groupByRecords} for:item="group">
+    <template for:each={records} for:item="group">
         <c-primitive-collapsible-group
             title={group.label}
             size={group.size}

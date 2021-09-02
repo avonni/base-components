@@ -419,7 +419,7 @@ export default class Datatable extends LightningElement {
      *
      * @type {element}
      */
-    get primitiveUngroupedDatatable() {
+    get ungroupedDatatable() {
         return this.template.querySelector(
             'c-primitive-datatable[data-role="ungrouped"]'
         );
@@ -430,20 +430,20 @@ export default class Datatable extends LightningElement {
      *
      * @type {element}
      */
-    get primitiveHeaderDatatable() {
+    get headerDatatable() {
         return this.template.querySelector(
             'c-primitive-datatable[data-role="header"]'
         );
     }
 
-    get primitiveGroupByItem() {
+    get groupByItem() {
         return this.template.querySelector('c-primitive-group-by-item');
     }
 
     get headerColumnsWidth() {
         let headerColumnsWidths = [];
-        if (this.primitiveHeaderDatatable) {
-            headerColumnsWidths = this.primitiveHeaderDatatable.columnsWidthWithHeader();
+        if (this.headerDatatable) {
+            headerColumnsWidths = this.headerDatatable.columnsWidthWithHeader();
         }
         return headerColumnsWidths;
     }
@@ -509,8 +509,8 @@ export default class Datatable extends LightningElement {
      *
      * @type {object}
      */
-    get primitiveUngroupedDatatableDraftValues() {
-        return this.primitiveUngroupedDatatable.primitiveDatatableDraftValues();
+    get ungroupedDatatableDraftValues() {
+        return this.ungroupedDatatable.primitiveDatatableDraftValues();
     }
 
     /**
@@ -549,7 +549,7 @@ export default class Datatable extends LightningElement {
      * Resize of the bottom datatable when the primitive-datatable is resized.
      */
     tableResize() {
-        this.updateColumnStyleResize();
+        this.updateColumnStyle();
         this.updateTableWidth();
     }
 
@@ -559,12 +559,12 @@ export default class Datatable extends LightningElement {
     datatableColumnsWidth() {
         if (!this.hasGroupBy) {
             this._columnsWidth = !this.hideTableHeader
-                ? this.primitiveUngroupedDatatable.columnsWidthWithHeader()
-                : this.primitiveUngroupedDatatable.columnsWidthWithoutHeader();
+                ? this.ungroupedDatatable.columnsWidthWithHeader()
+                : this.ungroupedDatatable.columnsWidthWithoutHeader();
         } else if (this.hasGroupBy) {
             this._columnsWidth = !this.hideTableHeader
-                ? this.primitiveHeaderDatatable.columnsWidthWithHeader()
-                : this.primitiveGroupByItem
+                ? this.headerDatatable.columnsWidthWithHeader()
+                : this.groupByItem
                       .recursivePrimitiveGroupByDatatable()
                       .columnsWidthWithoutHeader();
         }
@@ -575,11 +575,11 @@ export default class Datatable extends LightningElement {
      */
     datatableEditable() {
         this._columnsEditable = this.hasGroupBy
-            ? this.primitiveHeaderDatatable.columnsEditable()
-            : this.primitiveUngroupedDatatable.columnsEditable();
+            ? this.headerDatatable.columnsEditable()
+            : this.ungroupedDatatable.columnsEditable();
         this._isDatatableEditable = this.hasGroupBy
-            ? this.primitiveHeaderDatatable.isDatatableEditable()
-            : this.primitiveUngroupedDatatable.isDatatableEditable();
+            ? this.headerDatatable.isDatatableEditable()
+            : this.ungroupedDatatable.isDatatableEditable();
     }
 
     /**
@@ -587,7 +587,7 @@ export default class Datatable extends LightningElement {
      */
     primitiveDraftValues() {
         if (!this.hasGroupBy) {
-            this._hasDraftValues = this.primitiveUngroupedDatatableDraftValues.length;
+            this._hasDraftValues = this.ungroupedDatatableDraftValues.length;
             this._showStatusBar = this._hasDraftValues ? true : false;
         }
     }
@@ -602,8 +602,8 @@ export default class Datatable extends LightningElement {
             const dataCell = Array.from(row.querySelectorAll('td'));
             dataCell.forEach((cell, index) => {
                 // if column is editable, there is a button-icon which is 35 px but not on the first column.
-                cell.style.minWidth = `${this._columnsWidth[index]}px`;
                 cell.style.maxWidth = `${this._columnsWidth[index]}px`;
+                cell.style.minWidth = `${this._columnsWidth[index]}px`;
                 if (!this.hideCheckboxColumn) {
                     if (this._columnsEditable[index - 2]) {
                         cell.style.paddingRight = '35px';
@@ -618,41 +618,15 @@ export default class Datatable extends LightningElement {
     }
 
     /**
-     * Calls the updateColumnStyle method on resize.
-     */
-    updateColumnStyleResize() {
-        // on resize, it doesn't take in consideration the first column which is always 52 px.
-        // and 32 px for the checkbox column
-        if (this.isDatatableEditable) {
-            if (!this.hideCheckboxColumn) {
-                this._columnsWidth.unshift(52, 32);
-            } else this._columnsWidth.unshift(52);
-        } else {
-            if (!this.hideCheckboxColumn && !this.hideTableHeader) {
-                this._columnsWidth.unshift(32);
-            }
-        }
-        this.updateColumnStyle();
-    }
-
-    /**
      * Updates the table width base on the width of the primitive datatable on initialization and on resize.
      */
     updateTableWidth() {
-        if (!this.hasGroupBy) {
-            this.tableWidth = this.primitiveUngroupedDatatable.tableWidth();
-            const table = this.template.querySelector('table');
-            if (table) {
-                table.style.width = `${this.tableWidth}px`;
-            }
-        } else if (this.hasGroupBy) {
-            this.tableWidth = this.primitiveHeaderDatatable.tableWidth();
-            const tables = this.template.querySelectorAll('table');
-            if (tables) {
-                tables.forEach((table) => {
-                    table.style.width = `${this.tableWidth}px`;
-                });
-            }
+        const table = this.template.querySelector('table');
+        this.tableWidth = !this.hasGroupBy
+            ? this.ungroupedDatatable.tableWidth()
+            : this.headerDatatable.tableWidth();
+        if (table) {
+            table.style.width = `${this.tableWidth}px`;
         }
     }
 
@@ -747,7 +721,7 @@ export default class Datatable extends LightningElement {
          * @cancelable
          */
         if (!this.hasGroupBy) {
-            this.primitiveUngroupedDatatable.cancel(event);
+            this.ungroupedDatatable.cancel(event);
         }
 
         this.dispatchEvent(new CustomEvent('statusbarcancel'));
@@ -768,7 +742,7 @@ export default class Datatable extends LightningElement {
          * @public
          */
         if (!this.hasGroupBy) {
-            this.primitiveUngroupedDatatable.save(event);
+            this.ungroupedDatatable.save(event);
         }
 
         this.dispatchEvent(new CustomEvent('statusbarsave'));
