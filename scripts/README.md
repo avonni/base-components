@@ -1,8 +1,9 @@
 # Bash script for the sync base-components and base-components-sfdx repositories
+
 ### Before run script need to be updated:
 
-* baseComponentsPath attribute as exemple: /Users/Documents/AVONNI/base-components/src/modules/base
-* baseComponentsSfdxPath attribute as exemple: /Users/Documents/AVONNI/base-components-sfdx/src/modules/base/lwc
+-   baseComponentsPath attribute as exemple: /Users/Documents/AVONNI/base-components/src/modules
+-   baseComponentsSfdxPath attribute as exemple: /Users/Documents/AVONNI/base-components-sfdx/src/modules
 
 ### Command for the Start script:
 
