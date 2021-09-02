@@ -104,57 +104,33 @@ import {
 
 export default class SchedulerEvent {
     constructor(props) {
-        const recurrence = RECURRENCES.find(
-            (recurrenceObject) => recurrenceObject.name === props.recurrence
-        );
-
         this.key = generateUniqueId();
-        this._allDay = normalizeBoolean(props.allDay);
-        this.availableMonths = normalizeArray(props.availableMonths).length
-            ? normalizeArray(props.availableMonths)
-            : DEFAULT_AVAILABLE_MONTHS;
-        this.availableDaysOfTheWeek = normalizeArray(
-            props.availableDaysOfTheWeek
-        ).length
-            ? normalizeArray(props.availableDaysOfTheWeek)
-            : DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
-        this.availableTimeFrames = normalizeArray(props.availableTimeFrames)
-            .length
-            ? normalizeArray(props.availableTimeFrames)
-            : DEFAULT_AVAILABLE_TIME_FRAMES;
+        this.allDay = props.allDay;
+        this.availableMonths = props.availableMonths;
+        this.availableDaysOfTheWeek = props.availableDaysOfTheWeek;
+        this.availableTimeFrames = props.availableTimeFrames;
         this.color = props.color;
         this.data = props.data;
-        this.disabled = normalizeBoolean(props.disabled);
-        this._schedulerEnd = props.schedulerEnd;
-        this._schedulerStart = props.schedulerStart;
+        this.disabled = props.disabled;
+        this.schedulerEnd = props.schedulerEnd;
+        this.schedulerStart = props.schedulerStart;
         this.smallestHeader = props.smallestHeader;
-        this._from = dateTimeObjectFrom(props.from);
-        this._to = dateTimeObjectFrom(props.to);
+        this.from = props.from;
+        this.to = props.to;
         this.iconName = props.iconName;
         this.keyFields = props.keyFields;
         this.labels = props.labels || DEFAULT_EVENTS_LABELS;
-        this.referenceLine = normalizeBoolean(props.referenceLine);
-
-        if (recurrence) {
-            this.recurrence = recurrence;
-            this.recurrenceAttributes =
-                typeof props.recurrenceAttributes === 'object'
-                    ? props.recurrenceAttributes
-                    : undefined;
-            this.recurrenceEndDate = dateTimeObjectFrom(
-                props.recurrenceEndDate
-            );
-            this.recurrenceCount = Number(props.recurrenceCount);
-        }
-
-        this.name =
-            props.name ||
-            (!this.referenceLine && !this.disabled && 'new-event') ||
-            'disabled';
+        this.referenceLine = props.referenceLine;
+        this.recurrence = props.recurrence;
+        this.recurrenceAttributes = props.recurrenceAttributes;
+        this.recurrenceCount = props.recurrenceCount;
+        this.recurrenceEndDate = props.recurrenceEndDate;
+        this.name = props.name;
         this.theme = props.theme;
         this.title = props.title;
 
         this.initOccurrences();
+        this._isCreated = true;
     }
 
     get allDay() {
@@ -162,7 +138,48 @@ export default class SchedulerEvent {
     }
     set allDay(value) {
         this._allDay = normalizeBoolean(value);
-        this.initOccurrences();
+
+        if (this._isCreated) this.initOccurrences();
+    }
+
+    get availableDaysOfTheWeek() {
+        return this._availableDaysOfTheWeek;
+    }
+    set availableDaysOfTheWeek(value) {
+        this._availableDaysOfTheWeek = normalizeArray(value).length
+            ? normalizeArray(value)
+            : DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
+
+        if (this._isCreated) this.initOccurrences();
+    }
+
+    get availableMonths() {
+        return this._availableMonths;
+    }
+    set availableMonths(value) {
+        this._availableMonths = normalizeArray(value).length
+            ? normalizeArray(value)
+            : DEFAULT_AVAILABLE_MONTHS;
+
+        if (this._isCreated) this.initOccurrences();
+    }
+
+    get availableTimeFrames() {
+        return this._availableTimeFrames;
+    }
+    set availableTimeFrames(value) {
+        this._availableTimeFrames = normalizeArray(value).length
+            ? normalizeArray(value)
+            : DEFAULT_AVAILABLE_TIME_FRAMES;
+
+        if (this._isCreated) this.initOccurrences();
+    }
+
+    get disabled() {
+        return this._disabled;
+    }
+    set disabled(value) {
+        this._disabled = normalizeBoolean(value);
     }
 
     get from() {
@@ -171,7 +188,8 @@ export default class SchedulerEvent {
     set from(value) {
         this._from =
             value instanceof DateTime ? value : dateTimeObjectFrom(value);
-        this.initOccurrences();
+
+        if (this._isCreated) this.initOccurrences();
     }
 
     get keyFields() {
@@ -179,22 +197,89 @@ export default class SchedulerEvent {
     }
     set keyFields(value) {
         this._keyFields = JSON.parse(JSON.stringify(normalizeArray(value)));
+
+        if (this._isCreated) this.initOccurrences();
+    }
+
+    get name() {
+        return this._name;
+    }
+    set name(value) {
+        this._name =
+            value ||
+            (!this.referenceLine && !this.disabled && 'new-event') ||
+            'disabled';
+
+        if (this._isCreated) this.initOccurrences();
+    }
+
+    get recurrence() {
+        return this._recurrence;
+    }
+    set recurrence(value) {
+        const recurrence = RECURRENCES.find(
+            (recurrenceObject) => recurrenceObject.name === value
+        );
+        this._recurrence = recurrence || undefined;
+
+        if (this._isCreated) this.initOccurrences();
+    }
+
+    get recurrenceAttributes() {
+        return this._recurrenceAttributes;
+    }
+    set recurrenceAttributes(value) {
+        this._recurrenceAttributes =
+            typeof value === 'object' ? value : undefined;
+
+        if (this._isCreated) this.initOccurrences();
+    }
+
+    get recurrenceCount() {
+        return this._recurrenceCount;
+    }
+    set recurrenceCount(value) {
+        this._recurrenceCount = Number.isInteger(value) ? value : Infinity;
+
+        if (this._isCreated) this.initOccurrences();
+    }
+
+    get recurrenceEndDate() {
+        return this._recurrenceEndDate;
+    }
+    set recurrenceEndDate(value) {
+        this._recurrenceEndDate = dateTimeObjectFrom(value);
+
+        if (this._isCreated) this.initOccurrences();
+    }
+
+    get referenceLine() {
+        return this._referenceLine;
+    }
+    set referenceLine(value) {
+        this._referenceLine = normalizeBoolean(value);
+
+        if (this._isCreated) this.initOccurrences();
     }
 
     get schedulerEnd() {
         return this._schedulerEnd;
     }
     set schedulerEnd(value) {
-        this._schedulerEnd = value;
-        this.initOccurrences();
+        this._schedulerEnd =
+            value instanceof DateTime ? value : dateTimeObjectFrom(value);
+
+        if (this._isCreated) this.initOccurrences();
     }
 
     get schedulerStart() {
         return this._schedulerStart;
     }
     set schedulerStart(value) {
-        this._schedulerStart = value;
-        this.initOccurrences();
+        this._schedulerStart =
+            value instanceof DateTime ? value : dateTimeObjectFrom(value);
+
+        if (this._isCreated) this.initOccurrences();
     }
 
     get theme() {
@@ -217,7 +302,8 @@ export default class SchedulerEvent {
     set to(value) {
         this._to =
             value instanceof DateTime ? value : dateTimeObjectFrom(value);
-        this.initOccurrences();
+
+        if (this._isCreated) this.initOccurrences();
     }
 
     /**
@@ -291,8 +377,10 @@ export default class SchedulerEvent {
         const computedTo = to || this.computeOccurenceEnd(from);
 
         if (
-            (from < schedulerStart && computedTo < schedulerStart) ||
-            (from > schedulerEnd && computedTo > schedulerEnd)
+            (schedulerStart &&
+                from < schedulerStart &&
+                computedTo < schedulerStart) ||
+            (schedulerEnd && from > schedulerEnd && computedTo > schedulerEnd)
         )
             return;
 
@@ -424,12 +512,13 @@ export default class SchedulerEvent {
         const attributes = this.recurrenceAttributes;
         const interval =
             attributes && attributes.interval ? attributes.interval : 1;
-        const count = Number.isInteger(this.recurrenceCount)
-            ? this.recurrenceCount
-            : Infinity;
+        const count = this.recurrenceCount;
 
         // Use the recurrence end date only if it happens before the scheduler end
-        let end = endDate && endDate < schedulerEnd ? endDate : schedulerEnd;
+        let end =
+            !schedulerEnd || (endDate && endDate < schedulerEnd)
+                ? endDate
+                : schedulerEnd;
 
         let date = from;
         let occurrences = 0;
