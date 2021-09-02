@@ -1253,13 +1253,12 @@ export default class Scheduler extends LightningElement {
      * Save the datatable rows heights and use them as a min-height for the schedule rows.
      */
     updateDatatableRowsHeight() {
-        const datatable = this.template.querySelector('c-datatable');
-        if (!datatable || !this.computedRows.length) return;
+        if (!this.datatable || !this.computedRows.length) return;
 
         this._datatableRowsHeight = [];
         this.computedRows.forEach((row) => {
             const rowKey = row.key;
-            const height = datatable.getRowHeight(rowKey);
+            const height = this.datatable.getRowHeight(rowKey);
             this._datatableRowsHeight.push({ rowKey, height });
             row.minHeight = height;
         });

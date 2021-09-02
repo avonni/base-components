@@ -1,0 +1,15 @@
+<avonni-panel position={position} title={title} size={size} show-panel="true">
+    <div slot="title">
+        <div class="slds-text-heading_small">Panel Header</div>
+    </div>
+    <div slot="panel-body">
+        <lightning-input
+            name="enter-search"
+            label="Search"
+            type="search"
+        ></lightning-input>
+    </div>
+    <div class="avonni-panel-main-body-container">
+        <avonni-calendar></avonni-calendar>
+    </div>
+</avonni-panel>

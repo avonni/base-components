@@ -226,7 +226,7 @@ export default class PrivateSelect extends LightningElement {
         if (!value) {
             this.dispatchEvent(
                 new CustomEvent('invalid', {
-                    cancellable: true
+                    cancelable: true
                 })
             );
         }

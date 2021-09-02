@@ -281,6 +281,19 @@ export default {
     }
 };
 
+const colorsWithLabel = [
+    {
+        label: 'brand-accessible',
+        token: '--lwc-brand-accessible',
+        value: '#0176d3'
+    },
+    {
+        label: 'brand-accessible-active',
+        token: '--lwc-brand-accessible-active',
+        value: '#014486'
+    }
+];
+
 const colorsValue = [
     '#e3abec',
     '#c2dbf7',
@@ -321,6 +334,15 @@ Standard.args = {
     value: '#419fec',
     messageWhenBadInput: 'Please ensure value is correct',
     colors: colorsValue
+};
+
+export const StandardWithLabels = Template.bind({});
+StandardWithLabels.args = {
+    label: 'Color label',
+    fieldLevelHelp: 'Help text',
+    value: '#419fec',
+    messageWhenBadInput: 'Please ensure value is correct',
+    colors: colorsWithLabel
 };
 
 export const StandardWithIcon = Template.bind({});

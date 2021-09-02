@@ -7,9 +7,6 @@
             "dir": "src/modules/base"
         },
         {
-            "dir": "src/modules/data"
-        },
-        {
             "name": "c/configProvider",
             "path": "src/modules/base/configProvider/configProvider.js"
         },
@@ -36,14 +33,6 @@
         {
             "name": "c/utilsPrivate",
             "path": "src/modules/base/utilsPrivate/utilsPrivate.js"
-        },
-        {
-            "name": "c/activityTimeline",
-            "path": "src/modules/base/activityTimeline/activityTimeline.js"
-        },
-        {
-            "name": "c/activityTimelineItem",
-            "path": "src/modules/base/activityTimelineItem/activityTimelineItem.js"
         },
         {
             "name": "c/alert",
@@ -90,10 +79,6 @@
             "path": "src/modules/base/carousel/carousel.js"
         },
         {
-            "name": "c/checkboxGroup",
-            "path": "src/modules/base/checkboxGroup/checkboxGroup.js"
-        },
-        {
             "name": "c/chip",
             "path": "src/modules/base/chip/chip.js"
         },
@@ -126,8 +111,8 @@
             "path": "src/modules/base/confetti/confetti.js"
         },
         {
-            "name": "c/dataPageHeader",
-            "path": "src/modules/data/pageHeader/pageHeader.js"
+            "name": "c/inputData",
+            "path": "src/modules/base/inputData/inputData.js"
         },
         {
             "name": "c/datatable",
@@ -184,6 +169,10 @@
         {
             "name": "c/image",
             "path": "src/modules/base/image/image.js"
+        },
+        {
+            "name": "c/inputChoiceSet",
+            "path": "src/modules/base/inputChoiceSet/inputChoiceSet.js"
         },
         {
             "name": "c/inputCounter",
@@ -254,10 +243,6 @@
             "path": "src/modules/base/panel/panel.js"
         },
         {
-            "name": "c/path",
-            "path": "src/modules/base/path/path.js"
-        },
-        {
             "name": "c/positionLibrary",
             "path": "src/modules/base/positionLibrary/positionLibrary.js"
         },
@@ -270,6 +255,10 @@
             "path": "src/modules/base/primitiveBubble/primitiveBubble.js"
         },
         {
+            "name": "c/primitiveCellAvatarGroup",
+            "path": "src/modules/base/primitiveCellAvatarGroup/primitiveCellAvatarGroup.js"
+        },
+        {
             "name": "c/primitiveCellBadge",
             "path": "src/modules/base/primitiveCellBadge/primitiveCellBadge.js"
         },
@@ -280,6 +269,10 @@
         {
             "name": "c/primitiveCellColorPicker",
             "path": "src/modules/base/primitiveCellColorPicker/primitiveCellColorPicker.js"
+        },
+        {
+            "name": "c/primitiveCellCombobox",
+            "path": "src/modules/base/primitiveCellCombobox/primitiveCellCombobox.js"
         },
         {
             "name": "c/primitiveCellInputCounter",
@@ -314,6 +307,10 @@
             "path": "src/modules/base/primitiveComboboxGroup/primitiveComboboxGroup.js"
         },
         {
+            "name": "c/primitiveDatatable",
+            "path": "src/modules/base/primitiveDatatable/primitiveDatatable.js"
+        },
+        {
             "name": "c/primitiveCoordinateItem",
             "path": "src/modules/base/primitiveCoordinateItem/primitiveCoordinateItem.js"
         },
@@ -336,18 +333,6 @@
         {
             "name": "c/primitiveProgressStep",
             "path": "src/modules/base/primitiveProgressStep/primitiveProgressStep.js"
-        },
-        {
-            "name": "c/primitiveRelationshipGraphItem",
-            "path": "src/modules/base/primitiveRelationshipGraphItem/primitiveRelationshipGraphItem.js"
-        },
-        {
-            "name": "c/primitiveRelationshipGraphGroup",
-            "path": "src/modules/base/primitiveRelationshipGraphGroup/primitiveRelationshipGraphGroup.js"
-        },
-        {
-            "name": "c/primitiveRelationshipGraphLevel",
-            "path": "src/modules/base/primitiveRelationshipGraphLevel/primitiveRelationshipGraphLevel.js"
         },
         {
             "name": "c/primitiveSchedulerEventOccurrence",
@@ -402,10 +387,6 @@
             "path": "src/modules/base/rating/rating.js"
         },
         {
-            "name": "c/relationshipGraph",
-            "path": "src/modules/base/relationshipGraph/relationshipGraph.js"
-        },
-        {
             "name": "c/scheduler",
             "path": "src/modules/base/scheduler/scheduler.js"
         },
@@ -414,24 +395,12 @@
             "path": "src/modules/base/scopedNotification/scopedNotification.js"
         },
         {
-            "name": "c/segment",
-            "path": "src/modules/base/segment/segment.js"
-        },
-        {
-            "name": "c/segmentButton",
-            "path": "src/modules/base/segmentButton/segmentButton.js"
-        },
-        {
             "name": "c/separator",
             "path": "src/modules/base/separator/separator.js"
         },
         {
-            "name": "c/slide",
-            "path": "src/modules/base/slide/slide.js"
-        },
-        {
-            "name": "c/slides",
-            "path": "src/modules/base/slides/slides.js"
+            "name": "c/list",
+            "path": "src/modules/base/list/list.js"
         },
         {
             "name": "c/splitter",
@@ -486,10 +455,6 @@
             "path": "src/modules/base/wizardStep/wizardStep.js"
         },
         {
-            "name": "avonni/activityTimeline",
-            "path": "src/modules/base/activityTimeline/activityTimeline.js"
-        },
-        {
             "name": "avonni/alert",
             "path": "src/modules/base/alert/alert.js"
         },
@@ -534,10 +499,6 @@
             "path": "src/modules/base/carousel/carousel.js"
         },
         {
-            "name": "avonni/checkboxGroup",
-            "path": "src/modules/base/checkboxGroup/checkboxGroup.js"
-        },
-        {
             "name": "avonni/chip",
             "path": "src/modules/base/chip/chip.js"
         },
@@ -562,8 +523,8 @@
             "path": "src/modules/base/confetti/confetti.js"
         },
         {
-            "name": "avonni/dataPageHeader",
-            "path": "src/modules/data/pageHeader/pageHeader.js"
+            "name": "avonni/inputData",
+            "path": "src/modules/base/inputData/inputData.js"
         },
         {
             "name": "avonni/datatable",
@@ -612,6 +573,10 @@
         {
             "name": "avonni/image",
             "path": "src/modules/base/image/image.js"
+        },
+        {
+            "name": "avonni/inputChoiceSet",
+            "path": "src/modules/base/inputChoiceSet/inputChoiceSet.js"
         },
         {
             "name": "avonni/inputCounter",
@@ -666,10 +631,6 @@
             "path": "src/modules/base/panel/panel.js"
         },
         {
-            "name": "avonni/path",
-            "path": "src/modules/base/path/path.js"
-        },
-        {
             "name": "avonni/primitiveIcon",
             "path": "src/modules/base/primitiveIcon/primitiveIcon.js"
         },
@@ -710,10 +671,6 @@
             "path": "src/modules/base/rating/rating.js"
         },
         {
-            "name": "avonni/relationshipGraph",
-            "path": "src/modules/base/relationshipGraph/relationshipGraph.js"
-        },
-        {
             "name": "avonni/scheduler",
             "path": "src/modules/base/scheduler/scheduler.js"
         },
@@ -722,24 +679,12 @@
             "path": "src/modules/base/scopedNotification/scopedNotification.js"
         },
         {
-            "name": "avonni/segment",
-            "path": "src/modules/base/segment/segment.js"
-        },
-        {
-            "name": "avonni/segmentButton",
-            "path": "src/modules/base/segmentButton/segmentButton.js"
-        },
-        {
             "name": "avonni/separator",
             "path": "src/modules/base/separator/separator.js"
         },
         {
-            "name": "avonni/slide",
-            "path": "src/modules/base/slide/slide.js"
-        },
-        {
-            "name": "avonni/slides",
-            "path": "src/modules/base/slides/slides.js"
+            "name": "avonni/list",
+            "path": "src/modules/base/list/list.js"
         },
         {
             "name": "avonni/splitter",
@@ -791,7 +736,6 @@
         }
     ],
     "expose": [
-        "avonni/activityTimeline",
         "avonni/alert",
         "avonni/avatar",
         "avonni/avatarGroup",
@@ -803,14 +747,13 @@
         "avonni/buttonPopover",
         "avonni/calendar",
         "avonni/carousel",
-        "avonni/checkboxGroup",
         "avonni/chip",
         "avonni/colorGradient",
         "avonni/colorPalette",
         "avonni/colorPicker",
         "avonni/combobox",
         "avonni/confetti",
-        "avonni/dataPageHeader",
+        "avonni/inputData",
         "avonni/datatable",
         "avonni/dateTimePicker",
         "avonni/dialog",
@@ -823,6 +766,7 @@
         "avonni/heroBanner",
         "avonni/illustration",
         "avonni/image",
+        "avonni/inputChoiceSet",
         "avonni/inputCounter",
         "avonni/inputDateRange",
         "avonni/inputPen",
@@ -836,7 +780,6 @@
         "avonni/pageHeader",
         "avonni/pagination",
         "avonni/panel",
-        "avonni/path",
         "avonni/primitiveIcon",
         "avonni/profileCard",
         "avonni/progressBar",
@@ -848,14 +791,10 @@
         "avonni/qrcode",
         "avonni/range",
         "avonni/rating",
-        "avonni/relationshipGraph",
         "avonni/scheduler",
         "avonni/scopedNotification",
-        "avonni/segment",
-        "avonni/segmentButton",
         "avonni/separator",
-        "avonni/slide",
-        "avonni/slides",
+        "avonni/list",
         "avonni/splitter",
         "avonni/splitterPane",
         "avonni/submenu",

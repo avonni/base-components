@@ -72,7 +72,7 @@ describe('PrimitiveCombobox', () => {
         expect(element.isMultiSelect).toBeFalsy();
         expect(element.label).toBeUndefined();
         expect(element.loadingStateAlternativeText).toBe('Loading');
-        expect(element.messageWhenValueMissing).toBe('Complete this field.');
+        expect(element.messageWhenValueMissing).toBeUndefined();
         expect(element.multiLevelGroups).toBeFalsy();
         expect(element.name).toBeUndefined();
         expect(element.options).toMatchObject([]);

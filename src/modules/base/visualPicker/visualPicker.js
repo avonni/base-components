@@ -53,10 +53,41 @@ const DEFAULT_DISABLED = false;
 const DEFAULT_HIDE_BORDER = false;
 const DEFAULT_HIDE_CHECK_MARK = false;
 
+/**
+ * @class
+ * @descriptor avonni-visual-picker
+ * @storyId example-visualpicker--base
+ * @public
+ */
 export default class VisualPicker extends LightningElement {
+    /**
+     * Text label to title the visual picker.
+     *
+     * @type {string}
+     * @public
+     */
     @api label;
+    /**
+     * Array of items with attributes populating the visual picker.
+     *
+     * @type {object[]}
+     * @public
+     */
     @api items = [];
+    /**
+     * Optional message to be displayed when no checkbox is selected and the required attribute is set.
+     *
+     * @type {string}
+     * @public
+     */
     @api messageWhenValueMissing;
+    /**
+     * The name of the visual picker.
+     *
+     * @type {string}
+     * @public
+     * @required
+     */
     @api name = generateUniqueId();
 
     _value = [];
@@ -81,25 +112,37 @@ export default class VisualPicker extends LightningElement {
         }
     }
 
+    /**
+     * Value of the selected item. For the checkbox type, the value is an array (Ex: [value1, value2]
+     *
+     * @type {(string|string[])}
+     * @public
+     */
     @api
     get value() {
         return this._value;
     }
 
     set value(value) {
-        this._value = value;
-
+        this._value = value instanceof Array ? value : [value];
         const inputs = this.template.querySelectorAll('input');
 
-        if (inputs && this._value) {
+        if (inputs && this.value.length) {
             Array.from(inputs).forEach((item) => {
-                if (this._value.indexOf(item.value) > -1) {
+                if (this.value.indexOf(item.value) > -1) {
                     item.checked = true;
                 }
             });
         }
     }
 
+    /**
+     * Changes the appearance of the visual picker. Valid values include coverable, non-coverable and vertical.
+     *
+     * @type {string}
+     * @public
+     * @default non-coverable
+     */
     @api get variant() {
         return this._variant;
     }
@@ -111,6 +154,13 @@ export default class VisualPicker extends LightningElement {
         });
     }
 
+    /**
+     * Valid values include radio and checkbox.
+     *
+     * @type {string}
+     * @public
+     * @default radio
+     */
     @api get type() {
         return this._type;
     }
@@ -122,6 +172,13 @@ export default class VisualPicker extends LightningElement {
         });
     }
 
+    /**
+     * The size of the items. Valid values include xx-small (4rem x 4 rem), x-small (6rem x 6 rem), small (8rem x 8rem), medium and large.
+     *
+     * @type {string}
+     * @public
+     * @default medium
+     */
     @api get size() {
         return this._size;
     }
@@ -133,6 +190,13 @@ export default class VisualPicker extends LightningElement {
         });
     }
 
+    /**
+     * The ratio of the items. Valid values include 1-by-1, 4-by-3 and 16-by-9.
+     *
+     * @type {string}
+     * @public
+     * @default 1-by-1
+     */
     @api get ratio() {
         return this._ratio;
     }
@@ -144,6 +208,13 @@ export default class VisualPicker extends LightningElement {
         });
     }
 
+    /**
+     * If present, at least one item must be selected.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api get required() {
         return this._required;
     }
@@ -152,6 +223,13 @@ export default class VisualPicker extends LightningElement {
         this._required = normalizeBoolean(value);
     }
 
+    /**
+     * If present, the visual picker is disabled.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api get disabled() {
         return this._disabled;
     }
@@ -160,6 +238,13 @@ export default class VisualPicker extends LightningElement {
         this._disabled = normalizeBoolean(value);
     }
 
+    /**
+     * If present, hide the border and box-shadow on item picker. Still displayed border on hover.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api get hideBorder() {
         return this._hideBorder;
     }
@@ -168,6 +253,13 @@ export default class VisualPicker extends LightningElement {
         this._hideBorder = normalizeBoolean(value);
     }
 
+    /**
+     * If present, hide the check mark.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api get hideCheckMark() {
         return this._hideCheckMark;
     }
@@ -176,6 +268,11 @@ export default class VisualPicker extends LightningElement {
         this._hideCheckMark = normalizeBoolean(value);
     }
 
+    /**
+     * Compute layout styling for items in visual picker.
+     *
+     * @return {object[]} result
+     */
     get itemList() {
         let result = [];
 
@@ -266,14 +363,29 @@ export default class VisualPicker extends LightningElement {
         return result;
     }
 
+    /**
+     * Verify if variant is coverable.
+     *
+     * @type {string}
+     */
     get isCoverable() {
         return this._variant === 'coverable';
     }
 
+    /**
+     * Verify if layout is vertical.
+     *
+     * @type {string}
+     */
     get isVertical() {
         return this._variant === 'vertical';
     }
 
+    /**
+     * Compute visual picker class styling based on selected attributes. ( orientation, size, ratio)
+     *
+     * @type {string}
+     */
     get visualPickerClass() {
         return classSet('slds-visual-picker')
             .add({
@@ -293,6 +405,11 @@ export default class VisualPicker extends LightningElement {
             .toString();
     }
 
+    /**
+     * Compute visual picker type class styling based on selected attributes.
+     *
+     * @type {string}
+     */
     get visualPickerTypeClass() {
         return classSet('slds-visual-picker__figure')
             .add({
@@ -308,6 +425,11 @@ export default class VisualPicker extends LightningElement {
             .toString();
     }
 
+    /**
+     * Compute icon container class styling.
+     *
+     * @type {string}
+     */
     get iconContainerClass() {
         return classSet('slds-icon_container')
             .add({
@@ -316,6 +438,11 @@ export default class VisualPicker extends LightningElement {
             .toString();
     }
 
+    /**
+     * Compute element control class styling.
+     *
+     * @type {string}
+     */
     get elementControlClass() {
         return classSet('slds-form-element__control')
             .add({
@@ -324,6 +451,11 @@ export default class VisualPicker extends LightningElement {
             .toString();
     }
 
+    /**
+     * Compute text heading class styling.
+     *
+     * @type {string}
+     */
     get textHeadingClass() {
         return classSet()
             .add({
@@ -334,10 +466,20 @@ export default class VisualPicker extends LightningElement {
             .toString();
     }
 
+    /**
+     * Compute selected class styling.
+     *
+     * @type {string}
+     */
     get selectedClass() {
         return this._variant === 'coverable' ? 'slds-is-selected' : '';
     }
 
+    /**
+     * Compute NOT selected class styling.
+     *
+     * @type {string}
+     */
     get notSelectedClass() {
         return classSet()
             .add({
@@ -350,6 +492,11 @@ export default class VisualPicker extends LightningElement {
             .toString();
     }
 
+    /**
+     * Change event handler.
+     *
+     * @param {Event} event
+     */
     handleChange(event) {
         event.stopPropagation();
 
@@ -373,10 +520,18 @@ export default class VisualPicker extends LightningElement {
 
         this._value = value;
 
+        /**
+         * The event fired when the value changed.
+         *
+         * @event
+         * @name change
+         * @param {string[]} value The visual picker value.
+         * @public
+         */
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
-                    value: value.toString()
+                    value
                 }
             })
         );

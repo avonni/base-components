@@ -163,7 +163,7 @@ export default {
             description:
                 'Value of the selected item. For the checkbox type, the value is an array (Ex: [value1, value2])',
             table: {
-                type: { summary: 'string or string[]' }
+                type: { summary: 'string | string[]' }
             }
         },
         items: {
@@ -243,7 +243,6 @@ const Template = (args) => VisualPicker(args);
 export const Base = Template.bind({});
 Base.args = {
     name: 'base',
-    value: ['lightning-enterprise'],
     items: items
 };
 
@@ -251,7 +250,7 @@ export const NoMarkDoubleExtraSmall = Template.bind({});
 NoMarkDoubleExtraSmall.args = {
     name: 'xx-small',
     label: 'Double extra small input with no check mark',
-    value: ['lightning-enterprise'],
+    value: ['lightning-enterprise', 'lightning-unlimited'],
     items: items,
     size: 'xx-small',
     hideCheckMark: true
@@ -261,7 +260,7 @@ export const NoBorderExtraSmall = Template.bind({});
 NoBorderExtraSmall.args = {
     name: 'x-small',
     label: 'Extra small input with no borders',
-    value: ['lightning-enterprise'],
+    value: 'lightning-enterprise',
     items: items,
     size: 'x-small',
     hideBorder: true
@@ -271,7 +270,7 @@ export const CoverableSmall = Template.bind({});
 CoverableSmall.args = {
     name: 'small',
     label: 'Coverable small input',
-    value: ['lightning-enterprise'],
+    value: 'lightning-enterprise',
     items: items,
     size: 'small',
     variant: 'coverable'
@@ -281,7 +280,7 @@ export const Large4By3 = Template.bind({});
 Large4By3.args = {
     name: 'large',
     label: '4 by 3 large input',
-    value: ['lightning-enterprise'],
+    value: 'lightning-enterprise',
     items: items,
     size: 'large',
     ratio: '4-by-3'

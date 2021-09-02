@@ -19,9 +19,9 @@ do
 
     moduleFolderName=${module##*/}
 
-    [ ! -d "/Users/alex/Documents/AVONNI/base-components-sfdx/src/modules/"${moduleFolderName} ] && (
-        mkdir "/Users/alex/Documents/AVONNI/base-components-sfdx/src/modules/${moduleFolderName}"
-        mkdir "/Users/alex/Documents/AVONNI/base-components-sfdx/src/modules/${moduleFolderName}/lwc"
+    [ ! -d "${baseComponentsSfdxPath}/${moduleFolderName}" ] && (
+        mkdir "${baseComponentsSfdxPath}/${moduleFolderName}"
+        mkdir "${baseComponentsSfdxPath}/${moduleFolderName}/lwc"
     )
 
     # 2. Clearing base-components-sfdx lwc folder (excluding folders from "notRemoveFolders")
@@ -128,6 +128,7 @@ do
                 # Adding avonni prefix
 
                 find "$(dirname "$folder")/${folderName}" -type f -name '*.js' -exec sed -i '' "s/export default class /export default class $(tr '[:lower:]' '[:upper:]' <<< ${prefix:0:1})${prefix:1}/g" {} \;
+                find "$(dirname "$folder")/${folderName}" -type f -name '*.js' -exec sed -i '' "s/querySelector('c-/querySelector('c-avonni-/g" {} \;
                 find "$(dirname "$folder")/${folderName}" -type f -name '*.html' -exec sed -i '' "s/c-input-rich-text/lightning-input-rich-text/g" {} \;
                 find "$(dirname "$folder")/${folderName}" -type f -name '*.html' -exec sed -i '' "s/<c-/<c-avonni-/g" {} \;
                 find "$(dirname "$folder")/${folderName}" -type f -name '*.html' -exec sed -i '' "s/<\/c-/<\/c-avonni-/g" {} \;

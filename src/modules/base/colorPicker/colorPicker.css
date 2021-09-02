@@ -35,10 +35,10 @@ lightning-input {
     width: 7rem;
 }
 
-button {
+/*button {
     height: auto;
     min-height: var(--lwc-squareIconMediumBoundary, 2rem);
-}
+}*/
 
 div:focus {
     outline: none;
@@ -138,4 +138,8 @@ button:disabled {
 .avonni-spinner-container {
     width: 10rem;
     height: 4rem;
+}
+
+.palette-height{
+	height: 180px;
 }
