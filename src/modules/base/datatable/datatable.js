@@ -380,9 +380,8 @@ export default class Datatable extends LightningElement {
     @api
     setRowHeight(rowKeyField, height) {
         if (this.primitiveDatatable) {
-            return this.primitiveDatatable.setRowHeight(rowKeyField, height);
+            this.primitiveDatatable.setRowHeight(rowKeyField, height);
         }
-        return null;
     }
 
     /**

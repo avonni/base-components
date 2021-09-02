@@ -31,7 +31,7 @@
  */
 
 import { createElement } from 'lwc';
-import PrimitiveSchedulerHeaderGroup from 'c/primitiveSchedulerHeaderGroup';
+import PrimitiveSchedulerHeaderGroup from 'avonni/primitiveSchedulerHeaderGroup';
 import { DateTime } from 'c/luxon';
 
 // NB:

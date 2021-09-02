@@ -30,6 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import Datatable from 'avonni/datatable';
+
 describe('Datatable', () => {
     test.todo('please pass');
 });
