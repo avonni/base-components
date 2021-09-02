@@ -35,7 +35,7 @@ import { classSet } from 'c/utils';
 import { normalizeString } from 'c/utilsPrivate';
 
 const SCOPED_NOTIFICATION_VARIANTS = {
-    valid: ['base', 'light', 'dark', 'warning', 'error', 'success'],
+    valid: ['base', 'dark', 'warning', 'error', 'success'],
     default: 'base'
 };
 const ICON_SIZES = {
@@ -127,12 +127,11 @@ export default class ScopedNotification extends LightningElement {
     get computedNotificationClass() {
         return classSet('slds-scoped-notification slds-media slds-media_center')
             .add({
-                'slds-scoped-notification_light': this.variant === 'light',
+                'slds-scoped-notification_light': this.variant === 'base',
                 'slds-scoped-notification_dark': this.variant === 'dark',
-                'avonni-scoped-notification_warning':
-                    this.variant === 'warning',
-                'avonni-scoped-notification_error': this.variant === 'error',
-                'avonni-scoped-notification_success': this.variant === 'success'
+                'slds-theme_warning': this.variant === 'warning',
+                'slds-theme_error': this.variant === 'error',
+                'slds-theme_success': this.variant === 'success'
             })
             .toString();
     }
@@ -145,10 +144,10 @@ export default class ScopedNotification extends LightningElement {
     get computedIconVariant() {
         return classSet()
             .add({
-                inverse: this.variant === 'dark',
-                warning: this.variant === 'warning',
-                error: this.variant === 'error',
-                success: this.variant === 'success'
+                inverse:
+                    this.variant === 'dark' ||
+                    this.variant === 'success' ||
+                    this.variant === 'error'
             })
             .toString();
     }

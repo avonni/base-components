@@ -23,11 +23,6 @@
  */
 /**
  * @memberof examples
- * @name lightDoubleExtraSmallIcon
- * @storyId example-scoped-notification--light-double-extra-small-icon
- */
-/**
- * @memberof examples
  * @name darkExtraSmallIcon
  * @storyId example-scoped-notification--dark-extra-small-icon
  */

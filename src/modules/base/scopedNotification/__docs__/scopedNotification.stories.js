@@ -60,7 +60,7 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['base', 'light', 'dark', 'warning', 'error', 'success'],
+            options: ['base', 'dark', 'warning', 'error', 'success'],
             defaultValue: 'base',
             description:
                 'The variant changes the look of the scoped notification. Valid values include base, light, dark, warning, error, success.',
@@ -92,14 +92,6 @@ const NoSlotTemplate = (args) => NoSlotScopedNotification(args);
 export const Base = Template.bind({});
 Base.args = {
     iconName: 'utility:info'
-};
-
-export const LightDoubleExtraSmallIcon = NoSlotTemplate.bind({});
-LightDoubleExtraSmallIcon.args = {
-    iconName: 'utility:info',
-    variant: 'light',
-    iconSize: 'xx-small',
-    title: 'Light variant with double extra small icon.'
 };
 
 export const DarkExtraSmallIcon = NoSlotTemplate.bind({});
