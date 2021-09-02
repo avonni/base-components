@@ -335,6 +335,10 @@
             "path": "src/modules/base/primitiveSelect/primitiveSelect.js"
         },
         {
+            "name": "c/primitiveSummarizationTable",
+            "path": "src/modules/base/primitiveSummarizationTable/primitiveSummarizationTable.js"
+        },
+        {
             "name": "c/profileCard",
             "path": "src/modules/base/profileCard/profileCard.js"
         },

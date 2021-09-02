@@ -252,8 +252,8 @@ export default class Datatable extends LightningElement {
     _showStatusBar = false;
     _hasDraftValues = false;
 
-    _columnsWidth = [];
-    _columnsEditable = [];
+    columnsWidth = [];
+    columnsEditable = [];
     _isDatatableEditable;
 
     privateChildrenRecord = {};
@@ -343,22 +343,25 @@ export default class Datatable extends LightningElement {
 
         this.addEventListener('resize', (event) => {
             this._columnsWidth = event.detail.columnWidths;
-            this.tableResize();
             this.updateTableWidth();
             this.datatableColumnsWidth();
         });
 
         window.addEventListener('resize', () => {
             if (this.allowSummarize) {
-                this.tableResize();
+                this.updateTableWidth();
                 this.datatableColumnsWidth();
-                this.updateColumnStyle();
             }
         });
     }
 
     renderedCallback() {
-        this.bottomTableInitialization();
+        this.primitiveDraftValues();
+        this.updateTableWidth();
+        if (!this.rendered) {
+            this.bottomTableInitialization();
+        }
+        this.rendered = true;
     }
 
     /**
@@ -538,18 +541,8 @@ export default class Datatable extends LightningElement {
      */
     bottomTableInitialization() {
         this.datatableColumnsWidth();
-        this.updateColumnStyle();
         this.updateTableWidth();
-        this.primitiveDraftValues();
         this.datatableEditable();
-    }
-
-    /**
-     * Resize of the bottom datatable when the primitive-datatable is resized.
-     */
-    tableResize() {
-        this.updateColumnStyleResize();
-        this.updateTableWidth();
     }
 
     /**
@@ -557,11 +550,11 @@ export default class Datatable extends LightningElement {
      */
     datatableColumnsWidth() {
         if (!this.hasGroupBy) {
-            this._columnsWidth = !this.hideTableHeader
+            this.columnsWidth = !this.hideTableHeader
                 ? this.ungroupedDatatable.columnsWidthWithHeader()
                 : this.ungroupedDatatable.columnsWidthCalculation();
         } else if (this.hasGroupBy) {
-            this._columnsWidth = !this.hideTableHeader
+            this.columnsWidth = !this.hideTableHeader
                 ? this.headerDatatable.columnsWidthWithHeader()
                 : this.headerDatatable.columnsWidthCalculation();
         }
@@ -571,7 +564,7 @@ export default class Datatable extends LightningElement {
      * Gets the columns the information about if they are editable or not.
      */
     datatableEditable() {
-        this._columnsEditable = this.hasGroupBy
+        this.columnsEditable = this.hasGroupBy
             ? this.headerDatatable.columnsEditable()
             : this.ungroupedDatatable.columnsEditable();
         this._isDatatableEditable = this.hasGroupBy
@@ -590,59 +583,12 @@ export default class Datatable extends LightningElement {
     }
 
     /**
-     * Updates the column size and padding depending on the columns width of the primitive datatable and depending on if
-     * the columns are editable.
-     */
-    updateColumnStyle() {
-        const rows = Array.from(this.template.querySelectorAll('tr'));
-        rows.forEach((row) => {
-            const dataCell = Array.from(row.querySelectorAll('td'));
-            dataCell.forEach((cell, index) => {
-                // if column is editable, there is a button-icon which is 35 px but not on the first column.
-                cell.style.maxWidth = `${this._columnsWidth[index]}px`;
-                cell.style.minWidth = `${this._columnsWidth[index]}px`;
-                if (!this.hideCheckboxColumn) {
-                    if (this._columnsEditable[index - 2]) {
-                        cell.style.paddingRight = '35px';
-                    }
-                } else {
-                    if (this._columnsEditable[index - 1]) {
-                        cell.style.paddingRight = '35px';
-                    }
-                }
-            });
-        });
-    }
-
-    /**
-     * Calls the updateColumnStyle method on resize.
-     */
-    updateColumnStyleResize() {
-        // on resize, it doesn't take in consideration the first column which is always 52 px.
-        // and 32 px for the checkbox column
-        if (this.isDatatableEditable) {
-            if (!this.hideCheckboxColumn) {
-                this._columnsWidth.unshift(52, 32);
-            } else this._columnsWidth.unshift(52);
-        } else {
-            if (!this.hideCheckboxColumn && !this.hideTableHeader) {
-                this._columnsWidth.unshift(32);
-            }
-        }
-        this.updateColumnStyle();
-    }
-
-    /**
      * Updates the table width base on the width of the primitive datatable on initialization and on resize.
      */
     updateTableWidth() {
-        const table = this.template.querySelector('table');
         this.tableWidth = !this.hasGroupBy
             ? this.ungroupedDatatable.tableWidth()
             : this.headerDatatable.tableWidth();
-        if (table) {
-            table.style.width = `${this.tableWidth}px`;
-        }
     }
 
     /**

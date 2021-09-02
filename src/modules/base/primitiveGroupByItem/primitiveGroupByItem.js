@@ -79,7 +79,6 @@ export default class ProgressGroupByItem extends LightningElement {
                 guid: this.guid
             }
         });
-
         this.dispatchEvent(itemregister);
     }
 
