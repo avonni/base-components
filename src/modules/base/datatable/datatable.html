@@ -61,6 +61,7 @@
                 show-row-number-column={showRowNumberColumn}
                 sorted-by={sortedBy}
                 sorted-direction={sortedDirection}
+                table-width={tableWidth}
                 wrap-text-max-lines={wrapTextMaxLines}
                 onrowselection={handleDispatchEvents}
                 onsort={handleDispatchEvents}
@@ -72,7 +73,6 @@
                 oncellchange={handleDispatchEvents}
                 onrowaction={handleDispatchEvents}
                 onprivateitemregister={handleChildRegister}
-                table-width={tableWidth}
             ></c-primitive-group-by-item>
         </template>
         <c-primitive-datatable
@@ -120,10 +120,12 @@
                 is-datatable-editable={isDatatableEditable}
                 hide-checkbox-column={hideCheckboxColumn}
                 computed-summarize-array={computedSummarizeArray}
-                columns-width={columnsWidth}
+                has-group-by={hasGroupBy}
                 columns-editable={columnsEditable}
                 hide-table-header={hideTableHeader}
                 table-width={tableWidth}
+                no-group-by-columns-width={noGroupByColumnsWidth}
+                header-columns-width={headerColumnsWidth}
             ></c-primitive-summarization-table>
         </template>
     </div>

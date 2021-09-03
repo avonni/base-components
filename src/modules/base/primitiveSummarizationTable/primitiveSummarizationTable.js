@@ -38,18 +38,50 @@ export default class PrivateSummarizationTable extends LightningElement {
     @api hideCheckboxColumn;
     @api computedSummarizeArray;
     @api hideTableHeader;
-    @api tableWidth;
+    @api hasGroupBy;
 
+    _tableWidth;
     _columnsWidth;
     _columnsEditable;
+    _noGroupByColumnsWidth;
+    _headerColumnsWidth;
 
-    @api
-    get columnsWidth() {
-        return this._columnsWidth;
+    connectedCallback() {
+        window.addEventListener('resize', () => {
+            this.updateTableWidth();
+            this.updateColumnStyle();
+        });
     }
 
-    set columnsWidth(value) {
-        this._columnsWidth = JSON.parse(JSON.stringify(normalizeArray(value)));
+    @api
+    get tableWidth() {
+        return this._tableWidth;
+    }
+
+    set tableWidth(value) {
+        this._tableWidth = value;
+    }
+
+    @api
+    get noGroupByColumnsWidth() {
+        return this._noGroupByColumnsWidth;
+    }
+
+    set noGroupByColumnsWidth(value) {
+        this._noGroupByColumnsWidth = JSON.parse(
+            JSON.stringify(normalizeArray(value))
+        );
+    }
+
+    @api
+    get headerColumnsWidth() {
+        return this._headerColumnsWidth;
+    }
+
+    set headerColumnsWidth(value) {
+        this._headerColumnsWidth = JSON.parse(
+            JSON.stringify(normalizeArray(value))
+        );
     }
 
     @api
@@ -68,6 +100,12 @@ export default class PrivateSummarizationTable extends LightningElement {
         this.updateTableWidth();
     }
 
+    get columnsWidth() {
+        return this.hasGroupBy
+            ? this._headerColumnsWidth
+            : this._noGroupByColumnsWidth;
+    }
+
     /**
      * Updates the column size and padding depending on the columns width of the primitive datatable and depending on if
      * the columns are editable.
@@ -78,8 +116,8 @@ export default class PrivateSummarizationTable extends LightningElement {
             const dataCell = Array.from(row.querySelectorAll('td'));
             dataCell.forEach((cell, index) => {
                 // if column is editable, there is a button-icon which is 35 px but not on the first column.
-                cell.style.maxWidth = `${this._columnsWidth[index]}px`;
-                cell.style.minWidth = `${this._columnsWidth[index]}px`;
+                cell.style.maxWidth = `${this.columnsWidth[index]}px`;
+                cell.style.minWidth = `${this.columnsWidth[index]}px`;
                 if (!this.hideCheckboxColumn) {
                     if (this._columnsEditable[index - 2]) {
                         cell.style.paddingRight = '35px';
@@ -91,24 +129,6 @@ export default class PrivateSummarizationTable extends LightningElement {
                 }
             });
         });
-    }
-
-    /**
-     * Calls the updateColumnStyle method on resize.
-     */
-    updateColumnStyleResize() {
-        // on resize, it doesn't take in consideration the first column which is always 52 px.
-        // and 32 px for the checkbox column
-        if (this.isDatatableEditable) {
-            if (!this.hideCheckboxColumn) {
-                this._columnsWidth.unshift(52, 32);
-            } else this._columnsWidth.unshift(52);
-        } else {
-            if (!this.hideCheckboxColumn && !this.hideTableHeader) {
-                this._columnsWidth.unshift(32);
-            }
-        }
-        this.updateColumnStyle();
     }
 
     /**

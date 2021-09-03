@@ -450,6 +450,14 @@ export default class Datatable extends LightningElement {
         return headerColumnsWidths;
     }
 
+    get noGroupByColumnsWidth() {
+        let columnsWidths = [];
+        if (this.ungroupedDatatable) {
+            columnsWidths = this.ungroupedDatatable.columnsWidthWithHeader();
+        }
+        return columnsWidths;
+    }
+
     /**
      * Checks if there is a group-by.
      *
