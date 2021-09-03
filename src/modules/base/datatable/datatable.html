@@ -39,7 +39,6 @@
             <c-primitive-group-by-item
                 records={groupByRecords}
                 columns={columns}
-                header-columns-width={headerColumnsWidth}
                 key-field={keyField}
                 default-sort-direction={defaultSortDirection}
                 draft-values={draftValues}
@@ -53,6 +52,7 @@
                 max-column-width={maxColumnWidth}
                 max-row-selection={maxRowSelection}
                 min-column-width={minColumnWidth}
+                primitive-columns-width={primitiveColumnsWidth}
                 render-config={renderConfig}
                 resize-column-disabled={resizeColumnDisabled}
                 resize-step={resizeStep}
@@ -117,15 +117,12 @@
         </c-primitive-datatable>
         <template if:true={allowSummarize}>
             <c-primitive-summarization-table
-                is-datatable-editable={isDatatableEditable}
-                hide-checkbox-column={hideCheckboxColumn}
-                computed-summarize-array={computedSummarizeArray}
-                has-group-by={hasGroupBy}
                 columns-editable={columnsEditable}
-                hide-table-header={hideTableHeader}
+                computed-summarize-array={computedSummarizeArray}
+                hide-checkbox-column={hideCheckboxColumn}
+                is-datatable-editable={isDatatableEditable}
+                primitive-columns-width={primitiveColumnsWidth}
                 table-width={tableWidth}
-                no-group-by-columns-width={noGroupByColumnsWidth}
-                header-columns-width={headerColumnsWidth}
             ></c-primitive-summarization-table>
         </template>
     </div>

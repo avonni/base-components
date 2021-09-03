@@ -359,7 +359,7 @@ export default class Datatable extends LightningElement {
         this.primitiveDraftValues();
         this.updateTableWidth();
         if (!this.rendered) {
-            this.bottomTableInitialization();
+            this.datatableEditable();
         }
         this.rendered = true;
     }
@@ -438,22 +438,21 @@ export default class Datatable extends LightningElement {
         );
     }
 
-    get groupByItem() {
-        return this.template.querySelector('c-primitive-group-by-item');
-    }
-
-    get headerColumnsWidth() {
-        let headerColumnsWidths = [];
-        if (this.headerDatatable) {
-            headerColumnsWidths = this.headerDatatable.columnsWidthWithHeader();
-        }
-        return headerColumnsWidths;
-    }
-
-    get noGroupByColumnsWidth() {
+    /**
+     * Returns the columns width from the primitive summarization table.
+     *
+     * @type {array}
+     */
+    get primitiveColumnsWidth() {
         let columnsWidths = [];
-        if (this.ungroupedDatatable) {
-            columnsWidths = this.ungroupedDatatable.columnsWidthWithHeader();
+        if (this.hasGroupBy) {
+            if (this.headerDatatable) {
+                columnsWidths = this.headerDatatable.columnsWidthCalculation();
+            }
+        } else {
+            if (this.ungroupedDatatable) {
+                columnsWidths = this.ungroupedDatatable.columnsWidthCalculation();
+            }
         }
         return columnsWidths;
     }
@@ -545,27 +544,12 @@ export default class Datatable extends LightningElement {
     }
 
     /**
-     * Initialization of the bottom datatable used for for summarize.
-     */
-    bottomTableInitialization() {
-        this.datatableColumnsWidth();
-        this.updateTableWidth();
-        this.datatableEditable();
-    }
-
-    /**
      * Gets the columns width of the primitive-datatable depending on if there is a header or not.
      */
     datatableColumnsWidth() {
-        if (!this.hasGroupBy) {
-            this.columnsWidth = !this.hideTableHeader
-                ? this.ungroupedDatatable.columnsWidthWithHeader()
-                : this.ungroupedDatatable.columnsWidthCalculation();
-        } else if (this.hasGroupBy) {
-            this.columnsWidth = !this.hideTableHeader
-                ? this.headerDatatable.columnsWidthWithHeader()
-                : this.headerDatatable.columnsWidthCalculation();
-        }
+        this._columnsWidth = !this.hasGroupBy
+            ? this.ungroupedDatatable.columnsWidthCalculation()
+            : this.headerDatatable.columnsWidthCalculation();
     }
 
     /**

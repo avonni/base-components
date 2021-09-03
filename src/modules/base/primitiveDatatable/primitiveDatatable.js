@@ -550,27 +550,24 @@ export default class PrimitiveDatatable extends LightningDatatable {
     }
 
     /**
-     * Gets the columns width of the datatable if hide-table-header is false.
-     */
-    @api
-    columnsWidthWithHeader() {
-        return JSON.parse(
-            JSON.stringify(normalizeArray(super.widthsData.columnWidths))
-        );
-    }
-
-    /**
-     * Gets the columns width of the datatable if hide-table-header is true.
+     * Gets the columns width of the datatable.
      */
     @api
     columnsWidthCalculation() {
-        // when hide-table-header is true, all columns widths are equal.
-        const value =
-            super.widthsData.tableWidth / super.widthsData.columnWidths.length;
-        const length = super.widthsData.columnWidths.length;
         let arr = [];
-        for (let i = 0; i < length; i++) {
-            arr.push(value);
+        if (this.hideTableHeader) {
+            // when hide-table-header is true, all columns widths are equal.
+            const value =
+                super.widthsData.tableWidth /
+                super.widthsData.columnWidths.length;
+            const length = super.widthsData.columnWidths.length;
+            for (let i = 0; i < length; i++) {
+                arr.push(value);
+            }
+        } else {
+            arr = JSON.parse(
+                JSON.stringify(normalizeArray(super.widthsData.columnWidths))
+            );
         }
         return arr;
     }
@@ -612,7 +609,6 @@ export default class PrimitiveDatatable extends LightningDatatable {
 
     /**
      * Hides the visibility and padding of each c-primitive-datatables in groups.
-     *
      */
     hideTableHeaderPadding() {
         const groupedDatatableHeaders = this.template.querySelectorAll(

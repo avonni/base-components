@@ -34,56 +34,58 @@ import { LightningElement, api } from 'lwc';
 import { normalizeArray } from 'c/utilsPrivate';
 
 export default class PrivateSummarizationTable extends LightningElement {
+    /**
+     * Checks if one of the columns is editable or if none but showRowNumberColumn is true.
+     *
+     * @type {boolean}
+     */
     @api isDatatableEditable;
+
+    /**
+     * If present, the checkbox column for row selection is hidden.
+     *
+     * @type {boolean}
+     */
     @api hideCheckboxColumn;
+
+    /**
+     * Computed summarize array with summarization for the table.
+     *
+     * @type {array}
+     */
     @api computedSummarizeArray;
-    @api hideTableHeader;
-    @api hasGroupBy;
 
-    _tableWidth;
-    _columnsWidth;
+    /**
+     * Returns table width of the main datatable to set the width of the summarization table.
+     *
+     * @type {number}
+     */
+    @api tableWidth;
+
     _columnsEditable;
-    _noGroupByColumnsWidth;
-    _headerColumnsWidth;
+    _primitiveColumnsWidth;
 
-    connectedCallback() {
-        window.addEventListener('resize', () => {
-            this.updateTableWidth();
-            this.updateColumnStyle();
-        });
-    }
-
+    /**
+     * Returns the columns width of the main datatable from the primitive summarization table.
+     *
+     * @type {array}
+     */
     @api
-    get tableWidth() {
-        return this._tableWidth;
+    get primitiveColumnsWidth() {
+        return this._primitiveColumnsWidth;
     }
 
-    set tableWidth(value) {
-        this._tableWidth = value;
-    }
-
-    @api
-    get noGroupByColumnsWidth() {
-        return this._noGroupByColumnsWidth;
-    }
-
-    set noGroupByColumnsWidth(value) {
-        this._noGroupByColumnsWidth = JSON.parse(
+    set primitiveColumnsWidth(value) {
+        this._primitiveColumnsWidth = JSON.parse(
             JSON.stringify(normalizeArray(value))
         );
     }
 
-    @api
-    get headerColumnsWidth() {
-        return this._headerColumnsWidth;
-    }
-
-    set headerColumnsWidth(value) {
-        this._headerColumnsWidth = JSON.parse(
-            JSON.stringify(normalizeArray(value))
-        );
-    }
-
+    /**
+     * Returns the columns width of the main datatable from the primitive summarization table.
+     *
+     * @type {array}
+     */
     @api
     get columnsEditable() {
         return this._columnsEditable;
@@ -96,28 +98,22 @@ export default class PrivateSummarizationTable extends LightningElement {
     }
 
     renderedCallback() {
-        this.updateColumnStyle();
+        this.updateColumnStyling();
         this.updateTableWidth();
-    }
-
-    get columnsWidth() {
-        return this.hasGroupBy
-            ? this._headerColumnsWidth
-            : this._noGroupByColumnsWidth;
     }
 
     /**
      * Updates the column size and padding depending on the columns width of the primitive datatable and depending on if
      * the columns are editable.
      */
-    updateColumnStyle() {
+    updateColumnStyling() {
         const rows = Array.from(this.template.querySelectorAll('tr'));
         rows.forEach((row) => {
             const dataCell = Array.from(row.querySelectorAll('td'));
             dataCell.forEach((cell, index) => {
                 // if column is editable, there is a button-icon which is 35 px but not on the first column.
-                cell.style.maxWidth = `${this.columnsWidth[index]}px`;
-                cell.style.minWidth = `${this.columnsWidth[index]}px`;
+                cell.style.maxWidth = `${this._primitiveColumnsWidth[index]}px`;
+                cell.style.minWidth = `${this._primitiveColumnsWidth[index]}px`;
                 if (!this.hideCheckboxColumn) {
                     if (this._columnsEditable[index - 2]) {
                         cell.style.paddingRight = '35px';
