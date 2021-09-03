@@ -58,6 +58,7 @@ const IMAGE_WIDTH = {
  * @example example-list--base
  * @description The List component allows for a user to enumerate a vertical list with items.
  * @descriptor avonni-list
+ * @public
  */
 export default class List extends LightningElement {
     /**

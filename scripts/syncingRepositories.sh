@@ -19,9 +19,9 @@ do
 
     moduleFolderName=${module##*/}
 
-    [ ! -d "/Users/alex/Documents/AVONNI/base-components-sfdx/src/modules/"${moduleFolderName} ] && (
-        mkdir "/Users/alex/Documents/AVONNI/base-components-sfdx/src/modules/${moduleFolderName}"
-        mkdir "/Users/alex/Documents/AVONNI/base-components-sfdx/src/modules/${moduleFolderName}/lwc"
+    [ ! -d "${baseComponentsSfdxPath}/${moduleFolderName}" ] && (
+        mkdir "${baseComponentsSfdxPath}/${moduleFolderName}"
+        mkdir "${baseComponentsSfdxPath}/${moduleFolderName}/lwc"
     )
 
     # 2. Clearing base-components-sfdx lwc folder (excluding folders from "notRemoveFolders")

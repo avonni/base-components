@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class AvatarGroupTwoAvatars extends LightningElement {
+export default class AvatarGroupBaseWithTwoAvatars extends LightningElement {
     items = [
         {
             src:

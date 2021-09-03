@@ -166,7 +166,7 @@ export default class Datatable extends LightningElement {
      * Reserved for internal use.
      * Enables and configures advanced rendering modes.
      * @public
-     * @type {RenderManagerConfig} value - config object for datatable rendering
+     * @type {RenderManagerConfig} 
      */
     @api renderConfig;
 

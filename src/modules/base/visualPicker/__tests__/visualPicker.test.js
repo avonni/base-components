@@ -928,7 +928,9 @@ describe('VisualPicker', () => {
             inputs[2].click();
 
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.value).toBe('item-3');
+            expect(handler.mock.calls[0][0].detail.value).toMatchObject([
+                'item-3'
+            ]);
         });
     });
 
@@ -951,7 +953,10 @@ describe('VisualPicker', () => {
             inputs[1].click();
 
             expect(handler).toHaveBeenCalledTimes(2);
-            expect(handler.mock.calls[1][0].detail.value).toBe('item-2,item-3');
+            expect(handler.mock.calls[1][0].detail.value).toMatchObject([
+                'item-2',
+                'item-3'
+            ]);
             expect(handler.mock.calls[1][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[1][0].cancelable).toBeFalsy();
             expect(handler.mock.calls[1][0].composed).toBeFalsy();
