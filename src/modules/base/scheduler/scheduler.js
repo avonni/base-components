@@ -189,7 +189,7 @@ export default class Scheduler extends LightningElement {
 
         // If the edit dialog is opened, focus on the first input
         if (this.showEditDialog) {
-            this.template.querySelector('c-dialog lightning-input').focus();
+            this.template.querySelector('c-dialog').focusOnCloseButton();
         }
     }
 
@@ -328,6 +328,8 @@ export default class Scheduler extends LightningElement {
     }
     set customEventsPalette(value) {
         this._customEventsPalette = normalizeArray(value);
+
+        if (this.isConnected) this.initRows();
     }
 
     /**
@@ -442,8 +444,18 @@ export default class Scheduler extends LightningElement {
                 value.resources || DEFAULT_EDIT_DIALOG_LABELS.resources;
             labels.saveButton =
                 value.saveButton || DEFAULT_EDIT_DIALOG_LABELS.saveButton;
+            labels.saveOneRecurrent =
+                value.saveOneRecurrent ||
+                DEFAULT_EDIT_DIALOG_LABELS.saveOneRecurrent;
+            labels.saveAllRecurrent =
+                value.saveAllRecurrent ||
+                DEFAULT_EDIT_DIALOG_LABELS.saveAllRecurrent;
+            labels.editRecurrent =
+                value.editRecurrent || DEFAULT_EDIT_DIALOG_LABELS.editRecurrent;
             labels.cancelButton =
                 value.cancelButton || DEFAULT_EDIT_DIALOG_LABELS.cancelButton;
+            labels.deleteButton =
+                value.deleteButton || DEFAULT_EDIT_DIALOG_LABELS.deleteButton;
             labels.newEventTitle =
                 value.newEventTitle || DEFAULT_EDIT_DIALOG_LABELS.newEventTitle;
 
@@ -1066,7 +1078,7 @@ export default class Scheduler extends LightningElement {
      * @public
      */
     @api
-    opentEditEventDialog(eventName) {
+    openEditEventDialog(eventName) {
         this._draggedEvent = undefined;
         this.focusEvent(eventName);
         this.hideAllPopovers();
@@ -1109,6 +1121,9 @@ export default class Scheduler extends LightningElement {
         this._allEvents = this.events
             .concat(this.computedDisabledDatesTimes)
             .concat(this.computedReferenceLines);
+
+        if (!this._allEvents.length) return;
+
         this._allEvents.sort((first, second) => {
             return (
                 dateTimeObjectFrom(first.from) < dateTimeObjectFrom(second.from)
@@ -1123,6 +1138,8 @@ export default class Scheduler extends LightningElement {
      * Create the computed rows.
      */
     initRows() {
+        if (!this.smallestHeader || !this.rows || !this.rowsKeyField) return;
+
         let colorIndex = 0;
         this.computedRows = this.rows.map((row) => {
             const rowKey = row[this.rowsKeyField];
@@ -1141,7 +1158,7 @@ export default class Scheduler extends LightningElement {
                 referenceColumns: this.smallestHeader.columns,
                 events: occurrences,
                 // We store the initial row object in a variable,
-                // in case one of its field is used by an event's label
+                // in case one of its fields is used by an event's label
                 data: { ...row }
             });
 
@@ -1623,23 +1640,21 @@ export default class Scheduler extends LightningElement {
      * @param {Event} mouseEvent Event that triggered the selection.
      */
     selectEvent(mouseEvent) {
-        const { eventName, from } = mouseEvent.detail;
-
-        const computedEvent = this.computedEvents.find(
-            (evt) => evt.name === eventName
-        );
-        const occurrences = computedEvent.occurrences.filter(
-            (occ) => occ.from.ts === from.ts
-        );
-        const key = mouseEvent.target.dataset.key;
+        const { eventName, from, x, y, key } = mouseEvent.detail;
+        const computedEvent = this.computedEvents.find((evt) => {
+            return evt.name === eventName;
+        });
+        const occurrences = computedEvent.occurrences.filter((occ) => {
+            return occ.from.ts === from.ts;
+        });
         const occurrence = occurrences.find((occ) => occ.key === key);
 
         this.selection = {
             event: computedEvent,
             occurrences,
             occurrence,
-            x: mouseEvent.detail.x,
-            y: mouseEvent.detail.y,
+            x,
+            y,
             draftValues: {}
         };
     }

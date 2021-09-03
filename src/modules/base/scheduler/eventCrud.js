@@ -52,7 +52,7 @@ function deleteEvent(eventName) {
 }
 
 /**
- * Set the focus on a event.
+ * Set the focus on an event.
  *
  * @param {string} eventName Unique name of the event to focus.
  */
@@ -77,7 +77,7 @@ function newEvent(x, y, showDialog = true) {
     this.hideEditDialog();
 
     let keyFields, from, to;
-    if (x && y) {
+    if (!isNaN(x) && !isNaN(y)) {
         const row = this.getRowFromPosition(y);
         const cell = this.getCellFromPosition(row, x);
         keyFields = [row.dataset.key];

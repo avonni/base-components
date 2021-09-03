@@ -152,7 +152,6 @@
                                         columns={smallestHeader.columns}
                                         column-duration={smallestColumnDuration}
                                         column-width={cellWidth}
-                                        scroll-left-offset={datatableWidth}
                                         date-format={dateFormat}
                                         disabled={event.disabled}
                                         event-data={event.data}
@@ -166,11 +165,11 @@
                                         reference-line={event.referenceLine}
                                         row-key={occurrence.rowKey}
                                         rows={computedRows}
+                                        scroll-left-offset={datatableWidth}
                                         title={occurrence.title}
                                         theme={event.theme}
                                         to={occurrence.to}
                                         data-key={occurrence.key}
-                                        data-event-name={event.name}
                                         data-row-key={occurrence.rowKey}
                                         onprivatefocus={handleEventFocus}
                                         onprivateblur={hideDetailPopover}
