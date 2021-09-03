@@ -31,7 +31,7 @@
  */
 
 import { createElement } from 'lwc';
-import InputDateRange from 'c/inputDateRange';
+import InputDateRange from 'avonni/inputDateRange';
 
 // not tested
 // timezone

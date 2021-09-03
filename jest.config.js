@@ -7,8 +7,10 @@ module.exports = {
         '^lightning/(.+)$': '<rootDir>/jest-mock/components/lightning/$1/$1',
         '^c/(confetti)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(datatable)$': '<rootDir>/jest-mock/components/base/$1/$1',
+        '^c/(inputDateRange)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(inputRichText)$': '<rootDir>/jest-mock/components/base/$1/$1',
-        '^c/(primitiveSchedulerHeaderGroup)$': '<rootDir>/jest-mock/components/base/$1/$1',
+        '^c/(primitiveSchedulerHeaderGroup)$':
+            '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(verticalProgressIndicator)$':
             '<rootDir>/jest-mock/components/base/$1/$1'
     }
