@@ -33,7 +33,7 @@
 -->
 
 <template>
-    <template for:each={records} for:item="group">
+    <template for:each={computedGroupByRecords} for:item="group">
         <c-primitive-collapsible-group
             title={group.label}
             size={group.size}
@@ -85,7 +85,7 @@
             </template>
             <template if:true={group.multiLevelGroupBy}>
                 <c-primitive-group-by-item
-                    records={group.group}
+                    computed-group-by-records={group.group}
                     columns={columns}
                     key-field={keyField}
                     default-sort-direction={defaultSortDirection}
@@ -95,6 +95,7 @@
                     hide-checkbox-column={hideCheckboxColumn}
                     hide-table-header={hideTableHeader}
                     hide-collapsible-icon={hideCollapsibleIcon}
+                    is-datatable-editable={isDatatableEditable}
                     is-loading={isLoading}
                     load-more-offset={loadMoreOffset}
                     max-column-width={maxColumnWidth}

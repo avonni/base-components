@@ -30,6 +30,27 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import { createElement } from 'lwc';
+import PrimitiveGroupByItem from 'c/primitiveGroupByItem';
+
+let element = null;
 describe('Primitive Group By Item', () => {
-    test.todo('please pass');
+    afterEach(() => {
+        while (document.body.firstChild) {
+            document.body.removeChild(document.body.firstChild);
+        }
+    });
+
+    beforeEach(() => {
+        element = createElement('base-primitive-group-by-item', {
+            is: PrimitiveGroupByItem
+        });
+        document.body.appendChild(element);
+    });
+
+    it('Default attributes', () => {
+        expect(element.computedGroupByRecords).toMatchObject([]);
+        expect(element.isDatatableEditable).toBeUndefined();
+        expect(element.primitiveColumnsWidth).toMatchObject([]);
+    });
 });

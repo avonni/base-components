@@ -182,7 +182,7 @@ export default class Datatable extends LightningElement {
      * Required properties include 'label', 'fieldName', and 'type'. The default type is 'text'.
      * See the Documentation tab for more information.
      * @public
-     * @type {array}
+     * @type {object}
      */
     @api
     get columns() {
@@ -392,7 +392,7 @@ export default class Datatable extends LightningElement {
     /**
      * The array of data to be displayed. The objects keys depend on the columns fieldNames.
      * @public
-     * @type {array}
+     * @type {object}
      */
     @api
     get records() {
@@ -585,7 +585,7 @@ export default class Datatable extends LightningElement {
     /**
      * Returns the columns width for the primitive summarization table.
      *
-     * @type {array}
+     * @type {object}
      */
     get primitiveColumnsWidth() {
         let columnsWidths = [];
@@ -671,7 +671,7 @@ export default class Datatable extends LightningElement {
      *
      * @type {object}
      */
-    get groupByRecords() {
+    get computedGroupByRecords() {
         return this._hideUndefinedGroup
             ? recursiveGroupByNoUndefined(
                   this._records,

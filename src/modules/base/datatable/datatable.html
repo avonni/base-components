@@ -37,7 +37,7 @@
                 onrowaction={handleDispatchEvents}
             ></c-primitive-datatable>
             <c-primitive-group-by-item
-                records={groupByRecords}
+                computed-group-by-records={computedGroupByRecords}
                 columns={columns}
                 key-field={keyField}
                 default-sort-direction={defaultSortDirection}
@@ -47,6 +47,7 @@
                 hide-checkbox-column={hideCheckboxColumn}
                 hide-collapsible-icon={hideCollapsibleIcon}
                 hide-table-header={hideTableHeader}
+                is-datatable-editable={isDatatableEditable}
                 is-loading={isLoading}
                 load-more-offset={loadMoreOffset}
                 max-column-width={maxColumnWidth}

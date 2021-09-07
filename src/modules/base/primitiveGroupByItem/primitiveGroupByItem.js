@@ -32,6 +32,7 @@
 
 import { LightningElement, api } from 'lwc';
 import { generateUUID } from 'c/utils';
+import { normalizeArray, normalizeBoolean } from 'c/utilsPrivate';
 
 export default class ProgressGroupByItem extends LightningElement {
     @api columns;
@@ -58,8 +59,56 @@ export default class ProgressGroupByItem extends LightningElement {
     @api sortedDirection;
     @api tableWidth;
     @api wrapTextMaxLines;
-    @api primitiveColumnsWidth;
-    @api records;
+
+    _isDatatableEditable;
+    _computedGroupByRecords = [];
+    _primitiveColumnsWidth = [];
+
+    /**
+     * Verifies if one of the column is editable or not.
+     *
+     * @type {object}
+     */
+    @api
+    get computedGroupByRecords() {
+        return this._computedGroupByRecords;
+    }
+
+    set computedGroupByRecords(value) {
+        this._computedGroupByRecords = JSON.parse(
+            JSON.stringify(normalizeArray(value))
+        );
+    }
+
+    /**
+     * Checks if one of the columns is editable.
+     *
+     * @type {boolean}
+     */
+    @api
+    get isDatatableEditable() {
+        return this._isDatatableEditable;
+    }
+
+    set isDatatableEditable(value) {
+        this._isDatatableEditable = normalizeBoolean(value);
+    }
+
+    /**
+     * Returns the columns width of the main datatable from the primitive summarization table.
+     *
+     * @type {object}
+     */
+    @api
+    get primitiveColumnsWidth() {
+        return this._primitiveColumnsWidth;
+    }
+
+    set primitiveColumnsWidth(value) {
+        this._primitiveColumnsWidth = JSON.parse(
+            JSON.stringify(normalizeArray(value))
+        );
+    }
 
     guid = generateUUID();
 
@@ -107,24 +156,12 @@ export default class ProgressGroupByItem extends LightningElement {
     }
 
     /**
-     * Verifies if one of the column is editable or not.
-     *
-     * @type {boolean}
-     */
-    get datatableEditable() {
-        const columnsEditable = this.columns.map((column) => {
-            return column.editable;
-        });
-        return columnsEditable.filter(Boolean).length > 0;
-    }
-
-    /**
      * Returns true if on column is editable or showRowNumberColumn is true.
      *
      * @type {boolean}
      */
     get showRowNumberColumnOrEditable() {
-        return this.showRowNumberColumn || this.datatableEditable;
+        return this.showRowNumberColumn || this._isDatatableEditable;
     }
 
     /**

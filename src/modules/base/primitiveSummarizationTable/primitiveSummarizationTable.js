@@ -31,30 +31,9 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { normalizeArray } from 'c/utilsPrivate';
+import { normalizeArray, normalizeBoolean } from 'c/utilsPrivate';
 
 export default class PrivateSummarizationTable extends LightningElement {
-    /**
-     * Computed summarize array with summarization for the table.
-     *
-     * @type {array}
-     */
-    @api computedSummarizeArray = [];
-
-    /**
-     * If present, the checkbox column for row selection is hidden.
-     *
-     * @type {boolean}
-     */
-    @api hideCheckboxColumn;
-
-    /**
-     * Checks if one of the columns is editable or if none but showRowNumberColumn is true.
-     *
-     * @type {boolean}
-     */
-    @api isDatatableEditable;
-
     /**
      * Returns table width of the main datatable to set the width of the summarization table.
      *
@@ -63,11 +42,56 @@ export default class PrivateSummarizationTable extends LightningElement {
     @api tableWidth;
 
     _primitiveColumnsWidth = [];
+    _computedSummarizeArray = [];
+
+    /**
+     * Computed summarize array with summarization for the table.
+     *
+     * @type {object}
+     */
+    @api
+    get computedSummarizeArray() {
+        return this._computedSummarizeArray;
+    }
+
+    set computedSummarizeArray(value) {
+        this._computedSummarizeArray = JSON.parse(
+            JSON.stringify(normalizeArray(value))
+        );
+    }
+
+    /**
+     * If present, the checkbox column for row selection is hidden.
+     *
+     * @type {boolean}
+     */
+    @api
+    get hideCheckboxColumn() {
+        return this._hideCheckboxColumn;
+    }
+
+    set hideCheckboxColumn(value) {
+        this._hideCheckboxColumn = normalizeBoolean(value);
+    }
+
+    /**
+     * Checks if one of the columns is editable.
+     *
+     * @type {boolean}
+     */
+    @api
+    get isDatatableEditable() {
+        return this._isDatatableEditable;
+    }
+
+    set isDatatableEditable(value) {
+        this._isDatatableEditable = normalizeBoolean(value);
+    }
 
     /**
      * Returns the columns width of the main datatable from the primitive summarization table.
      *
-     * @type {array}
+     * @type {object}
      */
     @api
     get primitiveColumnsWidth() {

@@ -34,6 +34,7 @@ import { createElement } from 'lwc';
 import PrimitiveSummarizationTable from 'c/primitiveSummarizationTable';
 import { computedSummarizeArray } from './data';
 
+let element = null;
 describe('Primitive Summarization Table', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -41,10 +42,14 @@ describe('Primitive Summarization Table', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-primitive-summarization-table', {
+    beforeEach(() => {
+        element = createElement('c-primitive-summarization-table', {
             is: PrimitiveSummarizationTable
         });
+        document.body.appendChild(element);
+    });
+
+    it('Default attributes', () => {
         expect(element.computedSummarizeArray).toMatchObject([]);
         expect(element.hideCheckboxColumn).toBeUndefined();
         expect(element.isDatatableEditable).toBeUndefined();
@@ -53,11 +58,6 @@ describe('Primitive Summarization Table', () => {
     });
 
     it('Computed Summarize Array', () => {
-        const element = createElement('base-primitive-summarization-table', {
-            is: PrimitiveSummarizationTable
-        });
-        document.body.appendChild(element);
-
         element.computedSummarizeArray = computedSummarizeArray;
 
         return Promise.resolve().then(() => {
@@ -68,11 +68,6 @@ describe('Primitive Summarization Table', () => {
     });
 
     it('Hide checkbox column truthy', () => {
-        const element = createElement('base-primitive-summarization-table', {
-            is: PrimitiveSummarizationTable
-        });
-        document.body.appendChild(element);
-
         element.computedSummarizeArray = computedSummarizeArray;
         element.hideCheckboxColumn = true;
 
@@ -85,11 +80,6 @@ describe('Primitive Summarization Table', () => {
     });
 
     it('Hide checkbox column falsy', () => {
-        const element = createElement('base-primitive-summarization-table', {
-            is: PrimitiveSummarizationTable
-        });
-        document.body.appendChild(element);
-
         element.computedSummarizeArray = computedSummarizeArray;
         element.hideCheckboxColumn = false;
 
@@ -102,11 +92,6 @@ describe('Primitive Summarization Table', () => {
     });
 
     it('Is Datatable Editable truthy', () => {
-        const element = createElement('base-primitive-summarization-table', {
-            is: PrimitiveSummarizationTable
-        });
-        document.body.appendChild(element);
-
         element.computedSummarizeArray = computedSummarizeArray;
         element.isDatatableEditable = true;
 
@@ -119,11 +104,6 @@ describe('Primitive Summarization Table', () => {
     });
 
     it('Is Datatable Editable falsy', () => {
-        const element = createElement('base-primitive-summarization-table', {
-            is: PrimitiveSummarizationTable
-        });
-        document.body.appendChild(element);
-
         element.computedSummarizeArray = computedSummarizeArray;
         element.isDatatableEditable = false;
 
@@ -136,11 +116,6 @@ describe('Primitive Summarization Table', () => {
     });
 
     it('Primitive table width', () => {
-        const element = createElement('base-primitive-summarization-table', {
-            is: PrimitiveSummarizationTable
-        });
-        document.body.appendChild(element);
-
         element.computedSummarizeArray = computedSummarizeArray;
         element.primitiveColumnsWidth = [52, 32, 219, 280, 130, 219, 219, 219];
 
@@ -158,11 +133,6 @@ describe('Primitive Summarization Table', () => {
     });
 
     it('Table Width', () => {
-        const element = createElement('base-primitive-summarization-table', {
-            is: PrimitiveSummarizationTable
-        });
-        document.body.appendChild(element);
-
         element.computedSummarizeArray = computedSummarizeArray;
         element.tableWidth = 1000;
 
