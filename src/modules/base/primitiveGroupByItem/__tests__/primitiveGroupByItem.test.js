@@ -30,6 +30,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-describe('Datatable', () => {
+describe('Primitive Group By Item', () => {
     test.todo('please pass');
 });
