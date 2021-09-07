@@ -72,7 +72,7 @@ export const ROWS_KEY_FIELD = 'name';
 
 export const EVENTS = [
     {
-        keyFields: ['row-2', 'row1'],
+        keyFields: ['row-2', 'row-1'],
         name: 'event-1',
         title: 'Event 1',
         from: new Date(2021, 8, 2),
@@ -97,7 +97,7 @@ export const EVENTS = [
 
 export const DISABLED_DATES_TIMES = [
     {
-        keyFields: ['row-2', 'row1'],
+        keyFields: ['row-2', 'row-1'],
         title: 'Disabled date 1',
         iconName: 'utility:apps',
         from: new Date(2021, 8, 2, 10),
