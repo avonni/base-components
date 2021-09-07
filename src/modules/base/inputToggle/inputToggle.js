@@ -622,9 +622,10 @@ export default class InputToggle extends LightningElement {
         this.interactingState.leave();
 
         /**
+         * The event fired when the focus is removed from the input toggle.
+         * 
          * @event
          * @name blur
-         * The event fired when the focus is removed from the input toggle.
          * @public
          */
         this.dispatchEvent(new CustomEvent('blur'));
@@ -637,9 +638,10 @@ export default class InputToggle extends LightningElement {
         this.interactingState.enter();
 
         /**
+         * The event fired when you focus the input toggle.
+         * 
          * @event
          * @name focus
-         * The event fired when you focus the input toggle.
          * @public
          */
         this.dispatchEvent(new CustomEvent('focus'));

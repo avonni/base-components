@@ -716,9 +716,10 @@ export default class Combobox extends LightningElement {
      */
     handleActionClick(event) {
         /**
+         * The event fired when a user clicks on an action.
+         * 
          * @event
          * @name actionClick
-         * The event fired when a user clicks on an action.
          * @param {string} name The name of the action clicked.
          * @bubbles
          * @public

@@ -54,11 +54,6 @@
  */
 /**
  * @memberof examples
- * @name smallTopRight
- * @storyId example-profile-card--small-top-right
- */
-/**
- * @memberof examples
  * @name extraSmallBottomCenter
  * @storyId example-profile-card--extra-small-bottom-center
  */

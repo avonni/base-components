@@ -55,7 +55,7 @@ const IMAGE_WIDTH = {
 
 /**
  * @class
- * @example example-list--base
+ * @storyId example-list--base
  * @description The List component allows for a user to enumerate a vertical list with items.
  * @descriptor avonni-list
  * @public

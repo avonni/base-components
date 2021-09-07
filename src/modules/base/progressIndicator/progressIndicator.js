@@ -357,7 +357,7 @@ export default class ProgressIndicator extends LightningElement {
          * Event that fires when clicking on step popover.
          *
          * @event
-         * @name stepclick
+         * @name steppopoverclick
          * @public
          */
         this.dispatchEvent(new CustomEvent('steppopoverclick'));
