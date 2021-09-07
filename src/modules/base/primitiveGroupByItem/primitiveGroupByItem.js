@@ -111,9 +111,8 @@ export default class ProgressGroupByItem extends LightningElement {
      *
      * @type {boolean}
      */
-    get columnsEditable() {
-        let columnsEditable = [];
-        columnsEditable = this.columns.map((column) => {
+    get datatableEditable() {
+        const columnsEditable = this.columns.map((column) => {
             return column.editable;
         });
         return columnsEditable.filter(Boolean).length > 0;
@@ -125,7 +124,7 @@ export default class ProgressGroupByItem extends LightningElement {
      * @type {boolean}
      */
     get showRowNumberColumnOrEditable() {
-        return this.showRowNumberColumn || this.columnsEditable;
+        return this.showRowNumberColumn || this.datatableEditable;
     }
 
     /**

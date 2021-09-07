@@ -581,22 +581,14 @@ export default class PrimitiveDatatable extends LightningDatatable {
     }
 
     /**
-     * Verifies if a column is editable or not.
-     */
-    @api
-    columnsEditable() {
-        this._columnsEditable = this.columns.map((column) => {
-            return column.editable;
-        });
-        return this._columnsEditable;
-    }
-
-    /**
      * Verifies if one of the column is editable or not.
      */
     @api
     isDatatableEditable() {
-        return this._columnsEditable.filter(Boolean).length;
+        const columnsEditable = this.columns.map((column) => {
+            return column.editable;
+        });
+        return columnsEditable.filter(Boolean).length;
     }
 
     /**

@@ -31,9 +31,13 @@
  */
 
 const editableClassNameTrue =
-    'avonni-datatable__summarize-td_vertical-align_top avonni-primitive-summarization-table__padding_right';
+    'avonni-primitive-summarization-table-td_vertical-align_top avonni-primitive-summarization-table__padding_right';
 const editableClassNameFalse =
-    'avonni-datatable__summarize-td_vertical-align_top';
+    'avonni-primitive-summarization-table-td_vertical-align_top';
+const isNumberTypeClassNameTrue =
+    'slds-truncate avonni-primitive-summarization-table__display-flex_end';
+const isNumberTypeClassNameFalse =
+    'slds-truncate avonni-primitive-summarization-table__display-flex_start';
 
 /**
  * Method to count numbers of element in array.
@@ -400,8 +404,9 @@ const computeSummarizeArray = (columns, data) => {
         const formatType = formatNumberType(columnType);
         // If the column is a numberType, the alignement is right, otherwise it's left.
         const className = isNumberType(columnType)
-            ? 'slds-truncate avonni-datatable-summarize-table_display-flex_end'
-            : 'slds-truncate avonni-datatable-summarize-table_display-flex_start';
+            ? isNumberTypeClassNameTrue
+            : isNumberTypeClassNameFalse;
+        // If the column is editable we need to add padding-right to match the styling.
         const editableClassName = isColumnEditable
             ? editableClassNameTrue
             : editableClassNameFalse;

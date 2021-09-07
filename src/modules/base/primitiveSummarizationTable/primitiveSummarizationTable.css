@@ -30,28 +30,28 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.avonni-datatable__summarize-type-text_styling {
+.avonni-primitive-summarization-table__text_styling {
     color: #9e9e9e;
     margin-right: 5px;
 }
 
-.avonni-datatable-summarize-table_display-flex_start {
+.avonni-primitive-summarization-table__display-flex_start {
     display: flex;
     justify-content: flex-start;
     padding: 0.1rem 0;
 }
 
-.avonni-datatable-summarize-table_display-flex_end {
+.avonni-primitive-summarization-table__display-flex_end {
     display: flex;
     justify-content: flex-end;
     padding: 0.1rem 0;
 }
 
-.avonni-datatable__summarize-table_border-top_none {
+.avonni-primitive-summarization-table__border-top_none {
     border-top: none;
 }
 
-.avonni-datatable__summarize-td_vertical-align_top {
+.avonni-primitive-summarization-table-td_vertical-align_top {
     vertical-align: top;
 }
 

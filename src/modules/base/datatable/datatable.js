@@ -171,7 +171,6 @@ export default class Datatable extends LightningElement {
     _hasDraftValues = false;
 
     columnsWidth = [];
-    columnsEditable = [];
     _isDatatableEditable;
 
     privateChildrenRecord = {};
@@ -584,7 +583,7 @@ export default class Datatable extends LightningElement {
     }
 
     /**
-     * Returns the columns width from the primitive summarization table.
+     * Returns the columns width for the primitive summarization table.
      *
      * @type {array}
      */
@@ -698,12 +697,9 @@ export default class Datatable extends LightningElement {
     }
 
     /**
-     * Gets the columns the information about if they are editable or not.
+     * Checks if there is a column editable in the datatable.
      */
     datatableEditable() {
-        this.columnsEditable = this.hasGroupBy
-            ? this.headerDatatable.columnsEditable()
-            : this.ungroupedDatatable.columnsEditable();
         this._isDatatableEditable = this.hasGroupBy
             ? this.headerDatatable.isDatatableEditable()
             : this.ungroupedDatatable.isDatatableEditable();
