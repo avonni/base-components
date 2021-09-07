@@ -131,7 +131,7 @@ function saveEvent() {
     if (this.selection.newEvent) {
         // Generate a name for the new event, based on its title
         const lowerCaseName = event.title.toLowerCase();
-        event.name = lowerCaseName.replaceAll(/\s/g, '-').concat(event.key);
+        event.name = lowerCaseName.replace(/\s/g, '-').concat(event.key);
 
         /**
          * The event fired when a user creates an event.
@@ -151,9 +151,9 @@ function saveEvent() {
                         name: event.name,
                         title: event.title,
                         to: event.to.toUTC().toISO()
-                    },
-                    bubbles: true
-                }
+                    }
+                },
+                bubbles: true
             })
         );
         this.selection = undefined;

@@ -188,7 +188,7 @@ export default class Scheduler extends LightningElement {
         }
 
         // If the edit dialog is opened, focus on the first input
-        if (this.showEditDialog) {
+        if (this.showEditDialog || this.showRecurrenceDialog) {
             this.template.querySelector('c-dialog').focusOnCloseButton();
         }
     }
@@ -533,8 +533,7 @@ export default class Scheduler extends LightningElement {
         });
 
         if (this.isConnected) {
-            this.initEvents();
-            this.updateVisibleRows();
+            this.initRows();
         }
     }
 
@@ -2197,8 +2196,12 @@ export default class Scheduler extends LightningElement {
      * Handle the dblclick event fired by an empty spot of the schedule or a disabled primitive event occurrence. Create a new event at this position and open the edit dialog.
      */
     handleDoubleClick(mouseEvent) {
-        const x = mouseEvent.clientX || mouseEvent.detail.x;
-        const y = mouseEvent.clientY || mouseEvent.detail.y;
+        const x = !isNaN(mouseEvent.clientX)
+            ? mouseEvent.clientX
+            : mouseEvent.detail.x;
+        const y = !isNaN(mouseEvent.clientY)
+            ? mouseEvent.clientY
+            : mouseEvent.detail.y;
         this.crud.newEvent(x, y, true);
     }
 
@@ -2245,7 +2248,7 @@ export default class Scheduler extends LightningElement {
     handleCloseEditDialog() {
         this.cleanDraggedElement();
         this.cleanSelection();
-        this.hideEditDialog();
+        this.hideAllPopovers();
     }
 
     /**
@@ -2305,6 +2308,8 @@ export default class Scheduler extends LightningElement {
         } else {
             this.hideEditDialog();
         }
+        this.hideDetailPopover();
+        this.hideContextMenu();
     }
 
     /**
@@ -2312,7 +2317,8 @@ export default class Scheduler extends LightningElement {
      */
     handleEditSaveKeyDown(event) {
         if (event.key === 'Tab') {
-            this.template.querySelector('c-dialog lightning-input').focus();
+            event.preventDefault();
+            this.template.querySelector('c-dialog').focusOnCloseButton();
         }
     }
 

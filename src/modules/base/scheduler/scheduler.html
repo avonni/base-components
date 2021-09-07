@@ -169,6 +169,7 @@
                                         title={occurrence.title}
                                         theme={event.theme}
                                         to={occurrence.to}
+                                        data-event-name={event.name}
                                         data-key={occurrence.key}
                                         data-row-key={occurrence.rowKey}
                                         onprivatefocus={handleEventFocus}
@@ -282,6 +283,7 @@
             variant="brand"
             value="all"
             onclick={handleSaveEvent}
+            onkeydown={handleEditSaveKeyDown}
         ></lightning-button>
     </c-dialog>
 
