@@ -36,7 +36,7 @@ export default class SchedulerRow {
     constructor(props) {
         this.color = props.color;
         this.data = props.data;
-        this.key = props.key.toString();
+        this.key = props.key && props.key.toString();
         this.columns = [];
         this.minHeight = 0;
         this.referenceColumns = normalizeArray(props.referenceColumns);
