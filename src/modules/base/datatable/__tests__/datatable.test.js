@@ -30,6 +30,46 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+// import { createElement } from 'lwc';
+// import Datatable from 'avonni/datatable';
+// import { columnsAB, recordsAB } from './../__docs__/data'
+
 describe('Datatable', () => {
     test.todo('please pass');
+    // afterEach(() => {
+    //     while (document.body.firstChild) {
+    //         document.body.removeChild(document.body.firstChild);
+    //     }
+    // });
+
+    // it('Default attributes', () => {
+    //     const element = createElement('base-datatable', {
+    //         is: Datatable
+    //     });
+    //     console.log(Datatable);
+    //     expect(element.keyField).toBe('fixed');
+    //     expect(element.columnWidthsMode).toBe('fixed');
+    // });
+
+    /* ----- ATTRIBUTES ----- */
+
+    // add-button-icon-name & add-button-label
+    // it('Datatable', () => {
+    //     const element = createElement('base-datatable', {
+    //         is: Datatable
+    //     });
+    //     document.body.appendChild(element);
+
+    //     element.keyField = 'id';
+    //     element.columns = columnsAB;
+    //     element.records = recordsAB;
+
+    //     return Promise.resolve().then(() => {
+    //         const lightningButtonIcon = element.shadowRoot.querySelector(
+    //             "lightning-button-icon[title='add']"
+    //         );
+    //         expect(lightningButtonIcon.iconName).toBe('utility:add');
+    //         expect(lightningButtonIcon.title).toBe('add');
+    //     });
+    // });
 });
