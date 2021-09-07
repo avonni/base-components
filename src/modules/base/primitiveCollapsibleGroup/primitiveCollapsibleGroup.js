@@ -58,18 +58,16 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
     }
 
     /**
-     * If the section is not collapsible, the left icon is hidden.
-     *
+     * In case of group-by, if present, the section is not collapsible and the left icon is hidden.
      * @type {boolean}
      * @default false
      */
     @api
-    get collapsible() {
-        return this._collapsible;
+    get hideCollapsibleIcon() {
+        return this._hideCollapsibleIcon;
     }
-
-    set collapsible(value) {
-        this._collapsible = normalizeBoolean(!value);
+    set hideCollapsibleIcon(value) {
+        this._hideCollapsibleIcon = normalizeBoolean(value);
     }
 
     /**
@@ -101,29 +99,29 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
     }
 
     /**
-     * Width of the main datatable.
+     * Width of the section.
      *
      * @type {number}
      */
     @api
-    get tableWidth() {
-        return this._tableWidth;
+    get sectionWidth() {
+        return this._sectionWidth;
     }
 
-    set tableWidth(value) {
-        this._tableWidth =
+    set sectionWidth(value) {
+        this._sectionWidth =
             typeof value === 'number' ? value : parseInt(value, 10);
     }
 
     _closed = false;
-    _collapsible = false;
+    _hideCollapsibleIcon = false;
     _level;
+    _sectionWidth;
     _size;
-    _tableWidth;
 
     renderedCallback() {
         this.sectionPaddingLeft();
-        this.sectionWidth();
+        this.computedSectionWidth();
     }
 
     /**
@@ -134,7 +132,7 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
     get sectionClass() {
         return classSet('slds-section')
             .add({
-                'slds-is-open': !this._collapsible || !this._closed,
+                'slds-is-open': this._hideCollapsibleIcon || !this._closed,
                 'avonni-primitive-collapsible-group__section_margin_bottom': !this
                     ._closed
             })
@@ -151,7 +149,7 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
             'slds-section__title avonni-primitive-collapsible-group__section_padding_bottom'
         )
             .add({
-                'slds-theme_shade': !this._collapsible
+                'slds-theme_shade': this._hideCollapsibleIcon
             })
             .toString();
     }
@@ -179,7 +177,8 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
     /**
      * Section change status toggle.
      */
-    changeSectionStatus() {
+    @api
+    toggleSection() {
         this._closed = !this._closed;
     }
 
@@ -193,9 +192,9 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
     /**
      * Sets the width of the section depending on the width of the header datatable.
      */
-    sectionWidth() {
+    computedSectionWidth() {
         this.template.querySelectorAll('.slds-section').forEach((section) => {
-            section.style.width = `${this._tableWidth}px`;
+            section.style.width = `${this._sectionWidth}px`;
         });
     }
 }

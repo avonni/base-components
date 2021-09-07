@@ -35,14 +35,14 @@
 <template>
     <div class={sectionClass}>
         <h3 class={sectionTitleClass} aria-level={level}>
-            <template if:true={collapsible}>
+            <template if:false={hideCollapsibleIcon}>
                 <button
                     class="slds-button slds-section__title-action"
-                    onclick={changeSectionStatus}
+                    onclick={toggleSection}
                 >
                     <template if:false={closed}>
                         <lightning-icon
-                            icon-name="utility:switch"
+                            icon-name="utility:chevrondown"
                             size="x-small"
                             class="slds-button__icon slds-button__icon_left"
                         ></lightning-icon>
@@ -59,7 +59,7 @@
                     </span>
                 </button>
             </template>
-            <template if:false={collapsible}>
+            <template if:true={hideCollapsibleIcon}>
                 <span
                     class="slds-truncate slds-p-horizontal_small"
                     title={title}

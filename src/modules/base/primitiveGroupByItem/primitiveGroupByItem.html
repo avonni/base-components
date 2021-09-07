@@ -38,10 +38,9 @@
             title={group.label}
             size={group.size}
             level={group.level}
-            table-width={tableWidth}
+            section-width={tableWidth}
             key={group.label}
-            collapsible={hideCollapsibleIcon}
-            class="collapsible-group"
+            hide-collapsible-icon={hideCollapsibleIcon}
         >
             <template if:false={group.multiLevelGroupBy}>
                 <c-primitive-datatable
