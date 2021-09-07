@@ -54,3 +54,7 @@
 .avonni-datatable__summarize-td_vertical-align_top {
     vertical-align: top;
 }
+
+.avonni-primitive-summarization-table__padding_right {
+    padding-right: 35px;
+}

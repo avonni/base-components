@@ -40,12 +40,12 @@
     >
         <tbody>
             <tr>
-                <td if:true={isDatatableEditable}></td>
-                <td if:false={hideCheckboxColumn}></td>
+                <td data-role="row-number" if:true={isDatatableEditable}></td>
+                <td data-role="checkbox" if:false={hideCheckboxColumn}></td>
                 <template for:each={computedSummarizeArray} for:item="column">
                     <td
                         key={column.fieldName}
-                        class="avonni-datatable__summarize-td_vertical-align_top"
+                        class={column.editableClassName}
                         data-column={column.fieldName}
                         role="gridcell"
                     >

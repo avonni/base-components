@@ -30,6 +30,145 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import { createElement } from 'lwc';
+import PrimitiveSummarizationTable from 'c/primitiveSummarizationTable';
+import { computedSummarizeArray } from './data';
+
 describe('Primitive Summarization Table', () => {
-    test.todo('please pass');
+    afterEach(() => {
+        while (document.body.firstChild) {
+            document.body.removeChild(document.body.firstChild);
+        }
+    });
+
+    it('Default attributes', () => {
+        const element = createElement('base-primitive-summarization-table', {
+            is: PrimitiveSummarizationTable
+        });
+        expect(element.computedSummarizeArray).toMatchObject([]);
+        expect(element.hideCheckboxColumn).toBeUndefined();
+        expect(element.isDatatableEditable).toBeUndefined();
+        expect(element.primitiveColumnsWidth).toMatchObject([]);
+        expect(element.tableWidth).toBeUndefined();
+    });
+
+    it('Computed Summarize Array', () => {
+        const element = createElement('base-primitive-summarization-table', {
+            is: PrimitiveSummarizationTable
+        });
+        document.body.appendChild(element);
+
+        element.computedSummarizeArray = computedSummarizeArray;
+
+        return Promise.resolve().then(() => {
+            expect(element.computedSummarizeArray).toMatchObject(
+                computedSummarizeArray
+            );
+        });
+    });
+
+    it('Hide checkbox column truthy', () => {
+        const element = createElement('base-primitive-summarization-table', {
+            is: PrimitiveSummarizationTable
+        });
+        document.body.appendChild(element);
+
+        element.computedSummarizeArray = computedSummarizeArray;
+        element.hideCheckboxColumn = true;
+
+        return Promise.resolve().then(() => {
+            const rowNumberColumn = element.shadowRoot.querySelector(
+                'td[data-role="checkbox"]'
+            );
+            expect(rowNumberColumn).toBeFalsy();
+        });
+    });
+
+    it('Hide checkbox column falsy', () => {
+        const element = createElement('base-primitive-summarization-table', {
+            is: PrimitiveSummarizationTable
+        });
+        document.body.appendChild(element);
+
+        element.computedSummarizeArray = computedSummarizeArray;
+        element.hideCheckboxColumn = false;
+
+        return Promise.resolve().then(() => {
+            const rowNumberColumn = element.shadowRoot.querySelector(
+                'td[data-role="checkbox"]'
+            );
+            expect(rowNumberColumn).toBeTruthy();
+        });
+    });
+
+    it('Is Datatable Editable truthy', () => {
+        const element = createElement('base-primitive-summarization-table', {
+            is: PrimitiveSummarizationTable
+        });
+        document.body.appendChild(element);
+
+        element.computedSummarizeArray = computedSummarizeArray;
+        element.isDatatableEditable = true;
+
+        return Promise.resolve().then(() => {
+            const rowNumberColumn = element.shadowRoot.querySelector(
+                'td[data-role="row-number"]'
+            );
+            expect(rowNumberColumn).toBeTruthy();
+        });
+    });
+
+    it('Is Datatable Editable falsy', () => {
+        const element = createElement('base-primitive-summarization-table', {
+            is: PrimitiveSummarizationTable
+        });
+        document.body.appendChild(element);
+
+        element.computedSummarizeArray = computedSummarizeArray;
+        element.isDatatableEditable = false;
+
+        return Promise.resolve().then(() => {
+            const rowNumberColumn = element.shadowRoot.querySelector(
+                'td[data-role="row-number"]'
+            );
+            expect(rowNumberColumn).toBeFalsy();
+        });
+    });
+
+    it('Primitive table width', () => {
+        const element = createElement('base-primitive-summarization-table', {
+            is: PrimitiveSummarizationTable
+        });
+        document.body.appendChild(element);
+
+        element.computedSummarizeArray = computedSummarizeArray;
+        element.primitiveColumnsWidth = [52, 32, 219, 280, 130, 219, 219, 219];
+
+        return Promise.resolve().then(() => {
+            const gridCells = element.shadowRoot.querySelectorAll('td');
+            gridCells.forEach((cell, index) => {
+                expect(cell.style.maxWidth).toBe(
+                    element.primitiveColumnsWidth[index] + 'px'
+                );
+                expect(cell.style.minWidth).toBe(
+                    element.primitiveColumnsWidth[index] + 'px'
+                );
+            });
+        });
+    });
+
+    it('Table Width', () => {
+        const element = createElement('base-primitive-summarization-table', {
+            is: PrimitiveSummarizationTable
+        });
+        document.body.appendChild(element);
+
+        element.computedSummarizeArray = computedSummarizeArray;
+        element.tableWidth = 1000;
+
+        return Promise.resolve().then(() => {
+            const table = element.shadowRoot.querySelector('table');
+            expect(table.style.width).toBe('1000px');
+        });
+    });
 });

@@ -30,6 +30,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+const editableClassNameTrue =
+    'avonni-datatable__summarize-td_vertical-align_top avonni-primitive-summarization-table__padding_right';
+const editableClassNameFalse =
+    'avonni-datatable__summarize-td_vertical-align_top';
+
 /**
  * Method to count numbers of element in array.
  *
@@ -388,6 +393,7 @@ const computeSummarizeArray = (columns, data) => {
         let summarizeTypes = column.summarizeTypes;
         const columnType = column.type;
         const hasSummarizeType = column.summarizeTypes ? true : false;
+        const isColumnEditable = column.editable ? true : false;
         const dateType = isDateType(columnType);
         const formattedNumberType = isFormattedNumberType(columnType);
         const filteredDataValues = computeFilteredDataValues(columns, data);
@@ -396,12 +402,15 @@ const computeSummarizeArray = (columns, data) => {
         const className = isNumberType(columnType)
             ? 'slds-truncate avonni-datatable-summarize-table_display-flex_end'
             : 'slds-truncate avonni-datatable-summarize-table_display-flex_start';
-
+        const editableClassName = isColumnEditable
+            ? editableClassNameTrue
+            : editableClassNameFalse;
         // Formatting of the object that we need to iterate on, in the markup.
         const summarizeColumnObject = {
             fieldName: column.fieldName,
             type: columnType,
             hasSummarizeType: hasSummarizeType,
+            editableClassName: editableClassName,
             summarizeTypes: summarizeTypes,
             formattedNumberType: formattedNumberType,
             dateType: dateType,

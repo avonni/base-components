@@ -35,11 +35,11 @@ import { normalizeArray } from 'c/utilsPrivate';
 
 export default class PrivateSummarizationTable extends LightningElement {
     /**
-     * Checks if one of the columns is editable or if none but showRowNumberColumn is true.
+     * Computed summarize array with summarization for the table.
      *
-     * @type {boolean}
+     * @type {array}
      */
-    @api isDatatableEditable;
+    @api computedSummarizeArray = [];
 
     /**
      * If present, the checkbox column for row selection is hidden.
@@ -49,11 +49,11 @@ export default class PrivateSummarizationTable extends LightningElement {
     @api hideCheckboxColumn;
 
     /**
-     * Computed summarize array with summarization for the table.
+     * Checks if one of the columns is editable or if none but showRowNumberColumn is true.
      *
-     * @type {array}
+     * @type {boolean}
      */
-    @api computedSummarizeArray;
+    @api isDatatableEditable;
 
     /**
      * Returns table width of the main datatable to set the width of the summarization table.
@@ -62,8 +62,7 @@ export default class PrivateSummarizationTable extends LightningElement {
      */
     @api tableWidth;
 
-    _columnsEditable;
-    _primitiveColumnsWidth;
+    _primitiveColumnsWidth = [];
 
     /**
      * Returns the columns width of the main datatable from the primitive summarization table.
@@ -77,22 +76,6 @@ export default class PrivateSummarizationTable extends LightningElement {
 
     set primitiveColumnsWidth(value) {
         this._primitiveColumnsWidth = JSON.parse(
-            JSON.stringify(normalizeArray(value))
-        );
-    }
-
-    /**
-     * Returns the columns width of the main datatable from the primitive summarization table.
-     *
-     * @type {array}
-     */
-    @api
-    get columnsEditable() {
-        return this._columnsEditable;
-    }
-
-    set columnsEditable(value) {
-        this._columnsEditable = JSON.parse(
             JSON.stringify(normalizeArray(value))
         );
     }
@@ -114,15 +97,6 @@ export default class PrivateSummarizationTable extends LightningElement {
                 // if column is editable, there is a button-icon which is 35 px but not on the first column.
                 cell.style.maxWidth = `${this._primitiveColumnsWidth[index]}px`;
                 cell.style.minWidth = `${this._primitiveColumnsWidth[index]}px`;
-                if (!this.hideCheckboxColumn) {
-                    if (this._columnsEditable[index - 2]) {
-                        cell.style.paddingRight = '35px';
-                    }
-                } else {
-                    if (this._columnsEditable[index - 1]) {
-                        cell.style.paddingRight = '35px';
-                    }
-                }
             });
         });
     }

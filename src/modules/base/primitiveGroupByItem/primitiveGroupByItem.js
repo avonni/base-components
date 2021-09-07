@@ -40,7 +40,6 @@ export default class ProgressGroupByItem extends LightningElement {
     @api draftValues;
     @api enableInfiniteLoading;
     @api errors;
-    @api groupBy;
     @api hideCheckboxColumn;
     @api hideCollapsibleIcon;
     @api hideTableHeader;
