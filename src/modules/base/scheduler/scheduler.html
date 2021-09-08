@@ -289,6 +289,30 @@
         </div>
     </c-dialog>
 
+    <!-- Delete confirmation dialog -->
+    <c-dialog
+        if:true={showDeleteConfirmationDialog}
+        show-dialog={showDeleteConfirmationDialog}
+        title={editDialogTitle}
+        size="small"
+        onclosedialog={handleCloseDeleteConfirmationDialog}
+    >
+        <p class="slds-m-bottom_medium">{editDialogLabels.deleteMessage}</p>
+        <div slot="footer">
+            <lightning-button
+                class="slds-m-right_xx-small"
+                label={editDialogLabels.cancelButton}
+                onclick={handleCloseDeleteConfirmationDialog}
+            ></lightning-button>
+            <lightning-button
+                class="slds-m-right_xx-small"
+                label={editDialogLabels.deleteButton}
+                variant="brand"
+                onclick={handleEventDelete}
+            ></lightning-button>
+        </div>
+    </c-dialog>
+
     <!-- Event edit dialog -->
     <c-dialog
         if:true={showEditDialog}

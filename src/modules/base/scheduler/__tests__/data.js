@@ -50,18 +50,21 @@ export const COLUMNS = [
 export const ROWS = [
     {
         name: 'row-1',
+        resourceName: 'Row 1',
         col1: 'Row 1, column 1',
         col2: 'Row 1, column 2',
         col3: 'Row 1, column 3'
     },
     {
         name: 'row-2',
+        resourceName: 'Row 2',
         col1: 'Row 2, column 1',
         col2: 'Row 2, column 2',
         col3: 'Row 2, column 3'
     },
     {
         name: 'row-3',
+        resourceName: 'Row 3',
         col1: 'Row 3, column 1',
         col2: 'Row 3, column 2',
         col3: 'Row 3, column 3'

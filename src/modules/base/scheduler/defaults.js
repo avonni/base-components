@@ -68,6 +68,8 @@ const DEFAULT_EDIT_DIALOG_LABELS = {
     saveAllRecurrent: 'All events',
     editRecurrent: 'Edit recurring event.',
     cancelButton: 'Cancel',
+    deleteButton: 'Delete',
+    deleteMessage: 'Are you sure you want to delete this event?',
     newEventTitle: 'New event'
 };
 

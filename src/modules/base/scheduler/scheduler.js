@@ -124,6 +124,7 @@ export default class Scheduler extends LightningElement {
     selectedEvent;
     showContextMenu = false;
     showEditDialog = false;
+    showDeleteConfirmationDialog = false;
     showDetailPopover = false;
     showRecurrenceDialog = false;
     smallestHeader;
@@ -426,6 +427,8 @@ export default class Scheduler extends LightningElement {
      *   saveAllRecurrent: 'All events',
      *   editRecurrent: 'Edit recurring event.',
      *   cancelButton: 'Cancel',
+     *   deleteButton: 'Delete',
+     *   deleteMessage: 'Are you sure you want to delete this event?',
      *   newEventTitle: 'New event'
      * }
      */
@@ -453,6 +456,10 @@ export default class Scheduler extends LightningElement {
                 value.editRecurrent || DEFAULT_EDIT_DIALOG_LABELS.editRecurrent;
             labels.cancelButton =
                 value.cancelButton || DEFAULT_EDIT_DIALOG_LABELS.cancelButton;
+            labels.deleteButton =
+                value.deleteButton || DEFAULT_EDIT_DIALOG_LABELS.deleteButton;
+            labels.deleteMessage =
+                value.deleteMessage || DEFAULT_EDIT_DIALOG_LABELS.deleteMessage;
             labels.newEventTitle =
                 value.newEventTitle || DEFAULT_EDIT_DIALOG_LABELS.newEventTitle;
 
@@ -1810,6 +1817,7 @@ export default class Scheduler extends LightningElement {
         this.hideDetailPopover();
         this.hideContextMenu();
         this.hideEditDialog();
+        this.hideDeleteConfirmationDialog();
     }
 
     /**
@@ -1835,10 +1843,23 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * Hide the delete confirmation dialog.
+     */
+    hideDeleteConfirmationDialog() {
+        this.showDeleteConfirmationDialog = false;
+    }
+
+    /**
      * Hide the recurring event saving options dialog.
      */
     hideRecurrenceDialog() {
         this.showRecurrenceDialog = false;
+    }
+
+    handleCloseDeleteConfirmationDialog() {
+        this.cleanDraggedElement();
+        this.cleanSelection();
+        this.hideDeleteConfirmationDialog();
     }
 
     /**
@@ -1895,6 +1916,13 @@ export default class Scheduler extends LightningElement {
                     : schedule.scrollLeft - scrollOffset;
             schedule.scrollTo({ left: scrollValue });
         }
+    }
+
+    /**
+     * Handle the click event fired by the delete button. Delete the selected event.
+     */
+    handleEventDelete() {
+        this.crud.deleteEvent();
     }
 
     /**
@@ -2173,7 +2201,7 @@ export default class Scheduler extends LightningElement {
                 this.showEditDialog = true;
                 break;
             case 'delete':
-                this.crud.deleteEvent();
+                this.showDeleteConfirmationDialog = true;
                 break;
             case 'add-event':
                 this.showEditDialog = true;

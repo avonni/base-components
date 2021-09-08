@@ -374,13 +374,11 @@ describe('Scheduler', () => {
         element.rowsKeyField = ROWS_KEY_FIELD;
         element.events = EVENTS;
 
-        let occurrenceKey;
         return Promise.resolve()
             .then(() => {
                 const event = element.shadowRoot.querySelector(
                     'c-primitive-scheduler-event-occurrence'
                 );
-                occurrenceKey = event.occurrenceKey;
                 event.dispatchEvent(
                     new CustomEvent('privatecontextmenu', {
                         detail: {
@@ -407,10 +405,10 @@ describe('Scheduler', () => {
                 );
             })
             .then(() => {
-                const event = element.shadowRoot.querySelector(
-                    `c-primitive-scheduler-event-occurrence[data-key="${occurrenceKey}"]`
+                const deleteMessage = element.shadowRoot.querySelector(
+                    'c-dialog p'
                 );
-                expect(event).toBeFalsy();
+                expect(deleteMessage).toBeTruthy();
             });
     });
 
@@ -688,7 +686,7 @@ describe('Scheduler', () => {
     });
 
     // edit-dialog-labels
-    // Depends on the edit action flow
+    // Depends on the edit and delete action flow
     it('editDialogLabels', () => {
         element.start = START;
         document.body.appendChild(element);
@@ -918,6 +916,68 @@ describe('Scheduler', () => {
             .then(() => {
                 const dialog = element.shadowRoot.querySelector('c-dialog');
                 expect(dialog).toBeFalsy();
+            });
+    });
+
+    it('editDialogLabels, delete confirmation dialog', () => {
+        element.start = START;
+        document.body.appendChild(element);
+
+        element.rows = ROWS;
+        element.rowsKeyField = ROWS_KEY_FIELD;
+        element.events = EVENTS;
+        const labels = {
+            deleteButton: 'This is the delete',
+            cancelButton: 'This is the cancel',
+            deleteMessage: 'This is the delete message'
+        };
+        element.editDialogLabels = labels;
+
+        return Promise.resolve()
+            .then(() => {
+                const event = element.shadowRoot.querySelector(
+                    'c-primitive-scheduler-event-occurrence'
+                );
+                event.dispatchEvent(
+                    new CustomEvent('privatecontextmenu', {
+                        detail: {
+                            eventName: event.eventName,
+                            key: event.occurrenceKey,
+                            from: event.from,
+                            to: event.to,
+                            x: 20,
+                            y: 300
+                        }
+                    })
+                );
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    'c-primitive-dropdown-menu'
+                );
+                dropdown.dispatchEvent(
+                    new CustomEvent('privateselect', {
+                        detail: {
+                            name: 'delete'
+                        }
+                    })
+                );
+            })
+            .then(() => {
+                const deleteMessage = element.shadowRoot.querySelector(
+                    'c-dialog p'
+                );
+                expect(deleteMessage.textContent).toBe(labels.deleteMessage);
+
+                const deleteButton = element.shadowRoot.querySelector(
+                    'c-dialog lightning-button:nth-of-type(2)'
+                );
+                expect(deleteButton.label).toBe(labels.deleteButton);
+
+                const cancelButton = element.shadowRoot.querySelector(
+                    'c-dialog lightning-button'
+                );
+                expect(cancelButton.label).toBe(labels.cancelButton);
             });
     });
 
@@ -2149,7 +2209,7 @@ describe('Scheduler', () => {
 
     // Event delete
     // Depends on rows, rowsKeyField, events and start
-    it('User deletes an event from the context menu', () => {
+    it('User deletes an event', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -2190,6 +2250,12 @@ describe('Scheduler', () => {
                         }
                     })
                 );
+            })
+            .then(() => {
+                const deleteButton = element.shadowRoot.querySelector(
+                    'c-dialog lightning-button:nth-of-type(2)'
+                );
+                deleteButton.click();
             })
             .then(() => {
                 const event = element.shadowRoot.querySelector(
