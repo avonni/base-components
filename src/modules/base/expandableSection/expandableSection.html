@@ -34,7 +34,7 @@
 
 <template>
     <div class={sectionClass}>
-        <h3 class={sectionTitleClass}>
+        <h3 class={sectionTitleClass} if:true={showHeader}>
             <template if:true={collapsible}>
                 <button
                     class="slds-button slds-section__title-action"

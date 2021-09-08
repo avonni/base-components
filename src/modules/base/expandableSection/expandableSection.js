@@ -111,6 +111,16 @@ export default class ExpandableSection extends LightningElement {
     }
 
     /**
+     * If true, the header is visible.
+     *
+     * @type {boolean}
+     * @default false
+     */
+    get showHeader() {
+        return this.title || this.collapsible;
+    }
+
+    /**
      * Section change status toggle.
      */
     changeSectionStatus() {
