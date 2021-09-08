@@ -490,7 +490,6 @@ DatatableWithSummarizeTypesAndGroupBy.args = {
     columns: columnsSum,
     records: recordsSum,
     keyField: 'id',
-    columnWidthsMode: 'auto',
     groupBy: 'badge',
     hideCollapsibleIcon: true
 };
@@ -500,6 +499,16 @@ DatatableWithGroupBy.args = {
     columns: columnsGroupBy,
     records: recordsGroupBy,
     keyField: 'id',
-    columnWidthsMode: 'fixed',
     groupBy: ['city', 'district']
+};
+
+export const DatatableWithGroupByNoUndefined = Template.bind({});
+DatatableWithGroupByNoUndefined.args = {
+    columns: columnsGroupBy,
+    records: recordsGroupBy,
+    keyField: 'id',
+    groupBy: ['city', 'sex'],
+    hideUndefinedGroup: true,
+    hideCheckboxColumn: true,
+    resizeColumnDisabled: true
 };

@@ -536,16 +536,21 @@ const columnsGroupBy = [
     },
     {
         id: 3,
+        label: 'Sex',
+        fieldName: 'sex'
+    },
+    {
+        id: 4,
         label: 'City',
         fieldName: 'city'
     },
     {
-        id: 4,
+        id: 5,
         label: 'District',
         fieldName: 'district'
     },
     {
-        id: 5,
+        id: 6,
         label: 'Habitation',
         fieldName: 'habitation'
     }
@@ -972,6 +977,7 @@ const recordsGroupBy = [
         id: 1,
         name: 'Karen',
         age: '88',
+        sex: 'Female',
         city: 'Montreal',
         district: 'Plateau',
         habitation: 'Apartment'
@@ -980,6 +986,7 @@ const recordsGroupBy = [
         id: 2,
         name: 'James',
         age: '87',
+        sex: 'Male',
         city: 'Montreal',
         district: 'Villeray',
         habitation: 'Apartment'
@@ -988,6 +995,7 @@ const recordsGroupBy = [
         id: 3,
         name: 'Don',
         age: '18',
+        sex: 'Male',
         city: 'Longueuil',
         district: 'Old Longueuil',
         habitation: 'Room'
@@ -996,6 +1004,7 @@ const recordsGroupBy = [
         id: 5,
         name: 'Donald',
         age: '16',
+        sex: 'Male',
         city: 'Longueuil',
         district: 'Saint-Hubert'
     },
@@ -1003,6 +1012,7 @@ const recordsGroupBy = [
         id: 6,
         name: 'Jenny',
         age: '56',
+        sex: 'Female',
         city: 'Longueuil',
         district: 'Greenfield Park',
         habitation: 'Apartment'
@@ -1011,6 +1021,7 @@ const recordsGroupBy = [
         id: 7,
         name: 'Doug',
         age: '61',
+        sex: 'Male',
         city: 'Montreal',
         district: 'Outremont',
         habitation: 'Room'
@@ -1019,6 +1030,7 @@ const recordsGroupBy = [
         id: 8,
         name: 'Michel',
         age: '19',
+        sex: 'Male',
         city: 'Longueuil',
         district: 'Greenfield Park',
         habitation: 'Room'
@@ -1027,6 +1039,7 @@ const recordsGroupBy = [
         id: 9,
         name: 'Renaud',
         age: '29',
+        sex: 'Male',
         city: 'Longueuil',
         district: 'Saint-Hubert',
         habitation: 'Apartment'
@@ -1035,6 +1048,7 @@ const recordsGroupBy = [
         id: 10,
         name: 'Linda',
         age: '14',
+        sex: 'Female',
         city: 'Laval',
         district: 'Vimont',
         habitation: 'Apartment'
@@ -1043,6 +1057,7 @@ const recordsGroupBy = [
         id: 11,
         name: 'Daniel',
         age: '41',
+        sex: 'Male',
         city: 'Laval',
         habitation: 'House'
     },
@@ -1050,6 +1065,7 @@ const recordsGroupBy = [
         id: 12,
         name: 'Melissa',
         age: '73',
+        sex: 'Female',
         city: 'Montreal',
         district: 'Plateau',
         habitation: 'Apartment'
@@ -1058,22 +1074,25 @@ const recordsGroupBy = [
         id: 14,
         name: 'Lisa',
         age: '15',
+        sex: 'Female',
         city: 'Laval',
         district: 'Viau',
         habitation: 'House'
     },
     {
         id: 15,
-        name: 'Tyrone',
+        name: 'Hubert',
         age: '16',
+        sex: 'Male',
         city: 'Montreal',
         district: 'Outremont',
         habitation: 'House'
     },
     {
         id: 16,
-        name: 'Carlito',
+        name: 'Yvan',
         age: '19',
+        sex: 'Male',
         city: 'Montreal',
         district: 'Outremont',
         habitation: 'House'
@@ -1082,29 +1101,33 @@ const recordsGroupBy = [
         id: 17,
         name: 'Jean',
         age: '24',
+        sex: 'Male',
         city: 'Montreal',
         habitation: 'Apartment'
     },
     {
         id: 18,
-        name: 'Thulisa',
+        name: 'Samuel',
         age: '19',
+        sex: 'Male',
         city: 'Laval',
         district: 'Rosemere',
         habitation: 'House'
     },
     {
         id: 19,
-        name: 'Tygune',
+        name: 'Maggie',
         age: '26',
+        sex: 'Female',
         city: 'Montreal',
         district: 'Outremont',
         habitation: 'House'
     },
     {
         id: 20,
-        name: 'Carlita',
+        name: 'Rita',
         age: '19',
+        sex: 'Female',
         city: 'Laval',
         district: 'Vimont',
         habitation: 'Duplex'
@@ -1113,27 +1136,31 @@ const recordsGroupBy = [
         id: 21,
         name: 'Delphine',
         age: '29',
+        sex: 'Female',
         city: 'Laval'
     },
     {
         id: 22,
         name: 'Max',
         age: '87',
+        sex: 'Male',
         district: 'Villeray',
         habitation: 'Duplex'
     },
     {
         id: 23,
-        name: 'Done',
-        age: '2',
+        name: 'Richard',
+        age: '23',
+        sex: 'Male',
         city: 'Longueuil',
         district: 'Old Longueuil',
         habitation: 'Room'
     },
     {
         id: 24,
-        name: 'Donalda',
+        name: 'Edward',
         age: '99',
+        sex: 'Male',
         city: 'Longueuil',
         district: 'Saint-Hubert'
     },
@@ -1141,14 +1168,16 @@ const recordsGroupBy = [
         id: 25,
         name: 'Benny',
         age: '75',
+        sex: 'Male',
         city: 'Longueuil',
         district: 'Greenfield Park',
         habitation: 'Apartment'
     },
     {
         id: 26,
-        name: 'Goud',
+        name: 'Bella',
         age: '62',
+        sex: 'Female',
         city: 'Montreal',
         district: 'Outremont',
         habitation: 'Apartment'
@@ -1157,6 +1186,7 @@ const recordsGroupBy = [
         id: 27,
         name: 'Felix',
         age: '21',
+        sex: 'Male',
         city: 'Montreal',
         district: 'Plateau',
         habitation: 'Apartment'
@@ -1165,9 +1195,28 @@ const recordsGroupBy = [
         id: 28,
         name: 'Xavier',
         age: '27',
+        sex: 'Male',
         city: 'Montreal',
         district: 'Plateau',
         habitation: 'House'
+    },
+    {
+        id: 29,
+        name: 'Fred',
+        age: '27',
+        sex: 'Female',
+        city: 'Montreal',
+        district: 'Villeray',
+        habitation: 'House'
+    },
+    {
+        id: 30,
+        name: 'Pete',
+        age: '42',
+        sex: 'Male',
+        city: 'Laval',
+        district: 'Viau',
+        habitation: 'Duplex'
     }
 ];
 

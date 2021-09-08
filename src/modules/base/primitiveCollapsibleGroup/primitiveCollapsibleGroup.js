@@ -175,7 +175,7 @@ export default class PrimitiveCollapsibleGroup extends LightningElement {
     }
 
     /**
-     * Section change status toggle.
+     * Toggle section.
      */
     @api
     toggleSection() {
