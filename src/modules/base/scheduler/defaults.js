@@ -58,7 +58,7 @@ const DEFAULT_CONTEXT_MENU_EMPTY_SPOT_ACTIONS = [
     }
 ];
 
-const DEFAULT_EDIT_DIALOG_LABELS = {
+const DEFAULT_DIALOG_LABELS = {
     title: 'Title',
     from: 'From',
     to: 'To',
@@ -69,6 +69,7 @@ const DEFAULT_EDIT_DIALOG_LABELS = {
     editRecurrent: 'Edit recurring event.',
     cancelButton: 'Cancel',
     deleteButton: 'Delete',
+    deleteTitle: 'Delete Event',
     deleteMessage: 'Are you sure you want to delete this event?',
     newEventTitle: 'New event'
 };
@@ -401,7 +402,7 @@ export {
     DEFAULT_CONTEXT_MENU_EMPTY_SPOT_ACTIONS,
     DEFAULT_CONTEXT_MENU_EVENT_ACTIONS,
     DEFAULT_DATE_FORMAT,
-    DEFAULT_EDIT_DIALOG_LABELS,
+    DEFAULT_DIALOG_LABELS,
     DEFAULT_EVENTS_LABELS,
     DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT,
     DEFAULT_START_DATE,

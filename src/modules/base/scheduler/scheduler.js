@@ -48,7 +48,7 @@ import {
     DEFAULT_AVAILABLE_MONTHS,
     DEFAULT_AVAILABLE_TIME_FRAMES,
     DEFAULT_DATE_FORMAT,
-    DEFAULT_EDIT_DIALOG_LABELS,
+    DEFAULT_DIALOG_LABELS,
     DEFAULT_EVENTS_LABELS,
     DEFAULT_CONTEXT_MENU_EMPTY_SPOT_ACTIONS,
     DEFAULT_CONTEXT_MENU_EVENT_ACTIONS,
@@ -69,7 +69,7 @@ import SchedulerEvent from './event';
  * @public
  */
 export default class Scheduler extends LightningElement {
-    _editDialogLabels = DEFAULT_EDIT_DIALOG_LABELS;
+    _dialogLabels = DEFAULT_DIALOG_LABELS;
     _availableDaysOfTheWeek = DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
     _availableMonths = DEFAULT_AVAILABLE_MONTHS;
     _availableTimeFrames = DEFAULT_AVAILABLE_TIME_FRAMES;
@@ -413,7 +413,7 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Labels of the elements in the event edit dialog.
+     * Labels used in the edit and delete dialogs.
      *
      * @type {object}
      * @public
@@ -428,44 +428,47 @@ export default class Scheduler extends LightningElement {
      *   editRecurrent: 'Edit recurring event.',
      *   cancelButton: 'Cancel',
      *   deleteButton: 'Delete',
+     *   deleteTitle: 'Delete Event',
      *   deleteMessage: 'Are you sure you want to delete this event?',
      *   newEventTitle: 'New event'
      * }
      */
     @api
-    get editDialogLabels() {
-        return this._editDialogLabels;
+    get dialogLabels() {
+        return this._dialogLabels;
     }
-    set editDialogLabels(value) {
+    set dialogLabels(value) {
         if (value) {
             const labels = {};
-            labels.title = value.title || DEFAULT_EDIT_DIALOG_LABELS.title;
-            labels.from = value.from || DEFAULT_EDIT_DIALOG_LABELS.from;
-            labels.to = value.to || DEFAULT_EDIT_DIALOG_LABELS.to;
+            labels.title = value.title || DEFAULT_DIALOG_LABELS.title;
+            labels.from = value.from || DEFAULT_DIALOG_LABELS.from;
+            labels.to = value.to || DEFAULT_DIALOG_LABELS.to;
             labels.resources =
-                value.resources || DEFAULT_EDIT_DIALOG_LABELS.resources;
+                value.resources || DEFAULT_DIALOG_LABELS.resources;
             labels.saveButton =
-                value.saveButton || DEFAULT_EDIT_DIALOG_LABELS.saveButton;
+                value.saveButton || DEFAULT_DIALOG_LABELS.saveButton;
             labels.saveOneRecurrent =
                 value.saveOneRecurrent ||
-                DEFAULT_EDIT_DIALOG_LABELS.saveOneRecurrent;
+                DEFAULT_DIALOG_LABELS.saveOneRecurrent;
             labels.saveAllRecurrent =
                 value.saveAllRecurrent ||
-                DEFAULT_EDIT_DIALOG_LABELS.saveAllRecurrent;
+                DEFAULT_DIALOG_LABELS.saveAllRecurrent;
             labels.editRecurrent =
-                value.editRecurrent || DEFAULT_EDIT_DIALOG_LABELS.editRecurrent;
+                value.editRecurrent || DEFAULT_DIALOG_LABELS.editRecurrent;
             labels.cancelButton =
-                value.cancelButton || DEFAULT_EDIT_DIALOG_LABELS.cancelButton;
+                value.cancelButton || DEFAULT_DIALOG_LABELS.cancelButton;
             labels.deleteButton =
-                value.deleteButton || DEFAULT_EDIT_DIALOG_LABELS.deleteButton;
+                value.deleteButton || DEFAULT_DIALOG_LABELS.deleteButton;
+            labels.deleteTitle =
+                value.deleteTitle || DEFAULT_DIALOG_LABELS.deleteTitle;
             labels.deleteMessage =
-                value.deleteMessage || DEFAULT_EDIT_DIALOG_LABELS.deleteMessage;
+                value.deleteMessage || DEFAULT_DIALOG_LABELS.deleteMessage;
             labels.newEventTitle =
-                value.newEventTitle || DEFAULT_EDIT_DIALOG_LABELS.newEventTitle;
+                value.newEventTitle || DEFAULT_DIALOG_LABELS.newEventTitle;
 
-            this._editDialogLabels = labels;
+            this._dialogLabels = labels;
         } else {
-            this._editDialogLabels = DEFAULT_EDIT_DIALOG_LABELS;
+            this._dialogLabels = DEFAULT_DIALOG_LABELS;
         }
     }
 
@@ -912,7 +915,7 @@ export default class Scheduler extends LightningElement {
     get editDialogTitle() {
         return (
             (this.selection && this.selection.event.title) ||
-            this.editDialogLabels.newEventTitle
+            this.dialogLabels.newEventTitle
         );
     }
 

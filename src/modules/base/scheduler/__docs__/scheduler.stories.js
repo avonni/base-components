@@ -413,8 +413,8 @@ export default {
                 }
             }
         },
-        editDialogLabels: {
-            name: 'edit-dialog-labels',
+        dialogLabels: {
+            name: 'dialog-labels',
             control: {
                 type: 'object'
             },
@@ -430,7 +430,7 @@ export default {
                 cancelButton: 'Cancel',
                 newEventTitle: 'New event'
             },
-            description: 'Labels of the elements in the event edit dialog.',
+            description: 'Labels used in the edit and delete dialogs.',
             table: {
                 type: { summary: 'object' },
                 defaultValue: {
@@ -445,6 +445,9 @@ export default {
                         saveAllRecurrent: 'All events',
                         editRecurrent: 'Edit recurring event.',
                         cancelButton: 'Cancel',
+                        deleteButton: 'Delete',
+                        deleteTitle: 'Delete Event',
+                        deleteMessage: 'Are you sure you want to delete this event?'
                         newEventTitle: 'New event'
                     }`
                 },

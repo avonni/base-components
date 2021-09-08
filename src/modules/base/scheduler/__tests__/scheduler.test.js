@@ -96,7 +96,7 @@ describe('Scheduler', () => {
         expect(element.customHeaders).toMatchObject([]);
         expect(element.dateFormat).toBe('ff');
         expect(element.disabledDatesTimes).toMatchObject([]);
-        expect(element.editDialogLabels).toMatchObject({
+        expect(element.dialogLabels).toMatchObject({
             title: 'Title',
             from: 'From',
             to: 'To',
@@ -106,6 +106,9 @@ describe('Scheduler', () => {
             saveAllRecurrent: 'All events',
             editRecurrent: 'Edit recurring event.',
             cancelButton: 'Cancel',
+            deleteButton: 'Delete',
+            deleteTitle: 'Delete Event',
+            deleteMessage: 'Are you sure you want to delete this event?',
             newEventTitle: 'New event'
         });
         expect(element.events).toMatchObject([]);
@@ -457,12 +460,12 @@ describe('Scheduler', () => {
             });
     });
 
-    it('contextMenuEmptySpotActions, default add-event action (+ editDialogLabels.newEventTitle)', () => {
+    it('contextMenuEmptySpotActions, default add-event action (+ dialogLabels.newEventTitle)', () => {
         document.body.appendChild(element);
 
         element.rows = ROWS;
         element.rowsKeyField = ROWS_KEY_FIELD;
-        element.editDialogLabels = {
+        element.dialogLabels = {
             newEventTitle: 'Title of the new event'
         };
 
@@ -687,7 +690,7 @@ describe('Scheduler', () => {
 
     // edit-dialog-labels
     // Depends on the edit and delete action flow
-    it('editDialogLabels', () => {
+    it('dialogLabels', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -702,7 +705,7 @@ describe('Scheduler', () => {
             saveButton: 'Save button label',
             cancelButton: 'Cancel button label'
         };
-        element.editDialogLabels = labels;
+        element.dialogLabels = labels;
 
         return Promise.resolve()
             .then(() => {
@@ -763,7 +766,7 @@ describe('Scheduler', () => {
             });
     });
 
-    it('editDialogLabels, recurring event, edit dialog buttons', () => {
+    it('dialogLabels, recurring event, edit dialog buttons', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -785,7 +788,7 @@ describe('Scheduler', () => {
             saveAllRecurrent: 'Save all recurrent label',
             editRecurrent: 'Edit recurrent label'
         };
-        element.editDialogLabels = labels;
+        element.dialogLabels = labels;
 
         return Promise.resolve()
             .then(() => {
@@ -833,7 +836,7 @@ describe('Scheduler', () => {
             });
     });
 
-    it('editDialogLabels, recurring event edit choice dialog', () => {
+    it('dialogLabels, recurring event edit choice dialog', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -856,7 +859,7 @@ describe('Scheduler', () => {
             editRecurrent: 'Edit recurrent label',
             cancelButton: 'Cancel button label'
         };
-        element.editDialogLabels = labels;
+        element.dialogLabels = labels;
 
         const wrapper = element.shadowRoot.querySelector(
             '.avonni-scheduler__wrapper'
@@ -919,7 +922,7 @@ describe('Scheduler', () => {
             });
     });
 
-    it('editDialogLabels, delete confirmation dialog', () => {
+    it('dialogLabels, delete confirmation dialog', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -929,9 +932,10 @@ describe('Scheduler', () => {
         const labels = {
             deleteButton: 'This is the delete',
             cancelButton: 'This is the cancel',
-            deleteMessage: 'This is the delete message'
+            deleteMessage: 'This is the delete message',
+            deleteTitle: 'This is the title'
         };
-        element.editDialogLabels = labels;
+        element.dialogLabels = labels;
 
         return Promise.resolve()
             .then(() => {
@@ -964,19 +968,18 @@ describe('Scheduler', () => {
                 );
             })
             .then(() => {
-                const deleteMessage = element.shadowRoot.querySelector(
-                    'c-dialog p'
-                );
+                const dialog = element.shadowRoot.querySelector('c-dialog');
+                expect(dialog.title).toBe(labels.deleteTitle);
+
+                const deleteMessage = dialog.querySelector('p');
                 expect(deleteMessage.textContent).toBe(labels.deleteMessage);
 
-                const deleteButton = element.shadowRoot.querySelector(
-                    'c-dialog lightning-button:nth-of-type(2)'
+                const deleteButton = dialog.querySelector(
+                    'lightning-button:nth-of-type(2)'
                 );
                 expect(deleteButton.label).toBe(labels.deleteButton);
 
-                const cancelButton = element.shadowRoot.querySelector(
-                    'c-dialog lightning-button'
-                );
+                const cancelButton = dialog.querySelector('lightning-button');
                 expect(cancelButton.label).toBe(labels.cancelButton);
             });
     });
@@ -2322,9 +2325,7 @@ describe('Scheduler', () => {
             .then(() => {
                 const dialog = element.shadowRoot.querySelector('c-dialog');
                 expect(dialog).toBeTruthy();
-                expect(dialog.title).toBe(
-                    element.editDialogLabels.newEventTitle
-                );
+                expect(dialog.title).toBe(element.dialogLabels.newEventTitle);
             });
     });
 

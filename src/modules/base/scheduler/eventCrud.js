@@ -91,7 +91,7 @@ function newEvent(x, y, showDialog = true) {
 
     const event = {
         keyFields,
-        title: this.editDialogLabels.newEventTitle,
+        title: this.dialogLabels.newEventTitle,
         from,
         to
     };

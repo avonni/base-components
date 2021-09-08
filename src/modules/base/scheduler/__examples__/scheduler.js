@@ -44,6 +44,7 @@ export const Scheduler = ({
     contextMenuEventActions,
     customEventsPalette,
     dateFormat,
+    dialogLabels,
     disabledDatesTimes,
     events,
     eventsLabels,
@@ -71,6 +72,7 @@ export const Scheduler = ({
     element.contextMenuEventActions = contextMenuEventActions;
     element.customEventsPalette = customEventsPalette;
     element.dateFormat = dateFormat;
+    element.dialogLabels = dialogLabels;
     element.disabledDatesTimes = disabledDatesTimes;
     element.events = events;
     element.eventsLabels = eventsLabels;
