@@ -320,11 +320,12 @@
         </div>
         <div class="slds-m-bottom_small">
             <c-combobox
+                if:true={resourcesComboboxOptions.length}
                 allow-search
                 is-multi-select
                 label={editDialogLabels.resources}
                 value={selection.occurrence.keyFields}
-                options={allResourcesKeyFields}
+                options={resourcesComboboxOptions}
                 remove-selected-options
                 dropdown-length="5-items"
                 required

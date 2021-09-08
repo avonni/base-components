@@ -140,7 +140,7 @@ export default {
                 type: 'object'
             },
             description:
-                'Array of datatable data objects. Each object represent a row of the scheduler.',
+                'Array of datatable data objects. Each object represents a row of the scheduler.',
             table: {
                 type: { summary: 'object' }
             }

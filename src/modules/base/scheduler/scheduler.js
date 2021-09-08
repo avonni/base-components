@@ -720,7 +720,7 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Array of datatable data objects. Each object represent a row of the scheduler. For more details, see the Data Table component.
+     * Array of datatable data objects. Each object represents a row of the scheduler. For more details, see the Data Table component.
      *
      * @type {object[]}
      * @public
@@ -793,17 +793,21 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Array of all the key fields objects. The objects have two keys: label and value. Used in the edit form to generate a combobox of key fields.
+     * Array of resources options. The objects have two keys: label and value. Used in the edit form to generate a combobox of key fields.
      *
      * @type {object[]}
      */
-    get allResourcesKeyFields() {
-        return this.rows.map((row) => {
-            return {
-                label: row[this.rowsKeyField],
-                value: row[this.rowsKeyField]
-            };
+    get resourcesComboboxOptions() {
+        const options = [];
+        this.rows.forEach((row) => {
+            if (row.resourceName) {
+                options.push({
+                    label: row.resourceName,
+                    value: row[this.rowsKeyField]
+                });
+            }
         });
+        return options;
     }
 
     /**
@@ -2180,13 +2184,6 @@ export default class Scheduler extends LightningElement {
                 this.cleanDraggedElement();
                 break;
         }
-    }
-
-    /**
-     * Handle the click event fired by the edit dialog delete button. Delete the selected event.
-     */
-    handleEventDelete() {
-        this.crud.deleteEvent();
     }
 
     /**

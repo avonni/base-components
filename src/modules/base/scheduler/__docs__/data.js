@@ -41,7 +41,7 @@ const columns = [
             alternativeText: 'Avatar',
             fallbackIconName: { fieldName: 'avatarFallbackIconName' },
             initials: { fieldName: 'avatarInitials' },
-            primaryText: { fieldName: 'firstName' }
+            primaryText: { fieldName: 'name' }
         }
     },
     {
@@ -66,9 +66,9 @@ const rows = [
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
         avatarFallbackIconName: 'standard:person_account',
         avatarInitials: 'NG',
-        firstName: 'Nina',
+        resourceName: 'Nina',
         role: 'Lead developer',
-        sharedField: "This shouldn't show up"
+        sharedField: `This shouldn't show up`
     },
     {
         id: '2',
@@ -76,7 +76,7 @@ const rows = [
             'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
         avatarFallbackIconName: 'standard:person_account',
         avatarInitials: 'DM',
-        firstName: 'Dave',
+        resourceName: 'Dave',
         role: 'UX Specialist',
         customRowField: 'Label coming from a custom field in the row'
     },
@@ -84,14 +84,14 @@ const rows = [
         id: '3',
         avatarFallbackIconName: 'standard:person_account',
         avatarInitials: 'JP',
-        firstName: 'Jung',
+        resourceName: 'Jung',
         role: 'Product Owner'
     },
     {
         id: '4',
         avatarFallbackIconName: 'standard:article',
         avatarInitials: 'LM',
-        firstName: 'Lily',
+        resourceName: 'Lily',
         role: 'Graphic Designer',
         customField: "This comes from the row's custom field"
     },
@@ -101,7 +101,7 @@ const rows = [
             'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
         avatarFallbackIconName: 'standard:person_account',
         avatarInitials: 'RM',
-        firstName: 'Reginald',
+        resourceName: 'Reginald',
         role: 'Developer'
     }
 ];
