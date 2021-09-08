@@ -428,7 +428,6 @@ export default {
                 saveAllRecurrent: 'All events',
                 editRecurrent: 'Edit recurring event.',
                 cancelButton: 'Cancel',
-                deleteButton: 'Delete',
                 newEventTitle: 'New event'
             },
             description: 'Labels of the elements in the event edit dialog.',
@@ -446,7 +445,6 @@ export default {
                         saveAllRecurrent: 'All events',
                         editRecurrent: 'Edit recurring event.',
                         cancelButton: 'Cancel',
-                        deleteButton: 'Delete',
                         newEventTitle: 'New event'
                     }`
                 },

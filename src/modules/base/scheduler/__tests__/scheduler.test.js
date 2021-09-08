@@ -106,7 +106,6 @@ describe('Scheduler', () => {
             saveAllRecurrent: 'All events',
             editRecurrent: 'Edit recurring event.',
             cancelButton: 'Cancel',
-            deleteButton: 'Delete',
             newEventTitle: 'New event'
         });
         expect(element.events).toMatchObject([]);
@@ -703,8 +702,7 @@ describe('Scheduler', () => {
             to: 'To label',
             resources: 'Resources label',
             saveButton: 'Save button label',
-            cancelButton: 'Cancel button label',
-            deleteButton: 'Delete button label'
+            cancelButton: 'Cancel button label'
         };
         element.editDialogLabels = labels;
 
@@ -759,11 +757,6 @@ describe('Scheduler', () => {
                     'c-dialog lightning-button'
                 );
                 expect(cancelButton.label).toBe(labels.cancelButton);
-
-                const deleteButton = element.shadowRoot.querySelector(
-                    'c-dialog lightning-button:nth-of-type(2)'
-                );
-                expect(deleteButton.label).toBe(labels.deleteButton);
 
                 const saveButton = element.shadowRoot.querySelector(
                     'c-dialog lightning-button:last-of-type'
@@ -2156,62 +2149,6 @@ describe('Scheduler', () => {
 
     // Event delete
     // Depends on rows, rowsKeyField, events and start
-    it('User deletes an event from the edit dialog', () => {
-        element.start = START;
-        document.body.appendChild(element);
-
-        element.events = EVENTS;
-        element.rows = ROWS;
-        element.rowsKeyField = ROWS_KEY_FIELD;
-
-        let eventName;
-        return Promise.resolve()
-            .then(() => {
-                // Open event context menu
-                const event = element.shadowRoot.querySelector(
-                    'c-primitive-scheduler-event-occurrence'
-                );
-                eventName = event.eventName;
-                event.dispatchEvent(
-                    new CustomEvent('privatecontextmenu', {
-                        detail: {
-                            eventName,
-                            key: event.occurrenceKey,
-                            from: event.from,
-                            to: event.to,
-                            x: 20,
-                            y: 300
-                        }
-                    })
-                );
-            })
-            .then(() => {
-                // Select the edit menu
-                const dropdown = element.shadowRoot.querySelector(
-                    'c-primitive-dropdown-menu'
-                );
-                dropdown.dispatchEvent(
-                    new CustomEvent('privateselect', {
-                        detail: {
-                            name: 'edit'
-                        }
-                    })
-                );
-            })
-            .then(() => {
-                const deleteButton = element.shadowRoot.querySelector(
-                    'c-dialog lightning-button:nth-of-type(2)'
-                );
-                deleteButton.click();
-            })
-            .then(() => {
-                const event = element.shadowRoot.querySelector(
-                    `c-primitive-scheduler-event-occurrence[data-event-name="${eventName}"]`
-                );
-                expect(event).toBeFalsy();
-            });
-    });
-
     it('User deletes an event from the context menu', () => {
         element.start = START;
         document.body.appendChild(element);

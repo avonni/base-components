@@ -426,7 +426,6 @@ export default class Scheduler extends LightningElement {
      *   saveAllRecurrent: 'All events',
      *   editRecurrent: 'Edit recurring event.',
      *   cancelButton: 'Cancel',
-     *   deleteButton: 'Delete',
      *   newEventTitle: 'New event'
      * }
      */
@@ -454,8 +453,6 @@ export default class Scheduler extends LightningElement {
                 value.editRecurrent || DEFAULT_EDIT_DIALOG_LABELS.editRecurrent;
             labels.cancelButton =
                 value.cancelButton || DEFAULT_EDIT_DIALOG_LABELS.cancelButton;
-            labels.deleteButton =
-                value.deleteButton || DEFAULT_EDIT_DIALOG_LABELS.deleteButton;
             labels.newEventTitle =
                 value.newEventTitle || DEFAULT_EDIT_DIALOG_LABELS.newEventTitle;
 
