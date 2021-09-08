@@ -1,11 +1,90 @@
 <template>
-    <div class="avonni-datatable__container">
-        <template if:true={hasGroupBy}>
+    <div class="avonni-datatable__container slds-scrollable_x">
+        <div class="avonni-datatable__inner_container slds-scrollable_y">
+            <template if:true={hasGroupBy}>
+                <c-primitive-datatable
+                    data-role="header"
+                    column-widths-mode="fixed"
+                    columns={columns}
+                    data={records}
+                    default-sort-direction={defaultSortDirection}
+                    draft-values={draftValues}
+                    enable-infinite-loading={enableInfiniteLoading}
+                    errors={errors}
+                    hide-checkbox-column={hideCheckboxColumn}
+                    hide-table-header={hideTableHeader}
+                    is-loading={isLoading}
+                    key-field={keyField}
+                    load-more-offset={loadMoreOffset}
+                    max-column-width={maxColumnWidth}
+                    max-row-selection={maxRowSelection}
+                    min-column-width={minColumnWidth}
+                    render-config={renderConfig}
+                    resize-column-disabled={resizeColumnDisabled}
+                    resize-step={resizeStep}
+                    row-number-offset={rowNumberOffset}
+                    selected-rows={selectedRows}
+                    show-row-number-column={showRowNumberColumn}
+                    sorted-by={sortedBy}
+                    sorted-direction={sortedDirection}
+                    suppress-bottom-bar
+                    wrap-text-max-lines={wrapTextMaxLines}
+                    onrowselection={handleDispatchEvents}
+                    onsort={handleDispatchEvents}
+                    onresize={handleDispatchEvents}
+                    onheaderaction={handleDispatchEvents}
+                    onloadmore={handleDispatchEvents}
+                    oncellchange={handleDispatchEvents}
+                    onrowaction={handleDispatchEvents}
+                ></c-primitive-datatable>
+                <c-primitive-group-by-item
+                    computed-group-by-records={computedGroupByRecords}
+                    columns={columns}
+                    key-field={keyField}
+                    default-sort-direction={defaultSortDirection}
+                    draft-values={draftValues}
+                    enable-infinite-loading={enableInfiniteLoading}
+                    errors={errors}
+                    hide-checkbox-column={hideCheckboxColumn}
+                    hide-collapsible-icon={hideCollapsibleIcon}
+                    hide-group-by-summarization={hideGroupBySummarization}
+                    hide-table-header={hideTableHeader}
+                    is-datatable-editable={isDatatableEditable}
+                    is-loading={isLoading}
+                    load-more-offset={loadMoreOffset}
+                    max-column-width={maxColumnWidth}
+                    max-row-selection={maxRowSelection}
+                    min-column-width={minColumnWidth}
+                    primitive-columns-width={primitiveColumnsWidth}
+                    render-config={renderConfig}
+                    resize-column-disabled={resizeColumnDisabled}
+                    resize-step={resizeStep}
+                    row-number-offset={rowNumberOffset}
+                    selected-rows={selectedRows}
+                    show-row-number-column={showRowNumberColumn}
+                    sorted-by={sortedBy}
+                    sorted-direction={sortedDirection}
+                    table-width={tableWidth}
+                    wrap-text-max-lines={wrapTextMaxLines}
+                    onrowselection={handleDispatchEvents}
+                    onsort={handleDispatchEvents}
+                    onresize={handleDispatchEvents}
+                    onsave={handleDispatchEvents}
+                    oncancel={handleDispatchEvents}
+                    onheaderaction={handleDispatchEvents}
+                    onloadmore={handleDispatchEvents}
+                    oncellchange={handleDispatchEvents}
+                    onrowaction={handleDispatchEvents}
+                    onprivateitemregister={handleChildRegister}
+                ></c-primitive-group-by-item>
+            </template>
             <c-primitive-datatable
-                data-role="header"
-                column-widths-mode="fixed"
+                if:false={hasGroupBy}
+                data-role="ungrouped"
+                allow-summarize={allowSummarize}
                 columns={columns}
                 data={records}
+                column-widths-mode={columnWidthsMode}
                 default-sort-direction={defaultSortDirection}
                 draft-values={draftValues}
                 enable-infinite-loading={enableInfiniteLoading}
@@ -31,115 +110,41 @@
                 onrowselection={handleDispatchEvents}
                 onsort={handleDispatchEvents}
                 onresize={handleDispatchEvents}
-                onheaderaction={handleDispatchEvents}
-                onloadmore={handleDispatchEvents}
-                oncellchange={handleDispatchEvents}
-                onrowaction={handleDispatchEvents}
-            ></c-primitive-datatable>
-            <c-primitive-group-by-item
-                computed-group-by-records={computedGroupByRecords}
-                columns={columns}
-                key-field={keyField}
-                default-sort-direction={defaultSortDirection}
-                draft-values={draftValues}
-                enable-infinite-loading={enableInfiniteLoading}
-                errors={errors}
-                hide-checkbox-column={hideCheckboxColumn}
-                hide-collapsible-icon={hideCollapsibleIcon}
-                hide-group-by-summarization={hideGroupBySummarization}
-                hide-table-header={hideTableHeader}
-                is-datatable-editable={isDatatableEditable}
-                is-loading={isLoading}
-                load-more-offset={loadMoreOffset}
-                max-column-width={maxColumnWidth}
-                max-row-selection={maxRowSelection}
-                min-column-width={minColumnWidth}
-                primitive-columns-width={primitiveColumnsWidth}
-                render-config={renderConfig}
-                resize-column-disabled={resizeColumnDisabled}
-                resize-step={resizeStep}
-                row-number-offset={rowNumberOffset}
-                selected-rows={selectedRows}
-                show-row-number-column={showRowNumberColumn}
-                sorted-by={sortedBy}
-                sorted-direction={sortedDirection}
-                table-width={tableWidth}
-                wrap-text-max-lines={wrapTextMaxLines}
-                onrowselection={handleDispatchEvents}
-                onsort={handleDispatchEvents}
-                onresize={handleDispatchEvents}
                 onsave={handleDispatchEvents}
                 oncancel={handleDispatchEvents}
                 onheaderaction={handleDispatchEvents}
                 onloadmore={handleDispatchEvents}
                 oncellchange={handleDispatchEvents}
                 onrowaction={handleDispatchEvents}
-                onprivateitemregister={handleChildRegister}
-            ></c-primitive-group-by-item>
-        </template>
-        <c-primitive-datatable
-            if:false={hasGroupBy}
-            data-role="ungrouped"
-            allow-summarize={allowSummarize}
-            columns={columns}
-            data={records}
-            column-widths-mode={columnWidthsMode}
-            default-sort-direction={defaultSortDirection}
-            draft-values={draftValues}
-            enable-infinite-loading={enableInfiniteLoading}
-            errors={errors}
-            hide-checkbox-column={hideCheckboxColumn}
-            hide-table-header={hideTableHeader}
-            is-loading={isLoading}
-            key-field={keyField}
-            load-more-offset={loadMoreOffset}
-            max-column-width={maxColumnWidth}
-            max-row-selection={maxRowSelection}
-            min-column-width={minColumnWidth}
-            render-config={renderConfig}
-            resize-column-disabled={resizeColumnDisabled}
-            resize-step={resizeStep}
-            row-number-offset={rowNumberOffset}
-            selected-rows={selectedRows}
-            show-row-number-column={showRowNumberColumn}
-            sorted-by={sortedBy}
-            sorted-direction={sortedDirection}
-            suppress-bottom-bar
-            wrap-text-max-lines={wrapTextMaxLines}
-            onrowselection={handleDispatchEvents}
-            onsort={handleDispatchEvents}
-            onresize={handleDispatchEvents}
-            onsave={handleDispatchEvents}
-            oncancel={handleDispatchEvents}
-            onheaderaction={handleDispatchEvents}
-            onloadmore={handleDispatchEvents}
-            oncellchange={handleDispatchEvents}
-            onrowaction={handleDispatchEvents}
+            >
+            </c-primitive-datatable>
+            <template if:true={allowSummarize}>
+                <c-primitive-summarization-table
+                    computed-summarize-array={computedSummarizeArray}
+                    hide-checkbox-column={hideCheckboxColumn}
+                    is-datatable-editable={isDatatableEditable}
+                    primitive-columns-width={primitiveColumnsWidth}
+                    table-width={tableWidth}
+                ></c-primitive-summarization-table>
+            </template>
+        </div>
+        <div
+            class="avonni-datatable__bottom-bar_styling"
+            if:true={showStatusBar}
         >
-        </c-primitive-datatable>
-        <template if:true={allowSummarize}>
-            <c-primitive-summarization-table
-                computed-summarize-array={computedSummarizeArray}
-                hide-checkbox-column={hideCheckboxColumn}
-                is-datatable-editable={isDatatableEditable}
-                primitive-columns-width={primitiveColumnsWidth}
-                table-width={tableWidth}
-            ></c-primitive-summarization-table>
-        </template>
-    </div>
-    <div class="avonni-datatable__bottom-bar_styling" if:true={showStatusBar}>
-        <div class="slds-grid slds-grid_align-center">
-            <lightning-button
-                class="slds-button"
-                label="Cancel"
-                onclick={handleCancel}
-            ></lightning-button>
-            <lightning-button
-                class="slds-button"
-                label="Save"
-                variant="brand"
-                onclick={handleSave}
-            ></lightning-button>
+            <div class="slds-grid slds-grid_align-center">
+                <lightning-button
+                    class="slds-button"
+                    label="Cancel"
+                    onclick={handleCancel}
+                ></lightning-button>
+                <lightning-button
+                    class="slds-button"
+                    label="Save"
+                    variant="brand"
+                    onclick={handleSave}
+                ></lightning-button>
+            </div>
         </div>
     </div>
 </template>

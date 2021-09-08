@@ -659,6 +659,12 @@ export default class PrimitiveDatatable extends LightningDatatable {
                 datatable.style.overflowX = 'hidden';
             });
         }
+
+        this.template
+            .querySelectorAll('.slds-scrollable_y')
+            .forEach((scrollable) => {
+                scrollable.style.overflowY = 'hidden';
+            });
     }
 
     /**
@@ -667,7 +673,9 @@ export default class PrimitiveDatatable extends LightningDatatable {
     tablesInitialization() {
         this.hideTableHeaderPadding();
         this.headerDatatableStyling();
-        this.unscrollableDatatables();
+        if (this.allowSummarize || this.hasGroupBy) {
+            this.unscrollableDatatables();
+        }
     }
 
     /**

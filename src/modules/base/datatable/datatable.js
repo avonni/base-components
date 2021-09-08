@@ -506,8 +506,8 @@ export default class Datatable extends LightningElement {
         });
 
         window.addEventListener('resize', () => {
-            if (this.allowSummarize) {
-                this.updateTableWidth();
+            if (this.allowSummarize || this.hasGroupBy) {
+                this.updateYWidth();
                 this.datatableColumnsWidth();
             }
         });
@@ -736,6 +736,20 @@ export default class Datatable extends LightningElement {
         this.tableWidth = !this.hasGroupBy
             ? this.ungroupedDatatable.tableWidth()
             : this.headerDatatable.tableWidth();
+        if (this.allowSummarize || this.hasGroupBy) {
+            this.template.querySelector(
+                '.avonni-datatable__inner_container'
+            ).style.width = this.tableWidth + 'px';
+        }
+    }
+
+    updateYWidth() {
+        const yWidth = this.template.querySelector(
+            '.avonni-datatable__container'
+        ).offsetWidth;
+        this.template.querySelector(
+            '.avonni-datatable__inner_container'
+        ).style.width = yWidth + 'px';
     }
 
     /**
