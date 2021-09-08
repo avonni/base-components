@@ -1,4 +1,3 @@
-<!--
 /**
  * BSD 3-Clause License
  *
@@ -30,25 +29,13 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
--->
 
-<template>
-    <c-expandable-section
-        title={title}
-        closed={closed}
-        collapsible={collapsible}
-        variant={variant}
-    >
-        Sit nulla est ex deserunt exercitation anim occaecat. Nostrud ullamco
-        deserunt aute id consequat veniam incididunt duis in sint irure nisi.
-        Mollit officia cillum Lorem ullamco minim nostrud elit officia tempor
-        esse quis. Cillum sunt ad dolore quis aute consequat ipsum magna
-        exercitation reprehenderit magna. Tempor cupidatat consequat elit dolor
-        adipisicing. Dolor eiusmod sunt ex incididunt cillum quis nostrud velit
-        duis sit officia. Lorem aliqua enim laboris do dolor eiusmod officia.
-        Mollit incididunt nisi consectetur esse laborum eiusmod pariatur
-        proident. Eiusmod et adipisicing culpa deserunt nostrud ad veniam nulla
-        aute est. Labore esse esse cupidatat amet velit id elit consequat minim
-        ullamco mollit enim excepteur ea.
-    </c-expandable-section>
-</template>
+.avonni-expandable-section__title-button_base {
+    padding: 0;
+}
+
+.avonni-expandable-section__title-button_base:hover,
+.avonni-expandable-section__title-button_base:active,
+.avonni-expandable-section__title-button_base:focus {
+    background-color: var(--lwc-colorBackgroundAlt, #ffffff);
+}

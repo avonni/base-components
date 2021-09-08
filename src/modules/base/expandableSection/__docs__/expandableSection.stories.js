@@ -67,6 +67,19 @@ export default {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
             }
+        },
+        variant: {
+            control: {
+                type: 'select'
+            },
+            options: ['base', 'shaded'],
+            defaultValue: 'base',
+            description:
+                'Variant of the section. Valid values include base and shaded.',
+            table: {
+                defaultValue: { summary: 'base' },
+                type: { summary: 'string' }
+            }
         }
     },
     args: {
@@ -93,4 +106,11 @@ CollapsibleClosed.args = {
     title: 'Section',
     closed: 'true',
     collapsible: true
+};
+
+export const Shaded = Template.bind({});
+Shaded.args = {
+    title: 'Section',
+    collapsible: true,
+    variant: 'shaded'
 };
