@@ -33,6 +33,7 @@
 import { createElement } from 'lwc';
 import ExpandableSection from 'c/expandableSection';
 
+let element;
 describe('Expandable Section', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -40,25 +41,24 @@ describe('Expandable Section', () => {
         }
     });
 
-    it('Expandable Section Default attributes', () => {
-        const element = createElement('base-expandable-section', {
+    beforeEach(() => {
+        element = createElement('base-expandable-section', {
             is: ExpandableSection
         });
+        document.body.appendChild(element);
+    });
 
+    it('Expandable Section Default attributes', () => {
         expect(element.title).toBeUndefined();
         expect(element.closed).toBeFalsy();
         expect(element.collapsible).toBeFalsy();
+        expect(element.variant).toBe('base');
     });
 
     /* ----- ATTRIBUTES ----- */
 
     // title
     it('Expandable Section title', () => {
-        const element = createElement('base-expandable-section', {
-            is: ExpandableSection
-        });
-        document.body.appendChild(element);
-
         element.title = 'This is a title';
 
         return Promise.resolve().then(() => {
@@ -67,13 +67,13 @@ describe('Expandable Section', () => {
         });
     });
 
+    it('Empty title and no collapsible', () => {
+        const header = element.shadowRoot.querySelector('.slds-section__title');
+        expect(header).toBeFalsy();
+    });
+
     // closed
     it('Expandable Section closed', () => {
-        const element = createElement('base-expandable-section', {
-            is: ExpandableSection
-        });
-        document.body.appendChild(element);
-
         element.closed = true;
         element.collapsible = true;
 
@@ -84,12 +84,8 @@ describe('Expandable Section', () => {
     });
 
     // collapsible
+    // Depends on title
     it('Expandable Section collapsible true', () => {
-        const element = createElement('base-expandable-section', {
-            is: ExpandableSection
-        });
-        document.body.appendChild(element);
-
         element.collapsible = true;
 
         return Promise.resolve().then(() => {
@@ -111,24 +107,116 @@ describe('Expandable Section', () => {
     });
 
     it('Expandable Section collapsible false', () => {
-        const element = createElement('base-expandable-section', {
-            is: ExpandableSection
-        });
-        document.body.appendChild(element);
+        element.title = 'Some title';
+        element.collapsible = false;
 
         return Promise.resolve().then(() => {
             const section = element.shadowRoot.querySelector('.slds-section');
             expect(section.className).toContain('slds-is-open');
             const title = element.shadowRoot.querySelector(
-                '.slds-section__title'
+                '.slds-section__title span'
             );
-            expect(title.className).toContain('slds-theme_shade');
-            const spanTitle = element.shadowRoot.querySelector(
-                '.slds-truncate'
-            );
-            expect(spanTitle.className).toContain('slds-p-horizontal_small');
+            expect(title).toBeTruthy();
+
             const icon = element.shadowRoot.querySelector('lightning-icon');
             expect(icon).toBeFalsy();
         });
+    });
+
+    // variant
+    // Depends on title and collapsible
+    it('Shaded variant, with no collapsible', () => {
+        element.title = 'Some title';
+        element.variant = 'shaded';
+
+        return Promise.resolve().then(() => {
+            const header = element.shadowRoot.querySelector(
+                '.slds-section__title'
+            );
+            expect(header.className).toContain('slds-theme_shade');
+
+            const title = header.querySelector('span');
+            expect(title.classList).toContain('slds-p-horizontal_small');
+        });
+    });
+
+    it('Base variant, with no collapsible', () => {
+        element.title = 'Some title';
+        element.variant = 'base';
+
+        return Promise.resolve().then(() => {
+            const header = element.shadowRoot.querySelector(
+                '.slds-section__title'
+            );
+            expect(header.className).not.toContain('slds-theme_shade');
+
+            const title = header.querySelector('span');
+            expect(title.classList).toContain('slds-p-right_small');
+        });
+    });
+
+    it('Base variant, with collapsible', () => {
+        element.variant = 'base';
+        element.collapsible = true;
+
+        return Promise.resolve().then(() => {
+            const header = element.shadowRoot.querySelector(
+                '.slds-section__title'
+            );
+            expect(header.className).not.toContain('slds-theme_shade');
+
+            const title = header.querySelector('.slds-section__title-action');
+            expect(title.classList).toContain('slds-theme_default');
+            expect(title.classList).toContain(
+                'avonni-expandable-section__title-button_base'
+            );
+        });
+    });
+
+    it('Shaded variant, with collapsible', () => {
+        element.variant = 'shaded';
+        element.collapsible = true;
+
+        return Promise.resolve().then(() => {
+            const header = element.shadowRoot.querySelector(
+                '.slds-section__title'
+            );
+            expect(header.className).not.toContain('slds-theme_shade');
+
+            const title = header.querySelector('.slds-section__title-action');
+            expect(title.classList).not.toContain('slds-theme_default');
+            expect(title.classList).not.toContain(
+                'avonni-expandable-section__title-button_base'
+            );
+        });
+    });
+
+    /* ----- USER ACTIONS ----- */
+
+    // Toggle the section
+    // Depends on collapsible
+    it('The user toggles the collapse button', () => {
+        element.collapsible = true;
+
+        const section = element.shadowRoot.querySelector('.slds-section');
+        expect(section.classList).toContain('slds-is-open');
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '.slds-section__title-action'
+                );
+                button.click();
+            })
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '.slds-section__title-action'
+                );
+                expect(section.classList).not.toContain('slds-is-open');
+                button.click();
+            })
+            .then(() => {
+                expect(section.classList).toContain('slds-is-open');
+            });
     });
 });
