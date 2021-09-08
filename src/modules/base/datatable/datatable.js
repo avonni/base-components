@@ -250,6 +250,23 @@ export default class Datatable extends LightningElement {
     }
 
     /**
+     * If present, the value will define how the data will be grouped.
+     * @public
+     * @type {string}
+     */
+    @api
+    get groupBy() {
+        return this._groupBy;
+    }
+
+    set groupBy(value) {
+        this._groupBy = value;
+        if (this._groupBy) {
+            this.removeDefaultActions();
+        }
+    }
+
+    /**
      * If present, the checkbox column for row selection is hidden.
      * @public
      * @type {boolean}
@@ -265,6 +282,34 @@ export default class Datatable extends LightningElement {
     }
 
     /**
+     * In case of group-by, if present, the section is not collapsible and the left icon is hidden.
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get hideCollapsibleIcon() {
+        return this._hideCollapsibleIcon;
+    }
+    set hideCollapsibleIcon(value) {
+        this._hideCollapsibleIcon = normalizeBoolean(value);
+    }
+
+    /**
+     * In case of group-by and summarization, if present, hides summarization table in groups.
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get hideGroupBySummarization() {
+        return this._hideGroupBySummarization;
+    }
+    set hideGroupBySummarization(value) {
+        this._hideGroupBySummarization = normalizeBoolean(value);
+    }
+
+    /**
      * If present, the table header is hidden.
      * @public
      * @type {boolean}
@@ -277,6 +322,20 @@ export default class Datatable extends LightningElement {
 
     set hideTableHeader(value) {
         this._hideTableHeader = normalizeBoolean(value);
+    }
+
+    /**
+     * In case of group-by, if present, hides undefined groups.
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get hideUndefinedGroup() {
+        return this._hideUndefinedGroup;
+    }
+    set hideUndefinedGroup(value) {
+        this._hideUndefinedGroup = normalizeBoolean(value);
     }
 
     /**
@@ -432,51 +491,6 @@ export default class Datatable extends LightningElement {
 
     set suppressBottomBar(value) {
         this._suppressBottomBar = normalizeBoolean(value);
-    }
-
-    /**
-     * If present, the value will define how the data will be grouped.
-     * @public
-     * @type {string}
-     */
-    @api
-    get groupBy() {
-        return this._groupBy;
-    }
-
-    set groupBy(value) {
-        this._groupBy = value;
-        if (this._groupBy) {
-            this.removeDefaultActions();
-        }
-    }
-
-    /**
-     * In case of group-by, if present, hides undefined groups.
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get hideUndefinedGroup() {
-        return this._hideUndefinedGroup;
-    }
-    set hideUndefinedGroup(value) {
-        this._hideUndefinedGroup = normalizeBoolean(value);
-    }
-
-    /**
-     * In case of group-by, if present, the section is not collapsible and the left icon is hidden.
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get hideCollapsibleIcon() {
-        return this._hideCollapsibleIcon;
-    }
-    set hideCollapsibleIcon(value) {
-        this._hideCollapsibleIcon = normalizeBoolean(value);
     }
 
     connectedCallback() {

@@ -165,19 +165,6 @@ export default {
                 category: 'Display'
             }
         },
-        hideTableHeader: {
-            name: 'hide-table-header',
-            control: {
-                type: 'boolean'
-            },
-            defaultvalue: false,
-            description: 'If present, the table header is hidden.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' },
-                category: 'Display'
-            }
-        },
         hideCollapsibleIcon: {
             name: 'hide-collapsible-icon',
             control: {
@@ -190,6 +177,33 @@ export default {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' },
                 category: 'Group by'
+            }
+        },
+        hideGroupBySummarization: {
+            name: 'hide-group-by-summarization',
+            control: {
+                type: 'boolean'
+            },
+            defaultvalue: false,
+            description:
+                'In case of group-by and summarization, if present, hides summarization table in groups.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Group by'
+            }
+        },
+        hideTableHeader: {
+            name: 'hide-table-header',
+            control: {
+                type: 'boolean'
+            },
+            defaultvalue: false,
+            description: 'If present, the table header is hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Display'
             }
         },
         hideUndefinedGroup: {

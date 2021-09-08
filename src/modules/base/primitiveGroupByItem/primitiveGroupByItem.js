@@ -43,6 +43,7 @@ export default class ProgressGroupByItem extends LightningElement {
     @api errors;
     @api hideCheckboxColumn;
     @api hideCollapsibleIcon;
+    @api hideGroupBySummarization;
     @api hideTableHeader;
     @api isLoading;
     @api loadMoreOffset;
