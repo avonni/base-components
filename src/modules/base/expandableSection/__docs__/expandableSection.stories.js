@@ -73,11 +73,11 @@ export default {
                 type: 'select'
             },
             options: ['base', 'shaded'],
-            defaultValue: 'base',
+            defaultValue: 'shaded',
             description:
                 'Variant of the section. Valid values include base and shaded.',
             table: {
-                defaultValue: { summary: 'base' },
+                defaultValue: { summary: 'shaded' },
                 type: { summary: 'string' }
             }
         }
@@ -108,9 +108,9 @@ CollapsibleClosed.args = {
     collapsible: true
 };
 
-export const Shaded = Template.bind({});
-Shaded.args = {
+export const BaseVariant = Template.bind({});
+BaseVariant.args = {
     title: 'Section',
     collapsible: true,
-    variant: 'shaded'
+    variant: 'base'
 };

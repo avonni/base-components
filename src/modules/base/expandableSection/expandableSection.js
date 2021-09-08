@@ -36,7 +36,7 @@ import { normalizeBoolean } from 'c/utilsPrivate';
 import { normalizeString } from '../utilsPrivate/normalize';
 
 const VARIANTS = {
-    default: 'base',
+    default: 'shaded',
     valid: ['base', 'shaded']
 };
 
