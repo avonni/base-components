@@ -51,7 +51,6 @@ export default class Datatable extends LightningElement {
     @api groupBy;
     @api hideCheckboxColumn = false;
     @api hideCollapsibleIcon = false;
-    @api hideGroupBySummarization = false;
     @api hideTableHeader = false;
     @api hideUndefinedGroup = false;
     @api isLoading = false;

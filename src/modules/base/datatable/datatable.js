@@ -296,20 +296,6 @@ export default class Datatable extends LightningElement {
     }
 
     /**
-     * In case of group-by and summarization, if present, hides summarization table in groups.
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get hideGroupBySummarization() {
-        return this._hideGroupBySummarization;
-    }
-    set hideGroupBySummarization(value) {
-        this._hideGroupBySummarization = normalizeBoolean(value);
-    }
-
-    /**
      * If present, the table header is hidden.
      * @public
      * @type {boolean}

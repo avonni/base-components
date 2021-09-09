@@ -179,20 +179,6 @@ export default {
                 category: 'Group by'
             }
         },
-        hideGroupBySummarization: {
-            name: 'hide-group-by-summarization',
-            control: {
-                type: 'boolean'
-            },
-            defaultvalue: false,
-            description:
-                'In case of group-by and summarization, if present, hides summarization table in groups.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' },
-                category: 'Group by'
-            }
-        },
         hideTableHeader: {
             name: 'hide-table-header',
             control: {

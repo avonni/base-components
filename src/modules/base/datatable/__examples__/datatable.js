@@ -45,7 +45,6 @@ export const Datatable = ({
     groupBy,
     hideCheckboxColumn,
     hideCollapsibleIcon,
-    hideGroupBySummarization,
     hideTableHeader,
     hideUndefinedGroup,
     isLoading,
@@ -75,7 +74,6 @@ export const Datatable = ({
     element.groupBy = groupBy;
     element.hideCheckboxColumn = hideCheckboxColumn;
     element.hideCollapsibleIcon = hideCollapsibleIcon;
-    element.hideGroupBySummarization = hideGroupBySummarization;
     element.hideTableHeader = hideTableHeader;
     element.hideUndefinedGroup = hideUndefinedGroup;
     element.isLoading = isLoading;
