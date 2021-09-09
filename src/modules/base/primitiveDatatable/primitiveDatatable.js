@@ -285,6 +285,8 @@ export default class PrimitiveDatatable extends LightningDatatable {
     };
 
     // Normalization of primitive datatable attributes
+    @api hasGroupBy;
+
     @api
     get columnWidthsMode() {
         return super.columnWidthsMode;
@@ -658,6 +660,10 @@ export default class PrimitiveDatatable extends LightningDatatable {
             this.groupedDatatables.forEach((datatable) => {
                 datatable.style.overflowX = 'hidden';
             });
+        }
+
+        if (this.headerDatatable) {
+            this.headerDatatable.style.overflowX = 'hidden';
         }
 
         this.template

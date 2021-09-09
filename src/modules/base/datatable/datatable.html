@@ -1,6 +1,6 @@
 <template>
-    <div class="avonni-datatable__container slds-scrollable_x">
-        <div class="avonni-datatable__inner_container slds-scrollable_y">
+    <div class={computedOuterContainerClass}>
+        <div class={computedInnerContainerClass}>
             <template if:true={hasGroupBy}>
                 <c-primitive-datatable
                     data-role="header"
@@ -11,6 +11,7 @@
                     draft-values={draftValues}
                     enable-infinite-loading={enableInfiniteLoading}
                     errors={errors}
+                    has-group-by={hasGroupBy}
                     hide-checkbox-column={hideCheckboxColumn}
                     hide-table-header={hideTableHeader}
                     is-loading={isLoading}
@@ -88,6 +89,7 @@
                 draft-values={draftValues}
                 enable-infinite-loading={enableInfiniteLoading}
                 errors={errors}
+                has-group-by={hasGroupBy}
                 hide-checkbox-column={hideCheckboxColumn}
                 hide-table-header={hideTableHeader}
                 is-loading={isLoading}

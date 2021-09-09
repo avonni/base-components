@@ -35,9 +35,9 @@ const editableClassNameTrue =
 const editableClassNameFalse =
     'avonni-primitive-summarization-table-td_vertical-align_top';
 const isNumberTypeClassNameTrue =
-    'slds-truncate avonni-primitive-summarization-table__display-flex_end';
+    'avonni-primitive-summarization-table__display-flex_end';
 const isNumberTypeClassNameFalse =
-    'slds-truncate avonni-primitive-summarization-table__display-flex_start';
+    'avonni-primitive-summarization-table__display-flex_start';
 
 /**
  * Method to count numbers of element in array.

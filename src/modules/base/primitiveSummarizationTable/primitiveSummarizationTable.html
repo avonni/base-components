@@ -60,7 +60,7 @@
                                     if:true={type.displaySumType}
                                 >
                                     <div
-                                        class="avonni-primitive-summarization-table__text_styling"
+                                        class="slds-truncate avonni-primitive-summarization-table__text_styling"
                                     >
                                         {type.label}:
                                     </div>
@@ -69,6 +69,7 @@
                                             if:true={column.formattedNumberType}
                                         >
                                             <lightning-formatted-number
+                                                class="slds-truncate"
                                                 format-style={type.type}
                                                 value={type.value}
                                                 currency-code={type.typeAttributes.currencyCode}
@@ -82,6 +83,7 @@
                                         </template>
                                         <template if:true={column.dateType}>
                                             <lightning-formatted-date-time
+                                                class="slds-truncate"
                                                 value={type.value}
                                                 day={type.typeAttributes.day}
                                                 era={type.typeAttributes.era}
@@ -98,12 +100,14 @@
                                         </template>
                                         <template if:true={type.mode}>
                                             <lightning-formatted-text
+                                                class="slds-truncate"
                                                 value={type.value}
                                             ></lightning-formatted-text>
                                         </template>
                                     </template>
                                     <template if:true={type.count}>
                                         <lightning-formatted-number
+                                            class="slds-truncate"
                                             format-style="decimal"
                                             value={type.value}
                                         ></lightning-formatted-number>

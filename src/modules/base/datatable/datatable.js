@@ -31,6 +31,7 @@
  */
 
 import { api, LightningElement } from 'lwc';
+import { classSet } from 'c/utils';
 import {
     normalizeArray,
     normalizeBoolean,
@@ -493,8 +494,8 @@ export default class Datatable extends LightningElement {
 
         window.addEventListener('resize', () => {
             if (this.allowSummarize || this.hasGroupBy) {
-                this.updateYWidth();
                 this.datatableColumnsWidth();
+                this.updateInnerContainerWidth();
             }
         });
     }
@@ -504,6 +505,12 @@ export default class Datatable extends LightningElement {
         this.updateTableWidth();
         if (!this.rendered) {
             this.datatableEditable();
+        }
+        if (!this.windowSizing) {
+            this.windowSize = this.template.querySelector(
+                '.avonni-datatable__outer_container'
+            ).offsetWidth;
+            this.windowSizing = true;
         }
         this.rendered = true;
     }
@@ -579,6 +586,12 @@ export default class Datatable extends LightningElement {
     get headerDatatable() {
         return this.template.querySelector(
             'c-primitive-datatable[data-role="header"]'
+        );
+    }
+
+    get innerContainer() {
+        return this.template.querySelector(
+            '.avonni-datatable__inner_container'
         );
     }
 
@@ -687,6 +700,22 @@ export default class Datatable extends LightningElement {
               );
     }
 
+    get computedOuterContainerClass() {
+        return classSet('avonni-datatable__outer_container')
+            .add({
+                'slds-scrollable_x': this.allowSummarize || this.hasGroupBy
+            })
+            .toString();
+    }
+
+    get computedInnerContainerClass() {
+        return classSet('avonni-datatable__inner_container')
+            .add({
+                'slds-scrollable_y': this.allowSummarize || this.hasGroupBy
+            })
+            .toString();
+    }
+
     /**
      * Gets the columns width of the primitive-datatable depending on if there is a header or not.
      */
@@ -723,19 +752,28 @@ export default class Datatable extends LightningElement {
             ? this.ungroupedDatatable.tableWidth()
             : this.headerDatatable.tableWidth();
         if (this.allowSummarize || this.hasGroupBy) {
-            this.template.querySelector(
-                '.avonni-datatable__inner_container'
-            ).style.width = this.tableWidth + 'px';
+            this.innerContainer.style.width = this.tableWidth + 'px';
         }
     }
 
-    updateYWidth() {
-        const yWidth = this.template.querySelector(
-            '.avonni-datatable__container'
+    updateInnerContainerWidth() {
+        const containerWidth = this.template.querySelector(
+            '.avonni-datatable__outer_container'
         ).offsetWidth;
-        this.template.querySelector(
-            '.avonni-datatable__inner_container'
-        ).style.width = yWidth + 'px';
+        if (this.allowSummarize && !this.hasGroupBy) {
+            if (
+                this.tableWidth > containerWidth &&
+                this.windowSize > containerWidth
+            ) {
+                this.innerContainer.style.width = this.tableWidth + 'px';
+            }
+            this.innerContainer.style.width = containerWidth + 'px';
+        }
+        if (this.hasGroupBy) {
+            this.innerContainer.style.width = containerWidth + 'px';
+        }
+
+        this.windowSizing = false;
     }
 
     /**
