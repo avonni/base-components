@@ -31,9 +31,9 @@
  */
 
 import { createElement } from 'lwc';
-import PrimitiveProgressBarReferenceLine from 'c/primitiveProgressBarReferenceLine';
+import PrimitiveReferenceLine from 'c/primitiveReferenceLine';
 
-describe('PrimitiveProgressBarReferenceLine', () => {
+describe('PrimitiveReferenceLine', () => {
     afterEach(() => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
@@ -41,12 +41,9 @@ describe('PrimitiveProgressBarReferenceLine', () => {
     });
 
     it('Default attributes', () => {
-        const element = createElement(
-            'base-primitive-progress-bar-reference-line',
-            {
-                is: PrimitiveProgressBarReferenceLine
-            }
-        );
+        const element = createElement('base-primitive-reference-line', {
+            is: PrimitiveReferenceLine
+        });
 
         expect(element.borderStyle).toBe('dotted');
         expect(element.label).toBeUndefined();
@@ -59,12 +56,9 @@ describe('PrimitiveProgressBarReferenceLine', () => {
     // border-style
     // Depends on orientation
     it('borderStyle = solid, horizontal orientation', () => {
-        const element = createElement(
-            'base-primitive-progress-bar-reference-line',
-            {
-                is: PrimitiveProgressBarReferenceLine
-            }
-        );
+        const element = createElement('base-primitive-reference-line', {
+            is: PrimitiveReferenceLine
+        });
 
         document.body.appendChild(element);
 
@@ -79,28 +73,25 @@ describe('PrimitiveProgressBarReferenceLine', () => {
             borders.forEach((border) => {
                 if (border === 'solid') {
                     expect(div.classList).toContain(
-                        `avonni-progress-bar-reference-line-border-style_${border}`
+                        `reference-line__badge-border-style_${border}`
                     );
                 } else {
                     expect(div.classList).not.toContain(
-                        `avonni-progress-bar-reference-line-border-style_${border}`
+                        `reference-line__badge-border-style_${border}`
                     );
                 }
 
                 expect(div.classList).not.toContain(
-                    `avonni-progress-bar-reference-line-border-vertical-style_${border}`
+                    `reference-line__badge-border-vertical-style_${border}`
                 );
             });
         });
     });
 
     it('borderStyle = dashed, horizontal orientation', () => {
-        const element = createElement(
-            'base-primitive-progress-bar-reference-line',
-            {
-                is: PrimitiveProgressBarReferenceLine
-            }
-        );
+        const element = createElement('base-primitive-reference-line', {
+            is: PrimitiveReferenceLine
+        });
 
         document.body.appendChild(element);
 
@@ -115,28 +106,25 @@ describe('PrimitiveProgressBarReferenceLine', () => {
             borders.forEach((border) => {
                 if (border === 'dashed') {
                     expect(div.classList).toContain(
-                        `avonni-progress-bar-reference-line-border-style_${border}`
+                        `reference-line__badge-border-style_${border}`
                     );
                 } else {
                     expect(div.classList).not.toContain(
-                        `avonni-progress-bar-reference-line-border-style_${border}`
+                        `reference-line__badge-border-style_${border}`
                     );
                 }
 
                 expect(div.classList).not.toContain(
-                    `avonni-progress-bar-reference-line-border-vertical-style_${border}`
+                    `reference-line__badge-border-vertical-style_${border}`
                 );
             });
         });
     });
 
     it('borderStyle = dotted, horizontal orientation', () => {
-        const element = createElement(
-            'base-primitive-progress-bar-reference-line',
-            {
-                is: PrimitiveProgressBarReferenceLine
-            }
-        );
+        const element = createElement('base-primitive-reference-line', {
+            is: PrimitiveReferenceLine
+        });
 
         document.body.appendChild(element);
 
@@ -151,28 +139,25 @@ describe('PrimitiveProgressBarReferenceLine', () => {
             borders.forEach((border) => {
                 if (border === 'dotted') {
                     expect(div.classList).toContain(
-                        `avonni-progress-bar-reference-line-border-style_${border}`
+                        `reference-line__badge-border-style_${border}`
                     );
                 } else {
                     expect(div.classList).not.toContain(
-                        `avonni-progress-bar-reference-line-border-style_${border}`
+                        `reference-line__badge-border-style_${border}`
                     );
                 }
 
                 expect(div.classList).not.toContain(
-                    `avonni-progress-bar-reference-line-border-vertical-style_${border}`
+                    `reference-line__badge-border-vertical-style_${border}`
                 );
             });
         });
     });
 
     it('borderStyle = none, horizontal orientation', () => {
-        const element = createElement(
-            'base-primitive-progress-bar-reference-line',
-            {
-                is: PrimitiveProgressBarReferenceLine
-            }
-        );
+        const element = createElement('base-primitive-reference-line', {
+            is: PrimitiveReferenceLine
+        });
 
         document.body.appendChild(element);
 
@@ -186,22 +171,19 @@ describe('PrimitiveProgressBarReferenceLine', () => {
         return Promise.resolve().then(() => {
             borders.forEach((border) => {
                 expect(div.classList).not.toContain(
-                    `avonni-progress-bar-reference-line-border-style_${border}`
+                    `reference-line__badge-border-style_${border}`
                 );
                 expect(div.classList).not.toContain(
-                    `avonni-progress-bar-reference-line-border-vertical-style_${border}`
+                    `reference-line__badge-border-vertical-style_${border}`
                 );
             });
         });
     });
 
     it('borderStyle = solid, vertical orientation', () => {
-        const element = createElement(
-            'base-primitive-progress-bar-reference-line',
-            {
-                is: PrimitiveProgressBarReferenceLine
-            }
-        );
+        const element = createElement('base-primitive-reference-line', {
+            is: PrimitiveReferenceLine
+        });
 
         document.body.appendChild(element);
 
@@ -216,28 +198,25 @@ describe('PrimitiveProgressBarReferenceLine', () => {
             borders.forEach((border) => {
                 if (border === 'solid') {
                     expect(div.classList).toContain(
-                        `avonni-progress-bar-reference-line-border-vertical-style_${border}`
+                        `reference-line__badge-border-vertical-style_${border}`
                     );
                 } else {
                     expect(div.classList).not.toContain(
-                        `avonni-progress-bar-reference-line-border-vertical-style_${border}`
+                        `reference-line__badge-border-vertical-style_${border}`
                     );
                 }
 
                 expect(div.classList).not.toContain(
-                    `avonni-progress-bar-reference-line-border-style_${border}`
+                    `reference-line__badge-border-style_${border}`
                 );
             });
         });
     });
 
     it('borderStyle = dashed, vertical orientation', () => {
-        const element = createElement(
-            'base-primitive-progress-bar-reference-line',
-            {
-                is: PrimitiveProgressBarReferenceLine
-            }
-        );
+        const element = createElement('base-primitive-reference-line', {
+            is: PrimitiveReferenceLine
+        });
 
         document.body.appendChild(element);
 
@@ -252,28 +231,25 @@ describe('PrimitiveProgressBarReferenceLine', () => {
             borders.forEach((border) => {
                 if (border === 'dashed') {
                     expect(div.classList).toContain(
-                        `avonni-progress-bar-reference-line-border-vertical-style_${border}`
+                        `reference-line__badge-border-vertical-style_${border}`
                     );
                 } else {
                     expect(div.classList).not.toContain(
-                        `avonni-progress-bar-reference-line-border-vertical-style_${border}`
+                        `reference-line__badge-border-vertical-style_${border}`
                     );
                 }
 
                 expect(div.classList).not.toContain(
-                    `avonni-progress-bar-reference-line-border-style_${border}`
+                    `reference-line__badge-border-style_${border}`
                 );
             });
         });
     });
 
     it('borderStyle = dotted, vertical orientation', () => {
-        const element = createElement(
-            'base-primitive-progress-bar-reference-line',
-            {
-                is: PrimitiveProgressBarReferenceLine
-            }
-        );
+        const element = createElement('base-primitive-reference-line', {
+            is: PrimitiveReferenceLine
+        });
 
         document.body.appendChild(element);
 
@@ -288,28 +264,25 @@ describe('PrimitiveProgressBarReferenceLine', () => {
             borders.forEach((border) => {
                 if (border === 'dotted') {
                     expect(div.classList).toContain(
-                        `avonni-progress-bar-reference-line-border-vertical-style_${border}`
+                        `reference-line__badge-border-vertical-style_${border}`
                     );
                 } else {
                     expect(div.classList).not.toContain(
-                        `avonni-progress-bar-reference-line-border-vertical-style_${border}`
+                        `reference-line__badge-border-vertical-style_${border}`
                     );
                 }
 
                 expect(div.classList).not.toContain(
-                    `avonni-progress-bar-reference-line-border-style_${border}`
+                    `reference-line__badge-border-style_${border}`
                 );
             });
         });
     });
 
     it('borderStyle = none, vertical orientation', () => {
-        const element = createElement(
-            'base-primitive-progress-bar-reference-line',
-            {
-                is: PrimitiveProgressBarReferenceLine
-            }
-        );
+        const element = createElement('base-primitive-reference-line', {
+            is: PrimitiveReferenceLine
+        });
 
         document.body.appendChild(element);
 
@@ -323,10 +296,10 @@ describe('PrimitiveProgressBarReferenceLine', () => {
         return Promise.resolve().then(() => {
             borders.forEach((border) => {
                 expect(div.classList).not.toContain(
-                    `avonni-progress-bar-reference-line-border-vertical-style_${border}`
+                    `reference-line__badge-border-vertical-style_${border}`
                 );
                 expect(div.classList).not.toContain(
-                    `avonni-progress-bar-reference-line-border-style_${border}`
+                    `reference-line__badge-border-style_${border}`
                 );
             });
         });
@@ -334,12 +307,9 @@ describe('PrimitiveProgressBarReferenceLine', () => {
 
     // label
     it('label', () => {
-        const element = createElement(
-            'base-primitive-progress-bar-reference-line',
-            {
-                is: PrimitiveProgressBarReferenceLine
-            }
-        );
+        const element = createElement('base-primitive-reference-line', {
+            is: PrimitiveReferenceLine
+        });
 
         document.body.appendChild(element);
 
@@ -354,12 +324,9 @@ describe('PrimitiveProgressBarReferenceLine', () => {
 
     // orientation
     it('orientation = horizontal', () => {
-        const element = createElement(
-            'base-primitive-progress-bar-reference-line',
-            {
-                is: PrimitiveProgressBarReferenceLine
-            }
-        );
+        const element = createElement('base-primitive-reference-line', {
+            is: PrimitiveReferenceLine
+        });
 
         document.body.appendChild(element);
 
@@ -369,18 +336,15 @@ describe('PrimitiveProgressBarReferenceLine', () => {
 
         return Promise.resolve().then(() => {
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-marker-vertical'
+                'reference-line__line-vertical'
             );
         });
     });
 
     it('orientation = vertical', () => {
-        const element = createElement(
-            'base-primitive-progress-bar-reference-line',
-            {
-                is: PrimitiveProgressBarReferenceLine
-            }
-        );
+        const element = createElement('base-primitive-reference-line', {
+            is: PrimitiveReferenceLine
+        });
 
         document.body.appendChild(element);
 
@@ -389,21 +353,16 @@ describe('PrimitiveProgressBarReferenceLine', () => {
         element.orientation = 'vertical';
 
         return Promise.resolve().then(() => {
-            expect(div.classList).toContain(
-                'avonni-progress-bar-marker-vertical'
-            );
+            expect(div.classList).toContain('reference-line__line-vertical');
         });
     });
 
     // thickness
     // Depends on orientation
     it('thickness = x-small, horizontal orientation', () => {
-        const element = createElement(
-            'base-primitive-progress-bar-reference-line',
-            {
-                is: PrimitiveProgressBarReferenceLine
-            }
-        );
+        const element = createElement('base-primitive-reference-line', {
+            is: PrimitiveReferenceLine
+        });
 
         document.body.appendChild(element);
 
@@ -414,34 +373,31 @@ describe('PrimitiveProgressBarReferenceLine', () => {
 
         return Promise.resolve().then(() => {
             expect(div.classList).toContain(
-                'avonni-progress-bar-reference-line-border-thickness_x-small'
+                'reference-line__badge-border-thickness_x-small'
             );
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness_small'
+                'reference-line__badge-border-thickness_small'
             );
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness_large'
+                'reference-line__badge-border-thickness_large'
             );
 
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness-vertical_x-small'
+                'reference-line__badge-border-thickness-vertical_x-small'
             );
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness-vertical_small'
+                'reference-line__badge-border-thickness-vertical_small'
             );
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness-vertical_large'
+                'reference-line__badge-border-thickness-vertical_large'
             );
         });
     });
 
     it('thickness = small, horizontal orientation', () => {
-        const element = createElement(
-            'base-primitive-progress-bar-reference-line',
-            {
-                is: PrimitiveProgressBarReferenceLine
-            }
-        );
+        const element = createElement('base-primitive-reference-line', {
+            is: PrimitiveReferenceLine
+        });
 
         document.body.appendChild(element);
 
@@ -452,34 +408,31 @@ describe('PrimitiveProgressBarReferenceLine', () => {
 
         return Promise.resolve().then(() => {
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness_x-small'
+                'reference-line__badge-border-thickness_x-small'
             );
             expect(div.classList).toContain(
-                'avonni-progress-bar-reference-line-border-thickness_small'
+                'reference-line__badge-border-thickness_small'
             );
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness_large'
+                'reference-line__badge-border-thickness_large'
             );
 
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness-vertical_x-small'
+                'reference-line__badge-border-thickness-vertical_x-small'
             );
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness-vertical_small'
+                'reference-line__badge-border-thickness-vertical_small'
             );
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness-vertical_large'
+                'reference-line__badge-border-thickness-vertical_large'
             );
         });
     });
 
     it('thickness = medium, horizontal orientation', () => {
-        const element = createElement(
-            'base-primitive-progress-bar-reference-line',
-            {
-                is: PrimitiveProgressBarReferenceLine
-            }
-        );
+        const element = createElement('base-primitive-reference-line', {
+            is: PrimitiveReferenceLine
+        });
 
         document.body.appendChild(element);
 
@@ -490,34 +443,31 @@ describe('PrimitiveProgressBarReferenceLine', () => {
 
         return Promise.resolve().then(() => {
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness_x-small'
+                'reference-line__badge-border-thickness_x-small'
             );
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness_small'
+                'reference-line__badge-border-thickness_small'
             );
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness_large'
+                'reference-line__badge-border-thickness_large'
             );
 
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness-vertical_x-small'
+                'reference-line__badge-border-thickness-vertical_x-small'
             );
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness-vertical_small'
+                'reference-line__badge-border-thickness-vertical_small'
             );
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness-vertical_large'
+                'reference-line__badge-border-thickness-vertical_large'
             );
         });
     });
 
     it('thickness = large, horizontal orientation', () => {
-        const element = createElement(
-            'base-primitive-progress-bar-reference-line',
-            {
-                is: PrimitiveProgressBarReferenceLine
-            }
-        );
+        const element = createElement('base-primitive-reference-line', {
+            is: PrimitiveReferenceLine
+        });
 
         document.body.appendChild(element);
 
@@ -528,34 +478,31 @@ describe('PrimitiveProgressBarReferenceLine', () => {
 
         return Promise.resolve().then(() => {
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness_x-small'
+                'reference-line__badge-border-thickness_x-small'
             );
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness_small'
+                'reference-line__badge-border-thickness_small'
             );
             expect(div.classList).toContain(
-                'avonni-progress-bar-reference-line-border-thickness_large'
+                'reference-line__badge-border-thickness_large'
             );
 
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness-vertical_x-small'
+                'reference-line__badge-border-thickness-vertical_x-small'
             );
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness-vertical_small'
+                'reference-line__badge-border-thickness-vertical_small'
             );
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness-vertical_large'
+                'reference-line__badge-border-thickness-vertical_large'
             );
         });
     });
 
     it('thickness = x-small, vertical orientation', () => {
-        const element = createElement(
-            'base-primitive-progress-bar-reference-line',
-            {
-                is: PrimitiveProgressBarReferenceLine
-            }
-        );
+        const element = createElement('base-primitive-reference-line', {
+            is: PrimitiveReferenceLine
+        });
 
         document.body.appendChild(element);
 
@@ -566,34 +513,31 @@ describe('PrimitiveProgressBarReferenceLine', () => {
 
         return Promise.resolve().then(() => {
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness_x-small'
+                'reference-line__badge-border-thickness_x-small'
             );
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness_small'
+                'reference-line__badge-border-thickness_small'
             );
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness_large'
+                'reference-line__badge-border-thickness_large'
             );
 
             expect(div.classList).toContain(
-                'avonni-progress-bar-reference-line-border-thickness-vertical_x-small'
+                'reference-line__badge-border-thickness-vertical_x-small'
             );
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness-vertical_small'
+                'reference-line__badge-border-thickness-vertical_small'
             );
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness-vertical_large'
+                'reference-line__badge-border-thickness-vertical_large'
             );
         });
     });
 
     it('thickness = small, vertical orientation', () => {
-        const element = createElement(
-            'base-primitive-progress-bar-reference-line',
-            {
-                is: PrimitiveProgressBarReferenceLine
-            }
-        );
+        const element = createElement('base-primitive-reference-line', {
+            is: PrimitiveReferenceLine
+        });
 
         document.body.appendChild(element);
 
@@ -604,34 +548,31 @@ describe('PrimitiveProgressBarReferenceLine', () => {
 
         return Promise.resolve().then(() => {
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness_x-small'
+                'reference-line__badge-border-thickness_x-small'
             );
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness_small'
+                'reference-line__badge-border-thickness_small'
             );
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness_large'
+                'reference-line__badge-border-thickness_large'
             );
 
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness-vertical_x-small'
+                'reference-line__badge-border-thickness-vertical_x-small'
             );
             expect(div.classList).toContain(
-                'avonni-progress-bar-reference-line-border-thickness-vertical_small'
+                'reference-line__badge-border-thickness-vertical_small'
             );
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness-vertical_large'
+                'reference-line__badge-border-thickness-vertical_large'
             );
         });
     });
 
     it('thickness = medium, vertical orientation', () => {
-        const element = createElement(
-            'base-primitive-progress-bar-reference-line',
-            {
-                is: PrimitiveProgressBarReferenceLine
-            }
-        );
+        const element = createElement('base-primitive-reference-line', {
+            is: PrimitiveReferenceLine
+        });
 
         document.body.appendChild(element);
 
@@ -642,34 +583,31 @@ describe('PrimitiveProgressBarReferenceLine', () => {
 
         return Promise.resolve().then(() => {
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness_x-small'
+                'reference-line__badge-border-thickness_x-small'
             );
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness_small'
+                'reference-line__badge-border-thickness_small'
             );
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness_large'
+                'reference-line__badge-border-thickness_large'
             );
 
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness-vertical_x-small'
+                'reference-line__badge-border-thickness-vertical_x-small'
             );
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness-vertical_small'
+                'reference-line__badge-border-thickness-vertical_small'
             );
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness-vertical_large'
+                'reference-line__badge-border-thickness-vertical_large'
             );
         });
     });
 
     it('thickness = large, vertical orientation', () => {
-        const element = createElement(
-            'base-primitive-progress-bar-reference-line',
-            {
-                is: PrimitiveProgressBarReferenceLine
-            }
-        );
+        const element = createElement('base-primitive-reference-line', {
+            is: PrimitiveReferenceLine
+        });
 
         document.body.appendChild(element);
 
@@ -680,23 +618,23 @@ describe('PrimitiveProgressBarReferenceLine', () => {
 
         return Promise.resolve().then(() => {
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness_x-small'
+                'reference-line__badge-border-thickness_x-small'
             );
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness_small'
+                'reference-line__badge-border-thickness_small'
             );
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness_large'
+                'reference-line__badge-border-thickness_large'
             );
 
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness-vertical_x-small'
+                'reference-line__badge-border-thickness-vertical_x-small'
             );
             expect(div.classList).not.toContain(
-                'avonni-progress-bar-reference-line-border-thickness-vertical_small'
+                'reference-line__badge-border-thickness-vertical_small'
             );
             expect(div.classList).toContain(
-                'avonni-progress-bar-reference-line-border-thickness-vertical_large'
+                'reference-line__badge-border-thickness-vertical_large'
             );
         });
     });
@@ -704,12 +642,9 @@ describe('PrimitiveProgressBarReferenceLine', () => {
     // value
     // Depends on orientation
     it('value lesser than 0, horizontal orientation', () => {
-        const element = createElement(
-            'base-primitive-progress-bar-reference-line',
-            {
-                is: PrimitiveProgressBarReferenceLine
-            }
-        );
+        const element = createElement('base-primitive-reference-line', {
+            is: PrimitiveReferenceLine
+        });
 
         document.body.appendChild(element);
 
@@ -724,12 +659,9 @@ describe('PrimitiveProgressBarReferenceLine', () => {
     });
 
     it('value greater than 100, horizontal orientation', () => {
-        const element = createElement(
-            'base-primitive-progress-bar-reference-line',
-            {
-                is: PrimitiveProgressBarReferenceLine
-            }
-        );
+        const element = createElement('base-primitive-reference-line', {
+            is: PrimitiveReferenceLine
+        });
 
         document.body.appendChild(element);
 
@@ -744,12 +676,9 @@ describe('PrimitiveProgressBarReferenceLine', () => {
     });
 
     it('value = 35, horizontal orientation', () => {
-        const element = createElement(
-            'base-primitive-progress-bar-reference-line',
-            {
-                is: PrimitiveProgressBarReferenceLine
-            }
-        );
+        const element = createElement('base-primitive-reference-line', {
+            is: PrimitiveReferenceLine
+        });
 
         document.body.appendChild(element);
 
@@ -764,12 +693,9 @@ describe('PrimitiveProgressBarReferenceLine', () => {
     });
 
     it('value lesser than 0, vertical orientation', () => {
-        const element = createElement(
-            'base-primitive-progress-bar-reference-line',
-            {
-                is: PrimitiveProgressBarReferenceLine
-            }
-        );
+        const element = createElement('base-primitive-reference-line', {
+            is: PrimitiveReferenceLine
+        });
 
         document.body.appendChild(element);
 
@@ -784,12 +710,9 @@ describe('PrimitiveProgressBarReferenceLine', () => {
     });
 
     it('value greater than 100, vertical orientation', () => {
-        const element = createElement(
-            'base-primitive-progress-bar-reference-line',
-            {
-                is: PrimitiveProgressBarReferenceLine
-            }
-        );
+        const element = createElement('base-primitive-reference-line', {
+            is: PrimitiveReferenceLine
+        });
 
         document.body.appendChild(element);
 
@@ -804,12 +727,9 @@ describe('PrimitiveProgressBarReferenceLine', () => {
     });
 
     it('value = 35, vertical orientation', () => {
-        const element = createElement(
-            'base-primitive-progress-bar-reference-line',
-            {
-                is: PrimitiveProgressBarReferenceLine
-            }
-        );
+        const element = createElement('base-primitive-reference-line', {
+            is: PrimitiveReferenceLine
+        });
 
         document.body.appendChild(element);
 
@@ -825,12 +745,9 @@ describe('PrimitiveProgressBarReferenceLine', () => {
 
     // variant
     it('variant = default', () => {
-        const element = createElement(
-            'base-primitive-progress-bar-reference-line',
-            {
-                is: PrimitiveProgressBarReferenceLine
-            }
-        );
+        const element = createElement('base-primitive-reference-line', {
+            is: PrimitiveReferenceLine
+        });
 
         document.body.appendChild(element);
 
@@ -844,25 +761,22 @@ describe('PrimitiveProgressBarReferenceLine', () => {
         return Promise.resolve().then(() => {
             variants.forEach((variant) => {
                 expect(div.classList).not.toContain(
-                    `avonni-progress-bar-reference-line-border-color_${variant}`
+                    `reference-line__badge-border-color_${variant}`
                 );
                 expect(div.classList).not.toContain(
-                    `avonni-progress-bar-reference-line-border-vertical-color_${variant}`
+                    `reference-line__badge-border-vertical-color_${variant}`
                 );
                 expect(badge.classList).not.toContain(
-                    `avonni-progress-bar-reference-line_${variant}`
+                    `reference-line__badge_${variant}`
                 );
             });
         });
     });
 
     it('variant = inverse', () => {
-        const element = createElement(
-            'base-primitive-progress-bar-reference-line',
-            {
-                is: PrimitiveProgressBarReferenceLine
-            }
-        );
+        const element = createElement('base-primitive-reference-line', {
+            is: PrimitiveReferenceLine
+        });
 
         document.body.appendChild(element);
 
@@ -877,23 +791,23 @@ describe('PrimitiveProgressBarReferenceLine', () => {
             variants.forEach((variant) => {
                 if (variant === 'inverse') {
                     expect(div.classList).toContain(
-                        `avonni-progress-bar-reference-line-border-color_${variant}`
+                        `reference-line__badge-border-color_${variant}`
                     );
                     expect(badge.classList).toContain(
-                        `avonni-progress-bar-reference-line_${variant}`
+                        `reference-line__badge_${variant}`
                     );
                     expect(div.classList).toContain(
-                        `avonni-progress-bar-reference-line-border-vertical-color_${variant}`
+                        `reference-line__badge-border-vertical-color_${variant}`
                     );
                 } else {
                     expect(div.classList).not.toContain(
-                        `avonni-progress-bar-reference-line-border-color_${variant}`
+                        `reference-line__badge-border-color_${variant}`
                     );
                     expect(badge.classList).not.toContain(
-                        `avonni-progress-bar-reference-line_${variant}`
+                        `reference-line__badge_${variant}`
                     );
                     expect(div.classList).not.toContain(
-                        `avonni-progress-bar-reference-line-border-vertical-color_${variant}`
+                        `reference-line__badge-border-vertical-color_${variant}`
                     );
                 }
             });
@@ -901,12 +815,9 @@ describe('PrimitiveProgressBarReferenceLine', () => {
     });
 
     it('variant = success', () => {
-        const element = createElement(
-            'base-primitive-progress-bar-reference-line',
-            {
-                is: PrimitiveProgressBarReferenceLine
-            }
-        );
+        const element = createElement('base-primitive-reference-line', {
+            is: PrimitiveReferenceLine
+        });
 
         document.body.appendChild(element);
 
@@ -921,23 +832,23 @@ describe('PrimitiveProgressBarReferenceLine', () => {
             variants.forEach((variant) => {
                 if (variant === 'success') {
                     expect(div.classList).toContain(
-                        `avonni-progress-bar-reference-line-border-color_${variant}`
+                        `reference-line__badge-border-color_${variant}`
                     );
                     expect(badge.classList).toContain(
-                        `avonni-progress-bar-reference-line_${variant}`
+                        `reference-line__badge_${variant}`
                     );
                     expect(div.classList).toContain(
-                        `avonni-progress-bar-reference-line-border-vertical-color_${variant}`
+                        `reference-line__badge-border-vertical-color_${variant}`
                     );
                 } else {
                     expect(div.classList).not.toContain(
-                        `avonni-progress-bar-reference-line-border-color_${variant}`
+                        `reference-line__badge-border-color_${variant}`
                     );
                     expect(badge.classList).not.toContain(
-                        `avonni-progress-bar-reference-line_${variant}`
+                        `reference-line__badge_${variant}`
                     );
                     expect(div.classList).not.toContain(
-                        `avonni-progress-bar-reference-line-border-vertical-color_${variant}`
+                        `reference-line__badge-border-vertical-color_${variant}`
                     );
                 }
             });
@@ -945,12 +856,9 @@ describe('PrimitiveProgressBarReferenceLine', () => {
     });
 
     it('variant = warning', () => {
-        const element = createElement(
-            'base-primitive-progress-bar-reference-line',
-            {
-                is: PrimitiveProgressBarReferenceLine
-            }
-        );
+        const element = createElement('base-primitive-reference-line', {
+            is: PrimitiveReferenceLine
+        });
 
         document.body.appendChild(element);
 
@@ -965,23 +873,23 @@ describe('PrimitiveProgressBarReferenceLine', () => {
             variants.forEach((variant) => {
                 if (variant === 'warning') {
                     expect(div.classList).toContain(
-                        `avonni-progress-bar-reference-line-border-color_${variant}`
+                        `reference-line__badge-border-color_${variant}`
                     );
                     expect(badge.classList).toContain(
-                        `avonni-progress-bar-reference-line_${variant}`
+                        `reference-line__badge_${variant}`
                     );
                     expect(div.classList).toContain(
-                        `avonni-progress-bar-reference-line-border-vertical-color_${variant}`
+                        `reference-line__badge-border-vertical-color_${variant}`
                     );
                 } else {
                     expect(div.classList).not.toContain(
-                        `avonni-progress-bar-reference-line-border-color_${variant}`
+                        `reference-line__badge-border-color_${variant}`
                     );
                     expect(badge.classList).not.toContain(
-                        `avonni-progress-bar-reference-line_${variant}`
+                        `reference-line__badge_${variant}`
                     );
                     expect(div.classList).not.toContain(
-                        `avonni-progress-bar-reference-line-border-vertical-color_${variant}`
+                        `reference-line__badge-border-vertical-color_${variant}`
                     );
                 }
             });
@@ -989,12 +897,9 @@ describe('PrimitiveProgressBarReferenceLine', () => {
     });
 
     it('variant = error', () => {
-        const element = createElement(
-            'base-primitive-progress-bar-reference-line',
-            {
-                is: PrimitiveProgressBarReferenceLine
-            }
-        );
+        const element = createElement('base-primitive-reference-line', {
+            is: PrimitiveReferenceLine
+        });
 
         document.body.appendChild(element);
 
@@ -1009,23 +914,23 @@ describe('PrimitiveProgressBarReferenceLine', () => {
             variants.forEach((variant) => {
                 if (variant === 'error') {
                     expect(div.classList).toContain(
-                        `avonni-progress-bar-reference-line-border-color_${variant}`
+                        `reference-line__badge-border-color_${variant}`
                     );
                     expect(badge.classList).toContain(
-                        `avonni-progress-bar-reference-line_${variant}`
+                        `reference-line__badge_${variant}`
                     );
                     expect(div.classList).toContain(
-                        `avonni-progress-bar-reference-line-border-vertical-color_${variant}`
+                        `reference-line__badge-border-vertical-color_${variant}`
                     );
                 } else {
                     expect(div.classList).not.toContain(
-                        `avonni-progress-bar-reference-line-border-color_${variant}`
+                        `reference-line__badge-border-color_${variant}`
                     );
                     expect(badge.classList).not.toContain(
-                        `avonni-progress-bar-reference-line_${variant}`
+                        `reference-line__badge_${variant}`
                     );
                     expect(div.classList).not.toContain(
-                        `avonni-progress-bar-reference-line-border-vertical-color_${variant}`
+                        `reference-line__badge-border-vertical-color_${variant}`
                     );
                 }
             });
@@ -1033,12 +938,9 @@ describe('PrimitiveProgressBarReferenceLine', () => {
     });
 
     it('variant = lightest', () => {
-        const element = createElement(
-            'base-primitive-progress-bar-reference-line',
-            {
-                is: PrimitiveProgressBarReferenceLine
-            }
-        );
+        const element = createElement('base-primitive-reference-line', {
+            is: PrimitiveReferenceLine
+        });
 
         document.body.appendChild(element);
 
@@ -1053,23 +955,23 @@ describe('PrimitiveProgressBarReferenceLine', () => {
             variants.forEach((variant) => {
                 if (variant === 'lightest') {
                     expect(div.classList).toContain(
-                        `avonni-progress-bar-reference-line-border-color_${variant}`
+                        `reference-line__badge-border-color_${variant}`
                     );
                     expect(badge.classList).toContain(
-                        `avonni-progress-bar-reference-line_${variant}`
+                        `reference-line__badge_${variant}`
                     );
                     expect(div.classList).toContain(
-                        `avonni-progress-bar-reference-line-border-vertical-color_${variant}`
+                        `reference-line__badge-border-vertical-color_${variant}`
                     );
                 } else {
                     expect(div.classList).not.toContain(
-                        `avonni-progress-bar-reference-line-border-color_${variant}`
+                        `reference-line__badge-border-color_${variant}`
                     );
                     expect(badge.classList).not.toContain(
-                        `avonni-progress-bar-reference-line_${variant}`
+                        `reference-line__badge_${variant}`
                     );
                     expect(div.classList).not.toContain(
-                        `avonni-progress-bar-reference-line-border-vertical-color_${variant}`
+                        `reference-line__badge-border-vertical-color_${variant}`
                     );
                 }
             });

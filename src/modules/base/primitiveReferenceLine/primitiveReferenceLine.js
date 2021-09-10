@@ -51,7 +51,7 @@ const ORIENTATIONS = {
 
 const DEFAULT_VALUE = 0;
 
-export default class PrimitiveProgressBarReferenceLine extends LightningElement {
+export default class PrimitiveReferenceLine extends LightningElement {
     @api label;
     @api thickness;
 
@@ -118,18 +118,13 @@ export default class PrimitiveProgressBarReferenceLine extends LightningElement 
     }
 
     get computedBadgeClass() {
-        return classSet('avonni-progress-bar-reference-line')
+        return classSet('reference-line__badge')
             .add({
-                'avonni-progress-bar-reference-line_inverse':
-                    this._variant === 'inverse',
-                'avonni-progress-bar-reference-line_lightest':
-                    this._variant === 'lightest',
-                'avonni-progress-bar-reference-line_success':
-                    this._variant === 'success',
-                'avonni-progress-bar-reference-line_warning':
-                    this._variant === 'warning',
-                'avonni-progress-bar-reference-line_error':
-                    this._variant === 'error'
+                'reference-line__badge_inverse': this._variant === 'inverse',
+                'reference-line__badge_lightest': this._variant === 'lightest',
+                'reference-line__badge_success': this._variant === 'success',
+                'reference-line__badge_warning': this._variant === 'warning',
+                'reference-line__badge_error': this._variant === 'error'
             })
             .toString();
     }
@@ -137,65 +132,65 @@ export default class PrimitiveProgressBarReferenceLine extends LightningElement 
     get computedOuterClass() {
         return classSet('')
             .add({
-                'avonni-progress-bar-marker': this.isHorizontal
+                'reference-line__line': this.isHorizontal
             })
             .add({
-                'avonni-progress-bar-reference-line-border-style_dashed':
+                'reference-line__badge-border-style_dashed':
                     this._borderStyle === 'dashed' && this.isHorizontal,
-                'avonni-progress-bar-reference-line-border-style_solid':
+                'reference-line__badge-border-style_solid':
                     this._borderStyle === 'solid' && this.isHorizontal,
-                'avonni-progress-bar-reference-line-border-style_dotted':
+                'reference-line__badge-border-style_dotted':
                     this._borderStyle === 'dotted' && this.isHorizontal
             })
             .add({
-                'avonni-progress-bar-reference-line-border-thickness_x-small':
+                'reference-line__badge-border-thickness_x-small':
                     this.thickness === 'x-small' && this.isHorizontal,
-                'avonni-progress-bar-reference-line-border-thickness_small':
+                'reference-line__badge-border-thickness_small':
                     this.thickness === 'small' && this.isHorizontal,
-                'avonni-progress-bar-reference-line-border-thickness_large':
+                'reference-line__badge-border-thickness_large':
                     this.thickness === 'large' && this.isHorizontal
             })
             .add({
-                'avonni-progress-bar-reference-line-border-color_inverse':
+                'reference-line__badge-border-color_inverse':
                     this._variant === 'inverse',
-                'avonni-progress-bar-reference-line-border-color_success':
+                'reference-line__badge-border-color_success':
                     this._variant === 'success',
-                'avonni-progress-bar-reference-line-border-color_warning':
+                'reference-line__badge-border-color_warning':
                     this._variant === 'warning',
-                'avonni-progress-bar-reference-line-border-color_error':
+                'reference-line__badge-border-color_error':
                     this._variant === 'error',
-                'avonni-progress-bar-reference-line-border-color_lightest':
+                'reference-line__badge-border-color_lightest':
                     this._variant === 'lightest'
             })
             .add({
-                'avonni-progress-bar-marker-vertical': !this.isHorizontal
+                'reference-line__line-vertical': !this.isHorizontal
             })
             .add({
-                'avonni-progress-bar-reference-line-border-vertical-style_dashed':
+                'reference-line__badge-border-vertical-style_dashed':
                     this._borderStyle === 'dashed' && !this.isHorizontal,
-                'avonni-progress-bar-reference-line-border-vertical-style_solid':
+                'reference-line__badge-border-vertical-style_solid':
                     this._borderStyle === 'solid' && !this.isHorizontal,
-                'avonni-progress-bar-reference-line-border-vertical-style_dotted':
+                'reference-line__badge-border-vertical-style_dotted':
                     this._borderStyle === 'dotted' && !this.isHorizontal
             })
             .add({
-                'avonni-progress-bar-reference-line-border-thickness-vertical_x-small':
+                'reference-line__badge-border-thickness-vertical_x-small':
                     this.thickness === 'x-small' && !this.isHorizontal,
-                'avonni-progress-bar-reference-line-border-thickness-vertical_small':
+                'reference-line__badge-border-thickness-vertical_small':
                     this.thickness === 'small' && !this.isHorizontal,
-                'avonni-progress-bar-reference-line-border-thickness-vertical_large':
+                'reference-line__badge-border-thickness-vertical_large':
                     this.thickness === 'large' && !this.isHorizontal
             })
             .add({
-                'avonni-progress-bar-reference-line-border-vertical-color_inverse':
+                'reference-line__badge-border-vertical-color_inverse':
                     this._variant === 'inverse',
-                'avonni-progress-bar-reference-line-border-vertical-color_success':
+                'reference-line__badge-border-vertical-color_success':
                     this._variant === 'success',
-                'avonni-progress-bar-reference-line-border-vertical-color_warning':
+                'reference-line__badge-border-vertical-color_warning':
                     this._variant === 'warning',
-                'avonni-progress-bar-reference-line-border-vertical-color_error':
+                'reference-line__badge-border-vertical-color_error':
                     this._variant === 'error',
-                'avonni-progress-bar-reference-line-border-vertical-color_lightest':
+                'reference-line__badge-border-vertical-color_lightest':
                     this._variant === 'lightest'
             })
             .toString();

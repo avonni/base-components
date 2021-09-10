@@ -356,6 +356,35 @@ export default class Datatable extends LightningElement {
     }
 
     /**
+     * Gets a row height.
+     * 
+     * @param {string} rowKeyField The key field value of the row.
+     * @returns {number} The height of the row, in pixels.
+     * @public
+     */
+    @api
+    getRowHeight(rowKeyField) {
+        if (this.primitiveDatatable) {
+             return this.primitiveDatatable.getRowHeight(rowKeyField);
+        }
+        return null;
+    }
+ 
+    /**
+     * Sets the height of a row.
+     * 
+     * @param {string} rowKeyField The key field value of the row.
+     * @param {number} height The new height of the row, in pixels.
+     * @public
+     */
+    @api
+    setRowHeight(rowKeyField, height) {
+        if (this.primitiveDatatable) {
+            this.primitiveDatatable.setRowHeight(rowKeyField, height);
+        }
+    }
+
+    /**
      * Initialization of the bottom datatable used for for summarize.
      */
     bottomTableInitialization() {

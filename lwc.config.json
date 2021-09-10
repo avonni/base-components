@@ -203,6 +203,14 @@
             "path": "src/modules/base/linkToNonSalesforceResource/linkToNonSalesforceResource.js"
         },
         {
+            "name": "c/list",
+            "path": "src/modules/base/list/list.js"
+        },
+        {
+            "name": "c/luxon",
+            "path": "src/modules/base/luxon/luxon.js"
+        },
+        {
             "name": "c/map",
             "path": "src/modules/base/map/map.js"
         },
@@ -307,6 +315,10 @@
             "path": "src/modules/base/primitiveCoordinateItem/primitiveCoordinateItem.js"
         },
         {
+            "name": "c/primitiveDropdownMenu",
+            "path": "src/modules/base/primitiveDropdownMenu/primitiveDropdownMenu.js"
+        },
+        {
             "name": "c/primitiveIcon",
             "path": "src/modules/base/primitiveIcon/primitiveIcon.js"
         },
@@ -315,12 +327,20 @@
             "path": "src/modules/base/primitiveIframe/primitiveIframe.js"
         },
         {
-            "name": "c/primitiveProgressBarReferenceLine",
-            "path": "src/modules/base/primitiveProgressBarReferenceLine/primitiveProgressBarReferenceLine.js"
+            "name": "c/primitiveReferenceLine",
+            "path": "src/modules/base/primitiveReferenceLine/primitiveReferenceLine.js"
         },
         {
             "name": "c/primitiveProgressStep",
             "path": "src/modules/base/primitiveProgressStep/primitiveProgressStep.js"
+        },
+        {
+            "name": "c/primitiveSchedulerEventOccurrence",
+            "path": "src/modules/base/primitiveSchedulerEventOccurrence/primitiveSchedulerEventOccurrence.js"
+        },
+        {
+            "name": "c/primitiveSchedulerHeaderGroup",
+            "path": "src/modules/base/primitiveSchedulerHeaderGroup/primitiveSchedulerHeaderGroup.js"
         },
         {
             "name": "c/primitiveSelect",
@@ -365,6 +385,10 @@
         {
             "name": "c/rating",
             "path": "src/modules/base/rating/rating.js"
+        },
+        {
+            "name": "c/scheduler",
+            "path": "src/modules/base/scheduler/scheduler.js"
         },
         {
             "name": "c/scopedNotification",
@@ -575,6 +599,10 @@
             "path": "src/modules/base/inputToggle/inputToggle.js"
         },
         {
+            "name": "avonni/list",
+            "path": "src/modules/base/list/list.js"
+        },
+        {
             "name": "avonni/map",
             "path": "src/modules/base/map/map.js"
         },
@@ -605,6 +633,10 @@
         {
             "name": "avonni/primitiveIcon",
             "path": "src/modules/base/primitiveIcon/primitiveIcon.js"
+        },
+        {
+            "name": "avonni/primitiveSchedulerHeaderGroup",
+            "path": "src/modules/base/primitiveSchedulerHeaderGroup/primitiveSchedulerHeaderGroup.js"
         },
         {
             "name": "avonni/profileCard",
@@ -641,6 +673,10 @@
         {
             "name": "avonni/rating",
             "path": "src/modules/base/rating/rating.js"
+        },
+        {
+            "name": "avonni/scheduler",
+            "path": "src/modules/base/scheduler/scheduler.js"
         },
         {
             "name": "avonni/scopedNotification",
@@ -740,6 +776,7 @@
         "avonni/inputPen",
         "avonni/inputRichText",
         "avonni/inputToggle",
+        "avonni/list",
         "avonni/map",
         "avonni/mediaObject",
         "avonni/menuItemDialog",
@@ -758,6 +795,7 @@
         "avonni/qrcode",
         "avonni/range",
         "avonni/rating",
+        "avonni/scheduler",
         "avonni/scopedNotification",
         "avonni/separator",
         "avonni/list",
