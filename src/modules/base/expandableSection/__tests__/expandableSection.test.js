@@ -52,7 +52,7 @@ describe('Expandable Section', () => {
         expect(element.title).toBeUndefined();
         expect(element.closed).toBeFalsy();
         expect(element.collapsible).toBeFalsy();
-        expect(element.variant).toBe('base');
+        expect(element.variant).toBe('shaded');
     });
 
     /* ----- ATTRIBUTES ----- */
