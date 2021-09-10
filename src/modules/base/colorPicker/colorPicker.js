@@ -620,19 +620,6 @@ export default class ColorPicker extends LightningElement {
      *
      */
     dispatchClear() {
-        /**
-         * The event fired when the color value changed.
-         *
-         * @event
-         * @public
-         * @name change
-         * @param {string} hex Color in hexadecimal format.
-         * @param {string} hexa Color in hexadecimal format with alpha.
-         * @param {string} rgb Color in rgb format.
-         * @param {string} rgba Color in rgba format.
-         * @param {string} alpha Alpha value of the color.
-         */
-
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {

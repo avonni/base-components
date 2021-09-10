@@ -24,11 +24,6 @@
  */
 /**
  * @memberof examples
- * @name base
- * @storyId example-visualpickerlink--base
- */
-/**
- * @memberof examples
  * @name iconPositionLeft
  * @storyId example-visualpickerlink--icon-position-left
  */

@@ -49,11 +49,6 @@
  */
 /**
  * @memberof examples
- * @name full
- * @storyId example-panel--full
- */
-/**
- * @memberof examples
  * @name panelButtons
  * @storyId example-panel--panel-buttons
  */
