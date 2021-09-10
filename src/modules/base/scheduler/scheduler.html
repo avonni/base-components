@@ -264,7 +264,9 @@
         size="small"
         onclosedialog={handleCloseRecurrenceDialog}
     >
-        <p class="slds-m-bottom_medium">{dialogLabels.editRecurrent}</p>
+        <p class="slds-m-bottom_medium slds-text-align_center">
+            {dialogLabels.editRecurrent}
+        </p>
         <div slot="footer">
             <lightning-button
                 class="slds-m-right_xx-small"
@@ -297,7 +299,9 @@
         size="small"
         onclosedialog={handleCloseDeleteConfirmationDialog}
     >
-        <p class="slds-m-bottom_medium">{dialogLabels.deleteMessage}</p>
+        <p class="slds-m-bottom_medium slds-text-align_center">
+            {dialogLabels.deleteMessage}
+        </p>
         <div slot="footer">
             <lightning-button
                 class="slds-m-right_xx-small"
@@ -357,35 +361,34 @@
             ></c-combobox>
         </div>
         <div slot="footer" class="slds-text-align_right">
-            <lightning-button-group>
-                <lightning-button
-                    label={dialogLabels.cancelButton}
-                    onclick={handleCloseEditDialog}
-                ></lightning-button>
-                <lightning-button
-                    if:false={showRecurrenceSaveOptions}
-                    label={dialogLabels.saveButton}
-                    variant="brand"
-                    onclick={handleSaveEvent}
-                    onkeydown={handleEditSaveKeyDown}
-                ></lightning-button>
-                <lightning-button-menu
-                    if:true={showRecurrenceSaveOptions}
-                    label={dialogLabels.saveButton}
-                    menu-alignment="bottom-right"
-                    onselect={handleSaveEvent}
-                    onkeydown={handleEditSaveKeyDown}
-                >
-                    <lightning-menu-item
-                        value="one"
-                        label={dialogLabels.saveOneRecurrent}
-                    ></lightning-menu-item>
-                    <lightning-menu-item
-                        value="all"
-                        label={dialogLabels.saveAllRecurrent}
-                    ></lightning-menu-item>
-                </lightning-button-menu>
-            </lightning-button-group>
+            <lightning-button
+                class="slds-m-right_xx-small"
+                label={dialogLabels.cancelButton}
+                onclick={handleCloseEditDialog}
+            ></lightning-button>
+            <lightning-button
+                if:false={showRecurrenceSaveOptions}
+                label={dialogLabels.saveButton}
+                variant="brand"
+                onclick={handleSaveEvent}
+                onkeydown={handleEditSaveKeyDown}
+            ></lightning-button>
+            <lightning-button-menu
+                if:true={showRecurrenceSaveOptions}
+                label={dialogLabels.saveButton}
+                menu-alignment="bottom-right"
+                onselect={handleSaveEvent}
+                onkeydown={handleEditSaveKeyDown}
+            >
+                <lightning-menu-item
+                    value="one"
+                    label={dialogLabels.saveOneRecurrent}
+                ></lightning-menu-item>
+                <lightning-menu-item
+                    value="all"
+                    label={dialogLabels.saveAllRecurrent}
+                ></lightning-menu-item>
+            </lightning-button-menu>
         </div>
     </c-dialog>
 </template>
