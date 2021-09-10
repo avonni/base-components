@@ -404,6 +404,15 @@ export default class PrimitiveDatatable extends LightningDatatable {
     }
 
     @api
+    get showRowNumberColumn() {
+        return super.showRowNumberColumn;
+    }
+
+    set showRowNumberColumn(value) {
+        super.showRowNumberColumn = normalizeBoolean(value);
+    }
+
+    @api
     get hideTableHeader() {
         return super.hideTableHeader;
     }
@@ -590,7 +599,7 @@ export default class PrimitiveDatatable extends LightningDatatable {
         const columnsEditable = this.columns.map((column) => {
             return column.editable;
         });
-        return columnsEditable.filter(Boolean).length;
+        return columnsEditable.filter(Boolean).length > 0;
     }
 
     /**

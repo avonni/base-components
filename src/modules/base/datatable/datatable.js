@@ -760,6 +760,36 @@ export default class Datatable extends LightningElement {
         }
     }
 
+    get minimumColumnWidth() {
+        let width = [];
+        if (
+            this.showRowNumberColumn ||
+            this.template
+                .querySelector('c-primitive-datatable')
+                .isDatatableEditable()
+        ) {
+            width.push(52);
+        }
+        if (!this.hideCheckboxColumn) {
+            width.push(32);
+        }
+        this._columns.forEach((column) => {
+            if (column.fixedWith) {
+                width.push(column.fixedWith);
+            }
+            if (column.initialWidth) {
+                width.push(column.initialWidth);
+            }
+            if (
+                column.fixedWith === undefined &&
+                column.initialWidth === undefined
+            ) {
+                width.push(this.minColumnWidth);
+            }
+        });
+        return width.reduce((a, b) => a + b);
+    }
+
     updateInnerContainerWidth() {
         const containerWidth = this.template.querySelector(
             '.avonni-datatable__outer_container'
@@ -780,16 +810,17 @@ export default class Datatable extends LightningElement {
         const containerWidth = this.template.querySelector(
             '.avonni-datatable__outer_container'
         ).offsetWidth;
-
+        console.log(this.minimumColumnWidth);
         if (
             this.tableWidth > containerWidth &&
-            this.windowSize > containerWidth
+            this.windowSize > containerWidth &&
+            containerWidth <= this.minimumColumnWidth &&
+            this.tableWidth <= this.minimumColumnWidth
         ) {
-            console.log(this.headerDatatable.tableWidth());
             this.innerContainer.style.width = this.tableWidth + 'px';
+        } else {
+            this.innerContainer.style.width = containerWidth + 'px';
         }
-        this.innerContainer.style.width = containerWidth + 'px';
-
         this.windowSizing = false;
     }
 
