@@ -82,6 +82,7 @@ describe('Input choice set', () => {
         expect(element.name).toBeUndefined();
         expect(element.options).toBeUndefined();
         expect(element.orientation).toBe('vertical');
+        expect(element.readOnly).toBeFalsy();
         expect(element.required).toBeFalsy();
         expect(element.validity).toMatchObject({});
         expect(element.value).toMatchObject([]);
@@ -258,6 +259,28 @@ describe('Input choice set', () => {
                     element.options[index++].value
                 );
             });
+        });
+    });
+
+    // readOnly
+    it('Input choice set readOnly', () => {
+        const element = createElement('base-input-choice-set', {
+            is: InputChoiceSet
+        });
+        document.body.appendChild(element);
+
+        element.options = options;
+        element.readOnly = true;
+        element.value = options[0].value;
+
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        return Promise.resolve().then(() => {
+            const input = element.shadowRoot.querySelector('input');
+            input.click();
+            expect(handler).not.toHaveBeenCalled();
+            expect(element.value).toBe(options[0].value);
         });
     });
 
