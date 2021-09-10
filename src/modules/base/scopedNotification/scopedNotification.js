@@ -84,7 +84,7 @@ export default class ScopedNotification extends LightningElement {
     }
 
     /**
-     * The variant changes the look of the scoped notification. Valid values include base, light, dark, warning, error, success.
+     * The variant changes the look of the scoped notification. Valid values include base, dark, warning, error, success.
      *
      * @type {string}
      * @public
