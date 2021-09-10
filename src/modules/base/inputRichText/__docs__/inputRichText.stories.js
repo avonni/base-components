@@ -70,6 +70,17 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        readOnly: {
+            name: 'read-only',
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         messageWhenBadInput: {
             name: 'message-when-bad-input',
             control: {

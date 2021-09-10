@@ -44,6 +44,7 @@ export const InputRichText = ({
     labelVisible,
     messageWhenBadInput,
     placeholder,
+    readOnly,
     shareWithEntityId,
     value,
     variant,
@@ -57,6 +58,7 @@ export const InputRichText = ({
     element.labelVisible = labelVisible;
     element.messageWhenBadInput = messageWhenBadInput;
     element.placeholder = placeholder;
+    element.readOnly = readOnly;
     element.shareWithEntityId = shareWithEntityId;
     element.value = value;
     element.variant = variant;

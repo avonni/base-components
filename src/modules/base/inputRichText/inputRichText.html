@@ -42,11 +42,12 @@
     >
         <template if:true={isBottomToolbar}>
             <div
+                if:false={readOnly}
                 class="slds-rich-text-editor__textarea slds-grid editor"
                 lwc:dom="manual"
             ></div>
             <div
-                if:true={quillNotReady}
+                if:true={showFakeEditor}
                 class="slds-rich-text-editor__textarea slds-grid"
             >
                 <div
@@ -172,11 +173,12 @@
         </div>
         <template if:false={isBottomToolbar}>
             <div
+                if:false={readOnly}
                 class="slds-rich-text-editor__textarea slds-grid editor"
                 lwc:dom="manual"
             ></div>
             <div
-                if:true={quillNotReady}
+                if:true={showFakeEditor}
                 class="slds-rich-text-editor__textarea slds-grid"
             >
                 <div
