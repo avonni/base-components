@@ -37,10 +37,11 @@ customElements.define(
     Component.CustomElementConstructor
 );
 
-export const ExpandableSection = ({ title, closed, collapsible }) => {
+export const ExpandableSection = ({ title, closed, collapsible, variant }) => {
     const element = document.createElement('ac-base-expandable-section');
     element.title = title;
     element.closed = closed;
     element.collapsible = collapsible;
+    element.variant = variant;
     return element;
 };
