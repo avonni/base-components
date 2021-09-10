@@ -493,9 +493,13 @@ export default class Datatable extends LightningElement {
         });
 
         window.addEventListener('resize', () => {
-            if (this.allowSummarize || this.hasGroupBy) {
+            if (this.allowSummarize && !this.hasGroupBy) {
                 this.datatableColumnsWidth();
                 this.updateInnerContainerWidth();
+            }
+            if (this.hasGroupBy) {
+                this.datatableColumnsWidth();
+                this.updateInnerContainerWidthWithGroupBy();
             }
         });
     }
@@ -760,18 +764,31 @@ export default class Datatable extends LightningElement {
         const containerWidth = this.template.querySelector(
             '.avonni-datatable__outer_container'
         ).offsetWidth;
-        if (this.allowSummarize && !this.hasGroupBy) {
-            if (
-                this.tableWidth > containerWidth &&
-                this.windowSize > containerWidth
-            ) {
-                this.innerContainer.style.width = this.tableWidth + 'px';
-            }
-            this.innerContainer.style.width = containerWidth + 'px';
+
+        if (
+            this.tableWidth > containerWidth &&
+            this.windowSize > containerWidth
+        ) {
+            this.innerContainer.style.width = this.tableWidth + 'px';
         }
-        if (this.hasGroupBy) {
-            this.innerContainer.style.width = containerWidth + 'px';
+        this.innerContainer.style.width = containerWidth + 'px';
+
+        this.windowSizing = false;
+    }
+
+    updateInnerContainerWidthWithGroupBy() {
+        const containerWidth = this.template.querySelector(
+            '.avonni-datatable__outer_container'
+        ).offsetWidth;
+
+        if (
+            this.tableWidth > containerWidth &&
+            this.windowSize > containerWidth
+        ) {
+            console.log(this.headerDatatable.tableWidth());
+            this.innerContainer.style.width = this.tableWidth + 'px';
         }
+        this.innerContainer.style.width = containerWidth + 'px';
 
         this.windowSizing = false;
     }

@@ -656,12 +656,6 @@ export default class PrimitiveDatatable extends LightningDatatable {
             }
         }
 
-        if (this.groupedDatatables) {
-            this.groupedDatatables.forEach((datatable) => {
-                datatable.style.overflowX = 'hidden';
-            });
-        }
-
         if (this.headerDatatable) {
             this.headerDatatable.style.overflowX = 'hidden';
         }
