@@ -44,6 +44,7 @@ export const InputChoiceSet = ({
     messageWhenValueMissing,
     options,
     orientation,
+    readOnly,
     required,
     isMultiSelect,
     value,
@@ -56,6 +57,7 @@ export const InputChoiceSet = ({
     element.orientation = orientation;
     element.messageWhenValueMissing = messageWhenValueMissing;
     element.options = options;
+    element.readOnly = readOnly;
     element.required = required;
     element.isMultiSelect = isMultiSelect;
     element.value = value;
