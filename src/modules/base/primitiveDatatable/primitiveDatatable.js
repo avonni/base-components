@@ -404,15 +404,6 @@ export default class PrimitiveDatatable extends LightningDatatable {
     }
 
     @api
-    get showRowNumberColumn() {
-        return super.showRowNumberColumn;
-    }
-
-    set showRowNumberColumn(value) {
-        super.showRowNumberColumn = normalizeBoolean(value);
-    }
-
-    @api
     get hideTableHeader() {
         return super.hideTableHeader;
     }
@@ -565,7 +556,7 @@ export default class PrimitiveDatatable extends LightningDatatable {
      */
     @api
     columnsWidthCalculation() {
-        let arr = [];
+        let widthArray = [];
         if (this.hideTableHeader) {
             // when hide-table-header is true, all columns widths are equal.
             const value =
@@ -573,14 +564,14 @@ export default class PrimitiveDatatable extends LightningDatatable {
                 super.widthsData.columnWidths.length;
             const length = super.widthsData.columnWidths.length;
             for (let i = 0; i < length; i++) {
-                arr.push(value);
+                widthArray.push(value);
             }
         } else {
-            arr = JSON.parse(
+            widthArray = JSON.parse(
                 JSON.stringify(normalizeArray(super.widthsData.columnWidths))
             );
         }
-        return arr;
+        return widthArray;
     }
 
     /**
@@ -660,9 +651,7 @@ export default class PrimitiveDatatable extends LightningDatatable {
      */
     unscrollableDatatables() {
         if (this.ungroupedDatatable) {
-            if (this.allowSummarize) {
-                this.ungroupedDatatable.style.overflowX = 'hidden';
-            }
+            this.ungroupedDatatable.style.overflowX = 'hidden';
         }
 
         if (this.headerDatatable) {
