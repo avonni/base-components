@@ -9,6 +9,7 @@ export default class InputRichText extends LightningElement {
     @api variant;
     @api messageWhenBadInput;
     @api customButtons;
+    @api readOnly;
     @api shareWithEntityId;
     @api isPublisher;
     @api value;
