@@ -54,6 +54,7 @@ describe('InputRichText', () => {
         expect(element.labelVisible).toBeFalsy();
         expect(element.messageWhenBadInput).toBeUndefined();
         expect(element.placeholder).toBeUndefined();
+        expect(element.readOnly).toBeFalsy();
         expect(element.shareWithEntityId).toBeUndefined();
         expect(element.valid).toBeTruthy();
         expect(element.value).toBeUndefined();
@@ -279,6 +280,28 @@ describe('InputRichText', () => {
                 '.input-rich-text-placeholder'
             );
             expect(placeholder.textContent).toBe('A string placeholder');
+        });
+    });
+
+    // readOnly
+    it('readOnly', () => {
+        const element = createElement('base-input-rich-text', {
+            is: InputRichText
+        });
+        document.body.appendChild(element);
+
+        element.readOnly = true;
+        element.value = 'Some value';
+
+        return Promise.resolve().then(() => {
+            const quillEditor = element.shadowRoot.querySelector('.editor');
+            expect(quillEditor).toBeFalsy();
+
+            const fakeEditor = element.shadowRoot.querySelector(
+                'lightning-formatted-rich-text'
+            );
+            expect(fakeEditor).toBeTruthy();
+            expect(fakeEditor.value).toBe('Some value');
         });
     });
 
