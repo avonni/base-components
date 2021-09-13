@@ -509,9 +509,7 @@ export default class List extends LightningElement {
         this._draggedElement = event.currentTarget;
         this._currentItemDraggedHeight = this._draggedElement.offsetHeight;
         this._draggedIndex = Number(this._draggedElement.dataset.index);
-        this._draggedElement.classList.add(
-            'avonni-list__item-sortable_dragged'
-        );
+
         if (event.type !== 'keydown') {
             this.initPositions(event);
         } else {
@@ -535,7 +533,9 @@ export default class List extends LightningElement {
      */
     drag(event) {
         if (!this._draggedElement) return;
-        this._draggedElement.classList.add('sortable-item_dragged');
+        this._draggedElement.classList.add(
+            'avonni-list__item-sortable_dragged'
+        );
 
         // Deny itemclick event dispatch on drag
         this.denyItemClick = true;
