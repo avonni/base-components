@@ -846,9 +846,14 @@ export default class Datatable extends LightningElement {
                 ).style.paddingBottom = '33px';
             }
         } else if (this.hasGroupBy) {
-            this.template.querySelector(
-                '.avonni-datatable__inner_container.slds-scrollable_y'
-            ).style.paddingBottom = '33px';
+            const groupByItemsHeight = this.template
+                .querySelector('c-primitive-group-by-item')
+                .getGroupByItemsHeight();
+            if (outerContainerHeight < groupByItemsHeight) {
+                this.template.querySelector(
+                    '.avonni-datatable__inner_container.slds-scrollable_y'
+                ).style.paddingBottom = '33px';
+            }
         }
     }
 
