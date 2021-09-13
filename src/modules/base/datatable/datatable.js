@@ -850,7 +850,7 @@ export default class Datatable extends LightningElement {
             column.hideDefaultActions = true;
         });
     }
-    
+
     /**
      * Gets a row height.
      *
@@ -860,8 +860,8 @@ export default class Datatable extends LightningElement {
      */
     @api
     getRowHeight(rowKeyField) {
-        if (this.primitiveDatatable) {
-            return this.primitiveDatatable.getRowHeight(rowKeyField);
+        if (this.ungroupedDatatable) {
+            return this.ungroupedDatatable.getRowHeight(rowKeyField);
         }
         return null;
     }
@@ -875,8 +875,8 @@ export default class Datatable extends LightningElement {
      */
     @api
     setRowHeight(rowKeyField, height) {
-        if (this.primitiveDatatable) {
-            this.primitiveDatatable.setRowHeight(rowKeyField, height);
+        if (this.ungroupedDatatable) {
+            this.ungroupedDatatable.setRowHeight(rowKeyField, height);
         }
     }
 
