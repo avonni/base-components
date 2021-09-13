@@ -112,6 +112,19 @@ export default {
                 type: { summary: 'boolean' }
             }
         },
+        readOnly: {
+            name: 'read-only',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the input field is read-only and cannot be edited by users.',
+            defaultValue: 0,
+            table: {
+                defaultValue: { summary: false },
+                type: { summary: 'boolean' }
+            }
+        },
         required: {
             control: {
                 type: 'boolean'
@@ -159,7 +172,8 @@ export default {
     },
     args: {
         disabled: false,
-        required: false
+        required: false,
+        readOnly: false
     }
 };
 

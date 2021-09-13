@@ -602,6 +602,47 @@ export default class PrimitiveDatatable extends LightningDatatable {
     }
 
     /**
+     * Gets a row height.
+     *
+     * @param {string} rowKeyField The key field value of the row.
+     * @returns {number} The height of the row, in pixels.
+     * @public
+     */
+    @api
+    getRowHeight(rowKeyField) {
+        const row = this.template.querySelector(
+            `tr[data-row-key-value="${rowKeyField}"]`
+        );
+
+        if (row) {
+            if (rowKeyField === this.data[0][this.keyField]) {
+                // The first row has one pixel more because of the border
+                return row.offsetHeight + 1;
+            }
+            return row.offsetHeight;
+        }
+        return null;
+    }
+
+    /**
+     * Sets the height of a row.
+     *
+     * @param {string} rowKeyField The key field value of the row.
+     * @param {number} height The new height of the row, in pixels.
+     * @public
+     */
+    @api
+    setRowHeight(rowKeyField, height) {
+        const row = this.template.querySelector(
+            `tr[data-row-key-value="${rowKeyField}"]`
+        );
+
+        if (row) {
+            row.style.height = height ? `${height}px` : undefined;
+        }
+    }
+
+    /**
      * Hides the visibility and padding of each c-primitive-datatables in groups.
      */
     hideTableHeaderPadding() {

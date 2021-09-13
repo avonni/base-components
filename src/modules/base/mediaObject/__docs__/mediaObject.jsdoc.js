@@ -44,11 +44,11 @@
  */
 /**
  * @memberof examples
- * @name base
+ * @name endLarge
  * @storyId example-media-object--end-large
  */
 /**
  * @memberof examples
- * @name base
+ * @name inLine
  * @storyId example-media-object--in-line
  */

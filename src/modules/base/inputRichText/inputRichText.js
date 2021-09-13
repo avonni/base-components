@@ -168,6 +168,7 @@ export default class InputRichText extends LightningElement {
     * @public
     */
     @api label;
+
     /**
     * If present, the label on the rich text editor is visible.
     *
@@ -176,6 +177,7 @@ export default class InputRichText extends LightningElement {
     * @default false
     */
     @api labelVisible = false;
+
     /**
     * Text that is displayed when the field is empty, to prompt the user for a valid entry.
     *
@@ -183,6 +185,7 @@ export default class InputRichText extends LightningElement {
     * @public
     */
     @api placeholder;
+
     /**
     * A comma-separated list of button categories to remove from the toolbar.
     *
@@ -190,6 +193,7 @@ export default class InputRichText extends LightningElement {
     * @public
     */
     @api disabledCategories = '';
+
     /**
     * A list of allowed formats. By default, the list is computed based on enabled categories.
     * The 'table' format is always enabled to support copying and pasting of tables if formats are not provided.
@@ -198,6 +202,7 @@ export default class InputRichText extends LightningElement {
     * @public
     */
     @api formats = '';
+
     /**
     * The variant changes the appearance of the toolbar. Accepted variant is bottom-toolbar which causes
     * the toolbar to be displayed below the text box.
@@ -207,6 +212,7 @@ export default class InputRichText extends LightningElement {
     * @default top-toolbar
     */
     @api variant = DEFAULT_VARIANT;
+    
     /**
     * Error message to be displayed when invalid input is detected.
     *
@@ -214,6 +220,7 @@ export default class InputRichText extends LightningElement {
     * @public
     */
     @api messageWhenBadInput;
+
     /**
     * Custom buttons to add to the toolbar.
     * 
@@ -221,6 +228,7 @@ export default class InputRichText extends LightningElement {
     * @public
     */
     @api customButtons;
+
     /**
     * Entity ID to share the image with.
     *
@@ -228,6 +236,7 @@ export default class InputRichText extends LightningElement {
     * @public
     */
     @api shareWithEntityId;
+
     /**
     * Check if editor is in Publisher category.
     *
@@ -239,6 +248,7 @@ export default class InputRichText extends LightningElement {
 
     _valid = true;
     _disabled = false;
+    _readOnly = false;
     linkPanelOpen = false;
     queueLinkPanelOpen = false;
     selectedFontValue = DEFAULT_FONT;
@@ -286,9 +296,10 @@ export default class InputRichText extends LightningElement {
     }
 
    /**
-   * Specifies whether the editor content is valid. If invalid, the slds-has-error class is added. This value defaults to true.
+   * Represent the validity state the editor can be in, with respect to constraint validation.
    *
    * @type {boolean}
+   * @default true
    * @public
    */
     @api
@@ -319,6 +330,7 @@ export default class InputRichText extends LightningElement {
     * If present, the editor is disabled and users cannot interact with it.
     *
     * @type {boolean}
+    * @default false
     * @public
     */
     @api
@@ -328,6 +340,22 @@ export default class InputRichText extends LightningElement {
 
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
+    }
+
+    /**
+    * If present, the editor is read-only and cannot be edited by users.
+    *
+    * @type {boolean}
+    * @default false
+    * @public
+    */
+    @api
+    get readOnly() {
+        return this._readOnly;
+    }
+
+    set readOnly(value) {
+        this._readOnly = normalizeBoolean(value);
     }
 
     /**
@@ -485,6 +513,10 @@ export default class InputRichText extends LightningElement {
     get errorMessageId() {
         const element = this.template.querySelector('[data-error-message]');
         return getRealDOMId(element);
+    }
+
+    get showFakeEditor() {
+        return this.quillNotReady || this.readOnly;
     }
 
     /**
@@ -1212,6 +1244,8 @@ export default class InputRichText extends LightningElement {
      * @param {Event} event 
      */
     activateEditor(event) {
+        if (this.readOnly) return;
+
         if (this.initialRender) {
             this.setupToolbar();
             this.setupButtons();
@@ -1563,6 +1597,8 @@ export default class InputRichText extends LightningElement {
      */
     selectFont(event) {
         event.stopPropagation();
+        if (this.readOnly) return;
+
         const value = event.detail.value;
 
         let font = value;
@@ -1586,6 +1622,7 @@ export default class InputRichText extends LightningElement {
      */
     selectSize(event) {
         event.stopPropagation();
+        if (this.readOnly) return;
 
         const value = event.detail.value;
         const quill = this.quill;

@@ -55,16 +55,6 @@
  */
 /**
  * @memberof examples
- * @name baseWithAvatar
- * @storyId example-dual-listbox--base-with-avatar
- */
-/**
- * @memberof examples
- * @name baseWithAvatar
- * @storyId example-dual-listbox--base-with-avatar
- */
-/**
- * @memberof examples
  * @name baseWithAvatarReorderingDisabled
  * @storyId example-dual-listbox--base-with-avatar-reordering-disabled
  */

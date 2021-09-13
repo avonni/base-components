@@ -122,53 +122,15 @@ describe('ScopedNotification', () => {
                 '.slds-scoped-notification'
             );
 
-            expect(wrapper.classList).not.toContain(
-                'slds-scoped-notification_light'
-            );
-            expect(wrapper.classList).not.toContain(
-                'slds-scoped-notification_dark'
-            );
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_warning'
-            );
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_error'
-            );
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_success'
-            );
-        });
-    });
-
-    it('variant = light', () => {
-        const element = createElement('base-scoped-notification', {
-            is: ScopedNotification
-        });
-
-        document.body.appendChild(element);
-
-        element.variant = 'light';
-
-        return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector(
-                '.slds-scoped-notification'
-            );
-
             expect(wrapper.classList).toContain(
                 'slds-scoped-notification_light'
             );
             expect(wrapper.classList).not.toContain(
                 'slds-scoped-notification_dark'
             );
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_warning'
-            );
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_error'
-            );
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_success'
-            );
+            expect(wrapper.classList).not.toContain('slds-theme_warning');
+            expect(wrapper.classList).not.toContain('slds-theme_error');
+            expect(wrapper.classList).not.toContain('slds-theme_success');
         });
     });
 
@@ -194,15 +156,9 @@ describe('ScopedNotification', () => {
             expect(wrapper.classList).toContain(
                 'slds-scoped-notification_dark'
             );
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_warning'
-            );
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_error'
-            );
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_success'
-            );
+            expect(wrapper.classList).not.toContain('slds-theme_warning');
+            expect(wrapper.classList).not.toContain('slds-theme_error');
+            expect(wrapper.classList).not.toContain('slds-theme_success');
             expect(icon.variant).toBe('inverse');
         });
     });
@@ -221,7 +177,6 @@ describe('ScopedNotification', () => {
             const wrapper = element.shadowRoot.querySelector(
                 '.slds-scoped-notification'
             );
-            const icon = element.shadowRoot.querySelector('lightning-icon');
 
             expect(wrapper.classList).not.toContain(
                 'slds-scoped-notification_light'
@@ -229,16 +184,9 @@ describe('ScopedNotification', () => {
             expect(wrapper.classList).not.toContain(
                 'slds-scoped-notification_dark'
             );
-            expect(wrapper.classList).toContain(
-                'avonni-scoped-notification_warning'
-            );
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_error'
-            );
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_success'
-            );
-            expect(icon.variant).toBe('warning');
+            expect(wrapper.classList).toContain('slds-theme_warning');
+            expect(wrapper.classList).not.toContain('slds-theme_error');
+            expect(wrapper.classList).not.toContain('slds-theme_success');
         });
     });
 
@@ -264,16 +212,10 @@ describe('ScopedNotification', () => {
             expect(wrapper.classList).not.toContain(
                 'slds-scoped-notification_dark'
             );
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_warning'
-            );
-            expect(wrapper.classList).toContain(
-                'avonni-scoped-notification_error'
-            );
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_success'
-            );
-            expect(icon.variant).toBe('error');
+            expect(wrapper.classList).not.toContain('slds-theme_warning');
+            expect(wrapper.classList).toContain('slds-theme_error');
+            expect(wrapper.classList).not.toContain('slds-theme_success');
+            expect(icon.variant).toBe('inverse');
         });
     });
 
@@ -299,16 +241,10 @@ describe('ScopedNotification', () => {
             expect(wrapper.classList).not.toContain(
                 'slds-scoped-notification_dark'
             );
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_warning'
-            );
-            expect(wrapper.classList).not.toContain(
-                'avonni-scoped-notification_error'
-            );
-            expect(wrapper.classList).toContain(
-                'avonni-scoped-notification_success'
-            );
-            expect(icon.variant).toBe('success');
+            expect(wrapper.classList).not.toContain('slds-theme_warning');
+            expect(wrapper.classList).not.toContain('slds-theme_error');
+            expect(wrapper.classList).toContain('slds-theme_success');
+            expect(icon.variant).toBe('inverse');
         });
     });
 });

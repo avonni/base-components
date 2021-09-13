@@ -77,7 +77,7 @@ const TYPES = { valid: ['base', 'list'], default: 'base' };
 /**
  * @class
  * @descriptor avonni-color-palette
- * @storyId example-color-gradient--base
+ * @storyId example-color-palette--base
  * @public
  */
 export default class ColorPalette extends LightningElement {

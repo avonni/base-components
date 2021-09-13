@@ -30,160 +30,156 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.avonni-progress-bar-reference-line {
+.reference-line__badge {
     border-radius: 0.35rem;
     font-size: 0.55rem;
     padding: 0.1rem 0.4rem;
+    height: var(--avonni-reference-line-badge-height);
 }
 
-.avonni-progress-bar-marker {
-    height: 20px;
+.reference-line__line {
+    height: var(--avonni-reference-line-height, 20px);
     position: absolute;
-    bottom: -12px;
+    top: 0;
 }
 
-.avonni-progress-bar-marker > div {
+.reference-line__line > .reference-line__badge {
     position: absolute;
-    bottom: -10px;
-    right: 12px;
-    transform: translateX(100%);
+    top: var(--avonni-reference-line-badge-position-top);
+    bottom: var(--avonni-reference-line-badge-position-bottom, -10px);
+    left: var(--avonni-reference-line-badge-position-left);
+    right: var(--avonni-reference-line-badge-position-right, 0);
+    transform: var(--avonni-reference-line-badge-transform, translateX(50%));
 }
 
-.avonni-progress-bar-reference-line_inverse {
+.reference-line__badge_inverse {
     background-color: #706e6b;
     color: #fff;
 }
 
-.avonni-progress-bar-reference-line_lightest {
+.reference-line__badge_lightest {
     background-color: #fff;
     border-color: #dddbda;
     border: none;
 }
 
-.avonni-progress-bar-reference-line_success {
+.reference-line__badge_success {
     color: #fff;
     background-color: #04844b;
 }
 
-.avonni-progress-bar-reference-line_warning {
+.reference-line__badge_warning {
     background-color: #ffb75d;
     color: #080707;
 }
 
-.avonni-progress-bar-reference-line_error {
+.reference-line__badge_error {
     color: #fff;
     background-color: #c23934;
 }
 
-.avonni-progress-bar-reference-line-border-thickness_large {
+.reference-line__badge-border-thickness_large {
     height: 24px;
 }
 
-.avonni-progress-bar-reference-line-border-thickness_small {
+.reference-line__badge-border-thickness_small {
     height: 16px;
 }
 
-.avonni-progress-bar-reference-line-border-thickness_x-small {
+.reference-line__badge-border-thickness_x-small {
     height: 14px;
 }
 
-.avonni-progress-bar-reference-line-border-style_dashed {
+.reference-line__badge-border-style_dashed {
     border-right: 2px dashed #ecebea;
 }
 
-.avonni-progress-bar-reference-line-border-style_solid {
+.reference-line__badge-border-style_solid {
     border-right: 2px solid #ecebea;
 }
 
-.avonni-progress-bar-reference-line-border-style_dotted {
+.reference-line__badge-border-style_dotted {
     border-right: 2px dotted #ecebea;
 }
 
-.avonni-progress-bar-reference-line-border-color_inverse {
+.reference-line__badge-border-color_inverse {
     border-right-color: #706e6b;
 }
 
-.avonni-progress-bar-reference-line-border-color_success {
+.reference-line__badge-border-color_success {
     border-right-color: #04844b;
 }
 
-.avonni-progress-bar-reference-line-border-color_warning {
+.reference-line__badge-border-color_warning {
     border-right-color: var(--lwc-colorBorderWarning, #ffb75d);
 }
 
-.avonni-progress-bar-reference-line-border-color_error {
+.reference-line__badge-border-color_error {
     border-right-color: var(--lwc-colorBorderError, #c23934);
 }
 
-.avonni-progress-bar-reference-line-border-color_lightest {
+.reference-line__badge-border-color_lightest {
     border-right-color: #ffffff;
 }
 
-.avonni-progress-bar-marker-vertical {
+.reference-line__line-vertical {
     position: absolute;
     width: 20px;
 }
 
-.avonni-progress-bar-marker-vertical > div {
-    position: absolute;
-    bottom: 10px;
-    left: 18px;
-    transform: translateY(100%);
-}
-
-.avonni-progress-bar-marker-vertical {
+.reference-line__line-vertical {
     position: absolute;
     width: 20px;
     left: -8px;
 }
 
-.avonni-progress-bar-marker-vertical > div {
+.reference-line__line-vertical > .reference-line__badge {
     position: absolute;
-    bottom: 10px;
+    bottom: 0;
     left: 18px;
-    transform: translateY(100%);
+    transform: translateY(50%);
 }
 
-.avonni-progress-bar-reference-line-border-thickness-vertical_x-small {
+.reference-line__badge-border-thickness-vertical_x-small {
     left: -1px;
 }
 
-.avonni-progress-bar-reference-line-border-thickness-vertical_small {
+.reference-line__badge-border-thickness-vertical_small {
     left: -4px;
 }
 
-.avonni-progress-bar-reference-line-border-thickness-vertical_large {
+.reference-line__badge-border-thickness-vertical_large {
     left: -11px;
 }
 
-.avonni-progress-bar-reference-line-border-vertical-style_dashed {
+.reference-line__badge-border-vertical-style_dashed {
     border-bottom: 2px dashed #ecebea;
 }
 
-.avonni-progress-bar-reference-line-border-vertical-style_solid {
+.reference-line__badge-border-vertical-style_solid {
     border-bottom: 2px solid #ecebea;
 }
 
-.avonni-progress-bar-reference-line-border-vertical-style_dotted {
+.reference-line__badge-border-vertical-style_dotted {
     border-bottom: 2px dotted #ecebea;
 }
 
-.avonni-progress-bar-reference-line-border-vertical-color_inverse {
+.reference-line__badge-border-vertical-color_inverse {
     border-bottom-color: #706e6b;
 }
 
-.avonni-progress-bar-reference-line-border-vertical-color_success {
+.reference-line__badge-border-vertical-color_success {
     border-bottom-color: #027e46;
 }
 
-.avonni-progress-bar-reference-line-border-vertical-color_warning {
+.reference-line__badge-border-vertical-color_warning {
     border-bottom-color: var(--lwc-colorBorderWarning, #ffb75d);
 }
 
-.avonni-progress-bar-reference-line-border-vertical-color_error {
+.reference-line__badge-border-vertical-color_error {
     border-bottom-color: var(--lwc-colorBorderError, #c23934);
 }
 
-.avonni-progress-bar-reference-line-border-vertical-color_lightest {
+.reference-line__badge-border-vertical-color_lightest {
     border-bottom-color: #ffffff;
 }

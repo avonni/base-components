@@ -37,11 +37,6 @@
  */
 /**
  * @memberof examples
- * @name noBorderExtraSmall
- * @storyId example-visualpicker--no-border-extra-small
- */
-/**
- * @memberof examples
  * @name coverableSmall
  * @storyId example-visualpicker--coverable-small
  */

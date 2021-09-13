@@ -33,12 +33,13 @@
 -->
 
 <template>
-    <div class={computedOuterClass} style={computedStyle}>
-        <div>
-            <lightning-badge
-                class={computedBadgeClass}
-                label={label}
-            ></lightning-badge>
-        </div>
-    </div>
+    <c-primitive-reference-line
+        class="avonni-scheduler__reference-line slds-is-absolute"
+        label={title}
+        value="0"
+        variant={theme}
+        oncontextmenu={handleDisabledContextMenu}
+        ondblclick={handleDisabledDoubleClick}
+        onmousedown={handleDisabledMouseDown}
+    ></c-primitive-reference-line>
 </template>
