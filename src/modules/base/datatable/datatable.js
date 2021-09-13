@@ -31,7 +31,6 @@
  */
 
 import { api, LightningElement } from 'lwc';
-import { classSet } from 'c/utils';
 import {
     normalizeArray,
     normalizeBoolean,
@@ -488,6 +487,24 @@ export default class Datatable extends LightningElement {
             this.updateTableWidth();
         });
 
+        this.template.addEventListener('resizecol', (event) => {
+            if (this.ungroupedDatatable) {
+                this.ungroupedDatatable.handleResizeColumn(event);
+            }
+        });
+
+        this.template.addEventListener('selectallrows', (event) => {
+            if (this.ungroupedDatatable) {
+                this.ungroupedDatatable.handleSelectionCellClick(event);
+            }
+        });
+
+        this.template.addEventListener('deselectallrows', (event) => {
+            if (this.ungroupedDatatable) {
+                this.ungroupedDatatable.handleSelectionCellClick(event);
+            }
+        });
+
         window.addEventListener('resize', () => {
             this.updateInnerContainerWidth();
         });
@@ -496,6 +513,7 @@ export default class Datatable extends LightningElement {
     renderedCallback() {
         this.primitiveDraftValues();
         this.updateTableWidth();
+        this.innerContainerPadding();
         if (!this.rendered) {
             this.datatableEditable();
         }
@@ -587,8 +605,8 @@ export default class Datatable extends LightningElement {
      *
      * @type {element}
      */
-    get innerContainer() {
-        return this.template.querySelector(
+    get innerContainers() {
+        return this.template.querySelectorAll(
             '.avonni-datatable__inner_container'
         );
     }
@@ -610,14 +628,8 @@ export default class Datatable extends LightningElement {
      */
     get primitiveColumnsWidth() {
         let columnsWidths = [];
-        if (this.hasGroupBy) {
-            if (this.headerDatatable) {
-                columnsWidths = this.headerDatatable.columnsWidthCalculation();
-            }
-        } else {
-            if (this.ungroupedDatatable) {
-                columnsWidths = this.ungroupedDatatable.columnsWidthCalculation();
-            }
+        if (this.headerDatatable) {
+            columnsWidths = this.headerDatatable.columnsWidthCalculation();
         }
         return columnsWidths;
     }
@@ -736,39 +748,18 @@ export default class Datatable extends LightningElement {
         return width.reduce((a, b) => a + b);
     }
 
-    /**
-     * Computed Outer Container Class styling.
-     *
-     * @type {string}
-     */
-    get computedOuterContainerClass() {
-        return classSet('avonni-datatable__outer_container')
-            .add({
-                'slds-scrollable_x': this.allowSummarize || this.hasGroupBy
-            })
-            .toString();
-    }
-
-    /**
-     * Computed Inner Container Class styling.
-     *
-     * @type {string}
-     */
-    get computedInnerContainerClass() {
-        return classSet('avonni-datatable__inner_container')
-            .add({
-                'slds-scrollable_y': this.allowSummarize || this.hasGroupBy
-            })
-            .toString();
+    get computedColumnWithsMode() {
+        if (this.hasGroupBy) {
+            return 'fixed';
+        }
+        return this._columnWidthsMode;
     }
 
     /**
      * Checks if there is a column editable in the datatable.
      */
     datatableEditable() {
-        this._isDatatableEditable = this.hasGroupBy
-            ? this.headerDatatable.isDatatableEditable()
-            : this.ungroupedDatatable.isDatatableEditable();
+        this._isDatatableEditable = this.headerDatatable.isDatatableEditable();
     }
 
     /**
@@ -785,12 +776,10 @@ export default class Datatable extends LightningElement {
      * Updates the table width base on the width of the primitive datatable on initialization and on resize.
      */
     updateTableWidth() {
-        this.tableWidth = !this.hasGroupBy
-            ? this.ungroupedDatatable.tableWidth()
-            : this.headerDatatable.tableWidth();
-        if (this.allowSummarize || this.hasGroupBy) {
-            this.innerContainer.style.width = this.tableWidth + 'px';
-        }
+        this.tableWidth = this.headerDatatable.tableWidth();
+        this.innerContainers.forEach((container) => {
+            container.style.width = `${this.tableWidth}px`;
+        });
     }
 
     /**
@@ -801,9 +790,13 @@ export default class Datatable extends LightningElement {
             this.tableWidth > this.outerContainerWidth &&
             this._containerSize > this.outerContainerWidth
         ) {
-            this.innerContainer.style.width = this.tableWidth + 'px';
+            this.innerContainers.forEach((container) => {
+                container.style.width = `${this.tableWidth}px`;
+            });
         }
-        this.innerContainer.style.width = this.outerContainerWidth + 'px';
+        this.innerContainers.forEach((container) => {
+            container.style.width = `${this.outerContainerWidth}px`;
+        });
 
         this.windowResized = false;
     }
@@ -812,13 +805,19 @@ export default class Datatable extends LightningElement {
      * Updates the inner container width when there is a group by or summarization table and the columnWidthsMode is fixed.
      */
     updateInnerContainerWidthFixed() {
-        this.innerContainer.style.width =
+        if (
             this.tableWidth > this.outerContainerWidth &&
             this._containerSize > this.outerContainerWidth &&
-            this.outerContainerWidth <= this.minimumColumnWidth &&
-            this.tableWidth <= this.minimumColumnWidth
-                ? this.tableWidth + 'px'
-                : this.outerContainerWidth + 'px';
+            this.outerContainerWidth <= this.minimumColumnWidth
+        ) {
+            this.innerContainers.forEach((container) => {
+                container.style.width = `${this.tableWidth}px`;
+            });
+        } else {
+            this.innerContainers.forEach((container) => {
+                container.style.width = `${this.outerContainerWidth}px`;
+            });
+        }
         this.windowResized = false;
     }
 
@@ -826,18 +825,30 @@ export default class Datatable extends LightningElement {
      * Updates the inner container width.
      */
     updateInnerContainerWidth() {
-        if (
-            !this.hasGroupBy &&
-            this.allowSummarize &&
-            this._columnWidthsMode === 'auto'
-        ) {
+        if (!this.hasGroupBy && this._columnWidthsMode === 'auto') {
             this.updateInnerContainerWidthAuto();
         }
-        if (
-            this.hasGroupBy ||
-            (this._columnWidthsMode === 'fixed' && this.allowSummarize)
-        ) {
+        if (this.hasGroupBy || this._columnWidthsMode === 'fixed') {
             this.updateInnerContainerWidthFixed();
+        }
+    }
+
+    innerContainerPadding() {
+        const outerContainerHeight = this.template.querySelector(
+            '.avonni-datatable__outer_container'
+        ).offsetHeight;
+        if (!this.hasGroupBy) {
+            const ungroupedDatatableHeight = this.ungroupedDatatable
+                .offsetHeight;
+            if (outerContainerHeight < ungroupedDatatableHeight) {
+                this.template.querySelector(
+                    '.avonni-datatable__inner_container.slds-scrollable_y'
+                ).style.paddingBottom = '33px';
+            }
+        } else if (this.hasGroupBy) {
+            this.template.querySelector(
+                '.avonni-datatable__inner_container.slds-scrollable_y'
+            ).style.paddingBottom = '33px';
         }
     }
 

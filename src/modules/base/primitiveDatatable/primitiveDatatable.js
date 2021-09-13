@@ -647,7 +647,11 @@ export default class PrimitiveDatatable extends LightningDatatable {
      */
     hideTableHeaderPadding() {
         const groupedDatatableHeaders = this.template.querySelectorAll(
-            'c-primitive-datatable[data-role="grouped"] .slds-table_header-fixed_container thead'
+            'c-primitive-datatable[data-role="grouped"] thead'
+        );
+
+        const ungroupedDatatableHeader = this.template.querySelector(
+            'c-primitive-datatable[data-role="ungrouped"] thead'
         );
 
         if (this.hideTableHeader) {
@@ -657,6 +661,11 @@ export default class PrimitiveDatatable extends LightningDatatable {
             if (this.headerDatatable) {
                 this.headerDatatable.style.paddingTop = '0px';
             }
+        }
+
+        if (this.ungroupedDatatable) {
+            this.ungroupedDatatable.style.paddingTop = '0px';
+            ungroupedDatatableHeader.style.visibility = 'hidden';
         }
 
         if (this.groupedDatatables) {
@@ -681,14 +690,19 @@ export default class PrimitiveDatatable extends LightningDatatable {
             'c-primitive-datatable[data-role="header"] tbody'
         );
 
+        const headerDatatableOuterContainer = this.template.querySelector(
+            'c-primitive-datatable[data-role="header"] .dt-outer-container'
+        );
+
         if (headerDatatableTable) {
+            headerDatatableOuterContainer.style.height = '';
             headerDatatableTable.style.display = 'none';
             headerDatatableBorder.style.borderBottom = 'none';
         }
     }
 
     /**
-     * Makes the primitive datatable unscrollable to make the container scrollabale.
+     * Makes the primitive datatable unscrollable to make the outer container scrollable.
      */
     unscrollableDatatables() {
         if (this.ungroupedDatatable) {
@@ -712,9 +726,7 @@ export default class PrimitiveDatatable extends LightningDatatable {
     tablesInitialization() {
         this.hideTableHeaderPadding();
         this.headerDatatableStyling();
-        if (this.allowSummarize || this.hasGroupBy) {
-            this.unscrollableDatatables();
-        }
+        this.unscrollableDatatables();
     }
 
     /**
