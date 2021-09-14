@@ -285,7 +285,19 @@ export default class PrimitiveDatatable extends LightningDatatable {
     };
 
     // Normalization of primitive datatable attributes
-    @api hasGroupBy;
+    @api
+    get columns() {
+        return super.columns;
+    }
+
+    set columns(value) {
+        super.columns = value;
+
+        this._columns = JSON.parse(JSON.stringify(this._columns));
+
+        this.removeWrapOption();
+        this.computeEditableOption();
+    }
 
     @api
     get columnWidthsMode() {
@@ -312,25 +324,12 @@ export default class PrimitiveDatatable extends LightningDatatable {
     }
 
     @api
-    get sortedDirection() {
-        return super.sortedDirection;
+    get hideTableHeader() {
+        return super.hideTableHeader;
     }
 
-    set sortedDirection(value) {
-        super.sortedDirection = normalizeString(value, {
-            fallbackValue: SORT_DIRECTIONS.default,
-            validValues: SORT_DIRECTIONS.valid
-        });
-    }
-
-    @api
-    get wrapTextMaxLines() {
-        return super.wrapTextMaxLines;
-    }
-
-    set wrapTextMaxLines(value) {
-        if (value === undefined) return;
-        super.wrapTextMaxLines = value;
+    set hideTableHeader(value) {
+        super.hideTableHeader = normalizeBoolean(value);
     }
 
     @api
@@ -351,6 +350,16 @@ export default class PrimitiveDatatable extends LightningDatatable {
     set maxColumnWidth(value) {
         if (value === undefined) return;
         super.maxColumnWidth = value;
+    }
+
+    @api
+    get maxRowSelection() {
+        return super.maxRowSelection;
+    }
+
+    set maxRowSelection(value) {
+        if (value === undefined) return;
+        super.maxRowSelection = value;
     }
 
     @api
@@ -384,16 +393,6 @@ export default class PrimitiveDatatable extends LightningDatatable {
     }
 
     @api
-    get maxRowSelection() {
-        return super.maxRowSelection;
-    }
-
-    set maxRowSelection(value) {
-        if (value === undefined) return;
-        super.maxRowSelection = value;
-    }
-
-    @api
     get selectedRows() {
         return super.selectedRows;
     }
@@ -404,29 +403,26 @@ export default class PrimitiveDatatable extends LightningDatatable {
     }
 
     @api
-    get hideTableHeader() {
-        return super.hideTableHeader;
+    get sortedDirection() {
+        return super.sortedDirection;
     }
 
-    set hideTableHeader(value) {
-        super.hideTableHeader = normalizeBoolean(value);
+    set sortedDirection(value) {
+        super.sortedDirection = normalizeString(value, {
+            fallbackValue: SORT_DIRECTIONS.default,
+            validValues: SORT_DIRECTIONS.valid
+        });
     }
 
     @api
-    get columns() {
-        return super.columns;
+    get wrapTextMaxLines() {
+        return super.wrapTextMaxLines;
     }
 
-    set columns(value) {
-        super.columns = value;
-
-        this._columns = JSON.parse(JSON.stringify(this._columns));
-
-        this.removeWrapOption();
-        this.computeEditableOption();
+    set wrapTextMaxLines(value) {
+        if (value === undefined) return;
+        super.wrapTextMaxLines = value;
     }
-
-    @api allowSummarize;
 
     connectedCallback() {
         super.connectedCallback();
@@ -552,7 +548,7 @@ export default class PrimitiveDatatable extends LightningDatatable {
     }
 
     /**
-     * Gets the columns width of the datatable.
+     * Calculates the width of the datatable depending on hideTableHeader is true or not.
      */
     @api
     columnsWidthCalculation() {
@@ -643,7 +639,7 @@ export default class PrimitiveDatatable extends LightningDatatable {
     }
 
     /**
-     * Hides the visibility and padding of each c-primitive-datatables in groups.
+     * Hides the visibility and padding of each c-primitive-datatables header.
      */
     hideTableHeaderPadding() {
         const groupedDatatableHeaders = this.template.querySelectorAll(
@@ -680,7 +676,7 @@ export default class PrimitiveDatatable extends LightningDatatable {
     }
 
     /**
-     * Styling for the datatable header when group by.
+     * Styling for the datatable header.
      */
     headerDatatableStyling() {
         const headerDatatableBorder = this.template.querySelector(
@@ -702,7 +698,7 @@ export default class PrimitiveDatatable extends LightningDatatable {
     }
 
     /**
-     * Makes the primitive datatable unscrollable to make the outer container scrollable.
+     * Makes the primitive datatables unscrollable to make the outer container scrollable.
      */
     unscrollableDatatables() {
         if (this.ungroupedDatatable) {

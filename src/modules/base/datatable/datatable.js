@@ -511,6 +511,7 @@ export default class Datatable extends LightningElement {
         this.primitiveDraftValues();
         this.updateTableWidth();
         this.innerContainerPadding();
+
         if (!this.rendered) {
             this.datatableEditable();
             this.updateInnerContainerWidth();
@@ -750,6 +751,11 @@ export default class Datatable extends LightningElement {
         return width.reduce((a, b) => a + b);
     }
 
+    /**
+     * Returns fixed is there is group-by.
+     *
+     * @type {string}
+     */
     get computedColumnWithsMode() {
         if (this.hasGroupBy) {
             return 'fixed';
@@ -835,6 +841,9 @@ export default class Datatable extends LightningElement {
         }
     }
 
+    /**
+     * Adds padding to the inner container if the table height is bigger than the outer container height.
+     */
     innerContainerPadding() {
         const outerContainerHeight = this.template.querySelector(
             '.avonni-datatable__outer_container'
