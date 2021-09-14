@@ -277,6 +277,7 @@ export default class ProgressGroupByItem extends LightningElement {
 
     @api
     getGroupByItemsHeight() {
-        return this.template.querySelector('.container').offsetHeight;
+        return this.template.querySelector('.avonni_group_by_item__container')
+            .offsetHeight;
     }
 }

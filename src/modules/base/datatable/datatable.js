@@ -258,9 +258,6 @@ export default class Datatable extends LightningElement {
 
     set groupBy(value) {
         this._groupBy = value;
-        if (this._groupBy) {
-            this.removeDefaultActions();
-        }
     }
 
     /**
@@ -516,6 +513,7 @@ export default class Datatable extends LightningElement {
         this.innerContainerPadding();
         if (!this.rendered) {
             this.datatableEditable();
+            this.updateInnerContainerWidth();
         }
         this.rendered = true;
 
@@ -524,6 +522,10 @@ export default class Datatable extends LightningElement {
             this._containerSize = this.outerContainerWidth;
             this.windowResized = true;
         }
+
+        this.template
+            .querySelector('.avonni-datatable__inner_container')
+            .classList.add('avonni-datatable__header_container');
     }
 
     /**
@@ -855,16 +857,6 @@ export default class Datatable extends LightningElement {
                 ).style.paddingBottom = '33px';
             }
         }
-    }
-
-    /**
-     * Sets the wrapText to false and hideDefaultActions attributes to true when there is a group-by.
-     */
-    removeDefaultActions() {
-        this.columns.forEach((column) => {
-            column.wrapText = false;
-            column.hideDefaultActions = true;
-        });
     }
 
     /**

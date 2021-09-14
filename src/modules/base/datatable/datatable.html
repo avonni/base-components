@@ -38,7 +38,9 @@
                 onrowaction={handleDispatchEvents}
             ></c-primitive-datatable>
         </div>
-        <div class="avonni-datatable__inner_container slds-scrollable_y">
+        <div
+            class="avonni-datatable__inner_container avonni-datatable__inner_container_margin slds-scrollable_y"
+        >
             <c-primitive-group-by-item
                 if:true={hasGroupBy}
                 computed-group-by-records={computedGroupByRecords}

@@ -37,7 +37,6 @@
     bottom: 0;
     left: 0;
     background: #f3f2f2;
-    /* box-shadow: 0 -2px 2px 0 rgb(0 0 0 / 16%); */
     overflow: 'hidden';
     width: 100%;
 }
@@ -45,4 +44,13 @@
 .avonni-datatable__outer_container {
     background: #f3f2f2;
     height: 100%;
+    position: relative;
+}
+
+.avonni-datatable__header_container {
+    position: absolute;
+}
+
+.avonni-datatable__inner_container_margin {
+    margin-top: 32px;
 }
