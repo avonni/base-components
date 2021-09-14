@@ -503,7 +503,14 @@ export default class Datatable extends LightningElement {
         });
 
         window.addEventListener('resize', () => {
+            this.updateTableWidth();
             this.updateInnerContainerWidth();
+
+            // On window resize, we save the last width to compare it with the new one.
+            if (!this.windowResized) {
+                this.oldOuterContainerWidth = this.outerContainerWidth;
+                this.windowResized = true;
+            }
         });
     }
 
@@ -514,15 +521,11 @@ export default class Datatable extends LightningElement {
 
         if (!this.rendered) {
             this.datatableEditable();
-            this.updateInnerContainerWidth();
+            if (this.hasGroupBy || this._columnWidthsMode === 'fixed') {
+                this.updateInnerContainerWidthFixed();
+            }
         }
         this.rendered = true;
-
-        // On window resize, we save the last width to compare it with the new one.
-        if (!this.windowResized) {
-            this._containerSize = this.outerContainerWidth;
-            this.windowResized = true;
-        }
 
         this.template
             .querySelector('.avonni-datatable__inner_container')
@@ -731,20 +734,20 @@ export default class Datatable extends LightningElement {
      */
     get minimumColumnWidth() {
         let width = [];
-        if (this.hasRowNumberColumn) {
+        if (this.isDatatableEditable) {
             width.push(52);
         }
         if (!this.hideCheckboxColumn) {
             width.push(32);
         }
         this._columns.forEach((column) => {
-            if (column.fixedWith) {
-                width.push(column.fixedWith);
+            if (column.fixedWidth) {
+                width.push(column.fixedWidth);
             }
             if (column.initialWidth) {
                 width.push(column.initialWidth);
             }
-            if (!column.fixedWith && !column.initialWidth) {
+            if (!column.fixedWidth && !column.initialWidth) {
                 width.push(this.minColumnWidth);
             }
         });
@@ -786,36 +789,32 @@ export default class Datatable extends LightningElement {
     updateTableWidth() {
         this.tableWidth = this.headerDatatable.tableWidth();
         this.innerContainers.forEach((container) => {
-            container.style.width = `${this.tableWidth}px`;
+            container.style.width = this.tableWidth + 'px';
         });
     }
 
     /**
-     * Updates the inner container width when there is a summarization table and the columnWidthsMode is auto.
+     * Updates the inner containers width when the columnWidthsMode is auto.
      */
     updateInnerContainerWidthAuto() {
-        if (
-            this.tableWidth > this.outerContainerWidth &&
-            this._containerSize > this.outerContainerWidth
-        ) {
+        if (this.outerContainerWidth < this.minimumColumnWidth) {
             this.innerContainers.forEach((container) => {
                 container.style.width = `${this.tableWidth}px`;
             });
+        } else {
+            this.innerContainers.forEach((container) => {
+                container.style.width = `${this.outerContainerWidth}px`;
+            });
         }
-        this.innerContainers.forEach((container) => {
-            container.style.width = `${this.outerContainerWidth}px`;
-        });
-
-        this.windowResized = false;
     }
 
     /**
-     * Updates the inner container width when there is a group by or summarization table and the columnWidthsMode is fixed.
+     * Updates the inner containers width when there is a group by or columnWidthsMode is fixed.
      */
     updateInnerContainerWidthFixed() {
         if (
             this.tableWidth > this.outerContainerWidth &&
-            this._containerSize > this.outerContainerWidth &&
+            this.oldOuterContainerWidth > this.outerContainerWidth &&
             this.outerContainerWidth <= this.minimumColumnWidth
         ) {
             this.innerContainers.forEach((container) => {
@@ -830,7 +829,7 @@ export default class Datatable extends LightningElement {
     }
 
     /**
-     * Updates the inner container width.
+     * Updates the inner containers width.
      */
     updateInnerContainerWidth() {
         if (!this.hasGroupBy && this._columnWidthsMode === 'auto') {
