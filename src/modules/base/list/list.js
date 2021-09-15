@@ -36,7 +36,7 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+import { classSet, generateUniqueId } from 'c/utils';
 
 const ICON_POSITIONS = {
     valid: ['left', 'right'],
@@ -247,6 +247,10 @@ export default class List extends LightningElement {
      */
     get firstAction() {
         return this.computedActions[0];
+    }
+
+    get generateKey() {
+        return generateUniqueId();
     }
 
     /**
@@ -677,9 +681,7 @@ export default class List extends LightningElement {
         const actionName = this.hasMultipleActions
             ? event.detail.value
             : event.target.value;
-        const itemIndex = event.target.parentElement.parentElement.parentElement.getAttribute(
-            'data-index'
-        );
+        const itemIndex = event.currentTarget.dataset.itemIndex;
 
         /**
          * The event fired when a user clicks on an action.
