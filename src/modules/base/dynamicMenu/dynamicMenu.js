@@ -374,7 +374,7 @@ export default class DynamicMenu extends LightningElement {
     click() {
         if (this.isConnected) {
             if (this.label) {
-                this.template.querySelector('lightning-button').click();
+                this.template.querySelector('button').click();
             } else {
                 this.template.querySelector('lightning-button-icon').click();
             }
@@ -390,6 +390,12 @@ export default class DynamicMenu extends LightningElement {
         return String(this._dropdownVisible);
     }
 
+    /**
+     * Computed button class, when the dynamic menu has a label.
+     *
+     * @type {string}
+     * @default slds-button
+     */
     get computedButtonClass() {
         const { variant, _order, buttonSize } = this;
         return classSet('slds-button')
@@ -504,7 +510,7 @@ export default class DynamicMenu extends LightningElement {
      */
     focusOnButton() {
         if (this.label) {
-            this.template.querySelector('lightning-button').focus();
+            this.template.querySelector('button').focus();
         } else {
             this.template.querySelector('lightning-button-icon').focus();
         }

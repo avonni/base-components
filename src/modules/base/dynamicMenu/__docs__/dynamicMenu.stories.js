@@ -31,6 +31,7 @@
  */
 
 import { DynamicMenu } from '../__examples__/dynamicMenu';
+import { DynamicMenuInGroup } from '../__examples__/dynamicMenuInGroup';
 
 export default {
     title: 'Example/Dynamic Menu',
@@ -285,9 +286,8 @@ const items = [
     }
 ];
 
-// const iconSizes  = ['xx-small','x-small', 'small', 'medium'];
-
 const Template = (args) => DynamicMenu(args);
+const TemplateInGroup = (args) => DynamicMenuInGroup(args);
 
 export const Base = Template.bind({});
 Base.args = {
@@ -324,6 +324,14 @@ BaseWithLabel.args = {
     iconName: 'utility:favorite'
 };
 
+export const Stretched = Template.bind({});
+Stretched.args = {
+    items: items,
+    label: 'Menu',
+    iconName: 'utility:alert',
+    buttonSize: 'stretch'
+};
+
 export const BorderFilled = Template.bind({});
 BorderFilled.args = {
     items: items,
@@ -351,4 +359,10 @@ Container.args = {
     alternativeText: 'Display Menu',
     iconName: 'utility:add',
     variant: 'container'
+};
+
+export const InButtonGroup = TemplateInGroup.bind({});
+InButtonGroup.args = {
+    items: items,
+    label: 'Dynamic menu'
 };

@@ -1,0 +1,82 @@
+<!--
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+-->
+
+<template>
+    <lightning-button-group>
+        <lightning-button label="First button"></lightning-button>
+        <c-dynamic-menu
+            button-size={buttonSize}
+            icon-name={iconName}
+            icon-size={iconSize}
+            value={value}
+            alternative-text={alternativeText}
+            loading-state-alternative-text={loadingStateAlternativeText}
+            label={label}
+            with-search={withSearch}
+            access-key={accessKey}
+            title={title}
+            search-input-placeholder={searchInputPlaceholder}
+            tooltip={tooltip}
+            items={items}
+            is-loading={isLoading}
+            variant={variant}
+            menu-alignment={menuAlignment}
+            disabled={disabled}
+        >
+            <div class="slds-p-vertical_x-small slds-p-horizontal_small">
+                <h3
+                    class="slds-dynamic-menu__header slds-m-bottom_x-small"
+                    role="presentation"
+                >
+                    My Favorites
+                </h3>
+            </div>
+            <div slot="footer" style="display: flex; flex-direction: column">
+                <lightning-button
+                    label="Favorite this page"
+                    icon-name="utility:add"
+                    variant="base"
+                    type="reset"
+                ></lightning-button>
+                <lightning-button
+                    label="Edit Favorites"
+                    icon-name="utility:edit"
+                    variant="base"
+                    type="reset"
+                ></lightning-button>
+            </div>
+        </c-dynamic-menu>
+        <lightning-button label="Last button"></lightning-button>
+    </lightning-button-group>
+</template>
