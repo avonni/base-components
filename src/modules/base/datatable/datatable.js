@@ -171,6 +171,7 @@ export default class Datatable extends LightningElement {
     _hasDraftValues = false;
 
     privateChildrenRecord = {};
+    _delta = 0;
 
     tableWidth;
 
@@ -485,6 +486,8 @@ export default class Datatable extends LightningElement {
         });
 
         this.template.addEventListener('resizecol', (event) => {
+            this._delta = this._delta + event.detail.widthDelta;
+            this.minimumColumnWidth(this._delta);
             if (this.ungroupedDatatable) {
                 this.ungroupedDatatable.handleResizeColumn(event);
             }
@@ -502,15 +505,18 @@ export default class Datatable extends LightningElement {
             }
         });
 
+        this.addEventListener('tablewidthchange', (event) => {
+            this.tableWidth = event.detail;
+            if (this.outerContainerWidth < this.tableWidth) {
+                this.innerContainers.forEach((container) => {
+                    container.style.width = `${this.tableWidth}px`;
+                });
+            }
+        });
+
         window.addEventListener('resize', () => {
             this.updateTableWidth();
             this.updateInnerContainerWidth();
-
-            // On window resize, we save the last width to compare it with the new one.
-            if (!this.windowResized) {
-                this.oldOuterContainerWidth = this.outerContainerWidth;
-                this.windowResized = true;
-            }
         });
     }
 
@@ -521,9 +527,7 @@ export default class Datatable extends LightningElement {
 
         if (!this.rendered) {
             this.datatableEditable();
-            if (this.hasGroupBy || this._columnWidthsMode === 'fixed') {
-                this.updateInnerContainerWidthFixed();
-            }
+            this.minimumColumnWidth(0);
         }
         this.rendered = true;
 
@@ -728,11 +732,12 @@ export default class Datatable extends LightningElement {
     }
 
     /**
-     * Returns the minimum width of all column combine depending on inital width, fixed width and minimum column width.
+     * Returns the minimum width of all column combine depending on inital width, fixed width, minimum column width
+     * and when a column is resized.
      *
      * @type {number}
      */
-    get minimumColumnWidth() {
+    minimumColumnWidth(delta) {
         let width = [];
         if (this.isDatatableEditable) {
             width.push(52);
@@ -751,7 +756,11 @@ export default class Datatable extends LightningElement {
                 width.push(this.minColumnWidth);
             }
         });
-        return width.reduce((a, b) => a + b);
+        if (delta) {
+            width.push(delta);
+        }
+        this._minimumColumnWidth = width.reduce((a, b) => a + b);
+        return this._minimumColumnWidth;
     }
 
     /**
@@ -794,49 +803,17 @@ export default class Datatable extends LightningElement {
     }
 
     /**
-     * Updates the inner containers width when the columnWidthsMode is auto.
-     */
-    updateInnerContainerWidthAuto() {
-        if (this.outerContainerWidth < this.minimumColumnWidth) {
-            this.innerContainers.forEach((container) => {
-                container.style.width = `${this.tableWidth}px`;
-            });
-        } else {
-            this.innerContainers.forEach((container) => {
-                container.style.width = `${this.outerContainerWidth}px`;
-            });
-        }
-    }
-
-    /**
-     * Updates the inner containers width when there is a group by or columnWidthsMode is fixed.
-     */
-    updateInnerContainerWidthFixed() {
-        if (
-            this.tableWidth > this.outerContainerWidth &&
-            this.oldOuterContainerWidth > this.outerContainerWidth &&
-            this.outerContainerWidth <= this.minimumColumnWidth
-        ) {
-            this.innerContainers.forEach((container) => {
-                container.style.width = `${this.tableWidth}px`;
-            });
-        } else {
-            this.innerContainers.forEach((container) => {
-                container.style.width = `${this.outerContainerWidth}px`;
-            });
-        }
-        this.windowResized = false;
-    }
-
-    /**
-     * Updates the inner containers width.
+     * Updates the inner containers width on window resize.
      */
     updateInnerContainerWidth() {
-        if (!this.hasGroupBy && this._columnWidthsMode === 'auto') {
-            this.updateInnerContainerWidthAuto();
-        }
-        if (this.hasGroupBy || this._columnWidthsMode === 'fixed') {
-            this.updateInnerContainerWidthFixed();
+        if (this.outerContainerWidth < this._minimumColumnWidth) {
+            this.innerContainers.forEach((container) => {
+                container.style.width = `${this.tableWidth}px`;
+            });
+        } else {
+            this.innerContainers.forEach((container) => {
+                container.style.width = `${this.outerContainerWidth}px`;
+            });
         }
     }
 

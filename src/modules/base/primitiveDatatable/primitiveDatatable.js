@@ -424,6 +424,8 @@ export default class PrimitiveDatatable extends LightningDatatable {
         super.wrapTextMaxLines = value;
     }
 
+    tableW = 0;
+
     connectedCallback() {
         super.connectedCallback();
 
@@ -478,6 +480,16 @@ export default class PrimitiveDatatable extends LightningDatatable {
 
     renderedCallback() {
         super.renderedCallback();
+        if (this.tableW !== this.tableWidth()) {
+            this.tableW = this.tableWidth();
+            this.dispatchEvent(
+                new CustomEvent('tablewidthchange', {
+                    detail: this.tableW,
+                    bubbles: true,
+                    composed: true
+                })
+            );
+        }
 
         this._data = JSON.parse(JSON.stringify(normalizeArray(super.data)));
         this.computeEditableOption();
