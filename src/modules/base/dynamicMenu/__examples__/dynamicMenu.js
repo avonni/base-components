@@ -38,6 +38,7 @@ customElements.define(
 );
 
 export const DynamicMenu = ({
+    buttonSize,
     iconName,
     value,
     alternativeText,
@@ -56,6 +57,7 @@ export const DynamicMenu = ({
     iconSize
 }) => {
     const element = document.createElement('ac-base-dynamic-menu');
+    element.buttonSize = buttonSize;
     element.iconName = iconName;
     element.value = value;
     element.alternativeText = alternativeText;

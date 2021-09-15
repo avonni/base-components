@@ -142,6 +142,20 @@ export default {
                 defaultValue: { summary: 'medium' }
             }
         },
+        buttonSize: {
+            name: 'button-size',
+            control: {
+                type: 'radio'
+            },
+            options: ['auto', 'stretch'],
+            defaultValue: 'auto',
+            description:
+                'Size of the button. Available options include auto and stretch.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'auto' }
+            }
+        },
         variant: {
             control: {
                 type: 'select'
@@ -278,7 +292,8 @@ const Template = (args) => DynamicMenu(args);
 export const Base = Template.bind({});
 Base.args = {
     items: items,
-    iconName: 'utility:favorite'
+    iconName: 'utility:favorite',
+    buttonSize: 'stretch'
 };
 
 export const BaseWithSearch = Template.bind({});

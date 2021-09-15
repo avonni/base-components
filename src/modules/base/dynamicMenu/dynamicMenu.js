@@ -50,6 +50,11 @@ const MENU_ALIGNMENTS = {
     default: 'left'
 };
 
+const BUTTON_SIZES = {
+    valid: ['auto', 'stretch'],
+    default: 'auto'
+};
+
 const BUTTON_VARIANTS = {
     valid: [
         'border',
@@ -149,6 +154,7 @@ export default class DynamicMenu extends LightningElement {
      */
     @api tooltip;
 
+    _buttonSize = BUTTON_SIZES.default;
     _items = [];
     _isLoading;
     _variant = BUTTON_VARIANTS.default;
@@ -157,6 +163,7 @@ export default class DynamicMenu extends LightningElement {
     queryTerm;
     _dropdownVisible = false;
     _dropdownOpened = false;
+    _order;
     showFooter = true;
     filteredItems = [];
     _boundingRect = {};
@@ -167,6 +174,21 @@ export default class DynamicMenu extends LightningElement {
             'slds-dropdown-trigger',
             'slds-dropdown-trigger_click'
         );
+
+        // Register event so the button-group (or other) component can register the button
+        const privatebuttonregister = new CustomEvent('privatebuttonregister', {
+            bubbles: true,
+            detail: {
+                callbacks: {
+                    setOrder: this.setOrder.bind(this),
+                    setDeRegistrationCallback: (deRegistrationCallback) => {
+                        this._deRegistrationCallback = deRegistrationCallback;
+                    }
+                }
+            }
+        });
+
+        this.dispatchEvent(privatebuttonregister);
     }
 
     renderedCallback() {
@@ -175,8 +197,39 @@ export default class DynamicMenu extends LightningElement {
         }
     }
 
+    disconnectedCallback() {
+        if (this._deRegistrationCallback) {
+            this._deRegistrationCallback();
+        }
+    }
+
     get footerSlot() {
         return this.template.querySelector('slot[name=footer]');
+    }
+
+    /**
+     * Size of the button. Available options include auto and stretch.
+     *
+     * @type {string}
+     * @public
+     * @default auto
+     */
+    @api
+    get buttonSize() {
+        return this._buttonSize;
+    }
+
+    set buttonSize(value) {
+        this._buttonSize = normalizeString(value, {
+            fallbackValue: BUTTON_SIZES.default,
+            validValues: BUTTON_SIZES.valid
+        });
+
+        if (this._buttonSize === 'stretch') {
+            this.classList.add('slds-button_stretch');
+        } else {
+            this.classList.remove('slds-button_stretch');
+        }
     }
 
     /**
@@ -331,10 +384,24 @@ export default class DynamicMenu extends LightningElement {
     /**
      * Computed Aria Expanded from dropdown menu.
      *
-     * @type {string} 
+     * @type {string}
      */
     get computedAriaExpanded() {
         return String(this._dropdownVisible);
+    }
+
+    get computedButtonClass() {
+        const { variant, _order, buttonSize } = this;
+        return classSet('slds-button')
+            .add({
+                'slds-button_neutral': variant !== 'brand',
+                'slds-button_brand': variant === 'brand',
+                'slds-button_first': _order === 'first',
+                'slds-button_middle': _order === 'middle',
+                'slds-button_last': _order === 'last',
+                'slds-button_stretch': buttonSize === 'stretch'
+            })
+            .toString();
     }
 
     /**
@@ -373,6 +440,14 @@ export default class DynamicMenu extends LightningElement {
      */
     get showItems() {
         return this.filteredItems.length > 0;
+    }
+
+    /**
+     * Sets the order value of the button when in the context of a button-group or other ordered component
+     * @param {string} order -  The order string (first, middle, last)
+     */
+    setOrder(order) {
+        this._order = order;
     }
 
     /**
