@@ -171,7 +171,8 @@ export default class Datatable extends LightningElement {
     _hasDraftValues = false;
 
     privateChildrenRecord = {};
-    _delta = 0;
+    _minimumColumnWidthArray = [];
+    _colIndex = 0;
 
     tableWidth;
 
@@ -486,8 +487,8 @@ export default class Datatable extends LightningElement {
         });
 
         this.template.addEventListener('resizecol', (event) => {
-            this._delta = this._delta + event.detail.widthDelta;
-            this.minimumColumnWidth(this._delta);
+            this._colIndex = event.detail.colIndex;
+            this.updateMinWidth();
             if (this.ungroupedDatatable) {
                 this.ungroupedDatatable.handleResizeColumn(event);
             }
@@ -737,30 +738,54 @@ export default class Datatable extends LightningElement {
      *
      * @type {number}
      */
-    minimumColumnWidth(delta) {
+    minimumColumnWidth() {
         let width = [];
+        this._columns.forEach((column) => {
+            if (column.fixedWidth) {
+                width.push(column.fixedWidth);
+            } else if (column.initialWidth) {
+                width.push(column.initialWidth);
+            } else {
+                width.push(this.minColumnWidth);
+            }
+        });
         if (this.isDatatableEditable) {
             width.push(52);
         }
         if (!this.hideCheckboxColumn) {
             width.push(32);
         }
-        this._columns.forEach((column) => {
-            if (column.fixedWidth) {
-                width.push(column.fixedWidth);
-            }
-            if (column.initialWidth) {
-                width.push(column.initialWidth);
-            }
-            if (!column.fixedWidth && !column.initialWidth) {
-                width.push(this.minColumnWidth);
-            }
-        });
-        if (delta) {
-            width.push(delta);
-        }
+        this._minimumColumnWidthArray = width;
         this._minimumColumnWidth = width.reduce((a, b) => a + b);
         return this._minimumColumnWidth;
+    }
+
+    updateMinWidth() {
+        if (!this._hideCheckboxColumn && this.isDatatableEditable) {
+            this._minimumColumnWidthArray.splice(
+                this._colIndex - 2,
+                1,
+                this._columnsWidth[this._colIndex - 2]
+            );
+        } else if (
+            (this._hideCheckboxColumn && this.isDatatableEditable) ||
+            (this._hideCheckboxColumn && !this.isDatatableEditable)
+        ) {
+            this._minimumColumnWidthArray.splice(
+                this._colIndex - 1,
+                1,
+                this._columnsWidth[this._colIndex - 1]
+            );
+        } else {
+            this._minimumColumnWidthArray.splice(
+                this._colIndex,
+                1,
+                this._columnsWidth[this._colIndex]
+            );
+        }
+        this._minimumColumnWidth = this._minimumColumnWidthArray.reduce(
+            (a, b) => a + b
+        );
     }
 
     /**
@@ -807,9 +832,15 @@ export default class Datatable extends LightningElement {
      */
     updateInnerContainerWidth() {
         if (this.outerContainerWidth < this._minimumColumnWidth) {
-            this.innerContainers.forEach((container) => {
-                container.style.width = `${this.tableWidth}px`;
-            });
+            if (this.tableWidth > this._minimumColumnWidth) {
+                this.innerContainers.forEach((container) => {
+                    container.style.width = `${this._minimumColumnWidth}px`;
+                });
+            } else {
+                this.innerContainers.forEach((container) => {
+                    container.style.width = `${this.tableWidth}px`;
+                });
+            }
         } else {
             this.innerContainers.forEach((container) => {
                 container.style.width = `${this.outerContainerWidth}px`;

@@ -526,33 +526,39 @@ const columnsGroupBy = [
         id: 1,
         label: 'Name',
         fieldName: 'name',
-        editable: true
+        editable: true,
+        hideDefaultActions: true
     },
     {
         id: 2,
         label: 'Age',
         fieldName: 'age',
-        type: 'number'
+        type: 'number',
+        hideDefaultActions: true
     },
     {
         id: 3,
         label: 'Sex',
-        fieldName: 'sex'
+        fieldName: 'sex',
+        hideDefaultActions: true
     },
     {
         id: 4,
         label: 'City',
-        fieldName: 'city'
+        fieldName: 'city',
+        hideDefaultActions: true
     },
     {
         id: 5,
         label: 'District',
-        fieldName: 'district'
+        fieldName: 'district',
+        hideDefaultActions: true
     },
     {
         id: 6,
         label: 'Habitation',
-        fieldName: 'habitation'
+        fieldName: 'habitation',
+        hideDefaultActions: true
     }
 ];
 
