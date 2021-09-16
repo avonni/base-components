@@ -58,18 +58,6 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        hideBottomDivider: {
-            name: 'hide-bottom-divider',
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: false,
-            description: 'If present, hides the bottom divider.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: false }
-            }
-        },
         buttonSize: {
             name: 'button-size',
             control: {
@@ -174,6 +162,28 @@ export default {
                 'Help text detailing the purpose and function of the dual listbox.',
             table: {
                 type: { summary: 'string' }
+            }
+        },
+        groups: {
+            control: {
+                type: 'object'
+            },
+            description:
+                'Array of group objects. The groups are used to separate the options inside the listboxes.',
+            table: {
+                type: { summary: 'object[]' }
+            }
+        },
+        hideBottomDivider: {
+            name: 'hide-bottom-divider',
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description: 'If present, hides the bottom divider.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: false }
             }
         },
         isLoading: {

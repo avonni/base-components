@@ -34,6 +34,7 @@ import { LightningElement, api } from 'lwc';
 import {
     normalizeBoolean,
     normalizeString,
+    normalizeArray,
     assert,
     getRealDOMId,
     getListHeight
@@ -89,41 +90,6 @@ const i18n = {
  */
 export default class DualListbox extends LightningElement {
     /**
-     * Label for the source options listbox.
-     *
-     * @type {string}
-     * @public
-     */
-    @api sourceLabel;
-    /**
-     * Label for the selected options listbox.
-     *
-     * @type {string}
-     * @public
-     */
-    @api selectedLabel;
-    /**
-     * Text displayed when no options are selected.
-     *
-     * @type {string}
-     * @public
-     */
-    @api selectedPlaceholder;
-    /**
-     * Label for the dual listbox.
-     *
-     * @type {string}
-     * @public
-     */
-    @api label;
-    /**
-     * Specifies the name of an input element.
-     *
-     * @type {string}
-     * @public
-     */
-    @api name;
-    /**
      * The name of the icon to be used in the format 'utility:right'.
      *
      * @type {string}
@@ -131,6 +97,15 @@ export default class DualListbox extends LightningElement {
      * @default utility:right
      */
     @api addButtonIconName = DEFAULT_ADD_BUTTON_ICON_NAME;
+
+    /**
+     * Label for add button.
+     *
+     * @type {string}
+     * @public
+     */
+    @api addButtonLabel;
+
     /**
      * The name of the icon to be used in the format ‘utility:down’.
      *
@@ -139,6 +114,48 @@ export default class DualListbox extends LightningElement {
      * @default utility:down
      */
     @api downButtonIconName = DEFAULT_DOWN_BUTTON_ICON_NAME;
+
+    /**
+     * Label for down button
+     *
+     * @type {string}
+     * @public
+     */
+    @api downButtonLabel;
+
+    /**
+     * Help text detailing the purpose and function of the dual listbox.
+     *
+     * @type {string}
+     * @public
+     */
+    @api fieldLevelHelp;
+
+    /**
+     * Label for the dual listbox.
+     *
+     * @type {string}
+     * @public
+     */
+    @api label;
+
+    /**
+     * Error message to be displayed when the value is missing and input is required.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    messageWhenValueMissing = i18n.requiredError;
+
+    /**
+     * Specifies the name of an input element.
+     *
+     * @type {string}
+     * @public
+     */
+    @api name;
+
     /**
      * The name of the icon to be used in the format ‘utility:left’.
      *
@@ -147,6 +164,39 @@ export default class DualListbox extends LightningElement {
      * @default utility:left
      */
     @api removeButtonIconName = DEFAULT_REMOVE_BUTTON_ICON_NAME;
+
+    /**
+     * Label for remove button.
+     *
+     * @type {string}
+     * @public
+     */
+    @api removeButtonLabel;
+
+    /**
+     * Label for the selected options listbox.
+     *
+     * @type {string}
+     * @public
+     */
+    @api selectedLabel;
+
+    /**
+     * Text displayed when no options are selected.
+     *
+     * @type {string}
+     * @public
+     */
+    @api selectedPlaceholder;
+
+    /**
+     * Label for the source options listbox.
+     *
+     * @type {string}
+     * @public
+     */
+    @api sourceLabel;
+
     /**
      * The name of the icon to be used in the format ‘utility:up’.
      *
@@ -155,20 +205,7 @@ export default class DualListbox extends LightningElement {
      * @default utility:up
      */
     @api upButtonIconName = DEFAULT_UP_BUTTON_ICON_NAME;
-    /**
-     * Label for add button.
-     *
-     * @type {string}
-     * @public
-     */
-    @api addButtonLabel;
-    /**
-     * Label for remove button.
-     *
-     * @type {string}
-     * @public
-     */
-    @api removeButtonLabel;
+
     /**
      * Label for up button.
      *
@@ -176,20 +213,6 @@ export default class DualListbox extends LightningElement {
      * @public
      */
     @api upButtonLabel;
-    /**
-     * Label for down button
-     *
-     * @type {string}
-     * @public
-     */
-    @api downButtonLabel;
-    /**
-     * Help text detailing the purpose and function of the dual listbox.
-     *
-     * @type {string}
-     * @public
-     */
-    @api fieldLevelHelp;
 
     _requiredOptions = [];
     _options = [];
@@ -271,204 +294,6 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * A list of options that are available for selection. Each option has the following attributes: label, description, value, iconName, iconSrc, initials and variant.
-     *
-     * @type {object[]}
-     * @public
-     */
-    @api
-    get options() {
-        return this._options;
-    }
-
-    set options(value) {
-        this._options = Array.isArray(value)
-            ? JSON.parse(JSON.stringify(value))
-            : [];
-
-        if (this.isConnected) {
-            this.updateBoxesHeight();
-        }
-    }
-
-    /**
-     * Error message to be displayed when the value is missing and input is required.
-     *
-     * @type {string}
-     * @public
-     */
-    @api
-    messageWhenValueMissing = i18n.requiredError;
-
-    /**
-     * Error message to be displayed when a range overflow is detected.
-     *
-     * @type {string}
-     * @public
-     */
-    @api
-    get messageWhenRangeOverflow() {
-        return this._messageWhenRangeOverflow;
-    }
-
-    set messageWhenRangeOverflow(message) {
-        this._messageWhenRangeOverflow = message;
-    }
-
-    /**
-     * Error message to be displayed when a range underflow is detected.
-     *
-     * @type {string}
-     * @public
-     */
-    @api
-    get messageWhenRangeUnderflow() {
-        return this._messageWhenRangeUnderflow;
-    }
-
-    set messageWhenRangeUnderflow(message) {
-        this._messageWhenRangeUnderflow = message;
-    }
-
-    /**
-     * If present, hides the bottom divider.
-     *
-     * @type {boolean}
-     * @public
-     * @default false
-     */
-    @api
-    get hideBottomDivider() {
-        return this._hideBottomDivider || false;
-    }
-
-    set hideBottomDivider(value) {
-        this._hideBottomDivider = normalizeBoolean(value);
-    }
-
-    /**
-     * If present, the listbox is disabled and users cannot interact with it.
-     *
-     * @type {boolean}
-     * @public
-     * @default false
-     */
-    @api
-    get disabled() {
-        return this._disabled || false;
-    }
-
-    set disabled(value) {
-        this._disabled = normalizeBoolean(value);
-    }
-
-    /**
-     * If present, the source options listbox is in a loading state and shows a spinner.
-     *
-     * @type {boolean}
-     * @public
-     * @default false
-     */
-    @api
-    get isLoading() {
-        return this._isLoading || false;
-    }
-
-    set isLoading(value) {
-        this._isLoading = normalizeBoolean(value);
-    }
-
-    /**
-     * If present, the user must add an item to the selected listbox before submitting the form.
-     *
-     * @type {boolean}
-     * @public
-     * @default false
-     */
-    @api
-    get required() {
-        return this._required;
-    }
-
-    set required(value) {
-        this._required = normalizeBoolean(value);
-    }
-
-    /**
-     * If present, a search box is added to the first listbox.
-     *
-     * @type {boolean}
-     * @public
-     * @default false
-     */
-    @api
-    get searchEngine() {
-        return this._searchEngine;
-    }
-
-    set searchEngine(value) {
-        this._searchEngine = normalizeBoolean(value);
-    }
-
-    /**
-     * A list of default options that are included in the selected options listbox. This list is populated with values from the options attribute.
-     *
-     * @type {string[]}
-     * @public
-     */
-    @api
-    get value() {
-        return this._selectedValues;
-    }
-
-    set value(newValue) {
-        this.updateHighlightedOptions(newValue);
-        this._selectedValues = newValue || [];
-        if (this.isConnected) {
-            this.addRequiredOptionsToValue();
-        }
-    }
-
-    /**
-     * A list of required options that cannot be removed from selected options listbox. This list is populated with values from the options attribute.
-     *
-     * @type {string[]}
-     * @public
-     */
-    @api
-    get requiredOptions() {
-        return this._requiredOptions;
-    }
-
-    set requiredOptions(newValue) {
-        this._requiredOptions = Array.isArray(newValue)
-            ? JSON.parse(JSON.stringify(newValue))
-            : [];
-        if (this.isConnected) {
-            this.addRequiredOptionsToValue();
-        }
-    }
-
-    /**
-     * The variant changes the appearance of the dual listbox. Valid variants include standard, label-hidden and label-stacked. Use label-hidden to hide the label but make it available to assistive technology. Use label-stacked to place the label above the dual listbox.
-     *
-     * @type {string}
-     * @public
-     * @default standard
-     */
-    @api
-    get variant() {
-        return this._variant;
-    }
-
-    set variant(variant) {
-        this._variant = normalizeString(variant, {
-            fallbackValue: LABEL_VARIANTS.default,
-            validValues: LABEL_VARIANTS.valid
-        });
-    }
-
-    /**
      * For the bare variant, valid values include x-small, small, medium, and large. For non-bare variants, valid values include xx-small, x-small, small, and medium.
      *
      * @type {string}
@@ -503,6 +328,103 @@ export default class DualListbox extends LightningElement {
             fallbackValue: BUTTON_VARIANTS.default,
             validValues: BUTTON_VARIANTS.valid
         });
+    }
+
+    /**
+     * If present, the Up and Down buttons used for reordering are hidden.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get disableReordering() {
+        return this._disableReordering;
+    }
+
+    set disableReordering(value) {
+        this._disableReordering = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the listbox is disabled and users cannot interact with it.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get disabled() {
+        return this._disabled || false;
+    }
+
+    set disabled(value) {
+        this._disabled = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the options are draggable.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get draggable() {
+        if (this.disabled) {
+            return false;
+        }
+        return this._draggable;
+    }
+
+    set draggable(value) {
+        this._draggable = normalizeBoolean(value);
+    }
+
+    /**
+     * Array of group objects. The groups are used to separate the options inside the listboxes.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api
+    get groups() {
+        return this._groups;
+    }
+    set groups(value) {
+        this._groups = normalizeArray(value);
+    }
+
+    /**
+     * If present, hides the bottom divider.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get hideBottomDivider() {
+        return this._hideBottomDivider || false;
+    }
+
+    set hideBottomDivider(value) {
+        this._hideBottomDivider = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the source options listbox is in a loading state and shows a spinner.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get isLoading() {
+        return this._isLoading || false;
+    }
+
+    set isLoading(value) {
+        this._isLoading = normalizeBoolean(value);
     }
 
     /**
@@ -560,38 +482,106 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * If present, the Up and Down buttons used for reordering are hidden.
+     * Error message to be displayed when a range overflow is detected.
      *
-     * @type {boolean}
+     * @type {string}
      * @public
-     * @default false
      */
     @api
-    get disableReordering() {
-        return this._disableReordering;
+    get messageWhenRangeOverflow() {
+        return this._messageWhenRangeOverflow;
     }
 
-    set disableReordering(value) {
-        this._disableReordering = normalizeBoolean(value);
+    set messageWhenRangeOverflow(message) {
+        this._messageWhenRangeOverflow = message;
     }
 
     /**
-     * If present, the options are draggable.
+     * Error message to be displayed when a range underflow is detected.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get messageWhenRangeUnderflow() {
+        return this._messageWhenRangeUnderflow;
+    }
+
+    set messageWhenRangeUnderflow(message) {
+        this._messageWhenRangeUnderflow = message;
+    }
+
+    /**
+     * A list of options that are available for selection. Each option has the following attributes: label, description, value, iconName, iconSrc, initials and variant.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api
+    get options() {
+        return this._options;
+    }
+
+    set options(value) {
+        this._options = Array.isArray(value)
+            ? JSON.parse(JSON.stringify(value))
+            : [];
+
+        if (this.isConnected) {
+            this.updateBoxesHeight();
+        }
+    }
+
+    /**
+     * If present, the user must add an item to the selected listbox before submitting the form.
      *
      * @type {boolean}
      * @public
      * @default false
      */
     @api
-    get draggable() {
-        if (this.disabled) {
-            return false;
-        }
-        return this._draggable;
+    get required() {
+        return this._required;
     }
 
-    set draggable(value) {
-        this._draggable = normalizeBoolean(value);
+    set required(value) {
+        this._required = normalizeBoolean(value);
+    }
+
+    /**
+     * A list of required options that cannot be removed from selected options listbox. This list is populated with values from the options attribute.
+     *
+     * @type {string[]}
+     * @public
+     */
+    @api
+    get requiredOptions() {
+        return this._requiredOptions;
+    }
+
+    set requiredOptions(newValue) {
+        this._requiredOptions = Array.isArray(newValue)
+            ? JSON.parse(JSON.stringify(newValue))
+            : [];
+        if (this.isConnected) {
+            this.addRequiredOptionsToValue();
+        }
+    }
+
+    /**
+     * If present, a search box is added to the first listbox.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get searchEngine() {
+        return this._searchEngine;
+    }
+
+    set searchEngine(value) {
+        this._searchEngine = normalizeBoolean(value);
     }
 
     /**
@@ -610,6 +600,44 @@ export default class DualListbox extends LightningElement {
         this._size = normalizeString(size, {
             fallbackValue: BOXES_SIZES.default,
             validValues: BOXES_SIZES.valid
+        });
+    }
+
+    /**
+     * A list of default options that are included in the selected options listbox. This list is populated with values from the options attribute.
+     *
+     * @type {string[]}
+     * @public
+     */
+    @api
+    get value() {
+        return this._selectedValues;
+    }
+
+    set value(newValue) {
+        this.updateHighlightedOptions(newValue);
+        this._selectedValues = newValue || [];
+        if (this.isConnected) {
+            this.addRequiredOptionsToValue();
+        }
+    }
+
+    /**
+     * The variant changes the appearance of the dual listbox. Valid variants include standard, label-hidden and label-stacked. Use label-hidden to hide the label but make it available to assistive technology. Use label-stacked to place the label above the dual listbox.
+     *
+     * @type {string}
+     * @public
+     * @default standard
+     */
+    @api
+    get variant() {
+        return this._variant;
+    }
+
+    set variant(variant) {
+        this._variant = normalizeString(variant, {
+            fallbackValue: LABEL_VARIANTS.default,
+            validValues: LABEL_VARIANTS.valid
         });
     }
 
@@ -691,7 +719,7 @@ export default class DualListbox extends LightningElement {
     /**
      * Computed real DOM Id for Source List.
      *
-     * @type {string} 
+     * @type {string}
      */
     get computedSourceListId() {
         return getRealDOMId(this.template.querySelector('[data-source-list]'));
@@ -700,7 +728,7 @@ export default class DualListbox extends LightningElement {
     /**
      * Computed real DOM Id for Selected List.
      *
-     * @type {string} 
+     * @type {string}
      */
     get computedSelectedListId() {
         return getRealDOMId(
