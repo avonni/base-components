@@ -1,6 +1,7 @@
 <template>
     <div class="avonni-datatable__outer_container slds-scrollable_x">
         <div class="avonni-datatable__inner_container">
+            <!-- header datatable -->
             <c-primitive-datatable
                 data-role="header"
                 column-widths-mode={computedColumnWithsMode}
@@ -40,6 +41,7 @@
         <div
             class="avonni-datatable__inner_container avonni-datatable__inner_container_margin slds-scrollable_y"
         >
+            <!-- Group-by datatable -->
             <c-primitive-group-by-item
                 if:true={hasGroupBy}
                 computed-group-by-records={computedGroupByRecords}
@@ -80,6 +82,7 @@
                 onrowaction={handleDispatchEvents}
                 onprivateitemregister={handleChildRegister}
             ></c-primitive-group-by-item>
+            <!-- Ungrouped datatable -->
             <c-primitive-datatable
                 if:false={hasGroupBy}
                 class="slds-show"
@@ -120,6 +123,7 @@
                 onrowaction={handleDispatchEvents}
             >
             </c-primitive-datatable>
+            <!-- Summarization table -->
             <template if:true={allowSummarize}>
                 <c-primitive-summarization-table
                     computed-summarize-array={computedSummarizeArray}
@@ -131,6 +135,7 @@
             </template>
         </div>
     </div>
+    <!-- Status bar -->
     <div class="avonni-datatable__bottom-bar_styling" if:true={showStatusBar}>
         <div class="slds-grid slds-grid_align-center">
             <lightning-button

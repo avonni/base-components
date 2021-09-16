@@ -172,7 +172,6 @@ export default class Datatable extends LightningElement {
 
     privateChildrenRecord = {};
     _minimumColumnWidthArray = [];
-    _colIndex = 0;
 
     tableWidth;
 
@@ -486,26 +485,33 @@ export default class Datatable extends LightningElement {
             this.updateTableWidth();
         });
 
+        // Used to find the index of which column is being resized
+        // and to call the resizeColumn method from the primitive-datatable.
         this.template.addEventListener('resizecol', (event) => {
-            this._colIndex = event.detail.colIndex;
-            this.updateMinWidth();
+            const colIndex = event.detail.colIndex;
+            this.updateMinimumTableWidth(colIndex);
             if (this.ungroupedDatatable) {
                 this.ungroupedDatatable.handleResizeColumn(event);
             }
         });
 
+        // Used to call the handleSelectionCellClick(selectAll)
+        // method from the primitive-datatable.
         this.template.addEventListener('selectallrows', (event) => {
             if (this.ungroupedDatatable) {
                 this.ungroupedDatatable.handleSelectionCellClick(event);
             }
         });
 
+        // Used to call the handleSelectionCellClick(deselectAll)
+        // method from the primitive-datatable.
         this.template.addEventListener('deselectallrows', (event) => {
             if (this.ungroupedDatatable) {
                 this.ungroupedDatatable.handleSelectionCellClick(event);
             }
         });
 
+        // Used to get the table width from the primitive-datatable.
         this.addEventListener('tablewidthchange', (event) => {
             this.tableWidth = event.detail;
             if (this.outerContainerWidth < this.tableWidth) {
@@ -528,7 +534,7 @@ export default class Datatable extends LightningElement {
 
         if (!this.rendered) {
             this.datatableEditable();
-            this.minimumColumnWidth(0);
+            this.minimumColumnWidth();
         }
         this.rendered = true;
 
@@ -733,63 +739,7 @@ export default class Datatable extends LightningElement {
     }
 
     /**
-     * Returns the minimum width of all column combine depending on inital width, fixed width, minimum column width
-     * and when a column is resized.
-     *
-     * @type {number}
-     */
-    minimumColumnWidth() {
-        let width = [];
-        this._columns.forEach((column) => {
-            if (column.fixedWidth) {
-                width.push(column.fixedWidth);
-            } else if (column.initialWidth) {
-                width.push(column.initialWidth);
-            } else {
-                width.push(this.minColumnWidth);
-            }
-        });
-        if (this.isDatatableEditable) {
-            width.push(52);
-        }
-        if (!this.hideCheckboxColumn) {
-            width.push(32);
-        }
-        this._minimumColumnWidthArray = width;
-        this._minimumColumnWidth = width.reduce((a, b) => a + b);
-        return this._minimumColumnWidth;
-    }
-
-    updateMinWidth() {
-        if (!this._hideCheckboxColumn && this.isDatatableEditable) {
-            this._minimumColumnWidthArray.splice(
-                this._colIndex - 2,
-                1,
-                this._columnsWidth[this._colIndex - 2]
-            );
-        } else if (
-            (this._hideCheckboxColumn && this.isDatatableEditable) ||
-            (this._hideCheckboxColumn && !this.isDatatableEditable)
-        ) {
-            this._minimumColumnWidthArray.splice(
-                this._colIndex - 1,
-                1,
-                this._columnsWidth[this._colIndex - 1]
-            );
-        } else {
-            this._minimumColumnWidthArray.splice(
-                this._colIndex,
-                1,
-                this._columnsWidth[this._colIndex]
-            );
-        }
-        this._minimumColumnWidth = this._minimumColumnWidthArray.reduce(
-            (a, b) => a + b
-        );
-    }
-
-    /**
-     * Returns fixed is there is group-by.
+     * Returns fixed is there is group-by (datatables are always fixed when there is a groupBy).
      *
      * @type {string}
      */
@@ -873,6 +823,65 @@ export default class Datatable extends LightningElement {
                 ).style.paddingBottom = '33px';
             }
         }
+    }
+
+    /**
+     * Returns the minimum width of all column combine depending on inital width, fixed width, minimum column width
+     * and when a column is resized.
+     *
+     * @type {number}
+     */
+    minimumColumnWidth() {
+        let width = [];
+        this._columns.forEach((column) => {
+            if (column.fixedWidth) {
+                width.push(column.fixedWidth);
+            } else if (column.initialWidth) {
+                width.push(column.initialWidth);
+            } else {
+                width.push(this.minColumnWidth);
+            }
+        });
+        if (this.isDatatableEditable) {
+            width.push(52);
+        }
+        if (!this.hideCheckboxColumn) {
+            width.push(32);
+        }
+        this._minimumColumnWidthArray = width;
+        this._minimumColumnWidth = width.reduce((a, b) => a + b);
+        return this._minimumColumnWidth;
+    }
+
+    /**
+     * Updates the minimum width of the table depending on manual resize.
+     */
+    updateMinimumTableWidth(colIndex) {
+        if (!this._hideCheckboxColumn && this.isDatatableEditable) {
+            this._minimumColumnWidthArray.splice(
+                colIndex - 2,
+                1,
+                this._columnsWidth[colIndex - 2]
+            );
+        } else if (
+            (this._hideCheckboxColumn && this.isDatatableEditable) ||
+            (this._hideCheckboxColumn && !this.isDatatableEditable)
+        ) {
+            this._minimumColumnWidthArray.splice(
+                colIndex - 1,
+                1,
+                this._columnsWidth[colIndex - 1]
+            );
+        } else {
+            this._minimumColumnWidthArray.splice(
+                colIndex,
+                1,
+                this._columnsWidth[colIndex]
+            );
+        }
+        this._minimumColumnWidth = this._minimumColumnWidthArray.reduce(
+            (a, b) => a + b
+        );
     }
 
     /**
