@@ -826,7 +826,7 @@ export default class Scheduler extends LightningElement {
      * @type {HTMLElement}
      */
     get datatable() {
-        return this.template.querySelector('c-datatable');
+        return this.template.querySelector('c-primitive-datatable');
     }
 
     /**

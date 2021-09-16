@@ -885,35 +885,6 @@ export default class Datatable extends LightningElement {
     }
 
     /**
-     * Gets a row height.
-     *
-     * @param {string} rowKeyField The key field value of the row.
-     * @returns {number} The height of the row, in pixels.
-     * @public
-     */
-    @api
-    getRowHeight(rowKeyField) {
-        if (this.ungroupedDatatable) {
-            return this.ungroupedDatatable.getRowHeight(rowKeyField);
-        }
-        return null;
-    }
-
-    /**
-     * Sets the height of a row.
-     *
-     * @param {string} rowKeyField The key field value of the row.
-     * @param {number} height The new height of the row, in pixels.
-     * @public
-     */
-    @api
-    setRowHeight(rowKeyField, height) {
-        if (this.ungroupedDatatable) {
-            this.ungroupedDatatable.setRowHeight(rowKeyField, height);
-        }
-    }
-
-    /**
      * Dispatches events from the primitive-datatable.
      *
      * @param {event} event
