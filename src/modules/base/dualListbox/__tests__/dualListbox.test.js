@@ -92,7 +92,7 @@ describe('DualListbox', () => {
         expect(element.options).toMatchObject([]);
         expect(element.required).toBeFalsy();
         expect(element.requiredOptions).toMatchObject([]);
-        expect(element.searchEngine).toBeFalsy();
+        expect(element.allowSearch).toBeFalsy();
         expect(element.selectedLabel).toBeUndefined();
         expect(element.selectedPlaceholder).toBeUndefined();
         expect(element.maxVisibleOptions).toBe(5);
@@ -746,7 +746,7 @@ describe('DualListbox', () => {
             is: DualListbox
         });
         document.body.appendChild(element);
-        element.searchEngine = true;
+        element.allowSearch = true;
 
         return Promise.resolve().then(() => {
             const searchBox = element.shadowRoot.querySelector(

@@ -64,7 +64,7 @@ export const DualListbox = ({
     removeButtonLabel,
     required,
     requiredOptions,
-    searchEngine,
+    allowSearch,
     selectedLabel,
     selectedPlaceholder,
     size,
@@ -102,7 +102,7 @@ export const DualListbox = ({
     element.removeButtonLabel = removeButtonLabel;
     element.required = required;
     element.requiredOptions = requiredOptions;
-    element.searchEngine = searchEngine;
+    element.allowSearch = allowSearch;
     element.selectedLabel = selectedLabel;
     element.selectedPlaceholder = selectedPlaceholder;
     element.size = size;

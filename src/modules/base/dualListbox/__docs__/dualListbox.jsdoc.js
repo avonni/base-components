@@ -90,7 +90,7 @@
 /**
  * @memberof examples
  * @name languagesWithSearchEngine
- * @storyId example-dual-listbox--languages-with-search-engine
+ * @storyId example-dual-listbox--languages-with-allow-search
  */
 /**
  * @memberof examples

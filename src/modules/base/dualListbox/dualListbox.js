@@ -216,20 +216,20 @@ export default class DualListbox extends LightningElement {
 
     _requiredOptions = [];
     _options = [];
-    _hideBottomDivider = false;
+    _allowSearch = false;
     _buttonSize = BUTTON_SIZES.default;
     _buttonVariant = BUTTON_VARIANTS.default;
-    _isLoading = false;
-    _searchEngine = false;
-    _variant = LABEL_VARIANTS.default;
     _disabled;
     _disableReordering = false;
     _draggable = false;
-    _required = false;
+    _hideBottomDivider = false;
+    _isLoading = false;
+    _max;
     _maxVisibleOptions = DEFAULT_MAX_VISIBLE_OPTIONS;
     _min = DEFAULT_MIN;
-    _max;
+    _required = false;
     _size = BOXES_SIZES.default;
+    _variant = LABEL_VARIANTS.default;
 
     _selectedValues = [];
     highlightedOptions = [];
@@ -241,12 +241,13 @@ export default class DualListbox extends LightningElement {
     _upButtonDisabled = false;
     _downButtonDisabled = false;
     _oldIndex;
+    _newIndex;
+
     _sourceBoxHeight;
     _selectedBoxHeight;
 
     _dropItSelected = false;
     _dropItSource = false;
-    _newIndex;
 
     connectedCallback() {
         this.classList.add('slds-form-element');
@@ -291,6 +292,22 @@ export default class DualListbox extends LightningElement {
         }
         this.disabledButtons();
         this.updateBoxesHeight();
+    }
+
+    /**
+     * If present, a search box is added to the first listbox.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get allowSearch() {
+        return this._allowSearch;
+    }
+
+    set allowSearch(value) {
+        this._allowSearch = normalizeBoolean(value);
     }
 
     /**
@@ -566,22 +583,6 @@ export default class DualListbox extends LightningElement {
         if (this.isConnected) {
             this.addRequiredOptionsToValue();
         }
-    }
-
-    /**
-     * If present, a search box is added to the first listbox.
-     *
-     * @type {boolean}
-     * @public
-     * @default false
-     */
-    @api
-    get searchEngine() {
-        return this._searchEngine;
-    }
-
-    set searchEngine(value) {
-        this._searchEngine = normalizeBoolean(value);
     }
 
     /**
@@ -932,13 +933,13 @@ export default class DualListbox extends LightningElement {
             getListHeight(selectedOptions, this._maxVisibleOptions) +
             overSelectedHeight;
 
-        if (this.searchEngine) {
+        if (this.allowSearch) {
             if (this.computedSourceList.length > 0) {
                 this._sourceBoxHeight =
                     sourceOptionsHeight +
                     getListHeight(
                         this.template.querySelector(
-                            '.avonni-dual-listbox-search-engine'
+                            '.avonni-dual-listbox-allow-search'
                         )
                     ) +
                     overSourceHeight;
@@ -954,7 +955,7 @@ export default class DualListbox extends LightningElement {
      * @type {string}
      */
     get sourceHeight() {
-        if (this.searchEngine) {
+        if (this.allowSearch) {
             return this._selectedBoxHeight > this._sourceBoxHeight
                 ? `height: ${this._selectedBoxHeight - 48}px`
                 : `height: ${this._sourceBoxHeight}px`;
@@ -972,7 +973,7 @@ export default class DualListbox extends LightningElement {
      * @type {string}
      */
     get selectedHeight() {
-        if (this.searchEngine) {
+        if (this.allowSearch) {
             return this._selectedBoxHeight <= this._sourceBoxHeight
                 ? `height: ${this._sourceBoxHeight + 48}px`
                 : `height: ${this._selectedBoxHeight}px`;
@@ -1105,7 +1106,7 @@ export default class DualListbox extends LightningElement {
             .add({ 'slds-is-disabled': this._disabled })
             .add({
                 'avonni-dual-listbox-selected-list-with-search': this
-                    ._searchEngine
+                    ._allowSearch
             })
             .add({
                 'avonni-dual-listbox-empty-column': this.isSelectedBoxEmpty
