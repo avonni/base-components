@@ -411,6 +411,17 @@ export default {
             table: {
                 category: 'Display'
             }
+        },
+        args: {
+            enableInfiniteLoading: false,
+            hideCheckboxColumn: false,
+            hideCollapsibleIcon: false,
+            hideTableHeader: false,
+            hideUndefinedGroup: false,
+            isLoading: false,
+            resizeColumnDisabled: false,
+            showRowNumberColumn: false,
+            suppressBottomBar: false
         }
     }
 };
