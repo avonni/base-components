@@ -92,7 +92,7 @@ describe('VisualPicker', () => {
         expect(element.items).toMatchObject([]);
         expect(element.label).toBeUndefined();
         expect(element.messageWhenValueMissing).toBeUndefined();
-        expect(element.name).toBe('input-1');
+        expect(element.name).not.toBeUndefined();
         expect(element.ratio).toBe('1-by-1');
         expect(element.required).toBeFalsy();
         expect(element.size).toBe('medium');
