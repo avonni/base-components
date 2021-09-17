@@ -30,14 +30,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from '../../storybookWrappers/dynamicMenu/dynamicMenu';
+import Component from '../../storybookWrappers/dynamicMenu/dynamicMenuInGroup';
 
 customElements.define(
-    'ac-base-dynamic-menu',
+    'ac-base-dynamic-menu-in-group',
     Component.CustomElementConstructor
 );
 
-export const DynamicMenu = ({
+export const DynamicMenuInGroup = ({
     buttonSize,
     iconName,
     value,
@@ -56,7 +56,7 @@ export const DynamicMenu = ({
     disabled,
     iconSize
 }) => {
-    const element = document.createElement('ac-base-dynamic-menu');
+    const element = document.createElement('ac-base-dynamic-menu-in-group');
     element.buttonSize = buttonSize;
     element.iconName = iconName;
     element.value = value;

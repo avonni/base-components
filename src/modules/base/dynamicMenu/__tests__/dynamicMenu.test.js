@@ -78,6 +78,7 @@ describe('Dynamic Menu', () => {
             is: DynamicMenu
         });
 
+        expect(element.buttonSize).toBe('auto');
         expect(element.label).toBeUndefined();
         expect(element.iconName).toBeUndefined();
         expect(element.iconSize).toBe('medium');
@@ -98,6 +99,40 @@ describe('Dynamic Menu', () => {
 
     /* ----- ATTRIBUTES ----- */
 
+    // button-size
+    // Depends on label
+    it('Dynamic Menu buttonSize = auto', () => {
+        const element = createElement('base-dynamic-menu', {
+            is: DynamicMenu
+        });
+        document.body.appendChild(element);
+
+        element.label = 'Some label';
+        element.buttonSize = 'auto';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.classList).not.toContain('slds-button_stretch');
+            expect(element.classList).not.toContain('slds-button_stretch');
+        });
+    });
+
+    it('Dynamic Menu buttonSize = stretch', () => {
+        const element = createElement('base-dynamic-menu', {
+            is: DynamicMenu
+        });
+        document.body.appendChild(element);
+
+        element.label = 'Some label';
+        element.buttonSize = 'stretch';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.classList).toContain('slds-button_stretch');
+            expect(element.classList).toContain('slds-button_stretch');
+        });
+    });
+
     // label
     it('Dynamic Menu label', () => {
         const element = createElement('base-dynamic-menu', {
@@ -108,8 +143,9 @@ describe('Dynamic Menu', () => {
         element.label = 'This is a label';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
-            expect(button.label).toBe('This is a label');
+            const button = element.shadowRoot.querySelector('button');
+            expect(button).toBeTruthy();
+            expect(button.textContent).toBe('This is a label');
         });
     });
 
@@ -140,8 +176,9 @@ describe('Dynamic Menu', () => {
         element.iconName = 'utility:close';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
-            expect(button.iconName).toBe('utility:close');
+            const icon = element.shadowRoot.querySelector('c-primitive-icon');
+            expect(icon).toBeTruthy();
+            expect(icon.iconName).toBe('utility:close');
         });
     });
 
@@ -379,7 +416,7 @@ describe('Dynamic Menu', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('button');
             expect(button.disabled).toBeTruthy();
         });
     });
@@ -513,7 +550,7 @@ describe('Dynamic Menu', () => {
         element.title = 'This is a title text';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('button');
             expect(button.title).toBe('This is a title text');
         });
     });
@@ -564,6 +601,21 @@ describe('Dynamic Menu', () => {
                 'lightning-button-icon'
             );
             expect(button.variant).toBe('brand');
+        });
+    });
+
+    it('Dynamic Menu variant brand with label', () => {
+        const element = createElement('base-dynamic-menu', {
+            is: DynamicMenu
+        });
+        document.body.appendChild(element);
+
+        element.variant = 'brand';
+        element.label = 'Some label';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            expect(button.classList).toContain('slds-button_brand');
         });
     });
 
@@ -642,7 +694,7 @@ describe('Dynamic Menu', () => {
         element.value = '1';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('button');
             expect(button.value).toBe('1');
         });
     });
@@ -674,7 +726,7 @@ describe('Dynamic Menu', () => {
         element.accessKey = 'K';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('button');
             expect(button.accessKey).toBe('K');
         });
     });
@@ -696,9 +748,9 @@ describe('Dynamic Menu', () => {
         });
     });
 
-    /* ---- JS ----- */
+    /* ---- EVENTS ----- */
 
-    it('Dynamic Menu click on item', () => {
+    it('Dynamic Menu event: click on item', () => {
         const element = createElement('base-dynamic-menu', {
             is: DynamicMenu
         });
@@ -741,6 +793,28 @@ describe('Dynamic Menu', () => {
                 expect(handler.mock.calls[0][0].composed).toBeFalsy();
                 expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
             });
+    });
+
+    it('Dynamic Menu event: privatebuttonregister', () => {
+        const element = createElement('base-dynamic-menu', {
+            is: DynamicMenu
+        });
+
+        const handler = jest.fn();
+        element.addEventListener('privatebuttonregister', handler);
+
+        document.body.appendChild(element);
+
+        expect(handler).toHaveBeenCalled();
+        expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+        expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        expect(handler.mock.calls[0][0].canceled).toBeFalsy();
+        expect(
+            handler.mock.calls[0][0].detail.callbacks.setOrder
+        ).toBeInstanceOf(Function);
+        expect(
+            handler.mock.calls[0][0].detail.callbacks.setDeRegistrationCallback
+        ).toBeInstanceOf(Function);
     });
 
     /* ---- METHODS ----- */

@@ -30,49 +30,29 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from '../../storybookWrappers/dynamicMenu/dynamicMenu';
+import { LightningElement, api } from 'lwc';
 
-customElements.define(
-    'ac-base-dynamic-menu',
-    Component.CustomElementConstructor
-);
+const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Search…';
+const DEFAULT_BUTTON_VARIANT = 'border';
+const DEFAULT_MENU_ALIGNMENT = 'left';
+const DEFAULT_ICON_SIZE = 'medium';
 
-export const DynamicMenu = ({
-    buttonSize,
-    iconName,
-    value,
-    alternativeText,
-    loadingStateAlternativeText,
-    label,
-    withSearch,
-    accessKey,
-    title,
-    searchInputPlaceholder,
-    tooltip,
-    items,
-    isLoading,
-    variant,
-    menuAlignment,
-    disabled,
-    iconSize
-}) => {
-    const element = document.createElement('ac-base-dynamic-menu');
-    element.buttonSize = buttonSize;
-    element.iconName = iconName;
-    element.value = value;
-    element.alternativeText = alternativeText;
-    element.loadingStateAlternativeText = loadingStateAlternativeText;
-    element.label = label;
-    element.withSearch = withSearch;
-    element.accessKey = accessKey;
-    element.title = title;
-    element.searchInputPlaceholder = searchInputPlaceholder;
-    element.tooltip = tooltip;
-    element.items = items;
-    element.isLoading = isLoading;
-    element.variant = variant;
-    element.menuAlignment = menuAlignment;
-    element.disabled = disabled;
-    element.iconSize = iconSize;
-    return element;
-};
+export default class DynamicMenuInGroup extends LightningElement {
+    @api buttonSize;
+    @api iconName;
+    @api value;
+    @api alternativeText;
+    @api loadingStateAlternativeText;
+    @api label;
+    @api withSearch;
+    @api accessKey;
+    @api title;
+    @api searchInputPlaceholder = DEFAULT_SEARCH_INPUT_PLACEHOLDER;
+    @api tooltip;
+    @api items = [];
+    @api isLoading;
+    @api variant = DEFAULT_BUTTON_VARIANT;
+    @api menuAlignment = DEFAULT_MENU_ALIGNMENT;
+    @api disabled;
+    @api iconSize = DEFAULT_ICON_SIZE;
+}

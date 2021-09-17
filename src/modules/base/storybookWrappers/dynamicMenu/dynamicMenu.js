@@ -33,11 +33,12 @@
 import { LightningElement, api } from 'lwc';
 
 const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Search…';
-const DEFAULT_BUTTON_VARIANT = 'border'
-const DEFAULT_MENU_ALIGNMENT = 'left'
-const DEFAULT_ICON_SIZE = 'medium'
+const DEFAULT_BUTTON_VARIANT = 'border';
+const DEFAULT_MENU_ALIGNMENT = 'left';
+const DEFAULT_ICON_SIZE = 'medium';
 
 export default class DynamicMenu extends LightningElement {
+    @api buttonSize;
     @api iconName;
     @api value;
     @api alternativeText;
