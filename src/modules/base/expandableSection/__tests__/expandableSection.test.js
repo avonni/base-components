@@ -134,9 +134,6 @@ describe('Expandable Section', () => {
                 '.slds-section__title'
             );
             expect(header.className).toContain('slds-theme_shade');
-
-            const title = header.querySelector('span');
-            expect(title.classList).toContain('slds-p-horizontal_small');
         });
     });
 
@@ -149,9 +146,6 @@ describe('Expandable Section', () => {
                 '.slds-section__title'
             );
             expect(header.className).not.toContain('slds-theme_shade');
-
-            const title = header.querySelector('span');
-            expect(title.classList).toContain('slds-p-right_small');
         });
     });
 
