@@ -372,7 +372,6 @@ SortableList.args = {
     label: 'Sortable list',
     sortable: true,
     items: items,
-    actions: actions,
     divider: 'around'
 };
 
