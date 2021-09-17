@@ -295,10 +295,6 @@
             "path": "src/modules/base/primitiveCellSlider/primitiveCellSlider.js"
         },
         {
-            "name": "c/primitiveCollapsibleGroup",
-            "path": "src/modules/base/primitiveCollapsibleGroup/primitiveCollapsibleGroup.js"
-        },
-        {
             "name": "c/primitiveColorpickerButton",
             "path": "src/modules/base/primitiveColorpickerButton/primitiveColorpickerButton.js"
         },
@@ -313,10 +309,6 @@
         {
             "name": "c/primitiveDatatable",
             "path": "src/modules/base/primitiveDatatable/primitiveDatatable.js"
-        },
-        {
-            "name": "c/primitiveGroupByItem",
-            "path": "src/modules/base/primitiveGroupByItem/primitiveGroupByItem.js"
         },
         {
             "name": "c/primitiveCoordinateItem",
@@ -353,10 +345,6 @@
         {
             "name": "c/primitiveSelect",
             "path": "src/modules/base/primitiveSelect/primitiveSelect.js"
-        },
-        {
-            "name": "c/primitiveSummarizationTable",
-            "path": "src/modules/base/primitiveSummarizationTable/primitiveSummarizationTable.js"
         },
         {
             "name": "c/profileCard",

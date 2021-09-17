@@ -42,11 +42,8 @@ export const Datatable = ({
     draftValues,
     enableInfiniteLoading,
     errors,
-    groupBy,
     hideCheckboxColumn,
-    hideCollapsibleIcon,
     hideTableHeader,
-    hideUndefinedGroup,
     isLoading,
     keyField,
     loadMoreOffset,
@@ -71,11 +68,8 @@ export const Datatable = ({
     element.draftValues = draftValues;
     element.enableInfiniteLoading = enableInfiniteLoading;
     element.errors = errors;
-    element.groupBy = groupBy;
     element.hideCheckboxColumn = hideCheckboxColumn;
-    element.hideCollapsibleIcon = hideCollapsibleIcon;
     element.hideTableHeader = hideTableHeader;
-    element.hideUndefinedGroup = hideUndefinedGroup;
     element.isLoading = isLoading;
     element.keyField = keyField;
     element.loadMoreOffset = loadMoreOffset;

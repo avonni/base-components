@@ -31,21 +31,6 @@
  * @name datatableWithSummarizeTypes
  * @storyId example-datatable--datatable-with-summarize-types
  */
-/**
- * @memberof examples
- * @name datatableWithSummarizeTypesAndGroupBy
- * @storyId example-datatable--datatable-with-summarize-types-and-group-by
- */
-/**
- * @memberof examples
- * @name datatableWithGroupBy
- * @storyId example-datatable--datatable-with-group-by
- */
-/**
- * @memberof examples
- * @name datatableWithGroupByNoUndefined
- * @storyId example-datatable--datatable-with-group-by-no-undefined
- */
 
 /**
  * @typedef {Object} Column
