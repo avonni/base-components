@@ -266,7 +266,9 @@ describe('Scheduler', () => {
         element.columns = COLUMNS;
 
         return Promise.resolve().then(() => {
-            const datatable = element.shadowRoot.querySelector('c-datatable');
+            const datatable = element.shadowRoot.querySelector(
+                'c-primitive-datatable'
+            );
             expect(datatable.columns).toMatchObject(COLUMNS);
         });
     });
@@ -1660,7 +1662,7 @@ describe('Scheduler', () => {
         return Promise.resolve()
             .then(() => {
                 const datatable = element.shadowRoot.querySelector(
-                    'c-datatable'
+                    'c-primitive-datatable'
                 );
                 expect(datatable.resizeColumnDisabled).toBeFalsy();
 
@@ -1688,7 +1690,7 @@ describe('Scheduler', () => {
                     '.avonni-scheduler__datatable-col'
                 );
                 const datatable = element.shadowRoot.querySelector(
-                    'c-datatable'
+                    'c-primitive-datatable'
                 );
                 // The datatable will originally have a width of 0px
                 expect(datatableCol.style.width).toBe('-20px');
@@ -1706,7 +1708,7 @@ describe('Scheduler', () => {
         return Promise.resolve()
             .then(() => {
                 const datatable = element.shadowRoot.querySelector(
-                    'c-datatable'
+                    'c-primitive-datatable'
                 );
                 expect(datatable.resizeColumnDisabled).toBeTruthy();
 
@@ -1735,7 +1737,7 @@ describe('Scheduler', () => {
                     '.avonni-scheduler__datatable-col'
                 );
                 const datatable = element.shadowRoot.querySelector(
-                    'c-datatable'
+                    'c-primitive-datatable'
                 );
                 expect(datatableCol.style.width).toBeFalsy();
                 expect(datatable.style.width).toBeFalsy();
@@ -1756,8 +1758,10 @@ describe('Scheduler', () => {
             );
             expect(rows).toHaveLength(ROWS.length);
 
-            const datatable = element.shadowRoot.querySelector('c-datatable');
-            expect(datatable.records).toMatchObject(ROWS);
+            const datatable = element.shadowRoot.querySelector(
+                'c-primitive-datatable'
+            );
+            expect(datatable.data).toMatchObject(ROWS);
         });
     });
 
@@ -1770,7 +1774,9 @@ describe('Scheduler', () => {
         element.rowsKeyField = ROWS_KEY_FIELD;
 
         return Promise.resolve().then(() => {
-            const datatable = element.shadowRoot.querySelector('c-datatable');
+            const datatable = element.shadowRoot.querySelector(
+                'c-primitive-datatable'
+            );
             expect(datatable.keyField).toBe(ROWS_KEY_FIELD);
         });
     });
@@ -2192,7 +2198,7 @@ describe('Scheduler', () => {
             })
             .then(() => {
                 const datatable = element.shadowRoot.querySelector(
-                    'c-datatable'
+                    'c-primitive-datatable'
                 );
                 expect(datatable.style.width).toBe('-20px');
 

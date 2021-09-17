@@ -36,7 +36,7 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utilsPrivate';
-import { classSet, generateUniqueId } from 'c/utils';
+import { classSet, generateUUID } from 'c/utils';
 
 const ICON_POSITIONS = {
     valid: ['left', 'right'],
@@ -249,7 +249,7 @@ export default class List extends LightningElement {
     }
 
     get generateKey() {
-        return generateUniqueId();
+        return generateUUID();
     }
 
     /**
