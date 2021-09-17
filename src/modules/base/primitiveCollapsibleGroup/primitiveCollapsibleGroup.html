@@ -1,3 +1,4 @@
+<!--
 /**
  * BSD 3-Clause License
  *
@@ -29,14 +30,46 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+-->
 
-export function generateUUID() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
-        /[xy]/g,
-        function (c) {
-            var r = (Math.random() * 16) | 0,
-                v = c === 'x' ? r : (r & 0x3) | 0x8;
-            return v.toString(16);
-        }
-    );
-}
+<template>
+    <div class={sectionClass}>
+        <h3 class={sectionTitleClass} aria-level={level}>
+            <template if:false={hideCollapsibleIcon}>
+                <button
+                    class="slds-button slds-section__title-action"
+                    onclick={toggleSection}
+                >
+                    <template if:false={closed}>
+                        <lightning-icon
+                            icon-name="utility:chevrondown"
+                            size="x-small"
+                            class="slds-button__icon slds-button__icon_left"
+                        ></lightning-icon>
+                    </template>
+                    <template if:true={closed}>
+                        <lightning-icon
+                            icon-name="utility:chevronright"
+                            size="x-small"
+                            class="slds-button__icon slds-button__icon_left"
+                        ></lightning-icon>
+                    </template>
+                    <span class="slds-truncate" title={title}>
+                        {title} ({size})
+                    </span>
+                </button>
+            </template>
+            <template if:true={hideCollapsibleIcon}>
+                <span
+                    class="slds-truncate slds-p-horizontal_small"
+                    title={title}
+                >
+                    {title} ({size})
+                </span>
+            </template>
+        </h3>
+        <div class={slotSection}>
+            <slot></slot>
+        </div>
+    </div>
+</template>

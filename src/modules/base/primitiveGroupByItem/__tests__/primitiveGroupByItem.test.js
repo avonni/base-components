@@ -30,13 +30,27 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-export function generateUUID() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
-        /[xy]/g,
-        function (c) {
-            var r = (Math.random() * 16) | 0,
-                v = c === 'x' ? r : (r & 0x3) | 0x8;
-            return v.toString(16);
+import { createElement } from 'lwc';
+import PrimitiveGroupByItem from 'c/primitiveGroupByItem';
+
+let element = null;
+describe('Primitive Group By Item', () => {
+    afterEach(() => {
+        while (document.body.firstChild) {
+            document.body.removeChild(document.body.firstChild);
         }
-    );
-}
+    });
+
+    beforeEach(() => {
+        element = createElement('base-primitive-group-by-item', {
+            is: PrimitiveGroupByItem
+        });
+        document.body.appendChild(element);
+    });
+
+    it('Default attributes', () => {
+        expect(element.computedGroupByRecords).toMatchObject([]);
+        expect(element.isDatatableEditable).toBeUndefined();
+        expect(element.primitiveColumnsWidth).toMatchObject([]);
+    });
+});

@@ -30,13 +30,31 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-export function generateUUID() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
-        /[xy]/g,
-        function (c) {
-            var r = (Math.random() * 16) | 0,
-                v = c === 'x' ? r : (r & 0x3) | 0x8;
-            return v.toString(16);
-        }
-    );
+.avonni-primitive-summarization-table__text_styling {
+    color: #9e9e9e;
+    margin-right: 5px;
+}
+
+.avonni-primitive-summarization-table__display-flex_start {
+    display: flex;
+    justify-content: flex-start;
+    padding: 0.1rem 0;
+}
+
+.avonni-primitive-summarization-table__display-flex_end {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.1rem 0;
+}
+
+.avonni-primitive-summarization-table__border-top_none {
+    border-top: none;
+}
+
+.avonni-primitive-summarization-table-td_vertical-align_top {
+    vertical-align: top;
+}
+
+.avonni-primitive-summarization-table__padding_right {
+    padding-right: 35px;
 }

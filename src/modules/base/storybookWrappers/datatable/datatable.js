@@ -32,29 +32,40 @@
 
 import { LightningElement, api } from 'lwc';
 
+const DEFAULT_WIDTHS_MODE = 'fixed';
+const DEFAULT_SORT_DIRECTION = 'asc';
+const DEFAULT_LOAD_MORE_OFFSET = 20;
+const DEFAULT_MAX_COLUMN_WIDTH = 1000;
+const DEFAULT_MIN_COLUMN_WIDTH = 50;
+const DEFAULT_RESIZE_STEP = 10;
+const DEFAULT_ROW_NUMBER_OFFSET = 0;
+
 export default class Datatable extends LightningElement {
-    @api columnWidthsMode;
+    @api columnWidthsMode = DEFAULT_WIDTHS_MODE;
     @api columns;
     @api records;
-    @api defaultSortDirection;
+    @api defaultSortDirection = DEFAULT_SORT_DIRECTION;
     @api draftValues;
-    @api enableInfiniteLoading;
+    @api enableInfiniteLoading = false;
     @api errors;
-    @api hideCheckboxColumn;
-    @api hideTableHeader;
-    @api isLoading;
+    @api groupBy;
+    @api hideCheckboxColumn = false;
+    @api hideCollapsibleIcon = false;
+    @api hideTableHeader = false;
+    @api hideUndefinedGroup = false;
+    @api isLoading = false;
     @api keyField;
-    @api loadMoreOffset;
-    @api maxColumnWidth;
-    @api maxRowSelection = 10;
-    @api minColumnWidth;
+    @api loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
+    @api maxColumnWidth = DEFAULT_MAX_COLUMN_WIDTH;
+    @api maxRowSelection;
+    @api minColumnWidth = DEFAULT_MIN_COLUMN_WIDTH;
     @api renderConfig;
-    @api resizeColumnDisabled;
-    @api resizeStep;
-    @api rowNumberOffset;
+    @api resizeColumnDisabled = false;
+    @api resizeStep = DEFAULT_RESIZE_STEP;
+    @api rowNumberOffset = DEFAULT_ROW_NUMBER_OFFSET;
     @api selectedRows = [];
-    @api showRowNumberColumn;
+    @api showRowNumberColumn = false;
     @api sortedBy;
     @api sortedDirection;
-    @api suppressBottomBar;
+    @api suppressBottomBar = false;
 }

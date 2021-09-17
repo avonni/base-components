@@ -38,12 +38,14 @@ import {
     columnsOQ,
     columnsRZ,
     columnsSum,
+    columnsGroupBy,
     recordsAB,
     recordsCD,
     recordsEN,
     recordsOQ,
     recordsRZ,
-    recordsSum
+    recordsSum,
+    recordsGroupBy
 } from './data';
 
 export default {
@@ -137,6 +139,18 @@ export default {
                 category: 'Data'
             }
         },
+        groupBy: {
+            name: 'group-by',
+            control: {
+                type: 'text'
+            },
+            description:
+                'If present, the value will define how the data will be grouped.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Group by'
+            }
+        },
         hideCheckboxColumn: {
             name: 'hide-checkbox-column',
             control: {
@@ -151,6 +165,20 @@ export default {
                 category: 'Display'
             }
         },
+        hideCollapsibleIcon: {
+            name: 'hide-collapsible-icon',
+            control: {
+                type: 'boolean'
+            },
+            defaultvalue: false,
+            description:
+                'In case of group-by, if present, the section is not collapsible and the left icon is hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Group by'
+            }
+        },
         hideTableHeader: {
             name: 'hide-table-header',
             control: {
@@ -162,6 +190,20 @@ export default {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' },
                 category: 'Display'
+            }
+        },
+        hideUndefinedGroup: {
+            name: 'hide-undefined-group',
+            control: {
+                type: 'boolean'
+            },
+            defaultvalue: false,
+            description:
+                'In case of group-by, if present, hides undefined groups.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Group by'
             }
         },
         isLoading: {
@@ -369,6 +411,17 @@ export default {
             table: {
                 category: 'Display'
             }
+        },
+        args: {
+            enableInfiniteLoading: false,
+            hideCheckboxColumn: false,
+            hideCollapsibleIcon: false,
+            hideTableHeader: false,
+            hideUndefinedGroup: false,
+            isLoading: false,
+            resizeColumnDisabled: false,
+            showRowNumberColumn: false,
+            suppressBottomBar: false
         }
     }
 };
@@ -441,4 +494,32 @@ DatatableWithSummarizeTypes.args = {
     records: recordsSum,
     keyField: 'id',
     columnWidthsMode: 'auto'
+};
+
+export const DatatableWithSummarizeTypesAndGroupBy = Template.bind({});
+DatatableWithSummarizeTypesAndGroupBy.args = {
+    columns: columnsSum,
+    records: recordsSum,
+    keyField: 'id',
+    groupBy: 'badge',
+    hideCollapsibleIcon: true
+};
+
+export const DatatableWithGroupBy = Template.bind({});
+DatatableWithGroupBy.args = {
+    columns: columnsGroupBy,
+    records: recordsGroupBy,
+    keyField: 'id',
+    groupBy: ['city', 'district']
+};
+
+export const DatatableWithGroupByNoUndefined = Template.bind({});
+DatatableWithGroupByNoUndefined.args = {
+    columns: columnsGroupBy,
+    records: recordsGroupBy,
+    keyField: 'id',
+    groupBy: ['city', 'sex'],
+    hideUndefinedGroup: true,
+    hideCheckboxColumn: true,
+    resizeColumnDisabled: true
 };

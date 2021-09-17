@@ -34,6 +34,7 @@
 
 <template>
     <c-datatable
+        hide-collapsible-icon={hideCollapsibleIcon}
         column-widths-mode={columnWidthsMode}
         columns={columns}
         records={records}
@@ -41,8 +42,10 @@
         draft-values={draftValues}
         enable-infinite-loading={enableInfiniteLoading}
         errors={errors}
+        group-by={groupBy}
         hide-checkbox-column={hideCheckboxColumn}
         hide-table-header={hideTableHeader}
+        hide-undefined-group={hideUndefinedGroup}
         is-loading={isLoading}
         key-field={keyField}
         load-more-offset={loadMoreOffset}
