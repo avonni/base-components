@@ -278,7 +278,7 @@ export default class InputRichText extends LightningElement {
     }
 
     set value(value) {
-        if (typeof value == 'string' && this.internalValue !== value) {
+        if (value && typeof value == 'string' && this.internalValue !== value) {
             this.internalValue = inputRichTextLibrary.cleanInput(value);
 
             if (!this.internalValue) {

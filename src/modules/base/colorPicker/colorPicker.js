@@ -41,7 +41,7 @@ import {
 } from 'c/utilsPrivate';
 
 import { classSet } from 'c/utils';
-import { generateUniqueId } from 'c/utils';
+import { generateUUID } from 'c/utils';
 
 const validVariants = {
     valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'],
@@ -196,7 +196,7 @@ export default class ColorPicker extends LightningElement {
 
     connectedCallback() {
         if (!this.name) {
-            this.name = generateUniqueId();
+            this.name = generateUUID();
         }
     }
 
@@ -475,7 +475,7 @@ export default class ColorPicker extends LightningElement {
     }
 
     get uniqueKey() {
-        return generateUniqueId();
+        return generateUUID();
     }
 
     /**

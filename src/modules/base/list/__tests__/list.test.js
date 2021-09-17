@@ -375,7 +375,9 @@ describe('List', () => {
 
             // Item is clicked on
             items[1].dispatchEvent(new CustomEvent('mousedown'));
-            expect(items[1].classList).not.toContain('sortable-item_dragged');
+            expect(items[1].classList).not.toContain(
+                'avonni-list__item-sortable_dragged'
+            );
         });
     });
 
@@ -404,13 +406,17 @@ describe('List', () => {
 
             // Item is clicked on
             items[1].dispatchEvent(new CustomEvent('mousedown'));
-            expect(items[1].classList).not.toContain('sortable-item_dragged');
+            expect(items[1].classList).not.toContain(
+                'avonni-list__item-sortable_dragged'
+            );
 
-            // The sortable-item_dragged is added the selected item moved, then removed when the item is released.
+            // The avonni-list__item-sortable_dragged is added the selected item moved, then removed when the item is released.
 
             // Item is dropped
             items[1].dispatchEvent(new CustomEvent('mouseup'));
-            expect(items[1].classList).not.toContain('sortable-item_dragged');
+            expect(items[1].classList).not.toContain(
+                'avonni-list__item-sortable_dragged'
+            );
         });
     });
 
@@ -618,7 +624,9 @@ describe('List', () => {
 
             items[2].dispatchEvent(new CustomEvent('mousedown'));
             element.reset();
-            expect(items[2].classList).not.toContain('sortable-item_dragged');
+            expect(items[2].classList).not.toContain(
+                'avonni-list__item-sortable_dragged'
+            );
         });
     });
 

@@ -35,7 +35,7 @@ import {
     normalizeBoolean,
     generateColors
 } from 'c/utilsPrivate';
-import { generateUniqueId } from 'c/utils';
+import { generateUUID } from 'c/utils';
 
 const DEFAULT_COLORS = [
     '#e3abec',
@@ -254,7 +254,7 @@ export default class ColorPalette extends LightningElement {
      * Generate unique Key ID.
      */
     get uniqKey() {
-        return generateUniqueId();
+        return generateUUID();
     }
 
     get isBase() {

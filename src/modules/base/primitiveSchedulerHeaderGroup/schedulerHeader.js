@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { generateUniqueId } from 'c/utils';
+import { generateUUID } from 'c/utils';
 import { DateTime } from 'c/luxon';
 import {
     dateTimeObjectFrom,
@@ -89,7 +89,7 @@ export default class SchedulerHeader {
         this.duration = props.duration;
         this.isHidden = props.isHidden;
         this.isReference = props.isReference;
-        this.key = generateUniqueId();
+        this.key = generateUUID();
         this.label = props.label;
         this.numberOfColumns = props.numberOfColumns;
         this.span = props.span;

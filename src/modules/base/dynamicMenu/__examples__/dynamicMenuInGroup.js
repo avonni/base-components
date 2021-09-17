@@ -30,13 +30,49 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-export function generateUUID() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
-        /[xy]/g,
-        function (c) {
-            var r = (Math.random() * 16) | 0,
-                v = c === 'x' ? r : (r & 0x3) | 0x8;
-            return v.toString(16);
-        }
-    );
-}
+import Component from '../../storybookWrappers/dynamicMenu/dynamicMenuInGroup';
+
+customElements.define(
+    'ac-base-dynamic-menu-in-group',
+    Component.CustomElementConstructor
+);
+
+export const DynamicMenuInGroup = ({
+    buttonSize,
+    iconName,
+    value,
+    alternativeText,
+    loadingStateAlternativeText,
+    label,
+    withSearch,
+    accessKey,
+    title,
+    searchInputPlaceholder,
+    tooltip,
+    items,
+    isLoading,
+    variant,
+    menuAlignment,
+    disabled,
+    iconSize
+}) => {
+    const element = document.createElement('ac-base-dynamic-menu-in-group');
+    element.buttonSize = buttonSize;
+    element.iconName = iconName;
+    element.value = value;
+    element.alternativeText = alternativeText;
+    element.loadingStateAlternativeText = loadingStateAlternativeText;
+    element.label = label;
+    element.withSearch = withSearch;
+    element.accessKey = accessKey;
+    element.title = title;
+    element.searchInputPlaceholder = searchInputPlaceholder;
+    element.tooltip = tooltip;
+    element.items = items;
+    element.isLoading = isLoading;
+    element.variant = variant;
+    element.menuAlignment = menuAlignment;
+    element.disabled = disabled;
+    element.iconSize = iconSize;
+    return element;
+};

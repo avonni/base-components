@@ -63,6 +63,11 @@
  */
 /**
  * @memberof examples
+ * @name stretched
+ * @storyId example-dynamic-menu--stretched
+ */
+/**
+ * @memberof examples
  * @name borderFilled
  * @storyId example-dynamic-menu--border-filled
  */
@@ -80,4 +85,9 @@
  * @memberof examples
  * @name container
  * @storyId example-dynamic-menu--container
+ */
+/**
+ * @memberof examples
+ * @name inButtonGroup
+ * @storyId example-dynamic-menu--in-button-group
  */
