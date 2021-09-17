@@ -170,21 +170,6 @@ export default class ExpandableSection extends LightningElement {
     }
 
     /**
-     * Computed list of the title classes, when the section is not collapsible.
-     *
-     * @type {string}
-     * @default slds-truncate
-     */
-    get titleClass() {
-        return classSet('slds-truncate')
-            .add({
-                'slds-p-horizontal_small': this.variant === 'shaded',
-                'slds-p-right_small': this.variant === 'base'
-            })
-            .toString();
-    }
-
-    /**
      * If true, the header is visible.
      *
      * @type {boolean}

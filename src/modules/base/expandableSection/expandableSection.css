@@ -39,3 +39,14 @@
 .avonni-expandable-section__title-button_base:focus {
     background-color: var(--lwc-colorBackgroundAlt, #ffffff);
 }
+
+.avonni-expandable-section__title {
+    padding-left: var(
+        --avonni-expandable-section-header-spacing-block-start,
+        0.75rem
+    );
+    padding-right: var(
+        --avonni-expandable-section-header-spacing-block-end,
+        0.75rem
+    );
+}

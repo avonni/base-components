@@ -55,7 +55,11 @@
                 </button>
             </template>
             <template if:false={collapsible}>
-                <span class={titleClass} title={title}>{title}</span>
+                <span
+                    class="slds-truncate avonni-expandable-section__title"
+                    title={title}
+                    >{title}</span
+                >
             </template>
         </h3>
         <div class="slds-section__content">
