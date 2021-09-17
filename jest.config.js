@@ -6,7 +6,7 @@ module.exports = {
     moduleNameMapper: {
         '^lightning/(.+)$': '<rootDir>/jest-mock/components/lightning/$1/$1',
         '^c/(confetti)$': '<rootDir>/jest-mock/components/base/$1/$1',
-        '^c/(datatable)$': '<rootDir>/jest-mock/components/base/$1/$1',
+        '^c/(primitiveDatatable)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(inputDateRange)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(inputRichText)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(primitiveSchedulerHeaderGroup)$':
