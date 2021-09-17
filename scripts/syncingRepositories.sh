@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 # Full path to base-components modules as exemple: (/Users/Documents/AVONNI/base-components/src/modules): 
-baseComponentsPath="/Users/alex/Documents/AVONNI/base-components/src/modules"
+baseComponentsPath="/Users/jeanbaptisteverge/Documents/AvonniProjects/avonni-components/src/modules"
 
 # Full path to base-components-sfdx modules as exemple: (/Users/Documents/AVONNI/base-components-sfdx/src/modules): 
-baseComponentsSfdxPath="/Users/alex/Documents/AVONNI/base-components-sfdx/src/modules"
+baseComponentsSfdxPath="/Users/jeanbaptisteverge/Documents/AvonniProjects/base-components-sfdx/src/modules"
 
 containsElement () {
   local e match="$1"
@@ -96,6 +96,7 @@ do
         "inputUtils"
         "internationalizationLibrary"
         "iso8601Utils"
+        "luxon"
         "utils"
         "utilsPrivate"
         "tooltipLibrary"
