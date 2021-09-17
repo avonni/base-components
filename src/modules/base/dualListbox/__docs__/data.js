@@ -196,52 +196,52 @@ export const OptionsWithGroups = [
     {
         value: '1',
         label: 'Option 1',
-        groups: ['closed']
+        groupName: 'closed'
     },
     {
         value: '2',
         label: 'Option 2',
-        groups: ['closed']
+        groupName: 'closed'
     },
     {
         value: '3',
         label: 'Option 3',
-        groups: ['closed']
+        groupName: 'closed'
     },
     {
         value: '4',
         label: 'Option 4',
-        groups: ['closed']
+        groupName: 'closed'
     },
     {
         value: '5',
         label: 'Option 5',
-        groups: ['closed']
+        groupName: 'closed'
     },
     {
         value: '6',
         label: 'Option 6',
-        groups: ['won']
+        groupName: 'won'
     },
     {
         value: '7',
         label: 'Option 7',
-        groups: ['won']
+        groupName: 'won'
     },
     {
         value: '8',
         label: 'Option 8',
-        groups: ['won']
+        groupName: 'won'
     },
     {
         value: '9',
         label: 'Option 9',
-        groups: ['won']
+        groupName: 'won'
     },
     {
         value: '10',
         label: 'Option 10',
-        groups: ['won']
+        groupName: 'won'
     }
 ];
 

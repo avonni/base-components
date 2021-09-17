@@ -319,10 +319,6 @@
             "path": "src/modules/base/primitiveDropdownMenu/primitiveDropdownMenu.js"
         },
         {
-            "name": "c/primitiveDualListboxGroup",
-            "path": "src/modules/base/primitiveDualListboxGroup/primitiveDualListboxGroup.js"
-        },
-        {
             "name": "c/primitiveIcon",
             "path": "src/modules/base/primitiveIcon/primitiveIcon.js"
         },

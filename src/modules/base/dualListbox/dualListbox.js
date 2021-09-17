@@ -39,7 +39,7 @@ import {
     getRealDOMId,
     getListHeight
 } from 'c/utilsPrivate';
-import { classSet, formatLabel } from 'c/utils';
+import { classSet, formatLabel, generateUUID } from 'c/utils';
 import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 import { handleKeyDownOnOption } from './keyboard';
 
@@ -49,6 +49,7 @@ const DEFAULT_DOWN_BUTTON_ICON_NAME = 'utility:down';
 const DEFAULT_REMOVE_BUTTON_ICON_NAME = 'utility:left';
 const DEFAULT_UP_BUTTON_ICON_NAME = 'utility:up';
 const DEFAULT_MAX_VISIBLE_OPTIONS = 5;
+const DEFAULT_GROUP_NAME = 'ungrouped';
 
 const LABEL_VARIANTS = {
     valid: ['standard', 'label-hidden', 'label-stacked'],
@@ -222,6 +223,7 @@ export default class DualListbox extends LightningElement {
     _disabled;
     _disableReordering = false;
     _draggable = false;
+    _groups = [{ name: DEFAULT_GROUP_NAME }];
     _hideBottomDivider = false;
     _isLoading = false;
     _max;
@@ -248,6 +250,9 @@ export default class DualListbox extends LightningElement {
 
     _dropItSelected = false;
     _dropItSource = false;
+
+    _computedSourceGroups = [];
+    _computedSelectedGroups = [];
 
     connectedCallback() {
         this.classList.add('slds-form-element');
@@ -292,6 +297,13 @@ export default class DualListbox extends LightningElement {
         }
         this.disabledButtons();
         this.updateBoxesHeight();
+        if (this.hasGroups) {
+            this.computeSourceGroups();
+            this.computeSelectedGroups();
+        }
+
+        console.log(this.computedSelectedGroups);
+        console.log(this.computedSourceGroups);
     }
 
     /**
@@ -762,6 +774,10 @@ export default class DualListbox extends LightningElement {
      */
     get ariaDisabled() {
         return String(this.disabled);
+    }
+
+    get generateKey() {
+        return generateUUID();
     }
 
     /**
@@ -1821,5 +1837,138 @@ export default class DualListbox extends LightningElement {
     handleDragOver(event) {
         event.preventDefault();
         this._newIndex = Number(event.target.getAttribute('data-index'));
+    }
+
+    /**
+     * Computing the selected groups.
+     */
+    computeSourceGroups() {
+        const computedSourceGroups = [];
+
+        // For each visible option
+        this.computedSourceList.forEach((option) => {
+            const optionGroups = option.groups;
+            if (optionGroups.length && this.groups.length > 1) {
+                // For each group of the option
+                optionGroups.forEach((name) => {
+                    this.groupOption({
+                        groups: computedSourceGroups,
+                        name,
+                        option
+                    });
+                });
+            } else {
+                // If the option does not have groups,
+                // push the option in the default group
+                this.groupOption({
+                    groups: computedSourceGroups,
+                    option,
+                    name: DEFAULT_GROUP_NAME
+                });
+            }
+        });
+
+        this.sortGroups(computedSourceGroups);
+        this.computedSourceGroups = computedSourceGroups;
+    }
+
+    /**
+     * Computing the selected groups.
+     */
+    computeSelectedGroups() {
+        const computedSelectedGroups = [];
+
+        // For each visible option
+        this.computedSelectedList.forEach((option) => {
+            const optionGroups = option.groups;
+            if (optionGroups.length && this.groups.length > 1) {
+                // For each group of the option
+                optionGroups.forEach((name) => {
+                    this.groupOption({
+                        groups: computedSelectedGroups,
+                        name,
+                        option
+                    });
+                });
+            } else {
+                // If the option does not have groups,
+                // push the option in the default group
+                this.groupOption({
+                    groups: computedSelectedGroups,
+                    option,
+                    name: DEFAULT_GROUP_NAME
+                });
+            }
+        });
+
+        this.sortGroups(computedSelectedGroups);
+        this.computedSelectedGroups = computedSelectedGroups;
+    }
+
+    /**
+     * Finds a group based on its name, and adds an option to its list.
+     * Takes an object with three keys as an argument.
+     *
+     * @param {array} groups Array of the groups.
+     * @param {object} option (optional) The option we want to push in the group. If provided, when the group is found, the option will be added to its options.
+     * @param {string} name The name of the group the option belongs to.
+     *
+     * @returns {array} The children groups of the group that was selected.
+     */
+
+    // The rule is disabled, because the default "return" is to call the function again
+    // eslint-disable-next-line consistent-return
+    groupOption(params) {
+        const { groups, option, name } = params;
+        const computedGroup = groups.find((grp) => grp.name === name);
+
+        if (computedGroup) {
+            // If the group already exists, push the new option in the list
+            if (option) computedGroup.options.push(option);
+            return computedGroup.groups;
+        }
+
+        // If the group does not exist yet but is in the global groups list,
+        // create a new group
+        const group = this.groups.find((grp) => {
+            return grp.name === name;
+        });
+        if (group) {
+            const newGroup = {
+                label: group.label,
+                name: name,
+                options: option ? [option] : []
+            };
+            groups.push(newGroup);
+
+            // If we just added the default group, move it up to the first entry
+            if (name === DEFAULT_GROUP_NAME) this.sortGroups(groups);
+
+            return newGroup.groups;
+        }
+        // If the group is not in the global groups list,
+        // push the option in the default group
+        this.groupOption({
+            groups,
+            option,
+            name: DEFAULT_GROUP_NAME
+        });
+    }
+
+    /**
+     * Move the default group at the top.
+     */
+    sortGroups(groups) {
+        const defaultGroupIndex = groups.findIndex(
+            (group) => group.name === DEFAULT_GROUP_NAME
+        );
+        if (defaultGroupIndex > -1) {
+            const defaultGroup = groups.splice(defaultGroupIndex, 1)[0];
+            groups.unshift(defaultGroup);
+        }
+    }
+
+    get hasGroups() {
+        return this.groups.length > 1;
     }
 }
