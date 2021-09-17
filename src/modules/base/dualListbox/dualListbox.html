@@ -75,101 +75,40 @@
                         ondragover={handleDragOverSource}
                         ondragleave={handleDragLeaveSource}
                     >
-                        <template if:true={hasGroups}>
+                        <ul
+                            data-source-list
+                            id="source-list"
+                            aria-describedby="keyboard-interacton"
+                            aria-labelledby="source-list-label"
+                            aria-multiselectable="true"
+                            class="slds-listbox slds-listbox_vertical source-list"
+                            role="listbox"
+                            aria-disabled={ariaDisabled}
+                        >
                             <template
                                 for:each={computedSourceGroups}
                                 for:item="group"
                             >
-                                <ul
-                                    role="group"
-                                    aria-label={group.label}
+                                <div
+                                    if:true={group.label}
                                     key={generateKey}
+                                    role="presentation"
+                                    class="slds-listbox__item dual-listbox__group-title"
                                 >
-                                    <li
-                                        if:true={group.label}
+                                    <div
+                                        class="slds-media slds-listbox__option slds-media_small"
                                         role="presentation"
-                                        class="slds-listbox__item dual-listbox__group-title"
                                     >
-                                        <div
-                                            class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small"
+                                        <h3
+                                            class="slds-listbox__option-header slds-p-around_x-small slds-text-color_default"
                                             role="presentation"
                                         >
-                                            <h3
-                                                class="slds-listbox__option-header slds-p-around_x-small slds-text-color_default"
-                                                role="presentation"
-                                            >
-                                                {group.label}
-                                            </h3>
-                                        </div>
-                                    </li>
-                                    <template
-                                        for:each={group.options}
-                                        for:item="option"
-                                        for:index="index"
-                                    >
-                                        <li
-                                            key={option.value}
-                                            role="presentation"
-                                            class={computedListItemClass}
-                                            data-role="source"
-                                        >
-                                            <div
-                                                class={option.classList}
-                                                aria-selected={option.selected}
-                                                role="option"
-                                                tabindex={option.tabIndex}
-                                                data-index={index}
-                                                data-value={option.value}
-                                                data-type={computedSourceListId}
-                                                onclick={handleOptionClick}
-                                                onkeydown={handleOptionKeyDown}
-                                                draggable={draggable}
-                                                ondragstart={handleDragStartSource}
-                                                ondragend={handleDragEndSource}
-                                            >
-                                                <div class="slds-media__figure">
-                                                    <!-- <c-avatar
-                                                        fallback-icon-name={option.iconName}
-                                                        src={option.src}
-                                                        initials={option.initials}
-                                                        size={option.iconSize}
-                                                        variant={option.variant}
-                                                        primary-text={option.primaryText}
-                                                        secondary-text={option.secondaryText}
-                                                    ></c-avatar> -->
-                                                </div>
-                                                <template
-                                                    if:false={option.description}
-                                                >
-                                                    <span
-                                                        class="slds-media__body"
-                                                    >
-                                                        <span
-                                                            class="slds-truncate"
-                                                            title={option.label}
-                                                            >{option.label}</span
-                                                        >
-                                                    </span>
-                                                </template>
-                                            </div>
-                                        </li>
-                                    </template>
-                                </ul>
-                            </template>
-                        </template>
-                        <template if:false={hasGroups}>
-                            <ul
-                                data-source-list
-                                id="source-list"
-                                aria-describedby="keyboard-interacton"
-                                aria-labelledby="source-list-label"
-                                aria-multiselectable="true"
-                                class="slds-listbox slds-listbox_vertical source-list"
-                                role="listbox"
-                                aria-disabled={ariaDisabled}
-                            >
+                                            {group.label}
+                                        </h3>
+                                    </div>
+                                </div>
                                 <template
-                                    for:each={computedSourceList}
+                                    for:each={group.options}
                                     for:item="option"
                                     for:index="index"
                                 >
@@ -218,8 +157,8 @@
                                         </div>
                                     </li>
                                 </template>
-                            </ul>
-                        </template>
+                            </template>
+                        </ul>
                         <div if:true={isLoading}>
                             <lightning-spinner
                                 size="small"
@@ -267,115 +206,40 @@
                         ondragover={handleDragOverSelected}
                         ondragleave={handleDragLeaveSelected}
                     >
-                        <template if:true={hasGroups}>
+                        <ul
+                            data-selected-list
+                            id="selected-list"
+                            aria-describedby="keyboard-interacton"
+                            aria-labelledby="selected-list-label"
+                            aria-multiselectable="true"
+                            class="slds-listbox slds-listbox_vertical"
+                            role="listbox"
+                            aria-disabled={ariaDisabled}
+                        >
                             <template
                                 for:each={computedSelectedGroups}
                                 for:item="group"
                             >
-                                <ul
-                                    role="group"
-                                    aria-label={group.label}
+                                <div
+                                    if:true={group.label}
                                     key={generateKey}
+                                    role="presentation"
+                                    class="slds-listbox__item dual-listbox__group-title"
                                 >
-                                    <li
-                                        if:true={group.label}
+                                    <div
+                                        class="slds-media slds-listbox__option slds-media_small"
                                         role="presentation"
-                                        class="slds-listbox__item dual-listbox__group-title"
                                     >
-                                        <div
-                                            class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small"
+                                        <h3
+                                            class="slds-listbox__option-header slds-p-around_x-small slds-text-color_default"
                                             role="presentation"
                                         >
-                                            <h3
-                                                class="slds-listbox__option-header slds-p-around_x-small slds-text-color_default"
-                                                role="presentation"
-                                            >
-                                                {group.label}
-                                            </h3>
-                                        </div>
-                                    </li>
-                                    <template
-                                        for:each={group.options}
-                                        for:item="option"
-                                        for:index="index"
-                                    >
-                                        <li
-                                            key={option.value}
-                                            role="presentation"
-                                            class={computedListItemClass}
-                                            data-role="selected"
-                                        >
-                                            <div
-                                                class={option.classList}
-                                                aria-selected={option.selected}
-                                                role="option"
-                                                tabindex={option.tabIndex}
-                                                data-index={index}
-                                                data-value={option.value}
-                                                data-type={computedSelectedListId}
-                                                onclick={handleOptionClick}
-                                                onkeydown={handleOptionKeyDown}
-                                                draggable={draggable}
-                                                ondragstart={handleDragStartSelected}
-                                                ondragend={handleDragEndSelected}
-                                                ondragover={handleDragOver}
-                                            >
-                                                <div class="slds-media__figure">
-                                                    <c-avatar
-                                                        fallback-icon-name={option.iconName}
-                                                        src={option.src}
-                                                        initials={option.initials}
-                                                        size={option.iconSize}
-                                                        variant={option.variant}
-                                                        primary-text={option.primaryText}
-                                                        secondary-text={option.secondaryText}
-                                                    ></c-avatar>
-                                                </div>
-                                                <template
-                                                    if:false={option.description}
-                                                >
-                                                    <span
-                                                        class="slds-media__body"
-                                                    >
-                                                        <span
-                                                            class="slds-truncate"
-                                                            title={option.label}
-                                                            >{option.label}</span
-                                                        >
-                                                    </span>
-                                                </template>
-                                                <template
-                                                    if:true={option.isLocked}
-                                                >
-                                                    <span
-                                                        class="slds-media__figure slds-media__figure_reverse"
-                                                    >
-                                                        <lightning-icon
-                                                            icon-name="utility:lock"
-                                                            size="x-small"
-                                                            alternative-text={computedLockAssistiveText}
-                                                        ></lightning-icon>
-                                                    </span>
-                                                </template>
-                                            </div>
-                                        </li>
-                                    </template>
-                                </ul>
-                            </template>
-                        </template>
-                        <template if:false={hasGroups}>
-                            <ul
-                                data-selected-list
-                                id="selected-list"
-                                aria-describedby="keyboard-interacton"
-                                aria-labelledby="selected-list-label"
-                                aria-multiselectable="true"
-                                class="slds-listbox slds-listbox_vertical"
-                                role="listbox"
-                                aria-disabled={ariaDisabled}
-                            >
+                                            {group.label}
+                                        </h3>
+                                    </div>
+                                </div>
                                 <template
-                                    for:each={computedSelectedList}
+                                    for:each={group.options}
                                     for:item="option"
                                     for:index="index"
                                 >
@@ -436,8 +300,8 @@
                                         </div>
                                     </li>
                                 </template>
-                            </ul>
-                        </template>
+                            </template>
+                        </ul>
                         <template if:true={isSelectedBoxEmpty}>
                             <span>{selectedPlaceholder}</span>
                         </template>

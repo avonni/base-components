@@ -297,13 +297,6 @@ export default class DualListbox extends LightningElement {
         }
         this.disabledButtons();
         this.updateBoxesHeight();
-        if (this.hasGroups) {
-            this.computeSourceGroups();
-            this.computeSelectedGroups();
-        }
-
-        console.log(this.computedSelectedGroups);
-        console.log(this.computedSourceGroups);
     }
 
     /**
@@ -750,24 +743,6 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * Computed Source Listbox.
-     *
-     * @type {Element}
-     */
-    get computedSourceListbox() {
-        return this.template.querySelector('[data-source-list]');
-    }
-
-    /**
-     * Computed Selected Listbox.
-     *
-     * @type {Element}
-     */
-    get computedSelectedListbox() {
-        return this.template.querySelector('[data-selected-list]');
-    }
-
-    /**
      * Get Aria Disabled.
      *
      * @type {string}
@@ -847,6 +822,14 @@ export default class DualListbox extends LightningElement {
             selectedListOptions,
             this.focusableInSelected
         );
+    }
+
+    get computedSourceGroups() {
+        return this.groupByName(this.computedSourceList, 'groupName');
+    }
+
+    get computedSelectedGroups() {
+        return this.groupByName(this.computedSelectedList, 'groupName');
     }
 
     /**
@@ -1840,135 +1823,32 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * Computing the selected groups.
-     */
-    computeSourceGroups() {
-        const computedSourceGroups = [];
-
-        // For each visible option
-        this.computedSourceList.forEach((option) => {
-            const optionGroups = option.groups;
-            if (optionGroups.length && this.groups.length > 1) {
-                // For each group of the option
-                optionGroups.forEach((name) => {
-                    this.groupOption({
-                        groups: computedSourceGroups,
-                        name,
-                        option
-                    });
-                });
-            } else {
-                // If the option does not have groups,
-                // push the option in the default group
-                this.groupOption({
-                    groups: computedSourceGroups,
-                    option,
-                    name: DEFAULT_GROUP_NAME
-                });
-            }
-        });
-
-        this.sortGroups(computedSourceGroups);
-        this.computedSourceGroups = computedSourceGroups;
-    }
-
-    /**
-     * Computing the selected groups.
-     */
-    computeSelectedGroups() {
-        const computedSelectedGroups = [];
-
-        // For each visible option
-        this.computedSelectedList.forEach((option) => {
-            const optionGroups = option.groups;
-            if (optionGroups.length && this.groups.length > 1) {
-                // For each group of the option
-                optionGroups.forEach((name) => {
-                    this.groupOption({
-                        groups: computedSelectedGroups,
-                        name,
-                        option
-                    });
-                });
-            } else {
-                // If the option does not have groups,
-                // push the option in the default group
-                this.groupOption({
-                    groups: computedSelectedGroups,
-                    option,
-                    name: DEFAULT_GROUP_NAME
-                });
-            }
-        });
-
-        this.sortGroups(computedSelectedGroups);
-        this.computedSelectedGroups = computedSelectedGroups;
-    }
-
-    /**
-     * Finds a group based on its name, and adds an option to its list.
-     * Takes an object with three keys as an argument.
-     *
-     * @param {array} groups Array of the groups.
-     * @param {object} option (optional) The option we want to push in the group. If provided, when the group is found, the option will be added to its options.
-     * @param {string} name The name of the group the option belongs to.
-     *
-     * @returns {array} The children groups of the group that was selected.
-     */
-
-    // The rule is disabled, because the default "return" is to call the function again
-    // eslint-disable-next-line consistent-return
-    groupOption(params) {
-        const { groups, option, name } = params;
-        const computedGroup = groups.find((grp) => grp.name === name);
-
-        if (computedGroup) {
-            // If the group already exists, push the new option in the list
-            if (option) computedGroup.options.push(option);
-            return computedGroup.groups;
-        }
-
-        // If the group does not exist yet but is in the global groups list,
-        // create a new group
-        const group = this.groups.find((grp) => {
-            return grp.name === name;
-        });
-        if (group) {
-            const newGroup = {
-                label: group.label,
-                name: name,
-                options: option ? [option] : []
-            };
-            groups.push(newGroup);
-
-            // If we just added the default group, move it up to the first entry
-            if (name === DEFAULT_GROUP_NAME) this.sortGroups(groups);
-
-            return newGroup.groups;
-        }
-        // If the group is not in the global groups list,
-        // push the option in the default group
-        this.groupOption({
-            groups,
-            option,
-            name: DEFAULT_GROUP_NAME
-        });
-    }
-
-    /**
      * Move the default group at the top.
      */
     sortGroups(groups) {
         const defaultGroupIndex = groups.findIndex(
-            (group) => group.name === DEFAULT_GROUP_NAME
+            (group) => group.label === undefined
         );
         if (defaultGroupIndex > -1) {
             const defaultGroup = groups.splice(defaultGroupIndex, 1)[0];
             groups.unshift(defaultGroup);
         }
+        return groups;
     }
 
-    get hasGroups() {
-        return this.groups.length > 1;
+    groupByName(arr, field) {
+        return this.sortGroups(
+            Object.values(
+                arr.reduce((obj, current) => {
+                    if (!obj[current[field]])
+                        obj[current[field]] = {
+                            label: current[field],
+                            options: []
+                        };
+                    obj[current[field]].options.push(current);
+                    return obj;
+                }, [])
+            )
+        );
     }
 }

@@ -225,8 +225,8 @@ export const OptionsWithGroups = [
     },
     {
         value: '7',
-        label: 'Option 7',
-        groupName: 'won'
+        label: 'Option 7'
+        // groupName: 'won'
     },
     {
         value: '8',
