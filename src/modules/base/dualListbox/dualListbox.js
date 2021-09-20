@@ -1888,6 +1888,9 @@ export default class DualListbox extends LightningElement {
         );
     }
 
+    /**
+     * Sets the data-index attribute of each option.
+     */
     setOptionIndexes() {
         const sourceBox = this.template.querySelector('[data-source-list]');
         sourceBox
