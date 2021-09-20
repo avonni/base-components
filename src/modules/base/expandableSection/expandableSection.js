@@ -149,7 +149,13 @@ export default class ExpandableSection extends LightningElement {
         return classSet('slds-section__title')
             .add({
                 'slds-theme_shade':
-                    !this.collapsible && this.variant === 'shaded'
+                    !this.collapsible && this.variant === 'shaded',
+                'avonni-expandable-section__header_shaded':
+                    this.variant === 'shaded',
+                'avonni-expandable-section__header_base':
+                    this.variant === 'base',
+                'avonni-expandable-section__header_collapsible': this
+                    .collapsible
             })
             .toString();
     }
