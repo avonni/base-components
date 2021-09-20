@@ -36,8 +36,7 @@ import {
     OptionsWithAvatar,
     OptionsWithAvatarSrc,
     Options,
-    OptionsWithGroups,
-    Groups
+    OptionsWithGroups
 } from './data';
 
 export default {
@@ -183,16 +182,6 @@ export default {
                 'Help text detailing the purpose and function of the dual listbox.',
             table: {
                 type: { summary: 'string' }
-            }
-        },
-        groups: {
-            control: {
-                type: 'object'
-            },
-            description:
-                'Array of group objects. The groups are used to separate the options inside the listboxes.',
-            table: {
-                type: { summary: 'object[]' }
             }
         },
         hideBottomDivider: {
@@ -505,10 +494,9 @@ BaseWithGroups.args = {
     downButtonLabel: 'Down Button Label',
     upButtonLabel: 'Up Button Label',
     options: OptionsWithGroups,
-    value: ['3', '2', '4', '5', '6'],
+    value: ['B', '3', '2', '4', '5', '6'],
     draggable: true,
-    hideBottomDivider: true,
-    groups: Groups
+    hideBottomDivider: true
 };
 
 export const BaseSmall = Template.bind({});

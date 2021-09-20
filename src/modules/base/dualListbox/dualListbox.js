@@ -34,7 +34,6 @@ import { LightningElement, api } from 'lwc';
 import {
     normalizeBoolean,
     normalizeString,
-    normalizeArray,
     assert,
     getRealDOMId,
     getListHeight
@@ -49,7 +48,6 @@ const DEFAULT_DOWN_BUTTON_ICON_NAME = 'utility:down';
 const DEFAULT_REMOVE_BUTTON_ICON_NAME = 'utility:left';
 const DEFAULT_UP_BUTTON_ICON_NAME = 'utility:up';
 const DEFAULT_MAX_VISIBLE_OPTIONS = 5;
-const DEFAULT_GROUP_NAME = 'ungrouped';
 
 const LABEL_VARIANTS = {
     valid: ['standard', 'label-hidden', 'label-stacked'],
@@ -223,7 +221,6 @@ export default class DualListbox extends LightningElement {
     _disabled;
     _disableReordering = false;
     _draggable = false;
-    _groups = [{ name: DEFAULT_GROUP_NAME }];
     _hideBottomDivider = false;
     _isLoading = false;
     _max;
@@ -399,20 +396,6 @@ export default class DualListbox extends LightningElement {
 
     set draggable(value) {
         this._draggable = normalizeBoolean(value);
-    }
-
-    /**
-     * Array of group objects. The groups are used to separate the options inside the listboxes.
-     *
-     * @type {object[]}
-     * @public
-     */
-    @api
-    get groups() {
-        return this._groups;
-    }
-    set groups(value) {
-        this._groups = normalizeArray(value);
     }
 
     /**
