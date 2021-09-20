@@ -822,10 +822,20 @@ export default class DualListbox extends LightningElement {
         );
     }
 
+    /**
+     * Get Computed Source List With Groups.
+     *
+     * @type {object}
+     */
     get computedSourceGroups() {
         return this.groupByName(this.computedSourceList, 'groupName');
     }
 
+    /**
+     * Get Computed Selected List With Groups.
+     *
+     * @type {object}
+     */
     get computedSelectedGroups() {
         return this.groupByName(this.computedSelectedList, 'groupName');
     }
@@ -1394,18 +1404,43 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * Disabled buttons method.
+     * Disabled buttons method for up and down buttons.
      */
     disabledButtons() {
-        const selectedLength = this._selectedValues.length - 1;
+        const indexesArray = [];
+        // First we need to verify if the highlighted options are in the selected list.
+        if (
+            this._selectedValues.some((r) =>
+                this.highlightedOptions.includes(r)
+            )
+        ) {
+            this.highlightedOptions.forEach((option) => {
+                indexesArray.push(this.getOptionGroupIndexes(option));
+            });
+            // Then we need to verify if one of the highlighted options is the first one of its group.
+            const first = indexesArray.map((array) => {
+                return this.computedSelectedGroups[array[0]].options[
+                    Number(array[1]) - 1
+                ]
+                    ? false
+                    : true;
+            });
+            // And we need to verify if one of the highlighted options is the last one of its group.
+            const last = indexesArray.map((array) => {
+                return this.computedSelectedGroups[array[0]].options[
+                    Number(array[1]) + 1
+                ]
+                    ? false
+                    : true;
+            });
 
-        this._upButtonDisabled = this.highlightedOptions.find((option) => {
-            return this._selectedValues.indexOf(option) === 0;
-        });
-
-        this._downButtonDisabled = this.highlightedOptions.find((option) => {
-            return this._selectedValues.indexOf(option) === selectedLength;
-        });
+            this._upButtonDisabled = first.includes(true);
+            this._downButtonDisabled = last.includes(true);
+        } else {
+            // if the highlighted options are not in the selected list the up and down button are not disabled.
+            this._upButtonDisabled = false;
+            this._downButtonDisabled = false;
+        }
     }
 
     /**
@@ -1639,6 +1674,19 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
+     * Get the index of the group and the index of the option inside the group.
+     *
+     * @param {number} value
+     * @return {object[]} array containing the two indexes
+     */
+    getOptionGroupIndexes(value) {
+        const option = this.template.querySelector(
+            `div[data-value="${value}"]`
+        );
+        return [option.dataset.groupIndex, option.dataset.insideGroupIndex];
+    }
+
+    /**
      * Get DOM Id for the List element.
      *
      * @param {Element} optionElement
@@ -1834,18 +1882,25 @@ export default class DualListbox extends LightningElement {
         return groups;
     }
 
-    groupByName(arr, field) {
+    /**
+     * Method to create the groups of options.
+     *
+     * @param {array} array Array of options.
+     * @param {string} groupName groupName.
+     * @returns {array} Array of formatted list for the markup.
+     */
+    groupByName(array, groupName) {
         return this.sortGroups(
             Object.values(
-                arr.reduce((obj, current) => {
-                    if (!obj[current[field]])
-                        obj[current[field]] = {
-                            label: current[field],
+                array.reduce((obj, current) => {
+                    if (!obj[current[groupName]])
+                        obj[current[groupName]] = {
+                            label: current[groupName],
                             options: []
                         };
-                    obj[current[field]].options.push(current);
+                    obj[current[groupName]].options.push(current);
                     return obj;
-                }, [])
+                }, {})
             )
         );
     }

@@ -219,6 +219,7 @@
                             <template
                                 for:each={computedSelectedGroups}
                                 for:item="group"
+                                for:index="groupIndex"
                             >
                                 <div
                                     if:true={group.label}
@@ -241,7 +242,7 @@
                                 <template
                                     for:each={group.options}
                                     for:item="option"
-                                    for:index="index"
+                                    for:index="insideGroupIndex"
                                 >
                                     <li
                                         key={option.value}
@@ -254,7 +255,8 @@
                                             aria-selected={option.selected}
                                             role="option"
                                             tabindex={option.tabIndex}
-                                            group-index={index}
+                                            data-group-index={groupIndex}
+                                            data-inside-group-index={insideGroupIndex}
                                             data-value={option.value}
                                             data-type={computedSelectedListId}
                                             onclick={handleOptionClick}
