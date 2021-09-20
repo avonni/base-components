@@ -37,13 +37,11 @@ import {
     columnsEN,
     columnsOQ,
     columnsRZ,
-    columnsSum,
     recordsAB,
     recordsCD,
     recordsEN,
     recordsOQ,
-    recordsRZ,
-    recordsSum
+    recordsRZ
 } from './data';
 
 export default {
@@ -431,14 +429,6 @@ export const DataTypesFromRToZ = Template.bind({});
 DataTypesFromRToZ.args = {
     columns: columnsRZ,
     records: recordsRZ,
-    keyField: 'id',
-    columnWidthsMode: 'auto'
-};
-
-export const DatatableWithSummarizeTypes = Template.bind({});
-DatatableWithSummarizeTypes.args = {
-    columns: columnsSum,
-    records: recordsSum,
     keyField: 'id',
     columnWidthsMode: 'auto'
 };
