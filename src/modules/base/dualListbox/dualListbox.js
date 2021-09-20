@@ -251,9 +251,6 @@ export default class DualListbox extends LightningElement {
     _dropItSelected = false;
     _dropItSource = false;
 
-    _computedSourceGroups = [];
-    _computedSelectedGroups = [];
-
     connectedCallback() {
         this.classList.add('slds-form-element');
         this.keyboardInterface = this.selectKeyboardInterface();
@@ -297,6 +294,7 @@ export default class DualListbox extends LightningElement {
         }
         this.disabledButtons();
         this.updateBoxesHeight();
+        this.setOptionIndexes();
     }
 
     /**
@@ -1850,5 +1848,20 @@ export default class DualListbox extends LightningElement {
                 }, [])
             )
         );
+    }
+
+    setOptionIndexes() {
+        const sourceBox = this.template.querySelector('[data-source-list]');
+        sourceBox
+            .querySelectorAll('.slds-listbox__option')
+            .forEach((option, index) => {
+                option.setAttribute('data-index', index);
+            });
+        const selectedBox = this.template.querySelector('[data-selected-list]');
+        selectedBox
+            .querySelectorAll('.slds-listbox__option')
+            .forEach((option, index) => {
+                option.setAttribute('data-index', index);
+            });
     }
 }
