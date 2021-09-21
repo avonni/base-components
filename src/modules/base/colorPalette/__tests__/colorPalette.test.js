@@ -36,6 +36,7 @@ import ColorPalette from 'c/colorPalette';
 // Not tested because not used:
 // value
 
+let element;
 describe('Color Palette', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -43,11 +44,14 @@ describe('Color Palette', () => {
         }
     });
 
-    it('Color Palette Default attributes', () => {
-        const element = createElement('base-color-palette', {
+    beforeEach(() => {
+        element = createElement('base-color-palette', {
             is: ColorPalette
         });
+        document.body.appendChild(element);
+    });
 
+    it('Color Palette Default attributes', () => {
         expect(element.disabled).toBeFalsy();
         expect(element.value).toBeUndefined();
         expect(element.readOnly).toBeFalsy();
@@ -91,11 +95,6 @@ describe('Color Palette', () => {
 
     // disabled
     it('Color Palette disabled', () => {
-        const element = createElement('base-color-palette', {
-            is: ColorPalette
-        });
-        document.body.appendChild(element);
-
         element.disabled = true;
 
         return Promise.resolve().then(() => {
@@ -112,11 +111,6 @@ describe('Color Palette', () => {
 
     // read-only
     it('Color Palette read-only', () => {
-        const element = createElement('base-color-palette', {
-            is: ColorPalette
-        });
-        document.body.appendChild(element);
-
         element.readOnly = true;
 
         return Promise.resolve().then(() => {
@@ -129,11 +123,6 @@ describe('Color Palette', () => {
 
     // is loading
     it('Color Palette is loading', () => {
-        const element = createElement('base-color-palette', {
-            is: ColorPalette
-        });
-        document.body.appendChild(element);
-
         element.isLoading = true;
 
         return Promise.resolve().then(() => {
@@ -146,11 +135,6 @@ describe('Color Palette', () => {
 
     // colors
     it('Color Palette colors', () => {
-        const element = createElement('base-color-palette', {
-            is: ColorPalette
-        });
-        document.body.appendChild(element);
-
         element.colors = [
             'rgb(10, 35, 153)',
             'rgb(9, 116, 118)',
@@ -176,11 +160,6 @@ describe('Color Palette', () => {
 
     // columns
     it('Color Palette columns', () => {
-        const element = createElement('base-color-palette', {
-            is: ColorPalette
-        });
-        document.body.appendChild(element);
-
         element.columns = 4;
 
         return Promise.resolve().then(() => {
@@ -193,11 +172,6 @@ describe('Color Palette', () => {
 
     // tile width
     it('Color Palette tile width', () => {
-        const element = createElement('base-color-palette', {
-            is: ColorPalette
-        });
-        document.body.appendChild(element);
-
         element.tileWidth = 4;
 
         return Promise.resolve().then(() => {
@@ -210,11 +184,6 @@ describe('Color Palette', () => {
 
     // tile height
     it('Color Palette tile height', () => {
-        const element = createElement('base-color-palette', {
-            is: ColorPalette
-        });
-        document.body.appendChild(element);
-
         element.tileHeight = 10;
 
         return Promise.resolve().then(() => {
@@ -229,11 +198,6 @@ describe('Color Palette', () => {
 
     // click when disabled
     it('Color Palette click when disabled', () => {
-        const element = createElement('base-color-palette', {
-            is: ColorPalette
-        });
-        document.body.appendChild(element);
-
         element.disabled = true;
 
         const color = element.shadowRoot.querySelector('a');
@@ -248,11 +212,6 @@ describe('Color Palette', () => {
 
     // reset method
     it('Color Palette reset method', () => {
-        const element = createElement('base-color-palette', {
-            is: ColorPalette
-        });
-        document.body.appendChild(element);
-
         element.value = '#ffffff';
         element.reset();
 
@@ -265,11 +224,6 @@ describe('Color Palette', () => {
 
     // color palette change
     it('Color Palette change event', () => {
-        const element = createElement('base-color-palette', {
-            is: ColorPalette
-        });
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('change', handler);
 
@@ -293,11 +247,6 @@ describe('Color Palette', () => {
     });
 
     it('Color Palette focus event', () => {
-        const element = createElement('base-color-palette', {
-            is: ColorPalette
-        });
-        document.body.appendChild(element);
-
         const color = element.shadowRoot.querySelector(
             '.slds-color-picker__swatch-trigger'
         );
@@ -311,11 +260,6 @@ describe('Color Palette', () => {
     });
 
     it('Color Palette blur event', () => {
-        const element = createElement('base-color-palette', {
-            is: ColorPalette
-        });
-        document.body.appendChild(element);
-
         const color = element.shadowRoot.querySelector(
             '.slds-color-picker__swatch-trigger'
         );
