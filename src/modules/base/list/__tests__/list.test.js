@@ -38,7 +38,7 @@ import List from 'c/list';
 // Mouse move and all actions related to it (dragging the item and reorganizing the list)
 // Touch events (we can't artificially give a touch position to save in _initialY)
 // Partial test of reset() (we can't check if it would reorder the items, we only check that it unselects the currently dragged item)
-// Partial test of the reorder event (we can fire the event, but the items have not been reordered)
+// reorder event
 
 const ITEMS = [
     {
@@ -632,8 +632,105 @@ describe('List', () => {
 
     /* ----- EVENT ----- */
 
+    // actionclick
+    // Depends on items and actions
+    it('actionclick event, one action', () => {
+        const element = createElement('base-list', {
+            is: List
+        });
+
+        document.body.appendChild(element);
+
+        const handler = jest.fn();
+        element.addEventListener('actionclick', handler);
+        element.items = ITEMS;
+        element.actions = ACTION;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                'li lightning-button'
+            );
+            button.dispatchEvent(new CustomEvent('click'));
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.item).toMatchObject(
+                ITEMS[0]
+            );
+            expect(handler.mock.calls[0][0].detail.name).toBe(ACTION[0].name);
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        });
+    });
+
+    it('actionclick event, one icon action', () => {
+        const element = createElement('base-list', {
+            is: List
+        });
+
+        document.body.appendChild(element);
+
+        const handler = jest.fn();
+        element.addEventListener('actionclick', handler);
+        element.items = ITEMS;
+        element.actions = ACTION_NO_LABEL;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                'li lightning-button-icon'
+            );
+            button.dispatchEvent(new CustomEvent('click'));
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.item).toMatchObject(
+                ITEMS[0]
+            );
+            expect(handler.mock.calls[0][0].detail.name).toBe(
+                ACTION_NO_LABEL[0].name
+            );
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        });
+    });
+
+    it('actionclick event, multiple action', () => {
+        const element = createElement('base-list', {
+            is: List
+        });
+
+        document.body.appendChild(element);
+
+        const handler = jest.fn();
+        element.addEventListener('actionclick', handler);
+        element.items = ITEMS;
+        element.actions = ACTIONS;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                'li lightning-button-menu'
+            );
+            button.dispatchEvent(
+                new CustomEvent('select', {
+                    detail: {
+                        value: ACTIONS[0].name
+                    }
+                })
+            );
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.item).toMatchObject(
+                ITEMS[0]
+            );
+            expect(handler.mock.calls[0][0].detail.name).toBe(ACTIONS[0].name);
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        });
+    });
+
     // reorder
-    // Depends on items and sortable
+    // Depends on items
     it('reorder event', () => {
         const element = createElement('base-list', {
             is: List
@@ -642,17 +739,18 @@ describe('List', () => {
         document.body.appendChild(element);
 
         const handler = jest.fn();
-        element.addEventListener('reorder', handler);
+        element.addEventListener('itemclick', handler);
         element.items = ITEMS;
-        element.sortable = true;
 
         return Promise.resolve().then(() => {
             const items = element.shadowRoot.querySelectorAll('li');
 
-            items[2].dispatchEvent(new CustomEvent('mousedown'));
-            items[2].dispatchEvent(new CustomEvent('mouseup'));
+            items[2].dispatchEvent(new CustomEvent('click'));
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.items).toMatchObject(ITEMS);
+            expect(handler.mock.calls[0][0].detail.item).toMatchObject(
+                ITEMS[2]
+            );
+            expect(handler.mock.calls[0][0].detail.bounds).not.toBeUndefined();
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();

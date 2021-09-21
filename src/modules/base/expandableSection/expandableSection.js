@@ -32,8 +32,7 @@
 
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
-import { normalizeBoolean } from 'c/utilsPrivate';
-import { normalizeString } from '../utilsPrivate/normalize';
+import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
 const VARIANTS = {
     default: 'shaded',
@@ -198,7 +197,7 @@ export default class ExpandableSection extends LightningElement {
     /**
      * Section change status toggle.
      */
-    changeSectionStatus() {
+    toggleSection() {
         this._closed = !this._closed;
     }
 }

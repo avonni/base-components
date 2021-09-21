@@ -30,13 +30,29 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-export function generateUUID() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
-        /[xy]/g,
-        function (c) {
-            var r = (Math.random() * 16) | 0,
-                v = c === 'x' ? r : (r & 0x3) | 0x8;
-            return v.toString(16);
-        }
-    );
+import { LightningElement, api } from 'lwc';
+
+const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Search…';
+const DEFAULT_BUTTON_VARIANT = 'border';
+const DEFAULT_MENU_ALIGNMENT = 'left';
+const DEFAULT_ICON_SIZE = 'medium';
+
+export default class DynamicMenuInGroup extends LightningElement {
+    @api buttonSize;
+    @api iconName;
+    @api value;
+    @api alternativeText;
+    @api loadingStateAlternativeText;
+    @api label;
+    @api withSearch;
+    @api accessKey;
+    @api title;
+    @api searchInputPlaceholder = DEFAULT_SEARCH_INPUT_PLACEHOLDER;
+    @api tooltip;
+    @api items = [];
+    @api isLoading;
+    @api variant = DEFAULT_BUTTON_VARIANT;
+    @api menuAlignment = DEFAULT_MENU_ALIGNMENT;
+    @api disabled;
+    @api iconSize = DEFAULT_ICON_SIZE;
 }

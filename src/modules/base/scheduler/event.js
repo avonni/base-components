@@ -38,7 +38,7 @@ import {
     containsAllowedDateTimes,
     dateTimeObjectFrom
 } from 'c/utilsPrivate';
-import { generateUniqueId } from 'c/utils';
+import { generateUUID } from 'c/utils';
 import { DateTime, Interval } from 'c/luxon';
 import {
     DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK,
@@ -104,7 +104,7 @@ import {
 
 export default class SchedulerEvent {
     constructor(props) {
-        this.key = generateUniqueId();
+        this.key = generateUUID();
         this.allDay = props.allDay;
         this.availableMonths = props.availableMonths;
         this.availableDaysOfTheWeek = props.availableDaysOfTheWeek;

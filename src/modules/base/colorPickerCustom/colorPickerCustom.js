@@ -32,7 +32,7 @@
 
 import { LightningElement, api } from 'lwc';
 import { keyCodes } from 'c/utilsPrivate';
-import { generateUniqueId, getErrorMessage } from 'c/inputUtils';
+import { generateUUID, getErrorMessage } from 'c/inputUtils';
 import {
     fullHexValue,
     hexToRgb,
@@ -76,7 +76,7 @@ export default class ColorPickerCustom extends LightningElement {
     constructor() {
         super();
 
-        this.uniqueId = generateUniqueId();
+        this.uniqueId = generateUUID();
     }
 
     _initialized = false;
