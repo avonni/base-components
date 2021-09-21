@@ -157,93 +157,93 @@ function PARSE_INT_STYLE(element, value) {
 const DEFAULT_VARIANT = 'top-toolbar';
 
 /**
-* @class
-* @descriptor avonni-input-rich-text
-*/
+ * @class
+ * @descriptor avonni-input-rich-text
+ */
 export default class InputRichText extends LightningElement {
     /**
-    * The label of the rich text editor.
-    *
-    * @type {string}
-    * @public
-    */
+     * The label of the rich text editor.
+     *
+     * @type {string}
+     * @public
+     */
     @api label;
 
     /**
-    * If present, the label on the rich text editor is visible.
-    *
-    * @type {boolean}
-    * @public
-    * @default false
-    */
+     * If present, the label on the rich text editor is visible.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api labelVisible = false;
 
     /**
-    * Text that is displayed when the field is empty, to prompt the user for a valid entry.
-    *
-    * @type {string}
-    * @public
-    */
+     * Text that is displayed when the field is empty, to prompt the user for a valid entry.
+     *
+     * @type {string}
+     * @public
+     */
     @api placeholder;
 
     /**
-    * A comma-separated list of button categories to remove from the toolbar.
-    *
-    * @type {object} 
-    * @public
-    */
+     * A comma-separated list of button categories to remove from the toolbar.
+     *
+     * @type {object}
+     * @public
+     */
     @api disabledCategories = '';
 
     /**
-    * A list of allowed formats. By default, the list is computed based on enabled categories.
-    * The 'table' format is always enabled to support copying and pasting of tables if formats are not provided.
-    *
-    * @type {object}
-    * @public
-    */
+     * A list of allowed formats. By default, the list is computed based on enabled categories.
+     * The 'table' format is always enabled to support copying and pasting of tables if formats are not provided.
+     *
+     * @type {object}
+     * @public
+     */
     @api formats = '';
 
     /**
-    * The variant changes the appearance of the toolbar. Accepted variant is bottom-toolbar which causes
-    * the toolbar to be displayed below the text box.
-    *
-    * @type {string}
-    * @public
-    * @default top-toolbar
-    */
+     * The variant changes the appearance of the toolbar. Accepted variant is bottom-toolbar which causes
+     * the toolbar to be displayed below the text box.
+     *
+     * @type {string}
+     * @public
+     * @default top-toolbar
+     */
     @api variant = DEFAULT_VARIANT;
-    
+
     /**
-    * Error message to be displayed when invalid input is detected.
-    *
-    * @type {string}
-    * @public
-    */
+     * Error message to be displayed when invalid input is detected.
+     *
+     * @type {string}
+     * @public
+     */
     @api messageWhenBadInput;
 
     /**
-    * Custom buttons to add to the toolbar.
-    * 
-    * @type {object}
-    * @public
-    */
+     * Custom buttons to add to the toolbar.
+     *
+     * @type {object}
+     * @public
+     */
     @api customButtons;
 
     /**
-    * Entity ID to share the image with.
-    *
-    * @type {string}
-    * @public
-    */
+     * Entity ID to share the image with.
+     *
+     * @type {string}
+     * @public
+     */
     @api shareWithEntityId;
 
     /**
-    * Check if editor is in Publisher category.
-    *
-    * @type {boolean}
-    * @public
-    * @default false
-    */
+     * Check if editor is in Publisher category.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api isPublisher = false;
 
     _valid = true;
@@ -267,11 +267,11 @@ export default class InputRichText extends LightningElement {
     };
 
     /**
-    * The HTML content in the rich text editor.
-    *
-    * @type {string}
-    * @public
-    */
+     * The HTML content in the rich text editor.
+     *
+     * @type {string}
+     * @public
+     */
     @api
     get value() {
         return this.internalValue;
@@ -295,13 +295,13 @@ export default class InputRichText extends LightningElement {
         }
     }
 
-   /**
-   * Represent the validity state the editor can be in, with respect to constraint validation.
-   *
-   * @type {boolean}
-   * @default true
-   * @public
-   */
+    /**
+     * Represent the validity state the editor can be in, with respect to constraint validation.
+     *
+     * @type {boolean}
+     * @default true
+     * @public
+     */
     @api
     get valid() {
         return this._valid;
@@ -327,12 +327,12 @@ export default class InputRichText extends LightningElement {
     }
 
     /**
-    * If present, the editor is disabled and users cannot interact with it.
-    *
-    * @type {boolean}
-    * @default false
-    * @public
-    */
+     * If present, the editor is disabled and users cannot interact with it.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
     @api
     get disabled() {
         return this._disabled;
@@ -343,12 +343,12 @@ export default class InputRichText extends LightningElement {
     }
 
     /**
-    * If present, the editor is read-only and cannot be edited by users.
-    *
-    * @type {boolean}
-    * @default false
-    * @public
-    */
+     * If present, the editor is read-only and cannot be edited by users.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
     @api
     get readOnly() {
         return this._readOnly;
@@ -359,10 +359,10 @@ export default class InputRichText extends LightningElement {
     }
 
     /**
-    * Sets focus on the rich text editor.
-    *
-    * @public
-    */
+     * Sets focus on the rich text editor.
+     *
+     * @public
+     */
     @api
     focus() {
         if (!this.quill) {
@@ -374,7 +374,7 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Removes focus from the rich text editor.
-     * 
+     *
      * @public
      */
     @api
@@ -388,9 +388,9 @@ export default class InputRichText extends LightningElement {
      * Sets a format in the editor from the cursor point onwards.
      * The format also applies to currently selected content.
      * Valid formats are font, size, and align.
-     * 
+     *
      * @param {object} value A key-value pair with format names and values.
-     * @public 
+     * @public
      */
     @api
     setFormat(value) {
@@ -409,7 +409,7 @@ export default class InputRichText extends LightningElement {
      * Returns an object representing the formats applied to the current selection.
      * Formats supported are align, background, bold, code, code-block, color, font,
      * header, italic, link, size, strike, underline.
-     * 
+     *
      * @returns {object} formats
      */
     @api
@@ -429,10 +429,9 @@ export default class InputRichText extends LightningElement {
         this.updateSizeMenu(format);
     }
 
-
     /**
      * Check if Link Value is shown.
-     * 
+     *
      * @type {string}
      */
     get showLinkValue() {
@@ -441,7 +440,7 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Check if the Bottom Toolbar is visible.
-     * 
+     *
      * @type {boolean}
      */
     get isBottomToolbar() {
@@ -450,7 +449,7 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Check if the Color Picker is visible.
-     * 
+     *
      * @type {boolean}
      */
     get isColorpickerVisible() {
@@ -459,7 +458,7 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Check if the Font Menu is visible.
-     * 
+     *
      * @type {boolean}
      */
     get isFontMenusVisible() {
@@ -471,7 +470,7 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Check if dropdown menu alignment has bottom toolbar
-     * 
+     *
      * @type {boolean}
      */
     get menuDropdownAlignment() {
@@ -480,7 +479,7 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Retrieve error message text.
-     * 
+     *
      * @type {string}
      */
     get errorMessage() {
@@ -489,7 +488,7 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Localization.
-     * 
+     *
      * @type {i18n}
      */
     get i18n() {
@@ -498,7 +497,7 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Retrieve Unique Label Id.
-     * 
+     *
      * @type {string}
      */
     get labelId() {
@@ -507,8 +506,8 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Retrieve error message Id.
-     * 
-     * @type {string} 
+     *
+     * @type {string}
      */
     get errorMessageId() {
         const element = this.template.querySelector('[data-error-message]');
@@ -521,7 +520,7 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Get toolbar Aria label.
-     * 
+     *
      * @type {string}
      */
     get toolbarAriaLabel() {
@@ -530,7 +529,7 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Check if Label needs to be rendered.
-     * 
+     *
      * @type {boolean}
      */
     get renderLabel() {
@@ -539,7 +538,7 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Computed Label based on input or i18n.
-     * 
+     *
      * @type {string}
      */
     get computedLabel() {
@@ -548,7 +547,7 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Computed Label class styling.
-     * 
+     *
      * @type {string}
      */
     get computedLabelClass() {
@@ -561,8 +560,8 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Computed categories formats for rich text editor.
-     * 
-     * @type {object} 
+     *
+     * @type {object}
      */
     get computedCategories() {
         const formatsExist = !!this.formats.length;
@@ -737,8 +736,8 @@ export default class InputRichText extends LightningElement {
 
     /**
      * If custom buttons are present merge them to the categories format.
-     * 
-     * @param {object} categories 
+     *
+     * @param {object} categories
      * @returns {object} categories
      */
     mergeCustomToolbarButtons(categories) {
@@ -795,9 +794,9 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Button Tab index method.
-     * 
-     * @param {NodeListOf<Element>} buttons 
-     * @param {number} index 
+     *
+     * @param {NodeListOf<Element>} buttons
+     * @param {number} index
      */
     setButtonTabindex(buttons, index) {
         buttons.forEach((button) => {
@@ -806,7 +805,6 @@ export default class InputRichText extends LightningElement {
 
         buttons[index].setAttribute('tabindex', 0);
     }
-
 
     /**
      * If custom buttons are present attach an event listener on click.
@@ -828,8 +826,8 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Set initial dom element classes for rich text editor.
-     * 
-     * @param {Element} element 
+     *
+     * @param {Element} element
      */
     addInitialClassesAndAttributesToEditor(element) {
         element.classList.add('slds-rich-text-area__content');
@@ -840,7 +838,7 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Set Aria attributes for rich text editor.
-     * 
+     *
      * @param {Element} element
      */
     setAriaAttributesOnEditor(element) {
@@ -853,7 +851,7 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Compute formats via categories and FontMenu.
-     * 
+     *
      * @returns {object} formats
      */
     computeFormats() {
@@ -861,7 +859,8 @@ export default class InputRichText extends LightningElement {
 
         if (this.formats.length > 0) {
             return this.formats;
-        } else {
+        }
+        {
             this.computedCategories.forEach((category) => {
                 category.buttons.forEach((button) => {
                     if (
@@ -886,8 +885,8 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Normalize font size method.
-     * 
-     * @param {number} value 
+     *
+     * @param {number} value
      * @returns {number} l
      */
     getNormalizedFontSize(value) {
@@ -898,7 +897,7 @@ export default class InputRichText extends LightningElement {
     }
 
     /**
-     * The Quill clipboard interprets pasted HTML by traversing the corresponding DOM tree in post-order, building up a Delta representation of all subtrees. 
+     * The Quill clipboard interprets pasted HTML by traversing the corresponding DOM tree in post-order, building up a Delta representation of all subtrees.
      * At each descendant node, matcher functions are called with the DOM Node and Delta interpretation so far, allowing the matcher to return a modified Delta interpretation.
      * Custom matchers for : font( size, color), strike, code, acronym abbreviation, underline and linethrough, table.
      */
@@ -967,6 +966,7 @@ export default class InputRichText extends LightningElement {
 
         this.quill.clipboard.addMatcher('table', (element) => {
             if (this.formats.indexOf('table') === -1) {
+                // eslint-disable-next-line @lwc/lwc/no-inner-html
                 return this.quill.clipboard.convert(element.innerHTML);
             }
 
@@ -1024,6 +1024,7 @@ export default class InputRichText extends LightningElement {
             let internalValue = '';
 
             if (!this.quill.editor.isBlank()) {
+                // eslint-disable-next-line @lwc/lwc/no-inner-html
                 const innerHTML = this.quill.scroll.domNode.innerHTML;
                 internalValue = inputRichTextLibrary.cleanOutput(innerHTML);
             }
@@ -1124,12 +1125,12 @@ export default class InputRichText extends LightningElement {
                 .querySelector('.slds-rich-text-editor')
                 .classList.add('slds-has-focus');
             /**
-            * The event that fires when setting the focus on the rich text editor.
-            *
-            * @event
-            * @name focus
-            * @public
-            */
+             * The event that fires when setting the focus on the rich text editor.
+             *
+             * @event
+             * @name focus
+             * @public
+             */
             this.dispatchEvent(new CustomEvent('focus'));
         });
 
@@ -1138,12 +1139,12 @@ export default class InputRichText extends LightningElement {
                 .querySelector('.slds-rich-text-editor')
                 .classList.remove('slds-has-focus');
             /**
-            * The event that fires when removing focus from the rich text editor.
-            *
-            * @event
-            * @name blur
-            * @public
-            */
+             * The event that fires when removing focus from the rich text editor.
+             *
+             * @event
+             * @name blur
+             * @public
+             */
             this.dispatchEvent(new CustomEvent('blur'));
         });
 
@@ -1230,8 +1231,8 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Get unique label Id.
-     * 
-     * @type {string} 
+     *
+     * @type {string}
      */
     get uniqueLabelId() {
         const label = this.template.querySelector('[data-label]');
@@ -1240,8 +1241,8 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Activate Editor's intializing parameters.
-     * 
-     * @param {Event} event 
+     *
+     * @param {Event} event
      */
     activateEditor(event) {
         if (this.readOnly) return;
@@ -1294,9 +1295,9 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Set focus on Next button.
-     * 
-     * @param {NodeListOf<Element>} buttons 
-     * @param {number} oldIndex 
+     *
+     * @param {NodeListOf<Element>} buttons
+     * @param {number} oldIndex
      */
     moveToNextButton(buttons, oldIndex) {
         let index = oldIndex + 1;
@@ -1311,9 +1312,9 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Set focus on Previous button.
-     * 
-     * @param {NodeListOf<Element>} buttons 
-     * @param {number} oldIndex 
+     *
+     * @param {NodeListOf<Element>} buttons
+     * @param {number} oldIndex
      */
     moveToPreviousButton(buttons, oldIndex) {
         let index = oldIndex - 1;
@@ -1328,8 +1329,8 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Navigating toolbar logic.
-     * 
-     * @param {Event} value 
+     *
+     * @param {Event} value
      */
     navigateToolbar(value) {
         this.activateEditor();
@@ -1390,7 +1391,7 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Local device image file selection. Opens local file explorer.
-     * 
+     *
      * @param {function} container
      */
     loadNativeFileSelector(container) {
@@ -1434,8 +1435,8 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Hyperlink Value change handler.
-     * 
-     * @param {Event} event 
+     *
+     * @param {Event} event
      */
     handleLinkValueChange(event) {
         event.stopPropagation();
@@ -1519,8 +1520,8 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Find enclosing parent node to hyperlink in DOM.
-     * 
-     * @param {Element} element 
+     *
+     * @param {Element} element
      */
     getEnclosingLinkNode(element) {
         const node = this.quill.scroll.domNode;
@@ -1536,7 +1537,7 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Sets user selection to given range, which will also focus the editor.
-     * 
+     *
      * @param {*} item
      */
     expandSelectionToNode(item) {
@@ -1551,8 +1552,8 @@ export default class InputRichText extends LightningElement {
 
     /**
      * On keyboard 'enter' key press event saveLink and on 'escape' key close the hyperlink Panel.
-     * 
-     * @param {Event} event 
+     *
+     * @param {Event} event
      */
     linkKeyboardPress(event) {
         this.activateEditor();
@@ -1579,6 +1580,7 @@ export default class InputRichText extends LightningElement {
         this.linkPanelHasFocus = false;
 
         requestAnimationFrame(() => {
+            // eslint-disable-next-line no-unused-expressions
             this.linkPanelHasFocus || this.closeLinkPanel();
         });
     }
@@ -1592,8 +1594,8 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Font selection event handler.
-     * 
-     * @param {Event} event 
+     *
+     * @param {Event} event
      */
     selectFont(event) {
         event.stopPropagation();
@@ -1617,8 +1619,8 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Font size selection event handler.
-     * 
-     * @param {Event} event 
+     *
+     * @param {Event} event
      */
     selectSize(event) {
         event.stopPropagation();
@@ -1635,8 +1637,8 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Update font menu.
-     * 
-     * @param {object} item 
+     *
+     * @param {object} item
      */
     updateFontMenu(item) {
         const font = item && item.font ? item.font : DEFAULT_FONT;
@@ -1645,7 +1647,7 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Update size menu.
-     * 
+     *
      * @param {object} item
      */
     updateSizeMenu(item) {
@@ -1655,8 +1657,8 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Update Text color button.
-     * 
-     * @param {object} item 
+     *
+     * @param {object} item
      */
     updateTextColorButton(item) {
         const color = item && item.color ? item.color : DEFAULT_COLOR;
@@ -1665,7 +1667,7 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Apply text alignment.
-     * 
+     *
      * @param {object} t
      */
     applyTextAlignment(t) {
@@ -1676,8 +1678,8 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Color update to format handler.
-     * 
-     * @param {Event} event 
+     *
+     * @param {Event} event
      */
     handleColorUpdate(event) {
         const quill = this.quill;
@@ -1687,8 +1689,8 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Update button 'pressed' state.
-     * 
-     * @param {object} item 
+     *
+     * @param {object} item
      */
     updateButtonPressedState(item) {
         const buttons = this.template.querySelectorAll(BUTTON_SELECTOR);
@@ -1732,16 +1734,16 @@ export default class InputRichText extends LightningElement {
      */
     dispatchChangeEvent() {
         /**
-        * The event that fires when there is a value change.
-        *
-        * @event
-        * @name change 
-        * @param {string} value
-        * @public
-        * @bubbles
-        * @cancelable
-        * @composed
-        */
+         * The event that fires when there is a value change.
+         *
+         * @event
+         * @name change
+         * @param {string} value
+         * @public
+         * @bubbles
+         * @cancelable
+         * @composed
+         */
         this.dispatchEvent(
             new CustomEvent('change', {
                 composed: true,
@@ -1762,8 +1764,8 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Stand in Click handler.
-     * 
-     * @param {Event} event 
+     *
+     * @param {Event} event
      */
     handleStandInClick(event) {
         event.preventDefault();
@@ -1771,7 +1773,7 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Reserved for internal use. Insert text in the rich text editor at cursor position.
-     * 
+     *
      * @param {*} t
      */
     @api
@@ -1792,8 +1794,8 @@ export default class InputRichText extends LightningElement {
 
     /**
      * Emoji selection event handler.
-     * 
-     * @param {Event} event 
+     *
+     * @param {Event} event
      */
     handleEmoji(event) {
         this.insertTextAtCursor(`${event.detail.value} `);
