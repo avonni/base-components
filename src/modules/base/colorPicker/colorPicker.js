@@ -113,8 +113,6 @@ const DEFAULT_COLORS = [
     '#b85d0d'
 ];
 
-const DEFAULT_VALUE = '#ffffff';
-
 const DEFAULT_MESSAGE_WHEN_BAD_INPUT = 'Please ensure value is correct';
 
 /**
@@ -147,13 +145,6 @@ export default class ColorPicker extends LightningElement {
      */
     @api label;
     /**
-     * Specifies the name of an input element.
-     *
-     * @public
-     * @type {string}
-     */
-    @api name;
-    /**
      * If no icon-name specified, display default dropdown icon and color box.
      *
      * @public
@@ -169,6 +160,7 @@ export default class ColorPicker extends LightningElement {
     @api menuLabel;
 
     _value;
+    _name;
     _variant = validVariants.default;
     _type = LABEL_TYPES.default;
     _menuVariant = MENU_VARIANTS.default;
@@ -194,17 +186,26 @@ export default class ColorPicker extends LightningElement {
     currentLabel;
     currentToken;
 
-    connectedCallback() {
-        if (!this.name) {
-            this.name = generateUUID();
-        }
-    }
-
     renderedCallback() {
         if (!this.init) {
             this.initSwatchColor();
             this.init = true;
         }
+    }
+
+    /**
+     * Specifies the name of an input element.
+     *
+     * @public
+     * @type {string}
+     */
+    @api
+    get name() {
+        return this._name;
+    }
+
+    set name(value) {
+        this._name = value ? value : this.uniqueKey;
     }
 
     /**
@@ -548,7 +549,7 @@ export default class ColorPicker extends LightningElement {
         return this.currentLabel ? this.currentLabel : this._inputValue;
     }
 
-    set inputValue(val){
+    set inputValue(val) {
         this._inputValue = val;
     }
 
@@ -598,8 +599,6 @@ export default class ColorPicker extends LightningElement {
              * @param {string} rgba Color in rgba format.
              * @param {string} alpha Alpha value of the color.
              */
-
-
             this.dispatchEvent(
                 new CustomEvent('change', {
                     detail: {
@@ -609,7 +608,10 @@ export default class ColorPicker extends LightningElement {
                         rgba: colors.rgba,
                         alpha: colors.alpha,
                         token: this.currentToken
-                    }
+                    },
+                    bubbles: true,
+                    cancelable: true,
+                    composed: false
                 })
             );
         }
@@ -802,14 +804,14 @@ export default class ColorPicker extends LightningElement {
     }
 
     clearInput() {
-        this.value = undefined;
+        this._value = undefined;
         this.inputValue = undefined;
         this.currentLabel = undefined;
         this.currentToken = undefined;
         this.showError = false;
-            this.template
-                .querySelector('lightning-input')
-                .classList.remove('slds-has-error');
+        this.template
+            .querySelector('lightning-input')
+            .classList.remove('slds-has-error');
 
         this.dispatchClear();
     }
@@ -835,7 +837,7 @@ export default class ColorPicker extends LightningElement {
      */
     handlerDone() {
         if (!this.readOnly && this.newValue) {
-            this.value = this.newValue;
+            this._value = this.newValue;
             this.newValue = '';
 
             if (this.showError) {
@@ -1024,7 +1026,7 @@ export default class ColorPicker extends LightningElement {
                 ).style.background = color;
             }
 
-            this.value = color;
+            this._value = color;
 
             let gradientPalette = this.template.querySelector(
                 '[data-name="colorGradient"]'
