@@ -33,6 +33,7 @@
 import { createElement } from 'lwc';
 import Calendar from 'c/calendar';
 
+let element;
 describe('Calendar', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -40,8 +41,15 @@ describe('Calendar', () => {
         }
     });
 
+    beforeEach(() => {
+        element = createElement('base-calendar', {
+            is: Calendar
+        });
+        document.body.appendChild(element);
+    });
+
     it('Calendar default attributes', () => {
-        const element = createElement('base-calendar', {
+        element = createElement('base-calendar', {
             is: Calendar
         });
 
@@ -59,11 +67,6 @@ describe('Calendar', () => {
 
     // values
     it('Calendar values', () => {
-        const element = createElement('base-calendar', {
-            is: Calendar
-        });
-        document.body.appendChild(element);
-
         element.value = '04/15/2021';
         return Promise.resolve().then(() => {
             const day = element.shadowRoot.querySelector('.slds-is-selected');
@@ -79,11 +82,6 @@ describe('Calendar', () => {
 
     // disabled
     it('Calendar disabled', () => {
-        const element = createElement('base-calendar', {
-            is: Calendar
-        });
-        document.body.appendChild(element);
-
         element.value = '04/15/2021';
         element.disabled = true;
         return Promise.resolve().then(() => {
@@ -106,11 +104,6 @@ describe('Calendar', () => {
 
     // disabled dates
     it('Calendar disabled dates', () => {
-        const element = createElement('base-calendar', {
-            is: Calendar
-        });
-        document.body.appendChild(element);
-
         element.value = '05/09/2021';
         element.disabledDates = [5, 10, 15, 20, 25];
         element.min = new Date('05/01/2021');
@@ -134,11 +127,6 @@ describe('Calendar', () => {
 
     // marked dates
     it('Calendar marked dates', () => {
-        const element = createElement('base-calendar', {
-            is: Calendar
-        });
-        document.body.appendChild(element);
-
         element.value = '05/09/2021';
         element.markedDates = [5, 10, 15, 20, 25];
         element.min = new Date('05/01/2021');
@@ -162,11 +150,6 @@ describe('Calendar', () => {
 
     // min & max
     it('Calendar min and max', () => {
-        const element = createElement('base-calendar', {
-            is: Calendar
-        });
-        document.body.appendChild(element);
-
         element.value = '05/09/2021';
         element.min = new Date('05/01/2021');
         element.max = new Date('05/31/2021');
@@ -184,11 +167,6 @@ describe('Calendar', () => {
 
     // week number
     it('Calendar week number', () => {
-        const element = createElement('base-calendar', {
-            is: Calendar
-        });
-        document.body.appendChild(element);
-
         element.value = '05/09/2021';
         element.min = new Date('05/01/2021');
         element.max = new Date('05/31/2021');
@@ -215,11 +193,6 @@ describe('Calendar', () => {
 
     // multi-value
     it('Calendar multi-value', () => {
-        const element = createElement('base-calendar', {
-            is: Calendar
-        });
-        document.body.appendChild(element);
-
         element.value = '05/09/2021';
         element.min = new Date('05/01/2021');
         element.max = new Date('05/31/2021');
@@ -245,11 +218,6 @@ describe('Calendar', () => {
 
     // calendar change
     it('Calendar event change', () => {
-        const element = createElement('base-calendar', {
-            is: Calendar
-        });
-        document.body.appendChild(element);
-
         element.value = '05/09/2021';
         element.min = new Date('05/01/2021');
         element.max = new Date('05/31/2021');
