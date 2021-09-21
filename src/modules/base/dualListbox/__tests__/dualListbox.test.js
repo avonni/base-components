@@ -855,6 +855,33 @@ describe('DualListbox', () => {
     });
 
     // change order in options list
+    it('Dual Listbox change order in selected list', () => {
+        element.options = Options;
+        element.value = ['1', '2'];
+        element.downButtonLabel = 'down';
+
+        return Promise.resolve().then(() => {
+            const selectedBox = element.shadowRoot.querySelector(
+                '[data-selected-list]'
+            );
+            const option = selectedBox.querySelectorAll(
+                '.slds-listbox__option'
+            );
+            const firstOption = option[0];
+            firstOption.click();
+            expect(firstOption.getAttribute('aria-selected')).toBeTruthy();
+            expect(firstOption.getAttribute('tabindex')).toBe('0');
+            expect(firstOption.getAttribute('data-index')).toBe('0');
+            const lightningButtonIcon = element.shadowRoot.querySelector(
+                "lightning-button-icon[title='down']"
+            );
+            console.log(lightningButtonIcon);
+            lightningButtonIcon.click();
+            expect(firstOption.getAttribute('aria-selected')).toBeTruthy();
+            expect(firstOption.getAttribute('tabindex')).toBe('0');
+            expect(firstOption.getAttribute('data-index')).toBe('0');
+        });
+    });
 
     /* ----- EVENTS ----- */
 

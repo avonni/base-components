@@ -248,6 +248,8 @@ export default class DualListbox extends LightningElement {
     _dropItSelected = false;
     _dropItSource = false;
 
+    _groupedValues = [];
+
     connectedCallback() {
         this.classList.add('slds-form-element');
         this.keyboardInterface = this.selectKeyboardInterface();
@@ -292,6 +294,10 @@ export default class DualListbox extends LightningElement {
         this.disabledButtons();
         this.updateBoxesHeight();
         this.setOptionIndexes();
+        if (!this.rendered) {
+            this.getGroupValues();
+        }
+        this.rendered = true;
     }
 
     /**
@@ -1886,6 +1892,18 @@ export default class DualListbox extends LightningElement {
                 }, {})
             )
         );
+    }
+
+    /**
+     * Gets the new order of values after the group by.
+     */
+    getGroupValues() {
+        this.computedSelectedGroups.forEach((group) => {
+            group.options.forEach((option) => {
+                this._groupedValues.push(option.value);
+            });
+        });
+        this._selectedValues = this._groupedValues;
     }
 
     /**
