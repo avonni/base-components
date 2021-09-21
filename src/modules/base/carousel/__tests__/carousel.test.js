@@ -125,6 +125,39 @@ const items = [
     }
 ];
 
+const example = [
+    {
+        actions: [{ name: 'action-add', iconName: 'utility:add' }],
+        id: 1,
+        title: 'Visit App Exchange',
+        description: 'Extend Salesforce with the #1 business marketplace.',
+        imageAssistiveText: 'Appy',
+        src:
+            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+        href: 'https://www.salesforce.com/'
+    }
+];
+
+const secondExample = [
+    {
+        actions: [
+            {
+                name: 'action-add',
+                iconName: 'utility:add',
+                label: 'add'
+            }
+        ],
+        id: 1,
+        title: 'Visit App Exchange',
+        description: 'Extend Salesforce with the #1 business marketplace.',
+        imageAssistiveText: 'Appy',
+        src:
+            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+        href: 'https://www.salesforce.com/'
+    }
+];
+
+let element = null;
 describe('Carousel', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -132,15 +165,18 @@ describe('Carousel', () => {
         }
     });
 
+    beforeEach(() => {
+        element = createElement('base-carousel', {
+            is: Carousel
+        });
+        document.body.appendChild(element);
+    });
+
     // const flushPromises = () => new Promise(setImmediate);
 
     it('Default attributes', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-
         expect(element.assistiveText).toMatchObject({
-            autoplayButton: 'Start / Stop auto-play',
+            autoplayButton: 'Play / Stop auto-play',
             nextPanel: 'Next Panel',
             previousPanel: 'Previous Panel'
         });
@@ -162,11 +198,6 @@ describe('Carousel', () => {
 
     // assistive-text
     it('Carousel assistive-text with indicator', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
-
         element.items = items;
         element.assistiveText = {
             nextPanel: 'Next Panel Assistive Text',
@@ -191,11 +222,6 @@ describe('Carousel', () => {
     });
 
     it('Carousel assistive-text without indicator', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
-
         element.items = items;
         element.assistiveText = {
             nextPanel: 'Next Panel Assistive Text',
@@ -221,11 +247,6 @@ describe('Carousel', () => {
 
     // disable auto refresh
     it('Carousel disable auto refresh', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
-
         element.items = items;
         element.disableAutoRefresh = true;
 
@@ -247,11 +268,6 @@ describe('Carousel', () => {
 
     // disable auto scrollable
     it('Carousel disable auto scrollable with indicator', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
-
         element.items = items;
         element.disableAutoScroll = true;
         element.hideIndicator = false;
@@ -265,11 +281,6 @@ describe('Carousel', () => {
     });
 
     it('Carousel disable auto scrollable without indicator', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
-
         element.items = items;
         element.disableAutoScroll = true;
         element.hideIndicator = true;
@@ -284,11 +295,6 @@ describe('Carousel', () => {
 
     // indicator variant
     it('Carousel indicator variant base', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
-
         element.items = items;
         element.hideIndicator = false;
 
@@ -311,11 +317,6 @@ describe('Carousel', () => {
     });
 
     it('Carousel indicator variant shaded', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
-
         element.indicatorVariant = 'shaded';
         element.items = items;
 
@@ -337,11 +338,6 @@ describe('Carousel', () => {
 
     // current panel
     it('Carousel current panel', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
-
         element.currentPanel = 2;
         element.items = items;
 
@@ -358,11 +354,6 @@ describe('Carousel', () => {
 
     // hide indicator
     it('Carousel hide indicator', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
-
         element.items = items;
         element.hideIndicator = true;
 
@@ -374,11 +365,6 @@ describe('Carousel', () => {
 
     // hide previous next panel navigation
     it('Carousel hide previous next panel navigation', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
-
         element.items = [
             {
                 id: 1,
@@ -404,11 +390,6 @@ describe('Carousel', () => {
 
     // items per panel
     it('Carousel items per panel not a number', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
-
         element.items = items;
         element.itemsPerPanel = 'hello';
 
@@ -422,11 +403,6 @@ describe('Carousel', () => {
     });
 
     it('Carousel items per panel', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
-
         element.itemsPerPanel = 2;
         element.items = items;
 
@@ -440,25 +416,6 @@ describe('Carousel', () => {
 
     // items
     it('Carousel items', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
-
-        const example = [
-            {
-                actions: [{ name: 'action-add', iconName: 'utility:add' }],
-                id: 1,
-                title: 'Visit App Exchange',
-                description:
-                    'Extend Salesforce with the #1 business marketplace.',
-                imageAssistiveText: 'Appy',
-                src:
-                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
-                href: 'https://www.salesforce.com/'
-            }
-        ];
-
         element.items = example;
 
         return Promise.resolve().then(() => {
@@ -491,25 +448,6 @@ describe('Carousel', () => {
 
     // actions variant
     it('Carousel actions variant bare without label', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
-
-        const example = [
-            {
-                actions: [{ name: 'action-add', iconName: 'utility:add' }],
-                id: 1,
-                title: 'Visit App Exchange',
-                description:
-                    'Extend Salesforce with the #1 business marketplace.',
-                imageAssistiveText: 'Appy',
-                src:
-                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
-                href: 'https://www.salesforce.com/'
-            }
-        ];
-
         element.items = example;
         element.actionsVariant = 'bare';
 
@@ -522,25 +460,6 @@ describe('Carousel', () => {
     });
 
     it('Carousel actions variant border without label', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
-
-        const example = [
-            {
-                actions: [{ name: 'action-add', iconName: 'utility:add' }],
-                id: 1,
-                title: 'Visit App Exchange',
-                description:
-                    'Extend Salesforce with the #1 business marketplace.',
-                imageAssistiveText: 'Appy',
-                src:
-                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
-                href: 'https://www.salesforce.com/'
-            }
-        ];
-
         element.items = example;
         element.actionsVariant = 'border';
 
@@ -553,32 +472,7 @@ describe('Carousel', () => {
     });
 
     it('Carousel actions variant bare with label', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
-
-        const example = [
-            {
-                actions: [
-                    {
-                        name: 'action-add',
-                        iconName: 'utility:add',
-                        label: 'add'
-                    }
-                ],
-                id: 1,
-                title: 'Visit App Exchange',
-                description:
-                    'Extend Salesforce with the #1 business marketplace.',
-                imageAssistiveText: 'Appy',
-                src:
-                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
-                href: 'https://www.salesforce.com/'
-            }
-        ];
-
-        element.items = example;
+        element.items = secondExample;
         element.actionsVariant = 'bare';
 
         return Promise.resolve().then(() => {
@@ -590,32 +484,7 @@ describe('Carousel', () => {
     });
 
     it('Carousel actions variant border with label', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
-
-        const example = [
-            {
-                actions: [
-                    {
-                        name: 'action-add',
-                        iconName: 'utility:add',
-                        label: 'add'
-                    }
-                ],
-                id: 1,
-                title: 'Visit App Exchange',
-                description:
-                    'Extend Salesforce with the #1 business marketplace.',
-                imageAssistiveText: 'Appy',
-                src:
-                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
-                href: 'https://www.salesforce.com/'
-            }
-        ];
-
-        element.items = example;
+        element.items = secondExample;
         element.actionsVariant = 'border';
 
         return Promise.resolve().then(() => {
@@ -627,32 +496,7 @@ describe('Carousel', () => {
     });
 
     it('Carousel actions variant menu', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
-
-        const example = [
-            {
-                actions: [
-                    {
-                        name: 'action-add',
-                        iconName: 'utility:add',
-                        label: 'add'
-                    }
-                ],
-                id: 1,
-                title: 'Visit App Exchange',
-                description:
-                    'Extend Salesforce with the #1 business marketplace.',
-                imageAssistiveText: 'Appy',
-                src:
-                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
-                href: 'https://www.salesforce.com/'
-            }
-        ];
-
-        element.items = example;
+        element.items = secondExample;
         element.actionsVariant = 'menu';
 
         return Promise.resolve().then(() => {
@@ -666,25 +510,6 @@ describe('Carousel', () => {
 
     // actions position
     it('Carousel actions position bottom-center', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
-
-        const example = [
-            {
-                actions: [{ name: 'action-add', iconName: 'utility:add' }],
-                id: 1,
-                title: 'Visit App Exchange',
-                description:
-                    'Extend Salesforce with the #1 business marketplace.',
-                imageAssistiveText: 'Appy',
-                src:
-                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
-                href: 'https://www.salesforce.com/'
-            }
-        ];
-
         element.items = example;
         element.actionsPosition = 'bottom-center';
 
@@ -705,25 +530,6 @@ describe('Carousel', () => {
     });
 
     it('Carousel actions position bottom-right', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
-
-        const example = [
-            {
-                actions: [{ name: 'action-add', iconName: 'utility:add' }],
-                id: 1,
-                title: 'Visit App Exchange',
-                description:
-                    'Extend Salesforce with the #1 business marketplace.',
-                imageAssistiveText: 'Appy',
-                src:
-                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
-                href: 'https://www.salesforce.com/'
-            }
-        ];
-
         element.items = example;
         element.actionsPosition = 'bottom-right';
 
@@ -744,25 +550,6 @@ describe('Carousel', () => {
     });
 
     it('Carousel actions position bottom-left', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
-
-        const example = [
-            {
-                actions: [{ name: 'action-add', iconName: 'utility:add' }],
-                id: 1,
-                title: 'Visit App Exchange',
-                description:
-                    'Extend Salesforce with the #1 business marketplace.',
-                imageAssistiveText: 'Appy',
-                src:
-                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
-                href: 'https://www.salesforce.com/'
-            }
-        ];
-
         element.items = example;
         element.actionsPosition = 'bottom-left';
 
@@ -783,25 +570,6 @@ describe('Carousel', () => {
     });
 
     it('Carousel actions position top-left', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
-
-        const example = [
-            {
-                actions: [{ name: 'action-add', iconName: 'utility:add' }],
-                id: 1,
-                title: 'Visit App Exchange',
-                description:
-                    'Extend Salesforce with the #1 business marketplace.',
-                imageAssistiveText: 'Appy',
-                src:
-                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
-                href: 'https://www.salesforce.com/'
-            }
-        ];
-
         element.items = example;
         element.actionsPosition = 'top-left';
 
@@ -816,25 +584,6 @@ describe('Carousel', () => {
     });
 
     it('Carousel actions position top-right', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
-
-        const example = [
-            {
-                actions: [{ name: 'action-add', iconName: 'utility:add' }],
-                id: 1,
-                title: 'Visit App Exchange',
-                description:
-                    'Extend Salesforce with the #1 business marketplace.',
-                imageAssistiveText: 'Appy',
-                src:
-                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
-                href: 'https://www.salesforce.com/'
-            }
-        ];
-
         element.items = example;
         element.actionsPosition = 'top-right';
 
@@ -850,11 +599,6 @@ describe('Carousel', () => {
 
     // carousel infinite last goes back to first
     it('Carousel infinite last goes back to first', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
-
         element.items = items;
         element.hideIndicator = false;
         element.isIfinite = true;
@@ -878,11 +622,6 @@ describe('Carousel', () => {
 
     // carousel infinite first goes back to last
     it('Carousel infinite first goes back to last', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
-
         element.items = items;
         element.hideIndicator = false;
         element.isIfinite = true;
@@ -913,10 +652,6 @@ describe('Carousel', () => {
 
     // carousel next & previous
     it('Carousel next & previous methods', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
         element.items = items;
         element.hideIndicator = false;
         return Promise.resolve()
@@ -947,10 +682,6 @@ describe('Carousel', () => {
 
     // carousel first & last
     it('Carousel first & last methods', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
         element.items = items;
         element.hideIndicator = false;
         const lastItem = items.length - 1;
@@ -970,12 +701,8 @@ describe('Carousel', () => {
             });
     });
 
-    // carousel start & pause
-    it('Carousel start & pause methods', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
+    // carousel play & pause
+    it('Carousel play & pause methods', () => {
         element.items = items;
         element.hideIndicator = false;
         element.pause();
@@ -985,7 +712,7 @@ describe('Carousel', () => {
                     '.avonni-carousel__autoscroll-button-with-indicator'
                 );
                 expect(autoPlayButton.iconName).toBe('utility:play');
-                element.start();
+                element.play();
             })
             .then(() => {
                 const autoPlayButton = element.shadowRoot.querySelector(
@@ -999,18 +726,11 @@ describe('Carousel', () => {
 
     // handle indicator click
     it('Carousel handle indicator click base', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-
         element.items = items;
-
-        document.body.appendChild(element);
-
-        const indicators = element.shadowRoot.querySelectorAll('li');
 
         return Promise.resolve()
             .then(() => {
+                const indicators = element.shadowRoot.querySelectorAll('li');
                 const secondIndicator = indicators[1];
                 secondIndicator.click();
             })
@@ -1024,21 +744,14 @@ describe('Carousel', () => {
     });
 
     it('Carousel handle indicator click shaded', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-
         element.items = items;
         element.indicatorVariant = 'shaded';
 
-        document.body.appendChild(element);
-
-        const indicators = element.shadowRoot.querySelectorAll(
-            '.slds-carousel__indicator-action'
-        );
-
         return Promise.resolve()
             .then(() => {
+                const indicators = element.shadowRoot.querySelectorAll(
+                    '.slds-carousel__indicator-action'
+                );
                 const secondIndicator = indicators[1];
                 secondIndicator.click();
             })
@@ -1053,11 +766,6 @@ describe('Carousel', () => {
 
     // Scroll right
     it('Carousel handle scroll right', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
-
         element.items = items;
         const buttons = element.shadowRoot.querySelectorAll(
             'lightning-button-icon'
@@ -1079,12 +787,6 @@ describe('Carousel', () => {
 
     // Scroll left
     it('Carousel handle scroll left', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-
-        document.body.appendChild(element);
-
         element.items = items;
         const buttons = element.shadowRoot.querySelectorAll(
             'lightning-button-icon'
@@ -1119,32 +821,7 @@ describe('Carousel', () => {
 
     // Carousel content height based on actions or not
     it('Carousel content height with actions', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
-
-        const example = [
-            {
-                actions: [
-                    {
-                        name: 'action-add',
-                        iconName: 'utility:add',
-                        label: 'add'
-                    }
-                ],
-                id: 1,
-                title: 'Visit App Exchange',
-                description:
-                    'Extend Salesforce with the #1 business marketplace.',
-                imageAssistiveText: 'Appy',
-                src:
-                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
-                href: 'https://www.salesforce.com/'
-            }
-        ];
-
-        element.items = example;
+        element.items = secondExample;
         element.actionsVariant = 'menu';
 
         return Promise.resolve().then(() => {
@@ -1156,12 +833,7 @@ describe('Carousel', () => {
     });
 
     it('Carousel content height without actions', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
-
-        const example = [
+        const ex = [
             {
                 id: 1,
                 title: 'Visit App Exchange',
@@ -1174,7 +846,7 @@ describe('Carousel', () => {
             }
         ];
 
-        element.items = example;
+        element.items = ex;
         element.actionsVariant = 'menu';
 
         return Promise.resolve().then(() => {
@@ -1189,12 +861,7 @@ describe('Carousel', () => {
 
     // carousel itemclick
     it('Carousel item click', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
-
-        const example = [
+        const ex = [
             {
                 key: 1,
                 title: 'Visit App Exchange',
@@ -1217,9 +884,7 @@ describe('Carousel', () => {
             const item = element.shadowRoot.querySelector('a');
             item.click();
             expect(handler).toHaveBeenCalled();
-            expect([handler.mock.calls[0][0].detail.item]).toMatchObject(
-                example
-            );
+            expect([handler.mock.calls[0][0].detail.item]).toMatchObject(ex);
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
@@ -1228,12 +893,7 @@ describe('Carousel', () => {
 
     // carousel actionclick
     it('Carousel actionclick', () => {
-        const element = createElement('base-carousel', {
-            is: Carousel
-        });
-        document.body.appendChild(element);
-
-        const example = {
+        const ex = {
             key: 1,
             title: 'Visit App Exchange',
             description: 'Extend Salesforce with the #1 business marketplace.',
@@ -1256,7 +916,7 @@ describe('Carousel', () => {
             action.click();
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.name).toBe('action-add');
-            expect(handler.mock.calls[0][0].detail.item).toMatchObject(example);
+            expect(handler.mock.calls[0][0].detail.item).toMatchObject(ex);
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();

@@ -37,7 +37,7 @@ import {
     normalizeString,
     normalizeArray
 } from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+import { classSet, generateUUID } from 'c/utils';
 
 const INDICATOR_ACTION = 'slds-carousel__indicator-action';
 const INDICATOR_ACTION_SHADED =
@@ -468,10 +468,11 @@ export default class Carousel extends LightningElement {
      */
     initializePaginationItems(numberOfPanels) {
         for (let i = 0; i < numberOfPanels; i++) {
+            const id = generateUUID();
             const isItemActive = i === this.activeIndexPanel;
             if (this._indicatorVariant === 'base') {
                 this.paginationItems.push({
-                    key: i,
+                    key: id,
                     id: `pagination-item-${i}`,
                     className: isItemActive
                         ? INDICATOR_ACTION + ' ' + SLDS_ACTIVE
