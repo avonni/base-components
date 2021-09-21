@@ -31,10 +31,7 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import {
-    normalizeBoolean,
-    normalizeString
-} from 'c/utilsPrivate';
+import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { parseDateTime } from 'c/internationalizationLibrary';
 import { classSet } from 'c/utils';
 import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
@@ -63,7 +60,7 @@ export default class InputDateRange extends LightningElement {
     /**
      * Help text detailing the purpose and function of the input.
      * This attribute isn't supported for file, radio, toggle, and checkbox-button types.
-     * 
+     *
      * @type {string}
      * @public
      */
@@ -71,7 +68,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Text label for the input.
-     * 
+     *
      * @type {string}
      * @required
      * @public
@@ -80,7 +77,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Text label for the start input.
-     * 
+     *
      * @type {string}
      * @public
      */
@@ -88,7 +85,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Text label for the end input.
-     * 
+     *
      * @type {string}
      * @public
      */
@@ -96,7 +93,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Error message to be displayed when the start-date is missing.
-     * 
+     *
      * @type {string}
      * @public
      */
@@ -128,14 +125,14 @@ export default class InputDateRange extends LightningElement {
         this.interactingState = new InteractingState();
         this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
     }
-    
-    renderedCallback(){
+
+    renderedCallback() {
         this.updateClassListWhenError();
     }
 
     /**
      * Specifies the value of the start date input.
-     * 
+     *
      * @type {string}
      * @public
      */
@@ -152,7 +149,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Specifies the value of the end date input.
-     * 
+     *
      * @type {string}
      * @public
      */
@@ -170,7 +167,7 @@ export default class InputDateRange extends LightningElement {
     /**
      * Specifies the time zone used when type='datetime' only.
      * This value defaults to the user's Salesforce time zone setting.
-     * 
+     *
      * @type {string}
      * @public
      */
@@ -189,7 +186,7 @@ export default class InputDateRange extends LightningElement {
      * The display style of the date when type='date' or type='datetime'.
      * Valid values are short, medium and long. The format of each style is specific to the locale.
      * On mobile devices this attribute has no effect.
-     * 
+     *
      * @type {string}
      * @default medium
      * @public
@@ -210,7 +207,7 @@ export default class InputDateRange extends LightningElement {
      * The display style of the time when type='time' or type='datetime'.
      * Valid values are short, medium and long. Currently, medium and long styles look the same.
      * On mobile devices this attribute has no effect.
-     * 
+     *
      * @type {string}
      * @default short
      * @public
@@ -229,7 +226,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Valid types include date and datetime.
-     * 
+     *
      * @type {string}
      * @default date
      * @public
@@ -250,7 +247,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * If present, the input field is disabled and users cannot interact with it.
-     * 
+     *
      * @type {boolean}
      * @default false
      * @public
@@ -266,7 +263,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * If present, the input is read-only and cannot be edited by users.
-     * 
+     *
      * @type {boolean}
      * @default false
      * @public
@@ -282,7 +279,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * If present, the input field must be filled out before the form is submitted.
-     * 
+     *
      * @type {boolean}
      * @default false
      * @public
@@ -303,7 +300,7 @@ export default class InputDateRange extends LightningElement {
      * Use label-hidden to hide the label but make it available to assistive technology.
      * Use label-inline to horizontally align the label and input field.
      * Use label-stacked to place the label above the input field.
-     * 
+     *
      * @type {string}
      * @default standard
      * @public
@@ -322,7 +319,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Represents the validity states that an element can be in, with respect to constraint validation.
-     * 
+     *
      * @type {string}
      * @public
      */
@@ -333,43 +330,43 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Start date input.
-     * 
+     *
      * @type {element}
      */
     get startDateInput() {
-        return this.template.querySelector('.start-date')
+        return this.template.querySelector('.start-date');
     }
 
     /**
      * End date input.
-     * 
+     *
      * @type {element}
      */
     get endDateInput() {
-        return this.template.querySelector('.end-date')
+        return this.template.querySelector('.end-date');
     }
 
     /**
      * Start time input.
-     * 
+     *
      * @type {element}
      */
     get startTimeInput() {
-        return this.template.querySelector('.start-time')
+        return this.template.querySelector('.start-time');
     }
 
     /**
      * End time input.
-     * 
+     *
      * @type {element}
      */
     get endTimeInput() {
-        return this.template.querySelector('.end-time')
+        return this.template.querySelector('.end-time');
     }
 
     /**
      * True if type is datetime.
-     * 
+     *
      * @type {boolean}
      */
     get showTime() {
@@ -378,7 +375,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Formatted start date string.
-     * 
+     *
      * @type {string}
      */
     get startDateString() {
@@ -393,7 +390,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Formatted end date string.
-     * 
+     *
      * @type {string}
      */
     get endDateString() {
@@ -408,7 +405,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Class of the label container.
-     * 
+     *
      * @type {string}
      */
     get computedLabelClass() {
@@ -422,7 +419,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Class of the input date range wrapper.
-     * 
+     *
      * @type {string}
      */
     get computedWrapperClass() {
@@ -432,39 +429,47 @@ export default class InputDateRange extends LightningElement {
             })
             .toString();
     }
-    
+
     /**
      * Removes the slds-has-error class on the whole element if it's not valid.
      * Aplies it on every input we need it applied.
      * Removes it from every input when valid.
      */
     updateClassListWhenError() {
-        if(!this._valid) {
-            this.classList.remove('slds-has-error')
-            this.startDateInput.classList.add('slds-has-error')
-            this.startDateInput.classList.add('avonni-input-date-rage-input-error')
-            this.endDateInput.classList.add('slds-has-error')
-            this.endDateInput.classList.add('avonni-input-date-rage-input-error')
-            if(this.showTime){
-                this.startTimeInput.classList.add('slds-has-error')
-                this.endTimeInput.classList.add('slds-has-error')
+        if (!this._valid) {
+            this.classList.remove('slds-has-error');
+            this.startDateInput.classList.add('slds-has-error');
+            this.startDateInput.classList.add(
+                'avonni-input-date-rage-input-error'
+            );
+            this.endDateInput.classList.add('slds-has-error');
+            this.endDateInput.classList.add(
+                'avonni-input-date-rage-input-error'
+            );
+            if (this.showTime) {
+                this.startTimeInput.classList.add('slds-has-error');
+                this.endTimeInput.classList.add('slds-has-error');
             }
         }
-        if(this._valid) {
-            this.startDateInput.classList.remove('slds-has-error')
-            this.startDateInput.classList.remove('avonni-input-date-rage-input-error')
-            this.endDateInput.classList.remove('slds-has-error')
-            this.endDateInput.classList.remove('avonni-input-date-rage-input-error')
-            if(this.showTime){
-                this.startTimeInput.classList.remove('slds-has-error')
-                this.endTimeInput.classList.remove('slds-has-error')
+        if (this._valid) {
+            this.startDateInput.classList.remove('slds-has-error');
+            this.startDateInput.classList.remove(
+                'avonni-input-date-rage-input-error'
+            );
+            this.endDateInput.classList.remove('slds-has-error');
+            this.endDateInput.classList.remove(
+                'avonni-input-date-rage-input-error'
+            );
+            if (this.showTime) {
+                this.startTimeInput.classList.remove('slds-has-error');
+                this.endTimeInput.classList.remove('slds-has-error');
             }
         }
     }
 
     /**
      * Sets focus on the start date input.
-     * 
+     *
      * @public
      */
     @api
@@ -474,7 +479,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Removes keyboard focus from the start date input and end date input.
-     * 
+     *
      * @public
      */
     @api
@@ -485,7 +490,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Checks if the input is valid.
-     * 
+     *
      * @returns {boolean} Indicates whether the element meets all constraint validations.
      * @public
      */
@@ -497,7 +502,7 @@ export default class InputDateRange extends LightningElement {
     /**
      * Displays the error messages and returns false if the input is invalid.
      * If the input is valid, reportValidity() clears displayed error messages and returns true.
-     * 
+     *
      * @returns {boolean} - The validity status of the input fields.
      * @public
      */
@@ -510,7 +515,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Sets a custom error message to be displayed when a form is submitted.
-     * 
+     *
      * @param {string} message - The string that describes the error.
      * If message is an empty string, the error message is reset.
      * @public
@@ -523,14 +528,14 @@ export default class InputDateRange extends LightningElement {
     /**
      * Displays error messages on invalid fields.
      * An invalid field fails at least one constraint validation and returns false when checkValidity() is called.
-     * 
+     *
      * @public
      */
     @api
     showHelpMessageIfInvalid() {
         this.reportValidity();
     }
-    
+
     /**
      * Gets FieldConstraintApi.
      *
@@ -622,7 +627,7 @@ export default class InputDateRange extends LightningElement {
         const month = Number(date[1]) - 1;
         const day = Number(date[2]);
 
-        this.startDate = new Date(year, month, day);
+        this._startDate = new Date(year, month, day);
         event.stopPropagation();
         this._cancelBlurStartDate = false;
         this.handleBlurStartDate();
@@ -658,8 +663,8 @@ export default class InputDateRange extends LightningElement {
                 let date = parseDateTime(event.target.value);
 
                 if (date) {
-                    this.startDate = date;
-                    this.startDate.setHours(0, 0, 0, 0);
+                    this._startDate = date;
+                    this._startDate.setHours(0, 0, 0, 0);
                 }
             }
 
@@ -673,7 +678,9 @@ export default class InputDateRange extends LightningElement {
                 let endDate = new Date(this.startDate).setDate(
                     this.startDate.getDate() + 1
                 );
-                this.endDate = new Date(new Date(endDate).setHours(0, 0, 0, 0));
+                this._endDate = new Date(
+                    new Date(endDate).setHours(0, 0, 0, 0)
+                );
                 this.endDateInput.focus();
             }
 
@@ -735,7 +742,7 @@ export default class InputDateRange extends LightningElement {
         const month = Number(date[1]) - 1;
         const day = Number(date[2]);
 
-        this.endDate = new Date(year, month, day);
+        this._endDate = new Date(year, month, day);
         event.stopPropagation();
         this._cancelBlurEndDate = false;
         this.handleBlurEndDate();
@@ -767,8 +774,8 @@ export default class InputDateRange extends LightningElement {
                 let date = parseDateTime(event.target.value);
 
                 if (date) {
-                    this.endDate = date;
-                    this.endDate.setHours(0, 0, 0, 0);
+                    this._endDate = date;
+                    this._endDate.setHours(0, 0, 0, 0);
                 }
             }
 
@@ -782,7 +789,7 @@ export default class InputDateRange extends LightningElement {
                 let startDate = new Date(this.endDate).setDate(
                     this.endDate.getDate() - 1
                 );
-                this.startDate = new Date(
+                this._startDate = new Date(
                     new Date(startDate).setHours(0, 0, 0, 0)
                 );
                 this.startDateInput.focus();
@@ -838,7 +845,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Change the date format depending on date style.
-     * 
+     *
      * @param {date}
      * @returns {date} formated date depending on the date style.
      */
@@ -889,7 +896,7 @@ export default class InputDateRange extends LightningElement {
 
         /**
          * The event fired when the value changed.
-         * 
+         *
          * @event
          * @name change
          * @param {string} startDate Start date value.
