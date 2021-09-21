@@ -151,7 +151,7 @@ export default class ButtonIconPopover extends LightningElement {
     @api tooltip;
 
     _disabled = false;
-    _handleCloseButton = false;
+    _hideCloseButton = false;
     _isLoading = false;
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     _size = BUTTON_SIZES.default;
@@ -484,7 +484,7 @@ export default class ButtonIconPopover extends LightningElement {
         }
         /**
          * The event fired when the popover is clicked.
-         * 
+         *
          * @event
          * @name click
          * @public
@@ -528,7 +528,7 @@ export default class ButtonIconPopover extends LightningElement {
         }
         /**
          * The event fired when the popover is closed.
-         * 
+         *
          * @event
          * @name close
          * @public
