@@ -13,19 +13,17 @@
  */
 
 /**
- * @typedef {Object} Group
- * @name groups
- * @property {string} label Label of the option.
- * @property {string} name Required. A unique name for the group. It will be used as a reference in the options.
- */
-
-/**
  * @namespace examples
  */
 /**
  * @memberof examples
  * @name base
  * @storyId example-dual-listbox--base
+ */
+/**
+ * @memberof examples
+ * @name baseWithGroups
+ * @storyId example-dual-listbox--base-with-groups
  */
 /**
  * @memberof examples

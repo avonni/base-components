@@ -700,15 +700,6 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * Get fieldLevelHelp existence.
-     *
-     * @type {boolean}
-     */
-    get hasFieldLevelHelp() {
-        return !!this.fieldLevelHelp;
-    }
-
-    /**
      * Computed real DOM Id for Source List.
      *
      * @type {string}
