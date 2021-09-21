@@ -583,6 +583,7 @@ describe('DualListbox', () => {
     // required
     it('Dual Listbox required', () => {
         element.required = true;
+        element.options = Options;
 
         return Promise.resolve().then(() => {
             const asterisk = element.shadowRoot.querySelector('.slds-required');
@@ -854,39 +855,10 @@ describe('DualListbox', () => {
         });
     });
 
-    // change order in options list
-    it('Dual Listbox change order in selected list', () => {
-        element.options = Options;
-        element.value = ['1', '2'];
-        element.downButtonLabel = 'down';
-
-        return Promise.resolve().then(() => {
-            const selectedBox = element.shadowRoot.querySelector(
-                '[data-selected-list]'
-            );
-            const option = selectedBox.querySelectorAll(
-                '.slds-listbox__option'
-            );
-            const firstOption = option[0];
-            firstOption.click();
-            expect(firstOption.getAttribute('aria-selected')).toBeTruthy();
-            expect(firstOption.getAttribute('tabindex')).toBe('0');
-            expect(firstOption.getAttribute('data-index')).toBe('0');
-            const lightningButtonIcon = element.shadowRoot.querySelector(
-                "lightning-button-icon[title='down']"
-            );
-            console.log(lightningButtonIcon);
-            lightningButtonIcon.click();
-            expect(firstOption.getAttribute('aria-selected')).toBeTruthy();
-            expect(firstOption.getAttribute('tabindex')).toBe('0');
-            expect(firstOption.getAttribute('data-index')).toBe('0');
-        });
-    });
-
     /* ----- EVENTS ----- */
 
     // change
-    it('change event', () => {
+    it('change event add', () => {
         element.options = Options;
         element.value = ['1', '2'];
         element.addButtonLabel = 'add';
@@ -898,10 +870,10 @@ describe('DualListbox', () => {
             const option = element.shadowRoot.querySelector(
                 '.slds-listbox__option'
             );
+            option.click();
             const lightningButtonIcon = element.shadowRoot.querySelector(
                 "lightning-button-icon[title='add']"
             );
-            option.click();
             lightningButtonIcon.click();
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.value).toMatchObject([
@@ -913,5 +885,122 @@ describe('DualListbox', () => {
             expect(handler.mock.calls[0][0].composed).toBeTruthy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
+    });
+
+    it('change event remove', () => {
+        element.options = Options;
+        element.value = ['1', '2'];
+        element.removeButtonLabel = 'remove';
+
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        return Promise.resolve().then(() => {
+            const selectedBox = element.shadowRoot.querySelector(
+                '[data-selected-list]'
+            );
+            const options = selectedBox.querySelectorAll(
+                '.slds-listbox__option'
+            );
+            const lightningButtonIcon = element.shadowRoot.querySelector(
+                "lightning-button-icon[title='remove']"
+            );
+            options[1].click();
+            lightningButtonIcon.click();
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.value).toMatchObject(['1']);
+            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+            expect(handler.mock.calls[0][0].composed).toBeTruthy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    it('change event down', () => {
+        element.options = Options;
+        element.value = ['1', '2', '3'];
+        element.downButtonLabel = 'down';
+
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        return Promise.resolve().then(() => {
+            const selectedBox = element.shadowRoot.querySelector(
+                '[data-selected-list]'
+            );
+            const options = selectedBox.querySelectorAll(
+                '.slds-listbox__option'
+            );
+            const lightningButtonIcon = element.shadowRoot.querySelector(
+                "lightning-button-icon[title='down']"
+            );
+            options[1].click();
+            lightningButtonIcon.click();
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.value).toMatchObject([
+                '1',
+                '3',
+                '2'
+            ]);
+            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+            expect(handler.mock.calls[0][0].composed).toBeTruthy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    it('change event up', () => {
+        element.options = Options;
+        element.value = ['1', '2', '3'];
+        element.upButtonLabel = 'up';
+
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        return Promise.resolve().then(() => {
+            const selectedBox = element.shadowRoot.querySelector(
+                '[data-selected-list]'
+            );
+            const options = selectedBox.querySelectorAll(
+                '.slds-listbox__option'
+            );
+            const lightningButtonIcon = element.shadowRoot.querySelector(
+                "lightning-button-icon[title='up']"
+            );
+            options[1].click();
+            lightningButtonIcon.click();
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.value).toMatchObject([
+                '2',
+                '1',
+                '3'
+            ]);
+            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+            expect(handler.mock.calls[0][0].composed).toBeTruthy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    // blur
+    it('blur event', () => {
+        const handler = jest.fn();
+        element.addEventListener('blur', handler);
+
+        element.dispatchEvent(new CustomEvent('blur'));
+
+        expect(handler).toHaveBeenCalled();
+        expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+        expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+    });
+
+    // focus
+    it('focus event', () => {
+        const handler = jest.fn();
+        element.addEventListener('focus', handler);
+        element.dispatchEvent(new CustomEvent('focus'));
+
+        expect(handler).toHaveBeenCalled();
+        expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+        expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
     });
 });

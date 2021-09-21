@@ -231,6 +231,7 @@ export default class DualListbox extends LightningElement {
     _variant = LABEL_VARIANTS.default;
 
     _selectedValues = [];
+    _groupedValues = [];
     highlightedOptions = [];
     errorMessage = '';
     focusableInSource;
@@ -247,8 +248,6 @@ export default class DualListbox extends LightningElement {
 
     _dropItSelected = false;
     _dropItSource = false;
-
-    _groupedValues = [];
 
     connectedCallback() {
         this.classList.add('slds-form-element');
@@ -1698,16 +1697,6 @@ export default class DualListbox extends LightningElement {
             this.focusableInSelected = value;
         }
         this.optionToFocus = value;
-    }
-
-    /**
-     * Check whether value passed is a number.
-     *
-     * @param {string|number} value
-     * @returns {boolean}
-     */
-    isNumber(value) {
-        return value !== '' && value !== null && isFinite(value);
     }
 
     /**
