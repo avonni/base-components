@@ -33,6 +33,7 @@
 import { createElement } from 'lwc';
 import Alert from 'c/alert';
 
+let element;
 describe('Alert', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -40,32 +41,25 @@ describe('Alert', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-alert', {
+    beforeEach(() => {
+        element = createElement('base-alert', {
             is: Alert
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.iconName).toBeUndefined();
         expect(element.variant).toBe('base');
         expect(element.isDismissible).toBe(false);
     });
 
     it('Alert variant base', () => {
-        const element = createElement('base-alert', {
-            is: Alert
-        });
-        document.body.appendChild(element);
-
         const div = element.shadowRoot.querySelector('div');
         expect(div.classList).toContain('slds-theme_info');
     });
 
     it('Alert variant error', () => {
-        const element = createElement('base-alert', {
-            is: Alert
-        });
-        document.body.appendChild(element);
-
         const div = element.shadowRoot.querySelector('div');
 
         element.variant = 'error';
@@ -77,11 +71,6 @@ describe('Alert', () => {
     });
 
     it('Alert variant offline', () => {
-        const element = createElement('base-alert', {
-            is: Alert
-        });
-        document.body.appendChild(element);
-
         const div = element.shadowRoot.querySelector('div');
 
         element.variant = 'offline';
@@ -93,11 +82,6 @@ describe('Alert', () => {
     });
 
     it('Alert variant warning', () => {
-        const element = createElement('base-alert', {
-            is: Alert
-        });
-        document.body.appendChild(element);
-
         const div = element.shadowRoot.querySelector('div');
         const lightningButtonIcon = element.shadowRoot.querySelector(
             'lightning-button-icon'
@@ -120,12 +104,6 @@ describe('Alert', () => {
     });
 
     it('Alert isDismissible', () => {
-        const element = createElement('base-alert', {
-            is: Alert
-        });
-
-        document.body.appendChild(element);
-
         let lightningButtonIcon = element.shadowRoot.querySelector(
             'lightning-button-icon'
         );
@@ -144,11 +122,6 @@ describe('Alert', () => {
     });
 
     it('Alert iconName', () => {
-        const element = createElement('base-alert', {
-            is: Alert
-        });
-        document.body.appendChild(element);
-
         let lightningIcon = element.shadowRoot.querySelector('lightning-icon');
 
         expect(element.iconName).toBeUndefined();
@@ -164,11 +137,6 @@ describe('Alert', () => {
     });
 
     it('Alert closeAction', () => {
-        const element = createElement('base-alert', {
-            is: Alert
-        });
-        document.body.appendChild(element);
-
         const mockCallBack = jest.fn();
 
         let div = element.shadowRoot.querySelector('div');
