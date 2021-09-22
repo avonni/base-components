@@ -34,6 +34,7 @@ import { createElement } from 'lwc';
 import FilterMenuGroup from 'c/filterMenuGroup';
 import { MENUS, NO_VALUE_MENU } from '../__docs__/data';
 
+let element;
 describe('FilterMenuGroup', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -41,11 +42,14 @@ describe('FilterMenuGroup', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-filter-menu-group', {
+    beforeEach(() => {
+        element = createElement('base-filter-menu-group', {
             is: FilterMenuGroup
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.applyButtonLabel).toBe('Apply');
         expect(element.hideSelectedItems).toBeFalsy();
         expect(element.menus).toMatchObject([]);
@@ -58,12 +62,6 @@ describe('FilterMenuGroup', () => {
     // apply-button-label
     // Depends on variant
     it('applyButtonLabel, with horizontal variant', () => {
-        const element = createElement('base-filter-menu-group', {
-            is: FilterMenuGroup
-        });
-
-        document.body.appendChild(element);
-
         element.applyButtonLabel = 'Save';
         element.variant = 'horizontal';
 
@@ -76,12 +74,6 @@ describe('FilterMenuGroup', () => {
     });
 
     it('applyButtonLabel, with vertical variant', () => {
-        const element = createElement('base-filter-menu-group', {
-            is: FilterMenuGroup
-        });
-
-        document.body.appendChild(element);
-
         element.applyButtonLabel = 'Save';
         element.variant = 'vertical';
 
@@ -96,12 +88,6 @@ describe('FilterMenuGroup', () => {
     // hide-selected-items
     // Depends on menus
     it('hideSelectedItems = false', () => {
-        const element = createElement('base-filter-menu-group', {
-            is: FilterMenuGroup
-        });
-
-        document.body.appendChild(element);
-
         element.menus = MENUS;
         element.hideSelectedItems = false;
 
@@ -114,12 +100,6 @@ describe('FilterMenuGroup', () => {
     });
 
     it('hideSelectedItems = true', () => {
-        const element = createElement('base-filter-menu-group', {
-            is: FilterMenuGroup
-        });
-
-        document.body.appendChild(element);
-
         element.menus = MENUS;
         element.hideSelectedItems = true;
 
@@ -133,12 +113,6 @@ describe('FilterMenuGroup', () => {
 
     // menus
     it('menus', () => {
-        const element = createElement('base-filter-menu-group', {
-            is: FilterMenuGroup
-        });
-
-        document.body.appendChild(element);
-
         element.menus = MENUS;
 
         return Promise.resolve().then(() => {
@@ -188,12 +162,6 @@ describe('FilterMenuGroup', () => {
     // reset-button-label
     // Depends on variant
     it('resetButtonLabel, with horizontal variant', () => {
-        const element = createElement('base-filter-menu-group', {
-            is: FilterMenuGroup
-        });
-
-        document.body.appendChild(element);
-
         element.resetButtonLabel = 'Erase';
         element.variant = 'horizontal';
 
@@ -206,12 +174,6 @@ describe('FilterMenuGroup', () => {
     });
 
     it('resetButtonLabel, with vertical variant', () => {
-        const element = createElement('base-filter-menu-group', {
-            is: FilterMenuGroup
-        });
-
-        document.body.appendChild(element);
-
         element.resetButtonLabel = 'Erase';
         element.variant = 'vertical';
 
@@ -224,12 +186,6 @@ describe('FilterMenuGroup', () => {
     // variant
     // Depends on menus
     it('variant = horizontal', () => {
-        const element = createElement('base-filter-menu-group', {
-            is: FilterMenuGroup
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'horizontal';
         element.menus = MENUS;
 
@@ -257,12 +213,6 @@ describe('FilterMenuGroup', () => {
     });
 
     it('variant = vertical', () => {
-        const element = createElement('base-filter-menu-group', {
-            is: FilterMenuGroup
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'vertical';
         element.menus = MENUS;
 
@@ -294,12 +244,6 @@ describe('FilterMenuGroup', () => {
     // clear
     // Depends on menus
     it('clear method', () => {
-        const element = createElement('base-filter-menu-group', {
-            is: FilterMenuGroup
-        });
-
-        document.body.appendChild(element);
-
         element.menus = MENUS;
 
         return Promise.resolve()
@@ -324,12 +268,6 @@ describe('FilterMenuGroup', () => {
     // apply
     // Depends on menus
     it('apply method', () => {
-        const element = createElement('base-filter-menu-group', {
-            is: FilterMenuGroup
-        });
-
-        document.body.appendChild(element);
-
         element.menus = NO_VALUE_MENU;
 
         return Promise.resolve()
@@ -354,12 +292,6 @@ describe('FilterMenuGroup', () => {
     // select
     // Depends on menus
     it('select event', () => {
-        const element = createElement('base-filter-menu-group', {
-            is: FilterMenuGroup
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('select', handler);
         element.menus = MENUS;
@@ -389,12 +321,6 @@ describe('FilterMenuGroup', () => {
     // click on apply button
     // Depends on menus and variant
     it('click on apply button, with horizontal variant', () => {
-        const element = createElement('base-filter-menu-group', {
-            is: FilterMenuGroup
-        });
-
-        document.body.appendChild(element);
-
         element.menus = NO_VALUE_MENU;
 
         return Promise.resolve()
@@ -419,12 +345,6 @@ describe('FilterMenuGroup', () => {
     });
 
     it('click on apply button, with vertical variant', () => {
-        const element = createElement('base-filter-menu-group', {
-            is: FilterMenuGroup
-        });
-
-        document.body.appendChild(element);
-
         element.menus = NO_VALUE_MENU;
         element.variant = 'vertical';
 
@@ -451,12 +371,6 @@ describe('FilterMenuGroup', () => {
     // click on reset button
     // Depends on menus and variant
     it('click on reset button, with horizontal variant', () => {
-        const element = createElement('base-filter-menu-group', {
-            is: FilterMenuGroup
-        });
-
-        document.body.appendChild(element);
-
         element.menus = MENUS;
 
         return Promise.resolve()
@@ -475,12 +389,6 @@ describe('FilterMenuGroup', () => {
     });
 
     it('click on reset button, with vertical variant', () => {
-        const element = createElement('base-filter-menu-group', {
-            is: FilterMenuGroup
-        });
-
-        document.body.appendChild(element);
-
         element.menus = MENUS;
         element.variant = 'vertical';
 
@@ -502,12 +410,6 @@ describe('FilterMenuGroup', () => {
     // Remove selected item
     // Depends on menus
     it('Remove selected item', () => {
-        const element = createElement('base-filter-menu-group', {
-            is: FilterMenuGroup
-        });
-
-        document.body.appendChild(element);
-
         element.menus = MENUS;
 
         return Promise.resolve()
