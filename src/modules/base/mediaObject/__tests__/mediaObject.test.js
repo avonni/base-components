@@ -33,6 +33,7 @@
 import { createElement } from 'lwc';
 import MediaObject from 'c/mediaObject';
 
+let element;
 describe('MediaObject', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -40,11 +41,14 @@ describe('MediaObject', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-media-object', {
+    beforeEach(() => {
+        element = createElement('base-media-object', {
             is: MediaObject
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.verticalAlign).toBe('start');
         expect(element.responsive).toBeFalsy();
         expect(element.inline).toBeFalsy();
@@ -53,11 +57,6 @@ describe('MediaObject', () => {
 
     // vertical-align
     it('verticalAlign = start', () => {
-        const element = createElement('base-media-object', {
-            is: MediaObject
-        });
-        document.body.appendChild(element);
-
         element.verticalAlign = 'start';
         const wrapper = element.shadowRoot.querySelector('.slds-media');
 
@@ -70,11 +69,6 @@ describe('MediaObject', () => {
     });
 
     it('verticalAlign = center', () => {
-        const element = createElement('base-media-object', {
-            is: MediaObject
-        });
-        document.body.appendChild(element);
-
         element.verticalAlign = 'center';
         const wrapper = element.shadowRoot.querySelector('.slds-media');
 
@@ -87,11 +81,6 @@ describe('MediaObject', () => {
     });
 
     it('verticalAlign = end', () => {
-        const element = createElement('base-media-object', {
-            is: MediaObject
-        });
-        document.body.appendChild(element);
-
         element.verticalAlign = 'end';
         const wrapper = element.shadowRoot.querySelector('.slds-media');
 
@@ -105,11 +94,6 @@ describe('MediaObject', () => {
 
     // responsive
     it('responsive = false', () => {
-        const element = createElement('base-media-object', {
-            is: MediaObject
-        });
-        document.body.appendChild(element);
-
         element.responsive = false;
         const wrapper = element.shadowRoot.querySelector('.slds-media');
 
@@ -119,11 +103,6 @@ describe('MediaObject', () => {
     });
 
     it('responsive = true', () => {
-        const element = createElement('base-media-object', {
-            is: MediaObject
-        });
-        document.body.appendChild(element);
-
         element.responsive = true;
         const wrapper = element.shadowRoot.querySelector('.slds-media');
 
@@ -134,11 +113,6 @@ describe('MediaObject', () => {
 
     // inline
     it('inline = false', () => {
-        const element = createElement('base-media-object', {
-            is: MediaObject
-        });
-        document.body.appendChild(element);
-
         element.inline = false;
         const wrapper = element.shadowRoot.querySelector('.slds-media');
 
@@ -150,11 +124,6 @@ describe('MediaObject', () => {
     });
 
     it('inline = true', () => {
-        const element = createElement('base-media-object', {
-            is: MediaObject
-        });
-        document.body.appendChild(element);
-
         element.inline = true;
         const wrapper = element.shadowRoot.querySelector('.slds-media');
 
@@ -167,11 +136,6 @@ describe('MediaObject', () => {
 
     // size
     it('size = medium', () => {
-        const element = createElement('base-media-object', {
-            is: MediaObject
-        });
-        document.body.appendChild(element);
-
         element.size = 'medium';
         const wrapper = element.shadowRoot.querySelector('.slds-media');
 
@@ -182,11 +146,6 @@ describe('MediaObject', () => {
     });
 
     it('size = small', () => {
-        const element = createElement('base-media-object', {
-            is: MediaObject
-        });
-        document.body.appendChild(element);
-
         element.size = 'small';
         const wrapper = element.shadowRoot.querySelector('.slds-media');
 
@@ -197,11 +156,6 @@ describe('MediaObject', () => {
     });
 
     it('size = large', () => {
-        const element = createElement('base-media-object', {
-            is: MediaObject
-        });
-        document.body.appendChild(element);
-
         element.size = 'large';
         const wrapper = element.shadowRoot.querySelector('.slds-media');
 
