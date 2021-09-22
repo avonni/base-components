@@ -33,6 +33,7 @@
 import { createElement } from 'lwc';
 import Illustration from 'c/illustration';
 
+let element;
 describe('Illustration', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -40,11 +41,14 @@ describe('Illustration', () => {
         }
     });
 
-    it('Illustration Default attributes', () => {
-        const element = createElement('base-illustration', {
+    beforeEach(() => {
+        element = createElement('base-illustration', {
             is: Illustration
         });
+        document.body.appendChild(element);
+    });
 
+    it('Illustration Default attributes', () => {
         expect(element.title).toBeUndefined();
         expect(element.variant).toBe('text-only');
         expect(element.size).toBe('small');
@@ -54,11 +58,6 @@ describe('Illustration', () => {
 
     // title
     it('Illustration title', () => {
-        const element = createElement('base-illustration', {
-            is: Illustration
-        });
-        document.body.appendChild(element);
-
         element.title = 'This is a title';
 
         return Promise.resolve().then(() => {
@@ -69,11 +68,6 @@ describe('Illustration', () => {
 
     // size
     it('Illustration size small', () => {
-        const element = createElement('base-illustration', {
-            is: Illustration
-        });
-        document.body.appendChild(element);
-
         return Promise.resolve().then(() => {
             const container = element.shadowRoot.querySelector(
                 '.slds-illustration'
@@ -86,11 +80,6 @@ describe('Illustration', () => {
     });
 
     it('Illustration size large', () => {
-        const element = createElement('base-illustration', {
-            is: Illustration
-        });
-        document.body.appendChild(element);
-
         element.size = 'large';
 
         return Promise.resolve().then(() => {
@@ -106,11 +95,6 @@ describe('Illustration', () => {
 
     // variant
     it('Illustration variant text-only', () => {
-        const element = createElement('base-illustration', {
-            is: Illustration
-        });
-        document.body.appendChild(element);
-
         return Promise.resolve().then(() => {
             const img = element.shadowRoot.querySelector('img');
             expect(img).toBeFalsy();
@@ -118,11 +102,6 @@ describe('Illustration', () => {
     });
 
     it('Illustration variant going-camping', () => {
-        const element = createElement('base-illustration', {
-            is: Illustration
-        });
-        document.body.appendChild(element);
-
         element.variant = 'going-camping';
 
         return Promise.resolve().then(() => {
@@ -134,11 +113,6 @@ describe('Illustration', () => {
     });
 
     it('Illustration variant maintenance', () => {
-        const element = createElement('base-illustration', {
-            is: Illustration
-        });
-        document.body.appendChild(element);
-
         element.variant = 'maintenance';
 
         return Promise.resolve().then(() => {
@@ -150,11 +124,6 @@ describe('Illustration', () => {
     });
 
     it('Illustration variant desert', () => {
-        const element = createElement('base-illustration', {
-            is: Illustration
-        });
-        document.body.appendChild(element);
-
         element.variant = 'desert';
 
         return Promise.resolve().then(() => {
@@ -166,11 +135,6 @@ describe('Illustration', () => {
     });
 
     it('Illustration variant open-road', () => {
-        const element = createElement('base-illustration', {
-            is: Illustration
-        });
-        document.body.appendChild(element);
-
         element.variant = 'open-road';
 
         return Promise.resolve().then(() => {
@@ -182,11 +146,6 @@ describe('Illustration', () => {
     });
 
     it('Illustration variant no-access', () => {
-        const element = createElement('base-illustration', {
-            is: Illustration
-        });
-        document.body.appendChild(element);
-
         element.variant = 'no-access';
 
         return Promise.resolve().then(() => {
@@ -198,11 +157,6 @@ describe('Illustration', () => {
     });
 
     it('Illustration variant no-connection', () => {
-        const element = createElement('base-illustration', {
-            is: Illustration
-        });
-        document.body.appendChild(element);
-
         element.variant = 'no-connection';
 
         return Promise.resolve().then(() => {
@@ -214,11 +168,6 @@ describe('Illustration', () => {
     });
 
     it('Illustration variant not-available-in-lightning', () => {
-        const element = createElement('base-illustration', {
-            is: Illustration
-        });
-        document.body.appendChild(element);
-
         element.variant = 'not-available-in-lightning';
 
         return Promise.resolve().then(() => {
@@ -230,11 +179,6 @@ describe('Illustration', () => {
     });
 
     it('Illustration variant page-not-available', () => {
-        const element = createElement('base-illustration', {
-            is: Illustration
-        });
-        document.body.appendChild(element);
-
         element.variant = 'page-not-available';
 
         return Promise.resolve().then(() => {
@@ -246,11 +190,6 @@ describe('Illustration', () => {
     });
 
     it('Illustration variant walkthrough-not-available', () => {
-        const element = createElement('base-illustration', {
-            is: Illustration
-        });
-        document.body.appendChild(element);
-
         element.variant = 'walkthrough-not-available';
 
         return Promise.resolve().then(() => {
@@ -262,11 +201,6 @@ describe('Illustration', () => {
     });
 
     it('Illustration variant fishing-deals', () => {
-        const element = createElement('base-illustration', {
-            is: Illustration
-        });
-        document.body.appendChild(element);
-
         element.variant = 'fishing-deals';
 
         return Promise.resolve().then(() => {
@@ -278,11 +212,6 @@ describe('Illustration', () => {
     });
 
     it('Illustration variant lake-mountain', () => {
-        const element = createElement('base-illustration', {
-            is: Illustration
-        });
-        document.body.appendChild(element);
-
         element.variant = 'lake-mountain';
 
         return Promise.resolve().then(() => {
@@ -294,11 +223,6 @@ describe('Illustration', () => {
     });
 
     it('Illustration variant no-events', () => {
-        const element = createElement('base-illustration', {
-            is: Illustration
-        });
-        document.body.appendChild(element);
-
         element.variant = 'no-events';
 
         return Promise.resolve().then(() => {
@@ -310,11 +234,6 @@ describe('Illustration', () => {
     });
 
     it('Illustration variant no-task', () => {
-        const element = createElement('base-illustration', {
-            is: Illustration
-        });
-        document.body.appendChild(element);
-
         element.variant = 'no-task';
 
         return Promise.resolve().then(() => {
@@ -326,11 +245,6 @@ describe('Illustration', () => {
     });
 
     it('Illustration variant setup', () => {
-        const element = createElement('base-illustration', {
-            is: Illustration
-        });
-        document.body.appendChild(element);
-
         element.variant = 'setup';
 
         return Promise.resolve().then(() => {
@@ -342,11 +256,6 @@ describe('Illustration', () => {
     });
 
     it('Illustration variant gone-fishing', () => {
-        const element = createElement('base-illustration', {
-            is: Illustration
-        });
-        document.body.appendChild(element);
-
         element.variant = 'gone-fishing';
 
         return Promise.resolve().then(() => {
@@ -358,11 +267,6 @@ describe('Illustration', () => {
     });
 
     it('Illustration variant no-access-2', () => {
-        const element = createElement('base-illustration', {
-            is: Illustration
-        });
-        document.body.appendChild(element);
-
         element.variant = 'no-access-2';
 
         return Promise.resolve().then(() => {
@@ -374,11 +278,6 @@ describe('Illustration', () => {
     });
 
     it('Illustration variant no-content', () => {
-        const element = createElement('base-illustration', {
-            is: Illustration
-        });
-        document.body.appendChild(element);
-
         element.variant = 'no-content';
 
         return Promise.resolve().then(() => {
@@ -390,11 +289,6 @@ describe('Illustration', () => {
     });
 
     it('Illustration variant no-preview', () => {
-        const element = createElement('base-illustration', {
-            is: Illustration
-        });
-        document.body.appendChild(element);
-
         element.variant = 'no-preview';
 
         return Promise.resolve().then(() => {
@@ -406,11 +300,6 @@ describe('Illustration', () => {
     });
 
     it('Illustration variant preview', () => {
-        const element = createElement('base-illustration', {
-            is: Illustration
-        });
-        document.body.appendChild(element);
-
         element.variant = 'preview';
 
         return Promise.resolve().then(() => {
@@ -422,11 +311,6 @@ describe('Illustration', () => {
     });
 
     it('Illustration variant research', () => {
-        const element = createElement('base-illustration', {
-            is: Illustration
-        });
-        document.body.appendChild(element);
-
         element.variant = 'research';
 
         return Promise.resolve().then(() => {
