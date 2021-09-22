@@ -66,6 +66,7 @@ const items = [
     }
 ];
 
+let element;
 describe('Dynamic Menu', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -73,11 +74,14 @@ describe('Dynamic Menu', () => {
         }
     });
 
-    it('Dynamic Menu Default attributes', () => {
-        const element = createElement('base-dynamic-menu', {
+    beforeEach(() => {
+        element = createElement('base-dynamic-menu', {
             is: DynamicMenu
         });
+        document.body.appendChild(element);
+    });
 
+    it('Dynamic Menu Default attributes', () => {
         expect(element.buttonSize).toBe('auto');
         expect(element.label).toBeUndefined();
         expect(element.iconName).toBeUndefined();
@@ -102,11 +106,6 @@ describe('Dynamic Menu', () => {
     // button-size
     // Depends on label
     it('Dynamic Menu buttonSize = auto', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.label = 'Some label';
         element.buttonSize = 'auto';
 
@@ -118,11 +117,6 @@ describe('Dynamic Menu', () => {
     });
 
     it('Dynamic Menu buttonSize = stretch', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.label = 'Some label';
         element.buttonSize = 'stretch';
 
@@ -135,11 +129,6 @@ describe('Dynamic Menu', () => {
 
     // label
     it('Dynamic Menu label', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.label = 'This is a label';
 
         return Promise.resolve().then(() => {
@@ -151,11 +140,6 @@ describe('Dynamic Menu', () => {
 
     // icon name
     it('Dynamic Menu icon name without label', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.iconName = 'utility:close';
 
         return Promise.resolve().then(() => {
@@ -167,11 +151,6 @@ describe('Dynamic Menu', () => {
     });
 
     it('Dynamic Menu icon name with label', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.label = 'Label';
         element.iconName = 'utility:close';
 
@@ -184,11 +163,6 @@ describe('Dynamic Menu', () => {
 
     //icon size
     it('Dynamic Menu icon size without label', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.iconName = 'utility:add';
         element.iconSize = 'medium';
 
@@ -203,11 +177,6 @@ describe('Dynamic Menu', () => {
 
     // items
     it('Dynamic Menu items', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.items = items;
 
         return Promise.resolve().then(() => {
@@ -225,11 +194,6 @@ describe('Dynamic Menu', () => {
 
     // alternative text
     it('Dynamic Menu alternative text', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.alternativeText = 'This is an alternative text';
 
         return Promise.resolve().then(() => {
@@ -242,11 +206,6 @@ describe('Dynamic Menu', () => {
 
     // menu alignment
     it('Dynamic Menu menu alignment left', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         return Promise.resolve()
             .then(() => {
                 const button = element.shadowRoot.querySelector(
@@ -265,11 +224,6 @@ describe('Dynamic Menu', () => {
     });
 
     it('Dynamic Menu menu alignment right', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.menuAlignment = 'right';
 
         return Promise.resolve()
@@ -290,11 +244,6 @@ describe('Dynamic Menu', () => {
     });
 
     it('Dynamic Menu menu alignment center', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.menuAlignment = 'center';
 
         return Promise.resolve()
@@ -315,11 +264,6 @@ describe('Dynamic Menu', () => {
     });
 
     it('Dynamic Menu menu alignment bottom-left', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.menuAlignment = 'bottom-left';
 
         return Promise.resolve()
@@ -340,11 +284,6 @@ describe('Dynamic Menu', () => {
     });
 
     it('Dynamic Menu menu alignment bottom-right', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.menuAlignment = 'bottom-right';
 
         return Promise.resolve()
@@ -365,11 +304,6 @@ describe('Dynamic Menu', () => {
     });
 
     it('Dynamic Menu menu alignment bottom-center', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.menuAlignment = 'bottom-center';
 
         return Promise.resolve()
@@ -391,11 +325,6 @@ describe('Dynamic Menu', () => {
 
     // disabled
     it('Dynamic Menu disabled without label', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.disabled = true;
 
         return Promise.resolve().then(() => {
@@ -407,11 +336,6 @@ describe('Dynamic Menu', () => {
     });
 
     it('Dynamic Menu disabled with label', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.label = 'label';
         element.disabled = true;
 
@@ -423,11 +347,6 @@ describe('Dynamic Menu', () => {
 
     // is loading
     it('Dynamic Menu is loading', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.isLoading = true;
 
         return Promise.resolve()
@@ -447,11 +366,6 @@ describe('Dynamic Menu', () => {
 
     // loading state alternative text
     it('Dynamic Menu loading state alternative text', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.isLoading = true;
         element.loadingStateAlternativeText = 'This is a loading text';
 
@@ -472,11 +386,6 @@ describe('Dynamic Menu', () => {
 
     // with search
     it('Dynamic Menu with search', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.withSearch = true;
 
         return Promise.resolve()
@@ -497,11 +406,6 @@ describe('Dynamic Menu', () => {
 
     // search input placeholder
     it('Dynamic Menu search input placeholder', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.withSearch = true;
         element.searchInputPlaceholder = 'This is a search input placeholder';
 
@@ -525,11 +429,6 @@ describe('Dynamic Menu', () => {
 
     // title
     it('Dynamic Menu title without label', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.title = 'This is a title text';
 
         return Promise.resolve().then(() => {
@@ -541,11 +440,6 @@ describe('Dynamic Menu', () => {
     });
 
     it('Dynamic Menu title with label', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.label = 'label';
         element.title = 'This is a title text';
 
@@ -557,11 +451,6 @@ describe('Dynamic Menu', () => {
 
     // variant
     it('Dynamic Menu variant bare without label', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.variant = 'bare';
 
         return Promise.resolve().then(() => {
@@ -573,11 +462,6 @@ describe('Dynamic Menu', () => {
     });
 
     it('Dynamic Menu variant container without label', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.variant = 'container';
 
         return Promise.resolve().then(() => {
@@ -589,11 +473,6 @@ describe('Dynamic Menu', () => {
     });
 
     it('Dynamic Menu variant brand without label', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.variant = 'brand';
 
         return Promise.resolve().then(() => {
@@ -605,11 +484,6 @@ describe('Dynamic Menu', () => {
     });
 
     it('Dynamic Menu variant brand with label', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.variant = 'brand';
         element.label = 'Some label';
 
@@ -620,11 +494,6 @@ describe('Dynamic Menu', () => {
     });
 
     it('Dynamic Menu variant border-filled without label', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.variant = 'border-filled';
 
         return Promise.resolve().then(() => {
@@ -636,11 +505,6 @@ describe('Dynamic Menu', () => {
     });
 
     it('Dynamic Menu variant bare-inverse without label', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.variant = 'bare-inverse';
 
         return Promise.resolve().then(() => {
@@ -652,11 +516,6 @@ describe('Dynamic Menu', () => {
     });
 
     it('Dynamic Menu variant border-inverse without label', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.variant = 'border-inverse';
 
         return Promise.resolve().then(() => {
@@ -669,11 +528,6 @@ describe('Dynamic Menu', () => {
 
     // value
     it('Dynamic Menu value without label', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.value = '1';
 
         return Promise.resolve().then(() => {
@@ -685,11 +539,6 @@ describe('Dynamic Menu', () => {
     });
 
     it('Dynamic Menu value with label', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.label = 'label';
         element.value = '1';
 
@@ -701,11 +550,6 @@ describe('Dynamic Menu', () => {
 
     // accesskey
     it('Dynamic Menu accesskey without label', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.accessKey = 'K';
 
         return Promise.resolve().then(() => {
@@ -717,11 +561,6 @@ describe('Dynamic Menu', () => {
     });
 
     it('Dynamic Menu accesskey with label', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.label = 'label';
         element.accessKey = 'K';
 
@@ -733,11 +572,6 @@ describe('Dynamic Menu', () => {
 
     // tooltip
     it('Dynamic Menu tooltip without label', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.tooltip = 'This is a tooltip text';
 
         return Promise.resolve().then(() => {
@@ -751,11 +585,6 @@ describe('Dynamic Menu', () => {
     /* ---- EVENTS ----- */
 
     it('Dynamic Menu event: click on item', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         element.items = items;
 
         const button = element.shadowRoot.querySelector(
@@ -796,54 +625,54 @@ describe('Dynamic Menu', () => {
     });
 
     it('Dynamic Menu event: privatebuttonregister', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-
         const handler = jest.fn();
         element.addEventListener('privatebuttonregister', handler);
-
         document.body.appendChild(element);
 
+        return Promise.resolve().then(() => {
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].canceled).toBeFalsy();
+            expect(
+                handler.mock.calls[0][0].detail.callbacks.setOrder
+            ).toBeInstanceOf(Function);
+            expect(
+                handler.mock.calls[0][0].detail.callbacks
+                    .setDeRegistrationCallback
+            ).toBeInstanceOf(Function);
+        });
+    });
+
+    it('Dynamic Menu event: open', () => {
+        const handler = jest.fn();
+        element.addEventListener('open', handler);
+        element.click();
+
         expect(handler).toHaveBeenCalled();
-        expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+        expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+        expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         expect(handler.mock.calls[0][0].composed).toBeFalsy();
-        expect(handler.mock.calls[0][0].canceled).toBeFalsy();
-        expect(
-            handler.mock.calls[0][0].detail.callbacks.setOrder
-        ).toBeInstanceOf(Function);
-        expect(
-            handler.mock.calls[0][0].detail.callbacks.setDeRegistrationCallback
-        ).toBeInstanceOf(Function);
     });
 
     /* ---- METHODS ----- */
     it('Dynamic Menu method: click with label', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-
-        element.label = 'label';
-
-        document.body.appendChild(element);
-
         let clickEvent = false;
         element.addEventListener('click', () => {
             clickEvent = true;
         });
 
         element.click();
-        return Promise.resolve().then(() => {
-            expect(clickEvent).toBeTruthy();
-        });
+        return Promise.resolve()
+            .then(() => {
+                element.label = 'label';
+            })
+            .then(() => {
+                expect(clickEvent).toBeTruthy();
+            });
     });
 
     it('Dynamic Menu method: click without label', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         let clickEvent = false;
         element.addEventListener('click', () => {
             clickEvent = true;
@@ -852,15 +681,11 @@ describe('Dynamic Menu', () => {
         element.click();
         return Promise.resolve().then(() => {
             expect(clickEvent).toBeTruthy();
+            expect(element.classList).toContain('slds-is-open');
         });
     });
 
     it('Dynamic Menu method: focus without label', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-        document.body.appendChild(element);
-
         let focusEvent = false;
 
         element.addEventListener('focus', () => {
@@ -875,14 +700,6 @@ describe('Dynamic Menu', () => {
     });
 
     it('Dynamic Menu method: focus with label', () => {
-        const element = createElement('base-dynamic-menu', {
-            is: DynamicMenu
-        });
-
-        element.label = 'label';
-
-        document.body.appendChild(element);
-
         let focusEvent = false;
 
         element.addEventListener('focus', () => {
@@ -891,8 +708,12 @@ describe('Dynamic Menu', () => {
 
         element.focus();
 
-        return Promise.resolve().then(() => {
-            expect(focusEvent).toBeTruthy();
-        });
+        return Promise.resolve()
+            .then(() => {
+                element.label = 'label';
+            })
+            .then(() => {
+                expect(focusEvent).toBeTruthy();
+            });
     });
 });
