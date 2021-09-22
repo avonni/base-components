@@ -1146,7 +1146,7 @@ describe('FilterMenu', () => {
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector('button');
             const icons = element.shadowRoot.querySelectorAll(
-                'c-primitive-icon'
+                '[data-element-id^="avonni-primitive-icon"]'
             );
             expect(icons).toHaveLength(1);
             expect(icons[0].iconName).toBe('utility:chevrondown');
@@ -1166,7 +1166,7 @@ describe('FilterMenu', () => {
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector('button');
             const icons = element.shadowRoot.querySelectorAll(
-                'c-primitive-icon'
+                '[data-element-id^="avonni-primitive-icon"]'
             );
             expect(icons).toHaveLength(2);
             expect(icons[0].iconName).toBe('standard:user');

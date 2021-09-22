@@ -195,7 +195,7 @@ describe('PrimitiveComboboxGroup', () => {
 
         return Promise.resolve().then(() => {
             const childGroups = element.shadowRoot.querySelectorAll(
-                'c-primitive-combobox-group'
+                '[data-element-id="avonni-primitive-combobox-group"]'
             );
             expect(childGroups).toHaveLength(groups.length);
 
@@ -238,7 +238,7 @@ describe('PrimitiveComboboxGroup', () => {
                     expect(checkmark).toBeFalsy();
                 }
 
-                const avatar = option.querySelector('c-avatar');
+                const avatar = option.querySelector('[data-element-id="avonni-avatar"]');
                 if (options[index].hasAvatar) {
                     expect(avatar).toBeTruthy();
                 } else {
@@ -287,7 +287,7 @@ describe('PrimitiveComboboxGroup', () => {
 
         return Promise.resolve().then(() => {
             const childGroups = element.shadowRoot.querySelectorAll(
-                'c-primitive-combobox-group'
+                '[data-element-id="avonni-primitive-combobox-group"]'
             );
             childGroups.forEach((group) => {
                 expect(group.removeSelectedOptions).toBeFalsy();
@@ -321,7 +321,7 @@ describe('PrimitiveComboboxGroup', () => {
 
         return Promise.resolve().then(() => {
             const childGroups = element.shadowRoot.querySelectorAll(
-                'c-primitive-combobox-group'
+                '[data-element-id="avonni-primitive-combobox-group"]'
             );
             childGroups.forEach((group) => {
                 expect(group.removeSelectedOptions).toBeTruthy();

@@ -194,7 +194,7 @@ export default class FilterMenuGroup extends LightningElement {
      * @type {NodeListof<Element>}
      */
     get menuComponents() {
-        return this.template.querySelectorAll('c-filter-menu');
+        return this.template.querySelectorAll('[data-element-id^="avonni-filter-menu"]');
     }
 
     /**

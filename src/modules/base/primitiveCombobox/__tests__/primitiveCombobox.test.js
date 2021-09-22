@@ -461,7 +461,7 @@ describe('PrimitiveCombobox', () => {
 
         return Promise.resolve().then(() => {
             const groupElements = element.shadowRoot.querySelectorAll(
-                'c-primitive-combobox-group'
+                '[data-element-id^="avonni-primitive-combobox-group"]'
             );
             expect(groupElements).toHaveLength(5);
             groupElements.forEach((group, index) => {
@@ -641,7 +641,7 @@ describe('PrimitiveCombobox', () => {
 
         return Promise.resolve().then(() => {
             const groupElements = element.shadowRoot.querySelectorAll(
-                'c-primitive-combobox-group'
+                '[data-element-id^="avonni-primitive-combobox-group"]'
             );
             expect(groupElements).toHaveLength(5);
         });
@@ -661,7 +661,7 @@ describe('PrimitiveCombobox', () => {
 
         return Promise.resolve().then(() => {
             const groupElements = element.shadowRoot.querySelectorAll(
-                'c-primitive-combobox-group'
+                '[data-element-id^="avonni-primitive-combobox-group"]'
             );
             expect(groupElements).toHaveLength(3);
         });
@@ -698,7 +698,7 @@ describe('PrimitiveCombobox', () => {
                 expect(option).toBeInstanceOf(Option);
             });
             const group = element.shadowRoot.querySelector(
-                'c-primitive-combobox-group'
+                '[data-element-id="avonni-primitive-combobox-group"]'
             );
             expect(group.options).toMatchObject(options);
         });

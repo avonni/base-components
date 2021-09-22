@@ -149,7 +149,7 @@ describe('Blockquote', () => {
         element.iconName = 'utility:error';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id^="lightning-icon"]');
             expect(icon.iconName).toBe('utility:error');
         });
     });
@@ -165,7 +165,7 @@ describe('Blockquote', () => {
         element.iconSize = 'xx-small';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id^="lightning-icon"]');
             expect(icon.size).toBe('xx-small');
         });
     });
@@ -180,7 +180,7 @@ describe('Blockquote', () => {
         element.iconSize = 'x-small';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id^="lightning-icon"]');
             expect(icon.size).toBe('x-small');
         });
     });
@@ -194,7 +194,7 @@ describe('Blockquote', () => {
         element.iconName = 'utility:error';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id^="lightning-icon"]');
             expect(icon.size).toBe('small');
         });
     });
@@ -209,7 +209,7 @@ describe('Blockquote', () => {
         element.iconSize = 'medium';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id^="lightning-icon"]');
             expect(icon.size).toBe('medium');
         });
     });
@@ -224,7 +224,7 @@ describe('Blockquote', () => {
         element.iconSize = 'large';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id^="lightning-icon"]');
             expect(icon.size).toBe('large');
         });
     });
@@ -240,7 +240,7 @@ describe('Blockquote', () => {
         element.iconPosition = 'right';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id^="lightning-icon"]');
             expect(icon.className).toContain('slds-m-left_x-small');
         });
     });
@@ -255,7 +255,7 @@ describe('Blockquote', () => {
         element.iconPosition = 'left';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id^="lightning-icon"]');
             expect(icon.className).toContain('slds-m-right_x-small');
         });
     });

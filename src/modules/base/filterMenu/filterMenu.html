@@ -54,12 +54,14 @@
                 icon-name={iconName}
                 svg-class="slds-button__icon"
                 variant="bare"
+                data-element-id="avonni-primitive-icon-main"
             ></c-primitive-icon>
             <template if:true={computedShowDownIcon}>
                 <c-primitive-icon
                     icon-name="utility:down"
                     svg-class="slds-button__icon slds-button__icon_x-small slds-m-left_xx-small"
                     variant="bare"
+                    data-element-id="avonni-primitive-icon-down"
                 ></c-primitive-icon>
             </template>
             <span class="slds-assistive-text">{alternativeText}</span>

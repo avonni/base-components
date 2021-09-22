@@ -151,7 +151,7 @@ describe('Publisher', () => {
 
         return Promise.resolve().then(() => {
             const richText = element.shadowRoot.querySelector(
-                'c-input-rich-text'
+                '[data-element-id="avonni-input-rich-text"]'
             );
             expect(richText.value).toBe('A string value');
         });
@@ -203,7 +203,7 @@ describe('Publisher', () => {
         return Promise.resolve().then(() => {
             const wrapper = element.shadowRoot.querySelector('.slds-publisher');
             const richText = element.shadowRoot.querySelector(
-                'c-input-rich-text'
+                '[data-element-id="avonni-input-rich-text"]'
             );
 
             expect(wrapper.classList).toContain('slds-is-active');

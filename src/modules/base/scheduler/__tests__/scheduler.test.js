@@ -139,7 +139,7 @@ describe('Scheduler', () => {
 
         return Promise.resolve().then(() => {
             const header = element.shadowRoot.querySelector(
-                'c-primitive-scheduler-header-group'
+                '[data-element-id="avonni-primitive-scheduler-header-group"]'
             );
             expect(header.availableDaysOfTheWeek).toMatchObject([0, 1]);
         });
@@ -152,7 +152,7 @@ describe('Scheduler', () => {
 
         return Promise.resolve().then(() => {
             const header = element.shadowRoot.querySelector(
-                'c-primitive-scheduler-header-group'
+                '[data-element-id="avonni-primitive-scheduler-header-group"]'
             );
             expect(header.availableMonths).toMatchObject([0, 1]);
         });
@@ -165,7 +165,7 @@ describe('Scheduler', () => {
 
         return Promise.resolve().then(() => {
             const header = element.shadowRoot.querySelector(
-                'c-primitive-scheduler-header-group'
+                '[data-element-id="avonni-primitive-scheduler-header-group"]'
             );
             expect(header.availableTimeFrames).toMatchObject([
                 '12:00-17:00',
@@ -266,7 +266,7 @@ describe('Scheduler', () => {
         element.columns = COLUMNS;
 
         return Promise.resolve().then(() => {
-            const datatable = element.shadowRoot.querySelector('c-datatable');
+            const datatable = element.shadowRoot.querySelector('[data-element-id="avonni-datatable"]');
             expect(datatable.columns).toMatchObject(COLUMNS);
         });
     });
@@ -296,7 +296,7 @@ describe('Scheduler', () => {
         return Promise.resolve()
             .then(() => {
                 const event = element.shadowRoot.querySelector(
-                    'c-primitive-scheduler-event-occurrence'
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
                 );
                 event.dispatchEvent(
                     new CustomEvent('privatecontextmenu', {
@@ -313,7 +313,7 @@ describe('Scheduler', () => {
             })
             .then(() => {
                 const dropdown = element.shadowRoot.querySelector(
-                    'c-primitive-dropdown-menu'
+                    '[data-element-id="avonni-primitive-dropdown-menu"]'
                 );
                 expect(dropdown).toBeTruthy();
                 expect(dropdown.items).toMatchObject(menu);
@@ -334,7 +334,7 @@ describe('Scheduler', () => {
         return Promise.resolve()
             .then(() => {
                 const event = element.shadowRoot.querySelector(
-                    'c-primitive-scheduler-event-occurrence'
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
                 );
                 title = event.title;
                 event.dispatchEvent(
@@ -352,7 +352,7 @@ describe('Scheduler', () => {
             })
             .then(() => {
                 const dropdown = element.shadowRoot.querySelector(
-                    'c-primitive-dropdown-menu'
+                    '[data-element-id="avonni-primitive-dropdown-menu"]'
                 );
                 dropdown.dispatchEvent(
                     new CustomEvent('privateselect', {
@@ -363,7 +363,7 @@ describe('Scheduler', () => {
                 );
             })
             .then(() => {
-                const dialog = element.shadowRoot.querySelector('c-dialog');
+                const dialog = element.shadowRoot.querySelector('[data-element-id="avonni-dialog"]');
                 expect(dialog).toBeTruthy();
                 expect(dialog.title).toBe(title);
             });
@@ -380,7 +380,7 @@ describe('Scheduler', () => {
         return Promise.resolve()
             .then(() => {
                 const event = element.shadowRoot.querySelector(
-                    'c-primitive-scheduler-event-occurrence'
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
                 );
                 event.dispatchEvent(
                     new CustomEvent('privatecontextmenu', {
@@ -397,7 +397,7 @@ describe('Scheduler', () => {
             })
             .then(() => {
                 const dropdown = element.shadowRoot.querySelector(
-                    'c-primitive-dropdown-menu'
+                    '[data-element-id="avonni-primitive-dropdown-menu"]'
                 );
                 dropdown.dispatchEvent(
                     new CustomEvent('privateselect', {
@@ -409,7 +409,7 @@ describe('Scheduler', () => {
             })
             .then(() => {
                 const deleteMessage = element.shadowRoot.querySelector(
-                    'c-dialog p'
+                    '[data-element-id="avonni-dialog"] p'
                 );
                 expect(deleteMessage).toBeTruthy();
             });
@@ -451,7 +451,7 @@ describe('Scheduler', () => {
             })
             .then(() => {
                 const dropdown = element.shadowRoot.querySelector(
-                    'c-primitive-dropdown-menu'
+                    '[data-element-id="avonni-primitive-dropdown-menu"]'
                 );
                 expect(dropdown).toBeTruthy();
                 expect(dropdown.items).toMatchObject(menu);
@@ -485,7 +485,7 @@ describe('Scheduler', () => {
             })
             .then(() => {
                 const dropdown = element.shadowRoot.querySelector(
-                    'c-primitive-dropdown-menu'
+                    '[data-element-id="avonni-primitive-dropdown-menu"]'
                 );
                 dropdown.dispatchEvent(
                     new CustomEvent('privateselect', {
@@ -496,7 +496,7 @@ describe('Scheduler', () => {
                 );
             })
             .then(() => {
-                const dialog = element.shadowRoot.querySelector('c-dialog');
+                const dialog = element.shadowRoot.querySelector('[data-element-id="avonni-dialog"]');
                 expect(dialog).toBeTruthy();
                 expect(dialog.title).toBe('Title of the new event');
             });
@@ -516,7 +516,7 @@ describe('Scheduler', () => {
 
         return Promise.resolve().then(() => {
             const event = element.shadowRoot.querySelector(
-                'c-primitive-scheduler-event-occurrence'
+                '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
             );
             event.rows.forEach((row, index) => {
                 expect(row.color).toBe(palette[index]);
@@ -544,7 +544,7 @@ describe('Scheduler', () => {
 
         return Promise.resolve().then(() => {
             const header = element.shadowRoot.querySelector(
-                'c-primitive-scheduler-header-group'
+                '[data-element-id="avonni-primitive-scheduler-header-group"]'
             );
             expect(header.headers).toMatchObject(headers);
         });
@@ -563,7 +563,7 @@ describe('Scheduler', () => {
 
         return Promise.resolve().then(() => {
             const event = element.shadowRoot.querySelector(
-                'c-primitive-scheduler-event-occurrence'
+                '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
             );
             expect(event.dateFormat).toBe('hh:mm');
         });
@@ -582,7 +582,7 @@ describe('Scheduler', () => {
         return Promise.resolve()
             .then(() => {
                 event = element.shadowRoot.querySelector(
-                    'c-primitive-scheduler-event-occurrence'
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
                 );
                 event.dispatchEvent(
                     new CustomEvent('privatemouseenter', {
@@ -628,7 +628,7 @@ describe('Scheduler', () => {
 
         return Promise.resolve().then(() => {
             const occurrences = element.shadowRoot.querySelectorAll(
-                'c-primitive-scheduler-event-occurrence'
+                '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
             );
             DISABLED_DATES_TIMES.forEach((event) => {
                 event.keyFields.forEach((key) => {
@@ -682,7 +682,7 @@ describe('Scheduler', () => {
 
         return Promise.resolve().then(() => {
             const events = element.shadowRoot.querySelectorAll(
-                'c-primitive-scheduler-event-occurrence'
+                '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
             );
             expect(events).toHaveLength(3);
         });
@@ -710,7 +710,7 @@ describe('Scheduler', () => {
         return Promise.resolve()
             .then(() => {
                 const event = element.shadowRoot.querySelector(
-                    'c-primitive-scheduler-event-occurrence'
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
                 );
                 event.dispatchEvent(
                     new CustomEvent('privatecontextmenu', {
@@ -727,7 +727,7 @@ describe('Scheduler', () => {
             })
             .then(() => {
                 const dropdown = element.shadowRoot.querySelector(
-                    'c-primitive-dropdown-menu'
+                    '[data-element-id="avonni-primitive-dropdown-menu"]'
                 );
                 dropdown.dispatchEvent(
                     new CustomEvent('privateselect', {
@@ -739,28 +739,28 @@ describe('Scheduler', () => {
             })
             .then(() => {
                 const titleInput = element.shadowRoot.querySelector(
-                    'c-dialog lightning-input'
+                    '[data-element-id="lightning-input-event-title"]'
                 );
                 expect(titleInput.label).toBe(labels.title);
 
                 const dates = element.shadowRoot.querySelector(
-                    'c-dialog c-input-date-range'
+                    '[data-element-id="avonni-input-date-range-event-dates"]'
                 );
                 expect(dates.labelStartDate).toBe(labels.from);
                 expect(dates.labelEndDate).toBe(labels.to);
 
                 const resources = element.shadowRoot.querySelector(
-                    'c-dialog c-combobox'
+                    '[data-element-id="avonni-combobox-event-resources"]'
                 );
                 expect(resources.label).toBe(labels.resources);
 
                 const cancelButton = element.shadowRoot.querySelector(
-                    'c-dialog lightning-button'
+                    '[data-element-id="lightning-button-cancel-edit"]'
                 );
                 expect(cancelButton.label).toBe(labels.cancelButton);
 
                 const saveButton = element.shadowRoot.querySelector(
-                    'c-dialog lightning-button:last-of-type'
+                    '[data-element-id="lightning-button-save-edit"]'
                 );
                 expect(saveButton.label).toBe(labels.saveButton);
             });
@@ -793,7 +793,7 @@ describe('Scheduler', () => {
         return Promise.resolve()
             .then(() => {
                 const event = element.shadowRoot.querySelector(
-                    'c-primitive-scheduler-event-occurrence'
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
                 );
                 event.dispatchEvent(
                     new CustomEvent('privatecontextmenu', {
@@ -810,7 +810,7 @@ describe('Scheduler', () => {
             })
             .then(() => {
                 const dropdown = element.shadowRoot.querySelector(
-                    'c-primitive-dropdown-menu'
+                    '[data-element-id="avonni-primitive-dropdown-menu"]'
                 );
                 dropdown.dispatchEvent(
                     new CustomEvent('privateselect', {
@@ -822,15 +822,15 @@ describe('Scheduler', () => {
             })
             .then(() => {
                 const saveMenu = element.shadowRoot.querySelector(
-                    'c-dialog lightning-button-menu'
+                    '[data-element-id="lightning-button-menu-save-edit"]'
                 );
                 expect(saveMenu).toBeTruthy();
 
-                const saveOne = saveMenu.querySelector('lightning-menu-item');
+                const saveOne = saveMenu.querySelector('[data-element-id="lightning-menu-item-save-one"]');
                 expect(saveOne.label).toBe(labels.saveOneRecurrent);
 
                 const saveAll = saveMenu.querySelector(
-                    'lightning-menu-item:last-of-type'
+                    '[data-element-id="lightning-menu-item-save-all"]'
                 );
                 expect(saveAll.label).toBe(labels.saveAllRecurrent);
             });
@@ -869,7 +869,7 @@ describe('Scheduler', () => {
             .then(() => {
                 // Mouse down
                 const event = element.shadowRoot.querySelector(
-                    'c-primitive-scheduler-event-occurrence'
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
                 );
                 event.dispatchEvent(
                     new CustomEvent('privatemousedown', {
@@ -894,22 +894,22 @@ describe('Scheduler', () => {
                 wrapper.dispatchEvent(mouseUp);
             })
             .then(() => {
-                const dialog = element.shadowRoot.querySelector('c-dialog');
+                const dialog = element.shadowRoot.querySelector('[data-element-id="avonni-dialog"]');
                 expect(dialog).toBeTruthy();
 
-                const paragraph = dialog.querySelector('p');
+                const paragraph = dialog.querySelector('[data-element-id="p-recurrence-dialog-description"]');
                 expect(paragraph.textContent).toBe(labels.editRecurrent);
 
-                const cancelButton = dialog.querySelector('lightning-button');
+                const cancelButton = dialog.querySelector('[data-element-id="lightning-button-recurrence-dialog-cancel"]');
                 expect(cancelButton.label).toBe(labels.cancelButton);
 
                 const saveOneRecurrent = dialog.querySelector(
-                    'lightning-button:nth-of-type(2)'
+                    '[data-element-id="lightning-button-recurrence-dialog-save-one"]'
                 );
                 expect(saveOneRecurrent.label).toBe(labels.saveOneRecurrent);
 
                 const saveAllRecurrent = dialog.querySelector(
-                    'lightning-button:last-of-type'
+                    '[data-element-id="lightning-button-recurrence-dialog-save-all"]'
                 );
                 expect(saveAllRecurrent.label).toBe(labels.saveAllRecurrent);
 
@@ -917,7 +917,7 @@ describe('Scheduler', () => {
                 saveAllRecurrent.click();
             })
             .then(() => {
-                const dialog = element.shadowRoot.querySelector('c-dialog');
+                const dialog = element.shadowRoot.querySelector('[data-element-id="avonni-dialog"]');
                 expect(dialog).toBeFalsy();
             });
     });
@@ -940,7 +940,7 @@ describe('Scheduler', () => {
         return Promise.resolve()
             .then(() => {
                 const event = element.shadowRoot.querySelector(
-                    'c-primitive-scheduler-event-occurrence'
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
                 );
                 event.dispatchEvent(
                     new CustomEvent('privatecontextmenu', {
@@ -957,7 +957,7 @@ describe('Scheduler', () => {
             })
             .then(() => {
                 const dropdown = element.shadowRoot.querySelector(
-                    'c-primitive-dropdown-menu'
+                    '[data-element-id="avonni-primitive-dropdown-menu"]'
                 );
                 dropdown.dispatchEvent(
                     new CustomEvent('privateselect', {
@@ -968,18 +968,18 @@ describe('Scheduler', () => {
                 );
             })
             .then(() => {
-                const dialog = element.shadowRoot.querySelector('c-dialog');
+                const dialog = element.shadowRoot.querySelector('[data-element-id="avonni-dialog"]');
                 expect(dialog.title).toBe(labels.deleteTitle);
 
-                const deleteMessage = dialog.querySelector('p');
+                const deleteMessage = dialog.querySelector('[data-element-id="lightning-button-delete-description"]');
                 expect(deleteMessage.textContent).toBe(labels.deleteMessage);
 
                 const deleteButton = dialog.querySelector(
-                    'lightning-button:nth-of-type(2)'
+                    '[data-element-id="lightning-button-delete-dialog-delete"]'
                 );
                 expect(deleteButton.label).toBe(labels.deleteButton);
 
-                const cancelButton = dialog.querySelector('lightning-button');
+                const cancelButton = dialog.querySelector('[data-element-id="lightning-button-delete-dialog-cancel"]');
                 expect(cancelButton.label).toBe(labels.cancelButton);
             });
     });
@@ -996,7 +996,7 @@ describe('Scheduler', () => {
 
         return Promise.resolve().then(() => {
             const occurrences = element.shadowRoot.querySelectorAll(
-                'c-primitive-scheduler-event-occurrence'
+                '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
             );
             EVENTS.forEach((event) => {
                 event.keyFields.forEach((key) => {
@@ -1050,7 +1050,7 @@ describe('Scheduler', () => {
 
         return Promise.resolve().then(() => {
             const events = element.shadowRoot.querySelectorAll(
-                'c-primitive-scheduler-event-occurrence'
+                '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
             );
             expect(events).toHaveLength(3);
         });
@@ -1110,7 +1110,7 @@ describe('Scheduler', () => {
 
         return Promise.resolve().then(() => {
             const occurrences = element.shadowRoot.querySelectorAll(
-                'c-primitive-scheduler-event-occurrence'
+                '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
             );
             events.forEach((event) => {
                 event.keyFields.forEach((key) => {
@@ -1148,7 +1148,7 @@ describe('Scheduler', () => {
 
         return Promise.resolve().then(() => {
             const event = element.shadowRoot.querySelector(
-                'c-primitive-scheduler-event-occurrence'
+                '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
             );
             event.rows.forEach((row, index) => {
                 expect(row.color).toBe(lake[index]);
@@ -1169,7 +1169,7 @@ describe('Scheduler', () => {
 
         return Promise.resolve().then(() => {
             const events = element.shadowRoot.querySelectorAll(
-                'c-primitive-scheduler-event-occurrence'
+                '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
             );
             events.forEach((event) => {
                 expect(event.theme).toBe('line');
@@ -1197,7 +1197,7 @@ describe('Scheduler', () => {
 
         return Promise.resolve().then(() => {
             const header = element.shadowRoot.querySelector(
-                'c-primitive-scheduler-header-group'
+                '[data-element-id="avonni-primitive-scheduler-header-group"]'
             );
             expect(header.headers).toMatchObject(dayLetterAndWeek);
         });
@@ -1227,7 +1227,7 @@ describe('Scheduler', () => {
 
         return Promise.resolve().then(() => {
             const spinner = element.shadowRoot.querySelector(
-                'lightning-spinner'
+                '[data-element-id="lightning-spinner"]'
             );
             expect(spinner.alternativeText).toBe('Some alternative text');
         });
@@ -1246,7 +1246,7 @@ describe('Scheduler', () => {
 
         return Promise.resolve().then(() => {
             const events = element.shadowRoot.querySelectorAll(
-                'c-primitive-scheduler-event-occurrence'
+                '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
             );
             events.forEach((event) => {
                 expect(event.readOnly).toBeTruthy();
@@ -1266,7 +1266,7 @@ describe('Scheduler', () => {
         return Promise.resolve()
             .then(() => {
                 const event = element.shadowRoot.querySelector(
-                    'c-primitive-scheduler-event-occurrence'
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
                 );
                 event.dispatchEvent(
                     new CustomEvent('privatecontextmenu', {
@@ -1283,7 +1283,7 @@ describe('Scheduler', () => {
             })
             .then(() => {
                 const dropdown = element.shadowRoot.querySelector(
-                    'c-primitive-dropdown-menu'
+                    '[data-element-id="avonni-primitive-dropdown-menu"]'
                 );
                 expect(dropdown).toBeFalsy();
             });
@@ -1312,7 +1312,7 @@ describe('Scheduler', () => {
             })
             .then(() => {
                 const dropdown = element.shadowRoot.querySelector(
-                    'c-primitive-dropdown-menu'
+                    '[data-element-id="avonni-primitive-dropdown-menu"]'
                 );
                 expect(dropdown).toBeFalsy();
             });
@@ -1335,7 +1335,7 @@ describe('Scheduler', () => {
             .then(() => {
                 // Mouse down
                 const event = element.shadowRoot.querySelector(
-                    'c-primitive-scheduler-event-occurrence'
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
                 );
                 event.dispatchEvent(
                     new CustomEvent('privatemousedown', {
@@ -1360,7 +1360,7 @@ describe('Scheduler', () => {
                 wrapper.dispatchEvent(mouseUp);
             })
             .then(() => {
-                const dialog = element.shadowRoot.querySelector('c-dialog');
+                const dialog = element.shadowRoot.querySelector('[data-element-id="avonni-dialog"]');
                 expect(dialog).toBeFalsy();
             });
     });
@@ -1390,7 +1390,7 @@ describe('Scheduler', () => {
             .then(() => {
                 // Open the context menu
                 const event = element.shadowRoot.querySelector(
-                    'c-primitive-scheduler-event-occurrence'
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
                 );
                 event.dispatchEvent(
                     new CustomEvent('privatecontextmenu', {
@@ -1408,7 +1408,7 @@ describe('Scheduler', () => {
             .then(() => {
                 // Pick the edit menu
                 const dropdown = element.shadowRoot.querySelector(
-                    'c-primitive-dropdown-menu'
+                    '[data-element-id="avonni-primitive-dropdown-menu"]'
                 );
                 dropdown.dispatchEvent(
                     new CustomEvent('privateselect', {
@@ -1421,20 +1421,20 @@ describe('Scheduler', () => {
             .then(() => {
                 // Change the title
                 const title = element.shadowRoot.querySelector(
-                    'lightning-input'
+                    '[data-element-id="lightning-input-event-title"]'
                 );
                 title.value = 'Some new title';
                 title.dispatchEvent(new CustomEvent('change'));
 
                 // Save
                 const saveButton = element.shadowRoot.querySelector(
-                    'lightning-button:last-of-type'
+                    '[data-element-id="lightning-button-save-edit"]'
                 );
                 saveButton.click();
             })
             .then(() => {
                 const events = element.shadowRoot.querySelectorAll(
-                    'c-primitive-scheduler-event-occurrence'
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
                 );
                 events.forEach((event) => {
                     expect(event.title).toBe('Some new title');
@@ -1467,7 +1467,7 @@ describe('Scheduler', () => {
             .then(() => {
                 // Open the context menu
                 const event = element.shadowRoot.querySelector(
-                    'c-primitive-scheduler-event-occurrence'
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
                 );
                 from = event.from;
                 to = event.to;
@@ -1487,7 +1487,7 @@ describe('Scheduler', () => {
             .then(() => {
                 // Pick the edit menu
                 const dropdown = element.shadowRoot.querySelector(
-                    'c-primitive-dropdown-menu'
+                    '[data-element-id="avonni-primitive-dropdown-menu"]'
                 );
                 dropdown.dispatchEvent(
                     new CustomEvent('privateselect', {
@@ -1500,20 +1500,20 @@ describe('Scheduler', () => {
             .then(() => {
                 // Change the title
                 const title = element.shadowRoot.querySelector(
-                    'lightning-input'
+                    '[data-element-id="lightning-input-event-title"]'
                 );
                 title.value = 'Some new title';
                 title.dispatchEvent(new CustomEvent('change'));
 
                 // Save
                 const saveButton = element.shadowRoot.querySelector(
-                    'lightning-button:last-of-type'
+                    '[data-element-id="lightning-button-save-edit"]'
                 );
                 saveButton.click();
             })
             .then(() => {
                 const events = element.shadowRoot.querySelectorAll(
-                    'c-primitive-scheduler-event-occurrence'
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
                 );
                 events.forEach((event) => {
                     if (event.from === from && event.to === to) {
@@ -1552,7 +1552,7 @@ describe('Scheduler', () => {
             .then(() => {
                 // Mouse down
                 const event = element.shadowRoot.querySelector(
-                    'c-primitive-scheduler-event-occurrence'
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
                 );
                 event.dispatchEvent(
                     new CustomEvent('privatemousedown', {
@@ -1577,7 +1577,7 @@ describe('Scheduler', () => {
                 wrapper.dispatchEvent(mouseUp);
             })
             .then(() => {
-                const dialog = element.shadowRoot.querySelector('c-dialog');
+                const dialog = element.shadowRoot.querySelector('[data-element-id="avonni-dialog"]');
                 expect(dialog).toBeFalsy();
             });
     });
@@ -1605,7 +1605,7 @@ describe('Scheduler', () => {
 
         return Promise.resolve().then(() => {
             const events = element.shadowRoot.querySelectorAll(
-                'c-primitive-scheduler-event-occurrence'
+                '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
             );
             events.forEach((event, index) => {
                 expect(event.referenceLine).toBeTruthy();
@@ -1638,7 +1638,7 @@ describe('Scheduler', () => {
 
         return Promise.resolve().then(() => {
             const events = element.shadowRoot.querySelectorAll(
-                'c-primitive-scheduler-event-occurrence'
+                '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
             );
             expect(events).toHaveLength(5);
         });
@@ -1660,7 +1660,7 @@ describe('Scheduler', () => {
         return Promise.resolve()
             .then(() => {
                 const datatable = element.shadowRoot.querySelector(
-                    'c-datatable'
+                    '[data-element-id="avonni-datatable"]'
                 );
                 expect(datatable.resizeColumnDisabled).toBeFalsy();
 
@@ -1688,7 +1688,7 @@ describe('Scheduler', () => {
                     '.avonni-scheduler__datatable-col'
                 );
                 const datatable = element.shadowRoot.querySelector(
-                    'c-datatable'
+                    '[data-element-id="avonni-datatable"]'
                 );
                 // The datatable will originally have a width of 0px
                 expect(datatableCol.style.width).toBe('-20px');
@@ -1706,7 +1706,7 @@ describe('Scheduler', () => {
         return Promise.resolve()
             .then(() => {
                 const datatable = element.shadowRoot.querySelector(
-                    'c-datatable'
+                    '[data-element-id="avonni-datatable"]'
                 );
                 expect(datatable.resizeColumnDisabled).toBeTruthy();
 
@@ -1735,7 +1735,7 @@ describe('Scheduler', () => {
                     '.avonni-scheduler__datatable-col'
                 );
                 const datatable = element.shadowRoot.querySelector(
-                    'c-datatable'
+                    '[data-element-id="avonni-datatable"]'
                 );
                 expect(datatableCol.style.width).toBeFalsy();
                 expect(datatable.style.width).toBeFalsy();
@@ -1756,7 +1756,7 @@ describe('Scheduler', () => {
             );
             expect(rows).toHaveLength(ROWS.length);
 
-            const datatable = element.shadowRoot.querySelector('c-datatable');
+            const datatable = element.shadowRoot.querySelector('[data-element-id="avonni-datatable"]');
             expect(datatable.records).toMatchObject(ROWS);
         });
     });
@@ -1770,7 +1770,7 @@ describe('Scheduler', () => {
         element.rowsKeyField = ROWS_KEY_FIELD;
 
         return Promise.resolve().then(() => {
-            const datatable = element.shadowRoot.querySelector('c-datatable');
+            const datatable = element.shadowRoot.querySelector('[data-element-id="avonni-datatable"]');
             expect(datatable.keyField).toBe(ROWS_KEY_FIELD);
         });
     });
@@ -1783,7 +1783,7 @@ describe('Scheduler', () => {
 
         return Promise.resolve().then(() => {
             const header = element.shadowRoot.querySelector(
-                'c-primitive-scheduler-header-group'
+                '[data-element-id="avonni-primitive-scheduler-header-group"]'
             );
             expect(header.start.ts).toBe(START.getTime());
         });
@@ -1801,7 +1801,7 @@ describe('Scheduler', () => {
 
         return Promise.resolve().then(() => {
             const header = element.shadowRoot.querySelector(
-                'c-primitive-scheduler-header-group'
+                '[data-element-id="avonni-primitive-scheduler-header-group"]'
             );
             expect(header.timeSpan).toMatchObject(timeSpan);
         });
@@ -1821,7 +1821,7 @@ describe('Scheduler', () => {
 
         return Promise.resolve().then(() => {
             const events = element.shadowRoot.querySelectorAll(
-                'c-primitive-scheduler-event-occurrence'
+                '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
             );
             expect(events).toHaveLength(EVENTS[0].keyFields.length);
         });
@@ -1841,7 +1841,7 @@ describe('Scheduler', () => {
         return Promise.resolve()
             .then(() => {
                 const event = element.shadowRoot.querySelector(
-                    'c-primitive-scheduler-event-occurrence'
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
                 );
                 eventName = event.eventName;
 
@@ -1849,7 +1849,7 @@ describe('Scheduler', () => {
             })
             .then(() => {
                 const event = element.shadowRoot.querySelector(
-                    `c-primitive-scheduler-event-occurrence[data-event-name="${eventName}"]`
+                    `[data-element-id="avonni-primitive-scheduler-event-occurrence"][data-event-name="${eventName}"]`
                 );
                 expect(event).toBeFalsy();
             });
@@ -1867,7 +1867,7 @@ describe('Scheduler', () => {
 
         return Promise.resolve().then(() => {
             const event = element.shadowRoot.querySelector(
-                'c-primitive-scheduler-event-occurrence'
+                '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
             );
             const handler = jest.fn();
             event.focus = handler;
@@ -1888,7 +1888,7 @@ describe('Scheduler', () => {
         element.openNewEventDialog();
 
         return Promise.resolve().then(() => {
-            const dialog = element.shadowRoot.querySelector('c-dialog');
+            const dialog = element.shadowRoot.querySelector('[data-element-id="avonni-dialog"]');
             expect(dialog).toBeTruthy();
         });
     });
@@ -1912,7 +1912,7 @@ describe('Scheduler', () => {
         return Promise.resolve()
             .then(() => {
                 const event = element.shadowRoot.querySelector(
-                    'c-primitive-scheduler-event-occurrence'
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
                 );
                 eventName = event.eventName;
                 event.dispatchEvent(
@@ -1930,7 +1930,7 @@ describe('Scheduler', () => {
             })
             .then(() => {
                 const dropdown = element.shadowRoot.querySelector(
-                    'c-primitive-dropdown-menu'
+                    '[data-element-id="avonni-primitive-dropdown-menu"]'
                 );
                 dropdown.dispatchEvent(
                     new CustomEvent('privateselect', {
@@ -1979,7 +1979,7 @@ describe('Scheduler', () => {
             .then(() => {
                 // Open event context menu
                 const event = element.shadowRoot.querySelector(
-                    'c-primitive-scheduler-event-occurrence'
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
                 );
                 eventName = event.eventName;
                 from = event.from;
@@ -2000,7 +2000,7 @@ describe('Scheduler', () => {
             .then(() => {
                 // Select the edit menu
                 const dropdown = element.shadowRoot.querySelector(
-                    'c-primitive-dropdown-menu'
+                    '[data-element-id="avonni-primitive-dropdown-menu"]'
                 );
                 dropdown.dispatchEvent(
                     new CustomEvent('privateselect', {
@@ -2012,13 +2012,13 @@ describe('Scheduler', () => {
             })
             .then(() => {
                 const title = element.shadowRoot.querySelector(
-                    'c-dialog lightning-input'
+                    '[data-element-id="lightning-input-event-title"]'
                 );
                 title.value = 'New event title';
                 title.dispatchEvent(new CustomEvent('change'));
 
                 const resources = element.shadowRoot.querySelector(
-                    'c-dialog c-combobox'
+                    '[data-element-id="avonni-combobox-event-resources"]'
                 );
                 resources.dispatchEvent(
                     new CustomEvent('change', {
@@ -2032,7 +2032,7 @@ describe('Scheduler', () => {
                 );
 
                 const saveButton = element.shadowRoot.querySelector(
-                    'c-dialog lightning-button-menu'
+                    '[data-element-id="lightning-button-menu-save-edit"]'
                 );
                 saveButton.dispatchEvent(
                     new CustomEvent('select', {
@@ -2082,13 +2082,13 @@ describe('Scheduler', () => {
 
         return Promise.resolve().then(() => {
             const title = element.shadowRoot.querySelector(
-                'c-dialog lightning-input'
+                '[data-element-id="lightning-input-event-title"]'
             );
             title.value = 'New event title';
             title.dispatchEvent(new CustomEvent('change'));
 
             const resources = element.shadowRoot.querySelector(
-                'c-dialog c-combobox'
+                '[data-element-id="avonni-combobox-event-resources"]'
             );
             resources.dispatchEvent(
                 new CustomEvent('change', {
@@ -2102,7 +2102,7 @@ describe('Scheduler', () => {
             );
 
             const dateRange = element.shadowRoot.querySelector(
-                'c-dialog c-input-date-range'
+                '[data-element-id="avonni-input-date-range-event-dates"]'
             );
             dateRange.dispatchEvent(
                 new CustomEvent('change', {
@@ -2114,7 +2114,7 @@ describe('Scheduler', () => {
             );
 
             const saveButton = element.shadowRoot.querySelector(
-                'c-dialog lightning-button:last-of-type'
+                '[data-element-id="lightning-button-save-edit"]'
             );
             saveButton.click();
 
@@ -2192,7 +2192,7 @@ describe('Scheduler', () => {
             })
             .then(() => {
                 const datatable = element.shadowRoot.querySelector(
-                    'c-datatable'
+                    '[data-element-id="avonni-datatable"]'
                 );
                 expect(datatable.style.width).toBe('-20px');
 
@@ -2225,7 +2225,7 @@ describe('Scheduler', () => {
             .then(() => {
                 // Open event context menu
                 const event = element.shadowRoot.querySelector(
-                    'c-primitive-scheduler-event-occurrence'
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
                 );
                 eventName = event.eventName;
                 event.dispatchEvent(
@@ -2244,7 +2244,7 @@ describe('Scheduler', () => {
             .then(() => {
                 // Select the delete menu
                 const dropdown = element.shadowRoot.querySelector(
-                    'c-primitive-dropdown-menu'
+                    '[data-element-id="avonni-primitive-dropdown-menu"]'
                 );
                 dropdown.dispatchEvent(
                     new CustomEvent('privateselect', {
@@ -2256,13 +2256,13 @@ describe('Scheduler', () => {
             })
             .then(() => {
                 const deleteButton = element.shadowRoot.querySelector(
-                    'c-dialog lightning-button:nth-of-type(2)'
+                    '[data-element-id="avonni-dialog"] lightning-button:nth-of-type(2)'
                 );
                 deleteButton.click();
             })
             .then(() => {
                 const event = element.shadowRoot.querySelector(
-                    `c-primitive-scheduler-event-occurrence[data-event-name="${eventName}"]`
+                    `[data-element-id="avonni-primitive-scheduler-event-occurrence"][data-event-name="${eventName}"]`
                 );
                 expect(event).toBeFalsy();
             });
@@ -2282,7 +2282,7 @@ describe('Scheduler', () => {
         return Promise.resolve()
             .then(() => {
                 const event = element.shadowRoot.querySelector(
-                    'c-primitive-scheduler-event-occurrence'
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
                 );
                 eventTitle = event.title;
                 event.dispatchEvent(
@@ -2299,7 +2299,7 @@ describe('Scheduler', () => {
                 );
             })
             .then(() => {
-                const dialog = element.shadowRoot.querySelector('c-dialog');
+                const dialog = element.shadowRoot.querySelector('[data-element-id="avonni-dialog"]');
                 expect(dialog).toBeTruthy();
                 expect(dialog.title).toBe(eventTitle);
             });
@@ -2323,7 +2323,7 @@ describe('Scheduler', () => {
                 cell.dispatchEvent(doubleClick);
             })
             .then(() => {
-                const dialog = element.shadowRoot.querySelector('c-dialog');
+                const dialog = element.shadowRoot.querySelector('[data-element-id="avonni-dialog"]');
                 expect(dialog).toBeTruthy();
                 expect(dialog.title).toBe(element.dialogLabels.newEventTitle);
             });
@@ -2345,7 +2345,7 @@ describe('Scheduler', () => {
             .then(() => {
                 // Open event context menu
                 const event = element.shadowRoot.querySelector(
-                    'c-primitive-scheduler-event-occurrence'
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
                 );
                 eventName = event.eventName;
                 eventTitle = event.title;
@@ -2365,7 +2365,7 @@ describe('Scheduler', () => {
             .then(() => {
                 // Select the edit menu
                 const dropdown = element.shadowRoot.querySelector(
-                    'c-primitive-dropdown-menu'
+                    '[data-element-id="avonni-primitive-dropdown-menu"]'
                 );
                 dropdown.dispatchEvent(
                     new CustomEvent('privateselect', {
@@ -2377,22 +2377,22 @@ describe('Scheduler', () => {
             })
             .then(() => {
                 const titleInput = element.shadowRoot.querySelector(
-                    'c-dialog lightning-input'
+                    '[data-element-id="lightning-input-event-title"]'
                 );
                 titleInput.value = 'Some new title';
                 titleInput.dispatchEvent(new CustomEvent('change'));
 
                 const cancelButton = element.shadowRoot.querySelector(
-                    'c-dialog lightning-button'
+                    '[data-element-id="avonni-dialog"] lightning-button'
                 );
                 cancelButton.click();
             })
             .then(() => {
-                const dialog = element.shadowRoot.querySelector('c-dialog');
+                const dialog = element.shadowRoot.querySelector('[data-element-id="avonni-dialog"]');
                 expect(dialog).toBeFalsy();
 
                 const event = element.shadowRoot.querySelector(
-                    `c-primitive-scheduler-event-occurrence[data-event-name="${eventName}"]`
+                    `[data-element-id="avonni-primitive-scheduler-event-occurrence"][data-event-name="${eventName}"]`
                 );
                 expect(event.title).toBe(eventTitle);
             });
@@ -2424,7 +2424,7 @@ describe('Scheduler', () => {
                     '.avonni-scheduler__wrapper'
                 );
                 const event = element.shadowRoot.querySelector(
-                    'c-primitive-scheduler-event-occurrence'
+                    '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
                 );
                 occurrenceKey = event.occurrenceKey;
                 eventFrom = event.from;
@@ -2453,13 +2453,13 @@ describe('Scheduler', () => {
             })
             .then(() => {
                 const cancelButton = element.shadowRoot.querySelector(
-                    'c-dialog lightning-button'
+                    '[data-element-id="avonni-dialog"] lightning-button'
                 );
                 cancelButton.click();
             })
             .then(() => {
                 const event = element.shadowRoot.querySelector(
-                    `c-primitive-scheduler-event-occurrence[data-key="${occurrenceKey}"]`
+                    `[data-element-id="avonni-primitive-scheduler-event-occurrence"][data-key="${occurrenceKey}"]`
                 );
                 expect(event.from).toBe(eventFrom);
             });

@@ -504,7 +504,7 @@ describe('PrimitiveProgressStep', () => {
 
         return Promise.resolve().then(() => {
             const icon = element.shadowRoot.querySelector(
-                '.slds-popover c-primitive-icon'
+                '[data-element-id="avonni-primitive-icon-popover-no-button"]'
             );
             expect(icon.iconName).toBe('utility:apps');
         });
@@ -525,7 +525,7 @@ describe('PrimitiveProgressStep', () => {
 
         return Promise.resolve().then(() => {
             const icon = element.shadowRoot.querySelector(
-                '.avonni-progress-step-popover-icon-hover c-primitive-icon'
+                '[data-element-id="avonni-primitive-icon-popover-hover"]'
             );
             expect(icon.iconName).toBe('utility:apps');
         });
@@ -545,7 +545,7 @@ describe('PrimitiveProgressStep', () => {
 
         return Promise.resolve().then(() => {
             const icon = element.shadowRoot.querySelector(
-                '.slds-popover c-primitive-icon'
+                '[data-element-id="avonni-primitive-icon-popover-no-button"]'
             );
             expect(icon.src).toBe(
                 '/assets/icons/standard-sprite/svg/test.svg#icon-heart'
@@ -569,7 +569,7 @@ describe('PrimitiveProgressStep', () => {
 
         return Promise.resolve().then(() => {
             const icon = element.shadowRoot.querySelector(
-                '.avonni-progress-step-popover-icon-hover c-primitive-icon'
+                '[data-element-id="avonni-primitive-icon-popover-hover"]'
             );
             expect(icon.src).toBe(
                 '/assets/icons/standard-sprite/svg/test.svg#icon-heart'
@@ -685,7 +685,7 @@ describe('PrimitiveProgressStep', () => {
                 '.avonni-progress-step-popover_large'
             );
             const popoverIcon = element.shadowRoot.querySelector(
-                '.slds-popover c-primitive-icon'
+                '[data-element-id="avonni-primitive-icon-popover-no-button"]'
             );
 
             expect(popoverIcon.size).toBe('small');
@@ -716,7 +716,7 @@ describe('PrimitiveProgressStep', () => {
                 '.avonni-progress-step-popover_large'
             );
             const popoverIcon = element.shadowRoot.querySelector(
-                '.slds-popover c-primitive-icon'
+                '[data-element-id="avonni-primitive-icon-popover-no-button"]'
             );
 
             expect(popoverIcon.size).toBe('medium');
@@ -747,7 +747,7 @@ describe('PrimitiveProgressStep', () => {
                 '.avonni-progress-step-popover_large'
             );
             const popoverIcon = element.shadowRoot.querySelector(
-                '.slds-popover c-primitive-icon'
+                '[data-element-id="avonni-primitive-icon-popover-no-button"]'
             );
 
             expect(popoverIcon.size).toBe('large');
@@ -809,7 +809,7 @@ describe('PrimitiveProgressStep', () => {
 
         return Promise.resolve().then(() => {
             const icon = element.shadowRoot.querySelector(
-                '.slds-progress__marker c-primitive-icon'
+                '[data-element-id="avonni-primitive-icon-step"]'
             );
             expect(icon.variant).toBe('warning');
         });

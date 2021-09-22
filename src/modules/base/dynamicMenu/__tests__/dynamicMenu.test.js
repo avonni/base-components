@@ -176,7 +176,7 @@ describe('Dynamic Menu', () => {
         element.iconName = 'utility:close';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('c-primitive-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id="avonni-primitive-icon"]');
             expect(icon).toBeTruthy();
             expect(icon.iconName).toBe('utility:close');
         });

@@ -194,7 +194,7 @@ describe('Combobox', () => {
 
         return Promise.resolve().then(() => {
             const helptext = element.shadowRoot.querySelector(
-                'lightning-helptext'
+                '[data-element-id="lightning-helptext"]'
             );
             expect(helptext.content).toBe('A string help');
         });
@@ -244,7 +244,7 @@ describe('Combobox', () => {
             })
             .then(() => {
                 const pills = element.shadowRoot.querySelectorAll(
-                    'lightning-pill'
+                    '[data-element-id^="lightning-pill"]'
                 );
                 expect(pills).toHaveLength(6);
                 pills.forEach((pill, index) => {
@@ -278,7 +278,7 @@ describe('Combobox', () => {
             })
             .then(() => {
                 const pills = element.shadowRoot.querySelectorAll(
-                    'lightning-pill'
+                    '[data-element-id^="lightning-pill"]'
                 );
                 expect(pills).toHaveLength(0);
             });
@@ -1062,7 +1062,7 @@ describe('Combobox', () => {
                 );
             })
             .then(() => {
-                const pill = element.shadowRoot.querySelector('lightning-pill');
+                const pill = element.shadowRoot.querySelector('[data-element-id="lightning-pill"]');
                 pill.dispatchEvent(
                     new CustomEvent('remove', {
                         detail: {

@@ -721,7 +721,7 @@ export default class PrimitiveCombobox extends LightningElement {
             if (backLink) elements.push(backLink);
 
             const groups = this.template.querySelectorAll(
-                'c-primitive-combobox-group'
+                '[data-element-id^="avonni-primitive-combobox-group"]'
             );
             groups.forEach((group) => {
                 elements.push(group.optionElements);
@@ -1056,7 +1056,7 @@ export default class PrimitiveCombobox extends LightningElement {
      */
     updateDropdownHeight() {
         const groups = this.template.querySelectorAll(
-            'c-primitive-combobox-group'
+            '[data-element-id^="avonni-primitive-combobox-group"]'
         );
         const visibleItems = [];
         const visibleGroupTitles = [];

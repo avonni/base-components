@@ -68,7 +68,7 @@ describe('FilterMenuGroup', () => {
         element.variant = 'horizontal';
 
         return Promise.resolve().then(() => {
-            const menus = element.shadowRoot.querySelectorAll('c-filter-menu');
+            const menus = element.shadowRoot.querySelectorAll('[data-element-id^="avonni-filter-menu"]');
             menus.forEach((menu) => {
                 expect(menu.applyButtonLabel).toBe('Save');
             });
@@ -142,7 +142,7 @@ describe('FilterMenuGroup', () => {
         element.menus = MENUS;
 
         return Promise.resolve().then(() => {
-            const menus = element.shadowRoot.querySelectorAll('c-filter-menu');
+            const menus = element.shadowRoot.querySelectorAll('[data-element-id^="avonni-filter-menu"]');
             menus.forEach((menu, index) => {
                 expect(menu.accessKey).toBe(MENUS[index].accessKey);
                 expect(menu.alternativeText).toBe(
@@ -198,7 +198,7 @@ describe('FilterMenuGroup', () => {
         element.variant = 'horizontal';
 
         return Promise.resolve().then(() => {
-            const menus = element.shadowRoot.querySelectorAll('c-filter-menu');
+            const menus = element.shadowRoot.querySelectorAll('[data-element-id^="avonni-filter-menu"]');
             menus.forEach((menu) => {
                 expect(menu.resetButtonLabel).toBe('Erase');
             });
@@ -234,7 +234,7 @@ describe('FilterMenuGroup', () => {
         element.menus = MENUS;
 
         return Promise.resolve().then(() => {
-            const menus = element.shadowRoot.querySelectorAll('c-filter-menu');
+            const menus = element.shadowRoot.querySelectorAll('[data-element-id^="avonni-filter-menu"]');
             menus.forEach((menu) => {
                 expect(menu.hideApplyResetButtons).toBeFalsy();
             });
@@ -267,7 +267,7 @@ describe('FilterMenuGroup', () => {
         element.menus = MENUS;
 
         return Promise.resolve().then(() => {
-            const menus = element.shadowRoot.querySelectorAll('c-filter-menu');
+            const menus = element.shadowRoot.querySelectorAll('[data-element-id^="avonni-filter-menu"]');
             menus.forEach((menu) => {
                 expect(menu.hideApplyResetButtons).toBeTruthy();
             });
@@ -308,7 +308,7 @@ describe('FilterMenuGroup', () => {
             })
             .then(() => {
                 const menus = element.shadowRoot.querySelectorAll(
-                    'c-filter-menu'
+                    '[data-element-id^="avonni-filter-menu"]'
                 );
                 menus.forEach((menu) => {
                     expect(menu.value).toMatchObject([]);
@@ -335,7 +335,7 @@ describe('FilterMenuGroup', () => {
         return Promise.resolve()
             .then(() => {
                 const menus = element.shadowRoot.querySelectorAll(
-                    'c-filter-menu'
+                    '[data-element-id^="avonni-filter-menu"]'
                 );
                 menus[0].value = ['call'];
 
@@ -365,7 +365,7 @@ describe('FilterMenuGroup', () => {
         element.menus = MENUS;
 
         return Promise.resolve().then(() => {
-            const menus = element.shadowRoot.querySelectorAll('c-filter-menu');
+            const menus = element.shadowRoot.querySelectorAll('[data-element-id^="avonni-filter-menu"]');
             menus[1].dispatchEvent(
                 new CustomEvent('select', {
                     cancelable: true,
@@ -400,7 +400,7 @@ describe('FilterMenuGroup', () => {
         return Promise.resolve()
             .then(() => {
                 const menus = element.shadowRoot.querySelectorAll(
-                    'c-filter-menu'
+                    '[data-element-id^="avonni-filter-menu"]'
                 );
                 menus[0].dispatchEvent(
                     new CustomEvent('apply', {
@@ -431,7 +431,7 @@ describe('FilterMenuGroup', () => {
         return Promise.resolve()
             .then(() => {
                 const menus = element.shadowRoot.querySelectorAll(
-                    'c-filter-menu'
+                    '[data-element-id^="avonni-filter-menu"]'
                 );
                 menus[0].value = ['call'];
 
@@ -462,7 +462,7 @@ describe('FilterMenuGroup', () => {
         return Promise.resolve()
             .then(() => {
                 const menus = element.shadowRoot.querySelectorAll(
-                    'c-filter-menu'
+                    '[data-element-id^="avonni-filter-menu"]'
                 );
                 menus[0].dispatchEvent(new CustomEvent('reset'));
             })

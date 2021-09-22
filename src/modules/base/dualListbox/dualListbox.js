@@ -694,7 +694,7 @@ export default class DualListbox extends LightningElement {
      * @type {string} 
      */
     get computedSourceListId() {
-        return getRealDOMId(this.template.querySelector('[data-source-list]'));
+        return getRealDOMId(this.template.querySelector('[data-element-id="ul-source-list"]'));
     }
 
     /**
@@ -704,7 +704,7 @@ export default class DualListbox extends LightningElement {
      */
     get computedSelectedListId() {
         return getRealDOMId(
-            this.template.querySelector('[data-selected-list]')
+            this.template.querySelector('[data-element-id="ul-selected-list"]')
         );
     }
 
@@ -714,7 +714,7 @@ export default class DualListbox extends LightningElement {
      * @type {Element}
      */
     get computedSourceListbox() {
-        return this.template.querySelector('[data-source-list]');
+        return this.template.querySelector('[data-element-id="ul-source-list"]');
     }
 
     /**
@@ -723,7 +723,7 @@ export default class DualListbox extends LightningElement {
      * @type {Element}
      */
     get computedSelectedListbox() {
-        return this.template.querySelector('[data-selected-list]');
+        return this.template.querySelector('[data-element-id="ul-selected-list"]');
     }
 
     /**

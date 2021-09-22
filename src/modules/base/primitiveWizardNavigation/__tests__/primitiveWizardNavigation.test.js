@@ -566,14 +566,14 @@ describe('PrimitiveWizardNavigation', () => {
         document.body.appendChild(element);
 
         element.indicatorPosition = 'top';
-        element.position = 'side';
+        element.position = 'top';
 
         return Promise.resolve().then(() => {
             const actionsSlotCol = element.shadowRoot.querySelector(
                 'lightning-layout-item.slds-hide'
             );
             const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button'
+                '[data-element-id="lightning-button"]'
             );
             expect(buttons).toHaveLength(0);
             expect(actionsSlotCol).toBeTruthy();

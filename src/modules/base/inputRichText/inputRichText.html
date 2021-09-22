@@ -140,6 +140,7 @@
                 if:true={isColorpickerVisible}
                 disabled={disabled}
                 value={selectedTextColorValue}
+                data-element-id="avonni-primitive-colorpicker-button"
                 onchange={handleColorUpdate}
             ></c-primitive-colorpicker-button>
             <template for:each={computedCategories} for:item="category">
@@ -238,5 +239,6 @@
         if:true={isPublisher}
         class="slds-is-absolute slds-hide"
         onemoji={handleEmoji}
+        data-element-id="avonni-emoji-picker"
     ></c-emoji-picker>
 </template>

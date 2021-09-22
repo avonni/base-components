@@ -43,6 +43,7 @@
         <lightning-helptext
             if:true={fieldLevelHelp}
             content={fieldLevelHelp}
+            data-element-id="lightning-helptext"
         ></lightning-helptext>
         <div class="slds-form-element__control">
             <div
@@ -66,6 +67,7 @@
                             label=" "
                             variant="label-hidden"
                             type="search"
+                            data-element-id="lightning-input"
                             onchange={handleSearch}
                         ></lightning-input>
                     </div>
@@ -76,7 +78,6 @@
                         ondragleave={handleDragLeaveSource}
                     >
                         <ul
-                            data-source-list
                             id="source-list"
                             aria-describedby="keyboard-interacton"
                             aria-labelledby="source-list-label"
@@ -84,6 +85,7 @@
                             class="slds-listbox slds-listbox_vertical source-list"
                             role="listbox"
                             aria-disabled={ariaDisabled}
+                            data-element-id="ul-source-list"
                         >
                             <template
                                 for:each={computedSourceList}
@@ -139,6 +141,7 @@
                                 size="small"
                                 class="slds-spinner_container"
                                 alternative-text={i18n.loadingText}
+                                data-element-id="lightning-spinner"
                             ></lightning-spinner>
                         </div>
                     </div>
@@ -155,6 +158,7 @@
                         disabled={moveButtonsDisabled}
                         title={addButtonLabel}
                         alternative-text={addButtonLabel}
+                        data-element-id="lightning-button-icon-add"
                     >
                     </lightning-button-icon>
                     <lightning-button-icon
@@ -166,6 +170,7 @@
                         disabled={moveButtonsDisabled}
                         title={removeButtonLabel}
                         alternative-text={removeButtonLabel}
+                        data-element-id="lightning-button-icon-remove"
                     >
                     </lightning-button-icon>
                 </div>
@@ -182,7 +187,6 @@
                         ondragleave={handleDragLeaveSelected}
                     >
                         <ul
-                            data-selected-list
                             id="selected-list"
                             aria-describedby="keyboard-interacton"
                             aria-labelledby="selected-list-label"
@@ -190,6 +194,7 @@
                             class="slds-listbox slds-listbox_vertical"
                             role="listbox"
                             aria-disabled={ariaDisabled}
+                            data-element-id="ul-selected-list"
                         >
                             <template
                                 for:each={computedSelectedList}
@@ -253,7 +258,7 @@
                             </template>
                         </ul>
                         <template if:true={isSelectedBoxEmpty}>
-                            <span>{selectedPlaceholder}</span>
+                            <span data-element-id="span-selected-placeholder">{selectedPlaceholder}</span>
                         </template>
                     </div>
                 </div>
@@ -270,6 +275,7 @@
                             disabled={_upButtonDisabled}
                             title={upButtonLabel}
                             alternative-text={upButtonLabel}
+                            data-element-id="lightning-button-icon-up"
                         >
                         </lightning-button-icon>
                         <lightning-button-icon
@@ -281,6 +287,7 @@
                             disabled={_downButtonDisabled}
                             title={downButtonLabel}
                             alternative-text={downButtonLabel}
+                            data-element-id="lightning-button-icon-down"
                         >
                         </lightning-button-icon>
                     </div>

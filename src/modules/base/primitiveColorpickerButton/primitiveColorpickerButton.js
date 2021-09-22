@@ -107,7 +107,7 @@ export default class PrimitiveColorpickerButton extends LightningElement {
                 ),
             element: () =>
                 this.template
-                    .querySelector('c-color-picker-panel')
+                    .querySelector('[data-element-id="avonni-color-picker-panel"]')
                     .shadowRoot.querySelector('section'),
             align: {
                 horizontal: Direction.Left,

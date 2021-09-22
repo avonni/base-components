@@ -79,7 +79,7 @@ describe('InputRichText', () => {
             });
 
             const colorPicker = element.shadowRoot.querySelector(
-                'c-primitive-colorpicker-button'
+                '[data-element-id="avonni-primitive-colorpicker-button"]'
             );
             if (colorPicker) {
                 expect(colorPicker.disabled).toBeTruthy();
@@ -111,7 +111,7 @@ describe('InputRichText', () => {
             });
 
             const colorPicker = element.shadowRoot.querySelector(
-                'c-primitive-colorpicker-button'
+                '[data-element-id="avonni-primitive-colorpicker-button"]'
             );
             if (colorPicker) expect(colorPicker.disabled).toBeFalsy();
 

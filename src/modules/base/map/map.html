@@ -45,7 +45,11 @@
         </div>
         <div if:true={showFooter} class="slds-p-around_medium">
             <div class="slds-button slds-button_brand">
-                <c-external-link title={title} href={mapHref}>
+                <c-external-link
+                    title={title}
+                    href={mapHref}
+                    data-element-id="avonni-external-link"
+                >
                     {i18n.openInGoogleMapsString}
                 </c-external-link>
             </div>

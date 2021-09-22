@@ -188,7 +188,7 @@ describe('List', () => {
                 expect(item.ariaLabel).toBe(originalItem.label);
                 expect(item.textContent).toBe(originalItem.label);
 
-                const avatar = item.querySelector('c-avatar');
+                const avatar = item.querySelector('[data-element-id="avonni-avatar"]');
                 if (avatar) {
                     if (originalItem.avatarFallbackIconName) {
                         expect(avatar.fallbackIconName).toBe(
