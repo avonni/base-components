@@ -41,6 +41,7 @@ import Image from 'c/image';
 const src =
     'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg';
 
+let element;
 describe('Image', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -48,11 +49,14 @@ describe('Image', () => {
         }
     });
 
-    it('Image Default attributes', () => {
-        const element = createElement('base-image', {
+    beforeEach(() => {
+        element = createElement('base-image', {
             is: Image
         });
+        document.body.appendChild(element);
+    });
 
+    it('Image Default attributes', () => {
         expect(element.src).toBeUndefined();
         expect(element.srcset).toBeUndefined();
         expect(element.sizes).toBeUndefined();
@@ -80,11 +84,6 @@ describe('Image', () => {
 
     // src
     it('Image src', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
         element.src = src;
 
         return Promise.resolve().then(() => {
@@ -97,11 +96,6 @@ describe('Image', () => {
 
     // srcset
     it('Image srcset string', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
         element.srcset =
             'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg';
 
@@ -114,11 +108,6 @@ describe('Image', () => {
     });
 
     it('Image srcset string[]', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
         element.srcset = [
             'https://www.avonni.app/, https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
         ];
@@ -133,11 +122,6 @@ describe('Image', () => {
 
     // sizes
     it('Image sizes', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
         element.srcset =
             'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg 320w';
         element.sizes =
@@ -152,11 +136,6 @@ describe('Image', () => {
     });
 
     it('Image sizes[]', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
         element.srcset =
             'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg 320w';
         element.sizes = [
@@ -173,11 +152,6 @@ describe('Image', () => {
 
     // alt
     it('Image alt', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
         element.src = src;
         element.alt = 'This is an alt text';
 
@@ -189,11 +163,6 @@ describe('Image', () => {
 
     // width & height
     it('Image width & height numbers', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
         element.src = src;
         element.width = 120;
         element.height = 100;
@@ -206,11 +175,6 @@ describe('Image', () => {
     });
 
     it('Image width & height strings', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
         element.src = src;
         element.width = '120';
         element.height = '100';
@@ -224,11 +188,6 @@ describe('Image', () => {
 
     // block
     it('Image block', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
         element.src = src;
         element.block = true;
 
@@ -240,11 +199,6 @@ describe('Image', () => {
 
     // fluid
     it('Image fluid', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
         element.src = src;
         element.fluid = true;
 
@@ -256,11 +210,6 @@ describe('Image', () => {
 
     // fluid grow
     it('Image fluid grow', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
         element.src = src;
         element.fluidGrow = true;
 
@@ -274,11 +223,6 @@ describe('Image', () => {
 
     // rounded
     it('Image rounded', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
         element.src = src;
         element.rounded = true;
 
@@ -289,11 +233,6 @@ describe('Image', () => {
     });
 
     it('Image rounded top', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
         element.src = src;
         element.rounded = 'top';
 
@@ -304,11 +243,6 @@ describe('Image', () => {
     });
 
     it('Image rounded right', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
         element.src = src;
         element.rounded = 'right';
 
@@ -319,11 +253,6 @@ describe('Image', () => {
     });
 
     it('Image rounded left', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
         element.src = src;
         element.rounded = 'left';
 
@@ -334,11 +263,6 @@ describe('Image', () => {
     });
 
     it('Image rounded bottom', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
         element.src = src;
         element.rounded = 'bottom';
 
@@ -349,11 +273,6 @@ describe('Image', () => {
     });
 
     it('Image rounded circle', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
         element.src = src;
         element.rounded = 'circle';
 
@@ -365,11 +284,6 @@ describe('Image', () => {
 
     // thumbnail
     it('Image thumbnail', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
         element.src = src;
         element.thumbnail = true;
 
@@ -381,11 +295,6 @@ describe('Image', () => {
 
     // left
     it('Image left', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
         element.src = src;
         element.left = true;
 
@@ -397,11 +306,6 @@ describe('Image', () => {
 
     // right
     it('Image right', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
         element.src = src;
         element.right = true;
 
@@ -413,11 +317,6 @@ describe('Image', () => {
 
     // center
     it('Image center', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
         element.src = src;
         element.center = true;
 
@@ -431,11 +330,6 @@ describe('Image', () => {
 
     // Crop Fit
     it('Crop Fit Cover', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
         element.src = src;
         element.cropSize = '16x9';
         element.cropFit = 'cover';
@@ -447,11 +341,6 @@ describe('Image', () => {
     });
 
     it('Crop Fit Contain', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
         element.src = src;
         element.cropSize = '16x9';
         element.cropFit = 'contain';
@@ -463,11 +352,6 @@ describe('Image', () => {
     });
 
     it('Crop Fit Fill', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
         element.src = src;
         element.cropSize = '16x9';
         element.cropFit = 'fill';
@@ -479,11 +363,6 @@ describe('Image', () => {
     });
 
     it('Crop Fit None', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
         element.src = src;
         element.cropSize = '16x9';
         element.cropFit = 'none';
@@ -496,11 +375,6 @@ describe('Image', () => {
 
     // Crop Position
     it('Crop Position', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
         element.src = src;
         element.cropSize = '16x9';
         element.cropFit = 'none';
@@ -515,11 +389,6 @@ describe('Image', () => {
 
     // Cropped Img Alignment - left, right, centre
     it('Cropped Image Left', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
         element.src = src;
         element.cropSize = '16x9';
         element.width = '300';
@@ -532,11 +401,6 @@ describe('Image', () => {
     });
 
     it('Cropped Image Center', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
         element.src = src;
         element.cropSize = '16x9';
         element.width = '300';
@@ -551,11 +415,6 @@ describe('Image', () => {
     });
 
     it('Cropped Image Right', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
         element.src = src;
         element.cropSize = '16x9';
         element.width = '300';
@@ -569,11 +428,6 @@ describe('Image', () => {
 
     // img NO Crop - Height Only
     it('No crop - Height Only', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
         element.src = src;
         element.height = '225';
 
@@ -586,11 +440,6 @@ describe('Image', () => {
 
     // Static Images NO CROP
     it('Static Image - No Crop - Width - No Height', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
         element.src = src;
         element.staticImages = true;
         element.width = '400';
@@ -603,11 +452,6 @@ describe('Image', () => {
         });
     });
     it('Static Image - No Crop - No Width - Height', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
-
         element.src = src;
         element.staticImages = true;
         element.height = '400';
@@ -620,10 +464,6 @@ describe('Image', () => {
         });
     });
     it('Static Image - No Crop - No Width - No Height', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-
         element.src = src;
         element.staticImages = true;
         document.body.appendChild(element);
@@ -640,11 +480,6 @@ describe('Image', () => {
             });
     });
     it('Static Image - No Crop - Width - Height', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-
-        document.body.appendChild(element);
         element.src = src;
         element.staticImages = true;
         element.height = 400;
@@ -663,10 +498,6 @@ describe('Image', () => {
 
     // Static Images - Cropped
     it('Static Image - Crop 1x1 - Width - No Height', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
         element.src = src;
         element.staticImages = true;
         element.width = '400';
@@ -683,10 +514,6 @@ describe('Image', () => {
     });
 
     it('% on width', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
         element.src = src;
         element.width = '50%';
 
@@ -697,10 +524,6 @@ describe('Image', () => {
     });
 
     it('% on height', () => {
-        const element = createElement('base-image', {
-            is: Image
-        });
-        document.body.appendChild(element);
         element.src = src;
         element.height = '50%';
 

@@ -62,6 +62,7 @@ const optionsWithIcon = [
     }
 ];
 
+let element;
 describe('Input choice set', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -69,11 +70,14 @@ describe('Input choice set', () => {
         }
     });
 
-    it('Input choice set Default attributes', () => {
-        const element = createElement('base-input-choice-set', {
+    beforeEach(() => {
+        element = createElement('base-input-choice-set', {
             is: InputChoiceSet
         });
+        document.body.appendChild(element);
+    });
 
+    it('Input choice set Default attributes', () => {
         expect(element.disabled).toBeFalsy();
         expect(element.label).toBeUndefined();
         expect(element.type).toBe('default');
@@ -93,11 +97,6 @@ describe('Input choice set', () => {
 
     // disabled
     it('Input choice set disabled', () => {
-        const element = createElement('base-input-choice-set', {
-            is: InputChoiceSet
-        });
-        document.body.appendChild(element);
-
         element.options = options;
         element.disabled = true;
 
@@ -111,11 +110,6 @@ describe('Input choice set', () => {
 
     // label
     it('Input choice set label', () => {
-        const element = createElement('base-input-choice-set', {
-            is: InputChoiceSet
-        });
-        document.body.appendChild(element);
-
         element.options = options;
         element.label = 'This is a label';
 
@@ -129,11 +123,6 @@ describe('Input choice set', () => {
 
     // type
     it('Input choice set type checkbox', () => {
-        const element = createElement('base-input-choice-set', {
-            is: InputChoiceSet
-        });
-        document.body.appendChild(element);
-
         element.options = options;
         element.orientation = 'vertical';
         element.isMultiSelect = true;
@@ -150,11 +139,6 @@ describe('Input choice set', () => {
     });
 
     it('Input choice set type button', () => {
-        const element = createElement('base-input-choice-set', {
-            is: InputChoiceSet
-        });
-        document.body.appendChild(element);
-
         element.options = options;
         element.type = 'button';
         element.orientation = 'vertical';
@@ -175,11 +159,6 @@ describe('Input choice set', () => {
     // Message when value is missing
     // Depends on required, focus(), blur() and showHelpMessageIfInvalid()
     it('Input choice set message when value is missing', () => {
-        const element = createElement('base-input-choice-set', {
-            is: InputChoiceSet
-        });
-        document.body.appendChild(element);
-
         element.options = options;
         element.required = true;
         element.messageWhenValueMissing = 'Value is Missing';
@@ -200,11 +179,6 @@ describe('Input choice set', () => {
 
     // name
     it('Input choice set name', () => {
-        const element = createElement('base-input-choice-set', {
-            is: InputChoiceSet
-        });
-        document.body.appendChild(element);
-
         element.options = options;
         element.name = 'Checkbox group name';
 
@@ -218,11 +192,6 @@ describe('Input choice set', () => {
 
     // options
     it('Input choice set options', () => {
-        const element = createElement('base-input-choice-set', {
-            is: InputChoiceSet
-        });
-        document.body.appendChild(element);
-
         element.options = options;
 
         return Promise.resolve().then(() => {
@@ -238,11 +207,6 @@ describe('Input choice set', () => {
 
     // options with icons
     it('Input choice set options with icons', () => {
-        const element = createElement('base-input-choice-set', {
-            is: InputChoiceSet
-        });
-        document.body.appendChild(element);
-
         element.options = optionsWithIcon;
 
         return Promise.resolve().then(() => {
@@ -264,11 +228,6 @@ describe('Input choice set', () => {
 
     // readOnly
     it('Input choice set readOnly', () => {
-        const element = createElement('base-input-choice-set', {
-            is: InputChoiceSet
-        });
-        document.body.appendChild(element);
-
         element.options = options;
         element.readOnly = true;
         element.value = options[0].value;
@@ -286,11 +245,6 @@ describe('Input choice set', () => {
 
     // required
     it('Input choice set required', () => {
-        const element = createElement('base-input-choice-set', {
-            is: InputChoiceSet
-        });
-        document.body.appendChild(element);
-
         element.options = options;
         element.required = true;
 
@@ -302,11 +256,6 @@ describe('Input choice set', () => {
 
     // value
     it('Input choice set value', () => {
-        const element = createElement('base-input-choice-set', {
-            is: InputChoiceSet
-        });
-        document.body.appendChild(element);
-
         element.options = options;
         element.value = ['mon', 'wed'];
 
@@ -324,11 +273,6 @@ describe('Input choice set', () => {
 
     // orientation
     it('Input choice set vertical orientation', () => {
-        const element = createElement('base-input-choice-set', {
-            is: InputChoiceSet
-        });
-        document.body.appendChild(element);
-
         element.options = options;
         element.orientation = 'vertical';
 
@@ -342,11 +286,6 @@ describe('Input choice set', () => {
     });
 
     it('Input choice set horizontal orientation', () => {
-        const element = createElement('base-input-choice-set', {
-            is: InputChoiceSet
-        });
-        document.body.appendChild(element);
-
         element.options = options;
         element.orientation = 'horizontal';
 
@@ -361,11 +300,6 @@ describe('Input choice set', () => {
 
     // variant
     it('Input choice set variant standard', () => {
-        const element = createElement('base-input-choice-set', {
-            is: InputChoiceSet
-        });
-        document.body.appendChild(element);
-
         element.options = options;
 
         return Promise.resolve().then(() => {
@@ -383,11 +317,6 @@ describe('Input choice set', () => {
     });
 
     it('Input choice set variant label hidden', () => {
-        const element = createElement('base-input-choice-set', {
-            is: InputChoiceSet
-        });
-        document.body.appendChild(element);
-
         element.options = options;
         element.variant = 'label-hidden';
 
@@ -406,11 +335,6 @@ describe('Input choice set', () => {
     });
 
     it('Input choice set variant label inline', () => {
-        const element = createElement('base-input-choice-set', {
-            is: InputChoiceSet
-        });
-        document.body.appendChild(element);
-
         element.options = options;
         element.variant = 'label-inline';
 
@@ -427,11 +351,6 @@ describe('Input choice set', () => {
     });
 
     it('Input choice set variant label stacked', () => {
-        const element = createElement('base-input-choice-set', {
-            is: InputChoiceSet
-        });
-        document.body.appendChild(element);
-
         element.options = options;
         element.variant = 'label-stacked';
 
@@ -448,15 +367,25 @@ describe('Input choice set', () => {
     });
 
     /* ----- METHODS ----- */
+    // checkValidity
+    it('checkValidity method', () => {
+        const spy = jest.spyOn(element, 'checkValidity');
+
+        element.checkValidity();
+        expect(spy).toHaveBeenCalled();
+    });
+
+    // setCustomValidity
+    it('setCustomValidity method', () => {
+        const spy = jest.spyOn(element, 'setCustomValidity');
+
+        element.setCustomValidity('Something');
+        expect(spy).toHaveBeenCalled();
+    });
 
     // reportValidity
     // Depends on required
     it('reportValidity method', () => {
-        const element = createElement('base-input-choice-set', {
-            is: InputChoiceSet
-        });
-        document.body.appendChild(element);
-
         element.required = true;
         element.reportValidity();
 
@@ -471,11 +400,6 @@ describe('Input choice set', () => {
     // showHelpMessageIfInvalid
     // Depends on required
     it('showHelpMessageIfInvalid method', () => {
-        const element = createElement('base-input-choice-set', {
-            is: InputChoiceSet
-        });
-        document.body.appendChild(element);
-
         element.required = true;
         element.showHelpMessageIfInvalid();
 
@@ -491,11 +415,6 @@ describe('Input choice set', () => {
 
     // change event
     it('Input choice set change event', () => {
-        const element = createElement('base-input-choice-set', {
-            is: InputChoiceSet
-        });
-        document.body.appendChild(element);
-
         element.options = options;
 
         return Promise.resolve().then(() => {
@@ -513,11 +432,6 @@ describe('Input choice set', () => {
 
     // blur event
     it('Input choice set blur event', () => {
-        const element = createElement('base-input-choice-set', {
-            is: InputChoiceSet
-        });
-        document.body.appendChild(element);
-
         element.options = options;
 
         return Promise.resolve().then(() => {
@@ -534,11 +448,6 @@ describe('Input choice set', () => {
 
     // focus event
     it('Input choice set focus event', () => {
-        const element = createElement('base-input-choice-set', {
-            is: InputChoiceSet
-        });
-        document.body.appendChild(element);
-
         element.options = options;
 
         return Promise.resolve().then(() => {
