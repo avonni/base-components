@@ -74,6 +74,7 @@ describe('PrimitiveWizardNavigation', () => {
 
         expect(element.actionPosition).toBe('left');
         expect(element.buttonAlignmentBump).toBeUndefined();
+        expect(element.currentStepHasError).toBeFalsy();
         expect(element.finishButtonIconName).toBeUndefined();
         expect(element.finishButtonIconPosition).toBe('left');
         expect(element.finishButtonLabel).toBe('Finish');
@@ -565,7 +566,7 @@ describe('PrimitiveWizardNavigation', () => {
         document.body.appendChild(element);
 
         element.indicatorPosition = 'top';
-        element.position = 'top';
+        element.position = 'side';
 
         return Promise.resolve().then(() => {
             const actionsSlotCol = element.shadowRoot.querySelector(
@@ -606,7 +607,7 @@ describe('PrimitiveWizardNavigation', () => {
 
         return Promise.resolve().then(() => {
             const indicator = element.shadowRoot.querySelector(
-                'c-vertical-progress-indicator'
+                '[data-element-id="avonni-vertical-progress-indicator"]'
             );
             const buttons = element.shadowRoot.querySelectorAll(
                 'lightning-button'
@@ -639,7 +640,7 @@ describe('PrimitiveWizardNavigation', () => {
                 '.fractions-indicator'
             );
             const barIndicator = element.shadowRoot.querySelector(
-                'c-progress-bar'
+                '[data-element-id="avonni-progress-bar"]'
             );
 
             expect(progressIndicator).toBeTruthy();
@@ -670,7 +671,7 @@ describe('PrimitiveWizardNavigation', () => {
                 '.fractions-indicator'
             );
             const barIndicator = element.shadowRoot.querySelector(
-                'c-progress-bar'
+                '[data-element-id="avonni-progress-bar"]'
             );
 
             expect(progressIndicator).toBeTruthy();
@@ -701,7 +702,7 @@ describe('PrimitiveWizardNavigation', () => {
                 '.fractions-indicator'
             );
             const barIndicator = element.shadowRoot.querySelector(
-                'c-progress-bar'
+                '[data-element-id="avonni-progress-bar"]'
             );
 
             expect(progressIndicator).toBeTruthy();
@@ -733,7 +734,7 @@ describe('PrimitiveWizardNavigation', () => {
                 '.fractions-indicator'
             );
             const barIndicator = element.shadowRoot.querySelector(
-                'c-progress-bar'
+                '[data-element-id="avonni-progress-bar"]'
             );
 
             const bullets = element.shadowRoot.querySelectorAll(
@@ -769,7 +770,7 @@ describe('PrimitiveWizardNavigation', () => {
                 '.fractions-indicator'
             );
             const barIndicator = element.shadowRoot.querySelector(
-                'c-progress-bar'
+                '[data-element-id="avonni-progress-bar"]'
             );
 
             expect(progressIndicator).toBeFalsy();
@@ -800,7 +801,7 @@ describe('PrimitiveWizardNavigation', () => {
                 '.fractions-indicator'
             );
             const barIndicator = element.shadowRoot.querySelector(
-                'c-progress-bar'
+                '[data-element-id="avonni-progress-bar"]'
             );
 
             expect(progressIndicator).toBeFalsy();

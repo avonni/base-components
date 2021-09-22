@@ -123,7 +123,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                'c-primitive-wizard-navigation'
+                '[data-element-id="avonni-primitive-wizard-navigation"]'
             );
             expect(primitiveNavigation.actionPosition).toBe('right');
         });
@@ -141,7 +141,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                'c-primitive-wizard-navigation'
+                '[data-element-id="avonni-primitive-wizard-navigation"]'
             );
             expect(primitiveNavigation.finishButtonIconName).toBe(
                 'utility:apps'
@@ -161,7 +161,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                'c-primitive-wizard-navigation'
+                '[data-element-id="avonni-primitive-wizard-navigation"]'
             );
             expect(primitiveNavigation.finishButtonIconPosition).toBe('right');
         });
@@ -179,7 +179,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                'c-primitive-wizard-navigation'
+                '[data-element-id="avonni-primitive-wizard-navigation"]'
             );
             expect(primitiveNavigation.finishButtonLabel).toBe('The end');
         });
@@ -197,7 +197,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                'c-primitive-wizard-navigation'
+                '[data-element-id="avonni-primitive-wizard-navigation"]'
             );
             expect(primitiveNavigation.finishButtonVariant).toBe('brand');
         });
@@ -215,7 +215,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                'c-primitive-wizard-navigation'
+                '[data-element-id="avonni-primitive-wizard-navigation"]'
             );
             expect(primitiveNavigation.nextButtonIconName).toBe('utility:apps');
         });
@@ -233,7 +233,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                'c-primitive-wizard-navigation'
+                '[data-element-id="avonni-primitive-wizard-navigation"]'
             );
             expect(primitiveNavigation.nextButtonIconPosition).toBe('right');
         });
@@ -251,7 +251,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                'c-primitive-wizard-navigation'
+                '[data-element-id="avonni-primitive-wizard-navigation"]'
             );
             expect(primitiveNavigation.nextButtonLabel).toBe('The end');
         });
@@ -269,7 +269,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                'c-primitive-wizard-navigation'
+                '[data-element-id="avonni-primitive-wizard-navigation"]'
             );
             expect(primitiveNavigation.nextButtonVariant).toBe('brand');
         });
@@ -287,7 +287,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                'c-primitive-wizard-navigation'
+                '[data-element-id="avonni-primitive-wizard-navigation"]'
             );
             expect(primitiveNavigation.previousButtonIconName).toBe(
                 'utility:apps'
@@ -307,7 +307,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                'c-primitive-wizard-navigation'
+                '[data-element-id="avonni-primitive-wizard-navigation"]'
             );
             expect(primitiveNavigation.previousButtonIconPosition).toBe(
                 'right'
@@ -327,7 +327,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                'c-primitive-wizard-navigation'
+                '[data-element-id="avonni-primitive-wizard-navigation"]'
             );
             expect(primitiveNavigation.previousButtonLabel).toBe('The end');
         });
@@ -345,7 +345,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                'c-primitive-wizard-navigation'
+                '[data-element-id="avonni-primitive-wizard-navigation"]'
             );
             expect(primitiveNavigation.previousButtonVariant).toBe('brand');
         });
@@ -363,7 +363,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                'c-primitive-wizard-navigation'
+                '[data-element-id="avonni-primitive-wizard-navigation"]'
             );
             expect(primitiveNavigation.buttonAlignmentBump).toBe('right');
         });
@@ -379,7 +379,9 @@ describe('Wizard', () => {
 
         element.currentStep = 'second-step';
 
-        const slot = element.shadowRoot.querySelector('main slot');
+        const slot = element.shadowRoot.querySelector(
+            '[data-element-id="slot-default"]'
+        );
         STEPS.forEach((step) => {
             slot.dispatchEvent(
                 new CustomEvent('wizardstepregister', {
@@ -412,7 +414,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                'c-primitive-wizard-navigation'
+                '[data-element-id="avonni-primitive-wizard-navigation"]'
             );
             expect(primitiveNavigation.fractionLabel).toBe('/');
         });
@@ -430,7 +432,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                'c-primitive-wizard-navigation'
+                '[data-element-id="avonni-primitive-wizard-navigation"]'
             );
             expect(primitiveNavigation.fractionPrefixLabel).toBe('Page');
         });
@@ -448,7 +450,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                'c-primitive-wizard-navigation'
+                '[data-element-id="avonni-primitive-wizard-navigation"]'
             );
             expect(primitiveNavigation.hideIndicator).toBeTruthy();
         });
@@ -465,7 +467,9 @@ describe('Wizard', () => {
         element.hideNavigation = false;
 
         return Promise.resolve().then(() => {
-            const footer = element.shadowRoot.querySelector('footer');
+            const footer = element.shadowRoot.querySelector(
+                '[data-element-id="footer"]'
+            );
             expect(footer).toBeTruthy();
         });
     });
@@ -480,7 +484,9 @@ describe('Wizard', () => {
         element.hideNavigation = true;
 
         return Promise.resolve().then(() => {
-            const footer = element.shadowRoot.querySelector('footer');
+            const footer = element.shadowRoot.querySelector(
+                '[data-element-id="footer"]'
+            );
             expect(footer).toBeFalsy();
         });
     });
@@ -497,7 +503,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                'c-primitive-wizard-navigation'
+                '[data-element-id="avonni-primitive-wizard-navigation"]'
             );
             expect(primitiveNavigation.indicatorType).toBe('path');
         });
@@ -515,16 +521,18 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const footerNavigation = element.shadowRoot.querySelector(
-                'footer c-primitive-wizard-navigation'
+                'footer [data-element-id="avonni-primitive-wizard-navigation"]'
             );
             const headerNavigation = element.shadowRoot.querySelector(
-                'header c-primitive-wizard-navigation'
+                'header [data-element-id="avonni-primitive-wizard-navigation"]'
             );
             const sideNavigation = element.shadowRoot.querySelector(
-                '.side-col c-primitive-wizard-navigation'
+                '.side-col [data-element-id="avonni-primitive-wizard-navigation"]'
             );
             const mainCol = element.shadowRoot.querySelector('.main-col');
-            const wrapper = element.shadowRoot.querySelector('article');
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="article"]'
+            );
 
             expect(footerNavigation.indicatorPosition).toBe('bottom');
             expect(headerNavigation).toBeFalsy();
@@ -545,16 +553,18 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const footerNavigation = element.shadowRoot.querySelector(
-                'footer c-primitive-wizard-navigation'
+                'footer [data-element-id="avonni-primitive-wizard-navigation"]'
             );
             const headerNavigation = element.shadowRoot.querySelector(
-                'header c-primitive-wizard-navigation'
+                'header [data-element-id="avonni-primitive-wizard-navigation"]'
             );
             const sideNavigation = element.shadowRoot.querySelector(
-                '.side-col c-primitive-wizard-navigation'
+                '.side-col [data-element-id="avonni-primitive-wizard-navigation"]'
             );
             const mainCol = element.shadowRoot.querySelector('.main-col');
-            const wrapper = element.shadowRoot.querySelector('article');
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="article"]'
+            );
 
             expect(footerNavigation.indicatorPosition).toBe('top');
             expect(headerNavigation).toBeTruthy();
@@ -576,16 +586,18 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const footerNavigation = element.shadowRoot.querySelector(
-                'footer c-primitive-wizard-navigation'
+                'footer [data-element-id="avonni-primitive-wizard-navigation"]'
             );
             const headerNavigation = element.shadowRoot.querySelector(
-                'header c-primitive-wizard-navigation'
+                'header [data-element-id="avonni-primitive-wizard-navigation"]'
             );
             const sideNavigation = element.shadowRoot.querySelector(
-                '.side-col c-primitive-wizard-navigation'
+                '.side-col [data-element-id="avonni-primitive-wizard-navigation"]'
             );
             const mainCol = element.shadowRoot.querySelector('.main-col');
-            const wrapper = element.shadowRoot.querySelector('article');
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="article"]'
+            );
 
             expect(footerNavigation.indicatorPosition).toBe('right');
             expect(headerNavigation).toBeFalsy();
@@ -607,16 +619,18 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const footerNavigation = element.shadowRoot.querySelector(
-                'footer c-primitive-wizard-navigation'
+                'footer [data-element-id="avonni-primitive-wizard-navigation"]'
             );
             const headerNavigation = element.shadowRoot.querySelector(
-                'header c-primitive-wizard-navigation'
+                'header [data-element-id="avonni-primitive-wizard-navigation"]'
             );
             const sideNavigation = element.shadowRoot.querySelector(
-                '.side-col c-primitive-wizard-navigation'
+                '.side-col [data-element-id="avonni-primitive-wizard-navigation"]'
             );
             const mainCol = element.shadowRoot.querySelector('.main-col');
-            const wrapper = element.shadowRoot.querySelector('article');
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="article"]'
+            );
 
             expect(footerNavigation.indicatorPosition).toBe('left');
             expect(headerNavigation).toBeFalsy();
@@ -638,7 +652,9 @@ describe('Wizard', () => {
         element.title = 'A string title';
 
         return Promise.resolve().then(() => {
-            const title = element.shadowRoot.querySelector('h1');
+            const title = element.shadowRoot.querySelector(
+                '[data-element-id="h1"]'
+            );
             expect(title.textContent).toBe('A string title');
         });
     });
@@ -654,9 +670,15 @@ describe('Wizard', () => {
         element.variant = 'base';
 
         return Promise.resolve().then(() => {
-            const base = element.shadowRoot.querySelector('article');
-            const card = element.shadowRoot.querySelector('lightning-card');
-            const modal = element.shadowRoot.querySelector('c-dialog');
+            const base = element.shadowRoot.querySelector(
+                '[data-element-id="article"]'
+            );
+            const card = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-card"]'
+            );
+            const modal = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-dialog"]'
+            );
 
             expect(base).toBeTruthy();
             expect(card).toBeFalsy();
@@ -674,9 +696,15 @@ describe('Wizard', () => {
         element.variant = 'card';
 
         return Promise.resolve().then(() => {
-            const base = element.shadowRoot.querySelector('article');
-            const card = element.shadowRoot.querySelector('lightning-card');
-            const modal = element.shadowRoot.querySelector('c-dialog');
+            const base = element.shadowRoot.querySelector(
+                '[data-element-id="article"]'
+            );
+            const card = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-card"]'
+            );
+            const modal = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-dialog"]'
+            );
 
             expect(base).toBeFalsy();
             expect(card).toBeTruthy();
@@ -694,9 +722,15 @@ describe('Wizard', () => {
         element.variant = 'modal';
 
         return Promise.resolve().then(() => {
-            const base = element.shadowRoot.querySelector('article');
-            const card = element.shadowRoot.querySelector('lightning-card');
-            const modal = element.shadowRoot.querySelector('c-dialog');
+            const base = element.shadowRoot.querySelector(
+                '[data-element-id="article"]'
+            );
+            const card = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-card"]'
+            );
+            const modal = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-dialog"]'
+            );
 
             expect(base).toBeFalsy();
             expect(card).toBeFalsy();
@@ -713,7 +747,9 @@ describe('Wizard', () => {
         });
 
         document.body.appendChild(element);
-        const article = element.shadowRoot.querySelector('article');
+        const article = element.shadowRoot.querySelector(
+            '[data-element-id="article"]'
+        );
         expect(article).toBeTruthy();
 
         element.hide();
@@ -721,7 +757,7 @@ describe('Wizard', () => {
         return Promise.resolve()
             .then(() => {
                 const articleAfterHide = element.shadowRoot.querySelector(
-                    'article'
+                    '[data-element-id="article"]'
                 );
                 expect(articleAfterHide).toBeFalsy();
 
@@ -729,7 +765,7 @@ describe('Wizard', () => {
             })
             .then(() => {
                 const articleAfterShow = element.shadowRoot.querySelector(
-                    'article'
+                    '[data-element-id="article"]'
                 );
                 expect(articleAfterShow).toBeTruthy();
             });
@@ -743,7 +779,9 @@ describe('Wizard', () => {
 
         document.body.appendChild(element);
 
-        const slot = element.shadowRoot.querySelector('main slot');
+        const slot = element.shadowRoot.querySelector(
+            '[data-element-id="slot-default"]'
+        );
         STEPS.forEach((step) => {
             slot.dispatchEvent(
                 new CustomEvent('wizardstepregister', {
@@ -804,7 +842,9 @@ describe('Wizard', () => {
 
         document.body.appendChild(element);
 
-        const slot = element.shadowRoot.querySelector('main slot');
+        const slot = element.shadowRoot.querySelector(
+            '[data-element-id="slot-default"]'
+        );
         STEPS.forEach((step) => {
             slot.dispatchEvent(
                 new CustomEvent('wizardstepregister', {

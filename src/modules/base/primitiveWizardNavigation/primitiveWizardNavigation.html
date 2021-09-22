@@ -67,8 +67,10 @@
                     <template if:false={sideNavigation}>
                         <lightning-progress-indicator
                             current-step={currentStep}
+                            has-error={currentStepHasError}
                             type={progressIndicatorType}
                             variant={progressIndicatorVariant}
+                            data-element-id="lightning-progress-indicator"
                         >
                             <template for:each={steps} for:item="step">
                                 <lightning-progress-step
@@ -82,7 +84,9 @@
                     <template if:true={sideNavigation}>
                         <c-vertical-progress-indicator
                             current-step={currentStep}
+                            has-error={currentStepHasError}
                             variant={progressIndicatorVariant}
+                            data-element-id="avonni-vertical-progress-indicator"
                         >
                             <template for:each={steps} for:item="step">
                                 <c-vertical-progress-step
@@ -131,6 +135,7 @@
                         value={progressBarValue}
                         orientation={progressBarOrientation}
                         thickness="large"
+                        data-element-id="avonni-progress-bar"
                     ></c-progress-bar>
                 </template>
             </template>
