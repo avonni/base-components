@@ -33,6 +33,7 @@
 import { createElement } from 'lwc';
 import Dialog from 'c/dialog';
 
+let element;
 describe('Dialog', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -40,11 +41,14 @@ describe('Dialog', () => {
         }
     });
 
-    it('Dialog Default attributes', () => {
-        const element = createElement('base-dialog', {
+    beforeEach(() => {
+        element = createElement('base-dialog', {
             is: Dialog
         });
+        document.body.appendChild(element);
+    });
 
+    it('Dialog Default attributes', () => {
         expect(element.title).toBeUndefined();
         expect(element.size).toBe('medium');
         expect(element.isLoading).toBeFalsy();
@@ -55,11 +59,6 @@ describe('Dialog', () => {
 
     // title
     it('Dialog title', () => {
-        const element = createElement('base-dialog', {
-            is: Dialog
-        });
-        document.body.appendChild(element);
-
         element.title = 'This is a title';
         element.show();
 
@@ -71,11 +70,6 @@ describe('Dialog', () => {
 
     // size
     it('Dialog size small', () => {
-        const element = createElement('base-dialog', {
-            is: Dialog
-        });
-        document.body.appendChild(element);
-
         element.size = 'small';
         element.show();
 
@@ -86,11 +80,6 @@ describe('Dialog', () => {
     });
 
     it('Dialog size medium', () => {
-        const element = createElement('base-dialog', {
-            is: Dialog
-        });
-        document.body.appendChild(element);
-
         element.show();
 
         return Promise.resolve().then(() => {
@@ -100,11 +89,6 @@ describe('Dialog', () => {
     });
 
     it('Dialog size large', () => {
-        const element = createElement('base-dialog', {
-            is: Dialog
-        });
-        document.body.appendChild(element);
-
         element.size = 'large';
         element.show();
 
@@ -116,11 +100,6 @@ describe('Dialog', () => {
 
     // is loading
     it('Dialog size is loading', () => {
-        const element = createElement('base-dialog', {
-            is: Dialog
-        });
-        document.body.appendChild(element);
-
         element.isLoading = true;
         element.show();
 
@@ -134,11 +113,6 @@ describe('Dialog', () => {
 
     // loading state alternative text
     it('Dialog size loading state alternative text', () => {
-        const element = createElement('base-dialog', {
-            is: Dialog
-        });
-        document.body.appendChild(element);
-
         element.isLoading = true;
         element.loadingStateAlternativeText =
             'This is a loading state alternative text';
@@ -156,11 +130,6 @@ describe('Dialog', () => {
 
     // show dialog
     it('Dialog show dialog', () => {
-        const element = createElement('base-dialog', {
-            is: Dialog
-        });
-        document.body.appendChild(element);
-
         element.showDialog = true;
 
         return Promise.resolve().then(() => {
@@ -173,11 +142,6 @@ describe('Dialog', () => {
 
     // close
     it('Dialog close method', () => {
-        const element = createElement('base-dialog', {
-            is: Dialog
-        });
-        document.body.appendChild(element);
-
         element.show();
         element.hide();
 
@@ -190,11 +154,6 @@ describe('Dialog', () => {
     // focusOnCloseButton
     // Depends on showDialog
     it('Dialog focusOnCloseButton method', () => {
-        const element = createElement('base-dialog', {
-            is: Dialog
-        });
-        document.body.appendChild(element);
-
         element.showDialog = true;
         const handler = jest.fn();
 
@@ -210,11 +169,6 @@ describe('Dialog', () => {
 
     // show
     it('Dialog show method', () => {
-        const element = createElement('base-dialog', {
-            is: Dialog
-        });
-        document.body.appendChild(element);
-
         element.show();
 
         return Promise.resolve().then(() => {

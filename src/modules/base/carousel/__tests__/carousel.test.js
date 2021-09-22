@@ -157,7 +157,7 @@ const secondExample = [
     }
 ];
 
-let element = null;
+let element;
 describe('Carousel', () => {
     afterEach(() => {
         while (document.body.firstChild) {
