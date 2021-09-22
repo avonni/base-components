@@ -33,6 +33,10 @@
 import { createElement } from 'lwc';
 import InputCounter from 'c/inputCounter';
 
+// Not tested
+// aria-controls
+// aria-labelled-by
+// aria-described-by
 // Not tested because cannot test lightning-input:
 // messageWhenBadInput
 // messageWhenPatternMismatch
@@ -43,6 +47,7 @@ import InputCounter from 'c/inputCounter';
 // focus method
 // blur method
 
+let element;
 describe('Input Counter', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -50,11 +55,14 @@ describe('Input Counter', () => {
         }
     });
 
-    it('Input Counter Default attributes', () => {
-        const element = createElement('base-input-counter', {
+    beforeEach(() => {
+        element = createElement('base-input-counter', {
             is: InputCounter
         });
+        document.body.appendChild(element);
+    });
 
+    it('Input Counter Default attributes', () => {
         expect(element.name).toBeUndefined();
         expect(element.label).toBeUndefined();
         expect(element.messageWhenBadInput).toBeUndefined();
@@ -85,11 +93,6 @@ describe('Input Counter', () => {
 
     // name
     it('Input Counter name', () => {
-        const element = createElement('base-input-counter', {
-            is: InputCounter
-        });
-        document.body.appendChild(element);
-
         element.name = 'This is a name text';
 
         return Promise.resolve().then(() => {
@@ -100,11 +103,6 @@ describe('Input Counter', () => {
 
     // label
     it('Input Counter label', () => {
-        const element = createElement('base-input-counter', {
-            is: InputCounter
-        });
-        document.body.appendChild(element);
-
         element.label = 'This is a label text';
 
         return Promise.resolve().then(() => {
@@ -114,11 +112,6 @@ describe('Input Counter', () => {
     });
 
     it('Input Counter label label-inline', () => {
-        const element = createElement('base-input-counter', {
-            is: InputCounter
-        });
-        document.body.appendChild(element);
-
         element.label = 'This is a label text';
         element.variant = 'label-inline';
 
@@ -134,11 +127,6 @@ describe('Input Counter', () => {
 
     // aria-label
     it('Input Counter aria-label', () => {
-        const element = createElement('base-input-counter', {
-            is: InputCounter
-        });
-        document.body.appendChild(element);
-
         element.ariaLabel = 'Aria-label';
 
         return Promise.resolve().then(() => {
@@ -147,58 +135,8 @@ describe('Input Counter', () => {
         });
     });
 
-    // aria-controls
-    it('Input Counter aria-controls', () => {
-        const element = createElement('base-input-counter', {
-            is: InputCounter
-        });
-        document.body.appendChild(element);
-
-        element.ariaControls = 'I';
-
-        return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
-            expect(input.ariaControls).toBe('I-17');
-        });
-    });
-
-    // aria-labelled-by
-    it('Input Counter aria-labelled-by', () => {
-        const element = createElement('base-input-counter', {
-            is: InputCounter
-        });
-        document.body.appendChild(element);
-
-        element.ariaLabelledBy = 'I';
-
-        return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
-            expect(input.ariaLabelledBy).toBe('I-21');
-        });
-    });
-
-    // aria-described-by
-    it('Input Counter aria-described-by', () => {
-        const element = createElement('base-input-counter', {
-            is: InputCounter
-        });
-        document.body.appendChild(element);
-
-        element.ariaDescribedBy = 'I';
-
-        return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
-            expect(input.ariaDescribedBy).toBe('I-25');
-        });
-    });
-
     // max
     it('Input Counter max', () => {
-        const element = createElement('base-input-counter', {
-            is: InputCounter
-        });
-        document.body.appendChild(element);
-
         element.max = 20;
 
         return Promise.resolve().then(() => {
@@ -208,11 +146,6 @@ describe('Input Counter', () => {
 
     // min
     it('Input Counter min', () => {
-        const element = createElement('base-input-counter', {
-            is: InputCounter
-        });
-        document.body.appendChild(element);
-
         element.min = 5;
 
         return Promise.resolve().then(() => {
@@ -222,11 +155,6 @@ describe('Input Counter', () => {
 
     // step
     it('Input Counter step // no input-step given - defaults to 1', () => {
-        const element = createElement('base-input-counter', {
-            is: InputCounter
-        });
-        document.body.appendChild(element);
-
         element.step = 5;
         element.value = 0;
         element.fractionDigits = null;
@@ -247,11 +175,6 @@ describe('Input Counter', () => {
     });
 
     it('Input Counter step no decimal // input-step 0.01', () => {
-        const element = createElement('base-input-counter', {
-            is: InputCounter
-        });
-        document.body.appendChild(element);
-
         element.step = 5;
         element.value = 0;
         element.fractionDigits = 2;
@@ -272,11 +195,6 @@ describe('Input Counter', () => {
     });
 
     it('Input Counter step decimal // input-step 0.01', () => {
-        const element = createElement('base-input-counter', {
-            is: InputCounter
-        });
-        document.body.appendChild(element);
-
         element.step = 5.55;
         element.value = 0;
         element.fractionDigits = 2;
@@ -298,11 +216,6 @@ describe('Input Counter', () => {
 
     // Precision Handler
     it('Input Counter Precision step decimal // input-step', () => {
-        const element = createElement('base-input-counter', {
-            is: InputCounter
-        });
-        document.body.appendChild(element);
-
         element.step = 55.3658;
         element.value = 1256.789;
         element.fractionDigits = 3;
@@ -324,11 +237,6 @@ describe('Input Counter', () => {
 
     // value
     it('Input Counter value', () => {
-        const element = createElement('base-input-counter', {
-            is: InputCounter
-        });
-        document.body.appendChild(element);
-
         element.value = 5;
 
         return Promise.resolve()
@@ -349,11 +257,6 @@ describe('Input Counter', () => {
 
     // type
     it('Input Counter number', () => {
-        const element = createElement('base-input-counter', {
-            is: InputCounter
-        });
-        document.body.appendChild(element);
-
         element.type = 'number';
 
         return Promise.resolve().then(() => {
@@ -363,11 +266,6 @@ describe('Input Counter', () => {
     });
 
     it('Input Counter percent', () => {
-        const element = createElement('base-input-counter', {
-            is: InputCounter
-        });
-        document.body.appendChild(element);
-
         element.type = 'percent';
 
         return Promise.resolve().then(() => {
@@ -377,11 +275,6 @@ describe('Input Counter', () => {
     });
 
     it('Input Counter currency', () => {
-        const element = createElement('base-input-counter', {
-            is: InputCounter
-        });
-        document.body.appendChild(element);
-
         element.type = 'currency';
 
         return Promise.resolve().then(() => {
@@ -392,11 +285,6 @@ describe('Input Counter', () => {
 
     // disabled
     it('Input Counter disabled', () => {
-        const element = createElement('base-input-counter', {
-            is: InputCounter
-        });
-        document.body.appendChild(element);
-
         element.disabled = true;
 
         return Promise.resolve().then(() => {
@@ -407,11 +295,6 @@ describe('Input Counter', () => {
 
     // read only
     it('Input Counter read only', () => {
-        const element = createElement('base-input-counter', {
-            is: InputCounter
-        });
-        document.body.appendChild(element);
-
         element.readOnly = true;
 
         return Promise.resolve().then(() => {
@@ -426,11 +309,6 @@ describe('Input Counter', () => {
 
     // required needs to be label inline
     it('Input Counter required', () => {
-        const element = createElement('base-input-counter', {
-            is: InputCounter
-        });
-        document.body.appendChild(element);
-
         element.required = true;
         element.variant = 'label-inline';
 
@@ -443,11 +321,6 @@ describe('Input Counter', () => {
 
     // field level help
     it('Input Counter field level help', () => {
-        const element = createElement('base-input-counter', {
-            is: InputCounter
-        });
-        document.body.appendChild(element);
-
         element.fieldLevelHelp = 'This is a field level help';
         element.variant = 'label-inline';
 
@@ -461,11 +334,6 @@ describe('Input Counter', () => {
     });
 
     it('Input Counter field level help label hidden', () => {
-        const element = createElement('base-input-counter', {
-            is: InputCounter
-        });
-        document.body.appendChild(element);
-
         element.fieldLevelHelp = 'This is a field level help';
         element.variant = 'label-hidden';
 
@@ -481,11 +349,6 @@ describe('Input Counter', () => {
 
     // Input counter change
     it('Input counter change event // decrement defaults', () => {
-        const element = createElement('base-input-counter', {
-            is: InputCounter
-        });
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('change', handler);
 
@@ -503,11 +366,6 @@ describe('Input Counter', () => {
     });
 
     it('Input counter change event // decrement to Min floor', () => {
-        const element = createElement('base-input-counter', {
-            is: InputCounter
-        });
-        document.body.appendChild(element);
-
         element.min = 5;
         element.value = 10;
         element.step = 6;
@@ -529,11 +387,6 @@ describe('Input Counter', () => {
     });
 
     it('Input counter change event // decrement to Max ceiling', () => {
-        const element = createElement('base-input-counter', {
-            is: InputCounter
-        });
-        document.body.appendChild(element);
-
         element.max = 20;
         element.value = 25;
         element.step = 6;
@@ -555,11 +408,6 @@ describe('Input Counter', () => {
     });
 
     it('Input counter change event // increment defaults', () => {
-        const element = createElement('base-input-counter', {
-            is: InputCounter
-        });
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('change', handler);
 
@@ -577,11 +425,6 @@ describe('Input Counter', () => {
     });
 
     it('Input counter test Max ceiling on increment', () => {
-        const element = createElement('base-input-counter', {
-            is: InputCounter
-        });
-        document.body.appendChild(element);
-
         element.max = 5;
         element.value = 0;
         element.step = 6;
@@ -603,11 +446,6 @@ describe('Input Counter', () => {
     });
 
     it('Input counter test under Min floor on increment', () => {
-        const element = createElement('base-input-counter', {
-            is: InputCounter
-        });
-        document.body.appendChild(element);
-
         element.min = 5;
         element.value = 0;
         element.step = 6;
@@ -629,11 +467,6 @@ describe('Input Counter', () => {
     });
 
     it('Input counter test Max and value unchanged on increment', () => {
-        const element = createElement('base-input-counter', {
-            is: InputCounter
-        });
-        document.body.appendChild(element);
-
         element.max = 5;
         element.value = 5;
         element.step = 6;
@@ -655,11 +488,6 @@ describe('Input Counter', () => {
     });
 
     it('Input counter test Min and value unchanged on decrement', () => {
-        const element = createElement('base-input-counter', {
-            is: InputCounter
-        });
-        document.body.appendChild(element);
-
         element.min = 5;
         element.value = 5;
         element.step = 6;
