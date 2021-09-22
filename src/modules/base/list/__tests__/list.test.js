@@ -31,6 +31,13 @@
  */
 
 import { createElement } from 'lwc';
+import {
+    ITEMS,
+    ITEMS_WITHOUT_ICONS,
+    ACTIONS,
+    ACTION,
+    ACTION_NO_LABEL
+} from './data';
 import List from 'c/list';
 
 // Not tested:
@@ -40,91 +47,7 @@ import List from 'c/list';
 // Partial test of reset() (we can't check if it would reorder the items, we only check that it unselects the currently dragged item)
 // reorder event
 
-const ITEMS = [
-    {
-        label: 'Item 1',
-        avatarSrc:
-            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
-        avatarFallbackIconName: 'custom:custom5',
-        imageSrc:
-            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
-    },
-    {
-        label: 'Item 2',
-        avatarFallbackIconName: 'custom:custom9',
-        imageSrc:
-            'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg'
-    },
-    {
-        label: 'Item 3',
-        avatarFallbackIconName: 'custom:custom1',
-        avatarSrc:
-            'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg'
-    },
-    {
-        label: 'Item 4'
-    },
-    {
-        label: 'Item 5',
-        avatarFallbackIconName: 'custom:custom51',
-        imageSrc:
-            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
-    }
-];
-
-const ITEMS_WITHOUT_ICONS = [
-    {
-        label: 'Item 1'
-    },
-    {
-        label: 'Item 2'
-    },
-    {
-        label: 'Item 3'
-    },
-    {
-        label: 'Item 4'
-    }
-];
-
-const ACTIONS = [
-    {
-        label: 'Completed',
-        name: 'completed-action',
-        iconName: 'utility:check',
-        disabled: false
-    },
-    {
-        label: 'Pending',
-        name: 'pending-action',
-        iconName: 'utility:spinner',
-        disabled: false
-    },
-    {
-        label: 'Delete',
-        name: 'delete-action',
-        iconName: 'utility:delete',
-        disabled: true
-    }
-];
-
-const ACTION = [
-    {
-        label: 'Completed',
-        name: 'completed-action',
-        iconName: 'utility:check',
-        disabled: false
-    }
-];
-
-const ACTION_NO_LABEL = [
-    {
-        name: 'event-action',
-        iconName: 'utility:event',
-        disabled: false
-    }
-];
-
+let element;
 describe('List', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -132,11 +55,14 @@ describe('List', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-list', {
+    beforeEach(() => {
+        element = createElement('base-list', {
             is: List
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.alternativeText).toBeUndefined();
         expect(element.items).toMatchObject([]);
         expect(element.label).toBeUndefined();
@@ -151,12 +77,6 @@ describe('List', () => {
 
     // alternative-text
     it('alternativeText', () => {
-        const element = createElement('base-list', {
-            is: List
-        });
-
-        document.body.appendChild(element);
-
         element.alternativeText = 'A string alternative text';
 
         return Promise.resolve().then(() => {
@@ -169,12 +89,6 @@ describe('List', () => {
 
     // items
     it('items', () => {
-        const element = createElement('base-list', {
-            is: List
-        });
-
-        document.body.appendChild(element);
-
         element.items = ITEMS;
 
         return Promise.resolve().then(() => {
@@ -205,12 +119,6 @@ describe('List', () => {
 
     // label
     it('label', () => {
-        const element = createElement('base-list', {
-            is: List
-        });
-
-        document.body.appendChild(element);
-
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -222,12 +130,6 @@ describe('List', () => {
     });
     // divider
     it('divider = around', () => {
-        const element = createElement('base-list', {
-            is: List
-        });
-
-        document.body.appendChild(element);
-
         element.divider = 'around';
 
         return Promise.resolve().then(() => {
@@ -238,12 +140,6 @@ describe('List', () => {
         });
     });
     it('divider = top', () => {
-        const element = createElement('base-list', {
-            is: List
-        });
-
-        document.body.appendChild(element);
-
         element.divider = 'top';
 
         return Promise.resolve().then(() => {
@@ -254,12 +150,6 @@ describe('List', () => {
         });
     });
     it('divider = bottom', () => {
-        const element = createElement('base-list', {
-            is: List
-        });
-
-        document.body.appendChild(element);
-
         element.divider = 'bottom';
 
         return Promise.resolve().then(() => {
@@ -272,12 +162,6 @@ describe('List', () => {
 
     // ACTIONS with BUTTON-MENU / BUTTON / BUTTON-ICON
     it('actions button-menu', () => {
-        const element = createElement('base-list', {
-            is: List
-        });
-
-        document.body.appendChild(element);
-
         element.items = ITEMS;
         element.actions = ACTIONS;
 
@@ -308,12 +192,6 @@ describe('List', () => {
     });
 
     it('action lightning-button', () => {
-        const element = createElement('base-list', {
-            is: List
-        });
-
-        document.body.appendChild(element);
-
         element.items = ITEMS;
         element.actions = ACTION;
 
@@ -328,12 +206,6 @@ describe('List', () => {
     });
 
     it('action lightning-button-icon', () => {
-        const element = createElement('base-list', {
-            is: List
-        });
-
-        document.body.appendChild(element);
-
         element.items = ITEMS;
         element.actions = ACTION_NO_LABEL;
 
@@ -351,12 +223,6 @@ describe('List', () => {
     // sortable
     // Depends on items
     it('sortable = false', () => {
-        const element = createElement('base-list', {
-            is: List
-        });
-
-        document.body.appendChild(element);
-
         element.sortable = false;
         element.items = ITEMS;
 
@@ -382,12 +248,6 @@ describe('List', () => {
     });
 
     it('sortable = true', () => {
-        const element = createElement('base-list', {
-            is: List
-        });
-
-        document.body.appendChild(element);
-
         element.sortable = true;
         element.items = ITEMS;
 
@@ -423,12 +283,6 @@ describe('List', () => {
     // sortable-icon-name
     // Depends on items and sortable
     it('sortableIconName, with sortable = false', () => {
-        const element = createElement('base-list', {
-            is: List
-        });
-
-        document.body.appendChild(element);
-
         element.sortableIconName = 'utility:apps';
         element.sortable = false;
         element.items = ITEMS_WITHOUT_ICONS;
@@ -440,12 +294,6 @@ describe('List', () => {
     });
 
     it('sortableIconName, with sortable = true', () => {
-        const element = createElement('base-list', {
-            is: List
-        });
-
-        document.body.appendChild(element);
-
         element.sortableIconName = 'utility:apps';
         element.sortable = true;
         element.items = ITEMS_WITHOUT_ICONS;
@@ -463,12 +311,6 @@ describe('List', () => {
     // sortable-icon-position
     // Depends on items, sortable and sortableIconName
     it('sortableIconPosition = right', () => {
-        const element = createElement('base-list', {
-            is: List
-        });
-
-        document.body.appendChild(element);
-
         element.sortableIconName = 'utility:drag_and_drop';
         element.sortable = true;
         element.sortableIconPosition = 'right';
@@ -485,12 +327,6 @@ describe('List', () => {
     });
 
     it('sortableIconPosition = left', () => {
-        const element = createElement('base-list', {
-            is: List
-        });
-
-        document.body.appendChild(element);
-
         element.sortableIconName = 'utility:apps';
         element.sortable = true;
         element.sortableIconPosition = 'left';
@@ -507,12 +343,6 @@ describe('List', () => {
     });
     /* images */
     it('images presence', () => {
-        const element = createElement('base-list', {
-            is: List
-        });
-
-        document.body.appendChild(element);
-
         element.items = ITEMS;
 
         return Promise.resolve().then(() => {
@@ -522,12 +352,6 @@ describe('List', () => {
     });
 
     it('images width small', () => {
-        const element = createElement('base-list', {
-            is: List
-        });
-
-        document.body.appendChild(element);
-
         element.items = ITEMS;
         element.imageWidth = 'small';
 
@@ -540,12 +364,6 @@ describe('List', () => {
     });
 
     it('images width medium', () => {
-        const element = createElement('base-list', {
-            is: List
-        });
-
-        document.body.appendChild(element);
-
         element.items = ITEMS;
         element.imageWidth = 'medium';
 
@@ -558,12 +376,6 @@ describe('List', () => {
     });
 
     it('images width large', () => {
-        const element = createElement('base-list', {
-            is: List
-        });
-
-        document.body.appendChild(element);
-
         element.items = ITEMS;
         element.imageWidth = 'large';
 
@@ -576,12 +388,6 @@ describe('List', () => {
     });
 
     it('images rounded on sortable icon right', () => {
-        const element = createElement('base-list', {
-            is: List
-        });
-
-        document.body.appendChild(element);
-
         element.items = ITEMS;
         element.imageWidth = 'large';
         element.divider = 'around';
@@ -610,12 +416,6 @@ describe('List', () => {
     // reset
     // Depends on items and sortable
     it('reset method', () => {
-        const element = createElement('base-list', {
-            is: List
-        });
-
-        document.body.appendChild(element);
-
         element.items = ITEMS;
         element.sortable = true;
 
@@ -635,12 +435,6 @@ describe('List', () => {
     // actionclick
     // Depends on items and actions
     it('actionclick event, one action', () => {
-        const element = createElement('base-list', {
-            is: List
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('actionclick', handler);
         element.items = ITEMS;
@@ -664,12 +458,6 @@ describe('List', () => {
     });
 
     it('actionclick event, one icon action', () => {
-        const element = createElement('base-list', {
-            is: List
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('actionclick', handler);
         element.items = ITEMS;
@@ -695,12 +483,6 @@ describe('List', () => {
     });
 
     it('actionclick event, multiple action', () => {
-        const element = createElement('base-list', {
-            is: List
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('actionclick', handler);
         element.items = ITEMS;
@@ -732,12 +514,6 @@ describe('List', () => {
     // reorder
     // Depends on items
     it('reorder event', () => {
-        const element = createElement('base-list', {
-            is: List
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('itemclick', handler);
         element.items = ITEMS;
