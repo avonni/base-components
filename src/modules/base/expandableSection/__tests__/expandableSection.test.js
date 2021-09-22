@@ -185,12 +185,15 @@ describe('Expandable Section', () => {
         });
     });
 
-    /* ----- USER ACTIONS ----- */
+    /* ----- EVENTS ----- */
 
-    // Toggle the section
+    // toggle
     // Depends on collapsible
-    it('The user toggles the collapse button', () => {
+    it('toggle event', () => {
         element.collapsible = true;
+
+        const handler = jest.fn();
+        element.addEventListener('toggle', handler);
 
         const section = element.shadowRoot.querySelector('.slds-section');
         expect(section.classList).toContain('slds-is-open');
@@ -203,6 +206,9 @@ describe('Expandable Section', () => {
                 button.click();
             })
             .then(() => {
+                expect(handler).toHaveBeenCalledTimes(1);
+                expect(handler.mock.calls[0][0].detail.closed).toBeTruthy();
+
                 const button = element.shadowRoot.querySelector(
                     '.slds-section__title-action'
                 );
@@ -211,6 +217,8 @@ describe('Expandable Section', () => {
             })
             .then(() => {
                 expect(section.classList).toContain('slds-is-open');
+                expect(handler).toHaveBeenCalledTimes(2);
+                expect(handler.mock.calls[1][0].detail.closed).toBeFalsy();
             });
     });
 });

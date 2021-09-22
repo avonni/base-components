@@ -40,7 +40,6 @@ customElements.define(
 export const DualListbox = ({
     addButtonIconName,
     addButtonLabel,
-    hideBottomDivider,
     buttonSize,
     buttonVariant,
     disableReordering,
@@ -49,6 +48,8 @@ export const DualListbox = ({
     downButtonLabel,
     draggable,
     fieldLevelHelp,
+    groups,
+    hideBottomDivider,
     isLoading,
     label,
     maxVisibleOptions,
@@ -63,7 +64,7 @@ export const DualListbox = ({
     removeButtonLabel,
     required,
     requiredOptions,
-    searchEngine,
+    allowSearch,
     selectedLabel,
     selectedPlaceholder,
     size,
@@ -77,7 +78,6 @@ export const DualListbox = ({
     const element = document.createElement('ac-base-dual-listbox');
     element.addButtonIconName = addButtonIconName;
     element.addButtonLabel = addButtonLabel;
-    element.hideBottomDivider = hideBottomDivider;
     element.buttonSize = buttonSize;
     element.buttonVariant = buttonVariant;
     element.disableReordering = disableReordering;
@@ -86,6 +86,8 @@ export const DualListbox = ({
     element.downButtonLabel = downButtonLabel;
     element.draggable = draggable;
     element.fieldLevelHelp = fieldLevelHelp;
+    element.groups = groups;
+    element.hideBottomDivider = hideBottomDivider;
     element.isLoading = isLoading;
     element.label = label;
     element.maxVisibleOptions = maxVisibleOptions;
@@ -100,7 +102,7 @@ export const DualListbox = ({
     element.removeButtonLabel = removeButtonLabel;
     element.required = required;
     element.requiredOptions = requiredOptions;
-    element.searchEngine = searchEngine;
+    element.allowSearch = allowSearch;
     element.selectedLabel = selectedLabel;
     element.selectedPlaceholder = selectedPlaceholder;
     element.size = size;
