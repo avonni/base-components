@@ -33,6 +33,7 @@
 import { createElement } from 'lwc';
 import PageHeader from 'c/pageHeader';
 
+let element;
 describe('PageHeader', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -40,11 +41,14 @@ describe('PageHeader', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-page-header', {
+    beforeEach(() => {
+        element = createElement('base-page-header', {
             is: PageHeader
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.iconName).toBeUndefined();
         expect(element.label).toBeUndefined();
         expect(element.title).toBeUndefined();
@@ -54,11 +58,6 @@ describe('PageHeader', () => {
 
     // icon-name
     it('iconName', () => {
-        const element = createElement('base-page-header', {
-            is: PageHeader
-        });
-        document.body.appendChild(element);
-
         element.iconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
@@ -70,11 +69,6 @@ describe('PageHeader', () => {
     // label
     // Depends on variant
     it('label', () => {
-        const element = createElement('base-page-header', {
-            is: PageHeader
-        });
-        document.body.appendChild(element);
-
         element.variant = 'object-home';
         element.label = 'A string label';
 
@@ -89,11 +83,6 @@ describe('PageHeader', () => {
 
     // title
     it('title', () => {
-        const element = createElement('base-page-header', {
-            is: PageHeader
-        });
-        document.body.appendChild(element);
-
         element.title = 'A string title';
 
         return Promise.resolve().then(() => {
@@ -108,11 +97,6 @@ describe('PageHeader', () => {
     // info
     // Depends on variant
     it('info with the default (base) variant', () => {
-        const element = createElement('base-page-header', {
-            is: PageHeader
-        });
-        document.body.appendChild(element);
-
         element.info = 'A string info';
 
         return Promise.resolve().then(() => {
@@ -125,11 +109,6 @@ describe('PageHeader', () => {
     });
 
     it('info with the object-home variant', () => {
-        const element = createElement('base-page-header', {
-            is: PageHeader
-        });
-        document.body.appendChild(element);
-
         element.info = 'A string info';
         element.variant = 'object-home';
 
@@ -144,11 +123,6 @@ describe('PageHeader', () => {
 
     // variant
     it('variant = base', () => {
-        const element = createElement('base-page-header', {
-            is: PageHeader
-        });
-        document.body.appendChild(element);
-
         element.variant = 'base';
 
         return Promise.resolve().then(() => {
@@ -186,11 +160,6 @@ describe('PageHeader', () => {
     });
 
     it('variant = object-home', () => {
-        const element = createElement('base-page-header', {
-            is: PageHeader
-        });
-        document.body.appendChild(element);
-
         element.variant = 'object-home';
 
         return Promise.resolve().then(() => {
@@ -226,11 +195,6 @@ describe('PageHeader', () => {
     });
 
     it('variant = record-home', () => {
-        const element = createElement('base-page-header', {
-            is: PageHeader
-        });
-        document.body.appendChild(element);
-
         element.variant = 'record-home';
 
         return Promise.resolve().then(() => {
@@ -266,11 +230,6 @@ describe('PageHeader', () => {
     });
 
     it('variant = record-home-vertical', () => {
-        const element = createElement('base-page-header', {
-            is: PageHeader
-        });
-        document.body.appendChild(element);
-
         element.variant = 'record-home-vertical';
 
         return Promise.resolve().then(() => {
