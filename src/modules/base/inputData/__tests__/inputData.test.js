@@ -33,6 +33,7 @@
 import { createElement } from 'lwc';
 import InputData from 'c/inputData';
 
+let element;
 describe('InputData', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -40,14 +41,16 @@ describe('InputData', () => {
         }
     });
 
-    /* ----- ATTRIBUTES ----- */
-
-    it('Default attributes', () => {
-        const element = createElement('avonni-input-data', {
+    beforeEach(() => {
+        element = createElement('avonni-input-data', {
             is: InputData
         });
         document.body.appendChild(element);
+    });
 
+    /* ----- ATTRIBUTES ----- */
+
+    it('Default attributes', () => {
         expect(element.label).toBeUndefined();
         expect(element.name).toBeUndefined();
         expect(element.placeholder).toBeUndefined();
@@ -61,11 +64,6 @@ describe('InputData', () => {
     });
 
     it('Label attribute', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Base input';
 
         return Promise.resolve().then(() => {
@@ -75,11 +73,6 @@ describe('InputData', () => {
     });
 
     it('No label attribute', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector('lightning-input');
             expect(input.label).toBe('Data input');
@@ -88,11 +81,6 @@ describe('InputData', () => {
     });
 
     it('Disabled attribute', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Base input';
         element.disabled = true;
 
@@ -103,11 +91,6 @@ describe('InputData', () => {
     });
 
     it('Read-only attribute', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Base input';
         element.readOnly = true;
 
@@ -118,11 +101,6 @@ describe('InputData', () => {
     });
 
     it('Required attribute', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Base input';
         element.required = true;
 
@@ -133,11 +111,6 @@ describe('InputData', () => {
     });
 
     it('Variant attribute', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Base input';
         element.variant = 'label-inline';
 
@@ -148,11 +121,6 @@ describe('InputData', () => {
     });
 
     it('Value attribute', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Base input';
         element.value = 'Default text';
 
@@ -163,11 +131,6 @@ describe('InputData', () => {
     });
 
     it('Undefined value attribute', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Base input';
         element.value = undefined;
 
@@ -178,11 +141,6 @@ describe('InputData', () => {
     });
 
     it('Checked attribute', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Base input';
         element.type = 'checkbox';
         element.checked = true;
@@ -194,11 +152,6 @@ describe('InputData', () => {
     });
 
     it('Valid location attributes', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Base input';
         element.type = 'location';
         element.latitude = 80;
@@ -214,11 +167,6 @@ describe('InputData', () => {
     });
 
     it('Corrected positive location attributes', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Base input';
         element.type = 'location';
         element.latitude = 100;
@@ -234,11 +182,6 @@ describe('InputData', () => {
     });
 
     it('Corrected negative location attributes', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Base input';
         element.type = 'location';
         element.latitude = -100;
@@ -254,11 +197,6 @@ describe('InputData', () => {
     });
 
     it('Valid location attributes as (0, 0)', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Base input';
         element.type = 'location';
         element.latitude = 0;
@@ -274,11 +212,6 @@ describe('InputData', () => {
     });
 
     it('Undefined location attributes', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Base input';
         element.type = 'location';
         element.latitude = undefined;
@@ -296,11 +229,6 @@ describe('InputData', () => {
     /* ----- DATA INPUT TYPES ----- */
 
     it('Boolean input', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Label';
         element.type = 'boolean';
 
@@ -311,11 +239,6 @@ describe('InputData', () => {
     });
 
     it('Number input', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Label';
         element.type = 'number';
 
@@ -327,11 +250,6 @@ describe('InputData', () => {
     });
 
     it('Currency input', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Label';
         element.type = 'currency';
 
@@ -343,11 +261,6 @@ describe('InputData', () => {
     });
 
     it('Percent input', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Label';
         element.type = 'percent';
 
@@ -359,11 +272,6 @@ describe('InputData', () => {
     });
 
     it('Date input', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Label';
         element.type = 'date';
 
@@ -374,11 +282,6 @@ describe('InputData', () => {
     });
 
     it('Email input', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Label';
         element.type = 'email';
 
@@ -389,11 +292,6 @@ describe('InputData', () => {
     });
 
     it('Location input', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Label';
         element.type = 'location';
 
@@ -410,11 +308,6 @@ describe('InputData', () => {
     });
 
     it('Phone input', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Label';
         element.type = 'phone';
 
@@ -425,13 +318,9 @@ describe('InputData', () => {
     });
 
     it('Phone input with default value to format', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
         element.type = 'phone';
         element.label = 'Label';
         element.value = '1234567890';
-
         document.body.appendChild(element);
 
         return Promise.resolve().then(() => {
@@ -441,11 +330,6 @@ describe('InputData', () => {
     });
 
     it('URL input', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Label';
         element.type = 'url';
 
@@ -456,11 +340,6 @@ describe('InputData', () => {
     });
 
     it('Text input', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Label';
         element.type = 'text';
 
@@ -473,11 +352,6 @@ describe('InputData', () => {
     /* ----- BEHAVIOR ON INPUT CHANGE ----- */
 
     it('Formatted valid phone input', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Label';
         element.type = 'phone';
 
@@ -498,11 +372,6 @@ describe('InputData', () => {
     });
 
     it('Formatted invalid phone input with 7 digits', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Label';
         element.type = 'phone';
 
@@ -523,11 +392,6 @@ describe('InputData', () => {
     });
 
     it('Formatted invalid phone input with 5 digits', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Label';
         element.type = 'phone';
 
@@ -548,11 +412,6 @@ describe('InputData', () => {
     });
 
     it('Formatted invalid phone input without with 1 digit', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Label';
         element.type = 'phone';
 
@@ -573,11 +432,6 @@ describe('InputData', () => {
     });
 
     it('Location input change for adding values', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Label';
         element.type = 'location';
 
@@ -600,11 +454,6 @@ describe('InputData', () => {
     });
 
     it('Location input change for removing values', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Label';
         element.type = 'location';
         element.latitude = 80;
@@ -629,11 +478,6 @@ describe('InputData', () => {
     });
 
     it('Text input change for removing value', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Label';
 
         return Promise.resolve()
@@ -655,11 +499,6 @@ describe('InputData', () => {
     /* ----- HANDLING LIGHTNING-INPUT EVENTS AND THEIR TRANSFER (FOR COVERAGE PURPOSES) ----- */
 
     it('Transfer commit event', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Label';
 
         return Promise.resolve()
@@ -679,11 +518,6 @@ describe('InputData', () => {
     });
 
     it('Transfer blur event', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Label';
 
         return Promise.resolve()
@@ -703,11 +537,6 @@ describe('InputData', () => {
     });
 
     it('Transfer focus event', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Label';
 
         return Promise.resolve()
@@ -729,11 +558,6 @@ describe('InputData', () => {
     /* ----- PUBLIC METHODS ----- */
 
     it('Transfer focus and blur', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Label';
 
         return Promise.resolve()
@@ -747,11 +571,6 @@ describe('InputData', () => {
     });
 
     it('Transfer error messages on basic input', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Label';
 
         return Promise.resolve()
@@ -765,11 +584,6 @@ describe('InputData', () => {
     });
 
     it('Transfer error messages on location input', () => {
-        const element = createElement('avonni-input-data', {
-            is: InputData
-        });
-        document.body.appendChild(element);
-
         element.label = 'Label';
         element.type = 'location';
 
