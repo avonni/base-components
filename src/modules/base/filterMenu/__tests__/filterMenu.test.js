@@ -72,6 +72,7 @@ const ITEMS = [
 
 const VALUE = ['item-1', 'item-2'];
 
+let element;
 describe('FilterMenu', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -79,11 +80,15 @@ describe('FilterMenu', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-filter-menu', {
+    beforeEach(() => {
+        element = createElement('base-filter-menu', {
             is: FilterMenu
         });
 
+        document.body.appendChild(element);
+    });
+
+    it('Default attributes', () => {
         expect(element.accessKey).toBeUndefined();
         expect(element.alternativeText).toBe('Show Menu');
         expect(element.applyButtonLabel).toBe('Apply');
@@ -114,12 +119,6 @@ describe('FilterMenu', () => {
 
     // access-key
     it('accessKey', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.accessKey = 'K';
 
         return Promise.resolve().then(() => {
@@ -130,12 +129,6 @@ describe('FilterMenu', () => {
 
     // alternative-text
     it('alternativeText', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.alternativeText = 'A string alt text';
 
         return Promise.resolve().then(() => {
@@ -148,12 +141,6 @@ describe('FilterMenu', () => {
 
     // apply-button-label
     it('applyButtonLabel', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.applyButtonLabel = 'A string label';
         const button = element.shadowRoot.querySelector('button');
         button.click();
@@ -169,12 +156,6 @@ describe('FilterMenu', () => {
     // button-variant
     // Depends on iconName and label
     it('buttonVariant = border', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.buttonVariant = 'border';
 
         return Promise.resolve().then(() => {
@@ -186,12 +167,6 @@ describe('FilterMenu', () => {
     });
 
     it('buttonVariant = border, with label', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.buttonVariant = 'border';
         element.label = 'A string label';
 
@@ -204,12 +179,6 @@ describe('FilterMenu', () => {
     });
 
     it('buttonVariant = border, with icon', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.buttonVariant = 'border';
         element.iconName = 'utility:user';
 
@@ -222,12 +191,6 @@ describe('FilterMenu', () => {
     });
 
     it('buttonVariant = bare', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.buttonVariant = 'bare';
 
         return Promise.resolve().then(() => {
@@ -239,12 +202,6 @@ describe('FilterMenu', () => {
     });
 
     it('buttonVariant = bare, with label', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.buttonVariant = 'bare';
         element.label = 'A string label';
 
@@ -255,12 +212,6 @@ describe('FilterMenu', () => {
     });
 
     it('buttonVariant = bare, with icon', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.buttonVariant = 'bare';
         element.iconName = 'standard:user';
 
@@ -273,12 +224,6 @@ describe('FilterMenu', () => {
     });
 
     it('buttonVariant = container', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.buttonVariant = 'container';
 
         return Promise.resolve().then(() => {
@@ -290,12 +235,6 @@ describe('FilterMenu', () => {
     });
 
     it('buttonVariant = container, with label', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.buttonVariant = 'container';
         element.label = 'A string label';
 
@@ -306,12 +245,6 @@ describe('FilterMenu', () => {
     });
 
     it('buttonVariant = container, with icon', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.buttonVariant = 'container';
         element.icon = 'utility:user';
 
@@ -324,12 +257,6 @@ describe('FilterMenu', () => {
     });
 
     it('buttonVariant = border-filled', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.buttonVariant = 'border-filled';
 
         return Promise.resolve().then(() => {
@@ -341,12 +268,6 @@ describe('FilterMenu', () => {
     });
 
     it('buttonVariant = border-filled, with label', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.buttonVariant = 'border-filled';
         element.label = 'A string label';
 
@@ -357,12 +278,6 @@ describe('FilterMenu', () => {
     });
 
     it('buttonVariant = border-filled, with icon', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.buttonVariant = 'border-filled';
         element.iconName = 'utility:apps';
 
@@ -375,12 +290,6 @@ describe('FilterMenu', () => {
     });
 
     it('buttonVariant = bare-inverse', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.buttonVariant = 'bare-inverse';
 
         return Promise.resolve().then(() => {
@@ -392,12 +301,6 @@ describe('FilterMenu', () => {
     });
 
     it('buttonVariant = bare-inverse, with label', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.buttonVariant = 'bare-inverse';
         element.label = 'A string label';
 
@@ -408,12 +311,6 @@ describe('FilterMenu', () => {
     });
 
     it('buttonVariant = bare-inverse, with icon', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.buttonVariant = 'bare-inverse';
         element.iconName = 'standard:apps';
 
@@ -426,12 +323,6 @@ describe('FilterMenu', () => {
     });
 
     it('buttonVariant = border-inverse', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.buttonVariant = 'border-inverse';
 
         return Promise.resolve().then(() => {
@@ -443,12 +334,6 @@ describe('FilterMenu', () => {
     });
 
     it('buttonVariant = border-inverse, with label', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.buttonVariant = 'border-inverse';
         element.label = 'A string label';
 
@@ -461,12 +346,6 @@ describe('FilterMenu', () => {
     });
 
     it('buttonVariant = border-inverse, with icon', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.buttonVariant = 'border-inverse';
         element.icon = 'utility:apps';
 
@@ -480,12 +359,6 @@ describe('FilterMenu', () => {
 
     // disabled
     it('disabled = false', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.disabled = false;
 
         return Promise.resolve().then(() => {
@@ -495,12 +368,6 @@ describe('FilterMenu', () => {
     });
 
     it('disabled = true', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.disabled = true;
 
         return Promise.resolve().then(() => {
@@ -511,12 +378,6 @@ describe('FilterMenu', () => {
 
     // dropdown-alignment and dropdownNubbin
     it('dropdownAlignment = left and dropdownNubbin = true', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.dropdownAlignment = 'left';
         element.dropdownNubbin = true;
         const button = element.shadowRoot.querySelector('button');
@@ -547,12 +408,6 @@ describe('FilterMenu', () => {
     });
 
     it('dropdownAlignment = auto and dropdownNubbin = true', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.dropdownAlignment = 'auto';
         element.dropdownNubbin = true;
         const button = element.shadowRoot.querySelector('button');
@@ -583,12 +438,6 @@ describe('FilterMenu', () => {
     });
 
     it('dropdownAlignment = center and dropdownNubbin = true', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.dropdownAlignment = 'center';
         element.dropdownNubbin = true;
         const button = element.shadowRoot.querySelector('button');
@@ -619,12 +468,6 @@ describe('FilterMenu', () => {
     });
 
     it('dropdownAlignment = right and dropdownNubbin = true', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.dropdownAlignment = 'right';
         element.dropdownNubbin = true;
         const button = element.shadowRoot.querySelector('button');
@@ -655,12 +498,6 @@ describe('FilterMenu', () => {
     });
 
     it('dropdownAlignment = bottom-left and dropdownNubbin = true', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.dropdownAlignment = 'bottom-left';
         element.dropdownNubbin = true;
         const button = element.shadowRoot.querySelector('button');
@@ -689,12 +526,6 @@ describe('FilterMenu', () => {
     });
 
     it('dropdownAlignment = bottom-center and dropdownNubbin = true', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.dropdownAlignment = 'bottom-center';
         element.dropdownNubbin = true;
         const button = element.shadowRoot.querySelector('button');
@@ -725,12 +556,6 @@ describe('FilterMenu', () => {
     });
 
     it('dropdownAlignment = bottom-right and dropdownNubbin = true', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.dropdownAlignment = 'bottom-right';
         element.dropdownNubbin = true;
         const button = element.shadowRoot.querySelector('button');
@@ -757,12 +582,6 @@ describe('FilterMenu', () => {
     });
 
     it('dropdownNubbin = false', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.dropdownNubbin = false;
         const button = element.shadowRoot.querySelector('button');
         button.click();
@@ -783,12 +602,6 @@ describe('FilterMenu', () => {
 
     // dropdown-length
     it('dropdownLength = 7-items', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.dropdownLength = '7-items';
         const button = element.shadowRoot.querySelector('button');
         button.click();
@@ -810,12 +623,6 @@ describe('FilterMenu', () => {
     });
 
     it('dropdownLength = 5-items', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.dropdownLength = '5-items';
         const button = element.shadowRoot.querySelector('button');
         button.click();
@@ -837,12 +644,6 @@ describe('FilterMenu', () => {
     });
 
     it('dropdownLength = 10-items', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.dropdownLength = '10-items';
         const button = element.shadowRoot.querySelector('button');
         button.click();
@@ -865,12 +666,6 @@ describe('FilterMenu', () => {
 
     // dropdown-width
     it('dropdownWidth = small', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.dropdownWidth = 'small';
         const button = element.shadowRoot.querySelector('button');
         button.click();
@@ -886,12 +681,6 @@ describe('FilterMenu', () => {
     });
 
     it('dropdownWidth = xx-small', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.dropdownWidth = 'xx-small';
         const button = element.shadowRoot.querySelector('button');
         button.click();
@@ -907,12 +696,6 @@ describe('FilterMenu', () => {
     });
 
     it('dropdownWidth = x-small', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.dropdownWidth = 'x-small';
         const button = element.shadowRoot.querySelector('button');
         button.click();
@@ -928,12 +711,6 @@ describe('FilterMenu', () => {
     });
 
     it('dropdownWidth = medium', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.dropdownWidth = 'medium';
         const button = element.shadowRoot.querySelector('button');
         button.click();
@@ -949,12 +726,6 @@ describe('FilterMenu', () => {
     });
 
     it('dropdownWidth = large', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.dropdownWidth = 'large';
         const button = element.shadowRoot.querySelector('button');
         button.click();
@@ -972,12 +743,6 @@ describe('FilterMenu', () => {
     // hide-apply-reset-buttons
     // Depends on variant
     it('hideApplyResetButtons = false, with horizontal variant', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.hideApplyResetButtons = false;
 
         const button = element.shadowRoot.querySelector('button');
@@ -992,12 +757,6 @@ describe('FilterMenu', () => {
     });
 
     it('hideApplyResetButtons = false, with vertical variant', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.hideApplyResetButtons = false;
         element.variant = 'vertical';
 
@@ -1010,12 +769,6 @@ describe('FilterMenu', () => {
     });
 
     it('hideApplyResetButtons = true, with horizontal variant', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.hideApplyResetButtons = true;
 
         const button = element.shadowRoot.querySelector('button');
@@ -1030,12 +783,6 @@ describe('FilterMenu', () => {
     });
 
     it('hideApplyResetButtons = true, with vertical variant', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.hideApplyResetButtons = true;
         element.variant = 'vertical';
 
@@ -1050,12 +797,6 @@ describe('FilterMenu', () => {
     // hide-selected-items
     // Depends on items, value and variant
     it('hideSelectedItems = false, with horizontal variant', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.hideSelectedItems = false;
         element.items = ITEMS;
         element.value = VALUE;
@@ -1072,12 +813,6 @@ describe('FilterMenu', () => {
     });
 
     it('hideSelectedItems = false, with vertical variant', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.hideSelectedItems = false;
         element.variant = 'vertical';
         element.items = ITEMS;
@@ -1092,12 +827,6 @@ describe('FilterMenu', () => {
     });
 
     it('hideSelectedItems = true, with horizontal variant', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.hideSelectedItems = true;
         element.items = ITEMS;
         element.value = VALUE;
@@ -1114,12 +843,6 @@ describe('FilterMenu', () => {
     });
 
     it('hideSelectedItems = true, with vertical variant', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.hideSelectedItems = true;
         element.variant = 'vertical';
         element.items = ITEMS;
@@ -1135,12 +858,6 @@ describe('FilterMenu', () => {
 
     // icon-name
     it('iconName is down arrow', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.iconName = 'utility:chevrondown';
 
         return Promise.resolve().then(() => {
@@ -1155,12 +872,6 @@ describe('FilterMenu', () => {
     });
 
     it('iconName is not down arrow', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.iconName = 'standard:user';
 
         return Promise.resolve().then(() => {
@@ -1177,12 +888,6 @@ describe('FilterMenu', () => {
 
     // icon-size
     it('iconSize = xx-small', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.iconSize = 'xx-small';
 
         return Promise.resolve().then(() => {
@@ -1195,12 +900,6 @@ describe('FilterMenu', () => {
     });
 
     it('iconSize = x-small', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.iconSize = 'x-small';
 
         return Promise.resolve().then(() => {
@@ -1213,12 +912,6 @@ describe('FilterMenu', () => {
     });
 
     it('iconSize = medium', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.iconSize = 'medium';
 
         return Promise.resolve().then(() => {
@@ -1231,12 +924,6 @@ describe('FilterMenu', () => {
     });
 
     it('iconSize = large', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.iconSize = 'large';
 
         return Promise.resolve().then(() => {
@@ -1250,12 +937,6 @@ describe('FilterMenu', () => {
 
     // is-loading
     it('isLoading = false', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.isLoading = false;
         const button = element.shadowRoot.querySelector('button');
         button.click();
@@ -1274,12 +955,6 @@ describe('FilterMenu', () => {
     });
 
     it('isLoading = true', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.isLoading = true;
         const button = element.shadowRoot.querySelector('button');
         button.click();
@@ -1299,12 +974,6 @@ describe('FilterMenu', () => {
 
     // items
     it('items', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.items = ITEMS;
         const button = element.shadowRoot.querySelector('button');
         button.click();
@@ -1336,12 +1005,6 @@ describe('FilterMenu', () => {
 
     // label
     it('label', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -1353,12 +1016,6 @@ describe('FilterMenu', () => {
     // loading-state-alternative-text
     // Depends in isLoading
     it('loadingStateAlternativeText', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.loadingStateAlternativeText = 'A string alt text';
         element.isLoading = true;
         const button = element.shadowRoot.querySelector('button');
@@ -1374,12 +1031,6 @@ describe('FilterMenu', () => {
 
     // reset-button-label
     it('resetButtonLabel', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.resetButtonLabel = 'A string label';
         const button = element.shadowRoot.querySelector('button');
         button.click();
@@ -1395,12 +1046,6 @@ describe('FilterMenu', () => {
     // search-input-placeholder
     // Depends on showSearchBox
     it('searchInputPlaceholder', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.searchInputPlaceholder = 'A string placeholder';
         element.showSearchBox = true;
         const button = element.shadowRoot.querySelector('button');
@@ -1414,12 +1059,6 @@ describe('FilterMenu', () => {
 
     // show-search-box
     it('showSearchBox = false', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.showSearchBox = false;
         const button = element.shadowRoot.querySelector('button');
         button.click();
@@ -1431,12 +1070,6 @@ describe('FilterMenu', () => {
     });
 
     it('showSearchBox = true', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.showSearchBox = true;
         const button = element.shadowRoot.querySelector('button');
         button.click();
@@ -1449,12 +1082,6 @@ describe('FilterMenu', () => {
 
     // title
     it('title', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.title = 'A string title';
 
         return Promise.resolve().then(() => {
@@ -1466,12 +1093,6 @@ describe('FilterMenu', () => {
     // tooltip
     // Depends on variant
     it('tooltip with vertical variant', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.tooltip = 'A string tooltip';
         element.variant = 'vertical';
 
@@ -1485,12 +1106,6 @@ describe('FilterMenu', () => {
     // value
     // Depends on items
     it('value', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.value = VALUE;
         element.items = ITEMS;
         const button = element.shadowRoot.querySelector('button');
@@ -1508,12 +1123,6 @@ describe('FilterMenu', () => {
 
     // variant
     it('variant = horizontal', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'horizontal';
 
         return Promise.resolve().then(() => {
@@ -1530,12 +1139,6 @@ describe('FilterMenu', () => {
     });
 
     it('variant = vertical', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'vertical';
 
         return Promise.resolve().then(() => {
@@ -1558,12 +1161,6 @@ describe('FilterMenu', () => {
     // clear
     // Depends on value and items
     it('clear method', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.value = VALUE;
         element.items = ITEMS;
 
@@ -1576,12 +1173,6 @@ describe('FilterMenu', () => {
     // apply
     // Depends on value and items
     it('apply method', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.value = VALUE;
         element.items = ITEMS;
 
@@ -1599,12 +1190,6 @@ describe('FilterMenu', () => {
 
     // focus
     it('focus method', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         const button = element.shadowRoot.querySelector('button');
         button.addEventListener('focus', handler);
@@ -1618,12 +1203,6 @@ describe('FilterMenu', () => {
     // select
     // Depends on items and variant
     it('select event, with horizontal variant', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('select', handler);
 
@@ -1676,12 +1255,6 @@ describe('FilterMenu', () => {
     });
 
     it('select event, with vertical variant', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('select', handler);
         element.variant = 'vertical';
@@ -1708,12 +1281,6 @@ describe('FilterMenu', () => {
     // apply
     // Depends on items and value
     it('apply event', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('apply', handler);
 
@@ -1739,12 +1306,6 @@ describe('FilterMenu', () => {
     // reset
     // Depends on items and value
     it('reset event', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('reset', handler);
 
@@ -1770,12 +1331,6 @@ describe('FilterMenu', () => {
 
     // close
     it('close event', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('close', handler);
 
@@ -1795,12 +1350,6 @@ describe('FilterMenu', () => {
     // search
     // Depends on items and showSearchBox
     it('search event', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('search', handler);
 
@@ -1830,12 +1379,6 @@ describe('FilterMenu', () => {
 
     // blur
     it('blur event (button blur)', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('blur', handler);
 
@@ -1856,12 +1399,6 @@ describe('FilterMenu', () => {
     // content blur
     // Depends on items
     it('blur of an inside element', () => {
-        const element = createElement('base-filter-menu', {
-            is: FilterMenu
-        });
-
-        document.body.appendChild(element);
-
         element.items = ITEMS;
         const button = element.shadowRoot.querySelector('button');
         button.click();
@@ -1895,7 +1432,7 @@ describe('FilterMenu', () => {
 
     // privatebuttonregister
     it('privatebuttonregister event', () => {
-        const element = createElement('base-filter-menu', {
+        element = createElement('base-filter-menu', {
             is: FilterMenu
         });
 
