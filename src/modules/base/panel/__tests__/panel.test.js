@@ -33,6 +33,7 @@
 import { createElement } from 'lwc';
 import Panel from 'c/panel';
 
+let element;
 describe('Panel', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -40,13 +41,17 @@ describe('Panel', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-panel', {
+    beforeEach(() => {
+        element = createElement('base-panel', {
             is: Panel
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.position).toBe('right');
         expect(element.title).toBeUndefined();
+        expect(element.showPanel).toBeFalsy();
         expect(element.size).toBe('medium');
     });
 
@@ -54,11 +59,6 @@ describe('Panel', () => {
 
     // position
     it('position = right', () => {
-        const element = createElement('base-panel', {
-            is: Panel
-        });
-        document.body.appendChild(element);
-
         const wrapper = element.shadowRoot.querySelector('.slds-panel');
         element.position = 'right';
 
@@ -69,11 +69,6 @@ describe('Panel', () => {
     });
 
     it('position = left', () => {
-        const element = createElement('base-panel', {
-            is: Panel
-        });
-        document.body.appendChild(element);
-
         const wrapper = element.shadowRoot.querySelector('.slds-panel');
         element.position = 'left';
 
@@ -85,11 +80,6 @@ describe('Panel', () => {
 
     // title
     it('title', () => {
-        const element = createElement('base-panel', {
-            is: Panel
-        });
-        document.body.appendChild(element);
-
         const title = element.shadowRoot.querySelector('h1');
         element.title = 'A string title';
 
@@ -98,13 +88,18 @@ describe('Panel', () => {
         });
     });
 
+    // showPanel
+    it('showPanel = true', () => {
+        const wrapper = element.shadowRoot.querySelector('.slds-panel');
+        element.showPanel = true;
+
+        return Promise.resolve().then(() => {
+            expect(wrapper.classList).toContain('slds-is-open');
+        });
+    });
+
     // size
     it('size = medium', () => {
-        const element = createElement('base-panel', {
-            is: Panel
-        });
-        document.body.appendChild(element);
-
         const wrapper = element.shadowRoot.querySelector('.slds-panel');
         element.size = 'medium';
 
@@ -118,11 +113,6 @@ describe('Panel', () => {
     });
 
     it('size = small', () => {
-        const element = createElement('base-panel', {
-            is: Panel
-        });
-        document.body.appendChild(element);
-
         const wrapper = element.shadowRoot.querySelector('.slds-panel');
         element.size = 'small';
 
@@ -136,11 +126,6 @@ describe('Panel', () => {
     });
 
     it('size = large', () => {
-        const element = createElement('base-panel', {
-            is: Panel
-        });
-        document.body.appendChild(element);
-
         const wrapper = element.shadowRoot.querySelector('.slds-panel');
         element.size = 'large';
 
@@ -154,11 +139,6 @@ describe('Panel', () => {
     });
 
     it('size = x-large', () => {
-        const element = createElement('base-panel', {
-            is: Panel
-        });
-        document.body.appendChild(element);
-
         const wrapper = element.shadowRoot.querySelector('.slds-panel');
         element.size = 'x-large';
 
@@ -172,11 +152,6 @@ describe('Panel', () => {
     });
 
     it('size = full', () => {
-        const element = createElement('base-panel', {
-            is: Panel
-        });
-        document.body.appendChild(element);
-
         const wrapper = element.shadowRoot.querySelector('.slds-panel');
         element.size = 'full';
 
@@ -193,11 +168,6 @@ describe('Panel', () => {
 
     // toggle
     it('method: toggle', () => {
-        const element = createElement('base-panel', {
-            is: Panel
-        });
-        document.body.appendChild(element);
-
         const wrapper = element.shadowRoot.querySelector('.slds-panel');
         expect(wrapper.classList).toContain('slds-is-hidden');
 
@@ -218,11 +188,6 @@ describe('Panel', () => {
 
     // open and close
     it('methods: open and close', () => {
-        const element = createElement('base-panel', {
-            is: Panel
-        });
-        document.body.appendChild(element);
-
         const wrapper = element.shadowRoot.querySelector('.slds-panel');
         expect(wrapper.classList).toContain('slds-is-hidden');
 
