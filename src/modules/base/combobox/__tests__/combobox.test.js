@@ -34,6 +34,7 @@ import { createElement } from 'lwc';
 import Combobox from 'c/combobox';
 import { options, actions, scopes, scopesGroups, groups } from './data';
 
+let element;
 describe('Combobox', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -41,11 +42,17 @@ describe('Combobox', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-combobox', {
+    beforeEach(() => {
+        element = createElement('base-combobox', {
             is: Combobox
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
+        element = createElement('base-combobox', {
+            is: Combobox
+        });
         expect(element.actions).toMatchObject([]);
         expect(element.allowSearch).toBeFalsy();
         expect(element.disabled).toBeFalsy();
@@ -79,11 +86,6 @@ describe('Combobox', () => {
 
     // actions
     it('actions', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         element.actions = actions;
 
         return Promise.resolve().then(() => {
@@ -96,11 +98,6 @@ describe('Combobox', () => {
 
     // allow-search
     it('allowSearch', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         element.allowSearch = true;
 
         return Promise.resolve().then(() => {
@@ -114,11 +111,6 @@ describe('Combobox', () => {
     // disabled
     // Depends on scopes
     it('disabled', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         element.disabled = true;
         element.scopes = scopes;
 
@@ -138,11 +130,6 @@ describe('Combobox', () => {
     // dropdown-alignment
     // Depends on scopes
     it('dropdownAlignment', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         element.dropdownAlignment = 'right';
         element.scopes = scopes;
 
@@ -162,11 +149,6 @@ describe('Combobox', () => {
     // dropdown-length
     // Depends on scopes
     it('dropdownLength', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         element.dropdownLength = '5-items';
         element.scopes = scopes;
 
@@ -185,11 +167,6 @@ describe('Combobox', () => {
 
     // field-level-help
     it('fieldLevelHelp', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         element.fieldLevelHelp = 'A string help';
 
         return Promise.resolve().then(() => {
@@ -202,11 +179,6 @@ describe('Combobox', () => {
 
     // groups
     it('groups', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         element.groups = groups;
 
         return Promise.resolve().then(() => {
@@ -221,11 +193,6 @@ describe('Combobox', () => {
     // hide-selected-options
     // Depends on isMultiSelect
     it('hideSelectedOptions = false', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         element.hideSelectedOptions = false;
         element.isMultiSelect = true;
 
@@ -255,11 +222,6 @@ describe('Combobox', () => {
     });
 
     it('hideSelectedOptions = true', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         element.hideSelectedOptions = true;
         element.isMultiSelect = true;
 
@@ -286,11 +248,6 @@ describe('Combobox', () => {
 
     // is-loading
     it('isLoading', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         element.isLoading = true;
 
         return Promise.resolve().then(() => {
@@ -303,11 +260,6 @@ describe('Combobox', () => {
 
     // is-multi-select
     it('isMultiSelect', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         element.isMultiSelect = true;
 
         return Promise.resolve().then(() => {
@@ -320,11 +272,6 @@ describe('Combobox', () => {
 
     // label
     it('label', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -342,11 +289,6 @@ describe('Combobox', () => {
 
     // loading-state-alternative-text
     it('loadingStateAlternativeText', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         element.loadingStateAlternativeText = 'A string text';
 
         return Promise.resolve().then(() => {
@@ -359,11 +301,6 @@ describe('Combobox', () => {
 
     // message-when-value-missing
     it('messageWhenValueMissing', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         element.messageWhenValueMissing = 'A string message';
 
         return Promise.resolve().then(() => {
@@ -377,11 +314,6 @@ describe('Combobox', () => {
     // multi-level-groups
     // Depends on scopes
     it('multiLevelGroups', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         element.multiLevelGroups = true;
         element.scopes = scopes;
 
@@ -400,11 +332,6 @@ describe('Combobox', () => {
 
     // name
     it('name', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         element.name = 'a-string-name';
 
         return Promise.resolve().then(() => {
@@ -417,11 +344,6 @@ describe('Combobox', () => {
 
     // options
     it('options', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         element.options = options;
 
         return Promise.resolve().then(() => {
@@ -434,11 +356,6 @@ describe('Combobox', () => {
 
     // placeholder
     it('placeholder', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         element.placeholder = 'A string placeholder';
 
         return Promise.resolve().then(() => {
@@ -452,11 +369,6 @@ describe('Combobox', () => {
     // read-only
     // Depends on scopes
     it('readOnly', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         element.readOnly = true;
         element.scopes = scopes;
 
@@ -475,11 +387,6 @@ describe('Combobox', () => {
 
     // remove-selected-options
     it('removeSelectedOptions', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         element.removeSelectedOptions = true;
 
         return Promise.resolve().then(() => {
@@ -492,11 +399,6 @@ describe('Combobox', () => {
 
     // required
     it('required', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         element.required = true;
 
         return Promise.resolve().then(() => {
@@ -509,11 +411,6 @@ describe('Combobox', () => {
 
     // scopes
     it('scopes', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         element.scopes = scopes;
 
         return Promise.resolve().then(() => {
@@ -527,11 +424,6 @@ describe('Combobox', () => {
     // scopes-groups
     // Depends on scopes
     it('scopesGroups', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         element.scopes = scopes;
         element.scopesGroups = scopesGroups;
 
@@ -546,11 +438,6 @@ describe('Combobox', () => {
 
     // search
     it('search', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         const search = jest.fn();
         element.search = search;
 
@@ -565,11 +452,6 @@ describe('Combobox', () => {
     // selected-options-aria-label
     // Depends on isMultiSelect and options
     it('selectedOptionsAriaLabel', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         element.options = options;
         element.isMultiSelect = true;
         element.selectedOptionsAriaLabel = 'A string label';
@@ -602,11 +484,6 @@ describe('Combobox', () => {
     // validity
     // Depends on required
     it('validity', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         element.required = true;
 
         return Promise.resolve().then(() => {
@@ -616,11 +493,6 @@ describe('Combobox', () => {
 
     // value
     it('value', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         element.value = [options[0].value];
 
         return Promise.resolve().then(() => {
@@ -634,11 +506,6 @@ describe('Combobox', () => {
     // variant
     // Depends on label
     it('variant = standard', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         element.variant = 'standard';
         element.label = 'A string label';
 
@@ -657,11 +524,6 @@ describe('Combobox', () => {
     });
 
     it('variant = label-stacked', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         element.variant = 'label-stacked';
         element.label = 'A string label';
 
@@ -678,11 +540,6 @@ describe('Combobox', () => {
     });
 
     it('variant = label-hidden', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         element.variant = 'label-hidden';
         element.label = 'A string label';
 
@@ -701,11 +558,6 @@ describe('Combobox', () => {
     });
 
     it('variant = label-inline', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         element.variant = 'label-inline';
         element.label = 'A string label';
 
@@ -725,11 +577,6 @@ describe('Combobox', () => {
 
     // blur
     it('blur method', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         const combobox = element.shadowRoot.querySelector(
             '.combobox__main-combobox'
         );
@@ -741,11 +588,6 @@ describe('Combobox', () => {
 
     // checkValidity
     it('checkValidity method', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         const combobox = element.shadowRoot.querySelector(
             '.combobox__main-combobox'
         );
@@ -757,11 +599,6 @@ describe('Combobox', () => {
 
     // close
     it('close method', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         const combobox = element.shadowRoot.querySelector(
             '.combobox__main-combobox'
         );
@@ -773,11 +610,6 @@ describe('Combobox', () => {
 
     // focus
     it('focus method', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         const combobox = element.shadowRoot.querySelector(
             '.combobox__main-combobox'
         );
@@ -789,11 +621,6 @@ describe('Combobox', () => {
 
     // open
     it('open method', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         const combobox = element.shadowRoot.querySelector(
             '.combobox__main-combobox'
         );
@@ -805,11 +632,6 @@ describe('Combobox', () => {
 
     // reportValidity
     it('reportValidity method', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         const combobox = element.shadowRoot.querySelector(
             '.combobox__main-combobox'
         );
@@ -821,11 +643,6 @@ describe('Combobox', () => {
 
     // setCustomValidity
     it('setCustomValidity method', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         const combobox = element.shadowRoot.querySelector(
             '.combobox__main-combobox'
         );
@@ -837,11 +654,6 @@ describe('Combobox', () => {
 
     // showHelpMessageIfInvalid
     it('showHelpMessageIfInvalid method', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         const combobox = element.shadowRoot.querySelector(
             '.combobox__main-combobox'
         );
@@ -855,11 +667,6 @@ describe('Combobox', () => {
 
     // actionclick
     it('actionclick event', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('actionclick', handler);
 
@@ -883,11 +690,6 @@ describe('Combobox', () => {
 
     // blur
     it('blur event', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('blur', handler);
 
@@ -904,11 +706,6 @@ describe('Combobox', () => {
 
     // focus
     it('focus event', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('focus', handler);
 
@@ -925,11 +722,6 @@ describe('Combobox', () => {
 
     // open
     it('open event', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('open', handler);
 
@@ -947,11 +739,6 @@ describe('Combobox', () => {
     // scopechange
     // Depends on scopes
     it('scopechange event', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('scopechange', handler);
         element.scopes = scopes;
@@ -978,11 +765,6 @@ describe('Combobox', () => {
 
     // search
     it('search event', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('search', handler);
 
@@ -1006,11 +788,6 @@ describe('Combobox', () => {
 
     // change
     it('change event', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('change', handler);
 
@@ -1038,11 +815,6 @@ describe('Combobox', () => {
     // Remove a selected option
     // Depends on isMultiSelect
     it('Remove a selected option', () => {
-        const element = createElement('base-combobox', {
-            is: Combobox
-        });
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         const combobox = element.shadowRoot.querySelector(
             '.combobox__main-combobox'
