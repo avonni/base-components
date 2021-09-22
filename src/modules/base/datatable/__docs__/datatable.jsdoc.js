@@ -1,3 +1,156 @@
+// ------------------------- PROPERTIES -------------------------
+
+/**
+ * The current values per row that are provided during inline edit.
+ * @name draftValues
+ * @public
+ * @type {string[]}
+ */
+
+/**
+ * If present, you can load a subset of data and then display more
+ * when users scroll to the end of the table.
+ * Use with the onloadmore event handler to retrieve more data.
+ * @name enableInfiniteLoading
+ * @public
+ * @type {boolean}
+ * @default false
+ */
+
+/**
+ * Specifies an object containing information about cell level, row level, and table level errors.
+ * When it's set, error messages are displayed on the table accordingly.
+ * @name errors
+ * @public
+ * @type {object}
+ */
+
+/**
+ * If present, the checkbox column for row selection is hidden.
+ * @name hideCheckboxColumn
+ * @public
+ * @type {boolean}
+ * @default false
+ */
+
+/**
+ * If present, the table header is hidden.
+ * @name hideTableHeader
+ * @public
+ * @type {boolean}
+ * @default false
+ */
+
+/**
+ * If present, a spinner is shown to indicate that more data is loading.
+ * @name isLoading
+ * @public
+ * @type {boolean}
+ * @default false
+ */
+
+/**
+ * Associates each row with a unique ID.
+ * @name keyField
+ * @public
+ * @type {string}
+ * @required
+ */
+
+/**
+ * Reserved for internal use.
+ * Enables and configures advanced rendering modes.
+ * @name renderConfig
+ * @public
+ * @type {RenderManagerConfig}
+ */
+
+/**
+ * If present, column resizing is disabled.
+ * @name resizeColumnDisabled
+ * @public
+ * @type {boolean}
+ * @default false
+ */
+
+/**
+ * If present, the row numbers are shown in the first column.
+ * If a column is editable, the row number column will be automatically displayed.
+ * @name showRowNumberColumn
+ * @public
+ * @type {boolean}
+ * @default false
+ */
+
+/**
+ * The column fieldName that controls the sorting order.
+ * Sort the data using the onsort event handler.
+ * @name sortedBy
+ * @public
+ * @type {string}
+ */
+
+/**
+ * If present, the footer that displays the Save and Cancel buttons is hidden during inline editing.
+ * @name suppressBottomBar
+ * @public
+ * @type {boolean}
+ * @default false
+ */
+
+// ------------------------- EVENTS -------------------------
+
+/**
+ * The event fired when a header action is selected, such as text wrapping, text clipping, or a custom header action.
+ *
+ * @event
+ * @name headeraction
+ * @param {object} action The action definition described in the “Actions” table.
+ * @param {object} columnDefinition The column definition specified in the columns property,
+ * for example, the key-value pairs for label, fieldName, type, typeAttributes, and wrapText.
+ * @public
+ */
+/**
+ * The event fired when you scroll to the bottom of the table to load more data, until there are no more data to load.
+ *
+ * @event
+ * @name loadmore
+ * @param {boolean} enableInfiniteLoading Specifies whether infinite loading is available on the table.
+ * @param {boolean} isLoading Specifies that data is loading and displays a spinner on the table.
+ * @param {boolean} loadMoreOffset The number of pixels between the bottom of the table and the current scroll position,
+ * used to trigger more data loading.
+ * @public
+ */
+/**
+ * The event fired when the a table column is resized.
+ *
+ * @event
+ * @name resize
+ * @param {object} columnsWidth The width of all columns, in pixels. For example,
+ * a table with 5 columns of 205px width each at initial render returns [205, 205, 205, 205, 205].
+ * @param {boolean} isUserTriggered Specifies whether the column resize is caused by a user action.
+ * @public
+ */
+/**
+ * The event fired when the row is selected.
+ *
+ * @event
+ * @name rowselection
+ * @param {object} selectedRows The data in the rows that are selected.
+ * @public
+ */
+/**
+ * The event fired when a column is sorted.
+ *
+ * @event
+ * @name sort
+ * @param {string} fieldName The fieldName that controls the sorting.
+ * @param {string} sortedDirection The sorting direction. Valid options include 'asc' and 'desc'.
+ * @public
+ */
+
+// ------------------------- EXAMPLES -------------------------
+
 /**
  * @namespace examples
  */
@@ -26,11 +179,8 @@
  * @name dataTypesFromRToZ
  * @storyId example-datatable--data-types-from-r-to-z
  */
-/**
- * @memberof examples
- * @name datatableWithSummarizeTypes
- * @storyId example-datatable--datatable-with-summarize-types
- */
+
+// ------------------------- TYPE DEFINITIONS -------------------------
 
 /**
  * @typedef {Object} Column
@@ -58,20 +208,6 @@
  * @property {integer} initialWidth The width of the column when it's initialized, which must be within the min-column-width and max-column-width values, or within 50px and 1000px if they are not provided.
  * @property {string} label The Lightning Design System name of the icon.
  * @property {boolean} sortable Specifies whether the column can be sorted. The default is false.
- * @property {string[]} summarizeTypes Specifies what type of summarization.  If specified, an additional row is present a the bottom of the datatable with the result of the summarization. Valid summarize options are:
- * * count
- * * countUnique
- * * sum
- * * average
- * * median
- * * max
- * * min
- * * mode
- * 
- * Action, Avatar, button and button-icon don’t support summarize type.
- * Date type column and number type column support every summarize types. String type column support count, countUnique and mode. 
- * The rest support count and countUnique.
-
  * @property {string} type Required. The data type to be used for data formatting. For more information, see table below.
  * @property {object} typeAttributes Provides custom formatting with component attributes for the data type. For example, currency-code for the currency type. For more information, see table below.
  * @property {boolean} wrapText Specifies whether text in a column is wrapped when the table renders. Wrapped text vertically expands a row to reveal its full content. Use with wrap-text-max-lines to display a number of lines before hiding the rest.
