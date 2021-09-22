@@ -33,6 +33,7 @@
 import { createElement } from 'lwc';
 import MenuItemDialog from 'c/menuItemDialog';
 
+let element;
 describe('MenuItemDialog', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -40,11 +41,14 @@ describe('MenuItemDialog', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-menu-item-dialog', {
+    beforeEach(() => {
+        element = createElement('base-menu-item-dialog', {
             is: MenuItemDialog
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.accessKey).toBeUndefined();
         expect(element.disabled).toBeFalsy();
         expect(element.draftAlternativeText).toBeUndefined();
@@ -60,11 +64,6 @@ describe('MenuItemDialog', () => {
 
     // access-key
     it('accessKey', () => {
-        const element = createElement('base-menu-item-dialog', {
-            is: MenuItemDialog
-        });
-        document.body.appendChild(element);
-
         const link = element.shadowRoot.querySelector('a');
         element.accessKey = 'K';
 
@@ -76,11 +75,6 @@ describe('MenuItemDialog', () => {
     // disabled
     // Depends on the dispatch of a privateselect event on click
     it('disabled = false', () => {
-        const element = createElement('base-menu-item-dialog', {
-            is: MenuItemDialog
-        });
-        document.body.appendChild(element);
-
         let eventDispatched = false;
         element.disabled = false;
         element.addEventListener('privateselect', () => {
@@ -96,11 +90,6 @@ describe('MenuItemDialog', () => {
     });
 
     it('disabled = true', () => {
-        const element = createElement('base-menu-item-dialog', {
-            is: MenuItemDialog
-        });
-        document.body.appendChild(element);
-
         let eventDispatched = false;
         element.disabled = true;
         element.addEventListener('privateselect', () => {
@@ -118,11 +107,6 @@ describe('MenuItemDialog', () => {
     // draft-alternative-text
     // Depend on isDraft
     it('draftAlternativeText', () => {
-        const element = createElement('base-menu-item-dialog', {
-            is: MenuItemDialog
-        });
-        document.body.appendChild(element);
-
         element.draftAlternativeText = 'A string alternative text';
         element.isDraft = true;
 
@@ -134,11 +118,6 @@ describe('MenuItemDialog', () => {
 
     // icon-name
     it('iconName', () => {
-        const element = createElement('base-menu-item-dialog', {
-            is: MenuItemDialog
-        });
-        document.body.appendChild(element);
-
         element.iconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
@@ -151,11 +130,6 @@ describe('MenuItemDialog', () => {
 
     // is-draft
     it('isDraft = false', () => {
-        const element = createElement('base-menu-item-dialog', {
-            is: MenuItemDialog
-        });
-        document.body.appendChild(element);
-
         element.isDraft = false;
 
         return Promise.resolve().then(() => {
@@ -165,11 +139,6 @@ describe('MenuItemDialog', () => {
     });
 
     it('isDraft = true', () => {
-        const element = createElement('base-menu-item-dialog', {
-            is: MenuItemDialog
-        });
-        document.body.appendChild(element);
-
         element.isDraft = true;
 
         return Promise.resolve().then(() => {
@@ -180,11 +149,6 @@ describe('MenuItemDialog', () => {
 
     // label
     it('label', () => {
-        const element = createElement('base-menu-item-dialog', {
-            is: MenuItemDialog
-        });
-        document.body.appendChild(element);
-
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -196,11 +160,6 @@ describe('MenuItemDialog', () => {
 
     // prefix-icon-name
     it('prefixIconName', () => {
-        const element = createElement('base-menu-item-dialog', {
-            is: MenuItemDialog
-        });
-        document.body.appendChild(element);
-
         element.prefixIconName = 'standard:apps';
 
         return Promise.resolve().then(() => {
@@ -213,11 +172,6 @@ describe('MenuItemDialog', () => {
 
     // tab-index
     it('tabIndex', () => {
-        const element = createElement('base-menu-item-dialog', {
-            is: MenuItemDialog
-        });
-        document.body.appendChild(element);
-
         element.tabIndex = '-1';
 
         return Promise.resolve().then(() => {
@@ -229,11 +183,6 @@ describe('MenuItemDialog', () => {
     // value
     // Depends on the dispatch of a privateselect event on click
     it('value', () => {
-        const element = createElement('base-menu-item-dialog', {
-            is: MenuItemDialog
-        });
-        document.body.appendChild(element);
-
         let eventDetailValue;
         element.value = 'a-string-value';
         element.addEventListener('privateselect', (event) => {
@@ -252,11 +201,6 @@ describe('MenuItemDialog', () => {
 
     // focus
     it('focus', () => {
-        const element = createElement('base-menu-item-dialog', {
-            is: MenuItemDialog
-        });
-        document.body.appendChild(element);
-
         let focusEvent = false;
         element.addEventListener('focus', () => {
             focusEvent = true;
