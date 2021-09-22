@@ -30,125 +30,121 @@
 //  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //  */
 
-// import SchedulerRow from '../row';
+import SchedulerRow from '../row';
 
-// const REFERENCE_COLUMNS = [
-//     {
-//         start: new Date(2021, 8, 1, 11).getTime(),
-//         end: new Date(2021, 8, 1, 11).getTime() - 1
-//     },
-//     {
-//         start: new Date(2021, 8, 1, 12).getTime(),
-//         end: new Date(2021, 8, 1, 12).getTime() - 1
-//     },
-//     {
-//         start: new Date(2021, 8, 1, 13).getTime(),
-//         end: new Date(2021, 8, 1, 13).getTime() - 1
-//     },
-//     {
-//         start: new Date(2021, 8, 1, 14).getTime(),
-//         end: new Date(2021, 8, 1, 14).getTime() - 1
-//     },
-//     {
-//         start: new Date(2021, 8, 1, 15).getTime(),
-//         end: new Date(2021, 8, 1, 15).getTime() - 1
-//     },
-//     {
-//         start: new Date(2021, 8, 1, 16).getTime(),
-//         end: new Date(2021, 8, 1, 16).getTime() - 1
-//     }
-// ];
+const REFERENCE_COLUMNS = [
+    {
+        start: new Date(2021, 8, 1, 11).getTime(),
+        end: new Date(2021, 8, 1, 11).getTime() - 1
+    },
+    {
+        start: new Date(2021, 8, 1, 12).getTime(),
+        end: new Date(2021, 8, 1, 12).getTime() - 1
+    },
+    {
+        start: new Date(2021, 8, 1, 13).getTime(),
+        end: new Date(2021, 8, 1, 13).getTime() - 1
+    },
+    {
+        start: new Date(2021, 8, 1, 14).getTime(),
+        end: new Date(2021, 8, 1, 14).getTime() - 1
+    },
+    {
+        start: new Date(2021, 8, 1, 15).getTime(),
+        end: new Date(2021, 8, 1, 15).getTime() - 1
+    },
+    {
+        start: new Date(2021, 8, 1, 16).getTime(),
+        end: new Date(2021, 8, 1, 16).getTime() - 1
+    }
+];
 
-// const EVENTS = [
-//     {
-//         from: new Date(2021, 8, 1, 11).getTime(),
-//         to: new Date(2021, 8, 1, 12, 30).getTime(),
-//         key: 'event-1'
-//     },
-//     {
-//         from: new Date(2021, 8, 1, 13, 12).getTime(),
-//         to: new Date(2021, 8, 1, 15, 30).getTime(),
-//         key: 'event-2'
-//     }
-// ];
+const EVENTS = [
+    {
+        from: new Date(2021, 8, 1, 11).getTime(),
+        to: new Date(2021, 8, 1, 12, 30).getTime(),
+        key: 'event-1'
+    },
+    {
+        from: new Date(2021, 8, 1, 13, 12).getTime(),
+        to: new Date(2021, 8, 1, 15, 30).getTime(),
+        key: 'event-2'
+    }
+];
 
-// describe('SchedulerRow', () => {
-//     it('Default attributes', () => {
-//         const element = new SchedulerRow({});
+describe('SchedulerRow', () => {
+    it('Default attributes', () => {
+        const element = new SchedulerRow({});
 
-//         expect(element.color).toBeUndefined();
-//         expect(element.columns).toMatchObject([]);
-//         expect(element.data).toBeUndefined();
-//         expect(element.events).toMatchObject([]);
-//         expect(element.height).toBe(0);
-//         expect(element.key).toBeUndefined();
-//         expect(element.minHeight).toBe(0);
-//         expect(element.referenceColumns).toMatchObject([]);
-//     });
+        expect(element.color).toBeUndefined();
+        expect(element.columns).toMatchObject([]);
+        expect(element.data).toBeUndefined();
+        expect(element.events).toMatchObject([]);
+        expect(element.height).toBe(0);
+        expect(element.key).toBeUndefined();
+        expect(element.minHeight).toBe(0);
+        expect(element.referenceColumns).toMatchObject([]);
+    });
 
-//     /* ----- ATTRIBUTES ----- */
+    /* ----- ATTRIBUTES ----- */
 
-//     // columns
-//     // Depends on referenceColumns
-//     it('columns', () => {
-//         const element = new SchedulerRow({
-//             referenceColumns: REFERENCE_COLUMNS
-//         });
-//         expect(element.columns).toHaveLength(REFERENCE_COLUMNS.length);
-//         element.columns.forEach((column, index) => {
-//             expect(column.start).toBe(REFERENCE_COLUMNS[index].start);
-//             expect(column.end).toBe(REFERENCE_COLUMNS[index].end);
-//         });
-//     });
+    // columns
+    // Depends on referenceColumns
+    it('columns', () => {
+        const element = new SchedulerRow({
+            referenceColumns: REFERENCE_COLUMNS
+        });
+        expect(element.columns).toHaveLength(REFERENCE_COLUMNS.length);
+        element.columns.forEach((column, index) => {
+            expect(column.start).toBe(REFERENCE_COLUMNS[index].start);
+            expect(column.end).toBe(REFERENCE_COLUMNS[index].end);
+        });
+    });
 
-//     // events
-//     // Depends on referenceColumns
-//     it('events', () => {
-//         const element = new SchedulerRow({
-//             referenceColumns: REFERENCE_COLUMNS,
-//             events: EVENTS
-//         });
+    // events
+    // Depends on referenceColumns
+    it('events', () => {
+        const element = new SchedulerRow({
+            referenceColumns: REFERENCE_COLUMNS,
+            events: EVENTS
+        });
 
-//         const columns = element.columns;
-//         EVENTS.forEach((event) => {
-//             columns.forEach((column) => {
-//                 if (column.end >= event.from && column.start < event.to) {
-//                     expect(column.events).toContain(event);
-//                 } else {
-//                     expect(column.events).not.toContain(event);
-//                 }
-//             });
-//         });
-//     });
+        const columns = element.columns;
+        EVENTS.forEach((event) => {
+            columns.forEach((column) => {
+                if (column.end >= event.from && column.start < event.to) {
+                    expect(column.events).toContain(event);
+                } else {
+                    expect(column.events).not.toContain(event);
+                }
+            });
+        });
+    });
 
-//     // removeEvent()
-//     // Depends on referenceColumns and events
-//     it('removeEvent method', () => {
-//         const element = new SchedulerRow({
-//             referenceColumns: REFERENCE_COLUMNS,
-//             events: EVENTS
-//         });
+    // removeEvent()
+    // Depends on referenceColumns and events
+    it('removeEvent method', () => {
+        const element = new SchedulerRow({
+            referenceColumns: REFERENCE_COLUMNS,
+            events: EVENTS
+        });
 
-//         const eventToRemove = EVENTS[0];
-//         element.removeEvent(eventToRemove);
+        const eventToRemove = EVENTS[0];
+        element.removeEvent(eventToRemove);
 
-//         element.columns.forEach((column) => {
-//             expect(column.events).not.toContain(eventToRemove);
-//         });
-//     });
+        element.columns.forEach((column) => {
+            expect(column.events).not.toContain(eventToRemove);
+        });
+    });
 
-//     // getColumnFromStart()
-//     // Depends on referenceColumns
-//     it('getColumnFromStart method', () => {
-//         const element = new SchedulerRow({
-//             referenceColumns: REFERENCE_COLUMNS
-//         });
+    // getColumnFromStart()
+    // Depends on referenceColumns
+    it('getColumnFromStart method', () => {
+        const element = new SchedulerRow({
+            referenceColumns: REFERENCE_COLUMNS
+        });
 
-//         const start = element.getColumnFromStart(REFERENCE_COLUMNS[0].start);
-//         expect(start).toBe(element.columns[0]);
-//     });
-// });
-
-describe('Primitive Datatable', () => {
-    test.todo('please pass');
+        const start = element.getColumnFromStart(REFERENCE_COLUMNS[0].start);
+        expect(start).toBe(element.columns[0]);
+    });
 });
