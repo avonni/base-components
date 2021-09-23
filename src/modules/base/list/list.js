@@ -715,7 +715,7 @@ export default class List extends LightningElement {
          * @event
          * @name itemclick
          * @param {object}  item Item clicked.
-         * @param {DOMRect} name Bounds of the item clicked.
+         * @param {DOMRect} bounds Bounds of the item clicked.
          * @public
          */
         this.dispatchEvent(
