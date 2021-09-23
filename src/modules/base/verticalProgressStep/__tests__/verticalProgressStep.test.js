@@ -33,6 +33,7 @@
 import { createElement } from 'lwc';
 import VerticalProgressStep from 'c/verticalProgressStep';
 
+let element;
 describe('VerticalProgressStep', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -40,11 +41,14 @@ describe('VerticalProgressStep', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-vertical-progress-step', {
+    beforeEach(() => {
+        element = createElement('base-vertical-progress-step', {
             is: VerticalProgressStep
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.label).toBeUndefined();
         expect(element.value).toBeUndefined();
     });
@@ -53,12 +57,6 @@ describe('VerticalProgressStep', () => {
 
     // label
     it('label', () => {
-        const element = createElement('base-vertical-progress-step', {
-            is: VerticalProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -71,16 +69,31 @@ describe('VerticalProgressStep', () => {
 
     // value
     it('value', () => {
-        const element = createElement('base-vertical-progress-step', {
-            is: VerticalProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.value = 'a-string-value';
 
         return Promise.resolve().then(() => {
             expect(element.dataset.step).toBe('a-string-value');
+        });
+    });
+
+    /* ----- METHODS ----- */
+    // setAttributes
+    it('setAttributes', () => {
+        element.setAttributes(true, true);
+
+        return Promise.resolve().then(() => {
+            expect(element.classList).toContain('avonni-content-in-line');
+            expect(element.classList).toContain('avonni-spread');
+        });
+    });
+
+    // setIcon
+    it('setIcon', () => {
+        element.setIcon('utility:down');
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector('lightning-icon');
+            expect(icon.iconName).toBe('utility:down');
         });
     });
 
@@ -89,12 +102,6 @@ describe('VerticalProgressStep', () => {
     // stepmouseenter
     // Depends on value
     it('stepmouseenter event', () => {
-        const element = createElement('base-vertical-progress-step', {
-            is: VerticalProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.value = 'a-string-value';
         const handler = jest.fn();
         element.addEventListener('stepmouseenter', handler);
@@ -113,12 +120,6 @@ describe('VerticalProgressStep', () => {
     // stepmouseleave
     // Depends on value
     it('stepmouseleave event', () => {
-        const element = createElement('base-vertical-progress-step', {
-            is: VerticalProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.value = 'a-string-value';
         const handler = jest.fn();
         element.addEventListener('stepmouseleave', handler);
@@ -137,12 +138,6 @@ describe('VerticalProgressStep', () => {
     // stepblur
     // Depends on value
     it('stepblur event', () => {
-        const element = createElement('base-vertical-progress-step', {
-            is: VerticalProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.value = 'a-string-value';
         const handler = jest.fn();
         element.addEventListener('stepblur', handler);
@@ -161,12 +156,6 @@ describe('VerticalProgressStep', () => {
     // stepfocus
     // Depends on value
     it('stepfocus event', () => {
-        const element = createElement('base-vertical-progress-step', {
-            is: VerticalProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.value = 'a-string-value';
         const handler = jest.fn();
         element.addEventListener('stepfocus', handler);
