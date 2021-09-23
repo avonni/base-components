@@ -33,6 +33,7 @@
 import { createElement } from 'lwc';
 import Rating from 'c/rating';
 
+let element;
 describe('Rating', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -40,11 +41,14 @@ describe('Rating', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-rating', {
+    beforeEach(() => {
+        element = createElement('base-rating', {
             is: Rating
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.disabled).toBeFalsy();
         expect(element.fieldLevelHelp).toBeUndefined();
         expect(element.iconName).toBeUndefined();
@@ -64,12 +68,6 @@ describe('Rating', () => {
     // disabled
     // Depends on iconName
     it('disabled = false', () => {
-        const element = createElement('base-rating', {
-            is: Rating
-        });
-
-        document.body.appendChild(element);
-
         element.disabled = false;
 
         return Promise.resolve().then(() => {
@@ -81,12 +79,6 @@ describe('Rating', () => {
     });
 
     it('disabled = false, with icon', () => {
-        const element = createElement('base-rating', {
-            is: Rating
-        });
-
-        document.body.appendChild(element);
-
         element.disabled = false;
         element.iconName = 'standard:user';
 
@@ -99,12 +91,6 @@ describe('Rating', () => {
     });
 
     it('disabled = true', () => {
-        const element = createElement('base-rating', {
-            is: Rating
-        });
-
-        document.body.appendChild(element);
-
         element.disabled = true;
 
         return Promise.resolve().then(() => {
@@ -116,12 +102,6 @@ describe('Rating', () => {
     });
 
     it('disabled = true, with icon', () => {
-        const element = createElement('base-rating', {
-            is: Rating
-        });
-
-        document.body.appendChild(element);
-
         element.disabled = true;
         element.iconName = 'standard:apps';
 
@@ -138,12 +118,6 @@ describe('Rating', () => {
     // field-level-help
     // Depends on label
     it('fieldLevelHelp', () => {
-        const element = createElement('base-rating', {
-            is: Rating
-        });
-
-        document.body.appendChild(element);
-
         element.fieldLevelHelp = 'A string help';
         element.label = 'A string label';
 
@@ -158,12 +132,6 @@ describe('Rating', () => {
 
     // icon-name
     it('iconName', () => {
-        const element = createElement('base-rating', {
-            is: Rating
-        });
-
-        document.body.appendChild(element);
-
         element.iconName = 'utility:location';
 
         return Promise.resolve().then(() => {
@@ -179,12 +147,6 @@ describe('Rating', () => {
     // icon-size
     // Depends on iconName
     it('iconSize', () => {
-        const element = createElement('base-rating', {
-            is: Rating
-        });
-
-        document.body.appendChild(element);
-
         element.iconName = 'utility:location';
         element.iconSize = 'small';
 
@@ -200,12 +162,6 @@ describe('Rating', () => {
 
     // label
     it('label', () => {
-        const element = createElement('base-rating', {
-            is: Rating
-        });
-
-        document.body.appendChild(element);
-
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -217,12 +173,6 @@ describe('Rating', () => {
 
     // max
     it('max', () => {
-        const element = createElement('base-rating', {
-            is: Rating
-        });
-
-        document.body.appendChild(element);
-
         element.max = 8;
 
         return Promise.resolve().then(() => {
@@ -234,12 +184,6 @@ describe('Rating', () => {
 
     // min
     it('min', () => {
-        const element = createElement('base-rating', {
-            is: Rating
-        });
-
-        document.body.appendChild(element);
-
         element.min = 2;
 
         return Promise.resolve().then(() => {
@@ -252,12 +196,6 @@ describe('Rating', () => {
     // read-only
     // Depends on value
     it('readOnly = false', () => {
-        const element = createElement('base-rating', {
-            is: Rating
-        });
-
-        document.body.appendChild(element);
-
         element.readOnly = false;
         element.value = 3;
 
@@ -269,12 +207,6 @@ describe('Rating', () => {
     });
 
     it('readOnly = true', () => {
-        const element = createElement('base-rating', {
-            is: Rating
-        });
-
-        document.body.appendChild(element);
-
         element.readOnly = true;
         element.value = 3;
 
@@ -288,12 +220,6 @@ describe('Rating', () => {
     // selection
     // Depends on iconName
     it('selection = continuous', () => {
-        const element = createElement('base-rating', {
-            is: Rating
-        });
-
-        document.body.appendChild(element);
-
         element.selection = 'continuous';
 
         return Promise.resolve().then(() => {
@@ -305,12 +231,6 @@ describe('Rating', () => {
     });
 
     it('selection = continuous, with icon', () => {
-        const element = createElement('base-rating', {
-            is: Rating
-        });
-
-        document.body.appendChild(element);
-
         element.selection = 'continuous';
         element.iconName = 'utility:favorite';
 
@@ -325,12 +245,6 @@ describe('Rating', () => {
     });
 
     it('selection = single', () => {
-        const element = createElement('base-rating', {
-            is: Rating
-        });
-
-        document.body.appendChild(element);
-
         element.selection = 'single';
 
         return Promise.resolve().then(() => {
@@ -342,12 +256,6 @@ describe('Rating', () => {
     });
 
     it('selection = single, with icon', () => {
-        const element = createElement('base-rating', {
-            is: Rating
-        });
-
-        document.body.appendChild(element);
-
         element.selection = 'single';
 
         return Promise.resolve().then(() => {
@@ -365,12 +273,6 @@ describe('Rating', () => {
     // value
     // Depends on iconName
     it('value', () => {
-        const element = createElement('base-rating', {
-            is: Rating
-        });
-
-        document.body.appendChild(element);
-
         element.value = 3;
 
         return Promise.resolve().then(() => {
@@ -392,12 +294,6 @@ describe('Rating', () => {
     });
 
     it('value, with icon', () => {
-        const element = createElement('base-rating', {
-            is: Rating
-        });
-
-        document.body.appendChild(element);
-
         element.value = 2;
         element.iconName = 'utility:apps';
 
@@ -422,12 +318,6 @@ describe('Rating', () => {
     // value-hidden
     // Depends on value
     it('valueHidden = false', () => {
-        const element = createElement('base-rating', {
-            is: Rating
-        });
-
-        document.body.appendChild(element);
-
         element.valueHidden = false;
         element.value = 2;
 
@@ -439,12 +329,6 @@ describe('Rating', () => {
     });
 
     it('valueHidden = true', () => {
-        const element = createElement('base-rating', {
-            is: Rating
-        });
-
-        document.body.appendChild(element);
-
         element.valueHidden = true;
         element.value = 2;
 
@@ -457,12 +341,6 @@ describe('Rating', () => {
     // variant
     // Depends on label
     it('variant = standard', () => {
-        const element = createElement('base-rating', {
-            is: Rating
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'standard';
         element.label = 'A string label';
 
@@ -479,12 +357,6 @@ describe('Rating', () => {
     });
 
     it('variant = label-inline', () => {
-        const element = createElement('base-rating', {
-            is: Rating
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'label-inline';
         element.label = 'A string label';
 
@@ -501,12 +373,6 @@ describe('Rating', () => {
     });
 
     it('variant = label-hidden', () => {
-        const element = createElement('base-rating', {
-            is: Rating
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'label-hidden';
         element.label = 'A string label';
 
@@ -523,12 +389,6 @@ describe('Rating', () => {
     });
 
     it('variant = label-stacked', () => {
-        const element = createElement('base-rating', {
-            is: Rating
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'label-stacked';
         element.label = 'A string label';
 
@@ -547,12 +407,6 @@ describe('Rating', () => {
     // change
     // Depends on iconName
     it('change event', () => {
-        const element = createElement('base-rating', {
-            is: Rating
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('change', handler);
 
@@ -569,12 +423,6 @@ describe('Rating', () => {
     });
 
     it('change event, with icon', () => {
-        const element = createElement('base-rating', {
-            is: Rating
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('change', handler);
         element.iconName = 'utility:apps';
