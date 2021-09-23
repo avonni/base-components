@@ -56,6 +56,7 @@ const items = [
     }
 ];
 
+let element;
 describe('PrimitiveDropdownMenu', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -63,11 +64,14 @@ describe('PrimitiveDropdownMenu', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-primitive-dropdown-menu', {
+    beforeEach(() => {
+        element = createElement('base-primitive-dropdown-menu', {
             is: PrimitiveDropdownMenu
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.items).toMatchObject([]);
         expect(element.offsetHeight).toBeNull();
         expect(element.offsetWidth).toBeNull();
@@ -79,12 +83,6 @@ describe('PrimitiveDropdownMenu', () => {
     // items
     // Depends on show
     it('items', () => {
-        const element = createElement('base-primitive-dropdown-menu', {
-            is: PrimitiveDropdownMenu
-        });
-
-        document.body.appendChild(element);
-
         element.items = items;
         element.show = true;
 
@@ -104,11 +102,6 @@ describe('PrimitiveDropdownMenu', () => {
 
     // show
     it('show = false', () => {
-        const element = createElement('base-primitive-dropdown-menu', {
-            is: PrimitiveDropdownMenu
-        });
-
-        document.body.appendChild(element);
         element.show = false;
 
         return Promise.resolve().then(() => {
@@ -118,12 +111,6 @@ describe('PrimitiveDropdownMenu', () => {
     });
 
     it('show = true', () => {
-        const element = createElement('base-primitive-dropdown-menu', {
-            is: PrimitiveDropdownMenu
-        });
-
-        document.body.appendChild(element);
-
         element.show = true;
 
         return Promise.resolve().then(() => {
@@ -137,12 +124,6 @@ describe('PrimitiveDropdownMenu', () => {
     // Handle the privateblur of an item
     // Depends on show and items
     it('Close the dropdown if an item sends a blur event', () => {
-        const element = createElement('base-primitive-dropdown-menu', {
-            is: PrimitiveDropdownMenu
-        });
-
-        document.body.appendChild(element);
-
         element.show = true;
         element.items = items;
 
@@ -168,12 +149,6 @@ describe('PrimitiveDropdownMenu', () => {
     // privateselect
     // Depends on show and items
     it('privateselect event', () => {
-        const element = createElement('base-primitive-dropdown-menu', {
-            is: PrimitiveDropdownMenu
-        });
-
-        document.body.appendChild(element);
-
         element.show = true;
         element.items = items;
 
