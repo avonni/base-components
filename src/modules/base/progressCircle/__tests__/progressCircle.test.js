@@ -35,6 +35,7 @@ import ProgressCircle from 'c/progressCircle';
 
 const SIZES = ['x-small', 'small', 'medium', 'large', 'x-large'];
 
+let element;
 describe('ProgressCircle', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -42,11 +43,14 @@ describe('ProgressCircle', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-progress-circle', {
+    beforeEach(() => {
+        element = createElement('base-progress-circle', {
             is: ProgressCircle
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.color).toBe('#1589ee');
         expect(element.direction).toBe('fill');
         expect(element.label).toBeUndefined();
@@ -62,12 +66,6 @@ describe('ProgressCircle', () => {
 
     // color
     it('color', () => {
-        const element = createElement('base-progress-circle', {
-            is: ProgressCircle
-        });
-
-        document.body.appendChild(element);
-
         element.color = 'tomato';
 
         return Promise.resolve().then(() => {
@@ -78,14 +76,17 @@ describe('ProgressCircle', () => {
         });
     });
 
+    it('color number', () => {
+        element.color = 3;
+
+        return Promise.resolve().then(() => {
+            const span = element.shadowRoot.querySelector('span');
+            expect(span.style.color).toBe('rgb(21, 137, 238)');
+        });
+    });
+
     // direction and value
     it('direction = fill and value = 65', () => {
-        const element = createElement('base-progress-circle', {
-            is: ProgressCircle
-        });
-
-        document.body.appendChild(element);
-
         element.direction = 'fill';
         element.value = 65;
 
@@ -100,12 +101,6 @@ describe('ProgressCircle', () => {
     });
 
     it('direction = drain and value = 43', () => {
-        const element = createElement('base-progress-circle', {
-            is: ProgressCircle
-        });
-
-        document.body.appendChild(element);
-
         element.direction = 'drain';
         element.value = 43;
 
@@ -119,14 +114,32 @@ describe('ProgressCircle', () => {
         });
     });
 
+    it('value > 100', () => {
+        element.value = 110;
+
+        return Promise.resolve().then(() => {
+            expect(element.value).toBe(100);
+        });
+    });
+
+    it('value < 0', () => {
+        element.value = -110;
+
+        return Promise.resolve().then(() => {
+            expect(element.value).toBe(0);
+        });
+    });
+
+    it('value NaN', () => {
+        element.value = 'a';
+
+        return Promise.resolve().then(() => {
+            expect(element.value).toBe(0);
+        });
+    });
+
     // label
     it('label', () => {
-        const element = createElement('base-progress-circle', {
-            is: ProgressCircle
-        });
-
-        document.body.appendChild(element);
-
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -140,12 +153,6 @@ describe('ProgressCircle', () => {
     // size
     // Depends on label
     it('size = medium', () => {
-        const element = createElement('base-progress-circle', {
-            is: ProgressCircle
-        });
-
-        document.body.appendChild(element);
-
         element.size = 'medium';
         element.label = 'A string label';
 
@@ -194,12 +201,6 @@ describe('ProgressCircle', () => {
     });
 
     it('size = x-small', () => {
-        const element = createElement('base-progress-circle', {
-            is: ProgressCircle
-        });
-
-        document.body.appendChild(element);
-
         element.size = 'x-small';
         element.label = 'A string label';
 
@@ -248,12 +249,6 @@ describe('ProgressCircle', () => {
     });
 
     it('size = small', () => {
-        const element = createElement('base-progress-circle', {
-            is: ProgressCircle
-        });
-
-        document.body.appendChild(element);
-
         element.size = 'small';
         element.label = 'A string label';
 
@@ -302,12 +297,6 @@ describe('ProgressCircle', () => {
     });
 
     it('size = large', () => {
-        const element = createElement('base-progress-circle', {
-            is: ProgressCircle
-        });
-
-        document.body.appendChild(element);
-
         element.size = 'large';
         element.label = 'A string label';
 
@@ -356,12 +345,6 @@ describe('ProgressCircle', () => {
     });
 
     it('size = x-large', () => {
-        const element = createElement('base-progress-circle', {
-            is: ProgressCircle
-        });
-
-        document.body.appendChild(element);
-
         element.size = 'x-large';
         element.label = 'A string label';
 
@@ -412,12 +395,6 @@ describe('ProgressCircle', () => {
     // thickness
     // Depends on size
     it('thickness = medium and size = medium', () => {
-        const element = createElement('base-progress-circle', {
-            is: ProgressCircle
-        });
-
-        document.body.appendChild(element);
-
         const testedThickness = 'medium';
         const testedSize = 'medium';
 
@@ -444,12 +421,6 @@ describe('ProgressCircle', () => {
     });
 
     it('thickness = x-small and size = x-small', () => {
-        const element = createElement('base-progress-circle', {
-            is: ProgressCircle
-        });
-
-        document.body.appendChild(element);
-
         const testedThickness = 'x-small';
         const testedSize = 'x-small';
 
@@ -488,12 +459,6 @@ describe('ProgressCircle', () => {
     });
 
     it('thickness = small and size = x-small', () => {
-        const element = createElement('base-progress-circle', {
-            is: ProgressCircle
-        });
-
-        document.body.appendChild(element);
-
         const testedThickness = 'small';
         const testedSize = 'x-small';
 
@@ -532,12 +497,6 @@ describe('ProgressCircle', () => {
     });
 
     it('thickness = large and size = x-small', () => {
-        const element = createElement('base-progress-circle', {
-            is: ProgressCircle
-        });
-
-        document.body.appendChild(element);
-
         const testedThickness = 'large';
         const testedSize = 'x-small';
 
@@ -576,12 +535,6 @@ describe('ProgressCircle', () => {
     });
 
     it('thickness = x-large and size = x-small', () => {
-        const element = createElement('base-progress-circle', {
-            is: ProgressCircle
-        });
-
-        document.body.appendChild(element);
-
         const testedThickness = 'x-large';
         const testedSize = 'x-small';
 
@@ -620,12 +573,6 @@ describe('ProgressCircle', () => {
     });
 
     it('thickness = x-small and size = small', () => {
-        const element = createElement('base-progress-circle', {
-            is: ProgressCircle
-        });
-
-        document.body.appendChild(element);
-
         const testedThickness = 'x-small';
         const testedSize = 'small';
 
@@ -664,12 +611,6 @@ describe('ProgressCircle', () => {
     });
 
     it('thickness = small and size = small', () => {
-        const element = createElement('base-progress-circle', {
-            is: ProgressCircle
-        });
-
-        document.body.appendChild(element);
-
         const testedThickness = 'small';
         const testedSize = 'small';
 
@@ -708,12 +649,6 @@ describe('ProgressCircle', () => {
     });
 
     it('thickness = large and size = small', () => {
-        const element = createElement('base-progress-circle', {
-            is: ProgressCircle
-        });
-
-        document.body.appendChild(element);
-
         const testedThickness = 'large';
         const testedSize = 'small';
 
@@ -752,12 +687,6 @@ describe('ProgressCircle', () => {
     });
 
     it('thickness = x-large and size = small', () => {
-        const element = createElement('base-progress-circle', {
-            is: ProgressCircle
-        });
-
-        document.body.appendChild(element);
-
         const testedThickness = 'x-large';
         const testedSize = 'small';
 
@@ -796,12 +725,6 @@ describe('ProgressCircle', () => {
     });
 
     it('thickness = small and size = large', () => {
-        const element = createElement('base-progress-circle', {
-            is: ProgressCircle
-        });
-
-        document.body.appendChild(element);
-
         const testedThickness = 'small';
         const testedSize = 'large';
 
@@ -840,12 +763,6 @@ describe('ProgressCircle', () => {
     });
 
     it('thickness = large and size = large', () => {
-        const element = createElement('base-progress-circle', {
-            is: ProgressCircle
-        });
-
-        document.body.appendChild(element);
-
         const testedThickness = 'large';
         const testedSize = 'large';
 
@@ -884,12 +801,6 @@ describe('ProgressCircle', () => {
     });
 
     it('thickness = x-large and size = large', () => {
-        const element = createElement('base-progress-circle', {
-            is: ProgressCircle
-        });
-
-        document.body.appendChild(element);
-
         const testedThickness = 'x-large';
         const testedSize = 'large';
 
@@ -928,12 +839,6 @@ describe('ProgressCircle', () => {
     });
 
     it('thickness = small and size = x-large', () => {
-        const element = createElement('base-progress-circle', {
-            is: ProgressCircle
-        });
-
-        document.body.appendChild(element);
-
         const testedThickness = 'small';
         const testedSize = 'x-large';
 
@@ -972,12 +877,6 @@ describe('ProgressCircle', () => {
     });
 
     it('thickness = large and size = x-large', () => {
-        const element = createElement('base-progress-circle', {
-            is: ProgressCircle
-        });
-
-        document.body.appendChild(element);
-
         const testedThickness = 'large';
         const testedSize = 'x-large';
 
@@ -1016,12 +915,6 @@ describe('ProgressCircle', () => {
     });
 
     it('thickness = x-large and size = x-large', () => {
-        const element = createElement('base-progress-circle', {
-            is: ProgressCircle
-        });
-
-        document.body.appendChild(element);
-
         const testedThickness = 'x-large';
         const testedSize = 'x-large';
 
@@ -1061,12 +954,6 @@ describe('ProgressCircle', () => {
 
     // title
     it('title', () => {
-        const element = createElement('base-progress-circle', {
-            is: ProgressCircle
-        });
-
-        document.body.appendChild(element);
-
         element.title = 'A string title';
 
         return Promise.resolve().then(() => {
@@ -1079,12 +966,6 @@ describe('ProgressCircle', () => {
 
     // title-position
     it('titlePosition = bottom', () => {
-        const element = createElement('base-progress-circle', {
-            is: ProgressCircle
-        });
-
-        document.body.appendChild(element);
-
         element.titlePosition = 'bottom';
 
         return Promise.resolve().then(() => {
@@ -1099,12 +980,6 @@ describe('ProgressCircle', () => {
     });
 
     it('titlePosition = top', () => {
-        const element = createElement('base-progress-circle', {
-            is: ProgressCircle
-        });
-
-        document.body.appendChild(element);
-
         element.titlePosition = 'top';
 
         return Promise.resolve().then(() => {
@@ -1120,12 +995,6 @@ describe('ProgressCircle', () => {
 
     // variant
     it('variant = standard', () => {
-        const element = createElement('base-progress-circle', {
-            is: ProgressCircle
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'standard';
 
         return Promise.resolve().then(() => {
@@ -1135,12 +1004,6 @@ describe('ProgressCircle', () => {
     });
 
     it('variant = value-hidden', () => {
-        const element = createElement('base-progress-circle', {
-            is: ProgressCircle
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'value-hidden';
 
         return Promise.resolve().then(() => {
@@ -1149,5 +1012,3 @@ describe('ProgressCircle', () => {
         });
     });
 });
-
-// expect(element.variant).toBe('standard');
