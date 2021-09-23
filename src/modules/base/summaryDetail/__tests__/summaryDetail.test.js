@@ -33,6 +33,7 @@
 import { createElement } from 'lwc';
 import SummaryDetail from 'c/summaryDetail';
 
+let element;
 describe('SummaryDetail', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -40,11 +41,14 @@ describe('SummaryDetail', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-summary-detail', {
+    beforeEach(() => {
+        element = createElement('base-summary-detail', {
             is: SummaryDetail
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.closed).toBeFalsy();
         expect(element.expandIconName).toBe('utility:chevronright');
         expect(element.hideIcon).toBeFalsy();
@@ -58,11 +62,6 @@ describe('SummaryDetail', () => {
 
     // closed
     it('closed = false', () => {
-        const element = createElement('base-summary-detail', {
-            is: SummaryDetail
-        });
-
-        document.body.appendChild(element);
         element.closed = false;
 
         return Promise.resolve().then(() => {
@@ -79,11 +78,6 @@ describe('SummaryDetail', () => {
     });
 
     it('closed = true', () => {
-        const element = createElement('base-summary-detail', {
-            is: SummaryDetail
-        });
-
-        document.body.appendChild(element);
         element.closed = true;
 
         return Promise.resolve().then(() => {
@@ -102,11 +96,6 @@ describe('SummaryDetail', () => {
     // expand-icon-name
     // Depends on closed
     it('expandIconName', () => {
-        const element = createElement('base-summary-detail', {
-            is: SummaryDetail
-        });
-
-        document.body.appendChild(element);
         element.expandIconName = 'utility:apps';
         element.closed = true;
 
@@ -120,11 +109,6 @@ describe('SummaryDetail', () => {
 
     // hide-icon
     it('hideIcon = false', () => {
-        const element = createElement('base-summary-detail', {
-            is: SummaryDetail
-        });
-
-        document.body.appendChild(element);
         element.hideIcon = false;
 
         return Promise.resolve().then(() => {
@@ -136,11 +120,6 @@ describe('SummaryDetail', () => {
     });
 
     it('hideIcon = true', () => {
-        const element = createElement('base-summary-detail', {
-            is: SummaryDetail
-        });
-
-        document.body.appendChild(element);
         element.hideIcon = true;
 
         return Promise.resolve().then(() => {
@@ -153,11 +132,6 @@ describe('SummaryDetail', () => {
 
     // full-width
     it('fullWidth = false', () => {
-        const element = createElement('base-summary-detail', {
-            is: SummaryDetail
-        });
-
-        document.body.appendChild(element);
         element.fullWidth = false;
 
         return Promise.resolve().then(() => {
@@ -174,11 +148,6 @@ describe('SummaryDetail', () => {
     });
 
     it('fullWidth = true', () => {
-        const element = createElement('base-summary-detail', {
-            is: SummaryDetail
-        });
-
-        document.body.appendChild(element);
         element.fullWidth = true;
 
         return Promise.resolve().then(() => {
@@ -196,11 +165,6 @@ describe('SummaryDetail', () => {
 
     // remove-body-indentation
     it('removeBodyIndentation = false', () => {
-        const element = createElement('base-summary-detail', {
-            is: SummaryDetail
-        });
-
-        document.body.appendChild(element);
         element.removeBodyIndentation = false;
 
         return Promise.resolve().then(() => {
@@ -212,11 +176,6 @@ describe('SummaryDetail', () => {
     });
 
     it('removeBodyIndentation = true', () => {
-        const element = createElement('base-summary-detail', {
-            is: SummaryDetail
-        });
-
-        document.body.appendChild(element);
         element.removeBodyIndentation = true;
 
         return Promise.resolve().then(() => {
@@ -229,11 +188,6 @@ describe('SummaryDetail', () => {
 
     // shrink-icon-name
     it('shrinkIconName', () => {
-        const element = createElement('base-summary-detail', {
-            is: SummaryDetail
-        });
-
-        document.body.appendChild(element);
         element.shrinkIconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
@@ -246,11 +200,6 @@ describe('SummaryDetail', () => {
 
     // title
     it('title', () => {
-        const element = createElement('base-summary-detail', {
-            is: SummaryDetail
-        });
-
-        document.body.appendChild(element);
         element.title = 'A string title';
 
         return Promise.resolve().then(() => {
@@ -264,11 +213,6 @@ describe('SummaryDetail', () => {
 
     // toggle
     it('toggle event', () => {
-        const element = createElement('base-summary-detail', {
-            is: SummaryDetail
-        });
-
-        document.body.appendChild(element);
         const handler = jest.fn();
         element.addEventListener('toggle', handler);
         const icon = element.shadowRoot.querySelector('lightning-button-icon');
