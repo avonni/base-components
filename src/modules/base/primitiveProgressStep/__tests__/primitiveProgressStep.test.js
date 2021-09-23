@@ -33,6 +33,7 @@
 import { createElement } from 'lwc';
 import PrimitiveProgressStep from 'c/primitiveProgressStep';
 
+let element;
 describe('PrimitiveProgressStep', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -40,11 +41,14 @@ describe('PrimitiveProgressStep', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-primitive-progress-step', {
+    beforeEach(() => {
+        element = createElement('base-primitive-progress-step', {
             is: PrimitiveProgressStep
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.assistiveText).toBeUndefined();
         expect(element.buttonLabel).toBeUndefined();
         expect(element.buttonName).toBeUndefined();
@@ -75,12 +79,6 @@ describe('PrimitiveProgressStep', () => {
 
     // assistive-text
     it('assistiveText', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.assistiveText = 'A string help';
 
         return Promise.resolve().then(() => {
@@ -93,12 +91,6 @@ describe('PrimitiveProgressStep', () => {
 
     // button-label
     it('buttonLabel', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.buttonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -110,12 +102,6 @@ describe('PrimitiveProgressStep', () => {
     // button-name
     // Depends on buttonLabel
     it('buttonName', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.buttonName = 'a-string-name';
         element.buttonLabel = 'A string label';
 
@@ -128,12 +114,6 @@ describe('PrimitiveProgressStep', () => {
     // button-icon-name
     // Depends on buttonLabel
     it('buttonIconName', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.buttonIconName = 'utility:apps';
         element.buttonLabel = 'A string label';
 
@@ -146,12 +126,6 @@ describe('PrimitiveProgressStep', () => {
     // button-icon-position
     // Depends on buttonLabel
     it('buttonIconPosition', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.buttonIconPosition = 'right';
         element.buttonLabel = 'A string label';
 
@@ -164,12 +138,6 @@ describe('PrimitiveProgressStep', () => {
     // button-disabled
     // Depends on buttonLabel
     it('buttonDisabled', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.buttonDisabled = true;
         element.buttonLabel = 'A string label';
 
@@ -182,12 +150,6 @@ describe('PrimitiveProgressStep', () => {
     // button-title
     // Depends on buttonLabel
     it('buttonTitle', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.buttonTitle = 'A string title';
         element.buttonLabel = 'A string label';
 
@@ -200,12 +162,6 @@ describe('PrimitiveProgressStep', () => {
     // button-variant
     // Depends on buttonLabel
     it('buttonVariant', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.buttonVariant = 'destructive';
         element.buttonLabel = 'A string label';
 
@@ -218,12 +174,6 @@ describe('PrimitiveProgressStep', () => {
     // completed-steps
     // Depends on value and popoverLabel
     it('completedSteps includes this step', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.completedSteps = ['3', '4'];
         element.value = '3';
         element.popoverLabel = 'A string label';
@@ -237,12 +187,6 @@ describe('PrimitiveProgressStep', () => {
     });
 
     it('completedSteps excludes this step', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.completedSteps = ['3', '4'];
         element.value = '18';
         element.popoverLabel = 'A string label';
@@ -257,12 +201,6 @@ describe('PrimitiveProgressStep', () => {
 
     // description
     it('description', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.description = 'A string description';
 
         return Promise.resolve().then(() => {
@@ -276,12 +214,6 @@ describe('PrimitiveProgressStep', () => {
     // description-position
     // Depends on description
     it('descriptionPosition = top', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.description = 'A string description';
         element.descriptionPosition = 'top';
 
@@ -299,12 +231,6 @@ describe('PrimitiveProgressStep', () => {
     });
 
     it('descriptionPosition = bottom', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.description = 'A string description';
         element.descriptionPosition = 'bottom';
 
@@ -324,12 +250,6 @@ describe('PrimitiveProgressStep', () => {
     // disabled-steps
     // Depends on value and buttonLabel
     it('disabledSteps includes this step', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.value = '5';
         element.disabledSteps = ['2', '5', '12'];
         element.buttonLabel = 'A string label';
@@ -349,12 +269,6 @@ describe('PrimitiveProgressStep', () => {
     });
 
     it('disabledSteps excludes this step', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.value = '5';
         element.disabledSteps = ['2', '8', '12'];
         element.buttonLabel = 'A string label';
@@ -375,12 +289,6 @@ describe('PrimitiveProgressStep', () => {
 
     // label
     it('label', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -395,12 +303,6 @@ describe('PrimitiveProgressStep', () => {
     // label-position
     // Depends on label
     it('label-position = top', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.label = 'A string label';
         element.labelPosition = 'top';
 
@@ -418,12 +320,6 @@ describe('PrimitiveProgressStep', () => {
     });
 
     it('label-position = bottom', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.label = 'A string label';
         element.labelPosition = 'bottom';
 
@@ -442,12 +338,6 @@ describe('PrimitiveProgressStep', () => {
 
     // popover-description
     it('popoverDescription', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.popoverDescription = 'A string description';
 
         return Promise.resolve().then(() => {
@@ -461,12 +351,6 @@ describe('PrimitiveProgressStep', () => {
     // popover-hidden
     // Depends on popoverLabel
     it('popoverHidden = false', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.popoverHidden = false;
         element.popoverLabel = 'A string label';
 
@@ -477,12 +361,6 @@ describe('PrimitiveProgressStep', () => {
     });
 
     it('popoverHidden = true', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.popoverHidden = true;
         element.popoverLabel = 'A string label';
 
@@ -494,12 +372,6 @@ describe('PrimitiveProgressStep', () => {
 
     // popover-icon-name
     it('popoverIconName', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.popoverIconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
@@ -513,12 +385,6 @@ describe('PrimitiveProgressStep', () => {
     // popover-icon-name-when-hover
     // Depends on popoverVariant and popoverIconName
     it('popoverIconNameWhenHover', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.popoverIconNameWhenHover = 'utility:apps';
         element.popoverIconName = 'utility:user';
         element.popoverVariant = 'button';
@@ -533,12 +399,6 @@ describe('PrimitiveProgressStep', () => {
 
     // popover-icon-src
     it('popoverIconSrc', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.popoverIconSrc =
             '/assets/icons/standard-sprite/svg/test.svg#icon-heart';
         element.popoverIconName = 'utility:user';
@@ -556,12 +416,6 @@ describe('PrimitiveProgressStep', () => {
     // popover-icon-src-when-hover
     // Depends on popoverVariant and popoverIconName
     it('popoverIconSrcWhenHover', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.popoverIconSrcWhenHover =
             '/assets/icons/standard-sprite/svg/test.svg#icon-heart';
         element.popoverIconName = 'utility:user';
@@ -579,12 +433,6 @@ describe('PrimitiveProgressStep', () => {
 
     // popover-label
     it('popoverLabel', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.popoverLabel = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -598,12 +446,6 @@ describe('PrimitiveProgressStep', () => {
     // popover-ratio
     // Depends on popoverLabel
     it('popoverRatio = 1-by-1', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.popoverRatio = '1-by-1';
         element.popoverLabel = 'A string label';
 
@@ -614,12 +456,6 @@ describe('PrimitiveProgressStep', () => {
     });
 
     it('popoverRatio = 4-by-3', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.popoverRatio = '4-by-3';
         element.popoverLabel = 'A string label';
 
@@ -630,12 +466,6 @@ describe('PrimitiveProgressStep', () => {
     });
 
     it('popoverRatio = 16-by-9', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.popoverRatio = '16-by-9';
         element.popoverLabel = 'A string label';
 
@@ -646,12 +476,6 @@ describe('PrimitiveProgressStep', () => {
     });
 
     it('popoverRatio is not in the valid list', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.popoverRatio = 'Not a valid entry';
         element.popoverLabel = 'A string label';
 
@@ -664,12 +488,6 @@ describe('PrimitiveProgressStep', () => {
     // popover-size
     // Depends on popoverLabel and popoverIconName
     it('popoverSize = small', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.popoverSize = 'small';
         element.popoverLabel = 'A string label';
         element.popoverIconName = 'utility:apps';
@@ -695,12 +513,6 @@ describe('PrimitiveProgressStep', () => {
     });
 
     it('popoverSize = medium', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.popoverSize = 'medium';
         element.popoverLabel = 'A string label';
         element.popoverIconName = 'utility:apps';
@@ -726,12 +538,6 @@ describe('PrimitiveProgressStep', () => {
     });
 
     it('popoverSize = large', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.popoverSize = 'large';
         element.popoverLabel = 'A string label';
         element.popoverIconName = 'utility:apps';
@@ -759,12 +565,6 @@ describe('PrimitiveProgressStep', () => {
     // popoverVariant
     // Depends on popoverLabel
     it('popoverVariant = base', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.popoverVariant = 'base';
         element.popoverLabel = 'A string label';
 
@@ -777,12 +577,6 @@ describe('PrimitiveProgressStep', () => {
     });
 
     it('popoverVariant = button', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.popoverVariant = 'button';
         element.popoverLabel = 'A string label';
 
@@ -797,12 +591,6 @@ describe('PrimitiveProgressStep', () => {
     // waring-steps
     // Depends on value and setIcon
     it('warningSteps', () => {
-        const element = createElement('base-primitive-progress-step', {
-            is: PrimitiveProgressStep
-        });
-
-        document.body.appendChild(element);
-
         element.warningSteps = ['2', '3', '12'];
         element.value = '3';
         element.setIcon('utility:apps');
@@ -812,6 +600,115 @@ describe('PrimitiveProgressStep', () => {
                 '.slds-progress__marker c-primitive-icon'
             );
             expect(icon.variant).toBe('warning');
+        });
+    });
+
+    /* ----- EVENTS ----- */
+    it('step click', () => {
+        const handler = jest.fn();
+        element.addEventListener('stepclick', handler);
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            button.dispatchEvent(new CustomEvent('click'));
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    it('step mouseenter', () => {
+        const handler = jest.fn();
+        element.addEventListener('stepmouseenter', handler);
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            button.dispatchEvent(new CustomEvent('mouseenter'));
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    it('step mouseleave', () => {
+        const handler = jest.fn();
+        element.addEventListener('stepmouseleave', handler);
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            button.dispatchEvent(new CustomEvent('mouseleave'));
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    it('step focus', () => {
+        const handler = jest.fn();
+        element.addEventListener('stepfocus', handler);
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            button.dispatchEvent(new CustomEvent('focus'));
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    it('step blur', () => {
+        const handler = jest.fn();
+        element.addEventListener('stepblur', handler);
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('button');
+            button.dispatchEvent(new CustomEvent('blur'));
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    it('popover click', () => {
+        const handler = jest.fn();
+        element.popoverHidden = false;
+        element.popoverLabel = 'A string label';
+        element.addEventListener('steppopoverclick', handler);
+
+        return Promise.resolve().then(() => {
+            const popover = element.shadowRoot.querySelector('.slds-popover');
+            popover.dispatchEvent(new CustomEvent('click'));
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    it('button click', () => {
+        const handler = jest.fn();
+        element.buttonLabel = 'A string label';
+        element.addEventListener('stepbuttonclick', handler);
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector('lightning-button');
+            button.dispatchEvent(new CustomEvent('click'));
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
     });
 });
